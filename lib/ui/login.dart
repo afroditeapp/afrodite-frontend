@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:openapi/api.dart' as client_api;
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, required this.title}) : super(key: key);
 
@@ -9,7 +11,21 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
+const commonPadding = 5.0;
+
 class _LoginPageState extends State<LoginPage> {
+
+  var _apiClient = client_api.ApiClient(basePath: "http://10.0.2.2:3000");
+  String _accountId = "";
+
+  String accountIdUiText() {
+    if (_accountId.isEmpty) {
+      return "Not registerd";
+    } else {
+      return _accountId;
+    }
+  }
+
   void _incrementCounter() {
     setState(() {
       //_counter++;
@@ -17,6 +33,24 @@ class _LoginPageState extends State<LoginPage> {
   }
   void _buttonTest() {
     Navigator.of(context).pop();
+    // setState(() {
+    //
+    // });
+  }
+
+  Future<void> _register() async {
+    print("register");
+    final res = await client_api.AccountApi(_apiClient).postRegister();
+    if (res != null) {
+      setState(() {
+        _accountId = res.accountId;
+      });
+    }
+
+  }
+
+  void _login() {
+    print("login");
     // setState(() {
     //
     // });
@@ -42,9 +76,31 @@ class _LoginPageState extends State<LoginPage> {
             ),
             ElevatedButton(
               child: const Text(
-                  "Login"
+                  "Back"
               ),
               onPressed: _buttonTest,
+            ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
+            ElevatedButton(
+              child: const Text(
+                  "Register"
+              ),
+              onPressed: _register,
+            ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
+            Text(
+                accountIdUiText()
+            ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
+            ElevatedButton(
+              child: const Text(
+                  "Login"
+              ),
+              onPressed: _login,
+            ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
+            const Text(
+                "API key: "
             ),
           ],
         ),

@@ -54,9 +54,9 @@ class ImageFile {
         return true;
       }());
 
-      return ImageFile(
-        data: null, // No support for decoding binary content from JSON
-      );
+      // return ImageFile(
+      //   data: null, // No support for decoding binary content from JSON
+      // );
     }
     return null;
   }
