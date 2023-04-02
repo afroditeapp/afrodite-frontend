@@ -1,19 +1,39 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
+import "package:pihka_frontend/logic/app/main_state.dart";
+import "package:pihka_frontend/ui/login.dart";
+import "package:pihka_frontend/ui/main/home.dart";
+import "package:pihka_frontend/ui/utils/root_page.dart";
+
 
 import 'package:openapi/api.dart' as client_api;
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key, required this.title}) : super(key: key);
+class LoginPageOld extends StatefulWidget {
+  const LoginPageOld({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginPageOld> createState() => _LoginPageState();
 }
 
 const commonPadding = 5.0;
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPageOld> {
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    //final text = "t"
+
+    return Text("");
+  }
+}
+
+
+class LoginPage extends RootPage {
+  LoginPage({Key? key}) : super(MainState.loginRequired, key: key);
 
   var _apiClient = client_api.ApiClient(basePath: "http://10.0.2.2:3000");
   String _accountId = "";
@@ -27,13 +47,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _incrementCounter() {
-    setState(() {
-      //_counter++;
-    });
+
   }
   void _buttonTest() {
-    Navigator.of(context).pop();
-    // setState(() {
     //
     // });
   }
@@ -42,14 +58,12 @@ class _LoginPageState extends State<LoginPage> {
     print("register");
     final res = await client_api.AccountApi(_apiClient).postRegister();
     if (res != null) {
-      setState(() {
-        _accountId = res.accountId;
-      });
+        print(res);
     }
 
   }
 
-  void _login() {
+  void _login(BuildContext context) {
     print("login");
     // setState(() {
     //
@@ -57,9 +71,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    //final text = "t"
-
+  Widget buildRootWidget(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Column(
@@ -96,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
               child: const Text(
                   "Login"
               ),
-              onPressed: _login,
+              onPressed: () => context.read<MainStateBloc>().add(ToPendingRemovalScreen()),
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
             const Text(
@@ -108,5 +120,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-

@@ -36,6 +36,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   english_words: ^4.0.0
 
+  # State management
+  flutter_bloc: ^8.0.0
+
   # API client for server API
   openapi:
     path: "api_client"
