@@ -39,9 +39,15 @@ dependencies:
   # State management
   flutter_bloc: ^8.0.0
 
+  shared_preferences: ^2.1.0
+  rxdart: ^0.27.7
+
+
   # API client for server API
   openapi:
     path: "api_client"
+
+
 
 
 dev_dependencies:

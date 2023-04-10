@@ -57,7 +57,7 @@ class _MyTestWidgetState extends State<MyTestWidget> {
 }
 
 class HomePage extends RootPage {
-  const HomePage({Key? key}) : super(MainState.loggedIn, key: key);
+  const HomePage({Key? key}) : super(MainState.initialSetupComplete, key: key);
 
   void _incrementCounter() {
 

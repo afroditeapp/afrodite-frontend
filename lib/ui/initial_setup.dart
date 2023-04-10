@@ -5,8 +5,8 @@ import "package:pihka_frontend/ui/login.dart";
 import "package:pihka_frontend/ui/main/home.dart";
 import "package:pihka_frontend/ui/utils/root_page.dart";
 
-class PendingDeletionPage extends RootPage {
-  const PendingDeletionPage({Key? key}) : super(MainState.pendingRemoval, key: key);
+class InitialSetupPage extends RootPage {
+  const InitialSetupPage({Key? key}) : super(MainState.initialSetup, key: key);
 
   @override
   Widget buildRootWidget(BuildContext context) {
@@ -15,9 +15,9 @@ class PendingDeletionPage extends RootPage {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text("Pending deletion"),
+              const Text("Initial setup"),
               ElevatedButton(
-                child: const Text("Undo"),
+                child: const Text("Complete"),
                 onPressed: () => context.read<MainStateBloc>().add(ToMainScreen()),
               )
             ],
