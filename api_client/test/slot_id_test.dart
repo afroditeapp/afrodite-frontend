@@ -16,7 +16,7 @@ void main() {
   // final instance = SlotId();
 
   group('test SlotId', () {
-    // String slotId
+    // int slotId
     test('to test the property `slotId`', () async {
       // TODO
     });

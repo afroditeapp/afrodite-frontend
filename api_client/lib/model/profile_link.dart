@@ -17,9 +17,9 @@ class ProfileLink {
     required this.version,
   });
 
-  String id;
+  AccountIdLight id;
 
-  String version;
+  ProfileVersion version;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileLink &&
@@ -61,8 +61,8 @@ class ProfileLink {
       }());
 
       return ProfileLink(
-        id: mapValueOfType<String>(json, r'id')!,
-        version: mapValueOfType<String>(json, r'version')!,
+        id: AccountIdLight.fromJson(json[r'id'])!,
+        version: ProfileVersion.fromJson(json[r'version'])!,
       );
     }
     return null;

@@ -9,16 +9,16 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getImage**](MediaApi.md#getimage) | **GET** /media_api/image/{account_id}/{image_file} | Get profile image
+[**getImage**](MediaApi.md#getimage) | **GET** /media_api/image/{account_id}/{content_id} | Get profile image
 [**getModerationRequest**](MediaApi.md#getmoderationrequest) | **GET** /media_api/moderation/request | Get current moderation request.
-[**getModerationRequestList**](MediaApi.md#getmoderationrequestlist) | **GET** /media_api/admin/moderation/page/next | Get list of next moderation requests in moderation queue.
-[**postHandleModerationRequest**](MediaApi.md#posthandlemoderationrequest) | **POST** /media_api/admin/moderation/handle_request/{request_id} | Handle moderation request.
+[**patchModerationRequestList**](MediaApi.md#patchmoderationrequestlist) | **PATCH** /media_api/admin/moderation/page/next | Get current list of moderation requests in my moderation queue.
+[**postHandleModerationRequest**](MediaApi.md#posthandlemoderationrequest) | **POST** /media_api/admin/moderation/handle_request/{account_id} | Handle moderation request of some account.
 [**putImageToModerationSlot**](MediaApi.md#putimagetomoderationslot) | **PUT** /media_api/moderation/request/slot/{slot_id} | Set image to moderation request slot.
 [**putModerationRequest**](MediaApi.md#putmoderationrequest) | **PUT** /media_api/moderation/request | Create new or override old moderation request.
 
 
 # **getImage**
-> getImage(accountId, imageFile)
+> MultipartFile getImage(accountId, contentId)
 
 Get profile image
 
@@ -34,10 +34,11 @@ import 'package:openapi/api.dart';
 
 final api_instance = MediaApi();
 final accountId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
-final imageFile = imageFile_example; // String | 
+final contentId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
 
 try {
-    api_instance.getImage(accountId, imageFile);
+    final result = api_instance.getImage(accountId, contentId);
+    print(result);
 } catch (e) {
     print('Exception when calling MediaApi->getImage: $e\n');
 }
@@ -48,11 +49,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **accountId** | **String**|  | 
- **imageFile** | **String**|  | 
+ **contentId** | **String**|  | 
 
 ### Return type
 
-void (empty response body)
+[**MultipartFile**](MultipartFile.md)
 
 ### Authorization
 
@@ -61,7 +62,7 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: image/jpeg
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -108,12 +109,12 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getModerationRequestList**
-> ModerationRequestList getModerationRequestList()
+# **patchModerationRequestList**
+> ModerationList patchModerationRequestList()
 
-Get list of next moderation requests in moderation queue.
+Get current list of moderation requests in my moderation queue.
 
-Get list of next moderation requests in moderation queue.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
+Get current list of moderation requests in my moderation queue. Additional requests will be added to my queue if necessary.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
 
 ### Example
 ```dart
@@ -126,10 +127,10 @@ import 'package:openapi/api.dart';
 final api_instance = MediaApi();
 
 try {
-    final result = api_instance.getModerationRequestList();
+    final result = api_instance.patchModerationRequestList();
     print(result);
 } catch (e) {
-    print('Exception when calling MediaApi->getModerationRequestList: $e\n');
+    print('Exception when calling MediaApi->patchModerationRequestList: $e\n');
 }
 ```
 
@@ -138,7 +139,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**ModerationRequestList**](ModerationRequestList.md)
+[**ModerationList**](ModerationList.md)
 
 ### Authorization
 
@@ -152,11 +153,11 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **postHandleModerationRequest**
-> postHandleModerationRequest(requestId, handleModerationRequest)
+> postHandleModerationRequest(accountId, handleModerationRequest)
 
-Handle moderation request.
+Handle moderation request of some account.
 
-Handle moderation request.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
+Handle moderation request of some account.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
 
 ### Example
 ```dart
@@ -167,11 +168,11 @@ import 'package:openapi/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
 
 final api_instance = MediaApi();
-final requestId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
+final accountId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
 final handleModerationRequest = HandleModerationRequest(); // HandleModerationRequest | 
 
 try {
-    api_instance.postHandleModerationRequest(requestId, handleModerationRequest);
+    api_instance.postHandleModerationRequest(accountId, handleModerationRequest);
 } catch (e) {
     print('Exception when calling MediaApi->postHandleModerationRequest: $e\n');
 }
@@ -181,7 +182,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **requestId** | **String**|  | 
+ **accountId** | **String**|  | 
  **handleModerationRequest** | [**HandleModerationRequest**](HandleModerationRequest.md)|  | 
 
 ### Return type
@@ -200,11 +201,11 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **putImageToModerationSlot**
-> putImageToModerationSlot(slotId, body)
+> ContentId putImageToModerationSlot(slotId, body)
 
 Set image to moderation request slot.
 
-Set image to moderation request slot.  Slots \"camera\" and \"image1\" are available. 
+Set image to moderation request slot.  Slots from 0 to 2 are available.  TODO: resize and check images at some point 
 
 ### Example
 ```dart
@@ -215,11 +216,12 @@ import 'package:openapi/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
 
 final api_instance = MediaApi();
-final slotId = slotId_example; // String | 
-final body = String(); // String | 
+final slotId = 56; // int | 
+final body = MultipartFile(); // MultipartFile | 
 
 try {
-    api_instance.putImageToModerationSlot(slotId, body);
+    final result = api_instance.putImageToModerationSlot(slotId, body);
+    print(result);
 } catch (e) {
     print('Exception when calling MediaApi->putImageToModerationSlot: $e\n');
 }
@@ -229,12 +231,12 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **slotId** | **String**|  | 
- **body** | **String**|  | 
+ **slotId** | **int**|  | 
+ **body** | **MultipartFile**|  | 
 
 ### Return type
 
-void (empty response body)
+[**ContentId**](ContentId.md)
 
 ### Authorization
 
@@ -243,16 +245,16 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: image/jpeg
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **putModerationRequest**
-> putModerationRequest(newModerationRequest)
+> putModerationRequest(moderationRequestContent)
 
 Create new or override old moderation request.
 
-Create new or override old moderation request.  Set images to moderation request slots first. 
+Create new or override old moderation request.  Make sure that moderation request has content IDs which points to your own image slots. 
 
 ### Example
 ```dart
@@ -263,10 +265,10 @@ import 'package:openapi/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
 
 final api_instance = MediaApi();
-final newModerationRequest = NewModerationRequest(); // NewModerationRequest | 
+final moderationRequestContent = ModerationRequestContent(); // ModerationRequestContent | 
 
 try {
-    api_instance.putModerationRequest(newModerationRequest);
+    api_instance.putModerationRequest(moderationRequestContent);
 } catch (e) {
     print('Exception when calling MediaApi->putModerationRequest: $e\n');
 }
@@ -276,7 +278,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **newModerationRequest** | [**NewModerationRequest**](NewModerationRequest.md)|  | 
+ **moderationRequestContent** | [**ModerationRequestContent**](ModerationRequestContent.md)|  | 
 
 ### Return type
 

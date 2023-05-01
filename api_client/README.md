@@ -70,42 +70,49 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postRegister**](doc//AccountApi.md#postregister) | **POST** /account_api/register | Register new account. Returns new account ID which is UUID.
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update profile visiblity value.
 *AccountinternalApi* | [**checkApiKey**](doc//AccountinternalApi.md#checkapikey) | **GET** /internal/check_api_key | 
-*MediaApi* | [**getImage**](doc//MediaApi.md#getimage) | **GET** /media_api/image/{account_id}/{image_file} | Get profile image
+*AccountinternalApi* | [**internalGetAccountState**](doc//AccountinternalApi.md#internalgetaccountstate) | **GET** /internal/get_account_state/{account_id} | 
+*MediaApi* | [**getImage**](doc//MediaApi.md#getimage) | **GET** /media_api/image/{account_id}/{content_id} | Get profile image
 *MediaApi* | [**getModerationRequest**](doc//MediaApi.md#getmoderationrequest) | **GET** /media_api/moderation/request | Get current moderation request.
-*MediaApi* | [**getModerationRequestList**](doc//MediaApi.md#getmoderationrequestlist) | **GET** /media_api/admin/moderation/page/next | Get list of next moderation requests in moderation queue.
-*MediaApi* | [**postHandleModerationRequest**](doc//MediaApi.md#posthandlemoderationrequest) | **POST** /media_api/admin/moderation/handle_request/{request_id} | Handle moderation request.
+*MediaApi* | [**patchModerationRequestList**](doc//MediaApi.md#patchmoderationrequestlist) | **PATCH** /media_api/admin/moderation/page/next | Get current list of moderation requests in my moderation queue.
+*MediaApi* | [**postHandleModerationRequest**](doc//MediaApi.md#posthandlemoderationrequest) | **POST** /media_api/admin/moderation/handle_request/{account_id} | Handle moderation request of some account.
 *MediaApi* | [**putImageToModerationSlot**](doc//MediaApi.md#putimagetomoderationslot) | **PUT** /media_api/moderation/request/slot/{slot_id} | Set image to moderation request slot.
 *MediaApi* | [**putModerationRequest**](doc//MediaApi.md#putmoderationrequest) | **PUT** /media_api/moderation/request | Create new or override old moderation request.
-*MediainternalApi* | [**postImage**](doc//MediainternalApi.md#postimage) | **POST** /internal/image/{account_id}/{image_file} | 
-*ProfileApi* | [**getDefaultProfile**](doc//ProfileApi.md#getdefaultprofile) | **GET** /profile_api/default/{account_id} | TODO: Remove this at some point
-*ProfileApi* | [**getNextProfilePage**](doc//ProfileApi.md#getnextprofilepage) | **GET** /profile_api/page/next | Get next page of profile list.
+*MediainternalApi* | [**internalGetCheckModerationRequestForAccount**](doc//MediainternalApi.md#internalgetcheckmoderationrequestforaccount) | **GET** /internal/media_api/moderation/request/{account_id} | Check that current moderation request for account exists. Requires also
+*MediainternalApi* | [**internalPostUpdateProfileImageVisibility**](doc//MediainternalApi.md#internalpostupdateprofileimagevisibility) | **POST** /internal/media_api/visiblity/{account_id}/{value} | 
 *ProfileApi* | [**getProfile**](doc//ProfileApi.md#getprofile) | **GET** /profile_api/profile/{account_id} | Get account's current profile.
+*ProfileApi* | [**postGetNextProfilePage**](doc//ProfileApi.md#postgetnextprofilepage) | **POST** /profile_api/page/next | Post (updates iterator) to get next page of profile list.
 *ProfileApi* | [**postProfile**](doc//ProfileApi.md#postprofile) | **POST** /profile_api/profile | Update profile information.
 *ProfileApi* | [**postResetProfilePaging**](doc//ProfileApi.md#postresetprofilepaging) | **POST** /profile_api/page/reset | Reset profile paging.
 *ProfileApi* | [**putLocation**](doc//ProfileApi.md#putlocation) | **PUT** /profile_api/location | Update location
+*ProfileinternalApi* | [**internalPostUpdateProfileVisibility**](doc//ProfileinternalApi.md#internalpostupdateprofilevisibility) | **POST** /internal/profile_api/visiblity/{account_id}/{value} | 
 
 
 ## Documentation For Models
 
  - [Account](doc//Account.md)
- - [AccountId](doc//AccountId.md)
  - [AccountIdLight](doc//AccountIdLight.md)
  - [AccountSetup](doc//AccountSetup.md)
  - [AccountState](doc//AccountState.md)
  - [ApiKey](doc//ApiKey.md)
  - [BooleanSetting](doc//BooleanSetting.md)
  - [Capabilities](doc//Capabilities.md)
+ - [ContentId](doc//ContentId.md)
  - [DeleteStatus](doc//DeleteStatus.md)
  - [HandleModerationRequest](doc//HandleModerationRequest.md)
  - [ImageFile](doc//ImageFile.md)
  - [ImageFileName](doc//ImageFileName.md)
  - [Location](doc//Location.md)
+ - [Moderation](doc//Moderation.md)
+ - [ModerationList](doc//ModerationList.md)
  - [ModerationRequest](doc//ModerationRequest.md)
- - [ModerationRequestList](doc//ModerationRequestList.md)
- - [NewModerationRequest](doc//NewModerationRequest.md)
+ - [ModerationRequestContent](doc//ModerationRequestContent.md)
+ - [ModerationRequestId](doc//ModerationRequestId.md)
+ - [ModerationRequestState](doc//ModerationRequestState.md)
  - [Profile](doc//Profile.md)
  - [ProfileLink](doc//ProfileLink.md)
  - [ProfilePage](doc//ProfilePage.md)
+ - [ProfileUpdate](doc//ProfileUpdate.md)
+ - [ProfileVersion](doc//ProfileVersion.md)
  - [SlotId](doc//SlotId.md)
 
 

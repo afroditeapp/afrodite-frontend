@@ -26,12 +26,12 @@ class MediaApi {
   ///
   /// * [String] accountId (required):
   ///
-  /// * [String] imageFile (required):
-  Future<Response> getImageWithHttpInfo(String accountId, String imageFile,) async {
+  /// * [String] contentId (required):
+  Future<Response> getImageWithHttpInfo(String accountId, String contentId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/image/{account_id}/{image_file}'
+    final path = r'/media_api/image/{account_id}/{content_id}'
       .replaceAll('{account_id}', accountId)
-      .replaceAll('{image_file}', imageFile);
+      .replaceAll('{content_id}', contentId);
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -62,12 +62,20 @@ class MediaApi {
   ///
   /// * [String] accountId (required):
   ///
-  /// * [String] imageFile (required):
-  Future<void> getImage(String accountId, String imageFile,) async {
-    final response = await getImageWithHttpInfo(accountId, imageFile,);
+  /// * [String] contentId (required):
+  Future<MultipartFile?> getImage(String accountId, String contentId,) async {
+    final response = await getImageWithHttpInfo(accountId, contentId,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MultipartFile',) as MultipartFile;
+    
+    }
+    return null;
   }
 
   /// Get current moderation request.
@@ -118,12 +126,12 @@ class MediaApi {
     return null;
   }
 
-  /// Get list of next moderation requests in moderation queue.
+  /// Get current list of moderation requests in my moderation queue.
   ///
-  /// Get list of next moderation requests in moderation queue.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
+  /// Get current list of moderation requests in my moderation queue. Additional requests will be added to my queue if necessary.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getModerationRequestListWithHttpInfo() async {
+  Future<Response> patchModerationRequestListWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/admin/moderation/page/next';
 
@@ -139,7 +147,7 @@ class MediaApi {
 
     return apiClient.invokeAPI(
       path,
-      'GET',
+      'PATCH',
       queryParams,
       postBody,
       headerParams,
@@ -148,11 +156,11 @@ class MediaApi {
     );
   }
 
-  /// Get list of next moderation requests in moderation queue.
+  /// Get current list of moderation requests in my moderation queue.
   ///
-  /// Get list of next moderation requests in moderation queue.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
-  Future<ModerationRequestList?> getModerationRequestList() async {
-    final response = await getModerationRequestListWithHttpInfo();
+  /// Get current list of moderation requests in my moderation queue. Additional requests will be added to my queue if necessary.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
+  Future<ModerationList?> patchModerationRequestList() async {
+    final response = await patchModerationRequestListWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -160,27 +168,27 @@ class MediaApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ModerationRequestList',) as ModerationRequestList;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ModerationList',) as ModerationList;
     
     }
     return null;
   }
 
-  /// Handle moderation request.
+  /// Handle moderation request of some account.
   ///
-  /// Handle moderation request.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
+  /// Handle moderation request of some account.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [String] requestId (required):
+  /// * [String] accountId (required):
   ///
   /// * [HandleModerationRequest] handleModerationRequest (required):
-  Future<Response> postHandleModerationRequestWithHttpInfo(String requestId, HandleModerationRequest handleModerationRequest,) async {
+  Future<Response> postHandleModerationRequestWithHttpInfo(String accountId, HandleModerationRequest handleModerationRequest,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/admin/moderation/handle_request/{request_id}'
-      .replaceAll('{request_id}', requestId);
+    final path = r'/media_api/admin/moderation/handle_request/{account_id}'
+      .replaceAll('{account_id}', accountId);
 
     // ignore: prefer_final_locals
     Object? postBody = handleModerationRequest;
@@ -203,17 +211,17 @@ class MediaApi {
     );
   }
 
-  /// Handle moderation request.
+  /// Handle moderation request of some account.
   ///
-  /// Handle moderation request.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
+  /// Handle moderation request of some account.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
   ///
   /// Parameters:
   ///
-  /// * [String] requestId (required):
+  /// * [String] accountId (required):
   ///
   /// * [HandleModerationRequest] handleModerationRequest (required):
-  Future<void> postHandleModerationRequest(String requestId, HandleModerationRequest handleModerationRequest,) async {
-    final response = await postHandleModerationRequestWithHttpInfo(requestId, handleModerationRequest,);
+  Future<void> postHandleModerationRequest(String accountId, HandleModerationRequest handleModerationRequest,) async {
+    final response = await postHandleModerationRequestWithHttpInfo(accountId, handleModerationRequest,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -221,19 +229,19 @@ class MediaApi {
 
   /// Set image to moderation request slot.
   ///
-  /// Set image to moderation request slot.  Slots \"camera\" and \"image1\" are available. 
+  /// Set image to moderation request slot.  Slots from 0 to 2 are available.  TODO: resize and check images at some point 
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [String] slotId (required):
+  /// * [int] slotId (required):
   ///
-  /// * [String] body (required):
-  Future<Response> putImageToModerationSlotWithHttpInfo(String slotId, String body,) async {
+  /// * [MultipartFile] body (required):
+  Future<Response> putImageToModerationSlotWithHttpInfo(int slotId, MultipartFile body,) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/moderation/request/slot/{slot_id}'
-      .replaceAll('{slot_id}', slotId);
+      .replaceAll('{slot_id}', slotId.toString());
 
     // ignore: prefer_final_locals
     Object? postBody = body;
@@ -258,35 +266,43 @@ class MediaApi {
 
   /// Set image to moderation request slot.
   ///
-  /// Set image to moderation request slot.  Slots \"camera\" and \"image1\" are available. 
+  /// Set image to moderation request slot.  Slots from 0 to 2 are available.  TODO: resize and check images at some point 
   ///
   /// Parameters:
   ///
-  /// * [String] slotId (required):
+  /// * [int] slotId (required):
   ///
-  /// * [String] body (required):
-  Future<void> putImageToModerationSlot(String slotId, String body,) async {
+  /// * [MultipartFile] body (required):
+  Future<ContentId?> putImageToModerationSlot(int slotId, MultipartFile body,) async {
     final response = await putImageToModerationSlotWithHttpInfo(slotId, body,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ContentId',) as ContentId;
+    
+    }
+    return null;
   }
 
   /// Create new or override old moderation request.
   ///
-  /// Create new or override old moderation request.  Set images to moderation request slots first. 
+  /// Create new or override old moderation request.  Make sure that moderation request has content IDs which points to your own image slots. 
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [NewModerationRequest] newModerationRequest (required):
-  Future<Response> putModerationRequestWithHttpInfo(NewModerationRequest newModerationRequest,) async {
+  /// * [ModerationRequestContent] moderationRequestContent (required):
+  Future<Response> putModerationRequestWithHttpInfo(ModerationRequestContent moderationRequestContent,) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/moderation/request';
 
     // ignore: prefer_final_locals
-    Object? postBody = newModerationRequest;
+    Object? postBody = moderationRequestContent;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -308,13 +324,13 @@ class MediaApi {
 
   /// Create new or override old moderation request.
   ///
-  /// Create new or override old moderation request.  Set images to moderation request slots first. 
+  /// Create new or override old moderation request.  Make sure that moderation request has content IDs which points to your own image slots. 
   ///
   /// Parameters:
   ///
-  /// * [NewModerationRequest] newModerationRequest (required):
-  Future<void> putModerationRequest(NewModerationRequest newModerationRequest,) async {
-    final response = await putModerationRequestWithHttpInfo(newModerationRequest,);
+  /// * [ModerationRequestContent] moderationRequestContent (required):
+  Future<void> putModerationRequest(ModerationRequestContent moderationRequestContent,) async {
+    final response = await putModerationRequestWithHttpInfo(moderationRequestContent,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

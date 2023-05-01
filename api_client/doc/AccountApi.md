@@ -149,7 +149,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **postAccountSetup**
-> Account postAccountSetup()
+> postAccountSetup(accountSetup)
 
 Setup non-changeable user information during `initial setup` state.
 
@@ -164,21 +164,24 @@ import 'package:openapi/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
 
 final api_instance = AccountApi();
+final accountSetup = AccountSetup(); // AccountSetup | 
 
 try {
-    final result = api_instance.postAccountSetup();
-    print(result);
+    api_instance.postAccountSetup(accountSetup);
 } catch (e) {
     print('Exception when calling AccountApi->postAccountSetup: $e\n');
 }
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **accountSetup** | [**AccountSetup**](AccountSetup.md)|  | 
 
 ### Return type
 
-[**Account**](Account.md)
+void (empty response body)
 
 ### Authorization
 
@@ -186,8 +189,8 @@ This endpoint does not need any parameter.
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

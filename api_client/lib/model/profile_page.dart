@@ -13,26 +13,26 @@ part of openapi.api;
 class ProfilePage {
   /// Returns a new [ProfilePage] instance.
   ProfilePage({
-    this.latitude = const [],
+    this.profiles = const [],
   });
 
-  List<ProfileLink> latitude;
+  List<ProfileLink> profiles;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfilePage &&
-     other.latitude == latitude;
+     other.profiles == profiles;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (latitude.hashCode);
+    (profiles.hashCode);
 
   @override
-  String toString() => 'ProfilePage[latitude=$latitude]';
+  String toString() => 'ProfilePage[profiles=$profiles]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'latitude'] = this.latitude;
+      json[r'profiles'] = this.profiles;
     return json;
   }
 
@@ -55,7 +55,7 @@ class ProfilePage {
       }());
 
       return ProfilePage(
-        latitude: ProfileLink.listFromJson(json[r'latitude'])!,
+        profiles: ProfileLink.listFromJson(json[r'profiles'])!,
       );
     }
     return null;
@@ -105,7 +105,7 @@ class ProfilePage {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'latitude',
+    'profiles',
   };
 }
 

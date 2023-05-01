@@ -11,11 +11,17 @@
 import 'package:openapi/api.dart';
 import 'package:test/test.dart';
 
-// tests for Profile
+// tests for ModerationRequestContent
 void main() {
-  // final instance = Profile();
+  // final instance = ModerationRequestContent();
 
-  group('test Profile', () {
+  group('test ModerationRequestContent', () {
+    // Use slot 1 image as camera image.
+    // bool cameraImage
+    test('to test the property `cameraImage`', () async {
+      // TODO
+    });
+
     // ContentId image1
     test('to test the property `image1`', () async {
       // TODO
@@ -28,21 +34,6 @@ void main() {
 
     // ContentId image3
     test('to test the property `image3`', () async {
-      // TODO
-    });
-
-    // String name
-    test('to test the property `name`', () async {
-      // TODO
-    });
-
-    // String profileText
-    test('to test the property `profileText`', () async {
-      // TODO
-    });
-
-    // ProfileVersion version
-    test('to test the property `version`', () async {
       // TODO
     });
 

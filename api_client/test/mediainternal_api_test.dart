@@ -17,8 +17,17 @@ void main() {
   // final instance = MediainternalApi();
 
   group('tests for MediainternalApi', () {
-    //Future postImage(String accountId, String imageFile, ImageFile imageFile2) async
-    test('test postImage', () async {
+    // Check that current moderation request for account exists. Requires also
+    //
+    // Check that current moderation request for account exists. Requires also that request contains camera image. 
+    //
+    //Future internalGetCheckModerationRequestForAccount(String accountId) async
+    test('test internalGetCheckModerationRequestForAccount', () async {
+      // TODO
+    });
+
+    //Future internalPostUpdateProfileImageVisibility(String accountId, bool value, Profile profile) async
+    test('test internalPostUpdateProfileImageVisibility', () async {
       // TODO
     });
 

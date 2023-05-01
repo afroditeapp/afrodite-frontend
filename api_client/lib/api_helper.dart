@@ -58,6 +58,9 @@ String parameterToString(dynamic value) {
   if (value is AccountState) {
     return AccountStateTypeTransformer().encode(value).toString();
   }
+  if (value is ModerationRequestState) {
+    return ModerationRequestStateTypeTransformer().encode(value).toString();
+  }
   return value.toString();
 }
 

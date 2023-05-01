@@ -16,12 +16,12 @@ void main() {
   // final instance = ProfileLink();
 
   group('test ProfileLink', () {
-    // String id
+    // AccountIdLight id
     test('to test the property `id`', () async {
       // TODO
     });
 
-    // String version
+    // ProfileVersion version
     test('to test the property `version`', () async {
       // TODO
     });

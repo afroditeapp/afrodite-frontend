@@ -16,7 +16,7 @@ class SlotId {
     required this.slotId,
   });
 
-  String slotId;
+  int slotId;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SlotId &&
@@ -55,7 +55,7 @@ class SlotId {
       }());
 
       return SlotId(
-        slotId: mapValueOfType<String>(json, r'slot_id')!,
+        slotId: mapValueOfType<int>(json, r'slot_id')!,
       );
     }
     return null;

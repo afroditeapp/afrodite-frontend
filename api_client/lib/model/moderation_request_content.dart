@@ -10,24 +10,19 @@
 
 part of openapi.api;
 
-class Profile {
-  /// Returns a new [Profile] instance.
-  Profile({
-    this.image1,
+class ModerationRequestContent {
+  /// Returns a new [ModerationRequestContent] instance.
+  ModerationRequestContent({
+    required this.cameraImage,
+    required this.image1,
     this.image2,
     this.image3,
-    required this.name,
-    required this.profileText,
-    required this.version,
   });
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  ContentId? image1;
+  /// Use slot 1 image as camera image.
+  bool cameraImage;
+
+  ContentId image1;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -45,41 +40,28 @@ class Profile {
   ///
   ContentId? image3;
 
-  String name;
-
-  String profileText;
-
-  ProfileVersion version;
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is Profile &&
+  bool operator ==(Object other) => identical(this, other) || other is ModerationRequestContent &&
+     other.cameraImage == cameraImage &&
      other.image1 == image1 &&
      other.image2 == image2 &&
-     other.image3 == image3 &&
-     other.name == name &&
-     other.profileText == profileText &&
-     other.version == version;
+     other.image3 == image3;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (image1 == null ? 0 : image1!.hashCode) +
+    (cameraImage.hashCode) +
+    (image1.hashCode) +
     (image2 == null ? 0 : image2!.hashCode) +
-    (image3 == null ? 0 : image3!.hashCode) +
-    (name.hashCode) +
-    (profileText.hashCode) +
-    (version.hashCode);
+    (image3 == null ? 0 : image3!.hashCode);
 
   @override
-  String toString() => 'Profile[image1=$image1, image2=$image2, image3=$image3, name=$name, profileText=$profileText, version=$version]';
+  String toString() => 'ModerationRequestContent[cameraImage=$cameraImage, image1=$image1, image2=$image2, image3=$image3]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.image1 != null) {
+      json[r'camera_image'] = this.cameraImage;
       json[r'image1'] = this.image1;
-    } else {
-      json[r'image1'] = null;
-    }
     if (this.image2 != null) {
       json[r'image2'] = this.image2;
     } else {
@@ -90,16 +72,13 @@ class Profile {
     } else {
       json[r'image3'] = null;
     }
-      json[r'name'] = this.name;
-      json[r'profile_text'] = this.profileText;
-      json[r'version'] = this.version;
     return json;
   }
 
-  /// Returns a new [Profile] instance and imports its values from
+  /// Returns a new [ModerationRequestContent] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static Profile? fromJson(dynamic value) {
+  static ModerationRequestContent? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -108,29 +87,27 @@ class Profile {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "Profile[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "Profile[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ModerationRequestContent[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ModerationRequestContent[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return Profile(
-        image1: ContentId.fromJson(json[r'image1']),
+      return ModerationRequestContent(
+        cameraImage: mapValueOfType<bool>(json, r'camera_image')!,
+        image1: ContentId.fromJson(json[r'image1'])!,
         image2: ContentId.fromJson(json[r'image2']),
         image3: ContentId.fromJson(json[r'image3']),
-        name: mapValueOfType<String>(json, r'name')!,
-        profileText: mapValueOfType<String>(json, r'profile_text')!,
-        version: ProfileVersion.fromJson(json[r'version'])!,
       );
     }
     return null;
   }
 
-  static List<Profile>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <Profile>[];
+  static List<ModerationRequestContent>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ModerationRequestContent>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = Profile.fromJson(row);
+        final value = ModerationRequestContent.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -139,12 +116,12 @@ class Profile {
     return result.toList(growable: growable);
   }
 
-  static Map<String, Profile> mapFromJson(dynamic json) {
-    final map = <String, Profile>{};
+  static Map<String, ModerationRequestContent> mapFromJson(dynamic json) {
+    final map = <String, ModerationRequestContent>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = Profile.fromJson(entry.value);
+        final value = ModerationRequestContent.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -153,13 +130,13 @@ class Profile {
     return map;
   }
 
-  // maps a json object with a list of Profile-objects as value to a dart map
-  static Map<String, List<Profile>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<Profile>>{};
+  // maps a json object with a list of ModerationRequestContent-objects as value to a dart map
+  static Map<String, List<ModerationRequestContent>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ModerationRequestContent>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = Profile.listFromJson(entry.value, growable: growable,);
+        final value = ModerationRequestContent.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -170,9 +147,8 @@ class Profile {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'name',
-    'profile_text',
-    'version',
+    'camera_image',
+    'image1',
   };
 }
 

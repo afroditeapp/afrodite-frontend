@@ -17,24 +17,6 @@ void main() {
   // final instance = ProfileApi();
 
   group('tests for ProfileApi', () {
-    // TODO: Remove this at some point
-    //
-    // TODO: Remove this at some point
-    //
-    //Future<Profile> getDefaultProfile(String accountId) async
-    test('test getDefaultProfile', () async {
-      // TODO
-    });
-
-    // Get next page of profile list.
-    //
-    // Get next page of profile list.
-    //
-    //Future<ProfilePage> getNextProfilePage() async
-    test('test getNextProfilePage', () async {
-      // TODO
-    });
-
     // Get account's current profile.
     //
     // Get account's current profile.  Profile can include version UUID which can be used for caching.  # Access Public profile access requires `view_public_profiles` capability. Public and private profile access requires `admin_view_all_profiles` capablility.  # Microservice notes If account feature is set as external service then cached capability information from account service is used for access checks.
@@ -44,11 +26,20 @@ void main() {
       // TODO
     });
 
+    // Post (updates iterator) to get next page of profile list.
+    //
+    // Post (updates iterator) to get next page of profile list.
+    //
+    //Future<ProfilePage> postGetNextProfilePage() async
+    test('test postGetNextProfilePage', () async {
+      // TODO
+    });
+
     // Update profile information.
     //
     // Update profile information.  Writes the profile to the database only if it is changed.  TODO: string lenght validation, limit saving new profiles
     //
-    //Future postProfile(Profile profile) async
+    //Future postProfile(ProfileUpdate profileUpdate) async
     test('test postProfile', () async {
       // TODO
     });

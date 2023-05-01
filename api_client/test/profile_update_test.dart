@@ -11,11 +11,11 @@
 import 'package:openapi/api.dart';
 import 'package:test/test.dart';
 
-// tests for Profile
+// tests for ProfileUpdate
 void main() {
-  // final instance = Profile();
+  // final instance = ProfileUpdate();
 
-  group('test Profile', () {
+  group('test ProfileUpdate', () {
     // ContentId image1
     test('to test the property `image1`', () async {
       // TODO
@@ -31,18 +31,8 @@ void main() {
       // TODO
     });
 
-    // String name
-    test('to test the property `name`', () async {
-      // TODO
-    });
-
     // String profileText
     test('to test the property `profileText`', () async {
-      // TODO
-    });
-
-    // ProfileVersion version
-    test('to test the property `version`', () async {
       // TODO
     });
 

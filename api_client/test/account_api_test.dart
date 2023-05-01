@@ -48,7 +48,7 @@ void main() {
     //
     // Setup non-changeable user information during `initial setup` state.
     //
-    //Future<Account> postAccountSetup() async
+    //Future postAccountSetup(AccountSetup accountSetup) async
     test('test postAccountSetup', () async {
       // TODO
     });

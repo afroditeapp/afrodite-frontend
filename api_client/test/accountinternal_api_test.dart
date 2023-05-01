@@ -17,8 +17,13 @@ void main() {
   // final instance = AccountinternalApi();
 
   group('tests for AccountinternalApi', () {
-    //Future<AccountId> checkApiKey() async
+    //Future<AccountIdLight> checkApiKey(ApiKey apiKey) async
     test('test checkApiKey', () async {
+      // TODO
+    });
+
+    //Future<Account> internalGetAccountState(String accountId) async
+    test('test internalGetAccountState', () async {
       // TODO
     });
 

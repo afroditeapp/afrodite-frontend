@@ -9,103 +9,12 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getDefaultProfile**](ProfileApi.md#getdefaultprofile) | **GET** /profile_api/default/{account_id} | TODO: Remove this at some point
-[**getNextProfilePage**](ProfileApi.md#getnextprofilepage) | **GET** /profile_api/page/next | Get next page of profile list.
 [**getProfile**](ProfileApi.md#getprofile) | **GET** /profile_api/profile/{account_id} | Get account's current profile.
+[**postGetNextProfilePage**](ProfileApi.md#postgetnextprofilepage) | **POST** /profile_api/page/next | Post (updates iterator) to get next page of profile list.
 [**postProfile**](ProfileApi.md#postprofile) | **POST** /profile_api/profile | Update profile information.
 [**postResetProfilePaging**](ProfileApi.md#postresetprofilepaging) | **POST** /profile_api/page/reset | Reset profile paging.
 [**putLocation**](ProfileApi.md#putlocation) | **PUT** /profile_api/location | Update location
 
-
-# **getDefaultProfile**
-> Profile getDefaultProfile(accountId)
-
-TODO: Remove this at some point
-
-TODO: Remove this at some point
-
-### Example
-```dart
-import 'package:openapi/api.dart';
-// TODO Configure API key authorization: api_key
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKey = 'YOUR_API_KEY';
-// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
-
-final api_instance = ProfileApi();
-final accountId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
-
-try {
-    final result = api_instance.getDefaultProfile(accountId);
-    print(result);
-} catch (e) {
-    print('Exception when calling ProfileApi->getDefaultProfile: $e\n');
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **accountId** | **String**|  | 
-
-### Return type
-
-[**Profile**](Profile.md)
-
-### Authorization
-
-[api_key](../README.md#api_key)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **getNextProfilePage**
-> ProfilePage getNextProfilePage()
-
-Get next page of profile list.
-
-Get next page of profile list.
-
-### Example
-```dart
-import 'package:openapi/api.dart';
-// TODO Configure API key authorization: api_key
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKey = 'YOUR_API_KEY';
-// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
-
-final api_instance = ProfileApi();
-
-try {
-    final result = api_instance.getNextProfilePage();
-    print(result);
-} catch (e) {
-    print('Exception when calling ProfileApi->getNextProfilePage: $e\n');
-}
-```
-
-### Parameters
-This endpoint does not need any parameter.
-
-### Return type
-
-[**ProfilePage**](ProfilePage.md)
-
-### Authorization
-
-[api_key](../README.md#api_key)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getProfile**
 > Profile getProfile(accountId)
@@ -154,8 +63,51 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **postGetNextProfilePage**
+> ProfilePage postGetNextProfilePage()
+
+Post (updates iterator) to get next page of profile list.
+
+Post (updates iterator) to get next page of profile list.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: api_key
+//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
+
+final api_instance = ProfileApi();
+
+try {
+    final result = api_instance.postGetNextProfilePage();
+    print(result);
+} catch (e) {
+    print('Exception when calling ProfileApi->postGetNextProfilePage: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**ProfilePage**](ProfilePage.md)
+
+### Authorization
+
+[api_key](../README.md#api_key)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **postProfile**
-> postProfile(profile)
+> postProfile(profileUpdate)
 
 Update profile information.
 
@@ -170,10 +122,10 @@ import 'package:openapi/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
 
 final api_instance = ProfileApi();
-final profile = Profile(); // Profile | 
+final profileUpdate = ProfileUpdate(); // ProfileUpdate | 
 
 try {
-    api_instance.postProfile(profile);
+    api_instance.postProfile(profileUpdate);
 } catch (e) {
     print('Exception when calling ProfileApi->postProfile: $e\n');
 }
@@ -183,7 +135,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **profile** | [**Profile**](Profile.md)|  | 
+ **profileUpdate** | [**ProfileUpdate**](ProfileUpdate.md)|  | 
 
 ### Return type
 

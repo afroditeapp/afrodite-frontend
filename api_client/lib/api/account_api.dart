@@ -157,18 +157,22 @@ class AccountApi {
   /// Setup non-changeable user information during `initial setup` state.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> postAccountSetupWithHttpInfo() async {
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountSetup] accountSetup (required):
+  Future<Response> postAccountSetupWithHttpInfo(AccountSetup accountSetup,) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/setup';
 
     // ignore: prefer_final_locals
-    Object? postBody;
+    Object? postBody = accountSetup;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
-    const contentTypes = <String>[];
+    const contentTypes = <String>['application/json'];
 
 
     return apiClient.invokeAPI(
@@ -185,19 +189,15 @@ class AccountApi {
   /// Setup non-changeable user information during `initial setup` state.
   ///
   /// Setup non-changeable user information during `initial setup` state.
-  Future<Account?> postAccountSetup() async {
-    final response = await postAccountSetupWithHttpInfo();
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountSetup] accountSetup (required):
+  Future<void> postAccountSetup(AccountSetup accountSetup,) async {
+    final response = await postAccountSetupWithHttpInfo(accountSetup,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Account',) as Account;
-    
-    }
-    return null;
   }
 
   /// Complete initial setup.

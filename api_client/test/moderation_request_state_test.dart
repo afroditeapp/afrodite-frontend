@@ -11,21 +11,10 @@
 import 'package:openapi/api.dart';
 import 'package:test/test.dart';
 
-// tests for AccountSetup
+// tests for ModerationRequestState
 void main() {
-  // final instance = AccountSetup();
 
-  group('test AccountSetup', () {
-    // String email
-    test('to test the property `email`', () async {
-      // TODO
-    });
-
-    // String name
-    test('to test the property `name`', () async {
-      // TODO
-    });
-
+  group('test ModerationRequestState', () {
 
   });
 

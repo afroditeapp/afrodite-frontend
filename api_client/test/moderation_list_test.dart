@@ -11,18 +11,13 @@
 import 'package:openapi/api.dart';
 import 'package:test/test.dart';
 
-// tests for AccountSetup
+// tests for ModerationList
 void main() {
-  // final instance = AccountSetup();
+  // final instance = ModerationList();
 
-  group('test AccountSetup', () {
-    // String email
-    test('to test the property `email`', () async {
-      // TODO
-    });
-
-    // String name
-    test('to test the property `name`', () async {
+  group('test ModerationList', () {
+    // List<Moderation> list (default value: const [])
+    test('to test the property `list`', () async {
       // TODO
     });
 

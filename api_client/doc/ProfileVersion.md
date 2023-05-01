@@ -1,4 +1,4 @@
-# openapi.model.ModerationRequestList
+# openapi.model.ProfileVersion
 
 ## Load the model package
 ```dart
@@ -8,7 +8,7 @@ import 'package:openapi/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**list** | [**List<ModerationRequest>**](ModerationRequest.md) |  | [default to const []]
+**versionUuid** | **String** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

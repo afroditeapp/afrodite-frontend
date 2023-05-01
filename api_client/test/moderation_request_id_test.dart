@@ -11,13 +11,13 @@
 import 'package:openapi/api.dart';
 import 'package:test/test.dart';
 
-// tests for ModerationRequestList
+// tests for ModerationRequestId
 void main() {
-  // final instance = ModerationRequestList();
+  // final instance = ModerationRequestId();
 
-  group('test ModerationRequestList', () {
-    // List<ModerationRequest> list (default value: const [])
-    test('to test the property `list`', () async {
+  group('test ModerationRequestId', () {
+    // int requestRowId
+    test('to test the property `requestRowId`', () async {
       // TODO
     });
 

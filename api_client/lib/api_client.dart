@@ -183,8 +183,6 @@ class ApiClient {
           return value is DateTime ? value : DateTime.tryParse(value);
         case 'Account':
           return Account.fromJson(value);
-        case 'AccountId':
-          return AccountId.fromJson(value);
         case 'AccountIdLight':
           return AccountIdLight.fromJson(value);
         case 'AccountSetup':
@@ -197,6 +195,8 @@ class ApiClient {
           return BooleanSetting.fromJson(value);
         case 'Capabilities':
           return Capabilities.fromJson(value);
+        case 'ContentId':
+          return ContentId.fromJson(value);
         case 'DeleteStatus':
           return DeleteStatus.fromJson(value);
         case 'HandleModerationRequest':
@@ -207,18 +207,28 @@ class ApiClient {
           return ImageFileName.fromJson(value);
         case 'Location':
           return Location.fromJson(value);
+        case 'Moderation':
+          return Moderation.fromJson(value);
+        case 'ModerationList':
+          return ModerationList.fromJson(value);
         case 'ModerationRequest':
           return ModerationRequest.fromJson(value);
-        case 'ModerationRequestList':
-          return ModerationRequestList.fromJson(value);
-        case 'NewModerationRequest':
-          return NewModerationRequest.fromJson(value);
+        case 'ModerationRequestContent':
+          return ModerationRequestContent.fromJson(value);
+        case 'ModerationRequestId':
+          return ModerationRequestId.fromJson(value);
+        case 'ModerationRequestState':
+          return ModerationRequestStateTypeTransformer().decode(value);
         case 'Profile':
           return Profile.fromJson(value);
         case 'ProfileLink':
           return ProfileLink.fromJson(value);
         case 'ProfilePage':
           return ProfilePage.fromJson(value);
+        case 'ProfileUpdate':
+          return ProfileUpdate.fromJson(value);
+        case 'ProfileVersion':
+          return ProfileVersion.fromJson(value);
         case 'SlotId':
           return SlotId.fromJson(value);
         default:

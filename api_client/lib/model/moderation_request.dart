@@ -13,38 +13,32 @@ part of openapi.api;
 class ModerationRequest {
   /// Returns a new [ModerationRequest] instance.
   ModerationRequest({
-    required this.accountId,
-    required this.moderationRequestId,
-    required this.queuePosition,
+    required this.content,
+    required this.state,
   });
 
-  AccountIdLight accountId;
+  ModerationRequestContent content;
 
-  String moderationRequestId;
-
-  int queuePosition;
+  ModerationRequestState state;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ModerationRequest &&
-     other.accountId == accountId &&
-     other.moderationRequestId == moderationRequestId &&
-     other.queuePosition == queuePosition;
+     other.content == content &&
+     other.state == state;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (accountId.hashCode) +
-    (moderationRequestId.hashCode) +
-    (queuePosition.hashCode);
+    (content.hashCode) +
+    (state.hashCode);
 
   @override
-  String toString() => 'ModerationRequest[accountId=$accountId, moderationRequestId=$moderationRequestId, queuePosition=$queuePosition]';
+  String toString() => 'ModerationRequest[content=$content, state=$state]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'account_id'] = this.accountId;
-      json[r'moderation_request_id'] = this.moderationRequestId;
-      json[r'queue_position'] = this.queuePosition;
+      json[r'content'] = this.content;
+      json[r'state'] = this.state;
     return json;
   }
 
@@ -67,9 +61,8 @@ class ModerationRequest {
       }());
 
       return ModerationRequest(
-        accountId: AccountIdLight.fromJson(json[r'account_id'])!,
-        moderationRequestId: mapValueOfType<String>(json, r'moderation_request_id')!,
-        queuePosition: mapValueOfType<int>(json, r'queue_position')!,
+        content: ModerationRequestContent.fromJson(json[r'content'])!,
+        state: ModerationRequestState.fromJson(json[r'state'])!,
       );
     }
     return null;
@@ -119,9 +112,8 @@ class ModerationRequest {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'account_id',
-    'moderation_request_id',
-    'queue_position',
+    'content',
+    'state',
   };
 }
 

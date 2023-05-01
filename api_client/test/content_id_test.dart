@@ -11,19 +11,13 @@
 import 'package:openapi/api.dart';
 import 'package:test/test.dart';
 
-// tests for AccountId
+// tests for ContentId
 void main() {
-  // final instance = AccountId();
+  // final instance = ContentId();
 
-  group('test AccountId', () {
-    // UUID string with Simple format.
-    // String accountId
-    test('to test the property `accountId`', () async {
-      // TODO
-    });
-
-    // AccountIdLight light
-    test('to test the property `light`', () async {
+  group('test ContentId', () {
+    // String contentId
+    test('to test the property `contentId`', () async {
       // TODO
     });
 

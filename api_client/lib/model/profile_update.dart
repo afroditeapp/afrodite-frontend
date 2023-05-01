@@ -10,15 +10,13 @@
 
 part of openapi.api;
 
-class Profile {
-  /// Returns a new [Profile] instance.
-  Profile({
+class ProfileUpdate {
+  /// Returns a new [ProfileUpdate] instance.
+  ProfileUpdate({
     this.image1,
     this.image2,
     this.image3,
-    required this.name,
     required this.profileText,
-    required this.version,
   });
 
   ///
@@ -45,20 +43,14 @@ class Profile {
   ///
   ContentId? image3;
 
-  String name;
-
   String profileText;
 
-  ProfileVersion version;
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is Profile &&
+  bool operator ==(Object other) => identical(this, other) || other is ProfileUpdate &&
      other.image1 == image1 &&
      other.image2 == image2 &&
      other.image3 == image3 &&
-     other.name == name &&
-     other.profileText == profileText &&
-     other.version == version;
+     other.profileText == profileText;
 
   @override
   int get hashCode =>
@@ -66,12 +58,10 @@ class Profile {
     (image1 == null ? 0 : image1!.hashCode) +
     (image2 == null ? 0 : image2!.hashCode) +
     (image3 == null ? 0 : image3!.hashCode) +
-    (name.hashCode) +
-    (profileText.hashCode) +
-    (version.hashCode);
+    (profileText.hashCode);
 
   @override
-  String toString() => 'Profile[image1=$image1, image2=$image2, image3=$image3, name=$name, profileText=$profileText, version=$version]';
+  String toString() => 'ProfileUpdate[image1=$image1, image2=$image2, image3=$image3, profileText=$profileText]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -90,16 +80,14 @@ class Profile {
     } else {
       json[r'image3'] = null;
     }
-      json[r'name'] = this.name;
       json[r'profile_text'] = this.profileText;
-      json[r'version'] = this.version;
     return json;
   }
 
-  /// Returns a new [Profile] instance and imports its values from
+  /// Returns a new [ProfileUpdate] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static Profile? fromJson(dynamic value) {
+  static ProfileUpdate? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -108,29 +96,27 @@ class Profile {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "Profile[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "Profile[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ProfileUpdate[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ProfileUpdate[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return Profile(
+      return ProfileUpdate(
         image1: ContentId.fromJson(json[r'image1']),
         image2: ContentId.fromJson(json[r'image2']),
         image3: ContentId.fromJson(json[r'image3']),
-        name: mapValueOfType<String>(json, r'name')!,
         profileText: mapValueOfType<String>(json, r'profile_text')!,
-        version: ProfileVersion.fromJson(json[r'version'])!,
       );
     }
     return null;
   }
 
-  static List<Profile>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <Profile>[];
+  static List<ProfileUpdate>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ProfileUpdate>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = Profile.fromJson(row);
+        final value = ProfileUpdate.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -139,12 +125,12 @@ class Profile {
     return result.toList(growable: growable);
   }
 
-  static Map<String, Profile> mapFromJson(dynamic json) {
-    final map = <String, Profile>{};
+  static Map<String, ProfileUpdate> mapFromJson(dynamic json) {
+    final map = <String, ProfileUpdate>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = Profile.fromJson(entry.value);
+        final value = ProfileUpdate.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -153,13 +139,13 @@ class Profile {
     return map;
   }
 
-  // maps a json object with a list of Profile-objects as value to a dart map
-  static Map<String, List<Profile>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<Profile>>{};
+  // maps a json object with a list of ProfileUpdate-objects as value to a dart map
+  static Map<String, List<ProfileUpdate>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ProfileUpdate>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = Profile.listFromJson(entry.value, growable: growable,);
+        final value = ProfileUpdate.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -170,9 +156,7 @@ class Profile {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'name',
     'profile_text',
-    'version',
   };
 }
 

@@ -11,22 +11,16 @@
 import 'package:openapi/api.dart';
 import 'package:test/test.dart';
 
-// tests for AccountSetup
+
+/// tests for ProfileinternalApi
 void main() {
-  // final instance = AccountSetup();
+  // final instance = ProfileinternalApi();
 
-  group('test AccountSetup', () {
-    // String email
-    test('to test the property `email`', () async {
+  group('tests for ProfileinternalApi', () {
+    //Future internalPostUpdateProfileVisibility(String accountId, bool value) async
+    test('test internalPostUpdateProfileVisibility', () async {
       // TODO
     });
-
-    // String name
-    test('to test the property `name`', () async {
-      // TODO
-    });
-
 
   });
-
 }

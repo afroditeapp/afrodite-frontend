@@ -16,29 +16,77 @@ class MediainternalApi {
 
   final ApiClient apiClient;
 
-  /// Performs an HTTP 'POST /internal/image/{account_id}/{image_file}' operation and returns the [Response].
+  /// Check that current moderation request for account exists. Requires also
+  ///
+  /// Check that current moderation request for account exists. Requires also that request contains camera image. 
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
   /// Parameters:
   ///
   /// * [String] accountId (required):
-  ///
-  /// * [String] imageFile (required):
-  ///
-  /// * [ImageFile] imageFile2 (required):
-  ///   Upload new image
-  Future<Response> postImageWithHttpInfo(String accountId, String imageFile, ImageFile imageFile2,) async {
+  Future<Response> internalGetCheckModerationRequestForAccountWithHttpInfo(String accountId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/internal/image/{account_id}/{image_file}'
-      .replaceAll('{account_id}', accountId)
-      .replaceAll('{image_file}', imageFile);
+    final path = r'/internal/media_api/moderation/request/{account_id}'
+      .replaceAll('{account_id}', accountId);
 
     // ignore: prefer_final_locals
-    Object? postBody = imageFile2;
+    Object? postBody;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
-    const contentTypes = <String>['image/jpeg'];
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Check that current moderation request for account exists. Requires also
+  ///
+  /// Check that current moderation request for account exists. Requires also that request contains camera image. 
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<void> internalGetCheckModerationRequestForAccount(String accountId,) async {
+    final response = await internalGetCheckModerationRequestForAccountWithHttpInfo(accountId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'POST /internal/media_api/visiblity/{account_id}/{value}' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  ///
+  /// * [bool] value (required):
+  ///
+  /// * [Profile] profile (required):
+  Future<Response> internalPostUpdateProfileImageVisibilityWithHttpInfo(String accountId, bool value, Profile profile,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/internal/media_api/visiblity/{account_id}/{value}'
+      .replaceAll('{account_id}', accountId)
+      .replaceAll('{value}', value.toString());
+
+    // ignore: prefer_final_locals
+    Object? postBody = profile;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
 
 
     return apiClient.invokeAPI(
@@ -56,12 +104,11 @@ class MediainternalApi {
   ///
   /// * [String] accountId (required):
   ///
-  /// * [String] imageFile (required):
+  /// * [bool] value (required):
   ///
-  /// * [ImageFile] imageFile2 (required):
-  ///   Upload new image
-  Future<void> postImage(String accountId, String imageFile, ImageFile imageFile2,) async {
-    final response = await postImageWithHttpInfo(accountId, imageFile, imageFile2,);
+  /// * [Profile] profile (required):
+  Future<void> internalPostUpdateProfileImageVisibility(String accountId, bool value, Profile profile,) async {
+    final response = await internalPostUpdateProfileImageVisibilityWithHttpInfo(accountId, value, profile,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

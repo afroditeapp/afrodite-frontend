@@ -11,18 +11,28 @@
 import 'package:openapi/api.dart';
 import 'package:test/test.dart';
 
-// tests for ModerationRequest
+// tests for Moderation
 void main() {
-  // final instance = ModerationRequest();
+  // final instance = Moderation();
 
-  group('test ModerationRequest', () {
+  group('test Moderation', () {
     // ModerationRequestContent content
     test('to test the property `content`', () async {
       // TODO
     });
 
-    // ModerationRequestState state
-    test('to test the property `state`', () async {
+    // AccountIdLight moderatorId
+    test('to test the property `moderatorId`', () async {
+      // TODO
+    });
+
+    // AccountIdLight requestCreatorId
+    test('to test the property `requestCreatorId`', () async {
+      // TODO
+    });
+
+    // ModerationRequestId requestId
+    test('to test the property `requestId`', () async {
       // TODO
     });
 

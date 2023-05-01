@@ -10,43 +10,36 @@
 
 part of openapi.api;
 
-class AccountId {
-  /// Returns a new [AccountId] instance.
-  AccountId({
-    required this.accountId,
-    required this.light,
+class ProfileVersion {
+  /// Returns a new [ProfileVersion] instance.
+  ProfileVersion({
+    required this.versionUuid,
   });
 
-  /// UUID string with Simple format.
-  String accountId;
-
-  AccountIdLight light;
+  String versionUuid;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AccountId &&
-     other.accountId == accountId &&
-     other.light == light;
+  bool operator ==(Object other) => identical(this, other) || other is ProfileVersion &&
+     other.versionUuid == versionUuid;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (accountId.hashCode) +
-    (light.hashCode);
+    (versionUuid.hashCode);
 
   @override
-  String toString() => 'AccountId[accountId=$accountId, light=$light]';
+  String toString() => 'ProfileVersion[versionUuid=$versionUuid]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'account_id'] = this.accountId;
-      json[r'light'] = this.light;
+      json[r'version_uuid'] = this.versionUuid;
     return json;
   }
 
-  /// Returns a new [AccountId] instance and imports its values from
+  /// Returns a new [ProfileVersion] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AccountId? fromJson(dynamic value) {
+  static ProfileVersion? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -55,25 +48,24 @@ class AccountId {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AccountId[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AccountId[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ProfileVersion[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ProfileVersion[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AccountId(
-        accountId: mapValueOfType<String>(json, r'account_id')!,
-        light: AccountIdLight.fromJson(json[r'light'])!,
+      return ProfileVersion(
+        versionUuid: mapValueOfType<String>(json, r'version_uuid')!,
       );
     }
     return null;
   }
 
-  static List<AccountId>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AccountId>[];
+  static List<ProfileVersion>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ProfileVersion>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AccountId.fromJson(row);
+        final value = ProfileVersion.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -82,12 +74,12 @@ class AccountId {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AccountId> mapFromJson(dynamic json) {
-    final map = <String, AccountId>{};
+  static Map<String, ProfileVersion> mapFromJson(dynamic json) {
+    final map = <String, ProfileVersion>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AccountId.fromJson(entry.value);
+        final value = ProfileVersion.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -96,13 +88,13 @@ class AccountId {
     return map;
   }
 
-  // maps a json object with a list of AccountId-objects as value to a dart map
-  static Map<String, List<AccountId>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AccountId>>{};
+  // maps a json object with a list of ProfileVersion-objects as value to a dart map
+  static Map<String, List<ProfileVersion>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ProfileVersion>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AccountId.listFromJson(entry.value, growable: growable,);
+        final value = ProfileVersion.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -113,8 +105,7 @@ class AccountId {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'account_id',
-    'light',
+    'version_uuid',
   };
 }
 

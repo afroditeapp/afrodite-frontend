@@ -11,18 +11,13 @@
 import 'package:openapi/api.dart';
 import 'package:test/test.dart';
 
-// tests for NewModerationRequest
+// tests for ProfileVersion
 void main() {
-  // final instance = NewModerationRequest();
+  // final instance = ProfileVersion();
 
-  group('test NewModerationRequest', () {
-    // bool camera
-    test('to test the property `camera`', () async {
-      // TODO
-    });
-
-    // bool image1
-    test('to test the property `image1`', () async {
+  group('test ProfileVersion', () {
+    // String versionUuid
+    test('to test the property `versionUuid`', () async {
       // TODO
     });
 

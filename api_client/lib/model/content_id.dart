@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class ModerationRequestList {
-  /// Returns a new [ModerationRequestList] instance.
-  ModerationRequestList({
-    this.list = const [],
+class ContentId {
+  /// Returns a new [ContentId] instance.
+  ContentId({
+    required this.contentId,
   });
 
-  List<ModerationRequest> list;
+  String contentId;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ModerationRequestList &&
-     other.list == list;
+  bool operator ==(Object other) => identical(this, other) || other is ContentId &&
+     other.contentId == contentId;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (list.hashCode);
+    (contentId.hashCode);
 
   @override
-  String toString() => 'ModerationRequestList[list=$list]';
+  String toString() => 'ContentId[contentId=$contentId]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'list'] = this.list;
+      json[r'content_id'] = this.contentId;
     return json;
   }
 
-  /// Returns a new [ModerationRequestList] instance and imports its values from
+  /// Returns a new [ContentId] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ModerationRequestList? fromJson(dynamic value) {
+  static ContentId? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class ModerationRequestList {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ModerationRequestList[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ModerationRequestList[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ContentId[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ContentId[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ModerationRequestList(
-        list: ModerationRequest.listFromJson(json[r'list'])!,
+      return ContentId(
+        contentId: mapValueOfType<String>(json, r'content_id')!,
       );
     }
     return null;
   }
 
-  static List<ModerationRequestList>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ModerationRequestList>[];
+  static List<ContentId>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ContentId>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ModerationRequestList.fromJson(row);
+        final value = ContentId.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class ModerationRequestList {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ModerationRequestList> mapFromJson(dynamic json) {
-    final map = <String, ModerationRequestList>{};
+  static Map<String, ContentId> mapFromJson(dynamic json) {
+    final map = <String, ContentId>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ModerationRequestList.fromJson(entry.value);
+        final value = ContentId.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,13 +88,13 @@ class ModerationRequestList {
     return map;
   }
 
-  // maps a json object with a list of ModerationRequestList-objects as value to a dart map
-  static Map<String, List<ModerationRequestList>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ModerationRequestList>>{};
+  // maps a json object with a list of ContentId-objects as value to a dart map
+  static Map<String, List<ContentId>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ContentId>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ModerationRequestList.listFromJson(entry.value, growable: growable,);
+        final value = ContentId.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -105,7 +105,7 @@ class ModerationRequestList {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'list',
+    'content_id',
   };
 }
 

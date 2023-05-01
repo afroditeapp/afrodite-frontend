@@ -10,42 +10,36 @@
 
 part of openapi.api;
 
-class AccountSetup {
-  /// Returns a new [AccountSetup] instance.
-  AccountSetup({
-    required this.email,
-    required this.name,
+class ModerationRequestId {
+  /// Returns a new [ModerationRequestId] instance.
+  ModerationRequestId({
+    required this.requestRowId,
   });
 
-  String email;
-
-  String name;
+  int requestRowId;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AccountSetup &&
-     other.email == email &&
-     other.name == name;
+  bool operator ==(Object other) => identical(this, other) || other is ModerationRequestId &&
+     other.requestRowId == requestRowId;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (email.hashCode) +
-    (name.hashCode);
+    (requestRowId.hashCode);
 
   @override
-  String toString() => 'AccountSetup[email=$email, name=$name]';
+  String toString() => 'ModerationRequestId[requestRowId=$requestRowId]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'email'] = this.email;
-      json[r'name'] = this.name;
+      json[r'request_row_id'] = this.requestRowId;
     return json;
   }
 
-  /// Returns a new [AccountSetup] instance and imports its values from
+  /// Returns a new [ModerationRequestId] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AccountSetup? fromJson(dynamic value) {
+  static ModerationRequestId? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,25 +48,24 @@ class AccountSetup {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AccountSetup[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AccountSetup[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ModerationRequestId[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ModerationRequestId[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AccountSetup(
-        email: mapValueOfType<String>(json, r'email')!,
-        name: mapValueOfType<String>(json, r'name')!,
+      return ModerationRequestId(
+        requestRowId: mapValueOfType<int>(json, r'request_row_id')!,
       );
     }
     return null;
   }
 
-  static List<AccountSetup>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AccountSetup>[];
+  static List<ModerationRequestId>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ModerationRequestId>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AccountSetup.fromJson(row);
+        final value = ModerationRequestId.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +74,12 @@ class AccountSetup {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AccountSetup> mapFromJson(dynamic json) {
-    final map = <String, AccountSetup>{};
+  static Map<String, ModerationRequestId> mapFromJson(dynamic json) {
+    final map = <String, ModerationRequestId>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AccountSetup.fromJson(entry.value);
+        final value = ModerationRequestId.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,13 +88,13 @@ class AccountSetup {
     return map;
   }
 
-  // maps a json object with a list of AccountSetup-objects as value to a dart map
-  static Map<String, List<AccountSetup>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AccountSetup>>{};
+  // maps a json object with a list of ModerationRequestId-objects as value to a dart map
+  static Map<String, List<ModerationRequestId>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ModerationRequestId>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AccountSetup.listFromJson(entry.value, growable: growable,);
+        final value = ModerationRequestId.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -112,8 +105,7 @@ class AccountSetup {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'email',
-    'name',
+    'request_row_id',
   };
 }
 

@@ -32,26 +32,32 @@ part 'api/accountinternal_api.dart';
 part 'api/media_api.dart';
 part 'api/mediainternal_api.dart';
 part 'api/profile_api.dart';
+part 'api/profileinternal_api.dart';
 
 part 'model/account.dart';
-part 'model/account_id.dart';
 part 'model/account_id_light.dart';
 part 'model/account_setup.dart';
 part 'model/account_state.dart';
 part 'model/api_key.dart';
 part 'model/boolean_setting.dart';
 part 'model/capabilities.dart';
+part 'model/content_id.dart';
 part 'model/delete_status.dart';
 part 'model/handle_moderation_request.dart';
 part 'model/image_file.dart';
 part 'model/image_file_name.dart';
 part 'model/location.dart';
+part 'model/moderation.dart';
+part 'model/moderation_list.dart';
 part 'model/moderation_request.dart';
-part 'model/moderation_request_list.dart';
-part 'model/new_moderation_request.dart';
+part 'model/moderation_request_content.dart';
+part 'model/moderation_request_id.dart';
+part 'model/moderation_request_state.dart';
 part 'model/profile.dart';
 part 'model/profile_link.dart';
 part 'model/profile_page.dart';
+part 'model/profile_update.dart';
+part 'model/profile_version.dart';
 part 'model/slot_id.dart';
 
 

@@ -16,8 +16,8 @@ void main() {
   // final instance = ProfilePage();
 
   group('test ProfilePage', () {
-    // List<ProfileLink> latitude (default value: const [])
-    test('to test the property `latitude`', () async {
+    // List<ProfileLink> profiles (default value: const [])
+    test('to test the property `profiles`', () async {
       // TODO
     });
 

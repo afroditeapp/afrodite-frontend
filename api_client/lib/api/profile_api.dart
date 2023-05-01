@@ -16,111 +16,6 @@ class ProfileApi {
 
   final ApiClient apiClient;
 
-  /// TODO: Remove this at some point
-  ///
-  /// TODO: Remove this at some point
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [String] accountId (required):
-  Future<Response> getDefaultProfileWithHttpInfo(String accountId,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/profile_api/default/{account_id}'
-      .replaceAll('{account_id}', accountId);
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// TODO: Remove this at some point
-  ///
-  /// TODO: Remove this at some point
-  ///
-  /// Parameters:
-  ///
-  /// * [String] accountId (required):
-  Future<Profile?> getDefaultProfile(String accountId,) async {
-    final response = await getDefaultProfileWithHttpInfo(accountId,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Profile',) as Profile;
-    
-    }
-    return null;
-  }
-
-  /// Get next page of profile list.
-  ///
-  /// Get next page of profile list.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  Future<Response> getNextProfilePageWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/profile_api/page/next';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get next page of profile list.
-  ///
-  /// Get next page of profile list.
-  Future<ProfilePage?> getNextProfilePage() async {
-    final response = await getNextProfilePageWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfilePage',) as ProfilePage;
-    
-    }
-    return null;
-  }
-
   /// Get account's current profile.
   ///
   /// Get account's current profile.  Profile can include version UUID which can be used for caching.  # Access Public profile access requires `view_public_profiles` capability. Public and private profile access requires `admin_view_all_profiles` capablility.  # Microservice notes If account feature is set as external service then cached capability information from account service is used for access checks.
@@ -178,6 +73,54 @@ class ProfileApi {
     return null;
   }
 
+  /// Post (updates iterator) to get next page of profile list.
+  ///
+  /// Post (updates iterator) to get next page of profile list.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> postGetNextProfilePageWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/page/next';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Post (updates iterator) to get next page of profile list.
+  ///
+  /// Post (updates iterator) to get next page of profile list.
+  Future<ProfilePage?> postGetNextProfilePage() async {
+    final response = await postGetNextProfilePageWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfilePage',) as ProfilePage;
+    
+    }
+    return null;
+  }
+
   /// Update profile information.
   ///
   /// Update profile information.  Writes the profile to the database only if it is changed.  TODO: string lenght validation, limit saving new profiles
@@ -186,13 +129,13 @@ class ProfileApi {
   ///
   /// Parameters:
   ///
-  /// * [Profile] profile (required):
-  Future<Response> postProfileWithHttpInfo(Profile profile,) async {
+  /// * [ProfileUpdate] profileUpdate (required):
+  Future<Response> postProfileWithHttpInfo(ProfileUpdate profileUpdate,) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile';
 
     // ignore: prefer_final_locals
-    Object? postBody = profile;
+    Object? postBody = profileUpdate;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -218,9 +161,9 @@ class ProfileApi {
   ///
   /// Parameters:
   ///
-  /// * [Profile] profile (required):
-  Future<void> postProfile(Profile profile,) async {
-    final response = await postProfileWithHttpInfo(profile,);
+  /// * [ProfileUpdate] profileUpdate (required):
+  Future<void> postProfile(ProfileUpdate profileUpdate,) async {
+    final response = await postProfileWithHttpInfo(profileUpdate,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

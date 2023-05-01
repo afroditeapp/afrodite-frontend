@@ -21,7 +21,7 @@ void main() {
     //
     // Get profile image
     //
-    //Future getImage(String accountId, String imageFile) async
+    //Future<MultipartFile> getImage(String accountId, String contentId) async
     test('test getImage', () async {
       // TODO
     });
@@ -35,38 +35,38 @@ void main() {
       // TODO
     });
 
-    // Get list of next moderation requests in moderation queue.
+    // Get current list of moderation requests in my moderation queue.
     //
-    // Get list of next moderation requests in moderation queue.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
+    // Get current list of moderation requests in my moderation queue. Additional requests will be added to my queue if necessary.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
     //
-    //Future<ModerationRequestList> getModerationRequestList() async
-    test('test getModerationRequestList', () async {
+    //Future<ModerationList> patchModerationRequestList() async
+    test('test patchModerationRequestList', () async {
       // TODO
     });
 
-    // Handle moderation request.
+    // Handle moderation request of some account.
     //
-    // Handle moderation request.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
+    // Handle moderation request of some account.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
     //
-    //Future postHandleModerationRequest(String requestId, HandleModerationRequest handleModerationRequest) async
+    //Future postHandleModerationRequest(String accountId, HandleModerationRequest handleModerationRequest) async
     test('test postHandleModerationRequest', () async {
       // TODO
     });
 
     // Set image to moderation request slot.
     //
-    // Set image to moderation request slot.  Slots \"camera\" and \"image1\" are available. 
+    // Set image to moderation request slot.  Slots from 0 to 2 are available.  TODO: resize and check images at some point 
     //
-    //Future putImageToModerationSlot(String slotId, String body) async
+    //Future<ContentId> putImageToModerationSlot(int slotId, MultipartFile body) async
     test('test putImageToModerationSlot', () async {
       // TODO
     });
 
     // Create new or override old moderation request.
     //
-    // Create new or override old moderation request.  Set images to moderation request slots first. 
+    // Create new or override old moderation request.  Make sure that moderation request has content IDs which points to your own image slots. 
     //
-    //Future putModerationRequest(NewModerationRequest newModerationRequest) async
+    //Future putModerationRequest(ModerationRequestContent moderationRequestContent) async
     test('test putModerationRequest', () async {
       // TODO
     });
