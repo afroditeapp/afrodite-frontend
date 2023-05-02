@@ -6,26 +6,27 @@ import 'dart:async';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/api_provider.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
 const KEY_ACCOUNT_ID = "account-id";
 const KEY_API_KEY = "api-key";
+const KEY_ACCOUNT_STATE = "account-state";
 
 class AccountRepository {
   final ApiProvider api;
-  final StreamController<void> accountIdUpdated = StreamController();
-  final StreamController<void> apiKeyUpdated = StreamController();
+  final BehaviorSubject<void> accountIdUpdated = BehaviorSubject.seeded(null);
+  final BehaviorSubject<void> apiKeyUpdated = BehaviorSubject.seeded(null);
 
   AccountRepository(this.api);
 
   Stream<MainState> accountState() async* {
     yield MainState.splashScreen;
 
-    await Future.delayed(const Duration(seconds: 2), () {});
+    await Future.delayed(const Duration(seconds: 1), () {});
 
-
-    String accountId;
+    AccountIdLight accountId;
     getAccountId:
     while (true) {
       await for (final value in currentAccountId()) {
@@ -38,7 +39,7 @@ class AccountRepository {
       }
     }
 
-    String apiKey;
+    ApiKey apiKey;
     getApiKey:
     while (true) {
       await for (final value in currentApiKey()) {
@@ -53,24 +54,15 @@ class AccountRepository {
 
     api.setKey(apiKey);
 
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    final previousStateString = preferences.getString(KEY_ACCOUNT_STATE);
+    var previousState = AccountState.initialSetup;
+    if (previousStateString != null) {
+      previousState = AccountState.fromJson(previousStateString) ?? previousState;
+    }
+
+    var state = previousState;
     while (true) {
-      await Future.delayed(const Duration(seconds: 5), () {});
-
-      Account? data;
-      try {
-        data = await api.account.getAccountState();
-      } on ApiException catch (e) {
-        print("error: $e");
-        continue;
-      }
-
-      AccountState state;
-      if (data == null) {
-        return;
-      } else {
-        state = data.state;
-      }
-
       if (state == AccountState.initialSetup) {
         yield MainState.initialSetup;
       } else if (state == AccountState.normal) {
@@ -81,53 +73,90 @@ class AccountRepository {
         yield MainState.pendingRemoval;
       }
 
-      break;
+      Account? data;
+      try {
+        data = await api.account.getAccountState();
+      } on ApiException catch (e) {
+        print("error: $e");
+        continue;
+      }
+
+      if (data == null) {
+        continue;
+      } else {
+        state = data.state;
+      }
+
+      if (previousState != state) {
+        await preferences.setString(KEY_ACCOUNT_STATE, state.toString());
+      }
+
+      await Future.delayed(const Duration(seconds: 5), () {});
     }
   }
 
-  Stream<String?> currentAccountId() async* {
+  Stream<AccountIdLight?> currentAccountId() async* {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    while (true) {
-        var accountId = preferences.getString(KEY_ACCOUNT_ID);
-        yield accountId;
-        await accountIdUpdated.stream.first;
+    await for (final _ in accountIdUpdated) {
+      var accountId = preferences.getString(KEY_ACCOUNT_ID);
+      if (accountId != null) {
+        yield AccountIdLight(accountId: accountId);
+      } else {
+        yield null;
+      }
     }
   }
 
-  Stream<String?> currentApiKey() async* {
+  Stream<ApiKey?> currentApiKey() async* {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    while (true) {
-        var data = preferences.getString(KEY_API_KEY);
-        yield data;
-        await apiKeyUpdated.stream.first;
+    await for (final _ in accountIdUpdated) {
+      var data = preferences.getString(KEY_API_KEY);
+      if (data != null) {
+        yield ApiKey(apiKey: data);
+      } else {
+        yield null;
+      }
     }
   }
 
-  Future<String> getAccountId() async {
+  Future<AccountIdLight> getAccountId() async {
     return currentAccountId()
-      .where((event) => event != null)
-      .map((event) => event ?? "")
+      .whereNotNull()
       .first;
   }
 
-  Future<String> getApiKey() async {
+  Future<ApiKey> getApiKey() async {
     return currentApiKey()
-      .where((event) => event != null)
-      .map((event) => event ?? "")
+      .whereNotNull()
       .first;
   }
 
-  Future<void> setAccountId(String accountId) async {
+  Future<void> setAccountId(AccountIdLight accountId) async {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setString(KEY_ACCOUNT_ID, accountId);
+    await preferences.setString(KEY_ACCOUNT_ID, accountId.accountId);
     accountIdUpdated.add(null);
+    print("Set account id");
   }
 
-  Future<void> setApiKey(String apiKey) async {
+  Future<void> setApiKey(ApiKey apiKey) async {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setString(KEY_API_KEY, apiKey);
+    await preferences.setString(KEY_API_KEY, apiKey.apiKey);
     apiKeyUpdated.add(null);
+  }
+
+  Future<void> register() async {
+    var id = await api.account.postRegister();
+    if (id != null) {
+      await setAccountId(id);
+    }
+  }
+
+  Future<void> login() async {
+    var key = await api.account.postLogin(await getAccountId());
+    if (key != null) {
+      await setApiKey(key);
+    }
   }
 }

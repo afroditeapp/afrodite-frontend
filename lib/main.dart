@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/api_provider.dart';
+import 'package:pihka_frontend/logic/account/account.dart';
 
 import 'package:pihka_frontend/ui/main/home.dart';
 import 'package:pihka_frontend/ui/login.dart';
@@ -20,6 +21,7 @@ void main() {
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => MainStateBloc(accountRepository)),
+        BlocProvider(create: (_) => AccountBloc(accountRepository)),
       ],
       child: const MyApp(),
     )

@@ -16,6 +16,7 @@ class ToMainScreen extends MainStateEvent {}
 class ToAccountBannedScreen extends MainStateEvent {}
 class ToPendingRemovalScreen extends MainStateEvent {}
 
+/// Get current main state of the account/app
 class MainStateBloc extends Bloc<MainStateEvent, MainState> {
   final AccountRepository account;
 
@@ -27,11 +28,8 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
     on<ToAccountBannedScreen>((_, emit) => emit(MainState.accountBanned));
     on<ToPendingRemovalScreen>((_, emit) => emit(MainState.pendingRemoval));
 
-    account.accountState().listen((event) {
-      print("test: $event");
-
+    account.accountState().distinct().listen((event) {
       if (event == MainState.loginRequired) {
-          print("object");
           add(ToLoginRequiredScreen());
         } else if (event == MainState.initialSetup) {
           add(ToInitialSetup());

@@ -32,9 +32,9 @@ class ApiProvider {
     _media = MediaApi(client);
 
 
-  void setKey(String apiKey) {
+  void setKey(ApiKey apiKey) {
     var auth = ApiKeyAuth("header", "x-api-key");
-    auth.apiKey = apiKey;
+    auth.apiKey = apiKey.apiKey;
     var client = ApiClient(basePath: serverAddress, authentication: auth);
     _apiClient = client;
     _account = AccountApi(client);

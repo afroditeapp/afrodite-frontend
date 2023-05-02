@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:pihka_frontend/logic/account/account.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui/login.dart";
 import "package:pihka_frontend/ui/main/home.dart";
@@ -8,67 +9,10 @@ import "package:pihka_frontend/ui/utils/root_page.dart";
 
 import 'package:openapi/api.dart' as client_api;
 
-class LoginPageOld extends StatefulWidget {
-  const LoginPageOld({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<LoginPageOld> createState() => _LoginPageState();
-}
-
 const commonPadding = 5.0;
 
-class _LoginPageState extends State<LoginPageOld> {
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    //final text = "t"
-
-    return Text("");
-  }
-}
-
-
 class LoginPage extends RootPage {
-  LoginPage({Key? key}) : super(MainState.loginRequired, key: key);
-
-  var _apiClient = client_api.ApiClient(basePath: "http://10.0.2.2:3000");
-  String _accountId = "";
-
-  String accountIdUiText() {
-    if (_accountId.isEmpty) {
-      return "Not registerd";
-    } else {
-      return _accountId;
-    }
-  }
-
-  void _incrementCounter() {
-
-  }
-  void _buttonTest() {
-    //
-    // });
-  }
-
-  Future<void> _register() async {
-    print("register");
-    final res = await client_api.AccountApi(_apiClient).postRegister();
-    if (res != null) {
-        print(res);
-    }
-
-  }
-
-  void _login(BuildContext context) {
-    print("login");
-    // setState(() {
-    //
-    // });
-  }
+  const LoginPage({Key? key}) : super(MainState.loginRequired, key: key);
 
   @override
   Widget buildRootWidget(BuildContext context) {
@@ -86,33 +30,43 @@ class LoginPage extends RootPage {
             const Text(
               "Pihka"
             ),
-            ElevatedButton(
-              child: const Text(
+            const ElevatedButton(
+              child: Text(
                   "Back"
               ),
-              onPressed: _buttonTest,
+              onPressed: null,
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
             ElevatedButton(
               child: const Text(
                   "Register"
               ),
-              onPressed: _register,
+              onPressed: () => context.read<AccountBloc>().add(DoRegister()),
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
-            Text(
-                accountIdUiText()
+            BlocBuilder<AccountBloc, AccountData>(
+              buildWhen: (previous, current) => previous.accountId != current.accountId,
+              builder: (_, state) {
+                return Text(
+                  "Account ID: ${state.accountId ?? "not set"}"
+                );
+              }
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
             ElevatedButton(
               child: const Text(
                   "Login"
               ),
-              onPressed: () => context.read<MainStateBloc>().add(ToPendingRemovalScreen()),
+              onPressed: () => context.read<AccountBloc>().add(DoLogin()),
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
-            const Text(
-                "API key: "
+            BlocBuilder<AccountBloc, AccountData>(
+              buildWhen: (previous, current) => previous.apiKey != current.apiKey,
+              builder: (_, state) {
+                return Text(
+                  "API key: ${state.apiKey ?? "not set"}"
+                );
+              }
             ),
           ],
         ),

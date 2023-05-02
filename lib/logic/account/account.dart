@@ -1,41 +1,50 @@
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
+import "package:rxdart/rxdart.dart";
 
 
 class AccountData {
-
+  AccountIdLight? accountId;
+  ApiKey? apiKey;
 }
 
 abstract class AccountEvent {}
+class DoRegister extends AccountEvent {}
+class DoLogin extends AccountEvent {}
+class NewAccountIdValue extends AccountEvent {
+  final AccountIdLight value;
+  NewAccountIdValue(this.value);
+}
+class NewApiKeyValue extends AccountEvent {
+  final ApiKey value;
+  NewApiKeyValue(this.value);
+}
 
-class RegisterEvent extends AccountEvent {}
-class LoginEvent extends AccountEvent {}
+/// Do register/login operations
+class AccountBloc extends Bloc<AccountEvent, AccountData> {
+  final AccountRepository account;
 
-// class AccountBloc extends Bloc<AccountEvent, void> {
-//   final AccountRepository account;
+  AccountBloc(this.account) : super(AccountData()) {
+    on<DoRegister>((_, emit) {
+      return account.register();
+    });
+    on<DoLogin>((_, emit) {
+      return account.login();
+    });
+    on<NewAccountIdValue>((id, emit) {
+      state.accountId = id.value;
+      emit(state);
+    });
+    on<NewApiKeyValue>((key, emit) {
+      state.apiKey = key.value;
+      emit(state);
+    });
 
-//   MainStateBloc(this.account) : super(MainState.splashScreen) {
-//     on<ToSplashScreen>((_, emit) => emit(MainState.splashScreen));
-//     on<ToLoginRequiredScreen>((_, emit) => emit(MainState.loginRequired));
-
-//     account.accountState().listen((event) {
-//       print("test: $event");
-
-//       if (event == MainState.loginRequired) {
-//           print("object");
-//           add(ToLoginRequiredScreen());
-//         } else if (event == MainState.initialSetup) {
-//           add(ToInitialSetup());
-//         } else if (event == MainState.initialSetupComplete) {
-//           add(ToMainScreen());
-//         } else if (event == MainState.accountBanned) {
-//           add(ToAccountBannedScreen());
-//         } else if (event == MainState.pendingRemoval) {
-//           add(ToPendingRemovalScreen());
-//         } else if (event == MainState.splashScreen) {
-//           add(ToSplashScreen());
-//         }
-//     });
-//   }
-// }
+    account.currentAccountId().whereNotNull().listen((event) {
+      add(NewAccountIdValue(event));
+    });
+    account.currentApiKey().whereNotNull().listen((event) { add(NewApiKeyValue(event)); });
+  }
+}
