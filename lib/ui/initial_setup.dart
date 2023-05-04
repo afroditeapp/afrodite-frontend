@@ -1,3 +1,5 @@
+import "dart:ffi";
+
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -45,6 +47,7 @@ class InitialSetupWidget extends StatefulWidget {
 class _InitialSetupWidgetState extends State<InitialSetupWidget> {
   final _accountFormKey = GlobalKey<FormState>();
   final _profileFormKey = GlobalKey<FormState>();
+  String? _selfie;
   int _currentStep = 0;
 
   @override
@@ -85,6 +88,18 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
           onStepContinueHandler();
         }
       };
+    } else if (_currentStep == 2) {
+      if (_selfie != null) {
+        onStepContinue = onStepContinueHandler;
+      }
+      onStepContinue = () {
+        if (_selfie != null) {
+          onStepContinueHandler();
+        } else {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("No image. Take one using the camera button."), behavior: SnackBarBehavior.floating));
+        }
+      };
     } else {
       onStepContinue = onStepContinueHandler;
     }
@@ -123,6 +138,17 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
 
   List<Step> createSteps() {
     final counter = Counter();
+
+    //timeDilation = 10.0;
+    return [
+        createAccountStep(counter.next()),
+        createProfileStep(counter.next()),
+        createTakeSelfieStep(counter.next()),
+        createSelectProfileImageStep(counter.next()),
+      ];
+  }
+
+  Step createAccountStep(int id) {
     final accountForm = Form(
       key: _accountFormKey,
       child: TextFormField(
@@ -139,6 +165,22 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
         },
       ),
     );
+
+    return Step(
+      title: const Text("Account"),
+      // subtitle: counter.onlyIfSelected(
+      //   _currentStep,
+      //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
+      // ),
+      isActive: _currentStep == id,
+      content: Container(
+        alignment: Alignment.centerLeft,
+        child: accountForm,
+      ),
+    );
+  }
+
+  Step createProfileStep(int id) {
     final profileForm = Form(
       key: _profileFormKey,
       child: TextFormField(
@@ -155,51 +197,56 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
         },
       ),
     );
-    //timeDilation = 10.0;
-    return [
-        Step(
-          title: const Text("Account"),
-          // subtitle: counter.onlyIfSelected(
-          //   _currentStep,
-          //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
-          // ),
-          isActive: _currentStep == counter.next(),
-          content: Container(
-            alignment: Alignment.centerLeft,
-            child: accountForm,
-          ),
-        ),
-        Step(
-          title: const Text("Profile"),
-          // subtitle: counter.onlyIfSelected(
-          //   _currentStep,
-          //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
-          // ),
-          isActive: _currentStep == counter.next(),
-          content: Container(
-            alignment: Alignment.centerLeft,
-            child: profileForm,
-          )
-        ),
-        Step(
-          title: const Text("Take security selfie"),
-          // subtitle: counter.onlyIfSelected(
-          //   _currentStep,
-          //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
-          // ),
-          isActive: _currentStep == counter.next(),
-          content: const Text("This image will not be visible on your profile")
-        ),
-        Step(
-          title: const Text("Select proifle image"),
-          // subtitle: counter.onlyIfSelected(
-          //   _currentStep,
-          //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
-          // ),
-          isActive: _currentStep == counter.next(),
-          content: const Text("data"),
-        ),
-      ];
+    return Step(
+      title: const Text("Profile"),
+      // subtitle: counter.onlyIfSelected(
+      //   _currentStep,
+      //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
+      // ),
+      isActive: _currentStep == id,
+      content: Container(
+        alignment: Alignment.centerLeft,
+        child: profileForm,
+      )
+    );
+  }
+
+  Step createTakeSelfieStep(int id) {
+    return Step(
+      title: const Text("Take security selfie"),
+      // subtitle: counter.onlyIfSelected(
+      //   _currentStep,
+      //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
+      // ),
+      isActive: _currentStep == id,
+      content: Column(
+        children: [
+          const Text("Take image in which your face is clearly visible."),
+          Row(children: [
+            Icon(Icons.person, size: 150.0, color: Colors.black45),
+            Column(
+              children: [
+                ElevatedButton.icon(label: Text("Camera"), icon: Icon(Icons.camera_alt), onPressed: () {
+
+                }),
+              ],
+            ),
+          ]),
+        ],
+      )
+    );
+  }
+
+  Step createSelectProfileImageStep(int id) {
+    return Step(
+      title: const Text("Select proifle image"),
+      // subtitle: counter.onlyIfSelected(
+      //   _currentStep,
+      //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
+      // ),
+      isActive: _currentStep == id,
+      content: const Text("data"),
+    );
   }
 }
 
