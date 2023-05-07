@@ -33,16 +33,48 @@ class CameraPage extends StatefulWidget {
   State<CameraPage> createState() => _CameraPageState();
 }
 
-class _CameraPageState extends State<CameraPage> {
-  late CameraController? camera;
+class _CameraPageState extends State<CameraPage>
+  with WidgetsBindingObserver {
+  CameraController? camera;
   var currentCameraIndex = 0;
 
-  late Timer timer;
+  Timer? timer;
   var showNoCameraText = false;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    initCamera();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    disposeCamera();
+    super.dispose();
+  }
+
+  void disposeCamera() {
+    camera?.dispose().then((value) {
+      print("Camera disposed");
+    });
+    camera = null;
+    timer?.cancel();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+
+    if (state == AppLifecycleState.inactive) {
+      disposeCamera();
+    } else if (state == AppLifecycleState.resumed && camera == null) {
+      initCamera();
+    }
+  }
+
+  void initCamera() {
     for (var cameraDescription in cameras.asMap().entries) {
       currentCameraIndex = cameraDescription.key;
       camera = CameraController(cameraDescription.value, ResolutionPreset.max, enableAudio: false); // TODO: limit resolution?
@@ -71,12 +103,6 @@ class _CameraPageState extends State<CameraPage> {
         });
       }
     });
-  }
-
-  @override
-  void dispose() {
-    camera?.dispose();
-    super.dispose();
   }
 
   @override

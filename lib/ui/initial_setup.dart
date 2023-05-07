@@ -36,7 +36,7 @@ class InitialSetupWidget extends StatefulWidget {
 class _InitialSetupWidgetState extends State<InitialSetupWidget> {
   final _accountFormKey = GlobalKey<FormState>();
   final _profileFormKey = GlobalKey<FormState>();
-  int _currentStep = 0;
+  int _currentStep = 2;
 
   @override
   Widget build(BuildContext context) {
