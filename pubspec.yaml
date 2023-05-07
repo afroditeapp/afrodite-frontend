@@ -43,6 +43,7 @@ dependencies:
   rxdart: ^0.27.7
 
   camera: ^0.10.5
+  image_picker: ^0.8.7+4
 
   # API client for server API
   openapi:

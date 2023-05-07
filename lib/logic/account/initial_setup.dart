@@ -9,6 +9,7 @@ class InitialSetupData {
   String email = "";
   String profileName = "";
   XFile? securitySelfie;
+  XFile? profileImage;
 }
 
 abstract class InitialSetupEvent {}
@@ -23,6 +24,10 @@ class SetProfileName extends InitialSetupEvent {
 class SetSecuritySelfie extends InitialSetupEvent {
   final XFile securitySelfie;
   SetSecuritySelfie(this.securitySelfie);
+}
+class SetProfileImage extends InitialSetupEvent {
+  final XFile profileImage;
+  SetProfileImage(this.profileImage);
 }
 class SendAll extends InitialSetupEvent {}
 
@@ -41,6 +46,10 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
     });
     on<SetSecuritySelfie>((data, emit) {
       state.securitySelfie = data.securitySelfie;
+      emit(state);
+    });
+    on<SetProfileImage>((data, emit) {
+      state.profileImage = data.profileImage;
       emit(state);
     });
     on<SendAll>((_, emit) {

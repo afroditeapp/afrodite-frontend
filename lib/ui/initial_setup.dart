@@ -5,6 +5,7 @@ import "package:camera/camera.dart";
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:image_picker/image_picker.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui/login.dart";
@@ -13,6 +14,9 @@ import "package:pihka_frontend/ui/utils/camera_page.dart";
 import "package:pihka_frontend/ui/utils/root_page.dart";
 
 import "package:flutter/scheduler.dart";
+
+// TODO: save initial setup values, so that it will be possible to restore state
+//       if system kills the app when selecting profile photo
 
 class InitialSetupPage extends RootPage {
   const InitialSetupPage({Key? key}) : super(MainState.initialSetup, key: key);
@@ -36,7 +40,7 @@ class InitialSetupWidget extends StatefulWidget {
 class _InitialSetupWidgetState extends State<InitialSetupWidget> {
   final _accountFormKey = GlobalKey<FormState>();
   final _profileFormKey = GlobalKey<FormState>();
-  int _currentStep = 2;
+  int _currentStep = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -258,6 +262,46 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
   }
 
   Step createSelectProfileImageStep(int id) {
+
+    Widget image = FutureBuilder<LostDataResponse>(
+      future: ImagePicker().retrieveLostData(),
+      builder: (BuildContext context, AsyncSnapshot<LostDataResponse> lostData) {
+        return BlocBuilder<InitialSetupBloc, InitialSetupData>(builder: (context, state) {
+          final initialSetupBloc = context.read<InitialSetupBloc>();
+            Widget selectImageButton = ElevatedButton.icon(
+              label: Text("Select image"),
+              icon: Icon(Icons.image),
+              onPressed: () async {
+                final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                if (image != null) {
+                  print(image.path);
+                  initialSetupBloc.add(SetProfileImage(image));
+                  setState(() {
+                    // Update to display current image
+                  });
+                }
+              }
+            );
+            List<Widget> imageWidgets = [selectImageButton];
+            XFile? profileImage = state.profileImage;
+            var lostImageSelection = lostData.data?.file;
+            if (profileImage == null && lostImageSelection != null) {
+              profileImage = lostImageSelection;
+            }
+
+            if (profileImage != null) {
+              imageWidgets = [Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Image.file(File(profileImage.path), height: 200,),
+              ), selectImageButton];
+            }
+            return Column(
+              children: imageWidgets
+            );
+          });
+      }
+    );
+
     return Step(
       title: const Text("Select proifle image"),
       // subtitle: counter.onlyIfSelected(
@@ -265,7 +309,10 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
       //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
       // ),
       isActive: _currentStep == id,
-      content: const Text("data"),
+      content: Column(children: [
+        const Text("Select profile image"),
+        image,
+      ]),
     );
   }
 }
