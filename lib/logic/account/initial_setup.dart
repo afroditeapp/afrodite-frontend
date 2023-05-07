@@ -1,55 +1,26 @@
 import "package:camera/camera.dart";
-import "package:equatable/equatable.dart";
-import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
-import "package:pihka_frontend/ui/initial_setup.dart";
-import "package:rxdart/rxdart.dart";
 
-@immutable
-class InitialSetupData extends Equatable {
-  final String email;
-  final String profileName;
-  final XFile? securitySelfie;
-  final XFile? profileImage;
-  final String? sendError; // If null sending in progress
-  final int currentStep;
+import "package:freezed_annotation/freezed_annotation.dart";
+import 'package:flutter/foundation.dart';
 
-  const InitialSetupData({
-    this.email = "",
-    this.profileName = "",
-    this.securitySelfie,
-    this.profileImage,
-    this.sendError,
-    this.currentStep = 0,
-  });
+part 'initial_setup.freezed.dart';
 
-  InitialSetupData copyAndChange(void Function(InitialSetupData) change) {
-    final newData = InitialSetupData(
-      email: email,
-      profileName: profileName,
-      securitySelfie: securitySelfie,
-      profileImage: profileImage,
-      sendError: sendError,
-      currentStep: currentStep
-    );
-
-    return newData;
-  }
-
-  @override
-  List<Object?> get props =>  [
-    email,
-    profileName,
-    securitySelfie,
-    profileImage,
-    sendError,
-    currentStep
-  ];
+@freezed
+class InitialSetupData with _$InitialSetupData {
+  factory InitialSetupData({
+    @Default("") String email,
+    @Default("") String profileName,
+    XFile? securitySelfie,
+    XFile? profileImage,
+    String? sendError,
+    @Default(0) int currentStep,
+  }) = _InitialSetupData;
 }
 
 abstract class InitialSetupEvent {}
+
 class SetAccountStep extends InitialSetupEvent {
   final String email;
   SetAccountStep(this.email);
@@ -66,70 +37,41 @@ class SetProfileImageStep extends InitialSetupEvent {
   final XFile profileImage;
   SetProfileImageStep(this.profileImage);
 }
-// class SendAll extends InitialSetupEvent {}
 class GoBack extends InitialSetupEvent {
   final int? step;
   GoBack(this.step);
 }
 
-
-/// Do register/login operations
 class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
   final AccountRepository account;
 
   InitialSetupBloc(this.account) : super(InitialSetupData()) {
     on<SetAccountStep>((data, emit) {
-      print(data);
-      emit(InitialSetupData(
+      emit(state.copyWith(
         email: data.email,
-        profileName: state.profileName,
-        securitySelfie: state.securitySelfie,
-        profileImage: state.profileImage,
-        sendError: state.sendError,
         currentStep: 1,
       ));
     });
     on<SetProfileStep>((data, emit) {
-      print(data);
-      emit(InitialSetupData(
-        email: state.email,
+      emit(state.copyWith(
         profileName: data.profileName,
-        securitySelfie: state.securitySelfie,
-        profileImage: state.profileImage,
-        sendError: state.sendError,
         currentStep: 2,
       ));
     });
     on<SetSecuritySelfieStep>((data, emit) {
-      print(data);
-      emit(InitialSetupData(
-        email: state.email,
-        profileName: state.profileName,
+      emit(state.copyWith(
         securitySelfie: data.securitySelfie,
-        profileImage: state.profileImage,
-        sendError: state.sendError,
         currentStep: 3,
       ));
     });
     on<SetProfileImageStep>((data, emit) {
-      print(data);
-      emit(InitialSetupData(
-        email: state.email,
-        profileName: state.profileName,
-        securitySelfie: state.securitySelfie,
+      emit(state.copyWith(
         profileImage: data.profileImage,
-        sendError: state.sendError,
         currentStep: 4,
       ));
     });
-    // on<SendAll>((_, emit) {
-    //   state.sendError = null;
-    //   state.currentStep += 1;
-    //   emit(state);
-    // });
     on<GoBack>((requestedStep, emit) {
       final stepIndex = requestedStep.step;
-      print(requestedStep);
       int newIndex;
       if (stepIndex == null && state.currentStep > 0) {
         newIndex = state.currentStep - 1;
@@ -138,13 +80,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
       } else {
         newIndex = state.currentStep;
       }
-
-      emit(InitialSetupData(
-        email: state.email,
-        profileName: state.profileName,
-        securitySelfie: state.securitySelfie,
-        profileImage: state.profileImage,
-        sendError: state.sendError,
+      emit(state.copyWith(
         currentStep: newIndex,
       ));
     });
