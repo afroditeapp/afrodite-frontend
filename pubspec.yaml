@@ -42,6 +42,7 @@ dependencies:
   shared_preferences: ^2.1.0
   rxdart: ^0.27.7
 
+  camera: ^0.10.5
 
   # API client for server API
   openapi:

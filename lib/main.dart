@@ -4,24 +4,31 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/api_provider.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/account/initial_setup.dart';
 
 import 'package:pihka_frontend/ui/main/home.dart';
 import 'package:pihka_frontend/ui/login.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/ui/splash_screen.dart';
+import 'package:pihka_frontend/ui/utils/camera_page.dart';
 
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   Bloc.observer = DebugObserver();
 
   var api = ApiProvider();
   var accountRepository = AccountRepository(api);
+
+  await initAvailableCameras();
 
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => MainStateBloc(accountRepository)),
         BlocProvider(create: (_) => AccountBloc(accountRepository)),
+        BlocProvider(create: (_) => InitialSetupBloc(accountRepository)),
       ],
       child: const MyApp(),
     )

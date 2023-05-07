@@ -44,7 +44,8 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "app.pihka.pihka_frontend"
-        minSdkVersion flutter.minSdkVersion
+        // minSdkVersion flutter.minSdkVersion // original
+        minSdkVersion 21 // Camera library requires
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

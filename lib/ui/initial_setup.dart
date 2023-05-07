@@ -1,11 +1,15 @@
 import "dart:ffi";
+import "dart:io";
 
+import "package:camera/camera.dart";
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui/login.dart";
 import "package:pihka_frontend/ui/main/home.dart";
+import "package:pihka_frontend/ui/utils/camera_page.dart";
 import "package:pihka_frontend/ui/utils/root_page.dart";
 
 import "package:flutter/scheduler.dart";
@@ -97,7 +101,9 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
           onStepContinueHandler();
         } else {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("No image. Take one using the camera button."), behavior: SnackBarBehavior.floating));
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("No image. Take one using the camera button."), behavior: SnackBarBehavior.floating)
+          );
         }
       };
     } else {
@@ -212,6 +218,23 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
   }
 
   Step createTakeSelfieStep(int id) {
+    Widget cameraButton = ElevatedButton.icon(label: Text("Camera"), icon: Icon(Icons.camera_alt), onPressed: () {
+      Navigator.push(
+          context,
+          MaterialPageRoute<void>(builder: (_) {
+            CameraPage camera = CameraPage(ImageType.securitySelfie);
+            return camera;
+          }),
+      );
+    });
+    List<Widget> selfieImageWidgets = [cameraButton];
+    XFile? securitySelfie = context.read<InitialSetupBloc>().state.securitySelfie;
+    if (securitySelfie != null) {
+      selfieImageWidgets = [Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Image.file(File(securitySelfie.path), height: 150,),
+      ), cameraButton];
+    }
     return Step(
       title: const Text("Take security selfie"),
       // subtitle: counter.onlyIfSelected(
@@ -223,14 +246,30 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
         children: [
           const Text("Take image in which your face is clearly visible."),
           Row(children: [
-            Icon(Icons.person, size: 150.0, color: Colors.black45),
-            Column(
-              children: [
-                ElevatedButton.icon(label: Text("Camera"), icon: Icon(Icons.camera_alt), onPressed: () {
+            const Icon(Icons.person, size: 150.0, color: Colors.black45),
+            BlocBuilder<InitialSetupBloc, InitialSetupData>(builder: (context, state) {
+              Widget cameraButton = ElevatedButton.icon(label: Text("Camera"), icon: Icon(Icons.camera_alt), onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(builder: (_) {
+                      CameraPage camera = CameraPage(ImageType.securitySelfie);
+                      return camera;
+                    }),
+                );
+              });
+              List<Widget> selfieImageWidgets = [cameraButton];
+              XFile? securitySelfie = state.securitySelfie;
+              if (securitySelfie != null) {
+                selfieImageWidgets = [Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Image.file(File(securitySelfie.path), height: 220,),
+                ), cameraButton];
+              }
+              return Column(
+                children: selfieImageWidgets
+              );
+            },)
 
-                }),
-              ],
-            ),
           ]),
         ],
       )
