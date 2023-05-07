@@ -218,23 +218,6 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
   }
 
   Step createTakeSelfieStep(int id) {
-    Widget cameraButton = ElevatedButton.icon(label: Text("Camera"), icon: Icon(Icons.camera_alt), onPressed: () {
-      Navigator.push(
-          context,
-          MaterialPageRoute<void>(builder: (_) {
-            CameraPage camera = CameraPage(ImageType.securitySelfie);
-            return camera;
-          }),
-      );
-    });
-    List<Widget> selfieImageWidgets = [cameraButton];
-    XFile? securitySelfie = context.read<InitialSetupBloc>().state.securitySelfie;
-    if (securitySelfie != null) {
-      selfieImageWidgets = [Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Image.file(File(securitySelfie.path), height: 150,),
-      ), cameraButton];
-    }
     return Step(
       title: const Text("Take security selfie"),
       // subtitle: counter.onlyIfSelected(
@@ -262,14 +245,13 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
               if (securitySelfie != null) {
                 selfieImageWidgets = [Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: Image.file(File(securitySelfie.path), height: 220,),
+                  child: Image.file(File(securitySelfie.path), height: 200,),
                 ), cameraButton];
               }
               return Column(
                 children: selfieImageWidgets
               );
             },)
-
           ]),
         ],
       )
