@@ -26,21 +26,6 @@ class InitialSetupPage extends RootPage {
   }
 }
 
-
-
-// body: Center(
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               const Text("Initial setup"),
-//               ElevatedButton(
-//                 child: const Text("Complete"),
-//                 onPressed: () => context.read<MainStateBloc>().add(ToMainScreen()),
-//               )
-//             ],
-//           ),
-//         ),
-
 class InitialSetupWidget extends StatefulWidget {
   const InitialSetupWidget({super.key});
 
@@ -51,7 +36,6 @@ class InitialSetupWidget extends StatefulWidget {
 class _InitialSetupWidgetState extends State<InitialSetupWidget> {
   final _accountFormKey = GlobalKey<FormState>();
   final _profileFormKey = GlobalKey<FormState>();
-  String? _selfie;
   int _currentStep = 0;
 
   @override
@@ -82,6 +66,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
       onStepContinue = () {
         var valid = _accountFormKey.currentState?.validate() ?? false;
         if (valid) {
+          _accountFormKey.currentState?.save();
           onStepContinueHandler();
         }
       };
@@ -89,15 +74,13 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
       onStepContinue = () {
         var valid = _profileFormKey.currentState?.validate() ?? false;
         if (valid) {
+          _profileFormKey.currentState?.save();
           onStepContinueHandler();
         }
       };
     } else if (_currentStep == 2) {
-      if (_selfie != null) {
-        onStepContinue = onStepContinueHandler;
-      }
       onStepContinue = () {
-        if (_selfie != null) {
+        if (context.read<InitialSetupBloc>().state.securitySelfie != null) {
           onStepContinueHandler();
         } else {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -105,6 +88,17 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
             const SnackBar(content: Text("No image. Take one using the camera button."), behavior: SnackBarBehavior.floating)
           );
         }
+      };
+    } else if (_currentStep == 3) {
+      onStepContinue = () {
+        // if (context.read<InitialSetupBloc>().state.securitySelfie != null) {
+        //   onStepContinueHandler();
+        // } else {
+        //   ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text("No image. Take one using the camera button."), behavior: SnackBarBehavior.floating)
+        //   );
+        // }
       };
     } else {
       onStepContinue = onStepContinueHandler;
@@ -169,6 +163,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
             return null;
           }
         },
+        onSaved: (newValue) => context.read<InitialSetupBloc>().add(SetEmail(newValue ?? "")),
       ),
     );
 
@@ -201,6 +196,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
             return null;
           }
         },
+        onSaved: (newValue) => context.read<InitialSetupBloc>().add(SetProfileName(newValue ?? "")),
       ),
     );
     return Step(
@@ -231,14 +227,17 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
           Row(children: [
             const Icon(Icons.person, size: 150.0, color: Colors.black45),
             BlocBuilder<InitialSetupBloc, InitialSetupData>(builder: (context, state) {
-              Widget cameraButton = ElevatedButton.icon(label: Text("Camera"), icon: Icon(Icons.camera_alt), onPressed: () {
-                Navigator.push(
+              Widget cameraButton = ElevatedButton.icon(label: Text("Camera"), icon: Icon(Icons.camera_alt), onPressed: () async {
+                var _ = await Navigator.push(
                     context,
                     MaterialPageRoute<void>(builder: (_) {
                       CameraPage camera = CameraPage(ImageType.securitySelfie);
                       return camera;
                     }),
                 );
+                setState(() {
+                  // Update to display current image
+                });
               });
               List<Widget> selfieImageWidgets = [cameraButton];
               XFile? securitySelfie = state.securitySelfie;
