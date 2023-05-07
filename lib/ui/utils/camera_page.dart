@@ -21,6 +21,7 @@ Future<void> initAvailableCameras() async {
   cameras = cameras.where((element) => element.lensDirection == CameraLensDirection.front).toList();
 }
 
+// TODO: remove?
 enum ImageType {
   securitySelfie,
 }
@@ -159,8 +160,7 @@ class _CameraPageState extends State<CameraPage>
         print(file.runtimeType);
         print(file.name);
         if (widget.imageType == ImageType.securitySelfie) {
-          context.read<InitialSetupBloc>().add(SetSecuritySelfie(file));
-          Navigator.pop(context);
+          Navigator.pop(context, file);
         } else {
           showSnackBar(context, "Unknown image type");
         }

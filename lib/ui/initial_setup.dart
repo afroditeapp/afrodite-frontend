@@ -1,5 +1,6 @@
 import "dart:ffi";
 import "dart:io";
+import "dart:math";
 
 import "package:camera/camera.dart";
 import "package:flutter/gestures.dart";
@@ -40,52 +41,56 @@ class InitialSetupWidget extends StatefulWidget {
 class _InitialSetupWidgetState extends State<InitialSetupWidget> {
   final _accountFormKey = GlobalKey<FormState>();
   final _profileFormKey = GlobalKey<FormState>();
-  int _currentStep = 3;
+
+  String? email;
+  String? name;
+  XFile? securitySelfie;
+  XFile? profileImage;
 
   @override
   Widget build(BuildContext context) {
-    final steps = createSteps();
+    return BlocBuilder<InitialSetupBloc, InitialSetupData>(builder: ((context, state) {
+      print(state);
+      return createStepper(context, state);
+    }));
+  }
+
+   Stepper createStepper(BuildContext contex, InitialSetupData state) {
+    print("Creating new stepper");
+    final steps = createSteps(state);
     void Function()? onStepCancelHandler;
-    if (_currentStep == 0) {
+    sendingInProgress() => state.currentStep == 4 && state.sendError == null;
+    if (state.currentStep == 0 || sendingInProgress()) {
       onStepCancelHandler = null;
     } else {
       onStepCancelHandler = () {
-        if (_currentStep > 0) {
-          setState(() {
-            updateStep(_currentStep - 1);
-          });
-        }
+        context.read<InitialSetupBloc>().add(GoBack(null));
       };
     }
 
-    onStepContinueHandler() {
-      if (_currentStep < steps.length - 1) {
-        setState(() {
-          updateStep(_currentStep + 1);
-        });
-      }
-    }
     void Function()? onStepContinue;
-    if (_currentStep == 0) {
+
+    if (state.currentStep == 0) {
       onStepContinue = () {
         var valid = _accountFormKey.currentState?.validate() ?? false;
         if (valid) {
           _accountFormKey.currentState?.save();
-          onStepContinueHandler();
+          context.read<InitialSetupBloc>().add(SetAccountStep(email ?? ""));
         }
       };
-    } else if (_currentStep == 1) {
+    } else if (state.currentStep == 1) {
       onStepContinue = () {
         var valid = _profileFormKey.currentState?.validate() ?? false;
         if (valid) {
           _profileFormKey.currentState?.save();
-          onStepContinueHandler();
+          context.read<InitialSetupBloc>().add(SetProfileStep(name ?? ""));
         }
       };
-    } else if (_currentStep == 2) {
+    } else if (state.currentStep == 2) {
       onStepContinue = () {
-        if (context.read<InitialSetupBloc>().state.securitySelfie != null) {
-          onStepContinueHandler();
+        final file = securitySelfie;
+        if (file != null) {
+          context.read<InitialSetupBloc>().add(SetSecuritySelfieStep(file));
         } else {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(
@@ -93,41 +98,37 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
           );
         }
       };
-    } else if (_currentStep == 3) {
+    } else if (state.currentStep == 3) {
       onStepContinue = () {
-        // if (context.read<InitialSetupBloc>().state.securitySelfie != null) {
-        //   onStepContinueHandler();
-        // } else {
-        //   ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        //   ScaffoldMessenger.of(context).showSnackBar(
-        //     const SnackBar(content: Text("No image. Take one using the camera button."), behavior: SnackBarBehavior.floating)
-        //   );
-        // }
+        final file = profileImage;
+        if (file != null) {
+          context.read<InitialSetupBloc>().add(SetProfileImageStep(file));
+        } else {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("No image. Select one using the select button."), behavior: SnackBarBehavior.floating)
+          );
+        }
       };
     } else {
-      onStepContinue = onStepContinueHandler;
+      onStepContinue = null;
     }
 
-
     return Stepper(
-      currentStep: _currentStep,
+      currentStep: state.currentStep,
       onStepCancel: onStepCancelHandler,
       onStepContinue: onStepContinue,
       onStepTapped: (i) {
-        if (i < steps.length && (i < _currentStep)) {
-          setState(() {
-            updateStep(i);
-          });
-        }
+        context.read<InitialSetupBloc>().add(GoBack(i));
       },
       controlsBuilder: (context, details) {
         var buttonContinue = ElevatedButton(
-          child: const Text("CONTINUE"),
           onPressed: details.onStepContinue,
+          child: const Text("CONTINUE"),
         );
         var buttonBack = MaterialButton(
-          child: const Text("BACK"),
           onPressed: details.onStepCancel,
+          child: const Text("BACK"),
         );
         Widget buttons = Row(children: [buttonContinue, const Padding(padding: EdgeInsets.symmetric(horizontal: 10.0)), buttonBack]);
         return Padding(padding: const EdgeInsets.fromLTRB(10.0, 10.0, 0, 0), child: buttons);
@@ -136,23 +137,20 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
     );
   }
 
-  void updateStep(int i) {
-    _currentStep = i;
-  }
-
-  List<Step> createSteps() {
+  List<Step> createSteps(InitialSetupData state) {
     final counter = Counter();
 
     //timeDilation = 10.0;
     return [
-        createAccountStep(counter.next()),
-        createProfileStep(counter.next()),
-        createTakeSelfieStep(counter.next()),
-        createSelectProfileImageStep(counter.next()),
+        createAccountStep(counter.next(), state),
+        createProfileStep(counter.next(), state),
+        createTakeSelfieStep(counter.next(), state),
+        createSelectProfileImageStep(counter.next(), state),
+        createCompleteInitialSetup(counter.next(), state),
       ];
   }
 
-  Step createAccountStep(int id) {
+  Step createAccountStep(int id, InitialSetupData state) {
     final accountForm = Form(
       key: _accountFormKey,
       child: TextFormField(
@@ -167,8 +165,9 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
             return null;
           }
         },
-        onSaved: (newValue) => context.read<InitialSetupBloc>().add(SetEmail(newValue ?? "")),
+        onSaved: (newValue) => email = newValue,
       ),
+
     );
 
     return Step(
@@ -177,7 +176,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
       //   _currentStep,
       //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
       // ),
-      isActive: _currentStep == id,
+      isActive: state.currentStep == id,
       content: Container(
         alignment: Alignment.centerLeft,
         child: accountForm,
@@ -185,7 +184,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
     );
   }
 
-  Step createProfileStep(int id) {
+  Step createProfileStep(int id, InitialSetupData state) {
     final profileForm = Form(
       key: _profileFormKey,
       child: TextFormField(
@@ -200,7 +199,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
             return null;
           }
         },
-        onSaved: (newValue) => context.read<InitialSetupBloc>().add(SetProfileName(newValue ?? "")),
+        onSaved: (newValue) => name = newValue,
       ),
     );
     return Step(
@@ -209,7 +208,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
       //   _currentStep,
       //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
       // ),
-      isActive: _currentStep == id,
+      isActive: state.currentStep == id,
       content: Container(
         alignment: Alignment.centerLeft,
         child: profileForm,
@@ -217,88 +216,90 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
     );
   }
 
-  Step createTakeSelfieStep(int id) {
+  Step createTakeSelfieStep(int id, InitialSetupData state) {
+    Widget cameraButton = ElevatedButton.icon(label: Text("Camera"), icon: Icon(Icons.camera_alt), onPressed: () async {
+      final image = await Navigator.push<XFile?>(
+          context,
+          MaterialPageRoute<XFile?>(builder: (_) {
+            CameraPage camera = CameraPage(ImageType.securitySelfie);
+            return camera;
+          }),
+      );
+      setState(() {
+        // Update to display current image
+        securitySelfie = image;
+      });
+    });
+
+    List<Widget> selfieImageWidgets = [cameraButton];
+    final image = securitySelfie;
+    if (image != null) {
+      selfieImageWidgets = [Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Image.file(File(image.path), height: 200),
+      ), cameraButton];
+    }
+
     return Step(
       title: const Text("Take security selfie"),
       // subtitle: counter.onlyIfSelected(
       //   _currentStep,
       //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
       // ),
-      isActive: _currentStep == id,
+      isActive: state.currentStep == id,
       content: Column(
         children: [
           const Text("Take image in which your face is clearly visible."),
           Row(children: [
             const Icon(Icons.person, size: 150.0, color: Colors.black45),
-            BlocBuilder<InitialSetupBloc, InitialSetupData>(builder: (context, state) {
-              Widget cameraButton = ElevatedButton.icon(label: Text("Camera"), icon: Icon(Icons.camera_alt), onPressed: () async {
-                var _ = await Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(builder: (_) {
-                      CameraPage camera = CameraPage(ImageType.securitySelfie);
-                      return camera;
-                    }),
-                );
-                setState(() {
-                  // Update to display current image
-                });
-              });
-              List<Widget> selfieImageWidgets = [cameraButton];
-              XFile? securitySelfie = state.securitySelfie;
-              if (securitySelfie != null) {
-                selfieImageWidgets = [Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Image.file(File(securitySelfie.path), height: 200,),
-                ), cameraButton];
-              }
-              return Column(
-                children: selfieImageWidgets
-              );
-            },)
+            Column(
+              children: selfieImageWidgets
+            ),
           ]),
         ],
       )
     );
   }
 
-  Step createSelectProfileImageStep(int id) {
+  Step createSelectProfileImageStep(int id, InitialSetupData state) {
+    // TODO: Move LostDataResponse to somewhere else?
 
     Widget image = FutureBuilder<LostDataResponse>(
       future: ImagePicker().retrieveLostData(),
       builder: (BuildContext context, AsyncSnapshot<LostDataResponse> lostData) {
-        return BlocBuilder<InitialSetupBloc, InitialSetupData>(builder: (context, state) {
-          final initialSetupBloc = context.read<InitialSetupBloc>();
-            Widget selectImageButton = ElevatedButton.icon(
-              label: Text("Select image"),
-              icon: Icon(Icons.image),
-              onPressed: () async {
-                final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  print(image.path);
-                  initialSetupBloc.add(SetProfileImage(image));
-                  setState(() {
-                    // Update to display current image
-                  });
-                }
-              }
-            );
-            List<Widget> imageWidgets = [selectImageButton];
-            XFile? profileImage = state.profileImage;
-            var lostImageSelection = lostData.data?.file;
-            if (profileImage == null && lostImageSelection != null) {
-              profileImage = lostImageSelection;
+        Widget selectImageButton = ElevatedButton.icon(
+          label: Text("Select image"),
+          icon: Icon(Icons.image),
+          onPressed: () async {
+            final image  = await ImagePicker().pickImage(source: ImageSource.gallery);
+            if (image != null) {
+              print(image.path);
+              setState(() {
+                profileImage = image;
+              });
             }
+          }
+        );
+        List<Widget> imageWidgets = [selectImageButton];
+        final XFile? image = profileImage;
 
-            if (profileImage != null) {
-              imageWidgets = [Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Image.file(File(profileImage.path), height: 200,),
-              ), selectImageButton];
-            }
-            return Column(
-              children: imageWidgets
-            );
+        // Restore lost image
+        var lostImageSelection = lostData.data?.file;
+        if (profileImage == null && lostImageSelection != null) {
+          setState(() {
+            profileImage = lostImageSelection;
           });
+        }
+
+        if (image != null) {
+          imageWidgets = [Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Image.file(File(image.path), height: 200,),
+          ), selectImageButton];
+        }
+        return Column(
+          children: imageWidgets
+        );
       }
     );
 
@@ -308,11 +309,36 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
       //   _currentStep,
       //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
       // ),
-      isActive: _currentStep == id,
+      isActive: state.currentStep == id,
       content: Column(children: [
         const Text("Select profile image"),
         image,
       ]),
+    );
+  }
+
+  Step createCompleteInitialSetup(int id, InitialSetupData state) {
+    Widget progress;
+      if (state.sendError != null) {
+        String error = state.sendError ?? "";
+        progress = Column(children: [
+          Text(error),
+        ]);
+      } else {
+        progress = Column(children: const [
+          Text("Sending the above information to server..."),
+          CircularProgressIndicator(),
+        ]);
+      }
+
+    return Step(
+      title: const Text("Almost ready"),
+      // subtitle: counter.onlyIfSelected(
+      //   _currentStep,
+      //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
+      // ),
+      isActive: state.currentStep == id,
+      content: progress,
     );
   }
 }
