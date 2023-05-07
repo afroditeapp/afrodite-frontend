@@ -21,6 +21,7 @@ mixin _$InitialSetupData {
   XFile? get securitySelfie => throw _privateConstructorUsedError;
   XFile? get profileImage => throw _privateConstructorUsedError;
   String? get sendError => throw _privateConstructorUsedError;
+  bool get sendingInProgress => throw _privateConstructorUsedError;
   int get currentStep => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -40,6 +41,7 @@ abstract class $InitialSetupDataCopyWith<$Res> {
       XFile? securitySelfie,
       XFile? profileImage,
       String? sendError,
+      bool sendingInProgress,
       int currentStep});
 }
 
@@ -61,6 +63,7 @@ class _$InitialSetupDataCopyWithImpl<$Res, $Val extends InitialSetupData>
     Object? securitySelfie = freezed,
     Object? profileImage = freezed,
     Object? sendError = freezed,
+    Object? sendingInProgress = null,
     Object? currentStep = null,
   }) {
     return _then(_value.copyWith(
@@ -84,6 +87,10 @@ class _$InitialSetupDataCopyWithImpl<$Res, $Val extends InitialSetupData>
           ? _value.sendError
           : sendError // ignore: cast_nullable_to_non_nullable
               as String?,
+      sendingInProgress: null == sendingInProgress
+          ? _value.sendingInProgress
+          : sendingInProgress // ignore: cast_nullable_to_non_nullable
+              as bool,
       currentStep: null == currentStep
           ? _value.currentStep
           : currentStep // ignore: cast_nullable_to_non_nullable
@@ -106,6 +113,7 @@ abstract class _$$_InitialSetupDataCopyWith<$Res>
       XFile? securitySelfie,
       XFile? profileImage,
       String? sendError,
+      bool sendingInProgress,
       int currentStep});
 }
 
@@ -125,6 +133,7 @@ class __$$_InitialSetupDataCopyWithImpl<$Res>
     Object? securitySelfie = freezed,
     Object? profileImage = freezed,
     Object? sendError = freezed,
+    Object? sendingInProgress = null,
     Object? currentStep = null,
   }) {
     return _then(_$_InitialSetupData(
@@ -148,6 +157,10 @@ class __$$_InitialSetupDataCopyWithImpl<$Res>
           ? _value.sendError
           : sendError // ignore: cast_nullable_to_non_nullable
               as String?,
+      sendingInProgress: null == sendingInProgress
+          ? _value.sendingInProgress
+          : sendingInProgress // ignore: cast_nullable_to_non_nullable
+              as bool,
       currentStep: null == currentStep
           ? _value.currentStep
           : currentStep // ignore: cast_nullable_to_non_nullable
@@ -167,6 +180,7 @@ class _$_InitialSetupData
       this.securitySelfie,
       this.profileImage,
       this.sendError,
+      this.sendingInProgress = false,
       this.currentStep = 0});
 
   @override
@@ -183,11 +197,14 @@ class _$_InitialSetupData
   final String? sendError;
   @override
   @JsonKey()
+  final bool sendingInProgress;
+  @override
+  @JsonKey()
   final int currentStep;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'InitialSetupData(email: $email, profileName: $profileName, securitySelfie: $securitySelfie, profileImage: $profileImage, sendError: $sendError, currentStep: $currentStep)';
+    return 'InitialSetupData(email: $email, profileName: $profileName, securitySelfie: $securitySelfie, profileImage: $profileImage, sendError: $sendError, sendingInProgress: $sendingInProgress, currentStep: $currentStep)';
   }
 
   @override
@@ -200,6 +217,7 @@ class _$_InitialSetupData
       ..add(DiagnosticsProperty('securitySelfie', securitySelfie))
       ..add(DiagnosticsProperty('profileImage', profileImage))
       ..add(DiagnosticsProperty('sendError', sendError))
+      ..add(DiagnosticsProperty('sendingInProgress', sendingInProgress))
       ..add(DiagnosticsProperty('currentStep', currentStep));
   }
 
@@ -217,13 +235,15 @@ class _$_InitialSetupData
                 other.profileImage == profileImage) &&
             (identical(other.sendError, sendError) ||
                 other.sendError == sendError) &&
+            (identical(other.sendingInProgress, sendingInProgress) ||
+                other.sendingInProgress == sendingInProgress) &&
             (identical(other.currentStep, currentStep) ||
                 other.currentStep == currentStep));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, email, profileName,
-      securitySelfie, profileImage, sendError, currentStep);
+      securitySelfie, profileImage, sendError, sendingInProgress, currentStep);
 
   @JsonKey(ignore: true)
   @override
@@ -239,6 +259,7 @@ abstract class _InitialSetupData implements InitialSetupData {
       final XFile? securitySelfie,
       final XFile? profileImage,
       final String? sendError,
+      final bool sendingInProgress,
       final int currentStep}) = _$_InitialSetupData;
 
   @override
@@ -251,6 +272,8 @@ abstract class _InitialSetupData implements InitialSetupData {
   XFile? get profileImage;
   @override
   String? get sendError;
+  @override
+  bool get sendingInProgress;
   @override
   int get currentStep;
   @override

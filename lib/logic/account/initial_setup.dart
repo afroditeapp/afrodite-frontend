@@ -1,4 +1,5 @@
 import "package:camera/camera.dart";
+import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/data/account_repository.dart";
 
@@ -15,6 +16,7 @@ class InitialSetupData with _$InitialSetupData {
     XFile? securitySelfie,
     XFile? profileImage,
     String? sendError,
+    @Default(false) bool sendingInProgress,
     @Default(0) int currentStep,
   }) = _InitialSetupData;
 }
@@ -64,10 +66,18 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
         currentStep: 3,
       ));
     });
-    on<SetProfileImageStep>((data, emit) {
+    on<SetProfileImageStep>((data, emit) async {
       emit(state.copyWith(
         profileImage: data.profileImage,
-        currentStep: 4,
+        sendingInProgress: true,
+        sendError: null,
+      ));
+
+      await Future.delayed(Duration(seconds: 5));
+
+      emit(state.copyWith(
+        sendingInProgress: false,
+        sendError: "Sending failed",
       ));
     });
     on<GoBack>((requestedStep, emit) {

@@ -11,6 +11,7 @@ import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui/login.dart";
 import "package:pihka_frontend/ui/main/home.dart";
+import "package:pihka_frontend/ui/utils.dart";
 import "package:pihka_frontend/ui/utils/camera_page.dart";
 import "package:pihka_frontend/ui/utils/root_page.dart";
 
@@ -26,7 +27,32 @@ class InitialSetupPage extends RootPage {
   Widget buildRootWidget(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text("Setup your new account")),
-        body: InitialSetupWidget(),
+        body: BlocListener<InitialSetupBloc, InitialSetupData>(
+          listener: (context, state) {
+            if (state.sendingInProgress && !Navigator.canPop(context)) {
+              print("Show dialog");
+              showDialog<void>(context: context, barrierDismissible: false, builder: (context) {
+                return WillPopScope(
+                  onWillPop: () async => false,
+                  child: AlertDialog(
+                    title: const Text("Sending in progress..."),
+                    content: Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
+                      CircularProgressIndicator(),
+                    ]),
+                    actions: [],
+                  ),
+                );
+              });
+            } else if (!state.sendingInProgress && Navigator.canPop(context)) {
+              print("pop");
+              Navigator.pop(context);
+              if (state.sendError != null) {
+                showSnackBar(context, state.sendError ?? "");
+              }
+            }
+          },
+          child: const InitialSetupWidget(),
+        ),
       );
   }
 }
@@ -146,7 +172,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
         createProfileStep(counter.next(), state),
         createTakeSelfieStep(counter.next(), state),
         createSelectProfileImageStep(counter.next(), state),
-        createCompleteInitialSetup(counter.next(), state),
+        //createCompleteInitialSetup(counter.next(), state),
       ];
   }
 
@@ -317,30 +343,30 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
     );
   }
 
-  Step createCompleteInitialSetup(int id, InitialSetupData state) {
-    Widget progress;
-      if (state.sendError != null) {
-        String error = state.sendError ?? "";
-        progress = Column(children: [
-          Text(error),
-        ]);
-      } else {
-        progress = Column(children: const [
-          Text("Sending the above information to server..."),
-          CircularProgressIndicator(),
-        ]);
-      }
+  // Step createCompleteInitialSetup(int id, InitialSetupData state) {
+  //   Widget progress;
+  //     if (state.sendError != null) {
+  //       String error = state.sendError ?? "";
+  //       progress = Column(children: [
+  //         Text(error),
+  //       ]);
+  //     } else {
+  //       progress = Column(children: const [
+  //         Text("Sending the above information to server..."),
+  //         CircularProgressIndicator(),
+  //       ]);
+  //     }
 
-    return Step(
-      title: const Text("Almost ready"),
-      // subtitle: counter.onlyIfSelected(
-      //   _currentStep,
-      //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
-      // ),
-      isActive: state.currentStep == id,
-      content: progress,
-    );
-  }
+  //   return Step(
+  //     title: const Text("Almost ready"),
+  //     // subtitle: counter.onlyIfSelected(
+  //     //   _currentStep,
+  //     //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
+  //     // ),
+  //     isActive: state.currentStep == id,
+  //     content: progress,
+  //   );
+  // }
 }
 
 class Counter {
