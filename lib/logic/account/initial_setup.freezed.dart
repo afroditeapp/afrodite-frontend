@@ -171,9 +171,7 @@ class __$$_InitialSetupDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_InitialSetupData
-    with DiagnosticableTreeMixin
-    implements _InitialSetupData {
+class _$_InitialSetupData implements _InitialSetupData {
   _$_InitialSetupData(
       {this.email = "",
       this.profileName = "",
@@ -203,22 +201,8 @@ class _$_InitialSetupData
   final int currentStep;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'InitialSetupData(email: $email, profileName: $profileName, securitySelfie: $securitySelfie, profileImage: $profileImage, sendError: $sendError, sendingInProgress: $sendingInProgress, currentStep: $currentStep)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'InitialSetupData'))
-      ..add(DiagnosticsProperty('email', email))
-      ..add(DiagnosticsProperty('profileName', profileName))
-      ..add(DiagnosticsProperty('securitySelfie', securitySelfie))
-      ..add(DiagnosticsProperty('profileImage', profileImage))
-      ..add(DiagnosticsProperty('sendError', sendError))
-      ..add(DiagnosticsProperty('sendingInProgress', sendingInProgress))
-      ..add(DiagnosticsProperty('currentStep', currentStep));
   }
 
   @override

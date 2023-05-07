@@ -101,7 +101,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
         var valid = _accountFormKey.currentState?.validate() ?? false;
         if (valid) {
           _accountFormKey.currentState?.save();
-          context.read<InitialSetupBloc>().add(SetAccountStep(email ?? ""));
+          context.read<InitialSetupBloc>().add(SetAccountStep(email?.trim() ?? ""));
         }
       };
     } else if (state.currentStep == 1) {
@@ -109,7 +109,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
         var valid = _profileFormKey.currentState?.validate() ?? false;
         if (valid) {
           _profileFormKey.currentState?.save();
-          context.read<InitialSetupBloc>().add(SetProfileStep(name ?? ""));
+          context.read<InitialSetupBloc>().add(SetProfileStep(name?.trim() ?? ""));
         }
       };
     } else if (state.currentStep == 2) {

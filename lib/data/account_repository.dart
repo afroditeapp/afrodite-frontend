@@ -3,6 +3,8 @@
 
 import 'dart:async';
 
+import 'package:camera/camera.dart';
+import 'package:http/http.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/api_provider.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
@@ -18,6 +20,7 @@ class AccountRepository {
   final ApiProvider api;
   final BehaviorSubject<void> accountIdUpdated = BehaviorSubject.seeded(null);
   final BehaviorSubject<void> apiKeyUpdated = BehaviorSubject.seeded(null);
+  final PublishSubject<void> accountStateUpdated = PublishSubject();
 
   AccountRepository(this.api);
 
@@ -25,6 +28,8 @@ class AccountRepository {
     yield MainState.splashScreen;
 
     await Future.delayed(const Duration(seconds: 1), () {});
+
+    print("Waiting AccountId");
 
     AccountIdLight accountId;
     getAccountId:
@@ -39,6 +44,8 @@ class AccountRepository {
       }
     }
 
+    print("Waiting ApiKey");
+
     ApiKey apiKey;
     getApiKey:
     while (true) {
@@ -51,6 +58,7 @@ class AccountRepository {
         }
       }
     }
+    print("ApiKey received.");
 
     api.setKey(apiKey);
 
@@ -84,14 +92,27 @@ class AccountRepository {
       if (data == null) {
         continue;
       } else {
+        print(data.state);
         state = data.state;
       }
 
       if (previousState != state) {
+        if (state == AccountState.initialSetup) {
+          yield MainState.initialSetup;
+        } else if (state == AccountState.normal) {
+          yield MainState.initialSetupComplete;
+        } else if (state == AccountState.banned) {
+          yield MainState.accountBanned;
+        } else if (state == AccountState.pendingDeletion) {
+          yield MainState.pendingRemoval;
+        }
         await preferences.setString(KEY_ACCOUNT_STATE, state.toString());
       }
 
-      await Future.delayed(const Duration(seconds: 5), () {});
+      await Future.any([
+        Future.delayed(const Duration(seconds: 5), () {}),
+        accountStateUpdated.stream.first
+      ]);
     }
   }
 
@@ -111,7 +132,7 @@ class AccountRepository {
   Stream<ApiKey?> currentApiKey() async* {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    await for (final _ in accountIdUpdated) {
+    await for (final _ in apiKeyUpdated) {
       var data = preferences.getString(KEY_API_KEY);
       if (data != null) {
         yield ApiKey(apiKey: data);
@@ -144,19 +165,48 @@ class AccountRepository {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setString(KEY_API_KEY, apiKey.apiKey);
     apiKeyUpdated.add(null);
+    print("Set API key");
   }
 
-  Future<void> register() async {
+  Future<AccountIdLight?> register() async {
     var id = await api.account.postRegister();
     if (id != null) {
       await setAccountId(id);
     }
+    return id;
   }
 
-  Future<void> login() async {
+  Future<ApiKey?> login() async {
     var key = await api.account.postLogin(await getAccountId());
     if (key != null) {
       await setApiKey(key);
     }
+    return key;
+  }
+
+  Future<String?> doInitialSetup(String email, String name, XFile securitySelfie, XFile profileImage) async {
+    final securitySelfiePath = securitySelfie.path;
+    final profileImagePath = profileImage.path;
+    try {
+      await api.account.postAccountSetup(AccountSetup(email: email, name: name));
+      final securitySelfie = await MultipartFile.fromPath("", securitySelfiePath);
+      final contentId1 = await api.media.putImageToModerationSlot(0, securitySelfie);
+      if (contentId1 == null) {
+        return "Server did not return content ID";
+      }
+      final profileImage = await MultipartFile.fromPath("", profileImagePath);
+      final contentId2 = await api.media.putImageToModerationSlot(1, profileImage);
+      if (contentId2 == null) {
+        return "Server did not return content ID";
+      }
+      await api.media.putModerationRequest(ModerationRequestContent(cameraImage: true, image1: contentId1, image2: contentId2));
+      await api.account.postCompleteSetup();
+      accountStateUpdated.add(null);
+    } on ApiException catch (e) {
+      print(e);
+      return "Error";
+    }
+
+    return null;
   }
 }

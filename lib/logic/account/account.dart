@@ -5,9 +5,17 @@ import "package:pihka_frontend/ui/initial_setup.dart";
 import "package:rxdart/rxdart.dart";
 
 
-class AccountData {
-  AccountIdLight? accountId;
-  ApiKey? apiKey;
+import "package:freezed_annotation/freezed_annotation.dart";
+import 'package:flutter/foundation.dart';
+
+part 'account.freezed.dart';
+
+@freezed
+class AccountData with _$AccountData {
+  factory AccountData({
+    AccountIdLight? accountId,
+    ApiKey? apiKey,
+  }) = _AccountData;
 }
 
 abstract class AccountEvent {}
@@ -27,19 +35,22 @@ class AccountBloc extends Bloc<AccountEvent, AccountData> {
   final AccountRepository account;
 
   AccountBloc(this.account) : super(AccountData()) {
-    on<DoRegister>((_, emit) {
-      return account.register();
+    on<DoRegister>((_, emit) async {
+      emit(state.copyWith(
+        accountId: await account.register(),
+        apiKey: null,
+      ));
     });
-    on<DoLogin>((_, emit) {
-      return account.login();
+    on<DoLogin>((_, emit) async {
+      emit(state.copyWith(
+        apiKey: await account.login(),
+      ));
     });
     on<NewAccountIdValue>((id, emit) {
-      state.accountId = id.value;
-      emit(state);
+      emit(state.copyWith(accountId: id.value));
     });
     on<NewApiKeyValue>((key, emit) {
-      state.apiKey = key.value;
-      emit(state);
+      emit(state.copyWith(apiKey: key.value));
     });
 
     account.currentAccountId().whereNotNull().listen((event) {

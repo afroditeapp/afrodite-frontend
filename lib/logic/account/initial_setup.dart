@@ -73,12 +73,39 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
         sendError: null,
       ));
 
-      await Future.delayed(Duration(seconds: 5));
 
-      emit(state.copyWith(
-        sendingInProgress: false,
-        sendError: "Sending failed",
-      ));
+      final securitySelfie = state.securitySelfie;
+      if (securitySelfie == null) {
+        emit(state.copyWith(
+          sendingInProgress: false,
+          sendError: "Missing security selfie",
+        ));
+        return;
+      }
+
+      final profileImage = state.profileImage;
+      if (profileImage == null) {
+        emit(state.copyWith(
+          sendingInProgress: false,
+          sendError: "Missing profile image",
+        ));
+        return;
+      }
+
+      //await Future.delayed(Duration(seconds: 5));
+      var error = await account.doInitialSetup(
+        state.email,
+        state.profileName,
+        securitySelfie,
+        profileImage
+      );
+
+      if (error != null) {
+        emit(state.copyWith(
+          sendingInProgress: false,
+          sendError: error,
+        ));
+      }
     });
     on<GoBack>((requestedStep, emit) {
       final stepIndex = requestedStep.step;
