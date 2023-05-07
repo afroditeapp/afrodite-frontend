@@ -5,6 +5,7 @@ import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/api_provider.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
+import 'package:pihka_frontend/logic/server/address.dart';
 
 import 'package:pihka_frontend/ui/main/home.dart';
 import 'package:pihka_frontend/ui/login.dart';
@@ -29,6 +30,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => MainStateBloc(accountRepository)),
         BlocProvider(create: (_) => AccountBloc(accountRepository)),
         BlocProvider(create: (_) => InitialSetupBloc(accountRepository)),
+        BlocProvider(create: (_) => ServerAddressBloc(accountRepository)),
       ],
       child: const MyApp(),
     )

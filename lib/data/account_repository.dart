@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 const KEY_ACCOUNT_ID = "account-id";
 const KEY_API_KEY = "api-key";
 const KEY_ACCOUNT_STATE = "account-state";
+const KEY_SERVER_ADDRESS = "server-address";
 
 class AccountRepository {
   final ApiProvider api;
@@ -208,5 +209,24 @@ class AccountRepository {
     }
 
     return null;
+  }
+
+  Future<String> getCurrentServerAddress() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    final address = await preferences.getString(KEY_SERVER_ADDRESS);
+    if (address == null) {
+      return api.serverAddress;
+    } else {
+      if (address != api.serverAddress) {
+        api.updateServerAddress(address);
+      }
+      return address;
+    }
+  }
+
+  Future<void> setCurrentServerAddress(String serverAddress) async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.setString(KEY_SERVER_ADDRESS, serverAddress);
+    api.updateServerAddress(serverAddress);
   }
 }
