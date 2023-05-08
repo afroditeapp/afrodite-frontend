@@ -8,7 +8,7 @@ import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui/account_banned.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
 import "package:pihka_frontend/ui/login.dart";
-import "package:pihka_frontend/ui/main/home.dart";
+import 'package:pihka_frontend/ui/normal.dart';
 import "package:pihka_frontend/ui/pending_deletion.dart";
 import "package:pihka_frontend/ui/utils.dart";
 

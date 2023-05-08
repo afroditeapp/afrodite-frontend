@@ -10,7 +10,7 @@ import "package:image_picker/image_picker.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui/login.dart";
-import "package:pihka_frontend/ui/main/home.dart";
+import 'package:pihka_frontend/ui/normal.dart';
 import "package:pihka_frontend/ui/utils.dart";
 import "package:pihka_frontend/ui/utils/camera_page.dart";
 import "package:pihka_frontend/ui/utils/root_page.dart";

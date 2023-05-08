@@ -4,7 +4,7 @@ import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui/account_banned.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
 import "package:pihka_frontend/ui/login.dart";
-import "package:pihka_frontend/ui/main/home.dart";
+import 'package:pihka_frontend/ui/normal.dart';
 import "package:pihka_frontend/ui/pending_deletion.dart";
 
 abstract class RootPage extends StatelessWidget {
@@ -37,7 +37,7 @@ abstract class RootPage extends StatelessWidget {
         } else if (state == MainState.initialSetupComplete) {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute<void>(builder: (_) => const HomePage()),
+              MaterialPageRoute<void>(builder: (_) => const NormalStatePage()),
               (_) => false,
           );
         } else if (state == MainState.accountBanned) {
