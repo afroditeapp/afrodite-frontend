@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:openapi/api.dart';
+import 'package:pihka_frontend/logic/account/account.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({Key? key}) : super(key: key);
@@ -10,21 +13,29 @@ class SettingsView extends StatefulWidget {
 class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
-    List<Setting> settings = [
-      createSetting(Icons.account_circle, "My profile", () => {}),
-      createSetting(Icons.admin_panel_settings, "Admin", () => {}),
-    ];
-    return ListView.builder(
-      itemCount: settings.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          onTap: () {
-            print(index);
-            settings[index].action();
+    return BlocBuilder<AccountBloc, AccountData>(
+      builder: (context, state) {
+        List<Setting> settings = [
+          createSetting(Icons.account_circle, "My profile", () => {}),
+        ];
+
+        if (state.capabilities.adminSettingsVisible()) {
+          settings.add(createSetting(Icons.admin_panel_settings, "Admin", () => {}));
+        }
+
+        return ListView.builder(
+          itemCount: settings.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              onTap: () {
+                print(index);
+                settings[index].action();
+              },
+              title: settings[index].widget,
+            );
           },
-          title: settings[index].widget,
         );
-      },
+      }
     );
   }
 
@@ -47,4 +58,10 @@ class Setting {
   final Widget widget;
   final void Function() action;
   Setting(this.widget, this.action);
+}
+
+extension on Capabilities {
+  bool adminSettingsVisible() {
+    return adminModerateImages ?? false;
+  }
 }

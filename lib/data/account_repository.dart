@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 const KEY_ACCOUNT_ID = "account-id";
+const KEY_ACCOUNT_CAPABLITIES = "account-capablities";
 const KEY_API_KEY = "api-key";
 const KEY_ACCOUNT_STATE = "account-state";
 const KEY_SERVER_ADDRESS = "server-address";
@@ -23,12 +24,16 @@ class AccountRepository {
   final BehaviorSubject<void> apiKeyUpdated = BehaviorSubject.seeded(null);
   final PublishSubject<void> accountStateUpdated = PublishSubject();
 
+  final BehaviorSubject<Capabilities> _capablities = BehaviorSubject.seeded(Capabilities());
+
+  Stream<Capabilities> get capabilities {
+    return _capablities.distinct();
+  }
+
   AccountRepository(this.api);
 
   Stream<MainState> accountState() async* {
     yield MainState.splashScreen;
-
-    await Future.delayed(const Duration(seconds: 1), () {});
 
     print("Waiting AccountId");
 
@@ -70,6 +75,12 @@ class AccountRepository {
       previousState = AccountState.fromJson(previousStateString) ?? previousState;
     }
 
+    final previousCapablitiesString = preferences.getString(KEY_ACCOUNT_CAPABLITIES);
+    if (previousCapablitiesString != null) {
+      final c = Capabilities.fromJson(previousCapablitiesString) ?? Capabilities();
+      _capablities.add(c);
+    }
+
     var state = previousState;
     while (true) {
       if (state == AccountState.initialSetup) {
@@ -95,6 +106,11 @@ class AccountRepository {
       } else {
         print(data.state);
         state = data.state;
+
+        if (_capablities.value != data.capablities) {
+          _capablities.add(data.capablities);
+          await preferences.setString(KEY_ACCOUNT_CAPABLITIES, data.capablities.toString());
+        }
       }
 
       if (previousState != state) {
