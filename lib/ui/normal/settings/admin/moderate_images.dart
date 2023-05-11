@@ -7,6 +7,20 @@ import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 
 
+// Plan: Infinite list of rows of two images, first is security selfie, the
+// other is to be moderated image. First image is empty if moderating security
+// selfie.
+//
+// Long pressing the row opens option to discard the request. Maeby there should
+// be space in the right side for status color.
+//
+// If trying to display previous rows, maeby just display empty rows? After it
+// is not possible to load more entries then empty rows untill all moderated.
+// Change entry to contain message all moderated.
+//
+// Taping image should open it to another view.
+
+
 class ModerateImagesPage extends StatefulWidget {
   const ModerateImagesPage({Key? key}) : super(key: key);
 
@@ -25,7 +39,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
 
   Widget list(BuildContext context) {
     return ListView.builder(
-      itemCount: 100,
+      itemCount: null,
       itemBuilder: (context, index) {
         return ListTile(
           onLongPress: () {

@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/api_provider.dart';
+import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
+import 'package:pihka_frontend/logic/admin/image_moderation.dart';
 import 'package:pihka_frontend/logic/server/address.dart';
 
 import 'package:pihka_frontend/ui/normal.dart';
@@ -21,6 +23,7 @@ Future<void> main() async {
 
   var api = ApiProvider();
   var accountRepository = AccountRepository(api);
+  var mediaRepository = MediaRepository(api);
 
   await initAvailableCameras();
 
@@ -31,6 +34,9 @@ Future<void> main() async {
         BlocProvider(create: (_) => AccountBloc(accountRepository)),
         BlocProvider(create: (_) => InitialSetupBloc(accountRepository)),
         BlocProvider(create: (_) => ServerAddressBloc(accountRepository)),
+
+        // Admin features related blocs
+        BlocProvider(create: (_) => ImageModerationBloc(mediaRepository)),
       ],
       child: const MyApp(),
     )
