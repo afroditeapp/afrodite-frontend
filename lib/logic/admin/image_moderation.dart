@@ -7,6 +7,8 @@ import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
 import "package:rxdart/rxdart.dart";
 
+import 'package:openapi/manual_additions.dart';
+
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
@@ -178,16 +180,15 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
 
   Future<Uint8List?> getImage(AccountIdLight imageOwner, ContentId id) async {
     try {
-      final data = await media.api.media.getImage(
+      final data = await media.api.media.getImageFixed(
         imageOwner.accountId,
         id.contentId,
       );
       if (data != null) {
-        final imageBytes = await data.finalize().toBytes();
-        return imageBytes;
+        return data;
       }
     } on ApiException catch (e) {
-      print(e);
+      print("Image loading error ${e}");
     }
 
     return null;

@@ -90,11 +90,11 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
           Text("${entry.securitySelfie.toString()}, ${entry.target.toString()}"),
           Text(requestEntry.m.toString()),
           FutureBuilder(
-            future: context.read<ImageModerationBloc>().getImage(requestEntry.m.moderatorId, entry.target),
+            future: context.read<ImageModerationBloc>().getImage(requestEntry.m.requestCreatorId, entry.target),
             builder: (context, snapshot) {
               final data = snapshot.data;
               if (data != null) {
-                return Image.memory(data);
+                return Image.memory(data, height: 300,);
               } else if (snapshot.error != null) {
                 return Text("Loading error");
               } else {
