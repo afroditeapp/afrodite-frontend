@@ -179,18 +179,6 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
   }
 
   Future<Uint8List?> getImage(AccountIdLight imageOwner, ContentId id) async {
-    try {
-      final data = await media.api.media.getImageFixed(
-        imageOwner.accountId,
-        id.contentId,
-      );
-      if (data != null) {
-        return data;
-      }
-    } on ApiException catch (e) {
-      print("Image loading error ${e}");
-    }
-
-    return null;
+    return media.getImage(imageOwner, id);
   }
 }

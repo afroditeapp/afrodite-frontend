@@ -1,6 +1,7 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
+import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
@@ -16,23 +17,47 @@ part 'profile.freezed.dart';
 @freezed
 class ProfileData with _$ProfileData {
   factory ProfileData({
-    @Default("") String accountId,
+    Profile? profile,
   }) = _ProfileData;
 }
 
 abstract class ProfileEvent {}
-class SetProfileText extends ProfileEvent {
-  final String profile;
-  SetProfileText(this.profile);
+class SetProfile extends ProfileEvent {
+  final Profile profile;
+  SetProfile(this.profile);
+}
+class LoadProfile extends ProfileEvent {
+  LoadProfile();
 }
 
 /// Do register/login operations
 class ProfileBloc extends Bloc<ProfileEvent, ProfileData> {
+  final AccountRepository account;
   final ProfileRepository profile;
+  final MediaRepository media;
 
-  ProfileBloc(this.profile) : super(ProfileData()) {
-    on<SetProfileText>((data, emit) async {
+  var loadingProfile = false;
+
+  ProfileBloc(this.account, this.profile, this.media) : super(ProfileData()) {
+    on<SetProfile>((data, emit) async {
 
     });
+    on<LoadProfile>((data, emit) async {
+      if (!loadingProfile) {
+        loadingProfile = true;
+        final currentAccountId = await account.currentAccountId().first;
+        if (currentAccountId != null) {
+          final currentProfile = await profile.api.profile.getProfile(currentAccountId.accountId);
+          if (currentProfile != null) {
+            emit(state.copyWith(profile: currentProfile));
+          }
+        }
+        loadingProfile = false;
+      }
+    });
+  }
+
+  Future<Uint8List?> getImage(AccountIdLight imageOwner, ContentId id) async {
+    return media.getImage(imageOwner, id);
   }
 }

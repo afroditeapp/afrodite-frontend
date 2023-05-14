@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ProfileData {
-  String get accountId => throw _privateConstructorUsedError;
+  Profile? get profile => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProfileDataCopyWith<ProfileData> get copyWith =>
@@ -29,7 +29,7 @@ abstract class $ProfileDataCopyWith<$Res> {
           ProfileData value, $Res Function(ProfileData) then) =
       _$ProfileDataCopyWithImpl<$Res, ProfileData>;
   @useResult
-  $Res call({String accountId});
+  $Res call({Profile? profile});
 }
 
 /// @nodoc
@@ -45,13 +45,13 @@ class _$ProfileDataCopyWithImpl<$Res, $Val extends ProfileData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? accountId = null,
+    Object? profile = freezed,
   }) {
     return _then(_value.copyWith(
-      accountId: null == accountId
-          ? _value.accountId
-          : accountId // ignore: cast_nullable_to_non_nullable
-              as String,
+      profile: freezed == profile
+          ? _value.profile
+          : profile // ignore: cast_nullable_to_non_nullable
+              as Profile?,
     ) as $Val);
   }
 }
@@ -64,7 +64,7 @@ abstract class _$$_ProfileDataCopyWith<$Res>
       __$$_ProfileDataCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String accountId});
+  $Res call({Profile? profile});
 }
 
 /// @nodoc
@@ -78,13 +78,13 @@ class __$$_ProfileDataCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? accountId = null,
+    Object? profile = freezed,
   }) {
     return _then(_$_ProfileData(
-      accountId: null == accountId
-          ? _value.accountId
-          : accountId // ignore: cast_nullable_to_non_nullable
-              as String,
+      profile: freezed == profile
+          ? _value.profile
+          : profile // ignore: cast_nullable_to_non_nullable
+              as Profile?,
     ));
   }
 }
@@ -92,15 +92,14 @@ class __$$_ProfileDataCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_ProfileData with DiagnosticableTreeMixin implements _ProfileData {
-  _$_ProfileData({this.accountId = ""});
+  _$_ProfileData({this.profile});
 
   @override
-  @JsonKey()
-  final String accountId;
+  final Profile? profile;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProfileData(accountId: $accountId)';
+    return 'ProfileData(profile: $profile)';
   }
 
   @override
@@ -108,7 +107,7 @@ class _$_ProfileData with DiagnosticableTreeMixin implements _ProfileData {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ProfileData'))
-      ..add(DiagnosticsProperty('accountId', accountId));
+      ..add(DiagnosticsProperty('profile', profile));
   }
 
   @override
@@ -116,12 +115,11 @@ class _$_ProfileData with DiagnosticableTreeMixin implements _ProfileData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ProfileData &&
-            (identical(other.accountId, accountId) ||
-                other.accountId == accountId));
+            (identical(other.profile, profile) || other.profile == profile));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, accountId);
+  int get hashCode => Object.hash(runtimeType, profile);
 
   @JsonKey(ignore: true)
   @override
@@ -131,10 +129,10 @@ class _$_ProfileData with DiagnosticableTreeMixin implements _ProfileData {
 }
 
 abstract class _ProfileData implements ProfileData {
-  factory _ProfileData({final String accountId}) = _$_ProfileData;
+  factory _ProfileData({final Profile? profile}) = _$_ProfileData;
 
   @override
-  String get accountId;
+  Profile? get profile;
   @override
   @JsonKey(ignore: true)
   _$$_ProfileDataCopyWith<_$_ProfileData> get copyWith =>

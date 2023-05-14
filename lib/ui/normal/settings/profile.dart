@@ -7,6 +7,7 @@ import 'package:pihka_frontend/logic/profile/profile.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin/moderate_images.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
+import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
 
 class MyProfilePage extends StatelessWidget {
@@ -14,6 +15,8 @@ class MyProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<ProfileBloc>().add(LoadProfile());
+
     return Scaffold(
       appBar: AppBar(title: const Text("My profile")),
       body: myProfilePage(context),
@@ -26,11 +29,24 @@ class MyProfilePage extends StatelessWidget {
   }
 
   Widget myProfilePage(BuildContext context) {
-    return BlocBuilder<ProfileBloc, ProfileData>(
-      builder: (context, state) {
-        List<Setting> hello = [];
+    return BlocBuilder<AccountBloc, AccountData>(
+      builder: (context, accountState) {
+        final id = accountState.accountId;
+        if (id == null) {
+          return Text("No account");
+        } else {
+          return BlocBuilder<ProfileBloc, ProfileData>(
+            builder: (context, profileState) {
+              final profile = profileState.profile;
+              if (profile == null) {
+                return Text("No profile data");
+              } else {
+                return viewProifle(context, id, profile);
+              }
 
-        return Text("Hello");
+            }
+          );
+        }
       }
     );
   }

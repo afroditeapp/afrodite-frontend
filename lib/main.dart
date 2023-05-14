@@ -38,7 +38,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => AccountBloc(accountRepository)),
         BlocProvider(create: (_) => InitialSetupBloc(accountRepository)),
         BlocProvider(create: (_) => ServerAddressBloc(accountRepository)),
-        BlocProvider(create: (_) => ProfileBloc(profileRepository)),
+        BlocProvider(create: (_) => ProfileBloc(accountRepository, profileRepository, mediaRepository)),
 
         // Admin features related blocs
         BlocProvider(create: (_) => ImageModerationBloc(mediaRepository)),
