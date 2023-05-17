@@ -3,6 +3,7 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/logic/account/account.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/logic/server/address.dart";
+import "package:pihka_frontend/logic/sign_in_with.dart";
 import "package:pihka_frontend/ui/login.dart";
 import 'package:pihka_frontend/ui/normal.dart';
 import "package:pihka_frontend/ui/utils/root_page.dart";
@@ -104,6 +105,20 @@ class LoginPage extends RootPage {
                     "API key: ${state.apiKey ?? "not set"}"
                   );
                 }
+              ),
+              const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
+              ElevatedButton(
+                child: const Text(
+                    "Sign in with Google"
+                ),
+                onPressed: () => context.read<SignInWithBloc>().add(SignInWithGoogle()),
+              ),
+              const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
+              ElevatedButton(
+                child: const Text(
+                    "Logout from Google"
+                ),
+                onPressed: () => context.read<SignInWithBloc>().add(LogOutFromGoogle()),
               ),
             ],
           ),

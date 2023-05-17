@@ -45,7 +45,9 @@ dependencies:
   camera: ^0.10.5
   image_picker: ^0.8.7+4
 
-  equatable: ^2.0.0
+  equatable: ^2.0.0  # TODO: remove
+
+  google_sign_in: ^6.1.0
 
   # API client for server API
   openapi:

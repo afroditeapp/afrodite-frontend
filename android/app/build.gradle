@@ -43,7 +43,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "app.pihka.pihka_frontend"
+        applicationId "app.jonect.android"
         // minSdkVersion flutter.minSdkVersion // original
         minSdkVersion 21 // Camera library requires
         targetSdkVersion flutter.targetSdkVersion
@@ -52,6 +52,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
