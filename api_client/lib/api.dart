@@ -58,6 +58,7 @@ part 'model/profile_link.dart';
 part 'model/profile_page.dart';
 part 'model/profile_update.dart';
 part 'model/profile_version.dart';
+part 'model/sign_in_with_login_info.dart';
 part 'model/slot_id.dart';
 
 

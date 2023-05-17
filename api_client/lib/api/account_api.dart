@@ -384,6 +384,62 @@ class AccountApi {
     return null;
   }
 
+  /// Start new session with sign in with Apple or Google. Creates new account if
+  ///
+  /// Start new session with sign in with Apple or Google. Creates new account if it does not exists.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [SignInWithLoginInfo] signInWithLoginInfo (required):
+  Future<Response> postSignInWithLoginWithHttpInfo(SignInWithLoginInfo signInWithLoginInfo,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/sign_in_with_login';
+
+    // ignore: prefer_final_locals
+    Object? postBody = signInWithLoginInfo;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Start new session with sign in with Apple or Google. Creates new account if
+  ///
+  /// Start new session with sign in with Apple or Google. Creates new account if it does not exists.
+  ///
+  /// Parameters:
+  ///
+  /// * [SignInWithLoginInfo] signInWithLoginInfo (required):
+  Future<ApiKey?> postSignInWithLogin(SignInWithLoginInfo signInWithLoginInfo,) async {
+    final response = await postSignInWithLoginWithHttpInfo(signInWithLoginInfo,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ApiKey',) as ApiKey;
+    
+    }
+    return null;
+  }
+
   /// Update profile visiblity value.
   ///
   /// Update profile visiblity value.  This will check that the first image moderation request has been moderated before this turns the profile public.  Sets capablity `view_public_profiles` on or off depending on the value.

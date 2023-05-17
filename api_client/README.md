@@ -68,6 +68,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postDelete**](doc//AccountApi.md#postdelete) | **PUT** /account_api/delete | Delete account.
 *AccountApi* | [**postLogin**](doc//AccountApi.md#postlogin) | **POST** /account_api/login | Get new ApiKey.
 *AccountApi* | [**postRegister**](doc//AccountApi.md#postregister) | **POST** /account_api/register | Register new account. Returns new account ID which is UUID.
+*AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google. Creates new account if
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update profile visiblity value.
 *AccountinternalApi* | [**checkApiKey**](doc//AccountinternalApi.md#checkapikey) | **GET** /internal/check_api_key | 
 *AccountinternalApi* | [**internalGetAccountState**](doc//AccountinternalApi.md#internalgetaccountstate) | **GET** /internal/get_account_state/{account_id} | 
@@ -113,6 +114,7 @@ Class | Method | HTTP request | Description
  - [ProfilePage](doc//ProfilePage.md)
  - [ProfileUpdate](doc//ProfileUpdate.md)
  - [ProfileVersion](doc//ProfileVersion.md)
+ - [SignInWithLoginInfo](doc//SignInWithLoginInfo.md)
  - [SlotId](doc//SlotId.md)
 
 

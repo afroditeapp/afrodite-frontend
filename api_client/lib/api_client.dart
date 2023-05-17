@@ -229,6 +229,8 @@ class ApiClient {
           return ProfileUpdate.fromJson(value);
         case 'ProfileVersion':
           return ProfileVersion.fromJson(value);
+        case 'SignInWithLoginInfo':
+          return SignInWithLoginInfo.fromJson(value);
         case 'SlotId':
           return SlotId.fromJson(value);
         default:

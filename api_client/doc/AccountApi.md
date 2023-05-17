@@ -17,6 +17,7 @@ Method | HTTP request | Description
 [**postDelete**](AccountApi.md#postdelete) | **PUT** /account_api/delete | Delete account.
 [**postLogin**](AccountApi.md#postlogin) | **POST** /account_api/login | Get new ApiKey.
 [**postRegister**](AccountApi.md#postregister) | **POST** /account_api/register | Register new account. Returns new account ID which is UUID.
+[**postSignInWithLogin**](AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google. Creates new account if
 [**putSettingProfileVisiblity**](AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update profile visiblity value.
 
 
@@ -356,6 +357,49 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **postSignInWithLogin**
+> ApiKey postSignInWithLogin(signInWithLoginInfo)
+
+Start new session with sign in with Apple or Google. Creates new account if
+
+Start new session with sign in with Apple or Google. Creates new account if it does not exists.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+
+final api_instance = AccountApi();
+final signInWithLoginInfo = SignInWithLoginInfo(); // SignInWithLoginInfo | 
+
+try {
+    final result = api_instance.postSignInWithLogin(signInWithLoginInfo);
+    print(result);
+} catch (e) {
+    print('Exception when calling AccountApi->postSignInWithLogin: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **signInWithLoginInfo** | [**SignInWithLoginInfo**](SignInWithLoginInfo.md)|  | 
+
+### Return type
+
+[**ApiKey**](ApiKey.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

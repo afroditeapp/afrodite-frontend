@@ -32,6 +32,7 @@ doc/ProfilePage.md
 doc/ProfileUpdate.md
 doc/ProfileVersion.md
 doc/ProfileinternalApi.md
+doc/SignInWithLoginInfo.md
 doc/SlotId.md
 git_push.sh
 lib/api.dart
@@ -73,5 +74,7 @@ lib/model/profile_link.dart
 lib/model/profile_page.dart
 lib/model/profile_update.dart
 lib/model/profile_version.dart
+lib/model/sign_in_with_login_info.dart
 lib/model/slot_id.dart
 pubspec.yaml
+test/sign_in_with_login_info_test.dart

@@ -16,7 +16,7 @@ class ImageFile {
     required this.data,
   });
 
-  MultipartFile? data;
+  MultipartFile data;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ImageFile &&
@@ -54,9 +54,7 @@ class ImageFile {
         return true;
       }());
 
-      return ImageFile(
-        data: null, // No support for decoding binary content from JSON
-      );
+
     }
     return null;
   }
