@@ -38,6 +38,8 @@ class SignInWithBloc extends Bloc<SignInWithEvent, String> {
           var token = await signedIn.authentication;
           print(token.accessToken);
           print(token.idToken);
+
+          await account.api.account.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken));
         }
         signInOngoing = false;
       }
