@@ -290,9 +290,16 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
   Step createSelectProfileImageStep(int id, InitialSetupData state) {
     // TODO: Move LostDataResponse to somewhere else?
 
-    Widget image = FutureBuilder<LostDataResponse>(
-      future: ImagePicker().retrieveLostData(),
-      builder: (BuildContext context, AsyncSnapshot<LostDataResponse> lostData) {
+    final Future<LostDataResponse?> lostImageFuture;
+    if (Platform.isAndroid) {
+      lostImageFuture = ImagePicker().retrieveLostData();
+    } else {
+      lostImageFuture = Future.value(null);
+    }
+
+    Widget image = FutureBuilder<LostDataResponse?>(
+      future: lostImageFuture,
+      builder: (BuildContext context, AsyncSnapshot<LostDataResponse?> lostData) {
         Widget selectImageButton = ElevatedButton.icon(
           label: Text("Select image"),
           icon: Icon(Icons.image),
