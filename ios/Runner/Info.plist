@@ -47,5 +47,26 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+	<!-- Camera and photo picker -->
+	<key>NSCameraUsageDescription</key>
+	<string>Camera usage is needed for taking security selfies</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo library access is needed for selecting profile images</string>
+
+	<!-- Google Sign-in Section -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<!-- Copied from downloaded OAuth 2 client info. Value for key REVERSED_CLIENT_ID. -->
+				<string>***REMOVED***</string>
+			</array>
+		</dict>
+	</array>
+	<!-- End of the Google Sign-in Section -->
 </dict>
 </plist>

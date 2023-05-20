@@ -1,3 +1,6 @@
+import "dart:io";
+
+import "package:flutter/services.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:google_sign_in/google_sign_in.dart";
 import "package:openapi/api.dart";
@@ -23,7 +26,7 @@ class SignInWithBloc extends Bloc<SignInWithEvent, String> {
   final AccountRepository account;
 
   bool signInOngoing = false;
-  GoogleSignIn google = GoogleSignIn(serverClientId: signInWithGoogleBackendClientId());
+  GoogleSignIn google = createSignInWithGoogle();
 
   SignInWithBloc(this.account) : super("") {
 
@@ -56,5 +59,20 @@ class SignInWithBloc extends Bloc<SignInWithEvent, String> {
         signInOngoing = false;
       }
     });
+  }
+}
+
+// TODO: make sure that iOS client id does not end in Android apk.
+
+GoogleSignIn createSignInWithGoogle() {
+  if (Platform.isAndroid) {
+    return GoogleSignIn(serverClientId: signInWithGoogleBackendClientId());
+  } else if (Platform.isIOS) {
+    return GoogleSignIn(
+      clientId: signInWithGoogleIosClientId(),
+      serverClientId: signInWithGoogleBackendClientId()
+    );
+  } else {
+    throw UnsupportedError("Unsupported platform");
   }
 }

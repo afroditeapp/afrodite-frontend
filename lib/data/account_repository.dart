@@ -35,6 +35,9 @@ class AccountRepository {
   Stream<MainState> accountState() async* {
     yield MainState.splashScreen;
 
+    // Load previously saved server address
+    print(await getCurrentServerAddress());
+
     print("Waiting AccountId");
 
     AccountIdLight accountId;
