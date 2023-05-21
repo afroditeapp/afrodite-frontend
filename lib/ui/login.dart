@@ -8,8 +8,8 @@ import "package:pihka_frontend/ui/login.dart";
 import 'package:pihka_frontend/ui/normal.dart';
 import "package:pihka_frontend/ui/utils/root_page.dart";
 
-
 import 'package:openapi/api.dart' as client_api;
+import "package:sign_in_with_apple/sign_in_with_apple.dart";
 
 const commonPadding = 5.0;
 
@@ -119,6 +119,10 @@ class LoginPage extends RootPage {
                     "Logout from Google"
                 ),
                 onPressed: () => context.read<SignInWithBloc>().add(LogOutFromGoogle()),
+              ),
+              const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
+              SignInWithAppleButton(
+                onPressed: () => context.read<SignInWithBloc>().add(SignInWithAppleEvent()),
               ),
             ],
           ),

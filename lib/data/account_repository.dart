@@ -98,6 +98,9 @@ class AccountRepository {
 
       Account? data;
       try {
+        await Future.any([
+          Future.delayed(const Duration(seconds: 5), () {}),
+        ]);
         data = await api.account.getAccountState();
       } on ApiException catch (e) {
         print("error: $e");
@@ -105,6 +108,7 @@ class AccountRepository {
       }
 
       if (data == null) {
+        print("error: data == null");
         continue;
       } else {
         print(data.state);

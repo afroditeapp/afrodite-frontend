@@ -12,6 +12,7 @@ import "package:rxdart/rxdart.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
+import "package:sign_in_with_apple/sign_in_with_apple.dart";
 
 
 abstract class SignInWithEvent {}
@@ -20,6 +21,13 @@ class SignInWithGoogle extends SignInWithEvent {
 }
 class LogOutFromGoogle extends SignInWithEvent {
   LogOutFromGoogle();
+}
+
+class SignInWithAppleEvent extends SignInWithEvent {
+  SignInWithAppleEvent();
+}
+class SignOutFromAppleEvent extends SignInWithEvent {
+  SignOutFromAppleEvent();
 }
 
 class SignInWithBloc extends Bloc<SignInWithEvent, String> {
@@ -56,6 +64,34 @@ class SignInWithBloc extends Bloc<SignInWithEvent, String> {
           print(signedIn.toString());
           print(signedIn.email.toString());
         }
+        signInOngoing = false;
+      }
+    });
+
+    // Sign in with Apple requires iOS 13.
+    on<SignInWithAppleEvent>((data, emit) async {
+      if (!signInOngoing) {
+        signInOngoing = true;
+        AuthorizationCredentialAppleID signedIn;
+
+        try {
+          signedIn = await SignInWithApple.getAppleIDCredential(scopes: [
+            AppleIDAuthorizationScopes.email,
+          ]);
+          print(signedIn);
+          await account.api.account.postSignInWithLogin(SignInWithLoginInfo(appleToken: signedIn.identityToken));
+        } on SignInWithAppleException catch (e) {
+          print(e);
+        }
+        signInOngoing = false;
+      }
+    });
+
+    // TODO: or is not possible to support?
+    on<SignOutFromAppleEvent>((data, emit) async {
+      if (!signInOngoing) {
+        signInOngoing = true;
+        // TODO
         signInOngoing = false;
       }
     });
