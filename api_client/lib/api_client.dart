@@ -191,6 +191,8 @@ class ApiClient {
           return AccountStateTypeTransformer().decode(value);
         case 'ApiKey':
           return ApiKey.fromJson(value);
+        case 'AuthPair':
+          return AuthPair.fromJson(value);
         case 'BooleanSetting':
           return BooleanSetting.fromJson(value);
         case 'Capabilities':
@@ -199,6 +201,8 @@ class ApiClient {
           return ContentId.fromJson(value);
         case 'DeleteStatus':
           return DeleteStatus.fromJson(value);
+        case 'EventToClient':
+          return EventToClientTypeTransformer().decode(value);
         case 'HandleModerationRequest':
           return HandleModerationRequest.fromJson(value);
         case 'ImageFile':
@@ -207,6 +211,8 @@ class ApiClient {
           return ImageFileName.fromJson(value);
         case 'Location':
           return Location.fromJson(value);
+        case 'LoginResult':
+          return LoginResult.fromJson(value);
         case 'Moderation':
           return Moderation.fromJson(value);
         case 'ModerationList':
@@ -229,6 +235,8 @@ class ApiClient {
           return ProfileUpdate.fromJson(value);
         case 'ProfileVersion':
           return ProfileVersion.fromJson(value);
+        case 'RefreshToken':
+          return RefreshToken.fromJson(value);
         case 'SignInWithLoginInfo':
           return SignInWithLoginInfo.fromJson(value);
         case 'SlotId':

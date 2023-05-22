@@ -10,37 +10,36 @@
 
 part of openapi.api;
 
-class SlotId {
-  /// Returns a new [SlotId] instance.
-  SlotId({
-    required this.slotId,
+class RefreshToken {
+  /// Returns a new [RefreshToken] instance.
+  RefreshToken({
+    required this.token,
   });
 
-  /// Minimum value: 0
-  int slotId;
+  String token;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is SlotId &&
-     other.slotId == slotId;
+  bool operator ==(Object other) => identical(this, other) || other is RefreshToken &&
+     other.token == token;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (slotId.hashCode);
+    (token.hashCode);
 
   @override
-  String toString() => 'SlotId[slotId=$slotId]';
+  String toString() => 'RefreshToken[token=$token]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'slot_id'] = this.slotId;
+      json[r'token'] = this.token;
     return json;
   }
 
-  /// Returns a new [SlotId] instance and imports its values from
+  /// Returns a new [RefreshToken] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static SlotId? fromJson(dynamic value) {
+  static RefreshToken? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -49,24 +48,24 @@ class SlotId {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "SlotId[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SlotId[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "RefreshToken[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "RefreshToken[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return SlotId(
-        slotId: mapValueOfType<int>(json, r'slot_id')!,
+      return RefreshToken(
+        token: mapValueOfType<String>(json, r'token')!,
       );
     }
     return null;
   }
 
-  static List<SlotId>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <SlotId>[];
+  static List<RefreshToken>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <RefreshToken>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = SlotId.fromJson(row);
+        final value = RefreshToken.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -75,12 +74,12 @@ class SlotId {
     return result.toList(growable: growable);
   }
 
-  static Map<String, SlotId> mapFromJson(dynamic json) {
-    final map = <String, SlotId>{};
+  static Map<String, RefreshToken> mapFromJson(dynamic json) {
+    final map = <String, RefreshToken>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = SlotId.fromJson(entry.value);
+        final value = RefreshToken.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -89,13 +88,13 @@ class SlotId {
     return map;
   }
 
-  // maps a json object with a list of SlotId-objects as value to a dart map
-  static Map<String, List<SlotId>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<SlotId>>{};
+  // maps a json object with a list of RefreshToken-objects as value to a dart map
+  static Map<String, List<RefreshToken>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<RefreshToken>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = SlotId.listFromJson(entry.value, growable: growable,);
+        final value = RefreshToken.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -106,7 +105,7 @@ class SlotId {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'slot_id',
+    'token',
   };
 }
 

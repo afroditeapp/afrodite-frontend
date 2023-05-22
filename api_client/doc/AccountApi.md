@@ -280,7 +280,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **postLogin**
-> ApiKey postLogin(accountIdLight)
+> LoginResult postLogin(accountIdLight)
 
 Get new ApiKey.
 
@@ -309,7 +309,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ApiKey**](ApiKey.md)
+[**LoginResult**](LoginResult.md)
 
 ### Authorization
 

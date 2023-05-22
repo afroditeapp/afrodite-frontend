@@ -72,6 +72,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update profile visiblity value.
 *AccountinternalApi* | [**checkApiKey**](doc//AccountinternalApi.md#checkapikey) | **GET** /internal/check_api_key | 
 *AccountinternalApi* | [**internalGetAccountState**](doc//AccountinternalApi.md#internalgetaccountstate) | **GET** /internal/get_account_state/{account_id} | 
+*CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens.
 *MediaApi* | [**getImage**](doc//MediaApi.md#getimage) | **GET** /media_api/image/{account_id}/{content_id} | Get profile image
 *MediaApi* | [**getModerationRequest**](doc//MediaApi.md#getmoderationrequest) | **GET** /media_api/moderation/request | Get current moderation request.
 *MediaApi* | [**patchModerationRequestList**](doc//MediaApi.md#patchmoderationrequestlist) | **PATCH** /media_api/admin/moderation/page/next | Get current list of moderation requests in my moderation queue.
@@ -95,14 +96,17 @@ Class | Method | HTTP request | Description
  - [AccountSetup](doc//AccountSetup.md)
  - [AccountState](doc//AccountState.md)
  - [ApiKey](doc//ApiKey.md)
+ - [AuthPair](doc//AuthPair.md)
  - [BooleanSetting](doc//BooleanSetting.md)
  - [Capabilities](doc//Capabilities.md)
  - [ContentId](doc//ContentId.md)
  - [DeleteStatus](doc//DeleteStatus.md)
+ - [EventToClient](doc//EventToClient.md)
  - [HandleModerationRequest](doc//HandleModerationRequest.md)
  - [ImageFile](doc//ImageFile.md)
  - [ImageFileName](doc//ImageFileName.md)
  - [Location](doc//Location.md)
+ - [LoginResult](doc//LoginResult.md)
  - [Moderation](doc//Moderation.md)
  - [ModerationList](doc//ModerationList.md)
  - [ModerationRequest](doc//ModerationRequest.md)
@@ -114,6 +118,7 @@ Class | Method | HTTP request | Description
  - [ProfilePage](doc//ProfilePage.md)
  - [ProfileUpdate](doc//ProfileUpdate.md)
  - [ProfileVersion](doc//ProfileVersion.md)
+ - [RefreshToken](doc//RefreshToken.md)
  - [SignInWithLoginInfo](doc//SignInWithLoginInfo.md)
  - [SlotId](doc//SlotId.md)
 

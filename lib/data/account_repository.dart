@@ -201,11 +201,11 @@ class AccountRepository {
   }
 
   Future<ApiKey?> login() async {
-    var key = await api.account.postLogin(await getAccountId());
-    if (key != null) {
-      await setApiKey(key);
+    final loginResult = await api.account.postLogin(await getAccountId());
+    if (loginResult != null) {
+      await setApiKey(loginResult.account.access);
     }
-    return key;
+    return loginResult?.account.access;
   }
 
   Future<String?> doInitialSetup(String email, String name, XFile securitySelfie, XFile profileImage) async {
