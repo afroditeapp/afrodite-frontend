@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
+import "package:pihka_frontend/main.dart";
 import "package:pihka_frontend/ui/login.dart";
 import 'package:pihka_frontend/ui/normal.dart';
 import "package:pihka_frontend/ui/utils/root_page.dart";
@@ -20,11 +21,12 @@ class SplashScreen extends RootPage {
               ),
               const Padding(padding: EdgeInsets.all(10)),
               const Text("Pihka"),
-              ElevatedButton(
-                child: const Text("Login"),
-                onPressed: () =>
-                  context.read<MainStateBloc>().add(ToLoginRequiredScreen())
-              )
+              FutureBuilder(
+                future: GlobalInitManager.getInstance().triggerGlobalInit(),
+                builder: (context, snapshot) {
+                  return const SizedBox.shrink();
+                },
+              ),
             ],
           ),
         ),

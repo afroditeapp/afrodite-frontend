@@ -5,6 +5,7 @@ import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
+import "package:pihka_frontend/utils.dart";
 import "package:rxdart/rxdart.dart";
 
 import 'package:openapi/manual_additions.dart';
@@ -79,21 +80,18 @@ class AddNewData extends ImageModerationEvent {
 class NoMoreDataAvailable extends ImageModerationEvent {}
 
 
-class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData> {
+class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData> with ActionRunner {
   final MediaRepository media;
-  bool requestOngoing = false;
 
   ImageModerationBloc(this.media) : super(ImageModerationData.defaultState()) {
     on<ResetImageModerationData>((_, emit) async {
         emit(ImageModerationData.defaultState());
     });
     on<GetMoreData>((_, emit) async {
-        if (!requestOngoing) {
-          requestOngoing = true;
+        await runOnce(() async {
           await getMoreModerationRequests();
           await Future<void>.delayed(Duration(seconds: 1));
-          requestOngoing = false;
-        }
+        });
     });
     on<AddNewData>((data, emit) async {
         final nextIndex = state.data.length;
@@ -132,12 +130,12 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
           final imageStatus1 = entry.$2.imageStatus1;
           final imageStatus2 = entry.$2.imageStatus2;
           if (imageStatus1 != null && imageStatus2 != null) {
-            await handleModerationRequest(entry.$2, imageStatus1 && imageStatus2);
+            await media.handleModerationRequest(entry.$2.m.requestCreatorId, imageStatus1 && imageStatus2);
           }
         } else {
           final imageStatus1 = entry.$2.imageStatus1;
           if (imageStatus1 != null) {
-            await handleModerationRequest(entry.$2, imageStatus1);
+            await media.handleModerationRequest(entry.$2.m.requestCreatorId, imageStatus1);
           }
         }
       }
@@ -145,7 +143,7 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
   }
 
   Future<void> getMoreModerationRequests() async {
-    ModerationList requests = await media.api.media.patchModerationRequestList() ?? ModerationList();
+    ModerationList requests = await media.nextModerationListFromServer();
 
     if (requests.list.isEmpty) {
       add(NoMoreDataAvailable());
@@ -169,13 +167,6 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
         add(AddNewData(e, requestEntry));
       }
     }
-  }
-
-  Future<void> handleModerationRequest(ModerationRequestEntry e, bool accept) async {
-    await media.api.media.postHandleModerationRequest(
-      e.m.requestCreatorId.accountId,
-      HandleModerationRequest(accept: accept),
-    );
   }
 
   Future<Uint8List?> getImage(AccountIdLight imageOwner, ContentId id) async {

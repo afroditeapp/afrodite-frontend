@@ -7,6 +7,7 @@ import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
 import "package:pihka_frontend/secrets.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
+import "package:pihka_frontend/utils.dart";
 import "package:rxdart/rxdart.dart";
 
 
@@ -15,7 +16,7 @@ import 'package:flutter/foundation.dart';
 import "package:sign_in_with_apple/sign_in_with_apple.dart";
 
 
-abstract class SignInWithEvent {}
+sealed class SignInWithEvent {}
 class SignInWithGoogle extends SignInWithEvent {
   SignInWithGoogle();
 }
@@ -30,70 +31,28 @@ class SignOutFromAppleEvent extends SignInWithEvent {
   SignOutFromAppleEvent();
 }
 
-class SignInWithBloc extends Bloc<SignInWithEvent, String> {
+class SignInWithBloc extends Bloc<SignInWithEvent, String> with ActionRunner {
   final AccountRepository account;
 
-  bool signInOngoing = false;
   GoogleSignIn google = createSignInWithGoogle();
 
   SignInWithBloc(this.account) : super("") {
 
     on<SignInWithGoogle>((data, emit) async {
-      if (!signInOngoing) {
-        signInOngoing = true;
-        final signedIn = await google.signIn();
-        if (signedIn != null) {
-          print(signedIn.toString());
-          print(signedIn.email.toString());
-
-          var token = await signedIn.authentication;
-          print(token.accessToken);
-          print(token.idToken);
-
-          await account.api.account.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken));
-        }
-        signInOngoing = false;
-      }
+      await runOnce(() async => await account.signInWithGoogle(google));
     });
     on<LogOutFromGoogle>((data, emit) async {
-      if (!signInOngoing) {
-        signInOngoing = true;
-        final signedIn = await google.disconnect();
-        print(signedIn);
-        if (signedIn != null) {
-          print(signedIn.toString());
-          print(signedIn.email.toString());
-        }
-        signInOngoing = false;
-      }
+      await runOnce(() async => await account.signOutFromGoogle(google));
     });
 
     // Sign in with Apple requires iOS 13.
     on<SignInWithAppleEvent>((data, emit) async {
-      if (!signInOngoing) {
-        signInOngoing = true;
-        AuthorizationCredentialAppleID signedIn;
-
-        try {
-          signedIn = await SignInWithApple.getAppleIDCredential(scopes: [
-            AppleIDAuthorizationScopes.email,
-          ]);
-          print(signedIn);
-          await account.api.account.postSignInWithLogin(SignInWithLoginInfo(appleToken: signedIn.identityToken));
-        } on SignInWithAppleException catch (e) {
-          print(e);
-        }
-        signInOngoing = false;
-      }
+      await runOnce(() async => await account.signInWithApple());
     });
 
     // TODO: or is not possible to support?
     on<SignOutFromAppleEvent>((data, emit) async {
-      if (!signInOngoing) {
-        signInOngoing = true;
-        // TODO
-        signInOngoing = false;
-      }
+      // TODO
     });
   }
 }

@@ -5,6 +5,7 @@ import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
+import "package:pihka_frontend/utils.dart";
 import "package:rxdart/rxdart.dart";
 
 
@@ -21,7 +22,7 @@ class ProfileData with _$ProfileData {
   }) = _ProfileData;
 }
 
-abstract class ProfileEvent {}
+sealed class ProfileEvent {}
 class SetProfile extends ProfileEvent {
   final Profile profile;
   SetProfile(this.profile);
@@ -31,29 +32,25 @@ class LoadProfile extends ProfileEvent {
 }
 
 /// Do register/login operations
-class ProfileBloc extends Bloc<ProfileEvent, ProfileData> {
+class ProfileBloc extends Bloc<ProfileEvent, ProfileData> with ActionRunner {
   final AccountRepository account;
   final ProfileRepository profile;
   final MediaRepository media;
-
-  var loadingProfile = false;
 
   ProfileBloc(this.account, this.profile, this.media) : super(ProfileData()) {
     on<SetProfile>((data, emit) async {
 
     });
     on<LoadProfile>((data, emit) async {
-      if (!loadingProfile) {
-        loadingProfile = true;
-        final currentAccountId = await account.currentAccountId().first;
+      await runOnce(() async {
+        final currentAccountId = await account.accountId.first;
         if (currentAccountId != null) {
-          final currentProfile = await profile.api.profile.getProfile(currentAccountId.accountId);
+          final currentProfile = await profile.requestProfile(currentAccountId);
           if (currentProfile != null) {
             emit(state.copyWith(profile: currentProfile));
           }
         }
-        loadingProfile = false;
-      }
+      });
     });
   }
 

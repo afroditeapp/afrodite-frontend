@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
-import 'package:pihka_frontend/data/api_provider.dart';
+import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
@@ -17,20 +19,18 @@ import 'package:pihka_frontend/ui/login.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/ui/splash_screen.dart';
 import 'package:pihka_frontend/ui/utils/camera_page.dart';
-
+import 'package:pihka_frontend/utils.dart';
+import 'package:rxdart/rxdart.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
   Bloc.observer = DebugObserver();
 
-  var api = ApiProvider();
-  var accountRepository = AccountRepository(api);
-  var mediaRepository = MediaRepository(api);
-  var profileRepository = ProfileRepository(api);
+  await GlobalInitManager.getInstance().init();
 
-
-  await initAvailableCameras();
+  var accountRepository = AccountRepository();
+  accountRepository.init();
+  var mediaRepository = MediaRepository();
+  var profileRepository = ProfileRepository();
 
   runApp(
     MultiBlocProvider(
@@ -76,5 +76,43 @@ class DebugObserver extends BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
     print("${bloc.runtimeType} $change");
+  }
+}
+
+
+class GlobalInitManager extends AppSingleton {
+  GlobalInitManager._private();
+  static final _instance = GlobalInitManager._private();
+  factory GlobalInitManager.getInstance() {
+    return _instance;
+  }
+
+  final PublishSubject<void> startInit = PublishSubject();
+  bool _globalInitDone = false;
+
+  /// Run this in app main function.
+  @override
+  Future<void> init() async {
+    startInit.stream
+      .asyncMap((event) async => await _runInit())
+      .listen((event) {});
+  }
+
+  Future<void> _runInit() async {
+    if (_globalInitDone) {
+      return;
+    }
+    _globalInitDone = true;
+
+    WidgetsFlutterBinding.ensureInitialized();
+    await initAvailableCameras();
+    await ErrorManager.getInstance().init();
+    await ApiManager.getInstance().init();
+  }
+
+  /// Global init should be triggerred after when splash screen
+  /// is visible.
+  Future<void> triggerGlobalInit() async {
+    startInit.add(null);
   }
 }

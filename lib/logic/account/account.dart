@@ -72,11 +72,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountData> {
     account.capabilities.listen((event) {
       add(NewCapabilitiesValue(event));
     });
-
-    // TODO: Does the following work?
-    account.currentAccountId().whereNotNull().listen((event) {
+    account.accountId.whereNotNull().listen((event) {
       add(NewAccountIdValue(event));
     });
-    account.currentApiKey().whereNotNull().listen((event) { add(NewApiKeyValue(event)); });
+    account.accountAccessToken.whereNotNull().listen((event) { add(NewApiKeyValue(event)); });
   }
 }

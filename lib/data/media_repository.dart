@@ -8,35 +8,36 @@ import 'package:camera/camera.dart';
 import 'package:http/http.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
-import 'package:pihka_frontend/data/api_provider.dart';
+import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MediaRepository {
-  final ApiProvider api;
+  final ApiManager api = ApiManager.getInstance();
 
-  MediaRepository(this.api);
+  MediaRepository();
 
-
-  ApiProvider getMediaApi() {
-    return api;
+  Future<Uint8List?> getImage(AccountIdLight imageOwner, ContentId id) async {
+    final api = ApiManager.getInstance();
+    final data = await api.media((api) => api.getImageFixed(
+      imageOwner.accountId,
+      id.contentId,
+    ));
+    if (data != null) {
+      return data;
+    } else {
+      print("Image loading error");
+      return null;
+    }
   }
 
+  Future<ModerationList> nextModerationListFromServer() async {
+    return await api.media((api) => api.patchModerationRequestList()) ?? ModerationList();
+  }
 
-   Future<Uint8List?> getImage(AccountIdLight imageOwner, ContentId id) async {
-    try {
-      final data = await api.media.getImageFixed(
-        imageOwner.accountId,
-        id.contentId,
-      );
-      if (data != null) {
-        return data;
-      }
-    } on ApiException catch (e) {
-      print("Image loading error ${e}");
-    }
-
-    return null;
+  Future<void> handleModerationRequest(AccountIdLight accountId, bool accept) async {
+    await api.media((api) => api.postHandleModerationRequest(accountId.accountId, HandleModerationRequest(accept: accept)));
   }
 }
