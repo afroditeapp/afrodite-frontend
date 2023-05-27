@@ -10,6 +10,7 @@ import 'package:pihka_frontend/api/server_connection.dart';
 import 'package:pihka_frontend/config.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/storage/kv.dart';
+import 'package:pihka_frontend/ui/utils.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
@@ -65,17 +66,17 @@ class ApiManager extends AppSingleton {
   ServerConnection accountConnection =
     ServerConnection(
       ServerSlot.account,
-      ConfigStringKey.accountServerAddress.defaultValue(),
+      "",
     );
   ServerConnection mediaConnection =
    ServerConnection(
       ServerSlot.media,
-      ConfigStringKey.mediaServerAddress.defaultValue(),
+      "",
     );
   ServerConnection profileConnection =
     ServerConnection(
       ServerSlot.profile,
-      ConfigStringKey.profileServerAddress.defaultValue(),
+      "",
     );
 
   Stream<ApiManagerState> get state => _state.distinct();
@@ -110,6 +111,33 @@ class ApiManager extends AppSingleton {
       mediaConnection.serverEvents.listen((event) {
         _serverEvents.add(event);
       });
+
+      accountConnection.state.listen((event) {
+        print(event);
+        switch (event) {
+          // No connection states.
+          case ReadyToConnect():
+            _state.add(ApiManagerState.connecting); // TODO: try again at some point
+          case Error e: {
+            switch (e.error) {
+              case ServerConnectionError.connectionFailure: {
+                showSnackBar("Connection error");
+              }
+              case ServerConnectionError.invalidToken: {
+                _state.add(ApiManagerState.waitingRefreshToken);
+              }
+            }
+          }
+          // Ongoing connection states
+          case Connecting():
+            _state.add(ApiManagerState.connecting);
+          case Ready(): {
+            setupTokens();
+            _state.add(ApiManagerState.connected);
+          }
+        }
+      });
+      // TODO: handle media and proifle
   }
 
   Future<void> loadAddressesFromConfig() async {
@@ -146,7 +174,7 @@ class ApiManager extends AppSingleton {
     }
 
     // TODO: start other connections if needed.
-    accountConnection.start();
+    await accountConnection.start();
   }
 
   Future<void> restart() async {
@@ -178,20 +206,14 @@ class ApiManager extends AppSingleton {
   // }
 
 
-  // Future<void> setupTokens() async {
-  //   final storage = KvStorageManager.getInstance();
+  Future<void> setupTokens() async {
+    final storage = KvStorageManager.getInstance();
 
-  //   if (storage.getString(KvString.ac))
-  //   _account.updateServerAddress(
-  //     await config.getString(ConfigStringKey.accountServerAddress)
-  //   );
-  //   _profile.updateServerAddress(
-  //     await config.getString(ConfigStringKey.profileServerAddress)
-  //   );
-  //   _media.updateServerAddress(
-  //     await config.getString(ConfigStringKey.mediaServerAddress)
-  //   );
-  // }
+    final accountToken = await storage.getString(KvString.accountAccessToken);
+    if (accountToken != null) {
+      _account.setKey(ApiKey(apiKey: accountToken));
+    }
+  }
 
   ApiWrapper<AccountApi> accountWrapper() {
     return ApiWrapper(_account.account);
@@ -229,19 +251,21 @@ class ApiManager extends AppSingleton {
 String toWebSocketUri(String baseUrl) {
   final base = Uri.parse(baseUrl);
 
-  final String newScheme;
-  switch (base.scheme) {
-    case "http": newScheme = "ws";
-    case "https": newScheme = "wss";
-    case _: throw Exception(); // TODO: better error handling
-  }
+  // final String newScheme;
+  // switch (base.scheme) {
+  //   case "http": newScheme = "ws";
+  //   case "https": newScheme = "wss";
+  //   case _: throw Exception(); // TODO: better error handling
+  // }
 
-  return Uri(
-    scheme: newScheme,
+  final newAddress = Uri(
+    scheme: base.scheme,
     host: base.host,
     port: base.port,
     path: "/common_api/connect",
   ).toString();
+
+  return newAddress;
 }
 
 

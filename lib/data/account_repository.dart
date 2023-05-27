@@ -13,16 +13,21 @@ import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/config.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/storage/kv.dart';
+import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 enum AccountRepositoryState {
   initRequired,
+  waitConnection,
+  watchConnection
 }
 
 class AccountRepository {
   final api = ApiManager.getInstance();
+
+  final connectionTaskStatus = TaskStatus();
 
   final BehaviorSubject<MainState> _mainState =
     BehaviorSubject.seeded(MainState.splashScreen);
@@ -41,7 +46,7 @@ class AccountRepository {
     .getUpdatesForWithConversionAndDefaultIfNull(
       KvString.accountCapabilities,
       (value) {
-         final map = jsonDecode(value);
+        final map = jsonDecode(value);
         if (map != null) {
           return Capabilities.fromJson(map) ?? Capabilities();
         } else {
@@ -57,7 +62,7 @@ class AccountRepository {
     );
   final _accountAccessToken = KvStorageManager.getInstance()
     .getUpdatesForWithConversion(
-      KvString.mediaAccessToken,
+      KvString.accountAccessToken,
       (value) => ApiKey(apiKey: value)
     );
 
@@ -74,13 +79,49 @@ class AccountRepository {
     if (_internalState.value != AccountRepositoryState.initRequired) {
       return;
     }
+    _internalState.add(AccountRepositoryState.waitConnection);
 
-    _accountStateUpdating().then((value) => null);
+    _internalState
+      .distinct()
+      .asyncMap((state) async => await _handleInternalState(state))
+      .listen((event) { });
+
+    api.state.listen((event) {
+      print(event);
+      switch (event) {
+        case ApiManagerState.initRequired: {}
+        case ApiManagerState.waitingRefreshToken: {
+          _mainState.add(MainState.loginRequired);
+          _internalState.add(AccountRepositoryState.waitConnection);
+        }
+        case ApiManagerState.connecting: {
+          _internalState.add(AccountRepositoryState.waitConnection);
+        }
+        case ApiManagerState.connected: {
+          _internalState.add(AccountRepositoryState.watchConnection);
+        }
+      }
+    });
+  }
+
+  Future<void> _handleInternalState(AccountRepositoryState state) async {
+    print(state);
+    switch (state) {
+      case AccountRepositoryState.initRequired: {}
+      case AccountRepositoryState.waitConnection: {
+        connectionTaskStatus.cancel();
+      }
+      case AccountRepositoryState.watchConnection: {
+        connectionTaskStatus.start();
+        unawaited(
+          Future.any([connectionTaskStatus.taskCancelled(), _accountStateUpdating()])
+            .then((value) => null)
+        );
+      }
+    }
   }
 
   Future<void> _accountStateUpdating() async {
-    _mainState.add(MainState.splashScreen);
-
     print("Waiting AccountId");
     await for (final value in accountId) {
       if (value == null) {
@@ -115,8 +156,8 @@ class AccountRepository {
         print(data.state);
         state = data.state;
 
-        if (_capablities.value != data.capablities) {
-          await KvStorageManager.getInstance().setString(KvString.accountCapabilities, data.capablities.toString());
+        if (await capabilities.first != data.capablities) {
+          await KvStorageManager.getInstance().setString(KvString.accountCapabilities, jsonEncode(data.capablities.toJson()));
         }
 
         if (previousState != state) {

@@ -1,5 +1,7 @@
 
 
+import 'package:pihka_frontend/main.dart';
+import 'package:pihka_frontend/ui/utils.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -24,6 +26,8 @@ class ErrorManager extends AppSingleton {
 
   void send(Error e) {
     _errors.add(e);
+    print(e);
+    showSnackBar("API error");
   }
 
   @override

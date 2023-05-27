@@ -23,6 +23,8 @@ import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   Bloc.observer = DebugObserver();
 
   await GlobalInitManager.getInstance().init();
@@ -52,6 +54,8 @@ Future<void> main() async {
   );
 }
 
+final globalScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -63,6 +67,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const SplashScreen(),
+      scaffoldMessengerKey: globalScaffoldMessengerKey,
       // routes: <String, WidgetBuilder> {
       //   "/login": (context) => const LoginPage(title: "Test")
       // },
@@ -104,7 +109,6 @@ class GlobalInitManager extends AppSingleton {
     }
     _globalInitDone = true;
 
-    WidgetsFlutterBinding.ensureInitialized();
     await initAvailableCameras();
     await ErrorManager.getInstance().init();
     await ApiManager.getInstance().init();

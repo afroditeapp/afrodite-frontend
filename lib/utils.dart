@@ -2,6 +2,8 @@
 
 import 'dart:async';
 
+import 'package:rxdart/rxdart.dart';
+
 abstract class AppSingleton {
    Future<void> init();
 }
@@ -14,5 +16,22 @@ mixin ActionRunner {
       await action();
       isRunning = false;
     }
+  }
+}
+
+
+class TaskStatus {
+  final BehaviorSubject<bool> taskRunning = BehaviorSubject.seeded(false);
+
+  void cancel() {
+    taskRunning.add(false);
+  }
+
+  void start() {
+    taskRunning.add(true);
+  }
+
+  Future<void> taskCancelled() {
+    return taskRunning.stream.where((event) => !event).first;
   }
 }

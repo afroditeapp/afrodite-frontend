@@ -47,7 +47,7 @@ class InitialSetupPage extends RootPage {
               print("pop");
               Navigator.pop(context);
               if (state.sendError != null) {
-                showSnackBar(context, state.sendError ?? "");
+                showSnackBar(state.sendError ?? "");
               }
             }
           },

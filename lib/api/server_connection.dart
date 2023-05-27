@@ -2,14 +2,21 @@
 
 
 
+import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
+import 'dart:io';
+import 'dart:math';
 
+import 'package:http/http.dart';
+import 'package:http/io_client.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 enum ServerSlot {
   account,
@@ -35,35 +42,23 @@ enum ServerSlot {
 
 enum ServerConnectionError {
   /// Invalid token, so new login required.
-  invalidTokenSent,
+  invalidToken,
   /// Server unreachable, server connection broke or protocol error.
   connectionFailure,
 }
 
 sealed class ServerConnectionState {}
-/// Initial state.
+/// No connection. Initial and after closing state.
 class ReadyToConnect implements ServerConnectionState {}
-/// Connecting to server or getting new tokens.
+/// Connection exists. Connecting to server or getting new tokens.
 class Connecting implements ServerConnectionState {}
-/// New tokens received and event listening started.
+/// Connection exists. New tokens received and event listening started.
 class Ready implements ServerConnectionState {}
+/// No connection. Connection ended in error.
 class Error implements ServerConnectionState {
   final ServerConnectionError error;
   Error(this.error);
 }
-class ManuallyClosed implements ServerConnectionState {}
-
-
-// sealed class ServerConnectionEvent {}
-// class NewRefreshToken implements ServerConnectionEvent {
-//   final String newRefreshToken;
-//   NewRefreshToken(this.newRefreshToken);
-// }
-// class NewAccessToken implements ServerConnectionEvent {
-//   final String newAccessToken;
-//   NewAccessToken(this.newAccessToken);
-// }
-// class EventFromServerTodo implements ServerConnectionEvent {}
 
 enum ConnectionProtocolState {
   receiveNewRefreshToken,
@@ -89,13 +84,11 @@ class ServerConnection {
   ServerConnection(this._server, this._address);
 
   /// Starts new connection if it does not already exists.
-  void start() {
-    if (_state.value is ReadyToConnect || _state.value is Error) {
-      return;
-    }
-    _protocolState = ConnectionProtocolState.receiveNewRefreshToken;
+  Future<void> start() async {
+    await close();
     _state.add(Connecting());
-    _connect().then((value) => {});
+    _protocolState = ConnectionProtocolState.receiveNewRefreshToken;
+    unawaited(_connect().then((value) => null)); // Connect in backgorund.
   }
 
   Future<void> _connect() async {
@@ -103,17 +96,49 @@ class ServerConnection {
 
     final accessToken = await storage.getString(_server.toAccessTokenKey());
     if (accessToken == null) {
+      _state.add(Error(ServerConnectionError.invalidToken));
       return;
     }
     final refreshToken = await storage.getString(_server.toRefreshTokenKey());
     if (refreshToken == null) {
+      _state.add(Error(ServerConnectionError.invalidToken));
       return;
     }
 
-    final ws = IOWebSocketChannel.connect(
-      _address,
-      headers: { accessTokenHeaderName: accessToken },
-    );
+    final r = Random.secure();
+    final bytes = List<int>.generate(16, (_) => r.nextInt(255));
+    final key = base64.encode(bytes);
+
+    final client = IOClient();
+    final headers = {
+      accessTokenHeaderName: accessToken,
+      HttpHeaders.connectionHeader: "upgrade",
+      HttpHeaders.upgradeHeader: "websocket",
+      "sec-websocket-version": "13",
+      "sec-websocket-key": key,
+    };
+    final request = Request("GET", Uri.parse(_address));
+    request.headers.addAll(headers);
+
+    final IOStreamedResponse response;
+    try {
+       response = await client.send(request);
+    } on ClientException catch (e) {
+      print(e);
+      _state.add(Error(ServerConnectionError.connectionFailure));
+      return;
+    }
+
+    if (response.statusCode == HttpStatus.unauthorized) {
+      _state.add(Error(ServerConnectionError.invalidToken));
+      return;
+    } else if (response.statusCode != HttpStatus.switchingProtocols) {
+      _state.add(Error(ServerConnectionError.connectionFailure));
+      return;
+    }
+
+    final webSocket = WebSocket.fromUpgradedSocket(await response.detachSocket(), serverSide: false);
+    final IOWebSocketChannel ws = IOWebSocketChannel(webSocket);
     _connection = ws;
 
     // Client starts the messaging
@@ -122,25 +147,6 @@ class ServerConnection {
 
     ws
       .stream
-      .doOnDone(() {
-        if (_connection == null) {
-          // Expected disconnect
-          return;
-        }
-
-        if (ws.closeCode != null &&
-          ws.closeCode == status.internalServerError) {
-          _state.add(Error(ServerConnectionError.invalidTokenSent));
-        } else {
-          _state.add(Error(ServerConnectionError.connectionFailure));
-        }
-        _connection = null;
-      })
-      .doOnError((errorException, _) {
-        print(errorException);
-        _state.add(Error(ServerConnectionError.connectionFailure));
-        _connection = null;
-      })
       .asyncMap((message) async {
         switch (_protocolState) {
           case ConnectionProtocolState.receiveNewRefreshToken: {
@@ -156,6 +162,7 @@ class ServerConnection {
             if (message is String) {
               await storage.setString(_server.toAccessTokenKey(), message);
               _protocolState = ConnectionProtocolState.receiveEvents;
+              _state.add(Ready());
             } else {
               await _endConnectionToGeneralError();
             }
@@ -169,23 +176,41 @@ class ServerConnection {
           }
         }
       })
-      .listen(null);
+      .listen(
+        null,
+        onError: (Object error) {
+          print(error);
+          _connection = null;
+          _state.add(Error(ServerConnectionError.connectionFailure));
+        },
+        onDone: () {
+          if (_connection == null) {
+            // Client closed the connection.
+            return;
+          }
+
+          if (ws.closeCode != null &&
+            ws.closeCode == status.internalServerError) {
+            _state.add(Error(ServerConnectionError.invalidToken));
+          } else {
+            _state.add(Error(ServerConnectionError.connectionFailure));
+          }
+          _connection = null;
+        },
+        cancelOnError: true,
+      );
   }
 
-  // void _sendEvent(Sink<ApiManagerEvent> events, ServerConnectionEvent event) {
-  //   events.add(EventFromConnection(server, event));
-  // }
-
   Future<void> _endConnectionToGeneralError() async {
-    _connection = null;
     await _connection?.sink.close(status.goingAway);
+    _connection = null;
     _state.add(Error(ServerConnectionError.connectionFailure));
   }
 
   Future<void> close() async {
-    _connection = null;
     await _connection?.sink.close(status.goingAway);
-    _state.add(ManuallyClosed());
+    _connection = null;
+    _state.add(ReadyToConnect());
   }
 
   void setAddress(String address) {
@@ -193,6 +218,6 @@ class ServerConnection {
   }
 
   bool inUse() {
-    return _state.value is! ReadyToConnect;
+    return !(_state.value is ReadyToConnect || _state.value is Error);
   }
 }

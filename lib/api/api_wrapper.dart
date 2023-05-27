@@ -9,22 +9,26 @@ class ApiWrapper<T> {
 
   ApiWrapper(this.api);
 
+  /// Handle ApiException.
   Future<R?> request<R extends Object>(Future<R?> Function(T) action) async {
     try {
       return await action(api);
     } on ApiException catch (e) {
       print(e);
+      print(e.message);
       ErrorManager.getInstance().send(Error.api);
     }
 
     return null;
   }
 
+  /// Rethrow ApiException.
   Future<R?> requestWithException<R extends Object>(Future<R?> Function(T) action) async {
     try {
       return await action(api);
     } on ApiException catch (e) {
       print(e);
+      print(e.message);
       ErrorManager.getInstance().send(Error.api);
       rethrow;
     }

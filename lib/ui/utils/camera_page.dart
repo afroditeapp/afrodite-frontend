@@ -150,7 +150,7 @@ class _CameraPageState extends State<CameraPage>
 
   Future<void> takePicture(CameraController currentCamera) async {
     if (currentCamera.value.isTakingPicture) {
-      showSnackBar(context, "Picture taking already in progress");
+      showSnackBar("Picture taking already in progress");
     } else {
       try {
         var file = await currentCamera.takePicture();
@@ -162,11 +162,11 @@ class _CameraPageState extends State<CameraPage>
         if (widget.imageType == ImageType.securitySelfie) {
           Navigator.pop(context, file);
         } else {
-          showSnackBar(context, "Unknown image type");
+          showSnackBar("Unknown image type");
         }
       } on CameraException catch (e) {
         print(e);
-        showSnackBar(context, "Taking picture failed");
+        showSnackBar("Taking picture failed");
       }
     }
 
