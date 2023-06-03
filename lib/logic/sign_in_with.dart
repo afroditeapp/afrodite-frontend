@@ -61,11 +61,15 @@ class SignInWithBloc extends Bloc<SignInWithEvent, String> with ActionRunner {
 
 GoogleSignIn createSignInWithGoogle() {
   if (Platform.isAndroid) {
-    return GoogleSignIn(serverClientId: signInWithGoogleBackendClientId());
+    return GoogleSignIn(
+      serverClientId: signInWithGoogleBackendClientId(),
+      scopes: ["email"],
+    );
   } else if (Platform.isIOS) {
     return GoogleSignIn(
       clientId: signInWithGoogleIosClientId(),
-      serverClientId: signInWithGoogleBackendClientId()
+      serverClientId: signInWithGoogleBackendClientId(),
+      scopes: ["email"],
     );
   } else {
     throw UnsupportedError("Unsupported platform");

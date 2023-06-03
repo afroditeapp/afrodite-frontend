@@ -362,7 +362,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **postSignInWithLogin**
-> ApiKey postSignInWithLogin(signInWithLoginInfo)
+> LoginResult postSignInWithLogin(signInWithLoginInfo)
 
 Start new session with sign in with Apple or Google. Creates new account if
 
@@ -391,7 +391,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ApiKey**](ApiKey.md)
+[**LoginResult**](LoginResult.md)
 
 ### Authorization
 

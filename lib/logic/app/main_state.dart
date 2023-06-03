@@ -28,7 +28,7 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
     on<ToAccountBannedScreen>((_, emit) => emit(MainState.accountBanned));
     on<ToPendingRemovalScreen>((_, emit) => emit(MainState.pendingRemoval));
 
-    account.mainState.distinct().listen((event) {
+    account.mainState.listen((event) {
       if (event == MainState.loginRequired) {
           add(ToLoginRequiredScreen());
         } else if (event == MainState.initialSetup) {

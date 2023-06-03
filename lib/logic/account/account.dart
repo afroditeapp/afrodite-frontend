@@ -25,6 +25,7 @@ class DoRegister extends AccountEvent {
   DoRegister(this.serverAddress);
 }
 class DoLogin extends AccountEvent {}
+class DoLogout extends AccountEvent {}
 class NewAccountIdValue extends AccountEvent {
   final AccountIdLight value;
   NewAccountIdValue(this.value);
@@ -58,6 +59,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountData> {
       emit(state.copyWith(
         apiKey: await account.login(),
       ));
+    });
+    on<DoLogout>((_, emit) async {
+      account.logout();
     });
     on<NewAccountIdValue>((id, emit) {
       emit(state.copyWith(accountId: id.value));

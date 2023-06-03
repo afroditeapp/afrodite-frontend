@@ -37,10 +37,10 @@ class KvStorageManager {
     return _instance;
   }
 
-  final PublishSubject<(KvString, String)> _updates =
+  final PublishSubject<(KvString, String?)> _updates =
     PublishSubject();
 
-  Stream<(KvString, String)> get updates => _updates;
+  Stream<(KvString, String?)> get updates => _updates;
 
   Future<String?> getString(KvString key) async {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -48,13 +48,18 @@ class KvStorageManager {
   }
 
   /// Set new string. If it is same than the previous, then nothing is done.
-  Future<void> setString(KvString key, String value) async {
+  Future<void> setString(KvString key, String? value) async {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
     final current = await preferences.getString(key.key());
     if (current == value) {
       return;
     }
-    await preferences.setString(key.key(), value);
+    if (value == null) {
+      await preferences.remove(key.key());
+    } else {
+      await preferences.setString(key.key(), value);
+    }
+
     _updates.add((key, value));
   }
 
@@ -67,7 +72,7 @@ class KvStorageManager {
     }
   }
 
-  Stream<String> _getUpdatesForRaw(KvString key) {
+  Stream<String?> _getUpdatesForRaw(KvString key) {
     return updates.where((event) => event.$1 == key).map((event) => event.$2);
   }
 

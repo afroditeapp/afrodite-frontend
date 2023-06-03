@@ -87,8 +87,3 @@ lib/model/refresh_token.dart
 lib/model/sign_in_with_login_info.dart
 lib/model/slot_id.dart
 pubspec.yaml
-test/auth_pair_test.dart
-test/common_api_test.dart
-test/event_to_client_test.dart
-test/login_result_test.dart
-test/refresh_token_test.dart

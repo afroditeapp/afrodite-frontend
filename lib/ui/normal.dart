@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:pihka_frontend/logic/account/account.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui/login.dart";
 import 'package:pihka_frontend/ui/normal.dart';
@@ -67,7 +68,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.read<MainStateBloc>().add(ToLoginRequiredScreen()),
+        onPressed: () => context.read<AccountBloc>().add(DoLogout()),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),

@@ -32,6 +32,7 @@ class TaskStatus {
   }
 
   Future<void> taskCancelled() {
-    return taskRunning.stream.where((event) => !event).first;
+    final value = taskRunning.stream.where((event) => !event).first;
+    return value;
   }
 }

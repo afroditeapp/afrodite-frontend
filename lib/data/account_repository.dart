@@ -4,6 +4,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:async/async.dart';
 import 'package:camera/camera.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
@@ -26,8 +27,6 @@ enum AccountRepositoryState {
 
 class AccountRepository {
   final api = ApiManager.getInstance();
-
-  final connectionTaskStatus = TaskStatus();
 
   final BehaviorSubject<MainState> _mainState =
     BehaviorSubject.seeded(MainState.splashScreen);
@@ -73,6 +72,8 @@ class AccountRepository {
   Stream<AccountIdLight?> get accountId => _accountId.distinct();
   Stream<ApiKey?> get accountAccessToken => _accountAccessToken.distinct();
 
+  Future<void>? connectionWathcerTask;
+
   AccountRepository();
 
   void init() {
@@ -109,14 +110,15 @@ class AccountRepository {
     switch (state) {
       case AccountRepositoryState.initRequired: {}
       case AccountRepositoryState.waitConnection: {
-        connectionTaskStatus.cancel();
+        if (connectionWathcerTask != null) {
+          await connectionWathcerTask;
+        }
       }
       case AccountRepositoryState.watchConnection: {
-        connectionTaskStatus.start();
-        unawaited(
-          Future.any([connectionTaskStatus.taskCancelled(), _accountStateUpdating()])
-            .then((value) => null)
-        );
+        if (connectionWathcerTask != null) {
+          await connectionWathcerTask;
+        }
+        connectionWathcerTask = _accountStateUpdating().then((value) => {});
       }
     }
   }
@@ -147,7 +149,7 @@ class AccountRepository {
 
     emitStateUpdates(state);
 
-    while (true) {
+    while (_internalState.value == AccountRepositoryState.watchConnection) {
       Account? data = await api.account((api) => api.getAccountState());
 
       if (data == null) {
@@ -162,8 +164,8 @@ class AccountRepository {
 
         if (previousState != state) {
           await KvStorageManager.getInstance().setString(KvString.accountState, state.toString());
-          emitStateUpdates(state);
         }
+        emitStateUpdates(state);
       }
 
       await Future.any([
@@ -200,11 +202,24 @@ class AccountRepository {
     }
     final loginResult = await api.account((api) => api.postLogin(accountIdValue));
     if (loginResult != null) {
-      await KvStorageManager.getInstance().setString(KvString.accountRefreshToken, loginResult.account.refresh.token);
-      await KvStorageManager.getInstance().setString(KvString.accountAccessToken, loginResult.account.access.apiKey);
+      await handleLoginResult(loginResult);
     }
     await api.restart();
     return loginResult?.account.access;
+  }
+
+  Future<void> handleLoginResult(LoginResult loginResult) async {
+    await KvStorageManager.getInstance().setString(KvString.accountRefreshToken, loginResult.account.refresh.token);
+    await KvStorageManager.getInstance().setString(KvString.accountAccessToken, loginResult.account.access.apiKey);
+    // TODO: microservice support
+  }
+
+  Future<void> logout() async {
+    await KvStorageManager.getInstance().setString(KvString.accountRefreshToken, null);
+    await KvStorageManager.getInstance().setString(KvString.accountAccessToken, null);
+    // TODO: microservice support
+
+    await api.close();
   }
 
   /// Return null on success. Return String if error.
@@ -258,7 +273,11 @@ class AccountRepository {
         print(token.accessToken);
         print(token.idToken);
 
-        await api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken)));
+        final login = await api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken)));
+        if (login != null) {
+          await handleLoginResult(login);
+        }
+        await api.restart();
       }
   }
 
