@@ -21,8 +21,7 @@ class AccountData with _$AccountData {
 
 abstract class AccountEvent {}
 class DoRegister extends AccountEvent {
-  final String? serverAddress;
-  DoRegister(this.serverAddress);
+  DoRegister();
 }
 class DoLogin extends AccountEvent {}
 class DoLogout extends AccountEvent {}
@@ -46,10 +45,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountData> {
   AccountBloc(this.account) : super(AccountData(capabilities: Capabilities())) {
     // TODO: It is possible to start register and login multiple times?
     on<DoRegister>((data, emit) async {
-      final address = data.serverAddress;
-      if (address != null) {
-        await account.setCurrentServerAddress(address);
-      }
       emit(state.copyWith(
         accountId: await account.register(),
         apiKey: null,
@@ -61,7 +56,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountData> {
       ));
     });
     on<DoLogout>((_, emit) async {
-      account.logout();
+      await account.logout();
     });
     on<NewAccountIdValue>((id, emit) {
       emit(state.copyWith(accountId: id.value));

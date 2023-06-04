@@ -17,6 +17,7 @@ class ServerAddressBloc extends Bloc<ServerAddressEvent, String> {
 
   ServerAddressBloc(this.account) : super(ConfigStringKey.accountServerAddress.defaultValue()) {
     on<ChangeCachedServerAddress>((data, emit) async {
+      await account.setCurrentServerAddress(data.value);
       emit(data.value);
     });
 

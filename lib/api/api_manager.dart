@@ -87,6 +87,10 @@ class ApiManager extends AppSingleton {
     if (_state.value != ApiManagerState.initRequired) {
       return;
     }
+    await _account.init();
+    await _profile.init();
+    await _media.init();
+
     _connectEvents();
     await loadAddressesFromConfig();
     await _connect();

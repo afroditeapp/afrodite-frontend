@@ -18,7 +18,6 @@ class LoginPage extends RootPage {
 
   final _serverAddressFormKey = GlobalKey<FormState>();
 
-
   @override
   Widget buildRootWidget(BuildContext context) {
     final serverAddressForm = Form(
@@ -36,7 +35,7 @@ class LoginPage extends RootPage {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Is empty";
-              } else if (value != null && !(value.contains("192.168.0") || value.contains("10.0.2.2") || value.contains("127.0.0.1") || value.contains("/localhost:") )) {
+              } else if (!(value.contains("***REMOVED***") || value.contains("192.168.0") || value.contains("10.0.2.2") || value.contains("127.0.0.1") || value.contains("/localhost:") )) {
                 return "Public IP addresses are not supported";
               } else {
                 return null;
@@ -46,7 +45,6 @@ class LoginPage extends RootPage {
               if (newValue != null) {
                 context.read<ServerAddressBloc>().add(ChangeCachedServerAddress(newValue));
               }
-              context.read<AccountBloc>().add(DoRegister(newValue));
             },
           ),
         ),
@@ -72,13 +70,21 @@ class LoginPage extends RootPage {
               serverAddressForm,
               ElevatedButton(
                 child: const Text(
-                    "Register"
+                    "Update address"
                 ),
                 onPressed: () {
                   final valid = _serverAddressFormKey.currentState?.validate();
                   if (valid != null && valid) {
                     _serverAddressFormKey.currentState?.save();
                   }
+                },
+              ),
+              ElevatedButton(
+                child: const Text(
+                    "Register"
+                ),
+                onPressed: () {
+                  context.read<AccountBloc>().add(DoRegister());
                 },
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
@@ -111,7 +117,9 @@ class LoginPage extends RootPage {
                 child: const Text(
                     "Sign in with Google"
                 ),
-                onPressed: () => context.read<SignInWithBloc>().add(SignInWithGoogle()),
+                onPressed: () {
+                  context.read<SignInWithBloc>().add(SignInWithGoogle());
+                },
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
               ElevatedButton(
@@ -122,7 +130,9 @@ class LoginPage extends RootPage {
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
               SignInWithAppleButton(
-                onPressed: () => context.read<SignInWithBloc>().add(SignInWithAppleEvent()),
+                onPressed: () {
+                  context.read<SignInWithBloc>().add(SignInWithAppleEvent());
+                },
               ),
             ],
           ),

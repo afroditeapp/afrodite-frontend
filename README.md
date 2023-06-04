@@ -16,3 +16,30 @@ Dating app frontend
 ```
 dart run build_runner build
 ```
+
+
+## Android MacOS local DNS server for correct certificate handling
+
+### DNS server
+```
+brew install dnsmasq
+```
+
+/opt/homebrew/etc/dnsmasq.conf
+```
+listen-address=::1,127.0.0.1
+address=/DOMAIN/10.0.2.2
+port=5353
+```
+
+And start DNS
+
+```
+/opt/homebrew/opt/dnsmasq/sbin/dnsmasq -d -q --keep-in-foreground -C /opt/homebrew/etc/dnsmasq.conf
+```
+
+### Redirect
+
+./Library/Android/sdk/platform-tools/adb devices
+
+telnet 127.0.0.1 5554

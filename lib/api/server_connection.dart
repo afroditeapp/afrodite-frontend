@@ -12,6 +12,7 @@ import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
+import 'package:pihka_frontend/assets.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:web_socket_channel/io.dart';
@@ -109,7 +110,7 @@ class ServerConnection {
     final bytes = List<int>.generate(16, (_) => r.nextInt(255));
     final key = base64.encode(bytes);
 
-    final client = IOClient();
+    final client = IOClient(HttpClient(context: await createSecurityContextForBackendConnection()));
     final headers = {
       accessTokenHeaderName: accessToken,
       HttpHeaders.connectionHeader: "upgrade",

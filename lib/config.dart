@@ -4,8 +4,8 @@ import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-const String _defaultAccountServerAddressAndroid = "http://10.0.2.2:3000";
-const String _defaultAccountServerAddressIos = "http://192.168.0.1:3000";
+const String _defaultAccountServerAddressAndroid = "https://localdev.***REMOVED***:3000"; // Should point to 10.0.2.2 (Android emulator host)
+const String _defaultAccountServerAddressIos = "https://192.168.0.1:3000";
 
 String defaultAccountServerAddress() {
   if (Platform.isAndroid) {
@@ -17,8 +17,8 @@ String defaultAccountServerAddress() {
   }
 }
 
-const String _defaultMediaServerAddress = "http://10.0.2.2:3000";
-const String _defaultProfileServerAddress = "http://10.0.2.2:3000";
+const String _defaultMediaServerAddress = "https://10.0.2.2:3000";
+const String _defaultProfileServerAddress = "https://10.0.2.2:3000";
 
 String defaultMediaServerAddress() {
   return _defaultMediaServerAddress;
