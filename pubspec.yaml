@@ -60,6 +60,9 @@ dependencies:
 
   web_socket_channel: ^2.4.0
   async: ^2.11.0
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
 
 
@@ -120,3 +123,6 @@ flutter:
 
   assets:
     - assets_not_in_git/server_root.crt
+
+  # For intl translations
+  generate: true

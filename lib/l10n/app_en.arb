@@ -1,0 +1,12 @@
+{
+  "@_LOGIN_PAGE": {},
+  "loginButton": "Login",
+  "@loginButton": {
+    "description": "Login button text"
+  },
+  "registerButton": "Register",
+  "@registerButton": {
+    "description": "Register button text"
+  },
+  "@_END_OF_FILE": {}
+}

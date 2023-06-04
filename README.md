@@ -43,3 +43,8 @@ And start DNS
 ./Library/Android/sdk/platform-tools/adb devices
 
 telnet 127.0.0.1 5554
+
+
+# Update localizations
+
+flutter gen-l10n

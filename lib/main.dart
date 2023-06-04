@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +24,11 @@ import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/ui/splash_screen.dart';
 import 'package:pihka_frontend/ui/utils/camera_page.dart';
 import 'package:pihka_frontend/utils.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:rxdart/rxdart.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,7 +70,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Pihka frontend',
+      title: 'Pihka',
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
