@@ -1,4 +1,4 @@
-# openapi.model.Profile
+# openapi.model.NormalImages
 
 ## Load the model package
 ```dart
@@ -8,9 +8,7 @@ import 'package:openapi/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | **String** |  | 
-**profileText** | **String** |  | 
-**version** | [**ProfileVersion**](ProfileVersion.md) |  | 
+**data** | [**List<ContentId>**](ContentId.md) |  | [default to const []]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

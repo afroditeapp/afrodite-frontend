@@ -205,10 +205,8 @@ class ApiClient {
           return EventToClientTypeTransformer().decode(value);
         case 'HandleModerationRequest':
           return HandleModerationRequest.fromJson(value);
-        case 'ImageFile':
-          return ImageFile.fromJson(value);
-        case 'ImageFileName':
-          return ImageFileName.fromJson(value);
+        case 'ImageAccessCheck':
+          return ImageAccessCheck.fromJson(value);
         case 'Location':
           return Location.fromJson(value);
         case 'LoginResult':
@@ -225,6 +223,10 @@ class ApiClient {
           return ModerationRequestId.fromJson(value);
         case 'ModerationRequestState':
           return ModerationRequestStateTypeTransformer().decode(value);
+        case 'NormalImages':
+          return NormalImages.fromJson(value);
+        case 'PrimaryImage':
+          return PrimaryImage.fromJson(value);
         case 'Profile':
           return Profile.fromJson(value);
         case 'ProfileLink':
@@ -237,6 +239,8 @@ class ApiClient {
           return ProfileVersion.fromJson(value);
         case 'RefreshToken':
           return RefreshToken.fromJson(value);
+        case 'SecurityImage':
+          return SecurityImage.fromJson(value);
         case 'SignInWithLoginInfo':
           return SignInWithLoginInfo.fromJson(value);
         case 'SlotId':

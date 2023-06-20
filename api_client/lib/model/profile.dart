@@ -13,19 +13,10 @@ part of openapi.api;
 class Profile {
   /// Returns a new [Profile] instance.
   Profile({
-    this.image1,
-    this.image2,
-    this.image3,
     required this.name,
     required this.profileText,
     required this.version,
   });
-
-  ContentId? image1;
-
-  ContentId? image2;
-
-  ContentId? image3;
 
   String name;
 
@@ -35,9 +26,6 @@ class Profile {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Profile &&
-     other.image1 == image1 &&
-     other.image2 == image2 &&
-     other.image3 == image3 &&
      other.name == name &&
      other.profileText == profileText &&
      other.version == version;
@@ -45,33 +33,15 @@ class Profile {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (image1 == null ? 0 : image1!.hashCode) +
-    (image2 == null ? 0 : image2!.hashCode) +
-    (image3 == null ? 0 : image3!.hashCode) +
     (name.hashCode) +
     (profileText.hashCode) +
     (version.hashCode);
 
   @override
-  String toString() => 'Profile[image1=$image1, image2=$image2, image3=$image3, name=$name, profileText=$profileText, version=$version]';
+  String toString() => 'Profile[name=$name, profileText=$profileText, version=$version]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.image1 != null) {
-      json[r'image1'] = this.image1;
-    } else {
-      json[r'image1'] = null;
-    }
-    if (this.image2 != null) {
-      json[r'image2'] = this.image2;
-    } else {
-      json[r'image2'] = null;
-    }
-    if (this.image3 != null) {
-      json[r'image3'] = this.image3;
-    } else {
-      json[r'image3'] = null;
-    }
       json[r'name'] = this.name;
       json[r'profile_text'] = this.profileText;
       json[r'version'] = this.version;
@@ -97,9 +67,6 @@ class Profile {
       }());
 
       return Profile(
-        image1: ContentId.fromJson(json[r'image1']),
-        image2: ContentId.fromJson(json[r'image2']),
-        image3: ContentId.fromJson(json[r'image3']),
         name: mapValueOfType<String>(json, r'name')!,
         profileText: mapValueOfType<String>(json, r'profile_text')!,
         version: ProfileVersion.fromJson(json[r'version'])!,

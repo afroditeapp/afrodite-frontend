@@ -73,12 +73,16 @@ Class | Method | HTTP request | Description
 *AccountinternalApi* | [**checkApiKey**](doc//AccountinternalApi.md#checkapikey) | **GET** /internal/check_api_key | 
 *AccountinternalApi* | [**internalGetAccountState**](doc//AccountinternalApi.md#internalgetaccountstate) | **GET** /internal/get_account_state/{account_id} | 
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens.
+*MediaApi* | [**getAllNormalImages**](doc//MediaApi.md#getallnormalimages) | **GET** /media_api/all_normal_images/{account_id} | Get list of all normal images on the server for one account.
 *MediaApi* | [**getImage**](doc//MediaApi.md#getimage) | **GET** /media_api/image/{account_id}/{content_id} | Get profile image
 *MediaApi* | [**getModerationRequest**](doc//MediaApi.md#getmoderationrequest) | **GET** /media_api/moderation/request | Get current moderation request.
+*MediaApi* | [**getPrimaryImageInfo**](doc//MediaApi.md#getprimaryimageinfo) | **GET** /media_api/primary_image_info/{account_id} | Get current public image for selected profile
+*MediaApi* | [**getSecurityImageInfo**](doc//MediaApi.md#getsecurityimageinfo) | **GET** /media_api/security_image_info/{account_id} | Get current security image for selected profile. Only for admins.
 *MediaApi* | [**patchModerationRequestList**](doc//MediaApi.md#patchmoderationrequestlist) | **PATCH** /media_api/admin/moderation/page/next | Get current list of moderation requests in my moderation queue.
 *MediaApi* | [**postHandleModerationRequest**](doc//MediaApi.md#posthandlemoderationrequest) | **POST** /media_api/admin/moderation/handle_request/{account_id} | Handle moderation request of some account.
 *MediaApi* | [**putImageToModerationSlot**](doc//MediaApi.md#putimagetomoderationslot) | **PUT** /media_api/moderation/request/slot/{slot_id} | Set image to moderation request slot.
 *MediaApi* | [**putModerationRequest**](doc//MediaApi.md#putmoderationrequest) | **PUT** /media_api/moderation/request | Create new or override old moderation request.
+*MediaApi* | [**putPrimaryImage**](doc//MediaApi.md#putprimaryimage) | **PUT** /media_api/primary_image/{account_id} | Set primary image for account. Image content ID can not be empty.
 *MediainternalApi* | [**internalGetCheckModerationRequestForAccount**](doc//MediainternalApi.md#internalgetcheckmoderationrequestforaccount) | **GET** /internal/media_api/moderation/request/{account_id} | Check that current moderation request for account exists. Requires also
 *MediainternalApi* | [**internalPostUpdateProfileImageVisibility**](doc//MediainternalApi.md#internalpostupdateprofileimagevisibility) | **POST** /internal/media_api/visiblity/{account_id}/{value} | 
 *ProfileApi* | [**getProfile**](doc//ProfileApi.md#getprofile) | **GET** /profile_api/profile/{account_id} | Get account's current profile.
@@ -103,8 +107,7 @@ Class | Method | HTTP request | Description
  - [DeleteStatus](doc//DeleteStatus.md)
  - [EventToClient](doc//EventToClient.md)
  - [HandleModerationRequest](doc//HandleModerationRequest.md)
- - [ImageFile](doc//ImageFile.md)
- - [ImageFileName](doc//ImageFileName.md)
+ - [ImageAccessCheck](doc//ImageAccessCheck.md)
  - [Location](doc//Location.md)
  - [LoginResult](doc//LoginResult.md)
  - [Moderation](doc//Moderation.md)
@@ -113,12 +116,15 @@ Class | Method | HTTP request | Description
  - [ModerationRequestContent](doc//ModerationRequestContent.md)
  - [ModerationRequestId](doc//ModerationRequestId.md)
  - [ModerationRequestState](doc//ModerationRequestState.md)
+ - [NormalImages](doc//NormalImages.md)
+ - [PrimaryImage](doc//PrimaryImage.md)
  - [Profile](doc//Profile.md)
  - [ProfileLink](doc//ProfileLink.md)
  - [ProfilePage](doc//ProfilePage.md)
  - [ProfileUpdate](doc//ProfileUpdate.md)
  - [ProfileVersion](doc//ProfileVersion.md)
  - [RefreshToken](doc//RefreshToken.md)
+ - [SecurityImage](doc//SecurityImage.md)
  - [SignInWithLoginInfo](doc//SignInWithLoginInfo.md)
  - [SlotId](doc//SlotId.md)
 

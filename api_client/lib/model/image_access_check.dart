@@ -10,36 +10,37 @@
 
 part of openapi.api;
 
-class ProfileUpdate {
-  /// Returns a new [ProfileUpdate] instance.
-  ProfileUpdate({
-    required this.profileText,
+class ImageAccessCheck {
+  /// Returns a new [ImageAccessCheck] instance.
+  ImageAccessCheck({
+    required this.isMatch,
   });
 
-  String profileText;
+  /// If false image access is allowed when profile is set as public. If true image access is allowed when users are a match.
+  bool isMatch;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileUpdate &&
-     other.profileText == profileText;
+  bool operator ==(Object other) => identical(this, other) || other is ImageAccessCheck &&
+     other.isMatch == isMatch;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (profileText.hashCode);
+    (isMatch.hashCode);
 
   @override
-  String toString() => 'ProfileUpdate[profileText=$profileText]';
+  String toString() => 'ImageAccessCheck[isMatch=$isMatch]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'profile_text'] = this.profileText;
+      json[r'is_match'] = this.isMatch;
     return json;
   }
 
-  /// Returns a new [ProfileUpdate] instance and imports its values from
+  /// Returns a new [ImageAccessCheck] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileUpdate? fromJson(dynamic value) {
+  static ImageAccessCheck? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +49,24 @@ class ProfileUpdate {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileUpdate[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileUpdate[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ImageAccessCheck[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ImageAccessCheck[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileUpdate(
-        profileText: mapValueOfType<String>(json, r'profile_text')!,
+      return ImageAccessCheck(
+        isMatch: mapValueOfType<bool>(json, r'is_match')!,
       );
     }
     return null;
   }
 
-  static List<ProfileUpdate>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileUpdate>[];
+  static List<ImageAccessCheck>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ImageAccessCheck>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileUpdate.fromJson(row);
+        final value = ImageAccessCheck.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +75,12 @@ class ProfileUpdate {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileUpdate> mapFromJson(dynamic json) {
-    final map = <String, ProfileUpdate>{};
+  static Map<String, ImageAccessCheck> mapFromJson(dynamic json) {
+    final map = <String, ImageAccessCheck>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileUpdate.fromJson(entry.value);
+        final value = ImageAccessCheck.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,13 +89,13 @@ class ProfileUpdate {
     return map;
   }
 
-  // maps a json object with a list of ProfileUpdate-objects as value to a dart map
-  static Map<String, List<ProfileUpdate>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileUpdate>>{};
+  // maps a json object with a list of ImageAccessCheck-objects as value to a dart map
+  static Map<String, List<ImageAccessCheck>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ImageAccessCheck>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileUpdate.listFromJson(entry.value, growable: growable,);
+        final value = ImageAccessCheck.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -105,7 +106,7 @@ class ProfileUpdate {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'profile_text',
+    'is_match',
   };
 }
 

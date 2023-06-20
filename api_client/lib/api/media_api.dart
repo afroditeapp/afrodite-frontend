@@ -16,6 +16,63 @@ class MediaApi {
 
   final ApiClient apiClient;
 
+  /// Get list of all normal images on the server for one account.
+  ///
+  /// Get list of all normal images on the server for one account.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<Response> getAllNormalImagesWithHttpInfo(String accountId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/all_normal_images/{account_id}'
+      .replaceAll('{account_id}', accountId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get list of all normal images on the server for one account.
+  ///
+  /// Get list of all normal images on the server for one account.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<NormalImages?> getAllNormalImages(String accountId,) async {
+    final response = await getAllNormalImagesWithHttpInfo(accountId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'NormalImages',) as NormalImages;
+    
+    }
+    return null;
+  }
+
   /// Get profile image
   ///
   /// Get profile image
@@ -27,7 +84,10 @@ class MediaApi {
   /// * [String] accountId (required):
   ///
   /// * [String] contentId (required):
-  Future<Response> getImageWithHttpInfo(String accountId, String contentId,) async {
+  ///
+  /// * [bool] isMatch (required):
+  ///   If false image access is allowed when profile is set as public. If true image access is allowed when users are a match.
+  Future<Response> getImageWithHttpInfo(String accountId, String contentId, bool isMatch,) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/image/{account_id}/{content_id}'
       .replaceAll('{account_id}', accountId)
@@ -39,6 +99,8 @@ class MediaApi {
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'is_match', isMatch));
 
     const contentTypes = <String>[];
 
@@ -63,8 +125,11 @@ class MediaApi {
   /// * [String] accountId (required):
   ///
   /// * [String] contentId (required):
-  Future<MultipartFile?> getImage(String accountId, String contentId,) async {
-    final response = await getImageWithHttpInfo(accountId, contentId,);
+  ///
+  /// * [bool] isMatch (required):
+  ///   If false image access is allowed when profile is set as public. If true image access is allowed when users are a match.
+  Future<MultipartFile?> getImage(String accountId, String contentId, bool isMatch,) async {
+    final response = await getImageWithHttpInfo(accountId, contentId, isMatch,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -121,6 +186,128 @@ class MediaApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ModerationRequest',) as ModerationRequest;
+    
+    }
+    return null;
+  }
+
+  /// Get current public image for selected profile
+  ///
+  /// Get current public image for selected profile
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  ///
+  /// * [bool] isMatch (required):
+  ///   If false image access is allowed when profile is set as public. If true image access is allowed when users are a match.
+  Future<Response> getPrimaryImageInfoWithHttpInfo(String accountId, bool isMatch,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/primary_image_info/{account_id}'
+      .replaceAll('{account_id}', accountId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'is_match', isMatch));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get current public image for selected profile
+  ///
+  /// Get current public image for selected profile
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  ///
+  /// * [bool] isMatch (required):
+  ///   If false image access is allowed when profile is set as public. If true image access is allowed when users are a match.
+  Future<PrimaryImage?> getPrimaryImageInfo(String accountId, bool isMatch,) async {
+    final response = await getPrimaryImageInfoWithHttpInfo(accountId, isMatch,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PrimaryImage',) as PrimaryImage;
+    
+    }
+    return null;
+  }
+
+  /// Get current security image for selected profile. Only for admins.
+  ///
+  /// Get current security image for selected profile. Only for admins.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<Response> getSecurityImageInfoWithHttpInfo(String accountId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/security_image_info/{account_id}'
+      .replaceAll('{account_id}', accountId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get current security image for selected profile. Only for admins.
+  ///
+  /// Get current security image for selected profile. Only for admins.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<SecurityImage?> getSecurityImageInfo(String accountId,) async {
+    final response = await getSecurityImageInfoWithHttpInfo(accountId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SecurityImage',) as SecurityImage;
     
     }
     return null;
@@ -331,6 +518,59 @@ class MediaApi {
   /// * [ModerationRequestContent] moderationRequestContent (required):
   Future<void> putModerationRequest(ModerationRequestContent moderationRequestContent,) async {
     final response = await putModerationRequestWithHttpInfo(moderationRequestContent,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Set primary image for account. Image content ID can not be empty.
+  ///
+  /// Set primary image for account. Image content ID can not be empty.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  ///
+  /// * [PrimaryImage] primaryImage (required):
+  Future<Response> putPrimaryImageWithHttpInfo(String accountId, PrimaryImage primaryImage,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/primary_image/{account_id}'
+      .replaceAll('{account_id}', accountId);
+
+    // ignore: prefer_final_locals
+    Object? postBody = primaryImage;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'PUT',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Set primary image for account. Image content ID can not be empty.
+  ///
+  /// Set primary image for account. Image content ID can not be empty.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  ///
+  /// * [PrimaryImage] primaryImage (required):
+  Future<void> putPrimaryImage(String accountId, PrimaryImage primaryImage,) async {
+    final response = await putPrimaryImageWithHttpInfo(accountId, primaryImage,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

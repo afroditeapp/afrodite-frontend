@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class ImageFileName {
-  /// Returns a new [ImageFileName] instance.
-  ImageFileName({
-    required this.imageFile,
+class NormalImages {
+  /// Returns a new [NormalImages] instance.
+  NormalImages({
+    this.data = const [],
   });
 
-  String imageFile;
+  List<ContentId> data;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ImageFileName &&
-     other.imageFile == imageFile;
+  bool operator ==(Object other) => identical(this, other) || other is NormalImages &&
+     other.data == data;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (imageFile.hashCode);
+    (data.hashCode);
 
   @override
-  String toString() => 'ImageFileName[imageFile=$imageFile]';
+  String toString() => 'NormalImages[data=$data]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'image_file'] = this.imageFile;
+      json[r'data'] = this.data;
     return json;
   }
 
-  /// Returns a new [ImageFileName] instance and imports its values from
+  /// Returns a new [NormalImages] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ImageFileName? fromJson(dynamic value) {
+  static NormalImages? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class ImageFileName {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ImageFileName[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ImageFileName[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "NormalImages[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "NormalImages[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ImageFileName(
-        imageFile: mapValueOfType<String>(json, r'image_file')!,
+      return NormalImages(
+        data: ContentId.listFromJson(json[r'data'])!,
       );
     }
     return null;
   }
 
-  static List<ImageFileName>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ImageFileName>[];
+  static List<NormalImages>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <NormalImages>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ImageFileName.fromJson(row);
+        final value = NormalImages.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class ImageFileName {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ImageFileName> mapFromJson(dynamic json) {
-    final map = <String, ImageFileName>{};
+  static Map<String, NormalImages> mapFromJson(dynamic json) {
+    final map = <String, NormalImages>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ImageFileName.fromJson(entry.value);
+        final value = NormalImages.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,13 +88,13 @@ class ImageFileName {
     return map;
   }
 
-  // maps a json object with a list of ImageFileName-objects as value to a dart map
-  static Map<String, List<ImageFileName>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ImageFileName>>{};
+  // maps a json object with a list of NormalImages-objects as value to a dart map
+  static Map<String, List<NormalImages>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<NormalImages>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ImageFileName.listFromJson(entry.value, growable: growable,);
+        final value = NormalImages.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -105,7 +105,7 @@ class ImageFileName {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'image_file',
+    'data',
   };
 }
 
