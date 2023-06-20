@@ -48,3 +48,21 @@ telnet 127.0.0.1 5554
 # Update localizations
 
 flutter gen-l10n
+
+### After git clone
+
+1. Create lib/secrets.dart
+
+```dart
+String signInWithGoogleBackendClientId() {
+    return "HELLO";
+}
+
+String signInWithGoogleIosClientId() {
+    return "HELLO";
+}
+```
+
+2. Add server certificate to
+
+assets_not_in_git/server_root.crt
