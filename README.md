@@ -68,3 +68,5 @@ String signInWithGoogleIosClientId() {
 2. Add server certificate to
 
 assets_not_in_git/server_root.crt
+
+3. flutter gen-l10n

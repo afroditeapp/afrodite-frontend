@@ -11,13 +11,23 @@ import 'package:openapi/manual_additions.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
+import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MediaRepository {
-  final ApiManager api = ApiManager.getInstance();
+class MediaRepository extends AppSingleton {
+  MediaRepository._private();
+  static final _instance = MediaRepository._private();
+  factory MediaRepository.getInstance() {
+    return _instance;
+  }
 
-  MediaRepository();
+  @override
+  Future<void> init() async {
+    // nothing to do
+  }
+
+  final ApiManager api = ApiManager.getInstance();
 
   Future<Uint8List?> getImage(AccountIdLight imageOwner, ContentId id) async {
     final data = await api.media((api) => api.getImageFixed(

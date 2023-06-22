@@ -64,6 +64,8 @@ dependencies:
     sdk: flutter
   intl: any
 
+  flutter_cache_manager: ^3.3.0
+
 
 
 dev_dependencies:

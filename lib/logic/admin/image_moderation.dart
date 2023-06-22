@@ -144,6 +144,7 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
 
   Future<void> getMoreModerationRequests() async {
     ModerationList requests = await media.nextModerationListFromServer();
+    print(requests.toString());
 
     if (requests.list.isEmpty) {
       add(NoMoreDataAvailable());

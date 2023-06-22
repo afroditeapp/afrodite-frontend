@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/admin/image_moderation.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
@@ -90,7 +91,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
           Text("${entry.securitySelfie.toString()}, ${entry.target.toString()}"),
           Text(requestEntry.m.toString()),
           FutureBuilder(
-            future: context.read<ImageModerationBloc>().getImage(requestEntry.m.requestCreatorId, entry.target),
+            future: ImageCacheData.getInstance().getImage(requestEntry.m.requestCreatorId, entry.target),
             builder: (context, snapshot) {
               final data = snapshot.data;
               if (data != null) {

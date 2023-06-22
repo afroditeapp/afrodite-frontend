@@ -25,7 +25,13 @@ enum AccountRepositoryState {
   watchConnection
 }
 
-class AccountRepository {
+class AccountRepository extends AppSingleton {
+  AccountRepository._private();
+  static final _instance = AccountRepository._private();
+  factory AccountRepository.getInstance() {
+    return _instance;
+  }
+
   final api = ApiManager.getInstance();
 
   final BehaviorSubject<MainState> _mainState =
@@ -76,7 +82,8 @@ class AccountRepository {
 
   AccountRepository();
 
-  void init() {
+  @override
+  Future<void> init() async {
     if (_internalState.value != AccountRepositoryState.initRequired) {
       return;
     }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/assets.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
+import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
@@ -37,10 +39,9 @@ Future<void> main() async {
 
   await GlobalInitManager.getInstance().init();
 
-  var accountRepository = AccountRepository();
-  accountRepository.init();
-  var mediaRepository = MediaRepository();
-  var profileRepository = ProfileRepository();
+  var accountRepository = AccountRepository.getInstance();
+  var mediaRepository = MediaRepository.getInstance();
+  var profileRepository = ProfileRepository.getInstance();
 
   runApp(
     MultiBlocProvider(
@@ -122,6 +123,11 @@ class GlobalInitManager extends AppSingleton {
     await initAvailableCameras();
     await ErrorManager.getInstance().init();
     await ApiManager.getInstance().init();
+    await ImageCacheData.getInstance().init();
+
+    await AccountRepository.getInstance().init();
+    await MediaRepository.getInstance().init();
+    await ProfileRepository.getInstance().init();
   }
 
   /// Global init should be triggerred after when splash screen
