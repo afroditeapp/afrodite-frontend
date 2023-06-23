@@ -49,7 +49,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
     super.initState();
     reset = true;
     _controller.addListener(() {
-      final offset = _controller.offset - (imageHeight/8*1);
+      final offset = _controller.offset - (imageHeight);
       final position = offset ~/ imageHeight;
       if (currentPosition != position && offset > 0) {
         currentPosition = position;
@@ -104,35 +104,23 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
     );
   }
 
-  Widget buildEntry(BuildContext contex, ImageModerationData state, int index) {
-    final (entry, requestEntry) = state.data[index] ?? (null, null);
+  Widget buildEntry(BuildContext context, ImageModerationData state, int index) {
+    final (entry, requestEntry, updateRelay) = context.read<ImageModerationBloc>().moderationData[index] ?? (null, null, null);
 
-    if (entry != null && requestEntry != null) {
+    if (entry != null && requestEntry != null && updateRelay != null) {
       return LayoutBuilder(
         builder: (context, constraints) {
-          return BlocBuilder<ImageModerationBloc, ImageModerationData>(
-            buildWhen: (previous, current) {
-              final previousData = previous.data[index] ?? (null, null);
-              final currentData = current.data[index] ?? (null, null);
-              if (index == 0) {
-
-                print(previousData.$1?.status);
-                // print("tets");
-                print(currentData.$1?.status);
-                print(previousData.$1?.status != currentData.$1?.status);
-              }
-              return previousData.$1?.status != currentData.$1?.status;
-            },
-            builder: (context, state) {
-              final (entry, requestEntry) = state.data[index] ?? (null, null);
+          return StreamBuilder(
+            stream: updateRelay,
+            builder: (context, snapshot) {
+              final (entry, requestEntry, _) = context.read<ImageModerationBloc>().moderationData[index] ?? (null, null, null);
               if (entry != null && requestEntry != null) {
-                return buildImageRow(contex, entry, requestEntry, index, constraints.maxWidth);
+                return buildImageRow(context, entry, requestEntry, index, constraints.maxWidth);
               } else {
                 return Text(AppLocalizations.of(context).genericError);
               }
             }
-
-            );
+          );
         });
     } else {
       switch (state.state) {

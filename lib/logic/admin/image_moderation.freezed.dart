@@ -18,13 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ImageModerationData {
   ImageModerationStatus get state => throw _privateConstructorUsedError;
 
-  /// Keys are list item keys. Moderation entry is for moderating single
-  /// image in the moderation request. One moderation request has reference to
-  /// single ModerationRequestEntry, so multiple ModerationRequestEntry
-  /// references exists.
-  HashMap<int, (ModerationEntry, ModerationRequestEntry)> get data =>
-      throw _privateConstructorUsedError;
-
   @JsonKey(ignore: true)
   $ImageModerationDataCopyWith<ImageModerationData> get copyWith =>
       throw _privateConstructorUsedError;
@@ -36,9 +29,7 @@ abstract class $ImageModerationDataCopyWith<$Res> {
           ImageModerationData value, $Res Function(ImageModerationData) then) =
       _$ImageModerationDataCopyWithImpl<$Res, ImageModerationData>;
   @useResult
-  $Res call(
-      {ImageModerationStatus state,
-      HashMap<int, (ModerationEntry, ModerationRequestEntry)> data});
+  $Res call({ImageModerationStatus state});
 }
 
 /// @nodoc
@@ -55,17 +46,12 @@ class _$ImageModerationDataCopyWithImpl<$Res, $Val extends ImageModerationData>
   @override
   $Res call({
     Object? state = null,
-    Object? data = null,
   }) {
     return _then(_value.copyWith(
       state: null == state
           ? _value.state
           : state // ignore: cast_nullable_to_non_nullable
               as ImageModerationStatus,
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as HashMap<int, (ModerationEntry, ModerationRequestEntry)>,
     ) as $Val);
   }
 }
@@ -78,9 +64,7 @@ abstract class _$$_ImageModerationDataCopyWith<$Res>
       __$$_ImageModerationDataCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {ImageModerationStatus state,
-      HashMap<int, (ModerationEntry, ModerationRequestEntry)> data});
+  $Res call({ImageModerationStatus state});
 }
 
 /// @nodoc
@@ -95,17 +79,12 @@ class __$$_ImageModerationDataCopyWithImpl<$Res>
   @override
   $Res call({
     Object? state = null,
-    Object? data = null,
   }) {
     return _then(_$_ImageModerationData(
       state: null == state
           ? _value.state
           : state // ignore: cast_nullable_to_non_nullable
               as ImageModerationStatus,
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as HashMap<int, (ModerationEntry, ModerationRequestEntry)>,
     ));
   }
 }
@@ -115,23 +94,15 @@ class __$$_ImageModerationDataCopyWithImpl<$Res>
 class _$_ImageModerationData
     with DiagnosticableTreeMixin
     implements _ImageModerationData {
-  _$_ImageModerationData(
-      {this.state = ImageModerationStatus.loading, required this.data});
+  _$_ImageModerationData({this.state = ImageModerationStatus.loading});
 
   @override
   @JsonKey()
   final ImageModerationStatus state;
 
-  /// Keys are list item keys. Moderation entry is for moderating single
-  /// image in the moderation request. One moderation request has reference to
-  /// single ModerationRequestEntry, so multiple ModerationRequestEntry
-  /// references exists.
-  @override
-  final HashMap<int, (ModerationEntry, ModerationRequestEntry)> data;
-
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ImageModerationData(state: $state, data: $data)';
+    return 'ImageModerationData(state: $state)';
   }
 
   @override
@@ -139,8 +110,7 @@ class _$_ImageModerationData
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ImageModerationData'))
-      ..add(DiagnosticsProperty('state', state))
-      ..add(DiagnosticsProperty('data', data));
+      ..add(DiagnosticsProperty('state', state));
   }
 
   @override
@@ -148,13 +118,11 @@ class _$_ImageModerationData
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ImageModerationData &&
-            (identical(other.state, state) || other.state == state) &&
-            const DeepCollectionEquality().equals(other.data, data));
+            (identical(other.state, state) || other.state == state));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, state, const DeepCollectionEquality().hash(data));
+  int get hashCode => Object.hash(runtimeType, state);
 
   @JsonKey(ignore: true)
   @override
@@ -165,20 +133,11 @@ class _$_ImageModerationData
 }
 
 abstract class _ImageModerationData implements ImageModerationData {
-  factory _ImageModerationData(
-      {final ImageModerationStatus state,
-      required final HashMap<int, (ModerationEntry, ModerationRequestEntry)>
-          data}) = _$_ImageModerationData;
+  factory _ImageModerationData({final ImageModerationStatus state}) =
+      _$_ImageModerationData;
 
   @override
   ImageModerationStatus get state;
-  @override
-
-  /// Keys are list item keys. Moderation entry is for moderating single
-  /// image in the moderation request. One moderation request has reference to
-  /// single ModerationRequestEntry, so multiple ModerationRequestEntry
-  /// references exists.
-  HashMap<int, (ModerationEntry, ModerationRequestEntry)> get data;
   @override
   @JsonKey(ignore: true)
   _$$_ImageModerationDataCopyWith<_$_ImageModerationData> get copyWith =>

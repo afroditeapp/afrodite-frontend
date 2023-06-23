@@ -26,7 +26,6 @@ class ImageModerationData with _$ImageModerationData {
     /// image in the moderation request. One moderation request has reference to
     /// single ModerationRequestEntry, so multiple ModerationRequestEntry
     /// references exists.
-    required HashMap<int, (ModerationEntry, ModerationRequestEntry)> data,
   }) = _ImageModerationData;
 }
 
@@ -67,9 +66,12 @@ class NoMoreDataAvailable extends ImageModerationEvent {}
 class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData> with ActionRunner {
   final MediaRepository media;
 
-  ImageModerationBloc(this.media) : super(ImageModerationData(data: HashMap())) {
+  HashMap<int, (ModerationEntry, ModerationRequestEntry, PublishSubject<()>)> moderationData = HashMap();
+
+  ImageModerationBloc(this.media) : super(ImageModerationData()) {
     on<ResetImageModerationData>((_, emit) async {
-        emit(ImageModerationData(data: HashMap()));
+        moderationData = HashMap();
+        emit(ImageModerationData());
     });
     on<GetMoreData>((_, emit) async {
         await runOnce(() async {
@@ -78,24 +80,22 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
         });
     });
     on<AddNewData>((data, emit) async {
-        final nextIndex = state.data.length;
-        state.data.putIfAbsent(nextIndex, () {
-          return (data.entry, data.requestEntry);
+        final nextIndex = moderationData.length;
+        moderationData.putIfAbsent(nextIndex, () {
+          return (data.entry, data.requestEntry, PublishSubject());
         },);
         emit(ImageModerationData(
-          data: state.data,
           state: ImageModerationStatus.moderating,
         ));
     });
     on<NoMoreDataAvailable>((data, emit) async {
         emit(ImageModerationData(
           state: ImageModerationStatus.moderatingAndNoMoreData,
-          data: state.data,
         ));
     });
     on<ModerateEntry>((data, emit) async {
-      var (entry, requestEntry) = state.data[data.index] ?? (null, null);
-      if (entry != null && requestEntry != null && (entry.status == null)) {
+      var (entry, requestEntry, updateRelay) = moderationData[data.index] ?? (null, null, null);
+      if (entry != null && requestEntry != null && updateRelay != null && (entry.status == null)) {
         entry = entry.copyWith(status: data.accept);
         if (entry.target == requestEntry.m.content.image1) {
           requestEntry = requestEntry.copyWith(imageStatus1: data.accept);
@@ -103,12 +103,9 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
           requestEntry = requestEntry.copyWith(imageStatus2: data.accept);
         }
 
-        state.data[data.index] = (entry, requestEntry);
+        moderationData[data.index] = (entry, requestEntry, updateRelay);
 
-        emit(ImageModerationData(
-          state: state.state,
-          data: state.data,
-        ));
+        updateRelay.add(());
 
         // Check if all moderated
         // TODO: Reject all if first is rejected?
@@ -130,7 +127,6 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
 
   Future<void> getMoreModerationRequests() async {
     ModerationList requests = await media.nextModerationListFromServer();
-    print(requests.toString());
 
     if (requests.list.isEmpty) {
       add(NoMoreDataAvailable());
