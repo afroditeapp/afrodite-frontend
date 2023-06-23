@@ -49,7 +49,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
     super.initState();
     reset = true;
     _controller.addListener(() {
-      final offset = _controller.offset - (imageHeight/8*7);
+      final offset = _controller.offset - (imageHeight/8*1);
       final position = offset ~/ imageHeight;
       if (currentPosition != position && offset > 0) {
         currentPosition = position;
@@ -84,6 +84,9 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
 
   Widget list(BuildContext context) {
     return BlocBuilder<ImageModerationBloc, ImageModerationData>(
+      buildWhen: (previous, current) {
+        return previous.state != current.state;
+      },
       builder: (context, state) {
         switch (state.state) {
           case ImageModerationStatus.loading:
@@ -107,9 +110,30 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
     if (entry != null && requestEntry != null) {
       return LayoutBuilder(
         builder: (context, constraints) {
-          return buildImageRow(contex, entry, requestEntry, index, constraints.maxWidth);
-        }
-      );
+          return BlocBuilder<ImageModerationBloc, ImageModerationData>(
+            buildWhen: (previous, current) {
+              final previousData = previous.data[index] ?? (null, null);
+              final currentData = current.data[index] ?? (null, null);
+              if (index == 0) {
+
+                print(previousData.$1?.status);
+                // print("tets");
+                print(currentData.$1?.status);
+                print(previousData.$1?.status != currentData.$1?.status);
+              }
+              return previousData.$1?.status != currentData.$1?.status;
+            },
+            builder: (context, state) {
+              final (entry, requestEntry) = state.data[index] ?? (null, null);
+              if (entry != null && requestEntry != null) {
+                return buildImageRow(contex, entry, requestEntry, index, constraints.maxWidth);
+              } else {
+                return Text(AppLocalizations.of(context).genericError);
+              }
+            }
+
+            );
+        });
     } else {
       switch (state.state) {
         case ImageModerationStatus.loading || ImageModerationStatus.moderating:
@@ -121,17 +145,6 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
   }
 
   Widget buildImageRow(BuildContext contex, ModerationEntry entry, ModerationRequestEntry requestEntry, int index, double maxWidth) {
-    void Function()? acceptModeration;
-    void Function()? denyModeration;
-    if (entry.status == null) {
-      acceptModeration = () {
-        context.read<ImageModerationBloc>().add(ModerateEntry(index, true));
-      };
-      denyModeration = () {
-        context.read<ImageModerationBloc>().add(ModerateEntry(index, false));
-      };
-    }
-
     final securitySelfie = entry.securitySelfie;
     final Widget securitySelfieWidget;
     if (securitySelfie != null) {

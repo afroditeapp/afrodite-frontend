@@ -14,54 +14,38 @@ import 'package:openapi/manual_additions.dart';
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 
-//part 'image_moderation.freezed.dart';
+part 'image_moderation.freezed.dart';
 
 enum ImageModerationStatus { loading, moderating, moderatingAndNoMoreData }
 
-// @freezed
-// class ImageModerationData with _$ImageModerationData {
-//   factory ImageModerationData({
-//     @Default(ImageModerationStatus.loading) ImageModerationStatus state,
-//     /// Keys are list item keys. Moderation entry is for moderating single
-//     /// image in the moderation request. One moderation request has reference to
-//     /// single ModerationRequestEntry, so multiple ModerationRequestEntry
-//     /// references exists.
-//     required HashMap<int, (ModerationEntry, ModerationRequestEntry)> data,
-//   }) = _ImageModerationData;
-// }
-
-
-class ImageModerationData {
-  final ImageModerationStatus state;
-  /// Keys are list item keys. Moderation entry is for moderating single
-  /// image in the moderation request. One moderation request has reference to
-  /// single ModerationRequestEntry, so multiple ModerationRequestEntry
-  /// references exists.
-  final HashMap<int, (ModerationEntry, ModerationRequestEntry)> data;
-  ImageModerationData({required this.state, required this.data});
-
-  factory ImageModerationData.defaultState() {
-    return ImageModerationData(
-      state: ImageModerationStatus.loading, data: HashMap()
-    );
-  }
+@freezed
+class ImageModerationData with _$ImageModerationData {
+  factory ImageModerationData({
+    @Default(ImageModerationStatus.loading) ImageModerationStatus state,
+    /// Keys are list item keys. Moderation entry is for moderating single
+    /// image in the moderation request. One moderation request has reference to
+    /// single ModerationRequestEntry, so multiple ModerationRequestEntry
+    /// references exists.
+    required HashMap<int, (ModerationEntry, ModerationRequestEntry)> data,
+  }) = _ImageModerationData;
 }
 
-
-class ModerationEntry {
-  ContentId? securitySelfie;
-  ContentId target;
-  bool? status;
-
-  ModerationEntry(this.target);
+@freezed
+class ModerationEntry with _$ModerationEntry {
+  factory ModerationEntry({
+    ContentId? securitySelfie,
+    required ContentId target,
+    bool? status,
+  }) = _ModerationEntry;
 }
 
-class ModerationRequestEntry {
-  bool? imageStatus1;
-  bool? imageStatus2;
-  Moderation m;
-
-  ModerationRequestEntry(this.m);
+@freezed
+class ModerationRequestEntry with _$ModerationRequestEntry {
+  factory ModerationRequestEntry({
+    bool? imageStatus1,
+    bool? imageStatus2,
+    required Moderation m,
+  }) = _ModerationRequestEntry;
 }
 
 abstract class ImageModerationEvent {}
@@ -83,9 +67,9 @@ class NoMoreDataAvailable extends ImageModerationEvent {}
 class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData> with ActionRunner {
   final MediaRepository media;
 
-  ImageModerationBloc(this.media) : super(ImageModerationData.defaultState()) {
+  ImageModerationBloc(this.media) : super(ImageModerationData(data: HashMap())) {
     on<ResetImageModerationData>((_, emit) async {
-        emit(ImageModerationData.defaultState());
+        emit(ImageModerationData(data: HashMap()));
     });
     on<GetMoreData>((_, emit) async {
         await runOnce(() async {
@@ -110,14 +94,16 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
         ));
     });
     on<ModerateEntry>((data, emit) async {
-      final entry = state.data[data.index];
-      if (entry != null && (entry.$1.status == null || entry.$1.status == true)) {
-        entry.$1.status = data.accept;
-        if (entry.$1.target == entry.$2.m.content.image1) {
-          entry.$2.imageStatus1 = data.accept;
-        } else if (entry.$1.target == entry.$2.m.content.image2) {
-          entry.$2.imageStatus2 = data.accept;
+      var (entry, requestEntry) = state.data[data.index] ?? (null, null);
+      if (entry != null && requestEntry != null && (entry.status == null)) {
+        entry = entry.copyWith(status: data.accept);
+        if (entry.target == requestEntry.m.content.image1) {
+          requestEntry = requestEntry.copyWith(imageStatus1: data.accept);
+        } else if (entry.target == requestEntry.m.content.image2) {
+          requestEntry = requestEntry.copyWith(imageStatus2: data.accept);
         }
+
+        state.data[data.index] = (entry, requestEntry);
 
         emit(ImageModerationData(
           state: state.state,
@@ -126,16 +112,16 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
 
         // Check if all moderated
         // TODO: Reject all if first is rejected?
-        if (entry.$2.m.content.image2 != null) {
-          final imageStatus1 = entry.$2.imageStatus1;
-          final imageStatus2 = entry.$2.imageStatus2;
+        if (requestEntry.m.content.image2 != null) {
+          final imageStatus1 = requestEntry.imageStatus1;
+          final imageStatus2 = requestEntry.imageStatus2;
           if (imageStatus1 != null && imageStatus2 != null) {
-            await media.handleModerationRequest(entry.$2.m.requestCreatorId, imageStatus1 && imageStatus2);
+            await media.handleModerationRequest(requestEntry.m.requestCreatorId, imageStatus1 && imageStatus2);
           }
         } else {
-          final imageStatus1 = entry.$2.imageStatus1;
+          final imageStatus1 = requestEntry.imageStatus1;
           if (imageStatus1 != null) {
-            await media.handleModerationRequest(entry.$2.m.requestCreatorId, imageStatus1);
+            await media.handleModerationRequest(requestEntry.m.requestCreatorId, imageStatus1);
           }
         }
       }
@@ -151,23 +137,21 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
     }
 
     for (Moderation m in requests.list) {
-      ModerationRequestEntry requestEntry = ModerationRequestEntry(m);
+      ModerationRequestEntry requestEntry = ModerationRequestEntry(m: m);
       // Camera image should be possible only for the initial request.
       if (m.content.cameraImage) {
-        ModerationEntry e1 = ModerationEntry(m.content.image1);
+        ModerationEntry e1 = ModerationEntry(target: m.content.image1);
         add(AddNewData(e1, requestEntry));
         final image2 = m.content.image2;
         if (image2 != null) {
-          ModerationEntry e2 = ModerationEntry(image2);
-          e2.securitySelfie = m.content.image1;
+          ModerationEntry e2 = ModerationEntry(target: image2, securitySelfie: m.content.image1);
           add(AddNewData(e2, requestEntry));
         }
       } else {
         final securitySelfie = await media.getSecuritySelfie(m.requestCreatorId);
         if (securitySelfie != null) {
           // Only one image per normal moderation request is supported currently.
-          final e = ModerationEntry(m.content.image1);
-          e.securitySelfie = securitySelfie;
+          final e = ModerationEntry(target: m.content.image1, securitySelfie: securitySelfie);
           add(AddNewData(e, requestEntry));
         }
       }

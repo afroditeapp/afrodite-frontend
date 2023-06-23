@@ -45,8 +45,6 @@ dependencies:
   camera: ^0.10.5
   image_picker: ^0.8.7+4
 
-  equatable: ^2.0.0  # TODO: remove
-
   google_sign_in: ^6.1.0
   sign_in_with_apple: ^4.3.0
 
@@ -65,7 +63,7 @@ dependencies:
   intl: any
 
   flutter_cache_manager: ^3.3.0
-  logging: ^1.2.0
+  #logging: ^1.2.0
 
 
 
