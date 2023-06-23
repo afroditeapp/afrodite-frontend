@@ -65,6 +65,7 @@ dependencies:
   intl: any
 
   flutter_cache_manager: ^3.3.0
+  logging: ^1.2.0
 
 
 

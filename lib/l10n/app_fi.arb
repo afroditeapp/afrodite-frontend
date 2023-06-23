@@ -1,4 +1,11 @@
 {
+    "genericError": "Virhe",
+    "genericEmpty": "Tyhjä",
+    "genericCancel": "Peruuta",
+    "genericOk": "OK",
     "loginButton": "Kirjaudu",
-    "registerButton": "Rekisteröidy"
+    "registerButton": "Rekisteröidy",
+    "pageModerateImagesTitle": "Moderoi kuvia",
+    "pageModerateImagesDenyImageText": "Hylkää",
+    "pageViewImageTitle": "Kuva"
 }

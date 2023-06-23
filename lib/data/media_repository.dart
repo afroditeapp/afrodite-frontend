@@ -64,4 +64,9 @@ class MediaRepository extends AppSingleton {
   Future<void> handleModerationRequest(AccountIdLight accountId, bool accept) async {
     await api.media((api) => api.postHandleModerationRequest(accountId.accountId, HandleModerationRequest(accept: accept)));
   }
+
+  Future<ContentId?> getSecuritySelfie(AccountIdLight account) async {
+    final img = await api.media((api) => api.getSecurityImageInfo(account.accountId));
+    return img?.contentId;
+  }
 }

@@ -111,7 +111,7 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
     });
     on<ModerateEntry>((data, emit) async {
       final entry = state.data[data.index];
-      if (entry != null) {
+      if (entry != null && (entry.$1.status == null || entry.$1.status == true)) {
         entry.$1.status = data.accept;
         if (entry.$1.target == entry.$2.m.content.image1) {
           entry.$2.imageStatus1 = data.accept;
@@ -159,13 +159,17 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
         final image2 = m.content.image2;
         if (image2 != null) {
           ModerationEntry e2 = ModerationEntry(image2);
+          e2.securitySelfie = m.content.image1;
           add(AddNewData(e2, requestEntry));
         }
       } else {
-        // Only one image per normal moderation request is supported currently.
-        final e = ModerationEntry(m.content.image1);
-        e.securitySelfie = m.content.image1; // TODO: get security selfie
-        add(AddNewData(e, requestEntry));
+        final securitySelfie = await media.getSecuritySelfie(m.requestCreatorId);
+        if (securitySelfie != null) {
+          // Only one image per normal moderation request is supported currently.
+          final e = ModerationEntry(m.content.image1);
+          e.securitySelfie = securitySelfie;
+          add(AddNewData(e, requestEntry));
+        }
       }
     }
   }

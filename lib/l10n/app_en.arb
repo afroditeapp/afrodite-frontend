@@ -1,4 +1,22 @@
 {
+  "@_GENERIC": {},
+  "genericError": "Error",
+  "@genericError": {
+    "description": "Generic error message"
+  },
+  "genericEmpty": "Empty",
+  "@genericEmpty": {
+    "description": "Generic empty text"
+  },
+  "genericCancel": "Cancel",
+  "@genericCancel": {
+    "description": "Generic cancel text"
+  },
+  "genericOk": "OK",
+  "@genericOk": {
+    "description": "Generic OK text"
+  },
+
   "@_LOGIN_PAGE": {},
   "loginButton": "Login",
   "@loginButton": {
@@ -8,5 +26,22 @@
   "@registerButton": {
     "description": "Register button text"
   },
+
+  "@_MODERATE_IMAGES_PAGE": {},
+  "pageModerateImagesTitle": "Moderate images",
+  "@pageModerateImagesTitle": {
+    "description": "Title for moderate images page"
+  },
+  "pageModerateImagesDenyImageText": "Deny",
+  "@pageModerateImagesDenyImageText": {
+    "description": "Deny image text"
+  },
+
+  "@_VIEW_IMAGE_PAGE": {},
+  "pageViewImageTitle": "Image",
+  "@pageViewImageTitle": {
+    "description": "Title for view image page"
+  },
+
   "@_END_OF_FILE": {}
 }
