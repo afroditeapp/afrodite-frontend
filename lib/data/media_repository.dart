@@ -69,4 +69,8 @@ class MediaRepository extends AppSingleton {
     final img = await api.media((api) => api.getSecurityImageInfo(account.accountId));
     return img?.contentId;
   }
+
+  Future<PrimaryImage?> getPrimaryImage(AccountIdLight account, bool isMatch) async {
+    return await api.media((api) => api.getPrimaryImageInfo(account.accountId, isMatch));
+  }
 }

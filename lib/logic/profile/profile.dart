@@ -19,6 +19,7 @@ part 'profile.freezed.dart';
 class ProfileData with _$ProfileData {
   factory ProfileData({
     Profile? profile,
+    PrimaryImage? primaryImage,
   }) = _ProfileData;
 }
 
@@ -46,8 +47,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileData> with ActionRunner {
         final currentAccountId = await account.accountId.first;
         if (currentAccountId != null) {
           final currentProfile = await profile.requestProfile(currentAccountId);
-          if (currentProfile != null) {
-            emit(state.copyWith(profile: currentProfile));
+          final img = await media.getPrimaryImage(currentAccountId, false);
+          if (currentProfile != null || img != null) {
+            emit(state.copyWith(profile: currentProfile, primaryImage: img));
           }
         }
       });
