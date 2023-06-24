@@ -64,7 +64,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
 
     if (reset) {
       context.read<ImageModerationBloc>().add(ResetImageModerationData());
-      context.read<ImageModerationBloc>().add(GetMoreData());
+      //context.read<ImageModerationBloc>().add(GetMoreData());
       reset = false;
     }
 
@@ -105,31 +105,29 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
   }
 
   Widget buildEntry(BuildContext context, ImageModerationData state, int index) {
-    final (entry, requestEntry, updateRelay) = context.read<ImageModerationBloc>().moderationData[index] ?? (null, null, null);
+    final rowState = context.read<ImageModerationBloc>().getImageRow(index);
 
-    if (entry != null && requestEntry != null && updateRelay != null) {
-      return LayoutBuilder(
-        builder: (context, constraints) {
-          return StreamBuilder(
-            stream: updateRelay,
-            builder: (context, snapshot) {
-              final (entry, requestEntry, _) = context.read<ImageModerationBloc>().moderationData[index] ?? (null, null, null);
-              if (entry != null && requestEntry != null) {
-                return buildImageRow(context, entry, requestEntry, index, constraints.maxWidth);
-              } else {
-                return Text(AppLocalizations.of(context).genericError);
-              }
+    return StreamBuilder(
+      stream: rowState,
+      builder: (context, snapshot) {
+        final s = snapshot.data;
+        if (s != null) {
+          switch (s) {
+            case AllModerated _ : return Text(AppLocalizations.of(context).genericEmpty);
+            case Loading _ : return buildProgressIndicator();
+            case ImageRow r : {
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  return buildImageRow(context, r.entry, r.requestEntry, index, constraints.maxWidth);
+                }
+              );
             }
-          );
-        });
-    } else {
-      switch (state.state) {
-        case ImageModerationStatus.loading || ImageModerationStatus.moderating:
+          }
+        } else {
           return buildProgressIndicator();
-        case ImageModerationStatus.moderatingAndNoMoreData:
-          return Text(AppLocalizations.of(context).genericError);
+        }
       }
-    }
+    );
   }
 
   Widget buildImageRow(BuildContext contex, ModerationEntry entry, ModerationRequestEntry requestEntry, int index, double maxWidth) {

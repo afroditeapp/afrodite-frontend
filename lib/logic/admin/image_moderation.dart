@@ -47,6 +47,15 @@ class ModerationRequestEntry with _$ModerationRequestEntry {
   }) = _ModerationRequestEntry;
 }
 
+sealed class ImageRowState {}
+class AllModerated implements ImageRowState {}
+class Loading implements ImageRowState {}
+class ImageRow implements ImageRowState {
+  final ModerationEntry entry;
+  final ModerationRequestEntry requestEntry;
+  ImageRow(this.entry, this.requestEntry);
+}
+
 abstract class ImageModerationEvent {}
 class ModerateEntry extends ImageModerationEvent {
   final int index;
@@ -54,36 +63,20 @@ class ModerateEntry extends ImageModerationEvent {
   ModerateEntry(this.index, this.accept);
 }
 class ResetImageModerationData extends ImageModerationEvent {}
-class GetMoreData extends ImageModerationEvent {}
-class AddNewData extends ImageModerationEvent {
-  final ModerationEntry entry;
-  final ModerationRequestEntry requestEntry;
-  AddNewData(this.entry, this.requestEntry);
-}
 class NoMoreDataAvailable extends ImageModerationEvent {}
 
 
 class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData> with ActionRunner {
   final MediaRepository media;
 
-  HashMap<int, (ModerationEntry, ModerationRequestEntry, PublishSubject<()>)> moderationData = HashMap();
+  final LinkedHashMap<int, BehaviorSubject<ImageRowState>> moderationData = LinkedHashMap();
+  final HashSet<Moderation> alreadyStoredModerations = HashSet();
+  bool loadingFromServer = false;
 
   ImageModerationBloc(this.media) : super(ImageModerationData()) {
     on<ResetImageModerationData>((_, emit) async {
-        moderationData = HashMap();
-        emit(ImageModerationData());
-    });
-    on<GetMoreData>((_, emit) async {
-        await runOnce(() async {
-          await getMoreModerationRequests();
-          await Future<void>.delayed(Duration(seconds: 1));
-        });
-    });
-    on<AddNewData>((data, emit) async {
-        final nextIndex = moderationData.length;
-        moderationData.putIfAbsent(nextIndex, () {
-          return (data.entry, data.requestEntry, PublishSubject());
-        },);
+        moderationData.clear();
+        alreadyStoredModerations.clear();
         emit(ImageModerationData(
           state: ImageModerationStatus.moderating,
         ));
@@ -94,8 +87,11 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
         ));
     });
     on<ModerateEntry>((data, emit) async {
-      var (entry, requestEntry, updateRelay) = moderationData[data.index] ?? (null, null, null);
-      if (entry != null && requestEntry != null && updateRelay != null && (entry.status == null)) {
+      final imageRowState = moderationData[data.index]?.value;
+      if (imageRowState is ImageRow && (imageRowState.entry.status == null)) {
+        var entry = imageRowState.entry;
+        var requestEntry = imageRowState.requestEntry;
+
         entry = entry.copyWith(status: data.accept);
         if (entry.target == requestEntry.m.content.image1) {
           requestEntry = requestEntry.copyWith(imageStatus1: data.accept);
@@ -103,9 +99,8 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
           requestEntry = requestEntry.copyWith(imageStatus2: data.accept);
         }
 
-        moderationData[data.index] = (entry, requestEntry, updateRelay);
-
-        updateRelay.add(());
+        // Update background color
+        moderationData[data.index]?.add(ImageRow(entry, requestEntry));
 
         // Check if all moderated
         // TODO: Reject all if first is rejected?
@@ -125,31 +120,93 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
     });
   }
 
-  Future<void> getMoreModerationRequests() async {
+  Stream<ImageRowState> getImageRow(int index) async* {
+    final relay = moderationData[index];
+
+    if (relay == null) {
+      for (int i = index; i < index + 100; i++) {
+        moderationData.putIfAbsent(i, () => BehaviorSubject.seeded(Loading(), sync: true));
+      }
+
+      if (await getMoreModerationRequests()) {
+        yield AllModerated();
+        return;
+      }
+    }
+
+    final afterNewModerationRequests = moderationData[index];
+
+    if (afterNewModerationRequests != null) {
+      if (afterNewModerationRequests.value is Loading && await getMoreModerationRequests()) {
+        yield AllModerated();
+      } else {
+        yield* afterNewModerationRequests;
+      }
+    }
+  }
+
+  /// Returns true if no more data available
+  Future<bool> getMoreModerationRequests() async {
+    if (loadingFromServer) {
+      return false;
+    }
+    loadingFromServer = true;
+
     ModerationList requests = await media.nextModerationListFromServer();
+
+    var noMoreDataAvailable = false;
 
     if (requests.list.isEmpty) {
       add(NoMoreDataAvailable());
+      noMoreDataAvailable = true;
     }
 
     for (Moderation m in requests.list) {
+      if (alreadyStoredModerations.contains(m)) {
+        continue;
+      }
+
       ModerationRequestEntry requestEntry = ModerationRequestEntry(m: m);
       // Camera image should be possible only for the initial request.
       if (m.content.cameraImage) {
         ModerationEntry e1 = ModerationEntry(target: m.content.image1);
-        add(AddNewData(e1, requestEntry));
+        appendImageRow(e1, requestEntry);
         final image2 = m.content.image2;
         if (image2 != null) {
           ModerationEntry e2 = ModerationEntry(target: image2, securitySelfie: m.content.image1);
-          add(AddNewData(e2, requestEntry));
+          appendImageRow(e2, requestEntry);
         }
       } else {
         final securitySelfie = await media.getSecuritySelfie(m.requestCreatorId);
         if (securitySelfie != null) {
           // Only one image per normal moderation request is supported currently.
           final e = ModerationEntry(target: m.content.image1, securitySelfie: securitySelfie);
-          add(AddNewData(e, requestEntry));
+          appendImageRow(e, requestEntry);
         }
+      }
+
+      alreadyStoredModerations.add(m);
+    }
+
+    loadingFromServer = false;
+    return noMoreDataAvailable;
+  }
+
+  void appendImageRow(ModerationEntry e, ModerationRequestEntry requestEntry) {
+    try {
+      final first = moderationData.entries.firstWhere(
+        (element) {
+          return element.value.valueOrNull is Loading;
+        },
+      );
+      first.value.add(ImageRow(e, requestEntry));
+    } on StateError catch (_) {
+      final nextIndex = moderationData.length;
+      final relay = moderationData[nextIndex];
+      if (relay != null) {
+        relay.add(ImageRow(e, requestEntry));
+      } else {
+        moderationData[nextIndex] = BehaviorSubject.seeded(ImageRow(e, requestEntry), sync: true);
       }
     }
   }
