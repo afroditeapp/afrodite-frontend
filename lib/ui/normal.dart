@@ -67,11 +67,6 @@ class _NormalStateContentState extends State<NormalStateContent> {
           });
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.read<AccountBloc>().add(DoLogout()),
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
     );
   }
 }

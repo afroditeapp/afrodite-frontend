@@ -27,6 +27,28 @@
     "description": "Register button text"
   },
 
+  "@_SETTINGS_PAGE": {},
+  "pageSettingsTitle": "Settings",
+  "@pageSettingsTitle": {
+    "description": "Title for settings page"
+  },
+  "pageSettingsLogoutTitle": "Logout",
+  "@pageSettingsLogoutTitle": {
+    "description": "Title for logout action"
+  },
+
+  "@_MY_PROFILE_PAGE": {},
+  "pageMyProfileTitle": "My Profile",
+  "@pageMyProfileTitle": {
+    "description": "Title for my profile page"
+  },
+
+  "@_ADMIN_PAGE": {},
+  "pageAdminTitle": "Admin",
+  "@pageAdminTitle": {
+    "description": "Title for admin settings and tools page"
+  },
+
   "@_MODERATE_IMAGES_PAGE": {},
   "pageModerateImagesTitle": "Moderate images",
   "@pageModerateImagesTitle": {

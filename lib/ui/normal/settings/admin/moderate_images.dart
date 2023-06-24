@@ -182,7 +182,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
                 },
                 onLongPress: () {
                   if (index != null) {
-                    showDenyDialog().then((value) {
+                    showConfirmDialog(context, AppLocalizations.of(context).pageModerateImagesDenyImageText).then((value) {
                       if (value == true) {
                         context.read<ImageModerationBloc>().add(ModerateEntry(index, false));
                       }
@@ -222,29 +222,6 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(AppLocalizations.of(context).genericEmpty)
-        ],
-      )
-    );
-  }
-
-  Future<bool?> showDenyDialog() {
-    return showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppLocalizations.of(context).pageModerateImagesDenyImageText),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, false);
-            },
-            child: Text(AppLocalizations.of(context).genericCancel)
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, true);
-            },
-            child: Text(AppLocalizations.of(context).genericOk)
-          )
         ],
       )
     );

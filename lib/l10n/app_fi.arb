@@ -5,6 +5,10 @@
     "genericOk": "OK",
     "loginButton": "Kirjaudu",
     "registerButton": "Rekisteröidy",
+    "pageSettingsTitle": "Asetukset",
+    "pageSettingsLogoutTitle": "Kirjaudu ulos",
+    "pageMyProfileTitle": "Minun profiili",
+    "pageAdminTitle": "Ylläpitäjä",
     "pageModerateImagesTitle": "Moderoi kuvia",
     "pageModerateImagesDenyImageText": "Hylkää",
     "pageViewImageTitle": "Kuva"
