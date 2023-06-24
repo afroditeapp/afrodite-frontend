@@ -64,7 +64,6 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
 
     if (reset) {
       context.read<ImageModerationBloc>().add(ResetImageModerationData());
-      //context.read<ImageModerationBloc>().add(GetMoreData());
       reset = false;
     }
 
@@ -89,9 +88,9 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
       },
       builder: (context, state) {
         switch (state.state) {
-          case ImageModerationStatus.loading:
-            return buildProgressIndicator();
-          case ImageModerationStatus.moderating || ImageModerationStatus.moderatingAndNoMoreData:
+          case ImageModerationStatus.allModerated:
+            return buildEmptyText();
+          case ImageModerationStatus.moderating:
             return ListView.builder(
               itemCount: null,
               controller: _controller,
@@ -113,7 +112,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
         final s = snapshot.data;
         if (s != null) {
           switch (s) {
-            case AllModerated _ : return Text(AppLocalizations.of(context).genericEmpty);
+            case AllModerated _ : return buildEmptyText();
             case Loading _ : return buildProgressIndicator();
             case ImageRow r : {
               return LayoutBuilder(
@@ -211,6 +210,18 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(),
+        ],
+      )
+    );
+  }
+
+  Widget buildEmptyText() {
+    return SizedBox(
+      height: imageHeight,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(AppLocalizations.of(context).genericEmpty)
         ],
       )
     );

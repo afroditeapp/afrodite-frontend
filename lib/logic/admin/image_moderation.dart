@@ -16,12 +16,12 @@ import 'package:flutter/foundation.dart';
 
 part 'image_moderation.freezed.dart';
 
-enum ImageModerationStatus { loading, moderating, moderatingAndNoMoreData }
+enum ImageModerationStatus { moderating, allModerated }
 
 @freezed
 class ImageModerationData with _$ImageModerationData {
   factory ImageModerationData({
-    @Default(ImageModerationStatus.loading) ImageModerationStatus state,
+    @Default(ImageModerationStatus.moderating) ImageModerationStatus state,
     /// Keys are list item keys. Moderation entry is for moderating single
     /// image in the moderation request. One moderation request has reference to
     /// single ModerationRequestEntry, so multiple ModerationRequestEntry
@@ -38,13 +38,12 @@ class ModerationEntry with _$ModerationEntry {
   }) = _ModerationEntry;
 }
 
-@freezed
-class ModerationRequestEntry with _$ModerationRequestEntry {
-  factory ModerationRequestEntry({
-    bool? imageStatus1,
-    bool? imageStatus2,
-    required Moderation m,
-  }) = _ModerationRequestEntry;
+class ModerationRequestEntry {
+    bool? imageStatus1;
+    bool? imageStatus2;
+    Moderation m;
+
+    ModerationRequestEntry(this.m);
 }
 
 sealed class ImageRowState {}
@@ -62,9 +61,8 @@ class ModerateEntry extends ImageModerationEvent {
   final bool accept;
   ModerateEntry(this.index, this.accept);
 }
-class ResetImageModerationData extends ImageModerationEvent {}
 class NoMoreDataAvailable extends ImageModerationEvent {}
-
+class ResetImageModerationData extends ImageModerationEvent {}
 
 class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData> with ActionRunner {
   final MediaRepository media;
@@ -72,18 +70,20 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
   final LinkedHashMap<int, BehaviorSubject<ImageRowState>> moderationData = LinkedHashMap();
   final HashSet<Moderation> alreadyStoredModerations = HashSet();
   bool loadingFromServer = false;
+  bool currentLoadTheFirstLoad = true;
 
   ImageModerationBloc(this.media) : super(ImageModerationData()) {
     on<ResetImageModerationData>((_, emit) async {
         moderationData.clear();
         alreadyStoredModerations.clear();
+        currentLoadTheFirstLoad = true;
         emit(ImageModerationData(
           state: ImageModerationStatus.moderating,
         ));
     });
     on<NoMoreDataAvailable>((data, emit) async {
         emit(ImageModerationData(
-          state: ImageModerationStatus.moderatingAndNoMoreData,
+          state: ImageModerationStatus.allModerated,
         ));
     });
     on<ModerateEntry>((data, emit) async {
@@ -94,9 +94,9 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
 
         entry = entry.copyWith(status: data.accept);
         if (entry.target == requestEntry.m.content.image1) {
-          requestEntry = requestEntry.copyWith(imageStatus1: data.accept);
+          requestEntry.imageStatus1 = data.accept;
         } else if (entry.target == requestEntry.m.content.image2) {
-          requestEntry = requestEntry.copyWith(imageStatus2: data.accept);
+          requestEntry.imageStatus2 = data.accept;
         }
 
         // Update background color
@@ -157,16 +157,20 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
     var noMoreDataAvailable = false;
 
     if (requests.list.isEmpty) {
-      add(NoMoreDataAvailable());
       noMoreDataAvailable = true;
+      if (currentLoadTheFirstLoad) {
+        add(NoMoreDataAvailable());
+      }
     }
+
+    currentLoadTheFirstLoad = false;
 
     for (Moderation m in requests.list) {
       if (alreadyStoredModerations.contains(m)) {
         continue;
       }
 
-      ModerationRequestEntry requestEntry = ModerationRequestEntry(m: m);
+      ModerationRequestEntry requestEntry = ModerationRequestEntry(m);
       // Camera image should be possible only for the initial request.
       if (m.content.cameraImage) {
         ModerationEntry e1 = ModerationEntry(target: m.content.image1);
