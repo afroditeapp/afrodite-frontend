@@ -12,6 +12,8 @@ Name | Type | Description | Notes
 **adminModerateImages** | **bool** |  | [optional] 
 **adminModerateProfiles** | **bool** |  | [optional] 
 **adminModifyCapablities** | **bool** |  | [optional] 
+**adminServerMaintentanceUpdateSoftware** | **bool** |  | [optional] 
+**adminServerMaintentanceViewInfo** | **bool** |  | [optional] 
 **adminSetupPossible** | **bool** |  | [optional] 
 **adminViewAllProfiles** | **bool** | View public and private profiles. | [optional] 
 **adminViewPrivateInfo** | **bool** |  | [optional] 

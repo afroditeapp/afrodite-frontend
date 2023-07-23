@@ -18,7 +18,7 @@ Method | HTTP request | Description
 [**postHandleModerationRequest**](MediaApi.md#posthandlemoderationrequest) | **POST** /media_api/admin/moderation/handle_request/{account_id} | Handle moderation request of some account.
 [**putImageToModerationSlot**](MediaApi.md#putimagetomoderationslot) | **PUT** /media_api/moderation/request/slot/{slot_id} | Set image to moderation request slot.
 [**putModerationRequest**](MediaApi.md#putmoderationrequest) | **PUT** /media_api/moderation/request | Create new or override old moderation request.
-[**putPrimaryImage**](MediaApi.md#putprimaryimage) | **PUT** /media_api/primary_image/{account_id} | Set primary image for account. Image content ID can not be empty.
+[**putPrimaryImage**](MediaApi.md#putprimaryimage) | **PUT** /media_api/primary_image | Set primary image for account. Image content ID can not be empty.
 
 
 # **getAllNormalImages**
@@ -445,7 +445,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **putPrimaryImage**
-> putPrimaryImage(accountId, primaryImage)
+> putPrimaryImage(primaryImage)
 
 Set primary image for account. Image content ID can not be empty.
 
@@ -460,11 +460,10 @@ import 'package:openapi/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
 
 final api_instance = MediaApi();
-final accountId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
 final primaryImage = PrimaryImage(); // PrimaryImage | 
 
 try {
-    api_instance.putPrimaryImage(accountId, primaryImage);
+    api_instance.putPrimaryImage(primaryImage);
 } catch (e) {
     print('Exception when calling MediaApi->putPrimaryImage: $e\n');
 }
@@ -474,7 +473,6 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **accountId** | **String**|  | 
  **primaryImage** | [**PrimaryImage**](PrimaryImage.md)|  | 
 
 ### Return type

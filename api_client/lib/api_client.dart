@@ -193,14 +193,24 @@ class ApiClient {
           return ApiKey.fromJson(value);
         case 'AuthPair':
           return AuthPair.fromJson(value);
+        case 'BackendVersion':
+          return BackendVersion.fromJson(value);
         case 'BooleanSetting':
           return BooleanSetting.fromJson(value);
+        case 'BuildInfo':
+          return BuildInfo.fromJson(value);
         case 'Capabilities':
           return Capabilities.fromJson(value);
+        case 'CommandOutput':
+          return CommandOutput.fromJson(value);
         case 'ContentId':
           return ContentId.fromJson(value);
         case 'DeleteStatus':
           return DeleteStatus.fromJson(value);
+        case 'DownloadType':
+          return DownloadTypeTypeTransformer().decode(value);
+        case 'DownloadTypeQueryParam':
+          return DownloadTypeQueryParam.fromJson(value);
         case 'EventToClient':
           return EventToClientTypeTransformer().decode(value);
         case 'HandleModerationRequest':
@@ -237,6 +247,8 @@ class ApiClient {
           return ProfileUpdate.fromJson(value);
         case 'ProfileVersion':
           return ProfileVersion.fromJson(value);
+        case 'RebootQueryParam':
+          return RebootQueryParam.fromJson(value);
         case 'RefreshToken':
           return RefreshToken.fromJson(value);
         case 'SecurityImage':
@@ -245,6 +257,14 @@ class ApiClient {
           return SignInWithLoginInfo.fromJson(value);
         case 'SlotId':
           return SlotId.fromJson(value);
+        case 'SoftwareInfo':
+          return SoftwareInfo.fromJson(value);
+        case 'SoftwareOptions':
+          return SoftwareOptionsTypeTransformer().decode(value);
+        case 'SystemInfo':
+          return SystemInfo.fromJson(value);
+        case 'SystemInfoList':
+          return SystemInfoList.fromJson(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

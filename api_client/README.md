@@ -73,6 +73,12 @@ Class | Method | HTTP request | Description
 *AccountinternalApi* | [**checkApiKey**](doc//AccountinternalApi.md#checkapikey) | **GET** /internal/check_api_key | 
 *AccountinternalApi* | [**internalGetAccountState**](doc//AccountinternalApi.md#internalgetaccountstate) | **GET** /internal/get_account_state/{account_id} | 
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens.
+*CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
+*CommonadminApi* | [**getLatestBuildInfo**](doc//CommonadminApi.md#getlatestbuildinfo) | **GET** /common_api/get_latest_build_info | Get latest software build information available for update from manager
+*CommonadminApi* | [**getSoftwareInfo**](doc//CommonadminApi.md#getsoftwareinfo) | **GET** /common_api/software_info | Get software version information from manager instance.
+*CommonadminApi* | [**getSystemInfo**](doc//CommonadminApi.md#getsysteminfo) | **GET** /common_api/system_info | Get system information from manager instance.
+*CommonadminApi* | [**postRequestBuildSoftware**](doc//CommonadminApi.md#postrequestbuildsoftware) | **POST** /common_api/request_build_software | Request building new software from manager instance.
+*CommonadminApi* | [**postRequestUpdateSoftware**](doc//CommonadminApi.md#postrequestupdatesoftware) | **POST** /common_api/request_update_software | Request updating new software from manager instance.
 *MediaApi* | [**getAllNormalImages**](doc//MediaApi.md#getallnormalimages) | **GET** /media_api/all_normal_images/{account_id} | Get list of all normal images on the server for one account.
 *MediaApi* | [**getImage**](doc//MediaApi.md#getimage) | **GET** /media_api/image/{account_id}/{content_id} | Get profile image
 *MediaApi* | [**getModerationRequest**](doc//MediaApi.md#getmoderationrequest) | **GET** /media_api/moderation/request | Get current moderation request.
@@ -82,7 +88,7 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**postHandleModerationRequest**](doc//MediaApi.md#posthandlemoderationrequest) | **POST** /media_api/admin/moderation/handle_request/{account_id} | Handle moderation request of some account.
 *MediaApi* | [**putImageToModerationSlot**](doc//MediaApi.md#putimagetomoderationslot) | **PUT** /media_api/moderation/request/slot/{slot_id} | Set image to moderation request slot.
 *MediaApi* | [**putModerationRequest**](doc//MediaApi.md#putmoderationrequest) | **PUT** /media_api/moderation/request | Create new or override old moderation request.
-*MediaApi* | [**putPrimaryImage**](doc//MediaApi.md#putprimaryimage) | **PUT** /media_api/primary_image/{account_id} | Set primary image for account. Image content ID can not be empty.
+*MediaApi* | [**putPrimaryImage**](doc//MediaApi.md#putprimaryimage) | **PUT** /media_api/primary_image | Set primary image for account. Image content ID can not be empty.
 *MediainternalApi* | [**internalGetCheckModerationRequestForAccount**](doc//MediainternalApi.md#internalgetcheckmoderationrequestforaccount) | **GET** /internal/media_api/moderation/request/{account_id} | Check that current moderation request for account exists. Requires also
 *MediainternalApi* | [**internalPostUpdateProfileImageVisibility**](doc//MediainternalApi.md#internalpostupdateprofileimagevisibility) | **POST** /internal/media_api/visiblity/{account_id}/{value} | 
 *ProfileApi* | [**getProfile**](doc//ProfileApi.md#getprofile) | **GET** /profile_api/profile/{account_id} | Get account's current profile.
@@ -101,10 +107,15 @@ Class | Method | HTTP request | Description
  - [AccountState](doc//AccountState.md)
  - [ApiKey](doc//ApiKey.md)
  - [AuthPair](doc//AuthPair.md)
+ - [BackendVersion](doc//BackendVersion.md)
  - [BooleanSetting](doc//BooleanSetting.md)
+ - [BuildInfo](doc//BuildInfo.md)
  - [Capabilities](doc//Capabilities.md)
+ - [CommandOutput](doc//CommandOutput.md)
  - [ContentId](doc//ContentId.md)
  - [DeleteStatus](doc//DeleteStatus.md)
+ - [DownloadType](doc//DownloadType.md)
+ - [DownloadTypeQueryParam](doc//DownloadTypeQueryParam.md)
  - [EventToClient](doc//EventToClient.md)
  - [HandleModerationRequest](doc//HandleModerationRequest.md)
  - [ImageAccessCheck](doc//ImageAccessCheck.md)
@@ -123,10 +134,15 @@ Class | Method | HTTP request | Description
  - [ProfilePage](doc//ProfilePage.md)
  - [ProfileUpdate](doc//ProfileUpdate.md)
  - [ProfileVersion](doc//ProfileVersion.md)
+ - [RebootQueryParam](doc//RebootQueryParam.md)
  - [RefreshToken](doc//RefreshToken.md)
  - [SecurityImage](doc//SecurityImage.md)
  - [SignInWithLoginInfo](doc//SignInWithLoginInfo.md)
  - [SlotId](doc//SlotId.md)
+ - [SoftwareInfo](doc//SoftwareInfo.md)
+ - [SoftwareOptions](doc//SoftwareOptions.md)
+ - [SystemInfo](doc//SystemInfo.md)
+ - [SystemInfoList](doc//SystemInfoList.md)
 
 
 ## Documentation For Authorization

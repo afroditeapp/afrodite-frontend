@@ -10,6 +10,7 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**getConnectWebsocket**](CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens.
+[**getVersion**](CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
 
 
 # **getConnectWebsocket**
@@ -51,6 +52,45 @@ void (empty response body)
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getVersion**
+> BackendVersion getVersion()
+
+Get backend version.
+
+Get backend version.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+
+final api_instance = CommonApi();
+
+try {
+    final result = api_instance.getVersion();
+    print(result);
+} catch (e) {
+    print('Exception when calling CommonApi->getVersion: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**BackendVersion**](BackendVersion.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

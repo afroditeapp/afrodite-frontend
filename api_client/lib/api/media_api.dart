@@ -531,13 +531,10 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  ///
   /// * [PrimaryImage] primaryImage (required):
-  Future<Response> putPrimaryImageWithHttpInfo(String accountId, PrimaryImage primaryImage,) async {
+  Future<Response> putPrimaryImageWithHttpInfo(PrimaryImage primaryImage,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/primary_image/{account_id}'
-      .replaceAll('{account_id}', accountId);
+    final path = r'/media_api/primary_image';
 
     // ignore: prefer_final_locals
     Object? postBody = primaryImage;
@@ -566,11 +563,9 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  ///
   /// * [PrimaryImage] primaryImage (required):
-  Future<void> putPrimaryImage(String accountId, PrimaryImage primaryImage,) async {
-    final response = await putPrimaryImageWithHttpInfo(accountId, primaryImage,);
+  Future<void> putPrimaryImage(PrimaryImage primaryImage,) async {
+    final response = await putPrimaryImageWithHttpInfo(primaryImage,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

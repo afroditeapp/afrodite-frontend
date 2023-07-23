@@ -58,11 +58,17 @@ String parameterToString(dynamic value) {
   if (value is AccountState) {
     return AccountStateTypeTransformer().encode(value).toString();
   }
+  if (value is DownloadType) {
+    return DownloadTypeTypeTransformer().encode(value).toString();
+  }
   if (value is EventToClient) {
     return EventToClientTypeTransformer().encode(value).toString();
   }
   if (value is ModerationRequestState) {
     return ModerationRequestStateTypeTransformer().encode(value).toString();
+  }
+  if (value is SoftwareOptions) {
+    return SoftwareOptionsTypeTransformer().encode(value).toString();
   }
   return value.toString();
 }

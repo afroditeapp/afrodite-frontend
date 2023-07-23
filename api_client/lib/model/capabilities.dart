@@ -17,6 +17,8 @@ class Capabilities {
     this.adminModerateImages,
     this.adminModerateProfiles,
     this.adminModifyCapablities,
+    this.adminServerMaintentanceUpdateSoftware,
+    this.adminServerMaintentanceViewInfo,
     this.adminSetupPossible,
     this.adminViewAllProfiles,
     this.adminViewPrivateInfo,
@@ -56,6 +58,22 @@ class Capabilities {
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
   bool? adminModifyCapablities;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  bool? adminServerMaintentanceUpdateSoftware;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  bool? adminServerMaintentanceViewInfo;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -113,6 +131,8 @@ class Capabilities {
      other.adminModerateImages == adminModerateImages &&
      other.adminModerateProfiles == adminModerateProfiles &&
      other.adminModifyCapablities == adminModifyCapablities &&
+     other.adminServerMaintentanceUpdateSoftware == adminServerMaintentanceUpdateSoftware &&
+     other.adminServerMaintentanceViewInfo == adminServerMaintentanceViewInfo &&
      other.adminSetupPossible == adminSetupPossible &&
      other.adminViewAllProfiles == adminViewAllProfiles &&
      other.adminViewPrivateInfo == adminViewPrivateInfo &&
@@ -127,6 +147,8 @@ class Capabilities {
     (adminModerateImages == null ? 0 : adminModerateImages!.hashCode) +
     (adminModerateProfiles == null ? 0 : adminModerateProfiles!.hashCode) +
     (adminModifyCapablities == null ? 0 : adminModifyCapablities!.hashCode) +
+    (adminServerMaintentanceUpdateSoftware == null ? 0 : adminServerMaintentanceUpdateSoftware!.hashCode) +
+    (adminServerMaintentanceViewInfo == null ? 0 : adminServerMaintentanceViewInfo!.hashCode) +
     (adminSetupPossible == null ? 0 : adminSetupPossible!.hashCode) +
     (adminViewAllProfiles == null ? 0 : adminViewAllProfiles!.hashCode) +
     (adminViewPrivateInfo == null ? 0 : adminViewPrivateInfo!.hashCode) +
@@ -135,7 +157,7 @@ class Capabilities {
     (viewPublicProfiles == null ? 0 : viewPublicProfiles!.hashCode);
 
   @override
-  String toString() => 'Capabilities[adminBanProfile=$adminBanProfile, adminModerateImages=$adminModerateImages, adminModerateProfiles=$adminModerateProfiles, adminModifyCapablities=$adminModifyCapablities, adminSetupPossible=$adminSetupPossible, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory, bannedEditProfile=$bannedEditProfile, viewPublicProfiles=$viewPublicProfiles]';
+  String toString() => 'Capabilities[adminBanProfile=$adminBanProfile, adminModerateImages=$adminModerateImages, adminModerateProfiles=$adminModerateProfiles, adminModifyCapablities=$adminModifyCapablities, adminServerMaintentanceUpdateSoftware=$adminServerMaintentanceUpdateSoftware, adminServerMaintentanceViewInfo=$adminServerMaintentanceViewInfo, adminSetupPossible=$adminSetupPossible, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory, bannedEditProfile=$bannedEditProfile, viewPublicProfiles=$viewPublicProfiles]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -158,6 +180,16 @@ class Capabilities {
       json[r'admin_modify_capablities'] = this.adminModifyCapablities;
     } else {
       json[r'admin_modify_capablities'] = null;
+    }
+    if (this.adminServerMaintentanceUpdateSoftware != null) {
+      json[r'admin_server_maintentance_update_software'] = this.adminServerMaintentanceUpdateSoftware;
+    } else {
+      json[r'admin_server_maintentance_update_software'] = null;
+    }
+    if (this.adminServerMaintentanceViewInfo != null) {
+      json[r'admin_server_maintentance_view_info'] = this.adminServerMaintentanceViewInfo;
+    } else {
+      json[r'admin_server_maintentance_view_info'] = null;
     }
     if (this.adminSetupPossible != null) {
       json[r'admin_setup_possible'] = this.adminSetupPossible;
@@ -215,6 +247,8 @@ class Capabilities {
         adminModerateImages: mapValueOfType<bool>(json, r'admin_moderate_images'),
         adminModerateProfiles: mapValueOfType<bool>(json, r'admin_moderate_profiles'),
         adminModifyCapablities: mapValueOfType<bool>(json, r'admin_modify_capablities'),
+        adminServerMaintentanceUpdateSoftware: mapValueOfType<bool>(json, r'admin_server_maintentance_update_software'),
+        adminServerMaintentanceViewInfo: mapValueOfType<bool>(json, r'admin_server_maintentance_view_info'),
         adminSetupPossible: mapValueOfType<bool>(json, r'admin_setup_possible'),
         adminViewAllProfiles: mapValueOfType<bool>(json, r'admin_view_all_profiles'),
         adminViewPrivateInfo: mapValueOfType<bool>(json, r'admin_view_private_info'),
