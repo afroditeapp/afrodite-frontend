@@ -94,6 +94,15 @@ class AccountRepository extends AppSingleton {
       .asyncMap((state) async => await _handleInternalState(state))
       .listen((event) { });
 
+    // Restore previous state
+    final previousState = await KvStorageManager.getInstance().getString(KvString.accountState);
+    if (previousState != null) {
+      final state = AccountState.fromJson(previousState);
+      if (state != null) {
+        emitStateUpdates(state);
+      }
+    }
+
     api.state.listen((event) {
       print(event);
       switch (event) {

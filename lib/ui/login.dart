@@ -38,7 +38,7 @@ class LoginPage extends RootPage {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Is empty";
-              } else if (!(value.contains("***REMOVED***") || value.contains("192.168.0") || value.contains("10.0.2.2") || value.contains("127.0.0.1") || value.contains("/localhost:") )) {
+              } else if (!(value.contains("***REMOVED***") || value.contains("192.168.") || value.contains("10.0.2.2") || value.contains("127.0.0.1") || value.contains("/localhost:") )) {
                 return "Public IP addresses are not supported";
               } else {
                 return null;
