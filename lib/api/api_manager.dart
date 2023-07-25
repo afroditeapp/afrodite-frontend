@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:english_words/english_words.dart';
@@ -17,6 +18,12 @@ import 'package:rxdart/subjects.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+
+enum Server {
+  account,
+  media,
+  profile,
+}
 
 enum ApiManagerState {
   /// Run init mehod.
@@ -224,36 +231,102 @@ class ApiManager extends AppSingleton {
     }
   }
 
-  ApiWrapper<AccountApi> accountWrapper() {
-    return ApiWrapper(_account.account);
+  bool inMicroserviceMode() {
+    return mediaConnection.inUse();
   }
 
-  ApiWrapper<MediaApi> mediaWrapper() {
+  bool mediaInMicroserviceMode() {
+    return mediaConnection.inUse();
+  }
+
+  bool profileInMicroserviceMode() {
+    return profileConnection.inUse();
+  }
+
+  ApiProvider _mediaApiProvider() {
     if (mediaConnection.inUse()) {
-      return ApiWrapper(_media.media);
+      return _media;
     } else {
-      return ApiWrapper(_account.media);
+      return _account;
     }
   }
 
-  ApiWrapper<ProfileApi> profileWrapper() {
+  ApiProvider _profileApiProvider() {
     if (profileConnection.inUse()) {
-      return ApiWrapper(_profile.profile);
+      return _profile;
     } else {
-      return ApiWrapper(_account.profile);
+      return _account;
+    }
+  }
+
+  ApiWrapper<AccountApi> _accountWrapper() {
+    return ApiWrapper(_account.account);
+  }
+
+  ApiWrapper<ProfileApi> _profileWrapper() {
+    return ApiWrapper(_profileApiProvider().profile);
+  }
+
+  ApiWrapper<MediaApi> _mediaWrapper() {
+    return ApiWrapper(_mediaApiProvider().media);
+  }
+
+  Future<R?> common<R extends Object>(Server server, Future<R?> Function(CommonApi) action) async {
+    switch (server) {
+      case Server.account:
+        return accountCommon(action);
+      case Server.media:
+        return mediaCommon(action);
+      case Server.profile:
+        return profileCommon(action);
+    }
+  }
+
+  Future<R?> commonAdmin<R extends Object>(Server server, Future<R?> Function(CommonadminApi) action) async {
+    switch (server) {
+      case Server.account:
+        return accountCommonAdmin(action);
+      case Server.media:
+        return mediaCommonAdmin(action);
+      case Server.profile:
+        return profileCommonAdmin(action);
     }
   }
 
   Future<R?> account<R extends Object>(Future<R?> Function(AccountApi) action) async {
-    return await accountWrapper().request(action);
+    return await _accountWrapper().request(action);
+  }
+
+  Future<R?> accountCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {
+    return await ApiWrapper(_account.common).request(action);
+  }
+
+  Future<R?> accountCommonAdmin<R extends Object>(Future<R?> Function(CommonadminApi) action) async {
+    return await ApiWrapper(_account.commonAdmin).request(action);
   }
 
   Future<R?> media<R extends Object>(Future<R?> Function(MediaApi) action) async {
-    return await mediaWrapper().request(action);
+    return await _mediaWrapper().request(action);
+  }
+
+  Future<R?> mediaCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {
+    return await ApiWrapper(_mediaApiProvider().common).request(action);
+  }
+
+  Future<R?> mediaCommonAdmin<R extends Object>(Future<R?> Function(CommonadminApi) action) async {
+    return await ApiWrapper(_mediaApiProvider().commonAdmin).request(action);
   }
 
   Future<R?> profile<R extends Object>(Future<R?> Function(ProfileApi) action) async {
-    return await profileWrapper().request(action);
+    return await _profileWrapper().request(action);
+  }
+
+  Future<R?> profileCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {
+    return await ApiWrapper(_profileApiProvider().common).request(action);
+  }
+
+  Future<R?> profileCommonAdmin<R extends Object>(Future<R?> Function(CommonadminApi) action) async {
+    return await ApiWrapper(_mediaApiProvider().commonAdmin).request(action);
   }
 }
 
