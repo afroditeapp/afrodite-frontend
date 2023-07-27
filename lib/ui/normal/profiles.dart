@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:pihka_frontend/ui/utils.dart';
 
-class ProfileView extends StatefulWidget {
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+class ProfileView extends BottomNavigationView {
   const ProfileView({Key? key}) : super(key: key);
 
   @override
   _ProfileViewState createState() => _ProfileViewState();
+
+  @override
+  String title(BuildContext context) {
+    return AppLocalizations.of(context).pageProfileGridTitle;
+  }
 }
 
 class _ProfileViewState extends State<ProfileView> {

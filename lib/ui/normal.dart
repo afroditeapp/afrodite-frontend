@@ -33,30 +33,25 @@ class _NormalStateContentState extends State<NormalStateContent> {
 
   @override
   Widget build(BuildContext context) {
-    var widgets = const [
+    var views = const [
       ProfileView(),
       LikeView(),
       ChatView(),
       SettingsView(),
     ];
-    var titles = const [
-      "Profiles",
-      "Likes",
-      "Chats",
-      "Settings"
-    ];
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(titles[selectedView]),
+        title: Text(views[selectedView].title(context)),
+        actions: views[selectedView].actions(context),
       ),
-      body: widgets[selectedView],
+      body: views[selectedView],
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.account_box), label: "Profiles"),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Likes"),
-          BottomNavigationBarItem(icon: Icon(Icons.message), label: "Chats"),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings"),
+        items: [
+          BottomNavigationBarItem(icon: const Icon(Icons.account_box), label: views[selectedView].title(context)),
+          BottomNavigationBarItem(icon: const Icon(Icons.favorite), label: views[selectedView].title(context)),
+          BottomNavigationBarItem(icon: const Icon(Icons.message), label: views[selectedView].title(context)),
+          BottomNavigationBarItem(icon: const Icon(Icons.settings), label: views[selectedView].title(context)),
         ],
         selectedItemColor: Colors.lightBlue[900],
         unselectedItemColor: Colors.black54,

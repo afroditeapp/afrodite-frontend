@@ -34,3 +34,12 @@ Future<bool?> showConfirmDialog(BuildContext context, String actionText) {
     )
   );
 }
+
+
+abstract class BottomNavigationView extends StatefulWidget {
+  const BottomNavigationView({super.key});
+
+  String title(BuildContext context);
+  /// Action bar actions
+  List<Widget>? actions(BuildContext context) => null;
+}

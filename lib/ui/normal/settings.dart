@@ -8,11 +8,42 @@ import 'package:pihka_frontend/ui/utils.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SettingsView extends StatefulWidget {
+class SettingsView extends BottomNavigationView {
   const SettingsView({Key? key}) : super(key: key);
 
   @override
   _SettingsViewState createState() => _SettingsViewState();
+
+  @override
+  List<Widget> actions(BuildContext context) {
+    return [
+      PopupMenuButton(
+        itemBuilder: (context) {
+          return [
+            PopupMenuItem(value: "about", child: Text(AppLocalizations.of(context).pageSettingsAboutAction)),
+          ];
+        },
+        onSelected: (value) {
+          switch (value) {
+            case "about": {
+              showAboutDialog(
+                context: context,
+                applicationName: "Pihka",
+                applicationVersion: "0.1.0",
+                applicationIcon: null,
+                applicationLegalese: "© 2023 Pihka",
+              );
+            }
+          }
+        },
+      ),
+    ];
+  }
+
+  @override
+  String title(BuildContext context) {
+    return AppLocalizations.of(context).pageSettingsTitle;
+  }
 }
 
 class _SettingsViewState extends State<SettingsView> {
@@ -64,11 +95,11 @@ class Setting {
 
   factory Setting.createSetting(IconData icon, String text, void Function() action) {
     Widget widget = Padding(
-      padding: const EdgeInsets.all(2.0),
+      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
       child: Row(
         children: [
-          Icon(icon, size: 50,),
-          Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+          Icon(icon, size: 45,),
+          const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
           Text(text),
         ],
       ),

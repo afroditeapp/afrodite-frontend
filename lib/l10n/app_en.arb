@@ -27,6 +27,24 @@
     "description": "Register button text"
   },
 
+  "@_PROFILE_GRID_PAGE": {},
+  "pageProfileGridTitle": "Profiles",
+  "@pageProfileGridTitle": {
+    "description": "Title for profile grid page"
+  },
+
+  "@_LIKES_PAGE": {},
+  "pageLikesTitle": "Likes",
+  "@pageLikesTitle": {
+    "description": "Title for likes page"
+  },
+
+  "@_CHAT_LIST_PAGE": {},
+  "pageChatListTitle": "Chats",
+  "@pageChatListTitle": {
+    "description": "Title for chat list page"
+  },
+
   "@_SETTINGS_PAGE": {},
   "pageSettingsTitle": "Settings",
   "@pageSettingsTitle": {
@@ -35,6 +53,10 @@
   "pageSettingsLogoutTitle": "Logout",
   "@pageSettingsLogoutTitle": {
     "description": "Title for logout action"
+  },
+  "pageSettingsAboutAction": "About",
+  "@pageSettingsAboutAction": {
+    "description": "Title for about action"
   },
 
   "@_MY_PROFILE_PAGE": {},
