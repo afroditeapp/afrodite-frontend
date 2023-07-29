@@ -12,11 +12,12 @@ void showSnackBar(String text) {
   );
 }
 
-Future<bool?> showConfirmDialog(BuildContext context, String actionText) {
+Future<bool?> showConfirmDialog(BuildContext context, String actionText, {String? details}) {
   return showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
       title: Text(actionText),
+      content: details != null ? Text(details) : null,
       actions: <Widget>[
         TextButton(
           onPressed: () {
@@ -35,6 +36,22 @@ Future<bool?> showConfirmDialog(BuildContext context, String actionText) {
   );
 }
 
+Future<bool?> showInfoDialog(BuildContext context, String text) {
+  return showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      content: Text(text),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context, false);
+          },
+          child: Text(AppLocalizations.of(context).genericClose)
+        ),
+      ],
+    )
+  );
+}
 
 abstract class BottomNavigationView extends StatefulWidget {
   const BottomNavigationView({super.key});

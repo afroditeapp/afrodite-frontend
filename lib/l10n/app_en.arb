@@ -12,6 +12,10 @@
   "@genericCancel": {
     "description": "Generic cancel text"
   },
+  "genericClose": "Close",
+  "@genericClose": {
+    "description": "Generic close text"
+  },
   "genericOk": "OK",
   "@genericOk": {
     "description": "Generic OK text"

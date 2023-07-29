@@ -2,6 +2,7 @@
     "genericError": "Virhe",
     "genericEmpty": "Tyhjä",
     "genericCancel": "Peruuta",
+    "genericClose": "Sulje",
     "genericOk": "OK",
     "loginButton": "Kirjaudu",
     "registerButton": "Rekisteröidy",
