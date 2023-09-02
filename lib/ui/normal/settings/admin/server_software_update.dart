@@ -28,6 +28,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
 
   final Server _selectedServer = Server.account;
   bool _reboot = false;
+  bool _reset_data = false;
   SoftwareData? _currentData;
 
   @override
@@ -207,7 +208,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
 
   Widget displayUpdate(BuildContext context, SoftwareOptions softwareOptions) {
 
-    final rebootCheckbox = Expanded(
+    final rebootCheckbox = IntrinsicHeight(
       child: CheckboxListTile(
         title: const Text("Reboot"),
         value: _reboot,
@@ -219,9 +220,21 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
       ),
     );
 
+    final resetData = IntrinsicHeight(
+      child: CheckboxListTile(
+        title: const Text("Reset data"),
+        value: _reset_data,
+        onChanged: (value) {
+          setState(() {
+            _reset_data = value ?? false;
+          });
+        },
+      ),
+    );
+
     final requestUpdateButton = ElevatedButton(
       onPressed: () {
-        showConfirmDialog(context, "Request update?", details: "reboot: $_reboot")
+        showConfirmDialog(context, "Request update?", details: "Reboot: $_reboot \nReset data: $_reset_data")
           .then((value) async {
             if (value == true) {
               final result = await ApiManager.getInstance()
@@ -242,9 +255,18 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
       child: const Text("Request update"),
     );
 
+    var options = <Widget>[
+      rebootCheckbox,
+      resetData,
+    ];
+
     return Row(
       children: [
-        rebootCheckbox,
+        Expanded(
+          child: Column(
+            children: options,
+          ),
+        ),
         requestUpdateButton,
       ],
     );
