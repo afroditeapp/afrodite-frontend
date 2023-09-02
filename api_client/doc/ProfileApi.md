@@ -10,8 +10,10 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**getProfile**](ProfileApi.md#getprofile) | **GET** /profile_api/profile/{account_id} | Get account's current profile.
+[**getProfileFromDatabaseDebugModeBenchmark**](ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /profile_api/benchmark/profile/{account_id} | Get account's current profile from database. Debug mode must be enabled
 [**postGetNextProfilePage**](ProfileApi.md#postgetnextprofilepage) | **POST** /profile_api/page/next | Post (updates iterator) to get next page of profile list.
 [**postProfile**](ProfileApi.md#postprofile) | **POST** /profile_api/profile | Update profile information.
+[**postProfileToDatabaseDebugModeBenchmark**](ProfileApi.md#postprofiletodatabasedebugmodebenchmark) | **POST** /profile_api/benchmark/profile | Post account's current profile directly to database. Debug mode must be enabled
 [**postResetProfilePaging**](ProfileApi.md#postresetprofilepaging) | **POST** /profile_api/page/reset | Reset profile paging.
 [**putLocation**](ProfileApi.md#putlocation) | **PUT** /profile_api/location | Update location
 
@@ -26,10 +28,10 @@ Get account's current profile.  Profile can include version UUID which can be us
 ### Example
 ```dart
 import 'package:openapi/api.dart';
-// TODO Configure API key authorization: api_key
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKey = 'YOUR_API_KEY';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
 
 final api_instance = ProfileApi();
 final accountId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
@@ -54,7 +56,54 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[api_key](../README.md#api_key)
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getProfileFromDatabaseDebugModeBenchmark**
+> Profile getProfileFromDatabaseDebugModeBenchmark(accountId)
+
+Get account's current profile from database. Debug mode must be enabled
+
+Get account's current profile from database. Debug mode must be enabled that route can be used.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = ProfileApi();
+final accountId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
+
+try {
+    final result = api_instance.getProfileFromDatabaseDebugModeBenchmark(accountId);
+    print(result);
+} catch (e) {
+    print('Exception when calling ProfileApi->getProfileFromDatabaseDebugModeBenchmark: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **accountId** | **String**|  | 
+
+### Return type
+
+[**Profile**](Profile.md)
+
+### Authorization
+
+[access_token](../README.md#access_token)
 
 ### HTTP request headers
 
@@ -73,10 +122,10 @@ Post (updates iterator) to get next page of profile list.
 ### Example
 ```dart
 import 'package:openapi/api.dart';
-// TODO Configure API key authorization: api_key
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKey = 'YOUR_API_KEY';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
 
 final api_instance = ProfileApi();
 
@@ -97,7 +146,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-[api_key](../README.md#api_key)
+[access_token](../README.md#access_token)
 
 ### HTTP request headers
 
@@ -116,10 +165,10 @@ Update profile information.  Writes the profile to the database only if it is ch
 ### Example
 ```dart
 import 'package:openapi/api.dart';
-// TODO Configure API key authorization: api_key
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKey = 'YOUR_API_KEY';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
 
 final api_instance = ProfileApi();
 final profileUpdate = ProfileUpdate(); // ProfileUpdate | 
@@ -143,7 +192,53 @@ void (empty response body)
 
 ### Authorization
 
-[api_key](../README.md#api_key)
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **postProfileToDatabaseDebugModeBenchmark**
+> postProfileToDatabaseDebugModeBenchmark(profileUpdate)
+
+Post account's current profile directly to database. Debug mode must be enabled
+
+Post account's current profile directly to database. Debug mode must be enabled that route can be used.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = ProfileApi();
+final profileUpdate = ProfileUpdate(); // ProfileUpdate | 
+
+try {
+    api_instance.postProfileToDatabaseDebugModeBenchmark(profileUpdate);
+} catch (e) {
+    print('Exception when calling ProfileApi->postProfileToDatabaseDebugModeBenchmark: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **profileUpdate** | [**ProfileUpdate**](ProfileUpdate.md)|  | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[access_token](../README.md#access_token)
 
 ### HTTP request headers
 
@@ -162,10 +257,10 @@ Reset profile paging.  After this request getting next profiles will continue fr
 ### Example
 ```dart
 import 'package:openapi/api.dart';
-// TODO Configure API key authorization: api_key
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKey = 'YOUR_API_KEY';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
 
 final api_instance = ProfileApi();
 
@@ -185,7 +280,7 @@ void (empty response body)
 
 ### Authorization
 
-[api_key](../README.md#api_key)
+[access_token](../README.md#access_token)
 
 ### HTTP request headers
 
@@ -204,10 +299,10 @@ Update location
 ### Example
 ```dart
 import 'package:openapi/api.dart';
-// TODO Configure API key authorization: api_key
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKey = 'YOUR_API_KEY';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
 
 final api_instance = ProfileApi();
 final location = Location(); // Location | 
@@ -231,7 +326,7 @@ void (empty response body)
 
 ### Authorization
 
-[api_key](../README.md#api_key)
+[access_token](../README.md#access_token)
 
 ### HTTP request headers
 

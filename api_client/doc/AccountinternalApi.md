@@ -1,4 +1,4 @@
-# openapi.api.AccountinternalApi
+# openapi.api.AccountInternalApi
 
 ## Load the API package
 ```dart
@@ -9,12 +9,12 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**checkApiKey**](AccountinternalApi.md#checkapikey) | **GET** /internal/check_api_key | 
-[**internalGetAccountState**](AccountinternalApi.md#internalgetaccountstate) | **GET** /internal/get_account_state/{account_id} | 
+[**checkAccessToken**](AccountInternalApi.md#checkaccesstoken) | **GET** /internal/check_access_token | 
+[**internalGetAccountState**](AccountInternalApi.md#internalgetaccountstate) | **GET** /internal/get_account_state/{account_id} | 
 
 
-# **checkApiKey**
-> AccountIdLight checkApiKey(apiKey)
+# **checkAccessToken**
+> AccountId checkAccessToken(accessToken)
 
 
 
@@ -22,14 +22,14 @@ Method | HTTP request | Description
 ```dart
 import 'package:openapi/api.dart';
 
-final api_instance = AccountinternalApi();
-final apiKey = ApiKey(); // ApiKey | 
+final api_instance = AccountInternalApi();
+final accessToken = AccessToken(); // AccessToken | 
 
 try {
-    final result = api_instance.checkApiKey(apiKey);
+    final result = api_instance.checkAccessToken(accessToken);
     print(result);
 } catch (e) {
-    print('Exception when calling AccountinternalApi->checkApiKey: $e\n');
+    print('Exception when calling AccountInternalApi->checkAccessToken: $e\n');
 }
 ```
 
@@ -37,11 +37,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **apiKey** | [**ApiKey**](ApiKey.md)|  | 
+ **accessToken** | [**AccessToken**](AccessToken.md)|  | 
 
 ### Return type
 
-[**AccountIdLight**](AccountIdLight.md)
+[**AccountId**](AccountId.md)
 
 ### Authorization
 
@@ -63,14 +63,14 @@ No authorization required
 ```dart
 import 'package:openapi/api.dart';
 
-final api_instance = AccountinternalApi();
+final api_instance = AccountInternalApi();
 final accountId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
 
 try {
     final result = api_instance.internalGetAccountState(accountId);
     print(result);
 } catch (e) {
-    print('Exception when calling AccountinternalApi->internalGetAccountState: $e\n');
+    print('Exception when calling AccountInternalApi->internalGetAccountState: $e\n');
 }
 ```
 

@@ -9,8 +9,8 @@ import 'package:openapi/api.dart';
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **content** | [**ModerationRequestContent**](ModerationRequestContent.md) |  | 
-**moderatorId** | [**AccountIdLight**](AccountIdLight.md) |  | 
-**requestCreatorId** | [**AccountIdLight**](AccountIdLight.md) |  | 
+**moderatorId** | [**AccountId**](AccountId.md) |  | 
+**requestCreatorId** | [**AccountId**](AccountId.md) |  | 
 **requestId** | [**ModerationRequestId**](ModerationRequestId.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

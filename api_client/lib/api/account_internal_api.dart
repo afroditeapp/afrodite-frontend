@@ -11,21 +11,21 @@
 part of openapi.api;
 
 
-class AccountinternalApi {
-  AccountinternalApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
+class AccountInternalApi {
+  AccountInternalApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
 
   final ApiClient apiClient;
 
-  /// Performs an HTTP 'GET /internal/check_api_key' operation and returns the [Response].
+  /// Performs an HTTP 'GET /internal/check_access_token' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [ApiKey] apiKey (required):
-  Future<Response> checkApiKeyWithHttpInfo(ApiKey apiKey,) async {
+  /// * [AccessToken] accessToken (required):
+  Future<Response> checkAccessTokenWithHttpInfo(AccessToken accessToken,) async {
     // ignore: prefer_const_declarations
-    final path = r'/internal/check_api_key';
+    final path = r'/internal/check_access_token';
 
     // ignore: prefer_final_locals
-    Object? postBody = apiKey;
+    Object? postBody = accessToken;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -47,9 +47,9 @@ class AccountinternalApi {
 
   /// Parameters:
   ///
-  /// * [ApiKey] apiKey (required):
-  Future<AccountIdLight?> checkApiKey(ApiKey apiKey,) async {
-    final response = await checkApiKeyWithHttpInfo(apiKey,);
+  /// * [AccessToken] accessToken (required):
+  Future<AccountId?> checkAccessToken(AccessToken accessToken,) async {
+    final response = await checkAccessTokenWithHttpInfo(accessToken,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -57,7 +57,7 @@ class AccountinternalApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountIdLight',) as AccountIdLight;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountId',) as AccountId;
     
     }
     return null;

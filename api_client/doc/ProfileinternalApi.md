@@ -1,4 +1,4 @@
-# openapi.api.ProfileinternalApi
+# openapi.api.ProfileInternalApi
 
 ## Load the API package
 ```dart
@@ -9,7 +9,7 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**internalPostUpdateProfileVisibility**](ProfileinternalApi.md#internalpostupdateprofilevisibility) | **POST** /internal/profile_api/visiblity/{account_id}/{value} | 
+[**internalPostUpdateProfileVisibility**](ProfileInternalApi.md#internalpostupdateprofilevisibility) | **POST** /internal/profile_api/visiblity/{account_id}/{value} | 
 
 
 # **internalPostUpdateProfileVisibility**
@@ -21,14 +21,14 @@ Method | HTTP request | Description
 ```dart
 import 'package:openapi/api.dart';
 
-final api_instance = ProfileinternalApi();
+final api_instance = ProfileInternalApi();
 final accountId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
 final value = true; // bool | 
 
 try {
     api_instance.internalPostUpdateProfileVisibility(accountId, value);
 } catch (e) {
-    print('Exception when calling ProfileinternalApi->internalPostUpdateProfileVisibility: $e\n');
+    print('Exception when calling ProfileInternalApi->internalPostUpdateProfileVisibility: $e\n');
 }
 ```
 

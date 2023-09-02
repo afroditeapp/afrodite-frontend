@@ -1,4 +1,4 @@
-# openapi.api.MediainternalApi
+# openapi.api.MediaInternalApi
 
 ## Load the API package
 ```dart
@@ -9,8 +9,8 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**internalGetCheckModerationRequestForAccount**](MediainternalApi.md#internalgetcheckmoderationrequestforaccount) | **GET** /internal/media_api/moderation/request/{account_id} | Check that current moderation request for account exists. Requires also
-[**internalPostUpdateProfileImageVisibility**](MediainternalApi.md#internalpostupdateprofileimagevisibility) | **POST** /internal/media_api/visiblity/{account_id}/{value} | 
+[**internalGetCheckModerationRequestForAccount**](MediaInternalApi.md#internalgetcheckmoderationrequestforaccount) | **GET** /internal/media_api/moderation/request/{account_id} | Check that current moderation request for account exists. Requires also
+[**internalPostUpdateProfileImageVisibility**](MediaInternalApi.md#internalpostupdateprofileimagevisibility) | **POST** /internal/media_api/visiblity/{account_id}/{value} | 
 
 
 # **internalGetCheckModerationRequestForAccount**
@@ -24,13 +24,13 @@ Check that current moderation request for account exists. Requires also that req
 ```dart
 import 'package:openapi/api.dart';
 
-final api_instance = MediainternalApi();
+final api_instance = MediaInternalApi();
 final accountId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
 
 try {
     api_instance.internalGetCheckModerationRequestForAccount(accountId);
 } catch (e) {
-    print('Exception when calling MediainternalApi->internalGetCheckModerationRequestForAccount: $e\n');
+    print('Exception when calling MediaInternalApi->internalGetCheckModerationRequestForAccount: $e\n');
 }
 ```
 
@@ -64,7 +64,7 @@ No authorization required
 ```dart
 import 'package:openapi/api.dart';
 
-final api_instance = MediainternalApi();
+final api_instance = MediaInternalApi();
 final accountId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
 final value = true; // bool | 
 final profile = Profile(); // Profile | 
@@ -72,7 +72,7 @@ final profile = Profile(); // Profile |
 try {
     api_instance.internalPostUpdateProfileImageVisibility(accountId, value, profile);
 } catch (e) {
-    print('Exception when calling MediainternalApi->internalPostUpdateProfileImageVisibility: $e\n');
+    print('Exception when calling MediaInternalApi->internalPostUpdateProfileImageVisibility: $e\n');
 }
 ```
 

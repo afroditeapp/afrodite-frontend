@@ -11,8 +11,8 @@
 part of openapi.api;
 
 
-class ProfileinternalApi {
-  ProfileinternalApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
+class ProfileInternalApi {
+  ProfileInternalApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
 
   final ApiClient apiClient;
 

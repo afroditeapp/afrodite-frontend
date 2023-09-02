@@ -11,8 +11,8 @@
 part of openapi.api;
 
 
-class CommonadminApi {
-  CommonadminApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
+class CommonAdminApi {
+  CommonAdminApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
 
   final ApiClient apiClient;
 
@@ -170,6 +170,54 @@ class CommonadminApi {
     return null;
   }
 
+  /// Save dynamic backend config.
+  ///
+  /// Save dynamic backend config.  # Capabilities Requires admin_server_maintentance_save_backend_settings.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [BackendConfig] backendConfig (required):
+  Future<Response> postBackendConfigWithHttpInfo(BackendConfig backendConfig,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/backend_config';
+
+    // ignore: prefer_final_locals
+    Object? postBody = backendConfig;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Save dynamic backend config.
+  ///
+  /// Save dynamic backend config.  # Capabilities Requires admin_server_maintentance_save_backend_settings.
+  ///
+  /// Parameters:
+  ///
+  /// * [BackendConfig] backendConfig (required):
+  Future<void> postBackendConfig(BackendConfig backendConfig,) async {
+    final response = await postBackendConfigWithHttpInfo(backendConfig,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Request building new software from manager instance.
   ///
   /// Request building new software from manager instance.
@@ -220,9 +268,59 @@ class CommonadminApi {
     }
   }
 
+  /// Request restarting or reseting backend through app-manager instance.
+  ///
+  /// Request restarting or reseting backend through app-manager instance.  # Capabilities Requires admin_server_maintentance_restart_backend. Also requires admin_server_maintentance_reset_data if reset_data is true.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [bool] resetData (required):
+  Future<Response> postRequestRestartOrResetBackendWithHttpInfo(bool resetData,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/request_restart_or_reset_backend';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'reset_data', resetData));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Request restarting or reseting backend through app-manager instance.
+  ///
+  /// Request restarting or reseting backend through app-manager instance.  # Capabilities Requires admin_server_maintentance_restart_backend. Also requires admin_server_maintentance_reset_data if reset_data is true.
+  ///
+  /// Parameters:
+  ///
+  /// * [bool] resetData (required):
+  Future<void> postRequestRestartOrResetBackend(bool resetData,) async {
+    final response = await postRequestRestartOrResetBackendWithHttpInfo(resetData,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Request updating new software from manager instance.
   ///
-  /// Request updating new software from manager instance.
+  /// Request updating new software from manager instance.  Reboot query parameter will force reboot of the server after update. If it is off, the server will be rebooted when the usual reboot check is done.  Reset data query parameter will reset data like defined in current app-manager version. If this is true then specific capability is needed for completing this request.  # Capablities Requires admin_server_maintentance_update_software. Also requires admin_server_maintentance_reset_data if reset_data is true.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -231,7 +329,9 @@ class CommonadminApi {
   /// * [SoftwareOptions] softwareOptions (required):
   ///
   /// * [bool] reboot (required):
-  Future<Response> postRequestUpdateSoftwareWithHttpInfo(SoftwareOptions softwareOptions, bool reboot,) async {
+  ///
+  /// * [bool] resetData (required):
+  Future<Response> postRequestUpdateSoftwareWithHttpInfo(SoftwareOptions softwareOptions, bool reboot, bool resetData,) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/request_update_software';
 
@@ -244,6 +344,7 @@ class CommonadminApi {
 
       queryParams.addAll(_queryParams('', 'software_options', softwareOptions));
       queryParams.addAll(_queryParams('', 'reboot', reboot));
+      queryParams.addAll(_queryParams('', 'reset_data', resetData));
 
     const contentTypes = <String>[];
 
@@ -261,15 +362,17 @@ class CommonadminApi {
 
   /// Request updating new software from manager instance.
   ///
-  /// Request updating new software from manager instance.
+  /// Request updating new software from manager instance.  Reboot query parameter will force reboot of the server after update. If it is off, the server will be rebooted when the usual reboot check is done.  Reset data query parameter will reset data like defined in current app-manager version. If this is true then specific capability is needed for completing this request.  # Capablities Requires admin_server_maintentance_update_software. Also requires admin_server_maintentance_reset_data if reset_data is true.
   ///
   /// Parameters:
   ///
   /// * [SoftwareOptions] softwareOptions (required):
   ///
   /// * [bool] reboot (required):
-  Future<void> postRequestUpdateSoftware(SoftwareOptions softwareOptions, bool reboot,) async {
-    final response = await postRequestUpdateSoftwareWithHttpInfo(softwareOptions, reboot,);
+  ///
+  /// * [bool] resetData (required):
+  Future<void> postRequestUpdateSoftware(SoftwareOptions softwareOptions, bool reboot, bool resetData,) async {
+    final response = await postRequestUpdateSoftwareWithHttpInfo(softwareOptions, reboot, resetData,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

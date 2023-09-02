@@ -215,7 +215,7 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
     }
   }
 
-  Future<Uint8List?> getImage(AccountIdLight imageOwner, ContentId id) async {
+  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id) async {
     return media.getImage(imageOwner, id);
   }
 }

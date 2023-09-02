@@ -15,7 +15,7 @@ Method | HTTP request | Description
 [**postAccountSetup**](AccountApi.md#postaccountsetup) | **POST** /account_api/setup | Setup non-changeable user information during `initial setup` state.
 [**postCompleteSetup**](AccountApi.md#postcompletesetup) | **POST** /account_api/complete_setup | Complete initial setup.
 [**postDelete**](AccountApi.md#postdelete) | **PUT** /account_api/delete | Delete account.
-[**postLogin**](AccountApi.md#postlogin) | **POST** /account_api/login | Get new ApiKey.
+[**postLogin**](AccountApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken.
 [**postRegister**](AccountApi.md#postregister) | **POST** /account_api/register | Register new account. Returns new account ID which is UUID.
 [**postSignInWithLogin**](AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google. Creates new account if
 [**putSettingProfileVisiblity**](AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update profile visiblity value.
@@ -31,10 +31,10 @@ Cancel account deletion.  Account state will move to previous state.
 ### Example
 ```dart
 import 'package:openapi/api.dart';
-// TODO Configure API key authorization: api_key
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKey = 'YOUR_API_KEY';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
 
 final api_instance = AccountApi();
 
@@ -54,7 +54,7 @@ void (empty response body)
 
 ### Authorization
 
-[api_key](../README.md#api_key)
+[access_token](../README.md#access_token)
 
 ### HTTP request headers
 
@@ -73,10 +73,10 @@ Get current account state.
 ### Example
 ```dart
 import 'package:openapi/api.dart';
-// TODO Configure API key authorization: api_key
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKey = 'YOUR_API_KEY';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
 
 final api_instance = AccountApi();
 
@@ -97,7 +97,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-[api_key](../README.md#api_key)
+[access_token](../README.md#access_token)
 
 ### HTTP request headers
 
@@ -116,10 +116,10 @@ Get deletion status.  Get information when account will be really deleted.
 ### Example
 ```dart
 import 'package:openapi/api.dart';
-// TODO Configure API key authorization: api_key
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKey = 'YOUR_API_KEY';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
 
 final api_instance = AccountApi();
 
@@ -140,7 +140,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-[api_key](../README.md#api_key)
+[access_token](../README.md#access_token)
 
 ### HTTP request headers
 
@@ -159,10 +159,10 @@ Setup non-changeable user information during `initial setup` state.
 ### Example
 ```dart
 import 'package:openapi/api.dart';
-// TODO Configure API key authorization: api_key
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKey = 'YOUR_API_KEY';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
 
 final api_instance = AccountApi();
 final accountSetup = AccountSetup(); // AccountSetup | 
@@ -186,7 +186,7 @@ void (empty response body)
 
 ### Authorization
 
-[api_key](../README.md#api_key)
+[access_token](../README.md#access_token)
 
 ### HTTP request headers
 
@@ -205,10 +205,10 @@ Complete initial setup.  Request to this handler will complete if client is in `
 ### Example
 ```dart
 import 'package:openapi/api.dart';
-// TODO Configure API key authorization: api_key
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKey = 'YOUR_API_KEY';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
 
 final api_instance = AccountApi();
 
@@ -228,7 +228,7 @@ void (empty response body)
 
 ### Authorization
 
-[api_key](../README.md#api_key)
+[access_token](../README.md#access_token)
 
 ### HTTP request headers
 
@@ -247,10 +247,10 @@ Delete account.  Changes account state to `pending deletion` from all possible s
 ### Example
 ```dart
 import 'package:openapi/api.dart';
-// TODO Configure API key authorization: api_key
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKey = 'YOUR_API_KEY';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
 
 final api_instance = AccountApi();
 
@@ -270,7 +270,7 @@ void (empty response body)
 
 ### Authorization
 
-[api_key](../README.md#api_key)
+[access_token](../README.md#access_token)
 
 ### HTTP request headers
 
@@ -280,21 +280,21 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **postLogin**
-> LoginResult postLogin(accountIdLight)
+> LoginResult postLogin(accountId)
 
-Get new ApiKey.
+Get new AccessToken.
 
-Get new ApiKey.
+Get new AccessToken.  Available only if server is running in debug mode and bot_login is enabled from config file.
 
 ### Example
 ```dart
 import 'package:openapi/api.dart';
 
 final api_instance = AccountApi();
-final accountIdLight = AccountIdLight(); // AccountIdLight | 
+final accountId = AccountId(); // AccountId | 
 
 try {
-    final result = api_instance.postLogin(accountIdLight);
+    final result = api_instance.postLogin(accountId);
     print(result);
 } catch (e) {
     print('Exception when calling AccountApi->postLogin: $e\n');
@@ -305,7 +305,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **accountIdLight** | [**AccountIdLight**](AccountIdLight.md)|  | 
+ **accountId** | [**AccountId**](AccountId.md)|  | 
 
 ### Return type
 
@@ -323,11 +323,11 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **postRegister**
-> AccountIdLight postRegister()
+> AccountId postRegister()
 
 Register new account. Returns new account ID which is UUID.
 
-Register new account. Returns new account ID which is UUID.
+Register new account. Returns new account ID which is UUID.  Available only if server is running in debug mode and bot_login is enabled from config file.
 
 ### Example
 ```dart
@@ -348,7 +348,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**AccountIdLight**](AccountIdLight.md)
+[**AccountId**](AccountId.md)
 
 ### Authorization
 
@@ -414,10 +414,10 @@ Update profile visiblity value.  This will check that the first image moderation
 ### Example
 ```dart
 import 'package:openapi/api.dart';
-// TODO Configure API key authorization: api_key
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKey = 'YOUR_API_KEY';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('api_key').apiKeyPrefix = 'Bearer';
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
 
 final api_instance = AccountApi();
 final booleanSetting = BooleanSetting(); // BooleanSetting | 
@@ -441,7 +441,7 @@ void (empty response body)
 
 ### Authorization
 
-[api_key](../README.md#api_key)
+[access_token](../README.md#access_token)
 
 ### HTTP request headers
 

@@ -11,13 +11,13 @@
 import 'package:openapi/api.dart';
 import 'package:test/test.dart';
 
-// tests for AccountIdLight
+// tests for ResetDataQueryParam
 void main() {
-  // final instance = AccountIdLight();
+  // final instance = ResetDataQueryParam();
 
-  group('test AccountIdLight', () {
-    // String accountId
-    test('to test the property `accountId`', () async {
+  group('test ResetDataQueryParam', () {
+    // bool resetData
+    test('to test the property `resetData`', () async {
       // TODO
     });
 

@@ -280,21 +280,21 @@ class AccountApi {
     }
   }
 
-  /// Get new ApiKey.
+  /// Get new AccessToken.
   ///
-  /// Get new ApiKey.
+  /// Get new AccessToken.  Available only if server is running in debug mode and bot_login is enabled from config file.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [AccountIdLight] accountIdLight (required):
-  Future<Response> postLoginWithHttpInfo(AccountIdLight accountIdLight,) async {
+  /// * [AccountId] accountId (required):
+  Future<Response> postLoginWithHttpInfo(AccountId accountId,) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/login';
 
     // ignore: prefer_final_locals
-    Object? postBody = accountIdLight;
+    Object? postBody = accountId;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -314,15 +314,15 @@ class AccountApi {
     );
   }
 
-  /// Get new ApiKey.
+  /// Get new AccessToken.
   ///
-  /// Get new ApiKey.
+  /// Get new AccessToken.  Available only if server is running in debug mode and bot_login is enabled from config file.
   ///
   /// Parameters:
   ///
-  /// * [AccountIdLight] accountIdLight (required):
-  Future<LoginResult?> postLogin(AccountIdLight accountIdLight,) async {
-    final response = await postLoginWithHttpInfo(accountIdLight,);
+  /// * [AccountId] accountId (required):
+  Future<LoginResult?> postLogin(AccountId accountId,) async {
+    final response = await postLoginWithHttpInfo(accountId,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -338,7 +338,7 @@ class AccountApi {
 
   /// Register new account. Returns new account ID which is UUID.
   ///
-  /// Register new account. Returns new account ID which is UUID.
+  /// Register new account. Returns new account ID which is UUID.  Available only if server is running in debug mode and bot_login is enabled from config file.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> postRegisterWithHttpInfo() async {
@@ -368,8 +368,8 @@ class AccountApi {
 
   /// Register new account. Returns new account ID which is UUID.
   ///
-  /// Register new account. Returns new account ID which is UUID.
-  Future<AccountIdLight?> postRegister() async {
+  /// Register new account. Returns new account ID which is UUID.  Available only if server is running in debug mode and bot_login is enabled from config file.
+  Future<AccountId?> postRegister() async {
     final response = await postRegisterWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -378,7 +378,7 @@ class AccountApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountIdLight',) as AccountIdLight;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountId',) as AccountId;
     
     }
     return null;

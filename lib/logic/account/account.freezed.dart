@@ -16,8 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$AccountData {
-  AccountIdLight? get accountId => throw _privateConstructorUsedError;
-  ApiKey? get apiKey => throw _privateConstructorUsedError;
+  AccountId? get accountId => throw _privateConstructorUsedError;
+  AccessToken? get accessToken => throw _privateConstructorUsedError;
   Capabilities get capabilities => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -32,7 +32,9 @@ abstract class $AccountDataCopyWith<$Res> {
       _$AccountDataCopyWithImpl<$Res, AccountData>;
   @useResult
   $Res call(
-      {AccountIdLight? accountId, ApiKey? apiKey, Capabilities capabilities});
+      {AccountId? accountId,
+      AccessToken? accessToken,
+      Capabilities capabilities});
 }
 
 /// @nodoc
@@ -49,18 +51,18 @@ class _$AccountDataCopyWithImpl<$Res, $Val extends AccountData>
   @override
   $Res call({
     Object? accountId = freezed,
-    Object? apiKey = freezed,
+    Object? accessToken = freezed,
     Object? capabilities = null,
   }) {
     return _then(_value.copyWith(
       accountId: freezed == accountId
           ? _value.accountId
           : accountId // ignore: cast_nullable_to_non_nullable
-              as AccountIdLight?,
-      apiKey: freezed == apiKey
-          ? _value.apiKey
-          : apiKey // ignore: cast_nullable_to_non_nullable
-              as ApiKey?,
+              as AccountId?,
+      accessToken: freezed == accessToken
+          ? _value.accessToken
+          : accessToken // ignore: cast_nullable_to_non_nullable
+              as AccessToken?,
       capabilities: null == capabilities
           ? _value.capabilities
           : capabilities // ignore: cast_nullable_to_non_nullable
@@ -78,7 +80,9 @@ abstract class _$$_AccountDataCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {AccountIdLight? accountId, ApiKey? apiKey, Capabilities capabilities});
+      {AccountId? accountId,
+      AccessToken? accessToken,
+      Capabilities capabilities});
 }
 
 /// @nodoc
@@ -93,18 +97,18 @@ class __$$_AccountDataCopyWithImpl<$Res>
   @override
   $Res call({
     Object? accountId = freezed,
-    Object? apiKey = freezed,
+    Object? accessToken = freezed,
     Object? capabilities = null,
   }) {
     return _then(_$_AccountData(
       accountId: freezed == accountId
           ? _value.accountId
           : accountId // ignore: cast_nullable_to_non_nullable
-              as AccountIdLight?,
-      apiKey: freezed == apiKey
-          ? _value.apiKey
-          : apiKey // ignore: cast_nullable_to_non_nullable
-              as ApiKey?,
+              as AccountId?,
+      accessToken: freezed == accessToken
+          ? _value.accessToken
+          : accessToken // ignore: cast_nullable_to_non_nullable
+              as AccessToken?,
       capabilities: null == capabilities
           ? _value.capabilities
           : capabilities // ignore: cast_nullable_to_non_nullable
@@ -116,18 +120,19 @@ class __$$_AccountDataCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_AccountData with DiagnosticableTreeMixin implements _AccountData {
-  _$_AccountData({this.accountId, this.apiKey, required this.capabilities});
+  _$_AccountData(
+      {this.accountId, this.accessToken, required this.capabilities});
 
   @override
-  final AccountIdLight? accountId;
+  final AccountId? accountId;
   @override
-  final ApiKey? apiKey;
+  final AccessToken? accessToken;
   @override
   final Capabilities capabilities;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountData(accountId: $accountId, apiKey: $apiKey, capabilities: $capabilities)';
+    return 'AccountData(accountId: $accountId, accessToken: $accessToken, capabilities: $capabilities)';
   }
 
   @override
@@ -136,7 +141,7 @@ class _$_AccountData with DiagnosticableTreeMixin implements _AccountData {
     properties
       ..add(DiagnosticsProperty('type', 'AccountData'))
       ..add(DiagnosticsProperty('accountId', accountId))
-      ..add(DiagnosticsProperty('apiKey', apiKey))
+      ..add(DiagnosticsProperty('accessToken', accessToken))
       ..add(DiagnosticsProperty('capabilities', capabilities));
   }
 
@@ -147,13 +152,15 @@ class _$_AccountData with DiagnosticableTreeMixin implements _AccountData {
             other is _$_AccountData &&
             (identical(other.accountId, accountId) ||
                 other.accountId == accountId) &&
-            (identical(other.apiKey, apiKey) || other.apiKey == apiKey) &&
+            (identical(other.accessToken, accessToken) ||
+                other.accessToken == accessToken) &&
             (identical(other.capabilities, capabilities) ||
                 other.capabilities == capabilities));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, accountId, apiKey, capabilities);
+  int get hashCode =>
+      Object.hash(runtimeType, accountId, accessToken, capabilities);
 
   @JsonKey(ignore: true)
   @override
@@ -164,14 +171,14 @@ class _$_AccountData with DiagnosticableTreeMixin implements _AccountData {
 
 abstract class _AccountData implements AccountData {
   factory _AccountData(
-      {final AccountIdLight? accountId,
-      final ApiKey? apiKey,
+      {final AccountId? accountId,
+      final AccessToken? accessToken,
       required final Capabilities capabilities}) = _$_AccountData;
 
   @override
-  AccountIdLight? get accountId;
+  AccountId? get accountId;
   @override
-  ApiKey? get apiKey;
+  AccessToken? get accessToken;
   @override
   Capabilities get capabilities;
   @override

@@ -21,9 +21,9 @@ class Moderation {
 
   ModerationRequestContent content;
 
-  AccountIdLight moderatorId;
+  AccountId moderatorId;
 
-  AccountIdLight requestCreatorId;
+  AccountId requestCreatorId;
 
   ModerationRequestId requestId;
 
@@ -74,8 +74,8 @@ class Moderation {
 
       return Moderation(
         content: ModerationRequestContent.fromJson(json[r'content'])!,
-        moderatorId: AccountIdLight.fromJson(json[r'moderator_id'])!,
-        requestCreatorId: AccountIdLight.fromJson(json[r'request_creator_id'])!,
+        moderatorId: AccountId.fromJson(json[r'moderator_id'])!,
+        requestCreatorId: AccountId.fromJson(json[r'request_creator_id'])!,
         requestId: ModerationRequestId.fromJson(json[r'request_id'])!,
       );
     }

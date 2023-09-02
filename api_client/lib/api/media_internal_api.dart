@@ -11,8 +11,8 @@
 part of openapi.api;
 
 
-class MediainternalApi {
-  MediainternalApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
+class MediaInternalApi {
+  MediaInternalApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
 
   final ApiClient apiClient;
 

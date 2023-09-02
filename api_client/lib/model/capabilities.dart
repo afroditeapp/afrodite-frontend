@@ -17,7 +17,11 @@ class Capabilities {
     this.adminModerateImages,
     this.adminModerateProfiles,
     this.adminModifyCapablities,
+    this.adminServerMaintentanceRebootBackend,
+    this.adminServerMaintentanceResetData,
+    this.adminServerMaintentanceSaveBackendSettings,
     this.adminServerMaintentanceUpdateSoftware,
+    this.adminServerMaintentanceViewBackendSettings,
     this.adminServerMaintentanceViewInfo,
     this.adminSetupPossible,
     this.adminViewAllProfiles,
@@ -65,8 +69,41 @@ class Capabilities {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
+  bool? adminServerMaintentanceRebootBackend;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  bool? adminServerMaintentanceResetData;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  bool? adminServerMaintentanceSaveBackendSettings;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   bool? adminServerMaintentanceUpdateSoftware;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  bool? adminServerMaintentanceViewBackendSettings;
+
+  /// View server infrastructure related info like logs and software versions.
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
   /// does not include a default value (using the "default:" property), however, the generated
@@ -131,7 +168,11 @@ class Capabilities {
      other.adminModerateImages == adminModerateImages &&
      other.adminModerateProfiles == adminModerateProfiles &&
      other.adminModifyCapablities == adminModifyCapablities &&
+     other.adminServerMaintentanceRebootBackend == adminServerMaintentanceRebootBackend &&
+     other.adminServerMaintentanceResetData == adminServerMaintentanceResetData &&
+     other.adminServerMaintentanceSaveBackendSettings == adminServerMaintentanceSaveBackendSettings &&
      other.adminServerMaintentanceUpdateSoftware == adminServerMaintentanceUpdateSoftware &&
+     other.adminServerMaintentanceViewBackendSettings == adminServerMaintentanceViewBackendSettings &&
      other.adminServerMaintentanceViewInfo == adminServerMaintentanceViewInfo &&
      other.adminSetupPossible == adminSetupPossible &&
      other.adminViewAllProfiles == adminViewAllProfiles &&
@@ -147,7 +188,11 @@ class Capabilities {
     (adminModerateImages == null ? 0 : adminModerateImages!.hashCode) +
     (adminModerateProfiles == null ? 0 : adminModerateProfiles!.hashCode) +
     (adminModifyCapablities == null ? 0 : adminModifyCapablities!.hashCode) +
+    (adminServerMaintentanceRebootBackend == null ? 0 : adminServerMaintentanceRebootBackend!.hashCode) +
+    (adminServerMaintentanceResetData == null ? 0 : adminServerMaintentanceResetData!.hashCode) +
+    (adminServerMaintentanceSaveBackendSettings == null ? 0 : adminServerMaintentanceSaveBackendSettings!.hashCode) +
     (adminServerMaintentanceUpdateSoftware == null ? 0 : adminServerMaintentanceUpdateSoftware!.hashCode) +
+    (adminServerMaintentanceViewBackendSettings == null ? 0 : adminServerMaintentanceViewBackendSettings!.hashCode) +
     (adminServerMaintentanceViewInfo == null ? 0 : adminServerMaintentanceViewInfo!.hashCode) +
     (adminSetupPossible == null ? 0 : adminSetupPossible!.hashCode) +
     (adminViewAllProfiles == null ? 0 : adminViewAllProfiles!.hashCode) +
@@ -157,7 +202,7 @@ class Capabilities {
     (viewPublicProfiles == null ? 0 : viewPublicProfiles!.hashCode);
 
   @override
-  String toString() => 'Capabilities[adminBanProfile=$adminBanProfile, adminModerateImages=$adminModerateImages, adminModerateProfiles=$adminModerateProfiles, adminModifyCapablities=$adminModifyCapablities, adminServerMaintentanceUpdateSoftware=$adminServerMaintentanceUpdateSoftware, adminServerMaintentanceViewInfo=$adminServerMaintentanceViewInfo, adminSetupPossible=$adminSetupPossible, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory, bannedEditProfile=$bannedEditProfile, viewPublicProfiles=$viewPublicProfiles]';
+  String toString() => 'Capabilities[adminBanProfile=$adminBanProfile, adminModerateImages=$adminModerateImages, adminModerateProfiles=$adminModerateProfiles, adminModifyCapablities=$adminModifyCapablities, adminServerMaintentanceRebootBackend=$adminServerMaintentanceRebootBackend, adminServerMaintentanceResetData=$adminServerMaintentanceResetData, adminServerMaintentanceSaveBackendSettings=$adminServerMaintentanceSaveBackendSettings, adminServerMaintentanceUpdateSoftware=$adminServerMaintentanceUpdateSoftware, adminServerMaintentanceViewBackendSettings=$adminServerMaintentanceViewBackendSettings, adminServerMaintentanceViewInfo=$adminServerMaintentanceViewInfo, adminSetupPossible=$adminSetupPossible, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory, bannedEditProfile=$bannedEditProfile, viewPublicProfiles=$viewPublicProfiles]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -181,10 +226,30 @@ class Capabilities {
     } else {
       json[r'admin_modify_capablities'] = null;
     }
+    if (this.adminServerMaintentanceRebootBackend != null) {
+      json[r'admin_server_maintentance_reboot_backend'] = this.adminServerMaintentanceRebootBackend;
+    } else {
+      json[r'admin_server_maintentance_reboot_backend'] = null;
+    }
+    if (this.adminServerMaintentanceResetData != null) {
+      json[r'admin_server_maintentance_reset_data'] = this.adminServerMaintentanceResetData;
+    } else {
+      json[r'admin_server_maintentance_reset_data'] = null;
+    }
+    if (this.adminServerMaintentanceSaveBackendSettings != null) {
+      json[r'admin_server_maintentance_save_backend_settings'] = this.adminServerMaintentanceSaveBackendSettings;
+    } else {
+      json[r'admin_server_maintentance_save_backend_settings'] = null;
+    }
     if (this.adminServerMaintentanceUpdateSoftware != null) {
       json[r'admin_server_maintentance_update_software'] = this.adminServerMaintentanceUpdateSoftware;
     } else {
       json[r'admin_server_maintentance_update_software'] = null;
+    }
+    if (this.adminServerMaintentanceViewBackendSettings != null) {
+      json[r'admin_server_maintentance_view_backend_settings'] = this.adminServerMaintentanceViewBackendSettings;
+    } else {
+      json[r'admin_server_maintentance_view_backend_settings'] = null;
     }
     if (this.adminServerMaintentanceViewInfo != null) {
       json[r'admin_server_maintentance_view_info'] = this.adminServerMaintentanceViewInfo;
@@ -247,7 +312,11 @@ class Capabilities {
         adminModerateImages: mapValueOfType<bool>(json, r'admin_moderate_images'),
         adminModerateProfiles: mapValueOfType<bool>(json, r'admin_moderate_profiles'),
         adminModifyCapablities: mapValueOfType<bool>(json, r'admin_modify_capablities'),
+        adminServerMaintentanceRebootBackend: mapValueOfType<bool>(json, r'admin_server_maintentance_reboot_backend'),
+        adminServerMaintentanceResetData: mapValueOfType<bool>(json, r'admin_server_maintentance_reset_data'),
+        adminServerMaintentanceSaveBackendSettings: mapValueOfType<bool>(json, r'admin_server_maintentance_save_backend_settings'),
         adminServerMaintentanceUpdateSoftware: mapValueOfType<bool>(json, r'admin_server_maintentance_update_software'),
+        adminServerMaintentanceViewBackendSettings: mapValueOfType<bool>(json, r'admin_server_maintentance_view_backend_settings'),
         adminServerMaintentanceViewInfo: mapValueOfType<bool>(json, r'admin_server_maintentance_view_info'),
         adminSetupPossible: mapValueOfType<bool>(json, r'admin_setup_possible'),
         adminViewAllProfiles: mapValueOfType<bool>(json, r'admin_view_all_profiles'),

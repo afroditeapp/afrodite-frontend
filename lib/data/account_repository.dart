@@ -63,20 +63,20 @@ class AccountRepository extends AppSingleton {
   final _accountId = KvStorageManager.getInstance()
     .getUpdatesForWithConversion(
       KvString.accountId,
-      (value) => AccountIdLight(accountId: value)
+      (value) => AccountId(accountId: value)
     );
   final _accountAccessToken = KvStorageManager.getInstance()
     .getUpdatesForWithConversion(
       KvString.accountAccessToken,
-      (value) => ApiKey(apiKey: value)
+      (value) => AccessToken(accessToken: value)
     );
 
   Stream<MainState> get mainState => _mainState.distinct();
 
   Stream<AccountState> get accountState => _accountState.distinct();
   Stream<Capabilities> get capabilities => _capablities.distinct();
-  Stream<AccountIdLight?> get accountId => _accountId.distinct();
-  Stream<ApiKey?> get accountAccessToken => _accountAccessToken.distinct();
+  Stream<AccountId?> get accountId => _accountId.distinct();
+  Stream<AccessToken?> get accountAccessToken => _accountAccessToken.distinct();
 
   Future<void>? connectionWathcerTask;
 
@@ -203,7 +203,7 @@ class AccountRepository extends AppSingleton {
       }
   }
 
-  Future<AccountIdLight?> register() async {
+  Future<AccountId?> register() async {
     var id = await api.account((api) => api.postRegister());
     if (id != null) {
       await KvStorageManager.getInstance().setString(KvString.accountId, id.accountId);
@@ -211,7 +211,7 @@ class AccountRepository extends AppSingleton {
     return id;
   }
 
-  Future<ApiKey?> login() async {
+  Future<AccessToken?> login() async {
     final accountIdValue = await accountId.first;
     if (accountIdValue == null) {
       return null;
@@ -226,7 +226,7 @@ class AccountRepository extends AppSingleton {
 
   Future<void> handleLoginResult(LoginResult loginResult) async {
     await KvStorageManager.getInstance().setString(KvString.accountRefreshToken, loginResult.account.refresh.token);
-    await KvStorageManager.getInstance().setString(KvString.accountAccessToken, loginResult.account.access.apiKey);
+    await KvStorageManager.getInstance().setString(KvString.accountAccessToken, loginResult.account.access.accessToken);
     // TODO: microservice support
   }
 

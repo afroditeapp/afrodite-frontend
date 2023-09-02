@@ -12,7 +12,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pihka_frontend/ui/utils/image_page.dart';
 
 
-Widget viewProifle(BuildContext context, AccountIdLight account, Profile profile, PrimaryImage img, bool showGridImage) {
+Widget viewProifle(BuildContext context, AccountId account, Profile profile, PrimaryImage img, bool showGridImage) {
   return LayoutBuilder(
     builder: (context, constraints) {
       return Column(
@@ -33,7 +33,7 @@ Widget viewProifle(BuildContext context, AccountIdLight account, Profile profile
   );
 }
 
-Widget viewProifleImage(BuildContext context, AccountIdLight account, Profile profile, PrimaryImage img, bool showGridImage, BoxConstraints constraints) {
+Widget viewProifleImage(BuildContext context, AccountId account, Profile profile, PrimaryImage img, bool showGridImage, BoxConstraints constraints) {
 
   final double imgMaxWidth;
   if (showGridImage) {

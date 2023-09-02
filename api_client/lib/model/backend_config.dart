@@ -10,42 +10,40 @@
 
 part of openapi.api;
 
-class AuthPair {
-  /// Returns a new [AuthPair] instance.
-  AuthPair({
-    required this.access,
-    required this.refresh,
+class BackendConfig {
+  /// Returns a new [BackendConfig] instance.
+  BackendConfig({
+    this.bots,
   });
 
-  AccessToken access;
-
-  RefreshToken refresh;
+  BotConfig? bots;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AuthPair &&
-     other.access == access &&
-     other.refresh == refresh;
+  bool operator ==(Object other) => identical(this, other) || other is BackendConfig &&
+     other.bots == bots;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (access.hashCode) +
-    (refresh.hashCode);
+    (bots == null ? 0 : bots!.hashCode);
 
   @override
-  String toString() => 'AuthPair[access=$access, refresh=$refresh]';
+  String toString() => 'BackendConfig[bots=$bots]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'access'] = this.access;
-      json[r'refresh'] = this.refresh;
+    if (this.bots != null) {
+      json[r'bots'] = this.bots;
+    } else {
+      json[r'bots'] = null;
+    }
     return json;
   }
 
-  /// Returns a new [AuthPair] instance and imports its values from
+  /// Returns a new [BackendConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AuthPair? fromJson(dynamic value) {
+  static BackendConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,25 +52,24 @@ class AuthPair {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AuthPair[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AuthPair[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "BackendConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "BackendConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AuthPair(
-        access: AccessToken.fromJson(json[r'access'])!,
-        refresh: RefreshToken.fromJson(json[r'refresh'])!,
+      return BackendConfig(
+        bots: BotConfig.fromJson(json[r'bots']),
       );
     }
     return null;
   }
 
-  static List<AuthPair>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AuthPair>[];
+  static List<BackendConfig>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <BackendConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AuthPair.fromJson(row);
+        final value = BackendConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +78,12 @@ class AuthPair {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AuthPair> mapFromJson(dynamic json) {
-    final map = <String, AuthPair>{};
+  static Map<String, BackendConfig> mapFromJson(dynamic json) {
+    final map = <String, BackendConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AuthPair.fromJson(entry.value);
+        final value = BackendConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,13 +92,13 @@ class AuthPair {
     return map;
   }
 
-  // maps a json object with a list of AuthPair-objects as value to a dart map
-  static Map<String, List<AuthPair>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AuthPair>>{};
+  // maps a json object with a list of BackendConfig-objects as value to a dart map
+  static Map<String, List<BackendConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<BackendConfig>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AuthPair.listFromJson(entry.value, growable: growable,);
+        final value = BackendConfig.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -112,8 +109,6 @@ class AuthPair {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'access',
-    'refresh',
   };
 }
 

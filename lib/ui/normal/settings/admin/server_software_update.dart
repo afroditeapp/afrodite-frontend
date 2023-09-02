@@ -227,7 +227,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
               final result = await ApiManager.getInstance()
                 .commonAdmin(
                   _selectedServer, (api) async {
-                    await api.postRequestUpdateSoftware(softwareOptions, _reboot);
+                    await api.postRequestUpdateSoftware(softwareOptions, _reboot, false);
                     return true;
                   }
                 );

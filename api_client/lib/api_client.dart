@@ -181,22 +181,26 @@ class ApiClient {
           return valueString == 'true' || valueString == '1';
         case 'DateTime':
           return value is DateTime ? value : DateTime.tryParse(value);
+        case 'AccessToken':
+          return AccessToken.fromJson(value);
         case 'Account':
           return Account.fromJson(value);
-        case 'AccountIdLight':
-          return AccountIdLight.fromJson(value);
+        case 'AccountId':
+          return AccountId.fromJson(value);
         case 'AccountSetup':
           return AccountSetup.fromJson(value);
         case 'AccountState':
           return AccountStateTypeTransformer().decode(value);
-        case 'ApiKey':
-          return ApiKey.fromJson(value);
         case 'AuthPair':
           return AuthPair.fromJson(value);
+        case 'BackendConfig':
+          return BackendConfig.fromJson(value);
         case 'BackendVersion':
           return BackendVersion.fromJson(value);
         case 'BooleanSetting':
           return BooleanSetting.fromJson(value);
+        case 'BotConfig':
+          return BotConfig.fromJson(value);
         case 'BuildInfo':
           return BuildInfo.fromJson(value);
         case 'Capabilities':
@@ -251,6 +255,8 @@ class ApiClient {
           return RebootQueryParam.fromJson(value);
         case 'RefreshToken':
           return RefreshToken.fromJson(value);
+        case 'ResetDataQueryParam':
+          return ResetDataQueryParam.fromJson(value);
         case 'SecurityImage':
           return SecurityImage.fromJson(value);
         case 'SignInWithLoginInfo':

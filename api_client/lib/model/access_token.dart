@@ -10,37 +10,37 @@
 
 part of openapi.api;
 
-class ApiKey {
-  /// Returns a new [ApiKey] instance.
-  ApiKey({
-    required this.apiKey,
+class AccessToken {
+  /// Returns a new [AccessToken] instance.
+  AccessToken({
+    required this.accessToken,
   });
 
   /// API token which server generates.
-  String apiKey;
+  String accessToken;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ApiKey &&
-     other.apiKey == apiKey;
+  bool operator ==(Object other) => identical(this, other) || other is AccessToken &&
+     other.accessToken == accessToken;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (apiKey.hashCode);
+    (accessToken.hashCode);
 
   @override
-  String toString() => 'ApiKey[apiKey=$apiKey]';
+  String toString() => 'AccessToken[accessToken=$accessToken]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'api_key'] = this.apiKey;
+      json[r'access_token'] = this.accessToken;
     return json;
   }
 
-  /// Returns a new [ApiKey] instance and imports its values from
+  /// Returns a new [AccessToken] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ApiKey? fromJson(dynamic value) {
+  static AccessToken? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -49,24 +49,24 @@ class ApiKey {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ApiKey[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ApiKey[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AccessToken[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AccessToken[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ApiKey(
-        apiKey: mapValueOfType<String>(json, r'api_key')!,
+      return AccessToken(
+        accessToken: mapValueOfType<String>(json, r'access_token')!,
       );
     }
     return null;
   }
 
-  static List<ApiKey>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ApiKey>[];
+  static List<AccessToken>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AccessToken>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ApiKey.fromJson(row);
+        final value = AccessToken.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -75,12 +75,12 @@ class ApiKey {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ApiKey> mapFromJson(dynamic json) {
-    final map = <String, ApiKey>{};
+  static Map<String, AccessToken> mapFromJson(dynamic json) {
+    final map = <String, AccessToken>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ApiKey.fromJson(entry.value);
+        final value = AccessToken.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -89,13 +89,13 @@ class ApiKey {
     return map;
   }
 
-  // maps a json object with a list of ApiKey-objects as value to a dart map
-  static Map<String, List<ApiKey>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ApiKey>>{};
+  // maps a json object with a list of AccessToken-objects as value to a dart map
+  static Map<String, List<AccessToken>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AccessToken>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ApiKey.listFromJson(entry.value, growable: growable,);
+        final value = AccessToken.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -106,7 +106,7 @@ class ApiKey {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'api_key',
+    'access_token',
   };
 }
 

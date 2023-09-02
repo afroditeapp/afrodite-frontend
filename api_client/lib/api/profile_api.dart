@@ -73,6 +73,63 @@ class ProfileApi {
     return null;
   }
 
+  /// Get account's current profile from database. Debug mode must be enabled
+  ///
+  /// Get account's current profile from database. Debug mode must be enabled that route can be used.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<Response> getProfileFromDatabaseDebugModeBenchmarkWithHttpInfo(String accountId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/benchmark/profile/{account_id}'
+      .replaceAll('{account_id}', accountId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get account's current profile from database. Debug mode must be enabled
+  ///
+  /// Get account's current profile from database. Debug mode must be enabled that route can be used.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<Profile?> getProfileFromDatabaseDebugModeBenchmark(String accountId,) async {
+    final response = await getProfileFromDatabaseDebugModeBenchmarkWithHttpInfo(accountId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Profile',) as Profile;
+    
+    }
+    return null;
+  }
+
   /// Post (updates iterator) to get next page of profile list.
   ///
   /// Post (updates iterator) to get next page of profile list.
@@ -164,6 +221,54 @@ class ProfileApi {
   /// * [ProfileUpdate] profileUpdate (required):
   Future<void> postProfile(ProfileUpdate profileUpdate,) async {
     final response = await postProfileWithHttpInfo(profileUpdate,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Post account's current profile directly to database. Debug mode must be enabled
+  ///
+  /// Post account's current profile directly to database. Debug mode must be enabled that route can be used.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [ProfileUpdate] profileUpdate (required):
+  Future<Response> postProfileToDatabaseDebugModeBenchmarkWithHttpInfo(ProfileUpdate profileUpdate,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/benchmark/profile';
+
+    // ignore: prefer_final_locals
+    Object? postBody = profileUpdate;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Post account's current profile directly to database. Debug mode must be enabled
+  ///
+  /// Post account's current profile directly to database. Debug mode must be enabled that route can be used.
+  ///
+  /// Parameters:
+  ///
+  /// * [ProfileUpdate] profileUpdate (required):
+  Future<void> postProfileToDatabaseDebugModeBenchmark(ProfileUpdate profileUpdate,) async {
+    final response = await postProfileToDatabaseDebugModeBenchmarkWithHttpInfo(profileUpdate,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

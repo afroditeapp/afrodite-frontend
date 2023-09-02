@@ -13,8 +13,8 @@ part 'account.freezed.dart';
 @freezed
 class AccountData with _$AccountData {
   factory AccountData({
-    AccountIdLight? accountId,
-    ApiKey? apiKey,
+    AccountId? accountId,
+    AccessToken? accessToken,
     required Capabilities capabilities,
   }) = _AccountData;
 }
@@ -26,12 +26,12 @@ class DoRegister extends AccountEvent {
 class DoLogin extends AccountEvent {}
 class DoLogout extends AccountEvent {}
 class NewAccountIdValue extends AccountEvent {
-  final AccountIdLight value;
+  final AccountId value;
   NewAccountIdValue(this.value);
 }
-class NewApiKeyValue extends AccountEvent {
-  final ApiKey value;
-  NewApiKeyValue(this.value);
+class NewAccessTokenValue extends AccountEvent {
+  final AccessToken value;
+  NewAccessTokenValue(this.value);
 }
 class NewCapabilitiesValue extends AccountEvent {
   final Capabilities value;
@@ -47,12 +47,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountData> {
     on<DoRegister>((data, emit) async {
       emit(state.copyWith(
         accountId: await account.register(),
-        apiKey: null,
+        accessToken: null,
       ));
     });
     on<DoLogin>((_, emit) async {
       emit(state.copyWith(
-        apiKey: await account.login(),
+        accessToken: await account.login(),
       ));
     });
     on<DoLogout>((_, emit) async {
@@ -61,8 +61,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountData> {
     on<NewAccountIdValue>((id, emit) {
       emit(state.copyWith(accountId: id.value));
     });
-    on<NewApiKeyValue>((key, emit) {
-      emit(state.copyWith(apiKey: key.value));
+    on<NewAccessTokenValue>((key, emit) {
+      emit(state.copyWith(accessToken: key.value));
     });
     on<NewCapabilitiesValue>((key, emit) {
       emit(state.copyWith(capabilities: key.value));
@@ -74,6 +74,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountData> {
     account.accountId.whereNotNull().listen((event) {
       add(NewAccountIdValue(event));
     });
-    account.accountAccessToken.whereNotNull().listen((event) { add(NewApiKeyValue(event)); });
+    account.accountAccessToken.whereNotNull().listen((event) { add(NewAccessTokenValue(event)); });
   }
 }

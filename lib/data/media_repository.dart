@@ -29,7 +29,7 @@ class MediaRepository extends AppSingleton {
 
   final ApiManager api = ApiManager.getInstance();
 
-  Future<Uint8List?> getImage(AccountIdLight imageOwner, ContentId id) async {
+  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id) async {
     final data = await api.media((api) => api.getImageFixed(
       imageOwner.accountId,
       id.contentId,
@@ -43,7 +43,7 @@ class MediaRepository extends AppSingleton {
     }
   }
 
-  Future<ContentId?> getProfileImage(AccountIdLight imageOwner, bool isMatch) async {
+  Future<ContentId?> getProfileImage(AccountId imageOwner, bool isMatch) async {
     final data = await api.media((api) => api.getPrimaryImageInfo(
       imageOwner.accountId,
       isMatch
@@ -58,19 +58,19 @@ class MediaRepository extends AppSingleton {
 
 
   Future<ModerationList> nextModerationListFromServer() async {
-    return await api.media((api) => api.patchModerationRequestList()) ?? ModerationList();
+    return await api.mediaAdmin((api) => api.patchModerationRequestList()) ?? ModerationList();
   }
 
-  Future<void> handleModerationRequest(AccountIdLight accountId, bool accept) async {
-    await api.media((api) => api.postHandleModerationRequest(accountId.accountId, HandleModerationRequest(accept: accept)));
+  Future<void> handleModerationRequest(AccountId accountId, bool accept) async {
+    await api.mediaAdmin((api) => api.postHandleModerationRequest(accountId.accountId, HandleModerationRequest(accept: accept)));
   }
 
-  Future<ContentId?> getSecuritySelfie(AccountIdLight account) async {
-    final img = await api.media((api) => api.getSecurityImageInfo(account.accountId));
+  Future<ContentId?> getSecuritySelfie(AccountId account) async {
+    final img = await api.mediaAdmin((api) => api.getSecurityImageInfo(account.accountId));
     return img?.contentId;
   }
 
-  Future<PrimaryImage?> getPrimaryImage(AccountIdLight account, bool isMatch) async {
+  Future<PrimaryImage?> getPrimaryImage(AccountId account, bool isMatch) async {
     return await api.media((api) => api.getPrimaryImageInfo(account.accountId, isMatch));
   }
 }

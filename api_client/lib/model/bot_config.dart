@@ -10,36 +10,48 @@
 
 part of openapi.api;
 
-class AccountIdLight {
-  /// Returns a new [AccountIdLight] instance.
-  AccountIdLight({
-    required this.accountId,
+class BotConfig {
+  /// Returns a new [BotConfig] instance.
+  BotConfig({
+    required this.admins,
+    required this.users,
   });
 
-  String accountId;
+  /// Admin bot count
+  ///
+  /// Minimum value: 0
+  int admins;
+
+  /// User bot count
+  ///
+  /// Minimum value: 0
+  int users;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AccountIdLight &&
-     other.accountId == accountId;
+  bool operator ==(Object other) => identical(this, other) || other is BotConfig &&
+     other.admins == admins &&
+     other.users == users;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (accountId.hashCode);
+    (admins.hashCode) +
+    (users.hashCode);
 
   @override
-  String toString() => 'AccountIdLight[accountId=$accountId]';
+  String toString() => 'BotConfig[admins=$admins, users=$users]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'account_id'] = this.accountId;
+      json[r'admins'] = this.admins;
+      json[r'users'] = this.users;
     return json;
   }
 
-  /// Returns a new [AccountIdLight] instance and imports its values from
+  /// Returns a new [BotConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AccountIdLight? fromJson(dynamic value) {
+  static BotConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +60,25 @@ class AccountIdLight {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AccountIdLight[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AccountIdLight[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "BotConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "BotConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AccountIdLight(
-        accountId: mapValueOfType<String>(json, r'account_id')!,
+      return BotConfig(
+        admins: mapValueOfType<int>(json, r'admins')!,
+        users: mapValueOfType<int>(json, r'users')!,
       );
     }
     return null;
   }
 
-  static List<AccountIdLight>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AccountIdLight>[];
+  static List<BotConfig>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <BotConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AccountIdLight.fromJson(row);
+        final value = BotConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +87,12 @@ class AccountIdLight {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AccountIdLight> mapFromJson(dynamic json) {
-    final map = <String, AccountIdLight>{};
+  static Map<String, BotConfig> mapFromJson(dynamic json) {
+    final map = <String, BotConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AccountIdLight.fromJson(entry.value);
+        final value = BotConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,13 +101,13 @@ class AccountIdLight {
     return map;
   }
 
-  // maps a json object with a list of AccountIdLight-objects as value to a dart map
-  static Map<String, List<AccountIdLight>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AccountIdLight>>{};
+  // maps a json object with a list of BotConfig-objects as value to a dart map
+  static Map<String, List<BotConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<BotConfig>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AccountIdLight.listFromJson(entry.value, growable: growable,);
+        final value = BotConfig.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -105,7 +118,8 @@ class AccountIdLight {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'account_id',
+    'admins',
+    'users',
   };
 }
 

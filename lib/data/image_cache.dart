@@ -29,7 +29,7 @@ class ImageCacheData extends AppSingleton {
   final CacheManager cacheManager;
 
 
-  Future<Uint8List?> getImage(AccountIdLight imageOwner, ContentId id) async {
+  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id) async {
     final fileInfo = await cacheManager.getFileFromCache(id.contentId);
     if (fileInfo != null) {
       // TODO: error handling?

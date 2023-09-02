@@ -6,15 +6,16 @@ import 'package:http/io_client.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/assets.dart';
 
-const accessTokenHeaderName = "x-api-key";
+const accessTokenHeaderName = "x-access-token";
 
 class ApiProvider {
   ApiKeyAuth? _apiKey;
   AccountApi _account;
   ProfileApi _profile;
   MediaApi _media;
+  MediaAdminApi _mediaAdmin;
   CommonApi _common;
-  CommonadminApi _commonAdmin;
+  CommonAdminApi _commonAdmin;
 
   String _serverAddress;
 
@@ -23,8 +24,9 @@ class ApiProvider {
   AccountApi get account => _account;
   ProfileApi get profile => _profile;
   MediaApi get media => _media;
+  MediaAdminApi get mediaAdmin => _mediaAdmin;
   CommonApi get common => _common;
-  CommonadminApi get commonAdmin => _commonAdmin;
+  CommonAdminApi get commonAdmin => _commonAdmin;
   String get serverAddress => _serverAddress;
 
   ApiProvider(String address) :
@@ -35,12 +37,13 @@ class ApiProvider {
     _account = AccountApi(client),
     _profile = ProfileApi(client),
     _media = MediaApi(client),
+    _mediaAdmin = MediaAdminApi(client),
     _common = CommonApi(client),
-    _commonAdmin = CommonadminApi(client);
+    _commonAdmin = CommonAdminApi(client);
 
-  void setKey(ApiKey apiKey) {
+  void setAccessToken(AccessToken token) {
     var auth = ApiKeyAuth("header", accessTokenHeaderName);
-    auth.apiKey = apiKey.apiKey;
+    auth.apiKey = token.accessToken;
     _apiKey = auth;
     _refreshApiClient(serverAddress, auth);
   }
@@ -53,20 +56,18 @@ class ApiProvider {
   void _refreshApiClient(String serverAddress, ApiKeyAuth? key) {
     var client = ApiClient(basePath: serverAddress, authentication: key);
     client.client = httpClient;
+
     _account = AccountApi(client);
     _profile = ProfileApi(client);
     _media = MediaApi(client);
+    _mediaAdmin = MediaAdminApi(client);
     _common = CommonApi(client);
-    _commonAdmin = CommonadminApi(client);
+    _commonAdmin = CommonAdminApi(client);
   }
 
   Future<void> init() async {
     final client = IOClient(HttpClient(context: await createSecurityContextForBackendConnection()));
     httpClient = client;
-    _account.apiClient.client = client;
-    _profile.apiClient.client = client;
-    _media.apiClient.client = client;
-    _common.apiClient.client = client;
-    _commonAdmin.apiClient.client = client;
+    _refreshApiClient(_serverAddress, _apiKey);
   }
 }

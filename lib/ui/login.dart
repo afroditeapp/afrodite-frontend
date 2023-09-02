@@ -104,10 +104,10 @@ class LoginPage extends RootPage {
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
               BlocBuilder<AccountBloc, AccountData>(
-                buildWhen: (previous, current) => previous.apiKey != current.apiKey,
+                buildWhen: (previous, current) => previous.accessToken != current.accessToken,
                 builder: (_, state) {
                   return Text(
-                    "API key: ${state.apiKey ?? "not set"}"
+                    "Access token: ${state.accessToken ?? "not set"}"
                   );
                 }
               ),

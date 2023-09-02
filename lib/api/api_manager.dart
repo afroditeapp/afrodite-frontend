@@ -227,7 +227,7 @@ class ApiManager extends AppSingleton {
 
     final accountToken = await storage.getString(KvString.accountAccessToken);
     if (accountToken != null) {
-      _account.setKey(ApiKey(apiKey: accountToken));
+      _account.setAccessToken(AccessToken(accessToken: accountToken));
     }
   }
 
@@ -243,6 +243,7 @@ class ApiManager extends AppSingleton {
     return profileConnection.inUse();
   }
 
+  /// Provider for media and media admin API
   ApiProvider _mediaApiProvider() {
     if (mediaConnection.inUse()) {
       return _media;
@@ -271,6 +272,10 @@ class ApiManager extends AppSingleton {
     return ApiWrapper(_mediaApiProvider().media);
   }
 
+  ApiWrapper<MediaAdminApi> _mediaAdminWrapper() {
+    return ApiWrapper(_mediaApiProvider().mediaAdmin);
+  }
+
   Future<R?> common<R extends Object>(Server server, Future<R?> Function(CommonApi) action) async {
     switch (server) {
       case Server.account:
@@ -282,7 +287,7 @@ class ApiManager extends AppSingleton {
     }
   }
 
-  Future<R?> commonAdmin<R extends Object>(Server server, Future<R?> Function(CommonadminApi) action) async {
+  Future<R?> commonAdmin<R extends Object>(Server server, Future<R?> Function(CommonAdminApi) action) async {
     switch (server) {
       case Server.account:
         return accountCommonAdmin(action);
@@ -301,7 +306,7 @@ class ApiManager extends AppSingleton {
     return await ApiWrapper(_account.common).request(action);
   }
 
-  Future<R?> accountCommonAdmin<R extends Object>(Future<R?> Function(CommonadminApi) action) async {
+  Future<R?> accountCommonAdmin<R extends Object>(Future<R?> Function(CommonAdminApi) action) async {
     return await ApiWrapper(_account.commonAdmin).request(action);
   }
 
@@ -309,11 +314,15 @@ class ApiManager extends AppSingleton {
     return await _mediaWrapper().request(action);
   }
 
+  Future<R?> mediaAdmin<R extends Object>(Future<R?> Function(MediaAdminApi) action) async {
+    return await _mediaAdminWrapper().request(action);
+  }
+
   Future<R?> mediaCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {
     return await ApiWrapper(_mediaApiProvider().common).request(action);
   }
 
-  Future<R?> mediaCommonAdmin<R extends Object>(Future<R?> Function(CommonadminApi) action) async {
+  Future<R?> mediaCommonAdmin<R extends Object>(Future<R?> Function(CommonAdminApi) action) async {
     return await ApiWrapper(_mediaApiProvider().commonAdmin).request(action);
   }
 
@@ -325,7 +334,7 @@ class ApiManager extends AppSingleton {
     return await ApiWrapper(_profileApiProvider().common).request(action);
   }
 
-  Future<R?> profileCommonAdmin<R extends Object>(Future<R?> Function(CommonadminApi) action) async {
+  Future<R?> profileCommonAdmin<R extends Object>(Future<R?> Function(CommonAdminApi) action) async {
     return await ApiWrapper(_mediaApiProvider().commonAdmin).request(action);
   }
 }

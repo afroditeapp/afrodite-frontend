@@ -165,7 +165,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
     );
   }
 
-  Widget buildImage(BuildContext contex, AccountIdLight imageOwner, ContentId image, int? index, double width) {
+  Widget buildImage(BuildContext contex, AccountId imageOwner, ContentId image, int? index, double width) {
     return FutureBuilder(
       future: ImageCacheData.getInstance().getImage(imageOwner, image),
       builder: (context, snapshot) {

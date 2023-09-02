@@ -30,7 +30,7 @@ class ProfileRepository extends AppSingleton {
 
   ProfileRepository();
 
-  Future<Profile?> requestProfile(AccountIdLight id) async {
+  Future<Profile?> requestProfile(AccountId id) async {
     return await api.profile((api) => api.getProfile(id.accountId));
   }
 }

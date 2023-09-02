@@ -17,7 +17,7 @@ class ProfileLink {
     required this.version,
   });
 
-  AccountIdLight id;
+  AccountId id;
 
   ProfileVersion version;
 
@@ -61,7 +61,7 @@ class ProfileLink {
       }());
 
       return ProfileLink(
-        id: AccountIdLight.fromJson(json[r'id'])!,
+        id: AccountId.fromJson(json[r'id'])!,
         version: ProfileVersion.fromJson(json[r'version'])!,
       );
     }

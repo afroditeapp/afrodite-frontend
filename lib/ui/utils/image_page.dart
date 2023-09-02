@@ -19,7 +19,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ImagePage extends StatefulWidget {
   ImagePage(this.imageOwner, this.imageId, {super.key});
-  final AccountIdLight imageOwner;
+  final AccountId imageOwner;
   final ContentId imageId;
 
   @override
@@ -42,7 +42,7 @@ class _ImagePageState extends State<ImagePage>
     );
   }
 
-  Widget buildImage(BuildContext contex, AccountIdLight imageOwner, ContentId image) {
+  Widget buildImage(BuildContext contex, AccountId imageOwner, ContentId image) {
     return FutureBuilder(
       future: ImageCacheData.getInstance().getImage(imageOwner, image),
       builder: (context, snapshot) {

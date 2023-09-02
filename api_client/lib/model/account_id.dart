@@ -10,42 +10,36 @@
 
 part of openapi.api;
 
-class AuthPair {
-  /// Returns a new [AuthPair] instance.
-  AuthPair({
-    required this.access,
-    required this.refresh,
+class AccountId {
+  /// Returns a new [AccountId] instance.
+  AccountId({
+    required this.accountId,
   });
 
-  AccessToken access;
-
-  RefreshToken refresh;
+  String accountId;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AuthPair &&
-     other.access == access &&
-     other.refresh == refresh;
+  bool operator ==(Object other) => identical(this, other) || other is AccountId &&
+     other.accountId == accountId;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (access.hashCode) +
-    (refresh.hashCode);
+    (accountId.hashCode);
 
   @override
-  String toString() => 'AuthPair[access=$access, refresh=$refresh]';
+  String toString() => 'AccountId[accountId=$accountId]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'access'] = this.access;
-      json[r'refresh'] = this.refresh;
+      json[r'account_id'] = this.accountId;
     return json;
   }
 
-  /// Returns a new [AuthPair] instance and imports its values from
+  /// Returns a new [AccountId] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AuthPair? fromJson(dynamic value) {
+  static AccountId? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,25 +48,24 @@ class AuthPair {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AuthPair[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AuthPair[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AccountId[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AccountId[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AuthPair(
-        access: AccessToken.fromJson(json[r'access'])!,
-        refresh: RefreshToken.fromJson(json[r'refresh'])!,
+      return AccountId(
+        accountId: mapValueOfType<String>(json, r'account_id')!,
       );
     }
     return null;
   }
 
-  static List<AuthPair>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AuthPair>[];
+  static List<AccountId>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AccountId>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AuthPair.fromJson(row);
+        final value = AccountId.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +74,12 @@ class AuthPair {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AuthPair> mapFromJson(dynamic json) {
-    final map = <String, AuthPair>{};
+  static Map<String, AccountId> mapFromJson(dynamic json) {
+    final map = <String, AccountId>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AuthPair.fromJson(entry.value);
+        final value = AccountId.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,13 +88,13 @@ class AuthPair {
     return map;
   }
 
-  // maps a json object with a list of AuthPair-objects as value to a dart map
-  static Map<String, List<AuthPair>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AuthPair>>{};
+  // maps a json object with a list of AccountId-objects as value to a dart map
+  static Map<String, List<AccountId>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AccountId>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AuthPair.listFromJson(entry.value, growable: growable,);
+        final value = AccountId.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -112,8 +105,7 @@ class AuthPair {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'access',
-    'refresh',
+    'account_id',
   };
 }
 
