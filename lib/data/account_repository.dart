@@ -231,6 +231,9 @@ class AccountRepository extends AppSingleton {
   }
 
   Future<void> logout() async {
+    await KvStorageManager.getInstance().setString(KvString.accountCapabilities, null);
+    await KvStorageManager.getInstance().setString(KvString.accountState, null);
+
     await KvStorageManager.getInstance().setString(KvString.accountRefreshToken, null);
     await KvStorageManager.getInstance().setString(KvString.accountAccessToken, null);
     // TODO: microservice support

@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/logic/account/account.dart";
+import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/logic/server/address.dart";
 import "package:pihka_frontend/logic/sign_in_with.dart";
@@ -100,7 +101,10 @@ class LoginPage extends RootPage {
               const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
               ElevatedButton(
                 child: Text(AppLocalizations.of(context).loginButton),
-                onPressed: () => context.read<AccountBloc>().add(DoLogin()),
+                onPressed: () {
+                  context.read<InitialSetupBloc>().add(ResetState());
+                  context.read<AccountBloc>().add(DoLogin());
+                }
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
               BlocBuilder<AccountBloc, AccountData>(

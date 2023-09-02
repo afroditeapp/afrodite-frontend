@@ -43,11 +43,17 @@ class GoBack extends InitialSetupEvent {
   final int? step;
   GoBack(this.step);
 }
+class ResetState extends InitialSetupEvent {
+  ResetState();
+}
 
 class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
   final AccountRepository account;
 
   InitialSetupBloc(this.account) : super(InitialSetupData()) {
+    on<ResetState>((data, emit) {
+      emit(InitialSetupData());
+    });
     on<SetAccountStep>((data, emit) {
       emit(state.copyWith(
         email: data.email,
