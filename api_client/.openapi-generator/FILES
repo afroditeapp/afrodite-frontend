@@ -121,13 +121,3 @@ lib/model/software_options.dart
 lib/model/system_info.dart
 lib/model/system_info_list.dart
 pubspec.yaml
-test/access_token_test.dart
-test/account_id_test.dart
-test/account_internal_api_test.dart
-test/backend_config_test.dart
-test/bot_config_test.dart
-test/common_admin_api_test.dart
-test/media_admin_api_test.dart
-test/media_internal_api_test.dart
-test/profile_internal_api_test.dart
-test/reset_data_query_param_test.dart

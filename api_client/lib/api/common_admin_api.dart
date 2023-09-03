@@ -16,6 +16,54 @@ class CommonAdminApi {
 
   final ApiClient apiClient;
 
+  /// Get dynamic backend config.
+  ///
+  /// Get dynamic backend config.  # Capabilities Requires admin_server_maintentance_view_backend_settings.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getBackendConfigWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/backend_config';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get dynamic backend config.
+  ///
+  /// Get dynamic backend config.  # Capabilities Requires admin_server_maintentance_view_backend_settings.
+  Future<BackendConfig?> getBackendConfig() async {
+    final response = await getBackendConfigWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'BackendConfig',) as BackendConfig;
+    
+    }
+    return null;
+  }
+
   /// Get latest software build information available for update from manager
   ///
   /// Get latest software build information available for update from manager instance.

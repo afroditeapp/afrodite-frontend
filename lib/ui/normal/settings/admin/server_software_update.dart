@@ -153,7 +153,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
   ) {
     widgets.add(displayBuildInfo(context, "Installed: ", buildInfo));
     if (latestAvailable != null) {
-      widgets.add(displayBuildInfo(context, "Available: ", buildInfo));
+      widgets.add(displayBuildInfo(context, "Available: ", latestAvailable));
       if (latestAvailable.commitSha == buildInfo.commitSha) {
         widgets.add(Text("No updates available (${buildInfo.name})"));
       } else {
@@ -240,7 +240,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
               final result = await ApiManager.getInstance()
                 .commonAdmin(
                   _selectedServer, (api) async {
-                    await api.postRequestUpdateSoftware(softwareOptions, _reboot, false);
+                    await api.postRequestUpdateSoftware(softwareOptions, _reboot, _reset_data);
                     return true;
                   }
                 );

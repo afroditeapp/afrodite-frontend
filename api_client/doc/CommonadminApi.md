@@ -9,6 +9,7 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**getBackendConfig**](CommonAdminApi.md#getbackendconfig) | **GET** /common_api/backend_config | Get dynamic backend config.
 [**getLatestBuildInfo**](CommonAdminApi.md#getlatestbuildinfo) | **GET** /common_api/get_latest_build_info | Get latest software build information available for update from manager
 [**getSoftwareInfo**](CommonAdminApi.md#getsoftwareinfo) | **GET** /common_api/software_info | Get software version information from manager instance.
 [**getSystemInfo**](CommonAdminApi.md#getsysteminfo) | **GET** /common_api/system_info | Get system information from manager instance.
@@ -17,6 +18,49 @@ Method | HTTP request | Description
 [**postRequestRestartOrResetBackend**](CommonAdminApi.md#postrequestrestartorresetbackend) | **POST** /common_api/request_restart_or_reset_backend | Request restarting or reseting backend through app-manager instance.
 [**postRequestUpdateSoftware**](CommonAdminApi.md#postrequestupdatesoftware) | **POST** /common_api/request_update_software | Request updating new software from manager instance.
 
+
+# **getBackendConfig**
+> BackendConfig getBackendConfig()
+
+Get dynamic backend config.
+
+Get dynamic backend config.  # Capabilities Requires admin_server_maintentance_view_backend_settings.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = CommonAdminApi();
+
+try {
+    final result = api_instance.getBackendConfig();
+    print(result);
+} catch (e) {
+    print('Exception when calling CommonAdminApi->getBackendConfig: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**BackendConfig**](BackendConfig.md)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getLatestBuildInfo**
 > BuildInfo getLatestBuildInfo(softwareOptions)

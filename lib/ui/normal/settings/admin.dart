@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
+import 'package:pihka_frontend/ui/normal/settings/admin/configure_backend.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin/moderate_images.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin/server_software_update.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin/server_system_info.dart';
@@ -28,6 +29,13 @@ class AdminSettingsPage extends StatelessWidget {
         if (state.capabilities.adminModerateImages ?? false) {
           settings.add(Setting.createSetting(Icons.image, "Moderate images", () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ModerateImagesPage()),)
+          ));
+        }
+        if (state.capabilities.adminServerMaintentanceRebootBackend ?? false ||
+            (state.capabilities.adminServerMaintentanceSaveBackendSettings ?? false) ||
+            (state.capabilities.adminServerMaintentanceViewBackendSettings ?? false)) {
+          settings.add(Setting.createSetting(Icons.settings, "Configure backend", () =>
+            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ConfigureBackendPage()),)
           ));
         }
         if (state.capabilities.adminServerMaintentanceViewInfo ?? false) {
