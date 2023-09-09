@@ -214,6 +214,12 @@ class ApiManager extends AppSingleton {
     _state.add(ApiManagerState.waitingRefreshToken);
   }
 
+  Future<void> closeAndRefreshServerAddress() async {
+    await accountConnection.close();
+    await _loadAddressesFromConfig();
+    _state.add(ApiManagerState.waitingRefreshToken);
+  }
+
   // Future<void> _handleEventFromConnection(EventFromConnection e) async {
   //   final s = KvStorageManager.getInstance();
   //   switch (e.event) {

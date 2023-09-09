@@ -252,7 +252,7 @@ class AccountRepository extends AppSingleton {
     await KvStorageManager.getInstance().setString(
       KvString.accountServerAddress, serverAddress
     );
-    await ApiManager.getInstance().restart();
+    await _api.closeAndRefreshServerAddress();
   }
 
   Future<void> signInWithGoogle(GoogleSignIn google) async {
