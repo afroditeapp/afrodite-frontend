@@ -33,6 +33,8 @@ enum ApiManagerState {
   initRequired,
   /// No valid refresh token available. UI should display login view.
   waitingRefreshToken,
+  /// Reconnecting will happen in few seconds.
+  reconnectWaitTime,
   /// Making connections to servers.
   connecting,
   /// Connection to servers established.
@@ -135,7 +137,10 @@ class ApiManager extends AppSingleton {
           case Error e: {
             switch (e.error) {
               case ServerConnectionError.connectionFailure: {
-                showSnackBar("Connection error");
+                _state.add(ApiManagerState.reconnectWaitTime);
+                showSnackBar("Connection error - reconnecting in 5 seconds");
+                // TODO: check that internet connectivity exists?
+                Future.delayed(const Duration(seconds: 5), () => restart()).then((value) => null);
               }
               case ServerConnectionError.invalidToken: {
                 _state.add(ApiManagerState.waitingRefreshToken);

@@ -25,7 +25,7 @@ var log = Logger("AccountRepository");
 enum AccountRepositoryState {
   initRequired,
   waitConnection,
-  watchConnection
+  watchConnection,
 }
 
 class AccountRepository extends AppSingleton {
@@ -91,8 +91,6 @@ class AccountRepository extends AppSingleton {
   Stream<AccountId?> get accountId => _accountId.distinct();
   Stream<AccessToken?> get accountAccessToken => _accountAccessToken.distinct();
 
-  Future<void>? connectionWathcerTask;
-
   AccountRepository();
 
   @override
@@ -101,11 +99,6 @@ class AccountRepository extends AppSingleton {
       return;
     }
     _internalState.add(AccountRepositoryState.waitConnection);
-
-    _internalState
-      .distinct()
-      .asyncMap((state) async => await _handleInternalState(state))
-      .listen((event) { });
 
     // Restore previous state
     final previousState = await KvStorageManager.getInstance().getString(KvString.accountState);
@@ -124,7 +117,7 @@ class AccountRepository extends AppSingleton {
           _mainState.add(MainState.loginRequired);
           _internalState.add(AccountRepositoryState.waitConnection);
         }
-        case ApiManagerState.connecting: {
+        case ApiManagerState.connecting || ApiManagerState.reconnectWaitTime: {
           _internalState.add(AccountRepositoryState.waitConnection);
         }
         case ApiManagerState.connected: {
@@ -132,76 +125,49 @@ class AccountRepository extends AppSingleton {
         }
       }
     });
+
+    // Poll account state when there is connection to server
+    _internalState
+      .switchMap((value) {
+        if (value == AccountRepositoryState.watchConnection) {
+          return _pollNotificationStream()
+            .switchMap((value) => Stream.fromFuture(_downloadAccountState()).whereNotNull());
+        } else {
+          return const Stream<Account>.empty();
+        }
+      })
+      .listen((newAccountState) async {
+          if (await capabilities.first != newAccountState.capablities) {
+            await KvStorageManager.getInstance().setString(KvString.accountCapabilities, jsonEncode(newAccountState.capablities.toJson()));
+          }
+
+          if (await accountState.first != newAccountState.state) {
+            await KvStorageManager.getInstance().setString(KvString.accountState, newAccountState.toString());
+          }
+          emitStateUpdates(newAccountState.state);
+      });
   }
 
-  Future<void> _handleInternalState(AccountRepositoryState state) async {
-    log.finer(state);
-    switch (state) {
-      case AccountRepositoryState.initRequired: {}
-      case AccountRepositoryState.waitConnection: {
-        if (connectionWathcerTask != null) {
-          await connectionWathcerTask;
-        }
-      }
-      case AccountRepositoryState.watchConnection: {
-        if (connectionWathcerTask != null) {
-          await connectionWathcerTask;
-        }
-        connectionWathcerTask = _accountStateUpdating().then((value) => {});
-      }
-    }
-  }
+  Stream<void> _pollNotificationStream() async* {
+    yield null;
 
-  Future<void> _accountStateUpdating() async {
-    log.info("Waiting AccountId");
-    await for (final value in accountId) {
-      if (value == null) {
-        _mainState.add(MainState.loginRequired);
-      } else {
-        break;
-      }
-    }
-    log.info("AccountId received.");
-
-    log.info("Waiting accountAccessToken");
-    await for (final value in accountAccessToken) {
-      if (value == null) {
-        _mainState.add(MainState.loginRequired);
-      } else {
-        break;
-      }
-    }
-    log.info("accountAccessToken received.");
-
-    var previousState = await accountState.first;
-    var state = previousState;
-
-    emitStateUpdates(state);
-
-    while (_internalState.value == AccountRepositoryState.watchConnection) {
-      Account? data = await _api.account((api) => api.getAccountState());
-
-      if (data == null) {
-        log.error("error: data == null");
-      } else {
-        log.finer(data.state);
-        state = data.state;
-
-        if (await capabilities.first != data.capablities) {
-          await KvStorageManager.getInstance().setString(KvString.accountCapabilities, jsonEncode(data.capablities.toJson()));
-        }
-
-        if (previousState != state) {
-          await KvStorageManager.getInstance().setString(KvString.accountState, state.toString());
-        }
-        emitStateUpdates(state);
-      }
-
+    while (true) {
       await Future.any([
         Future.delayed(const Duration(seconds: 5), () {}),
         _hintAccountStateUpdated.stream.first
       ]);
+      yield null;
     }
+  }
+
+  Future<Account?> _downloadAccountState() async {
+    Account? data = await _api.account((api) => api.getAccountState());
+    if (data == null) {
+      log.error("error: data == null");
+    } else {
+      log.finer(data.state);
+    }
+    return data;
   }
 
   void emitStateUpdates(AccountState state) {
