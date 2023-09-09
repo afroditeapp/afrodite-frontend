@@ -176,7 +176,7 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
       onPressed: () {
         FocusScope.of(context).unfocus();
 
-        showConfirmDialog(context, "Reboot backend?")
+        showConfirmDialog(context, "Restart backend?")
           .then((value) async {
             if (value == true) {
               final result = await ApiManager.getInstance()
@@ -187,14 +187,14 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
                   }
                 );
               if (result != null) {
-                showSnackBar("Reboot requested!");
+                showSnackBar("Restart requested!");
               } else {
-                showSnackBar("Reboot request failed!");
+                showSnackBar("Restart request failed!");
               }
             }
           });
       },
-      child: const Text("Reboot backend"),
+      child: const Text("Restart backend"),
     );
   }
 
