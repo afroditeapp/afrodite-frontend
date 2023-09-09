@@ -6,6 +6,7 @@ import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
@@ -14,6 +15,8 @@ import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+var log = Logger("MediaRepository");
 
 class MediaRepository extends AppSingleton {
   MediaRepository._private();
@@ -38,7 +41,7 @@ class MediaRepository extends AppSingleton {
     if (data != null) {
       return data;
     } else {
-      print("Image loading error");
+      log.error("Image loading error");
       return null;
     }
   }
@@ -51,7 +54,7 @@ class MediaRepository extends AppSingleton {
     if (data != null) {
       return data.contentId;
     } else {
-      print("Image loading error");
+      log.error("Image loading error");
       return null;
     }
   }

@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logging/logging.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/assets.dart';
@@ -31,8 +33,21 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:rxdart/rxdart.dart';
 
+final log = Logger("main");
 
 Future<void> main() async {
+  // TODO: change log level before release?
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((record) {
+      developer.log(
+        record.message,
+        name: record.loggerName,
+        time: record.time,
+        sequenceNumber: record.sequenceNumber,
+        level: record.level.value,
+      );
+  });
+
   WidgetsFlutterBinding.ensureInitialized();
 
   Bloc.observer = DebugObserver();
@@ -90,11 +105,11 @@ class MyApp extends StatelessWidget {
 
 class DebugObserver extends BlocObserver {
   @override
-  void onChange(BlocBase bloc, Change change) {
-    print("${bloc.runtimeType} $change");
+  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
+    super.onChange(bloc, change);
+    log.finest("${bloc.runtimeType} $change");
   }
 }
-
 
 class GlobalInitManager extends AppSingleton {
   GlobalInitManager._private();

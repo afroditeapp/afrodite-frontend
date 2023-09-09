@@ -10,14 +10,18 @@ import 'dart:math';
 
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
+import 'package:logging/logging.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/assets.dart';
 import 'package:pihka_frontend/storage/kv.dart';
+import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:web_socket_channel/web_socket_channel.dart';
+
+var log = Logger("ServerConnection");
 
 enum ServerSlot {
   account,
@@ -125,11 +129,11 @@ class ServerConnection {
     try {
        response = await client.send(request);
     } on ClientException catch (e) {
-      print(e);
+      log.error(e);
       _state.add(Error(ServerConnectionError.connectionFailure));
       return;
     } on HandshakeException catch (e) {
-      print(e);
+      log.error(e);
       _state.add(Error(ServerConnectionError.connectionFailure));
       return;
     }
@@ -184,7 +188,7 @@ class ServerConnection {
       .listen(
         null,
         onError: (Object error) {
-          print(error);
+          log.error(error);
           _connection = null;
           _state.add(Error(ServerConnectionError.connectionFailure));
         },

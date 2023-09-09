@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class AppSingleton {
@@ -35,5 +36,12 @@ class TaskStatus {
   Future<void> taskCancelled() {
     final value = taskRunning.stream.where((event) => !event).first;
     return value;
+  }
+}
+
+
+extension LogUtils on Logger {
+  void error(Object? message, [Object? error, StackTrace? stackTrace]) {
+    severe(message, error, stackTrace);
   }
 }

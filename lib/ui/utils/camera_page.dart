@@ -3,6 +3,7 @@ import "dart:async";
 import "package:camera/camera.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:logging/logging.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui/account_banned.dart";
@@ -11,13 +12,15 @@ import "package:pihka_frontend/ui/login.dart";
 import 'package:pihka_frontend/ui/normal.dart';
 import "package:pihka_frontend/ui/pending_deletion.dart";
 import "package:pihka_frontend/ui/utils.dart";
+import "package:pihka_frontend/utils.dart";
 
+var log = Logger("CameraPage");
 
 late List<CameraDescription> cameras = [];
 
 Future<void> initAvailableCameras() async {
   cameras = await availableCameras();
-  print(cameras);
+  log.fine(cameras);
   cameras = cameras.where((element) => element.lensDirection == CameraLensDirection.front).toList();
 }
 
@@ -58,7 +61,7 @@ class _CameraPageState extends State<CameraPage>
 
   void disposeCamera() {
     camera?.dispose().then((value) {
-      print("Camera disposed");
+      log.info("Camera disposed");
     });
     camera = null;
     timer?.cancel();
@@ -66,7 +69,7 @@ class _CameraPageState extends State<CameraPage>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print(state);
+    log.fine(state);
 
     if (state == AppLifecycleState.inactive) {
       disposeCamera();
@@ -89,7 +92,7 @@ class _CameraPageState extends State<CameraPage>
       }).catchError((Object e) {
         if (e is CameraException) {
           // TODO: handle errors.
-          print(e);
+          log.error(e);
         }
       });
     }
@@ -131,7 +134,10 @@ class _CameraPageState extends State<CameraPage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 150, height: 70, child: ElevatedButton.icon(onPressed: () async {
-                    await takePicture(currentCamera);
+                    final file = await takePicture(currentCamera);
+                    if (file != null) {
+                      Future.delayed(Duration.zero, () => Navigator.pop(context, file));
+                    }
                   }, icon: const Icon(Icons.camera_alt), label: const Text("Take photo"),)),
                 ],
               )),
@@ -148,27 +154,24 @@ class _CameraPageState extends State<CameraPage>
     );
   }
 
-  Future<void> takePicture(CameraController currentCamera) async {
+  Future<XFile?> takePicture(CameraController currentCamera) async {
     if (currentCamera.value.isTakingPicture) {
       showSnackBar("Picture taking already in progress");
     } else {
       try {
         var file = await currentCamera.takePicture();
-        print(file.mimeType);
-        print(file.hashCode);
-        print(file.path);
-        print(file.runtimeType);
-        print(file.name);
+        log.info(file);
         if (widget.imageType == ImageType.securitySelfie) {
-          Navigator.pop(context, file);
+          return file;
         } else {
           showSnackBar("Unknown image type");
         }
       } on CameraException catch (e) {
-        print(e);
+        log.error(e);
         showSnackBar("Taking picture failed");
       }
     }
 
+    return null;
   }
 }

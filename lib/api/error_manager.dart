@@ -1,9 +1,12 @@
 
 
+import 'package:logging/logging.dart';
 import 'package:pihka_frontend/main.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
+
+final log = Logger("ErrorManager");
 
 enum Error {
   api,
@@ -26,7 +29,7 @@ class ErrorManager extends AppSingleton {
 
   void send(Error e) {
     _errors.add(e);
-    print(e);
+    log.error(e);
     showSnackBar("API error");
   }
 

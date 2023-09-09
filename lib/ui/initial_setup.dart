@@ -7,6 +7,7 @@ import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:image_picker/image_picker.dart";
+import "package:logging/logging.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui/login.dart";
@@ -16,6 +17,9 @@ import "package:pihka_frontend/ui/utils/camera_page.dart";
 import "package:pihka_frontend/ui/utils/root_page.dart";
 
 import "package:flutter/scheduler.dart";
+import "package:pihka_frontend/utils.dart";
+
+var log = Logger("InitialSetupWidget");
 
 // TODO: save initial setup values, so that it will be possible to restore state
 //       if system kills the app when selecting profile photo
@@ -30,13 +34,12 @@ class InitialSetupPage extends RootPage {
         body: BlocListener<InitialSetupBloc, InitialSetupData>(
           listener: (context, state) {
             if (state.sendingInProgress && !Navigator.canPop(context)) {
-              print("Show dialog");
               showDialog<void>(context: context, barrierDismissible: false, builder: (context) {
                 return WillPopScope(
                   onWillPop: () async => false,
-                  child: AlertDialog(
-                    title: const Text("Sending in progress..."),
-                    content: Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
+                  child: const AlertDialog(
+                    title: Text("Sending in progress..."),
+                    content: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       CircularProgressIndicator(),
                     ]),
                     actions: [],
@@ -44,7 +47,6 @@ class InitialSetupPage extends RootPage {
                 );
               });
             } else if (!state.sendingInProgress && Navigator.canPop(context)) {
-              print("pop");
               Navigator.pop(context);
               if (state.sendError != null) {
                 showSnackBar(state.sendError ?? "");
@@ -76,13 +78,12 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<InitialSetupBloc, InitialSetupData>(builder: ((context, state) {
-      print(state);
+      log.fine(state);
       return createStepper(context, state);
     }));
   }
 
    Stepper createStepper(BuildContext contex, InitialSetupData state) {
-    print("Creating new stepper");
     final steps = createSteps(state);
     void Function()? onStepCancelHandler;
     sendingInProgress() => state.currentStep == 4 && state.sendError == null;
@@ -301,12 +302,12 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
       future: lostImageFuture,
       builder: (BuildContext context, AsyncSnapshot<LostDataResponse?> lostData) {
         Widget selectImageButton = ElevatedButton.icon(
-          label: Text("Select image"),
-          icon: Icon(Icons.image),
+          label: const Text("Select image"),
+          icon: const Icon(Icons.image),
           onPressed: () async {
             final image  = await ImagePicker().pickImage(source: ImageSource.gallery, requestFullMetadata: false);
             if (image != null) {
-              print(image.path);
+              log.fine(image.path);
               setState(() {
                 profileImage = image;
               });

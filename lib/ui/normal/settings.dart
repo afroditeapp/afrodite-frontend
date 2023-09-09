@@ -76,7 +76,6 @@ class _SettingsViewState extends State<SettingsView> {
           itemBuilder: (context, index) {
             return ListTile(
               onTap: () {
-                print(index);
                 settings[index].action();
               },
               title: settings[index].widget,

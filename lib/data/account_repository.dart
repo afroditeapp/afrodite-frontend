@@ -8,6 +8,7 @@ import 'package:async/async.dart';
 import 'package:camera/camera.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
@@ -18,6 +19,8 @@ import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
+var log = Logger("AccountRepository");
 
 enum AccountRepositoryState {
   initRequired,
@@ -114,7 +117,7 @@ class AccountRepository extends AppSingleton {
     }
 
     _api.state.listen((event) {
-      print(event);
+      log.finer(event);
       switch (event) {
         case ApiManagerState.initRequired: {}
         case ApiManagerState.waitingRefreshToken: {
@@ -132,7 +135,7 @@ class AccountRepository extends AppSingleton {
   }
 
   Future<void> _handleInternalState(AccountRepositoryState state) async {
-    print(state);
+    log.finer(state);
     switch (state) {
       case AccountRepositoryState.initRequired: {}
       case AccountRepositoryState.waitConnection: {
@@ -150,7 +153,7 @@ class AccountRepository extends AppSingleton {
   }
 
   Future<void> _accountStateUpdating() async {
-    print("Waiting AccountId");
+    log.info("Waiting AccountId");
     await for (final value in accountId) {
       if (value == null) {
         _mainState.add(MainState.loginRequired);
@@ -158,9 +161,9 @@ class AccountRepository extends AppSingleton {
         break;
       }
     }
-    print("AccountId received.");
+    log.info("AccountId received.");
 
-    print("Waiting accountAccessToken");
+    log.info("Waiting accountAccessToken");
     await for (final value in accountAccessToken) {
       if (value == null) {
         _mainState.add(MainState.loginRequired);
@@ -168,7 +171,7 @@ class AccountRepository extends AppSingleton {
         break;
       }
     }
-    print("accountAccessToken received.");
+    log.info("accountAccessToken received.");
 
     var previousState = await accountState.first;
     var state = previousState;
@@ -179,9 +182,9 @@ class AccountRepository extends AppSingleton {
       Account? data = await _api.account((api) => api.getAccountState());
 
       if (data == null) {
-        print("error: data == null");
+        log.error("error: data == null");
       } else {
-        print(data.state);
+        log.finer(data.state);
         state = data.state;
 
         if (await capabilities.first != data.capablities) {
@@ -289,12 +292,10 @@ class AccountRepository extends AppSingleton {
   Future<void> signInWithGoogle(GoogleSignIn google) async {
      final signedIn = await google.signIn();
       if (signedIn != null) {
-        print(signedIn.toString());
-        print(signedIn.email.toString());
+        log.fine("$signedIn, ${signedIn.email}");
 
         var token = await signedIn.authentication;
-        print(token.accessToken);
-        print(token.idToken);
+        log.fine("${token.accessToken}, ${token.idToken}");
 
         final login = await _api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken)));
         if (login != null) {
@@ -306,11 +307,7 @@ class AccountRepository extends AppSingleton {
 
   Future<void> signOutFromGoogle(GoogleSignIn google) async {
     final signedIn = await google.disconnect();
-    print(signedIn);
-    if (signedIn != null) {
-      print(signedIn.toString());
-      print(signedIn.email.toString());
-    }
+    log.fine("$signedIn, ${signedIn?.email}");
   }
 
   Future<void> signInWithApple() async {
@@ -319,10 +316,10 @@ class AccountRepository extends AppSingleton {
       signedIn = await SignInWithApple.getAppleIDCredential(scopes: [
         AppleIDAuthorizationScopes.email,
       ]);
-      print(signedIn);
+      log.fine(signedIn);
       await _api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(appleToken: signedIn.identityToken)));
     } on SignInWithAppleException catch (e) {
-      print(e);
+      log.error(e);
     }
   }
 }

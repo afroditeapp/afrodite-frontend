@@ -1,8 +1,12 @@
 
 
 
+import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
+import 'package:pihka_frontend/utils.dart';
+
+final log = Logger("ApiWrapper");
 
 class ApiWrapper<T> {
   final T api;
@@ -14,8 +18,7 @@ class ApiWrapper<T> {
     try {
       return await action(api);
     } on ApiException catch (e) {
-      print(e);
-      print(e.message);
+      log.error(e);
       ErrorManager.getInstance().send(Error.api);
     }
 
@@ -27,8 +30,7 @@ class ApiWrapper<T> {
     try {
       return await action(api);
     } on ApiException catch (e) {
-      print(e);
-      print(e.message);
+      log.error(e);
       ErrorManager.getInstance().send(Error.api);
       rethrow;
     }
