@@ -158,12 +158,11 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
         widgets.add(Text("No updates available (${buildInfo.name})"));
       } else {
         widgets.add(Text("Update available! (${buildInfo.name})"));
+        widgets.add(displayUpdate(context, softwareOptions));
       }
     } else {
       widgets.add(const Text("No builds available from app-manager"));
     }
-
-    widgets.add(displayUpdate(context, softwareOptions));
 
     final requestBuildButton = Row(
       children: [ElevatedButton(
