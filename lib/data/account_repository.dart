@@ -245,6 +245,8 @@ class AccountRepository extends AppSingleton {
       return "Error";
     }
 
+    _hintAccountStateUpdated.add(null);
+
     return null;
   }
 

@@ -67,6 +67,9 @@ dependencies:
 
   google_fonts: ^5.1.0
 
+  image: ^4.0.17
+  path_provider: ^2.1.1
+
 
 
 dev_dependencies:

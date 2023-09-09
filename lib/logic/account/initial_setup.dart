@@ -1,10 +1,12 @@
 import "package:camera/camera.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:path_provider/path_provider.dart";
 import "package:pihka_frontend/data/account_repository.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
+import 'package:image/image.dart' as img;
 
 part 'initial_setup.freezed.dart';
 
@@ -45,6 +47,9 @@ class GoBack extends InitialSetupEvent {
 }
 class ResetState extends InitialSetupEvent {
   ResetState();
+}
+class CreateDebugAdminAccount extends InitialSetupEvent {
+  CreateDebugAdminAccount();
 }
 
 class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
@@ -127,5 +132,53 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
         currentStep: newIndex,
       ));
     });
+    on<CreateDebugAdminAccount>((data, emit) async {
+      emit(state.copyWith(
+        sendingInProgress: true,
+        sendError: null,
+      ));
+
+      final securitySelfie = await createImage("debug_security_selfie.jpg", (pixel) {
+        pixel..r = 0
+             ..g = 145
+             ..b = 255
+             ..a = 255;
+      });
+
+      final profileImage = await createImage("debug_profile_image.jpg", (pixel) {
+        pixel..r = 255
+             ..g = 150
+             ..b = 0
+             ..a = 255;
+      });
+
+      var error = await account.doInitialSetup(
+        "admin@example.com",
+        "Admin",
+        securitySelfie,
+        profileImage,
+      );
+
+      if (error != null) {
+        emit(state.copyWith(
+          sendingInProgress: false,
+          sendError: error,
+        ));
+      }
+    });
   }
+}
+
+Future<XFile> createImage(String fileName, void Function(img.Pixel) pixelModifier) async {
+  final imageBuffer = img.Image(width: 512, height: 512);
+
+  for (var pixel in imageBuffer) {
+    pixelModifier(pixel);
+  }
+
+  final jpg = img.encodeJpg(imageBuffer);
+  final tmpDir = await getTemporaryDirectory();
+  final imgPath = "${tmpDir.path}/$fileName";
+  await XFile.fromData(jpg).saveTo(imgPath);
+  return XFile(imgPath);
 }

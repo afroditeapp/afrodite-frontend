@@ -30,7 +30,17 @@ class InitialSetupPage extends RootPage {
   @override
   Widget buildRootWidget(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Setup your new account")),
+        appBar: AppBar(
+          title: const Text("Setup your new account"),
+          actions: [
+            // TODO: Hide this from release build
+            IconButton(
+              icon: const Icon(Icons.skip_next),
+              onPressed: () {
+                context.read<InitialSetupBloc>().add(CreateDebugAdminAccount());
+              },
+            ),],
+        ),
         body: BlocListener<InitialSetupBloc, InitialSetupData>(
           listener: (context, state) {
             if (state.sendingInProgress && !Navigator.canPop(context)) {
