@@ -128,6 +128,10 @@ class ServerConnection {
       print(e);
       _state.add(Error(ServerConnectionError.connectionFailure));
       return;
+    } on HandshakeException catch (e) {
+      print(e);
+      _state.add(Error(ServerConnectionError.connectionFailure));
+      return;
     }
 
     if (response.statusCode == HttpStatus.unauthorized) {

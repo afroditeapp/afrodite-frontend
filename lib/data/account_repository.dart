@@ -32,14 +32,21 @@ class AccountRepository extends AppSingleton {
     return _instance;
   }
 
-  final api = ApiManager.getInstance();
+  final _api = ApiManager.getInstance();
 
   final BehaviorSubject<MainState> _mainState =
     BehaviorSubject.seeded(MainState.splashScreen);
   final BehaviorSubject<AccountRepositoryState> _internalState =
     BehaviorSubject.seeded(AccountRepositoryState.initRequired);
 
-  final PublishSubject<void> hintAccountStateUpdated = PublishSubject();
+  final PublishSubject<void> _hintAccountStateUpdated = PublishSubject();
+
+  final _accountServerAddress = KvStorageManager.getInstance()
+    .getUpdatesForWithConversionAndDefaultIfNull(
+      KvString.accountServerAddress,
+      (value) => value,
+      defaultAccountServerAddress(),
+    );
 
   final _accountState = KvStorageManager.getInstance()
     .getUpdatesForWithConversionAndDefaultIfNull(
@@ -71,8 +78,11 @@ class AccountRepository extends AppSingleton {
       (value) => AccessToken(accessToken: value)
     );
 
+  // Main app state streams
   Stream<MainState> get mainState => _mainState.distinct();
+  Stream<String> get accountServerAddress => _accountServerAddress.distinct();
 
+  // Account state streams
   Stream<AccountState> get accountState => _accountState.distinct();
   Stream<Capabilities> get capabilities => _capablities.distinct();
   Stream<AccountId?> get accountId => _accountId.distinct();
@@ -103,7 +113,7 @@ class AccountRepository extends AppSingleton {
       }
     }
 
-    api.state.listen((event) {
+    _api.state.listen((event) {
       print(event);
       switch (event) {
         case ApiManagerState.initRequired: {}
@@ -166,7 +176,7 @@ class AccountRepository extends AppSingleton {
     emitStateUpdates(state);
 
     while (_internalState.value == AccountRepositoryState.watchConnection) {
-      Account? data = await api.account((api) => api.getAccountState());
+      Account? data = await _api.account((api) => api.getAccountState());
 
       if (data == null) {
         print("error: data == null");
@@ -186,7 +196,7 @@ class AccountRepository extends AppSingleton {
 
       await Future.any([
         Future.delayed(const Duration(seconds: 5), () {}),
-        hintAccountStateUpdated.stream.first
+        _hintAccountStateUpdated.stream.first
       ]);
     }
   }
@@ -204,7 +214,7 @@ class AccountRepository extends AppSingleton {
   }
 
   Future<AccountId?> register() async {
-    var id = await api.account((api) => api.postRegister());
+    var id = await _api.account((api) => api.postRegister());
     if (id != null) {
       await KvStorageManager.getInstance().setString(KvString.accountId, id.accountId);
     }
@@ -216,11 +226,11 @@ class AccountRepository extends AppSingleton {
     if (accountIdValue == null) {
       return null;
     }
-    final loginResult = await api.account((api) => api.postLogin(accountIdValue));
+    final loginResult = await _api.account((api) => api.postLogin(accountIdValue));
     if (loginResult != null) {
       await handleLoginResult(loginResult);
     }
-    await api.restart();
+    await _api.restart();
     return loginResult?.account.access;
   }
 
@@ -238,7 +248,7 @@ class AccountRepository extends AppSingleton {
     await KvStorageManager.getInstance().setString(KvString.accountAccessToken, null);
     // TODO: microservice support
 
-    await api.close();
+    await _api.close();
   }
 
   /// Return null on success. Return String if error.
@@ -246,22 +256,22 @@ class AccountRepository extends AppSingleton {
     final String securitySelfiePath = securitySelfieFile.path;
     final String profileImagePath = profileImageFile.path;
 
-    await api.account((api) => api.postAccountSetup(AccountSetup(email: email, name: name)));
+    await _api.account((api) => api.postAccountSetup(AccountSetup(email: email, name: name)));
     final securitySelfie = await MultipartFile.fromPath("", securitySelfiePath);
-    final contentId1 = await api.media((api) => api.putImageToModerationSlot(0, securitySelfie));
+    final contentId1 = await _api.media((api) => api.putImageToModerationSlot(0, securitySelfie));
     if (contentId1 == null) {
       return "Server did not return content ID";
     }
     final profileImage = await MultipartFile.fromPath("", profileImagePath);
-    final contentId2 = await api.media((api) => api.putImageToModerationSlot(1, profileImage));
+    final contentId2 = await _api.media((api) => api.putImageToModerationSlot(1, profileImage));
     if (contentId2 == null) {
       return "Server did not return content ID";
     }
-    await api.media((api) => api.putModerationRequest(ModerationRequestContent(cameraImage: true, image1: contentId1, image2: contentId2)));
-    await api.account((api) => api.postCompleteSetup());
-    hintAccountStateUpdated.add(null);
+    await _api.media((api) => api.putModerationRequest(ModerationRequestContent(cameraImage: true, image1: contentId1, image2: contentId2)));
+    await _api.account((api) => api.postCompleteSetup());
+    _hintAccountStateUpdated.add(null);
 
-    final state = await api.account((api) => api.getAccountState());
+    final state = await _api.account((api) => api.getAccountState());
     if (state == null || state.state != AccountState.normal) {
       return "Error";
     }
@@ -269,15 +279,9 @@ class AccountRepository extends AppSingleton {
     return null;
   }
 
-  Future<String> getCurrentServerAddress() async {
-    return await ConfigManager.getInstance().getString(
-      ConfigStringKey.accountServerAddress
-    );
-  }
-
   Future<void> setCurrentServerAddress(String serverAddress) async {
-    await ConfigManager.getInstance().setString(
-      ConfigStringKey.accountServerAddress, serverAddress
+    await KvStorageManager.getInstance().setString(
+      KvString.accountServerAddress, serverAddress
     );
     await ApiManager.getInstance().restart();
   }
@@ -292,11 +296,11 @@ class AccountRepository extends AppSingleton {
         print(token.accessToken);
         print(token.idToken);
 
-        final login = await api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken)));
+        final login = await _api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken)));
         if (login != null) {
           await handleLoginResult(login);
         }
-        await api.restart();
+        await _api.restart();
       }
   }
 
@@ -316,7 +320,7 @@ class AccountRepository extends AppSingleton {
         AppleIDAuthorizationScopes.email,
       ]);
       print(signedIn);
-      await api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(appleToken: signedIn.identityToken)));
+      await _api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(appleToken: signedIn.identityToken)));
     } on SignInWithAppleException catch (e) {
       print(e);
     }

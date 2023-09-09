@@ -15,12 +15,12 @@ class ChangeCachedServerAddress extends ServerAddressEvent {
 class ServerAddressBloc extends Bloc<ServerAddressEvent, String> {
   final AccountRepository account;
 
-  ServerAddressBloc(this.account) : super(ConfigStringKey.accountServerAddress.defaultValue()) {
+  ServerAddressBloc(this.account) : super(defaultAccountServerAddress()) {
     on<ChangeCachedServerAddress>((data, emit) async {
       await account.setCurrentServerAddress(data.value);
       emit(data.value);
     });
 
-    account.getCurrentServerAddress().then((value) => add(ChangeCachedServerAddress(value)));
+    account.accountServerAddress.listen((value) => add(ChangeCachedServerAddress(value)));
   }
 }

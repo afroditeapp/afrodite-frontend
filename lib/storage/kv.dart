@@ -1,10 +1,18 @@
 /// Key value storage
 
 
+import 'package:pihka_frontend/config.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum KvString {
+enum KvString implements KvStringProvider {
+  /// Url
+  accountServerAddress,
+  /// Url
+  mediaServerAddress,
+  /// Url
+  profileServerAddress,
+
   accountId,
   accountCapabilities,
   /// AccountState json
@@ -19,15 +27,19 @@ enum KvString {
   profileRefreshToken,
   profileAccessToken;
 
-  String key() {
+  /// Get shared preference key for this KvString
+  String _key() {
     return "kv-string-key-$name";
   }
 
-  // String defaultValue() {
-  //   switch (this) {
-  //     case _: return "";
-  //   }
-  // }
+  @override
+  KvString getKvString() {
+    return this;
+  }
+}
+
+abstract class KvStringProvider {
+  KvString getKvString();
 }
 
 class KvStorageManager {
@@ -44,20 +56,26 @@ class KvStorageManager {
 
   Future<String?> getString(KvString key) async {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString(key.key());
+    return preferences.getString(key._key());
+  }
+
+  Future<String> getStringOrDefault(KvStringWithDefault key) async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getString(key.key._key()) ?? key.defaultValue();
   }
 
   /// Set new string. If it is same than the previous, then nothing is done.
-  Future<void> setString(KvString key, String? value) async {
+  Future<void> setString(KvStringProvider keyProvider, String? value) async {
+    final key = keyProvider.getKvString();
     final SharedPreferences preferences = await SharedPreferences.getInstance();
-    final current = await preferences.getString(key.key());
+    final current = await preferences.getString(key._key());
     if (current == value) {
       return;
     }
     if (value == null) {
-      await preferences.remove(key.key());
+      await preferences.remove(key._key());
     } else {
-      await preferences.setString(key.key(), value);
+      await preferences.setString(key._key(), value);
     }
 
     _updates.add((key, value));

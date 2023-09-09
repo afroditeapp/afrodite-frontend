@@ -57,11 +57,11 @@ class ApiManager extends AppSingleton {
   }
 
   final ApiProvider _account =
-    ApiProvider(ConfigStringKey.accountServerAddress.defaultValue());
+    ApiProvider(KvStringWithDefault.accountServerAddress.defaultValue());
   final ApiProvider _media =
-    ApiProvider(ConfigStringKey.mediaServerAddress.defaultValue());
+    ApiProvider(KvStringWithDefault.mediaServerAddress.defaultValue());
   final ApiProvider _profile =
-    ApiProvider(ConfigStringKey.profileServerAddress.defaultValue());
+    ApiProvider(KvStringWithDefault.profileServerAddress.defaultValue());
 
   final BehaviorSubject<ApiManagerState> _state =
     BehaviorSubject.seeded(ApiManagerState.initRequired);
@@ -99,7 +99,7 @@ class ApiManager extends AppSingleton {
     await _media.init();
 
     _connectEvents();
-    await loadAddressesFromConfig();
+    await _loadAddressesFromConfig();
     await _connect();
   }
 
@@ -151,21 +151,21 @@ class ApiManager extends AppSingleton {
       // TODO: handle media and proifle
   }
 
-  Future<void> loadAddressesFromConfig() async {
-    final config = ConfigManager.getInstance();
+  Future<void> _loadAddressesFromConfig() async {
+    final storage = KvStorageManager.getInstance();
 
     final accountAddress =
-      await config.getString(ConfigStringKey.accountServerAddress);
+      await storage.getStringOrDefault(KvStringWithDefault.accountServerAddress);
     _account.updateServerAddress(accountAddress);
     accountConnection.setAddress(toWebSocketUri(accountAddress));
 
     final profileAddress =
-      await config.getString(ConfigStringKey.profileServerAddress);
+      await storage.getStringOrDefault(KvStringWithDefault.profileServerAddress);
     _profile.updateServerAddress(profileAddress);
     profileConnection.setAddress(toWebSocketUri(profileAddress));
 
     final mediaAddress =
-      await config.getString(ConfigStringKey.mediaServerAddress);
+      await storage.getStringOrDefault(KvStringWithDefault.mediaServerAddress);
     _media.updateServerAddress(mediaAddress);
     mediaConnection.setAddress(toWebSocketUri(mediaAddress));
   }
@@ -190,7 +190,7 @@ class ApiManager extends AppSingleton {
 
   Future<void> restart() async {
     await accountConnection.close();
-    await loadAddressesFromConfig();
+    await _loadAddressesFromConfig();
     await _connect();
   }
 

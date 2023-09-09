@@ -2,7 +2,7 @@
 
 import 'dart:io';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pihka_frontend/storage/kv.dart';
 
 const String _defaultAccountServerAddressAndroid = "https://localdev.***REMOVED***:3000"; // Should point to 10.0.2.2 (Android emulator host)
 const String _defaultAccountServerAddressIos = "https://192.168.0.1:3000";
@@ -28,42 +28,34 @@ String defaultProfileServerAddress() {
   return _defaultProfileServerAddress;
 }
 
+enum KvStringWithDefault implements KvStringProvider {
+  accountServerAddress(
+    KvString.accountServerAddress,
+    defaultAccountServerAddress,
+  ),
+  mediaServerAddress(
+    KvString.mediaServerAddress,
+    defaultMediaServerAddress,
+  ),
+  profileServerAddress(
+    KvString.profileServerAddress,
+    defaultProfileServerAddress,
+  );
 
-enum ConfigStringKey {
-  accountServerAddress,
-  mediaServerAddress,
-  profileServerAddress;
+  const KvStringWithDefault(
+    this.key,
+    this.defaultValueGetter,
+  );
 
-  String key() {
-    return "string-key-$name";
-  }
+  final KvString key;
+  final String Function() defaultValueGetter;
 
   String defaultValue() {
-    switch (this) {
-      case accountServerAddress: return defaultAccountServerAddress();
-      case profileServerAddress: return defaultProfileServerAddress();
-      case mediaServerAddress: return defaultMediaServerAddress();
-    }
-  }
-}
-
-class ConfigManager {
-  static final _instance = ConfigManager._private();
-
-  ConfigManager._private();
-
-  factory ConfigManager.getInstance() {
-    return _instance;
+    return defaultValueGetter();
   }
 
-  /// Get current or default value.
-  Future<String> getString(ConfigStringKey key) async {
-    final SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString(key.key()) ?? key.defaultValue();
-  }
-
-  Future<void> setString(ConfigStringKey key, String value) async {
-    final SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setString(key.key(), value);
+  @override
+  KvString getKvString() {
+    return key;
   }
 }
