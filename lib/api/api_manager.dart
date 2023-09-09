@@ -140,7 +140,14 @@ class ApiManager extends AppSingleton {
                 _state.add(ApiManagerState.reconnectWaitTime);
                 showSnackBar("Connection error - reconnecting in 5 seconds");
                 // TODO: check that internet connectivity exists?
-                Future.delayed(const Duration(seconds: 5), () => restart()).then((value) => null);
+                Future.delayed(const Duration(seconds: 5), () async {
+                  final currentState = await accountConnection.state.first;
+
+                  if (currentState is Error && currentState.error == ServerConnectionError.connectionFailure) {
+                    await restart();
+                  }
+                })
+                  .then((value) => null);
               }
               case ServerConnectionError.invalidToken: {
                 _state.add(ApiManagerState.waitingRefreshToken);
