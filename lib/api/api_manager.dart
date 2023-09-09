@@ -94,6 +94,8 @@ class ApiManager extends AppSingleton {
   Stream<ApiManagerState> get state => _state.distinct();
   Stream<ServerWsEvent> get serverEvents => _serverEvents;
 
+  bool reconnectInProgress = false;
+
   @override
   Future<void> init() async {
     if (_state.value != ApiManagerState.initRequired) {
@@ -138,6 +140,7 @@ class ApiManager extends AppSingleton {
             switch (e.error) {
               case ServerConnectionError.connectionFailure: {
                 _state.add(ApiManagerState.reconnectWaitTime);
+                reconnectInProgress = true;
                 showSnackBar("Connection error - reconnecting in 5 seconds");
                 // TODO: check that internet connectivity exists?
                 Future.delayed(const Duration(seconds: 5), () async {
@@ -158,6 +161,10 @@ class ApiManager extends AppSingleton {
           case Connecting():
             _state.add(ApiManagerState.connecting);
           case Ready(): {
+            if (reconnectInProgress) {
+              showSnackBar("Connected");
+              reconnectInProgress = false;
+            }
             setupTokens();
             _state.add(ApiManagerState.connected);
           }
@@ -210,6 +217,7 @@ class ApiManager extends AppSingleton {
   }
 
   Future<void> close() async {
+    reconnectInProgress = false;
     await accountConnection.close();
     _state.add(ApiManagerState.waitingRefreshToken);
   }
