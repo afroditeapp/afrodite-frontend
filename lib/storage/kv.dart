@@ -1,5 +1,6 @@
 /// Key value storage
 
+import 'dart:async';
 
 import 'package:pihka_frontend/config.dart';
 import 'package:rxdart/rxdart.dart';
@@ -68,7 +69,7 @@ class KvStorageManager {
   Future<void> setString(KvStringProvider keyProvider, String? value) async {
     final key = keyProvider.getKvString();
     final SharedPreferences preferences = await SharedPreferences.getInstance();
-    final current = await preferences.getString(key._key());
+    final current = preferences.getString(key._key());
     if (current == value) {
       return;
     }
@@ -81,75 +82,43 @@ class KvStorageManager {
     _updates.add((key, value));
   }
 
-  Future<T?> getStringAnd<T>(KvString key, T? Function(String) convert) async {
-    final value = await getString(key);
-    if (value != null) {
-      return convert(value);
+  Stream<T?> getUpdatesForWithConversion<T extends Object>(KvString key, T Function(String) convert) async* {
+    final current = await getString(key);
+    if (current != null) {
+      yield convert(current);
     } else {
-      return null;
+      yield null;
     }
-  }
 
-  Stream<String?> _getUpdatesForRaw(KvString key) {
-    return updates.where((event) => event.$1 == key).map((event) => event.$2);
-  }
-
-  ValueStream<String?> getUpdatesFor(KvString key) {
-    return Stream.fromFuture(getString(key))
-      .concatWith([_getUpdatesForRaw(key)])
-      .shareValue();
-  }
-
-  ValueStream<T?> getUpdatesForWithConversion<T extends Object>(KvString key, T Function(String) convert) {
-    return Stream.fromFuture(getString(key))
-      .concatWith([_getUpdatesForRaw(key)])
+    yield* _updates
+      .where((event) => event.$1 == key)
+      .map((event) => event.$2)
       .map((event) {
         if (event != null) {
           return convert(event);
         } else {
           return null;
         }
-      })
-      .shareValue();
+      });
   }
 
-  ValueStream<T> getUpdatesForWithConversionAndDefaultIfNull<T extends Object>(KvString key, T Function(String) convert, T defaultValue) {
-    return Stream.fromFuture(getString(key))
-      .concatWith([_getUpdatesForRaw(key)])
+  Stream<T> getUpdatesForWithConversionAndDefaultIfNull<T extends Object>(KvString key, T Function(String) convert, T defaultValue) async* {
+    final current = await getString(key);
+    if (current != null) {
+      yield convert(current);
+    } else {
+      yield defaultValue;
+    }
+
+    yield* _updates
+      .where((event) => event.$1 == key)
+      .map((event) => event.$2)
       .map((event) {
         if (event != null) {
           return convert(event);
         } else {
-          return null;
-        }
-      })
-      .map((event) {
-        if (event == null) {
           return defaultValue;
-        } else {
-          return event;
         }
-      })
-      .shareValue();
+      });
   }
-
-  // ValueStream<T> getUpdatesForWithConversionErrorAndAllNullToDefault<T extends Object>(KvString key, T? Function(String) convert, T defaultValue) {
-  //   return Stream.fromFuture(getString(key))
-  //     .concatWith([_getUpdatesForRaw(key)])
-  //     .map((event) {
-  //       if (event != null) {
-  //         return convert(event);
-  //       } else {
-  //         return null;
-  //       }
-  //     })
-  //     .map((event) {
-  //       if (event == null) {
-  //         return defaultValue;
-  //       } else {
-  //         return event;
-  //       }
-  //     })
-  //     .shareValue();
-  // }
 }

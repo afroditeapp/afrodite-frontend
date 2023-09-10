@@ -1,23 +1,18 @@
 
-
-
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:async/async.dart';
 import 'package:camera/camera.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/config.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 var log = Logger("AccountRepository");
@@ -44,52 +39,52 @@ class AccountRepository extends AppSingleton {
 
   final PublishSubject<void> _hintAccountStateUpdated = PublishSubject();
 
-  final _accountServerAddress = KvStorageManager.getInstance()
+  // Main app state streams
+  Stream<MainState> get mainState => _mainState.distinct();
+  Stream<String> get accountServerAddress => KvStorageManager.getInstance()
     .getUpdatesForWithConversionAndDefaultIfNull(
       KvString.accountServerAddress,
       (value) => value,
       defaultAccountServerAddress(),
     );
 
-  final _accountState = KvStorageManager.getInstance()
+  // Account state streams
+  Stream<AccountState> get accountState =>  KvStorageManager.getInstance()
     .getUpdatesForWithConversionAndDefaultIfNull(
       KvString.accountState,
       (value) => AccountState.fromJson(value) ?? AccountState.initialSetup,
       AccountState.initialSetup,
     );
-  final _capablities = KvStorageManager.getInstance()
+  Stream<Capabilities> get capabilities => KvStorageManager.getInstance()
     .getUpdatesForWithConversionAndDefaultIfNull(
       KvString.accountCapabilities,
       (value) {
         final map = jsonDecode(value);
         if (map != null) {
-          return Capabilities.fromJson(map) ?? Capabilities();
+          final capabilities = Capabilities.fromJson(map);
+          if (capabilities != null) {
+            return capabilities;
+          } else {
+            log.error("Capabilities fromJson failed");
+            return Capabilities();
+          }
         } else {
+          log.error("Capabilities jsonDecode failed");
           return Capabilities();
         }
       },
       Capabilities(),
     );
-  final _accountId = KvStorageManager.getInstance()
+  Stream<AccountId?> get accountId => KvStorageManager.getInstance()
     .getUpdatesForWithConversion(
       KvString.accountId,
       (value) => AccountId(accountId: value)
     );
-  final _accountAccessToken = KvStorageManager.getInstance()
+  Stream<AccessToken?> get accountAccessToken => KvStorageManager.getInstance()
     .getUpdatesForWithConversion(
       KvString.accountAccessToken,
       (value) => AccessToken(accessToken: value)
     );
-
-  // Main app state streams
-  Stream<MainState> get mainState => _mainState.distinct();
-  Stream<String> get accountServerAddress => _accountServerAddress.distinct();
-
-  // Account state streams
-  Stream<AccountState> get accountState => _accountState.distinct();
-  Stream<Capabilities> get capabilities => _capablities.distinct();
-  Stream<AccountId?> get accountId => _accountId.distinct();
-  Stream<AccessToken?> get accountAccessToken => _accountAccessToken.distinct();
 
   AccountRepository();
 
@@ -105,14 +100,13 @@ class AccountRepository extends AppSingleton {
     if (previousState != null) {
       final state = AccountState.fromJson(previousState);
       if (state != null) {
-        emitStateUpdates(state);
+        emitMainStateUpdates(state);
       }
     }
 
     _api.state.listen((event) {
       log.finer(event);
       switch (event) {
-        case ApiManagerState.initRequired: {}
         case ApiManagerState.waitingRefreshToken: {
           _mainState.add(MainState.loginRequired);
           _internalState.add(AccountRepositoryState.waitConnection);
@@ -131,20 +125,17 @@ class AccountRepository extends AppSingleton {
       .switchMap((value) {
         if (value == AccountRepositoryState.watchConnection) {
           return _pollNotificationStream()
-            .switchMap((value) => Stream.fromFuture(_downloadAccountState()).whereNotNull());
+            .asyncMap((value) => _downloadAccountState())
+            .whereNotNull();
         } else {
           return const Stream<Account>.empty();
         }
       })
       .listen((newAccountState) async {
-          if (await capabilities.first != newAccountState.capablities) {
-            await KvStorageManager.getInstance().setString(KvString.accountCapabilities, jsonEncode(newAccountState.capablities.toJson()));
-          }
-
-          if (await accountState.first != newAccountState.state) {
-            await KvStorageManager.getInstance().setString(KvString.accountState, newAccountState.toString());
-          }
-          emitStateUpdates(newAccountState.state);
+          final jsonString = jsonEncode(newAccountState.capablities.toJson());
+          await KvStorageManager.getInstance().setString(KvString.accountCapabilities, jsonString);
+          await KvStorageManager.getInstance().setString(KvString.accountState, newAccountState.state.toString());
+          emitMainStateUpdates(newAccountState.state);
       });
   }
 
@@ -170,7 +161,7 @@ class AccountRepository extends AppSingleton {
     return data;
   }
 
-  void emitStateUpdates(AccountState state) {
+  void emitMainStateUpdates(AccountState state) {
       if (state == AccountState.initialSetup) {
         _mainState.add(MainState.initialSetup);
       } else if (state == AccountState.normal) {

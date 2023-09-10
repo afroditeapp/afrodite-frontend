@@ -109,6 +109,8 @@ class Setting {
 
 extension GetCapabilities on Capabilities {
   bool adminSettingsVisible() {
+    // TODO: Add missing capabilities once
+    // capability properies are non-nullable
     return adminModerateImages ?? false;
   }
 }

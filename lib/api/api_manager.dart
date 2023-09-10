@@ -15,7 +15,6 @@ import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:rxdart/subjects.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -29,8 +28,6 @@ enum Server {
 }
 
 enum ApiManagerState {
-  /// Run init mehod.
-  initRequired,
   /// No valid refresh token available. UI should display login view.
   waitingRefreshToken,
   /// Reconnecting will happen in few seconds.
@@ -57,6 +54,7 @@ enum ServerWsEvent {
 class ApiManager extends AppSingleton {
   ApiManager._private();
   static final _instance = ApiManager._private();
+  static bool _initialized = false;
   factory ApiManager.getInstance() {
     return _instance;
   }
@@ -69,7 +67,7 @@ class ApiManager extends AppSingleton {
     ApiProvider(KvStringWithDefault.profileServerAddress.defaultValue());
 
   final BehaviorSubject<ApiManagerState> _state =
-    BehaviorSubject.seeded(ApiManagerState.initRequired);
+    BehaviorSubject.seeded(ApiManagerState.connecting);
   final PublishSubject<ApiManagerEvent> _events =
     PublishSubject();
   final PublishSubject<ServerWsEvent> _serverEvents =
@@ -98,9 +96,11 @@ class ApiManager extends AppSingleton {
 
   @override
   Future<void> init() async {
-    if (_state.value != ApiManagerState.initRequired) {
-      return;
+    if (_initialized) {
+      throw Exception("ApiManager already initialized");
     }
+    _initialized = true;
+
     await _account.init();
     await _profile.init();
     await _media.init();
