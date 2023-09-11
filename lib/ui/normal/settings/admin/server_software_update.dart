@@ -117,6 +117,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
     final currentVersion = Text("Running backend: ${data.runningVersion.backendVersion} ${data.runningVersion.backendCodeVersion}");
     widgets.add(currentVersion);
 
+    data.installedSoftware.currentSoftware.sort((a, b) => a.name.compareTo(b.name));
     for (final buildInfo in data.installedSoftware.currentSoftware) {
       switch (buildInfo.name) {
         case "manager": {
@@ -151,6 +152,11 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
     BuildInfo? latestAvailable,
     SoftwareOptions softwareOptions,
   ) {
+    widgets.add(Text(
+      buildInfo.name,
+      textAlign: TextAlign.left,
+      style: Theme.of(context).textTheme.headlineSmall,
+    ));
     widgets.add(displayBuildInfo(context, "Installed: ", buildInfo));
     if (latestAvailable != null) {
       widgets.add(displayBuildInfo(context, "Available: ", latestAvailable));
@@ -189,11 +195,19 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
   Widget displayBuildInfo(BuildContext context, String startText, BuildInfo buildInfo) {
     final details = "$startText\nname: ${buildInfo.name}\ntime: ${buildInfo.timestamp}\n${buildInfo.buildInfo}";
     final shortCommit = buildInfo.commitSha.substring(0, 7);
+    final buildInfoLines = buildInfo.buildInfo.split("\n");
+    var version = "";
+    for (final line in buildInfoLines) {
+      if (line.startsWith("version:")) {
+        version = line.substring(9);
+        break;
+      }
+    }
     return Row(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text("$startText${buildInfo.name} $shortCommit"),
+          child: Text("$startText$version $shortCommit"),
         ),
         ElevatedButton(
           onPressed: () {
