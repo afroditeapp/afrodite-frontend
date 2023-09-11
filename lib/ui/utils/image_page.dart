@@ -51,14 +51,14 @@ class _ImagePageState extends State<ImagePage>
             return buildProgressIndicator();
           }
           case ConnectionState.none || ConnectionState.done: {
-            final data = snapshot.data;
-            if (data != null) {
+            final imageFile = snapshot.data;
+            if (imageFile != null) {
               return InteractiveViewer(
                 panEnabled: false,
                 minScale: 1.0,
                 maxScale: 2.0,
-                child: Image.memory(
-                  data,
+                child: Image.file(
+                  imageFile,
                 ),
               );
             } else {

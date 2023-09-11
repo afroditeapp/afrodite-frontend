@@ -174,8 +174,8 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
             return buildProgressIndicator();
           }
           case ConnectionState.none || ConnectionState.done: {
-            final data = snapshot.data;
-            if (data != null) {
+            final imageFile = snapshot.data;
+            if (imageFile != null) {
               return InkWell(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ImagePage(imageOwner, image)));
@@ -189,8 +189,8 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
                     });
                   }
                 },
-                child: Image.memory(
-                  data,
+                child: Image.file(
+                  imageFile,
                   width: width,
                   height: imageHeight,
                 ),

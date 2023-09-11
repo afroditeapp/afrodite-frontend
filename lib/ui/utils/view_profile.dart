@@ -53,14 +53,14 @@ Widget viewProifleImage(BuildContext context, AccountId account, Profile profile
             return buildProgressIndicator(imgMaxWidth);
           }
           case ConnectionState.none || ConnectionState.done: {
-            final data = snapshot.data;
-            if (data != null) {
+            final imageFile = snapshot.data;
+            if (imageFile != null) {
               return InkWell( // TODO: remove?
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ImagePage(account, imgContentId)));
                 },
-                child: Image.memory(
-                  data,
+                child: Image.file(
+                  imageFile,
                   width: imgMaxWidth,
                 ),
               );

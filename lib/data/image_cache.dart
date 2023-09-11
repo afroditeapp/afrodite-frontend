@@ -3,6 +3,7 @@
 
 
 
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -29,12 +30,11 @@ class ImageCacheData extends AppSingleton {
   final CacheManager cacheManager;
 
 
-  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id) async {
+  Future<File?> getImage(AccountId imageOwner, ContentId id) async {
     final fileInfo = await cacheManager.getFileFromCache(id.contentId);
     if (fileInfo != null) {
       // TODO: error handling?
-      final fileBytes = await fileInfo.file.readAsBytes();
-      return fileBytes;
+      return fileInfo.file;
     }
 
     final imageData = await MediaRepository.getInstance().getImage(imageOwner, id);
@@ -42,9 +42,7 @@ class ImageCacheData extends AppSingleton {
       return null;
     }
 
-    await cacheManager.putFile("null", imageData, key: id.contentId);
-
-    return imageData;
+    return await cacheManager.putFile("null", imageData, key: id.contentId);
   }
 
   @override
