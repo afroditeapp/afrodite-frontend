@@ -19,7 +19,7 @@ class ApiWrapper<T> {
       return await action(api);
     } on ApiException catch (e) {
       log.error(e);
-      ErrorManager.getInstance().send(Error.api);
+      ErrorManager.getInstance().send(ApiError());
     }
 
     return null;
@@ -31,7 +31,7 @@ class ApiWrapper<T> {
       return await action(api);
     } on ApiException catch (e) {
       log.error(e);
-      ErrorManager.getInstance().send(Error.api);
+      ErrorManager.getInstance().send(ApiError());
       rethrow;
     }
   }

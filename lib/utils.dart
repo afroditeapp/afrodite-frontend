@@ -7,7 +7,8 @@ import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class AppSingleton {
-   Future<void> init();
+  /// Initialize the singleton. Runs when app splash screen is visible.
+  Future<void> init();
 }
 
 mixin ActionRunner {

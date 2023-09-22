@@ -1,20 +1,16 @@
 import 'dart:developer' as developer;
-import 'dart:io';
 
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
-import 'package:pihka_frontend/assets.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
-import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
+import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/logic/admin/image_moderation.dart';
@@ -22,12 +18,9 @@ import 'package:pihka_frontend/logic/profile/profile.dart';
 import 'package:pihka_frontend/logic/server/address.dart';
 import 'package:pihka_frontend/logic/sign_in_with.dart';
 
-import 'package:pihka_frontend/ui/normal.dart';
-import 'package:pihka_frontend/ui/login.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/ui/splash_screen.dart';
 import 'package:pihka_frontend/ui/utils/camera_page.dart';
-import 'package:pihka_frontend/utils.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -111,20 +104,19 @@ class DebugObserver extends BlocObserver {
   }
 }
 
-class GlobalInitManager extends AppSingleton {
+class GlobalInitManager {
   GlobalInitManager._private();
   static final _instance = GlobalInitManager._private();
   factory GlobalInitManager.getInstance() {
     return _instance;
   }
 
-  final PublishSubject<void> startInit = PublishSubject();
+  final PublishSubject<void> _startInit = PublishSubject();
   bool _globalInitDone = false;
 
   /// Run this in app main function.
-  @override
   Future<void> init() async {
-    startInit.stream
+    _startInit.stream
       .asyncMap((event) async => await _runInit())
       .listen((event) {});
   }
@@ -140,6 +132,8 @@ class GlobalInitManager extends AppSingleton {
     await ApiManager.getInstance().init();
     await ImageCacheData.getInstance().init();
 
+    await ProfileListDatabase.getInstance().init();
+
     await AccountRepository.getInstance().init();
     await MediaRepository.getInstance().init();
     await ProfileRepository.getInstance().init();
@@ -148,6 +142,6 @@ class GlobalInitManager extends AppSingleton {
   /// Global init should be triggerred after when splash screen
   /// is visible.
   Future<void> triggerGlobalInit() async {
-    startInit.add(null);
+    _startInit.add(null);
   }
 }

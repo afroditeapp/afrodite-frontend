@@ -4,21 +4,17 @@
 
 
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
-import 'package:pihka_frontend/ui/utils.dart';
 import 'package:pihka_frontend/utils.dart';
-import 'package:rxdart/rxdart.dart';
-
 
 class ImageCacheData extends AppSingleton {
   ImageCacheData._private(): cacheManager = CacheManager(
     Config(
       "imageCache",
-      stalePeriod: Duration(days: 30),
+      stalePeriod: const Duration(days: 30),
       maxNrOfCacheObjects: 2000,
     )
   );

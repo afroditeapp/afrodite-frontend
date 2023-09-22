@@ -5,6 +5,7 @@ import 'package:pihka_frontend/main.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// TODO: Show details button for displaying more detailed error message
 void showSnackBar(String text) {
   globalScaffoldMessengerKey.currentState?.hideCurrentSnackBar();
   globalScaffoldMessengerKey.currentState?.showSnackBar(
