@@ -42,7 +42,7 @@ class MyProfilePage extends StatelessWidget {
               final profile = profileState.profile;
               final img = profileState.primaryImage;
               if (profile != null && img != null) {
-                return viewProifle(context, id, profile, img, true);
+                return viewProifle(context, id, profile, PrimaryImageInfo(img), true);
               } else {
                 return Text(AppLocalizations.of(context).genericEmpty);
               }

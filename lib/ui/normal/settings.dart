@@ -4,7 +4,7 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin.dart';
 import 'package:pihka_frontend/ui/normal/settings/location.dart';
-import 'package:pihka_frontend/ui/normal/settings/profile.dart';
+import 'package:pihka_frontend/ui/normal/settings/my_profile.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

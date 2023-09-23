@@ -1,6 +1,8 @@
 
 
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,12 +14,34 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pihka_frontend/ui/utils/image_page.dart';
 
 
-Widget viewProifle(BuildContext context, AccountId account, Profile profile, PrimaryImage img, bool showGridImage) {
+Widget viewProifle(BuildContext context, AccountId account, Profile profile, PrimaryImageProvider img, bool showGridImage) {
   return LayoutBuilder(
     builder: (context, constraints) {
+
+      final Widget imgWidget;
+      switch (img) {
+        case PrimaryImageFile():
+          if (img.heroTransition) {
+            imgWidget = Hero(
+              tag: account,
+              child: Image.file(
+                img.file,
+                width: constraints.maxWidth,
+              ),
+            );
+          } else {
+            imgWidget = Image.file(
+              img.file,
+              width: constraints.maxWidth,
+            );
+          }
+        case PrimaryImageInfo():
+          imgWidget = viewProifleImage(context, account, profile, img, showGridImage, constraints);
+      }
+
       return Column(
         children: [
-          viewProifleImage(context, account, profile, img, showGridImage, constraints),
+          imgWidget,
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(profile.name, style: Theme.of(context).textTheme.titleLarge),
@@ -33,7 +57,7 @@ Widget viewProifle(BuildContext context, AccountId account, Profile profile, Pri
   );
 }
 
-Widget viewProifleImage(BuildContext context, AccountId account, Profile profile, PrimaryImage img, bool showGridImage, BoxConstraints constraints) {
+Widget viewProifleImage(BuildContext context, AccountId account, Profile profile, PrimaryImageInfo img, bool showGridImage, BoxConstraints constraints) {
 
   final double imgMaxWidth;
   if (showGridImage) {
@@ -43,7 +67,7 @@ Widget viewProifleImage(BuildContext context, AccountId account, Profile profile
   }
 
   final Widget primaryImageWidget;
-  final imgContentId = img.contentId;
+  final imgContentId = img.img.contentId;
   if (imgContentId != null) {
     primaryImageWidget = FutureBuilder(
       future: ImageCacheData.getInstance().getImage(account, imgContentId),
@@ -88,4 +112,18 @@ Widget buildProgressIndicator(double imgMaxWidth) {
       CircularProgressIndicator(),
     ],
   ));
+}
+
+
+sealed class PrimaryImageProvider {}
+
+class PrimaryImageFile extends PrimaryImageProvider {
+  final File file;
+  final bool heroTransition;
+  PrimaryImageFile(this.file, {this.heroTransition = false});
+}
+
+class PrimaryImageInfo extends PrimaryImageProvider {
+  final PrimaryImage img;
+  PrimaryImageInfo(this.img);
 }
