@@ -26,12 +26,14 @@ class ApiWrapper<T> {
   }
 
   /// Rethrow ApiException.
-  Future<R?> requestWithException<R extends Object>(Future<R?> Function(T) action) async {
+  Future<R?> requestWithException<R extends Object>(bool logError, Future<R?> Function(T) action) async {
     try {
       return await action(api);
     } on ApiException catch (e) {
-      log.error(e);
-      ErrorManager.getInstance().send(ApiError());
+      if (logError) {
+        log.error(e);
+        ErrorManager.getInstance().send(ApiError());
+      }
       rethrow;
     }
   }

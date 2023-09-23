@@ -84,6 +84,7 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**postRequestUpdateSoftware**](doc//CommonAdminApi.md#postrequestupdatesoftware) | **POST** /common_api/request_update_software | Request updating new software from manager instance.
 *MediaApi* | [**getAllNormalImages**](doc//MediaApi.md#getallnormalimages) | **GET** /media_api/all_normal_images/{account_id} | Get list of all normal images on the server for one account.
 *MediaApi* | [**getImage**](doc//MediaApi.md#getimage) | **GET** /media_api/image/{account_id}/{content_id} | Get profile image
+*MediaApi* | [**getMapTile**](doc//MediaApi.md#getmaptile) | **GET** /media_api/map_tile/{z}/{x}/{y} | Get map tile PNG file.
 *MediaApi* | [**getModerationRequest**](doc//MediaApi.md#getmoderationrequest) | **GET** /media_api/moderation/request | Get current moderation request.
 *MediaApi* | [**getPrimaryImageInfo**](doc//MediaApi.md#getprimaryimageinfo) | **GET** /media_api/primary_image_info/{account_id} | Get current public image for selected profile
 *MediaApi* | [**putImageToModerationSlot**](doc//MediaApi.md#putimagetomoderationslot) | **PUT** /media_api/moderation/request/slot/{slot_id} | Set image to moderation request slot.
@@ -128,6 +129,9 @@ Class | Method | HTTP request | Description
  - [ImageAccessCheck](doc//ImageAccessCheck.md)
  - [Location](doc//Location.md)
  - [LoginResult](doc//LoginResult.md)
+ - [MapTileX](doc//MapTileX.md)
+ - [MapTileY](doc//MapTileY.md)
+ - [MapTileZ](doc//MapTileZ.md)
  - [Moderation](doc//Moderation.md)
  - [ModerationList](doc//ModerationList.md)
  - [ModerationRequest](doc//ModerationRequest.md)

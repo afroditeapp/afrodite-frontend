@@ -143,6 +143,73 @@ class MediaApi {
     return null;
   }
 
+  /// Get map tile PNG file.
+  ///
+  /// Get map tile PNG file.  Returns a .png even if the URL does not have it.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [int] z (required):
+  ///
+  /// * [int] x (required):
+  ///
+  /// * [String] y (required):
+  Future<Response> getMapTileWithHttpInfo(int z, int x, String y,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/map_tile/{z}/{x}/{y}'
+      .replaceAll('{z}', z.toString())
+      .replaceAll('{x}', x.toString())
+      .replaceAll('{y}', y);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get map tile PNG file.
+  ///
+  /// Get map tile PNG file.  Returns a .png even if the URL does not have it.
+  ///
+  /// Parameters:
+  ///
+  /// * [int] z (required):
+  ///
+  /// * [int] x (required):
+  ///
+  /// * [String] y (required):
+  Future<MultipartFile?> getMapTile(int z, int x, String y,) async {
+    final response = await getMapTileWithHttpInfo(z, x, y,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MultipartFile',) as MultipartFile;
+    
+    }
+    return null;
+  }
+
   /// Get current moderation request.
   ///
   /// Get current moderation request. 

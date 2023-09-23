@@ -225,6 +225,12 @@ class ApiClient {
           return Location.fromJson(value);
         case 'LoginResult':
           return LoginResult.fromJson(value);
+        case 'MapTileX':
+          return MapTileX.fromJson(value);
+        case 'MapTileY':
+          return MapTileY.fromJson(value);
+        case 'MapTileZ':
+          return MapTileZ.fromJson(value);
         case 'Moderation':
           return Moderation.fromJson(value);
         case 'ModerationList':

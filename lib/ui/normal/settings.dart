@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin.dart';
+import 'package:pihka_frontend/ui/normal/settings/location.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 
@@ -53,7 +54,10 @@ class _SettingsViewState extends State<SettingsView> {
       builder: (context, state) {
         List<Setting> settings = [
           Setting.createSetting(Icons.account_circle, AppLocalizations.of(context).pageMyProfileTitle, () =>
-            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const MyProfilePage()),)
+            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const MyProfilePage()))
+          ),
+          Setting.createSetting(Icons.location_on, AppLocalizations.of(context).pageLocationTitle, () =>
+            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const LocationPage()))
           ),
           Setting.createSetting(Icons.logout, AppLocalizations.of(context).pageSettingsLogoutTitle, () =>
             showConfirmDialog(context, AppLocalizations.of(context).pageSettingsLogoutTitle)
@@ -67,7 +71,7 @@ class _SettingsViewState extends State<SettingsView> {
 
         if (state.capabilities.adminSettingsVisible()) {
           settings.add(Setting.createSetting(Icons.admin_panel_settings, AppLocalizations.of(context).pageAdminTitle, () =>
-            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const AdminSettingsPage()),)
+            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const AdminSettingsPage()))
           ));
         }
 

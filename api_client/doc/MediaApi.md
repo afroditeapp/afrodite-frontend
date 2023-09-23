@@ -11,6 +11,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**getAllNormalImages**](MediaApi.md#getallnormalimages) | **GET** /media_api/all_normal_images/{account_id} | Get list of all normal images on the server for one account.
 [**getImage**](MediaApi.md#getimage) | **GET** /media_api/image/{account_id}/{content_id} | Get profile image
+[**getMapTile**](MediaApi.md#getmaptile) | **GET** /media_api/map_tile/{z}/{x}/{y} | Get map tile PNG file.
 [**getModerationRequest**](MediaApi.md#getmoderationrequest) | **GET** /media_api/moderation/request | Get current moderation request.
 [**getPrimaryImageInfo**](MediaApi.md#getprimaryimageinfo) | **GET** /media_api/primary_image_info/{account_id} | Get current public image for selected profile
 [**putImageToModerationSlot**](MediaApi.md#putimagetomoderationslot) | **PUT** /media_api/moderation/request/slot/{slot_id} | Set image to moderation request slot.
@@ -113,6 +114,57 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: image/jpeg
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getMapTile**
+> MultipartFile getMapTile(z, x, y)
+
+Get map tile PNG file.
+
+Get map tile PNG file.  Returns a .png even if the URL does not have it.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = MediaApi();
+final z = 56; // int | 
+final x = 56; // int | 
+final y = y_example; // String | 
+
+try {
+    final result = api_instance.getMapTile(z, x, y);
+    print(result);
+} catch (e) {
+    print('Exception when calling MediaApi->getMapTile: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **z** | **int**|  | 
+ **x** | **int**|  | 
+ **y** | **String**|  | 
+
+### Return type
+
+[**MultipartFile**](MultipartFile.md)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: image/png
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

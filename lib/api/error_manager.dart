@@ -49,6 +49,13 @@ class ApiError extends Error {
   String title() { return "API error"; }
 }
 
+// File error
+
+class FileError extends Error {
+  @override
+  String title() { return "File error"; }
+}
+
 // Database errors
 
 sealed class DatabaseError extends Error {

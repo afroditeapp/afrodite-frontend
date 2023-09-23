@@ -69,6 +69,12 @@
     "description": "Title for my profile page"
   },
 
+  "@_LOCATION_PAGE": {},
+  "pageLocationTitle": "Location",
+  "@pageLocationTitle": {
+    "description": "Title for location page"
+  },
+
   "@_ADMIN_PAGE": {},
   "pageAdminTitle": "Admin",
   "@pageAdminTitle": {

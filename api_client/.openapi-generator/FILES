@@ -28,6 +28,9 @@ doc/HandleModerationRequest.md
 doc/ImageAccessCheck.md
 doc/Location.md
 doc/LoginResult.md
+doc/MapTileX.md
+doc/MapTileY.md
+doc/MapTileZ.md
 doc/MediaAdminApi.md
 doc/MediaApi.md
 doc/MediaInternalApi.md
@@ -97,6 +100,9 @@ lib/model/handle_moderation_request.dart
 lib/model/image_access_check.dart
 lib/model/location.dart
 lib/model/login_result.dart
+lib/model/map_tile_x.dart
+lib/model/map_tile_y.dart
+lib/model/map_tile_z.dart
 lib/model/moderation.dart
 lib/model/moderation_list.dart
 lib/model/moderation_request.dart
@@ -121,3 +127,6 @@ lib/model/software_options.dart
 lib/model/system_info.dart
 lib/model/system_info_list.dart
 pubspec.yaml
+test/map_tile_x_test.dart
+test/map_tile_y_test.dart
+test/map_tile_z_test.dart

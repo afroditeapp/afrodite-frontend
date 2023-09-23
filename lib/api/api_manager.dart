@@ -297,7 +297,7 @@ class ApiManager extends AppSingleton {
     return ApiWrapper(_profileApiProvider().profile);
   }
 
-  ApiWrapper<MediaApi> _mediaWrapper() {
+  ApiWrapper<MediaApi> mediaWrapper() {
     return ApiWrapper(_mediaApiProvider().media);
   }
 
@@ -340,7 +340,7 @@ class ApiManager extends AppSingleton {
   }
 
   Future<R?> media<R extends Object>(Future<R?> Function(MediaApi) action) async {
-    return await _mediaWrapper().request(action);
+    return await mediaWrapper().request(action);
   }
 
   Future<R?> mediaAdmin<R extends Object>(Future<R?> Function(MediaAdminApi) action) async {

@@ -13,154 +13,58 @@ part of openapi.api;
 class Capabilities {
   /// Returns a new [Capabilities] instance.
   Capabilities({
-    this.adminBanProfile,
-    this.adminModerateImages,
-    this.adminModerateProfiles,
-    this.adminModifyCapablities,
-    this.adminServerMaintentanceRebootBackend,
-    this.adminServerMaintentanceResetData,
-    this.adminServerMaintentanceSaveBackendSettings,
-    this.adminServerMaintentanceUpdateSoftware,
-    this.adminServerMaintentanceViewBackendSettings,
-    this.adminServerMaintentanceViewInfo,
-    this.adminSetupPossible,
-    this.adminViewAllProfiles,
-    this.adminViewPrivateInfo,
-    this.adminViewProfileHistory,
-    this.bannedEditProfile,
-    this.viewPublicProfiles,
+    this.adminBanProfile = false,
+    this.adminModerateImages = false,
+    this.adminModerateProfiles = false,
+    this.adminModifyCapablities = false,
+    this.adminServerMaintentanceRebootBackend = false,
+    this.adminServerMaintentanceResetData = false,
+    this.adminServerMaintentanceSaveBackendSettings = false,
+    this.adminServerMaintentanceUpdateSoftware = false,
+    this.adminServerMaintentanceViewBackendSettings = false,
+    this.adminServerMaintentanceViewInfo = false,
+    this.adminSetupPossible = false,
+    this.adminViewAllProfiles = false,
+    this.adminViewPrivateInfo = false,
+    this.adminViewProfileHistory = false,
+    this.bannedEditProfile = false,
+    this.viewPublicProfiles = false,
   });
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? adminBanProfile;
+  bool adminBanProfile;
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? adminModerateImages;
+  bool adminModerateImages;
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? adminModerateProfiles;
+  bool adminModerateProfiles;
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? adminModifyCapablities;
+  bool adminModifyCapablities;
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? adminServerMaintentanceRebootBackend;
+  bool adminServerMaintentanceRebootBackend;
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? adminServerMaintentanceResetData;
+  bool adminServerMaintentanceResetData;
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? adminServerMaintentanceSaveBackendSettings;
+  bool adminServerMaintentanceSaveBackendSettings;
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? adminServerMaintentanceUpdateSoftware;
+  bool adminServerMaintentanceUpdateSoftware;
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? adminServerMaintentanceViewBackendSettings;
+  bool adminServerMaintentanceViewBackendSettings;
 
   /// View server infrastructure related info like logs and software versions.
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? adminServerMaintentanceViewInfo;
+  bool adminServerMaintentanceViewInfo;
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? adminSetupPossible;
+  bool adminSetupPossible;
 
   /// View public and private profiles.
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? adminViewAllProfiles;
+  bool adminViewAllProfiles;
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? adminViewPrivateInfo;
+  bool adminViewPrivateInfo;
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? adminViewProfileHistory;
+  bool adminViewProfileHistory;
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? bannedEditProfile;
+  bool bannedEditProfile;
 
   /// View public profiles
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  bool? viewPublicProfiles;
+  bool viewPublicProfiles;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Capabilities &&
@@ -184,108 +88,44 @@ class Capabilities {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (adminBanProfile == null ? 0 : adminBanProfile!.hashCode) +
-    (adminModerateImages == null ? 0 : adminModerateImages!.hashCode) +
-    (adminModerateProfiles == null ? 0 : adminModerateProfiles!.hashCode) +
-    (adminModifyCapablities == null ? 0 : adminModifyCapablities!.hashCode) +
-    (adminServerMaintentanceRebootBackend == null ? 0 : adminServerMaintentanceRebootBackend!.hashCode) +
-    (adminServerMaintentanceResetData == null ? 0 : adminServerMaintentanceResetData!.hashCode) +
-    (adminServerMaintentanceSaveBackendSettings == null ? 0 : adminServerMaintentanceSaveBackendSettings!.hashCode) +
-    (adminServerMaintentanceUpdateSoftware == null ? 0 : adminServerMaintentanceUpdateSoftware!.hashCode) +
-    (adminServerMaintentanceViewBackendSettings == null ? 0 : adminServerMaintentanceViewBackendSettings!.hashCode) +
-    (adminServerMaintentanceViewInfo == null ? 0 : adminServerMaintentanceViewInfo!.hashCode) +
-    (adminSetupPossible == null ? 0 : adminSetupPossible!.hashCode) +
-    (adminViewAllProfiles == null ? 0 : adminViewAllProfiles!.hashCode) +
-    (adminViewPrivateInfo == null ? 0 : adminViewPrivateInfo!.hashCode) +
-    (adminViewProfileHistory == null ? 0 : adminViewProfileHistory!.hashCode) +
-    (bannedEditProfile == null ? 0 : bannedEditProfile!.hashCode) +
-    (viewPublicProfiles == null ? 0 : viewPublicProfiles!.hashCode);
+    (adminBanProfile.hashCode) +
+    (adminModerateImages.hashCode) +
+    (adminModerateProfiles.hashCode) +
+    (adminModifyCapablities.hashCode) +
+    (adminServerMaintentanceRebootBackend.hashCode) +
+    (adminServerMaintentanceResetData.hashCode) +
+    (adminServerMaintentanceSaveBackendSettings.hashCode) +
+    (adminServerMaintentanceUpdateSoftware.hashCode) +
+    (adminServerMaintentanceViewBackendSettings.hashCode) +
+    (adminServerMaintentanceViewInfo.hashCode) +
+    (adminSetupPossible.hashCode) +
+    (adminViewAllProfiles.hashCode) +
+    (adminViewPrivateInfo.hashCode) +
+    (adminViewProfileHistory.hashCode) +
+    (bannedEditProfile.hashCode) +
+    (viewPublicProfiles.hashCode);
 
   @override
   String toString() => 'Capabilities[adminBanProfile=$adminBanProfile, adminModerateImages=$adminModerateImages, adminModerateProfiles=$adminModerateProfiles, adminModifyCapablities=$adminModifyCapablities, adminServerMaintentanceRebootBackend=$adminServerMaintentanceRebootBackend, adminServerMaintentanceResetData=$adminServerMaintentanceResetData, adminServerMaintentanceSaveBackendSettings=$adminServerMaintentanceSaveBackendSettings, adminServerMaintentanceUpdateSoftware=$adminServerMaintentanceUpdateSoftware, adminServerMaintentanceViewBackendSettings=$adminServerMaintentanceViewBackendSettings, adminServerMaintentanceViewInfo=$adminServerMaintentanceViewInfo, adminSetupPossible=$adminSetupPossible, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory, bannedEditProfile=$bannedEditProfile, viewPublicProfiles=$viewPublicProfiles]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.adminBanProfile != null) {
       json[r'admin_ban_profile'] = this.adminBanProfile;
-    } else {
-      json[r'admin_ban_profile'] = null;
-    }
-    if (this.adminModerateImages != null) {
       json[r'admin_moderate_images'] = this.adminModerateImages;
-    } else {
-      json[r'admin_moderate_images'] = null;
-    }
-    if (this.adminModerateProfiles != null) {
       json[r'admin_moderate_profiles'] = this.adminModerateProfiles;
-    } else {
-      json[r'admin_moderate_profiles'] = null;
-    }
-    if (this.adminModifyCapablities != null) {
       json[r'admin_modify_capablities'] = this.adminModifyCapablities;
-    } else {
-      json[r'admin_modify_capablities'] = null;
-    }
-    if (this.adminServerMaintentanceRebootBackend != null) {
       json[r'admin_server_maintentance_reboot_backend'] = this.adminServerMaintentanceRebootBackend;
-    } else {
-      json[r'admin_server_maintentance_reboot_backend'] = null;
-    }
-    if (this.adminServerMaintentanceResetData != null) {
       json[r'admin_server_maintentance_reset_data'] = this.adminServerMaintentanceResetData;
-    } else {
-      json[r'admin_server_maintentance_reset_data'] = null;
-    }
-    if (this.adminServerMaintentanceSaveBackendSettings != null) {
       json[r'admin_server_maintentance_save_backend_settings'] = this.adminServerMaintentanceSaveBackendSettings;
-    } else {
-      json[r'admin_server_maintentance_save_backend_settings'] = null;
-    }
-    if (this.adminServerMaintentanceUpdateSoftware != null) {
       json[r'admin_server_maintentance_update_software'] = this.adminServerMaintentanceUpdateSoftware;
-    } else {
-      json[r'admin_server_maintentance_update_software'] = null;
-    }
-    if (this.adminServerMaintentanceViewBackendSettings != null) {
       json[r'admin_server_maintentance_view_backend_settings'] = this.adminServerMaintentanceViewBackendSettings;
-    } else {
-      json[r'admin_server_maintentance_view_backend_settings'] = null;
-    }
-    if (this.adminServerMaintentanceViewInfo != null) {
       json[r'admin_server_maintentance_view_info'] = this.adminServerMaintentanceViewInfo;
-    } else {
-      json[r'admin_server_maintentance_view_info'] = null;
-    }
-    if (this.adminSetupPossible != null) {
       json[r'admin_setup_possible'] = this.adminSetupPossible;
-    } else {
-      json[r'admin_setup_possible'] = null;
-    }
-    if (this.adminViewAllProfiles != null) {
       json[r'admin_view_all_profiles'] = this.adminViewAllProfiles;
-    } else {
-      json[r'admin_view_all_profiles'] = null;
-    }
-    if (this.adminViewPrivateInfo != null) {
       json[r'admin_view_private_info'] = this.adminViewPrivateInfo;
-    } else {
-      json[r'admin_view_private_info'] = null;
-    }
-    if (this.adminViewProfileHistory != null) {
       json[r'admin_view_profile_history'] = this.adminViewProfileHistory;
-    } else {
-      json[r'admin_view_profile_history'] = null;
-    }
-    if (this.bannedEditProfile != null) {
       json[r'banned_edit_profile'] = this.bannedEditProfile;
-    } else {
-      json[r'banned_edit_profile'] = null;
-    }
-    if (this.viewPublicProfiles != null) {
       json[r'view_public_profiles'] = this.viewPublicProfiles;
-    } else {
-      json[r'view_public_profiles'] = null;
-    }
     return json;
   }
 
@@ -308,22 +148,22 @@ class Capabilities {
       }());
 
       return Capabilities(
-        adminBanProfile: mapValueOfType<bool>(json, r'admin_ban_profile'),
-        adminModerateImages: mapValueOfType<bool>(json, r'admin_moderate_images'),
-        adminModerateProfiles: mapValueOfType<bool>(json, r'admin_moderate_profiles'),
-        adminModifyCapablities: mapValueOfType<bool>(json, r'admin_modify_capablities'),
-        adminServerMaintentanceRebootBackend: mapValueOfType<bool>(json, r'admin_server_maintentance_reboot_backend'),
-        adminServerMaintentanceResetData: mapValueOfType<bool>(json, r'admin_server_maintentance_reset_data'),
-        adminServerMaintentanceSaveBackendSettings: mapValueOfType<bool>(json, r'admin_server_maintentance_save_backend_settings'),
-        adminServerMaintentanceUpdateSoftware: mapValueOfType<bool>(json, r'admin_server_maintentance_update_software'),
-        adminServerMaintentanceViewBackendSettings: mapValueOfType<bool>(json, r'admin_server_maintentance_view_backend_settings'),
-        adminServerMaintentanceViewInfo: mapValueOfType<bool>(json, r'admin_server_maintentance_view_info'),
-        adminSetupPossible: mapValueOfType<bool>(json, r'admin_setup_possible'),
-        adminViewAllProfiles: mapValueOfType<bool>(json, r'admin_view_all_profiles'),
-        adminViewPrivateInfo: mapValueOfType<bool>(json, r'admin_view_private_info'),
-        adminViewProfileHistory: mapValueOfType<bool>(json, r'admin_view_profile_history'),
-        bannedEditProfile: mapValueOfType<bool>(json, r'banned_edit_profile'),
-        viewPublicProfiles: mapValueOfType<bool>(json, r'view_public_profiles'),
+        adminBanProfile: mapValueOfType<bool>(json, r'admin_ban_profile') ?? false,
+        adminModerateImages: mapValueOfType<bool>(json, r'admin_moderate_images') ?? false,
+        adminModerateProfiles: mapValueOfType<bool>(json, r'admin_moderate_profiles') ?? false,
+        adminModifyCapablities: mapValueOfType<bool>(json, r'admin_modify_capablities') ?? false,
+        adminServerMaintentanceRebootBackend: mapValueOfType<bool>(json, r'admin_server_maintentance_reboot_backend') ?? false,
+        adminServerMaintentanceResetData: mapValueOfType<bool>(json, r'admin_server_maintentance_reset_data') ?? false,
+        adminServerMaintentanceSaveBackendSettings: mapValueOfType<bool>(json, r'admin_server_maintentance_save_backend_settings') ?? false,
+        adminServerMaintentanceUpdateSoftware: mapValueOfType<bool>(json, r'admin_server_maintentance_update_software') ?? false,
+        adminServerMaintentanceViewBackendSettings: mapValueOfType<bool>(json, r'admin_server_maintentance_view_backend_settings') ?? false,
+        adminServerMaintentanceViewInfo: mapValueOfType<bool>(json, r'admin_server_maintentance_view_info') ?? false,
+        adminSetupPossible: mapValueOfType<bool>(json, r'admin_setup_possible') ?? false,
+        adminViewAllProfiles: mapValueOfType<bool>(json, r'admin_view_all_profiles') ?? false,
+        adminViewPrivateInfo: mapValueOfType<bool>(json, r'admin_view_private_info') ?? false,
+        adminViewProfileHistory: mapValueOfType<bool>(json, r'admin_view_profile_history') ?? false,
+        bannedEditProfile: mapValueOfType<bool>(json, r'banned_edit_profile') ?? false,
+        viewPublicProfiles: mapValueOfType<bool>(json, r'view_public_profiles') ?? false,
       );
     }
     return null;

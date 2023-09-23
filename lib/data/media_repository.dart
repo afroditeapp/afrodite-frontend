@@ -11,6 +11,7 @@ import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
+import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
@@ -59,6 +60,31 @@ class MediaRepository extends AppSingleton {
     }
   }
 
+  Future<MapTileResult> getMapTile(int z, int x, int y) async {
+    try {
+      final data = await api.mediaWrapper().requestWithException(false, (api) => api.getMapTileFixed(
+        z,
+        x,
+        y.toString(),
+      ));
+      if (data != null) {
+        return MapTileSuccess(data);
+      } else {
+        log.error("Map tile loading error: request successfull, but no tile data");
+        ErrorManager.getInstance().send(ApiError());
+        return MapTileError();
+      }
+    } on ApiException catch (e) {
+      if (e.code == 404) {
+        // No map tile available
+        return MapTileNotAvailable();
+      } else {
+        log.error(e);
+        ErrorManager.getInstance().send(ApiError());
+        return MapTileError();
+      }
+    }
+  }
 
   Future<ModerationList> nextModerationListFromServer() async {
     return await api.mediaAdmin((api) => api.patchModerationRequestList()) ?? ModerationList();
@@ -77,3 +103,12 @@ class MediaRepository extends AppSingleton {
     return await api.media((api) => api.getPrimaryImageInfo(account.accountId, isMatch));
   }
 }
+
+sealed class MapTileResult {}
+
+class MapTileSuccess extends MapTileResult {
+  Uint8List pngData;
+  MapTileSuccess(this.pngData);
+}
+class MapTileError extends MapTileResult {}
+class MapTileNotAvailable extends MapTileResult {}
