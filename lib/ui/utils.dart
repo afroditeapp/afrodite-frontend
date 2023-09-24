@@ -41,7 +41,7 @@ Future<bool?> showInfoDialog(BuildContext context, String text) {
   return showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
-      content: Text(text),
+      content: SelectableText(text),
       actions: <Widget>[
         TextButton(
           onPressed: () {

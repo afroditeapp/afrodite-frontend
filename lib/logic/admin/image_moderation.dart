@@ -53,6 +53,8 @@ class ImageRow implements ImageRowState {
   final ModerationEntry entry;
   final ModerationRequestEntry requestEntry;
   ImageRow(this.entry, this.requestEntry);
+
+
 }
 
 abstract class ImageModerationEvent {}

@@ -182,11 +182,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
                 },
                 onLongPress: () {
                   if (index != null) {
-                    showConfirmDialog(context, AppLocalizations.of(context).pageModerateImagesDenyImageText).then((value) {
-                      if (value == true) {
-                        context.read<ImageModerationBloc>().add(ModerateEntry(index, false));
-                      }
-                    });
+                    showActionDialog(imageOwner, image, index);
                   }
                 },
                 child: Image.file(
@@ -224,6 +220,44 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
           Text(AppLocalizations.of(context).genericEmpty)
         ],
       )
+    );
+  }
+
+  Future<void> showActionDialog(AccountId account, ContentId contentId, int index) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: const Text("Select action"),
+          children: <Widget>[
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context);
+                showConfirmDialog(
+                  context,
+                  AppLocalizations.of(context).pageModerateImagesDenyImageText,
+                  details: "Note that if when all images in a requests are green, you have to ban the profile if you want make sure that other users can't see the image.",
+                )
+                .then(
+                    (value) {
+                      if (value == true) {
+                        context.read<ImageModerationBloc>().add(ModerateEntry(index, false));
+                      }
+                    }
+                );
+              },
+              child: const Text("Deny image"),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context);
+                showInfoDialog(context, "Account ID\n\n${account.accountId}\n\nContent ID\n\n${contentId.contentId}");
+              },
+              child: const Text("Show info"),
+            ),
+          ],
+        );
+      },
     );
   }
 }
