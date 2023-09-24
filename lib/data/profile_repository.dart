@@ -1,38 +1,88 @@
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:camera/camera.dart';
-import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/api/api_provider.dart';
+import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
-import 'package:pihka_frontend/logic/app/main_state.dart';
+import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileRepository extends AppSingleton {
+var log = Logger("ProfileRepository");
+
+class ProfileRepository extends DataRepository {
   ProfileRepository._private();
   static final _instance = ProfileRepository._private();
   factory ProfileRepository.getInstance() {
     return _instance;
   }
 
-  final ApiManager api = ApiManager.getInstance();
+  final ApiManager _api = ApiManager.getInstance();
   IteratorType _currentIterator = DatabaseIterator();
+
+  Stream<Location> get location => KvStringManager.getInstance()
+    .getUpdatesForWithConversionAndDefaultIfNull(
+      KvString.profileLocation,
+      (value) {
+        final map = jsonDecode(value);
+        if (map != null) {
+          final location = Location.fromJson(map);
+          if (location != null) {
+            return location;
+          } else {
+            log.error("Location fromJson failed");
+            return Location(latitude: 0.0, longitude: 0.0);
+          }
+        } else {
+          log.error("Location jsonDecode failed");
+          return Location(latitude: 0.0, longitude: 0.0);
+        }
+      },
+      Location(latitude: 0.0, longitude: 0.0),
+    );
 
   @override
   Future<void> init() async {
     // nothing to do
   }
 
+  @override
+  Future<void> onLogin() async {
+    _currentIterator = OnlineIterator(firstIterationAfterLogin: true);
+
+    _api.state
+      .firstWhere((element) => element == ApiManagerState.connected)
+      .then((value) async {
+        final location = await _api.profile((api) => api.getLocation());
+        if (location != null) {
+          await KvStringManager.getInstance().setValue(KvString.profileLocation, jsonEncode(location.toJson()));
+        }
+      })
+      .ignore();
+  }
+
+  @override
+  Future<void> onLogout() async {
+    await ProfileListDatabase.getInstance().clearProfiles();
+    _currentIterator = OnlineIterator(firstIterationAfterLogin: true);
+  }
+
+  Future<void> updateLocation(Location location) async {
+     final requestResult = await ApiManager.getInstance().profile((api) => api.putLocation(location));
+      if (requestResult != null) {
+        final jsonString = jsonEncode(location.toJson());
+        await KvStringManager.getInstance().setValue(KvString.profileLocation, jsonString);
+      }
+  }
+
   Future<Profile?> requestProfile(AccountId id) async {
-    return await api.profile((api) => api.getProfile(id.accountId));
+    return await _api.profile((api) => api.getProfile(id.accountId));
   }
 
   Future<void> resetProfileIterator(bool clearDatabase) async {
     if (clearDatabase) {
-      await api.profile((api) => api.postResetProfilePaging());
+      await _api.profile((api) => api.postResetProfilePaging());
       await ProfileListDatabase.getInstance().clearProfiles();
       _currentIterator = OnlineIterator();
     } else {
@@ -61,19 +111,27 @@ sealed class IteratorType {
 class OnlineIterator extends IteratorType {
   int currentIndex = 0;
   DatabaseIterator? databaseIterator;
+  bool firstIterationAfterLogin;
   final ApiManager api = ApiManager.getInstance();
 
-  OnlineIterator();
+  OnlineIterator({this.firstIterationAfterLogin = false});
 
   @override
   void reset() {
-    /// Reset to use database iterator and then continue online profile
-    /// iterating.
-    databaseIterator = DatabaseIterator();
+    if (!firstIterationAfterLogin) {
+      /// Reset to use database iterator and then continue online profile
+      /// iterating.
+      databaseIterator = DatabaseIterator();
+    }
   }
 
   @override
   Future<List<ProfileListEntry>> nextList() async {
+    if (firstIterationAfterLogin) {
+      await ApiManager.getInstance().profile((api) => api.postResetProfilePaging());
+      firstIterationAfterLogin = false;
+    }
+
     // Handle case where iterator has been reseted in the middle
     // of online iteration. Get the beginning from the database.
     final iterator = databaseIterator;
@@ -88,6 +146,7 @@ class OnlineIterator extends IteratorType {
 
     // TODO: What if server restarts? The client thinks that it is
     // in the middle of the list, but the server has reseted the iterator.
+    // Add some uuid to the iterator to check if the server has restarted?
 
     final List<ProfileListEntry> list = List.empty(growable: true);
     final profiles = await api.profile((api) => api.postGetNextProfilePage());

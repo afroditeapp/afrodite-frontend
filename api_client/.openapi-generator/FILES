@@ -127,6 +127,3 @@ lib/model/software_options.dart
 lib/model/system_info.dart
 lib/model/system_info_list.dart
 pubspec.yaml
-test/map_tile_x_test.dart
-test/map_tile_y_test.dart
-test/map_tile_z_test.dart

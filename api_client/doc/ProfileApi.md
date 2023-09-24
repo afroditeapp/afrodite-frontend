@@ -9,14 +9,58 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**getLocation**](ProfileApi.md#getlocation) | **GET** /profile_api/location | Get location for account which makes this request.
 [**getProfile**](ProfileApi.md#getprofile) | **GET** /profile_api/profile/{account_id} | Get account's current profile.
 [**getProfileFromDatabaseDebugModeBenchmark**](ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /profile_api/benchmark/profile/{account_id} | Get account's current profile from database. Debug mode must be enabled
 [**postGetNextProfilePage**](ProfileApi.md#postgetnextprofilepage) | **POST** /profile_api/page/next | Post (updates iterator) to get next page of profile list.
 [**postProfile**](ProfileApi.md#postprofile) | **POST** /profile_api/profile | Update profile information.
 [**postProfileToDatabaseDebugModeBenchmark**](ProfileApi.md#postprofiletodatabasedebugmodebenchmark) | **POST** /profile_api/benchmark/profile | Post account's current profile directly to database. Debug mode must be enabled
 [**postResetProfilePaging**](ProfileApi.md#postresetprofilepaging) | **POST** /profile_api/page/reset | Reset profile paging.
-[**putLocation**](ProfileApi.md#putlocation) | **PUT** /profile_api/location | Update location
+[**putLocation**](ProfileApi.md#putlocation) | **PUT** /profile_api/location | Update location for account which makes this request.
 
+
+# **getLocation**
+> Location getLocation()
+
+Get location for account which makes this request.
+
+Get location for account which makes this request.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = ProfileApi();
+
+try {
+    final result = api_instance.getLocation();
+    print(result);
+} catch (e) {
+    print('Exception when calling ProfileApi->getLocation: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**Location**](Location.md)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getProfile**
 > Profile getProfile(accountId)
@@ -292,9 +336,9 @@ void (empty response body)
 # **putLocation**
 > putLocation(location)
 
-Update location
+Update location for account which makes this request.
 
-Update location
+Update location for account which makes this request.
 
 ### Example
 ```dart

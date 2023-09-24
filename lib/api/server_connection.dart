@@ -97,14 +97,14 @@ class ServerConnection {
   }
 
   Future<void> _connect() async {
-    final storage = KvStorageManager.getInstance();
+    final storage = KvStringManager.getInstance();
 
-    final accessToken = await storage.getString(_server.toAccessTokenKey());
+    final accessToken = await storage.getValue(_server.toAccessTokenKey());
     if (accessToken == null) {
       _state.add(Error(ServerConnectionError.invalidToken));
       return;
     }
-    final refreshToken = await storage.getString(_server.toRefreshTokenKey());
+    final refreshToken = await storage.getValue(_server.toRefreshTokenKey());
     if (refreshToken == null) {
       _state.add(Error(ServerConnectionError.invalidToken));
       return;
@@ -161,7 +161,7 @@ class ServerConnection {
           case ConnectionProtocolState.receiveNewRefreshToken: {
             if (message is List<int>) {
               final newRefreshToken = base64Encode(message);
-              await storage.setString(_server.toRefreshTokenKey(), newRefreshToken);
+              await storage.setValue(_server.toRefreshTokenKey(), newRefreshToken);
               _protocolState = ConnectionProtocolState.receiveNewAccessToken;
             } else {
               await _endConnectionToGeneralError();
@@ -169,7 +169,7 @@ class ServerConnection {
           }
           case ConnectionProtocolState.receiveNewAccessToken: {
             if (message is String) {
-              await storage.setString(_server.toAccessTokenKey(), message);
+              await storage.setValue(_server.toAccessTokenKey(), message);
               _protocolState = ConnectionProtocolState.receiveEvents;
               _state.add(Ready());
             } else {

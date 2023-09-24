@@ -12,6 +12,7 @@ import 'package:openapi/manual_additions.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
+import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
@@ -19,19 +20,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 var log = Logger("MediaRepository");
 
-class MediaRepository extends AppSingleton {
+class MediaRepository extends DataRepository {
   MediaRepository._private();
   static final _instance = MediaRepository._private();
   factory MediaRepository.getInstance() {
     return _instance;
   }
 
+  final ApiManager api = ApiManager.getInstance();
+
   @override
   Future<void> init() async {
     // nothing to do
   }
-
-  final ApiManager api = ApiManager.getInstance();
 
   Future<Uint8List?> getImage(AccountId imageOwner, ContentId id) async {
     final data = await api.media((api) => api.getImageFixed(

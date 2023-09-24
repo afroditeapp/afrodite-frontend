@@ -2,11 +2,10 @@
 
 import 'dart:async';
 
-import 'package:pihka_frontend/config.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:pihka_frontend/storage/base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum KvString implements KvStringProvider {
+enum KvString implements PreferenceKeyProvider<KvString, String> {
   /// Url
   accountServerAddress,
   /// Url
@@ -14,7 +13,9 @@ enum KvString implements KvStringProvider {
   /// Url
   profileServerAddress,
 
+  /// UUID string
   accountId,
+  /// Capabilities json
   accountCapabilities,
   /// AccountState json
   accountState,
@@ -26,99 +27,77 @@ enum KvString implements KvStringProvider {
   mediaAccessToken,
   /// Base64 string
   profileRefreshToken,
-  profileAccessToken;
+  profileAccessToken,
 
-  /// Get shared preference key for this KvString
-  String _key() {
+  // Location json
+  profileLocation;
+
+  @override
+  String sharedPreferencesKey() {
     return "kv-string-key-$name";
   }
 
   @override
-  KvString getKvString() {
+  KvString getKeyEnum() {
     return this;
   }
 }
 
-abstract class KvStringProvider {
-  KvString getKvString();
+enum KvDouble implements PreferenceKeyProvider<KvDouble, double> {
+  empty;
+
+  /// Get shared preference key for this KvDouble
+  @override
+  String sharedPreferencesKey() {
+    return "kv-double-key-$name";
+  }
+
+  @override
+  KvDouble getKeyEnum() {
+    return this;
+  }
 }
 
-class KvStorageManager {
-  static final _instance = KvStorageManager._private();
-  KvStorageManager._private();
-  factory KvStorageManager.getInstance() {
+class KvStringManager extends KvStorageManager<KvString, String> {
+  static final _instance = KvStringManager._private();
+  KvStringManager._private(): super(
+    // Set to shared preferences implementation.
+    // Implementing private methods doesn't seem to work as compiler didn't
+    // find the method.
+    (key, value) async {
+      final SharedPreferences preferences = await SharedPreferences.getInstance();
+      await preferences.setString(key.sharedPreferencesKey(), value);
+    }
+  );
+  factory KvStringManager.getInstance() {
     return _instance;
   }
 
-  final PublishSubject<(KvString, String?)> _updates =
-    PublishSubject();
-
-  Stream<(KvString, String?)> get updates => _updates;
-
-  Future<String?> getString(KvString key) async {
+  @override
+  Future<String?> getValue(KvString key) async {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString(key._key());
+    return preferences.getString(key.sharedPreferencesKey());
+  }
+}
+
+class KvDoubleManager extends KvStorageManager<KvDouble, double> {
+  static final _instance = KvDoubleManager._private();
+  KvDoubleManager._private(): super(
+    // Set to shared preferences implementation.
+    // Implementing private methods doesn't seem to work as compiler didn't
+    // find the method.
+    (key, value) async {
+      final SharedPreferences preferences = await SharedPreferences.getInstance();
+      await preferences.setDouble(key.sharedPreferencesKey(), value);
+    }
+  );
+  factory KvDoubleManager.getInstance() {
+    return _instance;
   }
 
-  Future<String> getStringOrDefault(KvStringWithDefault key) async {
+  @override
+  Future<double?> getValue(KvDouble key) async {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString(key.key._key()) ?? key.defaultValue();
-  }
-
-  /// Set new string. If it is same than the previous, then nothing is done.
-  Future<void> setString(KvStringProvider keyProvider, String? value) async {
-    final key = keyProvider.getKvString();
-    final SharedPreferences preferences = await SharedPreferences.getInstance();
-    final current = preferences.getString(key._key());
-    if (current == value) {
-      return;
-    }
-    if (value == null) {
-      await preferences.remove(key._key());
-    } else {
-      await preferences.setString(key._key(), value);
-    }
-
-    _updates.add((key, value));
-  }
-
-  Stream<T?> getUpdatesForWithConversion<T extends Object>(KvString key, T Function(String) convert) async* {
-    final current = await getString(key);
-    if (current != null) {
-      yield convert(current);
-    } else {
-      yield null;
-    }
-
-    yield* _updates
-      .where((event) => event.$1 == key)
-      .map((event) => event.$2)
-      .map((event) {
-        if (event != null) {
-          return convert(event);
-        } else {
-          return null;
-        }
-      });
-  }
-
-  Stream<T> getUpdatesForWithConversionAndDefaultIfNull<T extends Object>(KvString key, T Function(String) convert, T defaultValue) async* {
-    final current = await getString(key);
-    if (current != null) {
-      yield convert(current);
-    } else {
-      yield defaultValue;
-    }
-
-    yield* _updates
-      .where((event) => event.$1 == key)
-      .map((event) => event.$2)
-      .map((event) {
-        if (event != null) {
-          return convert(event);
-        } else {
-          return defaultValue;
-        }
-      });
+    return preferences.getDouble(key.sharedPreferencesKey());
   }
 }

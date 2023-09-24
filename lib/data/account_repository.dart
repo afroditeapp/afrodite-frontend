@@ -9,6 +9,9 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/config.dart';
+import 'package:pihka_frontend/data/media_repository.dart';
+import 'package:pihka_frontend/data/profile_repository.dart';
+import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
@@ -23,7 +26,7 @@ enum AccountRepositoryState {
   watchConnection,
 }
 
-class AccountRepository extends AppSingleton {
+class AccountRepository extends DataRepository {
   AccountRepository._private();
   static final _instance = AccountRepository._private();
   factory AccountRepository.getInstance() {
@@ -41,7 +44,7 @@ class AccountRepository extends AppSingleton {
 
   // Main app state streams
   Stream<MainState> get mainState => _mainState.distinct();
-  Stream<String> get accountServerAddress => KvStorageManager.getInstance()
+  Stream<String> get accountServerAddress => KvStringManager.getInstance()
     .getUpdatesForWithConversionAndDefaultIfNull(
       KvString.accountServerAddress,
       (value) => value,
@@ -49,13 +52,13 @@ class AccountRepository extends AppSingleton {
     );
 
   // Account state streams
-  Stream<AccountState> get accountState =>  KvStorageManager.getInstance()
+  Stream<AccountState> get accountState =>  KvStringManager.getInstance()
     .getUpdatesForWithConversionAndDefaultIfNull(
       KvString.accountState,
       (value) => AccountState.fromJson(value) ?? AccountState.initialSetup,
       AccountState.initialSetup,
     );
-  Stream<Capabilities> get capabilities => KvStorageManager.getInstance()
+  Stream<Capabilities> get capabilities => KvStringManager.getInstance()
     .getUpdatesForWithConversionAndDefaultIfNull(
       KvString.accountCapabilities,
       (value) {
@@ -75,18 +78,16 @@ class AccountRepository extends AppSingleton {
       },
       Capabilities(),
     );
-  Stream<AccountId?> get accountId => KvStorageManager.getInstance()
+  Stream<AccountId?> get accountId => KvStringManager.getInstance()
     .getUpdatesForWithConversion(
       KvString.accountId,
       (value) => AccountId(accountId: value)
     );
-  Stream<AccessToken?> get accountAccessToken => KvStorageManager.getInstance()
+  Stream<AccessToken?> get accountAccessToken => KvStringManager.getInstance()
     .getUpdatesForWithConversion(
       KvString.accountAccessToken,
       (value) => AccessToken(accessToken: value)
     );
-
-  AccountRepository();
 
   @override
   Future<void> init() async {
@@ -96,7 +97,7 @@ class AccountRepository extends AppSingleton {
     _internalState.add(AccountRepositoryState.waitConnection);
 
     // Restore previous state
-    final previousState = await KvStorageManager.getInstance().getString(KvString.accountState);
+    final previousState = await KvStringManager.getInstance().getValue(KvString.accountState);
     if (previousState != null) {
       final state = AccountState.fromJson(previousState);
       if (state != null) {
@@ -133,8 +134,8 @@ class AccountRepository extends AppSingleton {
       })
       .listen((newAccountState) async {
           final jsonString = jsonEncode(newAccountState.capablities.toJson());
-          await KvStorageManager.getInstance().setString(KvString.accountCapabilities, jsonString);
-          await KvStorageManager.getInstance().setString(KvString.accountState, newAccountState.state.toString());
+          await KvStringManager.getInstance().setValue(KvString.accountCapabilities, jsonString);
+          await KvStringManager.getInstance().setValue(KvString.accountState, newAccountState.state.toString());
           emitMainStateUpdates(newAccountState.state);
       });
   }
@@ -176,39 +177,52 @@ class AccountRepository extends AppSingleton {
   Future<AccountId?> register() async {
     var id = await _api.account((api) => api.postRegister());
     if (id != null) {
-      await KvStorageManager.getInstance().setString(KvString.accountId, id.accountId);
+      await KvStringManager.getInstance().setValue(KvString.accountId, id.accountId);
     }
     return id;
   }
 
-  Future<AccessToken?> login() async {
+  Future<void> login() async {
     final accountIdValue = await accountId.first;
     if (accountIdValue == null) {
-      return null;
+      return;
     }
     final loginResult = await _api.account((api) => api.postLogin(accountIdValue));
     if (loginResult != null) {
-      await handleLoginResult(loginResult);
+      await _handleLoginResult(loginResult);
     }
-    await _api.restart();
-    return loginResult?.account.access;
   }
 
-  Future<void> handleLoginResult(LoginResult loginResult) async {
-    await KvStorageManager.getInstance().setString(KvString.accountRefreshToken, loginResult.account.refresh.token);
-    await KvStorageManager.getInstance().setString(KvString.accountAccessToken, loginResult.account.access.accessToken);
-    // TODO: microservice support
+  Future<void> _handleLoginResult(LoginResult loginResult) async {
+    // Account
+    await KvStringManager.getInstance().setValue(KvString.accountRefreshToken, loginResult.account.refresh.token);
+    await KvStringManager.getInstance().setValue(KvString.accountAccessToken, loginResult.account.access.accessToken);
+    await onLogin();
+    // Other repostories
+    await ProfileRepository.getInstance().onLogin();
+    await MediaRepository.getInstance().onLogin();
+
+    await _api.restart();
   }
 
   Future<void> logout() async {
-    await KvStorageManager.getInstance().setString(KvString.accountCapabilities, null);
-    await KvStorageManager.getInstance().setString(KvString.accountState, null);
+    log.info("logout started");
+    // Disconnect
+    await _api.close();
 
-    await KvStorageManager.getInstance().setString(KvString.accountRefreshToken, null);
-    await KvStorageManager.getInstance().setString(KvString.accountAccessToken, null);
+    // Account
+    await KvStringManager.getInstance().setValue(KvString.accountCapabilities, null);
+    await KvStringManager.getInstance().setValue(KvString.accountState, null);
+    await KvStringManager.getInstance().setValue(KvString.accountRefreshToken, null);
+    await KvStringManager.getInstance().setValue(KvString.accountAccessToken, null);
+    await onLogout();
     // TODO: microservice support
 
-    await _api.close();
+    // Other repositories
+    await ProfileRepository.getInstance().onLogout();
+    await MediaRepository.getInstance().onLogout();
+
+    log.info("logout completed");
   }
 
   /// Return null on success. Return String if error.
@@ -242,7 +256,7 @@ class AccountRepository extends AppSingleton {
   }
 
   Future<void> setCurrentServerAddress(String serverAddress) async {
-    await KvStorageManager.getInstance().setString(
+    await KvStringManager.getInstance().setValue(
       KvString.accountServerAddress, serverAddress
     );
     await _api.closeAndRefreshServerAddress();
@@ -258,9 +272,8 @@ class AccountRepository extends AppSingleton {
 
         final login = await _api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken)));
         if (login != null) {
-          await handleLoginResult(login);
+          await _handleLoginResult(login);
         }
-        await _api.restart();
       }
   }
 

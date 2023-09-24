@@ -5,6 +5,7 @@ import "package:pihka_frontend/data/account_repository.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
+import "package:pihka_frontend/utils.dart";
 
 part 'account.freezed.dart';
 
@@ -37,24 +38,27 @@ class NewCapabilitiesValue extends AccountEvent {
 }
 
 /// Do register/login operations
-class AccountBloc extends Bloc<AccountEvent, AccountData> {
+class AccountBloc extends Bloc<AccountEvent, AccountData> with ActionRunner {
   final AccountRepository account;
 
   AccountBloc(this.account) : super(AccountData(capabilities: Capabilities())) {
-    // TODO: It is possible to start register and login multiple times?
     on<DoRegister>((data, emit) async {
-      emit(state.copyWith(
-        accountId: await account.register(),
-        accessToken: null,
-      ));
+      await runOnce(() async {
+        emit(state.copyWith(
+          accountId: await account.register(),
+          accessToken: null,
+        ));
+      });
     });
     on<DoLogin>((_, emit) async {
-      emit(state.copyWith(
-        accessToken: await account.login(),
-      ));
+      await runOnce(() async {
+        await account.login();
+      });
     });
     on<DoLogout>((_, emit) async {
-      await account.logout();
+      await runOnce(() async {
+        await account.logout();
+      });
     });
     on<NewAccountIdValue>((id, emit) {
       emit(state.copyWith(accountId: id.value));

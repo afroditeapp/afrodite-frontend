@@ -95,13 +95,14 @@ Class | Method | HTTP request | Description
 *MediaAdminApi* | [**postHandleModerationRequest**](doc//MediaAdminApi.md#posthandlemoderationrequest) | **POST** /media_api/admin/moderation/handle_request/{account_id} | Handle moderation request of some account.
 *MediaInternalApi* | [**internalGetCheckModerationRequestForAccount**](doc//MediaInternalApi.md#internalgetcheckmoderationrequestforaccount) | **GET** /internal/media_api/moderation/request/{account_id} | Check that current moderation request for account exists. Requires also
 *MediaInternalApi* | [**internalPostUpdateProfileImageVisibility**](doc//MediaInternalApi.md#internalpostupdateprofileimagevisibility) | **POST** /internal/media_api/visiblity/{account_id}/{value} | 
+*ProfileApi* | [**getLocation**](doc//ProfileApi.md#getlocation) | **GET** /profile_api/location | Get location for account which makes this request.
 *ProfileApi* | [**getProfile**](doc//ProfileApi.md#getprofile) | **GET** /profile_api/profile/{account_id} | Get account's current profile.
 *ProfileApi* | [**getProfileFromDatabaseDebugModeBenchmark**](doc//ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /profile_api/benchmark/profile/{account_id} | Get account's current profile from database. Debug mode must be enabled
 *ProfileApi* | [**postGetNextProfilePage**](doc//ProfileApi.md#postgetnextprofilepage) | **POST** /profile_api/page/next | Post (updates iterator) to get next page of profile list.
 *ProfileApi* | [**postProfile**](doc//ProfileApi.md#postprofile) | **POST** /profile_api/profile | Update profile information.
 *ProfileApi* | [**postProfileToDatabaseDebugModeBenchmark**](doc//ProfileApi.md#postprofiletodatabasedebugmodebenchmark) | **POST** /profile_api/benchmark/profile | Post account's current profile directly to database. Debug mode must be enabled
 *ProfileApi* | [**postResetProfilePaging**](doc//ProfileApi.md#postresetprofilepaging) | **POST** /profile_api/page/reset | Reset profile paging.
-*ProfileApi* | [**putLocation**](doc//ProfileApi.md#putlocation) | **PUT** /profile_api/location | Update location
+*ProfileApi* | [**putLocation**](doc//ProfileApi.md#putlocation) | **PUT** /profile_api/location | Update location for account which makes this request.
 *ProfileInternalApi* | [**internalPostUpdateProfileVisibility**](doc//ProfileInternalApi.md#internalpostupdateprofilevisibility) | **POST** /internal/profile_api/visiblity/{account_id}/{value} | 
 
 

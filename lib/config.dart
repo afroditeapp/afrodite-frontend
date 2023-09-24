@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:pihka_frontend/storage/base.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 
 const String _defaultAccountServerAddressAndroid = "https://localdev.***REMOVED***:3000"; // Should point to 10.0.2.2 (Android emulator host)
@@ -28,7 +29,7 @@ String defaultProfileServerAddress() {
   return _defaultProfileServerAddress;
 }
 
-enum KvStringWithDefault implements KvStringProvider {
+enum KvStringWithDefault implements DefaultProvider<KvString, String> {
   accountServerAddress(
     KvString.accountServerAddress,
     defaultAccountServerAddress,
@@ -50,12 +51,18 @@ enum KvStringWithDefault implements KvStringProvider {
   final KvString key;
   final String Function() defaultValueGetter;
 
-  String defaultValue() {
+  @override
+  String getDefault() {
     return defaultValueGetter();
   }
 
   @override
-  KvString getKvString() {
+  KvString getKeyEnum() {
     return key;
+  }
+
+  @override
+  String sharedPreferencesKey() {
+    return key.sharedPreferencesKey();
   }
 }

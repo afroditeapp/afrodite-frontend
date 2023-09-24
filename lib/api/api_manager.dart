@@ -60,11 +60,11 @@ class ApiManager extends AppSingleton {
   }
 
   final ApiProvider _account =
-    ApiProvider(KvStringWithDefault.accountServerAddress.defaultValue());
+    ApiProvider(KvStringWithDefault.accountServerAddress.getDefault());
   final ApiProvider _media =
-    ApiProvider(KvStringWithDefault.mediaServerAddress.defaultValue());
+    ApiProvider(KvStringWithDefault.mediaServerAddress.getDefault());
   final ApiProvider _profile =
-    ApiProvider(KvStringWithDefault.profileServerAddress.defaultValue());
+    ApiProvider(KvStringWithDefault.profileServerAddress.getDefault());
 
   final BehaviorSubject<ApiManagerState> _state =
     BehaviorSubject.seeded(ApiManagerState.connecting);
@@ -92,7 +92,7 @@ class ApiManager extends AppSingleton {
   Stream<ApiManagerState> get state => _state.distinct();
   Stream<ServerWsEvent> get serverEvents => _serverEvents;
 
-  bool reconnectInProgress = false;
+  bool _reconnectInProgress = false;
 
   @override
   Future<void> init() async {
@@ -140,7 +140,7 @@ class ApiManager extends AppSingleton {
             switch (e.error) {
               case ServerConnectionError.connectionFailure: {
                 _state.add(ApiManagerState.reconnectWaitTime);
-                reconnectInProgress = true;
+                _reconnectInProgress = true;
                 showSnackBar("Connection error - reconnecting in 5 seconds");
                 // TODO: check that internet connectivity exists?
                 Future.delayed(const Duration(seconds: 5), () async {
@@ -161,9 +161,9 @@ class ApiManager extends AppSingleton {
           case Connecting():
             _state.add(ApiManagerState.connecting);
           case Ready(): {
-            if (reconnectInProgress) {
+            if (_reconnectInProgress) {
               showSnackBar("Connected");
-              reconnectInProgress = false;
+              _reconnectInProgress = false;
             }
             setupTokens();
             _state.add(ApiManagerState.connected);
@@ -174,20 +174,20 @@ class ApiManager extends AppSingleton {
   }
 
   Future<void> _loadAddressesFromConfig() async {
-    final storage = KvStorageManager.getInstance();
+    final storage = KvStringManager.getInstance();
 
     final accountAddress =
-      await storage.getStringOrDefault(KvStringWithDefault.accountServerAddress);
+      await storage.getValueOrDefault(KvStringWithDefault.accountServerAddress);
     _account.updateServerAddress(accountAddress);
     accountConnection.setAddress(toWebSocketUri(accountAddress));
 
     final profileAddress =
-      await storage.getStringOrDefault(KvStringWithDefault.profileServerAddress);
+      await storage.getValueOrDefault(KvStringWithDefault.profileServerAddress);
     _profile.updateServerAddress(profileAddress);
     profileConnection.setAddress(toWebSocketUri(profileAddress));
 
     final mediaAddress =
-      await storage.getStringOrDefault(KvStringWithDefault.mediaServerAddress);
+      await storage.getValueOrDefault(KvStringWithDefault.mediaServerAddress);
     _media.updateServerAddress(mediaAddress);
     mediaConnection.setAddress(toWebSocketUri(mediaAddress));
   }
@@ -195,11 +195,11 @@ class ApiManager extends AppSingleton {
   Future<void> _connect() async {
     _state.add(ApiManagerState.connecting);
 
-    final storage = KvStorageManager.getInstance();
+    final storage = KvStringManager.getInstance();
     final accountRefreshToken =
-      await storage.getString(KvString.accountRefreshToken);
+      await storage.getValue(KvString.accountRefreshToken);
     final accountAccessToken =
-      await storage.getString(KvString.accountAccessToken);
+      await storage.getValue(KvString.accountAccessToken);
 
     if (accountRefreshToken == null || accountAccessToken == null) {
       _state.add(ApiManagerState.waitingRefreshToken);
@@ -217,7 +217,7 @@ class ApiManager extends AppSingleton {
   }
 
   Future<void> close() async {
-    reconnectInProgress = false;
+    _reconnectInProgress = false;
     await accountConnection.close();
     _state.add(ApiManagerState.waitingRefreshToken);
   }
@@ -252,9 +252,9 @@ class ApiManager extends AppSingleton {
 
 
   Future<void> setupTokens() async {
-    final storage = KvStorageManager.getInstance();
+    final storage = KvStringManager.getInstance();
 
-    final accountToken = await storage.getString(KvString.accountAccessToken);
+    final accountToken = await storage.getValue(KvString.accountAccessToken);
     if (accountToken != null) {
       _account.setAccessToken(AccessToken(accessToken: accountToken));
     }
