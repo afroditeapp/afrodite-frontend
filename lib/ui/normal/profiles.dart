@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
@@ -11,6 +13,8 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pihka_frontend/ui/utils/image_page.dart';
+
+var log = Logger("ProfileView");
 
 class ProfileView extends BottomNavigationView {
   const ProfileView({Key? key}) : super(key: key);
@@ -24,8 +28,10 @@ class ProfileView extends BottomNavigationView {
   }
 }
 
+typedef ProfileEntry = (ProfileListEntry profile, File img);
+
 class _ProfileViewState extends State<ProfileView> {
-  PagingController<int, ProfileListEntry>? _pagingController =
+  PagingController<int, ProfileEntry>? _pagingController =
     PagingController(firstPageKey: 0);
 
   @override
@@ -42,10 +48,28 @@ class _ProfileViewState extends State<ProfileView> {
     }
 
     final profileList = await ProfileRepository.getInstance().nextList();
+
+    // Get images here instead of FutureBuilder because there was some weird
+    // Hero tag error even if the builder index is in the tag.
+    // Not sure does this image loading change affect the issue.
+    // The PagedChildBuilderDelegate seems to run the builder twice for some
+    // reason for the initial page.
+    final newList = List<ProfileEntry>.empty(growable: true);
+    for (final profile in profileList) {
+      final accountId = AccountId(accountId: profile.uuid);
+      final contentId = ContentId(contentId: profile.imageUuid);
+      final file = await ImageCacheData.getInstance().getImage(accountId, contentId);
+      if (file == null) {
+        log.warning("Skipping one profile because image loading failed");
+        continue;
+      }
+      newList.add((profile, file));
+    }
+
     if (profileList.isEmpty) {
       _pagingController?.appendLastPage([]);
     } else {
-      _pagingController?.appendPage(profileList, pageKey + 1);
+      _pagingController?.appendPage(newList, pageKey + 1);
     }
   }
 
@@ -59,30 +83,18 @@ class _ProfileViewState extends State<ProfileView> {
       },
       child: PagedGridView(
         pagingController: _pagingController!,
-        builderDelegate: PagedChildBuilderDelegate<ProfileListEntry>(
+        builderDelegate: PagedChildBuilderDelegate<ProfileEntry>(
           animateTransitions: true,
           itemBuilder: (context, item, index) {
-            final accountId = AccountId(accountId: item.uuid);
-            final contentId = ContentId(contentId: item.imageUuid);
-            return FutureBuilder(
-              future: ImageCacheData.getInstance()
-                .getImage(accountId, contentId),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final data = snapshot.data!;
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ViewProfilePage(accountId, data, index)));
-                    },
-                    child: Hero(
-                      tag: (accountId, index),
-                      child: Image.file(data)
-                    ),
-                  );
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
+            final accountId = AccountId(accountId: item.$1.uuid);
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ViewProfilePage(accountId, item.$2, index)));
               },
+              child: Hero(
+                tag: (accountId, index),
+                child: Image.file(item.$2)
+              ),
             );
           },
         ),
