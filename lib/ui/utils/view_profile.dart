@@ -11,6 +11,7 @@ import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/logic/profile/profile.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui/utils/image_page.dart';
 
 
@@ -21,18 +22,22 @@ Widget viewProifle(BuildContext context, AccountId account, Profile profile, Pri
       final Widget imgWidget;
       switch (img) {
         case PrimaryImageFile():
-          if (img.heroTransition) {
+          const double height = 500;
+          final tag = img.heroTransition;
+          if (tag != null) {
             imgWidget = Hero(
-              tag: account,
+              tag: tag,
               child: Image.file(
                 img.file,
                 width: constraints.maxWidth,
+                height: height,
               ),
             );
           } else {
             imgWidget = Image.file(
               img.file,
               width: constraints.maxWidth,
+              height: height,
             );
           }
         case PrimaryImageInfo():
@@ -119,8 +124,8 @@ sealed class PrimaryImageProvider {}
 
 class PrimaryImageFile extends PrimaryImageProvider {
   final File file;
-  final bool heroTransition;
-  PrimaryImageFile(this.file, {this.heroTransition = false});
+  final ProfileHeroTag? heroTransition;
+  PrimaryImageFile(this.file, {this.heroTransition});
 }
 
 class PrimaryImageInfo extends PrimaryImageProvider {

@@ -14,13 +14,15 @@ import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+typedef ProfileHeroTag = (AccountId accountId, int index);
 
 class ViewProfilePage extends StatelessWidget {
   final AccountId accountId;
   final Profile profile = Profile(name: "test", profileText: "test", version: ProfileVersion(versionUuid: "123"));
   final File primaryProfileImage;
+  final int uiIndex;
 
-  ViewProfilePage(this.accountId, this.primaryProfileImage, {super.key});
+  ViewProfilePage(this.accountId, this.primaryProfileImage, this.uiIndex, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,6 @@ class ViewProfilePage extends StatelessWidget {
     //   child: Image.file(primaryProfileImage)
     // );
     //final primaryImage = PrimaryImage(contentId: image, gridCropSize: 0.0, gridCropX: 0.0, gridCropY: 0.0);
-    return viewProifle(context, accountId, profile, PrimaryImageFile(primaryProfileImage, heroTransition: true), true);
+    return viewProifle(context, accountId, profile, PrimaryImageFile(primaryProfileImage, heroTransition: (accountId, uiIndex)), true);
   }
 }

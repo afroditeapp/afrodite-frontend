@@ -72,10 +72,10 @@ class _ProfileViewState extends State<ProfileView> {
                   final data = snapshot.data!;
                   return GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ViewProfilePage(accountId, data)));
+                      Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ViewProfilePage(accountId, data, index)));
                     },
                     child: Hero(
-                      tag: accountId,
+                      tag: (accountId, index),
                       child: Image.file(data)
                     ),
                   );
