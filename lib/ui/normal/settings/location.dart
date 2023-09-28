@@ -364,14 +364,14 @@ class MapAnimationManager {
     } else {
 
       if (targetZoom > currentZoom && longDistance) {
-        _controller.duration = const Duration(milliseconds: 1500);
+        _controller.duration = const Duration(milliseconds: 1750);
         zoomTween = TweenSequence([
           TweenSequenceItem<double>(
             tween: Tween<double>(
               begin: currentZoom,
               end: currentZoom,
             ),
-            weight: 0.45
+            weight: 0.5
           ),
           TweenSequenceItem<double>(
             tween: Tween<double>(
@@ -385,7 +385,7 @@ class MapAnimationManager {
               begin: targetZoom,
               end: targetZoom,
             ),
-            weight: 0.10
+            weight: 0.05
           )
         ]);
       } else {
@@ -398,7 +398,7 @@ class MapAnimationManager {
 
     final Curve curve;
     if (longDistance) {
-      curve = Curves.easeInOutCubic;
+      curve = Curves.easeInOutCirc;
     } else {
       curve = Curves.easeInOut;
     }
