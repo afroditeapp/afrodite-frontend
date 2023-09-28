@@ -319,7 +319,6 @@ class MapAnimationManager {
     const distance = DistanceHaversine();
     final distanceToTargetLocation = distance.as(LengthUnit.Kilometer, mapController.center, targetLocation);
     if (!locationIsOnVisibleMapArea && distanceToTargetLocation > 100) {
-      targetZoom = locateMinZoom;
       longDistance = true;
     }
 
