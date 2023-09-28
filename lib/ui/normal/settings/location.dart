@@ -163,6 +163,24 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
   }
 
   Widget markerLayer() {
+    const blueDot = Icon(
+      Icons.circle,
+      color: Colors.lightBlue,
+      size: 21,
+    );
+    const whiteDot = Icon(
+      Icons.circle,
+      color: Colors.white,
+      size: 30,
+    );
+
+    const dot = Stack(
+      children: [
+        Center(child: whiteDot),
+        Center(child: blueDot),
+      ],
+    );
+
     final markers = List<Marker>.empty(growable: true);
     final currentLocation = _currentDeviceLocationMarker;
     if (currentLocation != null) {
@@ -170,10 +188,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
         width: 30.0,
         height: 30.0,
         point: currentLocation,
-        builder: (ctx) => const Icon(
-          Icons.circle,
-          color: Colors.lightBlue,
-        ),
+        builder: (ctx) => dot,
       ));
     }
 
