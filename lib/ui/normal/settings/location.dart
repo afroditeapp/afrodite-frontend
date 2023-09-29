@@ -4,22 +4,13 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
-import 'package:pihka_frontend/data/media_repository.dart';
-import 'package:pihka_frontend/data/profile_repository.dart';
-import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/profile/location.dart';
-import 'package:pihka_frontend/logic/profile/profile.dart';
-import 'package:pihka_frontend/ui/normal/settings.dart';
-import 'package:pihka_frontend/ui/normal/settings/admin/moderate_images.dart';
-import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
 import 'package:pihka_frontend/ui/utils.dart';
-import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -42,7 +33,9 @@ class LocationPage extends StatelessWidget {
   }
 
   Widget locationPage(BuildContext context) {
-    return const LocationWidget(MapMode.selectLocation);
+    final profileLocation = context.read<LocationBloc>().state;
+    final profileLocationLatLng = LatLng(profileLocation.latitude, profileLocation.longitude);
+    return LocationWidget(MapMode.selectLocation, profileLocationLatLng);
   }
 }
 
@@ -53,31 +46,47 @@ enum MapMode {
 
 class LocationWidget extends StatefulWidget {
   final MapMode mode;
-  const LocationWidget(this.mode, {Key? key}) : super(key: key);
+  final LatLng profileLocation;
+  const LocationWidget(this.mode, this.profileLocation, {Key? key}) : super(key: key);
 
 
   @override
   State<LocationWidget> createState() => _LocationWidgetState();
 }
 
+enum MapModeInternal {
+  selectLocationNoModeButton,
+  selectLocation,
+  viewLocation,
+}
+
 class _LocationWidgetState extends State<LocationWidget> with SingleTickerProviderStateMixin {
   final MapController _mapController = MapController();
   final LocationManager _locationManager = LocationManager();
   MapAnimationManager? _animationManager = MapAnimationManager();
-  bool _locateButtonVisible = true;
-  LatLng? _currentDeviceLocationMarker;
+  final bool _locateButtonVisible = true;
+  bool _profileLocationSaveNeeded = false;
+  LatLng? _profileLocationMarker;
+  LatLng? _deviceLocationMarker;
+  MapModeInternal _internalMode = MapModeInternal.selectLocation;
 
   @override
   void initState() {
     super.initState();
+    _profileLocationMarker = widget.profileLocation;
     _animationManager?.init(_mapController, this);
+    switch (widget.mode) {
+      case MapMode.selectInitialLocation: {
+        _internalMode = MapModeInternal.selectLocationNoModeButton;
+      }
+      case MapMode.selectLocation: {
+        _internalMode = MapModeInternal.viewLocation;
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final location = context.read<LocationBloc>().state;
-    final locationLatLng = LatLng(location.latitude, location.longitude);
-    print(locationLatLng);
     final bounds = LatLngBounds(
       const LatLng(75, 12),
       const LatLng(50, 40),
@@ -86,6 +95,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
     final LatLng initialLocation;
     final double initialZoom;
 
+    final locationLatLng = _profileLocationMarker ?? const LatLng(0, 0);
     if (bounds.contains(locationLatLng)) {
       initialLocation = locationLatLng;
       initialZoom = 10;
@@ -93,14 +103,6 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
       initialLocation = const LatLng(61, 24.5);
       initialZoom = 6;
     }
-
-    // switch (widget.mode) {
-    //   case MapMode.selectInitialLocation: {
-    //   }
-    //   case MapMode.selectLocation: {
-    //     //initialLocation = ;
-    //   }
-    // }
 
     final initialMap = FlutterMap(
       mapController: _mapController,
@@ -118,10 +120,17 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
             _animationManager?.preventAnimation();
           }
         },
+        onTap: (tapPosition, point) {
+          handleOnTap(point);
+        },
+        onLongPress: (tapPosition, point) {
+          handleOnTap(point);
+        }
       ),
       nonRotatedChildren: [
         attributionWidget(),
-        locateButton(),
+        floatingActionButtons(),
+        viewHelp(),
       ],
       children: [
         TileLayer(
@@ -135,43 +144,137 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
     return initialMap;
   }
 
-  Widget locateButton() {
+  void handleOnTap(LatLng point) {
+    switch (_internalMode) {
+      case MapModeInternal.selectLocationNoModeButton || MapModeInternal.selectLocation:
+        setState(() {
+          _profileLocationMarker = point;
+          _profileLocationSaveNeeded = true;
+          _internalMode = MapModeInternal.viewLocation;
+        });
+      case MapModeInternal.viewLocation: {}
+    }
+  }
+
+  Widget? modeButton() {
+    switch (_internalMode) {
+      case MapModeInternal.selectLocationNoModeButton:
+        return null;
+      case MapModeInternal.selectLocation:
+        return FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              _internalMode = MapModeInternal.viewLocation;
+            });
+          },
+          heroTag: "mapModeButton",
+          child: const Icon(Icons.check),
+        );
+      case MapModeInternal.viewLocation:
+        return FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              _internalMode = MapModeInternal.selectLocation;
+            });
+          },
+          heroTag: "mapModeButton",
+          child: const Icon(Icons.edit),
+        );
+    }
+  }
+
+  Widget viewHelp() {
+    // Create background color area
+
+    const helpText = Text("Tap on the map to select a new location for your profile.");
+    switch (_internalMode) {
+      case MapModeInternal.selectLocationNoModeButton || MapModeInternal.selectLocation:
+        return Align(
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              decoration: const BoxDecoration(
+                boxShadow: [BoxShadow(
+                  blurRadius: 15.0,
+                  color: Colors.black45,
+                )],
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              padding: const EdgeInsets.all(10),
+              child: helpText,
+            ),
+          ),
+        );
+      case MapModeInternal.viewLocation:
+        return Container();
+    }
+  }
+
+  Widget floatingActionButtons() {
+    Widget? locateButton;
     if (_locateButtonVisible) {
       final Icon icon;
-      if (_currentDeviceLocationMarker != null) {
+      if (_deviceLocationMarker != null) {
         icon = const Icon(Icons.my_location);
       } else {
         icon = const Icon(Icons.location_searching);
       }
-
-      return Align(
-        alignment: Alignment.bottomRight,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: FloatingActionButton(
-            onPressed: () {
-              _animationManager?.allowAnimation();
-              moveMapToDeviceLocation();
-            },
-            child: icon,
-          ),
-        ),
+      locateButton = FloatingActionButton(
+        onPressed: () {
+          _animationManager?.allowAnimation();
+          moveMapToDeviceLocation();
+        },
+        heroTag: "mapLocateButton",
+        child: icon,
       );
-    } else {
-      return Container();
     }
+
+    final List<Widget> buttons = [];
+
+    final Widget? modeButton = this.modeButton();
+    if (modeButton != null) {
+      buttons.add(modeButton);
+    }
+
+    if (locateButton != null) {
+      if (buttons.isNotEmpty) {
+        buttons.add(const Padding(padding: EdgeInsets.all(8.0)));
+      }
+      buttons.add(locateButton);
+    }
+
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: buttons,
+        ),
+      ),
+    );
   }
 
   Widget markerLayer() {
+    const dotSize = 30.0;
     const blueDot = Icon(
       Icons.circle,
       color: Colors.lightBlue,
-      size: 21,
+      size: dotSize - 10,
     );
     const whiteDot = Icon(
       Icons.circle,
       color: Colors.white,
-      size: 30,
+      size: dotSize,
+      shadows: [
+        Shadow(
+          blurRadius: 5.0,
+          color: Colors.black87,
+          offset: Offset(0.0, 0.0),
+        ),
+      ],
     );
 
     const dot = Stack(
@@ -182,27 +285,38 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
     );
 
     final markers = List<Marker>.empty(growable: true);
-    final currentLocation = _currentDeviceLocationMarker;
+    final currentLocation = _deviceLocationMarker;
     if (currentLocation != null) {
       markers.add(Marker(
-        width: 30.0,
-        height: 30.0,
+        width: dotSize,
+        height: dotSize,
         point: currentLocation,
+        anchorPos: AnchorPos.align(AnchorAlign.center),
         builder: (ctx) => dot,
       ));
     }
 
-    // final l = LatLng(61, 24.5);
-    // markers.add(Marker(
-    //   width: 30.0,
-    //   height: 30.0,
-    //   point: l,
-    //   builder: (ctx) => const Icon(
-    //     Icons.location_on,
-    //     color: Colors.lightBlue,
-    //     size: 100,
-    //     ),
-    // ));
+    const locationSize = 70.0;
+    final profileLocation = _profileLocationMarker;
+    if (profileLocation != null) {
+      markers.add(Marker(
+        width: locationSize,
+        height: locationSize,
+        point: profileLocation,
+        anchorPos: AnchorPos.align(AnchorAlign.top),
+        builder: (ctx) => const Icon(
+          Icons.location_on,
+          color: Colors.lightBlue,
+          size: locationSize,
+          shadows: [
+            Shadow(
+              blurRadius: 1.0,
+              color: Colors.black,
+              offset: Offset(0.0, 0.0),
+            ),],
+        ),
+      ));
+    }
 
     return MarkerLayer(
         markers: markers,
@@ -213,7 +327,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
     // Allow animation, but if the map is moved, it is prevented
     _animationManager?.allowAnimation();
 
-    final currentLocation = _currentDeviceLocationMarker;
+    final currentLocation = _deviceLocationMarker;
     if (currentLocation != null) {
       _animationManager?.startLimitedMapAnimation(
         _mapController,
@@ -224,7 +338,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
     final location = await _locationManager.getLocation();
     if (location != null && notDisposed()) {
       setState(() {
-        _currentDeviceLocationMarker = location;
+        _deviceLocationMarker = location;
       });
 
       if (currentLocation == null) {
