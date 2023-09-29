@@ -60,7 +60,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => InitialSetupBloc(accountRepository)),
         BlocProvider(create: (_) => ServerAddressBloc(accountRepository)),
         BlocProvider(create: (_) => ProfileBloc(accountRepository, profileRepository, mediaRepository)),
-        BlocProvider(create: (_) => LocationBloc(profileRepository)),
+        BlocProvider(create: (_) => LocationBloc(profileRepository), lazy: false),
 
         // Login
         BlocProvider(create: (_) => SignInWithBloc(accountRepository)),

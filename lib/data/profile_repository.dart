@@ -68,12 +68,19 @@ class ProfileRepository extends DataRepository {
     _currentIterator = OnlineIterator(firstIterationAfterLogin: true);
   }
 
-  Future<void> updateLocation(Location location) async {
-     final requestResult = await ApiManager.getInstance().profile((api) => api.putLocation(location));
-      if (requestResult != null) {
-        final jsonString = jsonEncode(location.toJson());
-        await KvStringManager.getInstance().setValue(KvString.profileLocation, jsonString);
-      }
+  Future<bool> updateLocation(Location location) async {
+    final requestSuccessful = await ApiManager.getInstance().profile<bool>((api) async {
+      await api.putLocation(location);
+      return true;
+    }) ?? false;
+    if (requestSuccessful) {
+      await KvStringManager.getInstance().setValue(
+        KvString.profileLocation,
+        jsonEncode(location.toJson())
+      );
+      _currentIterator = OnlineIterator(firstIterationAfterLogin: true);
+    }
+    return requestSuccessful;
   }
 
   Future<Profile?> requestProfile(AccountId id) async {
@@ -114,6 +121,8 @@ class OnlineIterator extends IteratorType {
   bool firstIterationAfterLogin;
   final ApiManager api = ApiManager.getInstance();
 
+  /// If [firstIterationAfterLogin] is true, the iterator will reset the
+  /// server iterator to the beginning.
   OnlineIterator({this.firstIterationAfterLogin = false});
 
   @override

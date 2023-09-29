@@ -8,7 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
+import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/logic/profile/location.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 
@@ -49,7 +51,6 @@ class LocationWidget extends StatefulWidget {
   final LatLng profileLocation;
   const LocationWidget(this.mode, this.profileLocation, {Key? key}) : super(key: key);
 
-
   @override
   State<LocationWidget> createState() => _LocationWidgetState();
 }
@@ -58,6 +59,7 @@ enum MapModeInternal {
   selectLocationNoModeButton,
   selectLocation,
   viewLocation,
+  viewLocationEditButtonDisabled,
 }
 
 class _LocationWidgetState extends State<LocationWidget> with SingleTickerProviderStateMixin {
@@ -65,7 +67,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
   final LocationManager _locationManager = LocationManager();
   MapAnimationManager? _animationManager = MapAnimationManager();
   final bool _locateButtonVisible = true;
-  bool _profileLocationSaveNeeded = false;
+  //bool _profileLocationSaveNeeded = false;
   LatLng? _profileLocationMarker;
   LatLng? _deviceLocationMarker;
   MapModeInternal _internalMode = MapModeInternal.selectLocation;
@@ -147,12 +149,26 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
   void handleOnTap(LatLng point) {
     switch (_internalMode) {
       case MapModeInternal.selectLocationNoModeButton || MapModeInternal.selectLocation:
-        setState(() {
-          _profileLocationMarker = point;
-          _profileLocationSaveNeeded = true;
-          _internalMode = MapModeInternal.viewLocation;
-        });
-      case MapModeInternal.viewLocation: {}
+        _locationManager.uploadLocation(
+          point,
+          onStart: () {
+            setState(() {
+              _profileLocationMarker = point;
+              _internalMode = MapModeInternal.viewLocationEditButtonDisabled;
+            });
+          },
+          onComplete: (result) {
+            if (result) {
+              showSnackBar("Location update successful");
+            } else {
+              showSnackBar("Location update failed");
+            }
+            setState(() {
+              _internalMode = MapModeInternal.viewLocation;
+            });
+          },
+        );
+      case MapModeInternal.viewLocation || MapModeInternal.viewLocationEditButtonDisabled: {}
     }
   }
 
@@ -170,16 +186,22 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
           heroTag: "mapModeButton",
           child: const Icon(Icons.check),
         );
-      case MapModeInternal.viewLocation:
-        return FloatingActionButton(
-          onPressed: () {
+      case MapModeInternal.viewLocation || MapModeInternal.viewLocationEditButtonDisabled: {
+        void Function()? editButtonAction;
+        if (_internalMode == MapModeInternal.viewLocation) {
+          editButtonAction = () {
             setState(() {
               _internalMode = MapModeInternal.selectLocation;
             });
-          },
+          };
+        }
+
+        return FloatingActionButton(
+          onPressed: editButtonAction,
           heroTag: "mapModeButton",
           child: const Icon(Icons.edit),
         );
+      }
     }
   }
 
@@ -207,7 +229,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
             ),
           ),
         );
-      case MapModeInternal.viewLocation:
+      case MapModeInternal.viewLocation || MapModeInternal.viewLocationEditButtonDisabled:
         return Container();
     }
   }
@@ -356,6 +378,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
 
   @override
   void dispose() {
+    _mapController.dispose();
     _animationManager?.dispose();
     _animationManager = null;
     super.dispose();
@@ -364,6 +387,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
 
 class LocationManager {
   bool searchingLocation = false;
+  bool locationUploadInProgress = false;
 
   Future<LatLng?> getLocation() async {
     if (searchingLocation) {
@@ -375,6 +399,20 @@ class LocationManager {
     searchingLocation = false;
 
     return location;
+  }
+
+  /// onComplete(true) is called if this succeeds, otherwise onComplete(false)
+  Future<void> uploadLocation(LatLng location, {required void Function() onStart, required void Function(bool) onComplete}) async {
+    if (locationUploadInProgress) {
+      return;
+    }
+
+    locationUploadInProgress = true;
+    onStart();
+    final apiLocation = Location(latitude: location.latitude, longitude: location.longitude);
+    final result = await ProfileRepository.getInstance().updateLocation(apiLocation);
+    locationUploadInProgress = false;
+    onComplete(result);
   }
 }
 
@@ -397,7 +435,9 @@ class MapAnimationManager {
   }
 
   void dispose() {
+    _controller.dispose();
     _animatedMapController = null;
+
     // TODO: dispose something else?
   }
 
@@ -455,7 +495,7 @@ class MapAnimationManager {
     double? middleZoom,
     bool longDistance,
   ) {
-    if (!animationAllowed) {
+    if (!animationAllowed || _animatedMapController == null) {
       return;
     }
 
