@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/admin/image_moderation.dart';
+import 'package:pihka_frontend/logic/profile/profile.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 
@@ -16,6 +18,7 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  final TextEditingController _profileTextController = TextEditingController();
 
   @override
   void initState() {
@@ -24,13 +27,39 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Edit proifle")),
-      body: edit(context),
+    return WillPopScope(
+      onWillPop: () async {
+        context.read<ProfileBloc>().add(SetProfile(ProfileUpdate(profileText: _profileTextController.text)));
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(title: const Text("Edit proifle")),
+        body: BlocBuilder<ProfileBloc, ProfileData>(
+          builder: (context, state) {
+            _profileTextController.text = state.profile?.profileText ?? "";
+
+            return edit(context);
+          },
+        ),
+      ),
     );
   }
 
   Widget edit(BuildContext context) {
-    return Text("Edit");
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextField(
+            controller: _profileTextController,
+            maxLines: 10,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: "Profile text",
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -14,6 +14,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui/utils/image_page.dart';
 
+const double imgHeight = 400;
 
 Widget viewProifle(BuildContext context, AccountId account, Profile profile, PrimaryImageProvider img, bool showGridImage) {
   return LayoutBuilder(
@@ -22,7 +23,7 @@ Widget viewProifle(BuildContext context, AccountId account, Profile profile, Pri
       final Widget imgWidget;
       switch (img) {
         case PrimaryImageFile():
-          const double height = 500;
+
           final tag = img.heroTransition;
           if (tag != null) {
             imgWidget = Hero(
@@ -30,33 +31,46 @@ Widget viewProifle(BuildContext context, AccountId account, Profile profile, Pri
               child: Image.file(
                 img.file,
                 width: constraints.maxWidth,
-                height: height,
+                height: imgHeight,
               ),
             );
           } else {
             imgWidget = Image.file(
               img.file,
               width: constraints.maxWidth,
-              height: height,
+              height: imgHeight,
             );
           }
         case PrimaryImageInfo():
           imgWidget = viewProifleImage(context, account, profile, img, showGridImage, constraints);
       }
+      String profileText;
+      if (profile.profileText.isEmpty) {
+        profileText = AppLocalizations.of(context).genericEmpty;
+      } else {
+        profileText = profile.profileText;
+      }
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            imgWidget,
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(profile.name, style: Theme.of(context).textTheme.titleLarge),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(profileText, style: Theme.of(context).textTheme.bodyLarge),
+              ),
+            ),
 
-      return Column(
-        children: [
-          imgWidget,
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(profile.name, style: Theme.of(context).textTheme.titleLarge),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(profile.profileText, style: Theme.of(context).textTheme.bodyMedium),
-          ),
-
-        ]
+          ]
+        ),
       );
     }
   );
@@ -91,6 +105,7 @@ Widget viewProifleImage(BuildContext context, AccountId account, Profile profile
                 child: Image.file(
                   imageFile,
                   width: imgMaxWidth,
+                  height: imgHeight,
                 ),
               );
             } else {

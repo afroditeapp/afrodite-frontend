@@ -87,6 +87,12 @@ class ProfileRepository extends DataRepository {
     return await _api.profile((api) => api.getProfile(id.accountId));
   }
 
+  /// Returns true if profile update was successful
+  Future<bool> updateProfile(ProfileUpdate profileUpdate) async {
+    final result = await _api.profile((api) async { await api.postProfile(profileUpdate); return true; });
+    return result ?? false;
+  }
+
   Future<void> resetProfileIterator(bool clearDatabase) async {
     if (clearDatabase) {
       await _api.profile((api) => api.postResetProfilePaging());

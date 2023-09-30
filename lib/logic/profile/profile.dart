@@ -5,6 +5,7 @@ import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
+import "package:pihka_frontend/ui/utils.dart";
 import "package:pihka_frontend/utils.dart";
 import "package:rxdart/rxdart.dart";
 
@@ -25,7 +26,7 @@ class ProfileData with _$ProfileData {
 
 sealed class ProfileEvent {}
 class SetProfile extends ProfileEvent {
-  final Profile profile;
+  final ProfileUpdate profile;
   SetProfile(this.profile);
 }
 class LoadProfile extends ProfileEvent {
@@ -40,7 +41,28 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileData> with ActionRunner {
 
   ProfileBloc(this.account, this.profile, this.media) : super(ProfileData()) {
     on<SetProfile>((data, emit) async {
+      await runOnce(() async {
+        final oldState = state;
+        final oldProfile = state.profile;
+        if (oldProfile != null) {
+          final newProfile = Profile(name: oldProfile.name, profileText: data.profile.profileText, version: oldProfile.version);
+          emit(state.copyWith(profile: newProfile));
+        }
 
+        if (await profile.updateProfile(data.profile)) {
+          final currentAccountId = await account.accountId.first;
+          if (currentAccountId != null) {
+            final currentProfile = await profile.requestProfile(currentAccountId);
+            if (currentProfile != null) {
+              emit(state.copyWith(profile: currentProfile));
+            }
+          }
+        } else {
+          showSnackBar("Failed to update profile");
+          emit(oldState);
+        }
+
+      });
     });
     on<LoadProfile>((data, emit) async {
       await runOnce(() async {
