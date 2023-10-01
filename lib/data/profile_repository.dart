@@ -83,8 +83,39 @@ class ProfileRepository extends DataRepository {
     return requestSuccessful;
   }
 
-  Future<Profile?> requestProfile(AccountId id) async {
-    return await _api.profile((api) => api.getProfile(id.accountId));
+  Future<Profile?> getProfile(AccountId id, {bool cache = false}) async {
+    // TODO: perhaps more detailed error message, so that changes from public to
+    // private profile can be handled.
+
+    if (cache) {
+      final profile = await ProfileListDatabase.getInstance().getProfile(id);
+      if (profile != null) {
+        return profile;
+      }
+    }
+
+    final profile = await _api.profile((api) => api.getProfile(id.accountId));
+    if (profile != null) {
+      await ProfileListDatabase.getInstance().updateProfile(id, profile);
+    }
+    return profile;
+  }
+
+  /// Get cached (if available) and then latest profile (if available).
+  Stream<Profile?> getProfileStream(AccountId id) async* {
+    // TODO: perhaps more detailed error message, so that changes from public to
+    // private profile can be handled.
+
+    final profile = await ProfileListDatabase.getInstance().getProfile(id);
+    if (profile != null) {
+      yield profile;
+    }
+
+    final latestProfile = await _api.profile((api) => api.getProfile(id.accountId));
+    if (latestProfile != null) {
+      await ProfileListDatabase.getInstance().updateProfile(id, latestProfile);
+    }
+    yield profile;
   }
 
   /// Returns true if profile update was successful
@@ -177,9 +208,18 @@ class OnlineIterator extends IteratorType {
         if (imageUuid == null) {
           continue;
         }
-        // final profileData = await api.profile((api) => api.getProfile(profile.id.accountId));
-        // TODO: compare cached profile data with the one from the server
-        final entry = ProfileListEntry(profile.id.accountId, imageUuid);
+
+        final profileDetails = await api.profile((api) => api.getProfile(profile.id.accountId));
+        if (profileDetails == null) {
+          continue;
+        }
+        // TODO: Compare cached profile data with the one from the server.
+        //       Update: perhaps another database for profiles? With current
+        //       implementation there is no cached data. Or should
+        //       new profile request be made every time profile is opened and
+        //       use the cache check there?
+
+        final entry = ProfileListEntry(profile.id.accountId, imageUuid, profileDetails.name, profileDetails.profileText);
         await ProfileListDatabase.getInstance().insertProfile(entry);
         list.add(entry);
       }

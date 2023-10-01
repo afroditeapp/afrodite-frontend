@@ -52,7 +52,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileData> with ActionRunner {
         if (await profile.updateProfile(data.profile)) {
           final currentAccountId = await account.accountId.first;
           if (currentAccountId != null) {
-            final currentProfile = await profile.requestProfile(currentAccountId);
+            final currentProfile = await profile.getProfile(currentAccountId);
             if (currentProfile != null) {
               emit(state.copyWith(profile: currentProfile));
             }
@@ -68,7 +68,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileData> with ActionRunner {
       await runOnce(() async {
         final currentAccountId = await account.accountId.first;
         if (currentAccountId != null) {
-          final currentProfile = await profile.requestProfile(currentAccountId);
+          final currentProfile = await profile.getProfile(currentAccountId);
           final img = await media.getPrimaryImage(currentAccountId, false);
           if (currentProfile != null || img != null) {
             emit(state.copyWith(profile: currentProfile, primaryImage: img));

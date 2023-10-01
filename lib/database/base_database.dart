@@ -49,9 +49,15 @@ abstract class BaseDatabase extends AppSingleton {
   }
 
   /// Opens new database if needed if not manually closed
-  Future<Database?> getOrOpenDatabase() async {
+  Future<Database?> getOrOpenDatabase({bool deleteBeforeOpenForDevelopment = false}) async {
     if (_closed) {
       return null;
+    }
+
+    if (deleteBeforeOpenForDevelopment) {
+      // Exception is not handled as this should be used when developing only
+      log.warning("Deleting database ${databaseType.databaseName}");
+      await deleteDatabase(databaseType.databaseName);
     }
 
     try {

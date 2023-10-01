@@ -87,9 +87,14 @@ class _ProfileViewState extends State<ProfileView> {
           animateTransitions: true,
           itemBuilder: (context, item, index) {
             final accountId = AccountId(accountId: item.$1.uuid);
+            final profile = Profile(
+              name: item.$1.name,
+              profileText: item.$1.profileText,
+              version: ProfileVersion(versionUuid: ""),
+            );
             return GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ViewProfilePage(accountId, item.$2, index)));
+                Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ViewProfilePage(accountId, profile, item.$2, index)));
               },
               child: Hero(
                 tag: (accountId, index),

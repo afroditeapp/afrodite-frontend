@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
+import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/profile/profile.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
@@ -18,11 +19,11 @@ typedef ProfileHeroTag = (AccountId accountId, int index);
 
 class ViewProfilePage extends StatelessWidget {
   final AccountId accountId;
-  final Profile profile = Profile(name: "test", profileText: "test", version: ProfileVersion(versionUuid: "123"));
+  final Profile profile;
   final File primaryProfileImage;
   final int uiIndex;
 
-  ViewProfilePage(this.accountId, this.primaryProfileImage, this.uiIndex, {super.key});
+  const ViewProfilePage(this.accountId, this.profile, this.primaryProfileImage, this.uiIndex, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +46,18 @@ class ViewProfilePage extends StatelessWidget {
   }
 
   Widget myProfilePage(BuildContext context) {
-    // return Hero(
-    //   tag: accountId,
-    //   child: Image.file(primaryProfileImage)
-    // );
-    //final primaryImage = PrimaryImage(contentId: image, gridCropSize: 0.0, gridCropX: 0.0, gridCropY: 0.0);
-    return viewProifle(context, accountId, profile, PrimaryImageFile(primaryProfileImage, heroTransition: (accountId, uiIndex)), true);
+    return StreamBuilder<Profile?>(
+      stream: ProfileRepository.getInstance().getProfileStream(accountId),
+      initialData: profile,
+      builder: (context, snapshot) {
+        final img = PrimaryImageFile(primaryProfileImage, heroTransition: (accountId, uiIndex));
+        final data = snapshot.data;
+        if (data != null) {
+          return viewProifle(context, accountId, data, img, true);
+        } else {
+          return viewProifle(context, accountId, profile, img, true);
+        }
+      }
+    );
   }
 }

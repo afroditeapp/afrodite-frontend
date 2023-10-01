@@ -1,6 +1,7 @@
 
 
 
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/base_database.dart';
 import 'package:sqflite/utils/utils.dart';
 import 'package:sqflite/sqflite.dart';
@@ -21,7 +22,9 @@ class ProfileListDatabase extends BaseDatabase {
       CREATE TABLE profile_list(
         id INTEGER PRIMARY KEY,
         uuid TEXT NOT NULL,
-        image_uuid TEXT NOT NULL
+        image_uuid TEXT NOT NULL,
+        name TEXT NOT NULL,
+        profile_text TEXT NOT NULL
       )
     """);
   }
@@ -29,7 +32,7 @@ class ProfileListDatabase extends BaseDatabase {
   @override
   Future<void> init() async {
     // Create database or run migrations
-    await getOrOpenDatabase();
+    await getOrOpenDatabase(deleteBeforeOpenForDevelopment: true);
 
     // await clearProfiles();
     // final count = await profileCount();
@@ -62,11 +65,43 @@ class ProfileListDatabase extends BaseDatabase {
     });
   }
 
+  Future<void> updateProfile(AccountId accountId, Profile profile) async {
+    await runAction((db) async {
+      return await db.update(
+        "profile_list",
+        {"profile_text": profile.profileText},
+        where: "uuid = ?",
+        whereArgs: [accountId.accountId],
+      );
+    });
+  }
+
+  Future<Profile?> getProfile(AccountId accountId) async {
+    return await runAction((db) async {
+      final result = await db.query(
+        "profile_list",
+        columns: ["uuid", "image_uuid", "name", "profile_text"],
+        where: "uuid = ?",
+        whereArgs: [accountId.accountId],
+      );
+      final list = result.map((e) {
+        final entry = ProfileListEntry.fromMap(e);
+        return Profile(
+          name: entry.name,
+          profileText: entry.profileText,
+          // TODO: save version?
+          version: ProfileVersion(versionUuid: ""),
+        );
+      }).toList();
+      return list.firstOrNull;
+    });
+  }
+
   Future<List<ProfileListEntry>?> getProfileList(int startIndex, int limit) async {
     return await runAction((db) async {
       final result = await db.query(
         "profile_list",
-        columns: ["uuid", "image_uuid"],
+        columns: ["uuid", "image_uuid", "name", "profile_text"],
         orderBy: "id",
         limit: limit,
         offset: startIndex,
@@ -79,21 +114,27 @@ class ProfileListDatabase extends BaseDatabase {
 class ProfileListEntry {
   final String uuid;
   final String imageUuid;
-  ProfileListEntry(this.uuid, this.imageUuid);
+  final String name;
+  final String profileText;
+  ProfileListEntry(this.uuid, this.imageUuid, this.name, this.profileText);
 
   Map<String, Object?> toMap() {
     return {
       "uuid": uuid,
       "image_uuid": imageUuid,
+      "name": name,
+      "profile_text": profileText,
     };
   }
 
   ProfileListEntry.fromMap(Map<String, Object?> map):
     uuid = map["uuid"] as String,
-    imageUuid = map["image_uuid"] as String;
+    imageUuid = map["image_uuid"] as String,
+    name = map["name"] as String,
+    profileText = map["profile_text"] as String;
 
   @override
   String toString() {
-    return "ProfileListEntry(uuid: $uuid, imageUuid: $imageUuid)";
+    return "ProfileListEntry(uuid: $uuid, imageUuid: $imageUuid, name: $name, profileText: $profileText)";
   }
 }
