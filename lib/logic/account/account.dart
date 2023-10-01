@@ -5,6 +5,7 @@ import "package:pihka_frontend/data/account_repository.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
+import "package:pihka_frontend/ui/utils.dart";
 import "package:pihka_frontend/utils.dart";
 
 part 'account.freezed.dart';
@@ -24,6 +25,10 @@ class DoRegister extends AccountEvent {
 }
 class DoLogin extends AccountEvent {}
 class DoLogout extends AccountEvent {}
+class DoProfileVisiblityChange extends AccountEvent {
+  final bool profileVisiblity;
+  DoProfileVisiblityChange(this.profileVisiblity);
+}
 class NewAccountIdValue extends AccountEvent {
   final AccountId? value;
   NewAccountIdValue(this.value);
@@ -58,6 +63,14 @@ class AccountBloc extends Bloc<AccountEvent, AccountData> with ActionRunner {
     on<DoLogout>((_, emit) async {
       await runOnce(() async {
         await account.logout();
+      });
+    });
+    on<DoProfileVisiblityChange>((state, emit) async {
+      await runOnce(() async {
+        final successful = await account.doProfileVisibilityChange(state.profileVisiblity);
+        if (!successful) {
+          showSnackBar("Failed to update profile visibility");
+        }
       });
     });
     on<NewAccountIdValue>((id, emit) {

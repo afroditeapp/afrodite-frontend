@@ -58,9 +58,12 @@ class ViewProfilePage extends StatelessWidget {
             return viewProifle(context, accountId, data.profile, img, true);
           case GetProfileDoesNotExist(): {
             // TODO: Is this called multiple times?
-            showInfoDialog(context, "Profile not available").then((value) {
-              Navigator.pop(context, RefreshProfileList());
+            Future.delayed(Duration.zero, () {
+              showInfoDialog(context, "Profile not available").then((value) {
+                Navigator.pop(context, RefreshProfileList());
+              });
             });
+
             return viewProifle(context, accountId, profile, img, true);
           }
           case GetProfileFailed() || null: {

@@ -5,6 +5,7 @@ import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin.dart';
 import 'package:pihka_frontend/ui/normal/settings/location.dart';
 import 'package:pihka_frontend/ui/normal/settings/my_profile.dart';
+import 'package:pihka_frontend/ui/normal/settings/profile_visibility.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -58,6 +59,9 @@ class _SettingsViewState extends State<SettingsView> {
           ),
           Setting.createSetting(Icons.location_on, AppLocalizations.of(context).pageLocationTitle, () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const LocationPage()))
+          ),
+          Setting.createSetting(Icons.public, "Profile visiblity", () =>
+            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ProfileVisibilityPage()))
           ),
           Setting.createSetting(Icons.logout, AppLocalizations.of(context).pageSettingsLogoutTitle, () =>
             showConfirmDialog(context, AppLocalizations.of(context).pageSettingsLogoutTitle)

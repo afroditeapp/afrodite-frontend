@@ -294,4 +294,15 @@ class AccountRepository extends DataRepository {
       log.error(e);
     }
   }
+
+  /// Returns true if successful.
+  Future<bool> doProfileVisibilityChange(bool profileVisiblity) async {
+    final result = await ApiManager.getInstance().account((api) async {
+      await api.putSettingProfileVisiblity(BooleanSetting(value: profileVisiblity)); return true;
+    }) ?? false;
+
+    _hintAccountStateUpdated.add(null);
+
+    return result;
+  }
 }
