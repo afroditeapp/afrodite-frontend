@@ -201,41 +201,51 @@ class OnlineIterator extends IteratorType {
     // Add some uuid to the iterator to check if the server has restarted?
 
     final List<ProfileListEntry> list = List.empty(growable: true);
-    final profiles = await api.profile((api) => api.postGetNextProfilePage());
-    if (profiles != null) {
-      if (profiles.profiles.isEmpty) {
-        return [];
-      }
-
-      for (final p in profiles.profiles) {
-        final profile = p;
-        final primaryImageInfo = await api.media((api) => api.getPrimaryImageInfo(profile.id.accountId, false));
-        final imageUuid = primaryImageInfo?.contentId?.contentId;
-        if (imageUuid == null) {
-          continue;
+    while (true) {
+      final profiles = await api.profile((api) => api.postGetNextProfilePage());
+      if (profiles != null) {
+        if (profiles.profiles.isEmpty) {
+          return [];
         }
 
-        // Prevent displaying error when profile is made private while iterating
-        final (_, profileDetails) = await api
-          .profileWrapper()
-          .requestWithHttpStatus(false, (api) => api.getProfile(profile.id.accountId));
-        if (profileDetails == null) {
+        for (final p in profiles.profiles) {
+          final profile = p;
+          final primaryImageInfo = await api.media((api) => api.getPrimaryImageInfo(profile.id.accountId, false));
+          final imageUuid = primaryImageInfo?.contentId?.contentId;
+          if (imageUuid == null) {
+            continue;
+          }
+
+          // Prevent displaying error when profile is made private while iterating
+          final (_, profileDetails) = await api
+            .profileWrapper()
+            .requestWithHttpStatus(false, (api) => api.getProfile(profile.id.accountId));
+          if (profileDetails == null) {
+            continue;
+          }
+          // TODO: Compare cached profile data with the one from the server.
+          //       Update: perhaps another database for profiles? With current
+          //       implementation there is no cached data. Or should
+          //       new profile request be made every time profile is opened and
+          //       use the cache check there?
+
+          final entry = ProfileListEntry(profile.id.accountId, imageUuid, profileDetails.name, profileDetails.profileText);
+          await ProfileListDatabase.getInstance().insertProfile(entry);
+          list.add(entry);
+        }
+
+        if (list.isEmpty) {
+          // Handle case where server returned some profiles
+          // but additional info fetching failed, so get next list of profiles.
           continue;
         }
-        // TODO: Compare cached profile data with the one from the server.
-        //       Update: perhaps another database for profiles? With current
-        //       implementation there is no cached data. Or should
-        //       new profile request be made every time profile is opened and
-        //       use the cache check there?
-
-        final entry = ProfileListEntry(profile.id.accountId, imageUuid, profileDetails.name, profileDetails.profileText);
-        await ProfileListDatabase.getInstance().insertProfile(entry);
-        list.add(entry);
       }
+
+      return list;
     }
-    return list;
   }
 }
+
 class DatabaseIterator extends IteratorType {
   int currentIndex;
   DatabaseIterator({this.currentIndex = 0});
