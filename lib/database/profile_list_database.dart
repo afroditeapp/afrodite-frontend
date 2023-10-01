@@ -65,6 +65,16 @@ class ProfileListDatabase extends BaseDatabase {
     });
   }
 
+  Future<void> removeProfile(AccountId accountId) async {
+    await runAction((db) async {
+      return await db.delete(
+        "profile_list",
+        where: "uuid = ?",
+        whereArgs: [accountId.accountId],
+      );
+    });
+  }
+
   Future<void> updateProfile(AccountId accountId, Profile profile) async {
     await runAction((db) async {
       return await db.update(

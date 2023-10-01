@@ -293,7 +293,7 @@ class ApiManager extends AppSingleton {
     return ApiWrapper(_account.account);
   }
 
-  ApiWrapper<ProfileApi> _profileWrapper() {
+  ApiWrapper<ProfileApi> profileWrapper() {
     return ApiWrapper(_profileApiProvider().profile);
   }
 
@@ -356,7 +356,7 @@ class ApiManager extends AppSingleton {
   }
 
   Future<R?> profile<R extends Object>(Future<R?> Function(ProfileApi) action) async {
-    return await _profileWrapper().request(action);
+    return await profileWrapper().request(action);
   }
 
   Future<R?> profileCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {

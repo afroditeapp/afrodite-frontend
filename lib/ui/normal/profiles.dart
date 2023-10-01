@@ -94,7 +94,17 @@ class _ProfileViewState extends State<ProfileView> {
             );
             return GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ViewProfilePage(accountId, profile, item.$2, index)));
+                Navigator.push(context, MaterialPageRoute<RefreshProfileList?>(builder: (_) => ViewProfilePage(accountId, profile, item.$2, index)))
+                  .then((value) {
+                    if (value is RefreshProfileList) {
+                      final controller = _pagingController;
+                      if (controller != null) {
+                        setState(() {
+                          controller.itemList?.removeAt(index);
+                        });
+                      }
+                    }
+                  });
               },
               child: Hero(
                 tag: (accountId, index),

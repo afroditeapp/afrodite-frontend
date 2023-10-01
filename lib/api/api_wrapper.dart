@@ -37,4 +37,21 @@ class ApiWrapper<T> {
       rethrow;
     }
   }
+
+  Future<(int?, R?)> requestWithHttpStatus<R extends Object>(bool logError, Future<R?> Function(T) action) async {
+    try {
+      final result = await action(api);
+      if (result != null) {
+        return (200, result);
+      } else {
+        return (null, null);
+      }
+    } on ApiException catch (e) {
+      if (logError) {
+        log.error(e);
+        ErrorManager.getInstance().send(ApiError());
+      }
+      return (e.code, null);
+    }
+  }
 }

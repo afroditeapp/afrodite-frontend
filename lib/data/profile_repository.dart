@@ -102,20 +102,26 @@ class ProfileRepository extends DataRepository {
   }
 
   /// Get cached (if available) and then latest profile (if available).
-  Stream<Profile?> getProfileStream(AccountId id) async* {
+  Stream<GetProfileResult> getProfileStream(AccountId id) async* {
     // TODO: perhaps more detailed error message, so that changes from public to
     // private profile can be handled.
 
     final profile = await ProfileListDatabase.getInstance().getProfile(id);
     if (profile != null) {
-      yield profile;
+      yield GetProfileSuccess(profile);
     }
 
-    final latestProfile = await _api.profile((api) => api.getProfile(id.accountId));
-    if (latestProfile != null) {
+    final (status, latestProfile) = await _api.profileWrapper().requestWithHttpStatus(false, (api) => api.getProfile(id.accountId));
+
+    if (status == 200 && latestProfile != null) {
       await ProfileListDatabase.getInstance().updateProfile(id, latestProfile);
+      yield GetProfileSuccess(latestProfile);
+    } else if (status == 500 && latestProfile == null) {
+      await ProfileListDatabase.getInstance().removeProfile(id);
+      yield GetProfileDoesNotExist();
+    } else {
+      yield GetProfileFailed();
     }
-    yield profile;
   }
 
   /// Returns true if profile update was successful
@@ -247,4 +253,18 @@ class DatabaseIterator extends IteratorType {
       return [];
     }
   }
+}
+
+sealed class GetProfileResult {}
+class GetProfileSuccess extends GetProfileResult {
+  final Profile profile;
+  GetProfileSuccess(this.profile);
+}
+/// Navigate out from view profile and reload profile list
+class GetProfileDoesNotExist extends GetProfileResult {
+  GetProfileDoesNotExist();
+}
+/// Show error message
+class GetProfileFailed extends GetProfileResult {
+  GetProfileFailed();
 }
