@@ -67,7 +67,9 @@ class ViewProfilePage extends StatelessWidget {
             return viewProifle(context, accountId, profile, img, true);
           }
           case GetProfileFailed() || null: {
-            showSnackBar("Profile loading error");
+            Future.delayed(Duration.zero, () {
+              showSnackBar("Profile loading error");
+            });
             return viewProifle(context, accountId, profile, img, true);
           }
         }
