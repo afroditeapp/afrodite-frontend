@@ -32,7 +32,7 @@ class ProfileListDatabase extends BaseDatabase {
   @override
   Future<void> init() async {
     // Create database or run migrations
-    await getOrOpenDatabase(deleteBeforeOpenForDevelopment: true);
+    await getOrOpenDatabase(deleteBeforeOpenForDevelopment: false);
 
     // await clearProfiles();
     // final count = await profileCount();
