@@ -11,6 +11,7 @@ import 'dart:math';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/assets.dart';
@@ -178,8 +179,9 @@ class ServerConnection {
           }
           case ConnectionProtocolState.receiveEvents: {
             if (message is String) {
-              switch (message) {
-                case _: _events.add(ServerWsEvent.todo);
+              final event = EventToClient.fromJson(jsonDecode(message));
+              if (event != null) {
+                _events.add(EventToClientContainer(event));
               }
             }
           }

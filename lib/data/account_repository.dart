@@ -40,6 +40,7 @@ class AccountRepository extends DataRepository {
   final BehaviorSubject<AccountRepositoryState> _internalState =
     BehaviorSubject.seeded(AccountRepositoryState.initRequired);
 
+  // TODO: Remove at some point?
   final PublishSubject<void> _hintAccountStateUpdated = PublishSubject();
 
   // Main app state streams
@@ -101,7 +102,7 @@ class AccountRepository extends DataRepository {
     if (previousState != null) {
       final state = AccountState.fromJson(previousState);
       if (state != null) {
-        emitMainStateUpdates(state);
+        _emitMainStateUpdates(state);
       }
     }
 
@@ -121,48 +122,57 @@ class AccountRepository extends DataRepository {
       }
     });
 
-    // Poll account state when there is connection to server
+    // Update account state when there is connection to server and
+    // state refresh is wanted because of some client functionality.
     _internalState
       .switchMap((value) {
         if (value == AccountRepositoryState.watchConnection) {
           return _pollNotificationStream()
-            .asyncMap((value) => _downloadAccountState())
-            .whereNotNull();
+            .asyncMap((value) => _downloadAccountState());
         } else {
           return const Stream<Account>.empty();
         }
       })
-      .listen((newAccountState) async {
-          final jsonString = jsonEncode(newAccountState.capablities.toJson());
-          await KvStringManager.getInstance().setValue(KvString.accountCapabilities, jsonString);
-          await KvStringManager.getInstance().setValue(KvString.accountState, newAccountState.state.toString());
-          emitMainStateUpdates(newAccountState.state);
-      });
+      .listen((_) {});
+
+    _api.serverEvents.listen((event) {
+      switch (event) {
+        case EventToClientContainer e:
+          _handleEventToClient(e.event);
+      }
+    });
   }
 
+  /// Server will now send events to client, so polling is only used when
+  /// manually triggered.
   Stream<void> _pollNotificationStream() async* {
-    yield null;
-
     while (true) {
       await Future.any([
-        Future.delayed(const Duration(seconds: 5), () {}),
         _hintAccountStateUpdated.stream.first
       ]);
+      // Manual refresh is deprecated
+      log.warning("Refreshing account state manually");
       yield null;
     }
   }
 
-  Future<Account?> _downloadAccountState() async {
+  Future<void> _downloadAccountState() async {
     Account? data = await _api.account((api) => api.getAccountState());
     if (data == null) {
       log.error("error: data == null");
     } else {
       log.finer(data.state);
+      await _saveAndUpdateCapabilities(data.capablities);
+      await _saveAndUpdateAccountState(data.state);
     }
-    return data;
   }
 
-  void emitMainStateUpdates(AccountState state) {
+  Future<void> _saveAndUpdateAccountState(AccountState state) async {
+      await KvStringManager.getInstance().setValue(KvString.accountState, state.toString());
+      _emitMainStateUpdates(state);
+  }
+
+  void _emitMainStateUpdates(AccountState state) {
       if (state == AccountState.initialSetup) {
         _mainState.add(MainState.initialSetup);
       } else if (state == AccountState.normal) {
@@ -172,6 +182,25 @@ class AccountRepository extends DataRepository {
       } else if (state == AccountState.pendingDeletion) {
         _mainState.add(MainState.pendingRemoval);
       }
+  }
+
+  Future<void> _saveAndUpdateCapabilities(Capabilities capabilities) async {
+      final jsonString = jsonEncode(capabilities.toJson());
+      await KvStringManager.getInstance().setValue(KvString.accountCapabilities, jsonString);
+  }
+
+  void _handleEventToClient(EventToClient event) {
+    log.finer("Event from server: $event");
+
+    final accountState = event.accountState;
+    final capabilities = event.capabilities;
+    if (event.event == EventType.accountStateChanged && accountState != null) {
+      _saveAndUpdateAccountState(accountState);
+    } else if (event.event == EventType.accountCapabilitiesChanged && capabilities != null) {
+      _saveAndUpdateCapabilities(capabilities);
+    } else {
+      log.error("Unknown EventToClient");
+    }
   }
 
   Future<AccountId?> register() async {
@@ -243,14 +272,11 @@ class AccountRepository extends DataRepository {
     }
     await _api.media((api) => api.putModerationRequest(ModerationRequestContent(cameraImage: true, image1: contentId1, image2: contentId2)));
     await _api.account((api) => api.postCompleteSetup());
-    _hintAccountStateUpdated.add(null);
 
     final state = await _api.account((api) => api.getAccountState());
     if (state == null || state.state != AccountState.normal) {
       return "Error";
     }
-
-    _hintAccountStateUpdated.add(null);
 
     return null;
   }
@@ -300,8 +326,6 @@ class AccountRepository extends DataRepository {
     final result = await ApiManager.getInstance().account((api) async {
       await api.putSettingProfileVisiblity(BooleanSetting(value: profileVisiblity)); return true;
     }) ?? false;
-
-    _hintAccountStateUpdated.add(null);
 
     return result;
   }

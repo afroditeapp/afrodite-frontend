@@ -46,8 +46,10 @@ sealed class ApiManagerEvent {}
 //   EventFromConnection(this.server, this.event);
 // }
 
-enum ServerWsEvent {
-  todo,
+sealed class ServerWsEvent {}
+class EventToClientContainer implements ServerWsEvent {
+  final EventToClient event;
+  EventToClientContainer(this.event);
 }
 
 
