@@ -216,7 +216,11 @@ class ApiClient {
         case 'DownloadTypeQueryParam':
           return DownloadTypeQueryParam.fromJson(value);
         case 'EventToClient':
-          return EventToClientTypeTransformer().decode(value);
+          return EventToClient.fromJson(value);
+        case 'EventType':
+          return EventTypeTypeTransformer().decode(value);
+        case 'FavoriteProfilesPage':
+          return FavoriteProfilesPage.fromJson(value);
         case 'HandleModerationRequest':
           return HandleModerationRequest.fromJson(value);
         case 'ImageAccessCheck':

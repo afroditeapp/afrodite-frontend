@@ -9,15 +9,107 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**deleteFavoriteProfile**](ProfileApi.md#deletefavoriteprofile) | **DELETE** /profile_api/favorite_profile | Delete favorite profile
+[**getFavoriteProfiles**](ProfileApi.md#getfavoriteprofiles) | **GET** /profile_api/favorite_profiles | Get list of all favorite profiles.
 [**getLocation**](ProfileApi.md#getlocation) | **GET** /profile_api/location | Get location for account which makes this request.
 [**getProfile**](ProfileApi.md#getprofile) | **GET** /profile_api/profile/{account_id} | Get account's current profile.
 [**getProfileFromDatabaseDebugModeBenchmark**](ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /profile_api/benchmark/profile/{account_id} | Get account's current profile from database. Debug mode must be enabled
+[**postFavoriteProfile**](ProfileApi.md#postfavoriteprofile) | **POST** /profile_api/favorite_profile | Add new favorite profile
 [**postGetNextProfilePage**](ProfileApi.md#postgetnextprofilepage) | **POST** /profile_api/page/next | Post (updates iterator) to get next page of profile list.
 [**postProfile**](ProfileApi.md#postprofile) | **POST** /profile_api/profile | Update profile information.
 [**postProfileToDatabaseDebugModeBenchmark**](ProfileApi.md#postprofiletodatabasedebugmodebenchmark) | **POST** /profile_api/benchmark/profile | Post account's current profile directly to database. Debug mode must be enabled
 [**postResetProfilePaging**](ProfileApi.md#postresetprofilepaging) | **POST** /profile_api/page/reset | Reset profile paging.
 [**putLocation**](ProfileApi.md#putlocation) | **PUT** /profile_api/location | Update location for account which makes this request.
 
+
+# **deleteFavoriteProfile**
+> deleteFavoriteProfile(accountId)
+
+Delete favorite profile
+
+Delete favorite profile
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = ProfileApi();
+final accountId = AccountId(); // AccountId | 
+
+try {
+    api_instance.deleteFavoriteProfile(accountId);
+} catch (e) {
+    print('Exception when calling ProfileApi->deleteFavoriteProfile: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **accountId** | [**AccountId**](AccountId.md)|  | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getFavoriteProfiles**
+> FavoriteProfilesPage getFavoriteProfiles()
+
+Get list of all favorite profiles.
+
+Get list of all favorite profiles.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = ProfileApi();
+
+try {
+    final result = api_instance.getFavoriteProfiles();
+    print(result);
+} catch (e) {
+    print('Exception when calling ProfileApi->getFavoriteProfiles: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**FavoriteProfilesPage**](FavoriteProfilesPage.md)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getLocation**
 > Location getLocation()
@@ -156,6 +248,52 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **postFavoriteProfile**
+> postFavoriteProfile(accountId)
+
+Add new favorite profile
+
+Add new favorite profile
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = ProfileApi();
+final accountId = AccountId(); // AccountId | 
+
+try {
+    api_instance.postFavoriteProfile(accountId);
+} catch (e) {
+    print('Exception when calling ProfileApi->postFavoriteProfile: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **accountId** | [**AccountId**](AccountId.md)|  | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **postGetNextProfilePage**
 > ProfilePage postGetNextProfilePage()
 
@@ -204,7 +342,7 @@ This endpoint does not need any parameter.
 
 Update profile information.
 
-Update profile information.  Writes the profile to the database only if it is changed.  TODO: string lenght validation, limit saving new profiles
+Update profile information.  Writes the profile to the database only if it is changed.  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
 
 ### Example
 ```dart

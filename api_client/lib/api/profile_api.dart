@@ -16,6 +16,102 @@ class ProfileApi {
 
   final ApiClient apiClient;
 
+  /// Delete favorite profile
+  ///
+  /// Delete favorite profile
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountId] accountId (required):
+  Future<Response> deleteFavoriteProfileWithHttpInfo(AccountId accountId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/favorite_profile';
+
+    // ignore: prefer_final_locals
+    Object? postBody = accountId;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'DELETE',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Delete favorite profile
+  ///
+  /// Delete favorite profile
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountId] accountId (required):
+  Future<void> deleteFavoriteProfile(AccountId accountId,) async {
+    final response = await deleteFavoriteProfileWithHttpInfo(accountId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Get list of all favorite profiles.
+  ///
+  /// Get list of all favorite profiles.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getFavoriteProfilesWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/favorite_profiles';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get list of all favorite profiles.
+  ///
+  /// Get list of all favorite profiles.
+  Future<FavoriteProfilesPage?> getFavoriteProfiles() async {
+    final response = await getFavoriteProfilesWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'FavoriteProfilesPage',) as FavoriteProfilesPage;
+    
+    }
+    return null;
+  }
+
   /// Get location for account which makes this request.
   ///
   /// Get location for account which makes this request.
@@ -178,6 +274,54 @@ class ProfileApi {
     return null;
   }
 
+  /// Add new favorite profile
+  ///
+  /// Add new favorite profile
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountId] accountId (required):
+  Future<Response> postFavoriteProfileWithHttpInfo(AccountId accountId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/favorite_profile';
+
+    // ignore: prefer_final_locals
+    Object? postBody = accountId;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Add new favorite profile
+  ///
+  /// Add new favorite profile
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountId] accountId (required):
+  Future<void> postFavoriteProfile(AccountId accountId,) async {
+    final response = await postFavoriteProfileWithHttpInfo(accountId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Post (updates iterator) to get next page of profile list.
   ///
   /// Post (updates iterator) to get next page of profile list.
@@ -228,7 +372,7 @@ class ProfileApi {
 
   /// Update profile information.
   ///
-  /// Update profile information.  Writes the profile to the database only if it is changed.  TODO: string lenght validation, limit saving new profiles
+  /// Update profile information.  Writes the profile to the database only if it is changed.  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -262,7 +406,7 @@ class ProfileApi {
 
   /// Update profile information.
   ///
-  /// Update profile information.  Writes the profile to the database only if it is changed.  TODO: string lenght validation, limit saving new profiles
+  /// Update profile information.  Writes the profile to the database only if it is changed.  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
   ///
   /// Parameters:
   ///

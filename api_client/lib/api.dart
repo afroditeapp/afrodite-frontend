@@ -55,6 +55,8 @@ part 'model/delete_status.dart';
 part 'model/download_type.dart';
 part 'model/download_type_query_param.dart';
 part 'model/event_to_client.dart';
+part 'model/event_type.dart';
+part 'model/favorite_profiles_page.dart';
 part 'model/handle_moderation_request.dart';
 part 'model/image_access_check.dart';
 part 'model/location.dart';

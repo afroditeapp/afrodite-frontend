@@ -10,27 +10,78 @@
 
 part of openapi.api;
 
-
 class EventToClient {
-  /// Instantiate a new enum with the provided [value].
-  const EventToClient._(this.value);
+  /// Returns a new [EventToClient] instance.
+  EventToClient({
+    this.accountState,
+    this.capabilities,
+    required this.event,
+  });
 
-  /// The underlying value of this enum member.
-  final String value;
+  AccountState? accountState;
+
+  Capabilities? capabilities;
+
+  EventType event;
 
   @override
-  String toString() => value;
+  bool operator ==(Object other) => identical(this, other) || other is EventToClient &&
+     other.accountState == accountState &&
+     other.capabilities == capabilities &&
+     other.event == event;
 
-  String toJson() => value;
+  @override
+  int get hashCode =>
+    // ignore: unnecessary_parenthesis
+    (accountState == null ? 0 : accountState!.hashCode) +
+    (capabilities == null ? 0 : capabilities!.hashCode) +
+    (event.hashCode);
 
-  static const accountStateChanged = EventToClient._(r'AccountStateChanged');
+  @override
+  String toString() => 'EventToClient[accountState=$accountState, capabilities=$capabilities, event=$event]';
 
-  /// List of all possible values in this [enum][EventToClient].
-  static const values = <EventToClient>[
-    accountStateChanged,
-  ];
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{};
+    if (this.accountState != null) {
+      json[r'account_state'] = this.accountState;
+    } else {
+      json[r'account_state'] = null;
+    }
+    if (this.capabilities != null) {
+      json[r'capabilities'] = this.capabilities;
+    } else {
+      json[r'capabilities'] = null;
+    }
+      json[r'event'] = this.event;
+    return json;
+  }
 
-  static EventToClient? fromJson(dynamic value) => EventToClientTypeTransformer().decode(value);
+  /// Returns a new [EventToClient] instance and imports its values from
+  /// [value] if it's a [Map], null otherwise.
+  // ignore: prefer_constructors_over_static_methods
+  static EventToClient? fromJson(dynamic value) {
+    if (value is Map) {
+      final json = value.cast<String, dynamic>();
+
+      // Ensure that the map contains the required keys.
+      // Note 1: the values aren't checked for validity beyond being non-null.
+      // Note 2: this code is stripped in release mode!
+      assert(() {
+        requiredKeys.forEach((key) {
+          assert(json.containsKey(key), 'Required key "EventToClient[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "EventToClient[$key]" has a null value in JSON.');
+        });
+        return true;
+      }());
+
+      return EventToClient(
+        accountState: AccountState.fromJson(json[r'account_state']),
+        capabilities: Capabilities.fromJson(json[r'capabilities']),
+        event: EventType.fromJson(json[r'event'])!,
+      );
+    }
+    return null;
+  }
 
   static List<EventToClient>? listFromJson(dynamic json, {bool growable = false,}) {
     final result = <EventToClient>[];
@@ -44,39 +95,39 @@ class EventToClient {
     }
     return result.toList(growable: growable);
   }
-}
 
-/// Transformation class that can [encode] an instance of [EventToClient] to String,
-/// and [decode] dynamic data back to [EventToClient].
-class EventToClientTypeTransformer {
-  factory EventToClientTypeTransformer() => _instance ??= const EventToClientTypeTransformer._();
-
-  const EventToClientTypeTransformer._();
-
-  String encode(EventToClient data) => data.value;
-
-  /// Decodes a [dynamic value][data] to a EventToClient.
-  ///
-  /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
-  /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
-  /// cannot be decoded successfully, then an [UnimplementedError] is thrown.
-  ///
-  /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
-  /// and users are still using an old app with the old code.
-  EventToClient? decode(dynamic data, {bool allowNull = true}) {
-    if (data != null) {
-      switch (data) {
-        case r'AccountStateChanged': return EventToClient.accountStateChanged;
-        default:
-          if (!allowNull) {
-            throw ArgumentError('Unknown enum value to decode: $data');
-          }
+  static Map<String, EventToClient> mapFromJson(dynamic json) {
+    final map = <String, EventToClient>{};
+    if (json is Map && json.isNotEmpty) {
+      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      for (final entry in json.entries) {
+        final value = EventToClient.fromJson(entry.value);
+        if (value != null) {
+          map[entry.key] = value;
+        }
       }
     }
-    return null;
+    return map;
   }
 
-  /// Singleton [EventToClientTypeTransformer] instance.
-  static EventToClientTypeTransformer? _instance;
+  // maps a json object with a list of EventToClient-objects as value to a dart map
+  static Map<String, List<EventToClient>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<EventToClient>>{};
+    if (json is Map && json.isNotEmpty) {
+      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      for (final entry in json.entries) {
+        final value = EventToClient.listFromJson(entry.value, growable: growable,);
+        if (value != null) {
+          map[entry.key] = value;
+        }
+      }
+    }
+    return map;
+  }
+
+  /// The list of required keys that must be present in a JSON.
+  static const requiredKeys = <String>{
+    'event',
+  };
 }
 

@@ -61,8 +61,8 @@ String parameterToString(dynamic value) {
   if (value is DownloadType) {
     return DownloadTypeTypeTransformer().encode(value).toString();
   }
-  if (value is EventToClient) {
-    return EventToClientTypeTransformer().encode(value).toString();
+  if (value is EventType) {
+    return EventTypeTypeTransformer().encode(value).toString();
   }
   if (value is ModerationRequestState) {
     return ModerationRequestStateTypeTransformer().encode(value).toString();

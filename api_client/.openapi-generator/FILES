@@ -24,6 +24,8 @@ doc/DeleteStatus.md
 doc/DownloadType.md
 doc/DownloadTypeQueryParam.md
 doc/EventToClient.md
+doc/EventType.md
+doc/FavoriteProfilesPage.md
 doc/HandleModerationRequest.md
 doc/ImageAccessCheck.md
 doc/Location.md
@@ -96,6 +98,8 @@ lib/model/delete_status.dart
 lib/model/download_type.dart
 lib/model/download_type_query_param.dart
 lib/model/event_to_client.dart
+lib/model/event_type.dart
+lib/model/favorite_profiles_page.dart
 lib/model/handle_moderation_request.dart
 lib/model/image_access_check.dart
 lib/model/location.dart
@@ -127,3 +131,5 @@ lib/model/software_options.dart
 lib/model/system_info.dart
 lib/model/system_info_list.dart
 pubspec.yaml
+test/event_type_test.dart
+test/favorite_profiles_page_test.dart
