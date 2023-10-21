@@ -9,16 +9,21 @@ import 'package:sqflite/sqflite.dart';
 
 
 enum DatabaseType {
+  favoriteProfiles,
   profileList;
 
   String get databaseName {
     switch (this) {
+      case DatabaseType.favoriteProfiles:
+        return "favorite_profiles_database.db";
       case DatabaseType.profileList:
         return "profile_list_database.db";
     }
   }
   String get databaseErrorTitle {
     switch (this) {
+      case DatabaseType.favoriteProfiles:
+        return "Favorite profiles database error";
       case DatabaseType.profileList:
         return "Profile list database error";
     }

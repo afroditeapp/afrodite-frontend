@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
+import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
+import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
@@ -44,7 +46,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   Future<void> _fetchPage(int pageKey) async {
     if (pageKey == 0) {
-      await ProfileRepository.getInstance().resetProfileIterator(false);
+      ProfileRepository.getInstance().resetIteratorToBeginning();
     }
 
     final profileList = await ProfileRepository.getInstance().nextList();
@@ -77,7 +79,10 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        await ProfileRepository.getInstance().resetProfileIterator(true);
+        await ProfileRepository.getInstance().resetProfileIterator(ModePublicProfiles(
+          clearDatabase: true,
+          serverSideIteratorResetNeeded: true
+        ));
         // This might be disposed after resetProfileIterator completes.
         _pagingController?.refresh();
       },

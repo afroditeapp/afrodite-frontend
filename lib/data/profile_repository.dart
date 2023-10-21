@@ -4,7 +4,10 @@ import 'dart:convert';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/profile/profile_iterator.dart';
+import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
 import 'package:pihka_frontend/data/utils.dart';
+import 'package:pihka_frontend/database/favorite_profiles_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
@@ -19,7 +22,7 @@ class ProfileRepository extends DataRepository {
   }
 
   final ApiManager _api = ApiManager.getInstance();
-  IteratorType _currentIterator = DatabaseIterator();
+  final ProfileIteratorManager mainProfilesViewIterator = ProfileIteratorManager();
 
   Stream<Location> get location => KvStringManager.getInstance()
     .getUpdatesForWithConversionAndDefaultIfNull(
@@ -49,14 +52,31 @@ class ProfileRepository extends DataRepository {
 
   @override
   Future<void> onLogin() async {
-    _currentIterator = OnlineIterator(firstIterationAfterLogin: true);
+    await mainProfilesViewIterator.reset(ModePublicProfiles(
+      clearDatabase: true,
+      serverSideIteratorResetNeeded: true)
+    );
 
     _api.state
       .firstWhere((element) => element == ApiManagerState.connected)
       .then((value) async {
+        // TODO: Perhps client should track these operations and retry
+        // these if needed.
+
+        // Download current location, so map will be positioned correctly.
         final location = await _api.profile((api) => api.getLocation());
         if (location != null) {
-          await KvStringManager.getInstance().setValue(KvString.profileLocation, jsonEncode(location.toJson()));
+          await KvStringManager.getInstance()
+            .setValue(KvString.profileLocation, jsonEncode(location.toJson()));
+        }
+
+        // Download current favorites.
+        final favorites = await _api.profile((api) => api.getFavoriteProfiles());
+        if (favorites != null) {
+          for (final profile in favorites.profiles) {
+            await FavoriteProfilesDatabase.getInstance()
+              .insertProfile(FavoriteProfileEntry(profile.accountId));
+          }
         }
       })
       .ignore();
@@ -65,7 +85,10 @@ class ProfileRepository extends DataRepository {
   @override
   Future<void> onLogout() async {
     await ProfileListDatabase.getInstance().clearProfiles();
-    _currentIterator = OnlineIterator(firstIterationAfterLogin: true);
+    await mainProfilesViewIterator.reset(ModePublicProfiles(
+      clearDatabase: true,
+      serverSideIteratorResetNeeded: true
+    ));
   }
 
   Future<bool> updateLocation(Location location) async {
@@ -78,7 +101,7 @@ class ProfileRepository extends DataRepository {
         KvString.profileLocation,
         jsonEncode(location.toJson())
       );
-      _currentIterator = OnlineIterator(firstIterationAfterLogin: true);
+      mainProfilesViewIterator.resetServerSideIteratorWhenItIsNeededNextTime();
     }
     return requestSuccessful;
   }
@@ -130,143 +153,19 @@ class ProfileRepository extends DataRepository {
     return result ?? false;
   }
 
-  Future<void> resetProfileIterator(bool clearDatabase) async {
-    if (clearDatabase) {
-      await _api.profile((api) => api.postResetProfilePaging());
-      await ProfileListDatabase.getInstance().clearProfiles();
-      _currentIterator = OnlineIterator();
-    } else {
-      _currentIterator.reset();
-    }
+  Future<void> resetProfileIterator(ProfileIteratorMode mode) async {
+    await mainProfilesViewIterator.reset(mode);
+  }
+
+  void resetIteratorToBeginning() {
+    mainProfilesViewIterator.resetToBeginning();
   }
 
   Future<List<ProfileListEntry>> nextList() async {
-    final nextList = await _currentIterator.nextList();
-
-    if (nextList.isEmpty && _currentIterator is OnlineIterator) {
-      _currentIterator = DatabaseIterator();
-    }
-    return nextList;
+    return await mainProfilesViewIterator.nextList();
   }
 }
 
-sealed class IteratorType {
-  /// Resets the iterator to the beginning
-  void reset() {}
-  /// Returns the next list of profiles
-  Future<List<ProfileListEntry>> nextList() async {
-    return [];
-  }
-}
-class OnlineIterator extends IteratorType {
-  int currentIndex = 0;
-  DatabaseIterator? databaseIterator;
-  bool firstIterationAfterLogin;
-  final ApiManager api = ApiManager.getInstance();
-
-  /// If [firstIterationAfterLogin] is true, the iterator will reset the
-  /// server iterator to the beginning.
-  OnlineIterator({this.firstIterationAfterLogin = false});
-
-  @override
-  void reset() {
-    if (!firstIterationAfterLogin) {
-      /// Reset to use database iterator and then continue online profile
-      /// iterating.
-      databaseIterator = DatabaseIterator();
-    }
-  }
-
-  @override
-  Future<List<ProfileListEntry>> nextList() async {
-    if (firstIterationAfterLogin) {
-      await ApiManager.getInstance().profile((api) => api.postResetProfilePaging());
-      firstIterationAfterLogin = false;
-    }
-
-    // Handle case where iterator has been reseted in the middle
-    // of online iteration. Get the beginning from the database.
-    final iterator = databaseIterator;
-    if (iterator != null) {
-      final list = await iterator.nextList();
-      if (list.isNotEmpty) {
-        return list;
-      } else {
-        databaseIterator = null;
-      }
-    }
-
-    // TODO: What if server restarts? The client thinks that it is
-    // in the middle of the list, but the server has reseted the iterator.
-    // Add some uuid to the iterator to check if the server has restarted?
-
-    final List<ProfileListEntry> list = List.empty(growable: true);
-    while (true) {
-      final profiles = await api.profile((api) => api.postGetNextProfilePage());
-      if (profiles != null) {
-        if (profiles.profiles.isEmpty) {
-          return [];
-        }
-
-        for (final p in profiles.profiles) {
-          final profile = p;
-          final primaryImageInfo = await api.media((api) => api.getPrimaryImageInfo(profile.id.accountId, false));
-          final imageUuid = primaryImageInfo?.contentId?.contentId;
-          if (imageUuid == null) {
-            continue;
-          }
-
-          // Prevent displaying error when profile is made private while iterating
-          final (_, profileDetails) = await api
-            .profileWrapper()
-            .requestWithHttpStatus(false, (api) => api.getProfile(profile.id.accountId));
-          if (profileDetails == null) {
-            continue;
-          }
-          // TODO: Compare cached profile data with the one from the server.
-          //       Update: perhaps another database for profiles? With current
-          //       implementation there is no cached data. Or should
-          //       new profile request be made every time profile is opened and
-          //       use the cache check there?
-
-          final entry = ProfileListEntry(profile.id.accountId, imageUuid, profileDetails.name, profileDetails.profileText);
-          await ProfileListDatabase.getInstance().insertProfile(entry);
-          list.add(entry);
-        }
-
-        if (list.isEmpty) {
-          // Handle case where server returned some profiles
-          // but additional info fetching failed, so get next list of profiles.
-          continue;
-        }
-      }
-
-      return list;
-    }
-  }
-}
-
-class DatabaseIterator extends IteratorType {
-  int currentIndex;
-  DatabaseIterator({this.currentIndex = 0});
-
-  @override
-  void reset() {
-    currentIndex = 0;
-  }
-
-  @override
-  Future<List<ProfileListEntry>> nextList() async {
-    const queryCount = 10;
-    final profiles = await ProfileListDatabase.getInstance().getProfileList(currentIndex, queryCount);
-    if (profiles != null) {
-      currentIndex += queryCount;
-      return profiles;
-    } else {
-      return [];
-    }
-  }
-}
 
 sealed class GetProfileResult {}
 class GetProfileSuccess extends GetProfileResult {
