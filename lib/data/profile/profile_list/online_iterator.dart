@@ -8,6 +8,7 @@ import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/favorite_profiles_database.dart';
+import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
@@ -33,7 +34,7 @@ class OnlineIterator extends IteratorType {
   }
 
   @override
-  Future<List<ProfileListEntry>> nextList() async {
+  Future<List<ProfileEntry>> nextList() async {
     if (firstIterationAfterLogin) {
       await ApiManager.getInstance().profile((api) => api.postResetProfilePaging());
       firstIterationAfterLogin = false;
@@ -55,7 +56,7 @@ class OnlineIterator extends IteratorType {
     // in the middle of the list, but the server has reseted the iterator.
     // Add some uuid to the iterator to check if the server has restarted?
 
-    final List<ProfileListEntry> list = List.empty(growable: true);
+    final List<ProfileEntry> list = List.empty(growable: true);
     while (true) {
       final profiles = await api.profile((api) => api.postGetNextProfilePage());
       if (profiles != null) {
@@ -84,9 +85,12 @@ class OnlineIterator extends IteratorType {
           //       new profile request be made every time profile is opened and
           //       use the cache check there?
 
-          final entry = ProfileListEntry(profile.id.accountId, imageUuid, profileDetails.name, profileDetails.profileText);
+          final entry = ProfileListEntry(profile.id.accountId);
           await ProfileListDatabase.getInstance().insertProfile(entry);
-          list.add(entry);
+
+          final dataEntry = ProfileEntry(profile.id.accountId, imageUuid, profileDetails.name, profileDetails.profileText);
+          await ProfileDatabase.getInstance().insertProfile(dataEntry);
+          list.add(dataEntry);
         }
 
         if (list.isEmpty) {

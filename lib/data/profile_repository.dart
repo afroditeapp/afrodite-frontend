@@ -8,6 +8,7 @@ import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/favorite_profiles_database.dart';
+import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
@@ -111,7 +112,7 @@ class ProfileRepository extends DataRepository {
     // private profile can be handled.
 
     if (cache) {
-      final profile = await ProfileListDatabase.getInstance().getProfile(id);
+      final profile = await ProfileDatabase.getInstance().getProfile(id);
       if (profile != null) {
         return profile;
       }
@@ -119,7 +120,7 @@ class ProfileRepository extends DataRepository {
 
     final profile = await _api.profile((api) => api.getProfile(id.accountId));
     if (profile != null) {
-      await ProfileListDatabase.getInstance().updateProfile(id, profile);
+      await ProfileDatabase.getInstance().updateProfile(id, profile);
     }
     return profile;
   }
@@ -129,7 +130,7 @@ class ProfileRepository extends DataRepository {
     // TODO: perhaps more detailed error message, so that changes from public to
     // private profile can be handled.
 
-    final profile = await ProfileListDatabase.getInstance().getProfile(id);
+    final profile = await ProfileDatabase.getInstance().getProfile(id);
     if (profile != null) {
       yield GetProfileSuccess(profile);
     }
@@ -137,10 +138,12 @@ class ProfileRepository extends DataRepository {
     final (status, latestProfile) = await _api.profileWrapper().requestWithHttpStatus(false, (api) => api.getProfile(id.accountId));
 
     if (status == 200 && latestProfile != null) {
-      await ProfileListDatabase.getInstance().updateProfile(id, latestProfile);
+      await ProfileDatabase.getInstance().updateProfile(id, latestProfile);
       yield GetProfileSuccess(latestProfile);
     } else if (status == 500 && latestProfile == null) {
+      await ProfileDatabase.getInstance().removeProfile(id);
       await ProfileListDatabase.getInstance().removeProfile(id);
+      // Favorites are not changed even if profile will become private
       yield GetProfileDoesNotExist();
     } else {
       yield GetProfileFailed();
@@ -161,7 +164,7 @@ class ProfileRepository extends DataRepository {
     mainProfilesViewIterator.resetToBeginning();
   }
 
-  Future<List<ProfileListEntry>> nextList() async {
+  Future<List<ProfileEntry>> nextList() async {
     return await mainProfilesViewIterator.nextList();
   }
 }

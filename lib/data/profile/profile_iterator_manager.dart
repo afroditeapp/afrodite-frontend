@@ -9,6 +9,7 @@ import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart'
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/favorite_profiles_database.dart';
+import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
@@ -66,7 +67,7 @@ class ProfileIteratorManager {
     _currentIterator.reset();
   }
 
-  Future<List<ProfileListEntry>> nextList() async {
+  Future<List<ProfileEntry>> nextList() async {
     switch (_currentMode) {
       case ModeFavorites(): {
         return [];

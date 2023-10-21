@@ -8,6 +8,7 @@ import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
+import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui/utils.dart';
@@ -30,10 +31,10 @@ class ProfileView extends BottomNavigationView {
   }
 }
 
-typedef ProfileEntry = (ProfileListEntry profile, File img);
+typedef ProfileViewEntry = (ProfileEntry profile, File img);
 
 class _ProfileViewState extends State<ProfileView> {
-  PagingController<int, ProfileEntry>? _pagingController =
+  PagingController<int, ProfileViewEntry>? _pagingController =
     PagingController(firstPageKey: 0);
 
   @override
@@ -56,7 +57,7 @@ class _ProfileViewState extends State<ProfileView> {
     // Not sure does this image loading change affect the issue.
     // The PagedChildBuilderDelegate seems to run the builder twice for some
     // reason for the initial page.
-    final newList = List<ProfileEntry>.empty(growable: true);
+    final newList = List<ProfileViewEntry>.empty(growable: true);
     for (final profile in profileList) {
       final accountId = AccountId(accountId: profile.uuid);
       final contentId = ContentId(contentId: profile.imageUuid);
@@ -88,7 +89,7 @@ class _ProfileViewState extends State<ProfileView> {
       },
       child: PagedGridView(
         pagingController: _pagingController!,
-        builderDelegate: PagedChildBuilderDelegate<ProfileEntry>(
+        builderDelegate: PagedChildBuilderDelegate<ProfileViewEntry>(
           animateTransitions: true,
           itemBuilder: (context, item, index) {
             final accountId = AccountId(accountId: item.$1.uuid);

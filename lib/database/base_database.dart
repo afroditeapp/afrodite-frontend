@@ -7,13 +7,15 @@ import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:sqflite/sqflite.dart';
 
-
 enum DatabaseType {
+  profile,
   favoriteProfiles,
   profileList;
 
   String get databaseName {
     switch (this) {
+      case DatabaseType.profile:
+        return "profile_database.db";
       case DatabaseType.favoriteProfiles:
         return "favorite_profiles_database.db";
       case DatabaseType.profileList:
@@ -22,6 +24,8 @@ enum DatabaseType {
   }
   String get databaseErrorTitle {
     switch (this) {
+      case DatabaseType.profile:
+        return "Profile database error";
       case DatabaseType.favoriteProfiles:
         return "Favorite profiles database error";
       case DatabaseType.profileList:

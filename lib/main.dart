@@ -11,6 +11,7 @@ import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/favorite_profiles_database.dart';
+import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
@@ -137,6 +138,7 @@ class GlobalInitManager {
 
     await ProfileListDatabase.getInstance().init();
     await FavoriteProfilesDatabase.getInstance().init();
+    await ProfileDatabase.getInstance().init();
 
     await AccountRepository.getInstance().init();
     await MediaRepository.getInstance().init();

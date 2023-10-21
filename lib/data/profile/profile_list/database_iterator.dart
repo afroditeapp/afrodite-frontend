@@ -6,6 +6,7 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/favorite_profiles_database.dart';
+import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
@@ -22,12 +23,12 @@ class DatabaseIterator extends IteratorType {
   }
 
   @override
-  Future<List<ProfileListEntry>> nextList() async {
+  Future<List<ProfileEntry>> nextList() async {
     const queryCount = 10;
     final profiles = await ProfileListDatabase.getInstance().getProfileList(currentIndex, queryCount);
     if (profiles != null) {
       currentIndex += queryCount;
-      return profiles;
+      return await ProfileDatabase.getInstance().convertList(profiles);
     } else {
       return [];
     }
