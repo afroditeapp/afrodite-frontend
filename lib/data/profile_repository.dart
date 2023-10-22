@@ -76,7 +76,7 @@ class ProfileRepository extends DataRepository {
         if (favorites != null) {
           for (final profile in favorites.profiles) {
             await FavoriteProfilesDatabase.getInstance()
-              .insertProfile(FavoriteProfileEntry(profile.accountId));
+              .insertProfile(profile);
           }
         }
       })
@@ -166,6 +166,24 @@ class ProfileRepository extends DataRepository {
 
   Future<List<ProfileEntry>> nextList() async {
     return await mainProfilesViewIterator.nextList();
+  }
+
+  Future<bool> isInFavorites(AccountId accountId) async {
+    return await FavoriteProfilesDatabase.getInstance()
+          .isInFavorites(accountId);
+  }
+
+  // TODO server support to favorites, perhaps stream should be returned so that there is error
+  // recovery
+
+  Future<void> addToFavorites(AccountId accountId) async {
+    return await FavoriteProfilesDatabase.getInstance()
+          .insertProfile(accountId);
+  }
+
+  Future<void> removeFromFavorites(AccountId accountId) async {
+    return await FavoriteProfilesDatabase.getInstance()
+          .removeFromFavorites(accountId);
   }
 }
 

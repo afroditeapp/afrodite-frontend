@@ -57,22 +57,22 @@ class _$ImageModerationDataCopyWithImpl<$Res, $Val extends ImageModerationData>
 }
 
 /// @nodoc
-abstract class _$$_ImageModerationDataCopyWith<$Res>
+abstract class _$$ImageModerationDataImplCopyWith<$Res>
     implements $ImageModerationDataCopyWith<$Res> {
-  factory _$$_ImageModerationDataCopyWith(_$_ImageModerationData value,
-          $Res Function(_$_ImageModerationData) then) =
-      __$$_ImageModerationDataCopyWithImpl<$Res>;
+  factory _$$ImageModerationDataImplCopyWith(_$ImageModerationDataImpl value,
+          $Res Function(_$ImageModerationDataImpl) then) =
+      __$$ImageModerationDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({ImageModerationStatus state});
 }
 
 /// @nodoc
-class __$$_ImageModerationDataCopyWithImpl<$Res>
-    extends _$ImageModerationDataCopyWithImpl<$Res, _$_ImageModerationData>
-    implements _$$_ImageModerationDataCopyWith<$Res> {
-  __$$_ImageModerationDataCopyWithImpl(_$_ImageModerationData _value,
-      $Res Function(_$_ImageModerationData) _then)
+class __$$ImageModerationDataImplCopyWithImpl<$Res>
+    extends _$ImageModerationDataCopyWithImpl<$Res, _$ImageModerationDataImpl>
+    implements _$$ImageModerationDataImplCopyWith<$Res> {
+  __$$ImageModerationDataImplCopyWithImpl(_$ImageModerationDataImpl _value,
+      $Res Function(_$ImageModerationDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -80,7 +80,7 @@ class __$$_ImageModerationDataCopyWithImpl<$Res>
   $Res call({
     Object? state = null,
   }) {
-    return _then(_$_ImageModerationData(
+    return _then(_$ImageModerationDataImpl(
       state: null == state
           ? _value.state
           : state // ignore: cast_nullable_to_non_nullable
@@ -91,10 +91,10 @@ class __$$_ImageModerationDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ImageModerationData
+class _$ImageModerationDataImpl
     with DiagnosticableTreeMixin
     implements _ImageModerationData {
-  _$_ImageModerationData({this.state = ImageModerationStatus.moderating});
+  _$ImageModerationDataImpl({this.state = ImageModerationStatus.moderating});
 
   @override
   @JsonKey()
@@ -117,7 +117,7 @@ class _$_ImageModerationData
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ImageModerationData &&
+            other is _$ImageModerationDataImpl &&
             (identical(other.state, state) || other.state == state));
   }
 
@@ -127,20 +127,20 @@ class _$_ImageModerationData
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ImageModerationDataCopyWith<_$_ImageModerationData> get copyWith =>
-      __$$_ImageModerationDataCopyWithImpl<_$_ImageModerationData>(
+  _$$ImageModerationDataImplCopyWith<_$ImageModerationDataImpl> get copyWith =>
+      __$$ImageModerationDataImplCopyWithImpl<_$ImageModerationDataImpl>(
           this, _$identity);
 }
 
 abstract class _ImageModerationData implements ImageModerationData {
   factory _ImageModerationData({final ImageModerationStatus state}) =
-      _$_ImageModerationData;
+      _$ImageModerationDataImpl;
 
   @override
   ImageModerationStatus get state;
   @override
   @JsonKey(ignore: true)
-  _$$_ImageModerationDataCopyWith<_$_ImageModerationData> get copyWith =>
+  _$$ImageModerationDataImplCopyWith<_$ImageModerationDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -199,22 +199,22 @@ class _$ModerationEntryCopyWithImpl<$Res, $Val extends ModerationEntry>
 }
 
 /// @nodoc
-abstract class _$$_ModerationEntryCopyWith<$Res>
+abstract class _$$ModerationEntryImplCopyWith<$Res>
     implements $ModerationEntryCopyWith<$Res> {
-  factory _$$_ModerationEntryCopyWith(
-          _$_ModerationEntry value, $Res Function(_$_ModerationEntry) then) =
-      __$$_ModerationEntryCopyWithImpl<$Res>;
+  factory _$$ModerationEntryImplCopyWith(_$ModerationEntryImpl value,
+          $Res Function(_$ModerationEntryImpl) then) =
+      __$$ModerationEntryImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({ContentId? securitySelfie, ContentId target, bool? status});
 }
 
 /// @nodoc
-class __$$_ModerationEntryCopyWithImpl<$Res>
-    extends _$ModerationEntryCopyWithImpl<$Res, _$_ModerationEntry>
-    implements _$$_ModerationEntryCopyWith<$Res> {
-  __$$_ModerationEntryCopyWithImpl(
-      _$_ModerationEntry _value, $Res Function(_$_ModerationEntry) _then)
+class __$$ModerationEntryImplCopyWithImpl<$Res>
+    extends _$ModerationEntryCopyWithImpl<$Res, _$ModerationEntryImpl>
+    implements _$$ModerationEntryImplCopyWith<$Res> {
+  __$$ModerationEntryImplCopyWithImpl(
+      _$ModerationEntryImpl _value, $Res Function(_$ModerationEntryImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -224,7 +224,7 @@ class __$$_ModerationEntryCopyWithImpl<$Res>
     Object? target = null,
     Object? status = freezed,
   }) {
-    return _then(_$_ModerationEntry(
+    return _then(_$ModerationEntryImpl(
       securitySelfie: freezed == securitySelfie
           ? _value.securitySelfie
           : securitySelfie // ignore: cast_nullable_to_non_nullable
@@ -243,10 +243,11 @@ class __$$_ModerationEntryCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ModerationEntry
+class _$ModerationEntryImpl
     with DiagnosticableTreeMixin
     implements _ModerationEntry {
-  _$_ModerationEntry({this.securitySelfie, required this.target, this.status});
+  _$ModerationEntryImpl(
+      {this.securitySelfie, required this.target, this.status});
 
   @override
   final ContentId? securitySelfie;
@@ -274,7 +275,7 @@ class _$_ModerationEntry
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ModerationEntry &&
+            other is _$ModerationEntryImpl &&
             (identical(other.securitySelfie, securitySelfie) ||
                 other.securitySelfie == securitySelfie) &&
             (identical(other.target, target) || other.target == target) &&
@@ -287,15 +288,16 @@ class _$_ModerationEntry
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ModerationEntryCopyWith<_$_ModerationEntry> get copyWith =>
-      __$$_ModerationEntryCopyWithImpl<_$_ModerationEntry>(this, _$identity);
+  _$$ModerationEntryImplCopyWith<_$ModerationEntryImpl> get copyWith =>
+      __$$ModerationEntryImplCopyWithImpl<_$ModerationEntryImpl>(
+          this, _$identity);
 }
 
 abstract class _ModerationEntry implements ModerationEntry {
   factory _ModerationEntry(
       {final ContentId? securitySelfie,
       required final ContentId target,
-      final bool? status}) = _$_ModerationEntry;
+      final bool? status}) = _$ModerationEntryImpl;
 
   @override
   ContentId? get securitySelfie;
@@ -305,6 +307,6 @@ abstract class _ModerationEntry implements ModerationEntry {
   bool? get status;
   @override
   @JsonKey(ignore: true)
-  _$$_ModerationEntryCopyWith<_$_ModerationEntry> get copyWith =>
+  _$$ModerationEntryImplCopyWith<_$ModerationEntryImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

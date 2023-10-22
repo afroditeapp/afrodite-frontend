@@ -58,6 +58,23 @@ enum KvDouble implements PreferenceKeyProvider<KvDouble, double> {
   }
 }
 
+enum KvBoolean implements PreferenceKeyProvider<KvBoolean, bool> {
+  // If true show only favorite profiles.
+  profileFilterFavorites,
+  empty;
+
+  /// Get shared preference key for this type
+  @override
+  String sharedPreferencesKey() {
+    return "kv-boolean-key-$name";
+  }
+
+  @override
+  KvBoolean getKeyEnum() {
+    return this;
+  }
+}
+
 class KvStringManager extends KvStorageManager<KvString, String> {
   static final _instance = KvStringManager._private();
   KvStringManager._private(): super(
@@ -99,5 +116,27 @@ class KvDoubleManager extends KvStorageManager<KvDouble, double> {
   Future<double?> getValue(KvDouble key) async {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getDouble(key.sharedPreferencesKey());
+  }
+}
+
+class KvBooleanManager extends KvStorageManager<KvBoolean, bool> {
+  static final _instance = KvBooleanManager._private();
+  KvBooleanManager._private(): super(
+    // Set to shared preferences implementation.
+    // Implementing private methods doesn't seem to work as compiler didn't
+    // find the method.
+    (key, value) async {
+      final SharedPreferences preferences = await SharedPreferences.getInstance();
+      await preferences.setBool(key.sharedPreferencesKey(), value);
+    }
+  );
+  factory KvBooleanManager.getInstance() {
+    return _instance;
+  }
+
+  @override
+  Future<bool?> getValue(KvBoolean key) async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getBool(key.sharedPreferencesKey());
   }
 }

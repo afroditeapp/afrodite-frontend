@@ -72,11 +72,11 @@ class _$AccountDataCopyWithImpl<$Res, $Val extends AccountData>
 }
 
 /// @nodoc
-abstract class _$$_AccountDataCopyWith<$Res>
+abstract class _$$AccountDataImplCopyWith<$Res>
     implements $AccountDataCopyWith<$Res> {
-  factory _$$_AccountDataCopyWith(
-          _$_AccountData value, $Res Function(_$_AccountData) then) =
-      __$$_AccountDataCopyWithImpl<$Res>;
+  factory _$$AccountDataImplCopyWith(
+          _$AccountDataImpl value, $Res Function(_$AccountDataImpl) then) =
+      __$$AccountDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -86,11 +86,11 @@ abstract class _$$_AccountDataCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_AccountDataCopyWithImpl<$Res>
-    extends _$AccountDataCopyWithImpl<$Res, _$_AccountData>
-    implements _$$_AccountDataCopyWith<$Res> {
-  __$$_AccountDataCopyWithImpl(
-      _$_AccountData _value, $Res Function(_$_AccountData) _then)
+class __$$AccountDataImplCopyWithImpl<$Res>
+    extends _$AccountDataCopyWithImpl<$Res, _$AccountDataImpl>
+    implements _$$AccountDataImplCopyWith<$Res> {
+  __$$AccountDataImplCopyWithImpl(
+      _$AccountDataImpl _value, $Res Function(_$AccountDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -100,7 +100,7 @@ class __$$_AccountDataCopyWithImpl<$Res>
     Object? accessToken = freezed,
     Object? capabilities = null,
   }) {
-    return _then(_$_AccountData(
+    return _then(_$AccountDataImpl(
       accountId: freezed == accountId
           ? _value.accountId
           : accountId // ignore: cast_nullable_to_non_nullable
@@ -119,8 +119,8 @@ class __$$_AccountDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_AccountData with DiagnosticableTreeMixin implements _AccountData {
-  _$_AccountData(
+class _$AccountDataImpl with DiagnosticableTreeMixin implements _AccountData {
+  _$AccountDataImpl(
       {this.accountId, this.accessToken, required this.capabilities});
 
   @override
@@ -149,7 +149,7 @@ class _$_AccountData with DiagnosticableTreeMixin implements _AccountData {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AccountData &&
+            other is _$AccountDataImpl &&
             (identical(other.accountId, accountId) ||
                 other.accountId == accountId) &&
             (identical(other.accessToken, accessToken) ||
@@ -165,15 +165,15 @@ class _$_AccountData with DiagnosticableTreeMixin implements _AccountData {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AccountDataCopyWith<_$_AccountData> get copyWith =>
-      __$$_AccountDataCopyWithImpl<_$_AccountData>(this, _$identity);
+  _$$AccountDataImplCopyWith<_$AccountDataImpl> get copyWith =>
+      __$$AccountDataImplCopyWithImpl<_$AccountDataImpl>(this, _$identity);
 }
 
 abstract class _AccountData implements AccountData {
   factory _AccountData(
       {final AccountId? accountId,
       final AccessToken? accessToken,
-      required final Capabilities capabilities}) = _$_AccountData;
+      required final Capabilities capabilities}) = _$AccountDataImpl;
 
   @override
   AccountId? get accountId;
@@ -183,6 +183,6 @@ abstract class _AccountData implements AccountData {
   Capabilities get capabilities;
   @override
   @JsonKey(ignore: true)
-  _$$_AccountDataCopyWith<_$_AccountData> get copyWith =>
+  _$$AccountDataImplCopyWith<_$AccountDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

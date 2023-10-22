@@ -63,22 +63,22 @@ class _$ProfileDataCopyWithImpl<$Res, $Val extends ProfileData>
 }
 
 /// @nodoc
-abstract class _$$_ProfileDataCopyWith<$Res>
+abstract class _$$ProfileDataImplCopyWith<$Res>
     implements $ProfileDataCopyWith<$Res> {
-  factory _$$_ProfileDataCopyWith(
-          _$_ProfileData value, $Res Function(_$_ProfileData) then) =
-      __$$_ProfileDataCopyWithImpl<$Res>;
+  factory _$$ProfileDataImplCopyWith(
+          _$ProfileDataImpl value, $Res Function(_$ProfileDataImpl) then) =
+      __$$ProfileDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({Profile? profile, PrimaryImage? primaryImage});
 }
 
 /// @nodoc
-class __$$_ProfileDataCopyWithImpl<$Res>
-    extends _$ProfileDataCopyWithImpl<$Res, _$_ProfileData>
-    implements _$$_ProfileDataCopyWith<$Res> {
-  __$$_ProfileDataCopyWithImpl(
-      _$_ProfileData _value, $Res Function(_$_ProfileData) _then)
+class __$$ProfileDataImplCopyWithImpl<$Res>
+    extends _$ProfileDataCopyWithImpl<$Res, _$ProfileDataImpl>
+    implements _$$ProfileDataImplCopyWith<$Res> {
+  __$$ProfileDataImplCopyWithImpl(
+      _$ProfileDataImpl _value, $Res Function(_$ProfileDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -87,7 +87,7 @@ class __$$_ProfileDataCopyWithImpl<$Res>
     Object? profile = freezed,
     Object? primaryImage = freezed,
   }) {
-    return _then(_$_ProfileData(
+    return _then(_$ProfileDataImpl(
       profile: freezed == profile
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
@@ -102,8 +102,8 @@ class __$$_ProfileDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ProfileData with DiagnosticableTreeMixin implements _ProfileData {
-  _$_ProfileData({this.profile, this.primaryImage});
+class _$ProfileDataImpl with DiagnosticableTreeMixin implements _ProfileData {
+  _$ProfileDataImpl({this.profile, this.primaryImage});
 
   @override
   final Profile? profile;
@@ -128,7 +128,7 @@ class _$_ProfileData with DiagnosticableTreeMixin implements _ProfileData {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ProfileData &&
+            other is _$ProfileDataImpl &&
             (identical(other.profile, profile) || other.profile == profile) &&
             (identical(other.primaryImage, primaryImage) ||
                 other.primaryImage == primaryImage));
@@ -140,14 +140,14 @@ class _$_ProfileData with DiagnosticableTreeMixin implements _ProfileData {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ProfileDataCopyWith<_$_ProfileData> get copyWith =>
-      __$$_ProfileDataCopyWithImpl<_$_ProfileData>(this, _$identity);
+  _$$ProfileDataImplCopyWith<_$ProfileDataImpl> get copyWith =>
+      __$$ProfileDataImplCopyWithImpl<_$ProfileDataImpl>(this, _$identity);
 }
 
 abstract class _ProfileData implements ProfileData {
   factory _ProfileData(
       {final Profile? profile,
-      final PrimaryImage? primaryImage}) = _$_ProfileData;
+      final PrimaryImage? primaryImage}) = _$ProfileDataImpl;
 
   @override
   Profile? get profile;
@@ -155,6 +155,6 @@ abstract class _ProfileData implements ProfileData {
   PrimaryImage? get primaryImage;
   @override
   @JsonKey(ignore: true)
-  _$$_ProfileDataCopyWith<_$_ProfileData> get copyWith =>
+  _$$ProfileDataImplCopyWith<_$ProfileDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

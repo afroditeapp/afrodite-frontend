@@ -100,11 +100,11 @@ class _$InitialSetupDataCopyWithImpl<$Res, $Val extends InitialSetupData>
 }
 
 /// @nodoc
-abstract class _$$_InitialSetupDataCopyWith<$Res>
+abstract class _$$InitialSetupDataImplCopyWith<$Res>
     implements $InitialSetupDataCopyWith<$Res> {
-  factory _$$_InitialSetupDataCopyWith(
-          _$_InitialSetupData value, $Res Function(_$_InitialSetupData) then) =
-      __$$_InitialSetupDataCopyWithImpl<$Res>;
+  factory _$$InitialSetupDataImplCopyWith(_$InitialSetupDataImpl value,
+          $Res Function(_$InitialSetupDataImpl) then) =
+      __$$InitialSetupDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -118,11 +118,11 @@ abstract class _$$_InitialSetupDataCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_InitialSetupDataCopyWithImpl<$Res>
-    extends _$InitialSetupDataCopyWithImpl<$Res, _$_InitialSetupData>
-    implements _$$_InitialSetupDataCopyWith<$Res> {
-  __$$_InitialSetupDataCopyWithImpl(
-      _$_InitialSetupData _value, $Res Function(_$_InitialSetupData) _then)
+class __$$InitialSetupDataImplCopyWithImpl<$Res>
+    extends _$InitialSetupDataCopyWithImpl<$Res, _$InitialSetupDataImpl>
+    implements _$$InitialSetupDataImplCopyWith<$Res> {
+  __$$InitialSetupDataImplCopyWithImpl(_$InitialSetupDataImpl _value,
+      $Res Function(_$InitialSetupDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -136,7 +136,7 @@ class __$$_InitialSetupDataCopyWithImpl<$Res>
     Object? sendingInProgress = null,
     Object? currentStep = null,
   }) {
-    return _then(_$_InitialSetupData(
+    return _then(_$InitialSetupDataImpl(
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -171,8 +171,8 @@ class __$$_InitialSetupDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_InitialSetupData implements _InitialSetupData {
-  _$_InitialSetupData(
+class _$InitialSetupDataImpl implements _InitialSetupData {
+  _$InitialSetupDataImpl(
       {this.email = "",
       this.profileName = "",
       this.securitySelfie,
@@ -209,7 +209,7 @@ class _$_InitialSetupData implements _InitialSetupData {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_InitialSetupData &&
+            other is _$InitialSetupDataImpl &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.profileName, profileName) ||
                 other.profileName == profileName) &&
@@ -232,8 +232,9 @@ class _$_InitialSetupData implements _InitialSetupData {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_InitialSetupDataCopyWith<_$_InitialSetupData> get copyWith =>
-      __$$_InitialSetupDataCopyWithImpl<_$_InitialSetupData>(this, _$identity);
+  _$$InitialSetupDataImplCopyWith<_$InitialSetupDataImpl> get copyWith =>
+      __$$InitialSetupDataImplCopyWithImpl<_$InitialSetupDataImpl>(
+          this, _$identity);
 }
 
 abstract class _InitialSetupData implements InitialSetupData {
@@ -244,7 +245,7 @@ abstract class _InitialSetupData implements InitialSetupData {
       final XFile? profileImage,
       final String? sendError,
       final bool sendingInProgress,
-      final int currentStep}) = _$_InitialSetupData;
+      final int currentStep}) = _$InitialSetupDataImpl;
 
   @override
   String get email;
@@ -262,6 +263,6 @@ abstract class _InitialSetupData implements InitialSetupData {
   int get currentStep;
   @override
   @JsonKey(ignore: true)
-  _$$_InitialSetupDataCopyWith<_$_InitialSetupData> get copyWith =>
+  _$$InitialSetupDataImplCopyWith<_$InitialSetupDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

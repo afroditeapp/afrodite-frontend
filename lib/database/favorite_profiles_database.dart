@@ -62,9 +62,12 @@ class FavoriteProfilesDatabase extends BaseDatabase {
     });
   }
 
-  Future<int?> insertProfile(FavoriteProfileEntry entry) async {
-    return await runAction((db) async {
-      return await db.insert(favoriteProfilesTableName, entry.toMap());
+  Future<void> insertProfile(AccountId accountId) async {
+    await runAction((db) async {
+      return await db.insert(
+        favoriteProfilesTableName,
+        FavoriteProfileEntry(accountId.accountId).toMap()
+      );
     });
   }
 
@@ -76,6 +79,17 @@ class FavoriteProfilesDatabase extends BaseDatabase {
         whereArgs: [accountId.accountId],
       );
     });
+  }
+
+  Future<bool> isInFavorites(AccountId accountId) async {
+    return await runAction((db) async {
+      final data = await db.query(
+        favoriteProfilesTableName,
+        where: "uuid = ?",
+        whereArgs: [accountId.accountId],
+      );
+      return data.isNotEmpty;
+    }) ?? false;
   }
 
   Future<List<FavoriteProfileEntry>?> getFavoriteProfilesList(int startIndex, int limit) async {
