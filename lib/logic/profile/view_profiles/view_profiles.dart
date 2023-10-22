@@ -77,13 +77,14 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
           return;
         }
         if (currentState.isFavorite) {
-          await profile
-            .removeFromFavorites(currentState.accountId);
+          await for (final inFavorites in profile.removeFromFavorites(currentState.accountId)) {
+            emit(currentState.copyWith(isFavorite: inFavorites));
+          }
         } else {
-          await profile
-            .addToFavorites(currentState.accountId);
+          await for (final inFavorites in profile.addToFavorites(currentState.accountId)) {
+            emit(currentState.copyWith(isFavorite: inFavorites));
+          }
         }
-        emit(currentState.copyWith(isFavorite: !currentState.isFavorite));
       });
     });
   }

@@ -75,7 +75,7 @@ class OnlineIterator extends IteratorType {
           // Prevent displaying error when profile is made private while iterating
           final (_, profileDetails) = await api
             .profileWrapper()
-            .requestWithHttpStatus(false, (api) => api.getProfile(profile.id.accountId));
+            .requestWithHttpStatus(logError: false, (api) => api.getProfile(profile.id.accountId));
           if (profileDetails == null) {
             continue;
           }

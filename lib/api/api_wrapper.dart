@@ -1,6 +1,8 @@
 
 
 
+import 'dart:io';
+
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
@@ -38,20 +40,37 @@ class ApiWrapper<T> {
     }
   }
 
-  Future<(int?, R?)> requestWithHttpStatus<R extends Object>(bool logError, Future<R?> Function(T) action) async {
+  Future<(ApiHttpStatus, R?)> requestWithHttpStatus<R extends Object>(Future<R?> Function(T) action, {bool logError = true}) async {
     try {
       final result = await action(api);
-      if (result != null) {
-        return (200, result);
-      } else {
-        return (null, null);
-      }
+      return (ApiHttpStatus(200), result);
     } on ApiException catch (e) {
       if (logError) {
         log.error(e);
         ErrorManager.getInstance().send(ApiError());
       }
-      return (e.code, null);
+      return (ApiHttpStatus(e.code), null);
     }
+  }
+}
+
+class ApiHttpStatus {
+  final int httpStatus;
+
+  ApiHttpStatus(this.httpStatus);
+
+  /// Is status code HTTP 200
+  bool isSuccess() {
+    return httpStatus == 200;
+  }
+
+  /// Is status code HTTP 500
+  bool isInternalServerError() {
+    return httpStatus == 500;
+  }
+
+  /// Is status code something other than HTTP 200
+  bool isFailure() {
+    return !isSuccess();
   }
 }

@@ -86,6 +86,8 @@ class ProfileRepository extends DataRepository {
   @override
   Future<void> onLogout() async {
     await ProfileListDatabase.getInstance().clearProfiles();
+    await FavoriteProfilesDatabase.getInstance().clearFavoriteProfiles();
+    await ProfileDatabase.getInstance().clearProfiles();
     await mainProfilesViewIterator.reset(ModePublicProfiles(
       clearDatabase: true,
       serverSideIteratorResetNeeded: true
@@ -135,17 +137,19 @@ class ProfileRepository extends DataRepository {
       yield GetProfileSuccess(profile);
     }
 
-    final (status, latestProfile) = await _api.profileWrapper().requestWithHttpStatus(false, (api) => api.getProfile(id.accountId));
+    final (status, latestProfile) = await _api.profileWrapper().requestWithHttpStatus(logError: false, (api) => api.getProfile(id.accountId));
 
-    if (status == 200 && latestProfile != null) {
+    if (status.isSuccess() && latestProfile != null) {
       await ProfileDatabase.getInstance().updateProfile(id, latestProfile);
       yield GetProfileSuccess(latestProfile);
-    } else if (status == 500 && latestProfile == null) {
+    } else if (status.isInternalServerError() && latestProfile == null) {
+      // Accessing profile failed (not public or something else)
       await ProfileDatabase.getInstance().removeProfile(id);
       await ProfileListDatabase.getInstance().removeProfile(id);
       // Favorites are not changed even if profile will become private
       yield GetProfileDoesNotExist();
     } else {
+      // Request failed
       yield GetProfileFailed();
     }
   }
@@ -173,17 +177,41 @@ class ProfileRepository extends DataRepository {
           .isInFavorites(accountId);
   }
 
-  // TODO server support to favorites, perhaps stream should be returned so that there is error
-  // recovery
+  Stream<bool> addToFavorites(AccountId accountId) async* {
+    if (await FavoriteProfilesDatabase.getInstance().isInFavorites(accountId)) {
+      // In favorites already
+      return;
+    }
 
-  Future<void> addToFavorites(AccountId accountId) async {
-    return await FavoriteProfilesDatabase.getInstance()
-          .insertProfile(accountId);
+    await FavoriteProfilesDatabase.getInstance().insertProfile(accountId);
+    yield true;
+
+    final (status, _) = await _api.profileWrapper().requestWithHttpStatus((api) => api.postFavoriteProfile(accountId));
+
+    if (status.isFailure()) {
+      // Revert local change
+      yield false;
+      await FavoriteProfilesDatabase.getInstance().removeFromFavorites(accountId);
+    }
   }
 
-  Future<void> removeFromFavorites(AccountId accountId) async {
-    return await FavoriteProfilesDatabase.getInstance()
-          .removeFromFavorites(accountId);
+  /// Returns new isFavorite status for AccountId.
+  Stream<bool> removeFromFavorites(AccountId accountId) async* {
+    if (!await FavoriteProfilesDatabase.getInstance().isInFavorites(accountId)) {
+      // Not in favorites already
+      return;
+    }
+
+    await FavoriteProfilesDatabase.getInstance().removeFromFavorites(accountId);
+    yield false;
+
+    final (status, _) = await _api.profileWrapper().requestWithHttpStatus((api) => api.deleteFavoriteProfile(accountId));
+
+    if (status.isFailure()) {
+      // Revert local change
+      yield true;
+      await FavoriteProfilesDatabase.getInstance().insertProfile(accountId);
+    }
   }
 }
 
