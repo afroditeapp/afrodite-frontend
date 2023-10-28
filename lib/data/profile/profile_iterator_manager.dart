@@ -42,7 +42,7 @@ class ProfileIteratorManager {
   Future<void> reset(ProfileIteratorMode mode) async {
     switch (mode) {
       case ModeFavorites(): {
-        // TODO
+        _currentIterator = DatabaseIterator(iterateFavorites: true);
       }
       case ModePublicProfiles(): {
         if (_pendingServerSideIteratorReset) {
@@ -53,7 +53,11 @@ class ProfileIteratorManager {
           await ProfileListDatabase.getInstance().clearProfiles();
           _currentIterator = OnlineIterator(firstIterationAfterLogin: mode.clearDatabase);
         } else {
-          _currentIterator.reset();
+          if (_currentMode is ModeFavorites) {
+            _currentIterator = OnlineIterator();
+          } else {
+            _currentIterator.reset();
+          }
         }
       }
     }
@@ -64,10 +68,21 @@ class ProfileIteratorManager {
     _currentIterator.reset();
   }
 
+  Future<void> refresh() async {
+    switch (_currentMode) {
+      case ModeFavorites(): {
+        await reset(ModeFavorites());
+      }
+      case ModePublicProfiles(): {
+        await reset(ModePublicProfiles(clearDatabase: true));
+      }
+    }
+  }
+
   Future<List<ProfileEntry>> nextList() async {
     switch (_currentMode) {
       case ModeFavorites(): {
-        return [];
+        return await _currentIterator.nextList();
       }
       case ModePublicProfiles(): {
         final nextList = await _currentIterator.nextList();

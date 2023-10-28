@@ -11,12 +11,12 @@ import "package:pihka_frontend/utils.dart";
 part 'account.freezed.dart';
 
 @freezed
-class AccountBlocData with _$AccountData {
+class AccountBlocData with _$AccountBlocData {
   factory AccountBlocData({
     AccountId? accountId,
     AccessToken? accessToken,
     required Capabilities capabilities,
-  }) = _AccountData;
+  }) = _AccountBlocData;
 }
 
 abstract class AccountEvent {}

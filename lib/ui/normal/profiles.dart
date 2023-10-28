@@ -11,13 +11,16 @@ import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
+import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_filtering_settings.dart';
 import 'package:pihka_frontend/logic/profile/view_profiles/view_profiles.dart';
+import 'package:pihka_frontend/ui/normal/profiles/filter_profiles.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pihka_frontend/ui/utils/image_page.dart';
+import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
 var log = Logger("ProfileView");
 
@@ -31,7 +34,38 @@ class ProfileView extends BottomNavigationView {
   String title(BuildContext context) {
     return AppLocalizations.of(context).pageProfileGridTitle;
   }
+
+  @override
+  List<Widget>? actions(BuildContext context) {
+    return [
+      IconButton(
+        icon: BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+          builder: (context, state) {
+            if (state == ProfileFilteringSettingsData()) {
+              return const Icon(Icons.filter_alt_outlined);
+            } else {
+              return const Icon(Icons.filter_alt_rounded);
+            }
+          },
+        ),
+        onPressed: () {
+          final stateBeforeChanges = context.read<ProfileFilteringSettingsBloc>().state;
+
+          Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ProfileFilteringSettingsPage()))
+            .then((value) {
+              final stateAfterChanges = context.read<ProfileFilteringSettingsBloc>().state;
+              if (stateBeforeChanges != stateAfterChanges) {
+                simpleRefresh();
+              }
+            });
+        },
+      ),
+    ];
+  }
 }
+
+// TODO: Change to bloc or something?
+var simpleRefresh = () {};
 
 typedef ProfileViewEntry = (ProfileEntry profile, File img);
 
@@ -45,6 +79,11 @@ class _ProfileViewState extends State<ProfileView> {
     _pagingController?.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
+    simpleRefresh = () {
+      setState(() {
+        _pagingController?.refresh();
+      });
+    };
   }
 
   Future<void> _fetchPage(int pageKey) async {
@@ -82,9 +121,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        await ProfileRepository.getInstance().resetProfileIterator(ModePublicProfiles(
-          clearDatabase: true
-        ));
+        await ProfileRepository.getInstance().refreshProfileIterator();
         // This might be disposed after resetProfileIterator completes.
         _pagingController?.refresh();
       },
@@ -102,9 +139,9 @@ class _ProfileViewState extends State<ProfileView> {
             return GestureDetector(
               onTap: () {
                 context.read<ViewProfileBloc>().add(SetProfileView(accountId, profile, item.$2, (accountId, index)));
-                Navigator.push(context, MaterialPageRoute<RefreshProfileList?>(builder: (_) => const ViewProfilePage()))
+                Navigator.push(context, MaterialPageRoute<RemoveProfileFromList?>(builder: (_) => const ViewProfilePage()))
                   .then((value) {
-                    if (value is RefreshProfileList) {
+                    if (value is RemoveProfileFromList) {
                       final controller = _pagingController;
                       if (controller != null) {
                         setState(() {
@@ -134,6 +171,7 @@ class _ProfileViewState extends State<ProfileView> {
   void dispose() {
     _pagingController?.dispose();
     _pagingController = null;
+    simpleRefresh = () {};
     super.dispose();
   }
 }

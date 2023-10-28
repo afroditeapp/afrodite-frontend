@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -25,6 +26,11 @@ class ProfileRepository extends DataRepository {
   final ApiManager _api = ApiManager.getInstance();
   final ProfileIteratorManager mainProfilesViewIterator = ProfileIteratorManager();
 
+  // TODO: Add profile updates relay and remove
+  // var simpleRefresh = () {};
+  // and
+  // RemoveProfileFromList
+
   Stream<Location> get location => KvStringManager.getInstance()
     .getUpdatesForWithConversionAndDefaultIfNull(
       KvString.profileLocation,
@@ -48,7 +54,12 @@ class ProfileRepository extends DataRepository {
 
   @override
   Future<void> init() async {
-    // nothing to do
+    final showOnlyFavorites = await KvBooleanManager.getInstance().getValue(
+      KvBoolean.profileFilterFavorites
+    );
+    if (showOnlyFavorites != null) {
+      await changeProfileFilteringSettings(showOnlyFavorites);
+    }
   }
 
   @override
@@ -91,6 +102,10 @@ class ProfileRepository extends DataRepository {
     await mainProfilesViewIterator.reset(ModePublicProfiles(
       clearDatabase: true
     ));
+    await KvBooleanManager.getInstance().setValue(
+      KvBoolean.profileFilterFavorites,
+      null
+    );
   }
 
   Future<bool> updateLocation(Location location) async {
@@ -159,8 +174,8 @@ class ProfileRepository extends DataRepository {
     return result ?? false;
   }
 
-  Future<void> resetProfileIterator(ProfileIteratorMode mode) async {
-    await mainProfilesViewIterator.reset(mode);
+  Future<void> refreshProfileIterator() async {
+    await mainProfilesViewIterator.refresh();
   }
 
   void resetIteratorToBeginning() {
@@ -210,6 +225,20 @@ class ProfileRepository extends DataRepository {
       // Revert local change
       yield true;
       await FavoriteProfilesDatabase.getInstance().insertProfile(accountId);
+    }
+  }
+
+  Future<void> changeProfileFilteringSettings(bool showOnlyFavorites) async {
+    await KvBooleanManager.getInstance().setValue(
+      KvBoolean.profileFilterFavorites,
+      showOnlyFavorites
+    );
+    if (showOnlyFavorites) {
+      await mainProfilesViewIterator.reset(ModeFavorites());
+    } else {
+      await mainProfilesViewIterator.reset(ModePublicProfiles(
+        clearDatabase: false
+      ));
     }
   }
 }

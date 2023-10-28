@@ -3,6 +3,7 @@
 
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/base_database.dart';
+import 'package:pihka_frontend/database/favorite_profiles_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:sqflite/utils/utils.dart';
 import 'package:sqflite/sqflite.dart';
@@ -119,6 +120,17 @@ class ProfileDatabase extends BaseDatabase {
   }
 
   Future<List<ProfileEntry>> convertList(List<ProfileListEntry> profiles) async {
+    final newList = List<ProfileEntry>.empty(growable: true);
+    for (final profile in profiles) {
+      final profileData = await getProfileEntry(AccountId(accountId: profile.uuid));
+      if (profileData != null) {
+        newList.add(profileData);
+      }
+    }
+    return newList;
+  }
+
+  Future<List<ProfileEntry>> convertListOfFavoriteProfiles(List<FavoriteProfileEntry> profiles) async {
     final newList = List<ProfileEntry>.empty(growable: true);
     for (final profile in profiles) {
       final profileData = await getProfileEntry(AccountId(accountId: profile.uuid));

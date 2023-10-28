@@ -19,7 +19,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 typedef ProfileHeroTag = (AccountId accountId, int index);
 
-/// Might return RefreshProfileList when navigating back to previous page
+/// Might return [RemoveProfileFromList] when navigating back to previous page
 class ViewProfilePage extends StatelessWidget {
   // final AccountId accountId;
   // final Profile profile;
@@ -94,7 +94,7 @@ class ViewProfilePage extends StatelessWidget {
             // TODO: Is this called multiple times?
             Future.delayed(Duration.zero, () {
               showInfoDialog(context, "Profile not available").then((value) {
-                Navigator.pop(context, RefreshProfileList());
+                Navigator.pop(context, RemoveProfileFromList());
               });
             });
 
@@ -111,5 +111,3 @@ class ViewProfilePage extends StatelessWidget {
     );
   }
 }
-
-class RefreshProfileList {}

@@ -18,6 +18,7 @@ import 'package:pihka_frontend/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/logic/admin/image_moderation.dart';
 import 'package:pihka_frontend/logic/profile/location.dart';
 import 'package:pihka_frontend/logic/profile/profile.dart';
+import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_filtering_settings.dart';
 import 'package:pihka_frontend/logic/profile/view_profiles/view_profiles.dart';
 import 'package:pihka_frontend/logic/server/address.dart';
 import 'package:pihka_frontend/logic/sign_in_with.dart';
@@ -64,6 +65,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => ServerAddressBloc(accountRepository)),
         BlocProvider(create: (_) => ProfileBloc(accountRepository, profileRepository, mediaRepository)),
         BlocProvider(create: (_) => ViewProfileBloc(accountRepository, profileRepository, mediaRepository)),
+        BlocProvider(create: (_) => ProfileFilteringSettingsBloc(profileRepository)),
         BlocProvider(create: (_) => LocationBloc(profileRepository), lazy: false),
 
         // Login

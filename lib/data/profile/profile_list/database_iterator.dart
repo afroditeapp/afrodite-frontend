@@ -15,7 +15,8 @@ import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 
 class DatabaseIterator extends IteratorType {
   int currentIndex;
-  DatabaseIterator({this.currentIndex = 0});
+  final bool iterateFavorites;
+  DatabaseIterator({this.currentIndex = 0, this.iterateFavorites = false});
 
   @override
   void reset() {
@@ -24,11 +25,30 @@ class DatabaseIterator extends IteratorType {
 
   @override
   Future<List<ProfileEntry>> nextList() async {
+    if (iterateFavorites) {
+      return await nextListFromFavorites();
+    } else {
+      return await nextListFromPublicProfiles();
+    }
+  }
+
+  Future<List<ProfileEntry>> nextListFromPublicProfiles() async {
     const queryCount = 10;
     final profiles = await ProfileListDatabase.getInstance().getProfileList(currentIndex, queryCount);
     if (profiles != null) {
       currentIndex += queryCount;
       return await ProfileDatabase.getInstance().convertList(profiles);
+    } else {
+      return [];
+    }
+  }
+
+  Future<List<ProfileEntry>> nextListFromFavorites() async {
+    const queryCount = 10;
+    final profiles = await FavoriteProfilesDatabase.getInstance().getFavoriteProfilesList(currentIndex, queryCount);
+    if (profiles != null) {
+      currentIndex += queryCount;
+      return await ProfileDatabase.getInstance().convertListOfFavoriteProfiles(profiles);
     } else {
       return [];
     }

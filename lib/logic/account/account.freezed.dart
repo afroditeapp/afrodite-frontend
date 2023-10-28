@@ -15,21 +15,21 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$AccountData {
+mixin _$AccountBlocData {
   AccountId? get accountId => throw _privateConstructorUsedError;
   AccessToken? get accessToken => throw _privateConstructorUsedError;
   Capabilities get capabilities => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $AccountDataCopyWith<AccountBlocData> get copyWith =>
+  $AccountBlocDataCopyWith<AccountBlocData> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $AccountDataCopyWith<$Res> {
-  factory $AccountDataCopyWith(
+abstract class $AccountBlocDataCopyWith<$Res> {
+  factory $AccountBlocDataCopyWith(
           AccountBlocData value, $Res Function(AccountBlocData) then) =
-      _$AccountDataCopyWithImpl<$Res, AccountBlocData>;
+      _$AccountBlocDataCopyWithImpl<$Res, AccountBlocData>;
   @useResult
   $Res call(
       {AccountId? accountId,
@@ -38,9 +38,9 @@ abstract class $AccountDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$AccountDataCopyWithImpl<$Res, $Val extends AccountBlocData>
-    implements $AccountDataCopyWith<$Res> {
-  _$AccountDataCopyWithImpl(this._value, this._then);
+class _$AccountBlocDataCopyWithImpl<$Res, $Val extends AccountBlocData>
+    implements $AccountBlocDataCopyWith<$Res> {
+  _$AccountBlocDataCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -72,11 +72,11 @@ class _$AccountDataCopyWithImpl<$Res, $Val extends AccountBlocData>
 }
 
 /// @nodoc
-abstract class _$$AccountDataImplCopyWith<$Res>
-    implements $AccountDataCopyWith<$Res> {
-  factory _$$AccountDataImplCopyWith(
-          _$AccountDataImpl value, $Res Function(_$AccountDataImpl) then) =
-      __$$AccountDataImplCopyWithImpl<$Res>;
+abstract class _$$AccountBlocDataImplCopyWith<$Res>
+    implements $AccountBlocDataCopyWith<$Res> {
+  factory _$$AccountBlocDataImplCopyWith(_$AccountBlocDataImpl value,
+          $Res Function(_$AccountBlocDataImpl) then) =
+      __$$AccountBlocDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -86,11 +86,11 @@ abstract class _$$AccountDataImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$AccountDataImplCopyWithImpl<$Res>
-    extends _$AccountDataCopyWithImpl<$Res, _$AccountDataImpl>
-    implements _$$AccountDataImplCopyWith<$Res> {
-  __$$AccountDataImplCopyWithImpl(
-      _$AccountDataImpl _value, $Res Function(_$AccountDataImpl) _then)
+class __$$AccountBlocDataImplCopyWithImpl<$Res>
+    extends _$AccountBlocDataCopyWithImpl<$Res, _$AccountBlocDataImpl>
+    implements _$$AccountBlocDataImplCopyWith<$Res> {
+  __$$AccountBlocDataImplCopyWithImpl(
+      _$AccountBlocDataImpl _value, $Res Function(_$AccountBlocDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -100,7 +100,7 @@ class __$$AccountDataImplCopyWithImpl<$Res>
     Object? accessToken = freezed,
     Object? capabilities = null,
   }) {
-    return _then(_$AccountDataImpl(
+    return _then(_$AccountBlocDataImpl(
       accountId: freezed == accountId
           ? _value.accountId
           : accountId // ignore: cast_nullable_to_non_nullable
@@ -119,8 +119,10 @@ class __$$AccountDataImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AccountDataImpl with DiagnosticableTreeMixin implements _AccountData {
-  _$AccountDataImpl(
+class _$AccountBlocDataImpl
+    with DiagnosticableTreeMixin
+    implements _AccountBlocData {
+  _$AccountBlocDataImpl(
       {this.accountId, this.accessToken, required this.capabilities});
 
   @override
@@ -132,14 +134,14 @@ class _$AccountDataImpl with DiagnosticableTreeMixin implements _AccountData {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountData(accountId: $accountId, accessToken: $accessToken, capabilities: $capabilities)';
+    return 'AccountBlocData(accountId: $accountId, accessToken: $accessToken, capabilities: $capabilities)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'AccountData'))
+      ..add(DiagnosticsProperty('type', 'AccountBlocData'))
       ..add(DiagnosticsProperty('accountId', accountId))
       ..add(DiagnosticsProperty('accessToken', accessToken))
       ..add(DiagnosticsProperty('capabilities', capabilities));
@@ -149,7 +151,7 @@ class _$AccountDataImpl with DiagnosticableTreeMixin implements _AccountData {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AccountDataImpl &&
+            other is _$AccountBlocDataImpl &&
             (identical(other.accountId, accountId) ||
                 other.accountId == accountId) &&
             (identical(other.accessToken, accessToken) ||
@@ -165,15 +167,16 @@ class _$AccountDataImpl with DiagnosticableTreeMixin implements _AccountData {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AccountDataImplCopyWith<_$AccountDataImpl> get copyWith =>
-      __$$AccountDataImplCopyWithImpl<_$AccountDataImpl>(this, _$identity);
+  _$$AccountBlocDataImplCopyWith<_$AccountBlocDataImpl> get copyWith =>
+      __$$AccountBlocDataImplCopyWithImpl<_$AccountBlocDataImpl>(
+          this, _$identity);
 }
 
-abstract class _AccountData implements AccountBlocData {
-  factory _AccountData(
+abstract class _AccountBlocData implements AccountBlocData {
+  factory _AccountBlocData(
       {final AccountId? accountId,
       final AccessToken? accessToken,
-      required final Capabilities capabilities}) = _$AccountDataImpl;
+      required final Capabilities capabilities}) = _$AccountBlocDataImpl;
 
   @override
   AccountId? get accountId;
@@ -183,6 +186,6 @@ abstract class _AccountData implements AccountBlocData {
   Capabilities get capabilities;
   @override
   @JsonKey(ignore: true)
-  _$$AccountDataImplCopyWith<_$AccountDataImpl> get copyWith =>
+  _$$AccountBlocDataImplCopyWith<_$AccountBlocDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
