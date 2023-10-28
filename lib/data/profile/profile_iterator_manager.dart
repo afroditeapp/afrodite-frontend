@@ -18,17 +18,15 @@ import 'package:pihka_frontend/utils.dart';
 sealed class ProfileIteratorMode {}
 class ModeFavorites extends ProfileIteratorMode {}
 class ModePublicProfiles extends ProfileIteratorMode {
-  // TODO: would one boolean be enough?
   final bool clearDatabase;
-  final bool serverSideIteratorResetNeeded;
-  ModePublicProfiles({required this.clearDatabase, required this.serverSideIteratorResetNeeded});
+  ModePublicProfiles({required this.clearDatabase});
 }
 
 class ProfileIteratorManager {
   final ApiManager _api = ApiManager.getInstance();
 
   ProfileIteratorMode _currentMode =
-    ModePublicProfiles(clearDatabase: false, serverSideIteratorResetNeeded: false);
+    ModePublicProfiles(clearDatabase: false);
   IteratorType _currentIterator = DatabaseIterator();
   bool _pendingServerSideIteratorReset = false;
 
@@ -52,9 +50,8 @@ class ProfileIteratorManager {
           _currentIterator = OnlineIterator(firstIterationAfterLogin: true);
           _pendingServerSideIteratorReset = false;
         } else if (mode.clearDatabase) {
-          await _api.profile((api) => api.postResetProfilePaging());
           await ProfileListDatabase.getInstance().clearProfiles();
-          _currentIterator = OnlineIterator(firstIterationAfterLogin: mode.serverSideIteratorResetNeeded);
+          _currentIterator = OnlineIterator(firstIterationAfterLogin: mode.clearDatabase);
         } else {
           _currentIterator.reset();
         }

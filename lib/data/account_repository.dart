@@ -236,7 +236,7 @@ class AccountRepository extends DataRepository {
 
   Future<void> logout() async {
     log.info("logout started");
-    // Disconnect
+    // Disconnect, so that server does not send events to client
     await _api.close();
 
     // Account

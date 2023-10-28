@@ -21,6 +21,8 @@ class ApiWrapper<T> {
       return await action(api);
     } on ApiException catch (e) {
       log.error(e);
+      // TODO: remove stack trace for production?
+      log.error(StackTrace.current);
       ErrorManager.getInstance().send(ApiError());
     }
 

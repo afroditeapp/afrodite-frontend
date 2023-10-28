@@ -83,8 +83,7 @@ class _ProfileViewState extends State<ProfileView> {
     return RefreshIndicator(
       onRefresh: () async {
         await ProfileRepository.getInstance().resetProfileIterator(ModePublicProfiles(
-          clearDatabase: true,
-          serverSideIteratorResetNeeded: true
+          clearDatabase: true
         ));
         // This might be disposed after resetProfileIterator completes.
         _pagingController?.refresh();

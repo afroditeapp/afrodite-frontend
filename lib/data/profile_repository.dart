@@ -53,10 +53,10 @@ class ProfileRepository extends DataRepository {
 
   @override
   Future<void> onLogin() async {
+    // Reset profile iterator
     await mainProfilesViewIterator.reset(ModePublicProfiles(
-      clearDatabase: true,
-      serverSideIteratorResetNeeded: true)
-    );
+      clearDatabase: true
+    ));
 
     _api.state
       .firstWhere((element) => element == ApiManagerState.connected)
@@ -89,8 +89,7 @@ class ProfileRepository extends DataRepository {
     await FavoriteProfilesDatabase.getInstance().clearFavoriteProfiles();
     await ProfileDatabase.getInstance().clearProfiles();
     await mainProfilesViewIterator.reset(ModePublicProfiles(
-      clearDatabase: true,
-      serverSideIteratorResetNeeded: true
+      clearDatabase: true
     ));
   }
 
