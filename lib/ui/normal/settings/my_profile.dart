@@ -31,7 +31,7 @@ class MyProfilePage extends StatelessWidget {
   }
 
   Widget myProfilePage(BuildContext context) {
-    return BlocBuilder<AccountBloc, AccountData>(
+    return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, accountState) {
         final id = accountState.accountId;
         if (id == null) {

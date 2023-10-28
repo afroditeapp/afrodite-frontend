@@ -27,7 +27,7 @@ class _ProfileVisibilityPageState extends State<ProfileVisibilityPage> {
   @override
   void initState() {
     super.initState();
-    _tmpProfileVisiblity = context.read<AccountBloc>().state.capabilities.viewPublicProfiles;
+    _tmpProfileVisiblity = context.read<AccountBloc>().state.capabilities.userViewPublicProfiles;
   }
 
   @override
@@ -39,11 +39,11 @@ class _ProfileVisibilityPageState extends State<ProfileVisibilityPage> {
   }
 
   Widget visibilitySettingsPage(BuildContext context) {
-    return BlocListener<AccountBloc, AccountData>(
+    return BlocListener<AccountBloc, AccountBlocData>(
       listener: (context, state) {
-        if (_tmpProfileVisiblity != state.capabilities.viewPublicProfiles) {
+        if (_tmpProfileVisiblity != state.capabilities.userViewPublicProfiles) {
           setState(() {
-            _tmpProfileVisiblity = state.capabilities.viewPublicProfiles;
+            _tmpProfileVisiblity = state.capabilities.userViewPublicProfiles;
           });
         }
       },

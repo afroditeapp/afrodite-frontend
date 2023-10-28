@@ -11,8 +11,8 @@ import "package:pihka_frontend/utils.dart";
 part 'account.freezed.dart';
 
 @freezed
-class AccountData with _$AccountData {
-  factory AccountData({
+class AccountBlocData with _$AccountData {
+  factory AccountBlocData({
     AccountId? accountId,
     AccessToken? accessToken,
     required Capabilities capabilities,
@@ -43,10 +43,10 @@ class NewCapabilitiesValue extends AccountEvent {
 }
 
 /// Do register/login operations
-class AccountBloc extends Bloc<AccountEvent, AccountData> with ActionRunner {
+class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner {
   final AccountRepository account;
 
-  AccountBloc(this.account) : super(AccountData(capabilities: Capabilities())) {
+  AccountBloc(this.account) : super(AccountBlocData(capabilities: Capabilities())) {
     on<DoRegister>((data, emit) async {
       await runOnce(() async {
         emit(state.copyWith(

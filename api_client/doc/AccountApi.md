@@ -10,9 +10,12 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**deleteCancelDeletion**](AccountApi.md#deletecanceldeletion) | **DELETE** /account_api/delete | Cancel account deletion.
+[**getAccountData**](AccountApi.md#getaccountdata) | **GET** /account_api/account_data | Get changeable user information to account.
+[**getAccountSetup**](AccountApi.md#getaccountsetup) | **GET** /account_api/account_setup | Get non-changeable user information to account.
 [**getAccountState**](AccountApi.md#getaccountstate) | **GET** /account_api/state | Get current account state.
 [**getDeletionStatus**](AccountApi.md#getdeletionstatus) | **GET** /account_api/delete | Get deletion status.
-[**postAccountSetup**](AccountApi.md#postaccountsetup) | **POST** /account_api/setup | Setup non-changeable user information during `initial setup` state.
+[**postAccountData**](AccountApi.md#postaccountdata) | **POST** /account_api/account_data | Set changeable user information to account.
+[**postAccountSetup**](AccountApi.md#postaccountsetup) | **POST** /account_api/account_setup | Setup non-changeable user information during `initial setup` state.
 [**postCompleteSetup**](AccountApi.md#postcompletesetup) | **POST** /account_api/complete_setup | Complete initial setup.
 [**postDelete**](AccountApi.md#postdelete) | **PUT** /account_api/delete | Delete account.
 [**postLogin**](AccountApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken.
@@ -60,6 +63,92 @@ void (empty response body)
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getAccountData**
+> AccountData getAccountData()
+
+Get changeable user information to account.
+
+Get changeable user information to account.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = AccountApi();
+
+try {
+    final result = api_instance.getAccountData();
+    print(result);
+} catch (e) {
+    print('Exception when calling AccountApi->getAccountData: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**AccountData**](AccountData.md)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getAccountSetup**
+> AccountSetup getAccountSetup()
+
+Get non-changeable user information to account.
+
+Get non-changeable user information to account.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = AccountApi();
+
+try {
+    final result = api_instance.getAccountSetup();
+    print(result);
+} catch (e) {
+    print('Exception when calling AccountApi->getAccountSetup: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**AccountSetup**](AccountSetup.md)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -146,6 +235,52 @@ This endpoint does not need any parameter.
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **postAccountData**
+> postAccountData(accountData)
+
+Set changeable user information to account.
+
+Set changeable user information to account.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = AccountApi();
+final accountData = AccountData(); // AccountData | 
+
+try {
+    api_instance.postAccountData(accountData);
+} catch (e) {
+    print('Exception when calling AccountApi->postAccountData: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **accountData** | [**AccountData**](AccountData.md)|  | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

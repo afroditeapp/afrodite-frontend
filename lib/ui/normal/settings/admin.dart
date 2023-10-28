@@ -22,29 +22,29 @@ class AdminSettingsPage extends StatelessWidget {
   }
 
   Widget settingsList(BuildContext context) {
-    return BlocBuilder<AccountBloc, AccountData>(
+    return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
         List<Setting> settings = [];
 
-        if (state.capabilities.adminModerateImages ?? false) {
+        if (state.capabilities.adminModerateImages) {
           settings.add(Setting.createSetting(Icons.image, "Moderate images", () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ModerateImagesPage()),)
           ));
         }
-        if (state.capabilities.adminServerMaintentanceRebootBackend ?? false ||
-            (state.capabilities.adminServerMaintentanceSaveBackendSettings ?? false) ||
-            (state.capabilities.adminServerMaintentanceViewBackendSettings ?? false)) {
+        if (state.capabilities.adminServerMaintenanceRebootBackend ||
+            state.capabilities.adminServerMaintenanceSaveBackendConfig ||
+            state.capabilities.adminServerMaintenanceViewBackendConfig) {
           settings.add(Setting.createSetting(Icons.settings, "Configure backend", () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ConfigureBackendPage()),)
           ));
         }
-        if (state.capabilities.adminServerMaintentanceViewInfo ?? false) {
+        if (state.capabilities.adminServerMaintenanceViewInfo) {
           settings.add(Setting.createSetting(Icons.info_outline, "Server system info", () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ServerSystemInfoPage()),)
           ));
         }
-        if ((state.capabilities.adminServerMaintentanceViewInfo ?? false) &&
-            (state.capabilities.adminServerMaintentanceUpdateSoftware ?? false)) {
+        if (state.capabilities.adminServerMaintenanceViewInfo &&
+            state.capabilities.adminServerMaintenanceUpdateSoftware) {
           settings.add(Setting.createSetting(Icons.system_update_alt, "Server software update", () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ServerSoftwareUpdatePage()),)
           ));

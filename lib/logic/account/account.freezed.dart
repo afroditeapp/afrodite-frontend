@@ -21,15 +21,15 @@ mixin _$AccountData {
   Capabilities get capabilities => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $AccountDataCopyWith<AccountData> get copyWith =>
+  $AccountDataCopyWith<AccountBlocData> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $AccountDataCopyWith<$Res> {
   factory $AccountDataCopyWith(
-          AccountData value, $Res Function(AccountData) then) =
-      _$AccountDataCopyWithImpl<$Res, AccountData>;
+          AccountBlocData value, $Res Function(AccountBlocData) then) =
+      _$AccountDataCopyWithImpl<$Res, AccountBlocData>;
   @useResult
   $Res call(
       {AccountId? accountId,
@@ -38,7 +38,7 @@ abstract class $AccountDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$AccountDataCopyWithImpl<$Res, $Val extends AccountData>
+class _$AccountDataCopyWithImpl<$Res, $Val extends AccountBlocData>
     implements $AccountDataCopyWith<$Res> {
   _$AccountDataCopyWithImpl(this._value, this._then);
 
@@ -169,7 +169,7 @@ class _$AccountDataImpl with DiagnosticableTreeMixin implements _AccountData {
       __$$AccountDataImplCopyWithImpl<_$AccountDataImpl>(this, _$identity);
 }
 
-abstract class _AccountData implements AccountData {
+abstract class _AccountData implements AccountBlocData {
   factory _AccountData(
       {final AccountId? accountId,
       final AccessToken? accessToken,

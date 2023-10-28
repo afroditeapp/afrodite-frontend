@@ -44,7 +44,7 @@ class LoginPage extends RootPage {
         },
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
-      BlocBuilder<AccountBloc, AccountData>(
+      BlocBuilder<AccountBloc, AccountBlocData>(
         buildWhen: (previous, current) => previous.accountId != current.accountId,
         builder: (_, state) {
           return Text(
@@ -61,7 +61,7 @@ class LoginPage extends RootPage {
         }
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
-      BlocBuilder<AccountBloc, AccountData>(
+      BlocBuilder<AccountBloc, AccountBlocData>(
         buildWhen: (previous, current) => previous.accessToken != current.accessToken,
         builder: (_, state) {
           return Text(

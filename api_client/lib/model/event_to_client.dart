@@ -16,6 +16,7 @@ class EventToClient {
     this.accountState,
     this.capabilities,
     required this.event,
+    this.latestViewedMessageChanged,
   });
 
   AccountState? accountState;
@@ -24,21 +25,25 @@ class EventToClient {
 
   EventType event;
 
+  LatestViewedMessageChanged? latestViewedMessageChanged;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is EventToClient &&
      other.accountState == accountState &&
      other.capabilities == capabilities &&
-     other.event == event;
+     other.event == event &&
+     other.latestViewedMessageChanged == latestViewedMessageChanged;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (accountState == null ? 0 : accountState!.hashCode) +
     (capabilities == null ? 0 : capabilities!.hashCode) +
-    (event.hashCode);
+    (event.hashCode) +
+    (latestViewedMessageChanged == null ? 0 : latestViewedMessageChanged!.hashCode);
 
   @override
-  String toString() => 'EventToClient[accountState=$accountState, capabilities=$capabilities, event=$event]';
+  String toString() => 'EventToClient[accountState=$accountState, capabilities=$capabilities, event=$event, latestViewedMessageChanged=$latestViewedMessageChanged]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -53,6 +58,11 @@ class EventToClient {
       json[r'capabilities'] = null;
     }
       json[r'event'] = this.event;
+    if (this.latestViewedMessageChanged != null) {
+      json[r'latest_viewed_message_changed'] = this.latestViewedMessageChanged;
+    } else {
+      json[r'latest_viewed_message_changed'] = null;
+    }
     return json;
   }
 
@@ -78,6 +88,7 @@ class EventToClient {
         accountState: AccountState.fromJson(json[r'account_state']),
         capabilities: Capabilities.fromJson(json[r'capabilities']),
         event: EventType.fromJson(json[r'event'])!,
+        latestViewedMessageChanged: LatestViewedMessageChanged.fromJson(json[r'latest_viewed_message_changed']),
       );
     }
     return null;

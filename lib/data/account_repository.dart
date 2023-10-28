@@ -162,7 +162,7 @@ class AccountRepository extends DataRepository {
       log.error("error: data == null");
     } else {
       log.finer(data.state);
-      await _saveAndUpdateCapabilities(data.capablities);
+      await _saveAndUpdateCapabilities(data.capabilities);
       await _saveAndUpdateAccountState(data.state);
     }
   }
@@ -259,7 +259,8 @@ class AccountRepository extends DataRepository {
     final String securitySelfiePath = securitySelfieFile.path;
     final String profileImagePath = profileImageFile.path;
 
-    await _api.account((api) => api.postAccountSetup(AccountSetup(email: email, name: name)));
+    await _api.account((api) => api.postAccountData(AccountData(email: email)));
+    await _api.account((api) => api.postAccountSetup(AccountSetup(birthdate: "", name: name)));
     final securitySelfie = await MultipartFile.fromPath("", securitySelfiePath);
     final contentId1 = await _api.media((api) => api.putImageToModerationSlot(0, securitySelfie));
     if (contentId1 == null) {

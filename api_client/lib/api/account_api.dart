@@ -56,6 +56,102 @@ class AccountApi {
     }
   }
 
+  /// Get changeable user information to account.
+  ///
+  /// Get changeable user information to account.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getAccountDataWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/account_data';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get changeable user information to account.
+  ///
+  /// Get changeable user information to account.
+  Future<AccountData?> getAccountData() async {
+    final response = await getAccountDataWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountData',) as AccountData;
+    
+    }
+    return null;
+  }
+
+  /// Get non-changeable user information to account.
+  ///
+  /// Get non-changeable user information to account.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getAccountSetupWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/account_setup';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get non-changeable user information to account.
+  ///
+  /// Get non-changeable user information to account.
+  Future<AccountSetup?> getAccountSetup() async {
+    final response = await getAccountSetupWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountSetup',) as AccountSetup;
+    
+    }
+    return null;
+  }
+
   /// Get current account state.
   ///
   /// Get current account state.
@@ -152,6 +248,54 @@ class AccountApi {
     return null;
   }
 
+  /// Set changeable user information to account.
+  ///
+  /// Set changeable user information to account.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountData] accountData (required):
+  Future<Response> postAccountDataWithHttpInfo(AccountData accountData,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/account_data';
+
+    // ignore: prefer_final_locals
+    Object? postBody = accountData;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Set changeable user information to account.
+  ///
+  /// Set changeable user information to account.
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountData] accountData (required):
+  Future<void> postAccountData(AccountData accountData,) async {
+    final response = await postAccountDataWithHttpInfo(accountData,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Setup non-changeable user information during `initial setup` state.
   ///
   /// Setup non-changeable user information during `initial setup` state.
@@ -163,7 +307,7 @@ class AccountApi {
   /// * [AccountSetup] accountSetup (required):
   Future<Response> postAccountSetupWithHttpInfo(AccountSetup accountSetup,) async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/setup';
+    final path = r'/account_api/account_setup';
 
     // ignore: prefer_final_locals
     Object? postBody = accountSetup;

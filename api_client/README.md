@@ -61,9 +61,12 @@ All URIs are relative to *http://localhost*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AccountApi* | [**deleteCancelDeletion**](doc//AccountApi.md#deletecanceldeletion) | **DELETE** /account_api/delete | Cancel account deletion.
+*AccountApi* | [**getAccountData**](doc//AccountApi.md#getaccountdata) | **GET** /account_api/account_data | Get changeable user information to account.
+*AccountApi* | [**getAccountSetup**](doc//AccountApi.md#getaccountsetup) | **GET** /account_api/account_setup | Get non-changeable user information to account.
 *AccountApi* | [**getAccountState**](doc//AccountApi.md#getaccountstate) | **GET** /account_api/state | Get current account state.
 *AccountApi* | [**getDeletionStatus**](doc//AccountApi.md#getdeletionstatus) | **GET** /account_api/delete | Get deletion status.
-*AccountApi* | [**postAccountSetup**](doc//AccountApi.md#postaccountsetup) | **POST** /account_api/setup | Setup non-changeable user information during `initial setup` state.
+*AccountApi* | [**postAccountData**](doc//AccountApi.md#postaccountdata) | **POST** /account_api/account_data | Set changeable user information to account.
+*AccountApi* | [**postAccountSetup**](doc//AccountApi.md#postaccountsetup) | **POST** /account_api/account_setup | Setup non-changeable user information during `initial setup` state.
 *AccountApi* | [**postCompleteSetup**](doc//AccountApi.md#postcompletesetup) | **POST** /account_api/complete_setup | Complete initial setup.
 *AccountApi* | [**postDelete**](doc//AccountApi.md#postdelete) | **PUT** /account_api/delete | Delete account.
 *AccountApi* | [**postLogin**](doc//AccountApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken.
@@ -72,6 +75,20 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update profile visiblity value.
 *AccountInternalApi* | [**checkAccessToken**](doc//AccountInternalApi.md#checkaccesstoken) | **GET** /internal/check_access_token | 
 *AccountInternalApi* | [**internalGetAccountState**](doc//AccountInternalApi.md#internalgetaccountstate) | **GET** /internal/get_account_state/{account_id} | 
+*ChatApi* | [**deleteLike**](doc//ChatApi.md#deletelike) | **DELETE** /chat_api/delete_like | Delete sent like.
+*ChatApi* | [**deletePendingMessages**](doc//ChatApi.md#deletependingmessages) | **DELETE** /chat_api/pending_messages | Delete list of pending messages
+*ChatApi* | [**getMatches**](doc//ChatApi.md#getmatches) | **GET** /chat_api/matches | Get matches
+*ChatApi* | [**getMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#getmessagenumberoflatestviewedmessage) | **GET** /chat_api/message_number_of_latest_viewed_message | Get message number of the most recent message that the recipient has viewed.
+*ChatApi* | [**getPendingMessages**](doc//ChatApi.md#getpendingmessages) | **GET** /chat_api/pending_messages | Get list of pending messages
+*ChatApi* | [**getReceivedBlocks**](doc//ChatApi.md#getreceivedblocks) | **GET** /chat_api/received_blocks | Get list of received blocks
+*ChatApi* | [**getReceivedLikes**](doc//ChatApi.md#getreceivedlikes) | **GET** /chat_api/received_likes | Get received likes.
+*ChatApi* | [**getSentBlocks**](doc//ChatApi.md#getsentblocks) | **GET** /chat_api/sent_blocks | Get list of sent blocks
+*ChatApi* | [**getSentLikes**](doc//ChatApi.md#getsentlikes) | **GET** /chat_api/sent_likes | Get sent likes.
+*ChatApi* | [**postBlockProfile**](doc//ChatApi.md#postblockprofile) | **POST** /chat_api/block_profile | Block profile
+*ChatApi* | [**postMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#postmessagenumberoflatestviewedmessage) | **POST** /chat_api/message_number_of_latest_viewed_message | Update message number of the most recent message that the recipient has viewed.
+*ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /chat_api/send_like | Send a like to some account.
+*ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /chat_api/send_message | Send message to a match
+*ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /chat_api/unblock_profile | Unblock profile
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens.
 *CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
 *CommonAdminApi* | [**getBackendConfig**](doc//CommonAdminApi.md#getbackendconfig) | **GET** /common_api/backend_config | Get dynamic backend config.
@@ -113,6 +130,7 @@ Class | Method | HTTP request | Description
 
  - [AccessToken](doc//AccessToken.md)
  - [Account](doc//Account.md)
+ - [AccountData](doc//AccountData.md)
  - [AccountId](doc//AccountId.md)
  - [AccountSetup](doc//AccountSetup.md)
  - [AccountState](doc//AccountState.md)
@@ -133,11 +151,14 @@ Class | Method | HTTP request | Description
  - [FavoriteProfilesPage](doc//FavoriteProfilesPage.md)
  - [HandleModerationRequest](doc//HandleModerationRequest.md)
  - [ImageAccessCheck](doc//ImageAccessCheck.md)
+ - [LatestViewedMessageChanged](doc//LatestViewedMessageChanged.md)
  - [Location](doc//Location.md)
  - [LoginResult](doc//LoginResult.md)
  - [MapTileX](doc//MapTileX.md)
  - [MapTileY](doc//MapTileY.md)
  - [MapTileZ](doc//MapTileZ.md)
+ - [MatchesPage](doc//MatchesPage.md)
+ - [MessageNumber](doc//MessageNumber.md)
  - [Moderation](doc//Moderation.md)
  - [ModerationList](doc//ModerationList.md)
  - [ModerationRequest](doc//ModerationRequest.md)
@@ -145,6 +166,10 @@ Class | Method | HTTP request | Description
  - [ModerationRequestId](doc//ModerationRequestId.md)
  - [ModerationRequestState](doc//ModerationRequestState.md)
  - [NormalImages](doc//NormalImages.md)
+ - [PendingMessage](doc//PendingMessage.md)
+ - [PendingMessageDeleteList](doc//PendingMessageDeleteList.md)
+ - [PendingMessageId](doc//PendingMessageId.md)
+ - [PendingMessagesPage](doc//PendingMessagesPage.md)
  - [PrimaryImage](doc//PrimaryImage.md)
  - [Profile](doc//Profile.md)
  - [ProfileLink](doc//ProfileLink.md)
@@ -152,15 +177,21 @@ Class | Method | HTTP request | Description
  - [ProfileUpdate](doc//ProfileUpdate.md)
  - [ProfileVersion](doc//ProfileVersion.md)
  - [RebootQueryParam](doc//RebootQueryParam.md)
+ - [ReceivedBlocksPage](doc//ReceivedBlocksPage.md)
+ - [ReceivedLikesPage](doc//ReceivedLikesPage.md)
  - [RefreshToken](doc//RefreshToken.md)
  - [ResetDataQueryParam](doc//ResetDataQueryParam.md)
  - [SecurityImage](doc//SecurityImage.md)
+ - [SendMessageToAccount](doc//SendMessageToAccount.md)
+ - [SentBlocksPage](doc//SentBlocksPage.md)
+ - [SentLikesPage](doc//SentLikesPage.md)
  - [SignInWithLoginInfo](doc//SignInWithLoginInfo.md)
  - [SlotId](doc//SlotId.md)
  - [SoftwareInfo](doc//SoftwareInfo.md)
  - [SoftwareOptions](doc//SoftwareOptions.md)
  - [SystemInfo](doc//SystemInfo.md)
  - [SystemInfoList](doc//SystemInfoList.md)
+ - [UpdateMessageViewStatus](doc//UpdateMessageViewStatus.md)
 
 
 ## Documentation For Authorization

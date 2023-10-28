@@ -13,46 +13,39 @@ part of openapi.api;
 class Capabilities {
   /// Returns a new [Capabilities] instance.
   Capabilities({
-    this.adminBanProfile = false,
     this.adminModerateImages = false,
     this.adminModerateProfiles = false,
-    this.adminModifyCapablities = false,
-    this.adminServerMaintentanceRebootBackend = false,
-    this.adminServerMaintentanceResetData = false,
-    this.adminServerMaintentanceSaveBackendSettings = false,
-    this.adminServerMaintentanceUpdateSoftware = false,
-    this.adminServerMaintentanceViewBackendSettings = false,
-    this.adminServerMaintentanceViewInfo = false,
-    this.adminSetupPossible = false,
+    this.adminModifyCapabilities = false,
+    this.adminServerMaintenanceRebootBackend = false,
+    this.adminServerMaintenanceResetData = false,
+    this.adminServerMaintenanceSaveBackendConfig = false,
+    this.adminServerMaintenanceUpdateSoftware = false,
+    this.adminServerMaintenanceViewBackendConfig = false,
+    this.adminServerMaintenanceViewInfo = false,
     this.adminViewAllProfiles = false,
     this.adminViewPrivateInfo = false,
     this.adminViewProfileHistory = false,
-    this.bannedEditProfile = false,
-    this.viewPublicProfiles = false,
+    this.userViewPublicProfiles = false,
   });
-
-  bool adminBanProfile;
 
   bool adminModerateImages;
 
   bool adminModerateProfiles;
 
-  bool adminModifyCapablities;
+  bool adminModifyCapabilities;
 
-  bool adminServerMaintentanceRebootBackend;
+  bool adminServerMaintenanceRebootBackend;
 
-  bool adminServerMaintentanceResetData;
+  bool adminServerMaintenanceResetData;
 
-  bool adminServerMaintentanceSaveBackendSettings;
+  bool adminServerMaintenanceSaveBackendConfig;
 
-  bool adminServerMaintentanceUpdateSoftware;
+  bool adminServerMaintenanceUpdateSoftware;
 
-  bool adminServerMaintentanceViewBackendSettings;
+  bool adminServerMaintenanceViewBackendConfig;
 
   /// View server infrastructure related info like logs and software versions.
-  bool adminServerMaintentanceViewInfo;
-
-  bool adminSetupPossible;
+  bool adminServerMaintenanceViewInfo;
 
   /// View public and private profiles.
   bool adminViewAllProfiles;
@@ -61,71 +54,60 @@ class Capabilities {
 
   bool adminViewProfileHistory;
 
-  bool bannedEditProfile;
-
-  /// View public profiles
-  bool viewPublicProfiles;
+  /// View public profiles. Automatically enabled once initial image moderation is complete.
+  bool userViewPublicProfiles;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Capabilities &&
-     other.adminBanProfile == adminBanProfile &&
      other.adminModerateImages == adminModerateImages &&
      other.adminModerateProfiles == adminModerateProfiles &&
-     other.adminModifyCapablities == adminModifyCapablities &&
-     other.adminServerMaintentanceRebootBackend == adminServerMaintentanceRebootBackend &&
-     other.adminServerMaintentanceResetData == adminServerMaintentanceResetData &&
-     other.adminServerMaintentanceSaveBackendSettings == adminServerMaintentanceSaveBackendSettings &&
-     other.adminServerMaintentanceUpdateSoftware == adminServerMaintentanceUpdateSoftware &&
-     other.adminServerMaintentanceViewBackendSettings == adminServerMaintentanceViewBackendSettings &&
-     other.adminServerMaintentanceViewInfo == adminServerMaintentanceViewInfo &&
-     other.adminSetupPossible == adminSetupPossible &&
+     other.adminModifyCapabilities == adminModifyCapabilities &&
+     other.adminServerMaintenanceRebootBackend == adminServerMaintenanceRebootBackend &&
+     other.adminServerMaintenanceResetData == adminServerMaintenanceResetData &&
+     other.adminServerMaintenanceSaveBackendConfig == adminServerMaintenanceSaveBackendConfig &&
+     other.adminServerMaintenanceUpdateSoftware == adminServerMaintenanceUpdateSoftware &&
+     other.adminServerMaintenanceViewBackendConfig == adminServerMaintenanceViewBackendConfig &&
+     other.adminServerMaintenanceViewInfo == adminServerMaintenanceViewInfo &&
      other.adminViewAllProfiles == adminViewAllProfiles &&
      other.adminViewPrivateInfo == adminViewPrivateInfo &&
      other.adminViewProfileHistory == adminViewProfileHistory &&
-     other.bannedEditProfile == bannedEditProfile &&
-     other.viewPublicProfiles == viewPublicProfiles;
+     other.userViewPublicProfiles == userViewPublicProfiles;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (adminBanProfile.hashCode) +
     (adminModerateImages.hashCode) +
     (adminModerateProfiles.hashCode) +
-    (adminModifyCapablities.hashCode) +
-    (adminServerMaintentanceRebootBackend.hashCode) +
-    (adminServerMaintentanceResetData.hashCode) +
-    (adminServerMaintentanceSaveBackendSettings.hashCode) +
-    (adminServerMaintentanceUpdateSoftware.hashCode) +
-    (adminServerMaintentanceViewBackendSettings.hashCode) +
-    (adminServerMaintentanceViewInfo.hashCode) +
-    (adminSetupPossible.hashCode) +
+    (adminModifyCapabilities.hashCode) +
+    (adminServerMaintenanceRebootBackend.hashCode) +
+    (adminServerMaintenanceResetData.hashCode) +
+    (adminServerMaintenanceSaveBackendConfig.hashCode) +
+    (adminServerMaintenanceUpdateSoftware.hashCode) +
+    (adminServerMaintenanceViewBackendConfig.hashCode) +
+    (adminServerMaintenanceViewInfo.hashCode) +
     (adminViewAllProfiles.hashCode) +
     (adminViewPrivateInfo.hashCode) +
     (adminViewProfileHistory.hashCode) +
-    (bannedEditProfile.hashCode) +
-    (viewPublicProfiles.hashCode);
+    (userViewPublicProfiles.hashCode);
 
   @override
-  String toString() => 'Capabilities[adminBanProfile=$adminBanProfile, adminModerateImages=$adminModerateImages, adminModerateProfiles=$adminModerateProfiles, adminModifyCapablities=$adminModifyCapablities, adminServerMaintentanceRebootBackend=$adminServerMaintentanceRebootBackend, adminServerMaintentanceResetData=$adminServerMaintentanceResetData, adminServerMaintentanceSaveBackendSettings=$adminServerMaintentanceSaveBackendSettings, adminServerMaintentanceUpdateSoftware=$adminServerMaintentanceUpdateSoftware, adminServerMaintentanceViewBackendSettings=$adminServerMaintentanceViewBackendSettings, adminServerMaintentanceViewInfo=$adminServerMaintentanceViewInfo, adminSetupPossible=$adminSetupPossible, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory, bannedEditProfile=$bannedEditProfile, viewPublicProfiles=$viewPublicProfiles]';
+  String toString() => 'Capabilities[adminModerateImages=$adminModerateImages, adminModerateProfiles=$adminModerateProfiles, adminModifyCapabilities=$adminModifyCapabilities, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory, userViewPublicProfiles=$userViewPublicProfiles]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'admin_ban_profile'] = this.adminBanProfile;
       json[r'admin_moderate_images'] = this.adminModerateImages;
       json[r'admin_moderate_profiles'] = this.adminModerateProfiles;
-      json[r'admin_modify_capablities'] = this.adminModifyCapablities;
-      json[r'admin_server_maintentance_reboot_backend'] = this.adminServerMaintentanceRebootBackend;
-      json[r'admin_server_maintentance_reset_data'] = this.adminServerMaintentanceResetData;
-      json[r'admin_server_maintentance_save_backend_settings'] = this.adminServerMaintentanceSaveBackendSettings;
-      json[r'admin_server_maintentance_update_software'] = this.adminServerMaintentanceUpdateSoftware;
-      json[r'admin_server_maintentance_view_backend_settings'] = this.adminServerMaintentanceViewBackendSettings;
-      json[r'admin_server_maintentance_view_info'] = this.adminServerMaintentanceViewInfo;
-      json[r'admin_setup_possible'] = this.adminSetupPossible;
+      json[r'admin_modify_capabilities'] = this.adminModifyCapabilities;
+      json[r'admin_server_maintenance_reboot_backend'] = this.adminServerMaintenanceRebootBackend;
+      json[r'admin_server_maintenance_reset_data'] = this.adminServerMaintenanceResetData;
+      json[r'admin_server_maintenance_save_backend_config'] = this.adminServerMaintenanceSaveBackendConfig;
+      json[r'admin_server_maintenance_update_software'] = this.adminServerMaintenanceUpdateSoftware;
+      json[r'admin_server_maintenance_view_backend_config'] = this.adminServerMaintenanceViewBackendConfig;
+      json[r'admin_server_maintenance_view_info'] = this.adminServerMaintenanceViewInfo;
       json[r'admin_view_all_profiles'] = this.adminViewAllProfiles;
       json[r'admin_view_private_info'] = this.adminViewPrivateInfo;
       json[r'admin_view_profile_history'] = this.adminViewProfileHistory;
-      json[r'banned_edit_profile'] = this.bannedEditProfile;
-      json[r'view_public_profiles'] = this.viewPublicProfiles;
+      json[r'user_view_public_profiles'] = this.userViewPublicProfiles;
     return json;
   }
 
@@ -148,22 +130,19 @@ class Capabilities {
       }());
 
       return Capabilities(
-        adminBanProfile: mapValueOfType<bool>(json, r'admin_ban_profile') ?? false,
         adminModerateImages: mapValueOfType<bool>(json, r'admin_moderate_images') ?? false,
         adminModerateProfiles: mapValueOfType<bool>(json, r'admin_moderate_profiles') ?? false,
-        adminModifyCapablities: mapValueOfType<bool>(json, r'admin_modify_capablities') ?? false,
-        adminServerMaintentanceRebootBackend: mapValueOfType<bool>(json, r'admin_server_maintentance_reboot_backend') ?? false,
-        adminServerMaintentanceResetData: mapValueOfType<bool>(json, r'admin_server_maintentance_reset_data') ?? false,
-        adminServerMaintentanceSaveBackendSettings: mapValueOfType<bool>(json, r'admin_server_maintentance_save_backend_settings') ?? false,
-        adminServerMaintentanceUpdateSoftware: mapValueOfType<bool>(json, r'admin_server_maintentance_update_software') ?? false,
-        adminServerMaintentanceViewBackendSettings: mapValueOfType<bool>(json, r'admin_server_maintentance_view_backend_settings') ?? false,
-        adminServerMaintentanceViewInfo: mapValueOfType<bool>(json, r'admin_server_maintentance_view_info') ?? false,
-        adminSetupPossible: mapValueOfType<bool>(json, r'admin_setup_possible') ?? false,
+        adminModifyCapabilities: mapValueOfType<bool>(json, r'admin_modify_capabilities') ?? false,
+        adminServerMaintenanceRebootBackend: mapValueOfType<bool>(json, r'admin_server_maintenance_reboot_backend') ?? false,
+        adminServerMaintenanceResetData: mapValueOfType<bool>(json, r'admin_server_maintenance_reset_data') ?? false,
+        adminServerMaintenanceSaveBackendConfig: mapValueOfType<bool>(json, r'admin_server_maintenance_save_backend_config') ?? false,
+        adminServerMaintenanceUpdateSoftware: mapValueOfType<bool>(json, r'admin_server_maintenance_update_software') ?? false,
+        adminServerMaintenanceViewBackendConfig: mapValueOfType<bool>(json, r'admin_server_maintenance_view_backend_config') ?? false,
+        adminServerMaintenanceViewInfo: mapValueOfType<bool>(json, r'admin_server_maintenance_view_info') ?? false,
         adminViewAllProfiles: mapValueOfType<bool>(json, r'admin_view_all_profiles') ?? false,
         adminViewPrivateInfo: mapValueOfType<bool>(json, r'admin_view_private_info') ?? false,
         adminViewProfileHistory: mapValueOfType<bool>(json, r'admin_view_profile_history') ?? false,
-        bannedEditProfile: mapValueOfType<bool>(json, r'banned_edit_profile') ?? false,
-        viewPublicProfiles: mapValueOfType<bool>(json, r'view_public_profiles') ?? false,
+        userViewPublicProfiles: mapValueOfType<bool>(json, r'user_view_public_profiles') ?? false,
       );
     }
     return null;

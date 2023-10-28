@@ -13,31 +13,31 @@ part of openapi.api;
 class AccountSetup {
   /// Returns a new [AccountSetup] instance.
   AccountSetup({
-    required this.email,
+    required this.birthdate,
     required this.name,
   });
 
-  String email;
+  String birthdate;
 
   String name;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AccountSetup &&
-     other.email == email &&
+     other.birthdate == birthdate &&
      other.name == name;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (email.hashCode) +
+    (birthdate.hashCode) +
     (name.hashCode);
 
   @override
-  String toString() => 'AccountSetup[email=$email, name=$name]';
+  String toString() => 'AccountSetup[birthdate=$birthdate, name=$name]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'email'] = this.email;
+      json[r'birthdate'] = this.birthdate;
       json[r'name'] = this.name;
     return json;
   }
@@ -61,7 +61,7 @@ class AccountSetup {
       }());
 
       return AccountSetup(
-        email: mapValueOfType<String>(json, r'email')!,
+        birthdate: mapValueOfType<String>(json, r'birthdate')!,
         name: mapValueOfType<String>(json, r'name')!,
       );
     }
@@ -112,7 +112,7 @@ class AccountSetup {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'email',
+    'birthdate',
     'name',
   };
 }

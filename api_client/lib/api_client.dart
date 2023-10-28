@@ -185,6 +185,8 @@ class ApiClient {
           return AccessToken.fromJson(value);
         case 'Account':
           return Account.fromJson(value);
+        case 'AccountData':
+          return AccountData.fromJson(value);
         case 'AccountId':
           return AccountId.fromJson(value);
         case 'AccountSetup':
@@ -225,6 +227,8 @@ class ApiClient {
           return HandleModerationRequest.fromJson(value);
         case 'ImageAccessCheck':
           return ImageAccessCheck.fromJson(value);
+        case 'LatestViewedMessageChanged':
+          return LatestViewedMessageChanged.fromJson(value);
         case 'Location':
           return Location.fromJson(value);
         case 'LoginResult':
@@ -235,6 +239,10 @@ class ApiClient {
           return MapTileY.fromJson(value);
         case 'MapTileZ':
           return MapTileZ.fromJson(value);
+        case 'MatchesPage':
+          return MatchesPage.fromJson(value);
+        case 'MessageNumber':
+          return MessageNumber.fromJson(value);
         case 'Moderation':
           return Moderation.fromJson(value);
         case 'ModerationList':
@@ -249,6 +257,14 @@ class ApiClient {
           return ModerationRequestStateTypeTransformer().decode(value);
         case 'NormalImages':
           return NormalImages.fromJson(value);
+        case 'PendingMessage':
+          return PendingMessage.fromJson(value);
+        case 'PendingMessageDeleteList':
+          return PendingMessageDeleteList.fromJson(value);
+        case 'PendingMessageId':
+          return PendingMessageId.fromJson(value);
+        case 'PendingMessagesPage':
+          return PendingMessagesPage.fromJson(value);
         case 'PrimaryImage':
           return PrimaryImage.fromJson(value);
         case 'Profile':
@@ -263,12 +279,22 @@ class ApiClient {
           return ProfileVersion.fromJson(value);
         case 'RebootQueryParam':
           return RebootQueryParam.fromJson(value);
+        case 'ReceivedBlocksPage':
+          return ReceivedBlocksPage.fromJson(value);
+        case 'ReceivedLikesPage':
+          return ReceivedLikesPage.fromJson(value);
         case 'RefreshToken':
           return RefreshToken.fromJson(value);
         case 'ResetDataQueryParam':
           return ResetDataQueryParam.fromJson(value);
         case 'SecurityImage':
           return SecurityImage.fromJson(value);
+        case 'SendMessageToAccount':
+          return SendMessageToAccount.fromJson(value);
+        case 'SentBlocksPage':
+          return SentBlocksPage.fromJson(value);
+        case 'SentLikesPage':
+          return SentLikesPage.fromJson(value);
         case 'SignInWithLoginInfo':
           return SignInWithLoginInfo.fromJson(value);
         case 'SlotId':
@@ -281,6 +307,8 @@ class ApiClient {
           return SystemInfo.fromJson(value);
         case 'SystemInfoList':
           return SystemInfoList.fromJson(value);
+        case 'UpdateMessageViewStatus':
+          return UpdateMessageViewStatus.fromJson(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

@@ -13,31 +13,31 @@ part of openapi.api;
 class Account {
   /// Returns a new [Account] instance.
   Account({
-    required this.capablities,
+    required this.capabilities,
     required this.state,
   });
 
-  Capabilities capablities;
+  Capabilities capabilities;
 
   AccountState state;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Account &&
-     other.capablities == capablities &&
+     other.capabilities == capabilities &&
      other.state == state;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (capablities.hashCode) +
+    (capabilities.hashCode) +
     (state.hashCode);
 
   @override
-  String toString() => 'Account[capablities=$capablities, state=$state]';
+  String toString() => 'Account[capabilities=$capabilities, state=$state]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'capablities'] = this.capablities;
+      json[r'capabilities'] = this.capabilities;
       json[r'state'] = this.state;
     return json;
   }
@@ -61,7 +61,7 @@ class Account {
       }());
 
       return Account(
-        capablities: Capabilities.fromJson(json[r'capablities'])!,
+        capabilities: Capabilities.fromJson(json[r'capabilities'])!,
         state: AccountState.fromJson(json[r'state'])!,
       );
     }
@@ -112,7 +112,7 @@ class Account {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'capablities',
+    'capabilities',
     'state',
   };
 }

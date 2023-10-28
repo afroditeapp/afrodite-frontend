@@ -51,7 +51,7 @@ class SettingsView extends BottomNavigationView {
 class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AccountBloc, AccountData>(
+    return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
         List<Setting> settings = [
           Setting.createSetting(Icons.account_circle, AppLocalizations.of(context).pageMyProfileTitle, () =>
