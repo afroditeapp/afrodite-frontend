@@ -193,6 +193,18 @@ class ProfileRepository extends DataRepository {
           .isInFavorites(accountId);
   }
 
+  Future<bool> isInMatches(AccountId accountId) async {
+    return false;
+  }
+
+  Future<bool> isInLikedProfiles(AccountId accountId) async {
+    return false;
+  }
+
+  Future<bool> isInReceivedLikes(AccountId accountId) async {
+    return false;
+  }
+
   Stream<bool> addToFavorites(AccountId accountId) async* {
     if (await FavoriteProfilesDatabase.getInstance().isInFavorites(accountId)) {
       // In favorites already

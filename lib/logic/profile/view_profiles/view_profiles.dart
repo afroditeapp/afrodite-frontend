@@ -1,3 +1,4 @@
+import "dart:async";
 import "dart:io";
 
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -19,6 +20,13 @@ import 'package:flutter/foundation.dart';
 
 part 'view_profiles.freezed.dart';
 
+enum ProfileActionState {
+  like,
+  removeLike,
+  makeMatch,
+  chat,
+}
+
 @freezed
 class ViewProfilesData with _$ViewProfilesData {
   factory ViewProfilesData({
@@ -27,6 +35,9 @@ class ViewProfilesData with _$ViewProfilesData {
     required File primaryProfileImage,
     required ProfileHeroTag imgTag,
     @Default(false) bool isFavorite,
+    @Default(ProfileActionState.like) ProfileActionState profileActionState,
+    @Default(false) bool isNotAvailable,
+    @Default(false) bool loadingError,
   }) = _ViewProfilesData;
 }
 
@@ -38,13 +49,24 @@ class SetProfileView extends ViewProfileEvent {
   final ProfileHeroTag imgTag;
   SetProfileView(this.accountId, this.profile, this.primaryProfileImage, this.imgTag);
 }
-// class LoadProfileView extends ViewProfileEvent {
-//   LoadProfileView();
-// }
+class HandleProfileResult extends ViewProfileEvent {
+  final GetProfileResult result;
+  HandleProfileResult(this.result);
+}
 class ToggleFavoriteStatus extends ViewProfileEvent {
   final AccountId accountId;
   ToggleFavoriteStatus(this.accountId);
 }
+class DoProfileAction extends ViewProfileEvent {
+  final AccountId accountId;
+  final ProfileActionState action;
+  DoProfileAction(this.accountId, this.action);
+}
+class BlockProfile extends ViewProfileEvent {
+  final AccountId accountId;
+  BlockProfile(this.accountId);
+}
+class ResetLoadingError extends ViewProfileEvent {}
 
 
 class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with ActionRunner {
@@ -52,9 +74,13 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
   final ProfileRepository profile;
   final MediaRepository media;
 
+  StreamSubscription<GetProfileResult>? _getProfileDataSubscription;
+
   ViewProfileBloc(this.account, this.profile, this.media) : super(null) {
     on<SetProfileView>((data, emit) async {
       await runOnce(() async {
+        await _getProfileDataSubscription?.cancel();
+
         final newState = ViewProfilesData(
           accountId: data.accountId,
           profile: data.profile,
@@ -64,10 +90,26 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
         );
         emit(newState);
 
-        final isInFavorites = await profile
-          .isInFavorites(newState.accountId);
+        final isInFavorites = await profile.isInFavorites(newState.accountId);
 
-        emit(newState.copyWith(isFavorite: isInFavorites));
+        final ProfileActionState action;
+        if (await profile.isInMatches(newState.accountId)) {
+          action = ProfileActionState.chat;
+        } else if (await profile.isInLikedProfiles(newState.accountId)) {
+          action = ProfileActionState.removeLike;
+        } else if (await profile.isInReceivedLikes(newState.accountId)) {
+          action = ProfileActionState.makeMatch;
+        } else {
+          action = ProfileActionState.like;
+        }
+
+        emit(newState.copyWith(isFavorite: isInFavorites, profileActionState: action));
+
+        _getProfileDataSubscription = ProfileRepository.getInstance()
+          .getProfileStream(newState.accountId)
+          .listen((event) {
+            add(HandleProfileResult(event));
+          });
       });
     });
     on<ToggleFavoriteStatus>((data, emit) async {
@@ -86,6 +128,24 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
           }
         }
       });
+    });
+    on<HandleProfileResult>((data, emit) async {
+      final currentState = state;
+      if (currentState == null) {
+        return;
+      }
+      final result = data.result;
+      switch (result) {
+        case GetProfileSuccess():
+          emit(currentState.copyWith(profile: result.profile));
+        case GetProfileDoesNotExist():
+          emit(currentState.copyWith(isNotAvailable: true));
+        case GetProfileFailed():
+          emit(currentState.copyWith(loadingError: true));
+      }
+    });
+    on<ResetLoadingError>((data, emit) async {
+      emit(state?.copyWith(loadingError: false));
     });
   }
 }

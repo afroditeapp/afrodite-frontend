@@ -21,6 +21,10 @@ mixin _$ViewProfilesData {
   File get primaryProfileImage => throw _privateConstructorUsedError;
   (AccountId, int) get imgTag => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
+  ProfileActionState get profileActionState =>
+      throw _privateConstructorUsedError;
+  bool get isNotAvailable => throw _privateConstructorUsedError;
+  bool get loadingError => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ViewProfilesDataCopyWith<ViewProfilesData> get copyWith =>
@@ -38,7 +42,10 @@ abstract class $ViewProfilesDataCopyWith<$Res> {
       Profile profile,
       File primaryProfileImage,
       (AccountId, int) imgTag,
-      bool isFavorite});
+      bool isFavorite,
+      ProfileActionState profileActionState,
+      bool isNotAvailable,
+      bool loadingError});
 }
 
 /// @nodoc
@@ -59,6 +66,9 @@ class _$ViewProfilesDataCopyWithImpl<$Res, $Val extends ViewProfilesData>
     Object? primaryProfileImage = null,
     Object? imgTag = null,
     Object? isFavorite = null,
+    Object? profileActionState = null,
+    Object? isNotAvailable = null,
+    Object? loadingError = null,
   }) {
     return _then(_value.copyWith(
       accountId: null == accountId
@@ -81,6 +91,18 @@ class _$ViewProfilesDataCopyWithImpl<$Res, $Val extends ViewProfilesData>
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
               as bool,
+      profileActionState: null == profileActionState
+          ? _value.profileActionState
+          : profileActionState // ignore: cast_nullable_to_non_nullable
+              as ProfileActionState,
+      isNotAvailable: null == isNotAvailable
+          ? _value.isNotAvailable
+          : isNotAvailable // ignore: cast_nullable_to_non_nullable
+              as bool,
+      loadingError: null == loadingError
+          ? _value.loadingError
+          : loadingError // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -98,7 +120,10 @@ abstract class _$$ViewProfilesDataImplCopyWith<$Res>
       Profile profile,
       File primaryProfileImage,
       (AccountId, int) imgTag,
-      bool isFavorite});
+      bool isFavorite,
+      ProfileActionState profileActionState,
+      bool isNotAvailable,
+      bool loadingError});
 }
 
 /// @nodoc
@@ -117,6 +142,9 @@ class __$$ViewProfilesDataImplCopyWithImpl<$Res>
     Object? primaryProfileImage = null,
     Object? imgTag = null,
     Object? isFavorite = null,
+    Object? profileActionState = null,
+    Object? isNotAvailable = null,
+    Object? loadingError = null,
   }) {
     return _then(_$ViewProfilesDataImpl(
       accountId: null == accountId
@@ -139,6 +167,18 @@ class __$$ViewProfilesDataImplCopyWithImpl<$Res>
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
               as bool,
+      profileActionState: null == profileActionState
+          ? _value.profileActionState
+          : profileActionState // ignore: cast_nullable_to_non_nullable
+              as ProfileActionState,
+      isNotAvailable: null == isNotAvailable
+          ? _value.isNotAvailable
+          : isNotAvailable // ignore: cast_nullable_to_non_nullable
+              as bool,
+      loadingError: null == loadingError
+          ? _value.loadingError
+          : loadingError // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -153,7 +193,10 @@ class _$ViewProfilesDataImpl
       required this.profile,
       required this.primaryProfileImage,
       required this.imgTag,
-      this.isFavorite = false});
+      this.isFavorite = false,
+      this.profileActionState = ProfileActionState.like,
+      this.isNotAvailable = false,
+      this.loadingError = false});
 
   @override
   final AccountId accountId;
@@ -166,10 +209,19 @@ class _$ViewProfilesDataImpl
   @override
   @JsonKey()
   final bool isFavorite;
+  @override
+  @JsonKey()
+  final ProfileActionState profileActionState;
+  @override
+  @JsonKey()
+  final bool isNotAvailable;
+  @override
+  @JsonKey()
+  final bool loadingError;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ViewProfilesData(accountId: $accountId, profile: $profile, primaryProfileImage: $primaryProfileImage, imgTag: $imgTag, isFavorite: $isFavorite)';
+    return 'ViewProfilesData(accountId: $accountId, profile: $profile, primaryProfileImage: $primaryProfileImage, imgTag: $imgTag, isFavorite: $isFavorite, profileActionState: $profileActionState, isNotAvailable: $isNotAvailable, loadingError: $loadingError)';
   }
 
   @override
@@ -181,7 +233,10 @@ class _$ViewProfilesDataImpl
       ..add(DiagnosticsProperty('profile', profile))
       ..add(DiagnosticsProperty('primaryProfileImage', primaryProfileImage))
       ..add(DiagnosticsProperty('imgTag', imgTag))
-      ..add(DiagnosticsProperty('isFavorite', isFavorite));
+      ..add(DiagnosticsProperty('isFavorite', isFavorite))
+      ..add(DiagnosticsProperty('profileActionState', profileActionState))
+      ..add(DiagnosticsProperty('isNotAvailable', isNotAvailable))
+      ..add(DiagnosticsProperty('loadingError', loadingError));
   }
 
   @override
@@ -196,12 +251,26 @@ class _$ViewProfilesDataImpl
                 other.primaryProfileImage == primaryProfileImage) &&
             (identical(other.imgTag, imgTag) || other.imgTag == imgTag) &&
             (identical(other.isFavorite, isFavorite) ||
-                other.isFavorite == isFavorite));
+                other.isFavorite == isFavorite) &&
+            (identical(other.profileActionState, profileActionState) ||
+                other.profileActionState == profileActionState) &&
+            (identical(other.isNotAvailable, isNotAvailable) ||
+                other.isNotAvailable == isNotAvailable) &&
+            (identical(other.loadingError, loadingError) ||
+                other.loadingError == loadingError));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, accountId, profile, primaryProfileImage, imgTag, isFavorite);
+      runtimeType,
+      accountId,
+      profile,
+      primaryProfileImage,
+      imgTag,
+      isFavorite,
+      profileActionState,
+      isNotAvailable,
+      loadingError);
 
   @JsonKey(ignore: true)
   @override
@@ -217,7 +286,10 @@ abstract class _ViewProfilesData implements ViewProfilesData {
       required final Profile profile,
       required final File primaryProfileImage,
       required final (AccountId, int) imgTag,
-      final bool isFavorite}) = _$ViewProfilesDataImpl;
+      final bool isFavorite,
+      final ProfileActionState profileActionState,
+      final bool isNotAvailable,
+      final bool loadingError}) = _$ViewProfilesDataImpl;
 
   @override
   AccountId get accountId;
@@ -229,6 +301,12 @@ abstract class _ViewProfilesData implements ViewProfilesData {
   (AccountId, int) get imgTag;
   @override
   bool get isFavorite;
+  @override
+  ProfileActionState get profileActionState;
+  @override
+  bool get isNotAvailable;
+  @override
+  bool get loadingError;
   @override
   @JsonKey(ignore: true)
   _$$ViewProfilesDataImplCopyWith<_$ViewProfilesDataImpl> get copyWith =>

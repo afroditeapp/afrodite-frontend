@@ -58,7 +58,9 @@ class ViewProfilePage extends StatelessWidget {
       ),
       body: myProfilePage(context),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => (),
+        onPressed: () => {
+
+        },
         tooltip: 'Like',
         child: const Icon(Icons.favorite),
       ),
@@ -74,34 +76,29 @@ class ViewProfilePage extends StatelessWidget {
     }
 
     final accountId = state.accountId;
-    final profile = state.profile;
     final primaryProfileImage = state.primaryProfileImage;
 
-    return StreamBuilder<GetProfileResult>(
-      stream: ProfileRepository.getInstance().getProfileStream(accountId),
-      initialData: GetProfileSuccess(profile),
-      builder: (context, snapshot) {
-        final img = PrimaryImageFile(primaryProfileImage, heroTransition: state.imgTag);
-        switch (snapshot.data) {
-          case GetProfileSuccess data:
-            return viewProifle(context, accountId, data.profile, img, true);
-          case GetProfileDoesNotExist(): {
-            // TODO: Is this called multiple times?
-            Future.delayed(Duration.zero, () {
-              showInfoDialog(context, "Profile not available").then((value) {
-                Navigator.pop(context);
-              });
-            });
-
-            return viewProifle(context, accountId, profile, img, true);
-          }
-          case GetProfileFailed() || null: {
-            Future.delayed(Duration.zero, () {
-              showSnackBar("Profile loading error");
-            });
-            return viewProifle(context, accountId, profile, img, true);
-          }
+    return BlocBuilder<ViewProfileBloc, ViewProfilesData?>(
+      builder: (context, state) {
+        if (state == null) {
+          return Container();
         }
+
+        final img = PrimaryImageFile(primaryProfileImage, heroTransition: state.imgTag);
+        if (state.isNotAvailable) {
+          Future.delayed(Duration.zero, () {
+            showInfoDialog(context, "Profile not available").then((value) {
+              Navigator.pop(context);
+            });
+          });
+          return Container();
+        } else if (state.loadingError) {
+          Future.delayed(Duration.zero, () {
+            showSnackBar("Profile loading error");
+          }).then((value) => context.read<ViewProfileBloc>().add(ResetLoadingError()));
+        }
+
+        return viewProifle(context, accountId, state.profile, img, true);
       }
     );
   }
