@@ -9,6 +9,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/config.dart';
+import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
@@ -226,10 +227,12 @@ class AccountRepository extends DataRepository {
     // Account
     await KvStringManager.getInstance().setValue(KvString.accountRefreshToken, loginResult.account.refresh.token);
     await KvStringManager.getInstance().setValue(KvString.accountAccessToken, loginResult.account.access.accessToken);
+    // TODO: microservice support
     await onLogin();
     // Other repostories
     await ProfileRepository.getInstance().onLogin();
     await MediaRepository.getInstance().onLogin();
+    await ChatRepository.getInstance().onLogin();
 
     await _api.restart();
   }
@@ -250,6 +253,7 @@ class AccountRepository extends DataRepository {
     // Other repositories
     await ProfileRepository.getInstance().onLogout();
     await MediaRepository.getInstance().onLogout();
+    await ChatRepository.getInstance().onLogout();
 
     log.info("logout completed");
   }

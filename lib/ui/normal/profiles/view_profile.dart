@@ -53,16 +53,78 @@ class ViewProfilePage extends StatelessWidget {
                 context.read<ViewProfileBloc>().add(ToggleFavoriteStatus(currentState.accountId)),
               icon: icon,
             );
-          })
+          }),
+          PopupMenuButton(
+            itemBuilder: (context) {
+              return const [
+                PopupMenuItem(value: "block", child: Text("Block")),
+              ];
+            },
+            onSelected: (value) {
+              switch (value) {
+                case "block": {
+                  showConfirmDialog(context, "Block profile?")
+                    .then((value) {
+                      if (value == true) {
+                        context.read<ViewProfileBloc>().add(BlockCurrentProfile());
+                      }
+                    });
+                }
+              }
+            },
+          ),
         ],
       ),
       body: myProfilePage(context),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => {
-
-        },
-        tooltip: 'Like',
-        child: const Icon(Icons.favorite),
+      floatingActionButton: BlocBuilder<ViewProfileBloc, ViewProfilesData?>(
+        builder: (context, state) {
+          final currentState = state;
+          if (currentState == null) {
+            return Container();
+          }
+          switch (currentState.profileActionState) {
+            case ProfileActionState.like:
+              return FloatingActionButton(
+                onPressed: () =>
+                  showConfirmDialog(context, "Send like?")
+                    .then((value) {
+                      if (value == true) {
+                        context.read<ViewProfileBloc>().add(DoProfileAction(currentState.accountId, currentState.profileActionState));
+                      }
+                    }),
+                tooltip: 'Send like',
+                child: const Icon(Icons.favorite_rounded),
+              );
+            case ProfileActionState.removeLike:
+              return FloatingActionButton(
+                onPressed: () =>
+                  showConfirmDialog(context, "Remove like?")
+                    .then((value) {
+                      if (value == true) {
+                        context.read<ViewProfileBloc>().add(DoProfileAction(currentState.accountId, currentState.profileActionState));
+                      }
+                    }),
+                tooltip: 'Remove like',
+                child: const Icon(Icons.undo_rounded),
+              );
+            case ProfileActionState.makeMatch:
+              return FloatingActionButton(
+                onPressed: () {
+                  showInfoDialog(context, "Not implemented");
+                },
+                tooltip: 'Open chat',
+                child: const Icon(Icons.chat_rounded),
+              );
+            case ProfileActionState.chat:
+              return FloatingActionButton(
+                onPressed: () {
+                  showInfoDialog(context, "Not implemented");
+                },
+                tooltip: 'Open chat',
+                child: const Icon(Icons.chat_rounded),
+              );
+          }
+        }
       ),
       //extendBodyBehindAppBar: true,
     );

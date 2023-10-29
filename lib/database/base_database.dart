@@ -8,6 +8,11 @@ import 'package:pihka_frontend/utils.dart';
 import 'package:sqflite/sqflite.dart';
 
 enum DatabaseType {
+  chatReceivedBlocks,
+  chatReceivedLikes,
+  chatSentBlocks,
+  chatSentLikes,
+  chatMatches,
   profile,
   favoriteProfiles,
   profileList;
@@ -15,11 +20,21 @@ enum DatabaseType {
   String get databaseName {
     switch (this) {
       case DatabaseType.profile:
-        return "profile_database.db";
+        return "a.db";
       case DatabaseType.favoriteProfiles:
-        return "favorite_profiles_database.db";
+        return "b.db";
       case DatabaseType.profileList:
-        return "profile_list_database.db";
+        return "c.db";
+      case DatabaseType.chatReceivedBlocks:
+        return "d.db";
+      case DatabaseType.chatReceivedLikes:
+        return "e.db";
+      case DatabaseType.chatSentBlocks:
+        return "f.db";
+      case DatabaseType.chatSentLikes:
+        return "g.db";
+      case DatabaseType.chatMatches:
+        return "h.db";
     }
   }
   String get databaseErrorTitle {
@@ -30,6 +45,16 @@ enum DatabaseType {
         return "Favorite profiles database error";
       case DatabaseType.profileList:
         return "Profile list database error";
+      case DatabaseType.chatReceivedBlocks:
+        return "Received blocks database error";
+      case DatabaseType.chatReceivedLikes:
+        return "Received likes database error";
+      case DatabaseType.chatSentBlocks:
+        return "Sent blocks database error";
+      case DatabaseType.chatSentLikes:
+        return "Sent likes database error";
+      case DatabaseType.chatMatches:
+        return "Matches database error";
     }
   }
 }

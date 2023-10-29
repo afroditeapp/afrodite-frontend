@@ -28,6 +28,9 @@ class ProfileRepository extends DataRepository {
   final ProfileIteratorManager mainProfilesViewIterator = ProfileIteratorManager();
 
   final PublishSubject<ProfileChange> _profileChangesRelay = PublishSubject();
+  void sendProfileChange(ProfileChange change) {
+    _profileChangesRelay.add(change);
+  }
   Stream<ProfileChange> get profileChanges => _profileChangesRelay;
 
   Stream<Location> get location => KvStringManager.getInstance()
@@ -191,18 +194,6 @@ class ProfileRepository extends DataRepository {
   Future<bool> isInFavorites(AccountId accountId) async {
     return await FavoriteProfilesDatabase.getInstance()
           .isInFavorites(accountId);
-  }
-
-  Future<bool> isInMatches(AccountId accountId) async {
-    return false;
-  }
-
-  Future<bool> isInLikedProfiles(AccountId accountId) async {
-    return false;
-  }
-
-  Future<bool> isInReceivedLikes(AccountId accountId) async {
-    return false;
   }
 
   Stream<bool> addToFavorites(AccountId accountId) async* {

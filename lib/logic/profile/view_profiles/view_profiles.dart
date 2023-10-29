@@ -4,6 +4,7 @@ import "dart:io";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
+import "package:pihka_frontend/data/chat_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/database/favorite_profiles_database.dart";
@@ -62,10 +63,7 @@ class DoProfileAction extends ViewProfileEvent {
   final ProfileActionState action;
   DoProfileAction(this.accountId, this.action);
 }
-class BlockProfile extends ViewProfileEvent {
-  final AccountId accountId;
-  BlockProfile(this.accountId);
-}
+class BlockCurrentProfile extends ViewProfileEvent {}
 class ResetLoadingError extends ViewProfileEvent {}
 
 
@@ -73,10 +71,11 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
   final AccountRepository account;
   final ProfileRepository profile;
   final MediaRepository media;
+  final ChatRepository chat;
 
   StreamSubscription<GetProfileResult>? _getProfileDataSubscription;
 
-  ViewProfileBloc(this.account, this.profile, this.media) : super(null) {
+  ViewProfileBloc(this.account, this.profile, this.media, this.chat) : super(null) {
     on<SetProfileView>((data, emit) async {
       await runOnce(() async {
         await _getProfileDataSubscription?.cancel();
@@ -91,17 +90,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
         emit(newState);
 
         final isInFavorites = await profile.isInFavorites(newState.accountId);
-
-        final ProfileActionState action;
-        if (await profile.isInMatches(newState.accountId)) {
-          action = ProfileActionState.chat;
-        } else if (await profile.isInLikedProfiles(newState.accountId)) {
-          action = ProfileActionState.removeLike;
-        } else if (await profile.isInReceivedLikes(newState.accountId)) {
-          action = ProfileActionState.makeMatch;
-        } else {
-          action = ProfileActionState.like;
-        }
+        final ProfileActionState action = await resolveProfileAction(newState.accountId);
 
         emit(newState.copyWith(isFavorite: isInFavorites, profileActionState: action));
 
@@ -147,5 +136,46 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
     on<ResetLoadingError>((data, emit) async {
       emit(state?.copyWith(loadingError: false));
     });
+    on<BlockCurrentProfile>((data, emit) async {
+      emit(state?.copyWith(loadingError: false));
+    });
+    on<DoProfileAction>((data, emit) async {
+      await runOnce(() async {
+        final currentState = state;
+        if (currentState == null) {
+          return;
+        }
+        switch (data.action) {
+          case ProfileActionState.like: {
+            if (await chat.sendLikeTo(data.accountId)) {
+              emit(currentState.copyWith(
+                profileActionState: await resolveProfileAction(data.accountId)
+              ));
+            }
+          }
+          case ProfileActionState.removeLike: {
+            if (await chat.removeLikeFrom(data.accountId)) {
+              emit(currentState.copyWith(
+                profileActionState: await resolveProfileAction(data.accountId)
+              ));
+            }
+          }
+          case ProfileActionState.makeMatch: {}
+          case ProfileActionState.chat: {}
+        }
+      });
+    });
+  }
+
+  Future<ProfileActionState> resolveProfileAction(AccountId accountId) async {
+    if (await chat.isInMatches(accountId)) {
+      return ProfileActionState.chat;
+    } else if (await chat.isInLikedProfiles(accountId)) {
+      return ProfileActionState.removeLike;
+    } else if (await chat.isInReceivedLikes(accountId)) {
+      return ProfileActionState.makeMatch;
+    } else {
+      return ProfileActionState.like;
+    }
   }
 }

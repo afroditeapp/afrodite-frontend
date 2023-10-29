@@ -27,13 +27,15 @@ var log = Logger("ServerConnection");
 enum ServerSlot {
   account,
   profile,
-  media;
+  media,
+  chat;
 
   KvString toRefreshTokenKey() {
     switch (this) {
       case ServerSlot.account: return KvString.accountRefreshToken;
       case ServerSlot.media: return KvString.mediaRefreshToken;
       case ServerSlot.profile: return KvString.profileRefreshToken;
+      case ServerSlot.chat: return KvString.chatRefreshToken;
     }
   }
 
@@ -42,6 +44,7 @@ enum ServerSlot {
       case ServerSlot.account: return KvString.accountAccessToken;
       case ServerSlot.media: return KvString.mediaAccessToken;
       case ServerSlot.profile: return KvString.profileAccessToken;
+      case ServerSlot.chat: return KvString.chatAccessToken;
     }
   }
 }

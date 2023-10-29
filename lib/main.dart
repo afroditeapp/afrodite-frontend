@@ -7,9 +7,15 @@ import 'package:logging/logging.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
+import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
+import 'package:pihka_frontend/database/chat/matches_database.dart';
+import 'package:pihka_frontend/database/chat/received_blocks_database.dart';
+import 'package:pihka_frontend/database/chat/received_likes_database.dart';
+import 'package:pihka_frontend/database/chat/sent_blocks_database.dart';
+import 'package:pihka_frontend/database/chat/sent_likes_database.dart';
 import 'package:pihka_frontend/database/favorite_profiles_database.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
@@ -55,6 +61,7 @@ Future<void> main() async {
   var accountRepository = AccountRepository.getInstance();
   var mediaRepository = MediaRepository.getInstance();
   var profileRepository = ProfileRepository.getInstance();
+  var chatRepository = ChatRepository.getInstance();
 
   runApp(
     MultiBlocProvider(
@@ -64,7 +71,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => InitialSetupBloc(accountRepository)),
         BlocProvider(create: (_) => ServerAddressBloc(accountRepository)),
         BlocProvider(create: (_) => ProfileBloc(accountRepository, profileRepository, mediaRepository)),
-        BlocProvider(create: (_) => ViewProfileBloc(accountRepository, profileRepository, mediaRepository)),
+        BlocProvider(create: (_) => ViewProfileBloc(accountRepository, profileRepository, mediaRepository, chatRepository)),
         BlocProvider(create: (_) => ProfileFilteringSettingsBloc(profileRepository)),
         BlocProvider(create: (_) => LocationBloc(profileRepository), lazy: false),
 
@@ -143,10 +150,16 @@ class GlobalInitManager {
     await ProfileListDatabase.getInstance().init();
     await FavoriteProfilesDatabase.getInstance().init();
     await ProfileDatabase.getInstance().init();
+    await MatchesDatabase.getInstance().init();
+    await ReceivedBlocksDatabase.getInstance().init();
+    await ReceivedLikesDatabase.getInstance().init();
+    await SentLikesDatabase.getInstance().init();
+    await SentBlocksDatabase.getInstance().init();
 
     await AccountRepository.getInstance().init();
     await MediaRepository.getInstance().init();
     await ProfileRepository.getInstance().init();
+    await ChatRepository.getInstance().init();
   }
 
   /// Global init should be triggerred after when splash screen

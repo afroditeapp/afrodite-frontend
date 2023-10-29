@@ -16,6 +16,7 @@ class ApiProvider {
   MediaAdminApi _mediaAdmin;
   CommonApi _common;
   CommonAdminApi _commonAdmin;
+  ChatApi _chat;
 
   String _serverAddress;
 
@@ -27,6 +28,7 @@ class ApiProvider {
   MediaAdminApi get mediaAdmin => _mediaAdmin;
   CommonApi get common => _common;
   CommonAdminApi get commonAdmin => _commonAdmin;
+  ChatApi get chat => _chat;
   String get serverAddress => _serverAddress;
 
   ApiProvider(String address) :
@@ -39,7 +41,8 @@ class ApiProvider {
     _media = MediaApi(client),
     _mediaAdmin = MediaAdminApi(client),
     _common = CommonApi(client),
-    _commonAdmin = CommonAdminApi(client);
+    _commonAdmin = CommonAdminApi(client),
+    _chat = ChatApi(client);
 
   void setAccessToken(AccessToken token) {
     var auth = ApiKeyAuth("header", accessTokenHeaderName);
@@ -63,6 +66,7 @@ class ApiProvider {
     _mediaAdmin = MediaAdminApi(client);
     _common = CommonApi(client);
     _commonAdmin = CommonAdminApi(client);
+    _chat = ChatApi(client);
   }
 
   Future<void> init() async {

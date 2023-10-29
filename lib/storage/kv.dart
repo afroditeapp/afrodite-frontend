@@ -12,6 +12,8 @@ enum KvString implements PreferenceKeyProvider<KvString, String> {
   mediaServerAddress,
   /// Url
   profileServerAddress,
+  /// Url
+  chatServerAddress,
 
   /// UUID string
   accountId,
@@ -28,6 +30,9 @@ enum KvString implements PreferenceKeyProvider<KvString, String> {
   /// Base64 string
   profileRefreshToken,
   profileAccessToken,
+  /// Base64 string
+  chatRefreshToken,
+  chatAccessToken,
 
   // Location json
   profileLocation;

@@ -38,13 +38,7 @@ enum ApiManagerState {
   connected,
 }
 
-sealed class ApiManagerEvent {}
-//class DoConnect implements ApiManagerEvent {}
-// class EventFromConnection implements ApiManagerEvent {
-//   final ServerSlot server;
-//   final ServerConnectionEvent event;
-//   EventFromConnection(this.server, this.event);
-// }
+// sealed class ApiManagerEvent {}
 
 sealed class ServerWsEvent {}
 class EventToClientContainer implements ServerWsEvent {
@@ -67,11 +61,13 @@ class ApiManager extends AppSingleton {
     ApiProvider(KvStringWithDefault.mediaServerAddress.getDefault());
   final ApiProvider _profile =
     ApiProvider(KvStringWithDefault.profileServerAddress.getDefault());
+  final ApiProvider _chat =
+    ApiProvider(KvStringWithDefault.chatServerAddress.getDefault());
 
   final BehaviorSubject<ApiManagerState> _state =
     BehaviorSubject.seeded(ApiManagerState.connecting);
-  final PublishSubject<ApiManagerEvent> _events =
-    PublishSubject();
+  // final PublishSubject<ApiManagerEvent> _events =
+  //   PublishSubject();
   final PublishSubject<ServerWsEvent> _serverEvents =
     PublishSubject();
 
@@ -86,6 +82,11 @@ class ApiManager extends AppSingleton {
       "",
     );
   ServerConnection profileConnection =
+    ServerConnection(
+      ServerSlot.profile,
+      "",
+    );
+  ServerConnection chatConnection =
     ServerConnection(
       ServerSlot.profile,
       "",
@@ -106,6 +107,7 @@ class ApiManager extends AppSingleton {
     await _account.init();
     await _profile.init();
     await _media.init();
+    await _chat.init();
 
     _connectEvents();
     await _loadAddressesFromConfig();
@@ -113,14 +115,14 @@ class ApiManager extends AppSingleton {
   }
 
   void _connectEvents() {
-    _events
-      .stream
-      .asyncMap((event) {
-        switch (event) {
-          case _: return;
-        }
-      })
-      .listen((event) { });
+    // _events
+    //   .stream
+    //   .asyncMap((event) {
+    //     switch (event) {
+    //       case _: return;
+    //     }
+    //   })
+    //   .listen((event) { });
 
       accountConnection.serverEvents.listen((event) {
         _serverEvents.add(event);
@@ -129,6 +131,9 @@ class ApiManager extends AppSingleton {
         _serverEvents.add(event);
       });
       mediaConnection.serverEvents.listen((event) {
+        _serverEvents.add(event);
+      });
+      chatConnection.serverEvents.listen((event) {
         _serverEvents.add(event);
       });
 
@@ -172,7 +177,7 @@ class ApiManager extends AppSingleton {
           }
         }
       });
-      // TODO: handle media and proifle
+      // TODO: handle media, proifle and chat
   }
 
   Future<void> _loadAddressesFromConfig() async {
@@ -192,6 +197,11 @@ class ApiManager extends AppSingleton {
       await storage.getValueOrDefault(KvStringWithDefault.mediaServerAddress);
     _media.updateServerAddress(mediaAddress);
     mediaConnection.setAddress(toWebSocketUri(mediaAddress));
+
+    final chatAddress =
+      await storage.getValueOrDefault(KvStringWithDefault.chatServerAddress);
+    _chat.updateServerAddress(chatAddress);
+    chatConnection.setAddress(toWebSocketUri(chatAddress));
   }
 
   Future<void> _connect() async {
@@ -229,29 +239,6 @@ class ApiManager extends AppSingleton {
     await _loadAddressesFromConfig();
     _state.add(ApiManagerState.waitingRefreshToken);
   }
-
-  // Future<void> _handleEventFromConnection(EventFromConnection e) async {
-  //   final s = KvStorageManager.getInstance();
-  //   switch (e.event) {
-  //     case NewRefreshToken token:
-  //       await s.setString(e.server.toRefreshTokenKey(), token.newRefreshToken);
-  //     case NewAccessToken token:
-  //       await s.setString(e.server.toAccessTokenKey(), token.newAccessToken);
-
-  //     // TODO: support multiple servers
-  //     case Ready():
-  //       _state.add(ApiManagerState.connected);
-  //     // TODO: support multiple servers
-  //     case Closed(): {
-  //       _state.add(ApiManagerState.connecting);
-  //     }
-  //       _serverEvents.add(ServerWsEvent.todo);
-
-  //     case EventFromServerTodo():
-  //       _serverEvents.add(ServerWsEvent.todo);
-  //   }
-  // }
-
 
   Future<void> setupTokens() async {
     final storage = KvStringManager.getInstance();
@@ -291,12 +278,24 @@ class ApiManager extends AppSingleton {
     }
   }
 
+  ApiProvider _chatApiProvider() {
+    if (chatConnection.inUse()) {
+      return _chat;
+    } else {
+      return _account;
+    }
+  }
+
   ApiWrapper<AccountApi> _accountWrapper() {
     return ApiWrapper(_account.account);
   }
 
   ApiWrapper<ProfileApi> profileWrapper() {
     return ApiWrapper(_profileApiProvider().profile);
+  }
+
+  ApiWrapper<ChatApi> chatWrapper() {
+    return ApiWrapper(_chatApiProvider().chat);
   }
 
   ApiWrapper<MediaApi> mediaWrapper() {
@@ -359,6 +358,10 @@ class ApiManager extends AppSingleton {
 
   Future<R?> profile<R extends Object>(Future<R?> Function(ProfileApi) action) async {
     return await profileWrapper().request(action);
+  }
+
+  Future<R?> chat<R extends Object>(Future<R?> Function(ChatApi) action) async {
+    return await chatWrapper().request(action);
   }
 
   Future<R?> profileCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {

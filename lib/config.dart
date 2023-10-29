@@ -20,6 +20,7 @@ String defaultAccountServerAddress() {
 
 const String _defaultMediaServerAddress = "https://10.0.2.2:3000";
 const String _defaultProfileServerAddress = "https://10.0.2.2:3000";
+const String _defaultChatServerAddress = "https://10.0.2.2:3000";
 
 String defaultMediaServerAddress() {
   return _defaultMediaServerAddress;
@@ -27,6 +28,10 @@ String defaultMediaServerAddress() {
 
 String defaultProfileServerAddress() {
   return _defaultProfileServerAddress;
+}
+
+String defaultChatServerAddress() {
+  return _defaultChatServerAddress;
 }
 
 enum KvStringWithDefault implements DefaultProvider<KvString, String> {
@@ -41,6 +46,10 @@ enum KvStringWithDefault implements DefaultProvider<KvString, String> {
   profileServerAddress(
     KvString.profileServerAddress,
     defaultProfileServerAddress,
+  ),
+  chatServerAddress(
+    KvString.chatServerAddress,
+    defaultChatServerAddress,
   );
 
   const KvStringWithDefault(
