@@ -17,9 +17,8 @@ import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-typedef ProfileHeroTag = (AccountId accountId, int index);
+typedef ProfileHeroTag = (AccountId accountId, int uniqueCounterNumber);
 
-/// Might return [RemoveProfileFromList] when navigating back to previous page
 class ViewProfilePage extends StatelessWidget {
   // final AccountId accountId;
   // final Profile profile;
@@ -43,21 +42,17 @@ class ViewProfilePage extends StatelessWidget {
             if (currentState == null) {
               return Container();
             }
+            final Icon icon;
             if (currentState.isFavorite) {
-              return IconButton(
-                onPressed: () async {
-                  context.read<ViewProfileBloc>().add(ToggleFavoriteStatus(currentState.accountId));
-                },
-                icon: const Icon(Icons.star_rounded),
-              );
+              icon = const Icon(Icons.star_rounded);
             } else {
-              return IconButton(
-                onPressed: () async {
-                  context.read<ViewProfileBloc>().add(ToggleFavoriteStatus(currentState.accountId));
-                },
-                icon: const Icon(Icons.star_outline_rounded),
-              );
+              icon = const Icon(Icons.star_outline_rounded);
             }
+            return IconButton(
+              onPressed: () =>
+                context.read<ViewProfileBloc>().add(ToggleFavoriteStatus(currentState.accountId)),
+              icon: icon,
+            );
           })
         ],
       ),
@@ -94,7 +89,7 @@ class ViewProfilePage extends StatelessWidget {
             // TODO: Is this called multiple times?
             Future.delayed(Duration.zero, () {
               showInfoDialog(context, "Profile not available").then((value) {
-                Navigator.pop(context, RemoveProfileFromList());
+                Navigator.pop(context);
               });
             });
 

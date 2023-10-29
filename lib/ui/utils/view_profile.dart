@@ -148,7 +148,3 @@ class PrimaryImageInfo extends PrimaryImageProvider {
   final PrimaryImage img;
   PrimaryImageInfo(this.img);
 }
-
-
-/// Notifies the [ProfileView] to remove viewed profile from list.
-class RemoveProfileFromList {}

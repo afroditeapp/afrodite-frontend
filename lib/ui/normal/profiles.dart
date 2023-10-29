@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
@@ -49,41 +50,56 @@ class ProfileView extends BottomNavigationView {
           },
         ),
         onPressed: () {
-          final stateBeforeChanges = context.read<ProfileFilteringSettingsBloc>().state;
-
-          Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ProfileFilteringSettingsPage()))
-            .then((value) {
-              final stateAfterChanges = context.read<ProfileFilteringSettingsBloc>().state;
-              if (stateBeforeChanges != stateAfterChanges) {
-                simpleRefresh();
-              }
-            });
+          Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ProfileFilteringSettingsPage()));
         },
       ),
     ];
   }
 }
 
-// TODO: Change to bloc or something?
-var simpleRefresh = () {};
-
-typedef ProfileViewEntry = (ProfileEntry profile, File img);
+typedef ProfileViewEntry = (ProfileEntry profile, File img, int heroNumber);
 
 class _ProfileViewState extends State<ProfileView> {
   PagingController<int, ProfileViewEntry>? _pagingController =
     PagingController(firstPageKey: 0);
+  int _heroUniqueIdCounter = 0;
+  StreamSubscription<ProfileChange>? _profileChangesSubscription;
+  ProfileFilteringSettingsData currentFilteringSettings = ProfileFilteringSettingsData();
 
   @override
   void initState() {
     super.initState();
+    _heroUniqueIdCounter = 0;
     _pagingController?.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-    simpleRefresh = () {
-      setState(() {
-        _pagingController?.refresh();
-      });
-    };
+    _profileChangesSubscription?.cancel();
+    _profileChangesSubscription = ProfileRepository.getInstance().profileChanges.listen((event) {
+        handleProfileChange(event);
+    });
+  }
+
+  void handleProfileChange(ProfileChange event) {
+    switch (event) {
+      case ProfileNowPrivate(): {
+        // Remove profile if it was made private
+        final controller = _pagingController;
+        if (controller != null) {
+          setState(() {
+            controller.itemList?.removeWhere((item) => item.$1.uuid == event.profile.accountId);
+          });
+        }
+      }
+      case ProfileFavoriteStatusChange(): {
+        // Remove profile if favorites filter is enabled and favorite status is changed to false
+        final controller = _pagingController;
+        if (controller != null && event.isFavorite == false && currentFilteringSettings.showOnlyFavorites) {
+          setState(() {
+            controller.itemList?.removeWhere((item) => item.$1.uuid == event.profile.accountId);
+          });
+        }
+      }
+    }
   }
 
   Future<void> _fetchPage(int pageKey) async {
@@ -107,7 +123,8 @@ class _ProfileViewState extends State<ProfileView> {
         log.warning("Skipping one profile because image loading failed");
         continue;
       }
-      newList.add((profile, file));
+      newList.add((profile, file, _heroUniqueIdCounter));
+      _heroUniqueIdCounter++;
     }
 
     if (profileList.isEmpty) {
@@ -125,44 +142,47 @@ class _ProfileViewState extends State<ProfileView> {
         // This might be disposed after resetProfileIterator completes.
         _pagingController?.refresh();
       },
-      child: PagedGridView(
-        pagingController: _pagingController!,
-        builderDelegate: PagedChildBuilderDelegate<ProfileViewEntry>(
-          animateTransitions: true,
-          itemBuilder: (context, item, index) {
-            final accountId = AccountId(accountId: item.$1.uuid);
-            final profile = Profile(
-              name: item.$1.name,
-              profileText: item.$1.profileText,
-              version: ProfileVersion(versionUuid: ""),
-            );
-            return GestureDetector(
-              onTap: () {
-                context.read<ViewProfileBloc>().add(SetProfileView(accountId, profile, item.$2, (accountId, index)));
-                Navigator.push(context, MaterialPageRoute<RemoveProfileFromList?>(builder: (_) => const ViewProfilePage()))
-                  .then((value) {
-                    if (value is RemoveProfileFromList) {
-                      final controller = _pagingController;
-                      if (controller != null) {
-                        setState(() {
-                          controller.itemList?.removeAt(index);
-                        });
-                      }
-                    }
-                  });
-              },
-              child: Hero(
-                tag: (accountId, index),
-                child: Image.file(item.$2)
-              ),
-            );
-          },
-        ),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 4,
-          mainAxisSpacing: 4,
-        ),
+      child: BlocListener<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+        listener: (context, data) {
+          // Filtering settings changed
+          currentFilteringSettings = data;
+          setState(() {
+            _pagingController?.refresh();
+          });
+        },
+        child: grid(context),
+      ),
+    );
+  }
+
+  Widget grid(BuildContext context) {
+    return PagedGridView(
+      pagingController: _pagingController!,
+      builderDelegate: PagedChildBuilderDelegate<ProfileViewEntry>(
+        animateTransitions: true,
+        itemBuilder: (context, item, index) {
+          final accountId = AccountId(accountId: item.$1.uuid);
+          final profile = Profile(
+            name: item.$1.name,
+            profileText: item.$1.profileText,
+            version: ProfileVersion(versionUuid: ""),
+          );
+          return GestureDetector(
+            onTap: () {
+              context.read<ViewProfileBloc>().add(SetProfileView(accountId, profile, item.$2, (accountId, item.$3)));
+              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ViewProfilePage()));
+            },
+            child: Hero(
+              tag: (accountId, item.$3),
+              child: Image.file(item.$2)
+            )
+          );
+        },
+      ),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 4,
+        mainAxisSpacing: 4,
       ),
     );
   }
@@ -171,7 +191,8 @@ class _ProfileViewState extends State<ProfileView> {
   void dispose() {
     _pagingController?.dispose();
     _pagingController = null;
-    simpleRefresh = () {};
+    _profileChangesSubscription?.cancel();
+    _profileChangesSubscription = null;
     super.dispose();
   }
 }

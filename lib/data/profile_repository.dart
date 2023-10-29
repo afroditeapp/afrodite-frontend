@@ -13,6 +13,7 @@ import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:rxdart/rxdart.dart';
 
 var log = Logger("ProfileRepository");
 
@@ -26,10 +27,8 @@ class ProfileRepository extends DataRepository {
   final ApiManager _api = ApiManager.getInstance();
   final ProfileIteratorManager mainProfilesViewIterator = ProfileIteratorManager();
 
-  // TODO: Add profile updates relay and remove
-  // var simpleRefresh = () {};
-  // and
-  // RemoveProfileFromList
+  final PublishSubject<ProfileChange> _profileChangesRelay = PublishSubject();
+  Stream<ProfileChange> get profileChanges => _profileChangesRelay;
 
   Stream<Location> get location => KvStringManager.getInstance()
     .getUpdatesForWithConversionAndDefaultIfNull(
@@ -162,6 +161,9 @@ class ProfileRepository extends DataRepository {
       await ProfileListDatabase.getInstance().removeProfile(id);
       // Favorites are not changed even if profile will become private
       yield GetProfileDoesNotExist();
+      _profileChangesRelay.add(
+        ProfileNowPrivate(id)
+      );
     } else {
       // Request failed
       yield GetProfileFailed();
@@ -206,6 +208,10 @@ class ProfileRepository extends DataRepository {
       // Revert local change
       yield false;
       await FavoriteProfilesDatabase.getInstance().removeFromFavorites(accountId);
+    } else {
+      _profileChangesRelay.add(
+        ProfileFavoriteStatusChange(accountId, true)
+      );
     }
   }
 
@@ -225,6 +231,10 @@ class ProfileRepository extends DataRepository {
       // Revert local change
       yield true;
       await FavoriteProfilesDatabase.getInstance().insertProfile(accountId);
+    } else {
+      _profileChangesRelay.add(
+        ProfileFavoriteStatusChange(accountId, false)
+      );
     }
   }
 
@@ -256,4 +266,15 @@ class GetProfileDoesNotExist extends GetProfileResult {
 /// Show error message
 class GetProfileFailed extends GetProfileResult {
   GetProfileFailed();
+}
+
+sealed class ProfileChange {}
+class ProfileNowPrivate extends ProfileChange {
+  final AccountId profile;
+  ProfileNowPrivate(this.profile);
+}
+class ProfileFavoriteStatusChange extends ProfileChange {
+  final AccountId profile;
+  final bool isFavorite;
+  ProfileFavoriteStatusChange(this.profile, this.isFavorite);
 }
