@@ -47,7 +47,7 @@ Widget viewProifle(BuildContext context, AccountId account, Profile profile, Pri
       }
       String profileText;
       if (profile.profileText.isEmpty) {
-        profileText = AppLocalizations.of(context).genericEmpty;
+        profileText = "";
       } else {
         profileText = profile.profileText;
       }

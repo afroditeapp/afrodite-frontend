@@ -24,7 +24,10 @@ mixin _$ViewProfilesData {
   ProfileActionState get profileActionState =>
       throw _privateConstructorUsedError;
   bool get isNotAvailable => throw _privateConstructorUsedError;
-  bool get loadingError => throw _privateConstructorUsedError;
+  bool get isBlocked => throw _privateConstructorUsedError;
+  bool get showLoadingError => throw _privateConstructorUsedError;
+  bool get showLikeCompleted => throw _privateConstructorUsedError;
+  bool get showRemoveLikeCompleted => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ViewProfilesDataCopyWith<ViewProfilesData> get copyWith =>
@@ -45,7 +48,10 @@ abstract class $ViewProfilesDataCopyWith<$Res> {
       bool isFavorite,
       ProfileActionState profileActionState,
       bool isNotAvailable,
-      bool loadingError});
+      bool isBlocked,
+      bool showLoadingError,
+      bool showLikeCompleted,
+      bool showRemoveLikeCompleted});
 }
 
 /// @nodoc
@@ -68,7 +74,10 @@ class _$ViewProfilesDataCopyWithImpl<$Res, $Val extends ViewProfilesData>
     Object? isFavorite = null,
     Object? profileActionState = null,
     Object? isNotAvailable = null,
-    Object? loadingError = null,
+    Object? isBlocked = null,
+    Object? showLoadingError = null,
+    Object? showLikeCompleted = null,
+    Object? showRemoveLikeCompleted = null,
   }) {
     return _then(_value.copyWith(
       accountId: null == accountId
@@ -99,9 +108,21 @@ class _$ViewProfilesDataCopyWithImpl<$Res, $Val extends ViewProfilesData>
           ? _value.isNotAvailable
           : isNotAvailable // ignore: cast_nullable_to_non_nullable
               as bool,
-      loadingError: null == loadingError
-          ? _value.loadingError
-          : loadingError // ignore: cast_nullable_to_non_nullable
+      isBlocked: null == isBlocked
+          ? _value.isBlocked
+          : isBlocked // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showLoadingError: null == showLoadingError
+          ? _value.showLoadingError
+          : showLoadingError // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showLikeCompleted: null == showLikeCompleted
+          ? _value.showLikeCompleted
+          : showLikeCompleted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showRemoveLikeCompleted: null == showRemoveLikeCompleted
+          ? _value.showRemoveLikeCompleted
+          : showRemoveLikeCompleted // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -123,7 +144,10 @@ abstract class _$$ViewProfilesDataImplCopyWith<$Res>
       bool isFavorite,
       ProfileActionState profileActionState,
       bool isNotAvailable,
-      bool loadingError});
+      bool isBlocked,
+      bool showLoadingError,
+      bool showLikeCompleted,
+      bool showRemoveLikeCompleted});
 }
 
 /// @nodoc
@@ -144,7 +168,10 @@ class __$$ViewProfilesDataImplCopyWithImpl<$Res>
     Object? isFavorite = null,
     Object? profileActionState = null,
     Object? isNotAvailable = null,
-    Object? loadingError = null,
+    Object? isBlocked = null,
+    Object? showLoadingError = null,
+    Object? showLikeCompleted = null,
+    Object? showRemoveLikeCompleted = null,
   }) {
     return _then(_$ViewProfilesDataImpl(
       accountId: null == accountId
@@ -175,9 +202,21 @@ class __$$ViewProfilesDataImplCopyWithImpl<$Res>
           ? _value.isNotAvailable
           : isNotAvailable // ignore: cast_nullable_to_non_nullable
               as bool,
-      loadingError: null == loadingError
-          ? _value.loadingError
-          : loadingError // ignore: cast_nullable_to_non_nullable
+      isBlocked: null == isBlocked
+          ? _value.isBlocked
+          : isBlocked // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showLoadingError: null == showLoadingError
+          ? _value.showLoadingError
+          : showLoadingError // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showLikeCompleted: null == showLikeCompleted
+          ? _value.showLikeCompleted
+          : showLikeCompleted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showRemoveLikeCompleted: null == showRemoveLikeCompleted
+          ? _value.showRemoveLikeCompleted
+          : showRemoveLikeCompleted // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -196,7 +235,10 @@ class _$ViewProfilesDataImpl
       this.isFavorite = false,
       this.profileActionState = ProfileActionState.like,
       this.isNotAvailable = false,
-      this.loadingError = false});
+      this.isBlocked = false,
+      this.showLoadingError = false,
+      this.showLikeCompleted = false,
+      this.showRemoveLikeCompleted = false});
 
   @override
   final AccountId accountId;
@@ -217,11 +259,20 @@ class _$ViewProfilesDataImpl
   final bool isNotAvailable;
   @override
   @JsonKey()
-  final bool loadingError;
+  final bool isBlocked;
+  @override
+  @JsonKey()
+  final bool showLoadingError;
+  @override
+  @JsonKey()
+  final bool showLikeCompleted;
+  @override
+  @JsonKey()
+  final bool showRemoveLikeCompleted;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ViewProfilesData(accountId: $accountId, profile: $profile, primaryProfileImage: $primaryProfileImage, imgTag: $imgTag, isFavorite: $isFavorite, profileActionState: $profileActionState, isNotAvailable: $isNotAvailable, loadingError: $loadingError)';
+    return 'ViewProfilesData(accountId: $accountId, profile: $profile, primaryProfileImage: $primaryProfileImage, imgTag: $imgTag, isFavorite: $isFavorite, profileActionState: $profileActionState, isNotAvailable: $isNotAvailable, isBlocked: $isBlocked, showLoadingError: $showLoadingError, showLikeCompleted: $showLikeCompleted, showRemoveLikeCompleted: $showRemoveLikeCompleted)';
   }
 
   @override
@@ -236,7 +287,11 @@ class _$ViewProfilesDataImpl
       ..add(DiagnosticsProperty('isFavorite', isFavorite))
       ..add(DiagnosticsProperty('profileActionState', profileActionState))
       ..add(DiagnosticsProperty('isNotAvailable', isNotAvailable))
-      ..add(DiagnosticsProperty('loadingError', loadingError));
+      ..add(DiagnosticsProperty('isBlocked', isBlocked))
+      ..add(DiagnosticsProperty('showLoadingError', showLoadingError))
+      ..add(DiagnosticsProperty('showLikeCompleted', showLikeCompleted))
+      ..add(DiagnosticsProperty(
+          'showRemoveLikeCompleted', showRemoveLikeCompleted));
   }
 
   @override
@@ -256,8 +311,15 @@ class _$ViewProfilesDataImpl
                 other.profileActionState == profileActionState) &&
             (identical(other.isNotAvailable, isNotAvailable) ||
                 other.isNotAvailable == isNotAvailable) &&
-            (identical(other.loadingError, loadingError) ||
-                other.loadingError == loadingError));
+            (identical(other.isBlocked, isBlocked) ||
+                other.isBlocked == isBlocked) &&
+            (identical(other.showLoadingError, showLoadingError) ||
+                other.showLoadingError == showLoadingError) &&
+            (identical(other.showLikeCompleted, showLikeCompleted) ||
+                other.showLikeCompleted == showLikeCompleted) &&
+            (identical(
+                    other.showRemoveLikeCompleted, showRemoveLikeCompleted) ||
+                other.showRemoveLikeCompleted == showRemoveLikeCompleted));
   }
 
   @override
@@ -270,7 +332,10 @@ class _$ViewProfilesDataImpl
       isFavorite,
       profileActionState,
       isNotAvailable,
-      loadingError);
+      isBlocked,
+      showLoadingError,
+      showLikeCompleted,
+      showRemoveLikeCompleted);
 
   @JsonKey(ignore: true)
   @override
@@ -289,7 +354,10 @@ abstract class _ViewProfilesData implements ViewProfilesData {
       final bool isFavorite,
       final ProfileActionState profileActionState,
       final bool isNotAvailable,
-      final bool loadingError}) = _$ViewProfilesDataImpl;
+      final bool isBlocked,
+      final bool showLoadingError,
+      final bool showLikeCompleted,
+      final bool showRemoveLikeCompleted}) = _$ViewProfilesDataImpl;
 
   @override
   AccountId get accountId;
@@ -306,7 +374,13 @@ abstract class _ViewProfilesData implements ViewProfilesData {
   @override
   bool get isNotAvailable;
   @override
-  bool get loadingError;
+  bool get isBlocked;
+  @override
+  bool get showLoadingError;
+  @override
+  bool get showLikeCompleted;
+  @override
+  bool get showRemoveLikeCompleted;
   @override
   @JsonKey(ignore: true)
   _$$ViewProfilesDataImplCopyWith<_$ViewProfilesDataImpl> get copyWith =>

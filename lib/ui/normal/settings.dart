@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin.dart';
+import 'package:pihka_frontend/ui/normal/settings/blocked_profiles.dart';
 import 'package:pihka_frontend/ui/normal/settings/location.dart';
 import 'package:pihka_frontend/ui/normal/settings/my_profile.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile_visibility.dart';
@@ -62,6 +63,9 @@ class _SettingsViewState extends State<SettingsView> {
           ),
           Setting.createSetting(Icons.public, "Profile visiblity", () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ProfileVisibilityPage()))
+          ),
+          Setting.createSetting(Icons.block, "Blocked profiles", () =>
+            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const BlockedProfilesPage()))
           ),
           Setting.createSetting(Icons.logout, AppLocalizations.of(context).pageSettingsLogoutTitle, () =>
             showConfirmDialog(context, AppLocalizations.of(context).pageSettingsLogoutTitle)

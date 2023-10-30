@@ -77,7 +77,7 @@ abstract class AccountIdDatabase extends BaseDatabase {
     }) ?? false;
   }
 
-  Future<List<AccountIdEntry>?> getAccountIdList(int startIndex, int limit) async {
+  Future<List<AccountId>?> getAccountIdList(int startIndex, int limit) async {
     return await runAction((db) async {
       final result = await db.query(
         accountIdTableName,
@@ -86,7 +86,7 @@ abstract class AccountIdDatabase extends BaseDatabase {
         limit: limit,
         offset: startIndex,
       );
-      return result.map((e) => AccountIdEntry.fromMap(e)).toList();
+      return result.map((e) => AccountIdEntry.fromMap(e).toAccountid()).toList();
     });
   }
 }
@@ -103,6 +103,12 @@ class AccountIdEntry {
 
   AccountIdEntry.fromMap(Map<String, Object?> map):
     uuid = map["uuid"] as String;
+
+  AccountId toAccountid() {
+    return AccountId(
+      accountId: uuid,
+    );
+  }
 
   @override
   String toString() {

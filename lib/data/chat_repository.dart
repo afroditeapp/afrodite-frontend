@@ -5,9 +5,13 @@ import 'dart:ffi';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/profile/account_id_database_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
+import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
+import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
+import 'package:pihka_frontend/database/account_id_database.dart';
 import 'package:pihka_frontend/database/chat/matches_database.dart';
 import 'package:pihka_frontend/database/chat/received_blocks_database.dart';
 import 'package:pihka_frontend/database/chat/received_likes_database.dart';
@@ -31,6 +35,11 @@ class ChatRepository extends DataRepository {
   }
 
   final ApiManager _api = ApiManager.getInstance();
+  final profileEntryDownloader = ProfileEntryDownloader();
+  final AccountIdDatabaseIterator sentBlocksIterator =
+    AccountIdDatabaseIterator(SentBlocksDatabase.getInstance());
+  final AccountIdDatabaseIterator receivedLikesIterator =
+    AccountIdDatabaseIterator(ReceivedLikesDatabase.getInstance());
 
   @override
   Future<void> init() async {
@@ -39,6 +48,9 @@ class ChatRepository extends DataRepository {
 
   @override
   Future<void> onLogin() async {
+    sentBlocksIterator.reset();
+    receivedLikesIterator.reset();
+
     _api.state
       .firstWhere((element) => element == ApiManagerState.connected)
       .then((value) async {
@@ -89,6 +101,14 @@ class ChatRepository extends DataRepository {
     return await ReceivedLikesDatabase.getInstance().exists(accountId);
   }
 
+  Future<bool> isInSentBlocks(AccountId accountId) async {
+    return await SentBlocksDatabase.getInstance().exists(accountId);
+  }
+
+  Future<bool> isInReceivedBlocks(AccountId accountId) async {
+    return await ReceivedBlocksDatabase.getInstance().exists(accountId);
+  }
+
   Future<bool> sendLikeTo(AccountId accountId) async {
     final (result, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.postSendLike(accountId));
     if (result.isSuccess()) {
@@ -114,6 +134,7 @@ class ChatRepository extends DataRepository {
     final (result, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.postBlockProfile(accountId));
     if (result.isSuccess()) {
       await SentBlocksDatabase.getInstance().insertAccountId(accountId);
+      ProfileRepository.getInstance().sendProfileChange(ProfileBlocked(accountId));
     }
     return result.isSuccess();
   }
@@ -122,7 +143,24 @@ class ChatRepository extends DataRepository {
     final (result, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.postUnblockProfile(accountId));
     if (result.isSuccess()) {
       await SentBlocksDatabase.getInstance().removeAccountId(accountId);
+      ProfileRepository.getInstance().sendProfileChange(ProfileUnblocked(accountId));
     }
     return result.isSuccess();
+  }
+
+  /// Returns AccountId for all blocked profiles. ProfileEntry is returned only
+  /// if the blocked profile is public.
+  Future<List<(AccountId, ProfileEntry?)>> sentBlocksIteratorNext() async {
+    final accounts = await sentBlocksIterator.nextList();
+    final newList = List<(AccountId, ProfileEntry?)>.empty(growable: true);
+    for (final accountId in accounts) {
+      final profileData = await profileEntryDownloader.download(accountId);
+      newList.add((accountId, profileData));
+    }
+    return newList;
+  }
+
+  void sentBlocksIteratorReset() {
+    sentBlocksIterator.reset();
   }
 }

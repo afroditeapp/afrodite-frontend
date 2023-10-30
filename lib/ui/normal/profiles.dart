@@ -83,13 +83,10 @@ class _ProfileViewState extends State<ProfileView> {
     switch (event) {
       case ProfileNowPrivate(): {
         // Remove profile if it was made private
-        final controller = _pagingController;
-        if (controller != null) {
-          setState(() {
-            controller.itemList?.removeWhere((item) => item.$1.uuid == event.profile.accountId);
-          });
-        }
+        removeAccountIdFromList(event.profile);
       }
+      case ProfileBlocked():
+        removeAccountIdFromList(event.profile);
       case ProfileFavoriteStatusChange(): {
         // Remove profile if favorites filter is enabled and favorite status is changed to false
         final controller = _pagingController;
@@ -99,6 +96,16 @@ class _ProfileViewState extends State<ProfileView> {
           });
         }
       }
+      case ProfileUnblocked(): {}
+    }
+  }
+
+  void removeAccountIdFromList(AccountId accountId) {
+    final controller = _pagingController;
+    if (controller != null) {
+      setState(() {
+        controller.itemList?.removeWhere((item) => item.$1.uuid == accountId.accountId);
+      });
     }
   }
 

@@ -89,7 +89,11 @@ class ViewProfilePage extends StatelessWidget {
                   showConfirmDialog(context, "Send like?")
                     .then((value) {
                       if (value == true) {
-                        context.read<ViewProfileBloc>().add(DoProfileAction(currentState.accountId, currentState.profileActionState));
+                        context.read<ViewProfileBloc>()
+                          .add(DoProfileAction(
+                            currentState.accountId,
+                            currentState.profileActionState
+                          ));
                       }
                     }),
                 tooltip: 'Send like',
@@ -101,7 +105,11 @@ class ViewProfilePage extends StatelessWidget {
                   showConfirmDialog(context, "Remove like?")
                     .then((value) {
                       if (value == true) {
-                        context.read<ViewProfileBloc>().add(DoProfileAction(currentState.accountId, currentState.profileActionState));
+                        context.read<ViewProfileBloc>()
+                          .add(DoProfileAction(
+                            currentState.accountId,
+                            currentState.profileActionState
+                          ));
                       }
                     }),
                 tooltip: 'Remove like',
@@ -154,10 +162,23 @@ class ViewProfilePage extends StatelessWidget {
             });
           });
           return Container();
-        } else if (state.loadingError) {
+        } else if (state.showLoadingError) {
           Future.delayed(Duration.zero, () {
             showSnackBar("Profile loading error");
-          }).then((value) => context.read<ViewProfileBloc>().add(ResetLoadingError()));
+          }).then((value) => context.read<ViewProfileBloc>().add(ResetShowMessages()));
+        } else if (state.showLikeCompleted) {
+          Future.delayed(Duration.zero, () {
+            showSnackBar("Like sent");
+          }).then((value) => context.read<ViewProfileBloc>().add(ResetShowMessages()));
+        } else if (state.showRemoveLikeCompleted) {
+          Future.delayed(Duration.zero, () {
+            showSnackBar("Like removed");
+          }).then((value) => context.read<ViewProfileBloc>().add(ResetShowMessages()));
+        } else if (state.isBlocked) {
+          Future.delayed(Duration.zero, () {
+            showSnackBar("Profile was blocked");
+            Navigator.pop(context);
+          });
         }
 
         return viewProifle(context, accountId, state.profile, img, true);

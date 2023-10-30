@@ -19,6 +19,7 @@ class OnlineIterator extends IteratorType {
   DatabaseIterator? databaseIterator;
   bool firstIterationAfterLogin;
   final ApiManager api = ApiManager.getInstance();
+  final downloader = ProfileEntryDownloader();
 
   /// If [firstIterationAfterLogin] is true, the iterator will reset the
   /// server iterator to the beginning.
@@ -65,32 +66,15 @@ class OnlineIterator extends IteratorType {
         }
 
         for (final p in profiles.profiles) {
-          final profile = p;
-          final primaryImageInfo = await api.media((api) => api.getPrimaryImageInfo(profile.id.accountId, false));
-          final imageUuid = primaryImageInfo?.contentId?.contentId;
-          if (imageUuid == null) {
+          final entry = await downloader.download(p.id);
+          if (entry == null) {
             continue;
           }
 
-          // Prevent displaying error when profile is made private while iterating
-          final (_, profileDetails) = await api
-            .profileWrapper()
-            .requestWithHttpStatus(logError: false, (api) => api.getProfile(profile.id.accountId));
-          if (profileDetails == null) {
-            continue;
-          }
-          // TODO: Compare cached profile data with the one from the server.
-          //       Update: perhaps another database for profiles? With current
-          //       implementation there is no cached data. Or should
-          //       new profile request be made every time profile is opened and
-          //       use the cache check there?
+          final listEntry = ProfileListEntry(p.id.accountId);
+          await ProfileListDatabase.getInstance().insertProfile(listEntry);
 
-          final entry = ProfileListEntry(profile.id.accountId);
-          await ProfileListDatabase.getInstance().insertProfile(entry);
-
-          final dataEntry = ProfileEntry(profile.id.accountId, imageUuid, profileDetails.name, profileDetails.profileText);
-          await ProfileDatabase.getInstance().insertProfile(dataEntry);
-          list.add(dataEntry);
+          list.add(entry);
         }
 
         if (list.isEmpty) {
@@ -102,5 +86,36 @@ class OnlineIterator extends IteratorType {
 
       return list;
     }
+  }
+}
+
+class ProfileEntryDownloader {
+  final ApiManager api = ApiManager.getInstance();
+
+  /// Download profile entry, save to databases and return it.
+  Future<ProfileEntry?> download(AccountId accountId) async {
+    final primaryImageInfo = await api.media((api) => api.getPrimaryImageInfo(accountId.accountId, false));
+    final imageUuid = primaryImageInfo?.contentId?.contentId;
+    if (imageUuid == null) {
+      return null;
+    }
+
+    // Prevent displaying error when profile is made private while iterating
+    final (_, profileDetails) = await api
+      .profileWrapper()
+      .requestWithHttpStatus(logError: false, (api) => api.getProfile(accountId.accountId));
+    if (profileDetails == null) {
+      return null;
+    }
+    // TODO: Compare cached profile data with the one from the server.
+    //       Update: perhaps another database for profiles? With current
+    //       implementation there is no cached data. Or should
+    //       new profile request be made every time profile is opened and
+    //       use the cache check there?
+
+    final dataEntry = ProfileEntry(accountId.accountId, imageUuid, profileDetails.name, profileDetails.profileText);
+    await ProfileDatabase.getInstance().insertProfile(dataEntry);
+
+    return dataEntry;
   }
 }

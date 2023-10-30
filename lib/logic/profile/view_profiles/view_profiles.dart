@@ -38,7 +38,10 @@ class ViewProfilesData with _$ViewProfilesData {
     @Default(false) bool isFavorite,
     @Default(ProfileActionState.like) ProfileActionState profileActionState,
     @Default(false) bool isNotAvailable,
-    @Default(false) bool loadingError,
+    @Default(false) bool isBlocked,
+    @Default(false) bool showLoadingError,
+    @Default(false) bool showLikeCompleted,
+    @Default(false) bool showRemoveLikeCompleted,
   }) = _ViewProfilesData;
 }
 
@@ -64,7 +67,7 @@ class DoProfileAction extends ViewProfileEvent {
   DoProfileAction(this.accountId, this.action);
 }
 class BlockCurrentProfile extends ViewProfileEvent {}
-class ResetLoadingError extends ViewProfileEvent {}
+class ResetShowMessages extends ViewProfileEvent {}
 
 
 class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with ActionRunner {
@@ -90,9 +93,15 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
         emit(newState);
 
         final isInFavorites = await profile.isInFavorites(newState.accountId);
+        final isBlocked = await chat.isInSentBlocks(newState.accountId) ||
+          await chat.isInReceivedBlocks(newState.accountId);
         final ProfileActionState action = await resolveProfileAction(newState.accountId);
 
-        emit(newState.copyWith(isFavorite: isInFavorites, profileActionState: action));
+        emit(newState.copyWith(
+          isFavorite: isInFavorites,
+          isBlocked: isBlocked,
+          profileActionState: action
+        ));
 
         _getProfileDataSubscription = ProfileRepository.getInstance()
           .getProfileStream(newState.accountId)
@@ -130,14 +139,28 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
         case GetProfileDoesNotExist():
           emit(currentState.copyWith(isNotAvailable: true));
         case GetProfileFailed():
-          emit(currentState.copyWith(loadingError: true));
+          emit(currentState.copyWith(showLoadingError: true));
       }
     });
-    on<ResetLoadingError>((data, emit) async {
-      emit(state?.copyWith(loadingError: false));
+    on<ResetShowMessages>((data, emit) async {
+      emit(state?.copyWith(
+        showLoadingError: false,
+        showLikeCompleted: false,
+        showRemoveLikeCompleted: false,
+      ));
     });
     on<BlockCurrentProfile>((data, emit) async {
-      emit(state?.copyWith(loadingError: false));
+      await runOnce(() async {
+        final currentState = state;
+        if (currentState == null) {
+          return;
+        }
+        if (await chat.sendBlockTo(currentState.accountId)) {
+          emit(currentState.copyWith(
+            isBlocked: true,
+          ));
+        }
+      });
     });
     on<DoProfileAction>((data, emit) async {
       await runOnce(() async {
@@ -149,14 +172,16 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
           case ProfileActionState.like: {
             if (await chat.sendLikeTo(data.accountId)) {
               emit(currentState.copyWith(
-                profileActionState: await resolveProfileAction(data.accountId)
+                profileActionState: await resolveProfileAction(data.accountId),
+                showLikeCompleted: true,
               ));
             }
           }
           case ProfileActionState.removeLike: {
             if (await chat.removeLikeFrom(data.accountId)) {
               emit(currentState.copyWith(
-                profileActionState: await resolveProfileAction(data.accountId)
+                profileActionState: await resolveProfileAction(data.accountId),
+                showRemoveLikeCompleted: true,
               ));
             }
           }

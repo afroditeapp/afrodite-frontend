@@ -5,6 +5,7 @@ import 'dart:ffi';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
 import 'package:pihka_frontend/data/utils.dart';
@@ -188,7 +189,27 @@ class ProfileRepository extends DataRepository {
   }
 
   Future<List<ProfileEntry>> nextList() async {
-    return await mainProfilesViewIterator.nextList();
+    // TODO: Perhaps move to iterator when filters are implemented?
+    while (true) {
+      final list = await mainProfilesViewIterator.nextList();
+      if (list.isEmpty) {
+        return [];
+      }
+      final toBeRemoved = <ProfileEntry>[];
+      for (final profile in list) {
+        final accountId = AccountId(accountId: profile.uuid);
+        final isBlocked = await ChatRepository.getInstance().isInReceivedBlocks(accountId) ||
+          await ChatRepository.getInstance().isInSentBlocks(accountId);
+        if (isBlocked) {
+          toBeRemoved.add(profile);
+        }
+      }
+      list.removeWhere((element) => toBeRemoved.contains(element));
+      if (list.isEmpty) {
+        continue;
+      }
+      return list;
+    }
   }
 
   Future<bool> isInFavorites(AccountId accountId) async {
@@ -275,6 +296,14 @@ sealed class ProfileChange {}
 class ProfileNowPrivate extends ProfileChange {
   final AccountId profile;
   ProfileNowPrivate(this.profile);
+}
+class ProfileBlocked extends ProfileChange {
+  final AccountId profile;
+  ProfileBlocked(this.profile);
+}
+class ProfileUnblocked extends ProfileChange {
+  final AccountId profile;
+  ProfileUnblocked(this.profile);
 }
 class ProfileFavoriteStatusChange extends ProfileChange {
   final AccountId profile;
