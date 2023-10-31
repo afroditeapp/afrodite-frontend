@@ -163,4 +163,26 @@ class ChatRepository extends DataRepository {
   void sentBlocksIteratorReset() {
     sentBlocksIterator.reset();
   }
+
+  /// ProfileEntry is returned if a profile of the like sender
+  /// is cached or the profile is public.
+  ///
+  /// Private profiles are not returned (except the cached ones).
+  Future<List<ProfileEntry>> receivedLikesIteratorNext() async {
+    final accounts = await receivedLikesIterator.nextList();
+    final newList = <ProfileEntry>[];
+    for (final accountId in accounts) {
+      final profileData =
+        await ProfileDatabase.getInstance().getProfileEntry(accountId) ??
+        await profileEntryDownloader.download(accountId);
+      if (profileData != null) {
+        newList.add(profileData);
+      }
+    }
+    return newList;
+  }
+
+  void receivedLikesIteratorReset() {
+    receivedLikesIterator.reset();
+  }
 }
