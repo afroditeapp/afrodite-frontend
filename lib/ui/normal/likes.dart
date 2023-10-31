@@ -55,27 +55,35 @@ class _LikeViewState extends State<LikeView> {
     });
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = ProfileRepository.getInstance().profileChanges.listen((event) {
-        handleProfileChange(event);
+        _handleProfileChange(event);
     });
   }
 
-  void handleProfileChange(ProfileChange event) {
+  void _handleProfileChange(ProfileChange event) {
     switch (event) {
       case ProfileNowPrivate():
-        removeAccountIdFromList(event.profile);
+        _removeAccountIdFromList(event.profile);
       case ProfileBlocked():
-        removeAccountIdFromList(event.profile);
+        _removeAccountIdFromList(event.profile);
+      case LikesChanged():
+        _refreshLikes();
       case ProfileUnblocked() || ProfileFavoriteStatusChange(): {}
     }
   }
 
-  void removeAccountIdFromList(AccountId accountId) {
+  void _removeAccountIdFromList(AccountId accountId) {
     final controller = _pagingController;
     if (controller != null) {
       setState(() {
         controller.itemList?.removeWhere((item) => item.$1.uuid == accountId.accountId);
       });
     }
+  }
+
+  void _refreshLikes() {
+    ChatRepository.getInstance().receivedLikesIteratorReset();
+    // This might be disposed after resetProfileIterator completes.
+    _pagingController?.refresh();
   }
 
   Future<void> _fetchPage(int pageKey) async {

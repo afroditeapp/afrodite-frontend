@@ -58,7 +58,8 @@ class _BlockedProfilesPage extends State<BlockedProfilesPage> {
         removeAccountIdFromList(event.profile);
       case ProfileNowPrivate() ||
         ProfileBlocked() ||
-        ProfileFavoriteStatusChange(): {}
+        ProfileFavoriteStatusChange() ||
+        LikesChanged(): {}
     }
   }
 

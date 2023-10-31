@@ -57,6 +57,10 @@ class HandleProfileResult extends ViewProfileEvent {
   final GetProfileResult result;
   HandleProfileResult(this.result);
 }
+class HandleProfileChange extends ViewProfileEvent {
+  final ProfileChange change;
+  HandleProfileChange(this.change);
+}
 class ToggleFavoriteStatus extends ViewProfileEvent {
   final AccountId accountId;
   ToggleFavoriteStatus(this.accountId);
@@ -77,6 +81,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
   final ChatRepository chat;
 
   StreamSubscription<GetProfileResult>? _getProfileDataSubscription;
+  StreamSubscription<ProfileChange>? _profileChangeSubscription;
 
   ViewProfileBloc(this.account, this.profile, this.media, this.chat) : super(null) {
     on<SetProfileView>((data, emit) async {
@@ -142,6 +147,29 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
           emit(currentState.copyWith(showLoadingError: true));
       }
     });
+    on<HandleProfileChange>((data, emit) async {
+      final currentState = state;
+      if (currentState == null) {
+        return;
+      }
+      final change = data.change;
+      switch (change) {
+        case ProfileBlocked(): {
+          if (change.profile == currentState.accountId) {
+            emit(currentState.copyWith(isBlocked: true));
+          }
+        }
+        case LikesChanged(): {
+          final ProfileActionState action = await resolveProfileAction(currentState.accountId);
+          emit(currentState.copyWith(
+            profileActionState: action,
+          ));
+        }
+        case ProfileNowPrivate() ||
+          ProfileUnblocked() ||
+          ProfileFavoriteStatusChange(): {}
+      }
+    });
     on<ResetShowMessages>((data, emit) async {
       emit(state?.copyWith(
         showLoadingError: false,
@@ -190,6 +218,12 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
         }
       });
     });
+
+    _profileChangeSubscription = ProfileRepository.getInstance()
+      .profileChanges
+      .listen((event) {
+        add(HandleProfileChange(event));
+      });
   }
 
   Future<ProfileActionState> resolveProfileAction(AccountId accountId) async {
@@ -202,5 +236,12 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
     } else {
       return ProfileActionState.like;
     }
+  }
+
+  @override
+  Future<void> close() async {
+    await _getProfileDataSubscription?.cancel();
+    await _profileChangeSubscription?.cancel();
+    return super.close();
   }
 }

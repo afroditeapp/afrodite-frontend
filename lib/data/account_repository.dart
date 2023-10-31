@@ -195,10 +195,21 @@ class AccountRepository extends DataRepository {
 
     final accountState = event.accountState;
     final capabilities = event.capabilities;
+    final latestViewedMessageChanged = event.latestViewedMessageChanged;
     if (event.event == EventType.accountStateChanged && accountState != null) {
       _saveAndUpdateAccountState(accountState);
     } else if (event.event == EventType.accountCapabilitiesChanged && capabilities != null) {
       _saveAndUpdateCapabilities(capabilities);
+    } else if (event.event == EventType.latestViewedMessageChanged && latestViewedMessageChanged != null) {
+      // TODO
+      log.warning("Unhandled event");
+    } else if (event.event == EventType.likesChanged) {
+      ChatRepository.getInstance().receivedLikesRefresh();
+    } else if (event.event == EventType.receivedBlocksChanged) {
+      ChatRepository.getInstance().receivedBlocksRefresh();
+    } else if (event.event == EventType.newMessageReceived) {
+      // TODO
+      log.warning("Unhandled event");
     } else {
       log.error("Unknown EventToClient");
     }

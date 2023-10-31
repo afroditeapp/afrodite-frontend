@@ -77,7 +77,8 @@ abstract class AccountIdDatabase extends BaseDatabase {
     }) ?? false;
   }
 
-  Future<List<AccountId>?> getAccountIdList(int startIndex, int limit) async {
+  /// Returns null in case of an error.
+  Future<List<AccountId>?> getAccountIdList(int startIndex, int? limit) async {
     return await runAction((db) async {
       final result = await db.query(
         accountIdTableName,

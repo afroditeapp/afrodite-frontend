@@ -96,7 +96,7 @@ class _ProfileViewState extends State<ProfileView> {
           });
         }
       }
-      case ProfileUnblocked(): {}
+      case ProfileUnblocked() || LikesChanged(): {}
     }
   }
 

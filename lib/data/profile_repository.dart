@@ -305,6 +305,7 @@ class ProfileUnblocked extends ProfileChange {
   final AccountId profile;
   ProfileUnblocked(this.profile);
 }
+class LikesChanged extends ProfileChange {}
 class ProfileFavoriteStatusChange extends ProfileChange {
   final AccountId profile;
   final bool isFavorite;

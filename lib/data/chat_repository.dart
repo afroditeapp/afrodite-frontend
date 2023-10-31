@@ -58,16 +58,14 @@ class ChatRepository extends DataRepository {
         // these if needed.
 
         // Download received blocks.
-        final receivedBlocks = await _api.chat((api) => api.getReceivedBlocks());
-        await ReceivedBlocksDatabase.getInstance().insertAccountIdList(receivedBlocks?.profiles);
+        await receivedBlocksRefresh();
 
         // Download sent blocks.
         final sentBlocks = await _api.chat((api) => api.getSentBlocks());
         await SentBlocksDatabase.getInstance().insertAccountIdList(sentBlocks?.profiles);
 
         // Download received likes.
-        final receivedLikes = await _api.chat((api) => api.getReceivedLikes());
-        await ReceivedLikesDatabase.getInstance().insertAccountIdList(receivedLikes?.profiles);
+        await receivedLikesRefresh();
 
         // Download sent likes.
         final sentLikes = await _api.chat((api) => api.getSentLikes());
@@ -134,6 +132,7 @@ class ChatRepository extends DataRepository {
     final (result, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.postBlockProfile(accountId));
     if (result.isSuccess()) {
       await SentBlocksDatabase.getInstance().insertAccountId(accountId);
+      await ReceivedLikesDatabase.getInstance().removeAccountId(accountId);
       ProfileRepository.getInstance().sendProfileChange(ProfileBlocked(accountId));
     }
     return result.isSuccess();
@@ -164,6 +163,29 @@ class ChatRepository extends DataRepository {
     sentBlocksIterator.reset();
   }
 
+  Future<void> receivedBlocksRefresh() async {
+    final receivedBlocks = await _api.chat((api) => api.getReceivedBlocks());
+    if (receivedBlocks != null) {
+      final db = ReceivedBlocksDatabase.getInstance();
+
+      final currentReceivedBlocks = await db.getAccountIdList(0, null) ?? [];
+      await db.clearAccountIds();
+      await db.insertAccountIdList(receivedBlocks.profiles);
+
+      for (final account in receivedBlocks.profiles) {
+        if (!currentReceivedBlocks.contains(account)) {
+          await ReceivedLikesDatabase.getInstance().removeAccountId(account);
+          await MatchesDatabase.getInstance().removeAccountId(account);
+          await SentLikesDatabase.getInstance().removeAccountId(account);
+          // Perhaps if both users blocks same time, the same account could be
+          // in both sent and received blocks. This handles that case.
+          await SentBlocksDatabase.getInstance().removeAccountId(account);
+          ProfileRepository.getInstance().sendProfileChange(ProfileBlocked(account));
+        }
+      }
+    }
+  }
+
   /// ProfileEntry is returned if a profile of the like sender
   /// is cached or the profile is public.
   ///
@@ -184,5 +206,15 @@ class ChatRepository extends DataRepository {
 
   void receivedLikesIteratorReset() {
     receivedLikesIterator.reset();
+  }
+
+  Future<void> receivedLikesRefresh() async {
+    final receivedLikes = await _api.chat((api) => api.getReceivedLikes());
+    if (receivedLikes != null) {
+      final db = ReceivedLikesDatabase.getInstance();
+      await db.clearAccountIds();
+      await db.insertAccountIdList(receivedLikes.profiles);
+      ProfileRepository.getInstance().sendProfileChange(LikesChanged());
+    }
   }
 }
