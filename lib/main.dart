@@ -12,6 +12,7 @@ import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/chat/matches_database.dart';
+import 'package:pihka_frontend/database/chat/message_database.dart';
 import 'package:pihka_frontend/database/chat/received_blocks_database.dart';
 import 'package:pihka_frontend/database/chat/received_likes_database.dart';
 import 'package:pihka_frontend/database/chat/sent_blocks_database.dart';
@@ -155,6 +156,7 @@ class GlobalInitManager {
     await ReceivedLikesDatabase.getInstance().init();
     await SentLikesDatabase.getInstance().init();
     await SentBlocksDatabase.getInstance().init();
+    await MessageDatabase.getInstance().init();
 
     await AccountRepository.getInstance().init();
     await MediaRepository.getInstance().init();

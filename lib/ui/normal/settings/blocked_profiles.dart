@@ -59,6 +59,7 @@ class _BlockedProfilesPage extends State<BlockedProfilesPage> {
       case ProfileNowPrivate() ||
         ProfileBlocked() ||
         ProfileFavoriteStatusChange() ||
+        ConversationChanged() ||
         LikesChanged(): {}
     }
   }

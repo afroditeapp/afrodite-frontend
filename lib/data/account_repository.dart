@@ -208,8 +208,7 @@ class AccountRepository extends DataRepository {
     } else if (event.event == EventType.receivedBlocksChanged) {
       ChatRepository.getInstance().receivedBlocksRefresh();
     } else if (event.event == EventType.newMessageReceived) {
-      // TODO
-      log.warning("Unhandled event");
+      ChatRepository.getInstance().receiveNewMessages();
     } else {
       log.error("Unknown EventToClient");
     }

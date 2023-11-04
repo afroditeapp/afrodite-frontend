@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 
+import 'package:async/async.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/profile/account_id_database_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
@@ -13,6 +15,7 @@ import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/account_id_database.dart';
 import 'package:pihka_frontend/database/chat/matches_database.dart';
+import 'package:pihka_frontend/database/chat/message_database.dart';
 import 'package:pihka_frontend/database/chat/received_blocks_database.dart';
 import 'package:pihka_frontend/database/chat/received_likes_database.dart';
 import 'package:pihka_frontend/database/chat/sent_blocks_database.dart';
@@ -240,5 +243,41 @@ class ChatRepository extends DataRepository {
 
   void matchesIteratorReset() {
     matchesIterator.reset();
+  }
+
+  // Messages
+
+  Future<void> receiveNewMessages() async {
+    final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
+    if (currentUser == null) {
+      return;
+    }
+    final newMessages = await _api.chat((api) => api.getPendingMessages());
+    if (newMessages != null) {
+      final toBeDeleted = <PendingMessageId>[];
+      final db = MessageDatabase.getInstance();
+      for (final message in newMessages.messages) {
+        if (await db.insertPendingMessage(currentUser, message)) {
+          toBeDeleted.add(message.id);
+        }
+      }
+      final toBeDeletedList = PendingMessageDeleteList(messagesIds: toBeDeleted);
+      final (result, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.deletePendingMessages(toBeDeletedList));
+      if (result.isSuccess()) {
+        for (final message in newMessages.messages) {
+          await db.updateReceivedMessageState(
+            currentUser,
+            message.id.accountIdSender,
+            message.id.messageNumber,
+            ReceivedMessageState.deletedFromServer,
+          );
+        }
+      }
+      // TODO: If request fails try again at some point.
+
+      for (final message in newMessages.messages) {
+        ProfileRepository.getInstance().sendProfileChange(ConversationChanged(message.id.accountIdSender));
+      }
+    }
   }
 }

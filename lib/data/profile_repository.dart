@@ -311,6 +311,10 @@ class ProfileUnblocked extends ProfileChange {
   final AccountId profile;
   ProfileUnblocked(this.profile);
 }
+class ConversationChanged extends ProfileChange {
+  final AccountId conversationWith;
+  ConversationChanged(this.conversationWith);
+}
 class LikesChanged extends ProfileChange {}
 class ProfileFavoriteStatusChange extends ProfileChange {
   final AccountId profile;

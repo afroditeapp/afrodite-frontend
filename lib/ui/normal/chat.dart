@@ -66,6 +66,7 @@ class _ChatViewState extends State<ChatView> {
       case ProfileNowPrivate() ||
         ProfileUnblocked() ||
         ProfileFavoriteStatusChange() ||
+        ConversationChanged() ||
         LikesChanged(): {}
     }
   }

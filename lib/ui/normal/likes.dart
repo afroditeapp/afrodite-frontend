@@ -67,7 +67,9 @@ class _LikeViewState extends State<LikeView> {
         _removeAccountIdFromList(event.profile);
       case LikesChanged():
         _refreshLikes();
-      case ProfileUnblocked() || ProfileFavoriteStatusChange(): {}
+      case ProfileUnblocked() ||
+        ConversationChanged() ||
+        ProfileFavoriteStatusChange(): {}
     }
   }
 

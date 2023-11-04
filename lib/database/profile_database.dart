@@ -64,6 +64,8 @@ class ProfileDatabase extends BaseDatabase {
   }
 
   /// Replaces the existing entry if it exists.
+  /// TODO: Replace the existing entry if it exists.
+  ///       Would adding UNIQUE(uuid) to the table definition work?
   Future<int?> insertProfile(ProfileEntry entry) async {
     return await runAction((db) async {
       return await db.insert(profilesTableName, entry.toMap());

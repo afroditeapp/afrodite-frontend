@@ -13,6 +13,7 @@ enum DatabaseType {
   chatSentBlocks,
   chatSentLikes,
   chatMatches,
+  chatMessages,
   profile,
   favoriteProfiles,
   profileList;
@@ -35,6 +36,8 @@ enum DatabaseType {
         return "g.db";
       case DatabaseType.chatMatches:
         return "h.db";
+      case DatabaseType.chatMessages:
+        return "h.db";
     }
   }
   String get databaseErrorTitle {
@@ -55,6 +58,8 @@ enum DatabaseType {
         return "Sent likes database error";
       case DatabaseType.chatMatches:
         return "Matches database error";
+      case DatabaseType.chatMessages:
+        return "Messages database error";
     }
   }
 }
