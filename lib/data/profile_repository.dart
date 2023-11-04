@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 
+import 'package:async/async.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
@@ -189,6 +191,9 @@ class ProfileRepository extends DataRepository {
   }
 
   Future<List<ProfileEntry>> nextList() async {
+    // TODO: cache this somewhere?
+    final ownAccountId = await AccountRepository.getInstance().accountId.firstOrNull;
+
     // TODO: Perhaps move to iterator when filters are implemented?
     while (true) {
       final list = await mainProfilesViewIterator.nextList();
@@ -200,7 +205,8 @@ class ProfileRepository extends DataRepository {
         final accountId = AccountId(accountId: profile.uuid);
         final isBlocked = await ChatRepository.getInstance().isInReceivedBlocks(accountId) ||
           await ChatRepository.getInstance().isInSentBlocks(accountId);
-        if (isBlocked) {
+
+        if (isBlocked || accountId == ownAccountId) {
           toBeRemoved.add(profile);
         }
       }
