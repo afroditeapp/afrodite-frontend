@@ -27,14 +27,14 @@ class ImageCacheData extends AppSingleton {
 
   final CacheManager cacheManager;
 
-  Future<File?> getImage(AccountId imageOwner, ContentId id) async {
+  Future<File?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) async {
     final fileInfo = await cacheManager.getFileFromCache(id.contentId);
     if (fileInfo != null) {
       // TODO: error handling?
       return fileInfo.file;
     }
 
-    final imageData = await MediaRepository.getInstance().getImage(imageOwner, id);
+    final imageData = await MediaRepository.getInstance().getImage(imageOwner, id, isMatch: isMatch);
     if (imageData == null) {
       return null;
     }

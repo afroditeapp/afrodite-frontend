@@ -34,11 +34,11 @@ class MediaRepository extends DataRepository {
     // nothing to do
   }
 
-  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id) async {
+  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) async {
     final data = await api.media((api) => api.getImageFixed(
       imageOwner.accountId,
       id.contentId,
-      false
+      isMatch,
     ));
     if (data != null) {
       return data;

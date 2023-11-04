@@ -40,6 +40,8 @@ class ChatRepository extends DataRepository {
     AccountIdDatabaseIterator(SentBlocksDatabase.getInstance());
   final AccountIdDatabaseIterator receivedLikesIterator =
     AccountIdDatabaseIterator(ReceivedLikesDatabase.getInstance());
+  final AccountIdDatabaseIterator matchesIterator =
+    AccountIdDatabaseIterator(MatchesDatabase.getInstance());
 
   @override
   Future<void> init() async {
@@ -216,5 +218,27 @@ class ChatRepository extends DataRepository {
       await db.insertAccountIdList(receivedLikes.profiles);
       ProfileRepository.getInstance().sendProfileChange(LikesChanged());
     }
+  }
+
+  /// Iterate ProfileEntries of current matches.
+  ///
+  /// Matches can see the profiles of each other even if one/both are
+  /// set as private.
+  Future<List<ProfileEntry>> matchesIteratorNext() async {
+    final accounts = await matchesIterator.nextList();
+    final newList = <ProfileEntry>[];
+    for (final accountId in accounts) {
+      final profileData =
+        await ProfileDatabase.getInstance().getProfileEntry(accountId) ??
+        await profileEntryDownloader.download(accountId, isMatch: true);
+      if (profileData != null) {
+        newList.add(profileData);
+      }
+    }
+    return newList;
+  }
+
+  void matchesIteratorReset() {
+    matchesIterator.reset();
   }
 }

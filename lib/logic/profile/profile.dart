@@ -78,17 +78,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileData> with ActionRunner {
     });
   }
 
-  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id) async {
-    return media.getImage(imageOwner, id);
-  }
+  // Future<Uint8List?> getImage(AccountId imageOwner, ContentId id) async {
+  //   return media.getImage(imageOwner, id);
+  // }
 
-  Future<Uint8List?> getProfileImage(AccountId imageOwner) async {
-    final contentId = await media.getProfileImage(imageOwner, false);
+  // Future<Uint8List?> getProfileImage(AccountId imageOwner) async {
+  //   final contentId = await media.getProfileImage(imageOwner, false);
 
-    if (contentId != null) {
-      return await getImage(imageOwner, contentId);
-    } else {
-      return null;
-    }
-  }
+  //   if (contentId != null) {
+  //     return await getImage(imageOwner, contentId);
+  //   } else {
+  //     return null;
+  //   }
+  // }
 }

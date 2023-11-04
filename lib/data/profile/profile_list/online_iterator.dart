@@ -93,8 +93,8 @@ class ProfileEntryDownloader {
   final ApiManager api = ApiManager.getInstance();
 
   /// Download profile entry, save to databases and return it.
-  Future<ProfileEntry?> download(AccountId accountId) async {
-    final primaryImageInfo = await api.media((api) => api.getPrimaryImageInfo(accountId.accountId, false));
+  Future<ProfileEntry?> download(AccountId accountId, {bool isMatch = false}) async {
+    final primaryImageInfo = await api.media((api) => api.getPrimaryImageInfo(accountId.accountId, isMatch));
     final imageUuid = primaryImageInfo?.contentId?.contentId;
     if (imageUuid == null) {
       return null;
