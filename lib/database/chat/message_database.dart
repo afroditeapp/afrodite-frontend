@@ -76,6 +76,25 @@ class MessageDatabase extends BaseDatabase {
     });
   }
 
+  Future<bool> insertToBeSentMessage(
+    AccountId localAccountId,
+    AccountId remoteAccountId,
+    String messageText,
+  ) async {
+    final message = MessageEntry(
+      localAccountId,
+      remoteAccountId,
+      messageText,
+      sentMessageState: SentMessageState.pending,
+    );
+    final result = await insert(message);
+    if (result != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   // Returns true if the insert was successful.
   Future<bool> insertPendingMessage(AccountId localAccountId, PendingMessage entry) async {
     final unixTime = DateTime.fromMillisecondsSinceEpoch(entry.unixTime * 1000);

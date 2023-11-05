@@ -280,4 +280,26 @@ class ChatRepository extends DataRepository {
       }
     }
   }
+
+  // TODO error handling
+  // Use stream instead?
+  Future<void> sendMessageTo(AccountId accountId, String message) async {
+    final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
+    if (currentUser == null) {
+      return;
+    }
+    final saveMessageResult = await MessageDatabase.getInstance().insertToBeSentMessage(
+      currentUser,
+      accountId,
+      message,
+    );
+    if (!saveMessageResult) {
+      return;
+    }
+    final sendMessage = SendMessageToAccount(message: message, receiver: accountId);
+    final (result, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.postSendMessage(sendMessage));
+    if (!result.isSuccess()) {
+      // TODO error handling
+    }
+  }
 }

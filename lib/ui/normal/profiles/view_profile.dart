@@ -7,8 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/logic/profile/profile.dart';
 import 'package:pihka_frontend/logic/profile/view_profiles/view_profiles.dart';
+import 'package:pihka_frontend/ui/normal/chat/conversation.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin/moderate_images.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
@@ -118,15 +120,17 @@ class ViewProfilePage extends StatelessWidget {
             case ProfileActionState.makeMatch:
               return FloatingActionButton(
                 onPressed: () {
-                  showInfoDialog(context, "Not implemented");
+                  context.read<ConversationBloc>().add(SetConversationView(currentState.accountId, currentState.profile, currentState.primaryProfileImage));
+                  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage()));
                 },
-                tooltip: 'Open chat',
-                child: const Icon(Icons.chat_rounded),
+                tooltip: 'Send message to make a match',
+                child: const Icon(Icons.waving_hand),
               );
             case ProfileActionState.chat:
               return FloatingActionButton(
                 onPressed: () {
-                  showInfoDialog(context, "Not implemented");
+                  context.read<ConversationBloc>().add(SetConversationView(currentState.accountId, currentState.profile, currentState.primaryProfileImage));
+                  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage()));
                 },
                 tooltip: 'Open chat',
                 child: const Icon(Icons.chat_rounded),
