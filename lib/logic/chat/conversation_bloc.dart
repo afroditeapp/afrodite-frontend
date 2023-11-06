@@ -31,6 +31,7 @@ class ConversationData with _$ConversationData {
     @Default(false) bool isBlocked,
     /// Resets chat box to empty state
     @Default(false) bool isSendSuccessful,
+    @Default(0) int messageCount,
   }) = _ConversationData;
 }
 
@@ -50,6 +51,10 @@ class HandleProfileChange extends ConversationEvent {
   final ProfileChange change;
   HandleProfileChange(this.change);
 }
+class MessageCountChanged extends ConversationEvent {
+  final int newMessageCount;
+  MessageCountChanged(this.newMessageCount);
+}
 class BlockProfile extends ConversationEvent {
   final AccountId accountId;
   BlockProfile(this.accountId);
@@ -62,11 +67,14 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData?> with A
   final MediaRepository media;
   final ChatRepository chat;
 
+  StreamSubscription<int>? _messageCountSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
 
   ConversationBloc(this.account, this.profile, this.media, this.chat) : super(null) {
     on<SetConversationView>((data, emit) async {
       await runOnce(() async {
+        await _messageCountSubscription?.cancel();
+
         final newState = ConversationData(
           accountId: data.accountId,
           profile: data.profile,
@@ -83,6 +91,10 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData?> with A
           isMatch: isMatch,
           isBlocked: isBlocked,
         ));
+
+        _messageCountSubscription = chat.getMessageCount(newState.accountId).listen((newMessageCount) {
+          add(MessageCountChanged(newMessageCount));
+        });
       });
     });
     on<HandleProfileChange>((data, emit) async {
@@ -101,6 +113,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData?> with A
           ProfileUnblocked() ||
           LikesChanged() ||
           ConversationChanged() ||
+          MatchesChanged() ||
           ProfileFavoriteStatusChange(): {}
       }
     });
@@ -124,13 +137,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData?> with A
           return;
         }
         await chat.sendMessageTo(data.accountId, data.message);
-
-        // if () {
-        //   emit(currentState.copyWith(
-        //     profileActionState: await resolveProfileAction(data.accountId),
-        //     showLikeCompleted: true,
-        //   ));
-        // }
       });
     });
     on<NotifyChatBoxCleared>((data, emit) async {
@@ -140,6 +146,15 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData?> with A
       }
       emit(currentState.copyWith(
         isSendSuccessful: false,
+      ));
+    });
+    on<MessageCountChanged>((data, emit) async {
+      final currentState = state;
+      if (currentState == null) {
+        return;
+      }
+      emit(currentState.copyWith(
+        messageCount: data.newMessageCount,
       ));
     });
 
@@ -152,6 +167,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData?> with A
 
   @override
   Future<void> close() async {
+    await _messageCountSubscription?.cancel();
     await _profileChangeSubscription?.cancel();
     return super.close();
   }

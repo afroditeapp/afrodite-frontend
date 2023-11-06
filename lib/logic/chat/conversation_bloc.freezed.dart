@@ -24,6 +24,7 @@ mixin _$ConversationData {
 
   /// Resets chat box to empty state
   bool get isSendSuccessful => throw _privateConstructorUsedError;
+  int get messageCount => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ConversationDataCopyWith<ConversationData> get copyWith =>
@@ -42,7 +43,8 @@ abstract class $ConversationDataCopyWith<$Res> {
       File primaryProfileImage,
       bool isMatch,
       bool isBlocked,
-      bool isSendSuccessful});
+      bool isSendSuccessful,
+      int messageCount});
 }
 
 /// @nodoc
@@ -64,6 +66,7 @@ class _$ConversationDataCopyWithImpl<$Res, $Val extends ConversationData>
     Object? isMatch = null,
     Object? isBlocked = null,
     Object? isSendSuccessful = null,
+    Object? messageCount = null,
   }) {
     return _then(_value.copyWith(
       accountId: null == accountId
@@ -90,6 +93,10 @@ class _$ConversationDataCopyWithImpl<$Res, $Val extends ConversationData>
           ? _value.isSendSuccessful
           : isSendSuccessful // ignore: cast_nullable_to_non_nullable
               as bool,
+      messageCount: null == messageCount
+          ? _value.messageCount
+          : messageCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -108,7 +115,8 @@ abstract class _$$ConversationDataImplCopyWith<$Res>
       File primaryProfileImage,
       bool isMatch,
       bool isBlocked,
-      bool isSendSuccessful});
+      bool isSendSuccessful,
+      int messageCount});
 }
 
 /// @nodoc
@@ -128,6 +136,7 @@ class __$$ConversationDataImplCopyWithImpl<$Res>
     Object? isMatch = null,
     Object? isBlocked = null,
     Object? isSendSuccessful = null,
+    Object? messageCount = null,
   }) {
     return _then(_$ConversationDataImpl(
       accountId: null == accountId
@@ -154,6 +163,10 @@ class __$$ConversationDataImplCopyWithImpl<$Res>
           ? _value.isSendSuccessful
           : isSendSuccessful // ignore: cast_nullable_to_non_nullable
               as bool,
+      messageCount: null == messageCount
+          ? _value.messageCount
+          : messageCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -169,7 +182,8 @@ class _$ConversationDataImpl
       required this.primaryProfileImage,
       this.isMatch = false,
       this.isBlocked = false,
-      this.isSendSuccessful = false});
+      this.isSendSuccessful = false,
+      this.messageCount = 0});
 
   @override
   final AccountId accountId;
@@ -188,10 +202,13 @@ class _$ConversationDataImpl
   @override
   @JsonKey()
   final bool isSendSuccessful;
+  @override
+  @JsonKey()
+  final int messageCount;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ConversationData(accountId: $accountId, profile: $profile, primaryProfileImage: $primaryProfileImage, isMatch: $isMatch, isBlocked: $isBlocked, isSendSuccessful: $isSendSuccessful)';
+    return 'ConversationData(accountId: $accountId, profile: $profile, primaryProfileImage: $primaryProfileImage, isMatch: $isMatch, isBlocked: $isBlocked, isSendSuccessful: $isSendSuccessful, messageCount: $messageCount)';
   }
 
   @override
@@ -204,7 +221,8 @@ class _$ConversationDataImpl
       ..add(DiagnosticsProperty('primaryProfileImage', primaryProfileImage))
       ..add(DiagnosticsProperty('isMatch', isMatch))
       ..add(DiagnosticsProperty('isBlocked', isBlocked))
-      ..add(DiagnosticsProperty('isSendSuccessful', isSendSuccessful));
+      ..add(DiagnosticsProperty('isSendSuccessful', isSendSuccessful))
+      ..add(DiagnosticsProperty('messageCount', messageCount));
   }
 
   @override
@@ -221,12 +239,14 @@ class _$ConversationDataImpl
             (identical(other.isBlocked, isBlocked) ||
                 other.isBlocked == isBlocked) &&
             (identical(other.isSendSuccessful, isSendSuccessful) ||
-                other.isSendSuccessful == isSendSuccessful));
+                other.isSendSuccessful == isSendSuccessful) &&
+            (identical(other.messageCount, messageCount) ||
+                other.messageCount == messageCount));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, accountId, profile,
-      primaryProfileImage, isMatch, isBlocked, isSendSuccessful);
+      primaryProfileImage, isMatch, isBlocked, isSendSuccessful, messageCount);
 
   @JsonKey(ignore: true)
   @override
@@ -243,7 +263,8 @@ abstract class _ConversationData implements ConversationData {
       required final File primaryProfileImage,
       final bool isMatch,
       final bool isBlocked,
-      final bool isSendSuccessful}) = _$ConversationDataImpl;
+      final bool isSendSuccessful,
+      final int messageCount}) = _$ConversationDataImpl;
 
   @override
   AccountId get accountId;
@@ -259,6 +280,8 @@ abstract class _ConversationData implements ConversationData {
 
   /// Resets chat box to empty state
   bool get isSendSuccessful;
+  @override
+  int get messageCount;
   @override
   @JsonKey(ignore: true)
   _$$ConversationDataImplCopyWith<_$ConversationDataImpl> get copyWith =>

@@ -317,6 +317,7 @@ class ConversationChanged extends ProfileChange {
   ConversationChanged(this.conversationWith);
 }
 class LikesChanged extends ProfileChange {}
+class MatchesChanged extends ProfileChange {}
 class ProfileFavoriteStatusChange extends ProfileChange {
   final AccountId profile;
   final bool isFavorite;

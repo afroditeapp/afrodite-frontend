@@ -78,7 +78,7 @@ class ChatRepository extends DataRepository {
 
         // Download current matches.
         final matchesList = await _api.chat((api) => api.getMatches());
-        await SentLikesDatabase.getInstance().insertAccountIdList(matchesList?.profiles);
+        await MatchesDatabase.getInstance().insertAccountIdList(matchesList?.profiles);
       })
       .ignore();
   }
@@ -257,10 +257,18 @@ class ChatRepository extends DataRepository {
       final toBeDeleted = <PendingMessageId>[];
       final db = MessageDatabase.getInstance();
       for (final message in newMessages.messages) {
+        final isMatch = await isInMatches(message.id.accountIdSender);
+        if (!isMatch) {
+          await MatchesDatabase.getInstance().insertAccountId(message.id.accountIdSender);
+          ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
+        }
+
         if (await db.insertPendingMessage(currentUser, message)) {
           toBeDeleted.add(message.id);
+          ProfileRepository.getInstance().sendProfileChange(ConversationChanged(message.id.accountIdSender));
         }
       }
+
       final toBeDeletedList = PendingMessageDeleteList(messagesIds: toBeDeleted);
       final (result, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.deletePendingMessages(toBeDeletedList));
       if (result.isSuccess()) {
@@ -274,20 +282,30 @@ class ChatRepository extends DataRepository {
         }
       }
       // TODO: If request fails try again at some point.
-
-      for (final message in newMessages.messages) {
-        ProfileRepository.getInstance().sendProfileChange(ConversationChanged(message.id.accountIdSender));
-      }
     }
   }
 
   // TODO error handling
   // Use stream instead?
+  // If saving to local database fails, don't clear the chat box UI.
   Future<void> sendMessageTo(AccountId accountId, String message) async {
     final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {
       return;
     }
+
+    final isMatch = await isInMatches(accountId);
+    if (!isMatch) {
+      final (resultSendLike, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.postSendLike(accountId));
+      if (resultSendLike.isSuccess()) {
+        await MatchesDatabase.getInstance().insertAccountId(accountId);
+        ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
+      } else {
+        // Notify about error
+        return;
+      }
+    }
+
     final saveMessageResult = await MessageDatabase.getInstance().insertToBeSentMessage(
       currentUser,
       accountId,
@@ -296,10 +314,56 @@ class ChatRepository extends DataRepository {
     if (!saveMessageResult) {
       return;
     }
+
+    ProfileRepository.getInstance().sendProfileChange(ConversationChanged(accountId));
+
     final sendMessage = SendMessageToAccount(message: message, receiver: accountId);
     final (result, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.postSendMessage(sendMessage));
     if (!result.isSuccess()) {
       // TODO error handling
+    }
+
+    // TODO save sent status to local database
+  }
+
+  /// Get message and updates to it.
+  Stream<MessageEntry?> getMessage(AccountId match, int index) async* {
+    final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
+    if (currentUser == null) {
+      yield null;
+      return;
+    }
+    final db = MessageDatabase.getInstance();
+    final message = await db.getMessage(currentUser, match, index);
+    if (message != null) {
+      yield message;
+    }
+    await for (final event in ProfileRepository.getInstance().profileChanges) {
+      if (event is ConversationChanged && event.conversationWith == match) {
+        final message = await db.getMessage(currentUser, match, index);
+        if (message != null) {
+          yield message;
+        }
+      }
+    }
+  }
+
+  /// Get message count of latest message and updates to it.
+  Stream<int> getMessageCount(AccountId match) async* {
+    final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
+    if (currentUser == null) {
+      yield 0;
+      return;
+    }
+    final db = MessageDatabase.getInstance();
+    final messageNumber = await db.countMessagesInConversation(currentUser, match);
+    yield messageNumber ?? 0;
+
+    await for (final event in ProfileRepository.getInstance().profileChanges) {
+      if (event is ConversationChanged && event.conversationWith == match) {
+        final messageNumber = await db.countMessagesInConversation(currentUser, match);
+        yield messageNumber ?? 0;
+      }
     }
   }
 }

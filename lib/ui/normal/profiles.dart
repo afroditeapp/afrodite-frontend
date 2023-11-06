@@ -98,6 +98,7 @@ class _ProfileViewState extends State<ProfileView> {
       }
       case ProfileUnblocked() ||
         ConversationChanged() ||
+        MatchesChanged() ||
         LikesChanged(): {}
     }
   }

@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:openapi/api.dart';
+import 'package:pihka_frontend/data/chat_repository.dart';
+import 'package:pihka_frontend/data/profile_repository.dart';
+import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 
 class ConversationPage extends StatefulWidget {
   const ConversationPage({Key? key}) : super(key: key);
@@ -7,19 +13,60 @@ class ConversationPage extends StatefulWidget {
   ConversationPageState createState() => ConversationPageState();
 }
 
+// typedef MessageViewEntry = (String message, bool isSent);
+
 class ConversationPageState extends State<ConversationPage> {
-final List<Map<String, dynamic>> _messages = [
+  // PagingController<int, MessageViewEntry>? _pagingController =
+  //   PagingController(firstPageKey: 0);
+
+  final List<Map<String, dynamic>> _messages = [
     {'message': 'Hi there!', 'isSent': false},
     {'message': 'Hello!', 'isSent': true},
     {'message': 'How are you?', 'isSent': true},
     {'message': 'I am doing well, thanks. How about you?', 'isSent': false},
     {'message': 'I am good too, thanks for asking!', 'isSent': true},
     {'message': 'Bye!', 'isSent': false},
-
   ];
 
+  bool viewingMessages = false;
   ScrollController _scrollController = ScrollController();
   TextEditingController _textEditingController = TextEditingController();
+
+  // @override
+  // void initState() {
+  //   super.initState();
+
+  //   _pagingController?.addPageRequestListener((pageKey) {
+  //     _fetchPage(pageKey);
+  //   });
+  // }
+
+  // Future<void> _fetchPage(int pageKey) async {
+  //   if (pageKey == 0) {
+  //     ChatRepository.getInstance().messageIteratorReset();
+  //   }
+
+  //   final profileList = await ProfileRepository.getInstance().nextList();
+
+  //   final newList = List<MessageViewEntry>.empty(growable: true);
+  //   for (final profile in profileList) {
+  //     final accountId = AccountId(accountId: profile.uuid);
+  //     final contentId = ContentId(contentId: profile.imageUuid);
+  //     final file = await ImageCacheData.getInstance().getImage(accountId, contentId);
+  //     if (file == null) {
+  //       log.warning("Skipping one profile because image loading failed");
+  //       continue;
+  //     }
+  //     newList.add((profile, file, _heroUniqueIdCounter));
+  //     _heroUniqueIdCounter++;
+  //   }
+
+  //   if (profileList.isEmpty) {
+  //     _pagingController?.appendLastPage([]);
+  //   } else {
+  //     _pagingController?.appendPage(newList, pageKey + 1);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +84,24 @@ final List<Map<String, dynamic>> _messages = [
               },
               child: Align(
                 alignment: Alignment.topCenter,
-                child: messageListView(),
+                child: BlocBuilder<ConversationBloc, ConversationData?>(
+                  buildWhen: (previous, current) =>
+                    previous?.messageCount != current?.messageCount,
+                  builder: (context, state) {
+                    if (state == null) {
+                      viewingMessages = false;
+                      return Container();
+                    } else if (state.isMatch) {
+                      viewingMessages = true;
+                      return messageListView(state.accountId, state.messageCount);
+                    } else {
+                      viewingMessages = false;
+                      return const Center(
+                        child: Text('Send a message to make a match!'),
+                      );
+                    }
+                  },
+                ),
               ),
             )
           ),
@@ -47,31 +111,42 @@ final List<Map<String, dynamic>> _messages = [
     );
   }
 
-  Widget messageListView() {
+  Widget messageListView(AccountId match, int messagesLenght) {
     return ListView.builder(
       physics: const ChatScrollPhysics(),
       controller: _scrollController,
       reverse: true,
       shrinkWrap: true,
-      itemCount: _messages.length,
+      itemCount: messagesLenght,
       itemBuilder: (context, index) {
-        final message = _messages[_messages.length - 1 - index];
-        return messageRowWidget(context, message);
+        return StreamBuilder(
+          stream: ChatRepository.getInstance().getMessage(match, index),
+          builder: (context, snapshot) {
+            final data = snapshot.data;
+            if (data != null) {
+              final message = data.messageText;
+              final isSent = data.sentMessageState != null;
+              return messageRowWidget(context, message, isSent);
+            } else {
+              return Container();
+            }
+          },
+        );
       },
     );
   }
 
-  Widget messageRowWidget(BuildContext context, Map<String, dynamic> message) {
+  Widget messageRowWidget(BuildContext context, String message, bool isSent) {
     return Align(
-      alignment: message['isSent'] as bool ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: isSent ? Alignment.centerRight : Alignment.centerLeft,
       child: FractionallySizedBox(
         widthFactor: 0.8,
         child: Row(
           children: [
             Expanded(
               child: Align(
-                alignment: message['isSent'] as bool ? Alignment.centerRight : Alignment.centerLeft,
-                child: messageWidget(context, message),
+                alignment: isSent ? Alignment.centerRight : Alignment.centerLeft,
+                child: messageWidget(context, message, isSent),
               ),
             ),
           ],
@@ -80,18 +155,18 @@ final List<Map<String, dynamic>> _messages = [
     );
   }
 
-  Widget messageWidget(BuildContext context, Map<String, dynamic> message) {
+  Widget messageWidget(BuildContext context, String message, bool isSent) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+      margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
       decoration: BoxDecoration(
-        color: message['isSent'] as bool ? Colors.blue : Colors.grey[300],
+        color: isSent ? Colors.blue : Colors.grey[300],
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Text(
-        message['message'] as String,
+        message,
         style: TextStyle(
-          color: message['isSent'] as bool ? Colors.white : Colors.black,
+          color: isSent ? Colors.white : Colors.black,
           fontSize: 16.0,
         ),
       ),
@@ -100,7 +175,7 @@ final List<Map<String, dynamic>> _messages = [
 
   Widget newMessageArea(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
         children: [
           Expanded(
@@ -115,15 +190,19 @@ final List<Map<String, dynamic>> _messages = [
             ),
           ),
           IconButton(
-            icon: Icon(Icons.send),
+            icon: const Icon(Icons.send),
             onPressed: () {
               final message = _textEditingController.text;
-              if (message.isNotEmpty) {
-                setState(() {
-                  _messages.add({'message': message, 'isSent': true});
-                  _scrollController.position.moveTo(0);
-                });
-                _textEditingController.clear();
+              if (message.trim().isNotEmpty) {
+                final bloc = context.read<ConversationBloc>();
+                final state = bloc.state;
+                if (state != null) {
+                  bloc.add(SendMessageTo(state.accountId, message));
+                  _textEditingController.clear();
+                  if (viewingMessages) {
+                    _scrollController.position.jumpTo(0);
+                  }
+                }
               }
             },
           ),

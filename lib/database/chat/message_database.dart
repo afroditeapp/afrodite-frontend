@@ -16,6 +16,14 @@ class MessageDatabase extends BaseDatabase {
   }
 
   static const tableName = "messages";
+  static const columId = "id";
+  static const columLocalAccountUuid = "local_account_uuid";
+  static const columRemoteAccountUuid = "remote_account_uuid";
+  static const columMessageText = "message_text";
+  static const columSentMessageState = "sent_message_state";
+  static const columReceivedMessageState = "received_message_state";
+  static const columMessageNumber = "message_number";
+  static const columUnixTime = "unix_time";
 
   @override
   DatabaseType get databaseType => DatabaseType.chatMessages;
@@ -23,17 +31,17 @@ class MessageDatabase extends BaseDatabase {
   @override
   Future<void> onCreate(Database db, int version) async {
     await db.execute("""
-      CREATE TABLE messages(
-        id INTEGER PRIMARY KEY,
-        local_account_uuid TEXT NOT NULL,
-        remote_account_uuid TEXT NOT NULL,
-        message_text TEXT NOT NULL,
-        sent_message_state INTEGER,
-        received_message_state INTEGER,
+      CREATE TABLE $tableName(
+        $columId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $columLocalAccountUuid TEXT NOT NULL,
+        $columRemoteAccountUuid TEXT NOT NULL,
+        $columMessageText TEXT NOT NULL,
+        $columSentMessageState INTEGER,
+        $columReceivedMessageState INTEGER,
 
         -- Server sends valid values for the next two fields.
-        message_number INTEGER,
-        unix_time INTEGER
+        $columMessageNumber INTEGER,
+        $columUnixTime INTEGER
       )
     """);
   }
@@ -65,7 +73,22 @@ class MessageDatabase extends BaseDatabase {
   /// Number of all messages in the database
   Future<int?> count() async {
     return await runAction((db) async {
-      return firstIntValue(await db.query(tableName, columns: ["COUNT(id)"]));
+      return firstIntValue(await db.query(tableName, columns: ["COUNT($columId)"]));
+    });
+  }
+
+  /// Number of all messages in the database
+  Future<int?> countMessagesInConversation(
+    AccountId localAccountId,
+    AccountId remoteAccountId,
+  ) async {
+    return await runAction((db) async {
+      return firstIntValue(await db.query(
+        tableName,
+        columns: ["COUNT($columId)"],
+        where: "$columLocalAccountUuid = ? AND $columRemoteAccountUuid = ?",
+        whereArgs: [localAccountId.accountId, remoteAccountId.accountId],
+      ));
     });
   }
 
@@ -124,10 +147,43 @@ class MessageDatabase extends BaseDatabase {
     await runAction((db) async {
       return await db.update(
         tableName,
-        {"received_message_state": receivedMessageState.number},
-        where: "local_account_uuid = ? AND remote_account_uuid = ? AND message_number = ?",
+        {columReceivedMessageState: receivedMessageState.number},
+        where: "$columLocalAccountUuid = ? AND $columRemoteAccountUuid = ? AND $columMessageNumber = ?",
         whereArgs: [localAccountId.accountId, remoteAccountId.accountId, messageNumber.messageNumber],
       );
+    });
+  }
+
+  /// Get message with given index in a conversation.
+  /// The index 0 is the latest message.
+  Future<MessageEntry?> getMessage(
+    AccountId localAccountId,
+    AccountId remoteAccountId,
+    int index,
+  ) async {
+    return await runAction((db) async {
+      final result = await db.query(
+        tableName,
+        columns:
+          [
+            columLocalAccountUuid,
+            columRemoteAccountUuid,
+            columMessageText,
+            columSentMessageState,
+            columReceivedMessageState,
+            columMessageNumber,
+            columUnixTime,
+          ],
+        where: "$columLocalAccountUuid = ? AND $columRemoteAccountUuid = ?",
+        whereArgs: [localAccountId.accountId, remoteAccountId.accountId],
+        orderBy: "$columId DESC",
+        limit: 1,
+        offset: index,
+      );
+      final list = result.map((e) {
+        return MessageEntry.fromMap(e);
+      }).toList();
+      return list.firstOrNull;
     });
   }
 

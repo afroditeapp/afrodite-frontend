@@ -37,7 +37,7 @@ enum DatabaseType {
       case DatabaseType.chatMatches:
         return "h.db";
       case DatabaseType.chatMessages:
-        return "h.db";
+        return "i.db";
     }
   }
   String get databaseErrorTitle {

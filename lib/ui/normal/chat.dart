@@ -63,6 +63,8 @@ class _ChatViewState extends State<ChatView> {
       case ProfileBlocked():
         // TODO: or hide info and show report option?
         removeAccountIdFromList(event.profile);
+      case MatchesChanged():
+        _pagingController?.refresh();
       case ProfileNowPrivate() ||
         ProfileUnblocked() ||
         ProfileFavoriteStatusChange() ||

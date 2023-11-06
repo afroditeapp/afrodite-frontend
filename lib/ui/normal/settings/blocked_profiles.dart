@@ -60,6 +60,7 @@ class _BlockedProfilesPage extends State<BlockedProfilesPage> {
         ProfileBlocked() ||
         ProfileFavoriteStatusChange() ||
         ConversationChanged() ||
+        MatchesChanged() ||
         LikesChanged(): {}
     }
   }
