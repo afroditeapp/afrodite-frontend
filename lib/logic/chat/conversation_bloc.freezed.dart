@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ConversationData {
   AccountId get accountId => throw _privateConstructorUsedError;
-  Profile get profile => throw _privateConstructorUsedError;
+  String get profileName => throw _privateConstructorUsedError;
   File get primaryProfileImage => throw _privateConstructorUsedError;
   bool get isMatch => throw _privateConstructorUsedError;
   bool get isBlocked => throw _privateConstructorUsedError;
@@ -39,7 +39,7 @@ abstract class $ConversationDataCopyWith<$Res> {
   @useResult
   $Res call(
       {AccountId accountId,
-      Profile profile,
+      String profileName,
       File primaryProfileImage,
       bool isMatch,
       bool isBlocked,
@@ -61,7 +61,7 @@ class _$ConversationDataCopyWithImpl<$Res, $Val extends ConversationData>
   @override
   $Res call({
     Object? accountId = null,
-    Object? profile = null,
+    Object? profileName = null,
     Object? primaryProfileImage = null,
     Object? isMatch = null,
     Object? isBlocked = null,
@@ -73,10 +73,10 @@ class _$ConversationDataCopyWithImpl<$Res, $Val extends ConversationData>
           ? _value.accountId
           : accountId // ignore: cast_nullable_to_non_nullable
               as AccountId,
-      profile: null == profile
-          ? _value.profile
-          : profile // ignore: cast_nullable_to_non_nullable
-              as Profile,
+      profileName: null == profileName
+          ? _value.profileName
+          : profileName // ignore: cast_nullable_to_non_nullable
+              as String,
       primaryProfileImage: null == primaryProfileImage
           ? _value.primaryProfileImage
           : primaryProfileImage // ignore: cast_nullable_to_non_nullable
@@ -111,7 +111,7 @@ abstract class _$$ConversationDataImplCopyWith<$Res>
   @useResult
   $Res call(
       {AccountId accountId,
-      Profile profile,
+      String profileName,
       File primaryProfileImage,
       bool isMatch,
       bool isBlocked,
@@ -131,7 +131,7 @@ class __$$ConversationDataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? accountId = null,
-    Object? profile = null,
+    Object? profileName = null,
     Object? primaryProfileImage = null,
     Object? isMatch = null,
     Object? isBlocked = null,
@@ -143,10 +143,10 @@ class __$$ConversationDataImplCopyWithImpl<$Res>
           ? _value.accountId
           : accountId // ignore: cast_nullable_to_non_nullable
               as AccountId,
-      profile: null == profile
-          ? _value.profile
-          : profile // ignore: cast_nullable_to_non_nullable
-              as Profile,
+      profileName: null == profileName
+          ? _value.profileName
+          : profileName // ignore: cast_nullable_to_non_nullable
+              as String,
       primaryProfileImage: null == primaryProfileImage
           ? _value.primaryProfileImage
           : primaryProfileImage // ignore: cast_nullable_to_non_nullable
@@ -178,7 +178,7 @@ class _$ConversationDataImpl
     implements _ConversationData {
   _$ConversationDataImpl(
       {required this.accountId,
-      required this.profile,
+      required this.profileName,
       required this.primaryProfileImage,
       this.isMatch = false,
       this.isBlocked = false,
@@ -188,7 +188,7 @@ class _$ConversationDataImpl
   @override
   final AccountId accountId;
   @override
-  final Profile profile;
+  final String profileName;
   @override
   final File primaryProfileImage;
   @override
@@ -208,7 +208,7 @@ class _$ConversationDataImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ConversationData(accountId: $accountId, profile: $profile, primaryProfileImage: $primaryProfileImage, isMatch: $isMatch, isBlocked: $isBlocked, isSendSuccessful: $isSendSuccessful, messageCount: $messageCount)';
+    return 'ConversationData(accountId: $accountId, profileName: $profileName, primaryProfileImage: $primaryProfileImage, isMatch: $isMatch, isBlocked: $isBlocked, isSendSuccessful: $isSendSuccessful, messageCount: $messageCount)';
   }
 
   @override
@@ -217,7 +217,7 @@ class _$ConversationDataImpl
     properties
       ..add(DiagnosticsProperty('type', 'ConversationData'))
       ..add(DiagnosticsProperty('accountId', accountId))
-      ..add(DiagnosticsProperty('profile', profile))
+      ..add(DiagnosticsProperty('profileName', profileName))
       ..add(DiagnosticsProperty('primaryProfileImage', primaryProfileImage))
       ..add(DiagnosticsProperty('isMatch', isMatch))
       ..add(DiagnosticsProperty('isBlocked', isBlocked))
@@ -232,7 +232,8 @@ class _$ConversationDataImpl
             other is _$ConversationDataImpl &&
             (identical(other.accountId, accountId) ||
                 other.accountId == accountId) &&
-            (identical(other.profile, profile) || other.profile == profile) &&
+            (identical(other.profileName, profileName) ||
+                other.profileName == profileName) &&
             (identical(other.primaryProfileImage, primaryProfileImage) ||
                 other.primaryProfileImage == primaryProfileImage) &&
             (identical(other.isMatch, isMatch) || other.isMatch == isMatch) &&
@@ -245,7 +246,7 @@ class _$ConversationDataImpl
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, accountId, profile,
+  int get hashCode => Object.hash(runtimeType, accountId, profileName,
       primaryProfileImage, isMatch, isBlocked, isSendSuccessful, messageCount);
 
   @JsonKey(ignore: true)
@@ -259,7 +260,7 @@ class _$ConversationDataImpl
 abstract class _ConversationData implements ConversationData {
   factory _ConversationData(
       {required final AccountId accountId,
-      required final Profile profile,
+      required final String profileName,
       required final File primaryProfileImage,
       final bool isMatch,
       final bool isBlocked,
@@ -269,7 +270,7 @@ abstract class _ConversationData implements ConversationData {
   @override
   AccountId get accountId;
   @override
-  Profile get profile;
+  String get profileName;
   @override
   File get primaryProfileImage;
   @override

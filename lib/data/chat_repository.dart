@@ -7,6 +7,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
+import 'package:pihka_frontend/data/chat/message_database_iterator.dart';
 import 'package:pihka_frontend/data/profile/account_id_database_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
@@ -45,6 +46,8 @@ class ChatRepository extends DataRepository {
     AccountIdDatabaseIterator(ReceivedLikesDatabase.getInstance());
   final AccountIdDatabaseIterator matchesIterator =
     AccountIdDatabaseIterator(MatchesDatabase.getInstance());
+  final MessageDatabaseIterator messageIterator =
+    MessageDatabaseIterator(MessageDatabase.getInstance());
 
   @override
   Future<void> init() async {
@@ -55,6 +58,8 @@ class ChatRepository extends DataRepository {
   Future<void> onLogin() async {
     sentBlocksIterator.reset();
     receivedLikesIterator.reset();
+    matchesIterator.reset();
+    messageIterator.resetToInitialState();
 
     _api.state
       .firstWhere((element) => element == ApiManagerState.connected)
@@ -327,20 +332,22 @@ class ChatRepository extends DataRepository {
   }
 
   /// Get message and updates to it.
-  Stream<MessageEntry?> getMessage(AccountId match, int index) async* {
+  Stream<MessageEntry?> getMessage(AccountId match, int localId) async* {
     final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {
       yield null;
       return;
     }
     final db = MessageDatabase.getInstance();
-    final message = await db.getMessage(currentUser, match, index);
+    final messageList = await db.getMessageListByLocalMessageId(currentUser, match, localId, 1);
+    final message = messageList.firstOrNull;
     if (message != null) {
       yield message;
     }
     await for (final event in ProfileRepository.getInstance().profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
-        final message = await db.getMessage(currentUser, match, index);
+        final messageList = await db.getMessageListByLocalMessageId(currentUser, match, localId, 1);
+        final message = messageList.firstOrNull;
         if (message != null) {
           yield message;
         }
@@ -365,5 +372,17 @@ class ChatRepository extends DataRepository {
         yield messageNumber ?? 0;
       }
     }
+  }
+
+  Future<void> messageIteratorReset(AccountId match) async {
+    final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
+    if (currentUser == null) {
+      return;
+    }
+    await messageIterator.switchConversation(currentUser, match);
+  }
+
+  Future<List<MessageEntry>> messageIteratorNext() async {
+    return await messageIterator.nextList();
   }
 }

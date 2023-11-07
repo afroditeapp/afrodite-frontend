@@ -120,8 +120,8 @@ class ViewProfilePage extends StatelessWidget {
             case ProfileActionState.makeMatch:
               return FloatingActionButton(
                 onPressed: () {
-                  context.read<ConversationBloc>().add(SetConversationView(currentState.accountId, currentState.profile, currentState.primaryProfileImage));
-                  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage()));
+                  context.read<ConversationBloc>().add(SetConversationView(currentState.accountId, currentState.profile.name, currentState.primaryProfileImage));
+                  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(currentState.accountId)));
                 },
                 tooltip: 'Send message to make a match',
                 child: const Icon(Icons.waving_hand),
@@ -129,8 +129,8 @@ class ViewProfilePage extends StatelessWidget {
             case ProfileActionState.chat:
               return FloatingActionButton(
                 onPressed: () {
-                  context.read<ConversationBloc>().add(SetConversationView(currentState.accountId, currentState.profile, currentState.primaryProfileImage));
-                  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage()));
+                  context.read<ConversationBloc>().add(SetConversationView(currentState.accountId, currentState.profile.name, currentState.primaryProfileImage));
+                  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(currentState.accountId)));
                 },
                 tooltip: 'Open chat',
                 child: const Icon(Icons.chat_rounded),

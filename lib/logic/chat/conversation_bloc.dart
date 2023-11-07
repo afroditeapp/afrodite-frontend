@@ -25,7 +25,7 @@ part 'conversation_bloc.freezed.dart';
 class ConversationData with _$ConversationData {
   factory ConversationData({
     required AccountId accountId,
-    required Profile profile,
+    required String profileName,
     required File primaryProfileImage,
     @Default(false) bool isMatch,
     @Default(false) bool isBlocked,
@@ -38,9 +38,9 @@ class ConversationData with _$ConversationData {
 sealed class ConversationEvent {}
 class SetConversationView extends ConversationEvent {
   final AccountId accountId;
-  final Profile profile;
+  final String profileName;
   final File primaryProfileImage;
-  SetConversationView(this.accountId, this.profile, this.primaryProfileImage);
+  SetConversationView(this.accountId, this.profileName, this.primaryProfileImage);
 }
 class SendMessageTo extends ConversationEvent {
   final AccountId accountId;
@@ -77,7 +77,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData?> with A
 
         final newState = ConversationData(
           accountId: data.accountId,
-          profile: data.profile,
+          profileName: data.profileName,
           primaryProfileImage:
           data.primaryProfileImage,
         );

@@ -166,6 +166,7 @@ class MessageDatabase extends BaseDatabase {
         tableName,
         columns:
           [
+            columId,
             columLocalAccountUuid,
             columRemoteAccountUuid,
             columMessageText,
@@ -185,6 +186,39 @@ class MessageDatabase extends BaseDatabase {
       }).toList();
       return list.firstOrNull;
     });
+  }
+
+  /// Get list of messages starting from startId. The next ID is smaller.
+  Future<List<MessageEntry>> getMessageListByLocalMessageId(
+    AccountId localAccountId,
+    AccountId remoteAccountId,
+    int startId,
+    int limit,
+  ) async {
+    return await runAction((db) async {
+      final result = await db.query(
+        tableName,
+        columns:
+          [
+            columId,
+            columLocalAccountUuid,
+            columRemoteAccountUuid,
+            columMessageText,
+            columSentMessageState,
+            columReceivedMessageState,
+            columMessageNumber,
+            columUnixTime,
+          ],
+        where: "$columLocalAccountUuid = ? AND $columRemoteAccountUuid = ? AND $columId <= ?",
+        whereArgs: [localAccountId.accountId, remoteAccountId.accountId, startId],
+        orderBy: "$columId DESC",
+        limit: limit,
+      );
+      final list = result.map((e) {
+        return MessageEntry.fromMap(e);
+      }).toList();
+      return list;
+    }) ?? [];
   }
 
   // Future<void> removeProfile(AccountId accountId) async {
@@ -240,6 +274,11 @@ class MessageDatabase extends BaseDatabase {
 }
 
 class MessageEntry {
+  /// Local database ID of the message.
+  /// This really is not null. Null is to avoid setting ID when inserting.
+  final int? id;
+  int get localId => id!;
+
   final AccountId localAccountId;
   final AccountId remoteAccountId;
   final String messageText;
@@ -261,29 +300,34 @@ class MessageEntry {
       this.receivedMessageState,
       this.messageNumber,
       this.unixTime,
+      this.id,
     }
   );
 
   Map<String, Object?> toMap() {
     final unixTimeMilliseconds = unixTime?.millisecondsSinceEpoch;
     final unixTimeSeconds = unixTimeMilliseconds != null ? unixTimeMilliseconds ~/ 1000 : null;
-    return {
-      "local_account_uuid": localAccountId.accountId,
-      "remote_account_uuid": remoteAccountId.accountId,
-      "message_text": messageText,
-      "sent_message_state": sentMessageState?.number,
-      "received_message_state": receivedMessageState?.number,
-      "message_number": messageNumber?.messageNumber,
-      "unix_time": unixTimeSeconds,
+    final map = {
+      MessageDatabase.columLocalAccountUuid: localAccountId.accountId,
+      MessageDatabase.columRemoteAccountUuid: remoteAccountId.accountId,
+      MessageDatabase.columMessageText: messageText,
+      MessageDatabase.columSentMessageState: sentMessageState?.number,
+      MessageDatabase.columReceivedMessageState: receivedMessageState?.number,
+      MessageDatabase.columMessageNumber: messageNumber?.messageNumber,
+      MessageDatabase.columUnixTime: unixTimeSeconds,
     };
+    if (id != null) {
+      map[MessageDatabase.columId] = id;
+    }
+    return map;
   }
 
   factory MessageEntry.fromMap(Map<String, Object?> map) {
-    final localAccountId = AccountId(accountId: map["local_account_uuid"] as String);
-    final remoteAccountId = AccountId(accountId: map["remote_account_uuid"] as String);
-    final messageText = map["message_text"] as String;
+    final localAccountId = AccountId(accountId: map[MessageDatabase.columLocalAccountUuid] as String);
+    final remoteAccountId = AccountId(accountId: map[MessageDatabase.columRemoteAccountUuid] as String);
+    final messageText = map[MessageDatabase.columMessageText] as String;
 
-    final sentMessageStateNumber = map["sent_message_state"] as int?;
+    final sentMessageStateNumber = map[MessageDatabase.columSentMessageState] as int?;
     final SentMessageState? sentMessageState;
     if (sentMessageStateNumber != null) {
       sentMessageState = SentMessageState.values[sentMessageStateNumber];
@@ -291,7 +335,7 @@ class MessageEntry {
       sentMessageState = null;
     }
 
-    final receivedMessageStateNumber = map["received_message_state"] as int?;
+    final receivedMessageStateNumber = map[MessageDatabase.columReceivedMessageState] as int?;
     final ReceivedMessageState? receivedMessageState;
     if (receivedMessageStateNumber != null) {
       receivedMessageState = ReceivedMessageState.values[receivedMessageStateNumber];
@@ -299,7 +343,7 @@ class MessageEntry {
       receivedMessageState = null;
     }
 
-    final messageNumberInt = map["message_number"] as int?;
+    final messageNumberInt = map[MessageDatabase.columMessageNumber] as int?;
     final MessageNumber? messageNumber;
     if (messageNumberInt != null) {
       messageNumber = MessageNumber(messageNumber: messageNumberInt);
@@ -307,13 +351,15 @@ class MessageEntry {
       messageNumber = null;
     }
 
-    final unixTimeSeconds = map["unix_time"] as int?;
+    final unixTimeSeconds = map[MessageDatabase.columUnixTime] as int?;
     final DateTime? unixTime;
     if (unixTimeSeconds != null) {
       unixTime = DateTime.fromMillisecondsSinceEpoch(unixTimeSeconds * 1000);
     } else {
       unixTime = null;
     }
+
+    final id = map[MessageDatabase.columId] as int?;
 
     return MessageEntry(
       localAccountId,
@@ -323,13 +369,14 @@ class MessageEntry {
       receivedMessageState: receivedMessageState,
       messageNumber: messageNumber,
       unixTime: unixTime,
+      id: id,
     );
   }
 
 
   @override
   String toString() {
-    return "MessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, sentMessageState: $sentMessageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime)";
+    return "MessageEntry(id: $id, localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, sentMessageState: $sentMessageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime)";
   }
 }
 

@@ -13,8 +13,10 @@ import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
+import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_filtering_settings.dart';
 import 'package:pihka_frontend/logic/profile/view_profiles/view_profiles.dart';
+import 'package:pihka_frontend/ui/normal/chat/conversation.dart';
 import 'package:pihka_frontend/ui/normal/profiles/filter_profiles.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui/utils.dart';
@@ -145,7 +147,8 @@ class _ChatViewState extends State<ChatView> {
 
           return InkWell(
             onTap: () {
-              // TODO: Open chat
+              context.read<ConversationBloc>().add(SetConversationView(item.$1, name, image));
+              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(item.$1)));
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),

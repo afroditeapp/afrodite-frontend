@@ -4,69 +4,57 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
+import 'package:pihka_frontend/database/chat/message_database.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 
 class ConversationPage extends StatefulWidget {
-  const ConversationPage({Key? key}) : super(key: key);
+  final AccountId accountId;
+  const ConversationPage(this.accountId, {Key? key}) : super(key: key);
 
   @override
   ConversationPageState createState() => ConversationPageState();
 }
 
-// typedef MessageViewEntry = (String message, bool isSent);
+typedef MessageViewEntry = (String message, int localId, bool isSent);
 
 class ConversationPageState extends State<ConversationPage> {
-  // PagingController<int, MessageViewEntry>? _pagingController =
-  //   PagingController(firstPageKey: 0);
-
-  final List<Map<String, dynamic>> _messages = [
-    {'message': 'Hi there!', 'isSent': false},
-    {'message': 'Hello!', 'isSent': true},
-    {'message': 'How are you?', 'isSent': true},
-    {'message': 'I am doing well, thanks. How about you?', 'isSent': false},
-    {'message': 'I am good too, thanks for asking!', 'isSent': true},
-    {'message': 'Bye!', 'isSent': false},
-  ];
+  PagingController<int, MessageViewEntry>? _pagingController =
+    PagingController(firstPageKey: 0);
 
   bool viewingMessages = false;
-  ScrollController _scrollController = ScrollController();
-  TextEditingController _textEditingController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  final TextEditingController _textEditingController = TextEditingController();
 
-  // @override
-  // void initState() {
-  //   super.initState();
+  @override
+  void initState() {
+    super.initState();
 
-  //   _pagingController?.addPageRequestListener((pageKey) {
-  //     _fetchPage(pageKey);
-  //   });
-  // }
+    _pagingController?.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
+  }
 
-  // Future<void> _fetchPage(int pageKey) async {
-  //   if (pageKey == 0) {
-  //     ChatRepository.getInstance().messageIteratorReset();
-  //   }
+  Future<void> _fetchPage(int pageKey) async {
+    if (pageKey == 0) {
+      await ChatRepository.getInstance().messageIteratorReset(widget.accountId);
+    }
 
-  //   final profileList = await ProfileRepository.getInstance().nextList();
+    final list = await ChatRepository.getInstance().messageIteratorNext();
+    final newList = List<MessageViewEntry>.empty(growable: true);
+    for (final entry in list) {
+      newList.add(messageEntryToViewData(entry));
+    }
 
-  //   final newList = List<MessageViewEntry>.empty(growable: true);
-  //   for (final profile in profileList) {
-  //     final accountId = AccountId(accountId: profile.uuid);
-  //     final contentId = ContentId(contentId: profile.imageUuid);
-  //     final file = await ImageCacheData.getInstance().getImage(accountId, contentId);
-  //     if (file == null) {
-  //       log.warning("Skipping one profile because image loading failed");
-  //       continue;
-  //     }
-  //     newList.add((profile, file, _heroUniqueIdCounter));
-  //     _heroUniqueIdCounter++;
-  //   }
+    if (list.isEmpty) {
+      _pagingController?.appendLastPage(newList);
+    } else {
+      _pagingController?.appendPage(newList, pageKey + 1);
+    }
+  }
 
-  //   if (profileList.isEmpty) {
-  //     _pagingController?.appendLastPage([]);
-  //   } else {
-  //     _pagingController?.appendPage(newList, pageKey + 1);
-  //   }
-  // }
+  MessageViewEntry messageEntryToViewData(MessageEntry entry) {
+    return (entry.messageText, entry.localId, entry.sentMessageState != null);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,14 +74,21 @@ class ConversationPageState extends State<ConversationPage> {
                 alignment: Alignment.topCenter,
                 child: BlocBuilder<ConversationBloc, ConversationData?>(
                   buildWhen: (previous, current) =>
-                    previous?.messageCount != current?.messageCount,
+                    previous?.isMatch != current?.isMatch,
                   builder: (context, state) {
                     if (state == null) {
                       viewingMessages = false;
                       return Container();
                     } else if (state.isMatch) {
                       viewingMessages = true;
-                      return messageListView(state.accountId, state.messageCount);
+                      return BlocListener<ConversationBloc, ConversationData?>(
+                        listenWhen: (previous, current) =>
+                          previous?.messageCount != current?.messageCount,
+                        listener: (context, data) {
+                          _pagingController?.refresh();
+                        },
+                        child: messageListView(state.accountId, state.messageCount),
+                      );
                     } else {
                       viewingMessages = false;
                       return const Center(
@@ -112,31 +107,47 @@ class ConversationPageState extends State<ConversationPage> {
   }
 
   Widget messageListView(AccountId match, int messagesLenght) {
-    return ListView.builder(
-      physics: const ChatScrollPhysics(),
-      controller: _scrollController,
+    return PagedListView(
+      // physics: const ChatScrollPhysics(),
+      pagingController: _pagingController!,
+      scrollController: _scrollController,
       reverse: true,
       shrinkWrap: true,
-      itemCount: messagesLenght,
-      itemBuilder: (context, index) {
-        return StreamBuilder(
-          stream: ChatRepository.getInstance().getMessage(match, index),
-          builder: (context, snapshot) {
-            final data = snapshot.data;
-            if (data != null) {
-              final message = data.messageText;
-              final isSent = data.sentMessageState != null;
-              return messageRowWidget(context, message, isSent);
-            } else {
-              return Container();
-            }
-          },
-        );
-      },
+      builderDelegate: PagedChildBuilderDelegate<MessageViewEntry>(
+        animateTransitions: false,
+        itemBuilder: (context, viewEntry, _) {
+          final (_, localId, isSent) = viewEntry;
+          if (isSent) {
+            return StreamBuilder(
+              initialData: viewEntry,
+              stream: ChatRepository.getInstance()
+                .getMessage(match, localId)
+                .map((event) {
+                  if (event != null) {
+                    return messageEntryToViewData(event);
+                  } else {
+                    return viewEntry;
+                  }
+                }),
+              builder: (context, snapshot) {
+                final newViewEntry = snapshot.data;
+                if (newViewEntry != null) {
+                  return messageRowWidget(context, newViewEntry);
+                } else {
+                  return messageRowWidget(context, viewEntry);
+                }
+              },
+            );
+          } else {
+            return messageRowWidget(context, viewEntry);
+          }
+        },
+      ),
     );
   }
 
-  Widget messageRowWidget(BuildContext context, String message, bool isSent) {
+  Widget messageRowWidget(BuildContext context, MessageViewEntry entry) {
+    final (message, _, isSent) = entry;
     return Align(
       alignment: isSent ? Alignment.centerRight : Alignment.centerLeft,
       child: FractionallySizedBox(
@@ -209,6 +220,13 @@ class ConversationPageState extends State<ConversationPage> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _pagingController?.dispose();
+    _pagingController = null;
+    super.dispose();
   }
 }
 
