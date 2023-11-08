@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
@@ -105,6 +106,10 @@ class AccountRepository extends DataRepository {
       if (state != null) {
         _emitMainStateUpdates(state);
       }
+      await onResumeAppUsage();
+      await ProfileRepository.getInstance().onResumeAppUsage();
+      await MediaRepository.getInstance().onResumeAppUsage();
+      await ChatRepository.getInstance().onResumeAppUsage();
     }
 
     _api.state.listen((event) {

@@ -15,4 +15,10 @@ abstract class DataRepository extends AppSingleton {
   ///
   /// Also note that server API is not available.
   Future<void> onLogout() async {}
+
+  /// Called when the user opens app and there has been previous
+  /// login.
+  ///
+  /// Also note that server API is not available.
+  Future<void> onResumeAppUsage() async {}
 }

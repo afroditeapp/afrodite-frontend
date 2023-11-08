@@ -64,26 +64,7 @@ class ChatRepository extends DataRepository {
     _api.state
       .firstWhere((element) => element == ApiManagerState.connected)
       .then((value) async {
-        // TODO: Perhps client should track these operations and retry
-        // these if needed.
-
-        // Download received blocks.
-        await receivedBlocksRefresh();
-
-        // Download sent blocks.
-        final sentBlocks = await _api.chat((api) => api.getSentBlocks());
-        await SentBlocksDatabase.getInstance().insertAccountIdList(sentBlocks?.profiles);
-
-        // Download received likes.
-        await receivedLikesRefresh();
-
-        // Download sent likes.
-        final sentLikes = await _api.chat((api) => api.getSentLikes());
-        await SentLikesDatabase.getInstance().insertAccountIdList(sentLikes?.profiles);
-
-        // Download current matches.
-        final matchesList = await _api.chat((api) => api.getMatches());
-        await MatchesDatabase.getInstance().insertAccountIdList(matchesList?.profiles);
+        await _syncData();
       })
       .ignore();
   }
@@ -95,6 +76,48 @@ class ChatRepository extends DataRepository {
     await ReceivedBlocksDatabase.getInstance().clearAccountIds();
     await ReceivedLikesDatabase.getInstance().clearAccountIds();
     await MatchesDatabase.getInstance().clearAccountIds();
+    // NOTE: MessageDatabase is not cleared.
+  }
+
+  @override
+  Future<void> onResumeAppUsage() async {
+    _api.state
+      .firstWhere((element) =>
+        element == ApiManagerState.connected ||
+        element == ApiManagerState.waitingRefreshToken
+      )
+      .then((value) async {
+        if (value == ApiManagerState.connected) {
+          await _syncData();
+        }
+      })
+      .ignore();
+  }
+
+  Future<void> _syncData() async {
+    // TODO: Perhps client should track these operations and retry
+    // these if needed.
+
+    // Download received blocks.
+    await receivedBlocksRefresh();
+
+    // Download sent blocks.
+    final sentBlocks = await _api.chat((api) => api.getSentBlocks());
+    await SentBlocksDatabase.getInstance().insertAccountIdList(sentBlocks?.profiles);
+
+    // Download received likes.
+    await receivedLikesRefresh();
+
+    // Download sent likes.
+    final sentLikes = await _api.chat((api) => api.getSentLikes());
+    await SentLikesDatabase.getInstance().insertAccountIdList(sentLikes?.profiles);
+
+    // Download current matches.
+    final matchesList = await _api.chat((api) => api.getMatches());
+    await MatchesDatabase.getInstance().insertAccountIdList(matchesList?.profiles);
+
+    // Download pending messages and remove those from server.
+    await receiveNewMessages();
   }
 
   Future<bool> isInMatches(AccountId accountId) async {
