@@ -14,7 +14,7 @@ abstract class AccountIdDatabase extends BaseDatabase {
     await db.execute("""
       CREATE TABLE account_id(
         id INTEGER PRIMARY KEY,
-        uuid TEXT NOT NULL
+        uuid TEXT NOT NULL UNIQUE
       )
     """);
   }

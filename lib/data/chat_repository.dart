@@ -113,8 +113,7 @@ class ChatRepository extends DataRepository {
     await SentLikesDatabase.getInstance().insertAccountIdList(sentLikes?.profiles);
 
     // Download current matches.
-    final matchesList = await _api.chat((api) => api.getMatches());
-    await MatchesDatabase.getInstance().insertAccountIdList(matchesList?.profiles);
+    await receivedMatchesRefresh();
 
     // Download pending messages and remove those from server.
     await receiveNewMessages();
@@ -271,6 +270,16 @@ class ChatRepository extends DataRepository {
 
   void matchesIteratorReset() {
     matchesIterator.reset();
+  }
+
+  Future<void> receivedMatchesRefresh() async {
+    final data = await _api.chat((api) => api.getMatches());
+    if (data != null) {
+      final db = MatchesDatabase.getInstance();
+      await db.clearAccountIds();
+      await db.insertAccountIdList(data.profiles);
+      ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
+    }
   }
 
   // Messages
