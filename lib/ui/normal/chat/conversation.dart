@@ -1,11 +1,17 @@
+import 'dart:collection';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/chat/message_database.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
+
+var log = Logger("ConversationPage");
 
 class ConversationPage extends StatefulWidget {
   final AccountId accountId;
@@ -15,45 +21,61 @@ class ConversationPage extends StatefulWidget {
   ConversationPageState createState() => ConversationPageState();
 }
 
-typedef MessageViewEntry = (String message, int localId, bool isSent);
+typedef MessageViewEntry = (String message, int? localId, bool isSent);
 
 class ConversationPageState extends State<ConversationPage> {
-  PagingController<int, MessageViewEntry>? _pagingController =
-    PagingController(firstPageKey: 0);
+  MessageIndexCache cache = MessageIndexCache();
 
-  bool viewingMessages = false;
+  bool _isDisposed = false;
+  bool _viewingMessages = false;
+  bool _jumpToLatest = false;
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    cache = MessageIndexCache();
+    _isDisposed = false;
 
-    _pagingController?.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
+    _scrollController.addListener(() {
+      if (_scrollController.position.atEdge) {
+        if (_scrollController.position.pixels == 0) {
+          // Latest message reached
+          if (cache.commitNeeded()) {
+            log.info("Cache Update requested without jump to latest message");
+            cacheUpdate(false);
+          }
+        }
+      }
     });
   }
 
-  Future<void> _fetchPage(int pageKey) async {
-    if (pageKey == 0) {
-      await ChatRepository.getInstance().messageIteratorReset(widget.accountId);
-    }
-
-    final list = await ChatRepository.getInstance().messageIteratorNext();
-    final newList = List<MessageViewEntry>.empty(growable: true);
-    for (final entry in list) {
-      newList.add(messageEntryToViewData(entry));
-    }
-
-    if (list.isEmpty) {
-      _pagingController?.appendLastPage(newList);
-    } else {
-      _pagingController?.appendPage(newList, pageKey + 1);
+  Future<void> cacheUpdate(bool jumpToLatestMessage) async {
+    log.info("Cache update. jumpToLatestMessage: $jumpToLatestMessage");
+    await ChatRepository.getInstance().messageIteratorReset(widget.accountId);
+    final messages1 = await ChatRepository.getInstance().messageIteratorNext();
+    final messages2 = await ChatRepository.getInstance().messageIteratorNext();
+    if (!_isDisposed) {
+      setState(() {
+        cache.commit();
+        final messageIterator = messages1.followedBy(messages2).indexed;
+        for (final (i, message) in messageIterator) {
+          cache.insertEntry(i, message);
+        }
+        if (jumpToLatestMessage) {
+          _scrollController.position.jumpTo(0);
+        }
+      });
     }
   }
 
   MessageViewEntry messageEntryToViewData(MessageEntry entry) {
     return (entry.messageText, entry.localId, entry.sentMessageState != null);
+  }
+
+  MessageViewEntry emptyViewData() {
+    return ("", -1, false);
   }
 
   @override
@@ -74,23 +96,30 @@ class ConversationPageState extends State<ConversationPage> {
                 alignment: Alignment.topCenter,
                 child: BlocBuilder<ConversationBloc, ConversationData?>(
                   buildWhen: (previous, current) =>
-                    previous?.isMatch != current?.isMatch,
+                    previous?.isMatch != current?.isMatch ||
+                      previous?.messageCount != current?.messageCount,
                   builder: (context, state) {
                     if (state == null) {
-                      viewingMessages = false;
+                      _viewingMessages = false;
                       return Container();
                     } else if (state.isMatch) {
-                      viewingMessages = true;
-                      return BlocListener<ConversationBloc, ConversationData?>(
-                        listenWhen: (previous, current) =>
-                          previous?.messageCount != current?.messageCount,
-                        listener: (context, data) {
-                          _pagingController?.refresh();
-                        },
-                        child: messageListView(state.accountId, state.messageCount),
-                      );
+                      _viewingMessages = true;
+                      log.info("Message count: ${state.messageCount}");
+                      cache.setNewSize(state.messageCount);
+                      if (cache.getSize() == 0 || _jumpToLatest
+                        // (cache.commitNeeded() &&
+                        // _scrollController.hasClients &&
+                        // _scrollController.position.pixels == 0)
+                        ) {
+                        log.info("Cache Update requested. commit needed ${cache.commitNeeded()}");
+                        _jumpToLatest = false;
+                        Future.delayed(Duration.zero, () async {
+                          await cacheUpdate(true);
+                        });
+                      }
+                      return messageListView(state.accountId);
                     } else {
-                      viewingMessages = false;
+                      _viewingMessages = false;
                       return const Center(
                         child: Text('Send a message to make a match!'),
                       );
@@ -106,43 +135,59 @@ class ConversationPageState extends State<ConversationPage> {
     );
   }
 
-  Widget messageListView(AccountId match, int messagesLenght) {
-    return PagedListView(
-      // physics: const ChatScrollPhysics(),
-      pagingController: _pagingController!,
-      scrollController: _scrollController,
+  Widget messageListView(AccountId match) {
+    return ListView.builder(
+      physics: const ChatScrollPhysics(),
+      controller: _scrollController,
       reverse: true,
       shrinkWrap: true,
-      builderDelegate: PagedChildBuilderDelegate<MessageViewEntry>(
-        animateTransitions: false,
-        itemBuilder: (context, viewEntry, _) {
-          final (_, localId, isSent) = viewEntry;
-          if (isSent) {
-            return StreamBuilder(
-              initialData: viewEntry,
-              stream: ChatRepository.getInstance()
-                .getMessage(match, localId)
-                .map((event) {
-                  if (event != null) {
-                    return messageEntryToViewData(event);
-                  } else {
-                    return viewEntry;
-                  }
-                }),
-              builder: (context, snapshot) {
-                final newViewEntry = snapshot.data;
-                if (newViewEntry != null) {
-                  return messageRowWidget(context, newViewEntry);
+      itemCount: cache.getSize(),
+      itemBuilder: (context, index) {
+        final entry = cache.indexToEntry(index);
+        if (entry == null) {
+          return StreamBuilder(
+            stream: ChatRepository.getInstance()
+              .getMessageWithIndex(match, index)
+              .map((event) {
+                if (event != null) {
+                  cache.insertEntry(index, event);
+                  return event;
                 } else {
-                  return messageRowWidget(context, viewEntry);
+                  return null;
                 }
-              },
-            );
-          } else {
-            return messageRowWidget(context, viewEntry);
-          }
-        },
-      ),
+              }),
+            builder: (context, snapshot) {
+              final newEntry = snapshot.data;
+              if (newEntry != null) {
+                return messageRowWidget(context, messageEntryToViewData(newEntry));
+              } else {
+                return messageRowWidget(context, emptyViewData());
+              }
+            },
+          );
+        } else {
+          return StreamBuilder<MessageEntry?>(
+            stream: ChatRepository.getInstance()
+              .getMessageWithLocalId(match, entry.localId)
+              .map((event) {
+                if (event != null) {
+                  cache.insertEntry(index, event);
+                  return event;
+                } else {
+                  return null;
+                }
+              }),
+            builder: (context, snapshot) {
+              final updatedEntry = snapshot.data;
+              if (updatedEntry != null) {
+                return messageRowWidget(context, messageEntryToViewData(updatedEntry));
+              } else {
+                return messageRowWidget(context, messageEntryToViewData(entry));
+              }
+            },
+          );
+        }
+      }
     );
   }
 
@@ -210,8 +255,8 @@ class ConversationPageState extends State<ConversationPage> {
                 if (state != null) {
                   bloc.add(SendMessageTo(state.accountId, message));
                   _textEditingController.clear();
-                  if (viewingMessages) {
-                    _scrollController.position.jumpTo(0);
+                  if (_viewingMessages) {
+                    _jumpToLatest = true;
                   }
                 }
               }
@@ -224,8 +269,7 @@ class ConversationPageState extends State<ConversationPage> {
 
   @override
   void dispose() {
-    _pagingController?.dispose();
-    _pagingController = null;
+    _isDisposed = true;
     super.dispose();
   }
 }
@@ -254,10 +298,67 @@ class ChatScrollPhysics extends ScrollPhysics {
     );
 
     final double addedMessagePixels = newPosition.maxScrollExtent - oldPosition.maxScrollExtent;
-    if (getNewPosition != 0 && addedMessagePixels > 0.0) {
+
+    print("oldPosition: $oldPosition, newPosition: $newPosition");
+    print("getNewPosition: $getNewPosition, addedMessagePixels: $addedMessagePixels");
+
+    if (getNewPosition == 0 && addedMessagePixels > 0 && isScrolling) {
       return getNewPosition + addedMessagePixels;
     } else {
       return getNewPosition;
     }
   }
+}
+
+/// Map from index to local message ID
+class MessageIndexCache {
+  int _size = 0;
+  final Queue<MessageContainer> _newLocalIds = Queue();
+  final Queue<MessageContainer> _currentLocalIds = Queue();
+
+  MessageIndexCache();
+
+  void setNewSize(int newSize) {
+    final difference = newSize - _size;
+    for (int i = 0; i < difference; i++) {
+      _newLocalIds.addLast(MessageContainer());
+    }
+    _size = newSize;
+  }
+
+  bool commitNeeded() {
+    return _newLocalIds.isNotEmpty;
+  }
+
+  void commit() {
+    // Reset to avoid possible race conditions where the local ID
+    // is loading when new message is added to database.
+    if (_newLocalIds.isNotEmpty) {
+      for (final container in _currentLocalIds) {
+        container.entry = null;
+      }
+    }
+
+    while (_newLocalIds.isNotEmpty) {
+      _currentLocalIds.addFirst(_newLocalIds.removeFirst());
+    }
+  }
+
+  int getSize() {
+    return _currentLocalIds.length;
+  }
+
+  /// If null, message entry is not yet loaded
+  MessageEntry? indexToEntry(int index) {
+    return _currentLocalIds.elementAtOrNull(index)?.entry;
+  }
+
+
+  void insertEntry(int index, MessageEntry entry) {
+    _currentLocalIds.elementAtOrNull(index)?.entry = entry;
+  }
+}
+
+class MessageContainer {
+  MessageEntry? entry;
 }

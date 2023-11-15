@@ -45,7 +45,8 @@ abstract class AccountIdDatabase extends BaseDatabase {
     await runAction((db) async {
       return await db.insert(
         accountIdTableName,
-        AccountIdEntry(accountId.accountId).toMap()
+        AccountIdEntry(accountId.accountId).toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
       );
     });
   }

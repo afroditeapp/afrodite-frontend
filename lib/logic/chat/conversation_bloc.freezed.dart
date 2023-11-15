@@ -25,6 +25,8 @@ mixin _$ConversationData {
   /// Resets chat box to empty state
   bool get isSendSuccessful => throw _privateConstructorUsedError;
   int get messageCount => throw _privateConstructorUsedError;
+  ConversationChangeType? get messageCountChangeInfo =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ConversationDataCopyWith<ConversationData> get copyWith =>
@@ -44,7 +46,8 @@ abstract class $ConversationDataCopyWith<$Res> {
       bool isMatch,
       bool isBlocked,
       bool isSendSuccessful,
-      int messageCount});
+      int messageCount,
+      ConversationChangeType? messageCountChangeInfo});
 }
 
 /// @nodoc
@@ -67,6 +70,7 @@ class _$ConversationDataCopyWithImpl<$Res, $Val extends ConversationData>
     Object? isBlocked = null,
     Object? isSendSuccessful = null,
     Object? messageCount = null,
+    Object? messageCountChangeInfo = freezed,
   }) {
     return _then(_value.copyWith(
       accountId: null == accountId
@@ -97,6 +101,10 @@ class _$ConversationDataCopyWithImpl<$Res, $Val extends ConversationData>
           ? _value.messageCount
           : messageCount // ignore: cast_nullable_to_non_nullable
               as int,
+      messageCountChangeInfo: freezed == messageCountChangeInfo
+          ? _value.messageCountChangeInfo
+          : messageCountChangeInfo // ignore: cast_nullable_to_non_nullable
+              as ConversationChangeType?,
     ) as $Val);
   }
 }
@@ -116,7 +124,8 @@ abstract class _$$ConversationDataImplCopyWith<$Res>
       bool isMatch,
       bool isBlocked,
       bool isSendSuccessful,
-      int messageCount});
+      int messageCount,
+      ConversationChangeType? messageCountChangeInfo});
 }
 
 /// @nodoc
@@ -137,6 +146,7 @@ class __$$ConversationDataImplCopyWithImpl<$Res>
     Object? isBlocked = null,
     Object? isSendSuccessful = null,
     Object? messageCount = null,
+    Object? messageCountChangeInfo = freezed,
   }) {
     return _then(_$ConversationDataImpl(
       accountId: null == accountId
@@ -167,6 +177,10 @@ class __$$ConversationDataImplCopyWithImpl<$Res>
           ? _value.messageCount
           : messageCount // ignore: cast_nullable_to_non_nullable
               as int,
+      messageCountChangeInfo: freezed == messageCountChangeInfo
+          ? _value.messageCountChangeInfo
+          : messageCountChangeInfo // ignore: cast_nullable_to_non_nullable
+              as ConversationChangeType?,
     ));
   }
 }
@@ -183,7 +197,8 @@ class _$ConversationDataImpl
       this.isMatch = false,
       this.isBlocked = false,
       this.isSendSuccessful = false,
-      this.messageCount = 0});
+      this.messageCount = 0,
+      this.messageCountChangeInfo});
 
   @override
   final AccountId accountId;
@@ -205,10 +220,12 @@ class _$ConversationDataImpl
   @override
   @JsonKey()
   final int messageCount;
+  @override
+  final ConversationChangeType? messageCountChangeInfo;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ConversationData(accountId: $accountId, profileName: $profileName, primaryProfileImage: $primaryProfileImage, isMatch: $isMatch, isBlocked: $isBlocked, isSendSuccessful: $isSendSuccessful, messageCount: $messageCount)';
+    return 'ConversationData(accountId: $accountId, profileName: $profileName, primaryProfileImage: $primaryProfileImage, isMatch: $isMatch, isBlocked: $isBlocked, isSendSuccessful: $isSendSuccessful, messageCount: $messageCount, messageCountChangeInfo: $messageCountChangeInfo)';
   }
 
   @override
@@ -222,7 +239,9 @@ class _$ConversationDataImpl
       ..add(DiagnosticsProperty('isMatch', isMatch))
       ..add(DiagnosticsProperty('isBlocked', isBlocked))
       ..add(DiagnosticsProperty('isSendSuccessful', isSendSuccessful))
-      ..add(DiagnosticsProperty('messageCount', messageCount));
+      ..add(DiagnosticsProperty('messageCount', messageCount))
+      ..add(DiagnosticsProperty(
+          'messageCountChangeInfo', messageCountChangeInfo));
   }
 
   @override
@@ -242,12 +261,22 @@ class _$ConversationDataImpl
             (identical(other.isSendSuccessful, isSendSuccessful) ||
                 other.isSendSuccessful == isSendSuccessful) &&
             (identical(other.messageCount, messageCount) ||
-                other.messageCount == messageCount));
+                other.messageCount == messageCount) &&
+            (identical(other.messageCountChangeInfo, messageCountChangeInfo) ||
+                other.messageCountChangeInfo == messageCountChangeInfo));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, accountId, profileName,
-      primaryProfileImage, isMatch, isBlocked, isSendSuccessful, messageCount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      accountId,
+      profileName,
+      primaryProfileImage,
+      isMatch,
+      isBlocked,
+      isSendSuccessful,
+      messageCount,
+      messageCountChangeInfo);
 
   @JsonKey(ignore: true)
   @override
@@ -259,13 +288,15 @@ class _$ConversationDataImpl
 
 abstract class _ConversationData implements ConversationData {
   factory _ConversationData(
-      {required final AccountId accountId,
-      required final String profileName,
-      required final File primaryProfileImage,
-      final bool isMatch,
-      final bool isBlocked,
-      final bool isSendSuccessful,
-      final int messageCount}) = _$ConversationDataImpl;
+          {required final AccountId accountId,
+          required final String profileName,
+          required final File primaryProfileImage,
+          final bool isMatch,
+          final bool isBlocked,
+          final bool isSendSuccessful,
+          final int messageCount,
+          final ConversationChangeType? messageCountChangeInfo}) =
+      _$ConversationDataImpl;
 
   @override
   AccountId get accountId;
@@ -283,6 +314,8 @@ abstract class _ConversationData implements ConversationData {
   bool get isSendSuccessful;
   @override
   int get messageCount;
+  @override
+  ConversationChangeType? get messageCountChangeInfo;
   @override
   @JsonKey(ignore: true)
   _$$ConversationDataImplCopyWith<_$ConversationDataImpl> get copyWith =>

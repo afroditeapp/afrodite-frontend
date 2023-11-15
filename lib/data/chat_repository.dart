@@ -302,7 +302,7 @@ class ChatRepository extends DataRepository {
 
         if (await db.insertPendingMessage(currentUser, message)) {
           toBeDeleted.add(message.id);
-          ProfileRepository.getInstance().sendProfileChange(ConversationChanged(message.id.accountIdSender));
+          ProfileRepository.getInstance().sendProfileChange(ConversationChanged(message.id.accountIdSender, ConversationChangeType.messageReceived));
         }
       }
 
@@ -352,7 +352,7 @@ class ChatRepository extends DataRepository {
       return;
     }
 
-    ProfileRepository.getInstance().sendProfileChange(ConversationChanged(accountId));
+    ProfileRepository.getInstance().sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
 
     final sendMessage = SendMessageToAccount(message: message, receiver: accountId);
     final (result, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.postSendMessage(sendMessage));
@@ -364,7 +364,7 @@ class ChatRepository extends DataRepository {
   }
 
   /// Get message and updates to it.
-  Stream<MessageEntry?> getMessage(AccountId match, int localId) async* {
+  Stream<MessageEntry?> getMessageWithLocalId(AccountId match, int localId) async* {
     final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {
       yield null;
@@ -373,9 +373,11 @@ class ChatRepository extends DataRepository {
     final db = MessageDatabase.getInstance();
     final messageList = await db.getMessageListByLocalMessageId(currentUser, match, localId, 1);
     final message = messageList.firstOrNull;
-    if (message != null) {
-      yield message;
+    if (message == null) {
+      yield null;
+      return;
     }
+    yield message;
     await for (final event in ProfileRepository.getInstance().profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
         final messageList = await db.getMessageListByLocalMessageId(currentUser, match, localId, 1);
@@ -387,21 +389,49 @@ class ChatRepository extends DataRepository {
     }
   }
 
-  /// Get message count of latest message and updates to it.
-  Stream<int> getMessageCount(AccountId match) async* {
+  /// Get message and updates to it.
+  /// Index 0 is the latest message.
+  Stream<MessageEntry?> getMessageWithIndex(AccountId match, int index) async* {
     final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {
-      yield 0;
+      yield null;
+      return;
+    }
+    final db = MessageDatabase.getInstance();
+    final message = await db.getMessage(currentUser, match, index);
+    final localId = message?.localId;
+    if (message == null || localId == null) {
+      yield null;
+      return;
+    }
+    yield message;
+    await for (final event in ProfileRepository.getInstance().profileChanges) {
+      if (event is ConversationChanged && event.conversationWith == match) {
+        final messageList = await db.getMessageListByLocalMessageId(currentUser, match, localId, 1);
+        final message = messageList.firstOrNull;
+        if (message != null) {
+          yield message;
+        }
+      }
+    }
+  }
+
+  /// Get message count of conversation and possibly the related change event.
+  /// Also receive updates to both.
+  Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match) async* {
+    final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
+    if (currentUser == null) {
+      yield (0, null);
       return;
     }
     final db = MessageDatabase.getInstance();
     final messageNumber = await db.countMessagesInConversation(currentUser, match);
-    yield messageNumber ?? 0;
+    yield (messageNumber ?? 0, null);
 
     await for (final event in ProfileRepository.getInstance().profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
         final messageNumber = await db.countMessagesInConversation(currentUser, match);
-        yield messageNumber ?? 0;
+        yield (messageNumber ?? 0, event);
       }
     }
   }
@@ -414,6 +444,7 @@ class ChatRepository extends DataRepository {
     await messageIterator.switchConversation(currentUser, match);
   }
 
+  // Get max 10 next messages.
   Future<List<MessageEntry>> messageIteratorNext() async {
     return await messageIterator.nextList();
   }

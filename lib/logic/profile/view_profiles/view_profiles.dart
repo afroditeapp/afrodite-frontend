@@ -85,35 +85,33 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
 
   ViewProfileBloc(this.account, this.profile, this.media, this.chat) : super(null) {
     on<SetProfileView>((data, emit) async {
-      await runOnce(() async {
-        await _getProfileDataSubscription?.cancel();
+      await _getProfileDataSubscription?.cancel();
 
-        final newState = ViewProfilesData(
-          accountId: data.accountId,
-          profile: data.profile,
-          primaryProfileImage:
-          data.primaryProfileImage,
-          imgTag: data.imgTag,
-        );
-        emit(newState);
+      final newState = ViewProfilesData(
+        accountId: data.accountId,
+        profile: data.profile,
+        primaryProfileImage:
+        data.primaryProfileImage,
+        imgTag: data.imgTag,
+      );
+      emit(newState);
 
-        final isInFavorites = await profile.isInFavorites(newState.accountId);
-        final isBlocked = await chat.isInSentBlocks(newState.accountId) ||
-          await chat.isInReceivedBlocks(newState.accountId);
-        final ProfileActionState action = await resolveProfileAction(newState.accountId);
+      final isInFavorites = await profile.isInFavorites(newState.accountId);
+      final isBlocked = await chat.isInSentBlocks(newState.accountId) ||
+        await chat.isInReceivedBlocks(newState.accountId);
+      final ProfileActionState action = await resolveProfileAction(newState.accountId);
 
-        emit(newState.copyWith(
-          isFavorite: isInFavorites,
-          isBlocked: isBlocked,
-          profileActionState: action
-        ));
+      emit(newState.copyWith(
+        isFavorite: isInFavorites,
+        isBlocked: isBlocked,
+        profileActionState: action
+      ));
 
-        _getProfileDataSubscription = ProfileRepository.getInstance()
-          .getProfileStream(newState.accountId)
-          .listen((event) {
-            add(HandleProfileResult(event));
-          });
-      });
+      _getProfileDataSubscription = ProfileRepository.getInstance()
+        .getProfileStream(newState.accountId)
+        .listen((event) {
+          add(HandleProfileResult(event));
+        });
     });
     on<ToggleFavoriteStatus>((data, emit) async {
       await runOnce(() async {

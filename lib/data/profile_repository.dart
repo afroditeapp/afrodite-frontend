@@ -314,7 +314,8 @@ class ProfileUnblocked extends ProfileChange {
 }
 class ConversationChanged extends ProfileChange {
   final AccountId conversationWith;
-  ConversationChanged(this.conversationWith);
+  final ConversationChangeType change;
+  ConversationChanged(this.conversationWith, this.change);
 }
 class LikesChanged extends ProfileChange {}
 class MatchesChanged extends ProfileChange {}
@@ -322,4 +323,9 @@ class ProfileFavoriteStatusChange extends ProfileChange {
   final AccountId profile;
   final bool isFavorite;
   ProfileFavoriteStatusChange(this.profile, this.isFavorite);
+}
+
+enum ConversationChangeType {
+  messageSent,
+  messageReceived,
 }

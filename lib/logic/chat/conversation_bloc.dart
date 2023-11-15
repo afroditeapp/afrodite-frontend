@@ -32,6 +32,7 @@ class ConversationData with _$ConversationData {
     /// Resets chat box to empty state
     @Default(false) bool isSendSuccessful,
     @Default(0) int messageCount,
+    ConversationChangeType? messageCountChangeInfo,
   }) = _ConversationData;
 }
 
@@ -53,7 +54,8 @@ class HandleProfileChange extends ConversationEvent {
 }
 class MessageCountChanged extends ConversationEvent {
   final int newMessageCount;
-  MessageCountChanged(this.newMessageCount);
+  final ConversationChangeType? changeInfo;
+  MessageCountChanged(this.newMessageCount, this.changeInfo);
 }
 class BlockProfile extends ConversationEvent {
   final AccountId accountId;
@@ -67,34 +69,33 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData?> with A
   final MediaRepository media;
   final ChatRepository chat;
 
-  StreamSubscription<int>? _messageCountSubscription;
+  StreamSubscription<(int, ConversationChanged?)>? _messageCountSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
 
   ConversationBloc(this.account, this.profile, this.media, this.chat) : super(null) {
     on<SetConversationView>((data, emit) async {
-      await runOnce(() async {
-        await _messageCountSubscription?.cancel();
+      await _messageCountSubscription?.cancel();
 
-        final newState = ConversationData(
-          accountId: data.accountId,
-          profileName: data.profileName,
-          primaryProfileImage:
-          data.primaryProfileImage,
-        );
-        emit(newState);
+      final newState = ConversationData(
+        accountId: data.accountId,
+        profileName: data.profileName,
+        primaryProfileImage:
+        data.primaryProfileImage,
+      );
+      emit(newState);
 
-        final isMatch = await chat.isInMatches(newState.accountId);
-        final isBlocked = await chat.isInSentBlocks(newState.accountId) ||
-          await chat.isInReceivedBlocks(newState.accountId);
+      final isMatch = await chat.isInMatches(newState.accountId);
+      final isBlocked = await chat.isInSentBlocks(newState.accountId) ||
+        await chat.isInReceivedBlocks(newState.accountId);
 
-        emit(newState.copyWith(
-          isMatch: isMatch,
-          isBlocked: isBlocked,
-        ));
+      emit(newState.copyWith(
+        isMatch: isMatch,
+        isBlocked: isBlocked,
+      ));
 
-        _messageCountSubscription = chat.getMessageCount(newState.accountId).listen((newMessageCount) {
-          add(MessageCountChanged(newMessageCount));
-        });
+      _messageCountSubscription = chat.getMessageCountAndChanges(newState.accountId).listen((countAndEvent) {
+        final (newMessageCount, event) = countAndEvent;
+        add(MessageCountChanged(newMessageCount, event?.change));
       });
     });
     on<HandleProfileChange>((data, emit) async {
@@ -108,6 +109,10 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData?> with A
           if (change.profile == currentState.accountId) {
             emit(currentState.copyWith(isBlocked: true));
           }
+        }
+        case MatchesChanged(): {
+          final isMatch = await chat.isInMatches(currentState.accountId);
+          emit(currentState.copyWith(isMatch: isMatch));
         }
         case ProfileNowPrivate() ||
           ProfileUnblocked() ||
@@ -155,6 +160,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData?> with A
       }
       emit(currentState.copyWith(
         messageCount: data.newMessageCount,
+        messageCountChangeInfo: data.changeInfo,
       ));
     });
 
