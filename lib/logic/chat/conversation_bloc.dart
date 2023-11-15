@@ -27,7 +27,7 @@ class ConversationData with _$ConversationData {
     required AccountId accountId,
     required String profileName,
     required File primaryProfileImage,
-    @Default(false) bool isMatch,
+    @Default(true) bool isMatch,
     @Default(false) bool isBlocked,
     /// Resets chat box to empty state
     @Default(false) bool isSendSuccessful,

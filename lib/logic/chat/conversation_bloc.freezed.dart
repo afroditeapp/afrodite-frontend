@@ -194,7 +194,7 @@ class _$ConversationDataImpl
       {required this.accountId,
       required this.profileName,
       required this.primaryProfileImage,
-      this.isMatch = false,
+      this.isMatch = true,
       this.isBlocked = false,
       this.isSendSuccessful = false,
       this.messageCount = 0,

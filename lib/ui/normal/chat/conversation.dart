@@ -24,50 +24,38 @@ class ConversationPage extends StatefulWidget {
 typedef MessageViewEntry = (String message, int? localId, bool isSent);
 
 class ConversationPageState extends State<ConversationPage> {
-  MessageIndexCache cache = MessageIndexCache();
+  late MessageCache cache;
 
   bool _isDisposed = false;
-  bool _viewingMessages = false;
-  bool _jumpToLatest = false;
+  final _chatScrollPhysics = ChatScrollPhysics(ChatScrollPhysicsSettings());
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    cache = MessageIndexCache();
+    cache = MessageCache(widget.accountId);
     _isDisposed = false;
 
-    _scrollController.addListener(() {
-      if (_scrollController.position.atEdge) {
-        if (_scrollController.position.pixels == 0) {
-          // Latest message reached
-          if (cache.commitNeeded()) {
-            log.info("Cache Update requested without jump to latest message");
-            cacheUpdate(false);
+    cache.registerCacheUpdateCallback((jumpToLatestMessage) {
+       if (!_isDisposed) {
+        setState(() {
+          if (
+            jumpToLatestMessage ||
+            (
+              _scrollController.hasClients &&
+              _scrollController.position.atEdge &&
+              _scrollController.position.pixels == 0
+            )
+          ) {
+            _chatScrollPhysics.settings.disableKeepScrollPositionOnce = true;
+            if (_scrollController.hasClients) {
+              _scrollController.position.jumpTo(0);
+            }
           }
-        }
+        });
       }
     });
-  }
-
-  Future<void> cacheUpdate(bool jumpToLatestMessage) async {
-    log.info("Cache update. jumpToLatestMessage: $jumpToLatestMessage");
-    await ChatRepository.getInstance().messageIteratorReset(widget.accountId);
-    final messages1 = await ChatRepository.getInstance().messageIteratorNext();
-    final messages2 = await ChatRepository.getInstance().messageIteratorNext();
-    if (!_isDisposed) {
-      setState(() {
-        cache.commit();
-        final messageIterator = messages1.followedBy(messages2).indexed;
-        for (final (i, message) in messageIterator) {
-          cache.insertEntry(i, message);
-        }
-        if (jumpToLatestMessage) {
-          _scrollController.position.jumpTo(0);
-        }
-      });
-    }
   }
 
   MessageViewEntry messageEntryToViewData(MessageEntry entry) {
@@ -100,29 +88,15 @@ class ConversationPageState extends State<ConversationPage> {
                       previous?.messageCount != current?.messageCount,
                   builder: (context, state) {
                     if (state == null) {
-                      _viewingMessages = false;
                       return Container();
-                    } else if (state.isMatch) {
-                      _viewingMessages = true;
-                      log.info("Message count: ${state.messageCount}");
-                      cache.setNewSize(state.messageCount);
-                      if (cache.getSize() == 0 || _jumpToLatest
-                        // (cache.commitNeeded() &&
-                        // _scrollController.hasClients &&
-                        // _scrollController.position.pixels == 0)
-                        ) {
-                        log.info("Cache Update requested. commit needed ${cache.commitNeeded()}");
-                        _jumpToLatest = false;
-                        Future.delayed(Duration.zero, () async {
-                          await cacheUpdate(true);
-                        });
-                      }
-                      return messageListView(state.accountId);
-                    } else {
-                      _viewingMessages = false;
+                    } else if (!state.isMatch) {
                       return const Center(
                         child: Text('Send a message to make a match!'),
                       );
+                    } else {
+                      log.info("Message count: ${state.messageCount}");
+                      cache.setNewSize(state.messageCount, state.messageCountChangeInfo == ConversationChangeType.messageSent);
+                      return messageListView(state.accountId);
                     }
                   },
                 ),
@@ -137,57 +111,19 @@ class ConversationPageState extends State<ConversationPage> {
 
   Widget messageListView(AccountId match) {
     return ListView.builder(
-      physics: const ChatScrollPhysics(),
+      physics: _chatScrollPhysics,
       controller: _scrollController,
       reverse: true,
       shrinkWrap: true,
       itemCount: cache.getSize(),
       itemBuilder: (context, index) {
         final entry = cache.indexToEntry(index);
-        if (entry == null) {
-          return StreamBuilder(
-            stream: ChatRepository.getInstance()
-              .getMessageWithIndex(match, index)
-              .map((event) {
-                if (event != null) {
-                  cache.insertEntry(index, event);
-                  return event;
-                } else {
-                  return null;
-                }
-              }),
-            builder: (context, snapshot) {
-              final newEntry = snapshot.data;
-              if (newEntry != null) {
-                return messageRowWidget(context, messageEntryToViewData(newEntry));
-              } else {
-                return messageRowWidget(context, emptyViewData());
-              }
-            },
-          );
+        if (entry != null) {
+          return messageRowWidget(context, messageEntryToViewData(entry));
         } else {
-          return StreamBuilder<MessageEntry?>(
-            stream: ChatRepository.getInstance()
-              .getMessageWithLocalId(match, entry.localId)
-              .map((event) {
-                if (event != null) {
-                  cache.insertEntry(index, event);
-                  return event;
-                } else {
-                  return null;
-                }
-              }),
-            builder: (context, snapshot) {
-              final updatedEntry = snapshot.data;
-              if (updatedEntry != null) {
-                return messageRowWidget(context, messageEntryToViewData(updatedEntry));
-              } else {
-                return messageRowWidget(context, messageEntryToViewData(entry));
-              }
-            },
-          );
+          return null;
         }
-      }
+      },
     );
   }
 
@@ -255,9 +191,6 @@ class ConversationPageState extends State<ConversationPage> {
                 if (state != null) {
                   bloc.add(SendMessageTo(state.accountId, message));
                   _textEditingController.clear();
-                  if (_viewingMessages) {
-                    _jumpToLatest = true;
-                  }
                 }
               }
             },
@@ -274,12 +207,17 @@ class ConversationPageState extends State<ConversationPage> {
   }
 }
 
+class ChatScrollPhysicsSettings {
+  bool disableKeepScrollPositionOnce = false;
+}
+
 class ChatScrollPhysics extends ScrollPhysics {
-  const ChatScrollPhysics({ScrollPhysics? parent}) : super(parent: parent);
+  final ChatScrollPhysicsSettings settings;
+  const ChatScrollPhysics(this.settings, {ScrollPhysics? parent}) : super(parent: parent);
 
   @override
   ScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return ChatScrollPhysics(parent: buildParent(ancestor));
+    return ChatScrollPhysics(settings, parent: buildParent(ancestor));
   }
 
   @override
@@ -299,63 +237,68 @@ class ChatScrollPhysics extends ScrollPhysics {
 
     final double addedMessagePixels = newPosition.maxScrollExtent - oldPosition.maxScrollExtent;
 
-    print("oldPosition: $oldPosition, newPosition: $newPosition");
-    print("getNewPosition: $getNewPosition, addedMessagePixels: $addedMessagePixels");
-
-    if (getNewPosition == 0 && addedMessagePixels > 0 && isScrolling) {
+    // TODO: The message list still jumps if the user is scrolling when message
+    // is received.
+    if (getNewPosition > 0 && addedMessagePixels > 0 && !settings.disableKeepScrollPositionOnce && !isScrolling) {
       return getNewPosition + addedMessagePixels;
     } else {
+      settings.disableKeepScrollPositionOnce = false;
       return getNewPosition;
     }
   }
 }
 
-/// Map from index to local message ID
-class MessageIndexCache {
-  int _size = 0;
-  final Queue<MessageContainer> _newLocalIds = Queue();
-  final Queue<MessageContainer> _currentLocalIds = Queue();
+class MessageCache {
+  int size = 0;
+  void Function(bool jumpToLatestMessage) _onCacheUpdate = (_) {};
+  final AccountId _accountId;
+  Queue<MessageContainer> _visibleMessages = Queue();
+  Queue<MessageContainer> _tmpMessages = Queue();
 
-  MessageIndexCache();
+  MessageCache(this._accountId);
 
-  void setNewSize(int newSize) {
-    final difference = newSize - _size;
-    for (int i = 0; i < difference; i++) {
-      _newLocalIds.addLast(MessageContainer());
+  void registerCacheUpdateCallback(void Function(bool) callback) {
+    _onCacheUpdate = callback;
+  }
+
+  void setNewSize(int newSize, bool jumpToLatestMessage) {
+    if (newSize != size) {
+      size = newSize;
+      // TODO: Prevent multiple updates or only commit the latest update
+      _updateCache(jumpToLatestMessage);
     }
-    _size = newSize;
   }
 
-  bool commitNeeded() {
-    return _newLocalIds.isNotEmpty;
-  }
+  Future<void> _updateCache(bool jumpToLatestMessage) async {
+    _tmpMessages.clear();
 
-  void commit() {
-    // Reset to avoid possible race conditions where the local ID
-    // is loading when new message is added to database.
-    if (_newLocalIds.isNotEmpty) {
-      for (final container in _currentLocalIds) {
-        container.entry = null;
+    await ChatRepository.getInstance().messageIteratorReset(_accountId);
+    while (true) {
+      final messages = await ChatRepository.getInstance().messageIteratorNext();
+      if (messages.isEmpty) {
+        break;
+      }
+      for (final message in messages) {
+        _tmpMessages.add(MessageContainer()..entry = message);
       }
     }
 
-    while (_newLocalIds.isNotEmpty) {
-      _currentLocalIds.addFirst(_newLocalIds.removeFirst());
-    }
+    final isFirstUpdate = _visibleMessages.isEmpty;
+
+    final currentMessages = _visibleMessages;
+    _visibleMessages = _tmpMessages;
+    _tmpMessages = currentMessages;
+
+    _onCacheUpdate(jumpToLatestMessage || isFirstUpdate);
   }
 
   int getSize() {
-    return _currentLocalIds.length;
+    return _visibleMessages.length;
   }
 
-  /// If null, message entry is not yet loaded
+  /// If null, message entry does not exists
   MessageEntry? indexToEntry(int index) {
-    return _currentLocalIds.elementAtOrNull(index)?.entry;
-  }
-
-
-  void insertEntry(int index, MessageEntry entry) {
-    _currentLocalIds.elementAtOrNull(index)?.entry = entry;
+    return _visibleMessages.elementAtOrNull(index)?.entry;
   }
 }
 
