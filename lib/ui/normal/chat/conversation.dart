@@ -45,17 +45,23 @@ class ConversationPageState extends State<ConversationPage> {
             (
               _scrollController.hasClients &&
               _scrollController.position.atEdge &&
-              _scrollController.position.pixels == 0
+              _scrollController.position.pixels == _scrollController.position.minScrollExtent
             )
           ) {
-            _chatScrollPhysics.settings.disableKeepScrollPositionOnce = true;
+            _chatScrollPhysics.settings.jumpToMin = true;
             if (_scrollController.hasClients) {
-              _scrollController.position.jumpTo(0);
+              // log.info("test ${_scrollController.position}");
+              _scrollController.position.jumpTo(_scrollController.position.minScrollExtent);
             }
           }
         });
       }
     });
+
+    // _scrollController.addListener(() {
+    //   log.info("test ${_scrollController.position}");
+    //   log.info("min ${_scrollController.position.minScrollExtent}");
+    // });
   }
 
   MessageViewEntry messageEntryToViewData(MessageEntry entry) {
@@ -110,21 +116,47 @@ class ConversationPageState extends State<ConversationPage> {
   }
 
   Widget messageListView(AccountId match) {
-    return ListView.builder(
-      physics: _chatScrollPhysics,
-      controller: _scrollController,
-      reverse: true,
-      shrinkWrap: true,
-      itemCount: cache.getSize(),
-      itemBuilder: (context, index) {
-        final entry = cache.indexToEntry(index);
-        if (entry != null) {
-          return messageRowWidget(context, messageEntryToViewData(entry));
-        } else {
-          return null;
-        }
-      },
-    );
+    const Key centerKey = ValueKey<String>('bottom-sliver-list');
+    return CustomScrollView(
+        center: centerKey,
+        physics: _chatScrollPhysics,
+        reverse: true,
+        controller: _scrollController,
+        slivers: <Widget>[
+          SliverList(
+
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                final reversedIndex = cache.getBottomMessagesSize() - index - 1;
+                final entry = cache.bottomMessagesindexToEntry(reversedIndex);
+                if (entry != null) {
+                  return messageRowWidget(context, messageEntryToViewData(entry));
+                } else {
+                  return null;
+                }
+              },
+              childCount: cache._bottomMessages.length,
+            ),
+          ),
+          SliverList(
+            key: centerKey,
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                //final reversedIndex = cache.getTopMessagesSize() - index - 1;
+                final reversedIndex = index;
+                final entry = cache.topMessagesindexToEntry(reversedIndex);
+                if (entry != null) {
+                  return messageRowWidget(context, messageEntryToViewData(entry));
+                } else {
+                  return null;
+                }
+              },
+              childCount: cache._topMessages.length,
+            ),
+          ),
+
+        ],
+      );
   }
 
   Widget messageRowWidget(BuildContext context, MessageViewEntry entry) {
@@ -208,7 +240,7 @@ class ConversationPageState extends State<ConversationPage> {
 }
 
 class ChatScrollPhysicsSettings {
-  bool disableKeepScrollPositionOnce = false;
+  bool jumpToMin = false;
 }
 
 class ChatScrollPhysics extends ScrollPhysics {
@@ -235,14 +267,15 @@ class ChatScrollPhysics extends ScrollPhysics {
       velocity: velocity
     );
 
-    final double addedMessagePixels = newPosition.maxScrollExtent - oldPosition.maxScrollExtent;
+    final double removedMessagePixels = oldPosition.minScrollExtent - newPosition.minScrollExtent;
 
-    // TODO: The message list still jumps if the user is scrolling when message
-    // is received.
-    if (getNewPosition > 0 && addedMessagePixels > 0 && !settings.disableKeepScrollPositionOnce && !isScrolling) {
-      return getNewPosition + addedMessagePixels;
+    log.info("removedMessagePixels $removedMessagePixels");
+    log.info("old: ${oldPosition.minScrollExtent} new: ${newPosition.minScrollExtent}");
+
+    if (removedMessagePixels > 0 && settings.jumpToMin) {
+      settings.jumpToMin = false;
+      return getNewPosition - removedMessagePixels;
     } else {
-      settings.disableKeepScrollPositionOnce = false;
       return getNewPosition;
     }
   }
@@ -252,8 +285,9 @@ class MessageCache {
   int size = 0;
   void Function(bool jumpToLatestMessage) _onCacheUpdate = (_) {};
   final AccountId _accountId;
-  Queue<MessageContainer> _visibleMessages = Queue();
-  Queue<MessageContainer> _tmpMessages = Queue();
+  int? initialMsgLocalKey;
+  List<MessageContainer> _topMessages = [];
+  List<MessageContainer> _bottomMessages = [];
 
   MessageCache(this._accountId);
 
@@ -263,42 +297,65 @@ class MessageCache {
 
   void setNewSize(int newSize, bool jumpToLatestMessage) {
     if (newSize != size) {
+      _updateCache(jumpToLatestMessage, size == 0);
       size = newSize;
-      // TODO: Prevent multiple updates or only commit the latest update
-      _updateCache(jumpToLatestMessage);
     }
   }
 
-  Future<void> _updateCache(bool jumpToLatestMessage) async {
-    _tmpMessages.clear();
-
+  Future<void> _updateCache(bool jumpToLatestMessage, bool initialLoad) async {
     await ChatRepository.getInstance().messageIteratorReset(_accountId);
+    bool useBottom = true;
+    List<MessageContainer> newBottomMessages = [];
+    List<MessageContainer> newTopMessages = [];
     while (true) {
       final messages = await ChatRepository.getInstance().messageIteratorNext();
       if (messages.isEmpty) {
         break;
       }
-      for (final message in messages) {
-        _tmpMessages.add(MessageContainer()..entry = message);
+
+      // ignore: prefer_conditional_assignment
+      if (initialMsgLocalKey == null) {
+        initialMsgLocalKey = messages.first.id;
+      }
+
+      if (initialLoad) {
+        for (final message in messages) {
+          newTopMessages.add(MessageContainer()..entry = message);
+        }
+      } else {
+        for (final message in messages) {
+          if (message.id == initialMsgLocalKey) {
+            useBottom = false;
+          }
+          if (useBottom) {
+            newBottomMessages.add(MessageContainer()..entry = message);
+          } else {
+            newTopMessages.add(MessageContainer()..entry = message);
+          }
+        }
       }
     }
-
-    final isFirstUpdate = _visibleMessages.isEmpty;
-
-    final currentMessages = _visibleMessages;
-    _visibleMessages = _tmpMessages;
-    _tmpMessages = currentMessages;
-
-    _onCacheUpdate(jumpToLatestMessage || isFirstUpdate);
+    _topMessages = newTopMessages;
+    _bottomMessages = newBottomMessages;
+    _onCacheUpdate(jumpToLatestMessage || initialLoad);
   }
 
-  int getSize() {
-    return _visibleMessages.length;
+  int getTopMessagesSize() {
+    return _topMessages.length;
+  }
+
+  int getBottomMessagesSize() {
+    return _bottomMessages.length;
   }
 
   /// If null, message entry does not exists
-  MessageEntry? indexToEntry(int index) {
-    return _visibleMessages.elementAtOrNull(index)?.entry;
+  MessageEntry? topMessagesindexToEntry(int index) {
+    return _topMessages.elementAtOrNull(index)?.entry;
+  }
+
+  /// If null, message entry does not exists
+  MessageEntry? bottomMessagesindexToEntry(int index) {
+    return _bottomMessages.elementAtOrNull(index)?.entry;
   }
 }
 
