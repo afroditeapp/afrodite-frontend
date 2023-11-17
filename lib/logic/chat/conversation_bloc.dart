@@ -7,6 +7,7 @@ import "package:pihka_frontend/data/account_repository.dart";
 import "package:pihka_frontend/data/chat_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
+import "package:pihka_frontend/database/chat/message_database.dart";
 import "package:pihka_frontend/database/favorite_profiles_database.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";

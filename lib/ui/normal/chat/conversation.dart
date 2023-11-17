@@ -26,50 +26,12 @@ typedef MessageViewEntry = (String message, int? localId, bool isSent);
 class ConversationPageState extends State<ConversationPage> {
   late MessageCache cache;
 
-  bool _isDisposed = false;
-  final _chatScrollPhysics = ChatScrollPhysics(ChatScrollPhysicsSettings());
-  final ScrollController _scrollController = ScrollController();
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     cache = MessageCache(widget.accountId);
-    _isDisposed = false;
-
-    cache.registerCacheUpdateCallback((jumpToLatestMessage) {
-       if (!_isDisposed) {
-        setState(() {
-          if (
-            jumpToLatestMessage ||
-            (
-              _scrollController.hasClients &&
-              _scrollController.position.atEdge &&
-              _scrollController.position.pixels == _scrollController.position.minScrollExtent
-            )
-          ) {
-            _chatScrollPhysics.settings.jumpToMin = true;
-            if (_scrollController.hasClients) {
-              // log.info("test ${_scrollController.position}");
-              _scrollController.position.jumpTo(_scrollController.position.minScrollExtent);
-            }
-          }
-        });
-      }
-    });
-
-    // _scrollController.addListener(() {
-    //   log.info("test ${_scrollController.position}");
-    //   log.info("min ${_scrollController.position.minScrollExtent}");
-    // });
-  }
-
-  MessageViewEntry messageEntryToViewData(MessageEntry entry) {
-    return (entry.messageText, entry.localId, entry.sentMessageState != null);
-  }
-
-  MessageViewEntry emptyViewData() {
-    return ("", -1, false);
   }
 
   @override
@@ -102,7 +64,7 @@ class ConversationPageState extends State<ConversationPage> {
                     } else {
                       log.info("Message count: ${state.messageCount}");
                       cache.setNewSize(state.messageCount, state.messageCountChangeInfo == ConversationChangeType.messageSent);
-                      return messageListView(state.accountId);
+                      return ChatViewWidget(state.accountId, cache);
                     }
                   },
                 ),
@@ -115,7 +77,296 @@ class ConversationPageState extends State<ConversationPage> {
     );
   }
 
+  Widget newMessageArea(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _textEditingController,
+              decoration: InputDecoration(
+                hintText: 'Type a message...',
+              ),
+              keyboardType: TextInputType.multiline,
+              maxLines: 4,
+              minLines: 1,
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.send),
+            onPressed: () {
+              final message = _textEditingController.text;
+              if (message.trim().isNotEmpty) {
+                final bloc = context.read<ConversationBloc>();
+                final state = bloc.state;
+                if (state != null) {
+                  bloc.add(SendMessageTo(state.accountId, message));
+                  _textEditingController.clear();
+                }
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class ChatViewDebuggerPage extends StatefulWidget {
+  final AccountId accountId;
+  const ChatViewDebuggerPage(this.accountId, {Key? key}) : super(key: key);
+
+  @override
+  ChatViewDebuggerPageState createState() => ChatViewDebuggerPageState();
+}
+
+class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
+  late MessageCache cache;
+  int msgCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    cache = MessageCache(widget.accountId);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Debug chat view'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: ChatViewWidget(widget.accountId, cache),
+              ),
+            )
+          ),
+          newMessageArea(context),
+        ],
+      ),
+    );
+  }
+
+  Widget newMessageArea(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              final count = msgCount++;
+              cache.debugAddToTop(count.toString(), count % 4 == 0);
+            },
+            child: Text("Top add")
+          ),
+          ElevatedButton(
+            onPressed: () {
+              cache.debugRemoveFromTop();
+            },
+            child: Text("Top rem")
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final count = msgCount++;
+              cache.debugAddToBottom(count.toString(), count % 4 == 0);
+            },
+            child: Text("Bottom add")
+          ),
+          ElevatedButton(
+            onPressed: () {
+              cache.debugRemoveFromBottom();
+            },
+            child: Text("Bottom rem")
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class ChatViewWidget extends StatefulWidget {
+  final AccountId accountId;
+  final MessageCache cache;
+  const ChatViewWidget(this.accountId, this.cache, {Key? key}) : super(key: key);
+
+  @override
+  ChatViewWidgetState createState() => ChatViewWidgetState();
+}
+
+// class Relayout extends SingleChildLayoutDelegate {
+//   void Function() messagesFillTheViewportCallback = () {};
+//   Relayout();
+
+//   void registerCallback(void Function() callback) {
+//     messagesFillTheViewportCallback = callback;
+//   }
+
+//   @override
+//   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
+//     return BoxConstraints(
+//       minWidth: constraints.maxWidth,
+//       maxWidth: constraints.maxWidth,
+//       minHeight: constraints.maxHeight,
+//       maxHeight: constraints.maxHeight,
+//     );
+//   }
+
+//   @override
+//   Offset getPositionForChild(Size size, Size childSize) {
+//     if (size.height == childSize.height && size.width == childSize.width) {
+//       // log.info("Messages fill the viewport");
+//       log.info("size: $size childSize: $childSize");
+//       messagesFillTheViewportCallback();
+//     }
+//     return Offset.zero;
+//   }
+
+//   @override
+//   bool shouldRelayout(covariant SingleChildLayoutDelegate oldDelegate) {
+//     return true;
+//   }
+// }
+
+class ChatViewWidgetState extends State<ChatViewWidget> {
+
+  bool _isDisposed = false;
+  bool _enableSliverMode = false;
+  final _chatScrollPhysics = ChatScrollPhysics(ChatScrollPhysicsSettings());
+  final ScrollController _scrollController = ScrollController();
+
+  // final chatLayoutDelegate = Relayout();
+
+  MessageCache get cache => widget.cache;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // chatLayoutDelegate.registerCallback(() {
+    //   if (!_enableSliverMode) {
+    //     // setState(() {
+    //     //   _enableSliverMode = true;
+    //     // });
+    //   }
+    // });
+
+    cache.registerCacheUpdateCallback((jumpToLatestMessage) {
+      if (!_isDisposed) {
+        setState(() {
+          if (
+            jumpToLatestMessage ||
+            (
+              _scrollController.hasClients &&
+              _scrollController.position.atEdge &&
+              _scrollController.position.pixels == _scrollController.position.minScrollExtent
+            )
+          ) {
+            _chatScrollPhysics.settings.jumpToMin = true;
+            if (_scrollController.hasClients) {
+              // log.info("test ${_scrollController.position}");
+              _scrollController.position.jumpTo(_scrollController.position.minScrollExtent);
+            }
+          }
+        });
+      }
+    });
+
+    _scrollController.addListener(() {
+      log.info("test ${_scrollController.position}");
+      log.info("min ${_scrollController.position.minScrollExtent}");
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return messageListView(widget.accountId);
+  }
+
+
   Widget messageListView(AccountId match) {
+    if (_enableSliverMode) {
+      return messageSliverList(match);
+    } else {
+      return ClipRect(child: normalScrollViewDetections());
+    }
+  }
+
+  Widget normalScrollViewDetections() {
+    return LayoutBuilder(
+      builder: (c, constraints) => Column(
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: constraints.maxHeight - 1,
+              maxWidth: constraints.maxWidth,
+            ),
+            child: normalScrollView(),
+          ),
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                log.info("constraints: $constraints");
+                if (constraints.maxHeight <= 1) {
+                    Future.delayed(Duration.zero, () {
+                      if (!_isDisposed) {
+                        setState(() {
+                          log.info("sliver mode enabled");
+                          _enableSliverMode = true;
+                        });
+                      }
+                    });
+                }
+                return Container();
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget normalScrollView() {
+    return ListView.builder(
+      controller: _scrollController,
+      reverse: true,
+      shrinkWrap: true,
+      itemCount: cache.getTopMessagesSize() + cache.getBottomMessagesSize(),
+      itemBuilder: (context, index) {
+        final MessageEntry? entry;
+        if (index >= cache.getBottomMessagesSize()) {
+          entry = cache.topMessagesindexToEntry(index - cache.getBottomMessagesSize());
+        } else {
+          entry = cache.bottomMessagesindexToEntry(index);
+        }
+        if (entry != null) {
+          return messageRowWidget(context, messageEntryToViewData(entry));
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+  MessageViewEntry messageEntryToViewData(MessageEntry entry) {
+    return (entry.messageText, entry.localId, entry.sentMessageState != null);
+  }
+
+  MessageViewEntry emptyViewData() {
+    return ("", -1, false);
+  }
+
+  Widget messageSliverList(AccountId match) {
     const Key centerKey = ValueKey<String>('bottom-sliver-list');
     return CustomScrollView(
         center: centerKey,
@@ -124,7 +375,6 @@ class ConversationPageState extends State<ConversationPage> {
         controller: _scrollController,
         slivers: <Widget>[
           SliverList(
-
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 final reversedIndex = cache.getBottomMessagesSize() - index - 1;
@@ -142,9 +392,7 @@ class ConversationPageState extends State<ConversationPage> {
             key: centerKey,
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
-                //final reversedIndex = cache.getTopMessagesSize() - index - 1;
-                final reversedIndex = index;
-                final entry = cache.topMessagesindexToEntry(reversedIndex);
+                final entry = cache.topMessagesindexToEntry(index);
                 if (entry != null) {
                   return messageRowWidget(context, messageEntryToViewData(entry));
                 } else {
@@ -154,7 +402,6 @@ class ConversationPageState extends State<ConversationPage> {
               childCount: cache._topMessages.length,
             ),
           ),
-
         ],
       );
   }
@@ -193,41 +440,6 @@ class ConversationPageState extends State<ConversationPage> {
           color: isSent ? Colors.white : Colors.black,
           fontSize: 16.0,
         ),
-      ),
-    );
-  }
-
-  Widget newMessageArea(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _textEditingController,
-              decoration: InputDecoration(
-                hintText: 'Type a message...',
-              ),
-              keyboardType: TextInputType.multiline,
-              maxLines: 4,
-              minLines: 1,
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.send),
-            onPressed: () {
-              final message = _textEditingController.text;
-              if (message.trim().isNotEmpty) {
-                final bloc = context.read<ConversationBloc>();
-                final state = bloc.state;
-                if (state != null) {
-                  bloc.add(SendMessageTo(state.accountId, message));
-                  _textEditingController.clear();
-                }
-              }
-            },
-          ),
-        ],
       ),
     );
   }
@@ -356,6 +568,50 @@ class MessageCache {
   /// If null, message entry does not exists
   MessageEntry? bottomMessagesindexToEntry(int index) {
     return _bottomMessages.elementAtOrNull(index)?.entry;
+  }
+
+  // Debugging
+
+  int counter = 0;
+  MessageEntry debugBuildEntry(String text, bool isSent) {
+    final SentMessageState? state;
+    if (isSent) {
+      state = SentMessageState.pending;
+    } else {
+      state = null;
+    }
+    return MessageEntry(
+      AccountId(accountId: ""),
+      AccountId(accountId: ""),
+      text,
+      sentMessageState: state,
+      id: counter++,
+    );
+  }
+
+  void debugAddToTop(String text, bool isSent) {
+    _topMessages.insert(0, MessageContainer()..entry = debugBuildEntry(text, isSent));
+    _onCacheUpdate(false);
+  }
+
+  void debugRemoveFromTop() {
+    if (_topMessages.isNotEmpty) {
+      _topMessages.removeAt(0);
+    }
+    _onCacheUpdate(false);
+  }
+
+  void debugAddToBottom(String text, bool isSent) {
+    _bottomMessages.insert(0, MessageContainer()..entry = debugBuildEntry(text, isSent));
+    _onCacheUpdate(false);
+  }
+
+  void debugRemoveFromBottom() {
+    if (_bottomMessages.isNotEmpty) {
+      _bottomMessages.removeAt(0);
+    }
+
+    _onCacheUpdate(false);
   }
 }
 

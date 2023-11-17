@@ -14,6 +14,7 @@ import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_filtering_settings.dart';
 import 'package:pihka_frontend/logic/profile/view_profiles/view_profiles.dart';
+import 'package:pihka_frontend/ui/normal/chat/conversation.dart';
 import 'package:pihka_frontend/ui/normal/profiles/filter_profiles.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui/utils.dart';
@@ -51,6 +52,12 @@ class ProfileView extends BottomNavigationView {
         ),
         onPressed: () {
           Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ProfileFilteringSettingsPage()));
+        },
+      ),
+      IconButton(
+        icon: const Icon(Icons.chat_bubble_outline_rounded),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ChatViewDebuggerPage(AccountId(accountId: ""))));
         },
       ),
     ];
