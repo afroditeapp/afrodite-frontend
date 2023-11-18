@@ -163,7 +163,34 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
               ),
             )
           ),
+          textEditArea(context),
           newMessageArea(context),
+        ],
+      ),
+    );
+  }
+
+   Widget textEditArea(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Type a message...',
+              ),
+              keyboardType: TextInputType.multiline,
+              maxLines: 4,
+              minLines: 1,
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.send),
+            onPressed: () {
+              // empty
+            },
+          ),
         ],
       ),
     );
@@ -472,7 +499,7 @@ class ChatScrollPhysics extends ScrollPhysics {
       // This is like this on purpose. If virtual keyboard is opened and if
       // the change is not done when new message arives, then the list makes
       // visible jump.
-      settings.maxViewportHeightDetected != newPosition.viewportDimension
+      oldPosition.viewportDimension == newPosition.viewportDimension
     ) {
       settings.useTwoSliverListMode = true;
       if (settings.messageCache == null) {
