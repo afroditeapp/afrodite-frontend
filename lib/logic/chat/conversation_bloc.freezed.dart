@@ -27,6 +27,7 @@ mixin _$ConversationData {
   int get messageCount => throw _privateConstructorUsedError;
   ConversationChangeType? get messageCountChangeInfo =>
       throw _privateConstructorUsedError;
+  MessageList get initialMessages => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ConversationDataCopyWith<ConversationData> get copyWith =>
@@ -47,7 +48,8 @@ abstract class $ConversationDataCopyWith<$Res> {
       bool isBlocked,
       bool isSendSuccessful,
       int messageCount,
-      ConversationChangeType? messageCountChangeInfo});
+      ConversationChangeType? messageCountChangeInfo,
+      MessageList initialMessages});
 }
 
 /// @nodoc
@@ -71,6 +73,7 @@ class _$ConversationDataCopyWithImpl<$Res, $Val extends ConversationData>
     Object? isSendSuccessful = null,
     Object? messageCount = null,
     Object? messageCountChangeInfo = freezed,
+    Object? initialMessages = null,
   }) {
     return _then(_value.copyWith(
       accountId: null == accountId
@@ -105,6 +108,10 @@ class _$ConversationDataCopyWithImpl<$Res, $Val extends ConversationData>
           ? _value.messageCountChangeInfo
           : messageCountChangeInfo // ignore: cast_nullable_to_non_nullable
               as ConversationChangeType?,
+      initialMessages: null == initialMessages
+          ? _value.initialMessages
+          : initialMessages // ignore: cast_nullable_to_non_nullable
+              as MessageList,
     ) as $Val);
   }
 }
@@ -125,7 +132,8 @@ abstract class _$$ConversationDataImplCopyWith<$Res>
       bool isBlocked,
       bool isSendSuccessful,
       int messageCount,
-      ConversationChangeType? messageCountChangeInfo});
+      ConversationChangeType? messageCountChangeInfo,
+      MessageList initialMessages});
 }
 
 /// @nodoc
@@ -147,6 +155,7 @@ class __$$ConversationDataImplCopyWithImpl<$Res>
     Object? isSendSuccessful = null,
     Object? messageCount = null,
     Object? messageCountChangeInfo = freezed,
+    Object? initialMessages = null,
   }) {
     return _then(_$ConversationDataImpl(
       accountId: null == accountId
@@ -181,6 +190,10 @@ class __$$ConversationDataImplCopyWithImpl<$Res>
           ? _value.messageCountChangeInfo
           : messageCountChangeInfo // ignore: cast_nullable_to_non_nullable
               as ConversationChangeType?,
+      initialMessages: null == initialMessages
+          ? _value.initialMessages
+          : initialMessages // ignore: cast_nullable_to_non_nullable
+              as MessageList,
     ));
   }
 }
@@ -198,7 +211,8 @@ class _$ConversationDataImpl
       this.isBlocked = false,
       this.isSendSuccessful = false,
       this.messageCount = 0,
-      this.messageCountChangeInfo});
+      this.messageCountChangeInfo,
+      this.initialMessages = const MessageList([])});
 
   @override
   final AccountId accountId;
@@ -222,10 +236,13 @@ class _$ConversationDataImpl
   final int messageCount;
   @override
   final ConversationChangeType? messageCountChangeInfo;
+  @override
+  @JsonKey()
+  final MessageList initialMessages;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ConversationData(accountId: $accountId, profileName: $profileName, primaryProfileImage: $primaryProfileImage, isMatch: $isMatch, isBlocked: $isBlocked, isSendSuccessful: $isSendSuccessful, messageCount: $messageCount, messageCountChangeInfo: $messageCountChangeInfo)';
+    return 'ConversationData(accountId: $accountId, profileName: $profileName, primaryProfileImage: $primaryProfileImage, isMatch: $isMatch, isBlocked: $isBlocked, isSendSuccessful: $isSendSuccessful, messageCount: $messageCount, messageCountChangeInfo: $messageCountChangeInfo, initialMessages: $initialMessages)';
   }
 
   @override
@@ -240,8 +257,9 @@ class _$ConversationDataImpl
       ..add(DiagnosticsProperty('isBlocked', isBlocked))
       ..add(DiagnosticsProperty('isSendSuccessful', isSendSuccessful))
       ..add(DiagnosticsProperty('messageCount', messageCount))
-      ..add(DiagnosticsProperty(
-          'messageCountChangeInfo', messageCountChangeInfo));
+      ..add(
+          DiagnosticsProperty('messageCountChangeInfo', messageCountChangeInfo))
+      ..add(DiagnosticsProperty('initialMessages', initialMessages));
   }
 
   @override
@@ -263,7 +281,9 @@ class _$ConversationDataImpl
             (identical(other.messageCount, messageCount) ||
                 other.messageCount == messageCount) &&
             (identical(other.messageCountChangeInfo, messageCountChangeInfo) ||
-                other.messageCountChangeInfo == messageCountChangeInfo));
+                other.messageCountChangeInfo == messageCountChangeInfo) &&
+            (identical(other.initialMessages, initialMessages) ||
+                other.initialMessages == initialMessages));
   }
 
   @override
@@ -276,7 +296,8 @@ class _$ConversationDataImpl
       isBlocked,
       isSendSuccessful,
       messageCount,
-      messageCountChangeInfo);
+      messageCountChangeInfo,
+      initialMessages);
 
   @JsonKey(ignore: true)
   @override
@@ -288,15 +309,15 @@ class _$ConversationDataImpl
 
 abstract class _ConversationData implements ConversationData {
   factory _ConversationData(
-          {required final AccountId accountId,
-          required final String profileName,
-          required final File primaryProfileImage,
-          final bool isMatch,
-          final bool isBlocked,
-          final bool isSendSuccessful,
-          final int messageCount,
-          final ConversationChangeType? messageCountChangeInfo}) =
-      _$ConversationDataImpl;
+      {required final AccountId accountId,
+      required final String profileName,
+      required final File primaryProfileImage,
+      final bool isMatch,
+      final bool isBlocked,
+      final bool isSendSuccessful,
+      final int messageCount,
+      final ConversationChangeType? messageCountChangeInfo,
+      final MessageList initialMessages}) = _$ConversationDataImpl;
 
   @override
   AccountId get accountId;
@@ -316,6 +337,8 @@ abstract class _ConversationData implements ConversationData {
   int get messageCount;
   @override
   ConversationChangeType? get messageCountChangeInfo;
+  @override
+  MessageList get initialMessages;
   @override
   @JsonKey(ignore: true)
   _$$ConversationDataImplCopyWith<_$ConversationDataImpl> get copyWith =>

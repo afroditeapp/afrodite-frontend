@@ -1,9 +1,8 @@
+import 'dart:async';
 import 'dart:collection';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
@@ -12,6 +11,10 @@ import 'package:pihka_frontend/database/chat/message_database.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 
 var log = Logger("ConversationPage");
+
+// TODO: Make sure callback can run when first chat message is sent
+// TODO: Move messages from bottom to top when changing sliver list mode to two
+// lists.
 
 class ConversationPage extends StatefulWidget {
   final AccountId accountId;
@@ -32,6 +35,7 @@ class ConversationPageState extends State<ConversationPage> {
   void initState() {
     super.initState();
     cache = MessageCache(widget.accountId);
+    log.info("Opening conversation to ${widget.accountId.accountId}");
   }
 
   @override
@@ -52,10 +56,11 @@ class ConversationPageState extends State<ConversationPage> {
                 alignment: Alignment.topCenter,
                 child: BlocBuilder<ConversationBloc, ConversationData?>(
                   buildWhen: (previous, current) =>
+                    previous?.accountId != current?.accountId ||
                     previous?.isMatch != current?.isMatch ||
-                      previous?.messageCount != current?.messageCount,
+                    previous?.messageCount != current?.messageCount,
                   builder: (context, state) {
-                    if (state == null) {
+                    if (state == null || state.accountId != widget.accountId) {
                       return Container();
                     } else if (!state.isMatch) {
                       return const Center(
@@ -63,7 +68,12 @@ class ConversationPageState extends State<ConversationPage> {
                       );
                     } else {
                       log.info("Message count: ${state.messageCount}");
-                      cache.setNewSize(state.messageCount, state.messageCountChangeInfo == ConversationChangeType.messageSent);
+                      if (!cache.setInitialMessagesIfNotSet(state.initialMessages.messages)) {
+                        cache.setNewSize(
+                          state.messageCount,
+                          state.messageCountChangeInfo == ConversationChangeType.messageSent
+                        );
+                      }
                       return ChatViewWidget(state.accountId, cache);
                     }
                   },
@@ -101,6 +111,7 @@ class ConversationPageState extends State<ConversationPage> {
                 final bloc = context.read<ConversationBloc>();
                 final state = bloc.state;
                 if (state != null) {
+                  log.info("Sending message to ${state.accountId.accountId}");
                   bloc.add(SendMessageTo(state.accountId, message));
                   _textEditingController.clear();
                 }
@@ -205,48 +216,11 @@ class ChatViewWidget extends StatefulWidget {
   ChatViewWidgetState createState() => ChatViewWidgetState();
 }
 
-// class Relayout extends SingleChildLayoutDelegate {
-//   void Function() messagesFillTheViewportCallback = () {};
-//   Relayout();
-
-//   void registerCallback(void Function() callback) {
-//     messagesFillTheViewportCallback = callback;
-//   }
-
-//   @override
-//   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-//     return BoxConstraints(
-//       minWidth: constraints.maxWidth,
-//       maxWidth: constraints.maxWidth,
-//       minHeight: constraints.maxHeight,
-//       maxHeight: constraints.maxHeight,
-//     );
-//   }
-
-//   @override
-//   Offset getPositionForChild(Size size, Size childSize) {
-//     if (size.height == childSize.height && size.width == childSize.width) {
-//       // log.info("Messages fill the viewport");
-//       log.info("size: $size childSize: $childSize");
-//       messagesFillTheViewportCallback();
-//     }
-//     return Offset.zero;
-//   }
-
-//   @override
-//   bool shouldRelayout(covariant SingleChildLayoutDelegate oldDelegate) {
-//     return true;
-//   }
-// }
-
 class ChatViewWidgetState extends State<ChatViewWidget> {
 
   bool _isDisposed = false;
-  bool _enableSliverMode = false;
   final _chatScrollPhysics = ChatScrollPhysics(ChatScrollPhysicsSettings());
   final ScrollController _scrollController = ScrollController();
-
-  // final chatLayoutDelegate = Relayout();
 
   MessageCache get cache => widget.cache;
 
@@ -254,17 +228,10 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
   void initState() {
     super.initState();
 
-    // chatLayoutDelegate.registerCallback(() {
-    //   if (!_enableSliverMode) {
-    //     // setState(() {
-    //     //   _enableSliverMode = true;
-    //     // });
-    //   }
-    // });
-
     cache.registerCacheUpdateCallback((jumpToLatestMessage) {
       if (!_isDisposed) {
         setState(() {
+          log.info("Show updated message list. jumpToLatestMessage: $jumpToLatestMessage");
           if (
             jumpToLatestMessage ||
             (
@@ -283,10 +250,10 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
       }
     });
 
-    _scrollController.addListener(() {
-      log.info("test ${_scrollController.position}");
-      log.info("min ${_scrollController.position.minScrollExtent}");
-    });
+    // _scrollController.addListener(() {
+    //   log.info("test ${_scrollController.position}");
+    //   log.info("min ${_scrollController.position.minScrollExtent}");
+    // });
   }
   @override
   Widget build(BuildContext context) {
@@ -295,67 +262,7 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
 
 
   Widget messageListView(AccountId match) {
-    if (_enableSliverMode) {
-      return messageSliverList(match);
-    } else {
-      return ClipRect(child: normalScrollViewDetections());
-    }
-  }
-
-  Widget normalScrollViewDetections() {
-    return LayoutBuilder(
-      builder: (c, constraints) => Column(
-        children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: constraints.maxHeight - 1,
-              maxWidth: constraints.maxWidth,
-            ),
-            child: normalScrollView(),
-          ),
-          Expanded(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                log.info("constraints: $constraints");
-                if (constraints.maxHeight <= 1) {
-                    Future.delayed(Duration.zero, () {
-                      if (!_isDisposed) {
-                        setState(() {
-                          log.info("sliver mode enabled");
-                          _enableSliverMode = true;
-                        });
-                      }
-                    });
-                }
-                return Container();
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget normalScrollView() {
-    return ListView.builder(
-      controller: _scrollController,
-      reverse: true,
-      shrinkWrap: true,
-      itemCount: cache.getTopMessagesSize() + cache.getBottomMessagesSize(),
-      itemBuilder: (context, index) {
-        final MessageEntry? entry;
-        if (index >= cache.getBottomMessagesSize()) {
-          entry = cache.topMessagesindexToEntry(index - cache.getBottomMessagesSize());
-        } else {
-          entry = cache.bottomMessagesindexToEntry(index);
-        }
-        if (entry != null) {
-          return messageRowWidget(context, messageEntryToViewData(entry));
-        } else {
-          return null;
-        }
-      },
-    );
+    return messageSliverList(match);
   }
 
   MessageViewEntry messageEntryToViewData(MessageEntry entry) {
@@ -368,42 +275,99 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
 
   Widget messageSliverList(AccountId match) {
     const Key centerKey = ValueKey<String>('bottom-sliver-list');
+    final List<Widget> content;
+    final Key? centerKeyValue;
+    if (_chatScrollPhysics.settings.useTwoSliverListMode) {
+      content = twoSliverListMode(centerKey);
+      centerKeyValue = centerKey;
+    } else {
+      content = singleSliverListMode(centerKey);
+      centerKeyValue = centerKey;
+    }
     return CustomScrollView(
-        center: centerKey,
+        center: centerKeyValue,
         physics: _chatScrollPhysics,
         reverse: true,
         controller: _scrollController,
-        slivers: <Widget>[
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                final reversedIndex = cache.getBottomMessagesSize() - index - 1;
-                final entry = cache.bottomMessagesindexToEntry(reversedIndex);
-                if (entry != null) {
-                  return messageRowWidget(context, messageEntryToViewData(entry));
-                } else {
-                  return null;
-                }
-              },
-              childCount: cache._bottomMessages.length,
-            ),
-          ),
-          SliverList(
-            key: centerKey,
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                final entry = cache.topMessagesindexToEntry(index);
-                if (entry != null) {
-                  return messageRowWidget(context, messageEntryToViewData(entry));
-                } else {
-                  return null;
-                }
-              },
-              childCount: cache._topMessages.length,
-            ),
-          ),
-        ],
+        slivers: content,
       );
+  }
+
+  List<Widget> singleSliverListMode(Key centerKey) {
+    return [
+      SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int index) {
+            return null;
+          },
+          childCount: 0,
+        ),
+      ),
+      SliverMainAxisGroup(
+          key: centerKey,
+          slivers: [
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  final MessageEntry? entry;
+                  if (index >= cache.getBottomMessagesSize()) {
+                    entry = cache.topMessagesindexToEntry(index - cache.getBottomMessagesSize());
+                  } else {
+                    entry = cache.bottomMessagesindexToEntry(index);
+                  }
+                  if (entry != null) {
+                    return messageRowWidget(context, messageEntryToViewData(entry));
+                  } else {
+                    return null;
+                  }
+                },
+                childCount: cache.getTopMessagesSize() + cache.getBottomMessagesSize(),
+              ),
+            ),
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Container(),
+            )
+        ]
+      ),
+    ];
+  }
+
+  List<Widget> twoSliverListMode(Key centerKey) {
+    return [
+      SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int index) {
+            final reversedIndex = cache.getBottomMessagesSize() - index - 1;
+            final entry = cache.bottomMessagesindexToEntry(reversedIndex);
+            if (entry != null) {
+              return messageRowWidget(context, messageEntryToViewData(entry));
+            } else {
+              return null;
+            }
+          },
+          childCount: cache.getBottomMessagesSize(),
+        ),
+      ),
+      SliverMainAxisGroup(
+          key: centerKey,
+          slivers: [
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  final entry = cache.topMessagesindexToEntry(index);
+                  if (entry != null) {
+                    return messageRowWidget(context, messageEntryToViewData(entry));
+                  } else {
+                    return null;
+                  }
+                },
+                childCount: cache._topMessages.length,
+              ),
+            ),
+        ]
+      ),
+    ];
   }
 
   Widget messageRowWidget(BuildContext context, MessageViewEntry entry) {
@@ -453,6 +417,7 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
 
 class ChatScrollPhysicsSettings {
   bool jumpToMin = false;
+  bool useTwoSliverListMode = false;
 }
 
 class ChatScrollPhysics extends ScrollPhysics {
@@ -481,8 +446,14 @@ class ChatScrollPhysics extends ScrollPhysics {
 
     final double removedMessagePixels = oldPosition.minScrollExtent - newPosition.minScrollExtent;
 
-    log.info("removedMessagePixels $removedMessagePixels");
-    log.info("old: ${oldPosition.minScrollExtent} new: ${newPosition.minScrollExtent}");
+    // log.info("removedMessagePixels $removedMessagePixels");
+    // log.info("old: ${oldPosition.minScrollExtent} new: ${newPosition.minScrollExtent}");
+    // log.info("newPostion: ${newPosition}");
+
+    if (newPosition.maxScrollExtent > 0 && !settings.useTwoSliverListMode) {
+      settings.useTwoSliverListMode = true;
+      log.info("Use two sliver list mode");
+    }
 
     if (removedMessagePixels > 0 && settings.jumpToMin) {
       settings.jumpToMin = false;
@@ -494,7 +465,7 @@ class ChatScrollPhysics extends ScrollPhysics {
 }
 
 class MessageCache {
-  int size = 0;
+  int? size;
   void Function(bool jumpToLatestMessage) _onCacheUpdate = (_) {};
   final AccountId _accountId;
   int? initialMsgLocalKey;
@@ -507,9 +478,23 @@ class MessageCache {
     _onCacheUpdate = callback;
   }
 
+  /// Returns true if this updated something.
+  bool setInitialMessagesIfNotSet(List<MessageEntry> initialMessages) {
+    if (size == null) {
+      log.info("Setting initial messages: ${initialMessages.length}");
+      _topMessages = initialMessages.map((e) => MessageContainer()..entry = e).toList();
+      size = initialMessages.length;
+      initialMsgLocalKey = initialMessages.firstOrNull?.id;
+      return true;
+    }
+
+    return false;
+  }
+
   void setNewSize(int newSize, bool jumpToLatestMessage) {
     if (newSize != size) {
-      _updateCache(jumpToLatestMessage, size == 0);
+      log.info("New size: $newSize, jumpToLatestMessage: $jumpToLatestMessage");
+      _updateCache(jumpToLatestMessage, size == null);
       size = newSize;
     }
   }

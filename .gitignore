@@ -47,3 +47,5 @@ app.*.map.json
 
 lib/secrets.dart
 assets_not_in_git
+
+.vscode

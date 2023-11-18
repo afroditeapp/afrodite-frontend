@@ -2,6 +2,7 @@ import "dart:async";
 import "dart:io";
 
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
 import "package:pihka_frontend/data/chat_repository.dart";
@@ -11,6 +12,7 @@ import "package:pihka_frontend/database/chat/message_database.dart";
 import "package:pihka_frontend/database/favorite_profiles_database.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
+import "package:pihka_frontend/ui/normal/chat/conversation.dart";
 import "package:pihka_frontend/ui/normal/profiles/view_profile.dart";
 import "package:pihka_frontend/ui/utils.dart";
 import "package:pihka_frontend/utils.dart";
@@ -21,6 +23,8 @@ import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 
 part 'conversation_bloc.freezed.dart';
+
+var log = Logger("ConversationBloc");
 
 @freezed
 class ConversationData with _$ConversationData {
@@ -34,7 +38,14 @@ class ConversationData with _$ConversationData {
     @Default(false) bool isSendSuccessful,
     @Default(0) int messageCount,
     ConversationChangeType? messageCountChangeInfo,
+    @Default(MessageList([])) MessageList initialMessages,
   }) = _ConversationData;
+}
+
+/// Wrapper for messages to prevent printing to console
+class MessageList {
+  final List<MessageEntry> messages;
+  const MessageList(this.messages);
 }
 
 sealed class ConversationEvent {}
@@ -75,23 +86,29 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData?> with A
 
   ConversationBloc(this.account, this.profile, this.media, this.chat) : super(null) {
     on<SetConversationView>((data, emit) async {
-      await _messageCountSubscription?.cancel();
+      log.info("Set conversation bloc initial state");
+      emit(null);
+      // For some reason this does not return.
+      unawaited(_messageCountSubscription?.cancel());
 
       final newState = ConversationData(
         accountId: data.accountId,
         profileName: data.profileName,
         primaryProfileImage:
         data.primaryProfileImage,
+        initialMessages: const MessageList([]),
       );
-      emit(newState);
 
       final isMatch = await chat.isInMatches(newState.accountId);
       final isBlocked = await chat.isInSentBlocks(newState.accountId) ||
         await chat.isInReceivedBlocks(newState.accountId);
+      final initialMessages = await chat.getAllMessages(newState.accountId);
 
       emit(newState.copyWith(
         isMatch: isMatch,
         isBlocked: isBlocked,
+        initialMessages: MessageList(initialMessages),
+        messageCount: initialMessages.length,
       ));
 
       _messageCountSubscription = chat.getMessageCountAndChanges(newState.accountId).listen((countAndEvent) {

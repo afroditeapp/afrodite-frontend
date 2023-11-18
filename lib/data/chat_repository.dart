@@ -448,4 +448,18 @@ class ChatRepository extends DataRepository {
   Future<List<MessageEntry>> messageIteratorNext() async {
     return await messageIterator.nextList();
   }
+
+  Future<List<MessageEntry>> getAllMessages(AccountId accountId) async {
+    await ChatRepository.getInstance().messageIteratorReset(accountId);
+
+    List<MessageEntry> allMessages = [];
+    while (true) {
+      final messages = await ChatRepository.getInstance().messageIteratorNext();
+      if (messages.isEmpty) {
+        break;
+      }
+      allMessages.addAll(messages);
+    }
+    return allMessages;
+  }
 }
