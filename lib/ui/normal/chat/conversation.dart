@@ -3,6 +3,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
@@ -11,9 +12,6 @@ import 'package:pihka_frontend/database/chat/message_database.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 
 var log = Logger("ConversationPage");
-
-// TODO: Move messages from bottom to top when changing sliver list mode to two
-// lists.
 
 class ConversationPage extends StatefulWidget {
   final AccountId accountId;
@@ -233,6 +231,7 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
   @override
   void initState() {
     super.initState();
+    _chatScrollPhysics.settings.messageCache = cache;
 
     cache.registerCacheUpdateCallback((jumpToLatestMessage) {
       if (!_isDisposed) {
@@ -424,6 +423,8 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
 class ChatScrollPhysicsSettings {
   bool jumpToMin = false;
   bool useTwoSliverListMode = false;
+  MessageCache? messageCache;
+  double maxViewportHeightDetected = 0;
 }
 
 class ChatScrollPhysics extends ScrollPhysics {
@@ -456,8 +457,31 @@ class ChatScrollPhysics extends ScrollPhysics {
     // log.info("old: ${oldPosition.minScrollExtent} new: ${newPosition.minScrollExtent}");
     // log.info("newPostion: ${newPosition}");
 
-    if (newPosition.maxScrollExtent > 0 && !settings.useTwoSliverListMode) {
+    if (settings.maxViewportHeightDetected < newPosition.viewportDimension) {
+      settings.maxViewportHeightDetected = newPosition.viewportDimension;
+      log.info("New max viewport height detected: ${settings.maxViewportHeightDetected}");
+    }
+
+    if (oldPosition.viewportDimension != newPosition.viewportDimension) {
+      log.info("Viewport dimension changed");
+    }
+
+    if (
+      newPosition.maxScrollExtent > 0 &&
+      !settings.useTwoSliverListMode &&
+      // This is like this on purpose. If virtual keyboard is opened and if
+      // the change is not done when new message arives, then the list makes
+      // visible jump.
+      settings.maxViewportHeightDetected != newPosition.viewportDimension
+    ) {
       settings.useTwoSliverListMode = true;
+      if (settings.messageCache == null) {
+        log.warning("Message cache is not connected");
+      }
+      Future<void>.delayed(Duration.zero).then((value) async {
+        settings.messageCache?.moveBottomMessagesToTop();
+      });
+
       log.info("Use two sliver list mode");
     }
 
@@ -543,9 +567,13 @@ class MessageCache {
     }
     _topMessages = newTopMessages;
     _bottomMessages = newBottomMessages;
+    _triggerUpdateCallback(jumpToLatestMessage || initialLoad);
+  }
+
+  void _triggerUpdateCallback(bool jumpToLatest) {
     final updateCallback = _onCacheUpdate;
     if (updateCallback != null) {
-      updateCallback(jumpToLatestMessage || initialLoad);
+      updateCallback(jumpToLatest);
     } else {
       log.info("Callback not registered, so callback will run when registered.");
       // Refresh when callback is registered.
@@ -569,6 +597,14 @@ class MessageCache {
   /// If null, message entry does not exists
   MessageEntry? bottomMessagesindexToEntry(int index) {
     return _bottomMessages.elementAtOrNull(index)?.entry;
+  }
+
+  void moveBottomMessagesToTop() async {
+    _topMessages = [..._bottomMessages, ..._topMessages];
+    initialMsgLocalKey = _topMessages.firstOrNull?.entry?.id;
+    _bottomMessages = [];
+    _triggerUpdateCallback(false);
+    log.info("Moved bottom messages to top");
   }
 
   // Debugging
