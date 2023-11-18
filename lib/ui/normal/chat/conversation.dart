@@ -136,11 +136,20 @@ class ChatViewDebuggerPage extends StatefulWidget {
 class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
   late MessageCache cache;
   int msgCount = 0;
+  bool msgAutoSend = false;
+  final TextEditingController _textEditingController = TextEditingController();
+  late StreamSubscription<void> _subscription;
 
   @override
   void initState() {
     super.initState();
     cache = MessageCache(widget.accountId);
+
+    _subscription = Stream<void>.periodic(const Duration(seconds: 1)).listen((event) {
+      if (msgAutoSend) {
+        sendToBottom();
+      }
+    });
   }
 
   @override
@@ -148,6 +157,14 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Debug chat view'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.timelapse),
+            onPressed: () {
+              msgAutoSend = !msgAutoSend;
+            },
+          ),
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -177,6 +194,7 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
         children: [
           Expanded(
             child: TextField(
+              controller: _textEditingController,
               decoration: InputDecoration(
                 hintText: 'Type a message...',
               ),
@@ -203,8 +221,7 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
         children: [
           ElevatedButton(
             onPressed: () {
-              final count = msgCount++;
-              cache.debugAddToTop(count.toString(), count % 4 == 0);
+              sendToTop();
             },
             child: Text("Top add")
           ),
@@ -216,8 +233,7 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
           ),
           ElevatedButton(
             onPressed: () {
-              final count = msgCount++;
-              cache.debugAddToBottom(count.toString(), count % 4 == 0);
+              sendToBottom();
             },
             child: Text("Bottom add")
           ),
@@ -230,6 +246,30 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
         ],
       ),
     );
+  }
+
+  void sendToTop() {
+    final count = msgCount++;
+    String msg = _textEditingController.text.trim();
+    if (msg.isEmpty) {
+      msg = count.toString();
+    }
+    cache.debugAddToTop(msg, count % 4 == 0);
+  }
+
+  void sendToBottom() {
+    final count = msgCount++;
+    String msg = _textEditingController.text.trim();
+    if (msg.isEmpty) {
+      msg = count.toString();
+    }
+    cache.debugAddToBottom(msg, count % 4 == 0);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _subscription.cancel();
   }
 }
 
@@ -282,10 +322,10 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
       }
     });
 
-    // _scrollController.addListener(() {
-    //   log.info("test ${_scrollController.position}");
-    //   log.info("min ${_scrollController.position.minScrollExtent}");
-    // });
+    _scrollController.addListener(() {
+      log.info("test ${_scrollController.position}");
+      log.info("min ${_scrollController.position.minScrollExtent}");
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -480,9 +520,9 @@ class ChatScrollPhysics extends ScrollPhysics {
 
     final double removedMessagePixels = oldPosition.minScrollExtent - newPosition.minScrollExtent;
 
-    // log.info("removedMessagePixels $removedMessagePixels");
-    // log.info("old: ${oldPosition.minScrollExtent} new: ${newPosition.minScrollExtent}");
-    // log.info("newPostion: ${newPosition}");
+    log.info("removedMessagePixels $removedMessagePixels");
+    log.info("old: ${oldPosition.minScrollExtent} new: ${newPosition.minScrollExtent}");
+    log.info("newPostion: ${newPosition}");
 
     if (settings.maxViewportHeightDetected < newPosition.viewportDimension) {
       settings.maxViewportHeightDetected = newPosition.viewportDimension;
