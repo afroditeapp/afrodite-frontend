@@ -113,6 +113,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData?> with A
 
       _messageCountSubscription = chat.getMessageCountAndChanges(newState.accountId).listen((countAndEvent) {
         final (newMessageCount, event) = countAndEvent;
+        log.info("Message count $newMessageCount received. Sending event about it.");
         add(MessageCountChanged(newMessageCount, event?.change));
       });
     });

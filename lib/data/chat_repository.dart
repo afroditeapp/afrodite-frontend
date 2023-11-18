@@ -337,6 +337,8 @@ class ChatRepository extends DataRepository {
       if (resultSendLike.isSuccess()) {
         await MatchesDatabase.getInstance().insertAccountId(accountId);
         ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
+        await ReceivedLikesDatabase.getInstance().removeAccountId(accountId);
+        ProfileRepository.getInstance().sendProfileChange(LikesChanged());
       } else {
         // Notify about error
         return;

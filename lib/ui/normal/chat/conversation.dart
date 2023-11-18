@@ -12,7 +12,6 @@ import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 
 var log = Logger("ConversationPage");
 
-// TODO: Make sure callback can run when first chat message is sent
 // TODO: Move messages from bottom to top when changing sliver list mode to two
 // lists.
 
@@ -68,12 +67,15 @@ class ConversationPageState extends State<ConversationPage> {
                       );
                     } else {
                       log.info("Message count: ${state.messageCount}");
-                      if (!cache.setInitialMessagesIfNotSet(state.initialMessages.messages)) {
-                        cache.setNewSize(
-                          state.messageCount,
-                          state.messageCountChangeInfo == ConversationChangeType.messageSent
-                        );
-                      }
+                      cache.setInitialMessagesIfNotSet(state.initialMessages.messages);
+                      // It does not matter if this is called right after.
+                      // Messages will not be fetched because size of message
+                      // count is the same.
+                      cache.setNewSize(
+                        state.messageCount,
+                        state.messageCountChangeInfo == ConversationChangeType.messageSent
+                      );
+
                       return ChatViewWidget(state.accountId, cache);
                     }
                   },
@@ -210,7 +212,11 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
 class ChatViewWidget extends StatefulWidget {
   final AccountId accountId;
   final MessageCache cache;
-  const ChatViewWidget(this.accountId, this.cache, {Key? key}) : super(key: key);
+  const ChatViewWidget(
+    this.accountId,
+    this.cache,
+    {Key? key}
+  ) : super(key: key);
 
   @override
   ChatViewWidgetState createState() => ChatViewWidgetState();
@@ -466,7 +472,8 @@ class ChatScrollPhysics extends ScrollPhysics {
 
 class MessageCache {
   int? size;
-  void Function(bool jumpToLatestMessage) _onCacheUpdate = (_) {};
+  bool cacheUpdateNeeded = false;
+  void Function(bool jumpToLatestMessage)? _onCacheUpdate;
   final AccountId _accountId;
   int? initialMsgLocalKey;
   List<MessageContainer> _topMessages = [];
@@ -476,19 +483,21 @@ class MessageCache {
 
   void registerCacheUpdateCallback(void Function(bool) callback) {
     _onCacheUpdate = callback;
+    if (cacheUpdateNeeded) {
+      // Not sure if this is needed but this might be run when
+      // sending the first message after match.
+      _onCacheUpdate!(true);
+      cacheUpdateNeeded = false;
+    }
   }
 
-  /// Returns true if this updated something.
-  bool setInitialMessagesIfNotSet(List<MessageEntry> initialMessages) {
+  void setInitialMessagesIfNotSet(List<MessageEntry> initialMessages) {
     if (size == null) {
       log.info("Setting initial messages: ${initialMessages.length}");
       _topMessages = initialMessages.map((e) => MessageContainer()..entry = e).toList();
       size = initialMessages.length;
       initialMsgLocalKey = initialMessages.firstOrNull?.id;
-      return true;
     }
-
-    return false;
   }
 
   void setNewSize(int newSize, bool jumpToLatestMessage) {
@@ -534,7 +543,14 @@ class MessageCache {
     }
     _topMessages = newTopMessages;
     _bottomMessages = newBottomMessages;
-    _onCacheUpdate(jumpToLatestMessage || initialLoad);
+    final updateCallback = _onCacheUpdate;
+    if (updateCallback != null) {
+      updateCallback(jumpToLatestMessage || initialLoad);
+    } else {
+      log.info("Callback not registered, so callback will run when registered.");
+      // Refresh when callback is registered.
+      cacheUpdateNeeded = true;
+    }
   }
 
   int getTopMessagesSize() {
@@ -576,19 +592,19 @@ class MessageCache {
 
   void debugAddToTop(String text, bool isSent) {
     _topMessages.insert(0, MessageContainer()..entry = debugBuildEntry(text, isSent));
-    _onCacheUpdate(false);
+    _onCacheUpdate!(false);
   }
 
   void debugRemoveFromTop() {
     if (_topMessages.isNotEmpty) {
       _topMessages.removeAt(0);
     }
-    _onCacheUpdate(false);
+    _onCacheUpdate!(false);
   }
 
   void debugAddToBottom(String text, bool isSent) {
     _bottomMessages.insert(0, MessageContainer()..entry = debugBuildEntry(text, isSent));
-    _onCacheUpdate(false);
+    _onCacheUpdate!(false);
   }
 
   void debugRemoveFromBottom() {
@@ -596,7 +612,7 @@ class MessageCache {
       _bottomMessages.removeAt(0);
     }
 
-    _onCacheUpdate(false);
+    _onCacheUpdate!(false);
   }
 }
 

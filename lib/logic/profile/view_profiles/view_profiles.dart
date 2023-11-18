@@ -157,7 +157,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
             emit(currentState.copyWith(isBlocked: true));
           }
         }
-        case LikesChanged(): {
+        case LikesChanged() || MatchesChanged(): {
           final ProfileActionState action = await resolveProfileAction(currentState.accountId);
           emit(currentState.copyWith(
             profileActionState: action,
@@ -166,7 +166,6 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
         case ProfileNowPrivate() ||
           ProfileUnblocked() ||
           ConversationChanged() ||
-          MatchesChanged() ||
           ProfileFavoriteStatusChange(): {}
       }
     });
