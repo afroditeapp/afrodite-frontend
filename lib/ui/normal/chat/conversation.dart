@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:logging/logging.dart';
@@ -10,6 +13,7 @@ import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/chat/message_database.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
+import 'package:pihka_frontend/utils.dart';
 
 var log = Logger("ConversationPage");
 
@@ -127,7 +131,8 @@ class ConversationPageState extends State<ConversationPage> {
 
 class ChatViewDebuggerPage extends StatefulWidget {
   final AccountId accountId;
-  const ChatViewDebuggerPage(this.accountId, {Key? key}) : super(key: key);
+  final int initialMsgCount;
+  const ChatViewDebuggerPage(this.accountId, {this.initialMsgCount = 0, Key? key}) : super(key: key);
 
   @override
   ChatViewDebuggerPageState createState() => ChatViewDebuggerPageState();
@@ -144,6 +149,9 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
   void initState() {
     super.initState();
     cache = MessageCache(widget.accountId);
+    if (widget.initialMsgCount > 0) {
+      cache.debugSetInitialMessagesIfNotSet(widget.initialMsgCount);
+    }
 
     _subscription = Stream<void>.periodic(const Duration(seconds: 1)).listen((event) {
       if (msgAutoSend) {
@@ -287,11 +295,43 @@ class ChatViewWidget extends StatefulWidget {
   ChatViewWidgetState createState() => ChatViewWidgetState();
 }
 
+class CustomScrollController extends ScrollController {
+  double? customInitialOffset;
+
+  @override
+  ScrollPosition createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition? oldPosition) {
+    if (customInitialOffset == null) {
+      log.warning("customInitialOffset is null");
+    }
+    return ScrollPositionWithSingleContext(
+      physics: physics,
+      context: context,
+      initialPixels: customInitialOffset ?? 0,
+      keepScrollOffset: keepScrollOffset,
+      oldPosition: oldPosition,
+      debugLabel: debugLabel,
+    );
+  }
+
+  void setCustomInitialOffsetOnce(double value) {
+    // ignore: prefer_conditional_assignment
+    if (customInitialOffset == null) {
+      customInitialOffset = value;
+    }
+  }
+}
+
 class ChatViewWidgetState extends State<ChatViewWidget> {
+  final centerKey = UniqueKey();
 
   bool _isDisposed = false;
   final _chatScrollPhysics = ChatScrollPhysics(ChatScrollPhysicsSettings());
-  final ScrollController _scrollController = ScrollController();
+  final CustomScrollController _scrollController = CustomScrollController(
+    //initialScrollOffset: 100000
+  );
+
+  bool setInitialMsgPosition = true;
+  bool jumpToLatestAfterBuild = false;
 
   MessageCache get cache => widget.cache;
 
@@ -304,18 +344,24 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
       if (!_isDisposed) {
         setState(() {
           log.info("Show updated message list. jumpToLatestMessage: $jumpToLatestMessage");
+            log.info("test ${_scrollController.position} at edge ${_scrollController.position.atEdge}");
+        log.info("min ${_scrollController.position.minScrollExtent}");
           if (
-            jumpToLatestMessage ||
-            (
-              _scrollController.hasClients &&
-              _scrollController.position.atEdge &&
-              _scrollController.position.pixels == _scrollController.position.minScrollExtent
-            )
+            jumpToLatestMessage
+            // (
+            //   _scrollController.hasClients &&
+            //   _scrollController.position.atEdge &&
+            //   _scrollController.position.pixels == _scrollController.position.minScrollExtent
+            // )
           ) {
-            _chatScrollPhysics.settings.jumpToMin = true;
+            //_chatScrollPhysics.settings.jumpToMin = true;
+            jumpToLatestAfterBuild = true;
+
+
             if (_scrollController.hasClients) {
               // log.info("test ${_scrollController.position}");
-              _scrollController.position.jumpTo(_scrollController.position.minScrollExtent);
+
+              //_scrollController.position.moveTo(1000000);
             }
           }
         });
@@ -323,18 +369,30 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
     });
 
     _scrollController.addListener(() {
-      log.info("test ${_scrollController.position}");
-      log.info("min ${_scrollController.position.minScrollExtent}");
+      // log.info("test ${_scrollController.position}");
+      // log.info("min ${_scrollController.position.minScrollExtent}");
+      // //_scrollController.position.viewportDimension
+      // if (_scrollController.offset < _scrollController.position.viewportDimension) {
+      //   _scrollController.jumpTo(_scrollController.position.viewportDimension);
+      // }
+      if (setInitialMsgPosition) {
+        setInitialMsgPosition = false;
+        log.info("test ${_scrollController.position}");
+        log.info("test ${_chatScrollPhysics.settings.reducedScrollArea}");
+
+        //_scrollController.jumpTo(_chatScrollPhysics.settings.reducedScrollArea);
+      }
     });
   }
   @override
   Widget build(BuildContext context) {
-    return messageListView(widget.accountId);
-  }
-
-
-  Widget messageListView(AccountId match) {
-    return messageSliverList(match);
+    //return normalListViewMessages(widget.accountId);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        _scrollController.setCustomInitialOffsetOnce(constraints.maxHeight);
+        return messageSliverList2(widget.accountId);
+      }
+    );
   }
 
   MessageViewEntry messageEntryToViewData(MessageEntry entry) {
@@ -345,101 +403,80 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
     return ("", -1, false);
   }
 
-  Widget messageSliverList(AccountId match) {
-    const Key centerKey = ValueKey<String>('bottom-sliver-list');
-    final List<Widget> content;
-    final Key? centerKeyValue;
-    if (_chatScrollPhysics.settings.useTwoSliverListMode) {
-      content = twoSliverListMode(centerKey);
-      centerKeyValue = centerKey;
-    } else {
-      content = singleSliverListMode(centerKey);
-      centerKeyValue = centerKey;
+  Widget messageSliverList2(AccountId match) {
+    if (jumpToLatestAfterBuild) {
+      Future<void>.delayed(Duration.zero).then((value) async {
+        if (!_isDisposed) {
+          jumpToLatestAfterBuild = false;
+          _scrollController.jumpTo(double.infinity);
+        }
+      });
     }
+
     return CustomScrollView(
-        center: centerKeyValue,
+        center: centerKey,
         physics: _chatScrollPhysics,
-        reverse: true,
+        reverse: false,
         controller: _scrollController,
-        slivers: content,
+        anchor: 1.0,
+        slivers: [
+          MySliverFillRemainingWithoutScrollable(
+            _chatScrollPhysics,
+            false,
+            child: Container(
+           //   color: Colors.green,
+            ),
+          ),
+          SliverList.builder(
+            itemBuilder: (BuildContext context, int index) {
+              //log.info("top: $index");
+              final entry = cache.getMessageUsingConstantIndexing(index);
+              if (entry != null) {
+                // return Column(
+                //   children: [
+                //     Text("Top: $index"),
+                //     messageRowWidget(context, messageEntryToViewData(entry)),
+                //   ],
+                // );
+                return messageRowWidget(context, messageEntryToViewData(entry));
+              } else {
+                return null;
+              }
+            },
+            itemCount: cache.getTopMessagesSize(),
+          ),
+          SliverToBoxAdapter(
+            key: centerKey,
+            child: Container(),
+          ),
+          SliverList.builder(
+            itemBuilder: (BuildContext context, int index) {
+              final correctIndex = -index - 1;
+              //log.info("bottom: $correctIndex");
+              final entry = cache.getMessageUsingConstantIndexing(correctIndex);
+              if (entry != null) {
+                // return Column(
+                //   children: [
+                //     Text("Bottom: $correctIndex"),
+                //     messageRowWidget(context, messageEntryToViewData(entry)),
+                //   ],
+                // );
+                return messageRowWidget(context, messageEntryToViewData(entry));
+              } else {
+                return null;
+              }
+            },
+            itemCount: cache.getBottomMessagesSize(),
+          ),
+          MySliverFillRemainingWithoutScrollable(
+            _chatScrollPhysics,
+            true,
+            child: Container(
+            //  color: Colors.red,
+            ),
+          ),
+        ],
       );
-  }
-
-  List<Widget> singleSliverListMode(Key centerKey) {
-    return [
-      SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return null;
-          },
-          childCount: 0,
-        ),
-      ),
-      SliverMainAxisGroup(
-          key: centerKey,
-          slivers: [
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  final MessageEntry? entry;
-                  if (index >= cache.getBottomMessagesSize()) {
-                    entry = cache.topMessagesindexToEntry(index - cache.getBottomMessagesSize());
-                  } else {
-                    entry = cache.bottomMessagesindexToEntry(index);
-                  }
-                  if (entry != null) {
-                    return messageRowWidget(context, messageEntryToViewData(entry));
-                  } else {
-                    return null;
-                  }
-                },
-                childCount: cache.getTopMessagesSize() + cache.getBottomMessagesSize(),
-              ),
-            ),
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Container(),
-            )
-        ]
-      ),
-    ];
-  }
-
-  List<Widget> twoSliverListMode(Key centerKey) {
-    return [
-      SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            final reversedIndex = cache.getBottomMessagesSize() - index - 1;
-            final entry = cache.bottomMessagesindexToEntry(reversedIndex);
-            if (entry != null) {
-              return messageRowWidget(context, messageEntryToViewData(entry));
-            } else {
-              return null;
-            }
-          },
-          childCount: cache.getBottomMessagesSize(),
-        ),
-      ),
-      SliverMainAxisGroup(
-          key: centerKey,
-          slivers: [
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  final entry = cache.topMessagesindexToEntry(index);
-                  if (entry != null) {
-                    return messageRowWidget(context, messageEntryToViewData(entry));
-                  } else {
-                    return null;
-                  }
-                },
-                childCount: cache._topMessages.length,
-              ),
-            ),
-        ]
-      ),
-    ];
   }
 
   Widget messageRowWidget(BuildContext context, MessageViewEntry entry) {
@@ -492,6 +529,10 @@ class ChatScrollPhysicsSettings {
   bool useTwoSliverListMode = false;
   MessageCache? messageCache;
   double maxViewportHeightDetected = 0;
+  double reducedScrollArea = 0;
+  double bottomExtraScrollArea = 0;
+
+  double previousViewPortHeight = 0;
 }
 
 class ChatScrollPhysics extends ScrollPhysics {
@@ -500,63 +541,261 @@ class ChatScrollPhysics extends ScrollPhysics {
 
   @override
   ScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return ChatScrollPhysics(settings, parent: buildParent(ancestor));
+    return ChatScrollPhysics(settings, parent: const RangeMaintainingScrollPhysics());
+  }
+
+  // @override
+  // double adjustPositionForNewDimensions({
+  //   required ScrollMetrics oldPosition,
+  //   required ScrollMetrics newPosition,
+  //   required bool isScrolling,
+  //   required double velocity
+  // }) {
+
+  //   final getNewPosition = super.adjustPositionForNewDimensions(
+  //     oldPosition: oldPosition,
+  //     newPosition: newPosition,
+  //     isScrolling: isScrolling,
+  //     velocity: velocity
+  //   );
+
+  //   final double removedMessagePixels = oldPosition.minScrollExtent - newPosition.minScrollExtent;
+
+  //   // log.info("removedMessagePixels $removedMessagePixels");
+  //   // log.info("old: ${oldPosition.minScrollExtent} new: ${newPosition.minScrollExtent}");
+  //   // log.info("newPostion: ${newPosition}");
+
+  //   // if (settings.maxViewportHeightDetected < newPosition.viewportDimension) {
+  //   //   settings.maxViewportHeightDetected = newPosition.viewportDimension;
+  //   //   log.info("New max viewport height detected: ${settings.maxViewportHeightDetected}");
+  //   // }
+
+  //   if (oldPosition.viewportDimension < newPosition.viewportDimension) {
+  //     log.info("Virtual keyboard closed");
+  //     //final viewportDiff = newPosition.viewportDimension - oldPosition.viewportDimension;
+  //     //return getNewPosition + viewportDiff;
+  //   } else if (oldPosition.viewportDimension > newPosition.viewportDimension) {
+  //     log.info("Virtual keyboard opened");
+  //     //final viewportDiff = oldPosition.viewportDimension - newPosition.viewportDimension;
+  //     //return getNewPosition + viewportDiff;
+  //   }
+
+  //   if (
+  //     newPosition.maxScrollExtent > 0 &&
+  //     !settings.useTwoSliverListMode &&
+  //     // This is like this on purpose. If virtual keyboard is opened and if
+  //     // the change is not done when new message arives, then the list makes
+  //     // visible jump.
+  //     oldPosition.viewportDimension == newPosition.viewportDimension
+  //     && false
+  //   ) {
+  //     settings.useTwoSliverListMode = true;
+  //     if (settings.messageCache == null) {
+  //       log.warning("Message cache is not connected");
+  //     }
+  //     Future<void>.delayed(Duration.zero).then((value) async {
+  //       settings.messageCache?.moveBottomMessagesToTop();
+  //     });
+
+  //     log.info("Use two sliver list mode");
+  //   }
+
+  //   if (removedMessagePixels > 0 && settings.jumpToMin) {
+  //     settings.jumpToMin = false;
+  //     return getNewPosition - removedMessagePixels;
+  //   } else {
+  //     return getNewPosition;
+  //   }
+  // }
+
+
+  // Modified from Flutter sources
+  @override
+  double applyBoundaryConditions(ScrollMetrics position1, double value) {
+    final shownMsgArea = position1.viewportDimension - settings.reducedScrollArea;
+    //log.info("shownMsgArea $shownMsgArea, bottomExtraScrollArea ${settings.bottomExtraScrollArea}");
+    final position = position1.copyWith(
+      minScrollExtent: position1.minScrollExtent + settings.reducedScrollArea,
+      maxScrollExtent: position1.maxScrollExtent - min(shownMsgArea, settings.bottomExtraScrollArea),
+    );
+    assert(() {
+      if (value == position.pixels) {
+        throw FlutterError.fromParts(<DiagnosticsNode>[
+          ErrorSummary('$runtimeType.applyBoundaryConditions() was called redundantly.'),
+          ErrorDescription(
+            'The proposed new position, $value, is exactly equal to the current position of the '
+            'given ${position.runtimeType}, ${position.pixels}.\n'
+            'The applyBoundaryConditions method should only be called when the value is '
+            'going to actually change the pixels, otherwise it is redundant.',
+          ),
+          DiagnosticsProperty<ScrollPhysics>('The physics object in question was', this, style: DiagnosticsTreeStyle.errorProperty),
+          DiagnosticsProperty<ScrollMetrics>('The position object in question was', position, style: DiagnosticsTreeStyle.errorProperty),
+        ]);
+      }
+      return true;
+    }());
+
+    if (value < position.pixels && position.pixels <= position.minScrollExtent) {
+      // Underscroll.
+      return value - position.pixels;
+    }
+    if (position.maxScrollExtent <= position.pixels && position.pixels < value) {
+      // Overscroll.
+      return value - position.pixels;
+    }
+    //log.info("v; $value p; ${position.pixels} min: ${position.minScrollExtent} max: ${position.maxScrollExtent}");
+    if (value < position.minScrollExtent && position.minScrollExtent < position.pixels) {
+    //if (value < position.minScrollExtent && position.minScrollExtent < position.pixels - 5000) {
+      // Hit top edge.
+      log.info("Hit top edge $value ${position.minScrollExtent} ${position.pixels}}");
+      return value - position.minScrollExtent;
+    }
+    if (position.pixels < position.maxScrollExtent && position.maxScrollExtent < value) {
+      // Hit bottom edge.
+      log.info("Hit bottom edge");
+      return value - position.maxScrollExtent;
+    }
+    return 0.0;
+  }
+
+  // Modified from Flutter sources
+  @override
+  Simulation? createBallisticSimulation(ScrollMetrics position1, double velocity) {
+    final shownMsgArea = position1.viewportDimension - settings.reducedScrollArea;
+    final position = position1.copyWith(
+      minScrollExtent: position1.minScrollExtent + settings.reducedScrollArea,
+      maxScrollExtent: position1.maxScrollExtent - min(shownMsgArea, settings.bottomExtraScrollArea),
+    );
+
+    final Tolerance tolerance = toleranceFor(position);
+    if (position.outOfRange) {
+      double? end;
+      if (position.pixels > position.maxScrollExtent) {
+        end = position.maxScrollExtent;
+      }
+      if (position.pixels < position.minScrollExtent) {
+        end = position.minScrollExtent;
+      }
+      assert(end != null);
+      // return ScrollSpringSimulation(
+      //   SpringDescription.withDampingRatio(mass: 1, stiffness: 100000, ratio: 1),
+      //   position.pixels,
+      //   end!,
+      //   min(0.0, velocity),
+      //   tolerance: tolerance,
+      // );
+      return NoSimulation(end!);
+    }
+    if (velocity.abs() < tolerance.velocity) {
+      return null;
+    }
+    if (velocity > 0.0 && position.pixels >= position.maxScrollExtent) {
+      return null;
+    }
+    if (velocity < 0.0 && position.pixels <= position.minScrollExtent) {
+      return null;
+    }
+    return ClampingScrollSimulation(
+      position: position.pixels,
+      velocity: velocity,
+      tolerance: tolerance,
+    );
+  }
+}
+
+class NoSimulation extends Simulation {
+  final double end;
+  NoSimulation(this.end);
+
+  @override
+  double dx(double time) {
+    return 0;
   }
 
   @override
-  double adjustPositionForNewDimensions({
-    required ScrollMetrics oldPosition,
-    required ScrollMetrics newPosition,
-    required bool isScrolling,
-    required double velocity
-  }) {
+  bool isDone(double time) {
+    return true;
+  }
 
-    final getNewPosition = super.adjustPositionForNewDimensions(
-      oldPosition: oldPosition,
-      newPosition: newPosition,
-      isScrolling: isScrolling,
-      velocity: velocity
-    );
+  @override
+  double x(double time) {
+    return end;
+  }
 
-    final double removedMessagePixels = oldPosition.minScrollExtent - newPosition.minScrollExtent;
+}
 
-    log.info("removedMessagePixels $removedMessagePixels");
-    log.info("old: ${oldPosition.minScrollExtent} new: ${newPosition.minScrollExtent}");
-    log.info("newPostion: ${newPosition}");
+// Modified from Flutter sources
+class MySliverFillRemainingWithoutScrollable extends SingleChildRenderObjectWidget {
+  final ChatScrollPhysics scrollPhysics;
+  final bool bottomList;
+  const MySliverFillRemainingWithoutScrollable(this.scrollPhysics, this.bottomList, {super.key, super.child});
 
-    if (settings.maxViewportHeightDetected < newPosition.viewportDimension) {
-      settings.maxViewportHeightDetected = newPosition.viewportDimension;
-      log.info("New max viewport height detected: ${settings.maxViewportHeightDetected}");
-    }
+  @override
+  MyRenderSliverFillRemaining createRenderObject(BuildContext context) =>
+    MyRenderSliverFillRemaining(scrollPhysics, bottomList);
+}
 
-    if (oldPosition.viewportDimension != newPosition.viewportDimension) {
-      log.info("Viewport dimension changed");
-    }
+// Modified from Flutter sources
+class MyRenderSliverFillRemaining extends RenderSliverSingleBoxAdapter {
+  final ChatScrollPhysics scrollPhysics;
+  final bool bottomList;
+  /// Creates a [RenderSliver] that wraps a non-scrollable [RenderBox] which is
+  /// sized to fit the remaining space in the viewport.
+  MyRenderSliverFillRemaining(this.scrollPhysics, this.bottomList, { super.child });
 
-    if (
-      newPosition.maxScrollExtent > 0 &&
-      !settings.useTwoSliverListMode &&
-      // This is like this on purpose. If virtual keyboard is opened and if
-      // the change is not done when new message arives, then the list makes
-      // visible jump.
-      oldPosition.viewportDimension == newPosition.viewportDimension
-    ) {
-      settings.useTwoSliverListMode = true;
-      if (settings.messageCache == null) {
-        log.warning("Message cache is not connected");
+  @override
+  void performLayout() {
+    final SliverConstraints constraints = this.constraints;
+    // The remaining space in the viewportMainAxisExtent. Can be <= 0 if we have
+    // scrolled beyond the extent of the screen.
+    double extent = constraints.viewportMainAxisExtent - constraints.precedingScrollExtent;
+    // The maxExtent includes any overscrolled area. Can be < 0 if we have
+    // overscroll in the opposite direction, away from the end of the list.
+    double maxExtent = constraints.remainingPaintExtent - min(constraints.overlap, 0.0);
+
+    if (child != null) {
+      final double childExtent;
+      switch (constraints.axis) {
+        case Axis.horizontal:
+          childExtent = child!.getMaxIntrinsicWidth(constraints.crossAxisExtent);
+        case Axis.vertical:
+          childExtent = child!.getMaxIntrinsicHeight(constraints.crossAxisExtent);
       }
-      Future<void>.delayed(Duration.zero).then((value) async {
-        settings.messageCache?.moveBottomMessagesToTop();
-      });
 
-      log.info("Use two sliver list mode");
+      // If the childExtent is greater than the computed extent, we want to use
+      // that instead of potentially cutting off the child. This allows us to
+      // safely specify a maxExtent.
+      extent = max(extent, childExtent);
+      // The extent could be larger than the maxExtent due to a larger child
+      // size or overscrolling at the top of the scrollable (rather than at the
+      // end where this sliver is).
+      maxExtent = max(extent, maxExtent);
+      if (bottomList) {
+        scrollPhysics.settings.bottomExtraScrollArea = maxExtent;
+      } else {
+        scrollPhysics.settings.reducedScrollArea = maxExtent;
+      }
+      child!.layout(constraints.asBoxConstraints(minExtent: extent, maxExtent: maxExtent));
     }
 
-    if (removedMessagePixels > 0 && settings.jumpToMin) {
-      settings.jumpToMin = false;
-      return getNewPosition - removedMessagePixels;
-    } else {
-      return getNewPosition;
+    assert(extent.isFinite,
+      'The calculated extent for the child of SliverFillRemaining is not finite. '
+      'This can happen if the child is a scrollable, in which case, the '
+      'hasScrollBody property of SliverFillRemaining should not be set to '
+      'false.',
+    );
+    final double paintedChildSize = calculatePaintOffset(constraints, from: 0.0, to: extent);
+
+    assert(paintedChildSize.isFinite);
+    assert(paintedChildSize >= 0.0);
+    geometry = SliverGeometry(
+      scrollExtent: extent,
+      paintExtent: min(maxExtent, constraints.remainingPaintExtent),
+      maxPaintExtent: maxExtent,
+      hasVisualOverflow: extent > constraints.remainingPaintExtent || constraints.scrollOffset > 0.0,
+    );
+    if (child != null) {
+      setChildParentData(child!, constraints, geometry!);
     }
   }
 }
@@ -656,6 +895,21 @@ class MessageCache {
     return _bottomMessages.length;
   }
 
+  /// If null, message entry does not exists.
+  /// First message in top messages list is index 0 message.
+  MessageEntry? getMessageUsingConstantIndexing(int index) {
+    if (index >= 0) {
+      return _topMessages.elementAtOrNull(index)?.entry;
+    } else {
+      final bottomIndex = -index - 1;
+      if (bottomIndex < 0) {
+        return null;
+      } else {
+        return _bottomMessages.elementAtOrNull(bottomIndex)?.entry;
+      }
+    }
+  }
+
   /// If null, message entry does not exists
   MessageEntry? topMessagesindexToEntry(int index) {
     return _topMessages.elementAtOrNull(index)?.entry;
@@ -676,6 +930,14 @@ class MessageCache {
 
   // Debugging
 
+  void debugSetInitialMessagesIfNotSet(int debugMsgCount) {
+    final List<MessageEntry> msgList = [];
+    for (int i = 0; i < debugMsgCount; i++) {
+      msgList.add(debugBuildEntry("$i", i % 4 == 0));
+    }
+    setInitialMessagesIfNotSet(msgList);
+  }
+
   int counter = 0;
   MessageEntry debugBuildEntry(String text, bool isSent) {
     final SentMessageState? state;
@@ -694,7 +956,7 @@ class MessageCache {
   }
 
   void debugAddToTop(String text, bool isSent) {
-    _topMessages.insert(0, MessageContainer()..entry = debugBuildEntry(text, isSent));
+    _topMessages.add(MessageContainer()..entry = debugBuildEntry(text, isSent));
     _onCacheUpdate!(false);
   }
 
@@ -706,8 +968,8 @@ class MessageCache {
   }
 
   void debugAddToBottom(String text, bool isSent) {
-    _bottomMessages.insert(0, MessageContainer()..entry = debugBuildEntry(text, isSent));
-    _onCacheUpdate!(false);
+    _bottomMessages.add(MessageContainer()..entry = debugBuildEntry(text, isSent));
+    _onCacheUpdate!(true);
   }
 
   void debugRemoveFromBottom() {

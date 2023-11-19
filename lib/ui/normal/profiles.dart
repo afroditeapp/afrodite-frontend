@@ -60,6 +60,12 @@ class ProfileView extends BottomNavigationView {
           Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ChatViewDebuggerPage(AccountId(accountId: ""))));
         },
       ),
+      IconButton(
+        icon: const Icon(Icons.chat_bubble_rounded),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ChatViewDebuggerPage(AccountId(accountId: ""), initialMsgCount: 5)));
+        },
+      ),
     ];
   }
 }
