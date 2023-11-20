@@ -389,6 +389,7 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
     //return normalListViewMessages(widget.accountId);
     return LayoutBuilder(
       builder: (context, constraints) {
+        log.info("maxHeight: ${constraints.maxHeight}");
         _scrollController.setCustomInitialOffsetOnce(constraints.maxHeight);
         return messageSliverList2(widget.accountId);
       }
@@ -408,6 +409,7 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
       Future<void>.delayed(Duration.zero).then((value) async {
         if (!_isDisposed) {
           jumpToLatestAfterBuild = false;
+          _chatScrollPhysics.settings.state = ScrollState.normal;
           _scrollController.jumpTo(double.infinity);
         }
       });
@@ -524,15 +526,24 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
   }
 }
 
+enum ScrollState {
+  normal,
+  virtualKeyboardOpened,
+  virtualKeyboardClosed,
+}
+
 class ChatScrollPhysicsSettings {
   bool jumpToMin = false;
-  bool useTwoSliverListMode = false;
+
   MessageCache? messageCache;
+
   double maxViewportHeightDetected = 0;
+  double minViewportHeightDetected = double.maxFinite;
+
   double reducedScrollArea = 0;
   double bottomExtraScrollArea = 0;
 
-  double previousViewPortHeight = 0;
+  ScrollState state = ScrollState.normal;
 }
 
 class ChatScrollPhysics extends ScrollPhysics {
@@ -541,83 +552,98 @@ class ChatScrollPhysics extends ScrollPhysics {
 
   @override
   ScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return ChatScrollPhysics(settings, parent: const RangeMaintainingScrollPhysics());
+    return ChatScrollPhysics(settings, parent: null);
   }
 
-  // @override
-  // double adjustPositionForNewDimensions({
-  //   required ScrollMetrics oldPosition,
-  //   required ScrollMetrics newPosition,
-  //   required bool isScrolling,
-  //   required double velocity
-  // }) {
+  @override
+  double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
+    log.info("applyPhysicsToUserOffset $offset");
+    settings.state = ScrollState.normal;
+    return super.applyPhysicsToUserOffset(position, offset);
+  }
 
-  //   final getNewPosition = super.adjustPositionForNewDimensions(
-  //     oldPosition: oldPosition,
-  //     newPosition: newPosition,
-  //     isScrolling: isScrolling,
-  //     velocity: velocity
-  //   );
+  @override
+  double adjustPositionForNewDimensions({
+    required ScrollMetrics oldPosition,
+    required ScrollMetrics newPosition,
+    required bool isScrolling,
+    required double velocity
+  }) {
 
-  //   final double removedMessagePixels = oldPosition.minScrollExtent - newPosition.minScrollExtent;
+    final getNewPosition = super.adjustPositionForNewDimensions(
+      oldPosition: oldPosition,
+      newPosition: newPosition,
+      isScrolling: isScrolling,
+      velocity: velocity
+    );
 
-  //   // log.info("removedMessagePixels $removedMessagePixels");
-  //   // log.info("old: ${oldPosition.minScrollExtent} new: ${newPosition.minScrollExtent}");
-  //   // log.info("newPostion: ${newPosition}");
+    // log.info("removedMessagePixels $removedMessagePixels");
+    // log.info("old: ${oldPosition.minScrollExtent} new: ${newPosition.minScrollExtent}");
+    // log.info("newPostion: ${newPosition}");
 
-  //   // if (settings.maxViewportHeightDetected < newPosition.viewportDimension) {
-  //   //   settings.maxViewportHeightDetected = newPosition.viewportDimension;
-  //   //   log.info("New max viewport height detected: ${settings.maxViewportHeightDetected}");
-  //   // }
+    if (settings.maxViewportHeightDetected < newPosition.viewportDimension) {
+      settings.maxViewportHeightDetected = newPosition.viewportDimension;
+      log.info("New max viewport height detected: ${settings.maxViewportHeightDetected}");
+    } else if (settings.minViewportHeightDetected > newPosition.viewportDimension) {
+      settings.minViewportHeightDetected = newPosition.viewportDimension;
+      log.info("New min viewport height detected: ${settings.minViewportHeightDetected}");
+    }
 
-  //   if (oldPosition.viewportDimension < newPosition.viewportDimension) {
-  //     log.info("Virtual keyboard closed");
-  //     //final viewportDiff = newPosition.viewportDimension - oldPosition.viewportDimension;
-  //     //return getNewPosition + viewportDiff;
-  //   } else if (oldPosition.viewportDimension > newPosition.viewportDimension) {
-  //     log.info("Virtual keyboard opened");
-  //     //final viewportDiff = oldPosition.viewportDimension - newPosition.viewportDimension;
-  //     //return getNewPosition + viewportDiff;
-  //   }
+    if (oldPosition.viewportDimension < newPosition.viewportDimension) {
+      settings.state = ScrollState.virtualKeyboardClosed;
+      log.info("Virtual keyboard closed");
+      // if (settings.bottomExtraScrollArea + settings.reducedScrollArea >= 0) {
+      //   final viewportDiff = newPosition.viewportDimension - oldPosition.viewportDimension;
+      //   return getNewPosition + viewportDiff;
+      // // }
+      // return getNewPosition + 1;
+    } else if (oldPosition.viewportDimension > newPosition.viewportDimension) {
+      settings.state = ScrollState.virtualKeyboardOpened;
+      log.info("Virtual keyboard opened");
+      // if (settings.bottomExtraScrollArea + settings.reducedScrollArea >= 0) {
+        // final viewportDiff = newPosition.viewportDimension + oldPosition.viewportDimension;
+        // log.info("viewportDiff $viewportDiff");
+        // return getNewPosition - settings.maxViewportHeightDetected;
+      // }
+      // return getNewPosition - 1;
+    } else {
+      log.info("Virtual keyboard not changed");
+    }
 
-  //   if (
-  //     newPosition.maxScrollExtent > 0 &&
-  //     !settings.useTwoSliverListMode &&
-  //     // This is like this on purpose. If virtual keyboard is opened and if
-  //     // the change is not done when new message arives, then the list makes
-  //     // visible jump.
-  //     oldPosition.viewportDimension == newPosition.viewportDimension
-  //     && false
-  //   ) {
-  //     settings.useTwoSliverListMode = true;
-  //     if (settings.messageCache == null) {
-  //       log.warning("Message cache is not connected");
-  //     }
-  //     Future<void>.delayed(Duration.zero).then((value) async {
-  //       settings.messageCache?.moveBottomMessagesToTop();
-  //     });
+    return getNewPosition;
+  }
 
-  //     log.info("Use two sliver list mode");
-  //   }
+  ScrollMetrics getModifiedPosition(ScrollMetrics position1) {
+    final shownMsgArea = position1.viewportDimension - settings.reducedScrollArea;
+    // log.info("shownMsgArea $shownMsgArea, bottomExtraScrollArea ${settings.bottomExtraScrollArea}");
 
-  //   if (removedMessagePixels > 0 && settings.jumpToMin) {
-  //     settings.jumpToMin = false;
-  //     return getNewPosition - removedMessagePixels;
-  //   } else {
-  //     return getNewPosition;
-  //   }
-  // }
+    final ScrollMetrics position;
+    if (settings.state == ScrollState.normal) {
+      position = position1.copyWith(
+        minScrollExtent: position1.minScrollExtent + settings.reducedScrollArea,
+        maxScrollExtent: position1.maxScrollExtent - min(shownMsgArea, settings.bottomExtraScrollArea),
+      );
+    } else if (settings.state == ScrollState.virtualKeyboardOpened) {
+      position = position1.copyWith(
+        minScrollExtent: position1.minScrollExtent + settings.reducedScrollArea,
+        maxScrollExtent: position1.maxScrollExtent - min(shownMsgArea, settings.bottomExtraScrollArea),
+      );
+    } else {
+      position = position1.copyWith(
+        minScrollExtent: position1.minScrollExtent + settings.reducedScrollArea,
+        maxScrollExtent: position1.maxScrollExtent - min(shownMsgArea, settings.bottomExtraScrollArea),
+      );
+    }
+    return position;
+  }
+
 
 
   // Modified from Flutter sources
   @override
   double applyBoundaryConditions(ScrollMetrics position1, double value) {
-    final shownMsgArea = position1.viewportDimension - settings.reducedScrollArea;
-    //log.info("shownMsgArea $shownMsgArea, bottomExtraScrollArea ${settings.bottomExtraScrollArea}");
-    final position = position1.copyWith(
-      minScrollExtent: position1.minScrollExtent + settings.reducedScrollArea,
-      maxScrollExtent: position1.maxScrollExtent - min(shownMsgArea, settings.bottomExtraScrollArea),
-    );
+    final position = getModifiedPosition(position1);
+
     assert(() {
       if (value == position.pixels) {
         throw FlutterError.fromParts(<DiagnosticsNode>[
@@ -637,10 +663,12 @@ class ChatScrollPhysics extends ScrollPhysics {
 
     if (value < position.pixels && position.pixels <= position.minScrollExtent) {
       // Underscroll.
+      log.info("Underscroll");
       return value - position.pixels;
     }
     if (position.maxScrollExtent <= position.pixels && position.pixels < value) {
       // Overscroll.
+      log.info("Overscroll");
       return value - position.pixels;
     }
     //log.info("v; $value p; ${position.pixels} min: ${position.minScrollExtent} max: ${position.maxScrollExtent}");
@@ -658,14 +686,22 @@ class ChatScrollPhysics extends ScrollPhysics {
     return 0.0;
   }
 
+  // TODO: current issue: virtual keyboard open and close not smooth if top list
+  //       has more messages than bottom list.
+  // Perhaps test BouncingScrollPhysics
+  // This factor starts at 0.52 and progressively becomes harder to overscroll
+  // as more of the area past the edge is dragged in (represented by an increasing
+  // `overscrollFraction` which starts at 0 when there is no overscroll).
+
   // Modified from Flutter sources
   @override
   Simulation? createBallisticSimulation(ScrollMetrics position1, double velocity) {
-    final shownMsgArea = position1.viewportDimension - settings.reducedScrollArea;
-    final position = position1.copyWith(
-      minScrollExtent: position1.minScrollExtent + settings.reducedScrollArea,
-      maxScrollExtent: position1.maxScrollExtent - min(shownMsgArea, settings.bottomExtraScrollArea),
-    );
+    final position = getModifiedPosition(position1);
+    // final shownMsgArea = position1.viewportDimension - settings.reducedScrollArea;
+    // final position = position1.copyWith(
+    //   minScrollExtent: position1.minScrollExtent + settings.reducedScrollArea,
+    //   maxScrollExtent: position1.maxScrollExtent - min(shownMsgArea, settings.bottomExtraScrollArea),
+    // );
 
     final Tolerance tolerance = toleranceFor(position);
     if (position.outOfRange) {
@@ -679,12 +715,32 @@ class ChatScrollPhysics extends ScrollPhysics {
       assert(end != null);
       // return ScrollSpringSimulation(
       //   SpringDescription.withDampingRatio(mass: 1, stiffness: 100000, ratio: 1),
+      //   // spring,
       //   position.pixels,
       //   end!,
       //   min(0.0, velocity),
       //   tolerance: tolerance,
       // );
-      return NoSimulation(end!);
+      // return ScrollSpringSimulation(
+      //   SpringDescription.withDampingRatio(
+      //     mass: 0.5,
+      //     stiffness: 100.0,
+      //     ratio: 2,
+      //   ),
+      //   position.pixels,
+      //   end!,
+      //   min(0.0, velocity),
+      //   tolerance: tolerance,
+      // );
+      log.info("Out of range ${end} $velocity $position1");
+      if (settings.state == ScrollState.normal) {
+        return NoSimulation(end!);
+      } else {
+        // settings.state == ScrollState.normal;
+        return NoSimulation(end!);
+        return LinearSimulation(position.pixels, end!, velocity);
+        return null;
+      }
     }
     if (velocity.abs() < tolerance.velocity) {
       return null;
@@ -695,6 +751,8 @@ class ChatScrollPhysics extends ScrollPhysics {
     if (velocity < 0.0 && position.pixels <= position.minScrollExtent) {
       return null;
     }
+    // return null;
+    // return NoSimulation(position.pixels);
     return ClampingScrollSimulation(
       position: position.pixels,
       velocity: velocity,
@@ -704,25 +762,53 @@ class ChatScrollPhysics extends ScrollPhysics {
 }
 
 class NoSimulation extends Simulation {
+  bool done = false;
   final double end;
   NoSimulation(this.end);
 
   @override
   double dx(double time) {
-    return 0;
+    return 1.0;
   }
 
   @override
   bool isDone(double time) {
-    return true;
+    return done;
   }
 
   @override
   double x(double time) {
+    done = true;
     return end;
   }
-
 }
+
+class LinearSimulation extends Simulation {
+  final double start;
+  final double end;
+  final double velocity;
+  final double speedMultiplier = 10.0;
+  LinearSimulation(this.start, this.end, this.velocity);
+
+  @override
+  double dx(double time) {
+    return 1.0;
+  }
+
+  @override
+  bool isDone(double time) {
+    return time * speedMultiplier >= 1;
+  }
+
+  @override
+  double x(double time) {
+    log.info("time $time");
+    final timeNew = time * speedMultiplier;
+    final diff = (end - start).abs() * timeNew;
+    return start + diff;
+  }
+}
+
 
 // Modified from Flutter sources
 class MySliverFillRemainingWithoutScrollable extends SingleChildRenderObjectWidget {
