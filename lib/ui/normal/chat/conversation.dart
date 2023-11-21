@@ -295,6 +295,33 @@ class ChatViewWidget extends StatefulWidget {
   ChatViewWidgetState createState() => ChatViewWidgetState();
 }
 
+class MyScrollPosition extends ScrollPositionWithSingleContext {
+  MyScrollPosition({
+    required super.physics,
+    required super.context,
+    super.initialPixels,
+    super.keepScrollOffset,
+    super.oldPosition,
+    super.debugLabel,
+  });
+
+  @override
+  bool applyContentDimensions(double minScrollExtent, double maxScrollExtent) {
+    final double? viewportDimensionLocal = viewportDimension;
+    if (viewportDimensionLocal == null) {
+      return super.applyContentDimensions(minScrollExtent, maxScrollExtent);
+    }
+
+    final shownMsgArea = viewportDimensionLocal - settings.reducedScrollArea;
+    // log.info("shownMsgArea $shownMsgArea, bottomExtraScrollArea ${settings.bottomExtraScrollArea}");
+
+    double minExtent = minScrollExtent + settings.reducedScrollArea;
+    double maxExtent = maxScrollExtent - min(shownMsgArea, settings.bottomExtraScrollArea);
+
+    return super.applyContentDimensions(minExtent, maxExtent);
+  }
+}
+
 class CustomScrollController extends ScrollController {
   double? customInitialOffset;
 
@@ -303,7 +330,7 @@ class CustomScrollController extends ScrollController {
     if (customInitialOffset == null) {
       log.warning("customInitialOffset is null");
     }
-    return ScrollPositionWithSingleContext(
+    return MyScrollPosition(
       physics: physics,
       context: context,
       initialPixels: customInitialOffset ?? 0,
@@ -321,11 +348,13 @@ class CustomScrollController extends ScrollController {
   }
 }
 
+final settings = ChatScrollPhysicsSettings();
+
 class ChatViewWidgetState extends State<ChatViewWidget> {
   final centerKey = UniqueKey();
 
   bool _isDisposed = false;
-  final _chatScrollPhysics = ChatScrollPhysics(ChatScrollPhysicsSettings());
+  final _chatScrollPhysics = ChatScrollPhysics(settings);
   final CustomScrollController _scrollController = CustomScrollController(
     //initialScrollOffset: 100000
   );
@@ -410,7 +439,7 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
         if (!_isDisposed) {
           jumpToLatestAfterBuild = false;
           _chatScrollPhysics.settings.state = ScrollState.normal;
-          _scrollController.jumpTo(double.infinity);
+          //_scrollController.jumpTo(double.infinity);
         }
       });
     }
@@ -614,6 +643,7 @@ class ChatScrollPhysics extends ScrollPhysics {
   }
 
   ScrollMetrics getModifiedPosition(ScrollMetrics position1) {
+    return position1;
     final shownMsgArea = position1.viewportDimension - settings.reducedScrollArea;
     // log.info("shownMsgArea $shownMsgArea, bottomExtraScrollArea ${settings.bottomExtraScrollArea}");
 
@@ -639,52 +669,52 @@ class ChatScrollPhysics extends ScrollPhysics {
 
 
 
-  // Modified from Flutter sources
-  @override
-  double applyBoundaryConditions(ScrollMetrics position1, double value) {
-    final position = getModifiedPosition(position1);
+  // // Modified from Flutter sources
+  // @override
+  // double applyBoundaryConditions(ScrollMetrics position1, double value) {
+  //   final position = getModifiedPosition(position1);
 
-    assert(() {
-      if (value == position.pixels) {
-        throw FlutterError.fromParts(<DiagnosticsNode>[
-          ErrorSummary('$runtimeType.applyBoundaryConditions() was called redundantly.'),
-          ErrorDescription(
-            'The proposed new position, $value, is exactly equal to the current position of the '
-            'given ${position.runtimeType}, ${position.pixels}.\n'
-            'The applyBoundaryConditions method should only be called when the value is '
-            'going to actually change the pixels, otherwise it is redundant.',
-          ),
-          DiagnosticsProperty<ScrollPhysics>('The physics object in question was', this, style: DiagnosticsTreeStyle.errorProperty),
-          DiagnosticsProperty<ScrollMetrics>('The position object in question was', position, style: DiagnosticsTreeStyle.errorProperty),
-        ]);
-      }
-      return true;
-    }());
+  //   assert(() {
+  //     if (value == position.pixels) {
+  //       throw FlutterError.fromParts(<DiagnosticsNode>[
+  //         ErrorSummary('$runtimeType.applyBoundaryConditions() was called redundantly.'),
+  //         ErrorDescription(
+  //           'The proposed new position, $value, is exactly equal to the current position of the '
+  //           'given ${position.runtimeType}, ${position.pixels}.\n'
+  //           'The applyBoundaryConditions method should only be called when the value is '
+  //           'going to actually change the pixels, otherwise it is redundant.',
+  //         ),
+  //         DiagnosticsProperty<ScrollPhysics>('The physics object in question was', this, style: DiagnosticsTreeStyle.errorProperty),
+  //         DiagnosticsProperty<ScrollMetrics>('The position object in question was', position, style: DiagnosticsTreeStyle.errorProperty),
+  //       ]);
+  //     }
+  //     return true;
+  //   }());
 
-    if (value < position.pixels && position.pixels <= position.minScrollExtent) {
-      // Underscroll.
-      log.info("Underscroll");
-      return value - position.pixels;
-    }
-    if (position.maxScrollExtent <= position.pixels && position.pixels < value) {
-      // Overscroll.
-      log.info("Overscroll");
-      return value - position.pixels;
-    }
-    //log.info("v; $value p; ${position.pixels} min: ${position.minScrollExtent} max: ${position.maxScrollExtent}");
-    if (value < position.minScrollExtent && position.minScrollExtent < position.pixels) {
-    //if (value < position.minScrollExtent && position.minScrollExtent < position.pixels - 5000) {
-      // Hit top edge.
-      log.info("Hit top edge $value ${position.minScrollExtent} ${position.pixels}}");
-      return value - position.minScrollExtent;
-    }
-    if (position.pixels < position.maxScrollExtent && position.maxScrollExtent < value) {
-      // Hit bottom edge.
-      log.info("Hit bottom edge");
-      return value - position.maxScrollExtent;
-    }
-    return 0.0;
-  }
+  //   if (value < position.pixels && position.pixels <= position.minScrollExtent) {
+  //     // Underscroll.
+  //     log.info("Underscroll");
+  //     return value - position.pixels;
+  //   }
+  //   if (position.maxScrollExtent <= position.pixels && position.pixels < value) {
+  //     // Overscroll.
+  //     log.info("Overscroll");
+  //     return value - position.pixels;
+  //   }
+  //   //log.info("v; $value p; ${position.pixels} min: ${position.minScrollExtent} max: ${position.maxScrollExtent}");
+  //   if (value < position.minScrollExtent && position.minScrollExtent < position.pixels) {
+  //   //if (value < position.minScrollExtent && position.minScrollExtent < position.pixels - 5000) {
+  //     // Hit top edge.
+  //     log.info("Hit top edge $value ${position.minScrollExtent} ${position.pixels}}");
+  //     return value - position.minScrollExtent;
+  //   }
+  //   if (position.pixels < position.maxScrollExtent && position.maxScrollExtent < value) {
+  //     // Hit bottom edge.
+  //     log.info("Hit bottom edge");
+  //     return value - position.maxScrollExtent;
+  //   }
+  //   return 0.0;
+  // }
 
   // TODO: current issue: virtual keyboard open and close not smooth if top list
   //       has more messages than bottom list.
