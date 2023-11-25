@@ -15,11 +15,13 @@ import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/chat/message_database.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
+import 'package:pihka_frontend/logic/profile/view_profiles/view_profiles.dart';
 import 'package:pihka_frontend/ui/normal/chat/cache.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_renderer.dart';
 import 'package:pihka_frontend/ui/normal/chat/two_ended_list.dart';
 import 'package:pihka_frontend/ui/normal/chat/one_ended_list.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
+import 'package:pihka_frontend/ui/utils.dart';
 import 'package:pihka_frontend/utils.dart';
 
 var log = Logger("ConversationPage");
@@ -76,51 +78,83 @@ class ConversationPageState extends State<ConversationPage> {
             ),
           ],
         ),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: BlocBuilder<ConversationBloc, ConversationData?>(
-                  buildWhen: (previous, current) =>
-                    previous?.accountId != current?.accountId ||
-                    previous?.isMatch != current?.isMatch ||
-                    previous?.messageCount != current?.messageCount,
-                  builder: (context, state) {
-                    if (state == null || state.accountId != widget.accountId) {
-                      return Container();
-                    } else if (!state.isMatch) {
-                      return const Center(
-                        child: Text('Send a message to make a match!'),
-                      );
-                    } else {
-                      log.info("Message count: ${state.messageCount}");
-                      cache.setInitialMessagesIfNotSet(state.initialMessages.messages);
-                      // It does not matter if this is called right after.
-                      // Messages will not be fetched because size of message
-                      // count is the same.
-                      cache.setNewSize(
-                        state.messageCount,
-                        state.messageCountChangeInfo == ConversationChangeType.messageSent
-                      );
-
-                      return OneEndedMessageListWidget(state.accountId, cache);
-                    }
-                  },
-                ),
-              ),
-            )
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (context) {
+              return const [
+                PopupMenuItem(value: "block", child: Text("Block")),
+              ];
+            },
+            onSelected: (value) {
+              switch (value) {
+                case "block": {
+                  showConfirmDialog(context, "Block profile?")
+                    .then((value) {
+                      if (value == true) {
+                        context.read<ConversationBloc>().add(BlockProfile(widget.accountId));
+                      }
+                    });
+                }
+              }
+            },
           ),
-          newMessageArea(context),
-          MessageRenderer(cache),
         ],
       ),
+      body: page(),
+    );
+  }
+
+  Widget page() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: BlocBuilder<ConversationBloc, ConversationData?>(
+                buildWhen: (previous, current) =>
+                  previous?.accountId != current?.accountId ||
+                  previous?.isMatch != current?.isMatch ||
+                  previous?.messageCount != current?.messageCount ||
+                  previous?.isBlocked != current?.isBlocked,
+                builder: (context, state) {
+                  if (state == null || state.accountId != widget.accountId) {
+                    return Container();
+                  } else if (state.isBlocked) {
+                    Future.delayed(Duration.zero, () {
+                      showSnackBar("Profile was blocked");
+                      Navigator.pop(context);
+                    });
+                    return Container();
+                  } else if (!state.isMatch) {
+                    return const Center(
+                      child: Text('Send a message to make a match!'),
+                    );
+                  } else {
+                    log.info("Message count: ${state.messageCount}");
+                    cache.setInitialMessagesIfNotSet(state.initialMessages.messages);
+                    // It does not matter if this is called right after.
+                    // Messages will not be fetched because size of message
+                    // count is the same.
+                    cache.setNewSize(
+                      state.messageCount,
+                      state.messageCountChangeInfo == ConversationChangeType.messageSent
+                    );
+
+                    return OneEndedMessageListWidget(state.accountId, cache);
+                  }
+                },
+              ),
+            ),
+          )
+        ),
+        newMessageArea(context),
+        MessageRenderer(cache),
+      ],
     );
   }
 
