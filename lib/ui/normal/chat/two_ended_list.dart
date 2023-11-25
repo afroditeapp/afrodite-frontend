@@ -13,286 +13,27 @@ import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/chat/message_database.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
+import 'package:pihka_frontend/ui/normal/chat/cache.dart';
+import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
+import 'package:pihka_frontend/ui/normal/chat/message_row.dart';
 import 'package:pihka_frontend/utils.dart';
 
-var log = Logger("ConversationPage");
+var log = Logger("TwoEndedMessageListWidget");
 
-class ConversationPage extends StatefulWidget {
-  final AccountId accountId;
-  const ConversationPage(this.accountId, {Key? key}) : super(key: key);
-
-  @override
-  ConversationPageState createState() => ConversationPageState();
-}
-
-typedef MessageViewEntry = (String message, int? localId, bool isSent);
-
-class ConversationPageState extends State<ConversationPage> {
-  late MessageCache cache;
-
-  final TextEditingController _textEditingController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    cache = MessageCache(widget.accountId);
-    log.info("Opening conversation to ${widget.accountId.accountId}");
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Chat Conversation'),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: BlocBuilder<ConversationBloc, ConversationData?>(
-                  buildWhen: (previous, current) =>
-                    previous?.accountId != current?.accountId ||
-                    previous?.isMatch != current?.isMatch ||
-                    previous?.messageCount != current?.messageCount,
-                  builder: (context, state) {
-                    if (state == null || state.accountId != widget.accountId) {
-                      return Container();
-                    } else if (!state.isMatch) {
-                      return const Center(
-                        child: Text('Send a message to make a match!'),
-                      );
-                    } else {
-                      log.info("Message count: ${state.messageCount}");
-                      cache.setInitialMessagesIfNotSet(state.initialMessages.messages);
-                      // It does not matter if this is called right after.
-                      // Messages will not be fetched because size of message
-                      // count is the same.
-                      cache.setNewSize(
-                        state.messageCount,
-                        state.messageCountChangeInfo == ConversationChangeType.messageSent
-                      );
-
-                      return ChatViewWidget(state.accountId, cache);
-                    }
-                  },
-                ),
-              ),
-            )
-          ),
-          newMessageArea(context),
-        ],
-      ),
-    );
-  }
-
-  Widget newMessageArea(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _textEditingController,
-              decoration: InputDecoration(
-                hintText: 'Type a message...',
-              ),
-              keyboardType: TextInputType.multiline,
-              maxLines: 4,
-              minLines: 1,
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.send),
-            onPressed: () {
-              final message = _textEditingController.text;
-              if (message.trim().isNotEmpty) {
-                final bloc = context.read<ConversationBloc>();
-                final state = bloc.state;
-                if (state != null) {
-                  log.info("Sending message to ${state.accountId.accountId}");
-                  bloc.add(SendMessageTo(state.accountId, message));
-                  _textEditingController.clear();
-                }
-              }
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
-class ChatViewDebuggerPage extends StatefulWidget {
-  final AccountId accountId;
-  final int initialMsgCount;
-  const ChatViewDebuggerPage(this.accountId, {this.initialMsgCount = 0, Key? key}) : super(key: key);
-
-  @override
-  ChatViewDebuggerPageState createState() => ChatViewDebuggerPageState();
-}
-
-class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
-  late MessageCache cache;
-  int msgCount = 0;
-  bool msgAutoSend = false;
-  final TextEditingController _textEditingController = TextEditingController();
-  late StreamSubscription<void> _subscription;
-
-  @override
-  void initState() {
-    super.initState();
-    cache = MessageCache(widget.accountId);
-    if (widget.initialMsgCount > 0) {
-      cache.debugSetInitialMessagesIfNotSet(widget.initialMsgCount);
-    }
-
-    _subscription = Stream<void>.periodic(const Duration(seconds: 1)).listen((event) {
-      if (msgAutoSend) {
-        sendToBottom();
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Debug chat view'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.timelapse),
-            onPressed: () {
-              msgAutoSend = !msgAutoSend;
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: ChatViewWidget(widget.accountId, cache),
-              ),
-            )
-          ),
-          textEditArea(context),
-          newMessageArea(context),
-        ],
-      ),
-    );
-  }
-
-   Widget textEditArea(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _textEditingController,
-              decoration: InputDecoration(
-                hintText: 'Type a message...',
-              ),
-              keyboardType: TextInputType.multiline,
-              maxLines: 4,
-              minLines: 1,
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.send),
-            onPressed: () {
-              // empty
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget newMessageArea(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Row(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              sendToTop();
-            },
-            child: Text("Top add")
-          ),
-          ElevatedButton(
-            onPressed: () {
-              cache.debugRemoveFromTop();
-            },
-            child: Text("Top rem")
-          ),
-          ElevatedButton(
-            onPressed: () {
-              sendToBottom();
-            },
-            child: Text("Bottom add")
-          ),
-          ElevatedButton(
-            onPressed: () {
-              cache.debugRemoveFromBottom();
-            },
-            child: Text("Bottom rem")
-          ),
-        ],
-      ),
-    );
-  }
-
-  void sendToTop() {
-    final count = msgCount++;
-    String msg = _textEditingController.text.trim();
-    if (msg.isEmpty) {
-      msg = count.toString();
-    }
-    cache.debugAddToTop(msg, count % 4 == 0);
-  }
-
-  void sendToBottom() {
-    final count = msgCount++;
-    String msg = _textEditingController.text.trim();
-    if (msg.isEmpty) {
-      msg = count.toString();
-    }
-    cache.debugAddToBottom(msg, count % 4 == 0);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _subscription.cancel();
-  }
-}
-
-
-class ChatViewWidget extends StatefulWidget {
+/// Infinite list where adding to both ends is possible.
+/// Add enough messages to bottom and top lists, so that opening
+/// virtual keyboard does not make odd looking animation.
+class TwoEndedMessageListWidget extends StatefulWidget {
   final AccountId accountId;
   final MessageCache cache;
-  const ChatViewWidget(
+  const TwoEndedMessageListWidget(
     this.accountId,
     this.cache,
     {Key? key}
   ) : super(key: key);
 
   @override
-  ChatViewWidgetState createState() => ChatViewWidgetState();
+  TwoEndedMessageListWidgetState createState() => TwoEndedMessageListWidgetState();
 }
 
 class MyScrollPosition extends ScrollPositionWithSingleContext {
@@ -350,7 +91,7 @@ class CustomScrollController extends ScrollController {
 
 final settings = ChatScrollPhysicsSettings();
 
-class ChatViewWidgetState extends State<ChatViewWidget> {
+class TwoEndedMessageListWidgetState extends State<TwoEndedMessageListWidget> {
   final centerKey = UniqueKey();
 
   bool _isDisposed = false;
@@ -369,7 +110,7 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
     super.initState();
     _chatScrollPhysics.settings.messageCache = cache;
 
-    cache.registerCacheUpdateCallback((jumpToLatestMessage) {
+    cache.registerCacheUpdateCallback((jumpToLatestMessage, _) {
       if (!_isDisposed) {
         setState(() {
           log.info("Show updated message list. jumpToLatestMessage: $jumpToLatestMessage");
@@ -425,14 +166,6 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
     );
   }
 
-  MessageViewEntry messageEntryToViewData(MessageEntry entry) {
-    return (entry.messageText, entry.localId, entry.sentMessageState != null);
-  }
-
-  MessageViewEntry emptyViewData() {
-    return ("", -1, false);
-  }
-
   Widget messageSliverList2(AccountId match) {
     if (jumpToLatestAfterBuild) {
       Future<void>.delayed(Duration.zero).then((value) async {
@@ -469,7 +202,8 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
                 //     messageRowWidget(context, messageEntryToViewData(entry)),
                 //   ],
                 // );
-                return messageRowWidget(context, messageEntryToViewData(entry));
+                final style = DefaultTextStyle.of(context).style;
+                return messageRowWidget(context, messageEntryToViewData(entry), parentTextStyle: style);
               } else {
                 return null;
               }
@@ -492,7 +226,8 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
                 //     messageRowWidget(context, messageEntryToViewData(entry)),
                 //   ],
                 // );
-                return messageRowWidget(context, messageEntryToViewData(entry));
+                final style = DefaultTextStyle.of(context).style;
+                return messageRowWidget(context, messageEntryToViewData(entry), parentTextStyle: style);
               } else {
                 return null;
               }
@@ -508,44 +243,6 @@ class ChatViewWidgetState extends State<ChatViewWidget> {
           ),
         ],
       );
-  }
-
-  Widget messageRowWidget(BuildContext context, MessageViewEntry entry) {
-    final (message, _, isSent) = entry;
-    return Align(
-      alignment: isSent ? Alignment.centerRight : Alignment.centerLeft,
-      child: FractionallySizedBox(
-        widthFactor: 0.8,
-        child: Row(
-          children: [
-            Expanded(
-              child: Align(
-                alignment: isSent ? Alignment.centerRight : Alignment.centerLeft,
-                child: messageWidget(context, message, isSent),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget messageWidget(BuildContext context, String message, bool isSent) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-      decoration: BoxDecoration(
-        color: isSent ? Colors.blue : Colors.grey[300],
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Text(
-        message,
-        style: TextStyle(
-          color: isSent ? Colors.white : Colors.black,
-          fontSize: 16.0,
-        ),
-      ),
-    );
   }
 
   @override
@@ -914,189 +611,4 @@ class MyRenderSliverFillRemaining extends RenderSliverSingleBoxAdapter {
       setChildParentData(child!, constraints, geometry!);
     }
   }
-}
-
-class MessageCache {
-  int? size;
-  bool cacheUpdateNeeded = false;
-  void Function(bool jumpToLatestMessage)? _onCacheUpdate;
-  final AccountId _accountId;
-  int? initialMsgLocalKey;
-  List<MessageContainer> _topMessages = [];
-  List<MessageContainer> _bottomMessages = [];
-
-  MessageCache(this._accountId);
-
-  void registerCacheUpdateCallback(void Function(bool) callback) {
-    _onCacheUpdate = callback;
-    if (cacheUpdateNeeded) {
-      // Not sure if this is needed but this might be run when
-      // sending the first message after match.
-      _onCacheUpdate!(true);
-      cacheUpdateNeeded = false;
-    }
-  }
-
-  void setInitialMessagesIfNotSet(List<MessageEntry> initialMessages) {
-    if (size == null) {
-      log.info("Setting initial messages: ${initialMessages.length}");
-      _topMessages = initialMessages.map((e) => MessageContainer()..entry = e).toList();
-      size = initialMessages.length;
-      initialMsgLocalKey = initialMessages.firstOrNull?.id;
-    }
-  }
-
-  void setNewSize(int newSize, bool jumpToLatestMessage) {
-    if (newSize != size) {
-      log.info("New size: $newSize, jumpToLatestMessage: $jumpToLatestMessage");
-      _updateCache(jumpToLatestMessage, size == null);
-      size = newSize;
-    }
-  }
-
-  Future<void> _updateCache(bool jumpToLatestMessage, bool initialLoad) async {
-    await ChatRepository.getInstance().messageIteratorReset(_accountId);
-    bool useBottom = true;
-    List<MessageContainer> newBottomMessages = [];
-    List<MessageContainer> newTopMessages = [];
-    while (true) {
-      final messages = await ChatRepository.getInstance().messageIteratorNext();
-      if (messages.isEmpty) {
-        break;
-      }
-
-      // ignore: prefer_conditional_assignment
-      if (initialMsgLocalKey == null) {
-        initialMsgLocalKey = messages.first.id;
-      }
-
-      if (initialLoad) {
-        for (final message in messages) {
-          newTopMessages.add(MessageContainer()..entry = message);
-        }
-      } else {
-        for (final message in messages) {
-          if (message.id == initialMsgLocalKey) {
-            useBottom = false;
-          }
-          if (useBottom) {
-            newBottomMessages.add(MessageContainer()..entry = message);
-          } else {
-            newTopMessages.add(MessageContainer()..entry = message);
-          }
-        }
-      }
-    }
-    _topMessages = newTopMessages;
-    _bottomMessages = newBottomMessages;
-    _triggerUpdateCallback(jumpToLatestMessage || initialLoad);
-  }
-
-  void _triggerUpdateCallback(bool jumpToLatest) {
-    final updateCallback = _onCacheUpdate;
-    if (updateCallback != null) {
-      updateCallback(jumpToLatest);
-    } else {
-      log.info("Callback not registered, so callback will run when registered.");
-      // Refresh when callback is registered.
-      cacheUpdateNeeded = true;
-    }
-  }
-
-  int getTopMessagesSize() {
-    return _topMessages.length;
-  }
-
-  int getBottomMessagesSize() {
-    return _bottomMessages.length;
-  }
-
-  /// If null, message entry does not exists.
-  /// First message in top messages list is index 0 message.
-  MessageEntry? getMessageUsingConstantIndexing(int index) {
-    if (index >= 0) {
-      return _topMessages.elementAtOrNull(index)?.entry;
-    } else {
-      final bottomIndex = -index - 1;
-      if (bottomIndex < 0) {
-        return null;
-      } else {
-        return _bottomMessages.elementAtOrNull(bottomIndex)?.entry;
-      }
-    }
-  }
-
-  /// If null, message entry does not exists
-  MessageEntry? topMessagesindexToEntry(int index) {
-    return _topMessages.elementAtOrNull(index)?.entry;
-  }
-
-  /// If null, message entry does not exists
-  MessageEntry? bottomMessagesindexToEntry(int index) {
-    return _bottomMessages.elementAtOrNull(index)?.entry;
-  }
-
-  void moveBottomMessagesToTop() async {
-    _topMessages = [..._bottomMessages, ..._topMessages];
-    initialMsgLocalKey = _topMessages.firstOrNull?.entry?.id;
-    _bottomMessages = [];
-    _triggerUpdateCallback(false);
-    log.info("Moved bottom messages to top");
-  }
-
-  // Debugging
-
-  void debugSetInitialMessagesIfNotSet(int debugMsgCount) {
-    final List<MessageEntry> msgList = [];
-    for (int i = 0; i < debugMsgCount; i++) {
-      msgList.add(debugBuildEntry("$i", i % 4 == 0));
-    }
-    setInitialMessagesIfNotSet(msgList);
-  }
-
-  int counter = 0;
-  MessageEntry debugBuildEntry(String text, bool isSent) {
-    final SentMessageState? state;
-    if (isSent) {
-      state = SentMessageState.pending;
-    } else {
-      state = null;
-    }
-    return MessageEntry(
-      AccountId(accountId: ""),
-      AccountId(accountId: ""),
-      text,
-      sentMessageState: state,
-      id: counter++,
-    );
-  }
-
-  void debugAddToTop(String text, bool isSent) {
-    _topMessages.add(MessageContainer()..entry = debugBuildEntry(text, isSent));
-    _onCacheUpdate!(false);
-  }
-
-  void debugRemoveFromTop() {
-    if (_topMessages.isNotEmpty) {
-      _topMessages.removeAt(0);
-    }
-    _onCacheUpdate!(false);
-  }
-
-  void debugAddToBottom(String text, bool isSent) {
-    _bottomMessages.add(MessageContainer()..entry = debugBuildEntry(text, isSent));
-    _onCacheUpdate!(true);
-  }
-
-  void debugRemoveFromBottom() {
-    if (_bottomMessages.isNotEmpty) {
-      _bottomMessages.removeAt(0);
-    }
-
-    _onCacheUpdate!(false);
-  }
-}
-
-class MessageContainer {
-  MessageEntry? entry;
 }

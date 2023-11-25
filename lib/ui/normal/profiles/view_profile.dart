@@ -10,7 +10,7 @@ import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/logic/profile/profile.dart';
 import 'package:pihka_frontend/logic/profile/view_profiles/view_profiles.dart';
-import 'package:pihka_frontend/ui/normal/chat/conversation.dart';
+import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin/moderate_images.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
