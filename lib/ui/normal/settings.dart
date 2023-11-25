@@ -4,6 +4,7 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin.dart';
 import 'package:pihka_frontend/ui/normal/settings/blocked_profiles.dart';
+import 'package:pihka_frontend/ui/normal/settings/debug.dart';
 import 'package:pihka_frontend/ui/normal/settings/location.dart';
 import 'package:pihka_frontend/ui/normal/settings/my_profile.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile_visibility.dart';
@@ -82,6 +83,10 @@ class _SettingsViewState extends State<SettingsView> {
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const AdminSettingsPage()))
           ));
         }
+
+        settings.add(Setting.createSetting(Icons.bug_report_rounded, "Debug", () =>
+          Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const DebugSettingsPage()))
+        ));
 
         return ListView.builder(
           itemCount: settings.length,
