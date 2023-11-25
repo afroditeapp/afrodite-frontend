@@ -19,7 +19,7 @@ class MessageCache {
   int? initialMsgLocalKey;
   /// Index 0 is the latest message of the already existing messages.
   List<MessageContainer> _topMessages = [];
-  /// Index 0 is the latest message.
+  /// Index 0 is the oldest message of the new messages.
   List<MessageContainer> _bottomMessages = [];
 
   /// Queue for new messages which will have the size calculated.
@@ -93,7 +93,7 @@ class MessageCache {
     }
     _topMessages = newTopMessages;
 
-    for (final (i, message) in newBottomMessages.indexed) {
+    for (final (i, message) in newBottomMessages.reversed.indexed) {
       if (i < _bottomMessages.length) {
         /// Update old bottom messsages.
         _bottomMessages[i].entry = message.entry;
@@ -192,7 +192,8 @@ class MessageCache {
       final i = index - getBottomMessagesSize();
       return _topMessages.elementAtOrNull(i)?.entry;
     } else {
-      return _bottomMessages.elementAtOrNull(index)?.entry;
+      final i = getBottomMessagesSize() - index - 1;
+      return _bottomMessages.elementAtOrNull(i)?.entry;
     }
   }
 
