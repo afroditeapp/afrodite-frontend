@@ -26,7 +26,9 @@ class MessageCache {
   bool jumpToLatestAtNextUpdate = false;
   final AccountId _accountId;
   int? initialMsgLocalKey;
+  /// Index 0 is the latest message of the already existing messages.
   List<MessageContainer> _topMessages = [];
+  /// Index 0 is the latest message.
   List<MessageContainer> _bottomMessages = [];
 
   /// Queue for new messages which will have the size calculated.
@@ -199,8 +201,7 @@ class MessageCache {
       final i = index - getBottomMessagesSize();
       return _topMessages.elementAtOrNull(i)?.entry;
     } else {
-      final i = getBottomMessagesSize() - index - 1;
-      return _bottomMessages.elementAtOrNull(i)?.entry;
+      return _bottomMessages.elementAtOrNull(index)?.entry;
     }
   }
 

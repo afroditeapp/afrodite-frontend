@@ -89,12 +89,12 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
           _chatScrollPhysics.settings.newMessageHeight = addedMessageSize;
 
           if (
-            jumpToLatestMessage
-            // (
-            //   _scrollController.hasClients &&
-            //   _scrollController.position.atEdge &&
-            //   _scrollController.position.pixels == _scrollController.position.minScrollExtent
-            // )
+            jumpToLatestMessage ||
+            (
+              _scrollController.hasClients &&
+              _scrollController.position.atEdge &&
+              _scrollController.position.pixels == _scrollController.position.minScrollExtent
+            )
           ) {
             //_chatScrollPhysics.settings.jumpToMin = true;
             jumpToLatestAfterBuild = true;
@@ -102,10 +102,9 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
 
             if (_scrollController.hasClients) {
               // log.info("test ${_scrollController.position}");
-
               _scrollController.position.jumpTo(0);
+              _chatScrollPhysics.settings.jumpToLatest = true;
             }
-
           }
         });
       }
@@ -243,6 +242,7 @@ class SimpleChatScrollPhysicsSettings {
   double reducedScrollArea = 0;
   double bottomExtraScrollArea = 0;
 
+  bool jumpToLatest = false;
   double? newMessageHeight;
   double? availableArea;
 
@@ -318,7 +318,10 @@ class SimpleChatScrollPhysics extends ScrollPhysics {
     if (addedMessageHeight != null && availableArea != null) {
       settings.newMessageHeight = null;
       log.info("New message height detected: $addedMessageHeight");
-      if (oldPosition.viewportDimension < availableArea &&
+      if (settings.jumpToLatest) {
+        settings.jumpToLatest = false;
+        return getNewPosition;
+      } else if (oldPosition.viewportDimension < availableArea &&
         newPosition.viewportDimension >= availableArea) {
         log.info("Partial scroll");
         final diff = newPosition.viewportDimension - oldPosition.viewportDimension;
