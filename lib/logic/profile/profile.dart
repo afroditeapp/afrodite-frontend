@@ -3,6 +3,7 @@ import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
+import "package:pihka_frontend/database/profile_database.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
 import "package:pihka_frontend/ui/utils.dart";
@@ -19,7 +20,7 @@ part 'profile.freezed.dart';
 @freezed
 class ProfileData with _$ProfileData {
   factory ProfileData({
-    Profile? profile,
+    ProfileEntry? profile,
     PrimaryImage? primaryImage,
   }) = _ProfileData;
 }
@@ -45,8 +46,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileData> with ActionRunner {
         final oldState = state;
         final oldProfile = state.profile;
         if (oldProfile != null) {
-          final newProfile = Profile(name: oldProfile.name, profileText: data.profile.profileText, version: oldProfile.version);
-          emit(state.copyWith(profile: newProfile));
+          emit(state.copyWith(profile: oldProfile.copyWith(profileText: data.profile.profileText)));
         }
 
         if (await profile.updateProfile(data.profile)) {
@@ -61,7 +61,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileData> with ActionRunner {
           showSnackBar("Failed to update profile");
           emit(oldState);
         }
-
       });
     });
     on<LoadProfile>((data, emit) async {

@@ -8,6 +8,7 @@ import "package:pihka_frontend/data/chat_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/database/favorite_profiles_database.dart";
+import "package:pihka_frontend/database/profile_database.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
 import "package:pihka_frontend/ui/normal/profiles/view_profile.dart";
@@ -32,9 +33,9 @@ enum ProfileActionState {
 class ViewProfilesData with _$ViewProfilesData {
   factory ViewProfilesData({
     required AccountId accountId,
-    required Profile profile,
+    required ProfileEntry profile,
     required File primaryProfileImage,
-    required ProfileHeroTag imgTag,
+    required ProfileHeroTag? imgTag,
     @Default(false) bool isFavorite,
     @Default(ProfileActionState.like) ProfileActionState profileActionState,
     @Default(false) bool isNotAvailable,
@@ -48,9 +49,9 @@ class ViewProfilesData with _$ViewProfilesData {
 sealed class ViewProfileEvent {}
 class SetProfileView extends ViewProfileEvent {
   final AccountId accountId;
-  final Profile profile;
+  final ProfileEntry profile;
   final File primaryProfileImage;
-  final ProfileHeroTag imgTag;
+  final ProfileHeroTag? imgTag;
   SetProfileView(this.accountId, this.profile, this.primaryProfileImage, this.imgTag);
 }
 class HandleProfileResult extends ViewProfileEvent {
@@ -139,8 +140,13 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
       switch (result) {
         case GetProfileSuccess():
           emit(currentState.copyWith(profile: result.profile));
-        case GetProfileDoesNotExist():
-          emit(currentState.copyWith(isNotAvailable: true));
+        case GetProfileDoesNotExist(): {
+          // TODO: Remove once backend supports getting private profiles
+          //       of matches.
+          emit(currentState.copyWith(
+            isNotAvailable: currentState.profileActionState != ProfileActionState.chat
+          ));
+        }
         case GetProfileFailed():
           emit(currentState.copyWith(showLoadingError: true));
       }

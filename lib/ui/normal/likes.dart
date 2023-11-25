@@ -134,18 +134,13 @@ class _LikeViewState extends State<LikeView> {
         animateTransitions: true,
         itemBuilder: (context, item, index) {
           final accountId = AccountId(accountId: item.$1.uuid);
-          final profile = Profile(
-            name: item.$1.name,
-            profileText: item.$1.profileText,
-            version: ProfileVersion(versionUuid: ""),
-          );
+          final heroTag = (accountId, item.$3);
           return GestureDetector(
             onTap: () {
-              context.read<ViewProfileBloc>().add(SetProfileView(accountId, profile, item.$2, (accountId, item.$3)));
-              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ViewProfilePage()));
+              openProfileView(context, accountId, item.$1, item.$2, heroTag);
             },
             child: Hero(
-              tag: (accountId, item.$3),
+              tag: heroTag,
               child: Image.file(item.$2)
             )
           );

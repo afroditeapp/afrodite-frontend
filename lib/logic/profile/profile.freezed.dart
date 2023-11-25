@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ProfileData {
-  Profile? get profile => throw _privateConstructorUsedError;
+  ProfileEntry? get profile => throw _privateConstructorUsedError;
   PrimaryImage? get primaryImage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +30,7 @@ abstract class $ProfileDataCopyWith<$Res> {
           ProfileData value, $Res Function(ProfileData) then) =
       _$ProfileDataCopyWithImpl<$Res, ProfileData>;
   @useResult
-  $Res call({Profile? profile, PrimaryImage? primaryImage});
+  $Res call({ProfileEntry? profile, PrimaryImage? primaryImage});
 }
 
 /// @nodoc
@@ -53,7 +53,7 @@ class _$ProfileDataCopyWithImpl<$Res, $Val extends ProfileData>
       profile: freezed == profile
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
-              as Profile?,
+              as ProfileEntry?,
       primaryImage: freezed == primaryImage
           ? _value.primaryImage
           : primaryImage // ignore: cast_nullable_to_non_nullable
@@ -70,7 +70,7 @@ abstract class _$$ProfileDataImplCopyWith<$Res>
       __$$ProfileDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Profile? profile, PrimaryImage? primaryImage});
+  $Res call({ProfileEntry? profile, PrimaryImage? primaryImage});
 }
 
 /// @nodoc
@@ -91,7 +91,7 @@ class __$$ProfileDataImplCopyWithImpl<$Res>
       profile: freezed == profile
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
-              as Profile?,
+              as ProfileEntry?,
       primaryImage: freezed == primaryImage
           ? _value.primaryImage
           : primaryImage // ignore: cast_nullable_to_non_nullable
@@ -106,7 +106,7 @@ class _$ProfileDataImpl with DiagnosticableTreeMixin implements _ProfileData {
   _$ProfileDataImpl({this.profile, this.primaryImage});
 
   @override
-  final Profile? profile;
+  final ProfileEntry? profile;
   @override
   final PrimaryImage? primaryImage;
 
@@ -146,11 +146,11 @@ class _$ProfileDataImpl with DiagnosticableTreeMixin implements _ProfileData {
 
 abstract class _ProfileData implements ProfileData {
   factory _ProfileData(
-      {final Profile? profile,
+      {final ProfileEntry? profile,
       final PrimaryImage? primaryImage}) = _$ProfileDataImpl;
 
   @override
-  Profile? get profile;
+  ProfileEntry? get profile;
   @override
   PrimaryImage? get primaryImage;
   @override

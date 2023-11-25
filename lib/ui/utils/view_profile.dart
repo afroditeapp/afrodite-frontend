@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
+import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/logic/profile/profile.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -17,7 +18,7 @@ import 'package:pihka_frontend/ui/utils/image_page.dart';
 
 const double imgHeight = 400;
 
-Widget viewProifle(BuildContext context, AccountId account, Profile profile, PrimaryImageProvider img, bool showGridImage) {
+Widget viewProifle(BuildContext context, AccountId account, ProfileEntry profile, PrimaryImageProvider img, bool showGridImage) {
   return LayoutBuilder(
     builder: (context, constraints) {
 
@@ -77,7 +78,7 @@ Widget viewProifle(BuildContext context, AccountId account, Profile profile, Pri
   );
 }
 
-Widget viewProifleImage(BuildContext context, AccountId account, Profile profile, PrimaryImageInfo img, bool showGridImage, BoxConstraints constraints) {
+Widget viewProifleImage(BuildContext context, AccountId account, ProfileEntry profile, PrimaryImageInfo img, bool showGridImage, BoxConstraints constraints) {
 
   final double imgMaxWidth;
   if (showGridImage) {

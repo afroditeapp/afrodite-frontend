@@ -167,6 +167,22 @@ class ProfileEntry {
     name = map["name"] as String,
     profileText = map["profile_text"] as String;
 
+  ProfileEntry copyWith(
+    {
+      String? uuid,
+      String? imageUuid,
+      String? name,
+      String? profileText
+    }
+  ) {
+    return ProfileEntry(
+      uuid ?? this.uuid,
+      imageUuid ?? this.imageUuid,
+      name ?? this.name,
+      profileText ?? this.profileText,
+    );
+  }
+
   @override
   String toString() {
     return "ProfileEntry(uuid: $uuid, imageUuid: $imageUuid, name: $name, profileText: $profileText)";

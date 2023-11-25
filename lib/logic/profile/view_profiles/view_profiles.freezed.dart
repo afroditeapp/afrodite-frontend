@@ -17,9 +17,9 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ViewProfilesData {
   AccountId get accountId => throw _privateConstructorUsedError;
-  Profile get profile => throw _privateConstructorUsedError;
+  ProfileEntry get profile => throw _privateConstructorUsedError;
   File get primaryProfileImage => throw _privateConstructorUsedError;
-  (AccountId, int) get imgTag => throw _privateConstructorUsedError;
+  (AccountId, int)? get imgTag => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
   ProfileActionState get profileActionState =>
       throw _privateConstructorUsedError;
@@ -42,9 +42,9 @@ abstract class $ViewProfilesDataCopyWith<$Res> {
   @useResult
   $Res call(
       {AccountId accountId,
-      Profile profile,
+      ProfileEntry profile,
       File primaryProfileImage,
-      (AccountId, int) imgTag,
+      (AccountId, int)? imgTag,
       bool isFavorite,
       ProfileActionState profileActionState,
       bool isNotAvailable,
@@ -70,7 +70,7 @@ class _$ViewProfilesDataCopyWithImpl<$Res, $Val extends ViewProfilesData>
     Object? accountId = null,
     Object? profile = null,
     Object? primaryProfileImage = null,
-    Object? imgTag = null,
+    Object? imgTag = freezed,
     Object? isFavorite = null,
     Object? profileActionState = null,
     Object? isNotAvailable = null,
@@ -87,15 +87,15 @@ class _$ViewProfilesDataCopyWithImpl<$Res, $Val extends ViewProfilesData>
       profile: null == profile
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
-              as Profile,
+              as ProfileEntry,
       primaryProfileImage: null == primaryProfileImage
           ? _value.primaryProfileImage
           : primaryProfileImage // ignore: cast_nullable_to_non_nullable
               as File,
-      imgTag: null == imgTag
+      imgTag: freezed == imgTag
           ? _value.imgTag
           : imgTag // ignore: cast_nullable_to_non_nullable
-              as (AccountId, int),
+              as (AccountId, int)?,
       isFavorite: null == isFavorite
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -138,9 +138,9 @@ abstract class _$$ViewProfilesDataImplCopyWith<$Res>
   @useResult
   $Res call(
       {AccountId accountId,
-      Profile profile,
+      ProfileEntry profile,
       File primaryProfileImage,
-      (AccountId, int) imgTag,
+      (AccountId, int)? imgTag,
       bool isFavorite,
       ProfileActionState profileActionState,
       bool isNotAvailable,
@@ -164,7 +164,7 @@ class __$$ViewProfilesDataImplCopyWithImpl<$Res>
     Object? accountId = null,
     Object? profile = null,
     Object? primaryProfileImage = null,
-    Object? imgTag = null,
+    Object? imgTag = freezed,
     Object? isFavorite = null,
     Object? profileActionState = null,
     Object? isNotAvailable = null,
@@ -181,15 +181,15 @@ class __$$ViewProfilesDataImplCopyWithImpl<$Res>
       profile: null == profile
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
-              as Profile,
+              as ProfileEntry,
       primaryProfileImage: null == primaryProfileImage
           ? _value.primaryProfileImage
           : primaryProfileImage // ignore: cast_nullable_to_non_nullable
               as File,
-      imgTag: null == imgTag
+      imgTag: freezed == imgTag
           ? _value.imgTag
           : imgTag // ignore: cast_nullable_to_non_nullable
-              as (AccountId, int),
+              as (AccountId, int)?,
       isFavorite: null == isFavorite
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -243,11 +243,11 @@ class _$ViewProfilesDataImpl
   @override
   final AccountId accountId;
   @override
-  final Profile profile;
+  final ProfileEntry profile;
   @override
   final File primaryProfileImage;
   @override
-  final (AccountId, int) imgTag;
+  final (AccountId, int)? imgTag;
   @override
   @JsonKey()
   final bool isFavorite;
@@ -348,9 +348,9 @@ class _$ViewProfilesDataImpl
 abstract class _ViewProfilesData implements ViewProfilesData {
   factory _ViewProfilesData(
       {required final AccountId accountId,
-      required final Profile profile,
+      required final ProfileEntry profile,
       required final File primaryProfileImage,
-      required final (AccountId, int) imgTag,
+      required final (AccountId, int)? imgTag,
       final bool isFavorite,
       final ProfileActionState profileActionState,
       final bool isNotAvailable,
@@ -362,11 +362,11 @@ abstract class _ViewProfilesData implements ViewProfilesData {
   @override
   AccountId get accountId;
   @override
-  Profile get profile;
+  ProfileEntry get profile;
   @override
   File get primaryProfileImage;
   @override
-  (AccountId, int) get imgTag;
+  (AccountId, int)? get imgTag;
   @override
   bool get isFavorite;
   @override

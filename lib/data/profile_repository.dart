@@ -129,12 +129,12 @@ class ProfileRepository extends DataRepository {
     return requestSuccessful;
   }
 
-  Future<Profile?> getProfile(AccountId id, {bool cache = false}) async {
+  Future<ProfileEntry?> getProfile(AccountId id, {bool cache = false}) async {
     // TODO: perhaps more detailed error message, so that changes from public to
     // private profile can be handled.
 
     if (cache) {
-      final profile = await ProfileDatabase.getInstance().getProfile(id);
+      final profile = await ProfileDatabase.getInstance().getProfileEntry(id);
       if (profile != null) {
         return profile;
       }
@@ -143,8 +143,10 @@ class ProfileRepository extends DataRepository {
     final profile = await _api.profile((api) => api.getProfile(id.accountId));
     if (profile != null) {
       await ProfileDatabase.getInstance().updateProfile(id, profile);
+      final updatedProfile = await ProfileDatabase.getInstance().getProfileEntry(id);
+      return updatedProfile;
     }
-    return profile;
+    return null;
   }
 
   /// Get cached (if available) and then latest profile (if available).
@@ -152,7 +154,7 @@ class ProfileRepository extends DataRepository {
     // TODO: perhaps more detailed error message, so that changes from public to
     // private profile can be handled.
 
-    final profile = await ProfileDatabase.getInstance().getProfile(id);
+    final profile = await ProfileDatabase.getInstance().getProfileEntry(id);
     if (profile != null) {
       yield GetProfileSuccess(profile);
     }
@@ -161,7 +163,12 @@ class ProfileRepository extends DataRepository {
 
     if (status.isSuccess() && latestProfile != null) {
       await ProfileDatabase.getInstance().updateProfile(id, latestProfile);
-      yield GetProfileSuccess(latestProfile);
+      final updatedEntry = await ProfileDatabase.getInstance().getProfileEntry(id);
+      if (updatedEntry != null) {
+        yield GetProfileSuccess(updatedEntry);
+      } else {
+        yield GetProfileFailed();
+      }
     } else if (status.isInternalServerError() && latestProfile == null) {
       // Accessing profile failed (not public or something else)
       await ProfileDatabase.getInstance().removeProfile(id);
@@ -287,7 +294,7 @@ class ProfileRepository extends DataRepository {
 
 sealed class GetProfileResult {}
 class GetProfileSuccess extends GetProfileResult {
-  final Profile profile;
+  final ProfileEntry profile;
   GetProfileSuccess(this.profile);
 }
 /// Navigate out from view profile and reload profile list

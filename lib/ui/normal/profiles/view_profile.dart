@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
+import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/logic/profile/profile.dart';
@@ -21,13 +22,26 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 typedef ProfileHeroTag = (AccountId accountId, int uniqueCounterNumber);
 
+void openProfileView(
+  BuildContext context,
+  AccountId accountId,
+  ProfileEntry profile,
+  File primaryProfileImage,
+  ProfileHeroTag? imgTag,
+  {bool noAction = false}
+) {
+  context.read<ViewProfileBloc>().add(SetProfileView(accountId, profile, primaryProfileImage, imgTag));
+  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ViewProfilePage(noAction: noAction)));
+}
+
 class ViewProfilePage extends StatelessWidget {
+  final bool noAction;
   // final AccountId accountId;
   // final Profile profile;
   // final File primaryProfileImage;
   // final int uiIndex;
 
-  const ViewProfilePage({super.key});
+  const ViewProfilePage({this.noAction = false, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -78,67 +92,75 @@ class ViewProfilePage extends StatelessWidget {
         ],
       ),
       body: myProfilePage(context),
-      floatingActionButton: BlocBuilder<ViewProfileBloc, ViewProfilesData?>(
-        builder: (context, state) {
-          final currentState = state;
-          if (currentState == null) {
-            return Container();
-          }
-          switch (currentState.profileActionState) {
-            case ProfileActionState.like:
-              return FloatingActionButton(
-                onPressed: () =>
-                  showConfirmDialog(context, "Send like?")
-                    .then((value) {
-                      if (value == true) {
-                        context.read<ViewProfileBloc>()
-                          .add(DoProfileAction(
-                            currentState.accountId,
-                            currentState.profileActionState
-                          ));
-                      }
-                    }),
-                tooltip: 'Send like',
-                child: const Icon(Icons.favorite_rounded),
-              );
-            case ProfileActionState.removeLike:
-              return FloatingActionButton(
-                onPressed: () =>
-                  showConfirmDialog(context, "Remove like?")
-                    .then((value) {
-                      if (value == true) {
-                        context.read<ViewProfileBloc>()
-                          .add(DoProfileAction(
-                            currentState.accountId,
-                            currentState.profileActionState
-                          ));
-                      }
-                    }),
-                tooltip: 'Remove like',
-                child: const Icon(Icons.undo_rounded),
-              );
-            case ProfileActionState.makeMatch:
-              return FloatingActionButton(
-                onPressed: () {
-                  context.read<ConversationBloc>().add(SetConversationView(currentState.accountId, currentState.profile.name, currentState.primaryProfileImage));
-                  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(currentState.accountId)));
-                },
-                tooltip: 'Send message to make a match',
-                child: const Icon(Icons.waving_hand),
-              );
-            case ProfileActionState.chat:
-              return FloatingActionButton(
-                onPressed: () {
-                  context.read<ConversationBloc>().add(SetConversationView(currentState.accountId, currentState.profile.name, currentState.primaryProfileImage));
-                  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(currentState.accountId)));
-                },
-                tooltip: 'Open chat',
-                child: const Icon(Icons.chat_rounded),
-              );
-          }
-        }
-      ),
+      floatingActionButton: actionButton(context),
       //extendBodyBehindAppBar: true,
+    );
+  }
+
+  Widget? actionButton(BuildContext context) {
+    if (noAction) {
+      return null;
+    }
+
+    return BlocBuilder<ViewProfileBloc, ViewProfilesData?>(
+      builder: (context, state) {
+        final currentState = state;
+        if (currentState == null) {
+          return Container();
+        }
+        switch (currentState.profileActionState) {
+          case ProfileActionState.like:
+            return FloatingActionButton(
+              onPressed: () =>
+                showConfirmDialog(context, "Send like?")
+                  .then((value) {
+                    if (value == true) {
+                      context.read<ViewProfileBloc>()
+                        .add(DoProfileAction(
+                          currentState.accountId,
+                          currentState.profileActionState
+                        ));
+                    }
+                  }),
+              tooltip: 'Send like',
+              child: const Icon(Icons.favorite_rounded),
+            );
+          case ProfileActionState.removeLike:
+            return FloatingActionButton(
+              onPressed: () =>
+                showConfirmDialog(context, "Remove like?")
+                  .then((value) {
+                    if (value == true) {
+                      context.read<ViewProfileBloc>()
+                        .add(DoProfileAction(
+                          currentState.accountId,
+                          currentState.profileActionState
+                        ));
+                    }
+                  }),
+              tooltip: 'Remove like',
+              child: const Icon(Icons.undo_rounded),
+            );
+          case ProfileActionState.makeMatch:
+            return FloatingActionButton(
+              onPressed: () {
+                context.read<ConversationBloc>().add(SetConversationView(currentState.accountId, currentState.profile.name, currentState.primaryProfileImage));
+                Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(currentState.accountId, currentState.profile, currentState.primaryProfileImage)));
+              },
+              tooltip: 'Send message to make a match',
+              child: const Icon(Icons.waving_hand),
+            );
+          case ProfileActionState.chat:
+            return FloatingActionButton(
+              onPressed: () {
+                context.read<ConversationBloc>().add(SetConversationView(currentState.accountId, currentState.profile.name, currentState.primaryProfileImage));
+                Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(currentState.accountId, currentState.profile, currentState.primaryProfileImage)));
+              },
+              tooltip: 'Open chat',
+              child: const Icon(Icons.chat_rounded),
+            );
+        }
+      }
     );
   }
 

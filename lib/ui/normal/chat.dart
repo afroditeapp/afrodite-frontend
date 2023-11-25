@@ -148,7 +148,7 @@ class _ChatViewState extends State<ChatView> {
           return InkWell(
             onTap: () {
               context.read<ConversationBloc>().add(SetConversationView(item.$1, name, image));
-              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(item.$1)));
+              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(item.$1, item.$2, item.$3)));
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),

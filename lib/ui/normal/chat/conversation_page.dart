@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -12,23 +13,26 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/chat/message_database.dart';
+import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/ui/normal/chat/cache.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_renderer.dart';
 import 'package:pihka_frontend/ui/normal/chat/two_ended_list.dart';
 import 'package:pihka_frontend/ui/normal/chat/one_ended_list.dart';
+import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/utils.dart';
 
 var log = Logger("ConversationPage");
 
 class ConversationPage extends StatefulWidget {
   final AccountId accountId;
-  const ConversationPage(this.accountId, {Key? key}) : super(key: key);
+  final ProfileEntry profileEntry;
+  final File img;
+  const ConversationPage(this.accountId, this.profileEntry, this.img, {Key? key}) : super(key: key);
 
   @override
   ConversationPageState createState() => ConversationPageState();
 }
-
 
 class ConversationPageState extends State<ConversationPage> {
   late MessageCache cache;
@@ -46,7 +50,32 @@ class ConversationPageState extends State<ConversationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat Conversation'),
+        title: Row(
+          children: [
+            InkWell(
+              onTap: () {
+                openProfileView(context, widget.accountId, widget.profileEntry, widget.img, null, noAction: true);
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                child: SizedBox(
+                  height: AppBar().preferredSize.height,
+                  child: Row(
+                    children: [
+                      Image.file(
+                        widget.img,
+                        width: 40,
+                        height: 40,
+                      ),
+                      const Padding(padding: EdgeInsets.all(8.0)),
+                      Text(widget.profileEntry.name),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
