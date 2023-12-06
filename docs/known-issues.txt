@@ -1,0 +1,4 @@
+- Denying images is not working reliably (ok and cancel)
+- Dialog text in moderation denying is missing to particle ("want to make")
+- Chat -> Block -> Unblock -> go to profile -> it is possible to go chat screen
+again -> and sending chats is not working (backend works correctly)
