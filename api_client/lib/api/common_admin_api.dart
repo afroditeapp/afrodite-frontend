@@ -122,6 +122,77 @@ class CommonAdminApi {
     return null;
   }
 
+  /// Get performance data
+  ///
+  /// Get performance data  # Capabilities Requires admin_server_maintenance_view_info.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [UnixTime] startTime:
+  ///   Start time for query results.
+  ///
+  /// * [UnixTime] endTime:
+  ///   End time for query results.
+  Future<Response> getPerfDataWithHttpInfo({ UnixTime? startTime, UnixTime? endTime, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/perf_data';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    if (startTime != null) {
+      queryParams.addAll(_queryParams('', 'start_time', startTime));
+    }
+    if (endTime != null) {
+      queryParams.addAll(_queryParams('', 'end_time', endTime));
+    }
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get performance data
+  ///
+  /// Get performance data  # Capabilities Requires admin_server_maintenance_view_info.
+  ///
+  /// Parameters:
+  ///
+  /// * [UnixTime] startTime:
+  ///   Start time for query results.
+  ///
+  /// * [UnixTime] endTime:
+  ///   End time for query results.
+  Future<PerfHistoryQueryResult?> getPerfData({ UnixTime? startTime, UnixTime? endTime, }) async {
+    final response = await getPerfDataWithHttpInfo( startTime: startTime, endTime: endTime, );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PerfHistoryQueryResult',) as PerfHistoryQueryResult;
+    
+    }
+    return null;
+  }
+
   /// Get software version information from manager instance.
   ///
   /// Get software version information from manager instance.

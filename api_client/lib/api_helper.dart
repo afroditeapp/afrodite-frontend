@@ -70,6 +70,9 @@ String parameterToString(dynamic value) {
   if (value is SoftwareOptions) {
     return SoftwareOptionsTypeTransformer().encode(value).toString();
   }
+  if (value is TimeGranularity) {
+    return TimeGranularityTypeTransformer().encode(value).toString();
+  }
   return value.toString();
 }
 

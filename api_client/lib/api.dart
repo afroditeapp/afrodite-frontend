@@ -80,6 +80,10 @@ part 'model/pending_message.dart';
 part 'model/pending_message_delete_list.dart';
 part 'model/pending_message_id.dart';
 part 'model/pending_messages_page.dart';
+part 'model/perf_history_query.dart';
+part 'model/perf_history_query_result.dart';
+part 'model/perf_history_value.dart';
+part 'model/perf_value_area.dart';
 part 'model/primary_image.dart';
 part 'model/profile.dart';
 part 'model/profile_link.dart';
@@ -101,6 +105,8 @@ part 'model/software_info.dart';
 part 'model/software_options.dart';
 part 'model/system_info.dart';
 part 'model/system_info_list.dart';
+part 'model/time_granularity.dart';
+part 'model/unix_time.dart';
 part 'model/update_message_view_status.dart';
 
 

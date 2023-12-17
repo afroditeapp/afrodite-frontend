@@ -11,6 +11,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**getBackendConfig**](CommonAdminApi.md#getbackendconfig) | **GET** /common_api/backend_config | Get dynamic backend config.
 [**getLatestBuildInfo**](CommonAdminApi.md#getlatestbuildinfo) | **GET** /common_api/get_latest_build_info | Get latest software build information available for update from manager
+[**getPerfData**](CommonAdminApi.md#getperfdata) | **GET** /common_api/perf_data | Get performance data
 [**getSoftwareInfo**](CommonAdminApi.md#getsoftwareinfo) | **GET** /common_api/software_info | Get software version information from manager instance.
 [**getSystemInfo**](CommonAdminApi.md#getsysteminfo) | **GET** /common_api/system_info | Get system information from manager instance.
 [**postBackendConfig**](CommonAdminApi.md#postbackendconfig) | **POST** /common_api/backend_config | Save dynamic backend config.
@@ -97,6 +98,55 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**BuildInfo**](BuildInfo.md)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getPerfData**
+> PerfHistoryQueryResult getPerfData(startTime, endTime)
+
+Get performance data
+
+Get performance data  # Capabilities Requires admin_server_maintenance_view_info.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = CommonAdminApi();
+final startTime = ; // UnixTime | Start time for query results.
+final endTime = ; // UnixTime | End time for query results.
+
+try {
+    final result = api_instance.getPerfData(startTime, endTime);
+    print(result);
+} catch (e) {
+    print('Exception when calling CommonAdminApi->getPerfData: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **startTime** | [**UnixTime**](.md)| Start time for query results. | [optional] 
+ **endTime** | [**UnixTime**](.md)| End time for query results. | [optional] 
+
+### Return type
+
+[**PerfHistoryQueryResult**](PerfHistoryQueryResult.md)
 
 ### Authorization
 

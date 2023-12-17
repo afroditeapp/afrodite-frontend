@@ -18,6 +18,7 @@ import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
 import 'package:pihka_frontend/ui/normal/chat/debug_page.dart';
 import 'package:pihka_frontend/ui/normal/profiles/filter_profiles.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
+import 'package:pihka_frontend/ui/normal/settings/admin/view_perf_data.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 

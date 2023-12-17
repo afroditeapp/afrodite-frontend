@@ -20,7 +20,7 @@ Method | HTTP request | Description
 [**getSentLikes**](ChatApi.md#getsentlikes) | **GET** /chat_api/sent_likes | Get sent likes.
 [**postBlockProfile**](ChatApi.md#postblockprofile) | **POST** /chat_api/block_profile | Block profile
 [**postMessageNumberOfLatestViewedMessage**](ChatApi.md#postmessagenumberoflatestviewedmessage) | **POST** /chat_api/message_number_of_latest_viewed_message | Update message number of the most recent message that the recipient has viewed.
-[**postSendLike**](ChatApi.md#postsendlike) | **POST** /chat_api/send_like | Send a like to some account.
+[**postSendLike**](ChatApi.md#postsendlike) | **POST** /chat_api/send_like | Send a like to some account. If both will like each other, then
 [**postSendMessage**](ChatApi.md#postsendmessage) | **POST** /chat_api/send_message | Send message to a match
 [**postUnblockProfile**](ChatApi.md#postunblockprofile) | **POST** /chat_api/unblock_profile | Unblock profile
 
@@ -517,9 +517,9 @@ void (empty response body)
 # **postSendLike**
 > postSendLike(accountId)
 
-Send a like to some account.
+Send a like to some account. If both will like each other, then
 
-Send a like to some account.
+Send a like to some account. If both will like each other, then the accounts will be a match.
 
 ### Example
 ```dart

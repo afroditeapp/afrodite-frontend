@@ -552,9 +552,9 @@ class ChatApi {
     }
   }
 
-  /// Send a like to some account.
+  /// Send a like to some account. If both will like each other, then
   ///
-  /// Send a like to some account.
+  /// Send a like to some account. If both will like each other, then the accounts will be a match.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -586,9 +586,9 @@ class ChatApi {
     );
   }
 
-  /// Send a like to some account.
+  /// Send a like to some account. If both will like each other, then
   ///
-  /// Send a like to some account.
+  /// Send a like to some account. If both will like each other, then the accounts will be a match.
   ///
   /// Parameters:
   ///

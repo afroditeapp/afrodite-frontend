@@ -86,13 +86,14 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**getSentLikes**](doc//ChatApi.md#getsentlikes) | **GET** /chat_api/sent_likes | Get sent likes.
 *ChatApi* | [**postBlockProfile**](doc//ChatApi.md#postblockprofile) | **POST** /chat_api/block_profile | Block profile
 *ChatApi* | [**postMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#postmessagenumberoflatestviewedmessage) | **POST** /chat_api/message_number_of_latest_viewed_message | Update message number of the most recent message that the recipient has viewed.
-*ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /chat_api/send_like | Send a like to some account.
+*ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /chat_api/send_like | Send a like to some account. If both will like each other, then
 *ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /chat_api/send_message | Send message to a match
 *ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /chat_api/unblock_profile | Unblock profile
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens.
 *CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
 *CommonAdminApi* | [**getBackendConfig**](doc//CommonAdminApi.md#getbackendconfig) | **GET** /common_api/backend_config | Get dynamic backend config.
 *CommonAdminApi* | [**getLatestBuildInfo**](doc//CommonAdminApi.md#getlatestbuildinfo) | **GET** /common_api/get_latest_build_info | Get latest software build information available for update from manager
+*CommonAdminApi* | [**getPerfData**](doc//CommonAdminApi.md#getperfdata) | **GET** /common_api/perf_data | Get performance data
 *CommonAdminApi* | [**getSoftwareInfo**](doc//CommonAdminApi.md#getsoftwareinfo) | **GET** /common_api/software_info | Get software version information from manager instance.
 *CommonAdminApi* | [**getSystemInfo**](doc//CommonAdminApi.md#getsysteminfo) | **GET** /common_api/system_info | Get system information from manager instance.
 *CommonAdminApi* | [**postBackendConfig**](doc//CommonAdminApi.md#postbackendconfig) | **POST** /common_api/backend_config | Save dynamic backend config.
@@ -170,6 +171,10 @@ Class | Method | HTTP request | Description
  - [PendingMessageDeleteList](doc//PendingMessageDeleteList.md)
  - [PendingMessageId](doc//PendingMessageId.md)
  - [PendingMessagesPage](doc//PendingMessagesPage.md)
+ - [PerfHistoryQuery](doc//PerfHistoryQuery.md)
+ - [PerfHistoryQueryResult](doc//PerfHistoryQueryResult.md)
+ - [PerfHistoryValue](doc//PerfHistoryValue.md)
+ - [PerfValueArea](doc//PerfValueArea.md)
  - [PrimaryImage](doc//PrimaryImage.md)
  - [Profile](doc//Profile.md)
  - [ProfileLink](doc//ProfileLink.md)
@@ -191,6 +196,8 @@ Class | Method | HTTP request | Description
  - [SoftwareOptions](doc//SoftwareOptions.md)
  - [SystemInfo](doc//SystemInfo.md)
  - [SystemInfoList](doc//SystemInfoList.md)
+ - [TimeGranularity](doc//TimeGranularity.md)
+ - [UnixTime](doc//UnixTime.md)
  - [UpdateMessageViewStatus](doc//UpdateMessageViewStatus.md)
 
 

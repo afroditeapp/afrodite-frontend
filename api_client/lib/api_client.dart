@@ -265,6 +265,14 @@ class ApiClient {
           return PendingMessageId.fromJson(value);
         case 'PendingMessagesPage':
           return PendingMessagesPage.fromJson(value);
+        case 'PerfHistoryQuery':
+          return PerfHistoryQuery.fromJson(value);
+        case 'PerfHistoryQueryResult':
+          return PerfHistoryQueryResult.fromJson(value);
+        case 'PerfHistoryValue':
+          return PerfHistoryValue.fromJson(value);
+        case 'PerfValueArea':
+          return PerfValueArea.fromJson(value);
         case 'PrimaryImage':
           return PrimaryImage.fromJson(value);
         case 'Profile':
@@ -307,6 +315,10 @@ class ApiClient {
           return SystemInfo.fromJson(value);
         case 'SystemInfoList':
           return SystemInfoList.fromJson(value);
+        case 'TimeGranularity':
+          return TimeGranularityTypeTransformer().decode(value);
+        case 'UnixTime':
+          return UnixTime.fromJson(value);
         case 'UpdateMessageViewStatus':
           return UpdateMessageViewStatus.fromJson(value);
         default:

@@ -79,6 +79,8 @@ dependencies:
 
   url_launcher: ^6.1.14
 
+  fl_chart: ^0.65.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
