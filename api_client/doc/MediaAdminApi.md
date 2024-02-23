@@ -9,60 +9,12 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getSecurityImageInfo**](MediaAdminApi.md#getsecurityimageinfo) | **GET** /media_api/security_image_info/{account_id} | Get current security image for selected profile. Only for admins.
 [**patchModerationRequestList**](MediaAdminApi.md#patchmoderationrequestlist) | **PATCH** /media_api/admin/moderation/page/next | Get current list of moderation requests in my moderation queue.
 [**postHandleModerationRequest**](MediaAdminApi.md#posthandlemoderationrequest) | **POST** /media_api/admin/moderation/handle_request/{account_id} | Handle moderation request of some account.
 
 
-# **getSecurityImageInfo**
-> SecurityImage getSecurityImageInfo(accountId)
-
-Get current security image for selected profile. Only for admins.
-
-Get current security image for selected profile. Only for admins.
-
-### Example
-```dart
-import 'package:openapi/api.dart';
-// TODO Configure API key authorization: access_token
-//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
-// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
-
-final api_instance = MediaAdminApi();
-final accountId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
-
-try {
-    final result = api_instance.getSecurityImageInfo(accountId);
-    print(result);
-} catch (e) {
-    print('Exception when calling MediaAdminApi->getSecurityImageInfo: $e\n');
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **accountId** | **String**|  | 
-
-### Return type
-
-[**SecurityImage**](SecurityImage.md)
-
-### Authorization
-
-[access_token](../README.md#access_token)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 # **patchModerationRequestList**
-> ModerationList patchModerationRequestList()
+> ModerationList patchModerationRequestList(queue)
 
 Get current list of moderation requests in my moderation queue.
 
@@ -77,9 +29,10 @@ import 'package:openapi/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
 
 final api_instance = MediaAdminApi();
+final queue = ; // ModerationQueueType | 
 
 try {
-    final result = api_instance.patchModerationRequestList();
+    final result = api_instance.patchModerationRequestList(queue);
     print(result);
 } catch (e) {
     print('Exception when calling MediaAdminApi->patchModerationRequestList: $e\n');
@@ -87,7 +40,10 @@ try {
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **queue** | [**ModerationQueueType**](.md)|  | 
 
 ### Return type
 

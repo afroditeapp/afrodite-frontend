@@ -10,40 +10,36 @@
 
 part of openapi.api;
 
-class SecurityImage {
-  /// Returns a new [SecurityImage] instance.
-  SecurityImage({
-    this.contentId,
+class SyncVersion {
+  /// Returns a new [SyncVersion] instance.
+  SyncVersion({
+    required this.version,
   });
 
-  ContentId? contentId;
+  int version;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is SecurityImage &&
-     other.contentId == contentId;
+  bool operator ==(Object other) => identical(this, other) || other is SyncVersion &&
+     other.version == version;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (contentId == null ? 0 : contentId!.hashCode);
+    (version.hashCode);
 
   @override
-  String toString() => 'SecurityImage[contentId=$contentId]';
+  String toString() => 'SyncVersion[version=$version]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.contentId != null) {
-      json[r'content_id'] = this.contentId;
-    } else {
-      json[r'content_id'] = null;
-    }
+      json[r'version'] = this.version;
     return json;
   }
 
-  /// Returns a new [SecurityImage] instance and imports its values from
+  /// Returns a new [SyncVersion] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static SecurityImage? fromJson(dynamic value) {
+  static SyncVersion? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -52,24 +48,24 @@ class SecurityImage {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "SecurityImage[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SecurityImage[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "SyncVersion[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "SyncVersion[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return SecurityImage(
-        contentId: ContentId.fromJson(json[r'content_id']),
+      return SyncVersion(
+        version: mapValueOfType<int>(json, r'version')!,
       );
     }
     return null;
   }
 
-  static List<SecurityImage>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <SecurityImage>[];
+  static List<SyncVersion>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <SyncVersion>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = SecurityImage.fromJson(row);
+        final value = SyncVersion.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -78,12 +74,12 @@ class SecurityImage {
     return result.toList(growable: growable);
   }
 
-  static Map<String, SecurityImage> mapFromJson(dynamic json) {
-    final map = <String, SecurityImage>{};
+  static Map<String, SyncVersion> mapFromJson(dynamic json) {
+    final map = <String, SyncVersion>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = SecurityImage.fromJson(entry.value);
+        final value = SyncVersion.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -92,13 +88,13 @@ class SecurityImage {
     return map;
   }
 
-  // maps a json object with a list of SecurityImage-objects as value to a dart map
-  static Map<String, List<SecurityImage>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<SecurityImage>>{};
+  // maps a json object with a list of SyncVersion-objects as value to a dart map
+  static Map<String, List<SyncVersion>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<SyncVersion>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = SecurityImage.listFromJson(entry.value, growable: growable,);
+        final value = SyncVersion.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -109,6 +105,7 @@ class SecurityImage {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'version',
   };
 }
 

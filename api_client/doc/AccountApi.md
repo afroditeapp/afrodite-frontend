@@ -21,7 +21,7 @@ Method | HTTP request | Description
 [**postLogin**](AccountApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken.
 [**postRegister**](AccountApi.md#postregister) | **POST** /account_api/register | Register new account. Returns new account ID which is UUID.
 [**postSignInWithLogin**](AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google. Creates new account if
-[**putSettingProfileVisiblity**](AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update profile visiblity value.
+[**putSettingProfileVisiblity**](AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update current or pending profile visiblity value.
 
 
 # **deleteCancelDeletion**
@@ -335,7 +335,7 @@ void (empty response body)
 
 Complete initial setup.
 
-Complete initial setup.  Request to this handler will complete if client is in `initial setup`, setup information is set and image moderation request has been made. 
+Complete initial setup.  Requirements: - Account must be in `InitialSetup` state. - Account must have a valid AccountSetup info set. - Account must have a moderation request. - The current or pending security image of the account is in the request. - The current or pending first profile image of the account is in the request. 
 
 ### Example
 ```dart
@@ -542,9 +542,9 @@ No authorization required
 # **putSettingProfileVisiblity**
 > putSettingProfileVisiblity(booleanSetting)
 
-Update profile visiblity value.
+Update current or pending profile visiblity value.
 
-Update profile visiblity value.  This will check that the first image moderation request has been moderated before this turns the profile public.  Sets capablity `view_public_profiles` on or off depending on the value.
+Update current or pending profile visiblity value.  Requirements: - Account state must be `Normal`.
 
 ### Example
 ```dart

@@ -16,18 +16,112 @@ class MediaApi {
 
   final ApiClient apiClient;
 
-  /// Get list of all normal images on the server for one account.
+  /// Delete content data. Content can be removed after specific time has passed
   ///
-  /// Get list of all normal images on the server for one account.
+  /// Delete content data. Content can be removed after specific time has passed since removing all usage from it (content is not a security image or profile content).
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
   /// * [String] accountId (required):
-  Future<Response> getAllNormalImagesWithHttpInfo(String accountId,) async {
+  ///
+  /// * [String] contentId (required):
+  Future<Response> deleteContentWithHttpInfo(String accountId, String contentId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/all_normal_images/{account_id}'
+    final path = r'/media_api/content/{account_id}/{content_id}'
+      .replaceAll('{account_id}', accountId)
+      .replaceAll('{content_id}', contentId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'DELETE',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Delete content data. Content can be removed after specific time has passed
+  ///
+  /// Delete content data. Content can be removed after specific time has passed since removing all usage from it (content is not a security image or profile content).
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  ///
+  /// * [String] contentId (required):
+  Future<void> deleteContent(String accountId, String contentId,) async {
+    final response = await deleteContentWithHttpInfo(accountId, contentId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Delete pending security content for current account.
+  ///
+  /// Delete pending security content for current account. Server will not change the security content when next moderation request is moderated as accepted.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> deletePendingSecurityContentInfoWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/pending_security_content_info';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'DELETE',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Delete pending security content for current account.
+  ///
+  /// Delete pending security content for current account. Server will not change the security content when next moderation request is moderated as accepted.
+  Future<void> deletePendingSecurityContentInfo() async {
+    final response = await deletePendingSecurityContentInfoWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Get list of all media content on the server for one account.
+  ///
+  /// Get list of all media content on the server for one account.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<Response> getAllAccountMediaContentWithHttpInfo(String accountId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/all_account_media_content/{account_id}'
       .replaceAll('{account_id}', accountId);
 
     // ignore: prefer_final_locals
@@ -51,15 +145,15 @@ class MediaApi {
     );
   }
 
-  /// Get list of all normal images on the server for one account.
+  /// Get list of all media content on the server for one account.
   ///
-  /// Get list of all normal images on the server for one account.
+  /// Get list of all media content on the server for one account.
   ///
   /// Parameters:
   ///
   /// * [String] accountId (required):
-  Future<NormalImages?> getAllNormalImages(String accountId,) async {
-    final response = await getAllNormalImagesWithHttpInfo(accountId,);
+  Future<AccountContent?> getAllAccountMediaContent(String accountId,) async {
+    final response = await getAllAccountMediaContentWithHttpInfo(accountId,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -67,15 +161,15 @@ class MediaApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'NormalImages',) as NormalImages;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountContent',) as AccountContent;
     
     }
     return null;
   }
 
-  /// Get profile image
+  /// Get content data
   ///
-  /// Get profile image
+  /// Get content data
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -86,10 +180,10 @@ class MediaApi {
   /// * [String] contentId (required):
   ///
   /// * [bool] isMatch (required):
-  ///   If false image access is allowed when profile is set as public. If true image access is allowed when users are a match.
-  Future<Response> getImageWithHttpInfo(String accountId, String contentId, bool isMatch,) async {
+  ///   If false media content access is allowed when profile is set as public. If true media content access is allowed when users are a match.
+  Future<Response> getContentWithHttpInfo(String accountId, String contentId, bool isMatch,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/image/{account_id}/{content_id}'
+    final path = r'/media_api/content/{account_id}/{content_id}'
       .replaceAll('{account_id}', accountId)
       .replaceAll('{content_id}', contentId);
 
@@ -116,9 +210,9 @@ class MediaApi {
     );
   }
 
-  /// Get profile image
+  /// Get content data
   ///
-  /// Get profile image
+  /// Get content data
   ///
   /// Parameters:
   ///
@@ -127,9 +221,9 @@ class MediaApi {
   /// * [String] contentId (required):
   ///
   /// * [bool] isMatch (required):
-  ///   If false image access is allowed when profile is set as public. If true image access is allowed when users are a match.
-  Future<MultipartFile?> getImage(String accountId, String contentId, bool isMatch,) async {
-    final response = await getImageWithHttpInfo(accountId, contentId, isMatch,);
+  ///   If false media content access is allowed when profile is set as public. If true media content access is allowed when users are a match.
+  Future<MultipartFile?> getContent(String accountId, String contentId, bool isMatch,) async {
+    final response = await getContentWithHttpInfo(accountId, contentId, isMatch,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -138,6 +232,63 @@ class MediaApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MultipartFile',) as MultipartFile;
+    
+    }
+    return null;
+  }
+
+  /// Get state of content slot.
+  ///
+  /// Get state of content slot.  Slots from 0 to 6 are available. 
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [int] slotId (required):
+  Future<Response> getContentSlotStateWithHttpInfo(int slotId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/content_slot/{slot_id}'
+      .replaceAll('{slot_id}', slotId.toString());
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get state of content slot.
+  ///
+  /// Get state of content slot.  Slots from 0 to 6 are available. 
+  ///
+  /// Parameters:
+  ///
+  /// * [int] slotId (required):
+  Future<ContentProcessingState?> getContentSlotState(int slotId,) async {
+    final response = await getContentSlotStateWithHttpInfo(slotId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ContentProcessingState',) as ContentProcessingState;
     
     }
     return null;
@@ -258,9 +409,123 @@ class MediaApi {
     return null;
   }
 
-  /// Get current public image for selected profile
+  /// Get pending profile content for selected profile
   ///
-  /// Get current public image for selected profile
+  /// Get pending profile content for selected profile
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<Response> getPendingProfileContentInfoWithHttpInfo(String accountId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/pending_profile_content_info/{account_id}'
+      .replaceAll('{account_id}', accountId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get pending profile content for selected profile
+  ///
+  /// Get pending profile content for selected profile
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<PendingProfileContent?> getPendingProfileContentInfo(String accountId,) async {
+    final response = await getPendingProfileContentInfoWithHttpInfo(accountId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingProfileContent',) as PendingProfileContent;
+    
+    }
+    return null;
+  }
+
+  /// Get pending security content for selected profile.
+  ///
+  /// Get pending security content for selected profile.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<Response> getPendingSecurityContentInfoWithHttpInfo(String accountId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/pending_security_content_info/{account_id}'
+      .replaceAll('{account_id}', accountId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get pending security content for selected profile.
+  ///
+  /// Get pending security content for selected profile.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<PendingSecurityContent?> getPendingSecurityContentInfo(String accountId,) async {
+    final response = await getPendingSecurityContentInfoWithHttpInfo(accountId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingSecurityContent',) as PendingSecurityContent;
+    
+    }
+    return null;
+  }
+
+  /// Get current profile content for selected profile
+  ///
+  /// Get current profile content for selected profile
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -269,10 +534,10 @@ class MediaApi {
   /// * [String] accountId (required):
   ///
   /// * [bool] isMatch (required):
-  ///   If false image access is allowed when profile is set as public. If true image access is allowed when users are a match.
-  Future<Response> getPrimaryImageInfoWithHttpInfo(String accountId, bool isMatch,) async {
+  ///   If false media content access is allowed when profile is set as public. If true media content access is allowed when users are a match.
+  Future<Response> getProfileContentInfoWithHttpInfo(String accountId, bool isMatch,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/primary_image_info/{account_id}'
+    final path = r'/media_api/profile_content_info/{account_id}'
       .replaceAll('{account_id}', accountId);
 
     // ignore: prefer_final_locals
@@ -298,18 +563,18 @@ class MediaApi {
     );
   }
 
-  /// Get current public image for selected profile
+  /// Get current profile content for selected profile
   ///
-  /// Get current public image for selected profile
+  /// Get current profile content for selected profile
   ///
   /// Parameters:
   ///
   /// * [String] accountId (required):
   ///
   /// * [bool] isMatch (required):
-  ///   If false image access is allowed when profile is set as public. If true image access is allowed when users are a match.
-  Future<PrimaryImage?> getPrimaryImageInfo(String accountId, bool isMatch,) async {
-    final response = await getPrimaryImageInfoWithHttpInfo(accountId, isMatch,);
+  ///   If false media content access is allowed when profile is set as public. If true media content access is allowed when users are a match.
+  Future<ProfileContent?> getProfileContentInfo(String accountId, bool isMatch,) async {
+    final response = await getProfileContentInfoWithHttpInfo(accountId, isMatch,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -317,15 +582,72 @@ class MediaApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PrimaryImage',) as PrimaryImage;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileContent',) as ProfileContent;
     
     }
     return null;
   }
 
-  /// Set image to moderation request slot.
+  /// Get current security content for selected profile.
   ///
-  /// Set image to moderation request slot.  Slots from 0 to 2 are available.  TODO: resize and check images at some point 
+  /// Get current security content for selected profile.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<Response> getSecurityContentInfoWithHttpInfo(String accountId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/security_content_info/{account_id}'
+      .replaceAll('{account_id}', accountId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get current security content for selected profile.
+  ///
+  /// Get current security content for selected profile.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<SecurityContent?> getSecurityContentInfo(String accountId,) async {
+    final response = await getSecurityContentInfoWithHttpInfo(accountId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SecurityContent',) as SecurityContent;
+    
+    }
+    return null;
+  }
+
+  /// Set content to content processing slot.
+  ///
+  /// Set content to content processing slot. Processing ID will be returned and processing of the content will begin. Events about the content processing will be sent to the client.  The state of the processing can be also queired. The querying is required to receive the content ID.  Slots from 0 to 6 are available.  One account can only have one content in upload or processing state. New upload might potentially delete the previous if processing of it is not complete. 
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -333,10 +655,15 @@ class MediaApi {
   ///
   /// * [int] slotId (required):
   ///
+  /// * [bool] secureCapture (required):
+  ///   Client captured this content.
+  ///
+  /// * [MediaContentType] contentType (required):
+  ///
   /// * [MultipartFile] body (required):
-  Future<Response> putImageToModerationSlotWithHttpInfo(int slotId, MultipartFile body,) async {
+  Future<Response> putContentToContentSlotWithHttpInfo(int slotId, bool secureCapture, MediaContentType contentType, MultipartFile body,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/moderation/request/slot/{slot_id}'
+    final path = r'/media_api/content_slot/{slot_id}'
       .replaceAll('{slot_id}', slotId.toString());
 
     // ignore: prefer_final_locals
@@ -345,6 +672,9 @@ class MediaApi {
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'secure_capture', secureCapture));
+      queryParams.addAll(_queryParams('', 'content_type', contentType));
 
     const contentTypes = <String>['image/jpeg'];
 
@@ -360,17 +690,22 @@ class MediaApi {
     );
   }
 
-  /// Set image to moderation request slot.
+  /// Set content to content processing slot.
   ///
-  /// Set image to moderation request slot.  Slots from 0 to 2 are available.  TODO: resize and check images at some point 
+  /// Set content to content processing slot. Processing ID will be returned and processing of the content will begin. Events about the content processing will be sent to the client.  The state of the processing can be also queired. The querying is required to receive the content ID.  Slots from 0 to 6 are available.  One account can only have one content in upload or processing state. New upload might potentially delete the previous if processing of it is not complete. 
   ///
   /// Parameters:
   ///
   /// * [int] slotId (required):
   ///
+  /// * [bool] secureCapture (required):
+  ///   Client captured this content.
+  ///
+  /// * [MediaContentType] contentType (required):
+  ///
   /// * [MultipartFile] body (required):
-  Future<ContentId?> putImageToModerationSlot(int slotId, MultipartFile body,) async {
-    final response = await putImageToModerationSlotWithHttpInfo(slotId, body,);
+  Future<ContentProcessingId?> putContentToContentSlot(int slotId, bool secureCapture, MediaContentType contentType, MultipartFile body,) async {
+    final response = await putContentToContentSlotWithHttpInfo(slotId, secureCapture, contentType, body,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -378,7 +713,7 @@ class MediaApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ContentId',) as ContentId;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ContentProcessingId',) as ContentProcessingId;
     
     }
     return null;
@@ -432,21 +767,21 @@ class MediaApi {
     }
   }
 
-  /// Set primary image for account. Image content ID can not be empty.
+  /// Set new pending profile content for current account.
   ///
-  /// Set primary image for account. Image content ID can not be empty.
+  /// Set new pending profile content for current account. Server will switch to pending content when next moderation request is accepted.  # Restrictions - All content must not be moderated as denied. - All content must be owned by the account. - All content must be images.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [PrimaryImage] primaryImage (required):
-  Future<Response> putPrimaryImageWithHttpInfo(PrimaryImage primaryImage,) async {
+  /// * [SetProfileContent] setProfileContent (required):
+  Future<Response> putPendingProfileContentWithHttpInfo(SetProfileContent setProfileContent,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/primary_image';
+    final path = r'/media_api/pending_profile_content';
 
     // ignore: prefer_final_locals
-    Object? postBody = primaryImage;
+    Object? postBody = setProfileContent;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -466,15 +801,159 @@ class MediaApi {
     );
   }
 
-  /// Set primary image for account. Image content ID can not be empty.
+  /// Set new pending profile content for current account.
   ///
-  /// Set primary image for account. Image content ID can not be empty.
+  /// Set new pending profile content for current account. Server will switch to pending content when next moderation request is accepted.  # Restrictions - All content must not be moderated as denied. - All content must be owned by the account. - All content must be images.
   ///
   /// Parameters:
   ///
-  /// * [PrimaryImage] primaryImage (required):
-  Future<void> putPrimaryImage(PrimaryImage primaryImage,) async {
-    final response = await putPrimaryImageWithHttpInfo(primaryImage,);
+  /// * [SetProfileContent] setProfileContent (required):
+  Future<void> putPendingProfileContent(SetProfileContent setProfileContent,) async {
+    final response = await putPendingProfileContentWithHttpInfo(setProfileContent,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Set pending security content for current account.
+  ///
+  /// Set pending security content for current account.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [ContentId] contentId (required):
+  Future<Response> putPendingSecurityContentInfoWithHttpInfo(ContentId contentId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/pending_security_content_info';
+
+    // ignore: prefer_final_locals
+    Object? postBody = contentId;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'PUT',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Set pending security content for current account.
+  ///
+  /// Set pending security content for current account.
+  ///
+  /// Parameters:
+  ///
+  /// * [ContentId] contentId (required):
+  Future<void> putPendingSecurityContentInfo(ContentId contentId,) async {
+    final response = await putPendingSecurityContentInfoWithHttpInfo(contentId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Set new profile content for current account.
+  ///
+  /// Set new profile content for current account.  # Restrictions - All content must be moderated as accepted. - All content must be owned by the account. - All content must be images.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [SetProfileContent] setProfileContent (required):
+  Future<Response> putProfileContentWithHttpInfo(SetProfileContent setProfileContent,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/profile_content';
+
+    // ignore: prefer_final_locals
+    Object? postBody = setProfileContent;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'PUT',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Set new profile content for current account.
+  ///
+  /// Set new profile content for current account.  # Restrictions - All content must be moderated as accepted. - All content must be owned by the account. - All content must be images.
+  ///
+  /// Parameters:
+  ///
+  /// * [SetProfileContent] setProfileContent (required):
+  Future<void> putProfileContent(SetProfileContent setProfileContent,) async {
+    final response = await putProfileContentWithHttpInfo(setProfileContent,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Set current security content content for current account.
+  ///
+  /// Set current security content content for current account.  # Restrictions - The content must be moderated as accepted. - The content must be owned by the account. - The content must be an image. - The content must be captured by client.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [ContentId] contentId (required):
+  Future<Response> putSecurityContentInfoWithHttpInfo(ContentId contentId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/security_content_info';
+
+    // ignore: prefer_final_locals
+    Object? postBody = contentId;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'PUT',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Set current security content content for current account.
+  ///
+  /// Set current security content content for current account.  # Restrictions - The content must be moderated as accepted. - The content must be owned by the account. - The content must be an image. - The content must be captured by client.
+  ///
+  /// Parameters:
+  ///
+  /// * [ContentId] contentId (required):
+  Future<void> putSecurityContentInfo(ContentId contentId,) async {
+    final response = await putSecurityContentInfoWithHttpInfo(contentId,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

@@ -14,31 +14,25 @@ class AccountSetup {
   /// Returns a new [AccountSetup] instance.
   AccountSetup({
     required this.birthdate,
-    required this.name,
   });
 
   String birthdate;
 
-  String name;
-
   @override
   bool operator ==(Object other) => identical(this, other) || other is AccountSetup &&
-     other.birthdate == birthdate &&
-     other.name == name;
+     other.birthdate == birthdate;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (birthdate.hashCode) +
-    (name.hashCode);
+    (birthdate.hashCode);
 
   @override
-  String toString() => 'AccountSetup[birthdate=$birthdate, name=$name]';
+  String toString() => 'AccountSetup[birthdate=$birthdate]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'birthdate'] = this.birthdate;
-      json[r'name'] = this.name;
     return json;
   }
 
@@ -62,7 +56,6 @@ class AccountSetup {
 
       return AccountSetup(
         birthdate: mapValueOfType<String>(json, r'birthdate')!,
-        name: mapValueOfType<String>(json, r'name')!,
       );
     }
     return null;
@@ -113,7 +106,6 @@ class AccountSetup {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'birthdate',
-    'name',
   };
 }
 

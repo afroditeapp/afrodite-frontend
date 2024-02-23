@@ -185,6 +185,8 @@ class ApiClient {
           return AccessToken.fromJson(value);
         case 'Account':
           return Account.fromJson(value);
+        case 'AccountContent':
+          return AccountContent.fromJson(value);
         case 'AccountData':
           return AccountData.fromJson(value);
         case 'AccountId':
@@ -193,6 +195,8 @@ class ApiClient {
           return AccountSetup.fromJson(value);
         case 'AccountState':
           return AccountStateTypeTransformer().decode(value);
+        case 'AccountSyncVersion':
+          return AccountSyncVersion.fromJson(value);
         case 'AuthPair':
           return AuthPair.fromJson(value);
         case 'BackendConfig':
@@ -209,8 +213,26 @@ class ApiClient {
           return Capabilities.fromJson(value);
         case 'CommandOutput':
           return CommandOutput.fromJson(value);
+        case 'ContentAccessCheck':
+          return ContentAccessCheck.fromJson(value);
         case 'ContentId':
           return ContentId.fromJson(value);
+        case 'ContentInfo':
+          return ContentInfo.fromJson(value);
+        case 'ContentInfoDetailed':
+          return ContentInfoDetailed.fromJson(value);
+        case 'ContentProcessingId':
+          return ContentProcessingId.fromJson(value);
+        case 'ContentProcessingState':
+          return ContentProcessingState.fromJson(value);
+        case 'ContentProcessingStateChanged':
+          return ContentProcessingStateChanged.fromJson(value);
+        case 'ContentProcessingStateType':
+          return ContentProcessingStateTypeTypeTransformer().decode(value);
+        case 'ContentSlot':
+          return ContentSlotTypeTransformer().decode(value);
+        case 'ContentState':
+          return ContentStateTypeTransformer().decode(value);
         case 'DeleteStatus':
           return DeleteStatus.fromJson(value);
         case 'DownloadType':
@@ -225,8 +247,6 @@ class ApiClient {
           return FavoriteProfilesPage.fromJson(value);
         case 'HandleModerationRequest':
           return HandleModerationRequest.fromJson(value);
-        case 'ImageAccessCheck':
-          return ImageAccessCheck.fromJson(value);
         case 'LatestViewedMessageChanged':
           return LatestViewedMessageChanged.fromJson(value);
         case 'Location':
@@ -241,12 +261,20 @@ class ApiClient {
           return MapTileZ.fromJson(value);
         case 'MatchesPage':
           return MatchesPage.fromJson(value);
+        case 'MatchesSyncVersion':
+          return MatchesSyncVersion.fromJson(value);
+        case 'MediaContentType':
+          return MediaContentTypeTypeTransformer().decode(value);
         case 'MessageNumber':
           return MessageNumber.fromJson(value);
         case 'Moderation':
           return Moderation.fromJson(value);
         case 'ModerationList':
           return ModerationList.fromJson(value);
+        case 'ModerationQueueType':
+          return ModerationQueueTypeTypeTransformer().decode(value);
+        case 'ModerationQueueTypeParam':
+          return ModerationQueueTypeParam.fromJson(value);
         case 'ModerationRequest':
           return ModerationRequest.fromJson(value);
         case 'ModerationRequestContent':
@@ -255,8 +283,8 @@ class ApiClient {
           return ModerationRequestId.fromJson(value);
         case 'ModerationRequestState':
           return ModerationRequestStateTypeTransformer().decode(value);
-        case 'NormalImages':
-          return NormalImages.fromJson(value);
+        case 'NewContentParams':
+          return NewContentParams.fromJson(value);
         case 'PendingMessage':
           return PendingMessage.fromJson(value);
         case 'PendingMessageDeleteList':
@@ -265,6 +293,10 @@ class ApiClient {
           return PendingMessageId.fromJson(value);
         case 'PendingMessagesPage':
           return PendingMessagesPage.fromJson(value);
+        case 'PendingProfileContent':
+          return PendingProfileContent.fromJson(value);
+        case 'PendingSecurityContent':
+          return PendingSecurityContent.fromJson(value);
         case 'PerfHistoryQuery':
           return PerfHistoryQuery.fromJson(value);
         case 'PerfHistoryQueryResult':
@@ -273,10 +305,10 @@ class ApiClient {
           return PerfHistoryValue.fromJson(value);
         case 'PerfValueArea':
           return PerfValueArea.fromJson(value);
-        case 'PrimaryImage':
-          return PrimaryImage.fromJson(value);
         case 'Profile':
           return Profile.fromJson(value);
+        case 'ProfileContent':
+          return ProfileContent.fromJson(value);
         case 'ProfileLink':
           return ProfileLink.fromJson(value);
         case 'ProfilePage':
@@ -285,24 +317,36 @@ class ApiClient {
           return ProfileUpdate.fromJson(value);
         case 'ProfileVersion':
           return ProfileVersion.fromJson(value);
+        case 'ProfileVisibility':
+          return ProfileVisibilityTypeTransformer().decode(value);
         case 'RebootQueryParam':
           return RebootQueryParam.fromJson(value);
         case 'ReceivedBlocksPage':
           return ReceivedBlocksPage.fromJson(value);
+        case 'ReceivedBlocksSyncVersion':
+          return ReceivedBlocksSyncVersion.fromJson(value);
         case 'ReceivedLikesPage':
           return ReceivedLikesPage.fromJson(value);
+        case 'ReceivedLikesSyncVersion':
+          return ReceivedLikesSyncVersion.fromJson(value);
         case 'RefreshToken':
           return RefreshToken.fromJson(value);
         case 'ResetDataQueryParam':
           return ResetDataQueryParam.fromJson(value);
-        case 'SecurityImage':
-          return SecurityImage.fromJson(value);
+        case 'SecurityContent':
+          return SecurityContent.fromJson(value);
         case 'SendMessageToAccount':
           return SendMessageToAccount.fromJson(value);
         case 'SentBlocksPage':
           return SentBlocksPage.fromJson(value);
+        case 'SentBlocksSyncVersion':
+          return SentBlocksSyncVersion.fromJson(value);
         case 'SentLikesPage':
           return SentLikesPage.fromJson(value);
+        case 'SentLikesSyncVersion':
+          return SentLikesSyncVersion.fromJson(value);
+        case 'SetProfileContent':
+          return SetProfileContent.fromJson(value);
         case 'SignInWithLoginInfo':
           return SignInWithLoginInfo.fromJson(value);
         case 'SlotId':
@@ -311,6 +355,8 @@ class ApiClient {
           return SoftwareInfo.fromJson(value);
         case 'SoftwareOptions':
           return SoftwareOptionsTypeTransformer().decode(value);
+        case 'SyncVersion':
+          return SyncVersion.fromJson(value);
         case 'SystemInfo':
           return SystemInfo.fromJson(value);
         case 'SystemInfoList':

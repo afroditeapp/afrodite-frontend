@@ -7,17 +7,17 @@ import 'dart:typed_data';
 import 'package:openapi/api.dart';
 
 extension MediaManualAdditions on MediaApi {
-  /// Get profile image
+  /// Get content
   ///
-  /// Get profile image
+  /// Get content
   ///
   /// Parameters:
   ///
   /// * [String] accountId (required):
   ///
   /// * [String] contentId (required):
-  Future<Uint8List?> getImageFixed(String accountId, String contentId, bool isMatch) async {
-    final response = await getImageWithHttpInfo(accountId, contentId, isMatch);
+  Future<Uint8List?> getContentFixed(String accountId, String contentId, bool isMatch) async {
+    final response = await getContentWithHttpInfo(accountId, contentId, isMatch);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, "Image loading failed");
     }

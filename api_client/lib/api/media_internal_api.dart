@@ -16,9 +16,9 @@ class MediaInternalApi {
 
   final ApiClient apiClient;
 
-  /// Check that current moderation request for account exists. Requires also
+  /// Check that media server has correct state for completing initial setup.
   ///
-  /// Check that current moderation request for account exists. Requires also that request contains camera image. 
+  /// Check that media server has correct state for completing initial setup. 
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -51,64 +51,15 @@ class MediaInternalApi {
     );
   }
 
-  /// Check that current moderation request for account exists. Requires also
+  /// Check that media server has correct state for completing initial setup.
   ///
-  /// Check that current moderation request for account exists. Requires also that request contains camera image. 
+  /// Check that media server has correct state for completing initial setup. 
   ///
   /// Parameters:
   ///
   /// * [String] accountId (required):
   Future<void> internalGetCheckModerationRequestForAccount(String accountId,) async {
     final response = await internalGetCheckModerationRequestForAccountWithHttpInfo(accountId,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
-  /// Performs an HTTP 'POST /internal/media_api/visiblity/{account_id}/{value}' operation and returns the [Response].
-  /// Parameters:
-  ///
-  /// * [String] accountId (required):
-  ///
-  /// * [bool] value (required):
-  ///
-  /// * [Profile] profile (required):
-  Future<Response> internalPostUpdateProfileImageVisibilityWithHttpInfo(String accountId, bool value, Profile profile,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/internal/media_api/visiblity/{account_id}/{value}'
-      .replaceAll('{account_id}', accountId)
-      .replaceAll('{value}', value.toString());
-
-    // ignore: prefer_final_locals
-    Object? postBody = profile;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Parameters:
-  ///
-  /// * [String] accountId (required):
-  ///
-  /// * [bool] value (required):
-  ///
-  /// * [Profile] profile (required):
-  Future<void> internalPostUpdateProfileImageVisibility(String accountId, bool value, Profile profile,) async {
-    final response = await internalPostUpdateProfileImageVisibilityWithHttpInfo(accountId, value, profile,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

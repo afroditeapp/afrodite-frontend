@@ -22,8 +22,7 @@ class PendingMessage {
 
   String message;
 
-  /// Unix time when server received the message.
-  int unixTime;
+  UnixTime unixTime;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PendingMessage &&
@@ -70,7 +69,7 @@ class PendingMessage {
       return PendingMessage(
         id: PendingMessageId.fromJson(json[r'id'])!,
         message: mapValueOfType<String>(json, r'message')!,
-        unixTime: mapValueOfType<int>(json, r'unix_time')!,
+        unixTime: UnixTime.fromJson(json[r'unix_time'])!,
       );
     }
     return null;

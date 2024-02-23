@@ -10,37 +10,40 @@
 
 part of openapi.api;
 
-class ImageAccessCheck {
-  /// Returns a new [ImageAccessCheck] instance.
-  ImageAccessCheck({
-    required this.isMatch,
+class SecurityContent {
+  /// Returns a new [SecurityContent] instance.
+  SecurityContent({
+    this.contentId,
   });
 
-  /// If false image access is allowed when profile is set as public. If true image access is allowed when users are a match.
-  bool isMatch;
+  ContentInfo? contentId;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ImageAccessCheck &&
-     other.isMatch == isMatch;
+  bool operator ==(Object other) => identical(this, other) || other is SecurityContent &&
+     other.contentId == contentId;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (isMatch.hashCode);
+    (contentId == null ? 0 : contentId!.hashCode);
 
   @override
-  String toString() => 'ImageAccessCheck[isMatch=$isMatch]';
+  String toString() => 'SecurityContent[contentId=$contentId]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'is_match'] = this.isMatch;
+    if (this.contentId != null) {
+      json[r'content_id'] = this.contentId;
+    } else {
+      json[r'content_id'] = null;
+    }
     return json;
   }
 
-  /// Returns a new [ImageAccessCheck] instance and imports its values from
+  /// Returns a new [SecurityContent] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ImageAccessCheck? fromJson(dynamic value) {
+  static SecurityContent? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -49,24 +52,24 @@ class ImageAccessCheck {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ImageAccessCheck[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ImageAccessCheck[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "SecurityContent[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "SecurityContent[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ImageAccessCheck(
-        isMatch: mapValueOfType<bool>(json, r'is_match')!,
+      return SecurityContent(
+        contentId: ContentInfo.fromJson(json[r'content_id']),
       );
     }
     return null;
   }
 
-  static List<ImageAccessCheck>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ImageAccessCheck>[];
+  static List<SecurityContent>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <SecurityContent>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ImageAccessCheck.fromJson(row);
+        final value = SecurityContent.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -75,12 +78,12 @@ class ImageAccessCheck {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ImageAccessCheck> mapFromJson(dynamic json) {
-    final map = <String, ImageAccessCheck>{};
+  static Map<String, SecurityContent> mapFromJson(dynamic json) {
+    final map = <String, SecurityContent>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ImageAccessCheck.fromJson(entry.value);
+        final value = SecurityContent.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -89,13 +92,13 @@ class ImageAccessCheck {
     return map;
   }
 
-  // maps a json object with a list of ImageAccessCheck-objects as value to a dart map
-  static Map<String, List<ImageAccessCheck>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ImageAccessCheck>>{};
+  // maps a json object with a list of SecurityContent-objects as value to a dart map
+  static Map<String, List<SecurityContent>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<SecurityContent>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ImageAccessCheck.listFromJson(entry.value, growable: growable,);
+        final value = SecurityContent.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -106,7 +109,6 @@ class ImageAccessCheck {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'is_match',
   };
 }
 

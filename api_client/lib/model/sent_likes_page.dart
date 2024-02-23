@@ -14,25 +14,31 @@ class SentLikesPage {
   /// Returns a new [SentLikesPage] instance.
   SentLikesPage({
     this.profiles = const [],
+    required this.version,
   });
 
   List<AccountId> profiles;
 
+  SentLikesSyncVersion version;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is SentLikesPage &&
-     other.profiles == profiles;
+     other.profiles == profiles &&
+     other.version == version;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (profiles.hashCode);
+    (profiles.hashCode) +
+    (version.hashCode);
 
   @override
-  String toString() => 'SentLikesPage[profiles=$profiles]';
+  String toString() => 'SentLikesPage[profiles=$profiles, version=$version]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'profiles'] = this.profiles;
+      json[r'version'] = this.version;
     return json;
   }
 
@@ -56,6 +62,7 @@ class SentLikesPage {
 
       return SentLikesPage(
         profiles: AccountId.listFromJson(json[r'profiles'])!,
+        version: SentLikesSyncVersion.fromJson(json[r'version'])!,
       );
     }
     return null;
@@ -106,6 +113,7 @@ class SentLikesPage {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'profiles',
+    'version',
   };
 }
 

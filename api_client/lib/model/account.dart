@@ -15,30 +15,42 @@ class Account {
   Account({
     required this.capabilities,
     required this.state,
+    required this.syncVersion,
+    required this.visibility,
   });
 
   Capabilities capabilities;
 
   AccountState state;
 
+  AccountSyncVersion syncVersion;
+
+  ProfileVisibility visibility;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is Account &&
      other.capabilities == capabilities &&
-     other.state == state;
+     other.state == state &&
+     other.syncVersion == syncVersion &&
+     other.visibility == visibility;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (capabilities.hashCode) +
-    (state.hashCode);
+    (state.hashCode) +
+    (syncVersion.hashCode) +
+    (visibility.hashCode);
 
   @override
-  String toString() => 'Account[capabilities=$capabilities, state=$state]';
+  String toString() => 'Account[capabilities=$capabilities, state=$state, syncVersion=$syncVersion, visibility=$visibility]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'capabilities'] = this.capabilities;
       json[r'state'] = this.state;
+      json[r'sync_version'] = this.syncVersion;
+      json[r'visibility'] = this.visibility;
     return json;
   }
 
@@ -63,6 +75,8 @@ class Account {
       return Account(
         capabilities: Capabilities.fromJson(json[r'capabilities'])!,
         state: AccountState.fromJson(json[r'state'])!,
+        syncVersion: AccountSyncVersion.fromJson(json[r'sync_version'])!,
+        visibility: ProfileVisibility.fromJson(json[r'visibility'])!,
       );
     }
     return null;
@@ -114,6 +128,8 @@ class Account {
   static const requiredKeys = <String>{
     'capabilities',
     'state',
+    'sync_version',
+    'visibility',
   };
 }
 

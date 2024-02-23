@@ -72,9 +72,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postLogin**](doc//AccountApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken.
 *AccountApi* | [**postRegister**](doc//AccountApi.md#postregister) | **POST** /account_api/register | Register new account. Returns new account ID which is UUID.
 *AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google. Creates new account if
-*AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update profile visiblity value.
-*AccountInternalApi* | [**checkAccessToken**](doc//AccountInternalApi.md#checkaccesstoken) | **GET** /internal/check_access_token | 
-*AccountInternalApi* | [**internalGetAccountState**](doc//AccountInternalApi.md#internalgetaccountstate) | **GET** /internal/get_account_state/{account_id} | 
+*AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update current or pending profile visiblity value.
 *ChatApi* | [**deleteLike**](doc//ChatApi.md#deletelike) | **DELETE** /chat_api/delete_like | Delete sent like.
 *ChatApi* | [**deletePendingMessages**](doc//ChatApi.md#deletependingmessages) | **DELETE** /chat_api/pending_messages | Delete list of pending messages
 *ChatApi* | [**getMatches**](doc//ChatApi.md#getmatches) | **GET** /chat_api/matches | Get matches
@@ -100,19 +98,26 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**postRequestBuildSoftware**](doc//CommonAdminApi.md#postrequestbuildsoftware) | **POST** /common_api/request_build_software | Request building new software from manager instance.
 *CommonAdminApi* | [**postRequestRestartOrResetBackend**](doc//CommonAdminApi.md#postrequestrestartorresetbackend) | **POST** /common_api/request_restart_or_reset_backend | Request restarting or reseting backend through app-manager instance.
 *CommonAdminApi* | [**postRequestUpdateSoftware**](doc//CommonAdminApi.md#postrequestupdatesoftware) | **POST** /common_api/request_update_software | Request updating new software from manager instance.
-*MediaApi* | [**getAllNormalImages**](doc//MediaApi.md#getallnormalimages) | **GET** /media_api/all_normal_images/{account_id} | Get list of all normal images on the server for one account.
-*MediaApi* | [**getImage**](doc//MediaApi.md#getimage) | **GET** /media_api/image/{account_id}/{content_id} | Get profile image
+*MediaApi* | [**deleteContent**](doc//MediaApi.md#deletecontent) | **DELETE** /media_api/content/{account_id}/{content_id} | Delete content data. Content can be removed after specific time has passed
+*MediaApi* | [**deletePendingSecurityContentInfo**](doc//MediaApi.md#deletependingsecuritycontentinfo) | **DELETE** /media_api/pending_security_content_info | Delete pending security content for current account.
+*MediaApi* | [**getAllAccountMediaContent**](doc//MediaApi.md#getallaccountmediacontent) | **GET** /media_api/all_account_media_content/{account_id} | Get list of all media content on the server for one account.
+*MediaApi* | [**getContent**](doc//MediaApi.md#getcontent) | **GET** /media_api/content/{account_id}/{content_id} | Get content data
+*MediaApi* | [**getContentSlotState**](doc//MediaApi.md#getcontentslotstate) | **GET** /media_api/content_slot/{slot_id} | Get state of content slot.
 *MediaApi* | [**getMapTile**](doc//MediaApi.md#getmaptile) | **GET** /media_api/map_tile/{z}/{x}/{y} | Get map tile PNG file.
 *MediaApi* | [**getModerationRequest**](doc//MediaApi.md#getmoderationrequest) | **GET** /media_api/moderation/request | Get current moderation request.
-*MediaApi* | [**getPrimaryImageInfo**](doc//MediaApi.md#getprimaryimageinfo) | **GET** /media_api/primary_image_info/{account_id} | Get current public image for selected profile
-*MediaApi* | [**putImageToModerationSlot**](doc//MediaApi.md#putimagetomoderationslot) | **PUT** /media_api/moderation/request/slot/{slot_id} | Set image to moderation request slot.
+*MediaApi* | [**getPendingProfileContentInfo**](doc//MediaApi.md#getpendingprofilecontentinfo) | **GET** /media_api/pending_profile_content_info/{account_id} | Get pending profile content for selected profile
+*MediaApi* | [**getPendingSecurityContentInfo**](doc//MediaApi.md#getpendingsecuritycontentinfo) | **GET** /media_api/pending_security_content_info/{account_id} | Get pending security content for selected profile.
+*MediaApi* | [**getProfileContentInfo**](doc//MediaApi.md#getprofilecontentinfo) | **GET** /media_api/profile_content_info/{account_id} | Get current profile content for selected profile
+*MediaApi* | [**getSecurityContentInfo**](doc//MediaApi.md#getsecuritycontentinfo) | **GET** /media_api/security_content_info/{account_id} | Get current security content for selected profile.
+*MediaApi* | [**putContentToContentSlot**](doc//MediaApi.md#putcontenttocontentslot) | **PUT** /media_api/content_slot/{slot_id} | Set content to content processing slot.
 *MediaApi* | [**putModerationRequest**](doc//MediaApi.md#putmoderationrequest) | **PUT** /media_api/moderation/request | Create new or override old moderation request.
-*MediaApi* | [**putPrimaryImage**](doc//MediaApi.md#putprimaryimage) | **PUT** /media_api/primary_image | Set primary image for account. Image content ID can not be empty.
-*MediaAdminApi* | [**getSecurityImageInfo**](doc//MediaAdminApi.md#getsecurityimageinfo) | **GET** /media_api/security_image_info/{account_id} | Get current security image for selected profile. Only for admins.
+*MediaApi* | [**putPendingProfileContent**](doc//MediaApi.md#putpendingprofilecontent) | **PUT** /media_api/pending_profile_content | Set new pending profile content for current account.
+*MediaApi* | [**putPendingSecurityContentInfo**](doc//MediaApi.md#putpendingsecuritycontentinfo) | **PUT** /media_api/pending_security_content_info | Set pending security content for current account.
+*MediaApi* | [**putProfileContent**](doc//MediaApi.md#putprofilecontent) | **PUT** /media_api/profile_content | Set new profile content for current account.
+*MediaApi* | [**putSecurityContentInfo**](doc//MediaApi.md#putsecuritycontentinfo) | **PUT** /media_api/security_content_info | Set current security content content for current account.
 *MediaAdminApi* | [**patchModerationRequestList**](doc//MediaAdminApi.md#patchmoderationrequestlist) | **PATCH** /media_api/admin/moderation/page/next | Get current list of moderation requests in my moderation queue.
 *MediaAdminApi* | [**postHandleModerationRequest**](doc//MediaAdminApi.md#posthandlemoderationrequest) | **POST** /media_api/admin/moderation/handle_request/{account_id} | Handle moderation request of some account.
-*MediaInternalApi* | [**internalGetCheckModerationRequestForAccount**](doc//MediaInternalApi.md#internalgetcheckmoderationrequestforaccount) | **GET** /internal/media_api/moderation/request/{account_id} | Check that current moderation request for account exists. Requires also
-*MediaInternalApi* | [**internalPostUpdateProfileImageVisibility**](doc//MediaInternalApi.md#internalpostupdateprofileimagevisibility) | **POST** /internal/media_api/visiblity/{account_id}/{value} | 
+*MediaInternalApi* | [**internalGetCheckModerationRequestForAccount**](doc//MediaInternalApi.md#internalgetcheckmoderationrequestforaccount) | **GET** /internal/media_api/moderation/request/{account_id} | Check that media server has correct state for completing initial setup.
 *ProfileApi* | [**deleteFavoriteProfile**](doc//ProfileApi.md#deletefavoriteprofile) | **DELETE** /profile_api/favorite_profile | Delete favorite profile
 *ProfileApi* | [**getFavoriteProfiles**](doc//ProfileApi.md#getfavoriteprofiles) | **GET** /profile_api/favorite_profiles | Get list of all favorite profiles.
 *ProfileApi* | [**getLocation**](doc//ProfileApi.md#getlocation) | **GET** /profile_api/location | Get location for account which makes this request.
@@ -124,17 +129,18 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**postProfileToDatabaseDebugModeBenchmark**](doc//ProfileApi.md#postprofiletodatabasedebugmodebenchmark) | **POST** /profile_api/benchmark/profile | Post account's current profile directly to database. Debug mode must be enabled
 *ProfileApi* | [**postResetProfilePaging**](doc//ProfileApi.md#postresetprofilepaging) | **POST** /profile_api/page/reset | Reset profile paging.
 *ProfileApi* | [**putLocation**](doc//ProfileApi.md#putlocation) | **PUT** /profile_api/location | Update location for account which makes this request.
-*ProfileInternalApi* | [**internalPostUpdateProfileVisibility**](doc//ProfileInternalApi.md#internalpostupdateprofilevisibility) | **POST** /internal/profile_api/visiblity/{account_id}/{value} | 
 
 
 ## Documentation For Models
 
  - [AccessToken](doc//AccessToken.md)
  - [Account](doc//Account.md)
+ - [AccountContent](doc//AccountContent.md)
  - [AccountData](doc//AccountData.md)
  - [AccountId](doc//AccountId.md)
  - [AccountSetup](doc//AccountSetup.md)
  - [AccountState](doc//AccountState.md)
+ - [AccountSyncVersion](doc//AccountSyncVersion.md)
  - [AuthPair](doc//AuthPair.md)
  - [BackendConfig](doc//BackendConfig.md)
  - [BackendVersion](doc//BackendVersion.md)
@@ -143,7 +149,16 @@ Class | Method | HTTP request | Description
  - [BuildInfo](doc//BuildInfo.md)
  - [Capabilities](doc//Capabilities.md)
  - [CommandOutput](doc//CommandOutput.md)
+ - [ContentAccessCheck](doc//ContentAccessCheck.md)
  - [ContentId](doc//ContentId.md)
+ - [ContentInfo](doc//ContentInfo.md)
+ - [ContentInfoDetailed](doc//ContentInfoDetailed.md)
+ - [ContentProcessingId](doc//ContentProcessingId.md)
+ - [ContentProcessingState](doc//ContentProcessingState.md)
+ - [ContentProcessingStateChanged](doc//ContentProcessingStateChanged.md)
+ - [ContentProcessingStateType](doc//ContentProcessingStateType.md)
+ - [ContentSlot](doc//ContentSlot.md)
+ - [ContentState](doc//ContentState.md)
  - [DeleteStatus](doc//DeleteStatus.md)
  - [DownloadType](doc//DownloadType.md)
  - [DownloadTypeQueryParam](doc//DownloadTypeQueryParam.md)
@@ -151,7 +166,6 @@ Class | Method | HTTP request | Description
  - [EventType](doc//EventType.md)
  - [FavoriteProfilesPage](doc//FavoriteProfilesPage.md)
  - [HandleModerationRequest](doc//HandleModerationRequest.md)
- - [ImageAccessCheck](doc//ImageAccessCheck.md)
  - [LatestViewedMessageChanged](doc//LatestViewedMessageChanged.md)
  - [Location](doc//Location.md)
  - [LoginResult](doc//LoginResult.md)
@@ -159,41 +173,54 @@ Class | Method | HTTP request | Description
  - [MapTileY](doc//MapTileY.md)
  - [MapTileZ](doc//MapTileZ.md)
  - [MatchesPage](doc//MatchesPage.md)
+ - [MatchesSyncVersion](doc//MatchesSyncVersion.md)
+ - [MediaContentType](doc//MediaContentType.md)
  - [MessageNumber](doc//MessageNumber.md)
  - [Moderation](doc//Moderation.md)
  - [ModerationList](doc//ModerationList.md)
+ - [ModerationQueueType](doc//ModerationQueueType.md)
+ - [ModerationQueueTypeParam](doc//ModerationQueueTypeParam.md)
  - [ModerationRequest](doc//ModerationRequest.md)
  - [ModerationRequestContent](doc//ModerationRequestContent.md)
  - [ModerationRequestId](doc//ModerationRequestId.md)
  - [ModerationRequestState](doc//ModerationRequestState.md)
- - [NormalImages](doc//NormalImages.md)
+ - [NewContentParams](doc//NewContentParams.md)
  - [PendingMessage](doc//PendingMessage.md)
  - [PendingMessageDeleteList](doc//PendingMessageDeleteList.md)
  - [PendingMessageId](doc//PendingMessageId.md)
  - [PendingMessagesPage](doc//PendingMessagesPage.md)
+ - [PendingProfileContent](doc//PendingProfileContent.md)
+ - [PendingSecurityContent](doc//PendingSecurityContent.md)
  - [PerfHistoryQuery](doc//PerfHistoryQuery.md)
  - [PerfHistoryQueryResult](doc//PerfHistoryQueryResult.md)
  - [PerfHistoryValue](doc//PerfHistoryValue.md)
  - [PerfValueArea](doc//PerfValueArea.md)
- - [PrimaryImage](doc//PrimaryImage.md)
  - [Profile](doc//Profile.md)
+ - [ProfileContent](doc//ProfileContent.md)
  - [ProfileLink](doc//ProfileLink.md)
  - [ProfilePage](doc//ProfilePage.md)
  - [ProfileUpdate](doc//ProfileUpdate.md)
  - [ProfileVersion](doc//ProfileVersion.md)
+ - [ProfileVisibility](doc//ProfileVisibility.md)
  - [RebootQueryParam](doc//RebootQueryParam.md)
  - [ReceivedBlocksPage](doc//ReceivedBlocksPage.md)
+ - [ReceivedBlocksSyncVersion](doc//ReceivedBlocksSyncVersion.md)
  - [ReceivedLikesPage](doc//ReceivedLikesPage.md)
+ - [ReceivedLikesSyncVersion](doc//ReceivedLikesSyncVersion.md)
  - [RefreshToken](doc//RefreshToken.md)
  - [ResetDataQueryParam](doc//ResetDataQueryParam.md)
- - [SecurityImage](doc//SecurityImage.md)
+ - [SecurityContent](doc//SecurityContent.md)
  - [SendMessageToAccount](doc//SendMessageToAccount.md)
  - [SentBlocksPage](doc//SentBlocksPage.md)
+ - [SentBlocksSyncVersion](doc//SentBlocksSyncVersion.md)
  - [SentLikesPage](doc//SentLikesPage.md)
+ - [SentLikesSyncVersion](doc//SentLikesSyncVersion.md)
+ - [SetProfileContent](doc//SetProfileContent.md)
  - [SignInWithLoginInfo](doc//SignInWithLoginInfo.md)
  - [SlotId](doc//SlotId.md)
  - [SoftwareInfo](doc//SoftwareInfo.md)
  - [SoftwareOptions](doc//SoftwareOptions.md)
+ - [SyncVersion](doc//SyncVersion.md)
  - [SystemInfo](doc//SystemInfo.md)
  - [SystemInfoList](doc//SystemInfoList.md)
  - [TimeGranularity](doc//TimeGranularity.md)

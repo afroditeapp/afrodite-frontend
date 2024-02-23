@@ -14,25 +14,31 @@ class ReceivedBlocksPage {
   /// Returns a new [ReceivedBlocksPage] instance.
   ReceivedBlocksPage({
     this.profiles = const [],
+    required this.version,
   });
 
   List<AccountId> profiles;
 
+  ReceivedBlocksSyncVersion version;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is ReceivedBlocksPage &&
-     other.profiles == profiles;
+     other.profiles == profiles &&
+     other.version == version;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (profiles.hashCode);
+    (profiles.hashCode) +
+    (version.hashCode);
 
   @override
-  String toString() => 'ReceivedBlocksPage[profiles=$profiles]';
+  String toString() => 'ReceivedBlocksPage[profiles=$profiles, version=$version]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'profiles'] = this.profiles;
+      json[r'version'] = this.version;
     return json;
   }
 
@@ -56,6 +62,7 @@ class ReceivedBlocksPage {
 
       return ReceivedBlocksPage(
         profiles: AccountId.listFromJson(json[r'profiles'])!,
+        version: ReceivedBlocksSyncVersion.fromJson(json[r'version'])!,
       );
     }
     return null;
@@ -106,6 +113,7 @@ class ReceivedBlocksPage {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'profiles',
+    'version',
   };
 }
 

@@ -346,7 +346,7 @@ class AccountApi {
 
   /// Complete initial setup.
   ///
-  /// Complete initial setup.  Request to this handler will complete if client is in `initial setup`, setup information is set and image moderation request has been made. 
+  /// Complete initial setup.  Requirements: - Account must be in `InitialSetup` state. - Account must have a valid AccountSetup info set. - Account must have a moderation request. - The current or pending security image of the account is in the request. - The current or pending first profile image of the account is in the request. 
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> postCompleteSetupWithHttpInfo() async {
@@ -376,7 +376,7 @@ class AccountApi {
 
   /// Complete initial setup.
   ///
-  /// Complete initial setup.  Request to this handler will complete if client is in `initial setup`, setup information is set and image moderation request has been made. 
+  /// Complete initial setup.  Requirements: - Account must be in `InitialSetup` state. - Account must have a valid AccountSetup info set. - Account must have a moderation request. - The current or pending security image of the account is in the request. - The current or pending first profile image of the account is in the request. 
   Future<void> postCompleteSetup() async {
     final response = await postCompleteSetupWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -584,9 +584,9 @@ class AccountApi {
     return null;
   }
 
-  /// Update profile visiblity value.
+  /// Update current or pending profile visiblity value.
   ///
-  /// Update profile visiblity value.  This will check that the first image moderation request has been moderated before this turns the profile public.  Sets capablity `view_public_profiles` on or off depending on the value.
+  /// Update current or pending profile visiblity value.  Requirements: - Account state must be `Normal`.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -618,9 +618,9 @@ class AccountApi {
     );
   }
 
-  /// Update profile visiblity value.
+  /// Update current or pending profile visiblity value.
   ///
-  /// Update profile visiblity value.  This will check that the first image moderation request has been moderated before this turns the profile public.  Sets capablity `view_public_profiles` on or off depending on the value.
+  /// Update current or pending profile visiblity value.  Requirements: - Account state must be `Normal`.
   ///
   /// Parameters:
   ///

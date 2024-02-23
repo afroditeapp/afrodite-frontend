@@ -10,16 +10,16 @@
 
 part of openapi.api;
 
-class NormalImages {
-  /// Returns a new [NormalImages] instance.
-  NormalImages({
+class AccountContent {
+  /// Returns a new [AccountContent] instance.
+  AccountContent({
     this.data = const [],
   });
 
-  List<ContentId> data;
+  List<ContentInfoDetailed> data;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is NormalImages &&
+  bool operator ==(Object other) => identical(this, other) || other is AccountContent &&
      other.data == data;
 
   @override
@@ -28,7 +28,7 @@ class NormalImages {
     (data.hashCode);
 
   @override
-  String toString() => 'NormalImages[data=$data]';
+  String toString() => 'AccountContent[data=$data]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -36,10 +36,10 @@ class NormalImages {
     return json;
   }
 
-  /// Returns a new [NormalImages] instance and imports its values from
+  /// Returns a new [AccountContent] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static NormalImages? fromJson(dynamic value) {
+  static AccountContent? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class NormalImages {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "NormalImages[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "NormalImages[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AccountContent[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AccountContent[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return NormalImages(
-        data: ContentId.listFromJson(json[r'data'])!,
+      return AccountContent(
+        data: ContentInfoDetailed.listFromJson(json[r'data'])!,
       );
     }
     return null;
   }
 
-  static List<NormalImages>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <NormalImages>[];
+  static List<AccountContent>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AccountContent>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = NormalImages.fromJson(row);
+        final value = AccountContent.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class NormalImages {
     return result.toList(growable: growable);
   }
 
-  static Map<String, NormalImages> mapFromJson(dynamic json) {
-    final map = <String, NormalImages>{};
+  static Map<String, AccountContent> mapFromJson(dynamic json) {
+    final map = <String, AccountContent>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = NormalImages.fromJson(entry.value);
+        final value = AccountContent.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,13 +88,13 @@ class NormalImages {
     return map;
   }
 
-  // maps a json object with a list of NormalImages-objects as value to a dart map
-  static Map<String, List<NormalImages>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<NormalImages>>{};
+  // maps a json object with a list of AccountContent-objects as value to a dart map
+  static Map<String, List<AccountContent>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AccountContent>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = NormalImages.listFromJson(entry.value, growable: growable,);
+        final value = AccountContent.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }

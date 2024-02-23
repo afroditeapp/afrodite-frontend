@@ -14,36 +14,51 @@ class EventToClient {
   /// Returns a new [EventToClient] instance.
   EventToClient({
     this.accountState,
+    this.accountSyncVersion,
     this.capabilities,
+    this.contentProcessingStateChanged,
     required this.event,
     this.latestViewedMessageChanged,
+    this.visibility,
   });
 
   AccountState? accountState;
 
+  AccountSyncVersion? accountSyncVersion;
+
   Capabilities? capabilities;
+
+  ContentProcessingStateChanged? contentProcessingStateChanged;
 
   EventType event;
 
   LatestViewedMessageChanged? latestViewedMessageChanged;
 
+  ProfileVisibility? visibility;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is EventToClient &&
      other.accountState == accountState &&
+     other.accountSyncVersion == accountSyncVersion &&
      other.capabilities == capabilities &&
+     other.contentProcessingStateChanged == contentProcessingStateChanged &&
      other.event == event &&
-     other.latestViewedMessageChanged == latestViewedMessageChanged;
+     other.latestViewedMessageChanged == latestViewedMessageChanged &&
+     other.visibility == visibility;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (accountState == null ? 0 : accountState!.hashCode) +
+    (accountSyncVersion == null ? 0 : accountSyncVersion!.hashCode) +
     (capabilities == null ? 0 : capabilities!.hashCode) +
+    (contentProcessingStateChanged == null ? 0 : contentProcessingStateChanged!.hashCode) +
     (event.hashCode) +
-    (latestViewedMessageChanged == null ? 0 : latestViewedMessageChanged!.hashCode);
+    (latestViewedMessageChanged == null ? 0 : latestViewedMessageChanged!.hashCode) +
+    (visibility == null ? 0 : visibility!.hashCode);
 
   @override
-  String toString() => 'EventToClient[accountState=$accountState, capabilities=$capabilities, event=$event, latestViewedMessageChanged=$latestViewedMessageChanged]';
+  String toString() => 'EventToClient[accountState=$accountState, accountSyncVersion=$accountSyncVersion, capabilities=$capabilities, contentProcessingStateChanged=$contentProcessingStateChanged, event=$event, latestViewedMessageChanged=$latestViewedMessageChanged, visibility=$visibility]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -52,16 +67,31 @@ class EventToClient {
     } else {
       json[r'account_state'] = null;
     }
+    if (this.accountSyncVersion != null) {
+      json[r'account_sync_version'] = this.accountSyncVersion;
+    } else {
+      json[r'account_sync_version'] = null;
+    }
     if (this.capabilities != null) {
       json[r'capabilities'] = this.capabilities;
     } else {
       json[r'capabilities'] = null;
+    }
+    if (this.contentProcessingStateChanged != null) {
+      json[r'content_processing_state_changed'] = this.contentProcessingStateChanged;
+    } else {
+      json[r'content_processing_state_changed'] = null;
     }
       json[r'event'] = this.event;
     if (this.latestViewedMessageChanged != null) {
       json[r'latest_viewed_message_changed'] = this.latestViewedMessageChanged;
     } else {
       json[r'latest_viewed_message_changed'] = null;
+    }
+    if (this.visibility != null) {
+      json[r'visibility'] = this.visibility;
+    } else {
+      json[r'visibility'] = null;
     }
     return json;
   }
@@ -86,9 +116,12 @@ class EventToClient {
 
       return EventToClient(
         accountState: AccountState.fromJson(json[r'account_state']),
+        accountSyncVersion: AccountSyncVersion.fromJson(json[r'account_sync_version']),
         capabilities: Capabilities.fromJson(json[r'capabilities']),
+        contentProcessingStateChanged: ContentProcessingStateChanged.fromJson(json[r'content_processing_state_changed']),
         event: EventType.fromJson(json[r'event'])!,
         latestViewedMessageChanged: LatestViewedMessageChanged.fromJson(json[r'latest_viewed_message_changed']),
+        visibility: ProfileVisibility.fromJson(json[r'visibility']),
       );
     }
     return null;

@@ -25,19 +25,31 @@ class EventType {
 
   static const accountStateChanged = EventType._(r'AccountStateChanged');
   static const accountCapabilitiesChanged = EventType._(r'AccountCapabilitiesChanged');
+  static const profileVisibilityChanged = EventType._(r'ProfileVisibilityChanged');
+  static const accountSyncVersionChanged = EventType._(r'AccountSyncVersionChanged');
   static const newMessageReceived = EventType._(r'NewMessageReceived');
-  static const likesChanged = EventType._(r'LikesChanged');
+  static const receivedLikesChanged = EventType._(r'ReceivedLikesChanged');
   static const receivedBlocksChanged = EventType._(r'ReceivedBlocksChanged');
+  static const sentLikesChanged = EventType._(r'SentLikesChanged');
+  static const sentBlocksChanged = EventType._(r'SentBlocksChanged');
+  static const matchesChanged = EventType._(r'MatchesChanged');
   static const latestViewedMessageChanged = EventType._(r'LatestViewedMessageChanged');
+  static const contentProcessingStateChanged = EventType._(r'ContentProcessingStateChanged');
 
   /// List of all possible values in this [enum][EventType].
   static const values = <EventType>[
     accountStateChanged,
     accountCapabilitiesChanged,
+    profileVisibilityChanged,
+    accountSyncVersionChanged,
     newMessageReceived,
-    likesChanged,
+    receivedLikesChanged,
     receivedBlocksChanged,
+    sentLikesChanged,
+    sentBlocksChanged,
+    matchesChanged,
     latestViewedMessageChanged,
+    contentProcessingStateChanged,
   ];
 
   static EventType? fromJson(dynamic value) => EventTypeTypeTransformer().decode(value);
@@ -78,10 +90,16 @@ class EventTypeTypeTransformer {
       switch (data) {
         case r'AccountStateChanged': return EventType.accountStateChanged;
         case r'AccountCapabilitiesChanged': return EventType.accountCapabilitiesChanged;
+        case r'ProfileVisibilityChanged': return EventType.profileVisibilityChanged;
+        case r'AccountSyncVersionChanged': return EventType.accountSyncVersionChanged;
         case r'NewMessageReceived': return EventType.newMessageReceived;
-        case r'LikesChanged': return EventType.likesChanged;
+        case r'ReceivedLikesChanged': return EventType.receivedLikesChanged;
         case r'ReceivedBlocksChanged': return EventType.receivedBlocksChanged;
+        case r'SentLikesChanged': return EventType.sentLikesChanged;
+        case r'SentBlocksChanged': return EventType.sentBlocksChanged;
+        case r'MatchesChanged': return EventType.matchesChanged;
         case r'LatestViewedMessageChanged': return EventType.latestViewedMessageChanged;
+        case r'ContentProcessingStateChanged': return EventType.contentProcessingStateChanged;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

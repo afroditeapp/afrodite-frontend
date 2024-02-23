@@ -58,14 +58,32 @@ String parameterToString(dynamic value) {
   if (value is AccountState) {
     return AccountStateTypeTransformer().encode(value).toString();
   }
+  if (value is ContentProcessingStateType) {
+    return ContentProcessingStateTypeTypeTransformer().encode(value).toString();
+  }
+  if (value is ContentSlot) {
+    return ContentSlotTypeTransformer().encode(value).toString();
+  }
+  if (value is ContentState) {
+    return ContentStateTypeTransformer().encode(value).toString();
+  }
   if (value is DownloadType) {
     return DownloadTypeTypeTransformer().encode(value).toString();
   }
   if (value is EventType) {
     return EventTypeTypeTransformer().encode(value).toString();
   }
+  if (value is MediaContentType) {
+    return MediaContentTypeTypeTransformer().encode(value).toString();
+  }
+  if (value is ModerationQueueType) {
+    return ModerationQueueTypeTypeTransformer().encode(value).toString();
+  }
   if (value is ModerationRequestState) {
     return ModerationRequestStateTypeTransformer().encode(value).toString();
+  }
+  if (value is ProfileVisibility) {
+    return ProfileVisibilityTypeTransformer().encode(value).toString();
   }
   if (value is SoftwareOptions) {
     return SoftwareOptionsTypeTransformer().encode(value).toString();

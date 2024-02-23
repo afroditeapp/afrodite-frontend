@@ -13,52 +13,85 @@ part of openapi.api;
 class ModerationRequestContent {
   /// Returns a new [ModerationRequestContent] instance.
   ModerationRequestContent({
-    required this.cameraImage,
-    required this.image1,
-    this.image2,
-    this.image3,
+    required this.content0,
+    this.content1,
+    this.content2,
+    this.content3,
+    this.content4,
+    this.content5,
+    this.content6,
   });
 
-  /// Use slot 1 image as camera image.
-  bool cameraImage;
+  ContentId content0;
 
-  ContentId image1;
+  ContentId? content1;
 
-  ContentId? image2;
+  ContentId? content2;
 
-  ContentId? image3;
+  ContentId? content3;
+
+  ContentId? content4;
+
+  ContentId? content5;
+
+  ContentId? content6;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ModerationRequestContent &&
-     other.cameraImage == cameraImage &&
-     other.image1 == image1 &&
-     other.image2 == image2 &&
-     other.image3 == image3;
+     other.content0 == content0 &&
+     other.content1 == content1 &&
+     other.content2 == content2 &&
+     other.content3 == content3 &&
+     other.content4 == content4 &&
+     other.content5 == content5 &&
+     other.content6 == content6;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (cameraImage.hashCode) +
-    (image1.hashCode) +
-    (image2 == null ? 0 : image2!.hashCode) +
-    (image3 == null ? 0 : image3!.hashCode);
+    (content0.hashCode) +
+    (content1 == null ? 0 : content1!.hashCode) +
+    (content2 == null ? 0 : content2!.hashCode) +
+    (content3 == null ? 0 : content3!.hashCode) +
+    (content4 == null ? 0 : content4!.hashCode) +
+    (content5 == null ? 0 : content5!.hashCode) +
+    (content6 == null ? 0 : content6!.hashCode);
 
   @override
-  String toString() => 'ModerationRequestContent[cameraImage=$cameraImage, image1=$image1, image2=$image2, image3=$image3]';
+  String toString() => 'ModerationRequestContent[content0=$content0, content1=$content1, content2=$content2, content3=$content3, content4=$content4, content5=$content5, content6=$content6]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'camera_image'] = this.cameraImage;
-      json[r'image1'] = this.image1;
-    if (this.image2 != null) {
-      json[r'image2'] = this.image2;
+      json[r'content0'] = this.content0;
+    if (this.content1 != null) {
+      json[r'content1'] = this.content1;
     } else {
-      json[r'image2'] = null;
+      json[r'content1'] = null;
     }
-    if (this.image3 != null) {
-      json[r'image3'] = this.image3;
+    if (this.content2 != null) {
+      json[r'content2'] = this.content2;
     } else {
-      json[r'image3'] = null;
+      json[r'content2'] = null;
+    }
+    if (this.content3 != null) {
+      json[r'content3'] = this.content3;
+    } else {
+      json[r'content3'] = null;
+    }
+    if (this.content4 != null) {
+      json[r'content4'] = this.content4;
+    } else {
+      json[r'content4'] = null;
+    }
+    if (this.content5 != null) {
+      json[r'content5'] = this.content5;
+    } else {
+      json[r'content5'] = null;
+    }
+    if (this.content6 != null) {
+      json[r'content6'] = this.content6;
+    } else {
+      json[r'content6'] = null;
     }
     return json;
   }
@@ -82,10 +115,13 @@ class ModerationRequestContent {
       }());
 
       return ModerationRequestContent(
-        cameraImage: mapValueOfType<bool>(json, r'camera_image')!,
-        image1: ContentId.fromJson(json[r'image1'])!,
-        image2: ContentId.fromJson(json[r'image2']),
-        image3: ContentId.fromJson(json[r'image3']),
+        content0: ContentId.fromJson(json[r'content0'])!,
+        content1: ContentId.fromJson(json[r'content1']),
+        content2: ContentId.fromJson(json[r'content2']),
+        content3: ContentId.fromJson(json[r'content3']),
+        content4: ContentId.fromJson(json[r'content4']),
+        content5: ContentId.fromJson(json[r'content5']),
+        content6: ContentId.fromJson(json[r'content6']),
       );
     }
     return null;
@@ -135,8 +171,7 @@ class ModerationRequestContent {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'camera_image',
-    'image1',
+    'content0',
   };
 }
 

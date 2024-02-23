@@ -25,7 +25,6 @@ class Capabilities {
     this.adminViewAllProfiles = false,
     this.adminViewPrivateInfo = false,
     this.adminViewProfileHistory = false,
-    this.userViewPublicProfiles = false,
   });
 
   bool adminModerateImages;
@@ -54,9 +53,6 @@ class Capabilities {
 
   bool adminViewProfileHistory;
 
-  /// View public profiles. Automatically enabled once initial image moderation is complete.
-  bool userViewPublicProfiles;
-
   @override
   bool operator ==(Object other) => identical(this, other) || other is Capabilities &&
      other.adminModerateImages == adminModerateImages &&
@@ -70,8 +66,7 @@ class Capabilities {
      other.adminServerMaintenanceViewInfo == adminServerMaintenanceViewInfo &&
      other.adminViewAllProfiles == adminViewAllProfiles &&
      other.adminViewPrivateInfo == adminViewPrivateInfo &&
-     other.adminViewProfileHistory == adminViewProfileHistory &&
-     other.userViewPublicProfiles == userViewPublicProfiles;
+     other.adminViewProfileHistory == adminViewProfileHistory;
 
   @override
   int get hashCode =>
@@ -87,11 +82,10 @@ class Capabilities {
     (adminServerMaintenanceViewInfo.hashCode) +
     (adminViewAllProfiles.hashCode) +
     (adminViewPrivateInfo.hashCode) +
-    (adminViewProfileHistory.hashCode) +
-    (userViewPublicProfiles.hashCode);
+    (adminViewProfileHistory.hashCode);
 
   @override
-  String toString() => 'Capabilities[adminModerateImages=$adminModerateImages, adminModerateProfiles=$adminModerateProfiles, adminModifyCapabilities=$adminModifyCapabilities, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory, userViewPublicProfiles=$userViewPublicProfiles]';
+  String toString() => 'Capabilities[adminModerateImages=$adminModerateImages, adminModerateProfiles=$adminModerateProfiles, adminModifyCapabilities=$adminModifyCapabilities, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -107,7 +101,6 @@ class Capabilities {
       json[r'admin_view_all_profiles'] = this.adminViewAllProfiles;
       json[r'admin_view_private_info'] = this.adminViewPrivateInfo;
       json[r'admin_view_profile_history'] = this.adminViewProfileHistory;
-      json[r'user_view_public_profiles'] = this.userViewPublicProfiles;
     return json;
   }
 
@@ -142,7 +135,6 @@ class Capabilities {
         adminViewAllProfiles: mapValueOfType<bool>(json, r'admin_view_all_profiles') ?? false,
         adminViewPrivateInfo: mapValueOfType<bool>(json, r'admin_view_private_info') ?? false,
         adminViewProfileHistory: mapValueOfType<bool>(json, r'admin_view_profile_history') ?? false,
-        userViewPublicProfiles: mapValueOfType<bool>(json, r'user_view_public_profiles') ?? false,
       );
     }
     return null;
