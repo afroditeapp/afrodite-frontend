@@ -6,6 +6,7 @@ import "package:pihka_frontend/ui/initial_setup.dart";
 import "package:pihka_frontend/ui/login.dart";
 import 'package:pihka_frontend/ui/normal.dart';
 import "package:pihka_frontend/ui/pending_deletion.dart";
+import "package:pihka_frontend/ui/unsupported_client.dart";
 
 abstract class RootPage extends StatelessWidget {
   const RootPage(this.rootPageIdentifier, {Key? key}) : super(key: key);
@@ -22,38 +23,23 @@ abstract class RootPage extends StatelessWidget {
           return;
         }
 
-        if (state == MainState.loginRequired) {
+        final page = switch (state) {
+          MainState.loginRequired => LoginPage(),
+          MainState.initialSetup => const InitialSetupPage(),
+          MainState.initialSetupComplete => const NormalStatePage(),
+          MainState.accountBanned => const AccountBannedPage(),
+          MainState.pendingRemoval => const PendingDeletionPage(),
+          MainState.unsupportedClientVersion => const UnsupportedClientPage(),
+          MainState.splashScreen => null,
+        };
+
+        if (page != null) {
           Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute<void>(builder: (_) => LoginPage()),
-              (_) => false,
-          );
-        } else if (state == MainState.initialSetup) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute<void>(builder: (_) => const InitialSetupPage()),
-              (_) => false,
-          );
-        } else if (state == MainState.initialSetupComplete) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute<void>(builder: (_) => const NormalStatePage()),
-              (_) => false,
-          );
-        } else if (state == MainState.accountBanned) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute<void>(builder: (_) => const AccountBannedPage()),
-              (_) => false,
-          );
-        } else if (state == MainState.pendingRemoval) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute<void>(builder: (_) => const PendingDeletionPage()),
-              (_) => false,
+            context,
+            MaterialPageRoute<void>(builder: (_) => page),
+            (_) => false,
           );
         }
-
       },
       child: buildRootWidget(context)
     );

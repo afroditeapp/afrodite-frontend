@@ -21,6 +21,8 @@ enum KvString implements PreferenceKeyProvider<KvString, String> {
   accountCapabilities,
   /// AccountState json
   accountState,
+  /// ProfileVisiblity json
+  profileVisibility,
   /// Base64 string
   accountRefreshToken,
   accountAccessToken,

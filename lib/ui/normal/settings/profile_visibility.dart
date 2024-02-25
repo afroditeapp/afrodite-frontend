@@ -22,12 +22,12 @@ class ProfileVisibilityPage extends StatefulWidget {
 }
 
 class _ProfileVisibilityPageState extends State<ProfileVisibilityPage> {
-  bool _tmpProfileVisiblity = false;
+  ProfileVisibility _tmpProfileVisiblity = ProfileVisibility.pendingPrivate;
 
   @override
   void initState() {
     super.initState();
-    _tmpProfileVisiblity = context.read<AccountBloc>().state.capabilities.userViewPublicProfiles;
+    _tmpProfileVisiblity = context.read<AccountBloc>().state.visibility;
   }
 
   @override
@@ -39,25 +39,55 @@ class _ProfileVisibilityPageState extends State<ProfileVisibilityPage> {
   }
 
   Widget visibilitySettingsPage(BuildContext context) {
+    final bool visibilityEnabled = _tmpProfileVisiblity == ProfileVisibility.pendingPublic || _tmpProfileVisiblity == ProfileVisibility.public;
+    final String descriptionForVisibility = switch (_tmpProfileVisiblity) {
+      ProfileVisibility.pendingPrivate || ProfileVisibility.private =>
+        "Your profile is currently private. No one can see it.",
+      ProfileVisibility.pendingPublic =>
+        "Your profile will be set to public after your images are moderated as accepted.",
+      ProfileVisibility.public =>
+        "Your profile is public. Everyone can see it.",
+      _ => "",
+    };
+
     return BlocListener<AccountBloc, AccountBlocData>(
       listener: (context, state) {
-        if (_tmpProfileVisiblity != state.capabilities.userViewPublicProfiles) {
+        if (_tmpProfileVisiblity != state.visibility) {
           setState(() {
-            _tmpProfileVisiblity = state.capabilities.userViewPublicProfiles;
+            _tmpProfileVisiblity = state.visibility;
           });
         }
       },
       child: SwitchListTile(
         title: Text("Public profile"),
-        value: _tmpProfileVisiblity,
+        value: visibilityEnabled,
+        subtitle: Text(descriptionForVisibility),
         onChanged: (bool value) {
           context.read<AccountBloc>().add(DoProfileVisiblityChange(value));
           setState(() {
-            _tmpProfileVisiblity = value;
+            _updateTmpVisibilityToMakeUiLookResponsive(value);
           });
         },
         secondary: const Icon(Icons.public),
       ),
     );
+  }
+
+  void _updateTmpVisibilityToMakeUiLookResponsive(bool value) {
+    // Update from server will override this update.
+
+    if (value) {
+      if (_tmpProfileVisiblity == ProfileVisibility.pendingPrivate) {
+        _tmpProfileVisiblity = ProfileVisibility.pendingPublic;
+      } else if (_tmpProfileVisiblity == ProfileVisibility.private) {
+        _tmpProfileVisiblity = ProfileVisibility.public;
+      }
+    } else {
+      if (_tmpProfileVisiblity == ProfileVisibility.pendingPublic) {
+        _tmpProfileVisiblity = ProfileVisibility.pendingPrivate;
+      } else if (_tmpProfileVisiblity == ProfileVisibility.public) {
+        _tmpProfileVisiblity = ProfileVisibility.private;
+      }
+    }
   }
 }

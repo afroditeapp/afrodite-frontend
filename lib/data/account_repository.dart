@@ -1,6 +1,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,7 +25,7 @@ var log = Logger("AccountRepository");
 
 enum AccountRepositoryState {
   initRequired,
-  waitConnection,
+  waitConnection, // TODO: replace wait and watch with initComplete?
   watchConnection,
 }
 
@@ -41,9 +42,6 @@ class AccountRepository extends DataRepository {
     BehaviorSubject.seeded(MainState.splashScreen);
   final BehaviorSubject<AccountRepositoryState> _internalState =
     BehaviorSubject.seeded(AccountRepositoryState.initRequired);
-
-  // TODO: Remove at some point?
-  final PublishSubject<void> _hintAccountStateUpdated = PublishSubject();
 
   // Main app state streams
   Stream<MainState> get mainState => _mainState.distinct();
@@ -80,6 +78,12 @@ class AccountRepository extends DataRepository {
         }
       },
       Capabilities(),
+    );
+  Stream<ProfileVisibility> get profileVisibility => KvStringManager.getInstance()
+    .getUpdatesForWithConversionAndDefaultIfNull(
+      KvString.profileVisibility,
+      (value) => ProfileVisibility.fromJson(value) ?? ProfileVisibility.pendingPrivate,
+      ProfileVisibility.pendingPrivate,
     );
   Stream<AccountId?> get accountId => KvStringManager.getInstance()
     .getUpdatesForWithConversion(
@@ -125,21 +129,12 @@ class AccountRepository extends DataRepository {
         case ApiManagerState.connected: {
           _internalState.add(AccountRepositoryState.watchConnection);
         }
+        case ApiManagerState.unsupportedClientVersion: {
+          _mainState.add(MainState.unsupportedClientVersion);
+          _internalState.add(AccountRepositoryState.waitConnection);
+        }
       }
     });
-
-    // Update account state when there is connection to server and
-    // state refresh is wanted because of some client functionality.
-    _internalState
-      .switchMap((value) {
-        if (value == AccountRepositoryState.watchConnection) {
-          return _pollNotificationStream()
-            .asyncMap((value) => _downloadAccountState());
-        } else {
-          return const Stream<Account>.empty();
-        }
-      })
-      .listen((_) {});
 
     _api.serverEvents.listen((event) {
       switch (event) {
@@ -149,50 +144,30 @@ class AccountRepository extends DataRepository {
     });
   }
 
-  /// Server will now send events to client, so polling is only used when
-  /// manually triggered.
-  Stream<void> _pollNotificationStream() async* {
-    while (true) {
-      await Future.any([
-        _hintAccountStateUpdated.stream.first
-      ]);
-      // Manual refresh is deprecated
-      log.warning("Refreshing account state manually");
-      yield null;
-    }
-  }
-
-  Future<void> _downloadAccountState() async {
-    Account? data = await _api.account((api) => api.getAccountState());
-    if (data == null) {
-      log.error("error: data == null");
-    } else {
-      log.finer(data.state);
-      await _saveAndUpdateCapabilities(data.capabilities);
-      await _saveAndUpdateAccountState(data.state);
-    }
-  }
-
   Future<void> _saveAndUpdateAccountState(AccountState state) async {
-      await KvStringManager.getInstance().setValue(KvString.accountState, state.toString());
-      _emitMainStateUpdates(state);
+    await KvStringManager.getInstance().setValue(KvString.accountState, state.toString());
+    _emitMainStateUpdates(state);
   }
 
   void _emitMainStateUpdates(AccountState state) {
-      if (state == AccountState.initialSetup) {
-        _mainState.add(MainState.initialSetup);
-      } else if (state == AccountState.normal) {
-        _mainState.add(MainState.initialSetupComplete);
-      } else if (state == AccountState.banned) {
-        _mainState.add(MainState.accountBanned);
-      } else if (state == AccountState.pendingDeletion) {
-        _mainState.add(MainState.pendingRemoval);
-      }
+    if (state == AccountState.initialSetup) {
+      _mainState.add(MainState.initialSetup);
+    } else if (state == AccountState.normal) {
+      _mainState.add(MainState.initialSetupComplete);
+    } else if (state == AccountState.banned) {
+      _mainState.add(MainState.accountBanned);
+    } else if (state == AccountState.pendingDeletion) {
+      _mainState.add(MainState.pendingRemoval);
+    }
   }
 
   Future<void> _saveAndUpdateCapabilities(Capabilities capabilities) async {
-      final jsonString = jsonEncode(capabilities.toJson());
-      await KvStringManager.getInstance().setValue(KvString.accountCapabilities, jsonString);
+    final jsonString = jsonEncode(capabilities.toJson());
+    await KvStringManager.getInstance().setValue(KvString.accountCapabilities, jsonString);
+  }
+
+  Future<void> _saveAndUpdateProfileVisibility(ProfileVisibility profileVisibility) async {
+    await KvStringManager.getInstance().setValue(KvString.profileVisibility, profileVisibility.toString());
   }
 
   void _handleEventToClient(EventToClient event) {
@@ -200,15 +175,18 @@ class AccountRepository extends DataRepository {
 
     final accountState = event.accountState;
     final capabilities = event.capabilities;
+    final visibility = event.visibility;
     final latestViewedMessageChanged = event.latestViewedMessageChanged;
     if (event.event == EventType.accountStateChanged && accountState != null) {
       _saveAndUpdateAccountState(accountState);
     } else if (event.event == EventType.accountCapabilitiesChanged && capabilities != null) {
       _saveAndUpdateCapabilities(capabilities);
+    } else if (event.event == EventType.profileVisibilityChanged && visibility != null) {
+      _saveAndUpdateProfileVisibility(visibility);
     } else if (event.event == EventType.latestViewedMessageChanged && latestViewedMessageChanged != null) {
       // TODO
       log.warning("Unhandled event");
-    } else if (event.event == EventType.likesChanged) {
+    } else if (event.event == EventType.receivedLikesChanged) {
       ChatRepository.getInstance().receivedLikesRefresh();
     } else if (event.event == EventType.receivedBlocksChanged) {
       ChatRepository.getInstance().receivedBlocksRefresh();
@@ -258,6 +236,7 @@ class AccountRepository extends DataRepository {
     await _api.close();
 
     // Account
+    await KvStringManager.getInstance().setValue(KvString.profileVisibility, null);
     await KvStringManager.getInstance().setValue(KvString.accountCapabilities, null);
     await KvStringManager.getInstance().setValue(KvString.accountState, null);
     await KvStringManager.getInstance().setValue(KvString.accountRefreshToken, null);
@@ -273,24 +252,66 @@ class AccountRepository extends DataRepository {
     log.info("logout completed");
   }
 
+  /// Returns null on success. Returns String if error.
+  Future<WaitProcessingResult> _waitContentProcessing(int slot) async {
+    while (true) {
+      final state = await _api.media((api) => api.getContentSlotState(slot));
+      if (state == null) {
+        return ProcessingError("Server did not return content processing state");
+      }
+
+      switch (state.state) {
+        case ContentProcessingStateType.processing || ContentProcessingStateType.inQueue: {
+          await Future<void>.delayed(const Duration(seconds: 1));
+        }
+        case ContentProcessingStateType.failed: return ProcessingError("Security selfie processing failed");
+        case ContentProcessingStateType.empty: return ProcessingError("Slot is empty");
+        case ContentProcessingStateType.completed: {
+          final contentId = state.contentId;
+          if (contentId == null) {
+            return ProcessingError("Server did not return content ID");
+          } else {
+            return ProcessingSuccess(contentId);
+          }
+        }
+      }
+    }
+  }
+
   /// Return null on success. Return String if error.
   Future<String?> doInitialSetup(String email, String name, XFile securitySelfieFile, XFile profileImageFile) async {
     final String securitySelfiePath = securitySelfieFile.path;
     final String profileImagePath = profileImageFile.path;
 
     await _api.account((api) => api.postAccountData(AccountData(email: email)));
-    await _api.account((api) => api.postAccountSetup(AccountSetup(birthdate: "", name: name)));
+    await _api.account((api) => api.postAccountSetup(AccountSetup(birthdate: "123")));
     final securitySelfie = await MultipartFile.fromPath("", securitySelfiePath);
-    final contentId1 = await _api.media((api) => api.putImageToModerationSlot(0, securitySelfie));
-    if (contentId1 == null) {
-      return "Server did not return content ID";
+    final processingId = await _api.media((api) => api.putContentToContentSlot(0, true, MediaContentType.jpegImage, securitySelfie));
+    if (processingId == null) {
+      return "Server did not return content processing ID";
     }
+    final result = await _waitContentProcessing(0);
+    final ContentId contentId0;
+    switch (result) {
+      case ProcessingError(): return result.message;
+      case ProcessingSuccess(): contentId0 = result.contentId;
+    }
+    await _api.media((api) => api.putPendingSecurityContentInfo(contentId0));
+
     final profileImage = await MultipartFile.fromPath("", profileImagePath);
-    final contentId2 = await _api.media((api) => api.putImageToModerationSlot(1, profileImage));
-    if (contentId2 == null) {
-      return "Server did not return content ID";
+    final processingId2 = await _api.media((api) => api.putContentToContentSlot(1, false, MediaContentType.jpegImage, profileImage));
+    if (processingId2 == null) {
+      return "Server did not return content processing ID";
     }
-    await _api.media((api) => api.putModerationRequest(ModerationRequestContent(cameraImage: true, image1: contentId1, image2: contentId2)));
+    final result2 = await _waitContentProcessing(1);
+    final ContentId contentId1;
+    switch (result2) {
+      case ProcessingError(): return result2.message;
+      case ProcessingSuccess(): contentId1 = result2.contentId;
+    }
+    await _api.media((api) => api.putPendingProfileContent(SetProfileContent(contentId0: contentId1)));
+
+    await _api.media((api) => api.putModerationRequest(ModerationRequestContent(content0: contentId0, content1: contentId1)));
     await _api.account((api) => api.postCompleteSetup());
 
     final state = await _api.account((api) => api.getAccountState());
@@ -349,4 +370,14 @@ class AccountRepository extends DataRepository {
 
     return result;
   }
+}
+
+sealed class WaitProcessingResult {}
+class ProcessingError extends WaitProcessingResult {
+  final String message;
+  ProcessingError(this.message);
+}
+class ProcessingSuccess extends WaitProcessingResult {
+  final ContentId contentId;
+  ProcessingSuccess(this.contentId);
 }

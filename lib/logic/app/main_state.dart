@@ -4,7 +4,7 @@ import "package:pihka_frontend/ui/initial_setup.dart";
 
 /// States for top level UI main states
 enum MainState {
-  splashScreen, loginRequired, initialSetup, initialSetupComplete, accountBanned, pendingRemoval,
+  splashScreen, loginRequired, initialSetup, initialSetupComplete, accountBanned, pendingRemoval, unsupportedClientVersion
 }
 
 abstract class MainStateEvent {}
@@ -15,6 +15,7 @@ class ToInitialSetup extends MainStateEvent {}
 class ToMainScreen extends MainStateEvent {}
 class ToAccountBannedScreen extends MainStateEvent {}
 class ToPendingRemovalScreen extends MainStateEvent {}
+class ToUnsupportedClientScreen extends MainStateEvent {}
 
 /// Get current main state of the account/app
 class MainStateBloc extends Bloc<MainStateEvent, MainState> {
@@ -27,21 +28,25 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
     on<ToMainScreen>((_, emit) => emit(MainState.initialSetupComplete));
     on<ToAccountBannedScreen>((_, emit) => emit(MainState.accountBanned));
     on<ToPendingRemovalScreen>((_, emit) => emit(MainState.pendingRemoval));
+    on<ToUnsupportedClientScreen>((_, emit) => emit(MainState.unsupportedClientVersion));
 
     account.mainState.listen((event) {
-      if (event == MainState.loginRequired) {
+      switch (event) {
+        case MainState.loginRequired:
           add(ToLoginRequiredScreen());
-        } else if (event == MainState.initialSetup) {
+        case MainState.initialSetup:
           add(ToInitialSetup());
-        } else if (event == MainState.initialSetupComplete) {
+        case MainState.initialSetupComplete:
           add(ToMainScreen());
-        } else if (event == MainState.accountBanned) {
+        case MainState.accountBanned:
           add(ToAccountBannedScreen());
-        } else if (event == MainState.pendingRemoval) {
+        case MainState.pendingRemoval:
           add(ToPendingRemovalScreen());
-        } else if (event == MainState.splashScreen) {
+        case MainState.splashScreen:
           add(ToSplashScreen());
-        }
+        case MainState.unsupportedClientVersion:
+          add(ToUnsupportedClientScreen());
+      }
     });
   }
 }

@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
@@ -54,6 +55,8 @@ enum ServerConnectionError {
   invalidToken,
   /// Server unreachable, server connection broke or protocol error.
   connectionFailure,
+  /// Unsupported client version.
+  unsupportedClientVersion,
 }
 
 sealed class ServerConnectionState {}
@@ -155,6 +158,7 @@ class ServerConnection {
     _connection = ws;
 
     // Client starts the messaging
+    ws.sink.add(clientVersionInfoBytes());
     final byteToken = base64Decode(refreshToken);
     ws.sink.add(byteToken);
 
@@ -167,6 +171,8 @@ class ServerConnection {
               final newRefreshToken = base64Encode(message);
               await storage.setValue(_server.toRefreshTokenKey(), newRefreshToken);
               _protocolState = ConnectionProtocolState.receiveNewAccessToken;
+            } else if (message is String) {
+              await _endConnectionToGeneralError(error: ServerConnectionError.unsupportedClientVersion);
             } else {
               await _endConnectionToGeneralError();
             }
@@ -174,6 +180,7 @@ class ServerConnection {
           case ConnectionProtocolState.receiveNewAccessToken: {
             if (message is String) {
               await storage.setValue(_server.toAccessTokenKey(), message);
+              ws.sink.add(syncDataBytes());
               _protocolState = ConnectionProtocolState.receiveEvents;
               _state.add(Ready());
             } else {
@@ -215,10 +222,10 @@ class ServerConnection {
       );
   }
 
-  Future<void> _endConnectionToGeneralError() async {
+  Future<void> _endConnectionToGeneralError({ServerConnectionError error = ServerConnectionError.connectionFailure}) async {
     await _connection?.sink.close(status.goingAway);
     _connection = null;
-    _state.add(Error(ServerConnectionError.connectionFailure));
+    _state.add(Error(error));
   }
 
   Future<void> close() async {
@@ -234,4 +241,63 @@ class ServerConnection {
   bool inUse() {
     return !(_state.value is ReadyToConnect || _state.value is Error);
   }
+}
+
+Uint8List clientVersionInfoBytes() {
+  const protocolVersion = 0;
+  final int platform;
+  if (Platform.isAndroid) {
+    platform = 0;
+  } else if (Platform.isIOS) {
+    platform = 1;
+  } else {
+    throw UnimplementedError("Platform not supported");
+  }
+  final protocolBytes = <int>[protocolVersion, platform];
+  const major = 0;
+  const minor = 0;
+  const patch = 0;
+  protocolBytes.addAll(u16VersionToLittleEndianBytes(major));
+  protocolBytes.addAll(u16VersionToLittleEndianBytes(minor));
+  protocolBytes.addAll(u16VersionToLittleEndianBytes(patch));
+  return Uint8List.fromList(protocolBytes);
+}
+
+Uint8List u16VersionToLittleEndianBytes(int version) {
+  final buffer = ByteData(2);
+  if (version < 0 || version > 0xFFFF) {
+    throw ArgumentError("Version must be 16 bit integer");
+  }
+  buffer.setInt16(0, version, Endian.little);
+  return buffer.buffer.asUint8List();
+}
+
+const forceSync = 255;
+/*
+    Account = 0,
+    ReveivedLikes = 1,
+    ReveivedBlocks = 2,
+    SentLikes = 3,
+    SentBlocks = 4,
+    Matches = 5,
+*/
+
+// TODO(prod): Implement sync data version handling
+
+Uint8List syncDataBytes() {
+  final bytes = <int>[
+    0, // Account
+    forceSync,
+    1, // ReveivedLikes
+    forceSync,
+    2, // ReveivedBlocks
+    forceSync,
+    3, // SentLikes
+    forceSync,
+    4, // SentBlocks
+    forceSync,
+    5, // Matches
+    forceSync,
+  ];
+  return Uint8List.fromList(bytes);
 }

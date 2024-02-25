@@ -12,13 +12,14 @@ part of 'account.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$AccountBlocData {
   AccountId? get accountId => throw _privateConstructorUsedError;
   AccessToken? get accessToken => throw _privateConstructorUsedError;
   Capabilities get capabilities => throw _privateConstructorUsedError;
+  ProfileVisibility get visibility => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AccountBlocDataCopyWith<AccountBlocData> get copyWith =>
@@ -34,7 +35,8 @@ abstract class $AccountBlocDataCopyWith<$Res> {
   $Res call(
       {AccountId? accountId,
       AccessToken? accessToken,
-      Capabilities capabilities});
+      Capabilities capabilities,
+      ProfileVisibility visibility});
 }
 
 /// @nodoc
@@ -53,6 +55,7 @@ class _$AccountBlocDataCopyWithImpl<$Res, $Val extends AccountBlocData>
     Object? accountId = freezed,
     Object? accessToken = freezed,
     Object? capabilities = null,
+    Object? visibility = null,
   }) {
     return _then(_value.copyWith(
       accountId: freezed == accountId
@@ -67,6 +70,10 @@ class _$AccountBlocDataCopyWithImpl<$Res, $Val extends AccountBlocData>
           ? _value.capabilities
           : capabilities // ignore: cast_nullable_to_non_nullable
               as Capabilities,
+      visibility: null == visibility
+          ? _value.visibility
+          : visibility // ignore: cast_nullable_to_non_nullable
+              as ProfileVisibility,
     ) as $Val);
   }
 }
@@ -82,7 +89,8 @@ abstract class _$$AccountBlocDataImplCopyWith<$Res>
   $Res call(
       {AccountId? accountId,
       AccessToken? accessToken,
-      Capabilities capabilities});
+      Capabilities capabilities,
+      ProfileVisibility visibility});
 }
 
 /// @nodoc
@@ -99,6 +107,7 @@ class __$$AccountBlocDataImplCopyWithImpl<$Res>
     Object? accountId = freezed,
     Object? accessToken = freezed,
     Object? capabilities = null,
+    Object? visibility = null,
   }) {
     return _then(_$AccountBlocDataImpl(
       accountId: freezed == accountId
@@ -113,6 +122,10 @@ class __$$AccountBlocDataImplCopyWithImpl<$Res>
           ? _value.capabilities
           : capabilities // ignore: cast_nullable_to_non_nullable
               as Capabilities,
+      visibility: null == visibility
+          ? _value.visibility
+          : visibility // ignore: cast_nullable_to_non_nullable
+              as ProfileVisibility,
     ));
   }
 }
@@ -123,7 +136,10 @@ class _$AccountBlocDataImpl
     with DiagnosticableTreeMixin
     implements _AccountBlocData {
   _$AccountBlocDataImpl(
-      {this.accountId, this.accessToken, required this.capabilities});
+      {this.accountId,
+      this.accessToken,
+      required this.capabilities,
+      required this.visibility});
 
   @override
   final AccountId? accountId;
@@ -131,10 +147,12 @@ class _$AccountBlocDataImpl
   final AccessToken? accessToken;
   @override
   final Capabilities capabilities;
+  @override
+  final ProfileVisibility visibility;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountBlocData(accountId: $accountId, accessToken: $accessToken, capabilities: $capabilities)';
+    return 'AccountBlocData(accountId: $accountId, accessToken: $accessToken, capabilities: $capabilities, visibility: $visibility)';
   }
 
   @override
@@ -144,11 +162,12 @@ class _$AccountBlocDataImpl
       ..add(DiagnosticsProperty('type', 'AccountBlocData'))
       ..add(DiagnosticsProperty('accountId', accountId))
       ..add(DiagnosticsProperty('accessToken', accessToken))
-      ..add(DiagnosticsProperty('capabilities', capabilities));
+      ..add(DiagnosticsProperty('capabilities', capabilities))
+      ..add(DiagnosticsProperty('visibility', visibility));
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AccountBlocDataImpl &&
@@ -157,12 +176,14 @@ class _$AccountBlocDataImpl
             (identical(other.accessToken, accessToken) ||
                 other.accessToken == accessToken) &&
             (identical(other.capabilities, capabilities) ||
-                other.capabilities == capabilities));
+                other.capabilities == capabilities) &&
+            (identical(other.visibility, visibility) ||
+                other.visibility == visibility));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, accountId, accessToken, capabilities);
+  int get hashCode => Object.hash(
+      runtimeType, accountId, accessToken, capabilities, visibility);
 
   @JsonKey(ignore: true)
   @override
@@ -176,7 +197,8 @@ abstract class _AccountBlocData implements AccountBlocData {
   factory _AccountBlocData(
       {final AccountId? accountId,
       final AccessToken? accessToken,
-      required final Capabilities capabilities}) = _$AccountBlocDataImpl;
+      required final Capabilities capabilities,
+      required final ProfileVisibility visibility}) = _$AccountBlocDataImpl;
 
   @override
   AccountId? get accountId;
@@ -184,6 +206,8 @@ abstract class _AccountBlocData implements AccountBlocData {
   AccessToken? get accessToken;
   @override
   Capabilities get capabilities;
+  @override
+  ProfileVisibility get visibility;
   @override
   @JsonKey(ignore: true)
   _$$AccountBlocDataImplCopyWith<_$AccountBlocDataImpl> get copyWith =>

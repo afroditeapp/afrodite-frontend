@@ -120,7 +120,7 @@ class MessageDatabase extends BaseDatabase {
 
   // Returns true if the insert was successful.
   Future<bool> insertPendingMessage(AccountId localAccountId, PendingMessage entry) async {
-    final unixTime = DateTime.fromMillisecondsSinceEpoch(entry.unixTime * 1000);
+    final unixTime = DateTime.fromMillisecondsSinceEpoch(entry.unixTime.unixTime * 1000);
     final message = MessageEntry(
       localAccountId,
       entry.id.accountIdSender,

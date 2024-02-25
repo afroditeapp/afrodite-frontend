@@ -36,6 +36,8 @@ enum ApiManagerState {
   connecting,
   /// Connection to servers established.
   connected,
+  /// Server does not support this client version.
+  unsupportedClientVersion,
 }
 
 // sealed class ApiManagerEvent {}
@@ -161,6 +163,9 @@ class ApiManager extends AppSingleton {
               }
               case ServerConnectionError.invalidToken: {
                 _state.add(ApiManagerState.waitingRefreshToken);
+              }
+              case ServerConnectionError.unsupportedClientVersion: {
+                _state.add(ApiManagerState.unsupportedClientVersion);
               }
             }
           }

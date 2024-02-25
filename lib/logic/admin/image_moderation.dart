@@ -36,11 +36,18 @@ class ModerationEntry with _$ModerationEntry {
     required ContentId target,
     bool? status,
   }) = _ModerationEntry;
+
+
 }
 
 class ModerationRequestEntry {
-    bool? imageStatus1;
-    bool? imageStatus2;
+    bool? content0;
+    bool? content1;
+    bool? content2;
+    bool? content3;
+    bool? content4;
+    bool? content5;
+    bool? content6;
     Moderation m;
 
     ModerationRequestEntry(this.m);
@@ -94,11 +101,13 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
         var entry = imageRowState.entry;
         var requestEntry = imageRowState.requestEntry;
 
+        // TODO(prod): Support other images than the first two
+
         entry = entry.copyWith(status: data.accept);
-        if (entry.target == requestEntry.m.content.image1) {
-          requestEntry.imageStatus1 = data.accept;
-        } else if (entry.target == requestEntry.m.content.image2) {
-          requestEntry.imageStatus2 = data.accept;
+        if (entry.target == requestEntry.m.content.content0) {
+          requestEntry.content0 = data.accept;
+        } else if (entry.target == requestEntry.m.content.content1) {
+          requestEntry.content1 = data.accept;
         }
 
         // Update background color
@@ -106,14 +115,14 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
 
         // Check if all moderated
         // TODO: Reject all if first is rejected?
-        if (requestEntry.m.content.image2 != null) {
-          final imageStatus1 = requestEntry.imageStatus1;
-          final imageStatus2 = requestEntry.imageStatus2;
+        if (requestEntry.m.content.content2 != null) {
+          final imageStatus1 = requestEntry.content0;
+          final imageStatus2 = requestEntry.content1;
           if (imageStatus1 != null && imageStatus2 != null) {
             await media.handleModerationRequest(requestEntry.m.requestCreatorId, imageStatus1 && imageStatus2);
           }
         } else {
-          final imageStatus1 = requestEntry.imageStatus1;
+          final imageStatus1 = requestEntry.content0;
           if (imageStatus1 != null) {
             await media.handleModerationRequest(requestEntry.m.requestCreatorId, imageStatus1);
           }
@@ -154,7 +163,7 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
     }
     loadingFromServer = true;
 
-    ModerationList requests = await media.nextModerationListFromServer();
+    ModerationList requests = await media.nextModerationListFromServer(ModerationQueueType.initialMediaModeration);
 
     var noMoreDataAvailable = false;
 
@@ -173,21 +182,23 @@ class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData
       }
 
       ModerationRequestEntry requestEntry = ModerationRequestEntry(m);
-      // Camera image should be possible only for the initial request.
-      if (m.content.cameraImage) {
-        ModerationEntry e1 = ModerationEntry(target: m.content.image1);
-        appendImageRow(e1, requestEntry);
-        final image2 = m.content.image2;
-        if (image2 != null) {
-          ModerationEntry e2 = ModerationEntry(target: image2, securitySelfie: m.content.image1);
-          appendImageRow(e2, requestEntry);
-        }
+      final securitySelfie = await media.getSecuritySelfie(m.requestCreatorId);
+      if (securitySelfie != null) {
+        // Only one image per normal moderation request is supported currently.
+        // TODO(prod): support multiple images
+        final e = ModerationEntry(target: m.content.content0, securitySelfie: securitySelfie);
+        appendImageRow(e, requestEntry);
       } else {
-        final securitySelfie = await media.getSecuritySelfie(m.requestCreatorId);
-        if (securitySelfie != null) {
-          // Only one image per normal moderation request is supported currently.
-          final e = ModerationEntry(target: m.content.image1, securitySelfie: securitySelfie);
-          appendImageRow(e, requestEntry);
+        final pendingSecuritySelfie = await media.getPendingSecuritySelfie(m.requestCreatorId);
+        if (pendingSecuritySelfie != null && pendingSecuritySelfie.contentId == m.content.content0.contentId) {
+          // Initial moderation request
+          ModerationEntry e1 = ModerationEntry(target: m.content.content0);
+          appendImageRow(e1, requestEntry);
+          final c1 = m.content.content1;
+          if (c1 != null) {
+            ModerationEntry e2 = ModerationEntry(target: c1, securitySelfie: m.content.content0);
+            appendImageRow(e2, requestEntry);
+          }
         }
       }
 

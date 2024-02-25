@@ -21,7 +21,7 @@ part 'profile.freezed.dart';
 class ProfileData with _$ProfileData {
   factory ProfileData({
     ProfileEntry? profile,
-    PrimaryImage? primaryImage,
+    ContentId? primaryImage,
   }) = _ProfileData;
 }
 

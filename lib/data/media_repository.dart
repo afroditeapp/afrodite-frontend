@@ -35,7 +35,7 @@ class MediaRepository extends DataRepository {
   }
 
   Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) async {
-    final data = await api.media((api) => api.getImageFixed(
+    final data = await api.media((api) => api.getContentFixed(
       imageOwner.accountId,
       id.contentId,
       isMatch,
@@ -49,12 +49,18 @@ class MediaRepository extends DataRepository {
   }
 
   Future<ContentId?> getProfileImage(AccountId imageOwner, bool isMatch) async {
-    final data = await api.media((api) => api.getPrimaryImageInfo(
+    final data = await api.media((api) => api.getProfileContentInfo(
       imageOwner.accountId,
       isMatch
     ));
     if (data != null) {
-      return data.contentId;
+      final contentId = data.contentId0;
+      if (contentId == null) {
+        log.error("Image loading error: no contentId0");
+        return null;
+      } else {
+        return contentId.id;
+      }
     } else {
       log.error("Image loading error");
       return null;
@@ -87,8 +93,8 @@ class MediaRepository extends DataRepository {
     }
   }
 
-  Future<ModerationList> nextModerationListFromServer() async {
-    return await api.mediaAdmin((api) => api.patchModerationRequestList()) ?? ModerationList();
+  Future<ModerationList> nextModerationListFromServer(ModerationQueueType queue) async {
+    return await api.mediaAdmin((api) => api.patchModerationRequestList(queue)) ?? ModerationList();
   }
 
   Future<void> handleModerationRequest(AccountId accountId, bool accept) async {
@@ -96,12 +102,18 @@ class MediaRepository extends DataRepository {
   }
 
   Future<ContentId?> getSecuritySelfie(AccountId account) async {
-    final img = await api.mediaAdmin((api) => api.getSecurityImageInfo(account.accountId));
-    return img?.contentId;
+    final img = await api.media((api) => api.getSecurityContentInfo(account.accountId));
+    return img?.contentId?.id;
   }
 
-  Future<PrimaryImage?> getPrimaryImage(AccountId account, bool isMatch) async {
-    return await api.media((api) => api.getPrimaryImageInfo(account.accountId, isMatch));
+  Future<ContentId?> getPendingSecuritySelfie(AccountId account) async {
+    final img = await api.media((api) => api.getPendingSecurityContentInfo(account.accountId));
+    return img?.contentId?.id;
+  }
+
+  Future<ContentId?> getPrimaryImage(AccountId account, bool isMatch) async {
+    final info = await api.media((api) => api.getProfileContentInfo(account.accountId, isMatch));
+    return info?.contentId0?.id;
   }
 }
 

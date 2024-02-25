@@ -88,7 +88,7 @@ Widget viewProifleImage(BuildContext context, AccountId account, ProfileEntry pr
   }
 
   final Widget primaryImageWidget;
-  final imgContentId = img.img.contentId;
+  final imgContentId = img.img;
   if (imgContentId != null) {
     primaryImageWidget = FutureBuilder(
       future: ImageCacheData.getInstance().getImage(account, imgContentId),
@@ -146,6 +146,6 @@ class PrimaryImageFile extends PrimaryImageProvider {
 }
 
 class PrimaryImageInfo extends PrimaryImageProvider {
-  final PrimaryImage img;
+  final ContentId img;
   PrimaryImageInfo(this.img);
 }

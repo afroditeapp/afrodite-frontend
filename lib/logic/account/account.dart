@@ -16,6 +16,7 @@ class AccountBlocData with _$AccountBlocData {
     AccountId? accountId,
     AccessToken? accessToken,
     required Capabilities capabilities,
+    required ProfileVisibility visibility,
   }) = _AccountBlocData;
 }
 
@@ -41,12 +42,20 @@ class NewCapabilitiesValue extends AccountEvent {
   final Capabilities value;
   NewCapabilitiesValue(this.value);
 }
+class NewProfileVisibilityValue extends AccountEvent {
+  final ProfileVisibility value;
+  NewProfileVisibilityValue(this.value);
+}
 
 /// Do register/login operations
 class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner {
   final AccountRepository account;
 
-  AccountBloc(this.account) : super(AccountBlocData(capabilities: Capabilities())) {
+  AccountBloc(this.account) :
+    super(AccountBlocData(
+      capabilities: Capabilities(),
+      visibility: ProfileVisibility.pendingPrivate
+    )) {
     on<DoRegister>((data, emit) async {
       await runOnce(() async {
         emit(state.copyWith(
@@ -82,15 +91,22 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
     on<NewCapabilitiesValue>((key, emit) {
       emit(state.copyWith(capabilities: key.value));
     });
-
-    account.capabilities.listen((event) {
-      add(NewCapabilitiesValue(event));
+    on<NewProfileVisibilityValue>((key, emit) {
+      emit(state.copyWith(visibility: key.value));
     });
+
+
     account.accountId.listen((event) {
       add(NewAccountIdValue(event));
     });
     account.accountAccessToken.listen((event) {
       add(NewAccessTokenValue(event));
+    });
+    account.capabilities.listen((event) {
+      add(NewCapabilitiesValue(event));
+    });
+    account.profileVisibility.listen((event) {
+      add(NewProfileVisibilityValue(event));
     });
   }
 }

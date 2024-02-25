@@ -12,12 +12,12 @@ part of 'profile.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ProfileData {
   ProfileEntry? get profile => throw _privateConstructorUsedError;
-  PrimaryImage? get primaryImage => throw _privateConstructorUsedError;
+  ContentId? get primaryImage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProfileDataCopyWith<ProfileData> get copyWith =>
@@ -30,7 +30,7 @@ abstract class $ProfileDataCopyWith<$Res> {
           ProfileData value, $Res Function(ProfileData) then) =
       _$ProfileDataCopyWithImpl<$Res, ProfileData>;
   @useResult
-  $Res call({ProfileEntry? profile, PrimaryImage? primaryImage});
+  $Res call({ProfileEntry? profile, ContentId? primaryImage});
 }
 
 /// @nodoc
@@ -57,7 +57,7 @@ class _$ProfileDataCopyWithImpl<$Res, $Val extends ProfileData>
       primaryImage: freezed == primaryImage
           ? _value.primaryImage
           : primaryImage // ignore: cast_nullable_to_non_nullable
-              as PrimaryImage?,
+              as ContentId?,
     ) as $Val);
   }
 }
@@ -70,7 +70,7 @@ abstract class _$$ProfileDataImplCopyWith<$Res>
       __$$ProfileDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({ProfileEntry? profile, PrimaryImage? primaryImage});
+  $Res call({ProfileEntry? profile, ContentId? primaryImage});
 }
 
 /// @nodoc
@@ -95,7 +95,7 @@ class __$$ProfileDataImplCopyWithImpl<$Res>
       primaryImage: freezed == primaryImage
           ? _value.primaryImage
           : primaryImage // ignore: cast_nullable_to_non_nullable
-              as PrimaryImage?,
+              as ContentId?,
     ));
   }
 }
@@ -108,7 +108,7 @@ class _$ProfileDataImpl with DiagnosticableTreeMixin implements _ProfileData {
   @override
   final ProfileEntry? profile;
   @override
-  final PrimaryImage? primaryImage;
+  final ContentId? primaryImage;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -125,7 +125,7 @@ class _$ProfileDataImpl with DiagnosticableTreeMixin implements _ProfileData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ProfileDataImpl &&
@@ -147,12 +147,12 @@ class _$ProfileDataImpl with DiagnosticableTreeMixin implements _ProfileData {
 abstract class _ProfileData implements ProfileData {
   factory _ProfileData(
       {final ProfileEntry? profile,
-      final PrimaryImage? primaryImage}) = _$ProfileDataImpl;
+      final ContentId? primaryImage}) = _$ProfileDataImpl;
 
   @override
   ProfileEntry? get profile;
   @override
-  PrimaryImage? get primaryImage;
+  ContentId? get primaryImage;
   @override
   @JsonKey(ignore: true)
   _$$ProfileDataImplCopyWith<_$ProfileDataImpl> get copyWith =>
