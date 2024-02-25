@@ -93,6 +93,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   build_runner: ^2.3.3
   freezed: ^2.3.3
+  flutter_launcher_icons: ^0.13.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -138,6 +139,13 @@ flutter:
 
   assets:
     - assets_not_in_git/server_root.crt
+    - assets/app-icon.png
 
   # For intl translations
   generate: true
+
+flutter_launcher_icons:
+  image_path: "assets/app-icon.png"
+  android: true
+  ios: true
+  remove_alpha_ios: true

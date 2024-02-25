@@ -11,16 +11,17 @@ class SplashScreen extends RootPage {
 
   @override
   Widget buildRootWidget(BuildContext context) {
+    const appIconSize = 100.0;
     return Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const FlutterLogo(
-                size: 100,
+              Image.asset(
+                "assets/app-icon.png",
+                width: appIconSize,
+                height: appIconSize,
               ),
-              const Padding(padding: EdgeInsets.all(10)),
-              const Text("Pihka"),
               FutureBuilder(
                 future: GlobalInitManager.getInstance().triggerGlobalInit(),
                 builder: (context, snapshot) {

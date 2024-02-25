@@ -15,6 +15,9 @@ update-generated-code:
 update-localizations:
 	flutter gen-l10n
 
+update-app-icon:
+	dart run flutter_launcher_icons
+
 code-stats:
 	@/bin/echo -n "Lines:"
 	@find \
