@@ -10,7 +10,7 @@ import 'package:pihka_frontend/ui/normal/settings/my_profile.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile_visibility.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pihka_frontend/localizations.dart';
 
 class SettingsView extends BottomNavigationView {
   const SettingsView({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class SettingsView extends BottomNavigationView {
       PopupMenuButton(
         itemBuilder: (context) {
           return [
-            PopupMenuItem(value: "about", child: Text(AppLocalizations.of(context).pageSettingsAboutAction)),
+            PopupMenuItem(value: "about", child: Text(context.strings.pageSettingsAboutAction)),
           ];
         },
         onSelected: (value) {
@@ -46,7 +46,7 @@ class SettingsView extends BottomNavigationView {
 
   @override
   String title(BuildContext context) {
-    return AppLocalizations.of(context).pageSettingsTitle;
+    return context.strings.pageSettingsTitle;
   }
 }
 
@@ -56,10 +56,10 @@ class _SettingsViewState extends State<SettingsView> {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
         List<Setting> settings = [
-          Setting.createSetting(Icons.account_circle, AppLocalizations.of(context).pageMyProfileTitle, () =>
+          Setting.createSetting(Icons.account_circle, context.strings.pageMyProfileTitle, () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const MyProfilePage()))
           ),
-          Setting.createSetting(Icons.location_on, AppLocalizations.of(context).pageLocationTitle, () =>
+          Setting.createSetting(Icons.location_on, context.strings.pageLocationTitle, () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const LocationPage()))
           ),
           Setting.createSetting(Icons.public, "Profile visiblity", () =>
@@ -68,8 +68,8 @@ class _SettingsViewState extends State<SettingsView> {
           Setting.createSetting(Icons.block, "Blocked profiles", () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const BlockedProfilesPage()))
           ),
-          Setting.createSetting(Icons.logout, AppLocalizations.of(context).pageSettingsLogoutTitle, () =>
-            showConfirmDialog(context, AppLocalizations.of(context).pageSettingsLogoutTitle)
+          Setting.createSetting(Icons.logout, context.strings.pageSettingsLogoutTitle, () =>
+            showConfirmDialog(context, context.strings.pageSettingsLogoutTitle)
               .then((value) {
                 if (value == true) {
                   context.read<AccountBloc>().add(DoLogout());
@@ -79,7 +79,7 @@ class _SettingsViewState extends State<SettingsView> {
         ];
 
         if (state.capabilities.adminSettingsVisible()) {
-          settings.add(Setting.createSetting(Icons.admin_panel_settings, AppLocalizations.of(context).pageAdminTitle, () =>
+          settings.add(Setting.createSetting(Icons.admin_panel_settings, context.strings.pageAdminTitle, () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const AdminSettingsPage()))
           ));
         }

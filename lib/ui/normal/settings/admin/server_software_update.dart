@@ -12,7 +12,7 @@ import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui/utils/image_page.dart';
 
 

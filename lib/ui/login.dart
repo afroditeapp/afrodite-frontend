@@ -10,7 +10,7 @@ import "package:pihka_frontend/ui/utils/root_page.dart";
 import "package:sign_in_with_apple/sign_in_with_apple.dart";
 
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pihka_frontend/localizations.dart';
 
 const commonPadding = 5.0;
 
@@ -38,7 +38,7 @@ class LoginPage extends RootPage {
         },
       ),
       ElevatedButton(
-        child: Text(AppLocalizations.of(context).registerButton),
+        child: Text(context.strings.registerButton),
         onPressed: () {
           context.read<AccountBloc>().add(DoRegister());
         },
@@ -54,7 +54,7 @@ class LoginPage extends RootPage {
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
       ElevatedButton(
-        child: Text(AppLocalizations.of(context).loginButton),
+        child: Text(context.strings.loginButton),
         onPressed: () {
           context.read<InitialSetupBloc>().add(ResetState());
           context.read<AccountBloc>().add(DoLogin());

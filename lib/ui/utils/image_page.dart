@@ -14,7 +14,7 @@ import 'package:pihka_frontend/ui/normal.dart';
 import "package:pihka_frontend/ui/pending_deletion.dart";
 import "package:pihka_frontend/ui/utils.dart";
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pihka_frontend/localizations.dart';
 
 
 class ImagePage extends StatefulWidget {
@@ -37,7 +37,7 @@ class _ImagePageState extends State<ImagePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context).pageViewImageTitle)),
+      appBar: AppBar(title: Text(context.strings.pageViewImageTitle)),
       body: Center(child: buildImage(context, widget.imageOwner, widget.imageId),),
     );
   }
@@ -62,7 +62,7 @@ class _ImagePageState extends State<ImagePage>
                 ),
               );
             } else {
-              return Text(AppLocalizations.of(context).genericError);
+              return Text(context.strings.genericError);
             }
           }
         }

@@ -11,7 +11,7 @@ import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/logic/profile/profile.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui/normal/profiles.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui/utils/image_page.dart';
@@ -111,13 +111,13 @@ Widget viewProifleImage(BuildContext context, AccountId account, ProfileEntry pr
                 ),
               );
             } else {
-              return Text(AppLocalizations.of(context).genericError);
+              return Text(context.strings.genericError);
             }
           }
         }
     },);
   } else {
-    primaryImageWidget = Text(AppLocalizations.of(context).genericEmpty);
+    primaryImageWidget = Text(context.strings.genericEmpty);
   }
 
   return Row(

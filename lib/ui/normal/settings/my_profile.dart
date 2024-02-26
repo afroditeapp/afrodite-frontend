@@ -9,7 +9,7 @@ import 'package:pihka_frontend/ui/normal/settings/admin/moderate_images.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pihka_frontend/localizations.dart';
 
 
 class MyProfilePage extends StatelessWidget {
@@ -20,7 +20,7 @@ class MyProfilePage extends StatelessWidget {
     context.read<ProfileBloc>().add(LoadProfile());
 
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context).pageMyProfileTitle)),
+      appBar: AppBar(title: Text(context.strings.pageMyProfileTitle)),
       body: myProfilePage(context),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const EditProfilePage()),),
@@ -35,7 +35,7 @@ class MyProfilePage extends StatelessWidget {
       builder: (context, accountState) {
         final id = accountState.accountId;
         if (id == null) {
-          return Text(AppLocalizations.of(context).genericError);
+          return Text(context.strings.genericError);
         } else {
           return BlocBuilder<ProfileBloc, ProfileData>(
             builder: (context, profileState) {
@@ -44,7 +44,7 @@ class MyProfilePage extends StatelessWidget {
               if (profile != null && img != null) {
                 return viewProifle(context, id, profile, PrimaryImageInfo(img), false);
               } else {
-                return Text(AppLocalizations.of(context).genericEmpty);
+                return Text(context.strings.genericEmpty);
               }
             }
           );

@@ -22,7 +22,7 @@ import 'package:pihka_frontend/ui/normal/settings/admin/view_perf_data.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui/utils/image_page.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
@@ -36,7 +36,7 @@ class ProfileView extends BottomNavigationView {
 
   @override
   String title(BuildContext context) {
-    return AppLocalizations.of(context).pageProfileGridTitle;
+    return context.strings.pageProfileGridTitle;
   }
 
   @override

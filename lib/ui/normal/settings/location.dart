@@ -14,7 +14,7 @@ import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/logic/profile/location.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pihka_frontend/localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
@@ -24,7 +24,7 @@ class LocationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context).pageLocationTitle)),
+      appBar: AppBar(title: Text(context.strings.pageLocationTitle)),
       body: locationPage(context),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () => (),

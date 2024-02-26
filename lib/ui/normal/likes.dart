@@ -20,7 +20,7 @@ import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui/utils/image_page.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
@@ -34,7 +34,7 @@ class LikeView extends BottomNavigationView {
 
   @override
   String title(BuildContext context) {
-    return AppLocalizations.of(context).pageLikesTitle;
+    return context.strings.pageLikesTitle;
   }
 }
 

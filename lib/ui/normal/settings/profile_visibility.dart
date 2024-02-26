@@ -11,7 +11,7 @@ import 'package:pihka_frontend/ui/normal/settings/admin/moderate_images.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pihka_frontend/localizations.dart';
 
 
 class ProfileVisibilityPage extends StatefulWidget {

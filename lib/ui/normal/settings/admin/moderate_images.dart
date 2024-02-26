@@ -10,7 +10,7 @@ import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui/utils/image_page.dart';
 
 
@@ -76,7 +76,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context).pageModerateImagesTitle)),
+      appBar: AppBar(title: Text(context.strings.pageModerateImagesTitle)),
       body: list(context),
     );
   }
@@ -140,7 +140,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
         SizedBox(width: maxWidth/2, height: imageHeight, child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(AppLocalizations.of(context).genericEmpty),
+            Text(context.strings.genericEmpty),
           ],
         ));
     }
@@ -192,7 +192,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
                 ),
               );
             } else {
-              return Text(AppLocalizations.of(context).genericError);
+              return Text(context.strings.genericError);
             }
           }
         }
@@ -217,7 +217,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(AppLocalizations.of(context).genericEmpty)
+          Text(context.strings.genericEmpty)
         ],
       )
     );
@@ -235,7 +235,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
                 Navigator.pop(context);
                 showConfirmDialog(
                   context,
-                  AppLocalizations.of(context).pageModerateImagesDenyImageText,
+                  context.strings.pageModerateImagesDenyImageText,
                   details: "Note that if when all images in a requests are green, you have to ban the profile if you want make sure that other users can't see the image.",
                 )
                 .then(

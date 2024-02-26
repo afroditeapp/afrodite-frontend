@@ -1,9 +1,10 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/main.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 // TODO: Show details button for displaying more detailed error message
 void showSnackBar(String text) {
@@ -24,13 +25,13 @@ Future<bool?> showConfirmDialog(BuildContext context, String actionText, {String
           onPressed: () {
             Navigator.pop(context, false);
           },
-          child: Text(AppLocalizations.of(context).genericCancel)
+          child: Text(context.strings.genericCancel)
         ),
         TextButton(
           onPressed: () {
             Navigator.pop(context, true);
           },
-          child: Text(AppLocalizations.of(context).genericOk)
+          child: Text(context.strings.genericOk)
         )
       ],
     )
@@ -47,7 +48,7 @@ Future<bool?> showInfoDialog(BuildContext context, String text) {
           onPressed: () {
             Navigator.pop(context, false);
           },
-          child: Text(AppLocalizations.of(context).genericClose)
+          child: Text(context.strings.genericClose)
         ),
       ],
     )
