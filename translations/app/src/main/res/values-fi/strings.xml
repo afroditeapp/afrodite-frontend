@@ -1,0 +1,21 @@
+<resources>
+    <string name="genericError">Virhe</string>
+    <string name="genericEmpty">Tyhjä</string>
+    <string name="genericCancel">Peruuta</string>
+    <string name="genericClose">Sulje</string>
+    <string name="genericOk">OK</string>
+    <string name="loginButton">Kirjaudu</string>
+    <string name="registerButton">Rekisteröidy</string>
+    <string name="pageProfileGridTitle">Profiilit</string>
+    <string name="pageLikesTitle">Tykkäykset</string>
+    <string name="pageChatListTitle">Keskustelut</string>
+    <string name="pageSettingsTitle">Asetukset</string>
+    <string name="pageSettingsLogoutTitle">Kirjaudu ulos</string>
+    <string name="pageSettingsAboutAction">Tietoja</string>
+    <string name="pageMyProfileTitle">Minun profiili</string>
+    <string name="pageLocationTitle">Sijainti</string>
+    <string name="pageAdminTitle">Ylläpitäjä</string>
+    <string name="pageModerateImagesTitle">Moderoi kuvia</string>
+    <string name="pageModerateImagesDenyImageText">Hylkää</string>
+    <string name="pageViewImageTitle">Kuva</string>
+</resources>

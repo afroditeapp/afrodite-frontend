@@ -49,7 +49,10 @@ telnet 127.0.0.1 5554
 
 # Update localizations
 
-flutter gen-l10n
+Run `make update-localizations`
+
+The localizations are in the `translations` Android Studio project to make
+editing translations easier.
 
 ### After git clone
 

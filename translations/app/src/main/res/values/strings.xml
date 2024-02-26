@@ -1,0 +1,44 @@
+<resources>
+    <string name="genericError" description="Generic error message">Error</string>
+    <string name="genericEmpty" description="Generic empty text">Empty</string>
+    <string name="genericCancel" description="Generic cancel text">Cancel</string>
+    <string name="genericClose" description="Generic close text">Close</string>
+    <string name="genericOk" description="Generic OK text">OK</string>
+
+    <!-- Login page -->
+    <string name="loginButton" description="Login button text">Login</string>
+    <string name="registerButton" description="Register button text">Register</string>
+
+    <!-- Profile grid page -->
+    <string name="pageProfileGridTitle" description="Title for profile grid page">Profiles</string>
+
+    <!-- Likes page -->
+    <string name="pageLikesTitle" description="Title for likes page">Likes</string>
+
+    <!-- Chat list page -->
+    <string name="pageChatListTitle" description="Title for chat list page">Chats</string>
+
+    <!-- Settings page -->
+    <string name="pageSettingsTitle" description="Title for settings page">Settings</string>
+    <string name="pageSettingsLogoutTitle" description="Title for logout action">Logout</string>
+    <string name="pageSettingsAboutAction" description="Title for about action">About</string>
+
+    <!-- My profile page -->
+    <string name="pageMyProfileTitle" description="Title for my profile page">My Profile</string>
+
+    <!-- Location page -->
+    <string name="pageLocationTitle" description="Title for location page">Location</string>
+
+    <!-- Admin page -->
+    <string name="pageAdminTitle" description="Title for admin settings and tools page">Admin</string>
+
+    <!-- Moderate images page -->
+    <string name="pageModerateImagesTitle" description="Title for moderate images page">Moderate images</string>
+    <string name="pageModerateImagesDenyImageText" description="Deny image text">Deny</string>
+
+    <!-- View image page
+        TODO: Does this page need a title?
+    -->
+    <string name="pageViewImageTitle" description="Title for view image page">Image</string>
+
+</resources>

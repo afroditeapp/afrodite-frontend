@@ -1,13 +1,4 @@
 {
-  "@_GENERIC": {},
-  "genericError": "Error",
-  "@genericError": {
-    "description": "Generic error message"
-  },
-  "genericEmpty": "Empty",
-  "@genericEmpty": {
-    "description": "Generic empty text"
-  },
   "genericCancel": "Cancel",
   "@genericCancel": {
     "description": "Generic cancel text"
@@ -16,86 +7,72 @@
   "@genericClose": {
     "description": "Generic close text"
   },
+  "genericEmpty": "Empty",
+  "@genericEmpty": {
+    "description": "Generic empty text"
+  },
+  "genericError": "Error",
+  "@genericError": {
+    "description": "Generic error message"
+  },
   "genericOk": "OK",
   "@genericOk": {
     "description": "Generic OK text"
   },
-
-  "@_LOGIN_PAGE": {},
   "loginButton": "Login",
   "@loginButton": {
     "description": "Login button text"
   },
-  "registerButton": "Register",
-  "@registerButton": {
-    "description": "Register button text"
-  },
-
-  "@_PROFILE_GRID_PAGE": {},
-  "pageProfileGridTitle": "Profiles",
-  "@pageProfileGridTitle": {
-    "description": "Title for profile grid page"
-  },
-
-  "@_LIKES_PAGE": {},
-  "pageLikesTitle": "Likes",
-  "@pageLikesTitle": {
-    "description": "Title for likes page"
-  },
-
-  "@_CHAT_LIST_PAGE": {},
-  "pageChatListTitle": "Chats",
-  "@pageChatListTitle": {
-    "description": "Title for chat list page"
-  },
-
-  "@_SETTINGS_PAGE": {},
-  "pageSettingsTitle": "Settings",
-  "@pageSettingsTitle": {
-    "description": "Title for settings page"
-  },
-  "pageSettingsLogoutTitle": "Logout",
-  "@pageSettingsLogoutTitle": {
-    "description": "Title for logout action"
-  },
-  "pageSettingsAboutAction": "About",
-  "@pageSettingsAboutAction": {
-    "description": "Title for about action"
-  },
-
-  "@_MY_PROFILE_PAGE": {},
-  "pageMyProfileTitle": "My Profile",
-  "@pageMyProfileTitle": {
-    "description": "Title for my profile page"
-  },
-
-  "@_LOCATION_PAGE": {},
-  "pageLocationTitle": "Location",
-  "@pageLocationTitle": {
-    "description": "Title for location page"
-  },
-
-  "@_ADMIN_PAGE": {},
   "pageAdminTitle": "Admin",
   "@pageAdminTitle": {
     "description": "Title for admin settings and tools page"
   },
-
-  "@_MODERATE_IMAGES_PAGE": {},
-  "pageModerateImagesTitle": "Moderate images",
-  "@pageModerateImagesTitle": {
-    "description": "Title for moderate images page"
+  "pageChatListTitle": "Chats",
+  "@pageChatListTitle": {
+    "description": "Title for chat list page"
+  },
+  "pageLikesTitle": "Likes",
+  "@pageLikesTitle": {
+    "description": "Title for likes page"
+  },
+  "pageLocationTitle": "Location",
+  "@pageLocationTitle": {
+    "description": "Title for location page"
   },
   "pageModerateImagesDenyImageText": "Deny",
   "@pageModerateImagesDenyImageText": {
     "description": "Deny image text"
   },
-
-  "@_VIEW_IMAGE_PAGE": {},
+  "pageModerateImagesTitle": "Moderate images",
+  "@pageModerateImagesTitle": {
+    "description": "Title for moderate images page"
+  },
+  "pageMyProfileTitle": "My Profile",
+  "@pageMyProfileTitle": {
+    "description": "Title for my profile page"
+  },
+  "pageProfileGridTitle": "Profiles",
+  "@pageProfileGridTitle": {
+    "description": "Title for profile grid page"
+  },
+  "pageSettingsAboutAction": "About",
+  "@pageSettingsAboutAction": {
+    "description": "Title for about action"
+  },
+  "pageSettingsLogoutTitle": "Logout",
+  "@pageSettingsLogoutTitle": {
+    "description": "Title for logout action"
+  },
+  "pageSettingsTitle": "Settings",
+  "@pageSettingsTitle": {
+    "description": "Title for settings page"
+  },
   "pageViewImageTitle": "Image",
   "@pageViewImageTitle": {
     "description": "Title for view image page"
   },
-
-  "@_END_OF_FILE": {}
+  "registerButton": "Register",
+  "@registerButton": {
+    "description": "Register button text"
+  }
 }
