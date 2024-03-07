@@ -197,8 +197,20 @@ class ApiClient {
           return AccountStateTypeTransformer().decode(value);
         case 'AccountSyncVersion':
           return AccountSyncVersion.fromJson(value);
+        case 'Attribute':
+          return Attribute.fromJson(value);
+        case 'AttributeMode':
+          return AttributeModeTypeTransformer().decode(value);
+        case 'AttributeOrderMode':
+          return AttributeOrderModeTypeTransformer().decode(value);
+        case 'AttributeValue':
+          return AttributeValue.fromJson(value);
+        case 'AttributeValueOrderMode':
+          return AttributeValueOrderModeTypeTransformer().decode(value);
         case 'AuthPair':
           return AuthPair.fromJson(value);
+        case 'AvailableProfileAttributes':
+          return AvailableProfileAttributes.fromJson(value);
         case 'BackendConfig':
           return BackendConfig.fromJson(value);
         case 'BackendVersion':
@@ -245,8 +257,16 @@ class ApiClient {
           return EventTypeTypeTransformer().decode(value);
         case 'FavoriteProfilesPage':
           return FavoriteProfilesPage.fromJson(value);
+        case 'GroupValues':
+          return GroupValues.fromJson(value);
         case 'HandleModerationRequest':
           return HandleModerationRequest.fromJson(value);
+        case 'IconLocation':
+          return IconLocationTypeTransformer().decode(value);
+        case 'IconResource':
+          return IconResource.fromJson(value);
+        case 'Language':
+          return Language.fromJson(value);
         case 'LatestViewedMessageChanged':
           return LatestViewedMessageChanged.fromJson(value);
         case 'Location':
@@ -307,12 +327,34 @@ class ApiClient {
           return PerfValueArea.fromJson(value);
         case 'Profile':
           return Profile.fromJson(value);
+        case 'ProfileAge':
+          return ProfileAge.fromJson(value);
+        case 'ProfileAllOf':
+          return ProfileAllOf.fromJson(value);
+        case 'ProfileAttributeFilterList':
+          return ProfileAttributeFilterList.fromJson(value);
+        case 'ProfileAttributeFilterListUpdate':
+          return ProfileAttributeFilterListUpdate.fromJson(value);
+        case 'ProfileAttributeFilterValue':
+          return ProfileAttributeFilterValue.fromJson(value);
+        case 'ProfileAttributeFilterValueUpdate':
+          return ProfileAttributeFilterValueUpdate.fromJson(value);
+        case 'ProfileAttributeValue':
+          return ProfileAttributeValue.fromJson(value);
+        case 'ProfileAttributeValueUpdate':
+          return ProfileAttributeValueUpdate.fromJson(value);
+        case 'ProfileAttributes':
+          return ProfileAttributes.fromJson(value);
+        case 'ProfileAttributesSyncVersion':
+          return ProfileAttributesSyncVersion.fromJson(value);
         case 'ProfileContent':
           return ProfileContent.fromJson(value);
         case 'ProfileLink':
           return ProfileLink.fromJson(value);
         case 'ProfilePage':
           return ProfilePage.fromJson(value);
+        case 'ProfileSearchAgeRange':
+          return ProfileSearchAgeRange.fromJson(value);
         case 'ProfileUpdate':
           return ProfileUpdate.fromJson(value);
         case 'ProfileVersion':
@@ -333,6 +375,8 @@ class ApiClient {
           return RefreshToken.fromJson(value);
         case 'ResetDataQueryParam':
           return ResetDataQueryParam.fromJson(value);
+        case 'SearchGroups':
+          return SearchGroups.fromJson(value);
         case 'SecurityContent':
           return SecurityContent.fromJson(value);
         case 'SendMessageToAccount':
@@ -363,6 +407,8 @@ class ApiClient {
           return SystemInfoList.fromJson(value);
         case 'TimeGranularity':
           return TimeGranularityTypeTransformer().decode(value);
+        case 'Translation':
+          return Translation.fromJson(value);
         case 'UnixTime':
           return UnixTime.fromJson(value);
         case 'UpdateMessageViewStatus':

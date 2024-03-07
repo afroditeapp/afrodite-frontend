@@ -8,9 +8,11 @@ import 'package:openapi/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**version** | **String** |  | 
+**age** | **int** |  | 
+**attributes** | [**List<ProfileAttributeValue>**](ProfileAttributeValue.md) |  | [default to const []]
 **name** | **String** |  | 
 **profileText** | **String** |  | 
-**version** | [**ProfileVersion**](ProfileVersion.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

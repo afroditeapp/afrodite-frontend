@@ -13,38 +13,50 @@ part of openapi.api;
 class Profile {
   /// Returns a new [Profile] instance.
   Profile({
+    required this.version,
+    required this.age,
+    this.attributes = const [],
     required this.name,
     required this.profileText,
-    required this.version,
   });
+
+  String version;
+
+  int age;
+
+  List<ProfileAttributeValue> attributes;
 
   String name;
 
   String profileText;
 
-  ProfileVersion version;
-
   @override
   bool operator ==(Object other) => identical(this, other) || other is Profile &&
+     other.version == version &&
+     other.age == age &&
+     other.attributes == attributes &&
      other.name == name &&
-     other.profileText == profileText &&
-     other.version == version;
+     other.profileText == profileText;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (version.hashCode) +
+    (age.hashCode) +
+    (attributes.hashCode) +
     (name.hashCode) +
-    (profileText.hashCode) +
-    (version.hashCode);
+    (profileText.hashCode);
 
   @override
-  String toString() => 'Profile[name=$name, profileText=$profileText, version=$version]';
+  String toString() => 'Profile[version=$version, age=$age, attributes=$attributes, name=$name, profileText=$profileText]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'version'] = this.version;
+      json[r'age'] = this.age;
+      json[r'attributes'] = this.attributes;
       json[r'name'] = this.name;
       json[r'profile_text'] = this.profileText;
-      json[r'version'] = this.version;
     return json;
   }
 
@@ -67,9 +79,11 @@ class Profile {
       }());
 
       return Profile(
+        version: mapValueOfType<String>(json, r'version')!,
+        age: mapValueOfType<int>(json, r'age')!,
+        attributes: ProfileAttributeValue.listFromJson(json[r'attributes'])!,
         name: mapValueOfType<String>(json, r'name')!,
         profileText: mapValueOfType<String>(json, r'profile_text')!,
-        version: ProfileVersion.fromJson(json[r'version'])!,
       );
     }
     return null;
@@ -119,9 +133,11 @@ class Profile {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'version',
+    'age',
+    'attributes',
     'name',
     'profile_text',
-    'version',
   };
 }
 

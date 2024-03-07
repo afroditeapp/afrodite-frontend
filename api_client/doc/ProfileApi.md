@@ -10,15 +10,22 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**deleteFavoriteProfile**](ProfileApi.md#deletefavoriteprofile) | **DELETE** /profile_api/favorite_profile | Delete favorite profile
+[**getAvailableProfileAttributes**](ProfileApi.md#getavailableprofileattributes) | **GET** /profile_api/available_profile_attributes | Get info what profile attributes server supports.
 [**getFavoriteProfiles**](ProfileApi.md#getfavoriteprofiles) | **GET** /profile_api/favorite_profiles | Get list of all favorite profiles.
 [**getLocation**](ProfileApi.md#getlocation) | **GET** /profile_api/location | Get location for account which makes this request.
 [**getProfile**](ProfileApi.md#getprofile) | **GET** /profile_api/profile/{account_id} | Get account's current profile.
+[**getProfileAttributeFilters**](ProfileApi.md#getprofileattributefilters) | **GET** /profile_api/profile_attribute_filters | Get current profile attribute filter values.
 [**getProfileFromDatabaseDebugModeBenchmark**](ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /profile_api/benchmark/profile/{account_id} | Get account's current profile from database. Debug mode must be enabled
+[**getSearchAgeRange**](ProfileApi.md#getsearchagerange) | **GET** /profile_api/search_age_range | Get account's current search age range
+[**getSearchGroups**](ProfileApi.md#getsearchgroups) | **GET** /profile_api/search_groups | Get account's current search groups
 [**postFavoriteProfile**](ProfileApi.md#postfavoriteprofile) | **POST** /profile_api/favorite_profile | Add new favorite profile
 [**postGetNextProfilePage**](ProfileApi.md#postgetnextprofilepage) | **POST** /profile_api/page/next | Post (updates iterator) to get next page of profile list.
 [**postProfile**](ProfileApi.md#postprofile) | **POST** /profile_api/profile | Update profile information.
+[**postProfileAttributeFilters**](ProfileApi.md#postprofileattributefilters) | **POST** /profile_api/profile_attribute_filters | Set profile attribute filter values.
 [**postProfileToDatabaseDebugModeBenchmark**](ProfileApi.md#postprofiletodatabasedebugmodebenchmark) | **POST** /profile_api/benchmark/profile | Post account's current profile directly to database. Debug mode must be enabled
 [**postResetProfilePaging**](ProfileApi.md#postresetprofilepaging) | **POST** /profile_api/page/reset | Reset profile paging.
+[**postSearchAgeRange**](ProfileApi.md#postsearchagerange) | **POST** /profile_api/search_age_range | Set account's current search age range
+[**postSearchGroups**](ProfileApi.md#postsearchgroups) | **POST** /profile_api/search_groups | Set account's current search groups
 [**putLocation**](ProfileApi.md#putlocation) | **PUT** /profile_api/location | Update location for account which makes this request.
 
 
@@ -65,6 +72,49 @@ void (empty response body)
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getAvailableProfileAttributes**
+> AvailableProfileAttributes getAvailableProfileAttributes()
+
+Get info what profile attributes server supports.
+
+Get info what profile attributes server supports.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = ProfileApi();
+
+try {
+    final result = api_instance.getAvailableProfileAttributes();
+    print(result);
+} catch (e) {
+    print('Exception when calling ProfileApi->getAvailableProfileAttributes: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**AvailableProfileAttributes**](AvailableProfileAttributes.md)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -201,6 +251,49 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **getProfileAttributeFilters**
+> ProfileAttributeFilterList getProfileAttributeFilters()
+
+Get current profile attribute filter values.
+
+Get current profile attribute filter values.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = ProfileApi();
+
+try {
+    final result = api_instance.getProfileAttributeFilters();
+    print(result);
+} catch (e) {
+    print('Exception when calling ProfileApi->getProfileAttributeFilters: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**ProfileAttributeFilterList**](ProfileAttributeFilterList.md)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **getProfileFromDatabaseDebugModeBenchmark**
 > Profile getProfileFromDatabaseDebugModeBenchmark(accountId)
 
@@ -236,6 +329,92 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Profile**](Profile.md)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getSearchAgeRange**
+> ProfileSearchAgeRange getSearchAgeRange()
+
+Get account's current search age range
+
+Get account's current search age range
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = ProfileApi();
+
+try {
+    final result = api_instance.getSearchAgeRange();
+    print(result);
+} catch (e) {
+    print('Exception when calling ProfileApi->getSearchAgeRange: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**ProfileSearchAgeRange**](ProfileSearchAgeRange.md)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getSearchGroups**
+> SearchGroups getSearchGroups()
+
+Get account's current search groups
+
+Get account's current search groups (gender and what gender user is looking for)
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = ProfileApi();
+
+try {
+    final result = api_instance.getSearchGroups();
+    print(result);
+} catch (e) {
+    print('Exception when calling ProfileApi->getSearchGroups: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**SearchGroups**](SearchGroups.md)
 
 ### Authorization
 
@@ -383,6 +562,52 @@ void (empty response body)
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **postProfileAttributeFilters**
+> postProfileAttributeFilters(profileAttributeFilterListUpdate)
+
+Set profile attribute filter values.
+
+Set profile attribute filter values.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = ProfileApi();
+final profileAttributeFilterListUpdate = ProfileAttributeFilterListUpdate(); // ProfileAttributeFilterListUpdate | 
+
+try {
+    api_instance.postProfileAttributeFilters(profileAttributeFilterListUpdate);
+} catch (e) {
+    print('Exception when calling ProfileApi->postProfileAttributeFilters: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **profileAttributeFilterListUpdate** | [**ProfileAttributeFilterListUpdate**](ProfileAttributeFilterListUpdate.md)|  | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **postProfileToDatabaseDebugModeBenchmark**
 > postProfileToDatabaseDebugModeBenchmark(profileUpdate)
 
@@ -467,6 +692,98 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **postSearchAgeRange**
+> postSearchAgeRange(profileSearchAgeRange)
+
+Set account's current search age range
+
+Set account's current search age range
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = ProfileApi();
+final profileSearchAgeRange = ProfileSearchAgeRange(); // ProfileSearchAgeRange | 
+
+try {
+    api_instance.postSearchAgeRange(profileSearchAgeRange);
+} catch (e) {
+    print('Exception when calling ProfileApi->postSearchAgeRange: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **profileSearchAgeRange** | [**ProfileSearchAgeRange**](ProfileSearchAgeRange.md)|  | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **postSearchGroups**
+> postSearchGroups(searchGroups)
+
+Set account's current search groups
+
+Set account's current search groups (gender and what gender user is looking for)
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: access_token
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+
+final api_instance = ProfileApi();
+final searchGroups = SearchGroups(); // SearchGroups | 
+
+try {
+    api_instance.postSearchGroups(searchGroups);
+} catch (e) {
+    print('Exception when calling ProfileApi->postSearchGroups: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **searchGroups** | [**SearchGroups**](SearchGroups.md)|  | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[access_token](../README.md#access_token)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

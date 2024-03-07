@@ -29,7 +29,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        context.read<ProfileBloc>().add(SetProfile(ProfileUpdate(profileText: _profileTextController.text)));
+        // TODO: Update ProfileUpdate to have proper values
+        context.read<ProfileBloc>().add(SetProfile(ProfileUpdate(
+          profileText: _profileTextController.text,
+          age: 18,
+          name: "name",
+        )));
         return true;
       },
       child: Scaffold(

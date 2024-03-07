@@ -114,8 +114,10 @@ class ProfileDatabase extends BaseDatabase {
       return Profile(
         name: entry.name,
         profileText: entry.profileText,
+        // TODO: save age
+        age: 18,
         // TODO: save version?
-        version: ProfileVersion(versionUuid: ""),
+        version: "",
       );
     } else {
       return null;

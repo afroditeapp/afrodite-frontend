@@ -58,6 +58,15 @@ String parameterToString(dynamic value) {
   if (value is AccountState) {
     return AccountStateTypeTransformer().encode(value).toString();
   }
+  if (value is AttributeMode) {
+    return AttributeModeTypeTransformer().encode(value).toString();
+  }
+  if (value is AttributeOrderMode) {
+    return AttributeOrderModeTypeTransformer().encode(value).toString();
+  }
+  if (value is AttributeValueOrderMode) {
+    return AttributeValueOrderModeTypeTransformer().encode(value).toString();
+  }
   if (value is ContentProcessingStateType) {
     return ContentProcessingStateTypeTypeTransformer().encode(value).toString();
   }
@@ -72,6 +81,9 @@ String parameterToString(dynamic value) {
   }
   if (value is EventType) {
     return EventTypeTypeTransformer().encode(value).toString();
+  }
+  if (value is IconLocation) {
+    return IconLocationTypeTransformer().encode(value).toString();
   }
   if (value is MediaContentType) {
     return MediaContentTypeTypeTransformer().encode(value).toString();

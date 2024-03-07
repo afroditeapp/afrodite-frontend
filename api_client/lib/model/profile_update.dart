@@ -13,25 +13,43 @@ part of openapi.api;
 class ProfileUpdate {
   /// Returns a new [ProfileUpdate] instance.
   ProfileUpdate({
+    required this.age,
+    this.attributes = const [],
+    required this.name,
     required this.profileText,
   });
+
+  int age;
+
+  List<ProfileAttributeValueUpdate> attributes;
+
+  String name;
 
   String profileText;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileUpdate &&
+     other.age == age &&
+     other.attributes == attributes &&
+     other.name == name &&
      other.profileText == profileText;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (age.hashCode) +
+    (attributes.hashCode) +
+    (name.hashCode) +
     (profileText.hashCode);
 
   @override
-  String toString() => 'ProfileUpdate[profileText=$profileText]';
+  String toString() => 'ProfileUpdate[age=$age, attributes=$attributes, name=$name, profileText=$profileText]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'age'] = this.age;
+      json[r'attributes'] = this.attributes;
+      json[r'name'] = this.name;
       json[r'profile_text'] = this.profileText;
     return json;
   }
@@ -55,6 +73,9 @@ class ProfileUpdate {
       }());
 
       return ProfileUpdate(
+        age: mapValueOfType<int>(json, r'age')!,
+        attributes: ProfileAttributeValueUpdate.listFromJson(json[r'attributes'])!,
+        name: mapValueOfType<String>(json, r'name')!,
         profileText: mapValueOfType<String>(json, r'profile_text')!,
       );
     }
@@ -105,6 +126,9 @@ class ProfileUpdate {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'age',
+    'attributes',
+    'name',
     'profile_text',
   };
 }

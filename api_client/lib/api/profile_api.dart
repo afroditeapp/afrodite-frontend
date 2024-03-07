@@ -64,6 +64,54 @@ class ProfileApi {
     }
   }
 
+  /// Get info what profile attributes server supports.
+  ///
+  /// Get info what profile attributes server supports.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getAvailableProfileAttributesWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/available_profile_attributes';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get info what profile attributes server supports.
+  ///
+  /// Get info what profile attributes server supports.
+  Future<AvailableProfileAttributes?> getAvailableProfileAttributes() async {
+    final response = await getAvailableProfileAttributesWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AvailableProfileAttributes',) as AvailableProfileAttributes;
+    
+    }
+    return null;
+  }
+
   /// Get list of all favorite profiles.
   ///
   /// Get list of all favorite profiles.
@@ -217,6 +265,54 @@ class ProfileApi {
     return null;
   }
 
+  /// Get current profile attribute filter values.
+  ///
+  /// Get current profile attribute filter values.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getProfileAttributeFiltersWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/profile_attribute_filters';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get current profile attribute filter values.
+  ///
+  /// Get current profile attribute filter values.
+  Future<ProfileAttributeFilterList?> getProfileAttributeFilters() async {
+    final response = await getProfileAttributeFiltersWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileAttributeFilterList',) as ProfileAttributeFilterList;
+    
+    }
+    return null;
+  }
+
   /// Get account's current profile from database. Debug mode must be enabled
   ///
   /// Get account's current profile from database. Debug mode must be enabled that route can be used.
@@ -269,6 +365,102 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Profile',) as Profile;
+    
+    }
+    return null;
+  }
+
+  /// Get account's current search age range
+  ///
+  /// Get account's current search age range
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getSearchAgeRangeWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/search_age_range';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get account's current search age range
+  ///
+  /// Get account's current search age range
+  Future<ProfileSearchAgeRange?> getSearchAgeRange() async {
+    final response = await getSearchAgeRangeWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileSearchAgeRange',) as ProfileSearchAgeRange;
+    
+    }
+    return null;
+  }
+
+  /// Get account's current search groups
+  ///
+  /// Get account's current search groups (gender and what gender user is looking for)
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getSearchGroupsWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/search_groups';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get account's current search groups
+  ///
+  /// Get account's current search groups (gender and what gender user is looking for)
+  Future<SearchGroups?> getSearchGroups() async {
+    final response = await getSearchGroupsWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SearchGroups',) as SearchGroups;
     
     }
     return null;
@@ -418,6 +610,54 @@ class ProfileApi {
     }
   }
 
+  /// Set profile attribute filter values.
+  ///
+  /// Set profile attribute filter values.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [ProfileAttributeFilterListUpdate] profileAttributeFilterListUpdate (required):
+  Future<Response> postProfileAttributeFiltersWithHttpInfo(ProfileAttributeFilterListUpdate profileAttributeFilterListUpdate,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/profile_attribute_filters';
+
+    // ignore: prefer_final_locals
+    Object? postBody = profileAttributeFilterListUpdate;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Set profile attribute filter values.
+  ///
+  /// Set profile attribute filter values.
+  ///
+  /// Parameters:
+  ///
+  /// * [ProfileAttributeFilterListUpdate] profileAttributeFilterListUpdate (required):
+  Future<void> postProfileAttributeFilters(ProfileAttributeFilterListUpdate profileAttributeFilterListUpdate,) async {
+    final response = await postProfileAttributeFiltersWithHttpInfo(profileAttributeFilterListUpdate,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Post account's current profile directly to database. Debug mode must be enabled
   ///
   /// Post account's current profile directly to database. Debug mode must be enabled that route can be used.
@@ -501,6 +741,102 @@ class ProfileApi {
   /// Reset profile paging.  After this request getting next profiles will continue from the nearest profiles.
   Future<void> postResetProfilePaging() async {
     final response = await postResetProfilePagingWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Set account's current search age range
+  ///
+  /// Set account's current search age range
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [ProfileSearchAgeRange] profileSearchAgeRange (required):
+  Future<Response> postSearchAgeRangeWithHttpInfo(ProfileSearchAgeRange profileSearchAgeRange,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/search_age_range';
+
+    // ignore: prefer_final_locals
+    Object? postBody = profileSearchAgeRange;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Set account's current search age range
+  ///
+  /// Set account's current search age range
+  ///
+  /// Parameters:
+  ///
+  /// * [ProfileSearchAgeRange] profileSearchAgeRange (required):
+  Future<void> postSearchAgeRange(ProfileSearchAgeRange profileSearchAgeRange,) async {
+    final response = await postSearchAgeRangeWithHttpInfo(profileSearchAgeRange,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Set account's current search groups
+  ///
+  /// Set account's current search groups (gender and what gender user is looking for)
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [SearchGroups] searchGroups (required):
+  Future<Response> postSearchGroupsWithHttpInfo(SearchGroups searchGroups,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/search_groups';
+
+    // ignore: prefer_final_locals
+    Object? postBody = searchGroups;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Set account's current search groups
+  ///
+  /// Set account's current search groups (gender and what gender user is looking for)
+  ///
+  /// Parameters:
+  ///
+  /// * [SearchGroups] searchGroups (required):
+  Future<void> postSearchGroups(SearchGroups searchGroups,) async {
+    final response = await postSearchGroupsWithHttpInfo(searchGroups,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

@@ -119,15 +119,22 @@ Class | Method | HTTP request | Description
 *MediaAdminApi* | [**postHandleModerationRequest**](doc//MediaAdminApi.md#posthandlemoderationrequest) | **POST** /media_api/admin/moderation/handle_request/{account_id} | Handle moderation request of some account.
 *MediaInternalApi* | [**internalGetCheckModerationRequestForAccount**](doc//MediaInternalApi.md#internalgetcheckmoderationrequestforaccount) | **GET** /internal/media_api/moderation/request/{account_id} | Check that media server has correct state for completing initial setup.
 *ProfileApi* | [**deleteFavoriteProfile**](doc//ProfileApi.md#deletefavoriteprofile) | **DELETE** /profile_api/favorite_profile | Delete favorite profile
+*ProfileApi* | [**getAvailableProfileAttributes**](doc//ProfileApi.md#getavailableprofileattributes) | **GET** /profile_api/available_profile_attributes | Get info what profile attributes server supports.
 *ProfileApi* | [**getFavoriteProfiles**](doc//ProfileApi.md#getfavoriteprofiles) | **GET** /profile_api/favorite_profiles | Get list of all favorite profiles.
 *ProfileApi* | [**getLocation**](doc//ProfileApi.md#getlocation) | **GET** /profile_api/location | Get location for account which makes this request.
 *ProfileApi* | [**getProfile**](doc//ProfileApi.md#getprofile) | **GET** /profile_api/profile/{account_id} | Get account's current profile.
+*ProfileApi* | [**getProfileAttributeFilters**](doc//ProfileApi.md#getprofileattributefilters) | **GET** /profile_api/profile_attribute_filters | Get current profile attribute filter values.
 *ProfileApi* | [**getProfileFromDatabaseDebugModeBenchmark**](doc//ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /profile_api/benchmark/profile/{account_id} | Get account's current profile from database. Debug mode must be enabled
+*ProfileApi* | [**getSearchAgeRange**](doc//ProfileApi.md#getsearchagerange) | **GET** /profile_api/search_age_range | Get account's current search age range
+*ProfileApi* | [**getSearchGroups**](doc//ProfileApi.md#getsearchgroups) | **GET** /profile_api/search_groups | Get account's current search groups
 *ProfileApi* | [**postFavoriteProfile**](doc//ProfileApi.md#postfavoriteprofile) | **POST** /profile_api/favorite_profile | Add new favorite profile
 *ProfileApi* | [**postGetNextProfilePage**](doc//ProfileApi.md#postgetnextprofilepage) | **POST** /profile_api/page/next | Post (updates iterator) to get next page of profile list.
 *ProfileApi* | [**postProfile**](doc//ProfileApi.md#postprofile) | **POST** /profile_api/profile | Update profile information.
+*ProfileApi* | [**postProfileAttributeFilters**](doc//ProfileApi.md#postprofileattributefilters) | **POST** /profile_api/profile_attribute_filters | Set profile attribute filter values.
 *ProfileApi* | [**postProfileToDatabaseDebugModeBenchmark**](doc//ProfileApi.md#postprofiletodatabasedebugmodebenchmark) | **POST** /profile_api/benchmark/profile | Post account's current profile directly to database. Debug mode must be enabled
 *ProfileApi* | [**postResetProfilePaging**](doc//ProfileApi.md#postresetprofilepaging) | **POST** /profile_api/page/reset | Reset profile paging.
+*ProfileApi* | [**postSearchAgeRange**](doc//ProfileApi.md#postsearchagerange) | **POST** /profile_api/search_age_range | Set account's current search age range
+*ProfileApi* | [**postSearchGroups**](doc//ProfileApi.md#postsearchgroups) | **POST** /profile_api/search_groups | Set account's current search groups
 *ProfileApi* | [**putLocation**](doc//ProfileApi.md#putlocation) | **PUT** /profile_api/location | Update location for account which makes this request.
 
 
@@ -141,7 +148,13 @@ Class | Method | HTTP request | Description
  - [AccountSetup](doc//AccountSetup.md)
  - [AccountState](doc//AccountState.md)
  - [AccountSyncVersion](doc//AccountSyncVersion.md)
+ - [Attribute](doc//Attribute.md)
+ - [AttributeMode](doc//AttributeMode.md)
+ - [AttributeOrderMode](doc//AttributeOrderMode.md)
+ - [AttributeValue](doc//AttributeValue.md)
+ - [AttributeValueOrderMode](doc//AttributeValueOrderMode.md)
  - [AuthPair](doc//AuthPair.md)
+ - [AvailableProfileAttributes](doc//AvailableProfileAttributes.md)
  - [BackendConfig](doc//BackendConfig.md)
  - [BackendVersion](doc//BackendVersion.md)
  - [BooleanSetting](doc//BooleanSetting.md)
@@ -165,7 +178,11 @@ Class | Method | HTTP request | Description
  - [EventToClient](doc//EventToClient.md)
  - [EventType](doc//EventType.md)
  - [FavoriteProfilesPage](doc//FavoriteProfilesPage.md)
+ - [GroupValues](doc//GroupValues.md)
  - [HandleModerationRequest](doc//HandleModerationRequest.md)
+ - [IconLocation](doc//IconLocation.md)
+ - [IconResource](doc//IconResource.md)
+ - [Language](doc//Language.md)
  - [LatestViewedMessageChanged](doc//LatestViewedMessageChanged.md)
  - [Location](doc//Location.md)
  - [LoginResult](doc//LoginResult.md)
@@ -196,9 +213,20 @@ Class | Method | HTTP request | Description
  - [PerfHistoryValue](doc//PerfHistoryValue.md)
  - [PerfValueArea](doc//PerfValueArea.md)
  - [Profile](doc//Profile.md)
+ - [ProfileAge](doc//ProfileAge.md)
+ - [ProfileAllOf](doc//ProfileAllOf.md)
+ - [ProfileAttributeFilterList](doc//ProfileAttributeFilterList.md)
+ - [ProfileAttributeFilterListUpdate](doc//ProfileAttributeFilterListUpdate.md)
+ - [ProfileAttributeFilterValue](doc//ProfileAttributeFilterValue.md)
+ - [ProfileAttributeFilterValueUpdate](doc//ProfileAttributeFilterValueUpdate.md)
+ - [ProfileAttributeValue](doc//ProfileAttributeValue.md)
+ - [ProfileAttributeValueUpdate](doc//ProfileAttributeValueUpdate.md)
+ - [ProfileAttributes](doc//ProfileAttributes.md)
+ - [ProfileAttributesSyncVersion](doc//ProfileAttributesSyncVersion.md)
  - [ProfileContent](doc//ProfileContent.md)
  - [ProfileLink](doc//ProfileLink.md)
  - [ProfilePage](doc//ProfilePage.md)
+ - [ProfileSearchAgeRange](doc//ProfileSearchAgeRange.md)
  - [ProfileUpdate](doc//ProfileUpdate.md)
  - [ProfileVersion](doc//ProfileVersion.md)
  - [ProfileVisibility](doc//ProfileVisibility.md)
@@ -209,6 +237,7 @@ Class | Method | HTTP request | Description
  - [ReceivedLikesSyncVersion](doc//ReceivedLikesSyncVersion.md)
  - [RefreshToken](doc//RefreshToken.md)
  - [ResetDataQueryParam](doc//ResetDataQueryParam.md)
+ - [SearchGroups](doc//SearchGroups.md)
  - [SecurityContent](doc//SecurityContent.md)
  - [SendMessageToAccount](doc//SendMessageToAccount.md)
  - [SentBlocksPage](doc//SentBlocksPage.md)
@@ -224,6 +253,7 @@ Class | Method | HTTP request | Description
  - [SystemInfo](doc//SystemInfo.md)
  - [SystemInfoList](doc//SystemInfoList.md)
  - [TimeGranularity](doc//TimeGranularity.md)
+ - [Translation](doc//Translation.md)
  - [UnixTime](doc//UnixTime.md)
  - [UpdateMessageViewStatus](doc//UpdateMessageViewStatus.md)
 
