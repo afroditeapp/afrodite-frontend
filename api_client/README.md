@@ -65,10 +65,15 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**getAccountSetup**](doc//AccountApi.md#getaccountsetup) | **GET** /account_api/account_setup | Get non-changeable user information to account.
 *AccountApi* | [**getAccountState**](doc//AccountApi.md#getaccountstate) | **GET** /account_api/state | Get current account state.
 *AccountApi* | [**getDeletionStatus**](doc//AccountApi.md#getdeletionstatus) | **GET** /account_api/delete | Get deletion status.
+*AccountApi* | [**getDemoModeAccessibleAccounts**](doc//AccountApi.md#getdemomodeaccessibleaccounts) | **GET** /account_api/demo_mode_accessible_accounts | 
 *AccountApi* | [**postAccountData**](doc//AccountApi.md#postaccountdata) | **POST** /account_api/account_data | Set changeable user information to account.
 *AccountApi* | [**postAccountSetup**](doc//AccountApi.md#postaccountsetup) | **POST** /account_api/account_setup | Setup non-changeable user information during `initial setup` state.
 *AccountApi* | [**postCompleteSetup**](doc//AccountApi.md#postcompletesetup) | **POST** /account_api/complete_setup | Complete initial setup.
 *AccountApi* | [**postDelete**](doc//AccountApi.md#postdelete) | **PUT** /account_api/delete | Delete account.
+*AccountApi* | [**postDemoModeConfirmLogin**](doc//AccountApi.md#postdemomodeconfirmlogin) | **POST** /account_api/demo_mode_confirm_login | 
+*AccountApi* | [**postDemoModeLogin**](doc//AccountApi.md#postdemomodelogin) | **POST** /account_api/demo_mode_login | Access demo mode, which allows accessing all or specific accounts
+*AccountApi* | [**postDemoModeLoginToAccount**](doc//AccountApi.md#postdemomodelogintoaccount) | **POST** /account_api/demo_mode_login_to_account | 
+*AccountApi* | [**postDemoModeRegisterAccount**](doc//AccountApi.md#postdemomoderegisteraccount) | **POST** /account_api/demo_mode_register_account | 
 *AccountApi* | [**postLogin**](doc//AccountApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken.
 *AccountApi* | [**postRegister**](doc//AccountApi.md#postregister) | **POST** /account_api/register | Register new account. Returns new account ID which is UUID.
 *AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google. Creates new account if
@@ -141,6 +146,7 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [AccessToken](doc//AccessToken.md)
+ - [AccessibleAccount](doc//AccessibleAccount.md)
  - [Account](doc//Account.md)
  - [AccountContent](doc//AccountContent.md)
  - [AccountData](doc//AccountData.md)
@@ -173,6 +179,13 @@ Class | Method | HTTP request | Description
  - [ContentSlot](doc//ContentSlot.md)
  - [ContentState](doc//ContentState.md)
  - [DeleteStatus](doc//DeleteStatus.md)
+ - [DemoModeConfirmLogin](doc//DemoModeConfirmLogin.md)
+ - [DemoModeConfirmLoginResult](doc//DemoModeConfirmLoginResult.md)
+ - [DemoModeLoginResult](doc//DemoModeLoginResult.md)
+ - [DemoModeLoginToAccount](doc//DemoModeLoginToAccount.md)
+ - [DemoModeLoginToken](doc//DemoModeLoginToken.md)
+ - [DemoModePassword](doc//DemoModePassword.md)
+ - [DemoModeToken](doc//DemoModeToken.md)
  - [DownloadType](doc//DownloadType.md)
  - [DownloadTypeQueryParam](doc//DownloadTypeQueryParam.md)
  - [EventToClient](doc//EventToClient.md)

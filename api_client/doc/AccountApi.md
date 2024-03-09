@@ -14,10 +14,15 @@ Method | HTTP request | Description
 [**getAccountSetup**](AccountApi.md#getaccountsetup) | **GET** /account_api/account_setup | Get non-changeable user information to account.
 [**getAccountState**](AccountApi.md#getaccountstate) | **GET** /account_api/state | Get current account state.
 [**getDeletionStatus**](AccountApi.md#getdeletionstatus) | **GET** /account_api/delete | Get deletion status.
+[**getDemoModeAccessibleAccounts**](AccountApi.md#getdemomodeaccessibleaccounts) | **GET** /account_api/demo_mode_accessible_accounts | 
 [**postAccountData**](AccountApi.md#postaccountdata) | **POST** /account_api/account_data | Set changeable user information to account.
 [**postAccountSetup**](AccountApi.md#postaccountsetup) | **POST** /account_api/account_setup | Setup non-changeable user information during `initial setup` state.
 [**postCompleteSetup**](AccountApi.md#postcompletesetup) | **POST** /account_api/complete_setup | Complete initial setup.
 [**postDelete**](AccountApi.md#postdelete) | **PUT** /account_api/delete | Delete account.
+[**postDemoModeConfirmLogin**](AccountApi.md#postdemomodeconfirmlogin) | **POST** /account_api/demo_mode_confirm_login | 
+[**postDemoModeLogin**](AccountApi.md#postdemomodelogin) | **POST** /account_api/demo_mode_login | Access demo mode, which allows accessing all or specific accounts
+[**postDemoModeLoginToAccount**](AccountApi.md#postdemomodelogintoaccount) | **POST** /account_api/demo_mode_login_to_account | 
+[**postDemoModeRegisterAccount**](AccountApi.md#postdemomoderegisteraccount) | **POST** /account_api/demo_mode_register_account | 
 [**postLogin**](AccountApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken.
 [**postRegister**](AccountApi.md#postregister) | **POST** /account_api/register | Register new account. Returns new account ID which is UUID.
 [**postSignInWithLogin**](AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google. Creates new account if
@@ -238,6 +243,47 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **getDemoModeAccessibleAccounts**
+> List<AccessibleAccount> getDemoModeAccessibleAccounts(demoModeToken)
+
+
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+
+final api_instance = AccountApi();
+final demoModeToken = DemoModeToken(); // DemoModeToken | 
+
+try {
+    final result = api_instance.getDemoModeAccessibleAccounts(demoModeToken);
+    print(result);
+} catch (e) {
+    print('Exception when calling AccountApi->getDemoModeAccessibleAccounts: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **demoModeToken** | [**DemoModeToken**](DemoModeToken.md)|  | 
+
+### Return type
+
+[**List<AccessibleAccount>**](AccessibleAccount.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **postAccountData**
 > postAccountData(accountData)
 
@@ -411,6 +457,172 @@ void (empty response body)
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **postDemoModeConfirmLogin**
+> DemoModeConfirmLoginResult postDemoModeConfirmLogin(demoModeConfirmLogin)
+
+
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+
+final api_instance = AccountApi();
+final demoModeConfirmLogin = DemoModeConfirmLogin(); // DemoModeConfirmLogin | 
+
+try {
+    final result = api_instance.postDemoModeConfirmLogin(demoModeConfirmLogin);
+    print(result);
+} catch (e) {
+    print('Exception when calling AccountApi->postDemoModeConfirmLogin: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **demoModeConfirmLogin** | [**DemoModeConfirmLogin**](DemoModeConfirmLogin.md)|  | 
+
+### Return type
+
+[**DemoModeConfirmLoginResult**](DemoModeConfirmLoginResult.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **postDemoModeLogin**
+> DemoModeLoginResult postDemoModeLogin(demoModePassword)
+
+Access demo mode, which allows accessing all or specific accounts
+
+Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+
+final api_instance = AccountApi();
+final demoModePassword = DemoModePassword(); // DemoModePassword | 
+
+try {
+    final result = api_instance.postDemoModeLogin(demoModePassword);
+    print(result);
+} catch (e) {
+    print('Exception when calling AccountApi->postDemoModeLogin: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **demoModePassword** | [**DemoModePassword**](DemoModePassword.md)|  | 
+
+### Return type
+
+[**DemoModeLoginResult**](DemoModeLoginResult.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **postDemoModeLoginToAccount**
+> LoginResult postDemoModeLoginToAccount(demoModeLoginToAccount)
+
+
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+
+final api_instance = AccountApi();
+final demoModeLoginToAccount = DemoModeLoginToAccount(); // DemoModeLoginToAccount | 
+
+try {
+    final result = api_instance.postDemoModeLoginToAccount(demoModeLoginToAccount);
+    print(result);
+} catch (e) {
+    print('Exception when calling AccountApi->postDemoModeLoginToAccount: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **demoModeLoginToAccount** | [**DemoModeLoginToAccount**](DemoModeLoginToAccount.md)|  | 
+
+### Return type
+
+[**LoginResult**](LoginResult.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **postDemoModeRegisterAccount**
+> AccountId postDemoModeRegisterAccount(demoModeToken)
+
+
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+
+final api_instance = AccountApi();
+final demoModeToken = DemoModeToken(); // DemoModeToken | 
+
+try {
+    final result = api_instance.postDemoModeRegisterAccount(demoModeToken);
+    print(result);
+} catch (e) {
+    print('Exception when calling AccountApi->postDemoModeRegisterAccount: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **demoModeToken** | [**DemoModeToken**](DemoModeToken.md)|  | 
+
+### Return type
+
+[**AccountId**](AccountId.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

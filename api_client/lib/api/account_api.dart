@@ -248,6 +248,56 @@ class AccountApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /account_api/demo_mode_accessible_accounts' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [DemoModeToken] demoModeToken (required):
+  Future<Response> getDemoModeAccessibleAccountsWithHttpInfo(DemoModeToken demoModeToken,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/demo_mode_accessible_accounts';
+
+    // ignore: prefer_final_locals
+    Object? postBody = demoModeToken;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [DemoModeToken] demoModeToken (required):
+  Future<List<AccessibleAccount>?> getDemoModeAccessibleAccounts(DemoModeToken demoModeToken,) async {
+    final response = await getDemoModeAccessibleAccountsWithHttpInfo(demoModeToken,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      final responseBody = await _decodeBodyBytes(response);
+      return (await apiClient.deserializeAsync(responseBody, 'List<AccessibleAccount>') as List)
+        .cast<AccessibleAccount>()
+        .toList();
+
+    }
+    return null;
+  }
+
   /// Set changeable user information to account.
   ///
   /// Set changeable user information to account.
@@ -422,6 +472,203 @@ class AccountApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Performs an HTTP 'POST /account_api/demo_mode_confirm_login' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [DemoModeConfirmLogin] demoModeConfirmLogin (required):
+  Future<Response> postDemoModeConfirmLoginWithHttpInfo(DemoModeConfirmLogin demoModeConfirmLogin,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/demo_mode_confirm_login';
+
+    // ignore: prefer_final_locals
+    Object? postBody = demoModeConfirmLogin;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [DemoModeConfirmLogin] demoModeConfirmLogin (required):
+  Future<DemoModeConfirmLoginResult?> postDemoModeConfirmLogin(DemoModeConfirmLogin demoModeConfirmLogin,) async {
+    final response = await postDemoModeConfirmLoginWithHttpInfo(demoModeConfirmLogin,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'DemoModeConfirmLoginResult',) as DemoModeConfirmLoginResult;
+    
+    }
+    return null;
+  }
+
+  /// Access demo mode, which allows accessing all or specific accounts
+  ///
+  /// Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [DemoModePassword] demoModePassword (required):
+  Future<Response> postDemoModeLoginWithHttpInfo(DemoModePassword demoModePassword,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/demo_mode_login';
+
+    // ignore: prefer_final_locals
+    Object? postBody = demoModePassword;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Access demo mode, which allows accessing all or specific accounts
+  ///
+  /// Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
+  ///
+  /// Parameters:
+  ///
+  /// * [DemoModePassword] demoModePassword (required):
+  Future<DemoModeLoginResult?> postDemoModeLogin(DemoModePassword demoModePassword,) async {
+    final response = await postDemoModeLoginWithHttpInfo(demoModePassword,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'DemoModeLoginResult',) as DemoModeLoginResult;
+    
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'POST /account_api/demo_mode_login_to_account' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [DemoModeLoginToAccount] demoModeLoginToAccount (required):
+  Future<Response> postDemoModeLoginToAccountWithHttpInfo(DemoModeLoginToAccount demoModeLoginToAccount,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/demo_mode_login_to_account';
+
+    // ignore: prefer_final_locals
+    Object? postBody = demoModeLoginToAccount;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [DemoModeLoginToAccount] demoModeLoginToAccount (required):
+  Future<LoginResult?> postDemoModeLoginToAccount(DemoModeLoginToAccount demoModeLoginToAccount,) async {
+    final response = await postDemoModeLoginToAccountWithHttpInfo(demoModeLoginToAccount,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LoginResult',) as LoginResult;
+    
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'POST /account_api/demo_mode_register_account' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [DemoModeToken] demoModeToken (required):
+  Future<Response> postDemoModeRegisterAccountWithHttpInfo(DemoModeToken demoModeToken,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/demo_mode_register_account';
+
+    // ignore: prefer_final_locals
+    Object? postBody = demoModeToken;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [DemoModeToken] demoModeToken (required):
+  Future<AccountId?> postDemoModeRegisterAccount(DemoModeToken demoModeToken,) async {
+    final response = await postDemoModeRegisterAccountWithHttpInfo(demoModeToken,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountId',) as AccountId;
+    
+    }
+    return null;
   }
 
   /// Get new AccessToken.

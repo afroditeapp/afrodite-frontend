@@ -183,6 +183,8 @@ class ApiClient {
           return value is DateTime ? value : DateTime.tryParse(value);
         case 'AccessToken':
           return AccessToken.fromJson(value);
+        case 'AccessibleAccount':
+          return AccessibleAccount.fromJson(value);
         case 'Account':
           return Account.fromJson(value);
         case 'AccountContent':
@@ -247,6 +249,20 @@ class ApiClient {
           return ContentStateTypeTransformer().decode(value);
         case 'DeleteStatus':
           return DeleteStatus.fromJson(value);
+        case 'DemoModeConfirmLogin':
+          return DemoModeConfirmLogin.fromJson(value);
+        case 'DemoModeConfirmLoginResult':
+          return DemoModeConfirmLoginResult.fromJson(value);
+        case 'DemoModeLoginResult':
+          return DemoModeLoginResult.fromJson(value);
+        case 'DemoModeLoginToAccount':
+          return DemoModeLoginToAccount.fromJson(value);
+        case 'DemoModeLoginToken':
+          return DemoModeLoginToken.fromJson(value);
+        case 'DemoModePassword':
+          return DemoModePassword.fromJson(value);
+        case 'DemoModeToken':
+          return DemoModeToken.fromJson(value);
         case 'DownloadType':
           return DownloadTypeTypeTransformer().decode(value);
         case 'DownloadTypeQueryParam':
