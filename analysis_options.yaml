@@ -39,3 +39,4 @@ analyzer:
   errors:
     unawaited_futures: warning
     todo: ignore
+    constant_identifier_names: ignore

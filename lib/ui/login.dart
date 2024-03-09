@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:pihka_frontend/config.dart";
 import "package:pihka_frontend/logic/account/account.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
@@ -22,9 +23,7 @@ class LoginPage extends RootPage {
   @override
   Widget buildRootWidget(BuildContext context) {
     final loginPageWidgets = <Widget>[
-      const Text(
-        "Pihka"
-      ),
+      Text(context.strings.app_name),
       ServerAddressField(_serverAddressFormKey),
       ElevatedButton(
         child: const Text(
@@ -38,7 +37,7 @@ class LoginPage extends RootPage {
         },
       ),
       ElevatedButton(
-        child: Text(context.strings.registerButton),
+        child: Text(context.strings.login_screen_register_button),
         onPressed: () {
           context.read<AccountBloc>().add(DoRegister());
         },
@@ -54,7 +53,7 @@ class LoginPage extends RootPage {
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
       ElevatedButton(
-        child: Text(context.strings.loginButton),
+        child: Text(context.strings.login_screen_login_button),
         onPressed: () {
           context.read<InitialSetupBloc>().add(ResetState());
           context.read<AccountBloc>().add(DoLogin());

@@ -1,10 +1,12 @@
 {
+  "app_slogan": "Suomen reiluin deittisovellus",
   "genericCancel": "Peruuta",
   "genericClose": "Sulje",
   "genericEmpty": "Tyhjä",
   "genericError": "Virhe",
   "genericOk": "OK",
-  "loginButton": "Kirjaudu",
+  "login_screen_login_button": "Kirjaudu",
+  "login_screen_register_button": "Rekisteröidy",
   "pageAdminTitle": "Ylläpitäjä",
   "pageChatListTitle": "Keskustelut",
   "pageLikesTitle": "Tykkäykset",
@@ -16,6 +18,5 @@
   "pageSettingsAboutAction": "Tietoja",
   "pageSettingsLogoutTitle": "Kirjaudu ulos",
   "pageSettingsTitle": "Asetukset",
-  "pageViewImageTitle": "Kuva",
-  "registerButton": "Rekisteröidy"
+  "pageViewImageTitle": "Kuva"
 }

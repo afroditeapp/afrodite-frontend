@@ -11,6 +11,8 @@ import 'package:pihka_frontend/ui/normal/settings/profile_visibility.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/ui_utils/app_bar/common_actions.dart';
+import 'package:pihka_frontend/ui_utils/app_bar/menu_actions.dart';
 
 class SettingsView extends BottomNavigationView {
   const SettingsView({Key? key}) : super(key: key);
@@ -21,26 +23,9 @@ class SettingsView extends BottomNavigationView {
   @override
   List<Widget> actions(BuildContext context) {
     return [
-      PopupMenuButton(
-        itemBuilder: (context) {
-          return [
-            PopupMenuItem(value: "about", child: Text(context.strings.pageSettingsAboutAction)),
-          ];
-        },
-        onSelected: (value) {
-          switch (value) {
-            case "about": {
-              showAboutDialog(
-                context: context,
-                applicationName: "Pihka",
-                applicationVersion: "0.1.0",
-                applicationIcon: null,
-                applicationLegalese: "© 2023 Pihka",
-              );
-            }
-          }
-        },
-      ),
+      menuActions([
+        commonActionOpenAboutDialog(context),
+      ]),
     ];
   }
 

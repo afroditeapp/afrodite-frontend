@@ -1,13 +1,32 @@
 <resources>
+    <!-- Non UI text string resources -->
+    <!-- TODO(prod): Change real terms of service and privacy policy links links -->
+    <string name="url_app_tos_link" translatable="false">https://example.com</string>
+    <string name="url_app_privacy_policy_link" translatable="false">https://example.com</string>
+
+    <!-- App branding -->
+    <string name="app_name" description="Name for the app" translatable="false">Pihka</string>
+    <string name="app_slogan" description="Slogan for the app">Finland&apos;s fairest dating app</string>
+
+    <!-- Generic texts -->
     <string name="genericError" description="Generic error message">Error</string>
     <string name="genericEmpty" description="Generic empty text">Empty</string>
     <string name="genericCancel" description="Generic cancel text">Cancel</string>
     <string name="genericClose" description="Generic close text">Close</string>
     <string name="genericOk" description="Generic OK text">OK</string>
 
-    <!-- Login page -->
-    <string name="loginButton" description="Login button text">Login</string>
-    <string name="registerButton" description="Register button text">Register</string>
+    <!-- App bar actions -->
+    <string name="app_bar_action_about" description="Title for app bar action which opens about dialog">About</string>
+
+    <!-- Login screen -->
+    <!-- TODO remove unnecessary -->
+    <string name="login_screen_login_button" description="Login button text">Login</string>
+    <string name="login_screen_register_button" description="Register button text">Register</string>
+    <string name="login_screen_login_note_text_beginning" description="Text about agreeing terms of service and privacy policy">By signing in, you agree to our</string>
+    <string name="login_screen_login_note_text_tos" description="Text for terms of service link">Terms of Service</string>
+    <string name="login_screen_login_note_text_and" description="Word 'and' between terms of service and privacy policy links">and</string>
+    <string name="login_screen_login_note_text_privacy_policy" description="Text for privacy policy link">Privacy Policy</string>
+    <string name="login_screen_action_demo_account_login" description="Text for demo account login action">Demo account login</string>
 
     <!-- Profile grid page -->
     <string name="pageProfileGridTitle" description="Title for profile grid page">Profiles</string>
@@ -21,7 +40,7 @@
     <!-- Settings page -->
     <string name="pageSettingsTitle" description="Title for settings page">Settings</string>
     <string name="pageSettingsLogoutTitle" description="Title for logout action">Logout</string>
-    <string name="pageSettingsAboutAction" description="Title for about action">About</string>
+
 
     <!-- My profile page -->
     <string name="pageMyProfileTitle" description="Title for my profile page">My Profile</string>

@@ -1,4 +1,16 @@
 {
+  "app_bar_action_about": "About",
+  "@app_bar_action_about": {
+    "description": "Title for app bar action which opens about dialog"
+  },
+  "app_name": "Pihka",
+  "@app_name": {
+    "description": "Name for the app"
+  },
+  "app_slogan": "Finland's fairest dating app",
+  "@app_slogan": {
+    "description": "Slogan for the app"
+  },
   "genericCancel": "Cancel",
   "@genericCancel": {
     "description": "Generic cancel text"
@@ -19,9 +31,33 @@
   "@genericOk": {
     "description": "Generic OK text"
   },
-  "loginButton": "Login",
-  "@loginButton": {
+  "login_screen_action_demo_account_login": "Demo account login",
+  "@login_screen_action_demo_account_login": {
+    "description": "Text for demo account login action"
+  },
+  "login_screen_login_button": "Login",
+  "@login_screen_login_button": {
     "description": "Login button text"
+  },
+  "login_screen_login_note_text_and": "and",
+  "@login_screen_login_note_text_and": {
+    "description": "Word 'and' between terms of service and privacy policy links"
+  },
+  "login_screen_login_note_text_beginning": "By signing in, you agree to our",
+  "@login_screen_login_note_text_beginning": {
+    "description": "Text about agreeing terms of service and privacy policy"
+  },
+  "login_screen_login_note_text_privacy_policy": "Privacy Policy",
+  "@login_screen_login_note_text_privacy_policy": {
+    "description": "Text for privacy policy link"
+  },
+  "login_screen_login_note_text_tos": "Terms of Service",
+  "@login_screen_login_note_text_tos": {
+    "description": "Text for terms of service link"
+  },
+  "login_screen_register_button": "Register",
+  "@login_screen_register_button": {
+    "description": "Register button text"
   },
   "pageAdminTitle": "Admin",
   "@pageAdminTitle": {
@@ -55,10 +91,6 @@
   "@pageProfileGridTitle": {
     "description": "Title for profile grid page"
   },
-  "pageSettingsAboutAction": "About",
-  "@pageSettingsAboutAction": {
-    "description": "Title for about action"
-  },
   "pageSettingsLogoutTitle": "Logout",
   "@pageSettingsLogoutTitle": {
     "description": "Title for logout action"
@@ -71,8 +103,6 @@
   "@pageViewImageTitle": {
     "description": "Title for view image page"
   },
-  "registerButton": "Register",
-  "@registerButton": {
-    "description": "Register button text"
-  }
+  "url_app_privacy_policy_link": "https://example.com",
+  "url_app_tos_link": "https://example.com"
 }

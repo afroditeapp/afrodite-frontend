@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:pihka_frontend/assets.dart";
+import "package:pihka_frontend/config.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/main.dart";
 import "package:pihka_frontend/ui/login.dart";
@@ -18,7 +20,7 @@ class SplashScreen extends RootPage {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                "assets/app-icon.png",
+                ImageAsset.appLogo.path,
                 width: appIconSize,
                 height: appIconSize,
               ),

@@ -4,6 +4,7 @@ import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui/account_banned.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
 import "package:pihka_frontend/ui/login.dart";
+import "package:pihka_frontend/ui/login_new.dart";
 import 'package:pihka_frontend/ui/normal.dart';
 import "package:pihka_frontend/ui/pending_deletion.dart";
 import "package:pihka_frontend/ui/unsupported_client.dart";
@@ -24,7 +25,7 @@ abstract class RootPage extends StatelessWidget {
         }
 
         final page = switch (state) {
-          MainState.loginRequired => LoginPage(),
+          MainState.loginRequired => LoginNewPage(),
           MainState.initialSetup => const InitialSetupPage(),
           MainState.initialSetupComplete => const NormalStatePage(),
           MainState.accountBanned => const AccountBannedPage(),

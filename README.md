@@ -73,3 +73,9 @@ String signInWithGoogleIosClientId() {
 assets_not_in_git/server_root.crt
 
 3. flutter gen-l10n
+
+# About Assets
+
+Google Sign In with buttons are from
+<https://developers.google.com/static/identity/images/signin-assets.zip>
+zip file found from <https://developers.google.com/identity/branding-guidelines>

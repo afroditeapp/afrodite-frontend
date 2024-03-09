@@ -4,8 +4,8 @@
     <string name="genericCancel">Peruuta</string>
     <string name="genericClose">Sulje</string>
     <string name="genericOk">OK</string>
-    <string name="loginButton">Kirjaudu</string>
-    <string name="registerButton">Rekisteröidy</string>
+    <string name="login_screen_login_button">Kirjaudu</string>
+    <string name="login_screen_register_button">Rekisteröidy</string>
     <string name="pageProfileGridTitle">Profiilit</string>
     <string name="pageLikesTitle">Tykkäykset</string>
     <string name="pageChatListTitle">Keskustelut</string>
@@ -18,4 +18,5 @@
     <string name="pageModerateImagesTitle">Moderoi kuvia</string>
     <string name="pageModerateImagesDenyImageText">Hylkää</string>
     <string name="pageViewImageTitle">Kuva</string>
+    <string name="app_slogan">Suomen reiluin deittisovellus</string>
 </resources>

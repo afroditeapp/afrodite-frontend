@@ -49,3 +49,5 @@ lib/secrets.dart
 assets_not_in_git
 
 .vscode
+
+devtools_options.yaml
