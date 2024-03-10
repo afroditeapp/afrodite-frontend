@@ -9,14 +9,8 @@ import "package:pihka_frontend/data/chat_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/database/chat/message_database.dart";
-import "package:pihka_frontend/database/favorite_profiles_database.dart";
-import "package:pihka_frontend/logic/account/initial_setup.dart";
-import "package:pihka_frontend/ui/initial_setup.dart";
-import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
-import "package:pihka_frontend/ui/normal/profiles/view_profile.dart";
 import "package:pihka_frontend/ui/utils.dart";
 import "package:pihka_frontend/utils.dart";
-import "package:rxdart/rxdart.dart";
 
 
 import "package:freezed_annotation/freezed_annotation.dart";

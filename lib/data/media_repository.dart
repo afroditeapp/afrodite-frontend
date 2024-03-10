@@ -4,19 +4,13 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:camera/camera.dart';
-import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/data/utils.dart';
-import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/utils.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 var log = Logger("MediaRepository");
 

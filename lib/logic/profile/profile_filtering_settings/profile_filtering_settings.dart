@@ -1,19 +1,9 @@
-import "dart:io";
 
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:openapi/api.dart";
-import "package:pihka_frontend/data/account_repository.dart";
-import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
-import "package:pihka_frontend/database/favorite_profiles_database.dart";
-import "package:pihka_frontend/logic/account/initial_setup.dart";
-import "package:pihka_frontend/storage/base.dart";
 import "package:pihka_frontend/storage/kv.dart";
-import "package:pihka_frontend/ui/initial_setup.dart";
-import "package:pihka_frontend/ui/normal/profiles/view_profile.dart";
 import "package:pihka_frontend/ui/utils.dart";
 import "package:pihka_frontend/utils.dart";
-import "package:rxdart/rxdart.dart";
 
 
 import "package:freezed_annotation/freezed_annotation.dart";

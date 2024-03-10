@@ -5,7 +5,7 @@ import "package:pihka_frontend/data/account_repository.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
-import "package:pihka_frontend/ui/utils.dart";
+import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 
 part 'account.freezed.dart';

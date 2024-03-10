@@ -1,20 +1,9 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:openapi/api.dart';
-import 'package:pihka_frontend/data/profile_repository.dart';
-import 'package:pihka_frontend/logic/account/account.dart';
-import 'package:pihka_frontend/logic/profile/profile.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_filtering_settings.dart';
-import 'package:pihka_frontend/logic/profile/view_profiles/view_profiles.dart';
-import 'package:pihka_frontend/ui/normal/settings.dart';
-import 'package:pihka_frontend/ui/normal/settings/admin/moderate_images.dart';
-import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
 import 'package:pihka_frontend/ui/utils.dart';
-import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
-import 'package:pihka_frontend/localizations.dart';
 
 /// Might return [RemoveProfileFromList] when navigating back to previous page
 class ProfileFilteringSettingsPage extends StatelessWidget {

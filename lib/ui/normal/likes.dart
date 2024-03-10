@@ -1,28 +1,18 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
-import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
-import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
-import 'package:pihka_frontend/database/profile_list_database.dart';
-import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_filtering_settings.dart';
-import 'package:pihka_frontend/logic/profile/view_profiles/view_profiles.dart';
-import 'package:pihka_frontend/ui/normal/profiles/filter_profiles.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/ui/utils/image_page.dart';
-import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
 var log = Logger("LikeView");
 

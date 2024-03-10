@@ -5,14 +5,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
-import 'package:pihka_frontend/logic/profile/profile.dart';
 
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/ui/normal/profiles.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui/utils/image_page.dart';
 

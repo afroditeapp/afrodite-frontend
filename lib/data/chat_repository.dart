@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:async/async.dart';
 import 'package:logging/logging.dart';
@@ -9,25 +7,17 @@ import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/chat/message_database_iterator.dart';
 import 'package:pihka_frontend/data/profile/account_id_database_iterator.dart';
-import 'package:pihka_frontend/data/profile/profile_iterator.dart';
-import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
-import 'package:pihka_frontend/database/account_id_database.dart';
 import 'package:pihka_frontend/database/chat/matches_database.dart';
 import 'package:pihka_frontend/database/chat/message_database.dart';
 import 'package:pihka_frontend/database/chat/received_blocks_database.dart';
 import 'package:pihka_frontend/database/chat/received_likes_database.dart';
 import 'package:pihka_frontend/database/chat/sent_blocks_database.dart';
 import 'package:pihka_frontend/database/chat/sent_likes_database.dart';
-import 'package:pihka_frontend/database/favorite_profiles_database.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
-import 'package:pihka_frontend/database/profile_list_database.dart';
-import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/ui/utils.dart';
-import 'package:pihka_frontend/utils.dart';
-import 'package:rxdart/rxdart.dart';
 
 var log = Logger("ChatRepository");
 

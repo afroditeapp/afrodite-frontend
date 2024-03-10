@@ -3,8 +3,6 @@
 
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/base_database.dart';
-import 'package:pihka_frontend/database/favorite_profiles_database.dart';
-import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:sqflite/utils/utils.dart';
 import 'package:sqflite/sqflite.dart';
 

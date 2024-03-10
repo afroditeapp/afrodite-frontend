@@ -1,6 +1,5 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/data/account_repository.dart";
-import "package:pihka_frontend/ui/initial_setup.dart";
 
 /// States for top level UI main states
 enum MainState {
