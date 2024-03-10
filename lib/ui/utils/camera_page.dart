@@ -12,6 +12,7 @@ import "package:pihka_frontend/ui/login.dart";
 import 'package:pihka_frontend/ui/normal.dart';
 import "package:pihka_frontend/ui/pending_deletion.dart";
 import "package:pihka_frontend/ui/utils.dart";
+import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 
 var log = Logger("CameraPage");

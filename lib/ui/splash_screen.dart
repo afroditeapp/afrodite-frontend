@@ -6,9 +6,9 @@ import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/main.dart";
 import "package:pihka_frontend/ui/login.dart";
 import 'package:pihka_frontend/ui/normal.dart';
-import "package:pihka_frontend/ui/utils/root_page.dart";
+import "package:pihka_frontend/ui_utils/root_screen.dart";
 
-class SplashScreen extends RootPage {
+class SplashScreen extends RootScreen {
   const SplashScreen({Key? key}) : super(MainState.splashScreen, key: key);
 
   @override

@@ -8,13 +8,14 @@ import 'package:pihka_frontend/ui/normal/settings/debug.dart';
 import 'package:pihka_frontend/ui/normal/settings/location.dart';
 import 'package:pihka_frontend/ui/normal/settings/my_profile.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile_visibility.dart';
-import 'package:pihka_frontend/ui/utils.dart';
+import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/common_actions.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/menu_actions.dart';
+import 'package:pihka_frontend/ui_utils/dialog.dart';
 
-class SettingsView extends BottomNavigationView {
+class SettingsView extends BottomNavigationScreen {
   const SettingsView({Key? key}) : super(key: key);
 
   @override

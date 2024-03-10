@@ -10,8 +10,8 @@ import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/logic/server/address.dart";
 import "package:pihka_frontend/logic/sign_in_with.dart";
-import "package:pihka_frontend/ui/colors.dart";
-import "package:pihka_frontend/ui/utils/root_page.dart";
+import "package:pihka_frontend/ui_utils/colors.dart";
+import "package:pihka_frontend/ui_utils/root_screen.dart";
 import "package:pihka_frontend/ui_utils/app_bar/common_actions.dart";
 import "package:pihka_frontend/ui_utils/app_bar/menu_actions.dart";
 
@@ -23,7 +23,7 @@ import "package:url_launcher/url_launcher_string.dart";
 
 // TODO(prod): Use SVG for sign in with google button
 
-class LoginNewPage extends RootPage {
+class LoginNewPage extends RootScreen {
   const LoginNewPage({Key? key}) : super(MainState.loginRequired, key: key);
 
   @override

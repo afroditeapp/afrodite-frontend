@@ -19,7 +19,7 @@ import 'package:pihka_frontend/logic/profile/view_profiles/view_profiles.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
 import 'package:pihka_frontend/ui/normal/profiles/filter_profiles.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
-import 'package:pihka_frontend/ui/utils.dart';
+import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:pihka_frontend/localizations.dart';
@@ -28,7 +28,7 @@ import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
 var log = Logger("ChatView");
 
-class ChatView extends BottomNavigationView {
+class ChatView extends BottomNavigationScreen {
   const ChatView({Key? key}) : super(key: key);
 
   @override

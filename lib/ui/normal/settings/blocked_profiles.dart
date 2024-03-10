@@ -23,6 +23,8 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui/utils/image_page.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
+import 'package:pihka_frontend/ui_utils/dialog.dart';
+import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
 var log = Logger("BlockedProfilesPage");
 

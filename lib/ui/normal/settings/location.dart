@@ -15,6 +15,7 @@ import 'package:pihka_frontend/logic/profile/location.dart';
 import 'package:pihka_frontend/ui/utils.dart';
 
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 

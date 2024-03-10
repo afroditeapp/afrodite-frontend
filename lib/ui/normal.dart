@@ -10,9 +10,9 @@ import "package:pihka_frontend/ui/normal/chat.dart";
 import "package:pihka_frontend/ui/normal/likes.dart";
 import "package:pihka_frontend/ui/normal/profiles.dart";
 import "package:pihka_frontend/ui/normal/settings.dart";
-import "package:pihka_frontend/ui/utils/root_page.dart";
+import "package:pihka_frontend/ui_utils/root_screen.dart";
 
-class NormalStatePage extends RootPage {
+class NormalStatePage extends RootScreen {
   const NormalStatePage({Key? key}) : super(MainState.initialSetupComplete, key: key);
 
   @override

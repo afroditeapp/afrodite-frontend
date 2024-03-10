@@ -12,6 +12,7 @@ import 'package:pihka_frontend/ui/utils.dart';
 
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui/utils/image_page.dart';
+import 'package:pihka_frontend/ui_utils/dialog.dart';
 
 
 // Plan: Infinite list of rows of two images, first is security selfie, the

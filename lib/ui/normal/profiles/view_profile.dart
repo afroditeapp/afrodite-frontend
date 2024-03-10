@@ -19,6 +19,7 @@ import 'package:pihka_frontend/ui/utils.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/ui_utils/dialog.dart';
 
 typedef ProfileHeroTag = (AccountId accountId, int uniqueCounterNumber);
 

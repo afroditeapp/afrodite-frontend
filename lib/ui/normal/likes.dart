@@ -17,7 +17,7 @@ import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_
 import 'package:pihka_frontend/logic/profile/view_profiles/view_profiles.dart';
 import 'package:pihka_frontend/ui/normal/profiles/filter_profiles.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
-import 'package:pihka_frontend/ui/utils.dart';
+import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:pihka_frontend/localizations.dart';
@@ -26,7 +26,7 @@ import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
 var log = Logger("LikeView");
 
-class LikeView extends BottomNavigationView {
+class LikeView extends BottomNavigationScreen {
   const LikeView({Key? key}) : super(key: key);
 
   @override

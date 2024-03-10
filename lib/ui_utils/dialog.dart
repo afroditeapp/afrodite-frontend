@@ -1,16 +1,20 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:pihka_frontend/assets.dart';
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/main.dart';
 
-
-
-// TODO: Show details button for displaying more detailed error message
-void showSnackBar(String text) {
-  globalScaffoldMessengerKey.currentState?.hideCurrentSnackBar();
-  globalScaffoldMessengerKey.currentState?.showSnackBar(
-    SnackBar(content: Text(text), behavior: SnackBarBehavior.floating)
+void showAppAboutDialog(BuildContext context) {
+  // TODO(prod): Finish about dialog information
+  const double ICON_SIZE = 80.0;
+  showAboutDialog(
+    context: context,
+    applicationName: context.strings.app_name,
+    applicationVersion: "0.1.0",
+    applicationIcon: Image.asset(
+      ImageAsset.appLogo.path,
+      width: ICON_SIZE,
+      height: ICON_SIZE,
+    ),
+    applicationLegalese: "© 2024 Pihka",
   );
 }
 
@@ -53,12 +57,4 @@ Future<bool?> showInfoDialog(BuildContext context, String text) {
       ],
     )
   );
-}
-
-abstract class BottomNavigationView extends StatefulWidget {
-  const BottomNavigationView({super.key});
-
-  String title(BuildContext context);
-  /// Action bar actions
-  List<Widget>? actions(BuildContext context) => null;
 }

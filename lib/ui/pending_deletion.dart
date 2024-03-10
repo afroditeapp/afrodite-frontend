@@ -3,9 +3,9 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui/login.dart";
 import 'package:pihka_frontend/ui/normal.dart';
-import "package:pihka_frontend/ui/utils/root_page.dart";
+import "package:pihka_frontend/ui_utils/root_screen.dart";
 
-class PendingDeletionPage extends RootPage {
+class PendingDeletionPage extends RootScreen {
   const PendingDeletionPage({Key? key}) : super(MainState.pendingRemoval, key: key);
 
   @override

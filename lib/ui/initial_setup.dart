@@ -12,11 +12,12 @@ import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui/login.dart";
 import 'package:pihka_frontend/ui/normal.dart';
-import "package:pihka_frontend/ui/utils.dart";
+import "package:pihka_frontend/ui_utils/bottom_navigation.dart";
 import "package:pihka_frontend/ui/utils/camera_page.dart";
-import "package:pihka_frontend/ui/utils/root_page.dart";
+import "package:pihka_frontend/ui_utils/root_screen.dart";
 
 import "package:flutter/scheduler.dart";
+import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 
 var log = Logger("InitialSetupWidget");
@@ -24,7 +25,7 @@ var log = Logger("InitialSetupWidget");
 // TODO: save initial setup values, so that it will be possible to restore state
 //       if system kills the app when selecting profile photo
 
-class InitialSetupPage extends RootPage {
+class InitialSetupPage extends RootScreen {
   const InitialSetupPage({Key? key}) : super(MainState.initialSetup, key: key);
 
   @override

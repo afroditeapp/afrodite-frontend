@@ -3,16 +3,15 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui/account_banned.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
-import "package:pihka_frontend/ui/login.dart";
 import "package:pihka_frontend/ui/login_new.dart";
 import 'package:pihka_frontend/ui/normal.dart';
 import "package:pihka_frontend/ui/pending_deletion.dart";
 import "package:pihka_frontend/ui/unsupported_client.dart";
 
-abstract class RootPage extends StatelessWidget {
-  const RootPage(this.rootPageIdentifier, {Key? key}) : super(key: key);
+abstract class RootScreen extends StatelessWidget {
+  const RootScreen(this.rootScreenIdentifier, {Key? key}) : super(key: key);
 
-  final MainState rootPageIdentifier;
+  final MainState rootScreenIdentifier;
 
   Widget buildRootWidget(BuildContext context);
 
@@ -20,12 +19,12 @@ abstract class RootPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<MainStateBloc, MainState>(
       listener: (context, state) {
-        if (state == rootPageIdentifier) {
+        if (state == rootScreenIdentifier) {
           return;
         }
 
         final page = switch (state) {
-          MainState.loginRequired => LoginNewPage(),
+          MainState.loginRequired => const LoginNewPage(),
           MainState.initialSetup => const InitialSetupPage(),
           MainState.initialSetupComplete => const NormalStatePage(),
           MainState.accountBanned => const AccountBannedPage(),
