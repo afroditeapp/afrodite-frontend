@@ -12,7 +12,7 @@ update-api-bindings:
 update-generated-code:
 	dart run build_runner build
 
-update-localizations:
+update-translations:
 	xml2arb --input-dir translations/app/src/main/res --output-dir lib/l10n --arb-file-name-template app_en.arb
 	flutter gen-l10n
 

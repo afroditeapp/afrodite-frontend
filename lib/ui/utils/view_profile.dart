@@ -114,7 +114,7 @@ Widget viewProifleImage(BuildContext context, AccountId account, ProfileEntry pr
         }
     },);
   } else {
-    primaryImageWidget = Text(context.strings.genericEmpty);
+    primaryImageWidget = Text(context.strings.generic_empty);
   }
 
   return Row(

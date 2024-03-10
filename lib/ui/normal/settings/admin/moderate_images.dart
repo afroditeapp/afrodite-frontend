@@ -138,7 +138,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
         SizedBox(width: maxWidth/2, height: imageHeight, child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(context.strings.genericEmpty),
+            Text(context.strings.generic_empty),
           ],
         ));
     }
@@ -215,7 +215,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(context.strings.genericEmpty)
+          Text(context.strings.generic_empty)
         ],
       )
     );

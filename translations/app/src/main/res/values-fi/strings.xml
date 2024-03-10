@@ -1,9 +1,9 @@
 <resources>
     <string name="generic_error">Virhe</string>
-    <string name="genericEmpty">Tyhjä</string>
-    <string name="genericCancel">Peruuta</string>
-    <string name="genericClose">Sulje</string>
-    <string name="genericOk">OK</string>
+    <string name="generic_empty">Tyhjä</string>
+    <string name="generic_cancel">Peruuta</string>
+    <string name="generic_close">Sulje</string>
+    <string name="generic_ok">OK</string>
     <string name="login_screen_login_button">Kirjaudu</string>
     <string name="login_screen_register_button">Rekisteröidy</string>
     <string name="pageProfileGridTitle">Profiilit</string>

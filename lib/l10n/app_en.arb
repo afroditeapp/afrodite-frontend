@@ -11,29 +11,49 @@
   "@app_slogan": {
     "description": "Slogan for the app"
   },
-  "genericCancel": "Cancel",
-  "@genericCancel": {
+  "generic_cancel": "Cancel",
+  "@generic_cancel": {
     "description": "Generic cancel text"
   },
-  "genericClose": "Close",
-  "@genericClose": {
+  "generic_close": "Close",
+  "@generic_close": {
     "description": "Generic close text"
   },
-  "genericEmpty": "Empty",
-  "@genericEmpty": {
+  "generic_empty": "Empty",
+  "@generic_empty": {
     "description": "Generic empty text"
   },
   "generic_error": "Error",
   "@generic_error": {
     "description": "Generic error message"
   },
-  "genericOk": "OK",
-  "@genericOk": {
+  "generic_login": "Login",
+  "@generic_login": {
+    "description": "Generic login text"
+  },
+  "generic_ok": "OK",
+  "@generic_ok": {
     "description": "Generic OK text"
   },
   "login_screen_action_demo_account_login": "Demo account login",
   "@login_screen_action_demo_account_login": {
     "description": "Text for demo account login action"
+  },
+  "login_screen_demo_account_dialog_description": "Login to demo account on the demo account server.",
+  "@login_screen_demo_account_dialog_description": {
+    "description": "Description for demo account login dialog"
+  },
+  "login_screen_demo_account_dialog_title": "Demo account login",
+  "@login_screen_demo_account_dialog_title": {
+    "description": "Title for demo account login dialog"
+  },
+  "login_screen_demo_account_identifier": "Account ID",
+  "@login_screen_demo_account_identifier": {
+    "description": "Placeholder text for demo account identifier"
+  },
+  "login_screen_demo_account_password": "Password",
+  "@login_screen_demo_account_password": {
+    "description": "Placeholder text for demo account password"
   },
   "login_screen_login_button": "Login",
   "@login_screen_login_button": {

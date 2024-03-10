@@ -10,6 +10,7 @@ import "package:pihka_frontend/ui_utils/colors.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
 import "package:pihka_frontend/ui_utils/app_bar/common_actions.dart";
 import "package:pihka_frontend/ui_utils/app_bar/menu_actions.dart";
+import "package:pihka_frontend/ui_utils/text_field.dart";
 
 import "package:sign_in_with_apple/sign_in_with_apple.dart";
 
@@ -43,13 +44,14 @@ class LoginNewPage extends RootScreen {
         ),
       ),
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: null,
         actions: [
           menuActions([
             MenuItemButton(
               child: Text(context.strings.login_screen_action_demo_account_login),
-              //onPressed: () => openFirstDemoAccountLoginDialog(context),
+              onPressed: () => openFirstDemoAccountLoginDialog(context),
             ),
             ...commonActionsWhenLoggedOut(context),
           ]),
@@ -179,26 +181,53 @@ Widget logoAndAppNameAndSlogan(BuildContext context) {
   );
 }
 
-// Future<bool?> openFirstDemoAccountLoginDialog(BuildContext context) {
-//   return showDialog<bool>(
-//     context: context,
-//     builder: (context) => AlertDialog(
-//       title: Text(actionText),
-//       content: details != null ? Text(details) : null,
-//       actions: <Widget>[
-//         TextButton(
-//           onPressed: () {
-//             Navigator.pop(context, false);
-//           },
-//           child: Text(context.strings.genericCancel)
-//         ),
-//         TextButton(
-//           onPressed: () {
-//             Navigator.pop(context, true);
-//           },
-//           child: Text(context.strings.genericOk)
-//         )
-//       ],
-//     )
-//   );
-// }
+class DemoAccountCredentials {
+  final String id;
+  final String password;
+  DemoAccountCredentials(this.id, this.password);
+}
+
+Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext context) {
+  final idField = SimpleTextField(
+    hintText: context.strings.login_screen_demo_account_identifier,
+  );
+  final passwordField = SimpleTextField(
+    hintText: context.strings.login_screen_demo_account_password,
+    obscureText: true,
+  );
+  return showDialog<DemoAccountCredentials?>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(context.strings.login_screen_demo_account_dialog_title),
+      content: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text(context.strings.login_screen_demo_account_dialog_description),
+            idField,
+            passwordField,
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context, null);
+          },
+          child: Text(context.strings.generic_cancel)
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(
+              context,
+              DemoAccountCredentials(
+                idField.controller.text,
+                passwordField.controller.text
+                )
+            );
+          },
+          child: Text(context.strings.generic_login)
+        )
+      ],
+    )
+  );
+}

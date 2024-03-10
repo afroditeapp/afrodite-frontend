@@ -29,13 +29,13 @@ Future<bool?> showConfirmDialog(BuildContext context, String actionText, {String
           onPressed: () {
             Navigator.pop(context, false);
           },
-          child: Text(context.strings.genericCancel)
+          child: Text(context.strings.generic_cancel)
         ),
         TextButton(
           onPressed: () {
             Navigator.pop(context, true);
           },
-          child: Text(context.strings.genericOk)
+          child: Text(context.strings.generic_ok)
         )
       ],
     )
@@ -52,7 +52,7 @@ Future<bool?> showInfoDialog(BuildContext context, String text) {
           onPressed: () {
             Navigator.pop(context, false);
           },
-          child: Text(context.strings.genericClose)
+          child: Text(context.strings.generic_close)
         ),
       ],
     )
