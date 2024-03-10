@@ -33,7 +33,7 @@ class MyProfilePage extends StatelessWidget {
       builder: (context, accountState) {
         final id = accountState.accountId;
         if (id == null) {
-          return Text(context.strings.genericError);
+          return Text(context.strings.generic_error);
         } else {
           return BlocBuilder<ProfileBloc, ProfileData>(
             builder: (context, profileState) {

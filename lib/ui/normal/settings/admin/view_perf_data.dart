@@ -4,7 +4,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/ui/utils.dart';
 
 
 class ViewPerfDataPage extends StatefulWidget {

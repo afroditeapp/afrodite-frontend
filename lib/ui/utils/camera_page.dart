@@ -3,7 +3,6 @@ import "dart:async";
 import "package:camera/camera.dart";
 import "package:flutter/material.dart";
 import "package:logging/logging.dart";
-import "package:pihka_frontend/ui/utils.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 

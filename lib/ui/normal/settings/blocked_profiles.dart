@@ -8,7 +8,6 @@ import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
-import 'package:pihka_frontend/ui/utils.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:pihka_frontend/ui_utils/dialog.dart';

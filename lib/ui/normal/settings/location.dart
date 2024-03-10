@@ -12,7 +12,6 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/logic/profile/location.dart';
-import 'package:pihka_frontend/ui/utils.dart';
 
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';

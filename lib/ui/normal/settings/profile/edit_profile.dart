@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/logic/profile/profile.dart';
-import 'package:pihka_frontend/ui/utils.dart';
 
 
 class EditProfilePage extends StatefulWidget {

@@ -14,7 +14,6 @@ import 'package:pihka_frontend/ui/normal/chat/cache.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_renderer.dart';
 import 'package:pihka_frontend/ui/normal/chat/one_ended_list.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
-import 'package:pihka_frontend/ui/utils.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 

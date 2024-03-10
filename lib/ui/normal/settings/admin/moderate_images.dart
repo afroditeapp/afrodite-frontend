@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/logic/admin/image_moderation.dart';
-import 'package:pihka_frontend/ui/utils.dart';
 
 
 import 'package:pihka_frontend/localizations.dart';
@@ -191,7 +190,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
                 ),
               );
             } else {
-              return Text(context.strings.genericError);
+              return Text(context.strings.generic_error);
             }
           }
         }

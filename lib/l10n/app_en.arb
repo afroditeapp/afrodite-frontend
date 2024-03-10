@@ -23,8 +23,8 @@
   "@genericEmpty": {
     "description": "Generic empty text"
   },
-  "genericError": "Error",
-  "@genericError": {
+  "generic_error": "Error",
+  "@generic_error": {
     "description": "Generic error message"
   },
   "genericOk": "OK",

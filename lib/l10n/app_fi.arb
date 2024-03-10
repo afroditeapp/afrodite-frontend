@@ -3,7 +3,7 @@
   "genericCancel": "Peruuta",
   "genericClose": "Sulje",
   "genericEmpty": "Tyhjä",
-  "genericError": "Virhe",
+  "generic_error": "Virhe",
   "genericOk": "OK",
   "login_screen_login_button": "Kirjaudu",
   "login_screen_register_button": "Rekisteröidy",

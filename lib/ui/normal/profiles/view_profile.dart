@@ -9,10 +9,10 @@ import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/logic/profile/view_profiles/view_profiles.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
-import 'package:pihka_frontend/ui/utils.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
 import 'package:pihka_frontend/ui_utils/dialog.dart';
+import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
 typedef ProfileHeroTag = (AccountId accountId, int uniqueCounterNumber);
 

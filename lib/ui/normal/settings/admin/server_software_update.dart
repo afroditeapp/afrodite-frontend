@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/ui/utils.dart';
 
 
 import 'package:pihka_frontend/ui_utils/dialog.dart';

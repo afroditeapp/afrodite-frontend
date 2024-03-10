@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_filtering_settings.dart';
-import 'package:pihka_frontend/ui/utils.dart';
 
 
 /// Might return [RemoveProfileFromList] when navigating back to previous page

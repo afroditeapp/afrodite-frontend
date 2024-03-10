@@ -9,7 +9,7 @@
     <string name="app_slogan" description="Slogan for the app">Finland&apos;s fairest dating app</string>
 
     <!-- Generic texts -->
-    <string name="genericError" description="Generic error message">Error</string>
+    <string name="generic_error" description="Generic error message">Error</string>
     <string name="genericEmpty" description="Generic empty text">Empty</string>
     <string name="genericCancel" description="Generic cancel text">Cancel</string>
     <string name="genericClose" description="Generic close text">Close</string>
@@ -27,6 +27,11 @@
     <string name="login_screen_login_note_text_and" description="Word 'and' between terms of service and privacy policy links">and</string>
     <string name="login_screen_login_note_text_privacy_policy" description="Text for privacy policy link">Privacy Policy</string>
     <string name="login_screen_action_demo_account_login" description="Text for demo account login action">Demo account login</string>
+    <string name="login_screen_demo_account_dialog_title" description="Title for demo account login dialog">Demo account login</string>
+    <string name="login_screen_demo_account_dialog_description" description="Description for demo account login dialog">Login to demo account which allows testing all app features. Demo accounts are only for app developers and app marketplace app reviewers.</string>
+    <string name="login_screen_demo_account_identifier" description="Placeholder text for demo account identifier">Account ID</string>
+    <string name="login_screen_demo_account_password" description="Placeholder text for demo account password">Password</string>
+
 
     <!-- Profile grid page -->
     <string name="pageProfileGridTitle" description="Title for profile grid page">Profiles</string>

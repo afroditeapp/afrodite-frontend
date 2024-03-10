@@ -2,7 +2,6 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/storage/kv.dart";
-import "package:pihka_frontend/ui/utils.dart";
 import "package:pihka_frontend/utils.dart";
 
 

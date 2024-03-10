@@ -49,7 +49,7 @@ class LoginNewPage extends RootScreen {
           menuActions([
             MenuItemButton(
               child: Text(context.strings.login_screen_action_demo_account_login),
-              onPressed: null,
+              //onPressed: () => openFirstDemoAccountLoginDialog(context),
             ),
             ...commonActionsWhenLoggedOut(context),
           ]),
@@ -178,3 +178,27 @@ Widget logoAndAppNameAndSlogan(BuildContext context) {
     ],
   );
 }
+
+// Future<bool?> openFirstDemoAccountLoginDialog(BuildContext context) {
+//   return showDialog<bool>(
+//     context: context,
+//     builder: (context) => AlertDialog(
+//       title: Text(actionText),
+//       content: details != null ? Text(details) : null,
+//       actions: <Widget>[
+//         TextButton(
+//           onPressed: () {
+//             Navigator.pop(context, false);
+//           },
+//           child: Text(context.strings.genericCancel)
+//         ),
+//         TextButton(
+//           onPressed: () {
+//             Navigator.pop(context, true);
+//           },
+//           child: Text(context.strings.genericOk)
+//         )
+//       ],
+//     )
+//   );
+// }

@@ -5,7 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
-import 'package:pihka_frontend/ui/utils.dart';
+import 'package:pihka_frontend/ui_utils/dialog.dart';
+import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
 
 

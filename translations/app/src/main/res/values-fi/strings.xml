@@ -1,5 +1,5 @@
 <resources>
-    <string name="genericError">Virhe</string>
+    <string name="generic_error">Virhe</string>
     <string name="genericEmpty">Tyhjä</string>
     <string name="genericCancel">Peruuta</string>
     <string name="genericClose">Sulje</string>

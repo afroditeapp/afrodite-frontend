@@ -108,7 +108,7 @@ Widget viewProifleImage(BuildContext context, AccountId account, ProfileEntry pr
                 ),
               );
             } else {
-              return Text(context.strings.genericError);
+              return Text(context.strings.generic_error);
             }
           }
         }

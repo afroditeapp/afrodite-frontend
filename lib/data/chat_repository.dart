@@ -17,7 +17,6 @@ import 'package:pihka_frontend/database/chat/received_likes_database.dart';
 import 'package:pihka_frontend/database/chat/sent_blocks_database.dart';
 import 'package:pihka_frontend/database/chat/sent_likes_database.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
-import 'package:pihka_frontend/ui/utils.dart';
 
 var log = Logger("ChatRepository");
 
