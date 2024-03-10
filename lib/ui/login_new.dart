@@ -25,25 +25,27 @@ class LoginNewPage extends RootScreen {
 
   @override
   Widget buildRootWidget(BuildContext context) {
-    final loginPageWidgets = <Widget>[
-      const Padding(padding: EdgeInsets.symmetric(vertical: 50)),
-      logoAndAppNameAndSlogan(context),
-      Expanded(child: Container()),
-      signInButtonArea(context),
-      const Padding(padding: EdgeInsets.symmetric(vertical: 25)),
-    ];
-
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: loginPageWidgets,
-          ),
-        ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
+                child: Column(
+                  children: [
+                    const Spacer(flex: 2),
+                    logoAndAppNameAndSlogan(context),
+                    const Spacer(flex: 10),
+                    signInButtonArea(context),
+                    const Spacer(flex: 1),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
       ),
-      extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: null,
@@ -55,7 +57,7 @@ class LoginNewPage extends RootScreen {
             ),
             ...commonActionsWhenLoggedOut(context),
           ]),
-        ]
+        ],
       ),
     );
   }
@@ -68,23 +70,33 @@ Widget signInButtonArea(BuildContext context) {
 
   return Column(
     children: [
-      SizedBox(
-        width: 300,
-        child: termsOfServiceAndPrivacyPolicyInfo(context),
+      const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
+      // MYSTERY: Without this Row, there is overflow warning if screen is rotated
+      // for some reason. Content height is larger than screen height in
+      // this case.
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 300,
+            child: termsOfServiceAndPrivacyPolicyInfo(context)
+          ),
+        ],
       ),
+      const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
       // TODO(prod): Add more padding?
       SizedBox(
         width: 240,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
             firstSignInButton(context),
             const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
             secondSignInButton(context),
           ],
         ),
       ),
+      const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
     ],
   );
 }
@@ -199,14 +211,12 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
     context: context,
     builder: (context) => AlertDialog(
       title: Text(context.strings.login_screen_demo_account_dialog_title),
-      content: SingleChildScrollView(
-        child: Column(
-          children: [
-            Text(context.strings.login_screen_demo_account_dialog_description),
-            idField,
-            passwordField,
-          ],
-        ),
+      content: Column(
+        children: [
+          Text(context.strings.login_screen_demo_account_dialog_description),
+          idField,
+          passwordField,
+        ],
       ),
       actions: <Widget>[
         TextButton(
@@ -222,12 +232,13 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
               DemoAccountCredentials(
                 idField.controller.text,
                 passwordField.controller.text
-                )
+              )
             );
           },
           child: Text(context.strings.generic_login)
         )
       ],
+      scrollable: true,
     )
   );
 }
