@@ -3,6 +3,7 @@ import "dart:io";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:google_sign_in/google_sign_in.dart";
 import "package:pihka_frontend/data/account_repository.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/secrets.dart";
 import "package:pihka_frontend/utils.dart";
 
@@ -25,22 +26,22 @@ class SignOutFromAppleEvent extends SignInWithEvent {
 }
 
 class SignInWithBloc extends Bloc<SignInWithEvent, String> with ActionRunner {
-  final AccountRepository account;
+  final LoginRepository login = LoginRepository.getInstance();
 
   GoogleSignIn google = createSignInWithGoogle();
 
-  SignInWithBloc(this.account) : super("") {
+  SignInWithBloc() : super("") {
 
     on<SignInWithGoogle>((data, emit) async {
-      await runOnce(() async => await account.signInWithGoogle(google));
+      await runOnce(() async => await login.signInWithGoogle(google));
     });
     on<LogOutFromGoogle>((data, emit) async {
-      await runOnce(() async => await account.signOutFromGoogle(google));
+      await runOnce(() async => await login.signOutFromGoogle(google));
     });
 
     // Sign in with Apple requires iOS 13.
     on<SignInWithAppleEvent>((data, emit) async {
-      await runOnce(() async => await account.signInWithApple());
+      await runOnce(() async => await login.signInWithApple());
     });
 
     // TODO: or is not possible to support?

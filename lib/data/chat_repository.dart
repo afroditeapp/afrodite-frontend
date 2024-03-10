@@ -6,6 +6,7 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/chat/message_database_iterator.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile/account_id_database_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
@@ -274,7 +275,7 @@ class ChatRepository extends DataRepository {
   // Messages
 
   Future<void> receiveNewMessages() async {
-    final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
+    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {
       return;
     }
@@ -315,7 +316,7 @@ class ChatRepository extends DataRepository {
   // Use stream instead?
   // If saving to local database fails, don't clear the chat box UI.
   Future<void> sendMessageTo(AccountId accountId, String message) async {
-    final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
+    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {
       return;
     }
@@ -356,7 +357,7 @@ class ChatRepository extends DataRepository {
 
   /// Get message and updates to it.
   Stream<MessageEntry?> getMessageWithLocalId(AccountId match, int localId) async* {
-    final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
+    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {
       yield null;
       return;
@@ -383,7 +384,7 @@ class ChatRepository extends DataRepository {
   /// Get message and updates to it.
   /// Index 0 is the latest message.
   Stream<MessageEntry?> getMessageWithIndex(AccountId match, int index) async* {
-    final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
+    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {
       yield null;
       return;
@@ -410,7 +411,7 @@ class ChatRepository extends DataRepository {
   /// Get message count of conversation and possibly the related change event.
   /// Also receive updates to both.
   Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match) async* {
-    final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
+    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {
       yield (0, null);
       return;
@@ -428,7 +429,7 @@ class ChatRepository extends DataRepository {
   }
 
   Future<void> messageIteratorReset(AccountId match) async {
-    final currentUser = await AccountRepository.getInstance().accountId.firstOrNull;
+    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {
       return;
     }

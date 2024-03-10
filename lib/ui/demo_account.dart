@@ -20,8 +20,8 @@ import "package:url_launcher/url_launcher_string.dart";
 
 // TODO(prod): Use SVG for sign in with google button
 
-class LoginScreen extends RootScreen {
-  const LoginScreen({Key? key}) : super(MainState.loginRequired, key: key);
+class DemoAccountScreen extends RootScreen {
+  const DemoAccountScreen({Key? key}) : super(MainState.loginRequired, key: key);
 
   @override
   Widget buildRootWidget(BuildContext context) {
@@ -34,6 +34,7 @@ class LoginScreen extends RootScreen {
               child: IntrinsicHeight(
                 child: Column(
                   children: [
+                    Text("Demo account screen"),
                     const Spacer(flex: 2),
                     logoAndAppNameAndSlogan(context),
                     const Spacer(flex: 10),

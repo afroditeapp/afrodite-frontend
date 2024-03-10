@@ -5,6 +5,7 @@ import "package:pihka_frontend/data/account_repository.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 
@@ -49,9 +50,10 @@ class NewProfileVisibilityValue extends AccountEvent {
 
 /// Do register/login operations
 class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner {
-  final AccountRepository account;
+  final AccountRepository account = AccountRepository.getInstance();
+  final LoginRepository login = LoginRepository.getInstance();
 
-  AccountBloc(this.account) :
+  AccountBloc() :
     super(AccountBlocData(
       capabilities: Capabilities(),
       visibility: ProfileVisibility.pendingPrivate
@@ -59,19 +61,19 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
     on<DoRegister>((data, emit) async {
       await runOnce(() async {
         emit(state.copyWith(
-          accountId: await account.register(),
+          accountId: await login.register(),
           accessToken: null,
         ));
       });
     });
     on<DoLogin>((_, emit) async {
       await runOnce(() async {
-        await account.login();
+        await login.login();
       });
     });
     on<DoLogout>((_, emit) async {
       await runOnce(() async {
-        await account.logout();
+        await login.logout();
       });
     });
     on<DoProfileVisiblityChange>((state, emit) async {
@@ -96,10 +98,10 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
     });
 
 
-    account.accountId.listen((event) {
+    login.accountId.listen((event) {
       add(NewAccountIdValue(event));
     });
-    account.accountAccessToken.listen((event) {
+    login.accountAccessToken.listen((event) {
       add(NewAccessTokenValue(event));
     });
     account.capabilities.listen((event) {

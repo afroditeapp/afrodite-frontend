@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui/account_banned.dart";
+import "package:pihka_frontend/ui/demo_account.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
 import "package:pihka_frontend/ui/login_new.dart";
 import 'package:pihka_frontend/ui/normal.dart';
@@ -24,7 +25,8 @@ abstract class RootScreen extends StatelessWidget {
         }
 
         final page = switch (state) {
-          MainState.loginRequired => const LoginNewPage(),
+          MainState.loginRequired => const LoginScreen(),
+          MainState.demoAccount => const DemoAccountScreen(),
           MainState.initialSetup => const InitialSetupPage(),
           MainState.initialSetupComplete => const NormalStatePage(),
           MainState.accountBanned => const AccountBannedPage(),

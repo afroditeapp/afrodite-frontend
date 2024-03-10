@@ -7,6 +7,7 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/favorite_profiles_database.dart';
@@ -197,7 +198,7 @@ class ProfileRepository extends DataRepository {
 
   Future<List<ProfileEntry>> nextList() async {
     // TODO: cache this somewhere?
-    final ownAccountId = await AccountRepository.getInstance().accountId.firstOrNull;
+    final ownAccountId = await LoginRepository.getInstance().accountId.firstOrNull;
 
     // TODO: Perhaps move to iterator when filters are implemented?
     while (true) {

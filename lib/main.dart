@@ -8,6 +8,7 @@ import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
@@ -20,7 +21,9 @@ import 'package:pihka_frontend/database/chat/sent_likes_database.dart';
 import 'package:pihka_frontend/database/favorite_profiles_database.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
+import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/account/demo_account.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/logic/admin/image_moderation.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
@@ -60,6 +63,7 @@ Future<void> main() async {
 
   await GlobalInitManager.getInstance().init();
 
+  // TODO: remove and get instances in Bloc
   var accountRepository = AccountRepository.getInstance();
   var mediaRepository = MediaRepository.getInstance();
   var profileRepository = ProfileRepository.getInstance();
@@ -68,18 +72,19 @@ Future<void> main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => MainStateBloc(accountRepository)),
-        BlocProvider(create: (_) => AccountBloc(accountRepository)),
+        BlocProvider(create: (_) => MainStateBloc()),
+        BlocProvider(create: (_) => AccountBloc()),
+        BlocProvider(create: (_) => DemoAccountBloc()),
         BlocProvider(create: (_) => InitialSetupBloc(accountRepository)),
-        BlocProvider(create: (_) => ServerAddressBloc(accountRepository)),
-        BlocProvider(create: (_) => ProfileBloc(accountRepository, profileRepository, mediaRepository)),
+        BlocProvider(create: (_) => ServerAddressBloc()),
+        BlocProvider(create: (_) => ProfileBloc()),
         BlocProvider(create: (_) => ViewProfileBloc(accountRepository, profileRepository, mediaRepository, chatRepository)),
         BlocProvider(create: (_) => ConversationBloc(accountRepository, profileRepository, mediaRepository, chatRepository)),
         BlocProvider(create: (_) => ProfileFilteringSettingsBloc(profileRepository)),
         BlocProvider(create: (_) => LocationBloc(profileRepository), lazy: false),
 
         // Login
-        BlocProvider(create: (_) => SignInWithBloc(accountRepository)),
+        BlocProvider(create: (_) => SignInWithBloc()),
 
         // Admin features related blocs
         BlocProvider(create: (_) => ImageModerationBloc(mediaRepository)),
@@ -97,7 +102,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Pihka',
+      title: context.strings.app_name,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData(
@@ -105,9 +110,6 @@ class MyApp extends StatelessWidget {
       ),
       home: const SplashScreen(),
       scaffoldMessengerKey: globalScaffoldMessengerKey,
-      // routes: <String, WidgetBuilder> {
-      //   "/login": (context) => const LoginPage(title: "Test")
-      // },
       debugShowCheckedModeBanner: false,
     );
   }
@@ -160,6 +162,7 @@ class GlobalInitManager {
     await SentBlocksDatabase.getInstance().init();
     await MessageDatabase.getInstance().init();
 
+    await LoginRepository.getInstance().init();
     await AccountRepository.getInstance().init();
     await MediaRepository.getInstance().init();
     await ProfileRepository.getInstance().init();

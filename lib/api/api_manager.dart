@@ -87,6 +87,7 @@ class ApiManager extends AppSingleton {
       "",
     );
 
+  ApiManagerState get currentState => _state.value;
   Stream<ApiManagerState> get state => _state.distinct();
   Stream<ServerWsEvent> get serverEvents => _serverEvents;
 

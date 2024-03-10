@@ -1,6 +1,6 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/config.dart";
-import "package:pihka_frontend/data/account_repository.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 
 sealed class ServerAddressEvent {}
 class ChangeCachedServerAddress extends ServerAddressEvent {
@@ -9,14 +9,14 @@ class ChangeCachedServerAddress extends ServerAddressEvent {
 }
 
 class ServerAddressBloc extends Bloc<ServerAddressEvent, String> {
-  final AccountRepository account;
+  final LoginRepository login = LoginRepository.getInstance();
 
-  ServerAddressBloc(this.account) : super(defaultAccountServerAddress()) {
+  ServerAddressBloc() : super(defaultAccountServerAddress()) {
     on<ChangeCachedServerAddress>((data, emit) async {
-      await account.setCurrentServerAddress(data.value);
+      await login.setCurrentServerAddress(data.value);
       emit(data.value);
     });
 
-    account.accountServerAddress.listen((value) => add(ChangeCachedServerAddress(value)));
+    login.accountServerAddress.listen((value) => add(ChangeCachedServerAddress(value)));
   }
 }
