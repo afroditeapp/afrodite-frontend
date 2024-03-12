@@ -27,6 +27,11 @@ class DoDemoAccountLogin extends DemoAccountEvent {
 }
 class DoDemoAccountLogout extends DemoAccountEvent {}
 class DoDemoAccountRefreshAccountList extends DemoAccountEvent {}
+class DoDemoAccountCreateNewAccount extends DemoAccountEvent {}
+class DoDemoAccountLoginToAccount extends DemoAccountEvent {
+  final AccountId id;
+  DoDemoAccountLoginToAccount(this.id);
+}
 class NewDemoAccountUserIdValue extends DemoAccountEvent {
   final String? value;
   NewDemoAccountUserIdValue(this.value);
@@ -75,6 +80,20 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
         }
       });
     });
+    on<DoDemoAccountCreateNewAccount>((_, emit) async {
+      await runOnce(() async {
+        handleErrors(
+          await login.demoAccountRegisterAndLogin()
+        );
+      });
+    });
+    on<DoDemoAccountLoginToAccount>((data, emit) async {
+      await runOnce(() async {
+        handleErrors(
+          await login.demoAccountLoginToAccount(data.id)
+        );
+      });
+    });
     on<NewDemoAccountUserIdValue>((id, emit) {
       emit(state.copyWith(userId: id.value));
     });
@@ -94,5 +113,16 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
     login.demoAccountLoginInProgress.listen((event) {
       add(NewLoginProgressValue(event));
     });
+  }
+}
+
+void handleErrors(Result<(), SessionOrOtherError> result) {
+  switch (result) {
+    case Ok(v: ()):
+      ();
+    case Err(e: SessionExpired()):
+      showSnackBar(R.strings.login_screen_demo_account_login_session_expired);
+    case Err(e: OtherError()):
+      showSnackBar(R.strings.generic_error_occurred);
   }
 }

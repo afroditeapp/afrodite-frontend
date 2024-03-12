@@ -229,12 +229,12 @@ class ApiManager extends AppSingleton {
 
   Future<void> close() async {
     _reconnectInProgress = false;
-    await accountConnection.close();
+    await accountConnection.close(logoutClose: true);
     _state.add(ApiManagerState.waitingRefreshToken);
   }
 
   Future<void> closeAndRefreshServerAddress() async {
-    await accountConnection.close();
+    await accountConnection.close(logoutClose: true);
     await _loadAddressesFromConfig();
     _state.add(ApiManagerState.waitingRefreshToken);
   }

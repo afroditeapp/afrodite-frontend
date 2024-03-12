@@ -116,6 +116,7 @@ class MyApp extends StatelessWidget {
 }
 
 
+// TODO(prod); Remove bloc state change printing
 class DebugObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {

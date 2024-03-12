@@ -221,15 +221,27 @@ class ServerConnection {
   }
 
   Future<void> _endConnectionToGeneralError({ServerConnectionError error = ServerConnectionError.connectionFailure}) async {
-    await _connection?.sink.close(status.goingAway);
+    // Nullify connection to make sure that onDone is called when
+    // _connection is null. This order seems not required but, this style
+    // feels safer.
+    final c = _connection;
     _connection = null;
+    await c?.sink.close(status.goingAway);
     _state.add(Error(error));
   }
 
-  Future<void> close() async {
-    await _connection?.sink.close(status.goingAway);
+  Future<void> close({bool logoutClose = false}) async {
+    // Nullify connection to make sure that onDone is called when
+    // _connection is null. This order seems not required but, this style
+    // feels safer.
+    final c = _connection;
     _connection = null;
-    _state.add(ReadyToConnect());
+    await c?.sink.close(status.goingAway);
+    if (logoutClose) {
+      _state.add(Error(ServerConnectionError.invalidToken));
+    } else {
+      _state.add(ReadyToConnect());
+    }
   }
 
   void setAddress(String address) {

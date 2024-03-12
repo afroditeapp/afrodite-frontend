@@ -170,6 +170,9 @@ class LoginRepository extends DataRepository {
   }
 
   Future<void> _handleLoginResult(LoginResult loginResult) async {
+    // TODO(prod): Sign in with login does not set the account id to
+    // shared preferences.
+
     // Login repository
     await KvStringManager.getInstance().setValue(KvString.accountRefreshToken, loginResult.account.refresh.token);
     await KvStringManager.getInstance().setValue(KvString.accountAccessToken, loginResult.account.access.accessToken);
@@ -223,6 +226,7 @@ class LoginRepository extends DataRepository {
     }
   }
 
+  // TODO(prod): Remove runtime server address changing?
   Future<void> setCurrentServerAddress(String serverAddress) async {
     await KvStringManager.getInstance().setValue(
       KvString.accountServerAddress, serverAddress
@@ -269,7 +273,7 @@ class LoginRepository extends DataRepository {
     log.info("demo account logout completed");
   }
 
-  Future<Result<List<AccessibleAccount>, AccessibleAccountsError>> demoAccountGetAccounts() async {
+  Future<Result<List<AccessibleAccount>, SessionOrOtherError>> demoAccountGetAccounts() async {
     final token = await demoAccountToken.first;
     if (token == null) {
       return Err(OtherError());
@@ -279,7 +283,42 @@ class LoginRepository extends DataRepository {
       return Ok(accounts);
     } else {
       // TODO: Better error handling
+      // Assume session expiration every time for now.
+      await demoAccountLogout();
+      return Err(SessionExpired());
+    }
+  }
 
+  Future<Result<(), SessionOrOtherError>> demoAccountRegisterAndLogin() async {
+    final token = await demoAccountToken.first;
+    if (token == null) {
+      return Err(OtherError());
+    }
+    final demoToken = DemoModeToken(token: token);
+    final id = await _api.account((api) => api.postDemoModeRegisterAccount(demoToken));
+    if (id != null) {
+      return await demoAccountLoginToAccount(id);
+    } else {
+      // TODO: Better error handling
+      // Assume session expiration every time for now.
+      await demoAccountLogout();
+      return Err(SessionExpired());
+    }
+  }
+
+  Future<Result<(), SessionOrOtherError>> demoAccountLoginToAccount(AccountId id) async {
+    final token = await demoAccountToken.first;
+    if (token == null) {
+      return Err(OtherError());
+    }
+    final demoToken = DemoModeToken(token: token);
+    final loginResult = await _api.account((api) => api.postDemoModeLoginToAccount(DemoModeLoginToAccount(accountId: id, token: demoToken)));
+    if (loginResult != null) {
+      await KvStringManager.getInstance().setValue(KvString.accountId, id.accountId);
+      await _handleLoginResult(loginResult);
+      return Ok(());
+    } else {
+      // TODO: Better error handling
       // Assume session expiration every time for now.
       await demoAccountLogout();
       return Err(SessionExpired());
@@ -293,6 +332,6 @@ class DemoAccountCredentials {
   DemoAccountCredentials(this.id, this.password);
 }
 
-sealed class AccessibleAccountsError {}
-class SessionExpired extends AccessibleAccountsError {}
-class OtherError extends AccessibleAccountsError {}
+sealed class SessionOrOtherError {}
+class SessionExpired extends SessionOrOtherError {}
+class OtherError extends SessionOrOtherError {}

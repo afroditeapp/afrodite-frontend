@@ -19,11 +19,11 @@ void showAppAboutDialog(BuildContext context) {
   );
 }
 
-Future<bool?> showConfirmDialog(BuildContext context, String actionText, {String? details}) {
+Future<bool?> showConfirmDialog(BuildContext context, String titleText, {String? details}) {
   return showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
-      title: Text(actionText),
+      title: Text(titleText),
       content: details != null ? Text(details) : null,
       actions: <Widget>[
         TextButton(
@@ -35,6 +35,40 @@ Future<bool?> showConfirmDialog(BuildContext context, String actionText, {String
         TextButton(
           onPressed: () {
             Navigator.pop(context, true);
+          },
+          child: Text(context.strings.generic_ok)
+        )
+      ],
+    )
+  );
+}
+
+Future<void> showConfirmDialogAdvanced(
+  {
+    required BuildContext context,
+    required String title,
+    String? details,
+    void Function()? onSuccess,
+  }
+) {
+  return showDialog<void>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(title),
+      content: details != null ? Text(details) : null,
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context, null);
+          },
+          child: Text(context.strings.generic_cancel)
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context, null);
+            if (onSuccess != null) {
+              onSuccess();
+            }
           },
           child: Text(context.strings.generic_ok)
         )

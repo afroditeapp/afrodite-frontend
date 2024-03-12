@@ -11,6 +11,26 @@
   "@app_slogan": {
     "description": "Slogan for the app"
   },
+  "demo_account_screen_confirm_logout_dialog_title": "Logout?",
+  "@demo_account_screen_confirm_logout_dialog_title": {
+    "description": "Dialog title text for confirming logout from demo account"
+  },
+  "demo_account_screen_login_to_account_dialog_title": "Login to account?",
+  "@demo_account_screen_login_to_account_dialog_title": {
+    "description": "Dialog title text for confirming login to some account"
+  },
+  "demo_account_screen_new_account_action": "New account",
+  "@demo_account_screen_new_account_action": {
+    "description": "Text for action which creates a new account"
+  },
+  "demo_account_screen_new_account_dialog_description": "Create new account and login to it?",
+  "@demo_account_screen_new_account_dialog_description": {
+    "description": ""
+  },
+  "demo_account_screen_new_account_dialog_title": "New account",
+  "@demo_account_screen_new_account_dialog_title": {
+    "description": "Dialog title text for action which creates a new account"
+  },
   "demo_account_screen_no_accounts_available": "No accounts available",
   "@demo_account_screen_no_accounts_available": {
     "description": "Text displayed when available accounts list is empty"
@@ -31,6 +51,10 @@
   "@generic_error": {
     "description": "Generic error message"
   },
+  "generic_error_occurred": "Error occurred",
+  "@generic_error_occurred": {
+    "description": "Generic error occurred text"
+  },
   "generic_login": "Login",
   "@generic_login": {
     "description": "Generic login text"
@@ -42,10 +66,6 @@
   "generic_ok": "OK",
   "@generic_ok": {
     "description": "Generic OK text"
-  },
-  "generic_register": "Register",
-  "@generic_register": {
-    "description": "Generic register text"
   },
   "login_screen_action_demo_account_login": "Demo account login",
   "@login_screen_action_demo_account_login": {

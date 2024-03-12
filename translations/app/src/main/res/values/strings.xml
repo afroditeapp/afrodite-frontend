@@ -16,7 +16,7 @@
     <string name="generic_ok" description="Generic OK text">OK</string>
     <string name="generic_login" description="Generic login text">Login</string>
     <string name="generic_logout" description="Generic logout text">Logout</string>
-    <string name="generic_register" description="Generic register text">Register</string>
+    <string name="generic_error_occurred" description="Generic error occurred text">Error occurred</string>
 
     <!-- App bar actions -->
     <string name="app_bar_action_about" description="Title for app bar action which opens about dialog">About</string>
@@ -40,6 +40,11 @@
 
     <!-- Demo account screen -->
     <string name="demo_account_screen_no_accounts_available" description="Text displayed when available accounts list is empty">No accounts available</string>
+    <string name="demo_account_screen_new_account_action" description="Text for action which creates a new account">New account</string>
+    <string name="demo_account_screen_new_account_dialog_title" description="Dialog title text for action which creates a new account">New account</string>
+    <string name="demo_account_screen_new_account_dialog_description" description="">Create new account and login to it?</string>
+    <string name="demo_account_screen_login_to_account_dialog_title" description="Dialog title text for confirming login to some account">Login to account?</string>
+    <string name="demo_account_screen_confirm_logout_dialog_title" description="Dialog title text for confirming logout from demo account">Logout?</string>
 
     <!-- Profile grid page -->
     <string name="pageProfileGridTitle" description="Title for profile grid page">Profiles</string>
