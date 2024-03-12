@@ -7,8 +7,8 @@ import "package:pihka_frontend/ui/normal/profiles.dart";
 import "package:pihka_frontend/ui/normal/settings.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
 
-class NormalStatePage extends RootScreen {
-  const NormalStatePage({Key? key}) : super(MainState.initialSetupComplete, key: key);
+class NormalStateScreen extends RootScreen {
+  const NormalStateScreen({Key? key}) : super(key: key);
 
   @override
   Widget buildRootWidget(BuildContext context) {

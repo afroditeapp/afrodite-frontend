@@ -2,8 +2,8 @@ import "package:flutter/material.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
 
-class UnsupportedClientPage extends RootScreen {
-  const UnsupportedClientPage({Key? key}) : super(MainState.unsupportedClientVersion, key: key);
+class UnsupportedClientScreen extends RootScreen {
+  const UnsupportedClientScreen({Key? key}) : super(key: key);
 
   @override
   Widget buildRootWidget(BuildContext context) {

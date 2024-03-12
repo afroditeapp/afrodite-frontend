@@ -23,7 +23,7 @@ import "package:url_launcher/url_launcher_string.dart";
 // TODO(prod): Use SVG for sign in with google button
 
 class LoginScreen extends RootScreen {
-  LoginScreen({Key? key}) : super(MainState.loginRequired, key: key);
+  LoginScreen({Key? key}) : super(key: key);
 
   bool dialogOpen = false;
 

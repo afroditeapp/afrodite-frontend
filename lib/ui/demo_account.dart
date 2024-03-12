@@ -20,7 +20,7 @@ import 'package:pihka_frontend/localizations.dart';
 import "package:url_launcher/url_launcher_string.dart";
 
 class DemoAccountScreen extends RootScreen {
-  const DemoAccountScreen({Key? key}) : super(MainState.demoAccount, key: key);
+  const DemoAccountScreen({Key? key}) : super(key: key);
 
   @override
   Widget buildRootWidget(BuildContext context) {

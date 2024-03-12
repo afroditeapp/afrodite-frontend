@@ -14,8 +14,8 @@ import 'package:pihka_frontend/localizations.dart';
 
 const commonPadding = 5.0;
 
-class LoginPage extends RootScreen {
-  LoginPage({Key? key}) : super(MainState.loginRequired, key: key);
+class LoginScreenOld extends RootScreen {
+  LoginScreenOld({Key? key}) : super(key: key);
 
   final _serverAddressFormKey = GlobalKey<FormState>();
 

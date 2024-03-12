@@ -10,10 +10,7 @@ import "package:pihka_frontend/ui/pending_deletion.dart";
 import "package:pihka_frontend/ui/unsupported_client.dart";
 
 abstract class RootScreen extends StatelessWidget {
-  const RootScreen(this.rootScreenIdentifier, {Key? key}) : super(key: key);
-
-  // TODO: remove this
-  final MainState rootScreenIdentifier;
+  const RootScreen({Key? key}) : super(key: key);
 
   Widget buildRootWidget(BuildContext context);
 
@@ -21,25 +18,21 @@ abstract class RootScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<MainStateBloc, MainState>(
       listener: (context, state) {
-        if (state == rootScreenIdentifier) {
-          return;
-        }
-
-        final page = switch (state) {
+        final screen = switch (state) {
           MainState.loginRequired => LoginScreen(),
           MainState.demoAccount => const DemoAccountScreen(),
-          MainState.initialSetup => const InitialSetupPage(),
-          MainState.initialSetupComplete => const NormalStatePage(),
-          MainState.accountBanned => const AccountBannedPage(),
+          MainState.initialSetup => const InitialSetupScreen(),
+          MainState.initialSetupComplete => const NormalStateScreen(),
+          MainState.accountBanned => const AccountBannedScreen(),
           MainState.pendingRemoval => const PendingDeletionPage(),
-          MainState.unsupportedClientVersion => const UnsupportedClientPage(),
+          MainState.unsupportedClientVersion => const UnsupportedClientScreen(),
           MainState.splashScreen => null,
         };
 
-        if (page != null) {
+        if (screen != null) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute<void>(builder: (_) => page),
+            MaterialPageRoute<void>(builder: (_) => screen),
             (_) => false,
           );
         }

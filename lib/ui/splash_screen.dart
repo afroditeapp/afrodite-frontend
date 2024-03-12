@@ -5,7 +5,7 @@ import "package:pihka_frontend/main.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
 
 class SplashScreen extends RootScreen {
-  const SplashScreen({Key? key}) : super(MainState.splashScreen, key: key);
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   Widget buildRootWidget(BuildContext context) {

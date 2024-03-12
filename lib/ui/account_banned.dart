@@ -2,8 +2,8 @@ import "package:flutter/material.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
 
-class AccountBannedPage extends RootScreen {
-  const AccountBannedPage({Key? key}) : super(MainState.accountBanned, key: key);
+class AccountBannedScreen extends RootScreen {
+  const AccountBannedScreen({Key? key}) : super(key: key);
 
   @override
   Widget buildRootWidget(BuildContext context) {
