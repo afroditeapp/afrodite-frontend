@@ -9,6 +9,7 @@ import "package:pihka_frontend/logic/account/demo_account.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/logic/sign_in_with.dart";
 import "package:pihka_frontend/ui_utils/colors.dart";
+import "package:pihka_frontend/ui_utils/loading_dialog.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
 import "package:pihka_frontend/ui_utils/app_bar/common_actions.dart";
 import "package:pihka_frontend/ui_utils/app_bar/menu_actions.dart";
@@ -23,25 +24,16 @@ import "package:url_launcher/url_launcher_string.dart";
 // TODO(prod): Use SVG for sign in with google button
 
 class LoginScreen extends RootScreen {
-  LoginScreen({Key? key}) : super(key: key);
-
-  bool dialogOpen = false;
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget buildRootWidget(BuildContext context) {
     return Scaffold(
-      body: BlocListener<DemoAccountBloc, DemoAccountBlocData>(
-        listener: (context, state) {
-          if (state.loginProgressVisible) {
-            dialogOpen = true;
-            showLoadingDialog(context);
-          } else {
-            if (dialogOpen) {
-              Navigator.pop(context);
-              dialogOpen = false;
-            }
-          }
-        },
+      body: ProgressDialogBlocListener<DemoAccountBloc, DemoAccountBlocData>(
+        dialogVisibilityGetter:
+          (_, state) => state.loginProgressVisible,
+        loadingText:
+          context.strings.login_screen_demo_account_login_progress_dialog,
         child: screenContent(),
       ),
       resizeToAvoidBottomInset: false,
@@ -267,26 +259,5 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
       ],
       scrollable: true,
     )
-  );
-}
-
-void showLoadingDialog(BuildContext context) {
-  showDialog<void>(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const CircularProgressIndicator(),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(context.strings.login_screen_demo_account_login_progress_dialog),
-            ),
-          ],
-        ),
-      );
-    },
   );
 }

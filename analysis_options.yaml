@@ -40,3 +40,4 @@ analyzer:
     unawaited_futures: warning
     todo: ignore
     constant_identifier_names: ignore
+    inference_failure_on_instance_creation: error
