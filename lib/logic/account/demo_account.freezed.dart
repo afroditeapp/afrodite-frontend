@@ -19,6 +19,7 @@ mixin _$DemoAccountBlocData {
   String? get userId => throw _privateConstructorUsedError;
   String? get password => throw _privateConstructorUsedError;
   bool get loginProgressVisible => throw _privateConstructorUsedError;
+  List<AccessibleAccount> get accounts => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $DemoAccountBlocDataCopyWith<DemoAccountBlocData> get copyWith =>
@@ -31,7 +32,11 @@ abstract class $DemoAccountBlocDataCopyWith<$Res> {
           DemoAccountBlocData value, $Res Function(DemoAccountBlocData) then) =
       _$DemoAccountBlocDataCopyWithImpl<$Res, DemoAccountBlocData>;
   @useResult
-  $Res call({String? userId, String? password, bool loginProgressVisible});
+  $Res call(
+      {String? userId,
+      String? password,
+      bool loginProgressVisible,
+      List<AccessibleAccount> accounts});
 }
 
 /// @nodoc
@@ -50,6 +55,7 @@ class _$DemoAccountBlocDataCopyWithImpl<$Res, $Val extends DemoAccountBlocData>
     Object? userId = freezed,
     Object? password = freezed,
     Object? loginProgressVisible = null,
+    Object? accounts = null,
   }) {
     return _then(_value.copyWith(
       userId: freezed == userId
@@ -64,6 +70,10 @@ class _$DemoAccountBlocDataCopyWithImpl<$Res, $Val extends DemoAccountBlocData>
           ? _value.loginProgressVisible
           : loginProgressVisible // ignore: cast_nullable_to_non_nullable
               as bool,
+      accounts: null == accounts
+          ? _value.accounts
+          : accounts // ignore: cast_nullable_to_non_nullable
+              as List<AccessibleAccount>,
     ) as $Val);
   }
 }
@@ -76,7 +86,11 @@ abstract class _$$DemoAccountBlocDataImplCopyWith<$Res>
       __$$DemoAccountBlocDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? userId, String? password, bool loginProgressVisible});
+  $Res call(
+      {String? userId,
+      String? password,
+      bool loginProgressVisible,
+      List<AccessibleAccount> accounts});
 }
 
 /// @nodoc
@@ -93,6 +107,7 @@ class __$$DemoAccountBlocDataImplCopyWithImpl<$Res>
     Object? userId = freezed,
     Object? password = freezed,
     Object? loginProgressVisible = null,
+    Object? accounts = null,
   }) {
     return _then(_$DemoAccountBlocDataImpl(
       userId: freezed == userId
@@ -107,6 +122,10 @@ class __$$DemoAccountBlocDataImplCopyWithImpl<$Res>
           ? _value.loginProgressVisible
           : loginProgressVisible // ignore: cast_nullable_to_non_nullable
               as bool,
+      accounts: null == accounts
+          ? _value._accounts
+          : accounts // ignore: cast_nullable_to_non_nullable
+              as List<AccessibleAccount>,
     ));
   }
 }
@@ -117,7 +136,11 @@ class _$DemoAccountBlocDataImpl
     with DiagnosticableTreeMixin
     implements _DemoAccountBlocData {
   _$DemoAccountBlocDataImpl(
-      {this.userId, this.password, this.loginProgressVisible = false});
+      {this.userId,
+      this.password,
+      this.loginProgressVisible = false,
+      final List<AccessibleAccount> accounts = const []})
+      : _accounts = accounts;
 
   @override
   final String? userId;
@@ -126,10 +149,18 @@ class _$DemoAccountBlocDataImpl
   @override
   @JsonKey()
   final bool loginProgressVisible;
+  final List<AccessibleAccount> _accounts;
+  @override
+  @JsonKey()
+  List<AccessibleAccount> get accounts {
+    if (_accounts is EqualUnmodifiableListView) return _accounts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_accounts);
+  }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'DemoAccountBlocData(userId: $userId, password: $password, loginProgressVisible: $loginProgressVisible)';
+    return 'DemoAccountBlocData(userId: $userId, password: $password, loginProgressVisible: $loginProgressVisible, accounts: $accounts)';
   }
 
   @override
@@ -139,7 +170,8 @@ class _$DemoAccountBlocDataImpl
       ..add(DiagnosticsProperty('type', 'DemoAccountBlocData'))
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('password', password))
-      ..add(DiagnosticsProperty('loginProgressVisible', loginProgressVisible));
+      ..add(DiagnosticsProperty('loginProgressVisible', loginProgressVisible))
+      ..add(DiagnosticsProperty('accounts', accounts));
   }
 
   @override
@@ -151,12 +183,13 @@ class _$DemoAccountBlocDataImpl
             (identical(other.password, password) ||
                 other.password == password) &&
             (identical(other.loginProgressVisible, loginProgressVisible) ||
-                other.loginProgressVisible == loginProgressVisible));
+                other.loginProgressVisible == loginProgressVisible) &&
+            const DeepCollectionEquality().equals(other._accounts, _accounts));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, userId, password, loginProgressVisible);
+  int get hashCode => Object.hash(runtimeType, userId, password,
+      loginProgressVisible, const DeepCollectionEquality().hash(_accounts));
 
   @JsonKey(ignore: true)
   @override
@@ -170,7 +203,8 @@ abstract class _DemoAccountBlocData implements DemoAccountBlocData {
   factory _DemoAccountBlocData(
       {final String? userId,
       final String? password,
-      final bool loginProgressVisible}) = _$DemoAccountBlocDataImpl;
+      final bool loginProgressVisible,
+      final List<AccessibleAccount> accounts}) = _$DemoAccountBlocDataImpl;
 
   @override
   String? get userId;
@@ -178,6 +212,8 @@ abstract class _DemoAccountBlocData implements DemoAccountBlocData {
   String? get password;
   @override
   bool get loginProgressVisible;
+  @override
+  List<AccessibleAccount> get accounts;
   @override
   @JsonKey(ignore: true)
   _$$DemoAccountBlocDataImplCopyWith<_$DemoAccountBlocDataImpl> get copyWith =>

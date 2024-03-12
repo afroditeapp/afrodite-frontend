@@ -1,6 +1,7 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
+import "package:openapi/api.dart";
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
@@ -15,6 +16,7 @@ class DemoAccountBlocData with _$DemoAccountBlocData {
     String? userId,
     String? password,
     @Default(false) bool loginProgressVisible,
+    @Default([]) List<AccessibleAccount> accounts,
   }) = _DemoAccountBlocData;
 }
 
@@ -24,6 +26,7 @@ class DoDemoAccountLogin extends DemoAccountEvent {
   DoDemoAccountLogin(this.credentials);
 }
 class DoDemoAccountLogout extends DemoAccountEvent {}
+class DoDemoAccountRefreshAccountList extends DemoAccountEvent {}
 class NewDemoAccountUserIdValue extends DemoAccountEvent {
   final String? value;
   NewDemoAccountUserIdValue(this.value);
@@ -44,14 +47,32 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
     super(DemoAccountBlocData()) {
     on<DoDemoAccountLogin>((data, emit) async {
       await runOnce(() async {
-        if (await login.demoAccountLogin(data.credentials).isErr()) {
-          showSnackBar(R.strings.login_screen_demo_account_login_failed);
+        // Possibly prevent displaying account info from another demo account.
+        emit(state.copyWith(accounts: []));
+
+        switch (await login.demoAccountLogin(data.credentials)) {
+          case Ok(v: ()):
+            ();
+          case Err(e: _):
+            showSnackBar(R.strings.login_screen_demo_account_login_failed);
         }
       });
     });
     on<DoDemoAccountLogout>((_, emit) async {
       await runOnce(() async {
         await login.demoAccountLogout();
+      });
+    });
+    on<DoDemoAccountRefreshAccountList>((_, emit) async {
+      await runOnce(() async {
+        switch (await login.demoAccountGetAccounts()) {
+          case Ok(:final v):
+            emit(state.copyWith(accounts: v));
+          case Err(e: SessionExpired()):
+            showSnackBar(R.strings.login_screen_demo_account_login_session_expired);
+          case Err(e: OtherError()):
+            ();
+        }
       });
     });
     on<NewDemoAccountUserIdValue>((id, emit) {

@@ -1,9 +1,5 @@
 
-import 'dart:convert';
-
-import 'package:camera/camera.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
@@ -13,7 +9,6 @@ import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
-import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
@@ -266,11 +261,29 @@ class LoginRepository extends DataRepository {
   Future<void> demoAccountLogout() async {
     log.info("demo account logout");
 
-    await KvStringManager.getInstance().setValue(KvString.demoAccountPassword, null);
-    await KvStringManager.getInstance().setValue(KvString.demoAccountUserId, null);
+    // TODO(prod): Uncomment
+    // await KvStringManager.getInstance().setValue(KvString.demoAccountPassword, null);
+    // await KvStringManager.getInstance().setValue(KvString.demoAccountUserId, null);
     await KvStringManager.getInstance().setValue(KvString.demoAccountToken, null);
 
     log.info("demo account logout completed");
+  }
+
+  Future<Result<List<AccessibleAccount>, AccessibleAccountsError>> demoAccountGetAccounts() async {
+    final token = await demoAccountToken.first;
+    if (token == null) {
+      return Err(OtherError());
+    }
+    final accounts = await _api.account((api) => api.getDemoModeAccessibleAccounts(DemoModeToken(token: token)));
+    if (accounts != null) {
+      return Ok(accounts);
+    } else {
+      // TODO: Better error handling
+
+      // Assume session expiration every time for now.
+      await demoAccountLogout();
+      return Err(SessionExpired());
+    }
   }
 }
 
@@ -279,3 +292,7 @@ class DemoAccountCredentials {
   final String password;
   DemoAccountCredentials(this.id, this.password);
 }
+
+sealed class AccessibleAccountsError {}
+class SessionExpired extends AccessibleAccountsError {}
+class OtherError extends AccessibleAccountsError {}

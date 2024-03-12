@@ -10,14 +10,16 @@ sealed class Result<Success, Error> {
   }
 }
 
-class Ok<Success, Err> extends Result<Success, Err> {
+final class Ok<Success, Err> extends Result<Success, Err> {
   final Success value;
   Ok(this.value);
+  Success get v => value;
 }
 
-class Err<Ok, E> extends Result<Ok, E> {
-  final E value;
-  Err(this.value);
+final class Err<Ok, E> extends Result<Ok, E> {
+  final E error;
+  Err(this.error);
+  E get e => error;
 }
 
 

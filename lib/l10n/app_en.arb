@@ -11,6 +11,10 @@
   "@app_slogan": {
     "description": "Slogan for the app"
   },
+  "demo_account_screen_no_accounts_available": "No accounts available",
+  "@demo_account_screen_no_accounts_available": {
+    "description": "Text displayed when available accounts list is empty"
+  },
   "generic_cancel": "Cancel",
   "@generic_cancel": {
     "description": "Generic cancel text"
@@ -39,6 +43,10 @@
   "@generic_ok": {
     "description": "Generic OK text"
   },
+  "generic_register": "Register",
+  "@generic_register": {
+    "description": "Generic register text"
+  },
   "login_screen_action_demo_account_login": "Demo account login",
   "@login_screen_action_demo_account_login": {
     "description": "Text for demo account login action"
@@ -62,6 +70,10 @@
   "login_screen_demo_account_login_progress_dialog": "Login…",
   "@login_screen_demo_account_login_progress_dialog": {
     "description": "Dialog info text that demo account login is in progress"
+  },
+  "login_screen_demo_account_login_session_expired": "Demo account session expired",
+  "@login_screen_demo_account_login_session_expired": {
+    "description": "Snackbar text for demo account login session expiration"
   },
   "login_screen_demo_account_password": "Password",
   "@login_screen_demo_account_password": {

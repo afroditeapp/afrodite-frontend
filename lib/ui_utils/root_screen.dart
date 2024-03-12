@@ -12,6 +12,7 @@ import "package:pihka_frontend/ui/unsupported_client.dart";
 abstract class RootScreen extends StatelessWidget {
   const RootScreen({Key? key}) : super(key: key);
 
+  void runOnceBeforeNavigatedTo(BuildContext context) {}
   Widget buildRootWidget(BuildContext context);
 
   @override
@@ -30,6 +31,8 @@ abstract class RootScreen extends StatelessWidget {
         };
 
         if (screen != null) {
+          screen.runOnceBeforeNavigatedTo(context);
+
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute<void>(builder: (_) => screen),
