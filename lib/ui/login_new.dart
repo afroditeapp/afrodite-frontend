@@ -4,6 +4,8 @@ import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/assets.dart";
+import "package:pihka_frontend/data/login_repository.dart";
+import "package:pihka_frontend/logic/account/demo_account.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/logic/sign_in_with.dart";
 import "package:pihka_frontend/ui_utils/colors.dart";
@@ -21,30 +23,26 @@ import "package:url_launcher/url_launcher_string.dart";
 // TODO(prod): Use SVG for sign in with google button
 
 class LoginScreen extends RootScreen {
-  const LoginScreen({Key? key}) : super(MainState.loginRequired, key: key);
+  LoginScreen({Key? key}) : super(MainState.loginRequired, key: key);
+
+  bool dialogOpen = false;
 
   @override
   Widget buildRootWidget(BuildContext context) {
     return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: IntrinsicHeight(
-                child: Column(
-                  children: [
-                    const Spacer(flex: 2),
-                    logoAndAppNameAndSlogan(context),
-                    const Spacer(flex: 10),
-                    signInButtonArea(context),
-                    const Spacer(flex: 1),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }
+      body: BlocListener<DemoAccountBloc, DemoAccountBlocData>(
+        listener: (context, state) {
+          if (state.loginProgressVisible) {
+            dialogOpen = true;
+            showLoadingDialog(context);
+          } else {
+            if (dialogOpen) {
+              Navigator.pop(context);
+              dialogOpen = false;
+            }
+          }
+        },
+        child: screenContent(),
       ),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -53,12 +51,43 @@ class LoginScreen extends RootScreen {
           menuActions([
             MenuItemButton(
               child: Text(context.strings.login_screen_action_demo_account_login),
-              onPressed: () => openFirstDemoAccountLoginDialog(context),
+              onPressed: () {
+                final demoAccountBloc = context.read<DemoAccountBloc>();
+                openFirstDemoAccountLoginDialog(context)
+                  .then((value) {
+                    if (value != null) {
+                      demoAccountBloc.add(DoDemoAccountLogin(value));
+                    }
+                  });
+              },
             ),
             ...commonActionsWhenLoggedOut(context),
           ]),
         ],
       ),
+    );
+  }
+
+  Widget screenContent() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: IntrinsicHeight(
+              child: Column(
+                children: [
+                  const Spacer(flex: 2),
+                  logoAndAppNameAndSlogan(context),
+                  const Spacer(flex: 10),
+                  signInButtonArea(context),
+                  const Spacer(flex: 1),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
     );
   }
 }
@@ -193,20 +222,18 @@ Widget logoAndAppNameAndSlogan(BuildContext context) {
   );
 }
 
-class DemoAccountCredentials {
-  final String id;
-  final String password;
-  DemoAccountCredentials(this.id, this.password);
-}
 
 Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext context) {
   final idField = SimpleTextField(
     hintText: context.strings.login_screen_demo_account_identifier,
+    getInitialValue: () => context.read<DemoAccountBloc>().state.userId ?? "",
   );
   final passwordField = SimpleTextField(
     hintText: context.strings.login_screen_demo_account_password,
     obscureText: true,
+    getInitialValue: () => context.read<DemoAccountBloc>().state.password ?? "",
   );
+
   return showDialog<DemoAccountCredentials?>(
     context: context,
     builder: (context) => AlertDialog(
@@ -240,5 +267,26 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
       ],
       scrollable: true,
     )
+  );
+}
+
+void showLoadingDialog(BuildContext context) {
+  showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircularProgressIndicator(),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(context.strings.login_screen_demo_account_login_progress_dialog),
+            ),
+          ],
+        ),
+      );
+    },
   );
 }

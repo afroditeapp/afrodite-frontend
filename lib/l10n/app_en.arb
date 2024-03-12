@@ -31,6 +31,10 @@
   "@generic_login": {
     "description": "Generic login text"
   },
+  "generic_logout": "Logout",
+  "@generic_logout": {
+    "description": "Generic logout text"
+  },
   "generic_ok": "OK",
   "@generic_ok": {
     "description": "Generic OK text"
@@ -50,6 +54,14 @@
   "login_screen_demo_account_identifier": "Account ID",
   "@login_screen_demo_account_identifier": {
     "description": "Placeholder text for demo account identifier"
+  },
+  "login_screen_demo_account_login_failed": "Login failed",
+  "@login_screen_demo_account_login_failed": {
+    "description": "Snackbar text for demo account login failed"
+  },
+  "login_screen_demo_account_login_progress_dialog": "Login…",
+  "@login_screen_demo_account_login_progress_dialog": {
+    "description": "Dialog info text that demo account login is in progress"
   },
   "login_screen_demo_account_password": "Password",
   "@login_screen_demo_account_password": {

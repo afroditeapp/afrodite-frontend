@@ -12,6 +12,7 @@ import "package:pihka_frontend/ui/unsupported_client.dart";
 abstract class RootScreen extends StatelessWidget {
   const RootScreen(this.rootScreenIdentifier, {Key? key}) : super(key: key);
 
+  // TODO: remove this
   final MainState rootScreenIdentifier;
 
   Widget buildRootWidget(BuildContext context);
@@ -25,7 +26,7 @@ abstract class RootScreen extends StatelessWidget {
         }
 
         final page = switch (state) {
-          MainState.loginRequired => const LoginScreen(),
+          MainState.loginRequired => LoginScreen(),
           MainState.demoAccount => const DemoAccountScreen(),
           MainState.initialSetup => const InitialSetupPage(),
           MainState.initialSetupComplete => const NormalStatePage(),

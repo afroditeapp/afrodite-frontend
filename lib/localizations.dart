@@ -8,16 +8,26 @@ import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
 
 final log = Logger("localizations");
 
+AppLocalizations currentLocalizations = AppLocalizationsEn();
+
 AppLocalizations getStringsImplementation(BuildContext context) {
-  final localizations = AppLocalizations.of(context);
+  var localizations = AppLocalizations.of(context);
   if (localizations == null) {
     log.warning("AppLocalizations.of(context) returned null");
-    return AppLocalizationsEn();
-  } else {
-    return localizations;
+    localizations = AppLocalizationsEn();
   }
+  currentLocalizations = localizations;
+  return localizations;
 }
 
 extension LocalizationsExtension on BuildContext {
   AppLocalizations get strings => getStringsImplementation(this);
+}
+
+AppLocalizations getStrings() {
+  return currentLocalizations;
+}
+
+class R {
+  static AppLocalizations get strings => currentLocalizations;
 }

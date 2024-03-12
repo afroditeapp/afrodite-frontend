@@ -7,6 +7,8 @@ import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 
 
+/// Common action that should be shown when the user is logged out from
+/// normal account.
 List<MenuItemButton> commonActionsWhenLoggedOut(BuildContext context) {
   return [
     commonActionOpenAboutDialog(context),

@@ -1,8 +1,6 @@
 
-import 'dart:async';
 import 'dart:convert';
 
-import 'package:async/async.dart';
 import 'package:camera/camera.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
@@ -18,6 +16,7 @@ import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -49,6 +48,8 @@ class LoginRepository extends DataRepository {
     BehaviorSubject.seeded(LoginState.splashScreen);
   final BehaviorSubject<LoginRepositoryState> _internalState =
     BehaviorSubject.seeded(LoginRepositoryState.initRequired);
+  final BehaviorSubject<bool> _demoAccountLoginInProgress =
+    BehaviorSubject.seeded(false);
 
   // Main app state streams
   Stream<LoginState> get loginState => _loginState.distinct();
@@ -70,6 +71,12 @@ class LoginRepository extends DataRepository {
       KvString.demoAccountPassword,
       (value) => value,
     );
+  Stream<String?> get demoAccountToken => KvStringManager.getInstance()
+    .getUpdatesForWithConversion(
+      KvString.demoAccountToken,
+      (value) => value,
+    );
+  Stream<bool> get demoAccountLoginInProgress => _demoAccountLoginInProgress;
 
   // Account
   Stream<AccountId?> get accountId => KvStringManager.getInstance()
@@ -102,11 +109,20 @@ class LoginRepository extends DataRepository {
       await ChatRepository.getInstance().onResumeAppUsage();
     }
 
-    _api.state.listen((event) {
-      log.finer(event);
-      switch (event) {
+    Rx.combineLatest2(
+      _api.state,
+      demoAccountToken,
+      (a, b) => (a, b),
+    ).listen((event) {
+      final (apiState, demoAccountToken) = event;
+      log.finer("state changed. apiState: $apiState, demoAccountToken: ${demoAccountToken != null}");
+      switch (apiState) {
         case ApiManagerState.waitingRefreshToken:
-          _loginState.add(LoginState.loginRequired);
+          if (demoAccountToken != null) {
+            _loginState.add(LoginState.demoAccount);
+          } else {
+            _loginState.add(LoginState.loginRequired);
+          }
         case ApiManagerState.connecting || ApiManagerState.reconnectWaitTime: {}
         case ApiManagerState.connected:
           _loginState.add(LoginState.viewAccountStateOnceItExists);
@@ -143,19 +159,6 @@ class LoginRepository extends DataRepository {
     }
   }
 
-  Future<void> demoAccountLogout() async {
-    log.info("logout started");
-    // Disconnect, so that server does not send events to client
-    await _api.close();
-
-    // Account
-    await KvStringManager.getInstance().setValue(KvString.demoAccountPassword, null);
-    await KvStringManager.getInstance().setValue(KvString.demoAccountUserId, null);
-    await onLogout();
-
-    log.info("logout completed");
-  }
-
   Future<void> signInWithGoogle(GoogleSignIn google) async {
     final signedIn = await google.signIn();
     if (signedIn != null) {
@@ -172,13 +175,13 @@ class LoginRepository extends DataRepository {
   }
 
   Future<void> _handleLoginResult(LoginResult loginResult) async {
-    // Account
+    // Login repository
     await KvStringManager.getInstance().setValue(KvString.accountRefreshToken, loginResult.account.refresh.token);
     await KvStringManager.getInstance().setValue(KvString.accountAccessToken, loginResult.account.access.accessToken);
     // TODO: microservice support
     await onLogin();
     // Other repostories
-    await AccountRepository.getInstance().onLogout();
+    await AccountRepository.getInstance().onLogin();
     await ProfileRepository.getInstance().onLogin();
     await MediaRepository.getInstance().onLogin();
     await ChatRepository.getInstance().onLogin();
@@ -192,7 +195,7 @@ class LoginRepository extends DataRepository {
     // Disconnect, so that server does not send events to client
     await _api.close();
 
-    // Account
+    // Login repository
     await KvStringManager.getInstance().setValue(KvString.accountRefreshToken, null);
     await KvStringManager.getInstance().setValue(KvString.accountAccessToken, null);
     await onLogout();
@@ -225,11 +228,54 @@ class LoginRepository extends DataRepository {
     }
   }
 
-    Future<void> setCurrentServerAddress(String serverAddress) async {
+  Future<void> setCurrentServerAddress(String serverAddress) async {
     await KvStringManager.getInstance().setValue(
       KvString.accountServerAddress, serverAddress
     );
     await _api.closeAndRefreshServerAddress();
   }
 
+  Future<Result<(), ()>> demoAccountLogin(DemoAccountCredentials credentials) async {
+    _demoAccountLoginInProgress.add(true);
+    final loginResult = await _api.account((api) => api.postDemoModeLogin(DemoModePassword(password: credentials.id)));
+    _demoAccountLoginInProgress.add(false);
+
+    final loginToken = loginResult?.token;
+    if (loginToken == null) {
+      return Err(());
+    }
+
+    final loginResult2 = await _api.account((api) => api.postDemoModeConfirmLogin(
+      DemoModeConfirmLogin(
+        password: DemoModePassword(password: credentials.password),
+        token: loginToken
+      )
+    ));
+    final demoAccountToken = loginResult2?.token?.token;
+    if (demoAccountToken == null) {
+      return Err(());
+    }
+
+    await KvStringManager.getInstance().setValue(KvString.demoAccountToken, demoAccountToken);
+    await KvStringManager.getInstance().setValue(KvString.demoAccountUserId, credentials.id);
+    await KvStringManager.getInstance().setValue(KvString.demoAccountPassword, credentials.password);
+
+    return Ok(());
+  }
+
+  Future<void> demoAccountLogout() async {
+    log.info("demo account logout");
+
+    await KvStringManager.getInstance().setValue(KvString.demoAccountPassword, null);
+    await KvStringManager.getInstance().setValue(KvString.demoAccountUserId, null);
+    await KvStringManager.getInstance().setValue(KvString.demoAccountToken, null);
+
+    log.info("demo account logout completed");
+  }
+}
+
+class DemoAccountCredentials {
+  final String id;
+  final String password;
+  DemoAccountCredentials(this.id, this.password);
 }

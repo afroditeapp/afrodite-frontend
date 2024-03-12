@@ -9,6 +9,7 @@ enum KvString implements PreferenceKeyProvider<KvString, String> {
 
   demoAccountUserId,
   demoAccountPassword,
+  demoAccountToken,
 
   /// Url
   accountServerAddress,

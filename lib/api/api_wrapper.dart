@@ -9,6 +9,9 @@ import 'package:pihka_frontend/utils.dart';
 
 final log = Logger("ApiWrapper");
 
+// TODO(prod): make sure that error messages do not contain API paths
+//             in production
+
 class ApiWrapper<T> {
   final T api;
 
@@ -20,7 +23,7 @@ class ApiWrapper<T> {
       return await action(api);
     } on ApiException catch (e) {
       log.error(e);
-      // TODO: remove stack trace for production?
+      // TODO(prod): remove stack trace for production?
       log.error(StackTrace.current);
       ErrorManager.getInstance().send(ApiError());
     }
@@ -35,7 +38,7 @@ class ApiWrapper<T> {
     } on ApiException catch (e) {
       if (logError) {
         log.error(e);
-        // TODO: remove stack trace for production?
+        // TODO(prod): remove stack trace for production?
         log.error(StackTrace.current);
         ErrorManager.getInstance().send(ApiError());
       }
@@ -50,7 +53,7 @@ class ApiWrapper<T> {
     } on ApiException catch (e) {
       if (logError) {
         log.error(e);
-        // TODO: remove stack trace for production?
+        // TODO(prod): remove stack trace for production?
         log.error(StackTrace.current);
         ErrorManager.getInstance().send(ApiError());
       }

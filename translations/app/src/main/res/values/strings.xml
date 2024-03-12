@@ -15,6 +15,7 @@
     <string name="generic_close" description="Generic close text">Close</string>
     <string name="generic_ok" description="Generic OK text">OK</string>
     <string name="generic_login" description="Generic login text">Login</string>
+    <string name="generic_logout" description="Generic logout text">Logout</string>
 
     <!-- App bar actions -->
     <string name="app_bar_action_about" description="Title for app bar action which opens about dialog">About</string>
@@ -32,7 +33,8 @@
     <string name="login_screen_demo_account_dialog_description" description="Description for demo account login dialog">Login to demo account on the demo account server.</string>
     <string name="login_screen_demo_account_identifier" description="Placeholder text for demo account identifier">Account ID</string>
     <string name="login_screen_demo_account_password" description="Placeholder text for demo account password">Password</string>
-
+    <string name="login_screen_demo_account_login_progress_dialog" description="Dialog info text that demo account login is in progress">Login…</string>
+    <string name="login_screen_demo_account_login_failed" description="Snackbar text for demo account login failed">Login failed</string>
 
     <!-- Profile grid page -->
     <string name="pageProfileGridTitle" description="Title for profile grid page">Profiles</string>
