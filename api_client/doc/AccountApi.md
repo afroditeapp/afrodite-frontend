@@ -14,11 +14,11 @@ Method | HTTP request | Description
 [**getAccountSetup**](AccountApi.md#getaccountsetup) | **GET** /account_api/account_setup | Get non-changeable user information to account.
 [**getAccountState**](AccountApi.md#getaccountstate) | **GET** /account_api/state | Get current account state.
 [**getDeletionStatus**](AccountApi.md#getdeletionstatus) | **GET** /account_api/delete | Get deletion status.
-[**getDemoModeAccessibleAccounts**](AccountApi.md#getdemomodeaccessibleaccounts) | **GET** /account_api/demo_mode_accessible_accounts | 
 [**postAccountData**](AccountApi.md#postaccountdata) | **POST** /account_api/account_data | Set changeable user information to account.
 [**postAccountSetup**](AccountApi.md#postaccountsetup) | **POST** /account_api/account_setup | Setup non-changeable user information during `initial setup` state.
 [**postCompleteSetup**](AccountApi.md#postcompletesetup) | **POST** /account_api/complete_setup | Complete initial setup.
 [**postDelete**](AccountApi.md#postdelete) | **PUT** /account_api/delete | Delete account.
+[**postDemoModeAccessibleAccounts**](AccountApi.md#postdemomodeaccessibleaccounts) | **POST** /account_api/demo_mode_accessible_accounts | Get demo account's available accounts.
 [**postDemoModeConfirmLogin**](AccountApi.md#postdemomodeconfirmlogin) | **POST** /account_api/demo_mode_confirm_login | 
 [**postDemoModeLogin**](AccountApi.md#postdemomodelogin) | **POST** /account_api/demo_mode_login | Access demo mode, which allows accessing all or specific accounts
 [**postDemoModeLoginToAccount**](AccountApi.md#postdemomodelogintoaccount) | **POST** /account_api/demo_mode_login_to_account | 
@@ -243,47 +243,6 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getDemoModeAccessibleAccounts**
-> List<AccessibleAccount> getDemoModeAccessibleAccounts(demoModeToken)
-
-
-
-### Example
-```dart
-import 'package:openapi/api.dart';
-
-final api_instance = AccountApi();
-final demoModeToken = DemoModeToken(); // DemoModeToken | 
-
-try {
-    final result = api_instance.getDemoModeAccessibleAccounts(demoModeToken);
-    print(result);
-} catch (e) {
-    print('Exception when calling AccountApi->getDemoModeAccessibleAccounts: $e\n');
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **demoModeToken** | [**DemoModeToken**](DemoModeToken.md)|  | 
-
-### Return type
-
-[**List<AccessibleAccount>**](AccessibleAccount.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 # **postAccountData**
 > postAccountData(accountData)
 
@@ -457,6 +416,49 @@ void (empty response body)
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **postDemoModeAccessibleAccounts**
+> List<AccessibleAccount> postDemoModeAccessibleAccounts(demoModeToken)
+
+Get demo account's available accounts.
+
+Get demo account's available accounts.  This path is using HTTP POST because there is JSON in the request body.
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+
+final api_instance = AccountApi();
+final demoModeToken = DemoModeToken(); // DemoModeToken | 
+
+try {
+    final result = api_instance.postDemoModeAccessibleAccounts(demoModeToken);
+    print(result);
+} catch (e) {
+    print('Exception when calling AccountApi->postDemoModeAccessibleAccounts: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **demoModeToken** | [**DemoModeToken**](DemoModeToken.md)|  | 
+
+### Return type
+
+[**List<AccessibleAccount>**](AccessibleAccount.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

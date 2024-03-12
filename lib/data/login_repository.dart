@@ -274,7 +274,7 @@ class LoginRepository extends DataRepository {
     if (token == null) {
       return Err(OtherError());
     }
-    final accounts = await _api.account((api) => api.getDemoModeAccessibleAccounts(DemoModeToken(token: token)));
+    final accounts = await _api.account((api) => api.postDemoModeAccessibleAccounts(DemoModeToken(token: token)));
     if (accounts != null) {
       return Ok(accounts);
     } else {

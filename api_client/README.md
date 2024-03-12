@@ -65,11 +65,11 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**getAccountSetup**](doc//AccountApi.md#getaccountsetup) | **GET** /account_api/account_setup | Get non-changeable user information to account.
 *AccountApi* | [**getAccountState**](doc//AccountApi.md#getaccountstate) | **GET** /account_api/state | Get current account state.
 *AccountApi* | [**getDeletionStatus**](doc//AccountApi.md#getdeletionstatus) | **GET** /account_api/delete | Get deletion status.
-*AccountApi* | [**getDemoModeAccessibleAccounts**](doc//AccountApi.md#getdemomodeaccessibleaccounts) | **GET** /account_api/demo_mode_accessible_accounts | 
 *AccountApi* | [**postAccountData**](doc//AccountApi.md#postaccountdata) | **POST** /account_api/account_data | Set changeable user information to account.
 *AccountApi* | [**postAccountSetup**](doc//AccountApi.md#postaccountsetup) | **POST** /account_api/account_setup | Setup non-changeable user information during `initial setup` state.
 *AccountApi* | [**postCompleteSetup**](doc//AccountApi.md#postcompletesetup) | **POST** /account_api/complete_setup | Complete initial setup.
 *AccountApi* | [**postDelete**](doc//AccountApi.md#postdelete) | **PUT** /account_api/delete | Delete account.
+*AccountApi* | [**postDemoModeAccessibleAccounts**](doc//AccountApi.md#postdemomodeaccessibleaccounts) | **POST** /account_api/demo_mode_accessible_accounts | Get demo account's available accounts.
 *AccountApi* | [**postDemoModeConfirmLogin**](doc//AccountApi.md#postdemomodeconfirmlogin) | **POST** /account_api/demo_mode_confirm_login | 
 *AccountApi* | [**postDemoModeLogin**](doc//AccountApi.md#postdemomodelogin) | **POST** /account_api/demo_mode_login | Access demo mode, which allows accessing all or specific accounts
 *AccountApi* | [**postDemoModeLoginToAccount**](doc//AccountApi.md#postdemomodelogintoaccount) | **POST** /account_api/demo_mode_login_to_account | 
