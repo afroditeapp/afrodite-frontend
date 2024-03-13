@@ -43,24 +43,27 @@ void _showLoadingDialog<B extends StateStreamable<S>, S>(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
-      return AlertDialog(
-        content: BlocListener<B, S>(
-          listener: (context, state) {
-            if (!dialogVisibilityGetter(context, state)) {
-              if (Navigator.canPop(context)) {
-                Navigator.pop(context);
+      return PopScope(
+        canPop: false,
+        child: AlertDialog(
+          content: BlocListener<B, S>(
+            listener: (context, state) {
+              if (!dialogVisibilityGetter(context, state)) {
+                if (Navigator.canPop(context)) {
+                  Navigator.pop(context);
+                }
               }
-            }
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const CircularProgressIndicator(),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Text(loadingText),
-              ),
-            ],
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CircularProgressIndicator(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(loadingText),
+                ),
+              ],
+            ),
           ),
         ),
       );
