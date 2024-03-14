@@ -8,11 +8,17 @@ import 'package:image/image.dart' as img;
 
 part 'initial_setup.freezed.dart';
 
+// TODO(prod): Figure out email address changing?
+//  Remove it from complete initial setup?
+//  Allow changeing email in AccountDate only if it null?
+//  That allows easy debugging.
+
 @freezed
 class InitialSetupData with _$InitialSetupData {
   factory InitialSetupData({
-    @Default("") String email,
+    String? email,
     @Default("") String profileName,
+    DateTime? birthdate,
     XFile? securitySelfie,
     XFile? profileImage,
     String? sendError,
@@ -23,9 +29,13 @@ class InitialSetupData with _$InitialSetupData {
 
 abstract class InitialSetupEvent {}
 
-class SetAccountStep extends InitialSetupEvent {
+class SetBirthdate extends InitialSetupEvent {
+  final DateTime birthdate;
+  SetBirthdate(this.birthdate);
+}
+class SetEmailStep extends InitialSetupEvent {
   final String email;
-  SetAccountStep(this.email);
+  SetEmailStep(this.email);
 }
 class SetProfileStep extends InitialSetupEvent {
   final String profileName;
@@ -57,7 +67,12 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
     on<ResetState>((data, emit) {
       emit(InitialSetupData());
     });
-    on<SetAccountStep>((data, emit) {
+    on<SetBirthdate>((data, emit) {
+      emit(state.copyWith(
+        birthdate: data.birthdate,
+      ));
+    });
+    on<SetEmailStep>((data, emit) {
       emit(state.copyWith(
         email: data.email,
         currentStep: 1,
@@ -103,7 +118,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
 
       //await Future.delayed(Duration(seconds: 5));
       var error = await account.doInitialSetup(
-        state.email,
+        state.email ?? "",
         state.profileName,
         securitySelfie,
         profileImage

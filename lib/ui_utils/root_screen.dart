@@ -23,7 +23,7 @@ abstract class RootScreen extends StatelessWidget {
           MainState.loginRequired => const LoginScreen(),
           MainState.demoAccount => const DemoAccountScreen(),
           MainState.initialSetup => const InitialSetupScreen(),
-          MainState.initialSetupComplete => const NormalStateScreen(),
+          MainState.initialSetupComplete => const InitialSetupScreen(),
           MainState.accountBanned => const AccountBannedScreen(),
           MainState.pendingRemoval => const PendingDeletionPage(),
           MainState.unsupportedClientVersion => const UnsupportedClientScreen(),

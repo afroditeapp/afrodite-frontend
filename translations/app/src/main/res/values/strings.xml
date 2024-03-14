@@ -16,7 +16,9 @@
     <string name="generic_ok" description="Generic OK text">OK</string>
     <string name="generic_login" description="Generic login text">Login</string>
     <string name="generic_logout" description="Generic logout text">Logout</string>
+    <string name="generic_logout_confirmation_title" description="Generic logout confirmation title text">Logout?</string>
     <string name="generic_error_occurred" description="Generic error occurred text">Error occurred</string>
+    <string name="generic_continue" description="Generic continue text">Continue</string>
 
     <!-- App bar actions -->
     <string name="app_bar_action_about" description="Title for app bar action which opens about dialog">About</string>
@@ -46,6 +48,13 @@
     <string name="demo_account_screen_login_to_account_dialog_title" description="Dialog title text for confirming login to some account">Login to account?</string>
     <string name="demo_account_screen_confirm_logout_dialog_title" description="Dialog title text for confirming logout from demo account">Logout?</string>
 
+    <!-- Initial setup -->
+    <string name="initial_setup_screen_email_title" description="Title for initial setup email address info">My email address is…</string>
+    <string name="initial_setup_screen_email_hint_text" description="Hint text for inserting email address to text field">Insert email address</string>
+    <string name="initial_setup_screen_birthdate_title" description="Title for birthdate question">My birthdate is…</string>
+    <string name="initial_setup_screen_birthdate_button" description="Title for birthdate selection button">Select birthdate</string>
+    <string name="initial_setup_screen_too_young_error" description="Error text displayed when age is under 18.">To use the app you must be 18 years old.</string>
+
     <!-- Profile grid page -->
     <string name="pageProfileGridTitle" description="Title for profile grid page">Profiles</string>
 
@@ -57,8 +66,6 @@
 
     <!-- Settings page -->
     <string name="pageSettingsTitle" description="Title for settings page">Settings</string>
-    <string name="pageSettingsLogoutTitle" description="Title for logout action">Logout</string>
-
 
     <!-- My profile page -->
     <string name="pageMyProfileTitle" description="Title for my profile page">My Profile</string>

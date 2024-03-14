@@ -16,6 +16,7 @@ class AccountBlocData with _$AccountBlocData {
   factory AccountBlocData({
     AccountId? accountId,
     AccessToken? accessToken,
+    String? email,
     required Capabilities capabilities,
     required ProfileVisibility visibility,
   }) = _AccountBlocData;

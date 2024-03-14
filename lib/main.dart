@@ -40,6 +40,8 @@ import 'package:pihka_frontend/ui/utils/camera_page.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:intl/date_symbol_data_local.dart';
+
 import 'package:rxdart/rxdart.dart';
 
 final log = Logger("main");
@@ -168,6 +170,9 @@ class GlobalInitManager {
     await MediaRepository.getInstance().init();
     await ProfileRepository.getInstance().init();
     await ChatRepository.getInstance().init();
+
+    // Initializes formatting for other locales as well
+    await initializeDateFormatting("en_US", null);
   }
 
   /// Global init should be triggerred after when splash screen

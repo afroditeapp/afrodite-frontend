@@ -43,6 +43,10 @@
   "@generic_close": {
     "description": "Generic close text"
   },
+  "generic_continue": "Continue",
+  "@generic_continue": {
+    "description": "Generic continue text"
+  },
   "generic_empty": "Empty",
   "@generic_empty": {
     "description": "Generic empty text"
@@ -63,9 +67,33 @@
   "@generic_logout": {
     "description": "Generic logout text"
   },
+  "generic_logout_confirmation_title": "Logout?",
+  "@generic_logout_confirmation_title": {
+    "description": "Generic logout confirmation title text"
+  },
   "generic_ok": "OK",
   "@generic_ok": {
     "description": "Generic OK text"
+  },
+  "initial_setup_screen_birthdate_button": "Select birthdate",
+  "@initial_setup_screen_birthdate_button": {
+    "description": "Title for birthdate selection button"
+  },
+  "initial_setup_screen_birthdate_title": "My birthdate is…",
+  "@initial_setup_screen_birthdate_title": {
+    "description": "Title for birthdate question"
+  },
+  "initial_setup_screen_email_hint_text": "Insert email address",
+  "@initial_setup_screen_email_hint_text": {
+    "description": "Hint text for inserting email address to text field"
+  },
+  "initial_setup_screen_email_title": "My email address is…",
+  "@initial_setup_screen_email_title": {
+    "description": "Title for initial setup email address info"
+  },
+  "initial_setup_screen_too_young_error": "To use the app you must be 18 years old.",
+  "@initial_setup_screen_too_young_error": {
+    "description": "Error text displayed when age is under 18."
   },
   "login_screen_action_demo_account_login": "Demo account login",
   "@login_screen_action_demo_account_login": {
@@ -154,10 +182,6 @@
   "pageProfileGridTitle": "Profiles",
   "@pageProfileGridTitle": {
     "description": "Title for profile grid page"
-  },
-  "pageSettingsLogoutTitle": "Logout",
-  "@pageSettingsLogoutTitle": {
-    "description": "Title for logout action"
   },
   "pageSettingsTitle": "Settings",
   "@pageSettingsTitle": {

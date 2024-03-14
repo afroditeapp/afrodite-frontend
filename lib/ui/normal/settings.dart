@@ -54,13 +54,12 @@ class _SettingsViewState extends State<SettingsView> {
           Setting.createSetting(Icons.block, "Blocked profiles", () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const BlockedProfilesPage()))
           ),
-          Setting.createSetting(Icons.logout, context.strings.pageSettingsLogoutTitle, () =>
-            showConfirmDialog(context, context.strings.pageSettingsLogoutTitle)
-              .then((value) {
-                if (value == true) {
-                  context.read<AccountBloc>().add(DoLogout());
-                }
-              })
+          Setting.createSetting(Icons.logout, context.strings.generic_logout, () =>
+            showConfirmDialogAdvanced(
+              context: context,
+              title: context.strings.generic_logout_confirmation_title,
+              onSuccess: () => context.read<AccountBloc>().add(DoLogout()),
+            )
           ),
         ];
 
