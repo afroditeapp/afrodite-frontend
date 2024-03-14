@@ -3,7 +3,7 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:intl/intl.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
-import "package:pihka_frontend/ui/initial_setup/gender.dart";
+import "package:pihka_frontend/ui/initial_setup/security_selfie.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
 import "package:pihka_frontend/utils/date.dart";
 
@@ -20,7 +20,7 @@ class AskBirthdateScreen extends StatelessWidget {
           final birthdate = state.birthdate;
           if (birthdate != null && birthdate.isNowAdult()) {
             return () {
-              // Navigator.push(context, MaterialPageRoute<void>(builder: (_) => AskGenderScreen()));
+              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const AskSecuritySelfieScreen()));
             };
           } else {
             return null;

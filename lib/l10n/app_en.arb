@@ -11,6 +11,26 @@
   "@app_slogan": {
     "description": "Slogan for the app"
   },
+  "camera_screen_camera_initialization_error": "Camera initialization failed",
+  "@camera_screen_camera_initialization_error": {
+    "description": "Error text displayed when camera initialization fails"
+  },
+  "camera_screen_camera_permission_error_check_settings": "No camera permission. Please grant the camera permission from system settings.",
+  "@camera_screen_camera_permission_error_check_settings": {
+    "description": "Error text displayed when there is no camera permission and system settings must be used for granting the permission"
+  },
+  "camera_screen_camera_permission_error_try_again_or_check_settings": "No camera permission. Please try again. If that will not work then grant the camera permission from system settings.",
+  "@camera_screen_camera_permission_error_try_again_or_check_settings": {
+    "description": "Error text displayed when there is no camera permission"
+  },
+  "camera_screen_no_front_camera_error": "No front camera available",
+  "@camera_screen_no_front_camera_error": {
+    "description": "Error text displayed when there is no front camera available"
+  },
+  "camera_screen_take_photo_error": "Taking photo failed",
+  "@camera_screen_take_photo_error": {
+    "description": "Snackbar error text displayed when taking photo fails"
+  },
   "demo_account_screen_confirm_logout_dialog_title": "Logout?",
   "@demo_account_screen_confirm_logout_dialog_title": {
     "description": "Dialog title text for confirming logout from demo account"
@@ -75,6 +95,10 @@
   "@generic_ok": {
     "description": "Generic OK text"
   },
+  "generic_take_photo": "Take photo",
+  "@generic_take_photo": {
+    "description": "Generic take photo text"
+  },
   "initial_setup_screen_birthdate_button": "Select birthdate",
   "@initial_setup_screen_birthdate_button": {
     "description": "Title for birthdate selection button"
@@ -90,6 +114,14 @@
   "initial_setup_screen_email_title": "My email address is…",
   "@initial_setup_screen_email_title": {
     "description": "Title for initial setup email address info"
+  },
+  "initial_setup_screen_security_selfie_description": "Take selfie with your phone's front camera. The selfie is used for moderating your profile images and by default it is only visible to content Moderators.",
+  "@initial_setup_screen_security_selfie_description": {
+    "description": "Description for initial setup security selfie step"
+  },
+  "initial_setup_screen_security_selfie_title": "My security selfie is…",
+  "@initial_setup_screen_security_selfie_title": {
+    "description": "Title for initial setup security selfie screen"
   },
   "initial_setup_screen_too_young_error": "To use the app you must be 18 years old.",
   "@initial_setup_screen_too_young_error": {

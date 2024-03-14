@@ -7,7 +7,7 @@ import "package:image_picker/image_picker.dart";
 import "package:logging/logging.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
-import "package:pihka_frontend/ui/utils/camera_page.dart";
+import "package:pihka_frontend/ui_utils/camera_screen.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
 
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
@@ -105,7 +105,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
         var valid = _accountFormKey.currentState?.validate() ?? false;
         if (valid) {
           _accountFormKey.currentState?.save();
-          context.read<InitialSetupBloc>().add(SetEmailStep(email?.trim() ?? ""));
+          context.read<InitialSetupBloc>().add(SetEmail(email?.trim() ?? ""));
         }
       };
     } else if (state.currentStep == 1) {
@@ -120,7 +120,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
       onStepContinue = () {
         final file = securitySelfie;
         if (file != null) {
-          context.read<InitialSetupBloc>().add(SetSecuritySelfieStep(file));
+          context.read<InitialSetupBloc>().add(SetSecuritySelfie(file));
         } else {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(
@@ -251,7 +251,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
       final image = await Navigator.push<XFile?>(
           context,
           MaterialPageRoute<XFile?>(builder: (_) {
-            CameraPage camera = CameraPage(ImageType.securitySelfie);
+            CameraScreen camera = CameraScreen();
             return camera;
           }),
       );

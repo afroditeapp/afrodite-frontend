@@ -33,17 +33,17 @@ class SetBirthdate extends InitialSetupEvent {
   final DateTime birthdate;
   SetBirthdate(this.birthdate);
 }
-class SetEmailStep extends InitialSetupEvent {
+class SetEmail extends InitialSetupEvent {
   final String email;
-  SetEmailStep(this.email);
+  SetEmail(this.email);
 }
 class SetProfileStep extends InitialSetupEvent {
   final String profileName;
   SetProfileStep(this.profileName);
 }
-class SetSecuritySelfieStep extends InitialSetupEvent {
+class SetSecuritySelfie extends InitialSetupEvent {
   final XFile securitySelfie;
-  SetSecuritySelfieStep(this.securitySelfie);
+  SetSecuritySelfie(this.securitySelfie);
 }
 class SetProfileImageStep extends InitialSetupEvent {
   final XFile profileImage;
@@ -72,7 +72,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
         birthdate: data.birthdate,
       ));
     });
-    on<SetEmailStep>((data, emit) {
+    on<SetEmail>((data, emit) {
       emit(state.copyWith(
         email: data.email,
         currentStep: 1,
@@ -84,7 +84,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
         currentStep: 2,
       ));
     });
-    on<SetSecuritySelfieStep>((data, emit) {
+    on<SetSecuritySelfie>((data, emit) {
       emit(state.copyWith(
         securitySelfie: data.securitySelfie,
         currentStep: 3,

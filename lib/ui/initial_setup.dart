@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:pihka_frontend/ui/initial_setup/email.dart";
+import "package:pihka_frontend/ui/initial_setup/security_selfie.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
 
 // TODO: save initial setup values, so that it will be possible to restore state
@@ -10,6 +11,6 @@ class InitialSetupScreen extends RootScreen {
 
   @override
   Widget buildRootWidget(BuildContext context) {
-    return const AskEmailScreen();
+    return const AskSecuritySelfieScreen();
   }
 }

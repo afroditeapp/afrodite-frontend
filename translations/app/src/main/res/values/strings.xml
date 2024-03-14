@@ -19,6 +19,7 @@
     <string name="generic_logout_confirmation_title" description="Generic logout confirmation title text">Logout?</string>
     <string name="generic_error_occurred" description="Generic error occurred text">Error occurred</string>
     <string name="generic_continue" description="Generic continue text">Continue</string>
+    <string name="generic_take_photo" description="Generic take photo text">Take photo</string>
 
     <!-- App bar actions -->
     <string name="app_bar_action_about" description="Title for app bar action which opens about dialog">About</string>
@@ -54,6 +55,17 @@
     <string name="initial_setup_screen_birthdate_title" description="Title for birthdate question">My birthdate is…</string>
     <string name="initial_setup_screen_birthdate_button" description="Title for birthdate selection button">Select birthdate</string>
     <string name="initial_setup_screen_too_young_error" description="Error text displayed when age is under 18.">To use the app you must be 18 years old.</string>
+    <string name="initial_setup_screen_security_selfie_title" description="Title for initial setup security selfie screen">My security selfie is…</string>
+    <string name="initial_setup_screen_security_selfie_description" description="Description for initial setup security selfie step">Take selfie with your phone&apos;s front camera. The selfie is used for moderating your profile images and by default it is only visible to content Moderators.</string>
+
+    <!-- Camera screen -->
+    <string name="camera_screen_no_front_camera_error" description="Error text displayed when there is no front camera available">No front camera available</string>
+    <string name="camera_screen_camera_initialization_error" description="Error text displayed when camera initialization fails">Camera initialization failed</string>
+    <string name="camera_screen_camera_permission_error_try_again_or_check_settings" description="Error text displayed when there is no camera permission">No camera permission. Please try again. If that will not work then grant the camera permission from system settings.</string>
+    <string name="camera_screen_camera_permission_error_check_settings" description="Error text displayed when there is no camera permission and system settings must be used for granting the permission">No camera permission. Please grant the camera permission from system settings.</string>
+<!--  TODO  <string name="camera_screen_camera_access_restricted_error" description="Error text displayed when camera access is restricted">TODO</string>-->
+    <string name="camera_screen_take_photo_error" description="Snackbar error text displayed when taking photo fails">Taking photo failed</string>
+
 
     <!-- Profile grid page -->
     <string name="pageProfileGridTitle" description="Title for profile grid page">Profiles</string>

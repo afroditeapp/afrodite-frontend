@@ -78,7 +78,7 @@ class _AskEmailState extends State<AskEmail> {
             hintText: context.strings.initial_setup_screen_email_hint_text,
           ),
           onChanged: (value) {
-            context.read<InitialSetupBloc>().add(SetEmailStep(value.trim()));
+            context.read<InitialSetupBloc>().add(SetEmail(value.trim()));
           },
         ),
       );

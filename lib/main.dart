@@ -36,7 +36,7 @@ import 'package:pihka_frontend/logic/sign_in_with.dart';
 
 import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/ui/splash_screen.dart';
-import 'package:pihka_frontend/ui/utils/camera_page.dart';
+import 'package:pihka_frontend/ui_utils/camera_screen.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
