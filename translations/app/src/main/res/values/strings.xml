@@ -94,9 +94,9 @@
     <string name="pageModerateImagesTitle" description="Title for moderate images page">Moderate images</string>
     <string name="pageModerateImagesDenyImageText" description="Deny image text">Deny</string>
 
-    <!-- View image page
+    <!-- View image screen
         TODO: Does this page need a title?
     -->
-    <string name="pageViewImageTitle" description="Title for view image page">Image</string>
+    <string name="view_image_screen_title" description="Title for view image screen">View image</string>
 
 </resources>

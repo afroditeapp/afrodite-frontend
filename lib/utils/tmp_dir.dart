@@ -6,6 +6,10 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 class TmpDirUtils {
+  static Future<String> initialSetupSecuritySelfieFilePath() async {
+    return await initialSetupFilePath("security_selfie.jpg");
+  }
+
   static Future<String> initialSetupFilePath(String fileName) async {
     final tmpDir = await getTemporaryDirectory();
     return "${tmpDir.path}/initial_setup/$fileName";

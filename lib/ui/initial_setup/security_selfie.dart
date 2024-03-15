@@ -7,6 +7,7 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
+import "package:pihka_frontend/ui_utils/view_image_screen.dart";
 import "package:pihka_frontend/ui_utils/camera_screen.dart";
 import "package:pihka_frontend/ui_utils/dialog.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
@@ -114,7 +115,17 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
           selfieImageWidgets = [
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Image.file(File(image.path), height: 200),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (_) => ViewImageScreen(ViewImageFileContent(File(image.path)))
+                    )
+                  );
+                },
+                child: Image.file(File(image.path), height: 200)
+              ),
             ),
             cameraButton
           ];

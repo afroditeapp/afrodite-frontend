@@ -1,21 +1,32 @@
 
+import "dart:io";
+
 import "package:flutter/material.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/image_cache.dart";
 
 import 'package:pihka_frontend/localizations.dart';
 
-
-class ImagePage extends StatefulWidget {
-  ImagePage(this.imageOwner, this.imageId, {super.key});
+sealed class ViewImageScreenMode {}
+class ViewImageAccountContent extends ViewImageScreenMode {
+  ViewImageAccountContent(this.imageOwner, this.imageId);
   final AccountId imageOwner;
   final ContentId imageId;
-
-  @override
-  State<ImagePage> createState() => _ImagePageState();
+}
+class ViewImageFileContent extends ViewImageScreenMode {
+  ViewImageFileContent(this.imageFile);
+  final File imageFile;
 }
 
-class _ImagePageState extends State<ImagePage>
+class ViewImageScreen extends StatefulWidget {
+  const ViewImageScreen(this.mode, {super.key});
+  final ViewImageScreenMode mode;
+
+  @override
+  State<ViewImageScreen> createState() => _ViewImageScreenState();
+}
+
+class _ViewImageScreenState extends State<ViewImageScreen>
   with WidgetsBindingObserver {
 
   @override
@@ -25,9 +36,16 @@ class _ImagePageState extends State<ImagePage>
 
   @override
   Widget build(BuildContext context) {
+    final imageWidget = switch (widget.mode) {
+      ViewImageAccountContent(:final imageOwner, :final imageId) =>
+        buildImage(context, imageOwner, imageId),
+      ViewImageFileContent(:final imageFile) =>
+        viewerForFile(imageFile),
+    };
+
     return Scaffold(
-      appBar: AppBar(title: Text(context.strings.pageViewImageTitle)),
-      body: Center(child: buildImage(context, widget.imageOwner, widget.imageId),),
+      appBar: AppBar(title: Text(context.strings.view_image_screen_title)),
+      body: Center(child: imageWidget),
     );
   }
 
@@ -42,20 +60,24 @@ class _ImagePageState extends State<ImagePage>
           case ConnectionState.none || ConnectionState.done: {
             final imageFile = snapshot.data;
             if (imageFile != null) {
-              return InteractiveViewer(
-                panEnabled: false,
-                minScale: 1.0,
-                maxScale: 2.0,
-                child: Image.file(
-                  imageFile,
-                ),
-              );
+              return viewerForFile(imageFile);
             } else {
               return Text(context.strings.generic_error);
             }
           }
         }
     },);
+  }
+
+  Widget viewerForFile(File imageFile) {
+    return InteractiveViewer(
+      panEnabled: false,
+      minScale: 1.0,
+      maxScale: 2.0,
+      child: Image.file(
+        imageFile,
+      ),
+    );
   }
 
   Widget buildProgressIndicator() {

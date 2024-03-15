@@ -8,7 +8,7 @@ import 'package:pihka_frontend/logic/admin/image_moderation.dart';
 
 
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/ui/utils/image_page.dart';
+import 'package:pihka_frontend/ui_utils/view_image_screen.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 
 
@@ -176,7 +176,12 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
             if (imageFile != null) {
               return InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ImagePage(imageOwner, image)));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (_) => ViewImageScreen(ViewImageAccountContent(imageOwner, image))
+                    ),
+                  );
                 },
                 onLongPress: () {
                   if (index != null) {

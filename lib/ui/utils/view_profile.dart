@@ -11,7 +11,7 @@ import 'package:pihka_frontend/database/profile_database.dart';
 
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
-import 'package:pihka_frontend/ui/utils/image_page.dart';
+import 'package:pihka_frontend/ui_utils/view_image_screen.dart';
 
 const double imgHeight = 400;
 
@@ -99,7 +99,7 @@ Widget viewProifleImage(BuildContext context, AccountId account, ProfileEntry pr
             if (imageFile != null) {
               return InkWell( // TODO: remove?
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ImagePage(account, imgContentId)));
+                  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ViewImageScreen(ViewImageAccountContent(account, imgContentId))));
                 },
                 child: Image.file(
                   imageFile,

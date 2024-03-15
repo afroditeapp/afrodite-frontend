@@ -227,10 +227,10 @@
   "@pageSettingsTitle": {
     "description": "Title for settings page"
   },
-  "pageViewImageTitle": "Image",
-  "@pageViewImageTitle": {
-    "description": "Title for view image page"
-  },
   "url_app_privacy_policy_link": "https://example.com",
-  "url_app_tos_link": "https://example.com"
+  "url_app_tos_link": "https://example.com",
+  "view_image_screen_title": "View image",
+  "@view_image_screen_title": {
+    "description": "Title for view image screen"
+  }
 }

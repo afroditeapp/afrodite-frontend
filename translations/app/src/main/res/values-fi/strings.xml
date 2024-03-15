@@ -17,6 +17,6 @@
     <string name="pageAdminTitle">Ylläpitäjä</string>
     <string name="pageModerateImagesTitle">Moderoi kuvia</string>
     <string name="pageModerateImagesDenyImageText">Hylkää</string>
-    <string name="pageViewImageTitle">Kuva</string>
+    <string name="view_image_screen_title">Kuva</string>
     <string name="app_slogan">Suomen reiluin deittisovellus</string>
 </resources>
