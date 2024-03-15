@@ -2,11 +2,14 @@ import "dart:async";
 
 import "package:camera/camera.dart";
 import "package:flutter/material.dart";
+import "package:flutter/rendering.dart";
 import "package:flutter/services.dart";
+import "package:flutter/widgets.dart";
 import "package:logging/logging.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
+import "package:pihka_frontend/utils/image.dart";
 
 var log = Logger("CameraScreen");
 
@@ -19,6 +22,10 @@ Future<void> initAvailableCameras() async {
     .where((element) => element.lensDirection == CameraLensDirection.front)
     .toList();
 }
+
+// TODO(prod): Add some camera manager as it seems to possible to
+// crash the app if going to and back several times from the camera screen
+// fast enough.
 
 sealed class CameraInitState {}
 class InitSuccessful extends CameraInitState {}
@@ -127,7 +134,6 @@ class _CameraScreenState extends State<CameraScreen>
       await controller.lockCaptureOrientation(DeviceOrientation.portraitUp);
       await controller.setFocusMode(FocusMode.auto);
       await controller.setFlashMode(FlashMode.off);
-
     } on CameraException catch (e) {
       log.error(e);
       error = switch (e.code) {
@@ -168,7 +174,7 @@ class _CameraScreenState extends State<CameraScreen>
       }
     } else {
       widgets = [
-        Expanded(child: CameraPreview(currentCamera)),
+        cameraPreview(context, currentCamera),
         controlRow(context, currentCamera),
       ];
     }
@@ -176,6 +182,50 @@ class _CameraScreenState extends State<CameraScreen>
     return Scaffold(
       appBar: AppBar(title: Text(context.strings.generic_take_photo)),
       body: Column(children: widgets)
+    );
+  }
+
+  Widget cameraPreview(BuildContext context, CameraController currentCamera) {
+    final size = currentCamera.value.previewSize;
+    if (size == null) {
+      return Container();
+    }
+
+    return Expanded(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final croppedImg = ClipRect(
+              child: Align(
+                alignment: Alignment.topCenter,
+                heightFactor: cropFactorToAspectRatioAtLeast43(size),
+                child: SizedBox(
+                  width: constraints.maxWidth,
+                  child: CameraPreview(currentCamera)
+                ),
+              ),
+            );
+
+          return SizedBox(
+            width: constraints.maxWidth,
+            height: constraints.maxHeight,
+            child: FittedBox(
+              alignment: Alignment.topCenter,
+              clipBehavior: Clip.hardEdge,
+              fit: BoxFit.contain,
+              child: croppedImg,
+            ),
+          );
+        }
+      ),
+    );
+  }
+
+  Widget simulateCameraPreview(BuildContext context, double maxWidth, double maxHeight) {
+    final cropSize = Size(maxWidth, maxHeight);
+    return Container(
+      width: maxWidth,
+      height: maxHeight * cropFactorToAspectRatioAtLeast43(cropSize),
+      color: Colors.black,
     );
   }
 
