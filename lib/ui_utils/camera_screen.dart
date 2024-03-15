@@ -37,6 +37,8 @@ class _CameraScreenState extends State<CameraScreen>
   CameraInitState? cameraInitState;
   StreamSubscription<CameraManagerState>? stateListener;
 
+  ShutterController shutterController = ShutterController();
+
   @override
   void initState() {
     super.initState();
@@ -183,6 +185,7 @@ class _CameraScreenState extends State<CameraScreen>
             children: [
               emptyCameraPreviewArea(context, constraints.maxWidth, constraints.maxHeight),
               img,
+              AnimatedShutter(controller: shutterController),
             ],
           );
         }
@@ -264,6 +267,7 @@ class _CameraScreenState extends State<CameraScreen>
       return null;
     }
 
+    shutterController.startShutter();
     setState(() {
       photoTakingInProgress = true;
     });
@@ -280,5 +284,96 @@ class _CameraScreenState extends State<CameraScreen>
     }
 
     return file;
+  }
+}
+
+
+class ShutterController {
+  void Function()? _startShutterCallback;
+  void startShutter() {
+    _startShutterCallback?.call();
+  }
+}
+
+class AnimatedShutter extends StatefulWidget {
+  final ShutterController controller;
+  const AnimatedShutter({required this.controller, super.key});
+
+  @override
+  State<AnimatedShutter> createState() => _AnimatedShutterState();
+}
+
+class _AnimatedShutterState extends State<AnimatedShutter>
+    with SingleTickerProviderStateMixin {
+  Animation<int>? _opacityAnimation;
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this);
+    _controller.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+    widget.controller._startShutterCallback = () {
+      if (!mounted) {
+        return;
+      }
+
+      const MIDDLE_VALUE = 50;
+      const DURATION = Duration(milliseconds: 200);
+
+      final opacityTween = TweenSequence([
+        // Animation using two items:
+        // TweenSequenceItem(
+        //   tween: IntTween(
+        //     begin: 0,
+        //     end: MIDDLE_VALUE,
+        //   ),
+        //   weight: 0.5
+        // ),
+        // TweenSequenceItem(
+        //   tween: IntTween(
+        //     begin: MIDDLE_VALUE,
+        //     end: 0,
+        //   ),
+        //   weight: 0.5
+        // ),
+
+        // Single item version
+        TweenSequenceItem(
+          tween: IntTween(
+            begin: MIDDLE_VALUE,
+            end: 0,
+          ),
+          weight: 1.0
+        ),
+      ]);
+
+      _controller.duration = DURATION;
+      _opacityAnimation = opacityTween.animate(_controller);
+      _controller
+          ..reset()
+          ..forward();
+    };
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final a = _opacityAnimation;
+    if (a == null) {
+      return Container();
+    }
+
+    final color = Color.fromARGB(a.value, 0, 0, 0);
+    return Container(color: color);
   }
 }
