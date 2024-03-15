@@ -7,6 +7,7 @@ import "package:flutter/services.dart";
 import "package:flutter/widgets.dart";
 import "package:logging/logging.dart";
 import "package:pihka_frontend/localizations.dart";
+import "package:pihka_frontend/ui_utils/dialog.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 import "package:pihka_frontend/utils/image.dart";
@@ -69,6 +70,7 @@ class _CameraScreenState extends State<CameraScreen>
   with WidgetsBindingObserver {
   CameraController? currentCameraController;
   bool photoTakingInProgress = false;
+  bool errorDialogOpened = false;
 
   CameraInitState? cameraInitState;
 
@@ -158,54 +160,59 @@ class _CameraScreenState extends State<CameraScreen>
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> widgets;
     final currentCamera = currentCameraController;
     final initState = cameraInitState;
+    Widget preview;
     if (currentCamera == null || initState == null || initState is InitFailed) {
-      if (initState is InitFailed) {
-        widgets = [
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Text(initState.error.message),
-          ),
-        ];
-      } else {
-        widgets = [];
+      if (initState is InitFailed && !errorDialogOpened) {
+        errorDialogOpened = true;
+
+        Future.delayed(Duration.zero, () {
+           showInfoDialog(context, initState.error.message)
+            .then((_) {
+              if (context.mounted) {
+                Navigator.pop(context, null);
+              }
+            });
+        });
       }
+      preview = simulateCameraPreview(context);
     } else {
-      widgets = [
-        cameraPreview(context, currentCamera),
-        controlRow(context, currentCamera),
-      ];
+      preview = cameraPreview(context, currentCamera);
     }
 
     return Scaffold(
       appBar: AppBar(title: Text(context.strings.generic_take_photo)),
-      body: Column(children: widgets)
+      body: Column(
+        children: [
+          preview,
+          controlRow(context, currentCamera),
+        ]
+      )
     );
   }
 
   Widget cameraPreview(BuildContext context, CameraController currentCamera) {
     final size = currentCamera.value.previewSize;
     if (size == null) {
-      return Container();
+      return simulateCameraPreview(context);
     }
 
     return Expanded(
       child: LayoutBuilder(
         builder: (context, constraints) {
           final croppedImg = ClipRect(
-              child: Align(
-                alignment: Alignment.topCenter,
-                heightFactor: cropFactorToAspectRatioAtLeast43(size),
-                child: SizedBox(
-                  width: constraints.maxWidth,
-                  child: CameraPreview(currentCamera)
-                ),
+            child: Align(
+              alignment: Alignment.topCenter,
+              heightFactor: cropFactorToAspectRatioAtLeast43(size),
+              child: SizedBox(
+                width: constraints.maxWidth,
+                child: CameraPreview(currentCamera)
               ),
-            );
+            ),
+          );
 
-          return SizedBox(
+          final img = SizedBox(
             width: constraints.maxWidth,
             height: constraints.maxHeight,
             child: FittedBox(
@@ -215,12 +222,29 @@ class _CameraScreenState extends State<CameraScreen>
               child: croppedImg,
             ),
           );
+
+          return Stack(
+            children: [
+              emptyCameraPreviewArea(context, constraints.maxWidth, constraints.maxHeight),
+              img,
+            ],
+          );
         }
       ),
     );
   }
 
-  Widget simulateCameraPreview(BuildContext context, double maxWidth, double maxHeight) {
+  Widget simulateCameraPreview(BuildContext context) {
+    return Expanded(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return emptyCameraPreviewArea(context, constraints.maxWidth, constraints.maxHeight);
+        }
+      ),
+    );
+  }
+
+  Widget emptyCameraPreviewArea(BuildContext context, double maxWidth, double maxHeight) {
     final cropSize = Size(maxWidth, maxHeight);
     return Container(
       width: maxWidth,
@@ -229,7 +253,7 @@ class _CameraScreenState extends State<CameraScreen>
     );
   }
 
-  Widget controlRow(BuildContext context, CameraController currentCamera) {
+  Widget controlRow(BuildContext context, CameraController? currentCamera) {
     final Widget progress;
     if (photoTakingInProgress) {
       progress = const CircularProgressIndicator();
@@ -252,12 +276,15 @@ class _CameraScreenState extends State<CameraScreen>
     );
   }
 
-  Widget takePhotoButton(BuildContext context, CameraController currentCamera) {
+  Widget takePhotoButton(BuildContext context, CameraController? currentCamera) {
     final void Function()? onPressed;
     if (photoTakingInProgress) {
       onPressed = null;
     } else {
       onPressed = () async {
+        if (currentCamera == null) {
+          return;
+        }
         final file = await takePhoto(currentCamera);
         if (context.mounted) {
           Future.delayed(Duration.zero, () => Navigator.pop(context, file));
