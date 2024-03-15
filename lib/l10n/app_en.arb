@@ -19,6 +19,10 @@
   "@camera_screen_camera_initialization_error_with_error_code": {
     "description": "Error text displayed when camera initialization fails and error code exists"
   },
+  "camera_screen_camera_opening_already_in_progress_error": "Camera opening in progress",
+  "@camera_screen_camera_opening_already_in_progress_error": {
+    "description": "Snackbar error text displayed when user tries to open camera but camera initialization is already in progress"
+  },
   "camera_screen_camera_permission_error_check_settings": "No camera permission. Please grant the camera permission from system settings.",
   "@camera_screen_camera_permission_error_check_settings": {
     "description": "Error text displayed when there is no camera permission and system settings must be used for granting the permission"

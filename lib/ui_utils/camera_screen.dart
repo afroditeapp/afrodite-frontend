@@ -21,7 +21,8 @@ class InitFailed extends CameraInitState {
 }
 
 class CameraScreen extends StatefulWidget {
-  const CameraScreen({super.key});
+  final CameraControllerWrapper? controller;
+  const CameraScreen({this.controller, super.key});
 
   @override
   State<CameraScreen> createState() => _CameraScreenState();
@@ -44,7 +45,16 @@ class _CameraScreenState extends State<CameraScreen>
     ]);
     WidgetsBinding.instance.addObserver(this);
 
-    stateListener = CameraManager.getInstance().opeNewControllerAndThenEvents().listen((state) {
+    final c = widget.controller;
+    final Stream<CameraManagerState> eventStream;
+    if (c != null) {
+      eventStream = CameraManager.getInstance().stateEvents();
+      cameraInitState = InitSuccessful();
+      controller = c;
+    } else {
+      eventStream = CameraManager.getInstance().openNewControllerAndThenEvents();
+    }
+    stateListener = eventStream.listen((state) {
       if (!mounted) {
         return;
       }
@@ -72,10 +82,13 @@ class _CameraScreenState extends State<CameraScreen>
   void dispose() {
     super.dispose();
     stateListener?.cancel();
+    stateListener = null;
+    controller?.dispose();
+    controller = null;
+    CameraManager.getInstance().sendCmd(CloseCmd());
     // Change back to the default orientations.
     SystemChrome.setPreferredOrientations([]);
     WidgetsBinding.instance.removeObserver(this);
-    controller?.dispose();
   }
 
   @override
@@ -116,8 +129,10 @@ class _CameraScreenState extends State<CameraScreen>
             });
         });
       }
+      log.info("Simulating camera preview");
       preview = simulateCameraPreview(context);
     } else {
+      log.info("Camera preview possible");
       preview = cameraPreview(context, currentCamera);
     }
 
@@ -135,6 +150,7 @@ class _CameraScreenState extends State<CameraScreen>
   Widget cameraPreview(BuildContext context, CameraController currentCamera) {
     final size = currentCamera.value.previewSize;
     if (size == null) {
+      log.info("Simulating camera preview");
       return simulateCameraPreview(context);
     }
 

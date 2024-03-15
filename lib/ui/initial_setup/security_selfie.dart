@@ -1,16 +1,24 @@
+import "dart:async";
 import "dart:io";
 
 import "package:camera/camera.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:intl/intl.dart";
+import "package:logging/logging.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
-import "package:pihka_frontend/ui/initial_setup/gender.dart";
 import "package:pihka_frontend/ui_utils/camera_screen.dart";
+import "package:pihka_frontend/ui_utils/dialog.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
-import "package:pihka_frontend/utils/date.dart";
+import "package:pihka_frontend/ui_utils/snack_bar.dart";
+import "package:pihka_frontend/utils/camera.dart";
 
+var log = Logger("AskSecuritySelfieScreen");
+
+// There is several CameraManager.getInstance().sendCmd(CloseCmd());
+// calls in this file as the CameraController travels from screen to another
+// I'm not sure does that always work, so just to make sure that camera will be
+// closed there is several sending of CloseCmd to close the camera.
 
 class AskSecuritySelfieScreen extends StatelessWidget {
   const AskSecuritySelfieScreen({Key? key}) : super(key: key);
@@ -24,6 +32,7 @@ class AskSecuritySelfieScreen extends StatelessWidget {
           final selfie = state.securitySelfie;
           if (selfie != null) {
             // return () {
+            //   CameraManager.getInstance().sendCmd(CloseCmd());
             //   Navigator.push(context, MaterialPageRoute<void>(builder: (_) => screen))
             // };
           } else {
@@ -36,8 +45,6 @@ class AskSecuritySelfieScreen extends StatelessWidget {
   }
 }
 
-
-
 class AskSecuritySelfie extends StatefulWidget {
   const AskSecuritySelfie({super.key});
 
@@ -46,23 +53,21 @@ class AskSecuritySelfie extends StatefulWidget {
 }
 
 class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
+  bool cameraOpeningInProgress = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    log.info("Disposing AskSecuritySelfie");
+    CameraManager.getInstance().sendCmd(CloseCmd());
+  }
+
   @override
   Widget build(BuildContext context) {
      Widget cameraButton = ElevatedButton.icon(
       label: Text(context.strings.generic_take_photo),
       icon: const Icon(Icons.camera_alt),
-      onPressed: () async {
-        final bloc = context.read<InitialSetupBloc>();
-        final image = await Navigator.push<XFile?>(
-            context,
-            MaterialPageRoute<XFile?>(builder: (_) {
-              return const CameraScreen();
-            }),
-        );
-        if (image != null) {
-          bloc.add(SetSecuritySelfie(image));
-        }
-      }
+      onPressed: () => openCameraScreenAction(context),
     );
 
     return SingleChildScrollView(
@@ -98,18 +103,7 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
     Widget cameraButton = ElevatedButton.icon(
       label: Text(context.strings.generic_take_photo),
       icon: const Icon(Icons.camera_alt),
-      onPressed: () async {
-        final bloc = context.read<InitialSetupBloc>();
-        final image = await Navigator.push<XFile?>(
-            context,
-            MaterialPageRoute<XFile?>(builder: (_) {
-              return const CameraScreen();
-            }),
-        );
-        if (image != null) {
-          bloc.add(SetSecuritySelfie(image));
-        }
-      }
+      onPressed: () => openCameraScreenAction(context),
     );
 
     return BlocBuilder<InitialSetupBloc, InitialSetupData>(
@@ -130,5 +124,50 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
         );
       }
     );
+  }
+
+  void openCameraScreenAction(BuildContext context) async {
+    if (cameraOpeningInProgress) {
+      showSnackBar(context.strings.camera_screen_camera_opening_already_in_progress_error);
+      return;
+    }
+    cameraOpeningInProgress = true;
+    final bloc = context.read<InitialSetupBloc>();
+
+    final result = await CameraManager.getInstance().openNewControllerAndThenEvents().first;
+    switch (result) {
+      case Open(:final controller): {
+        if (!context.mounted) {
+          CameraManager.getInstance().sendCmd(CloseCmd());
+          return;
+        }
+
+        final image = await Navigator.push<XFile?>(
+          context,
+          MaterialPageRoute<XFile?>(builder: (_) {
+            return CameraScreen(controller: controller);
+          }),
+        );
+
+        if (image != null) {
+          bloc.add(SetSecuritySelfie(image));
+        }
+
+        // Assume that CameraScreens will close the camera.
+      }
+      case Closed(:final error): {
+        if (error != null) {
+          Future.delayed(Duration.zero, () {
+            showInfoDialog(context, error.message);
+          });
+        }
+        CameraManager.getInstance().sendCmd(CloseCmd());
+      }
+      case DisposeOngoing(): {
+        CameraManager.getInstance().sendCmd(CloseCmd());
+      }
+    }
+
+    cameraOpeningInProgress = false;
   }
 }

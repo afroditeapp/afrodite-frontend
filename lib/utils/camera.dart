@@ -1,9 +1,5 @@
 
 
-
-
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
@@ -156,7 +152,6 @@ class CameraManager extends AppSingleton {
       firstCamera,
       ResolutionPreset.veryHigh,
       enableAudio: false,
-      imageFormatGroup: ImageFormatGroup.jpeg,
     );
 
     CameraInitError? error;
@@ -260,14 +255,25 @@ class CameraManager extends AppSingleton {
     _cmds.add(cmd);
   }
 
-  Stream<CameraManagerState> opeNewControllerAndThenEvents() async* {
+  Stream<CameraManagerState> openNewControllerAndThenEvents() async* {
     log.info("openNewAndThenEvents");
 
     sendCmd(CloseCmd());
     await _state.firstWhere((element) => element is Closed);
     sendCmd(OpenCmd());
-    await _state.firstWhere((element) => element is Open);
+    await _state.firstWhere((element) {
+      return switch (element) {
+        DisposeOngoing() => false,
+        Open() => true,
+        Closed(:final error) => error != null
+      };
+    });
 
+    yield* _state;
+  }
+
+  Stream<CameraManagerState> stateEvents() async* {
+    log.info("stateEvents");
     yield* _state;
   }
 }
