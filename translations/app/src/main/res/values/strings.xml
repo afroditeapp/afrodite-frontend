@@ -61,6 +61,7 @@
     <!-- Camera screen -->
     <string name="camera_screen_no_front_camera_error" description="Error text displayed when there is no front camera available">No front camera available</string>
     <string name="camera_screen_camera_initialization_error" description="Error text displayed when camera initialization fails">Camera initialization failed</string>
+    <string name="camera_screen_camera_initialization_error_with_error_code" description="Error text displayed when camera initialization fails and error code exists">Camera initialization failed. Error code:</string>
     <string name="camera_screen_camera_permission_error_try_again_or_check_settings" description="Error text displayed when there is no camera permission">No camera permission. Please try again. If that will not work then grant the camera permission from system settings.</string>
     <string name="camera_screen_camera_permission_error_check_settings" description="Error text displayed when there is no camera permission and system settings must be used for granting the permission">No camera permission. Please grant the camera permission from system settings.</string>
 <!--  TODO  <string name="camera_screen_camera_access_restricted_error" description="Error text displayed when camera access is restricted">TODO</string>-->

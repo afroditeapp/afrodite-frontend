@@ -2,6 +2,8 @@
 
 
 
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
@@ -11,29 +13,34 @@ import 'package:rxdart/rxdart.dart';
 
 var log = Logger("CameraManager");
 
-enum CameraInitError {
-  noCamera,
-  noCameraPermissionTryAgainOrCheckSettings,
-  noCameraPermissionCheckSettings,
-  noCameraPermissionCameraAccessRestricted,
-  initFailed;
 
+sealed class CameraInitError {
   String get message {
-    switch (this) {
-      case CameraInitError.noCamera:
-        return R.strings.camera_screen_no_front_camera_error;
-      case CameraInitError.noCameraPermissionTryAgainOrCheckSettings:
-        return R.strings.camera_screen_camera_permission_error_try_again_or_check_settings;
-      case CameraInitError.noCameraPermissionCheckSettings:
-        return R.strings.camera_screen_camera_permission_error_check_settings;
-      case CameraInitError.noCameraPermissionCameraAccessRestricted:
+    return switch (this) {
+      NoCamera() => R.strings.camera_screen_no_front_camera_error,
+      NoCameraPermissionTryAgainOrCheckSettings() =>
+        R.strings.camera_screen_camera_permission_error_try_again_or_check_settings,
+      NoCameraPermissionCheckSettings() =>
+        R.strings.camera_screen_camera_permission_error_check_settings,
+      NoCameraPermissionCameraAccessRestricted() =>
         // TODO(prod): Figure out good error text
-        return "Error";
-      case CameraInitError.initFailed:
-        return R.strings.camera_screen_camera_initialization_error;
-    }
+        "Error",
+      InitFailedWithErrorCode(:final code) =>
+        "${R.strings.camera_screen_camera_initialization_error_with_error_code} $code",
+      InitFailed() =>
+        R.strings.camera_screen_camera_initialization_error,
+    };
   }
 }
+class NoCamera extends CameraInitError {}
+class NoCameraPermissionTryAgainOrCheckSettings extends CameraInitError {}
+class NoCameraPermissionCheckSettings extends CameraInitError {}
+class NoCameraPermissionCameraAccessRestricted extends CameraInitError {}
+class InitFailedWithErrorCode extends CameraInitError {
+  final int code;
+  InitFailedWithErrorCode(this.code);
+}
+class InitFailed extends CameraInitError {}
 
 enum ScheduledAction {
   openCameraAgain,
@@ -70,6 +77,7 @@ class CameraManager extends AppSingleton {
     return _instance;
   }
 
+  int deadlockDebugValue = 0;
   ScheduledAction? action;
   bool managerInitCompleted = false;
   List<CameraDescription> availableCamerasList = [];
@@ -124,7 +132,6 @@ class CameraManager extends AppSingleton {
       .toList();
   }
 
-  int value = 0;
   Future<void> _openCameraCmd() async {
     switch (_currentState) {
       case DisposeOngoing(): {
@@ -141,7 +148,7 @@ class CameraManager extends AppSingleton {
 
     final firstCamera = availableCamerasList.firstOrNull;
     if (firstCamera == null) {
-      _state.add(Closed(CameraInitError.noCamera));
+      _state.add(Closed(NoCamera()));
       return;
     }
 
@@ -154,27 +161,25 @@ class CameraManager extends AppSingleton {
 
     CameraInitError? error;
     try {
-      // log.info("init 1");
-      value = 1;
+      deadlockDebugValue = 1;
       await controller.initialize();
-      value = 2;
-      // log.info("init 2");
-      await controller.lockCaptureOrientation(DeviceOrientation.portraitUp);
-      value = 3;
-      // log.info("init 3");
-      await controller.setFocusMode(FocusMode.auto);
-      value = 4;
-      // log.info("init 4");
-      await controller.setFlashMode(FlashMode.off); // This can make a deadlock
-      value = 5;
-      // log.info("init 5");
+
+      final timeout = await Future.any<bool>([
+        Future<bool>.delayed(const Duration(seconds: 4), () => true),
+        setControllerSettingsAfterInit(controller).then((value) => false),
+      ]);
+
+      if (timeout) {
+        log.error("Camera init timeout, deadlock debug value $deadlockDebugValue");
+        error = InitFailedWithErrorCode(deadlockDebugValue);
+      }
     } on CameraException catch (e) {
       log.error(e);
       error = switch (e.code) {
-        "CameraAccessDenied" => CameraInitError.noCameraPermissionTryAgainOrCheckSettings,
-        "CameraAccessDeniedWithoutPrompt" => CameraInitError.noCameraPermissionCheckSettings,
-        "CameraAccessRestricted" => CameraInitError.noCameraPermissionCameraAccessRestricted,
-        _ => CameraInitError.initFailed,
+        "CameraAccessDenied" => NoCameraPermissionTryAgainOrCheckSettings(),
+        "CameraAccessDeniedWithoutPrompt" => NoCameraPermissionCheckSettings(),
+        "CameraAccessRestricted" => NoCameraPermissionCameraAccessRestricted(),
+        _ => InitFailed(),
       };
     }
 
@@ -185,6 +190,18 @@ class CameraManager extends AppSingleton {
       await controller.dispose();
       _state.add(Closed(error));
     }
+  }
+
+  Future<void> setControllerSettingsAfterInit(CameraController controller) async {
+    deadlockDebugValue = 2;
+    await controller.lockCaptureOrientation(DeviceOrientation.portraitUp);
+    deadlockDebugValue = 3;
+    await controller.setFocusMode(FocusMode.auto);
+    deadlockDebugValue = 4;
+    // On Android emulator (Pixel 2 API 31) this has deadlocked
+    // after going in and out from camera screen several times.
+    await controller.setFlashMode(FlashMode.off);
+    deadlockDebugValue = 5;
   }
 
   Future<void> _closeCmd() async {
@@ -290,7 +307,13 @@ class CameraControllerWrapper {
 
 /*
 
-There is odd deadlock bug in some camera init functions. Logs:
+// On Android emulator (Pixel 2 API 31) this has deadlocked
+// after going in and out from camera screen.
+await controller.setFlashMode(FlashMode.off);
+
+Added timeout to prevent deadlock.
+
+Logs:
 
 [CameraManager] start CameraManagerCmd: Instance of 'EventDisposeComplete'
 [CameraManager] CameraManagerState: Instance of 'Closed'
