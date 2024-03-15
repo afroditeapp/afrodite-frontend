@@ -2,61 +2,22 @@ import "dart:async";
 
 import "package:camera/camera.dart";
 import "package:flutter/material.dart";
-import "package:flutter/rendering.dart";
 import "package:flutter/services.dart";
-import "package:flutter/widgets.dart";
 import "package:logging/logging.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/ui_utils/dialog.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
+import "package:pihka_frontend/utils/camera.dart";
 import "package:pihka_frontend/utils/image.dart";
 
 var log = Logger("CameraScreen");
-
-List<CameraDescription> availableCamerasList = [];
-
-Future<void> initAvailableCameras() async {
-  availableCamerasList = await availableCameras();
-  log.fine(availableCamerasList);
-  availableCamerasList = availableCamerasList
-    .where((element) => element.lensDirection == CameraLensDirection.front)
-    .toList();
-}
-
-// TODO(prod): Add some camera manager as it seems to possible to
-// crash the app if going to and back several times from the camera screen
-// fast enough.
 
 sealed class CameraInitState {}
 class InitSuccessful extends CameraInitState {}
 class InitFailed extends CameraInitState {
   final CameraInitError error;
   InitFailed(this.error);
-}
-
-enum CameraInitError {
-  noCamera,
-  noCameraPermissionTryAgainOrCheckSettings,
-  noCameraPermissionCheckSettings,
-  noCameraPermissionCameraAccessRestricted,
-  initFailed;
-
-  String get message {
-    switch (this) {
-      case CameraInitError.noCamera:
-        return R.strings.camera_screen_no_front_camera_error;
-      case CameraInitError.noCameraPermissionTryAgainOrCheckSettings:
-        return R.strings.camera_screen_camera_permission_error_try_again_or_check_settings;
-      case CameraInitError.noCameraPermissionCheckSettings:
-        return R.strings.camera_screen_camera_permission_error_check_settings;
-      case CameraInitError.noCameraPermissionCameraAccessRestricted:
-        // TODO(prod): Figure out good error text
-        return "Error";
-      case CameraInitError.initFailed:
-        return R.strings.camera_screen_camera_initialization_error;
-    }
-  }
 }
 
 class CameraScreen extends StatefulWidget {
@@ -68,11 +29,12 @@ class CameraScreen extends StatefulWidget {
 
 class _CameraScreenState extends State<CameraScreen>
   with WidgetsBindingObserver {
-  CameraController? currentCameraController;
   bool photoTakingInProgress = false;
   bool errorDialogOpened = false;
 
+  CameraControllerWrapper? controller;
   CameraInitState? cameraInitState;
+  StreamSubscription<CameraManagerState>? stateListener;
 
   @override
   void initState() {
@@ -81,86 +43,64 @@ class _CameraScreenState extends State<CameraScreen>
       DeviceOrientation.portraitUp,
     ]);
     WidgetsBinding.instance.addObserver(this);
-    initCamera();
+
+    stateListener = CameraManager.getInstance().opeNewControllerAndThenEvents().listen((state) {
+      if (!mounted) {
+        return;
+      }
+
+      switch (state) {
+        case Closed(:final error): {
+           if (error != null) {
+            setState(() {
+              cameraInitState = InitFailed(error);
+            });
+          }
+        }
+        case DisposeOngoing(): {}
+        case Open(:final controller): {
+          setState(() {
+            cameraInitState = InitSuccessful();
+            this.controller = controller;
+          });
+        }
+      }
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+    stateListener?.cancel();
     // Change back to the default orientations.
     SystemChrome.setPreferredOrientations([]);
     WidgetsBinding.instance.removeObserver(this);
-    disposeCamera();
-  }
-
-  void disposeCamera() {
-    currentCameraController?.dispose().then((value) {
-      log.info("Camera disposed");
-    });
-    currentCameraController = null;
+    controller?.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     log.fine(state);
 
-    final initState = cameraInitState;
+    final c = controller;
+    final s = cameraInitState;
     if (state == AppLifecycleState.inactive) {
-      disposeCamera();
-    } else if (state == AppLifecycleState.resumed && initState != null && initState is InitSuccessful) {
-      initCamera();
-    }
-  }
-
-  void initCamera() async {
-    final firstCamera = availableCamerasList.firstOrNull;
-    if (firstCamera == null) {
+      log.info("Inactive");
+      controller?.dispose();
       if (mounted) {
         setState(() {
-          cameraInitState = InitFailed(CameraInitError.noCamera);
+          controller = null;
         });
       }
-      return;
-    }
-
-    final controller = CameraController(
-      firstCamera,
-      ResolutionPreset.veryHigh,
-      enableAudio: false,
-      imageFormatGroup: ImageFormatGroup.jpeg,
-    );
-
-    CameraInitError? error;
-    try {
-      await controller.initialize();
-      await controller.lockCaptureOrientation(DeviceOrientation.portraitUp);
-      await controller.setFocusMode(FocusMode.auto);
-      await controller.setFlashMode(FlashMode.off);
-    } on CameraException catch (e) {
-      log.error(e);
-      error = switch (e.code) {
-        "CameraAccessDenied" => CameraInitError.noCameraPermissionTryAgainOrCheckSettings,
-        "CameraAccessDeniedWithoutPrompt" => CameraInitError.noCameraPermissionCheckSettings,
-        "CameraAccessRestricted" => CameraInitError.noCameraPermissionCameraAccessRestricted,
-        _ => CameraInitError.initFailed,
-      };
-    }
-
-    if (mounted) {
-      setState(() {
-        if (error == null) {
-          cameraInitState = InitSuccessful();
-        } else {
-          cameraInitState = InitFailed(error);
-        }
-        currentCameraController = controller;
-      });
+    } else if (state == AppLifecycleState.resumed && c == null && s is InitSuccessful) {
+      log.info("Resumed");
+      CameraManager.getInstance().sendCmd(OpenCmd());
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final currentCamera = currentCameraController;
+    final currentCamera = controller?.getController();
     final initState = cameraInitState;
     Widget preview;
     if (currentCamera == null || initState == null || initState is InitFailed) {

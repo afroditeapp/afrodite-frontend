@@ -41,6 +41,7 @@ import 'package:pihka_frontend/ui_utils/camera_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:pihka_frontend/utils/camera.dart';
 
 import 'package:rxdart/rxdart.dart';
 
@@ -150,10 +151,10 @@ class GlobalInitManager {
     }
     _globalInitDone = true;
 
-    await initAvailableCameras();
     await ErrorManager.getInstance().init();
     await ApiManager.getInstance().init();
     await ImageCacheData.getInstance().init();
+    await CameraManager.getInstance().init();
 
     await ProfileListDatabase.getInstance().init();
     await FavoriteProfilesDatabase.getInstance().init();

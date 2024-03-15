@@ -48,9 +48,27 @@ class AskSecuritySelfie extends StatefulWidget {
 class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
   @override
   Widget build(BuildContext context) {
+     Widget cameraButton = ElevatedButton.icon(
+      label: Text(context.strings.generic_take_photo),
+      icon: const Icon(Icons.camera_alt),
+      onPressed: () async {
+        final bloc = context.read<InitialSetupBloc>();
+        final image = await Navigator.push<XFile?>(
+            context,
+            MaterialPageRoute<XFile?>(builder: (_) {
+              return const CameraScreen();
+            }),
+        );
+        if (image != null) {
+          bloc.add(SetSecuritySelfie(image));
+        }
+      }
+    );
+
     return SingleChildScrollView(
       child: Column(
         children: [
+          Row(children: [cameraButton]),
           questionTitleText(context, context.strings.initial_setup_screen_security_selfie_title),
           imageArea(context),
         ],
