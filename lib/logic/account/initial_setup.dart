@@ -5,6 +5,7 @@ import "package:pihka_frontend/data/account_repository.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:image/image.dart' as img;
+import "package:pihka_frontend/utils/tmp_dir.dart";
 
 part 'initial_setup.freezed.dart';
 
@@ -190,8 +191,7 @@ Future<XFile> createImage(String fileName, void Function(img.Pixel) pixelModifie
   }
 
   final jpg = img.encodeJpg(imageBuffer);
-  final tmpDir = await getTemporaryDirectory();
-  final imgPath = "${tmpDir.path}/$fileName";
+  final imgPath = await TmpDirUtils.initialSetupFilePath(fileName);
   await XFile.fromData(jpg).saveTo(imgPath);
   return XFile(imgPath);
 }

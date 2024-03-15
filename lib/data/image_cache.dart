@@ -9,6 +9,7 @@ import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/utils.dart';
 
 import 'package:image/image.dart' as img;
+import 'package:pihka_frontend/utils/tmp_dir.dart';
 
 var log = Logger("ImageCacheData");
 
@@ -72,9 +73,7 @@ String createMapTileKey(int z, int x, int y) {
 }
 
 Future<File?> emptyMapTile() async {
-  final tmpDir = await getTemporaryDirectory();
-  final imgPath = "${tmpDir.path}/empty_map_tile.png";
-  final imgFile = File(imgPath);
+  final imgFile = await TmpDirUtils.emptyMapTileFilePath();
   if (await imgFile.exists()) {
     return imgFile;
   }
