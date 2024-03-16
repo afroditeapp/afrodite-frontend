@@ -1,4 +1,5 @@
 import "dart:async";
+import "dart:io";
 
 import "package:camera/camera.dart";
 import "package:flutter/material.dart";
@@ -10,6 +11,9 @@ import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 import "package:pihka_frontend/utils/camera.dart";
 import "package:pihka_frontend/utils/image.dart";
+
+import 'package:image/image.dart' as img;
+import "package:pihka_frontend/utils/tmp_dir.dart";
 
 var log = Logger("CameraScreen");
 
@@ -272,7 +276,7 @@ class _CameraScreenState extends State<CameraScreen>
       photoTakingInProgress = true;
     });
 
-    XFile? file;
+    XFile file;
     try {
       file = await currentCamera.takePicture();
       log.info(file);
@@ -281,10 +285,77 @@ class _CameraScreenState extends State<CameraScreen>
       if (mounted) {
         showSnackBar(R.strings.camera_screen_take_photo_error);
       }
+      return null;
     }
 
-    return file;
+    final processedFile = await processImage(file);
+    if (processedFile == null) {
+      if (mounted) {
+        showSnackBar(R.strings.camera_screen_take_photo_error);
+      }
+    } else {
+      final cache = PaintingBinding.instance.imageCache;
+      cache.evict(FileImage(File(processedFile.path)));
+    }
+
+    return processedFile;
   }
+
+  Future<XFile?> processImage(XFile file) async {
+    try {
+      final decodedImg = await img.decodeJpgFile(file.path);
+      if (decodedImg == null) {
+        return null;
+      }
+
+      logImageSize(decodedImg, "decodedImg");
+
+      // Maybe orientation should be baked? It should turn the image pixels
+      // to portrait.
+      final orientationBakedImage = img.bakeOrientation(decodedImg);
+      logImageSize(orientationBakedImage, "orientationBakedImage");
+      final croppedImage = await cropToAspectRatio43(orientationBakedImage);
+      logImageSize(croppedImage, "croppedImage");
+
+      final finalImg = img.copyFlip(croppedImage, direction: img.FlipDirection.horizontal);
+      final finalImgPath = await TmpDirUtils.initialSetupSecuritySelfieFilePath();
+      final result = await img.encodeJpgFile(finalImgPath, finalImg);
+
+      if (result) {
+        final f =  XFile(finalImgPath);
+        final l = await f.length();
+        final kb = l / 1024;
+        log.info("Image size: $kb KB");
+        return f;
+      } else {
+        return null;
+      }
+    } on img.ImageException catch (e) {
+      log.error(e);
+      return null;
+    }
+  }
+}
+
+void logImageSize(img.Image imgData, String info) {
+  log.info("$info size: ${imgData.width}x${imgData.height}");
+}
+
+Future<img.Image> cropToAspectRatio43(img.Image imgData) async {
+  final s = Size(imgData.width.toDouble(), imgData.height.toDouble());
+  final factor = cropFactorToAspectRatioAtLeast43(s);
+  final img.Image croppedImage;
+  if (imgData.width > imgData.height) {
+    final newWidth = imgData.width * factor;
+    log.info("newWidth: $newWidth");
+    croppedImage = img.copyCrop(imgData, x: 0, y: 0, width: newWidth.toInt(), height: imgData.height);
+  } else {
+    final newHeight = imgData.height * factor;
+    log.info("newHeight: $newHeight");
+    croppedImage = img.copyCrop(imgData, x: 0, y: 0, width: imgData.width, height: newHeight.toInt());
+  }
+
+  return croppedImage;
 }
 
 
