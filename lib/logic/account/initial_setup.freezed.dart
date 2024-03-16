@@ -19,11 +19,13 @@ mixin _$InitialSetupData {
   String? get email => throw _privateConstructorUsedError;
   String get profileName => throw _privateConstructorUsedError;
   DateTime? get birthdate => throw _privateConstructorUsedError;
-  XFile? get securitySelfie => throw _privateConstructorUsedError;
+  InitialSetupSecuritySelfieState? get securitySelfieState =>
+      throw _privateConstructorUsedError;
+  SelectedSecuritySelfie? get securitySelfie =>
+      throw _privateConstructorUsedError;
   XFile? get profileImage => throw _privateConstructorUsedError;
   String? get sendError => throw _privateConstructorUsedError;
   bool get sendingInProgress => throw _privateConstructorUsedError;
-  int get currentStep => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $InitialSetupDataCopyWith<InitialSetupData> get copyWith =>
@@ -40,11 +42,11 @@ abstract class $InitialSetupDataCopyWith<$Res> {
       {String? email,
       String profileName,
       DateTime? birthdate,
-      XFile? securitySelfie,
+      InitialSetupSecuritySelfieState? securitySelfieState,
+      SelectedSecuritySelfie? securitySelfie,
       XFile? profileImage,
       String? sendError,
-      bool sendingInProgress,
-      int currentStep});
+      bool sendingInProgress});
 }
 
 /// @nodoc
@@ -63,11 +65,11 @@ class _$InitialSetupDataCopyWithImpl<$Res, $Val extends InitialSetupData>
     Object? email = freezed,
     Object? profileName = null,
     Object? birthdate = freezed,
+    Object? securitySelfieState = freezed,
     Object? securitySelfie = freezed,
     Object? profileImage = freezed,
     Object? sendError = freezed,
     Object? sendingInProgress = null,
-    Object? currentStep = null,
   }) {
     return _then(_value.copyWith(
       email: freezed == email
@@ -82,10 +84,14 @@ class _$InitialSetupDataCopyWithImpl<$Res, $Val extends InitialSetupData>
           ? _value.birthdate
           : birthdate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      securitySelfieState: freezed == securitySelfieState
+          ? _value.securitySelfieState
+          : securitySelfieState // ignore: cast_nullable_to_non_nullable
+              as InitialSetupSecuritySelfieState?,
       securitySelfie: freezed == securitySelfie
           ? _value.securitySelfie
           : securitySelfie // ignore: cast_nullable_to_non_nullable
-              as XFile?,
+              as SelectedSecuritySelfie?,
       profileImage: freezed == profileImage
           ? _value.profileImage
           : profileImage // ignore: cast_nullable_to_non_nullable
@@ -98,10 +104,6 @@ class _$InitialSetupDataCopyWithImpl<$Res, $Val extends InitialSetupData>
           ? _value.sendingInProgress
           : sendingInProgress // ignore: cast_nullable_to_non_nullable
               as bool,
-      currentStep: null == currentStep
-          ? _value.currentStep
-          : currentStep // ignore: cast_nullable_to_non_nullable
-              as int,
     ) as $Val);
   }
 }
@@ -118,11 +120,11 @@ abstract class _$$InitialSetupDataImplCopyWith<$Res>
       {String? email,
       String profileName,
       DateTime? birthdate,
-      XFile? securitySelfie,
+      InitialSetupSecuritySelfieState? securitySelfieState,
+      SelectedSecuritySelfie? securitySelfie,
       XFile? profileImage,
       String? sendError,
-      bool sendingInProgress,
-      int currentStep});
+      bool sendingInProgress});
 }
 
 /// @nodoc
@@ -139,11 +141,11 @@ class __$$InitialSetupDataImplCopyWithImpl<$Res>
     Object? email = freezed,
     Object? profileName = null,
     Object? birthdate = freezed,
+    Object? securitySelfieState = freezed,
     Object? securitySelfie = freezed,
     Object? profileImage = freezed,
     Object? sendError = freezed,
     Object? sendingInProgress = null,
-    Object? currentStep = null,
   }) {
     return _then(_$InitialSetupDataImpl(
       email: freezed == email
@@ -158,10 +160,14 @@ class __$$InitialSetupDataImplCopyWithImpl<$Res>
           ? _value.birthdate
           : birthdate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      securitySelfieState: freezed == securitySelfieState
+          ? _value.securitySelfieState
+          : securitySelfieState // ignore: cast_nullable_to_non_nullable
+              as InitialSetupSecuritySelfieState?,
       securitySelfie: freezed == securitySelfie
           ? _value.securitySelfie
           : securitySelfie // ignore: cast_nullable_to_non_nullable
-              as XFile?,
+              as SelectedSecuritySelfie?,
       profileImage: freezed == profileImage
           ? _value.profileImage
           : profileImage // ignore: cast_nullable_to_non_nullable
@@ -174,10 +180,6 @@ class __$$InitialSetupDataImplCopyWithImpl<$Res>
           ? _value.sendingInProgress
           : sendingInProgress // ignore: cast_nullable_to_non_nullable
               as bool,
-      currentStep: null == currentStep
-          ? _value.currentStep
-          : currentStep // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
@@ -189,11 +191,11 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
       {this.email,
       this.profileName = "",
       this.birthdate,
+      this.securitySelfieState,
       this.securitySelfie,
       this.profileImage,
       this.sendError,
-      this.sendingInProgress = false,
-      this.currentStep = 0});
+      this.sendingInProgress = false});
 
   @override
   final String? email;
@@ -203,7 +205,9 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   @override
   final DateTime? birthdate;
   @override
-  final XFile? securitySelfie;
+  final InitialSetupSecuritySelfieState? securitySelfieState;
+  @override
+  final SelectedSecuritySelfie? securitySelfie;
   @override
   final XFile? profileImage;
   @override
@@ -211,13 +215,10 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   @override
   @JsonKey()
   final bool sendingInProgress;
-  @override
-  @JsonKey()
-  final int currentStep;
 
   @override
   String toString() {
-    return 'InitialSetupData(email: $email, profileName: $profileName, birthdate: $birthdate, securitySelfie: $securitySelfie, profileImage: $profileImage, sendError: $sendError, sendingInProgress: $sendingInProgress, currentStep: $currentStep)';
+    return 'InitialSetupData(email: $email, profileName: $profileName, birthdate: $birthdate, securitySelfieState: $securitySelfieState, securitySelfie: $securitySelfie, profileImage: $profileImage, sendError: $sendError, sendingInProgress: $sendingInProgress)';
   }
 
   @override
@@ -230,6 +231,8 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
                 other.profileName == profileName) &&
             (identical(other.birthdate, birthdate) ||
                 other.birthdate == birthdate) &&
+            (identical(other.securitySelfieState, securitySelfieState) ||
+                other.securitySelfieState == securitySelfieState) &&
             (identical(other.securitySelfie, securitySelfie) ||
                 other.securitySelfie == securitySelfie) &&
             (identical(other.profileImage, profileImage) ||
@@ -237,14 +240,20 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
             (identical(other.sendError, sendError) ||
                 other.sendError == sendError) &&
             (identical(other.sendingInProgress, sendingInProgress) ||
-                other.sendingInProgress == sendingInProgress) &&
-            (identical(other.currentStep, currentStep) ||
-                other.currentStep == currentStep));
+                other.sendingInProgress == sendingInProgress));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, email, profileName, birthdate,
-      securitySelfie, profileImage, sendError, sendingInProgress, currentStep);
+  int get hashCode => Object.hash(
+      runtimeType,
+      email,
+      profileName,
+      birthdate,
+      securitySelfieState,
+      securitySelfie,
+      profileImage,
+      sendError,
+      sendingInProgress);
 
   @JsonKey(ignore: true)
   @override
@@ -259,11 +268,11 @@ abstract class _InitialSetupData implements InitialSetupData {
       {final String? email,
       final String profileName,
       final DateTime? birthdate,
-      final XFile? securitySelfie,
+      final InitialSetupSecuritySelfieState? securitySelfieState,
+      final SelectedSecuritySelfie? securitySelfie,
       final XFile? profileImage,
       final String? sendError,
-      final bool sendingInProgress,
-      final int currentStep}) = _$InitialSetupDataImpl;
+      final bool sendingInProgress}) = _$InitialSetupDataImpl;
 
   @override
   String? get email;
@@ -272,15 +281,15 @@ abstract class _InitialSetupData implements InitialSetupData {
   @override
   DateTime? get birthdate;
   @override
-  XFile? get securitySelfie;
+  InitialSetupSecuritySelfieState? get securitySelfieState;
+  @override
+  SelectedSecuritySelfie? get securitySelfie;
   @override
   XFile? get profileImage;
   @override
   String? get sendError;
   @override
   bool get sendingInProgress;
-  @override
-  int get currentStep;
   @override
   @JsonKey(ignore: true)
   _$$InitialSetupDataImplCopyWith<_$InitialSetupDataImpl> get copyWith =>

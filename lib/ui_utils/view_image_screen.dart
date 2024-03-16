@@ -3,9 +3,9 @@ import "dart:io";
 
 import "package:flutter/material.dart";
 import "package:openapi/api.dart";
-import "package:pihka_frontend/data/image_cache.dart";
 
 import 'package:pihka_frontend/localizations.dart';
+import "package:pihka_frontend/ui_utils/image.dart";
 
 sealed class ViewImageScreenMode {}
 class ViewImageAccountContent extends ViewImageScreenMode {
@@ -50,23 +50,7 @@ class _ViewImageScreenState extends State<ViewImageScreen>
   }
 
   Widget buildImage(BuildContext contex, AccountId imageOwner, ContentId image) {
-    return FutureBuilder(
-      future: ImageCacheData.getInstance().getImage(imageOwner, image),
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.active || ConnectionState.waiting: {
-            return buildProgressIndicator();
-          }
-          case ConnectionState.none || ConnectionState.done: {
-            final imageFile = snapshot.data;
-            if (imageFile != null) {
-              return viewerForFile(imageFile);
-            } else {
-              return Text(context.strings.generic_error);
-            }
-          }
-        }
-    },);
+    return AccountImage(accountId: imageOwner, contentId: image, imageBuilder: viewerForFile);
   }
 
   Widget viewerForFile(File imageFile) {
@@ -78,14 +62,5 @@ class _ViewImageScreenState extends State<ViewImageScreen>
         imageFile,
       ),
     );
-  }
-
-  Widget buildProgressIndicator() {
-    return const SizedBox(child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CircularProgressIndicator(),
-      ],
-    ));
   }
 }

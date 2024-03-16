@@ -64,6 +64,10 @@ class AccountRepository extends DataRepository {
       ProfileVisibility.pendingPrivate,
     );
 
+  // WebSocket related event streams
+  final _contentProcessingStateChanges = PublishSubject<ContentProcessingStateChanged>();
+  Stream<ContentProcessingStateChanged> get contentProcessingStateChanges => _contentProcessingStateChanges.stream;
+
   @override
   Future<void> init() async {
     if (_internalState.value != AccountRepositoryState.initRequired) {
@@ -96,6 +100,7 @@ class AccountRepository extends DataRepository {
     final capabilities = event.capabilities;
     final visibility = event.visibility;
     final latestViewedMessageChanged = event.latestViewedMessageChanged;
+    final contentProcessingEvent = event.contentProcessingStateChanged;
     if (event.event == EventType.accountStateChanged && accountState != null) {
       _saveAccountState(accountState);
     } else if (event.event == EventType.accountCapabilitiesChanged && capabilities != null) {
@@ -105,6 +110,8 @@ class AccountRepository extends DataRepository {
     } else if (event.event == EventType.latestViewedMessageChanged && latestViewedMessageChanged != null) {
       // TODO
       log.warning("Unhandled event");
+    } else if (event.event == EventType.contentProcessingStateChanged && contentProcessingEvent != null) {
+      _contentProcessingStateChanges.add(contentProcessingEvent);
     } else if (event.event == EventType.receivedLikesChanged) {
       ChatRepository.getInstance().receivedLikesRefresh();
     } else if (event.event == EventType.receivedBlocksChanged) {

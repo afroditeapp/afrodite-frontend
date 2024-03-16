@@ -78,7 +78,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => MainStateBloc()),
         BlocProvider(create: (_) => AccountBloc()),
         BlocProvider(create: (_) => DemoAccountBloc()),
-        BlocProvider(create: (_) => InitialSetupBloc(accountRepository)),
+        BlocProvider(create: (_) => InitialSetupBloc()),
         BlocProvider(create: (_) => ServerAddressBloc()),
         BlocProvider(create: (_) => ProfileBloc()),
         BlocProvider(create: (_) => ViewProfileBloc(accountRepository, profileRepository, mediaRepository, chatRepository)),

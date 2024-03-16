@@ -266,7 +266,7 @@ class _CameraScreenState extends State<CameraScreen>
     );
   }
 
-  Future<XFile?> takePhoto(CameraController currentCamera) async {
+  Future<File?> takePhoto(CameraController currentCamera) async {
     if (!mounted) {
       return null;
     }
@@ -276,9 +276,10 @@ class _CameraScreenState extends State<CameraScreen>
       photoTakingInProgress = true;
     });
 
-    XFile file;
+    File file;
     try {
-      file = await currentCamera.takePicture();
+      final xfile = await currentCamera.takePicture();
+      file = File(xfile.path);
       log.info(file);
     } on CameraException catch (e) {
       log.error(e);
@@ -301,7 +302,7 @@ class _CameraScreenState extends State<CameraScreen>
     return processedFile;
   }
 
-  Future<XFile?> processImage(XFile file) async {
+  Future<File?> processImage(File file) async {
     try {
       final decodedImg = await img.decodeJpgFile(file.path);
       if (decodedImg == null) {
@@ -322,7 +323,7 @@ class _CameraScreenState extends State<CameraScreen>
       final result = await img.encodeJpgFile(finalImgPath, finalImg);
 
       if (result) {
-        final f =  XFile(finalImgPath);
+        final f =  File(finalImgPath);
         final l = await f.length();
         final kb = l / 1024;
         log.info("Image size: $kb KB");

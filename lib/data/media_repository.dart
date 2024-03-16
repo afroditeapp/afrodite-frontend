@@ -2,15 +2,20 @@
 
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
+import 'package:pihka_frontend/data/account_repository.dart';
+import 'package:pihka_frontend/data/media/send_to_slot.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:rxdart/rxdart.dart';
 
 var log = Logger("MediaRepository");
 
@@ -108,6 +113,12 @@ class MediaRepository extends DataRepository {
   Future<ContentId?> getPrimaryImage(AccountId account, bool isMatch) async {
     final info = await api.media((api) => api.getProfileContentInfo(account.accountId, isMatch));
     return info?.contentId0?.id;
+  }
+
+  /// Last event from stream is ProcessingCompleted or SendToSlotError.
+  Stream<SendToSlotEvent> sendImageToSlot(File file, int slot, {bool secureCapture = false}) async* {
+    final task = SendImageToSlotTask();
+    yield* task.sendImageToSlot(file, slot, secureCapture: secureCapture);
   }
 }
 

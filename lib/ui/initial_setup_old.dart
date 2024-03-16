@@ -82,90 +82,91 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<InitialSetupBloc, InitialSetupData>(builder: ((context, state) {
       log.fine(state);
-      return createStepper(context, state);
+      // return createStepper(context, state);
+      return Container();
     }));
   }
 
-   Stepper createStepper(BuildContext contex, InitialSetupData state) {
-    final steps = createSteps(state);
-    void Function()? onStepCancelHandler;
-    sendingInProgress() => state.currentStep == 4 && state.sendError == null;
-    if (state.currentStep == 0 || sendingInProgress()) {
-      onStepCancelHandler = null;
-    } else {
-      onStepCancelHandler = () {
-        context.read<InitialSetupBloc>().add(GoBack(null));
-      };
-    }
+  //  Stepper createStepper(BuildContext contex, InitialSetupData state) {
+  //   final steps = createSteps(state);
+  //   void Function()? onStepCancelHandler;
+  //   sendingInProgress() => state.currentStep == 4 && state.sendError == null;
+  //   if (state.currentStep == 0 || sendingInProgress()) {
+  //     onStepCancelHandler = null;
+  //   } else {
+  //     onStepCancelHandler = () {
+  //       context.read<InitialSetupBloc>().add(GoBack(null));
+  //     };
+  //   }
 
-    void Function()? onStepContinue;
+  //   void Function()? onStepContinue;
 
-    if (state.currentStep == 0) {
-      onStepContinue = () {
-        var valid = _accountFormKey.currentState?.validate() ?? false;
-        if (valid) {
-          _accountFormKey.currentState?.save();
-          context.read<InitialSetupBloc>().add(SetEmail(email?.trim() ?? ""));
-        }
-      };
-    } else if (state.currentStep == 1) {
-      onStepContinue = () {
-        var valid = _profileFormKey.currentState?.validate() ?? false;
-        if (valid) {
-          _profileFormKey.currentState?.save();
-          context.read<InitialSetupBloc>().add(SetProfileStep(name?.trim() ?? ""));
-        }
-      };
-    } else if (state.currentStep == 2) {
-      onStepContinue = () {
-        final file = securitySelfie;
-        if (file != null) {
-          context.read<InitialSetupBloc>().add(SetSecuritySelfie(file));
-        } else {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("No image. Take one using the camera button."), behavior: SnackBarBehavior.floating)
-          );
-        }
-      };
-    } else if (state.currentStep == 3) {
-      onStepContinue = () {
-        final file = profileImage;
-        if (file != null) {
-          context.read<InitialSetupBloc>().add(SetProfileImageStep(file));
-        } else {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("No image. Select one using the select button."), behavior: SnackBarBehavior.floating)
-          );
-        }
-      };
-    } else {
-      onStepContinue = null;
-    }
+  //   if (state.currentStep == 0) {
+  //     onStepContinue = () {
+  //       var valid = _accountFormKey.currentState?.validate() ?? false;
+  //       if (valid) {
+  //         _accountFormKey.currentState?.save();
+  //         context.read<InitialSetupBloc>().add(SetEmail(email?.trim() ?? ""));
+  //       }
+  //     };
+  //   } else if (state.currentStep == 1) {
+  //     onStepContinue = () {
+  //       var valid = _profileFormKey.currentState?.validate() ?? false;
+  //       if (valid) {
+  //         _profileFormKey.currentState?.save();
+  //         context.read<InitialSetupBloc>().add(SetProfileStep(name?.trim() ?? ""));
+  //       }
+  //     };
+  //   } else if (state.currentStep == 2) {
+  //     onStepContinue = () {
+  //       final file = securitySelfie;
+  //       if (file != null) {
+  //         context.read<InitialSetupBloc>().add(SetSecuritySelfie(file));
+  //       } else {
+  //         ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           const SnackBar(content: Text("No image. Take one using the camera button."), behavior: SnackBarBehavior.floating)
+  //         );
+  //       }
+  //     };
+  //   } else if (state.currentStep == 3) {
+  //     onStepContinue = () {
+  //       final file = profileImage;
+  //       if (file != null) {
+  //         context.read<InitialSetupBloc>().add(SetProfileImageStep(file));
+  //       } else {
+  //         ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           const SnackBar(content: Text("No image. Select one using the select button."), behavior: SnackBarBehavior.floating)
+  //         );
+  //       }
+  //     };
+  //   } else {
+  //     onStepContinue = null;
+  //   }
 
-    return Stepper(
-      currentStep: state.currentStep,
-      onStepCancel: onStepCancelHandler,
-      onStepContinue: onStepContinue,
-      onStepTapped: (i) {
-        context.read<InitialSetupBloc>().add(GoBack(i));
-      },
-      controlsBuilder: (context, details) {
-        var buttonContinue = ElevatedButton(
-          onPressed: details.onStepContinue,
-          child: const Text("CONTINUE"),
-        );
-        var buttonBack = MaterialButton(
-          onPressed: details.onStepCancel,
-          child: const Text("BACK"),
-        );
-        Widget buttons = Row(children: [buttonContinue, const Padding(padding: EdgeInsets.symmetric(horizontal: 10.0)), buttonBack]);
-        return Padding(padding: const EdgeInsets.fromLTRB(10.0, 10.0, 0, 0), child: buttons);
-      },
-      steps: steps,
-    );
-  }
+  //   return Stepper(
+  //     currentStep: state.currentStep,
+  //     onStepCancel: onStepCancelHandler,
+  //     onStepContinue: onStepContinue,
+  //     onStepTapped: (i) {
+  //       context.read<InitialSetupBloc>().add(GoBack(i));
+  //     },
+  //     controlsBuilder: (context, details) {
+  //       var buttonContinue = ElevatedButton(
+  //         onPressed: details.onStepContinue,
+  //         child: const Text("CONTINUE"),
+  //       );
+  //       var buttonBack = MaterialButton(
+  //         onPressed: details.onStepCancel,
+  //         child: const Text("BACK"),
+  //       );
+  //       Widget buttons = Row(children: [buttonContinue, const Padding(padding: EdgeInsets.symmetric(horizontal: 10.0)), buttonBack]);
+  //       return Padding(padding: const EdgeInsets.fromLTRB(10.0, 10.0, 0, 0), child: buttons);
+  //     },
+  //     steps: steps,
+  //   );
+  // }
 
   List<Step> createSteps(InitialSetupData state) {
     final counter = Counter();
@@ -206,7 +207,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
       //   _currentStep,
       //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
       // ),
-      isActive: state.currentStep == id,
+      // isActive: state.currentStep == id,
       content: Container(
         alignment: Alignment.centerLeft,
         child: accountForm,
@@ -238,7 +239,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
       //   _currentStep,
       //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
       // ),
-      isActive: state.currentStep == id,
+      // isActive: state.currentStep == id,
       content: Container(
         alignment: Alignment.centerLeft,
         child: profileForm,
@@ -276,7 +277,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
       //   _currentStep,
       //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
       // ),
-      isActive: state.currentStep == id,
+      // isActive: state.currentStep == id,
       content: Column(
         children: [
           const Text("Take image in which your face is clearly visible."),
@@ -346,7 +347,7 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
       //   _currentStep,
       //   Text("Your first name will be visible on your profile. It is not possible to change this later.")
       // ),
-      isActive: state.currentStep == id,
+      // isActive: state.currentStep == id,
       content: Column(children: [
         const Text("Select profile image"),
         image,
