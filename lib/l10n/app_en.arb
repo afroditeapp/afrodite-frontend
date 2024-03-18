@@ -123,6 +123,26 @@
   "@initial_setup_screen_email_title": {
     "description": "Title for initial setup email address info"
   },
+  "initial_setup_screen_profile_pictures_select_picture_dialog_title": "Select picture…",
+  "@initial_setup_screen_profile_pictures_select_picture_dialog_title": {
+    "description": "Dialog title for initial setup profile picture selection dialog"
+  },
+  "initial_setup_screen_profile_pictures_select_picture_from_gallery_title": "From gallery",
+  "@initial_setup_screen_profile_pictures_select_picture_from_gallery_title": {
+    "description": "Action title for selecting profile picture from gallery"
+  },
+  "initial_setup_screen_profile_pictures_select_picture_security_selfie_title": "Security selfie",
+  "@initial_setup_screen_profile_pictures_select_picture_security_selfie_title": {
+    "description": "Action title for using security selfie as a profile picture"
+  },
+  "initial_setup_screen_profile_pictures_select_picture_take_new_picture_title": "Take new photo",
+  "@initial_setup_screen_profile_pictures_select_picture_take_new_picture_title": {
+    "description": "Action title for taking new picture to be used as a profile picture"
+  },
+  "initial_setup_screen_profile_pictures_title": "My profile pictures are…",
+  "@initial_setup_screen_profile_pictures_title": {
+    "description": "Title for profile pictures selection screen"
+  },
   "initial_setup_screen_security_selfie_confirm_photo_dialog_title": "Continue with this photo?",
   "@initial_setup_screen_security_selfie_confirm_photo_dialog_title": {
     "description": "Dialog title for confirming new security selfie"

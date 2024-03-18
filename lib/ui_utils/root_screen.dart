@@ -20,10 +20,12 @@ abstract class RootScreen extends StatelessWidget {
     return BlocListener<MainStateBloc, MainState>(
       listener: (context, state) {
         final screen = switch (state) {
-          MainState.loginRequired => const InitialSetupScreen(),
+          // MainState.loginRequired => const InitialSetupScreen(),
+          MainState.loginRequired => const LoginScreen(),
           MainState.demoAccount => const DemoAccountScreen(),
           MainState.initialSetup => const InitialSetupScreen(),
-          MainState.initialSetupComplete => const InitialSetupScreen(),
+          MainState.initialSetupComplete => const NormalStateScreen(),
+          // MainState.initialSetupComplete => const InitialSetupScreen(),
           MainState.accountBanned => const AccountBannedScreen(),
           MainState.pendingRemoval => const PendingDeletionPage(),
           MainState.unsupportedClientVersion => const UnsupportedClientScreen(),

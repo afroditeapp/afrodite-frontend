@@ -6,6 +6,7 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
+import "package:pihka_frontend/ui/initial_setup/profile_pictures.dart";
 import "package:pihka_frontend/ui_utils/image.dart";
 import "package:pihka_frontend/ui_utils/loading_dialog.dart";
 import "package:pihka_frontend/ui_utils/view_image_screen.dart";
@@ -33,10 +34,10 @@ class AskSecuritySelfieScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           final selfie = state.securitySelfie;
           if (selfie != null) {
-            // return () {
-            //   CameraManager.getInstance().sendCmd(CloseCmd());
-            //   Navigator.push(context, MaterialPageRoute<void>(builder: (_) => screen))
-            // };
+            return () {
+              CameraManager.getInstance().sendCmd(CloseCmd());
+              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const AskProfilePicturesScreen()));
+            };
           } else {
             return null;
           }
