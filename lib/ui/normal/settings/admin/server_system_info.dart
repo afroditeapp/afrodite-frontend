@@ -7,6 +7,7 @@ import 'package:pihka_frontend/api/api_manager.dart';
 
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pihka_frontend/utils/result.dart';
 
 
 class ServerSystemInfoPage extends StatefulWidget {
@@ -35,7 +36,7 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
       actions = [];
     }
     actions.add(IconButton(onPressed: () async {
-        final data = await ApiManager.getInstance().mediaCommonAdmin((api) => api.getSystemInfo());
+        final data = await ApiManager.getInstance().mediaCommonAdmin((api) => api.getSystemInfo()).ok();
         setState(() {
           _currentData = data;
         });
@@ -93,7 +94,7 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
 
   Widget loadInitialData() {
     return FutureBuilder(
-      future: ApiManager.getInstance().mediaCommonAdmin((api) => api.getSystemInfo()),
+      future: ApiManager.getInstance().mediaCommonAdmin((api) => api.getSystemInfo()).ok(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.active || ConnectionState.waiting: {
@@ -121,7 +122,7 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
   Widget displayData() {
     return RefreshIndicator(
       onRefresh: () async {
-        final data = await ApiManager.getInstance().mediaCommonAdmin((api) => api.getSystemInfo());
+        final data = await ApiManager.getInstance().mediaCommonAdmin((api) => api.getSystemInfo()).ok();
 
         setState(() {
           _currentData = data;

@@ -3,6 +3,7 @@ import "package:openapi/api.dart";
 import "package:pihka_frontend/api/api_manager.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/utils.dart";
+import "package:pihka_frontend/utils/result.dart";
 
 
 sealed class LocationEvent {}
@@ -27,8 +28,8 @@ class LocationBloc extends Bloc<LocationEvent, Location> with ActionRunner {
     });
     on<LoadLocation>((data, emit) async {
       final location = await ApiManager.getInstance().profile((api) => api.getLocation());
-      if (location != null) {
-        emit(location);
+      if (location case Ok(:final v)) {
+        emit(v);
       }
     });
     on<NewLocation>((data, emit) async {

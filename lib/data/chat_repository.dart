@@ -18,6 +18,7 @@ import 'package:pihka_frontend/database/chat/received_likes_database.dart';
 import 'package:pihka_frontend/database/chat/sent_blocks_database.dart';
 import 'package:pihka_frontend/database/chat/sent_likes_database.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
+import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("ChatRepository");
 
@@ -92,14 +93,14 @@ class ChatRepository extends DataRepository {
     await receivedBlocksRefresh();
 
     // Download sent blocks.
-    final sentBlocks = await _api.chat((api) => api.getSentBlocks());
+    final sentBlocks = await _api.chat((api) => api.getSentBlocks()).ok();
     await SentBlocksDatabase.getInstance().insertAccountIdList(sentBlocks?.profiles);
 
     // Download received likes.
     await receivedLikesRefresh();
 
     // Download sent likes.
-    final sentLikes = await _api.chat((api) => api.getSentLikes());
+    final sentLikes = await _api.chat((api) => api.getSentLikes()).ok();
     await SentLikesDatabase.getInstance().insertAccountIdList(sentLikes?.profiles);
 
     // Download current matches.
@@ -186,7 +187,7 @@ class ChatRepository extends DataRepository {
   }
 
   Future<void> receivedBlocksRefresh() async {
-    final receivedBlocks = await _api.chat((api) => api.getReceivedBlocks());
+    final receivedBlocks = await _api.chat((api) => api.getReceivedBlocks()).ok();
     if (receivedBlocks != null) {
       final db = ReceivedBlocksDatabase.getInstance();
 
@@ -231,7 +232,7 @@ class ChatRepository extends DataRepository {
   }
 
   Future<void> receivedLikesRefresh() async {
-    final receivedLikes = await _api.chat((api) => api.getReceivedLikes());
+    final receivedLikes = await _api.chat((api) => api.getReceivedLikes()).ok();
     if (receivedLikes != null) {
       final db = ReceivedLikesDatabase.getInstance();
       await db.clearAccountIds();
@@ -263,7 +264,7 @@ class ChatRepository extends DataRepository {
   }
 
   Future<void> receivedMatchesRefresh() async {
-    final data = await _api.chat((api) => api.getMatches());
+    final data = await _api.chat((api) => api.getMatches()).ok();
     if (data != null) {
       final db = MatchesDatabase.getInstance();
       await db.clearAccountIds();
@@ -279,7 +280,7 @@ class ChatRepository extends DataRepository {
     if (currentUser == null) {
       return;
     }
-    final newMessages = await _api.chat((api) => api.getPendingMessages());
+    final newMessages = await _api.chat((api) => api.getPendingMessages()).ok();
     if (newMessages != null) {
       final toBeDeleted = <PendingMessageId>[];
       final db = MessageDatabase.getInstance();

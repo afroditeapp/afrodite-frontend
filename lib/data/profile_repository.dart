@@ -5,7 +5,6 @@ import 'package:async/async.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
@@ -15,6 +14,7 @@ import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
 var log = Logger("ProfileRepository");
@@ -80,14 +80,14 @@ class ProfileRepository extends DataRepository {
         // these if needed.
 
         // Download current location, so map will be positioned correctly.
-        final location = await _api.profile((api) => api.getLocation());
+        final location = await _api.profile((api) => api.getLocation()).ok();
         if (location != null) {
           await KvStringManager.getInstance()
             .setValue(KvString.profileLocation, jsonEncode(location.toJson()));
         }
 
         // Download current favorites.
-        final favorites = await _api.profile((api) => api.getFavoriteProfiles());
+        final favorites = await _api.profile((api) => api.getFavoriteProfiles()).ok();
         if (favorites != null) {
           for (final profile in favorites.profiles) {
             await FavoriteProfilesDatabase.getInstance()
@@ -113,10 +113,7 @@ class ProfileRepository extends DataRepository {
   }
 
   Future<bool> updateLocation(Location location) async {
-    final requestSuccessful = await ApiManager.getInstance().profile<bool>((api) async {
-      await api.putLocation(location);
-      return true;
-    }) ?? false;
+    final requestSuccessful = await _api.profileAction((api) => api.putLocation(location)).isOk();
     if (requestSuccessful) {
       await KvStringManager.getInstance().setValue(
         KvString.profileLocation,
@@ -138,7 +135,7 @@ class ProfileRepository extends DataRepository {
       }
     }
 
-    final profile = await _api.profile((api) => api.getProfile(id.accountId));
+    final profile = await _api.profile((api) => api.getProfile(id.accountId)).ok();
     if (profile != null) {
       await ProfileDatabase.getInstance().updateProfile(id, profile);
       final updatedProfile = await ProfileDatabase.getInstance().getProfileEntry(id);
@@ -184,8 +181,8 @@ class ProfileRepository extends DataRepository {
 
   /// Returns true if profile update was successful
   Future<bool> updateProfile(ProfileUpdate profileUpdate) async {
-    final result = await _api.profile((api) async { await api.postProfile(profileUpdate); return true; });
-    return result ?? false;
+    final result = await _api.profileAction((api) => api.postProfile(profileUpdate));
+    return result.isOk();
   }
 
   Future<void> refreshProfileIterator() async {

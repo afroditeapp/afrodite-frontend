@@ -8,6 +8,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
+import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
 var log = Logger("SendToSlotTask");
@@ -58,11 +59,12 @@ class SendImageToSlotTask {
     yield Uploading();
     final data = await MultipartFile.fromPath("", file.path);
     final processingId = await api.media((api) => api.putContentToContentSlot(slot, secureCapture, MediaContentType.jpegImage, data));
-    if (processingId == null) {
-      yield SendToSlotError();
-      token.cancel();
-    } else {
-      uploadDone.add(processingId);
+    switch (processingId) {
+      case Ok(:final v):
+        uploadDone.add(v);
+      case Err():
+        yield SendToSlotError();
+        token.cancel();
     }
   }
 
@@ -148,11 +150,12 @@ class SendImageToSlotTask {
 
   Future<SendToSlotEvent> _getStateFromServer(int slot) async {
     final state = await api.media((api) => api.getContentSlotState(slot));
-    if (state == null) {
-      return SendToSlotError();
+    switch (state) {
+      case Ok(:final v):
+        return _convertState(v);
+      case Err():
+        return SendToSlotError();
     }
-
-    return _convertState(state);
   }
 
   SendToSlotEvent _convertState(ContentProcessingState state) {

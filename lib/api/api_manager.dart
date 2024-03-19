@@ -10,6 +10,7 @@ import 'package:pihka_frontend/config.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
 final log = Logger("ApiManager");
@@ -305,7 +306,10 @@ class ApiManager extends AppSingleton {
     return ApiWrapper(_mediaApiProvider().mediaAdmin);
   }
 
-  Future<R?> common<R extends Object>(Server server, Future<R?> Function(CommonApi) action) async {
+  // TODO(microservice): Chat server missing from common, commonAdmin
+  // commmonAction, commonAdminAction
+
+  Future<Result<R, ValueApiError>> common<R extends Object>(Server server, Future<R?> Function(CommonApi) action) async {
     switch (server) {
       case Server.account:
         return accountCommon(action);
@@ -316,7 +320,7 @@ class ApiManager extends AppSingleton {
     }
   }
 
-  Future<R?> commonAdmin<R extends Object>(Server server, Future<R?> Function(CommonAdminApi) action) async {
+  Future<Result<R, ValueApiError>> commonAdmin<R extends Object>(Server server, Future<R?> Function(CommonAdminApi) action) async {
     switch (server) {
       case Server.account:
         return accountCommonAdmin(action);
@@ -327,49 +331,120 @@ class ApiManager extends AppSingleton {
     }
   }
 
-  Future<R?> account<R extends Object>(Future<R?> Function(AccountApi) action) async {
-    return await _accountWrapper().request(action);
+
+  Future<Result<R, ValueApiError>> account<R extends Object>(Future<R?> Function(AccountApi) action) async {
+    return await _accountWrapper().requestValue(action);
   }
 
-  Future<R?> accountCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {
-    return await ApiWrapper(_account.common).request(action);
+  Future<Result<R, ValueApiError>> accountCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {
+    return await ApiWrapper(_account.common).requestValue(action);
   }
 
-  Future<R?> accountCommonAdmin<R extends Object>(Future<R?> Function(CommonAdminApi) action) async {
-    return await ApiWrapper(_account.commonAdmin).request(action);
+  Future<Result<R, ValueApiError>> accountCommonAdmin<R extends Object>(Future<R?> Function(CommonAdminApi) action) async {
+    return await ApiWrapper(_account.commonAdmin).requestValue(action);
   }
 
-  Future<R?> media<R extends Object>(Future<R?> Function(MediaApi) action) async {
-    return await mediaWrapper().request(action);
+  Future<Result<R, ValueApiError>> media<R extends Object>(Future<R?> Function(MediaApi) action) async {
+    return await mediaWrapper().requestValue(action);
   }
 
-  Future<R?> mediaAdmin<R extends Object>(Future<R?> Function(MediaAdminApi) action) async {
-    return await _mediaAdminWrapper().request(action);
+  Future<Result<R, ValueApiError>> mediaAdmin<R extends Object>(Future<R?> Function(MediaAdminApi) action) async {
+    return await _mediaAdminWrapper().requestValue(action);
   }
 
-  Future<R?> mediaCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {
-    return await ApiWrapper(_mediaApiProvider().common).request(action);
+  Future<Result<R, ValueApiError>> mediaCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {
+    return await ApiWrapper(_mediaApiProvider().common).requestValue(action);
   }
 
-  Future<R?> mediaCommonAdmin<R extends Object>(Future<R?> Function(CommonAdminApi) action) async {
-    return await ApiWrapper(_mediaApiProvider().commonAdmin).request(action);
+  Future<Result<R, ValueApiError>> mediaCommonAdmin<R extends Object>(Future<R?> Function(CommonAdminApi) action) async {
+    return await ApiWrapper(_mediaApiProvider().commonAdmin).requestValue(action);
   }
 
-  Future<R?> profile<R extends Object>(Future<R?> Function(ProfileApi) action) async {
-    return await profileWrapper().request(action);
+  Future<Result<R, ValueApiError>> profile<R extends Object>(Future<R?> Function(ProfileApi) action) async {
+    return await profileWrapper().requestValue(action);
   }
 
-  Future<R?> chat<R extends Object>(Future<R?> Function(ChatApi) action) async {
-    return await chatWrapper().request(action);
+  Future<Result<R, ValueApiError>> chat<R extends Object>(Future<R?> Function(ChatApi) action) async {
+    return await chatWrapper().requestValue(action);
   }
 
-  Future<R?> profileCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {
-    return await ApiWrapper(_profileApiProvider().common).request(action);
+  Future<Result<R, ValueApiError>> profileCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {
+    return await ApiWrapper(_profileApiProvider().common).requestValue(action);
   }
 
-  Future<R?> profileCommonAdmin<R extends Object>(Future<R?> Function(CommonAdminApi) action) async {
-    return await ApiWrapper(_mediaApiProvider().commonAdmin).request(action);
+  Future<Result<R, ValueApiError>> profileCommonAdmin<R extends Object>(Future<R?> Function(CommonAdminApi) action) async {
+    return await ApiWrapper(_mediaApiProvider().commonAdmin).requestValue(action);
   }
+
+  // Actions
+
+  Future<Result<void, ValueApiError>> commonAction(Server server, Future<void> Function(CommonApi) action) async {
+    switch (server) {
+      case Server.account:
+        return accountCommon(action);
+      case Server.media:
+        return mediaCommon(action);
+      case Server.profile:
+        return profileCommon(action);
+    }
+  }
+
+  Future<Result<void, ValueApiError>> commonAdminAction(Server server, Future<void> Function(CommonAdminApi) action) async {
+    switch (server) {
+      case Server.account:
+        return accountCommonAdmin(action);
+      case Server.media:
+        return mediaCommonAdmin(action);
+      case Server.profile:
+        return profileCommonAdmin(action);
+    }
+  }
+
+
+  Future<Result<void, ActionApiError>> accountAction(Future<void> Function(AccountApi) action) async {
+    return await _accountWrapper().requestAction(action);
+  }
+
+  Future<Result<void, ActionApiError>> accountCommonAction(Future<void> Function(CommonApi) action) async {
+    return await ApiWrapper(_account.common).requestAction(action);
+  }
+
+  Future<Result<void, ActionApiError>> accountCommonAdminAction(Future<void> Function(CommonAdminApi) action) async {
+    return await ApiWrapper(_account.commonAdmin).requestAction(action);
+  }
+
+  Future<Result<void, ActionApiError>> mediaAction(Future<void> Function(MediaApi) action) async {
+    return await mediaWrapper().requestAction(action);
+  }
+
+  Future<Result<void, ActionApiError>> mediaAdminAction(Future<void> Function(MediaAdminApi) action) async {
+    return await _mediaAdminWrapper().requestAction(action);
+  }
+
+  Future<Result<void, ActionApiError>> mediaCommonAction(Future<void> Function(CommonApi) action) async {
+    return await ApiWrapper(_mediaApiProvider().common).requestAction(action);
+  }
+
+  Future<Result<void, ActionApiError>> mediaCommonAdminAction(Future<void> Function(CommonAdminApi) action) async {
+    return await ApiWrapper(_mediaApiProvider().commonAdmin).requestAction(action);
+  }
+
+  Future<Result<void, ActionApiError>> profileAction(Future<void> Function(ProfileApi) action) async {
+    return await profileWrapper().requestAction(action);
+  }
+
+  Future<Result<void, ActionApiError>> chatAction(Future<void> Function(ChatApi) action) async {
+    return await chatWrapper().requestAction(action);
+  }
+
+  Future<Result<void, ActionApiError>> profileCommonAction(Future<void> Function(CommonApi) action) async {
+    return await ApiWrapper(_profileApiProvider().common).requestAction(action);
+  }
+
+  Future<Result<void, ActionApiError>> profileCommonAdminAction(Future<void> Function(CommonAdminApi) action) async {
+    return await ApiWrapper(_mediaApiProvider().commonAdmin).requestAction(action);
+  }
+
 }
 
 String toWebSocketUri(String baseUrl) {

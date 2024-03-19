@@ -6,6 +6,7 @@ import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
+import 'package:pihka_frontend/utils/result.dart';
 
 
 class OnlineIterator extends IteratorType {
@@ -53,7 +54,7 @@ class OnlineIterator extends IteratorType {
 
     final List<ProfileEntry> list = List.empty(growable: true);
     while (true) {
-      final profiles = await api.profile((api) => api.postGetNextProfilePage());
+      final profiles = await api.profile((api) => api.postGetNextProfilePage()).ok();
       if (profiles != null) {
         if (profiles.profiles.isEmpty) {
           return [];
@@ -88,7 +89,7 @@ class ProfileEntryDownloader {
 
   /// Download profile entry, save to databases and return it.
   Future<ProfileEntry?> download(AccountId accountId, {bool isMatch = false}) async {
-    final primaryImageInfo = await api.media((api) => api.getProfileContentInfo(accountId.accountId, isMatch));
+    final primaryImageInfo = await api.media((api) => api.getProfileContentInfo(accountId.accountId, isMatch)).ok();
     final imageUuid = primaryImageInfo?.contentId0?.id.contentId;
     if (imageUuid == null) {
       return null;

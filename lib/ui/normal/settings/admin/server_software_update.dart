@@ -8,6 +8,7 @@ import 'package:pihka_frontend/api/api_manager.dart';
 
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
+import 'package:pihka_frontend/utils/result.dart';
 
 
 
@@ -168,13 +169,11 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
       children: [ElevatedButton(
         onPressed: () async {
           final result = await ApiManager.getInstance()
-            .commonAdmin(
-              _selectedServer, (api) async {
-                await api.postRequestBuildSoftware(softwareOptions);
-                return true;
-              }
+            .commonAdminAction(
+              _selectedServer, (api) =>
+                api.postRequestBuildSoftware(softwareOptions),
             );
-          if (result != null) {
+          if (result case Ok()) {
             showSnackBar("Build requested!");
           } else {
             showSnackBar("Build request failed!");
@@ -245,13 +244,11 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
           .then((value) async {
             if (value == true) {
               final result = await ApiManager.getInstance()
-                .commonAdmin(
-                  _selectedServer, (api) async {
-                    await api.postRequestUpdateSoftware(softwareOptions, _reboot, _reset_data);
-                    return true;
-                  }
+                .commonAdminAction(
+                  _selectedServer, (api) =>
+                    api.postRequestUpdateSoftware(softwareOptions, _reboot, _reset_data)
                 );
-              if (result != null) {
+              if (result case Ok()) {
                 showSnackBar("Update requested!");
               } else {
                 showSnackBar("Update request failed!");
@@ -334,11 +331,11 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
 
 
 Future<SoftwareData?> getData(Server server) async {
-  final version = await ApiManager.getInstance().common(server, (api) => api.getVersion());
-  final installedSoftware = await ApiManager.getInstance().commonAdmin(server, (api) => api.getSoftwareInfo());
-  final latestAvailableBackend = await ApiManager.getInstance().commonAdmin(server, (api) => api.getLatestBuildInfo(SoftwareOptions.backend));
-  final latestAvailableManager = await ApiManager.getInstance().commonAdmin(server, (api) => api.getLatestBuildInfo(SoftwareOptions.manager));
-  final systemInfo = await ApiManager.getInstance().commonAdmin(server, (api) => api.getSystemInfo());
+  final version = await ApiManager.getInstance().common(server, (api) => api.getVersion()).ok();
+  final installedSoftware = await ApiManager.getInstance().commonAdmin(server, (api) => api.getSoftwareInfo()).ok();
+  final latestAvailableBackend = await ApiManager.getInstance().commonAdmin(server, (api) => api.getLatestBuildInfo(SoftwareOptions.backend)).ok();
+  final latestAvailableManager = await ApiManager.getInstance().commonAdmin(server, (api) => api.getLatestBuildInfo(SoftwareOptions.manager)).ok();
+  final systemInfo = await ApiManager.getInstance().commonAdmin(server, (api) => api.getSystemInfo()).ok();
 
 
   if (version == null) {

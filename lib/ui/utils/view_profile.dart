@@ -4,7 +4,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
@@ -86,36 +85,34 @@ Widget viewProifleImage(BuildContext context, AccountId account, ProfileEntry pr
 
   final Widget primaryImageWidget;
   final imgContentId = img.img;
-  if (imgContentId != null) {
-    primaryImageWidget = FutureBuilder(
-      future: ImageCacheData.getInstance().getImage(account, imgContentId),
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.active || ConnectionState.waiting: {
-            return buildProgressIndicator(imgMaxWidth);
-          }
-          case ConnectionState.none || ConnectionState.done: {
-            final imageFile = snapshot.data;
-            if (imageFile != null) {
-              return InkWell( // TODO: remove?
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ViewImageScreen(ViewImageAccountContent(account, imgContentId))));
-                },
-                child: Image.file(
-                  imageFile,
-                  width: imgMaxWidth,
-                  height: imgHeight,
-                ),
-              );
-            } else {
-              return Text(context.strings.generic_error);
-            }
+
+  primaryImageWidget = FutureBuilder(
+    future: ImageCacheData.getInstance().getImage(account, imgContentId),
+    builder: (context, snapshot) {
+      switch (snapshot.connectionState) {
+        case ConnectionState.active || ConnectionState.waiting: {
+          return buildProgressIndicator(imgMaxWidth);
+        }
+        case ConnectionState.none || ConnectionState.done: {
+          final imageFile = snapshot.data;
+          if (imageFile != null) {
+            return InkWell( // TODO: remove?
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ViewImageScreen(ViewImageAccountContent(account, imgContentId))));
+              },
+              child: Image.file(
+                imageFile,
+                width: imgMaxWidth,
+                height: imgHeight,
+              ),
+            );
+          } else {
+            return Text(context.strings.generic_error);
           }
         }
-    },);
-  } else {
-    primaryImageWidget = Text(context.strings.generic_empty);
-  }
+      }
+    },
+  );
 
   return Row(
     children: [

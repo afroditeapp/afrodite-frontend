@@ -11,6 +11,7 @@ import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
 var log = Logger("AccountRepository");
@@ -133,7 +134,7 @@ class AccountRepository extends DataRepository {
   /// Returns null on success. Returns String if error.
   Future<WaitProcessingResult> _waitContentProcessing(int slot) async {
     while (true) {
-      final state = await _api.media((api) => api.getContentSlotState(slot));
+      final state = await _api.media((api) => api.getContentSlotState(slot)).ok();
       if (state == null) {
         return ProcessingError("Server did not return content processing state");
       }
@@ -165,7 +166,7 @@ class AccountRepository extends DataRepository {
     await _api.account((api) => api.postAccountSetup(AccountSetup(birthdate: "123")));
     final securitySelfie = await MultipartFile.fromPath("", securitySelfiePath);
     final processingId = await _api.media((api) => api.putContentToContentSlot(0, true, MediaContentType.jpegImage, securitySelfie));
-    if (processingId == null) {
+    if (processingId case Err()) {
       return "Server did not return content processing ID";
     }
     final result = await _waitContentProcessing(0);
@@ -178,7 +179,7 @@ class AccountRepository extends DataRepository {
 
     final profileImage = await MultipartFile.fromPath("", profileImagePath);
     final processingId2 = await _api.media((api) => api.putContentToContentSlot(1, false, MediaContentType.jpegImage, profileImage));
-    if (processingId2 == null) {
+    if (processingId2 case Err()) {
       return "Server did not return content processing ID";
     }
     final result2 = await _waitContentProcessing(1);
@@ -192,7 +193,7 @@ class AccountRepository extends DataRepository {
     await _api.media((api) => api.putModerationRequest(ModerationRequestContent(content0: contentId0, content1: contentId1)));
     await _api.account((api) => api.postCompleteSetup());
 
-    final state = await _api.account((api) => api.getAccountState());
+    final state = await _api.account((api) => api.getAccountState()).ok();
     if (state == null || state.state != AccountState.normal) {
       return "Error";
     }
@@ -202,11 +203,11 @@ class AccountRepository extends DataRepository {
 
   /// Returns true if successful.
   Future<bool> doProfileVisibilityChange(bool profileVisiblity) async {
-    final result = await ApiManager.getInstance().account((api) async {
-      await api.putSettingProfileVisiblity(BooleanSetting(value: profileVisiblity)); return true;
-    }) ?? false;
+    final result = await ApiManager.getInstance().accountAction((api) =>
+      api.putSettingProfileVisiblity(BooleanSetting(value: profileVisiblity))
+    );
 
-    return result;
+    return result.isOk();
   }
 }
 

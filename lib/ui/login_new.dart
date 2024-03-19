@@ -6,8 +6,8 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/assets.dart";
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/logic/account/demo_account.dart";
-import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/logic/sign_in_with.dart";
+import "package:pihka_frontend/ui/login.dart";
 import "package:pihka_frontend/ui_utils/colors.dart";
 import "package:pihka_frontend/ui_utils/loading_dialog.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
@@ -51,6 +51,13 @@ class LoginScreen extends RootScreen {
                       demoAccountBloc.add(DoDemoAccountLogin(value));
                     }
                   });
+              },
+            ),
+            // TODO(prod): remove
+            MenuItemButton(
+              child: Text("Old login"),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute<void>(builder: (_) => LoginScreenOld()));
               },
             ),
             ...commonActionsWhenLoggedOut(context),

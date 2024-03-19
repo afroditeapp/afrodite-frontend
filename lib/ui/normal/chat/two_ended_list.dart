@@ -39,10 +39,7 @@ class MyScrollPosition extends ScrollPositionWithSingleContext {
 
   @override
   bool applyContentDimensions(double minScrollExtent, double maxScrollExtent) {
-    final double? viewportDimensionLocal = viewportDimension;
-    if (viewportDimensionLocal == null) {
-      return super.applyContentDimensions(minScrollExtent, maxScrollExtent);
-    }
+    final double viewportDimensionLocal = viewportDimension;
 
     final shownMsgArea = viewportDimensionLocal - settings.reducedScrollArea;
     // log.info("shownMsgArea $shownMsgArea, bottomExtraScrollArea ${settings.bottomExtraScrollArea}");
@@ -456,7 +453,7 @@ class ChatScrollPhysics extends ScrollPhysics {
       } else {
         // settings.state == ScrollState.normal;
         return NoSimulation(end!);
-        return LinearSimulation(position.pixels, end!, velocity);
+        return LinearSimulation(position.pixels, end, velocity);
         return null;
       }
     }

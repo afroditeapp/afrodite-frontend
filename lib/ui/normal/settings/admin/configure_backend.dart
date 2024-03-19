@@ -7,6 +7,7 @@ import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
+import 'package:pihka_frontend/utils/result.dart';
 
 
 
@@ -175,13 +176,10 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
           .then((value) async {
             if (value == true) {
               final result = await ApiManager.getInstance()
-                .commonAdmin(
-                  _selectedServer, (api) async {
-                    await api.postRequestRestartOrResetBackend(false);
-                    return true;
-                  }
+                .commonAdminAction(
+                  _selectedServer, (api) => api.postRequestRestartOrResetBackend(false)
                 );
-              if (result != null) {
+              if (result case Ok()) {
                 showSnackBar("Restart requested!");
               } else {
                 showSnackBar("Restart request failed!");
@@ -202,13 +200,11 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
           .then((value) async {
             if (value == true) {
               final result = await ApiManager.getInstance()
-                .commonAdmin(
-                  _selectedServer, (api) async {
-                    await api.postRequestRestartOrResetBackend(true);
-                    return true;
-                  }
+                .commonAdminAction(
+                  _selectedServer, (api) =>
+                    api.postRequestRestartOrResetBackend(true)
                 );
-              if (result != null) {
+              if (result case Ok()) {
                 showSnackBar("Reset requested!");
               } else {
                 showSnackBar("Reset request failed!");
@@ -293,18 +289,15 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
         showConfirmDialog(context, "Save backend config?", details: "New config: ${config.toString()}")
           .then((value) async {
             if (value == true) {
-
               final result = await ApiManager.getInstance()
-                .commonAdmin(
-                  _selectedServer, (api) async {
-                    await api.postBackendConfig(config);
-                    return true;
-                  }
+                .commonAdminAction(
+                  _selectedServer, (api) => api.postBackendConfig(config)
                 );
-              if (result != null) {
-                showSnackBar("Config saved!");
-              } else {
-                showSnackBar("Config save failed!");
+              switch (result) {
+                case Ok():
+                  showSnackBar("Config saved!");
+                case Err():
+                  showSnackBar("Config save failed!");
               }
             }
           });
@@ -334,7 +327,7 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
 }
 
 Future<CurrentConfig?> getData(Server server) async {
-  final config = await ApiManager.getInstance().commonAdmin(server, (api) => api.getBackendConfig());
+  final config = await ApiManager.getInstance().commonAdmin(server, (api) => api.getBackendConfig()).ok();
   if (config == null) {
     return null;
   }

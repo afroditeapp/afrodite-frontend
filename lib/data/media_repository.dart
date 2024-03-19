@@ -15,6 +15,7 @@ import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/media/send_to_slot.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
 var log = Logger("MediaRepository");
@@ -38,7 +39,7 @@ class MediaRepository extends DataRepository {
       imageOwner.accountId,
       id.contentId,
       isMatch,
-    ));
+    )).ok();
     if (data != null) {
       return data;
     } else {
@@ -51,7 +52,7 @@ class MediaRepository extends DataRepository {
     final data = await api.media((api) => api.getProfileContentInfo(
       imageOwner.accountId,
       isMatch
-    ));
+    )).ok();
     if (data != null) {
       final contentId = data.contentId0;
       if (contentId == null) {
@@ -67,33 +68,28 @@ class MediaRepository extends DataRepository {
   }
 
   Future<MapTileResult> getMapTile(int z, int x, int y) async {
-    try {
-      final data = await api.mediaWrapper().requestWithException(false, (api) => api.getMapTileFixed(
-        z,
-        x,
-        y.toString(),
-      ));
-      if (data != null) {
-        return MapTileSuccess(data);
-      } else {
-        log.error("Map tile loading error: request successfull, but no tile data");
-        ErrorManager.getInstance().send(ApiError());
-        return MapTileError();
-      }
-    } on ApiException catch (e) {
-      if (e.code == 404) {
-        // No map tile available
-        return MapTileNotAvailable();
-      } else {
-        log.error(e);
-        ErrorManager.getInstance().send(ApiError());
-        return MapTileError();
-      }
+    final data = await api.mediaWrapper().requestValue((api) => api.getMapTileFixed(
+      z,
+      x,
+      y.toString(),
+    ), logError: false);
+
+    switch (data) {
+      case Ok(:final v):
+        return MapTileSuccess(v);
+      case Err(:final e):
+        if (e.isNotFoundError()) {
+          // No map tile available
+          return MapTileNotAvailable();
+        } else {
+          ErrorManager.getInstance().send(ApiError());
+          return MapTileError();
+        }
     }
   }
 
   Future<ModerationList> nextModerationListFromServer(ModerationQueueType queue) async {
-    return await api.mediaAdmin((api) => api.patchModerationRequestList(queue)) ?? ModerationList();
+    return await api.mediaAdmin((api) => api.patchModerationRequestList(queue)).ok() ?? ModerationList();
   }
 
   Future<void> handleModerationRequest(AccountId accountId, bool accept) async {
@@ -101,17 +97,17 @@ class MediaRepository extends DataRepository {
   }
 
   Future<ContentId?> getSecuritySelfie(AccountId account) async {
-    final img = await api.media((api) => api.getSecurityContentInfo(account.accountId));
+    final img = await api.media((api) => api.getSecurityContentInfo(account.accountId)).ok();
     return img?.contentId?.id;
   }
 
   Future<ContentId?> getPendingSecuritySelfie(AccountId account) async {
-    final img = await api.media((api) => api.getPendingSecurityContentInfo(account.accountId));
+    final img = await api.media((api) => api.getPendingSecurityContentInfo(account.accountId)).ok();
     return img?.contentId?.id;
   }
 
   Future<ContentId?> getPrimaryImage(AccountId account, bool isMatch) async {
-    final info = await api.media((api) => api.getProfileContentInfo(account.accountId, isMatch));
+    final info = await api.media((api) => api.getProfileContentInfo(account.accountId, isMatch)).ok();
     return info?.contentId0?.id;
   }
 

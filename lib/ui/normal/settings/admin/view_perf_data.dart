@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/utils/result.dart';
 
 
 class ViewPerfDataPage extends StatefulWidget {
@@ -287,7 +288,7 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
 
 
 Future<PerfData?> getData(Server server) async {
-  final queryResults = await ApiManager.getInstance().commonAdmin(server, (api) => api.getPerfData());
+  final queryResults = await ApiManager.getInstance().commonAdmin(server, (api) => api.getPerfData()).ok();
 
   if (queryResults == null) {
     return null;

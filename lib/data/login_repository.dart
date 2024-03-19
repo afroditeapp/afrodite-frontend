@@ -136,7 +136,7 @@ class LoginRepository extends DataRepository {
   }
 
   Future<AccountId?> register() async {
-    var id = await _api.account((api) => api.postRegister());
+    var id = await _api.account((api) => api.postRegister()).ok();
     if (id != null) {
       await KvStringManager.getInstance().setValue(KvString.accountId, id.accountId);
     }
@@ -148,7 +148,7 @@ class LoginRepository extends DataRepository {
     if (accountIdValue == null) {
       return;
     }
-    final loginResult = await _api.account((api) => api.postLogin(accountIdValue));
+    final loginResult = await _api.account((api) => api.postLogin(accountIdValue)).ok();
     if (loginResult != null) {
       await _handleLoginResult(loginResult);
     }
@@ -162,7 +162,7 @@ class LoginRepository extends DataRepository {
       var token = await signedIn.authentication;
       log.fine("${token.accessToken}, ${token.idToken}");
 
-      final login = await _api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken)));
+      final login = await _api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken))).ok();
       if (login != null) {
         await _handleLoginResult(login);
       }
@@ -236,7 +236,7 @@ class LoginRepository extends DataRepository {
 
   Future<Result<(), ()>> demoAccountLogin(DemoAccountCredentials credentials) async {
     _demoAccountLoginInProgress.add(true);
-    final loginResult = await _api.account((api) => api.postDemoModeLogin(DemoModePassword(password: credentials.id)));
+    final loginResult = await _api.account((api) => api.postDemoModeLogin(DemoModePassword(password: credentials.id))).ok();
     _demoAccountLoginInProgress.add(false);
 
     final loginToken = loginResult?.token;
@@ -249,7 +249,7 @@ class LoginRepository extends DataRepository {
         password: DemoModePassword(password: credentials.password),
         token: loginToken
       )
-    ));
+    )).ok();
     final demoAccountToken = loginResult2?.token?.token;
     if (demoAccountToken == null) {
       return Err(());
@@ -278,7 +278,7 @@ class LoginRepository extends DataRepository {
     if (token == null) {
       return Err(OtherError());
     }
-    final accounts = await _api.account((api) => api.postDemoModeAccessibleAccounts(DemoModeToken(token: token)));
+    final accounts = await _api.account((api) => api.postDemoModeAccessibleAccounts(DemoModeToken(token: token))).ok();
     if (accounts != null) {
       return Ok(accounts);
     } else {
@@ -295,7 +295,7 @@ class LoginRepository extends DataRepository {
       return Err(OtherError());
     }
     final demoToken = DemoModeToken(token: token);
-    final id = await _api.account((api) => api.postDemoModeRegisterAccount(demoToken));
+    final id = await _api.account((api) => api.postDemoModeRegisterAccount(demoToken)).ok();
     if (id != null) {
       return await demoAccountLoginToAccount(id);
     } else {
@@ -312,7 +312,7 @@ class LoginRepository extends DataRepository {
       return Err(OtherError());
     }
     final demoToken = DemoModeToken(token: token);
-    final loginResult = await _api.account((api) => api.postDemoModeLoginToAccount(DemoModeLoginToAccount(accountId: id, token: demoToken)));
+    final loginResult = await _api.account((api) => api.postDemoModeLoginToAccount(DemoModeLoginToAccount(accountId: id, token: demoToken))).ok();
     if (loginResult != null) {
       await KvStringManager.getInstance().setValue(KvString.accountId, id.accountId);
       await _handleLoginResult(loginResult);
