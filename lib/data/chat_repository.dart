@@ -131,8 +131,8 @@ class ChatRepository extends DataRepository {
   }
 
   Future<bool> sendLikeTo(AccountId accountId) async {
-    final (result, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.postSendLike(accountId));
-    if (result.isSuccess()) {
+    final result = await _api.chatAction((api) => api.postSendLike(accountId));
+    if (result.isOk()) {
       final isReceivedLike = await ReceivedLikesDatabase.getInstance().exists(accountId);
       if (isReceivedLike) {
         await MatchesDatabase.getInstance().insertAccountId(accountId);
@@ -140,34 +140,34 @@ class ChatRepository extends DataRepository {
         await SentLikesDatabase.getInstance().insertAccountId(accountId);
       }
     }
-    return result.isSuccess();
+    return result.isOk();
   }
 
   Future<bool> removeLikeFrom(AccountId accountId) async {
-    final (result, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.deleteLike(accountId));
-    if (result.isSuccess()) {
+    final result = await _api.chatAction((api) => api.deleteLike(accountId));
+    if (result.isOk()) {
       await SentLikesDatabase.getInstance().removeAccountId(accountId);
     }
-    return result.isSuccess();
+    return result.isOk();
   }
 
   Future<bool> sendBlockTo(AccountId accountId) async {
-    final (result, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.postBlockProfile(accountId));
-    if (result.isSuccess()) {
+    final result = await _api.chatAction((api) => api.postBlockProfile(accountId));
+    if (result.isOk()) {
       await SentBlocksDatabase.getInstance().insertAccountId(accountId);
       await ReceivedLikesDatabase.getInstance().removeAccountId(accountId);
       ProfileRepository.getInstance().sendProfileChange(ProfileBlocked(accountId));
     }
-    return result.isSuccess();
+    return result.isOk();
   }
 
   Future<bool> removeBlockFrom(AccountId accountId) async {
-    final (result, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.postUnblockProfile(accountId));
-    if (result.isSuccess()) {
+    final result = await _api.chatAction((api) => api.postUnblockProfile(accountId));
+    if (result.isOk()) {
       await SentBlocksDatabase.getInstance().removeAccountId(accountId);
       ProfileRepository.getInstance().sendProfileChange(ProfileUnblocked(accountId));
     }
-    return result.isSuccess();
+    return result.isOk();
   }
 
   /// Returns AccountId for all blocked profiles. ProfileEntry is returned only
@@ -298,8 +298,8 @@ class ChatRepository extends DataRepository {
       }
 
       final toBeDeletedList = PendingMessageDeleteList(messagesIds: toBeDeleted);
-      final (result, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.deletePendingMessages(toBeDeletedList));
-      if (result.isSuccess()) {
+      final result = await _api.chatAction((api) => api.deletePendingMessages(toBeDeletedList));
+      if (result.isOk()) {
         for (final message in newMessages.messages) {
           await db.updateReceivedMessageState(
             currentUser,
@@ -324,8 +324,8 @@ class ChatRepository extends DataRepository {
 
     final isMatch = await isInMatches(accountId);
     if (!isMatch) {
-      final (resultSendLike, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.postSendLike(accountId));
-      if (resultSendLike.isSuccess()) {
+      final resultSendLike = await _api.chatAction((api) => api.postSendLike(accountId));
+      if (resultSendLike.isOk()) {
         await MatchesDatabase.getInstance().insertAccountId(accountId);
         ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
         await ReceivedLikesDatabase.getInstance().removeAccountId(accountId);
@@ -348,8 +348,8 @@ class ChatRepository extends DataRepository {
     ProfileRepository.getInstance().sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
 
     final sendMessage = SendMessageToAccount(message: message, receiver: accountId);
-    final (result, _) = await _api.chatWrapper().requestWithHttpStatus((api) => api.postSendMessage(sendMessage));
-    if (!result.isSuccess()) {
+    final result = await _api.chatAction((api) => api.postSendMessage(sendMessage));
+    if (result.isErr()) {
       // TODO error handling
     }
 

@@ -18,21 +18,6 @@ class ApiWrapper<T> {
 
   ApiWrapper(this.api);
 
-  Future<(ApiHttpStatus, R?)> requestWithHttpStatus<R extends Object>(Future<R?> Function(T) action, {bool logError = true}) async {
-    try {
-      final result = await action(api);
-      return (ApiHttpStatus(200), result);
-    } on ApiException catch (e) {
-      if (logError) {
-        log.error(e);
-        // TODO(prod): remove stack trace for production?
-        log.error(StackTrace.current);
-        ErrorManager.getInstance().send(ApiError());
-      }
-      return (ApiHttpStatus(e.code), null);
-    }
-  }
-
   /// Handle ApiException.
   Future<Result<R, ValueApiError>> requestValue<R extends Object>(Future<R?> Function(T) action, {bool logError = true}) async {
     try {
@@ -96,8 +81,11 @@ class ActionApiError {
 }
 
 sealed class ValueApiError {
-  /// HTTP 404 error
+  /// Is status code HTTP 404
   bool isNotFoundError() { return false; }
+
+  /// Is status code HTTP 500
+  bool isInternalServerError() { return false; }
 }
 class NullError extends ValueApiError {}
 class ValueApiException extends ValueApiError {
@@ -107,5 +95,10 @@ class ValueApiException extends ValueApiError {
   @override
   bool isNotFoundError() {
     return e.code == 404;
+  }
+
+  @override
+  bool isInternalServerError() {
+    return e.code == 500;
   }
 }

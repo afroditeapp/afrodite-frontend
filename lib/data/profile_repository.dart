@@ -154,9 +154,9 @@ class ProfileRepository extends DataRepository {
       yield GetProfileSuccess(profile);
     }
 
-    final (status, latestProfile) = await _api.profileWrapper().requestWithHttpStatus(logError: false, (api) => api.getProfile(id.accountId));
+    final result = await _api.profileWrapper().requestValue(logError: false, (api) => api.getProfile(id.accountId));
 
-    if (status.isSuccess() && latestProfile != null) {
+    if (result case Ok(v:final latestProfile)) {
       await ProfileDatabase.getInstance().updateProfile(id, latestProfile);
       final updatedEntry = await ProfileDatabase.getInstance().getProfileEntry(id);
       if (updatedEntry != null) {
@@ -164,7 +164,7 @@ class ProfileRepository extends DataRepository {
       } else {
         yield GetProfileFailed();
       }
-    } else if (status.isInternalServerError() && latestProfile == null) {
+    } else if (result case Err(:final e) when e.isInternalServerError()) {
       // Accessing profile failed (not public or something else)
       await ProfileDatabase.getInstance().removeProfile(id);
       await ProfileListDatabase.getInstance().removeProfile(id);
@@ -235,9 +235,9 @@ class ProfileRepository extends DataRepository {
     await FavoriteProfilesDatabase.getInstance().insertProfile(accountId);
     yield true;
 
-    final (status, _) = await _api.profileWrapper().requestWithHttpStatus((api) => api.postFavoriteProfile(accountId));
+    final status = await _api.profileAction((api) => api.postFavoriteProfile(accountId));
 
-    if (status.isFailure()) {
+    if (status.isErr()) {
       // Revert local change
       yield false;
       await FavoriteProfilesDatabase.getInstance().removeFromFavorites(accountId);
@@ -258,9 +258,9 @@ class ProfileRepository extends DataRepository {
     await FavoriteProfilesDatabase.getInstance().removeFromFavorites(accountId);
     yield false;
 
-    final (status, _) = await _api.profileWrapper().requestWithHttpStatus((api) => api.deleteFavoriteProfile(accountId));
+    final status = await _api.profileAction((api) => api.deleteFavoriteProfile(accountId));
 
-    if (status.isFailure()) {
+    if (status.isErr()) {
       // Revert local change
       yield true;
       await FavoriteProfilesDatabase.getInstance().insertProfile(accountId);

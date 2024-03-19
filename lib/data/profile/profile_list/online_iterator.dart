@@ -96,9 +96,10 @@ class ProfileEntryDownloader {
     }
 
     // Prevent displaying error when profile is made private while iterating
-    final (_, profileDetails) = await api
+    final profileDetails = await api
       .profileWrapper()
-      .requestWithHttpStatus(logError: false, (api) => api.getProfile(accountId.accountId));
+      .requestValue(logError: false, (api) => api.getProfile(accountId.accountId))
+      .ok();
     if (profileDetails == null) {
       return null;
     }
