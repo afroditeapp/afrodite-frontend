@@ -15,9 +15,14 @@
   "@camera_screen_camera_initialization_error": {
     "description": "Error text displayed when camera initialization fails"
   },
-  "camera_screen_camera_initialization_error_with_error_code": "Camera initialization failed. Error code:",
+  "camera_screen_camera_initialization_error_with_error_code": "Camera initialization failed. Error code: {param0}",
   "@camera_screen_camera_initialization_error_with_error_code": {
-    "description": "Error text displayed when camera initialization fails and error code exists"
+    "description": "Error text displayed when camera initialization fails and error code exists",
+    "placeholders": {
+      "param0": {
+        "type": "String"
+      }
+    }
   },
   "camera_screen_camera_opening_already_in_progress_error": "Camera opening in progress",
   "@camera_screen_camera_opening_already_in_progress_error": {
@@ -159,9 +164,14 @@
   "@initial_setup_screen_security_selfie_upload_failed_dialog_title": {
     "description": "Progress dialog info text that security selfie upload failed"
   },
-  "initial_setup_screen_security_selfie_upload_in_processing_queue_dialog_description": "Waiting for processing. Queue number:",
+  "initial_setup_screen_security_selfie_upload_in_processing_queue_dialog_description": "Waiting for processing. Queue number: {param0}",
   "@initial_setup_screen_security_selfie_upload_in_processing_queue_dialog_description": {
-    "description": "Progress dialog info text that security selfie is currently in server's processing queue"
+    "description": "Progress dialog info text that security selfie is currently in server's processing queue",
+    "placeholders": {
+      "param0": {
+        "type": "String"
+      }
+    }
   },
   "initial_setup_screen_security_selfie_upload_in_progress_dialog_description": "Uploading photo",
   "@initial_setup_screen_security_selfie_upload_in_progress_dialog_description": {

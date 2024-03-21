@@ -6,7 +6,7 @@
 
     <!-- App branding -->
     <string name="app_name" description="Name for the app" translatable="false">Pihka</string>
-    <string name="app_slogan" description="Slogan for the app">Finland&apos;s fairest dating app</string>
+    <string name="app_slogan" description="Slogan for the app">Finland\'s fairest dating app</string>
 
     <!-- Generic texts -->
     <string name="generic_error" description="Generic error message">Error</string>
@@ -56,10 +56,10 @@
     <string name="initial_setup_screen_birthdate_button" description="Title for birthdate selection button">Select birthdate</string>
     <string name="initial_setup_screen_too_young_error" description="Error text displayed when age is under 18.">To use the app you must be 18 years old.</string>
     <string name="initial_setup_screen_security_selfie_title" description="Title for initial setup security selfie screen">My security selfie is…</string>
-    <string name="initial_setup_screen_security_selfie_description" description="Description for initial setup security selfie step">Take selfie with your phone&apos;s front camera. The selfie is used for moderating your profile images and by default it is only visible to content Moderators.</string>
+    <string name="initial_setup_screen_security_selfie_description" description="Description for initial setup security selfie step">Take selfie with your phone\'s front camera. The selfie is used for moderating your profile images and by default it is only visible to content Moderators.</string>
     <string name="initial_setup_screen_security_selfie_confirm_photo_dialog_title" description="Dialog title for confirming new security selfie">Continue with this photo?</string>
     <string name="initial_setup_screen_security_selfie_upload_in_progress_dialog_description" description="Progress dialog info text that security selfie upload is in progress">Uploading photo</string>
-    <string name="initial_setup_screen_security_selfie_upload_in_processing_queue_dialog_description" description="Progress dialog info text that security selfie is currently in server's processing queue">Waiting for processing. Queue number:</string>
+    <string name="initial_setup_screen_security_selfie_upload_in_processing_queue_dialog_description" description="Progress dialog info text that security selfie is currently in server's processing queue">Waiting for processing. Queue number: %s</string>
     <string name="initial_setup_screen_security_selfie_upload_processing_ongoing_description" description="Progress dialog info text that security selfie processing is ongoing">Processing ongoing</string>
     <string name="initial_setup_screen_security_selfie_upload_failed_dialog_title" description="Progress dialog info text that security selfie upload failed">Upload failed</string>
     <string name="initial_setup_screen_profile_pictures_title" description="Title for profile pictures selection screen">My profile pictures are…</string>
@@ -73,7 +73,7 @@
     <string name="camera_screen_camera_opening_already_in_progress_error" description="Snackbar error text displayed when user tries to open camera but camera initialization is already in progress">Camera opening in progress</string>
     <string name="camera_screen_no_front_camera_error" description="Error text displayed when there is no front camera available">No front camera available</string>
     <string name="camera_screen_camera_initialization_error" description="Error text displayed when camera initialization fails">Camera initialization failed</string>
-    <string name="camera_screen_camera_initialization_error_with_error_code" description="Error text displayed when camera initialization fails and error code exists">Camera initialization failed. Error code:</string>
+    <string name="camera_screen_camera_initialization_error_with_error_code" description="Error text displayed when camera initialization fails and error code exists">Camera initialization failed. Error code: %s</string>
     <string name="camera_screen_camera_permission_error_try_again_or_check_settings" description="Error text displayed when there is no camera permission">No camera permission. Please try again. If that will not work then grant the camera permission from system settings.</string>
     <string name="camera_screen_camera_permission_error_check_settings" description="Error text displayed when there is no camera permission and system settings must be used for granting the permission">No camera permission. Please grant the camera permission from system settings.</string>
 <!--  TODO  <string name="camera_screen_camera_access_restricted_error" description="Error text displayed when camera access is restricted">TODO</string>-->

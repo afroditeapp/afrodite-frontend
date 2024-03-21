@@ -275,7 +275,7 @@ class ServerDataProcessingInProgress extends ContentUploadState {
     if (queueNumber == null) {
       return context.strings.initial_setup_screen_security_selfie_upload_processing_ongoing_description;
     } else {
-      return "${context.strings.initial_setup_screen_security_selfie_upload_in_processing_queue_dialog_description} $queueNumber";
+      return context.strings.initial_setup_screen_security_selfie_upload_in_processing_queue_dialog_description(queueNumber.toString());
     }
   }
 }

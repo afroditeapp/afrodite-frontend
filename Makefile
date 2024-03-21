@@ -19,6 +19,9 @@ update-translations:
 update-app-icon:
 	dart run flutter_launcher_icons
 
+watch-translations:
+	fswatch -o -e Updated translations/app/src/main/res | xargs -n1 -I{} make update-translations
+
 code-stats:
 	@/bin/echo -n "Lines:"
 	@find \

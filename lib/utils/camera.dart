@@ -22,7 +22,7 @@ sealed class CameraInitError {
         // TODO(prod): Figure out good error text
         "Error",
       InitFailedWithErrorCode(:final code) =>
-        "${R.strings.camera_screen_camera_initialization_error_with_error_code} $code",
+        R.strings.camera_screen_camera_initialization_error_with_error_code(code.toString()),
       InitFailed() =>
         R.strings.camera_screen_camera_initialization_error,
     };
