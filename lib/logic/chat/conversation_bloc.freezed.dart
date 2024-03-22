@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ConversationData {
   AccountId get accountId => throw _privateConstructorUsedError;
   String get profileName => throw _privateConstructorUsedError;
-  File get primaryProfileImage => throw _privateConstructorUsedError;
+  XFile get primaryProfileImage => throw _privateConstructorUsedError;
   bool get isMatch => throw _privateConstructorUsedError;
   bool get isBlocked => throw _privateConstructorUsedError;
 
@@ -43,7 +43,7 @@ abstract class $ConversationDataCopyWith<$Res> {
   $Res call(
       {AccountId accountId,
       String profileName,
-      File primaryProfileImage,
+      XFile primaryProfileImage,
       bool isMatch,
       bool isBlocked,
       bool isSendSuccessful,
@@ -87,7 +87,7 @@ class _$ConversationDataCopyWithImpl<$Res, $Val extends ConversationData>
       primaryProfileImage: null == primaryProfileImage
           ? _value.primaryProfileImage
           : primaryProfileImage // ignore: cast_nullable_to_non_nullable
-              as File,
+              as XFile,
       isMatch: null == isMatch
           ? _value.isMatch
           : isMatch // ignore: cast_nullable_to_non_nullable
@@ -127,7 +127,7 @@ abstract class _$$ConversationDataImplCopyWith<$Res>
   $Res call(
       {AccountId accountId,
       String profileName,
-      File primaryProfileImage,
+      XFile primaryProfileImage,
       bool isMatch,
       bool isBlocked,
       bool isSendSuccessful,
@@ -169,7 +169,7 @@ class __$$ConversationDataImplCopyWithImpl<$Res>
       primaryProfileImage: null == primaryProfileImage
           ? _value.primaryProfileImage
           : primaryProfileImage // ignore: cast_nullable_to_non_nullable
-              as File,
+              as XFile,
       isMatch: null == isMatch
           ? _value.isMatch
           : isMatch // ignore: cast_nullable_to_non_nullable
@@ -219,7 +219,7 @@ class _$ConversationDataImpl
   @override
   final String profileName;
   @override
-  final File primaryProfileImage;
+  final XFile primaryProfileImage;
   @override
   @JsonKey()
   final bool isMatch;
@@ -311,7 +311,7 @@ abstract class _ConversationData implements ConversationData {
   factory _ConversationData(
       {required final AccountId accountId,
       required final String profileName,
-      required final File primaryProfileImage,
+      required final XFile primaryProfileImage,
       final bool isMatch,
       final bool isBlocked,
       final bool isSendSuccessful,
@@ -324,7 +324,7 @@ abstract class _ConversationData implements ConversationData {
   @override
   String get profileName;
   @override
-  File get primaryProfileImage;
+  XFile get primaryProfileImage;
   @override
   bool get isMatch;
   @override

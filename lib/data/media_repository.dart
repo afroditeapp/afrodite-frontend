@@ -5,6 +5,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:camera/camera.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -112,7 +113,7 @@ class MediaRepository extends DataRepository {
   }
 
   /// Last event from stream is ProcessingCompleted or SendToSlotError.
-  Stream<SendToSlotEvent> sendImageToSlot(File file, int slot, {bool secureCapture = false}) async* {
+  Stream<SendToSlotEvent> sendImageToSlot(XFile file, int slot, {bool secureCapture = false}) async* {
     final task = SendImageToSlotTask();
     yield* task.sendImageToSlot(file, slot, secureCapture: secureCapture);
   }

@@ -112,6 +112,31 @@
   "@generic_take_photo": {
     "description": "Generic take photo text"
   },
+  "image_processing_ui_confirm_photo_dialog_title": "Continue with this photo?",
+  "@image_processing_ui_confirm_photo_dialog_title": {
+    "description": "Dialog title for confirming new security selfie"
+  },
+  "image_processing_ui_upload_failed_dialog_title": "Upload failed",
+  "@image_processing_ui_upload_failed_dialog_title": {
+    "description": "Progress dialog info text that security selfie upload failed"
+  },
+  "image_processing_ui_upload_in_processing_queue_dialog_description": "Waiting for processing. Queue number: {param0}",
+  "@image_processing_ui_upload_in_processing_queue_dialog_description": {
+    "description": "Progress dialog info text that security selfie is currently in server's processing queue",
+    "placeholders": {
+      "param0": {
+        "type": "String"
+      }
+    }
+  },
+  "image_processing_ui_upload_in_progress_dialog_description": "Uploading photo",
+  "@image_processing_ui_upload_in_progress_dialog_description": {
+    "description": "Progress dialog info text that security selfie upload is in progress"
+  },
+  "image_processing_ui_upload_processing_ongoing_description": "Processing ongoing",
+  "@image_processing_ui_upload_processing_ongoing_description": {
+    "description": "Progress dialog info text that security selfie processing is ongoing"
+  },
   "initial_setup_screen_birthdate_button": "Select birthdate",
   "@initial_setup_screen_birthdate_button": {
     "description": "Title for birthdate selection button"
@@ -148,10 +173,6 @@
   "@initial_setup_screen_profile_pictures_title": {
     "description": "Title for profile pictures selection screen"
   },
-  "initial_setup_screen_security_selfie_confirm_photo_dialog_title": "Continue with this photo?",
-  "@initial_setup_screen_security_selfie_confirm_photo_dialog_title": {
-    "description": "Dialog title for confirming new security selfie"
-  },
   "initial_setup_screen_security_selfie_description": "Take selfie with your phone's front camera. The selfie is used for moderating your profile images and by default it is only visible to content Moderators.",
   "@initial_setup_screen_security_selfie_description": {
     "description": "Description for initial setup security selfie step"
@@ -159,27 +180,6 @@
   "initial_setup_screen_security_selfie_title": "My security selfie is…",
   "@initial_setup_screen_security_selfie_title": {
     "description": "Title for initial setup security selfie screen"
-  },
-  "initial_setup_screen_security_selfie_upload_failed_dialog_title": "Upload failed",
-  "@initial_setup_screen_security_selfie_upload_failed_dialog_title": {
-    "description": "Progress dialog info text that security selfie upload failed"
-  },
-  "initial_setup_screen_security_selfie_upload_in_processing_queue_dialog_description": "Waiting for processing. Queue number: {param0}",
-  "@initial_setup_screen_security_selfie_upload_in_processing_queue_dialog_description": {
-    "description": "Progress dialog info text that security selfie is currently in server's processing queue",
-    "placeholders": {
-      "param0": {
-        "type": "String"
-      }
-    }
-  },
-  "initial_setup_screen_security_selfie_upload_in_progress_dialog_description": "Uploading photo",
-  "@initial_setup_screen_security_selfie_upload_in_progress_dialog_description": {
-    "description": "Progress dialog info text that security selfie upload is in progress"
-  },
-  "initial_setup_screen_security_selfie_upload_processing_ongoing_description": "Processing ongoing",
-  "@initial_setup_screen_security_selfie_upload_processing_ongoing_description": {
-    "description": "Progress dialog info text that security selfie processing is ongoing"
   },
   "initial_setup_screen_too_young_error": "To use the app you must be 18 years old.",
   "@initial_setup_screen_too_young_error": {

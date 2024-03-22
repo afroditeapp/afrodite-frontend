@@ -8,6 +8,7 @@ import 'package:pihka_frontend/logic/admin/image_moderation.dart';
 
 
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/view_image_screen.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 
@@ -188,7 +189,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
                     showActionDialog(imageOwner, image, index);
                   }
                 },
-                child: Image.file(
+                child: xfileImgWidget(
                   imageFile,
                   width: width,
                   height: imageHeight,

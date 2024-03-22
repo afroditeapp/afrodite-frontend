@@ -73,6 +73,7 @@ Future<void> _showLoadingDialog<B extends StateStreamable<S>, S>(
         canPop: false,
         child: AlertDialog(
           content: BlocListener<B, S>(
+            listenWhen: (previous, current) => dialogVisibilityGetter(context, previous) != dialogVisibilityGetter(context, current),
             listener: (context, state) {
               if (!dialogVisibilityGetter(context, state)) {
                 if (Navigator.canPop(context)) {

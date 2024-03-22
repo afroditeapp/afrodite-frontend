@@ -2,6 +2,7 @@ import "dart:async";
 import "dart:io";
 
 import "package:camera/camera.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:logging/logging.dart";
@@ -266,7 +267,7 @@ class _CameraScreenState extends State<CameraScreen>
     );
   }
 
-  Future<File?> takePhoto(CameraController currentCamera) async {
+  Future<XFile?> takePhoto(CameraController currentCamera) async {
     if (!mounted) {
       return null;
     }
@@ -276,10 +277,9 @@ class _CameraScreenState extends State<CameraScreen>
       photoTakingInProgress = true;
     });
 
-    File file;
+    XFile file;
     try {
-      final xfile = await currentCamera.takePicture();
-      file = File(xfile.path);
+      file = await currentCamera.takePicture();
       log.info(file);
     } on CameraException catch (e) {
       log.error(e);
@@ -302,7 +302,11 @@ class _CameraScreenState extends State<CameraScreen>
     return processedFile;
   }
 
-  Future<File?> processImage(File file) async {
+  Future<XFile?> processImage(XFile file) async {
+    if (kIsWeb) {
+      throw UnsupportedError("processImage is not supported on web");
+    }
+
     try {
       final decodedImg = await img.decodeJpgFile(file.path);
       if (decodedImg == null) {
@@ -327,7 +331,7 @@ class _CameraScreenState extends State<CameraScreen>
         final l = await f.length();
         final kb = l / 1024;
         log.info("Image size: $kb KB");
-        return f;
+        return XFile(finalImgPath);
       } else {
         return null;
       }

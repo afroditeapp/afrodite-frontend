@@ -1,10 +1,11 @@
-import "dart:io";
-
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:image_picker/image_picker.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
+import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/ui_utils/image.dart";
+import "package:pihka_frontend/ui_utils/image_processing.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
 
 class AskProfilePicturesScreen extends StatelessWidget {
@@ -46,58 +47,95 @@ class _AskProfilePicturesState extends State<AskProfilePictures> {
       child: Column(
         children: [
           questionTitleText(context, context.strings.initial_setup_screen_profile_pictures_title),
-          const ProfilePictureSelection(mode: PictureSelectionMode.initialSetup),
+          ProfilePictureSelection(
+            mode: InitialSetupProfilePictures(),
+            imageProcessingBloc: context.read<ProfilePicturesImageProcessingBloc>(),
+          ),
         ],
       ),
     );
   }
 }
 
-enum PictureSelectionMode {
-  initialSetup,
-  normal,
-}
-
+sealed class PictureSelectionMode {}
+class InitialSetupProfilePictures extends PictureSelectionMode {}
+class NormalProfilePictures extends PictureSelectionMode {}
 
 class ProfilePictureSelection extends StatefulWidget {
   final PictureSelectionMode mode;
+  final ProfilePicturesImageProcessingBloc imageProcessingBloc;
+  const ProfilePictureSelection({
+    required this.mode,
+    required this.imageProcessingBloc,
+    Key? key,
+  }) : super(key: key);
 
-  const ProfilePictureSelection({required this.mode, Key? key}) : super(key: key);
   @override
   _ProfilePictureSelection createState() => _ProfilePictureSelection();
 }
 
-class _ProfilePictureSelection extends State<ProfilePictureSelection> {
+PictureSelectionController? _globalController;
 
+class _ProfilePictureSelection extends State<ProfilePictureSelection> {
   late PictureSelectionController controller;
 
   @override
   void initState() {
     super.initState();
-    controller = PictureSelectionController(mode: widget.mode);
-    controller.init();
+    var c = _globalController;
+    if (c == null) {
+       controller = PictureSelectionController(
+        imageProcessingBloc: widget.imageProcessingBloc,
+        mode: widget.mode,
+        updateStateCallback: () {
+          if (mounted) {
+            setState(() {});
+          }
+        },
+      );
+      controller.setStateInit();
+      _globalController = controller;
+    } else {
+      controller = c;
+      controller.setStateUpdate(
+        widget.mode,
+        () {
+          if (mounted) {
+            setState(() {});
+          }
+        },
+        widget.imageProcessingBloc,
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        topRow(),
+        topRow(context),
         const Divider(
           color: Colors.grey,
           height: 50,
         ),
-        bottomRow(),
+        bottomRow(context),
+
+        // Zero sized widgets
+        ...imageProcessingUiWidgets<ProfilePicturesImageProcessingBloc>(
+          onComplete: (context, processedImg) {
+            controller.addProcessedImage(ProfileImage(processedImg));
+          },
+        ),
       ],
     );
   }
 
-  Widget topRow() {
+  Widget topRow(BuildContext context) {
     return Row(children: [
       Expanded(
         flex: 1,
         child: Center(
-          child: imgStateToWidget(controller.pictures[0]),
+          child: imgStateToWidget(context, 0),
         ),
       ),
       Expanded(
@@ -112,22 +150,22 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     ],);
   }
 
-  Widget bottomRow() {
+  Widget bottomRow(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: Center(
-            child: imgStateToWidget(controller.pictures[1]),
+            child: imgStateToWidget(context, 1),
           ),
         ),
         Expanded(
           child: Center(
-            child: imgStateToWidget(controller.pictures[2]),
+            child: imgStateToWidget(context, 2),
           ),
         ),
         Expanded(
           child: Center(
-            child: imgStateToWidget(controller.pictures[3]),
+            child: imgStateToWidget(context, 3),
           ),
         ),
       ]
@@ -166,7 +204,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
   }
 
   Widget thumbnailEditButton() {
-    if (controller.pictures[0] is FileSelected) {
+    if (controller.pictures[0] is ImageSelected) {
       return IconButton(
         onPressed: () {},
         icon: const Icon(Icons.edit)
@@ -176,11 +214,22 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     }
   }
 
-  Widget imgStateToWidget(ImgState imgState) {
-    switch (imgState) {
-      case Add(): return AddPicture(mode: controller.mode);
+  Widget imgStateToWidget(BuildContext context, int imgStateIndex) {
+    switch (controller.pictures[imgStateIndex]) {
+      case Add(): return AddPicture(imgIndex: imgStateIndex, controller: controller);
       case Hidden(): return HiddenPicture();
-      case FileSelected(:final file): return FilePicture(file: file);
+      case ImageSelected(:final img):
+        switch (img) {
+          case InitialSetupSecuritySelfie():
+            final currentSecuritySelfie = context.read<InitialSetupBloc>().state.securitySelfie;
+            if (currentSecuritySelfie != null) {
+              return FilePicture(img: currentSecuritySelfie);
+            } else {
+              return AddPicture(imgIndex: imgStateIndex, controller: controller);
+            }
+          case ProfileImage(:final img):
+            return FilePicture(img: img);
+        }
     }
   }
 
@@ -188,19 +237,25 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     switch (imgState) {
       case Add(): return HiddenThumbnailPicture();
       case Hidden(): return HiddenThumbnailPicture();
-      case FileSelected(:final file): return HiddenThumbnailPicture();
+      case ImageSelected(): return HiddenThumbnailPicture();
     }
   }
 }
 
 
 class PictureSelectionController {
-  final PictureSelectionMode mode;
-  PictureSelectionController({required this.mode});
+  PictureSelectionMode mode;
+  void Function() updateStateCallback;
+  ProfilePicturesImageProcessingBloc imageProcessingBloc;
+  PictureSelectionController({
+    required this.mode,
+    required this.updateStateCallback,
+    required this.imageProcessingBloc,
+  });
 
   List<ImgState> pictures = [];
 
-  void init() {
+  void setStateInit() {
     pictures = [
       Add(),
       Hidden(),
@@ -208,29 +263,93 @@ class PictureSelectionController {
       Hidden(),
     ];
   }
-}
 
+  void setStateUpdate(
+    PictureSelectionMode mode,
+    void Function() updateStateCallback,
+    ProfilePicturesImageProcessingBloc imageProcessingBloc,
+  ) {
+    this.updateStateCallback = updateStateCallback;
+    this.imageProcessingBloc = imageProcessingBloc;
+
+    // Reset if mode changes
+    if (this.mode.runtimeType != mode.runtimeType) {
+      setStateInit();
+    }
+    this.mode = mode;
+  }
+
+  void addImageWithConfirm(XFile file, int imgIndex) {
+    imageProcessingBloc.add(ConfirmImage(file, imgIndex + 1));
+  }
+
+  void addImage(XFile file, int imgIndex) {
+    imageProcessingBloc.add(SendImageToSlot(file, imgIndex + 1));
+  }
+
+  void addProcessedImage(SelectedImageInfo imgInfo) {
+    switch (imgInfo) {
+      case InitialSetupSecuritySelfie(:final profileImagesIndex): {
+        pictures[profileImagesIndex] = ImageSelected(imgInfo);
+      }
+      case ProfileImage(:final img): {
+        pictures[img.slot - 1] = ImageSelected(imgInfo);
+      }
+    }
+    _updateHiddenSlotsAndRefreshUi();
+  }
+
+
+  void _updateHiddenSlotsAndRefreshUi() {
+    for (var i = 1; i < pictures.length; i++) {
+      if (pictures[i - 1] is ImageSelected && pictures[i] is Hidden) {
+        // If previous slot has image, show add button
+        pictures[i] = Add();
+      } else if (pictures[i - 1] is Add && pictures[i] is ImageSelected) {
+        // If previous slot image was removed move image to previous slot
+        pictures[i - 1] = pictures[i];
+        pictures[i] = Add();
+      }
+    }
+    updateStateCallback();
+  }
+}
 
 sealed class ImgState {}
 class Hidden extends ImgState {}
 class Add extends ImgState {}
-class FileSelected extends ImgState {
-  final File file;
-  FileSelected(this.file);
+class ImageSelected extends ImgState {
+  final SelectedImageInfo img;
+  ImageSelected(this.img);
+}
+
+sealed class SelectedImageInfo {}
+class InitialSetupSecuritySelfie extends SelectedImageInfo {
+  final int profileImagesIndex;
+  InitialSetupSecuritySelfie(this.profileImagesIndex);
+}
+class ProfileImage extends SelectedImageInfo {
+  final ProcessedAccountImage img;
+  ProfileImage(this.img);
 }
 
 class AddPicture extends StatelessWidget {
-  final PictureSelectionMode mode;
-  const AddPicture({required this.mode, Key? key}) : super(key: key);
+  final PictureSelectionController controller;
+  final int imgIndex;
+  const AddPicture({
+      required this.controller,
+      required this.imgIndex,
+      Key? key,
+    }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        switch (mode) {
-          case PictureSelectionMode.initialSetup:
+        switch (controller.mode) {
+          case InitialSetupProfilePictures():
             openInitialSetupActionDialog(context);
-          case PictureSelectionMode.normal:
+          case NormalProfilePictures():
             openActionDialog(context);
         }
       },
@@ -250,30 +369,29 @@ class AddPicture extends StatelessWidget {
   }
 
   void openInitialSetupActionDialog(BuildContext context) {
-    final securitySelfieFile = context.read<InitialSetupBloc>().state.securitySelfie;
+    final securitySelfie = context.read<InitialSetupBloc>().state.securitySelfie;
     final Widget lastOption;
-    if (securitySelfieFile != null) {
-      // TODO
-      // Fix error
-      // "A RenderFlex overflowed by 12 pixels on the right.
-      // The relevant error-causing widget was:"
+    if (securitySelfie != null) {
       final iconSize = IconTheme.of(context).size ?? 24.0;
       lastOption = ListTile(
         leading: SizedBox(
           width: iconSize,
           height: iconSize,
-          child: AccountImage(accountId: securitySelfieFile.accountId, contentId: securitySelfieFile.contentId)
+          child: FittedBox(
+            child: AccountImage(accountId: securitySelfie.accountId, contentId: securitySelfie.contentId),
+          )
         ),
         title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_security_selfie_title),
         onTap: () {
-          Navigator.pop(context);
+          Navigator.pop(context, null);
+          controller.addProcessedImage(InitialSetupSecuritySelfie(imgIndex));
         },
       );
     } else {
       lastOption = const SizedBox.shrink();
     }
 
-    final selectedImg = showDialog<File?>(
+    showDialog<void>(
       context: context,
       builder: (context) => SimpleDialog(
         title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_dialog_title),
@@ -281,12 +399,31 @@ class AddPicture extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.photo),
               title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_from_gallery_title),
-              onTap: () => Navigator.pop(context, null),
+              onTap: () async {
+                Navigator.pop(context, null);
+                final image  = await ImagePicker().pickImage(
+                  source: ImageSource.gallery,
+                  requestFullMetadata: false
+                );
+                if (image != null) {
+                  controller.addImage(image, imgIndex);
+                }
+              },
             ),
             ListTile(
               leading: const Icon(Icons.camera_alt),
               title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_take_new_picture_title),
-              onTap: () => Navigator.pop(context, null),
+              onTap: () async {
+                Navigator.pop(context, null);
+                final image  = await ImagePicker().pickImage(
+                  source: ImageSource.camera,
+                  requestFullMetadata: false,
+                  preferredCameraDevice: CameraDevice.front,
+                );
+                if (image != null) {
+                  controller.addImageWithConfirm(image, imgIndex);
+                }
+              }
             ),
             lastOption,
           ],
@@ -340,16 +477,16 @@ class HiddenThumbnailPicture extends StatelessWidget {
 
 
 class FilePicture extends StatelessWidget {
-  final File file;
+  final ProcessedAccountImage img;
 
-  const FilePicture({required this.file, Key? key}) : super(key: key);
+  const FilePicture({required this.img, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Image.file(
-      file,
-      width: 100,
-      height: 150,
+    return AccountImage(
+      accountId: img.accountId,
+      contentId: img.contentId,
+      imageBuilder: (file) => xfileImgWidget(file, width: 100, height: 150),
     );
   }
 }

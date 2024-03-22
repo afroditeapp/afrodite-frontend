@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
@@ -11,6 +11,7 @@ import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:pihka_frontend/ui_utils/dialog.dart';
+import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
 var log = Logger("BlockedProfilesPage");
@@ -22,7 +23,7 @@ class BlockedProfilesPage extends StatefulWidget {
   _BlockedProfilesPage createState() => _BlockedProfilesPage();
 }
 
-typedef BlockedProfileEntry = (AccountId account, ProfileEntry? profile, File? img);
+typedef BlockedProfileEntry = (AccountId account, ProfileEntry? profile, XFile? img);
 
 class _BlockedProfilesPage extends State<BlockedProfilesPage> {
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
@@ -126,7 +127,7 @@ class _BlockedProfilesPage extends State<BlockedProfilesPage> {
           final Widget imageWidget;
           if (profileEntry != null && image != null) {
             name = profileEntry.name;
-            imageWidget = Image.file(
+            imageWidget = xfileImgWidget(
               image,
               width: 100,
             );

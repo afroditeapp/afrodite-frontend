@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
@@ -15,6 +13,7 @@ import 'package:pihka_frontend/ui/normal/chat/message_renderer.dart';
 import 'package:pihka_frontend/ui/normal/chat/one_ended_list.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
+import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
 var log = Logger("ConversationPage");
@@ -22,7 +21,7 @@ var log = Logger("ConversationPage");
 class ConversationPage extends StatefulWidget {
   final AccountId accountId;
   final ProfileEntry profileEntry;
-  final File img;
+  final XFile img;
   const ConversationPage(this.accountId, this.profileEntry, this.img, {Key? key}) : super(key: key);
 
   @override
@@ -57,7 +56,7 @@ class ConversationPageState extends State<ConversationPage> {
                   height: AppBar().preferredSize.height,
                   child: Row(
                     children: [
-                      Image.file(
+                      xfileImgWidget(
                         widget.img,
                         width: 40,
                         height: 40,

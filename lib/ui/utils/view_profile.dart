@@ -4,12 +4,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
+import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/view_image_screen.dart';
 
 const double imgHeight = 400;
@@ -26,14 +28,14 @@ Widget viewProifle(BuildContext context, AccountId account, ProfileEntry profile
           if (tag != null) {
             imgWidget = Hero(
               tag: tag,
-              child: Image.file(
+              child: xfileImgWidget(
                 img.file,
                 width: constraints.maxWidth,
                 height: imgHeight,
               ),
             );
           } else {
-            imgWidget = Image.file(
+            imgWidget = xfileImgWidget(
               img.file,
               width: constraints.maxWidth,
               height: imgHeight,
@@ -100,7 +102,7 @@ Widget viewProifleImage(BuildContext context, AccountId account, ProfileEntry pr
               onTap: () {
                 Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ViewImageScreen(ViewImageAccountContent(account, imgContentId))));
               },
-              child: Image.file(
+              child: xfileImgWidget(
                 imageFile,
                 width: imgMaxWidth,
                 height: imgHeight,
@@ -134,7 +136,7 @@ Widget buildProgressIndicator(double imgMaxWidth) {
 sealed class PrimaryImageProvider {}
 
 class PrimaryImageFile extends PrimaryImageProvider {
-  final File file;
+  final XFile file;
   final ProfileHeroTag? heroTransition;
   PrimaryImageFile(this.file, {this.heroTransition});
 }

@@ -2,6 +2,7 @@ import "dart:async";
 import "dart:io";
 
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:image_picker/image_picker.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
@@ -24,7 +25,7 @@ class ConversationData with _$ConversationData {
   factory ConversationData({
     required AccountId accountId,
     required String profileName,
-    required File primaryProfileImage,
+    required XFile primaryProfileImage,
     @Default(true) bool isMatch,
     @Default(false) bool isBlocked,
     /// Resets chat box to empty state
@@ -45,7 +46,7 @@ sealed class ConversationEvent {}
 class SetConversationView extends ConversationEvent {
   final AccountId accountId;
   final String profileName;
-  final File primaryProfileImage;
+  final XFile primaryProfileImage;
   SetConversationView(this.accountId, this.profileName, this.primaryProfileImage);
 }
 class SendMessageTo extends ConversationEvent {

@@ -1,9 +1,10 @@
 import 'dart:io';
 
+import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/utils.dart';
@@ -28,11 +29,16 @@ class ImageCacheData extends AppSingleton {
 
   final CacheManager cacheManager;
 
-  Future<File?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) async {
+  Future<XFile?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) async {
+    if (kIsWeb) {
+      throw UnsupportedError("getImage is not supported on web");
+    }
+
     final fileInfo = await cacheManager.getFileFromCache(id.contentId);
     if (fileInfo != null) {
       // TODO: error handling?
-      return fileInfo.file;
+
+      return XFile(fileInfo.file.path);
     }
 
     final imageData = await MediaRepository.getInstance().getImage(imageOwner, id, isMatch: isMatch);
@@ -40,7 +46,8 @@ class ImageCacheData extends AppSingleton {
       return null;
     }
 
-    return await cacheManager.putFile("null", imageData, key: id.contentId);
+    final file = await cacheManager.putFile("null", imageData, key: id.contentId);
+    return XFile(file.path);
   }
 
   Future<File?> getMapTile(int z, int x, int y) async {

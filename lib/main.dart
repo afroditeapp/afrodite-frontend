@@ -27,6 +27,7 @@ import 'package:pihka_frontend/logic/account/demo_account.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/logic/admin/image_moderation.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
+import 'package:pihka_frontend/logic/media/image_processing.dart';
 import 'package:pihka_frontend/logic/profile/location.dart';
 import 'package:pihka_frontend/logic/profile/profile.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_filtering_settings.dart';
@@ -36,7 +37,6 @@ import 'package:pihka_frontend/logic/sign_in_with.dart';
 
 import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/ui/splash_screen.dart';
-import 'package:pihka_frontend/ui_utils/camera_screen.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -81,6 +81,8 @@ Future<void> main() async {
         BlocProvider(create: (_) => InitialSetupBloc()),
         BlocProvider(create: (_) => ServerAddressBloc()),
         BlocProvider(create: (_) => ProfileBloc()),
+        BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
+        BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
         BlocProvider(create: (_) => ViewProfileBloc(accountRepository, profileRepository, mediaRepository, chatRepository)),
         BlocProvider(create: (_) => ConversationBloc(accountRepository, profileRepository, mediaRepository, chatRepository)),
         BlocProvider(create: (_) => ProfileFilteringSettingsBloc(profileRepository)),

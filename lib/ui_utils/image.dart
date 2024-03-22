@@ -4,6 +4,8 @@
 
 import 'dart:io';
 
+import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
@@ -20,7 +22,7 @@ class AccountImage extends StatelessWidget {
   }) : super(key: key);
   final AccountId accountId;
   final ContentId contentId;
-  final Widget Function(File file) imageBuilder;
+  final Widget Function(XFile file) imageBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,29 @@ class AccountImage extends StatelessWidget {
   }
 }
 
-Widget defaultImgBuilder(File f) {
-  return Image.file(f);
+Widget defaultImgBuilder(XFile f) {
+  return xfileImgWidget(f);
+}
+
+Widget xfileImgWidget(XFile imageFile, {double? width, double? height}) {
+  if (kIsWeb) {
+    throw UnsupportedError("xfileImgWidget: Error cases create correct UI?");
+    // return FutureBuilder(
+    //   future: imageFile.readAsBytes(),
+    //   builder: (context, snapshot) {
+    //     if (snapshot.connectionState == ConnectionState.done) {
+    //       final bytes = snapshot.data;
+    //       if (bytes != null) {
+    //         return Image.memory(bytes);
+    //       } else {
+    //         return Container();
+    //       }
+    //     } else {
+    //       return Container();
+    //     }
+    //   }
+    // );
+  } else {
+    return Image.file(File(imageFile.path), width: width, height: height);
+  }
 }

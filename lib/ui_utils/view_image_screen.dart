@@ -1,6 +1,8 @@
 
 import "dart:io";
 
+import "package:camera/camera.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:openapi/api.dart";
 
@@ -15,7 +17,7 @@ class ViewImageAccountContent extends ViewImageScreenMode {
 }
 class ViewImageFileContent extends ViewImageScreenMode {
   ViewImageFileContent(this.imageFile);
-  final File imageFile;
+  final XFile imageFile;
 }
 
 class ViewImageScreen extends StatefulWidget {
@@ -53,14 +55,12 @@ class _ViewImageScreenState extends State<ViewImageScreen>
     return AccountImage(accountId: imageOwner, contentId: image, imageBuilder: viewerForFile);
   }
 
-  Widget viewerForFile(File imageFile) {
+  Widget viewerForFile(XFile imageFile) {
     return InteractiveViewer(
       panEnabled: false,
       minScale: 1.0,
       maxScale: 2.0,
-      child: Image.file(
-        imageFile,
-      ),
+      child: xfileImgWidget(imageFile),
     );
   }
 }

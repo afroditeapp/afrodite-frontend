@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
@@ -20,7 +21,7 @@ void openProfileView(
   BuildContext context,
   AccountId accountId,
   ProfileEntry profile,
-  File primaryProfileImage,
+  XFile primaryProfileImage,
   ProfileHeroTag? imgTag,
   {bool noAction = false}
 ) {

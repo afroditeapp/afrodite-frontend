@@ -309,7 +309,10 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
           label: const Text("Select image"),
           icon: const Icon(Icons.image),
           onPressed: () async {
-            final image  = await ImagePicker().pickImage(source: ImageSource.gallery, requestFullMetadata: false);
+            final image  = await ImagePicker().pickImage(
+              source: ImageSource.gallery,
+              requestFullMetadata: false
+            );
             if (image != null) {
               log.fine(image.path);
               setState(() {

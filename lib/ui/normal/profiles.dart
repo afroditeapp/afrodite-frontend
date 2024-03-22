@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
@@ -15,6 +16,7 @@ import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/ui_utils/image.dart';
 
 var log = Logger("ProfileView");
 
@@ -50,7 +52,7 @@ class ProfileView extends BottomNavigationScreen {
   }
 }
 
-typedef ProfileViewEntry = (ProfileEntry profile, File img, int heroNumber);
+typedef ProfileViewEntry = (ProfileEntry profile, XFile img, int heroNumber);
 
 class _ProfileViewState extends State<ProfileView> {
   PagingController<int, ProfileViewEntry>? _pagingController =
@@ -172,7 +174,7 @@ class _ProfileViewState extends State<ProfileView> {
             },
             child: Hero(
               tag: heroTag,
-              child: Image.file(item.$2)
+              child: xfileImgWidget(item.$2)
             )
           );
         },

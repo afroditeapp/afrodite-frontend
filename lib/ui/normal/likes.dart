@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
@@ -13,6 +14,7 @@ import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/ui_utils/image.dart';
 
 var log = Logger("LikeView");
 
@@ -28,7 +30,7 @@ class LikeView extends BottomNavigationScreen {
   }
 }
 
-typedef LikeViewEntry = (ProfileEntry profile, File img, int heroNumber);
+typedef LikeViewEntry = (ProfileEntry profile, XFile img, int heroNumber);
 
 class _LikeViewState extends State<LikeView> {
   PagingController<int, LikeViewEntry>? _pagingController =
@@ -131,7 +133,7 @@ class _LikeViewState extends State<LikeView> {
             },
             child: Hero(
               tag: heroTag,
-              child: Image.file(item.$2)
+              child: xfileImgWidget(item.$2)
             )
           );
         },

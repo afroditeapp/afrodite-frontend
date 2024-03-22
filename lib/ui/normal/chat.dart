@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
@@ -15,6 +16,7 @@ import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/ui_utils/image.dart';
 
 var log = Logger("ChatView");
 
@@ -30,7 +32,7 @@ class ChatView extends BottomNavigationScreen {
   }
 }
 
-typedef MatchEntry = (AccountId account, ProfileEntry profile, File img);
+typedef MatchEntry = (AccountId account, ProfileEntry profile, XFile img);
 
 
 class _ChatViewState extends State<ChatView> {
@@ -116,7 +118,7 @@ class _ChatViewState extends State<ChatView> {
           final profileEntry = item.$2;
           final image = item.$3;
           final String name = profileEntry.name;
-          final Widget imageWidget = Image.file(
+          final Widget imageWidget = xfileImgWidget(
             image,
             width: 100,
           );

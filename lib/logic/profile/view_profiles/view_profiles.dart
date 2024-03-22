@@ -2,6 +2,7 @@ import "dart:async";
 import "dart:io";
 
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:image_picker/image_picker.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
 import "package:pihka_frontend/data/chat_repository.dart";
@@ -29,7 +30,7 @@ class ViewProfilesData with _$ViewProfilesData {
   factory ViewProfilesData({
     required AccountId accountId,
     required ProfileEntry profile,
-    required File primaryProfileImage,
+    required XFile primaryProfileImage,
     required ProfileHeroTag? imgTag,
     @Default(false) bool isFavorite,
     @Default(ProfileActionState.like) ProfileActionState profileActionState,
@@ -45,7 +46,7 @@ sealed class ViewProfileEvent {}
 class SetProfileView extends ViewProfileEvent {
   final AccountId accountId;
   final ProfileEntry profile;
-  final File primaryProfileImage;
+  final XFile primaryProfileImage;
   final ProfileHeroTag? imgTag;
   SetProfileView(this.accountId, this.profile, this.primaryProfileImage, this.imgTag);
 }

@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ViewProfilesData {
   AccountId get accountId => throw _privateConstructorUsedError;
   ProfileEntry get profile => throw _privateConstructorUsedError;
-  File get primaryProfileImage => throw _privateConstructorUsedError;
+  XFile get primaryProfileImage => throw _privateConstructorUsedError;
   (AccountId, int)? get imgTag => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
   ProfileActionState get profileActionState =>
@@ -43,7 +43,7 @@ abstract class $ViewProfilesDataCopyWith<$Res> {
   $Res call(
       {AccountId accountId,
       ProfileEntry profile,
-      File primaryProfileImage,
+      XFile primaryProfileImage,
       (AccountId, int)? imgTag,
       bool isFavorite,
       ProfileActionState profileActionState,
@@ -91,7 +91,7 @@ class _$ViewProfilesDataCopyWithImpl<$Res, $Val extends ViewProfilesData>
       primaryProfileImage: null == primaryProfileImage
           ? _value.primaryProfileImage
           : primaryProfileImage // ignore: cast_nullable_to_non_nullable
-              as File,
+              as XFile,
       imgTag: freezed == imgTag
           ? _value.imgTag
           : imgTag // ignore: cast_nullable_to_non_nullable
@@ -139,7 +139,7 @@ abstract class _$$ViewProfilesDataImplCopyWith<$Res>
   $Res call(
       {AccountId accountId,
       ProfileEntry profile,
-      File primaryProfileImage,
+      XFile primaryProfileImage,
       (AccountId, int)? imgTag,
       bool isFavorite,
       ProfileActionState profileActionState,
@@ -185,7 +185,7 @@ class __$$ViewProfilesDataImplCopyWithImpl<$Res>
       primaryProfileImage: null == primaryProfileImage
           ? _value.primaryProfileImage
           : primaryProfileImage // ignore: cast_nullable_to_non_nullable
-              as File,
+              as XFile,
       imgTag: freezed == imgTag
           ? _value.imgTag
           : imgTag // ignore: cast_nullable_to_non_nullable
@@ -245,7 +245,7 @@ class _$ViewProfilesDataImpl
   @override
   final ProfileEntry profile;
   @override
-  final File primaryProfileImage;
+  final XFile primaryProfileImage;
   @override
   final (AccountId, int)? imgTag;
   @override
@@ -349,7 +349,7 @@ abstract class _ViewProfilesData implements ViewProfilesData {
   factory _ViewProfilesData(
       {required final AccountId accountId,
       required final ProfileEntry profile,
-      required final File primaryProfileImage,
+      required final XFile primaryProfileImage,
       required final (AccountId, int)? imgTag,
       final bool isFavorite,
       final ProfileActionState profileActionState,
@@ -364,7 +364,7 @@ abstract class _ViewProfilesData implements ViewProfilesData {
   @override
   ProfileEntry get profile;
   @override
-  File get primaryProfileImage;
+  XFile get primaryProfileImage;
   @override
   (AccountId, int)? get imgTag;
   @override
