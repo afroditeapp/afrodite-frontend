@@ -7,6 +7,7 @@ import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/ui_utils/image.dart";
 import "package:pihka_frontend/ui_utils/image_processing.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
+import "package:pihka_frontend/ui_utils/view_image_screen.dart";
 
 class AskProfilePicturesScreen extends StatelessWidget {
   const AskProfilePicturesScreen({Key? key}) : super(key: key);
@@ -33,6 +34,7 @@ class AskProfilePicturesScreen extends StatelessWidget {
   }
 }
 
+const ROW_HEIGHT = 150.0;
 
 class AskProfilePictures extends StatefulWidget {
   @override
@@ -142,7 +144,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
         flex: 2,
         child: Center(
           child: SizedBox(
-            height: 150,
+            height: ROW_HEIGHT,
             child: thumbnailArea()
           ),
         ),
@@ -177,7 +179,10 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Flexible(
-          child: thumbnailInfoButton(),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: primaryImageInfoButton(),
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -196,7 +201,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     );
   }
 
-  Widget thumbnailInfoButton() {
+  Widget primaryImageInfoButton() {
     return IconButton(
       onPressed: () {},
       icon: const Icon(Icons.info)
@@ -223,12 +228,12 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
           case InitialSetupSecuritySelfie():
             final currentSecuritySelfie = context.read<InitialSetupBloc>().state.securitySelfie;
             if (currentSecuritySelfie != null) {
-              return FilePicture(img: currentSecuritySelfie);
+              return FilePicture(img: currentSecuritySelfie, imgIndex: imgStateIndex, controller: controller);
             } else {
               return AddPicture(imgIndex: imgStateIndex, controller: controller);
             }
           case ProfileImage(:final img):
-            return FilePicture(img: img);
+            return FilePicture(img: img, imgIndex: imgStateIndex, controller: controller);
         }
     }
   }
@@ -241,7 +246,6 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     }
   }
 }
-
 
 class PictureSelectionController {
   PictureSelectionMode mode;
@@ -299,6 +303,14 @@ class PictureSelectionController {
     _updateHiddenSlotsAndRefreshUi();
   }
 
+  void removeImage(int imgIndex) {
+    final img = pictures[imgIndex];
+    if (img is ImageSelected) {
+      pictures[imgIndex] = Add();
+    }
+
+    _updateHiddenSlotsAndRefreshUi();
+  }
 
   void _updateHiddenSlotsAndRefreshUi() {
     for (var i = 1; i < pictures.length; i++) {
@@ -306,9 +318,12 @@ class PictureSelectionController {
         // If previous slot has image, show add button
         pictures[i] = Add();
       } else if (pictures[i - 1] is Add && pictures[i] is ImageSelected) {
-        // If previous slot image was removed move image to previous slot
+        // If previous slot image was removed, move image to previous slot
         pictures[i - 1] = pictures[i];
         pictures[i] = Add();
+      } else if (pictures[i - 1] is Add && pictures[i] is Add) {
+        // Subsequent add image buttons
+        pictures[i] = Hidden();
       }
     }
     updateStateCallback();
@@ -344,24 +359,26 @@ class AddPicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        switch (controller.mode) {
-          case InitialSetupProfilePictures():
-            openInitialSetupActionDialog(context);
-          case NormalProfilePictures():
-            openActionDialog(context);
-        }
-      },
-      child: Ink(
-        width: 100,
-        height: 150,
-        color: Colors.grey,
-        child: const Center(
-          child: Icon(
-            Icons.add_a_photo,
-            size: 40,
-            color: Colors.white,
+    return Material(
+      child: InkWell(
+        onTap: () {
+          switch (controller.mode) {
+            case InitialSetupProfilePictures():
+              openInitialSetupActionDialog(context);
+            case NormalProfilePictures():
+              openActionDialog(context);
+          }
+        },
+        child: Ink(
+          width: 100,
+          height: ROW_HEIGHT,
+          color: Colors.grey,
+          child: const Center(
+            child: Icon(
+              Icons.add_a_photo,
+              size: 40,
+              color: Colors.white,
+            ),
           ),
         ),
       ),
@@ -443,7 +460,7 @@ class HiddenPicture extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 100,
-      height: 150,
+      height: ROW_HEIGHT,
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.grey.shade400,
@@ -478,15 +495,99 @@ class HiddenThumbnailPicture extends StatelessWidget {
 
 class FilePicture extends StatelessWidget {
   final ProcessedAccountImage img;
+  final PictureSelectionController controller;
+  final int imgIndex;
 
-  const FilePicture({required this.img, Key? key}) : super(key: key);
+  const FilePicture({required this.img, required this.controller, required this.imgIndex, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AccountImage(
-      accountId: img.accountId,
-      contentId: img.contentId,
-      imageBuilder: (file) => xfileImgWidget(file, width: 100, height: 150),
+    final iconSize = IconTheme.of(context).size ?? 24.0;
+    const maxWidth = 150.0;
+    const maxHeight = ROW_HEIGHT;
+    final imgWidth = maxWidth - iconSize;
+    final imgHeight = maxHeight - iconSize;
+    return imgAndDeleteButton(
+      context,
+      iconSize,
+      maxWidth,
+      maxHeight,
+      imgWidth,
+      imgHeight,
     );
+  }
+
+  Widget imgAndDeleteButton(
+    BuildContext context,
+    double iconSize,
+    double maxWidth,
+    double maxHeight,
+    double imgWidth,
+    double imgHeight,
+  ) {
+    return SizedBox(
+        width: maxWidth,
+        height: maxHeight,
+        child: Stack(
+          alignment: Alignment.topRight,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: iconSize, right: iconSize, left: iconSize),
+              child: SizedBox(
+                width: imgWidth,
+                height: imgHeight,
+                child: Material(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (_) => ViewImageScreen(ViewImageAccountContent(img.accountId, img.contentId))
+                        )
+                      );
+                    },
+                    child: AccountImage(
+                      accountId: img.accountId,
+                      contentId: img.contentId,
+                      imageBuilder: (file) => xfileImgWidgetInk(file, width: imgWidth, height: imgHeight, alignment: Alignment.topRight),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 2,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      controller.removeImage(imgIndex);
+                    },
+                    icon: const Icon(Icons.close),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
   }
 }

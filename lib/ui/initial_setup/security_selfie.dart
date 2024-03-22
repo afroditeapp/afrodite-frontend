@@ -49,6 +49,8 @@ class AskSecuritySelfieScreen extends StatelessWidget {
   }
 }
 
+const IMAGE_AREA_HEIGHT = 200.0;
+
 class AskSecuritySelfie extends StatefulWidget {
   const AskSecuritySelfie({super.key});
 
@@ -68,16 +70,9 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
 
   @override
   Widget build(BuildContext context) {
-     Widget cameraButton = ElevatedButton.icon(
-      label: Text(context.strings.generic_take_photo),
-      icon: const Icon(Icons.camera_alt),
-      onPressed: () => openCameraScreenAction(context),
-    );
-
     return SingleChildScrollView(
       child: Column(
         children: [
-          Row(children: [cameraButton]),
           questionTitleText(context, context.strings.initial_setup_screen_security_selfie_title),
           imageArea(context),
 
@@ -98,12 +93,22 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
   Widget imageArea(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.person, size: 150.0, color: Colors.black45),
-            imageAndCameraButton(context),
-          ],
+        SizedBox(
+          height: IMAGE_AREA_HEIGHT,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Expanded(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Icon(Icons.person, size: 150.0, color: Colors.black45)
+                ),
+              ),
+              Expanded(
+                child: imageAndCameraButton(context)
+              ),
+            ],
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -113,45 +118,58 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
     );
   }
 
-  Widget imageAndCameraButton(BuildContext context) {
-    Widget cameraButton = ElevatedButton.icon(
-      label: Text(context.strings.generic_take_photo),
-      icon: const Icon(Icons.camera_alt),
-      onPressed: () => openCameraScreenAction(context),
+  Widget normalCameraButton() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: ElevatedButton.icon(
+        label: Text(context.strings.generic_take_photo),
+        icon: const Icon(Icons.camera_alt),
+        onPressed: () => openCameraScreenAction(context),
+      ),
     );
+  }
+
+  Widget imageAndCameraButton(BuildContext context) {
+    Widget cameraButton = normalCameraButton();
 
     return BlocBuilder<InitialSetupBloc, InitialSetupData>(
       builder: (context, state) {
-        List<Widget> selfieImageWidgets = [cameraButton];
+        Widget w = cameraButton;
         final image = state.securitySelfie;
         if (image != null) {
-          selfieImageWidgets = [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: AccountImage(
+          const IMG_WIDTH = 120.0;
+          w = Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              AccountImage(
                 accountId: image.accountId,
                 contentId: image.contentId,
+                height: IMAGE_AREA_HEIGHT,
+                width: IMG_WIDTH,
                 imageBuilder: (file) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute<void>(
-                          builder: (_) => ViewImageScreen(ViewImageAccountContent(image.accountId, image.contentId))
-                        )
-                      );
-                    },
-                    child: xfileImgWidget(file, height: 200),
+                  return Material(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (_) => ViewImageScreen(ViewImageAccountContent(image.accountId, image.contentId))
+                          )
+                        );
+                      },
+                      child: xfileImgWidgetInk(file, height: IMAGE_AREA_HEIGHT, width: IMG_WIDTH),
+                    ),
                   );
                 }
               ),
-            ),
-            cameraButton
-          ];
+              IconButton(
+                onPressed: () => openCameraScreenAction(context),
+                icon: const Icon(Icons.camera_alt),
+              )
+            ],
+          );
         }
-        return Column(
-          children: selfieImageWidgets
-        );
+        return w;
       }
     );
   }
