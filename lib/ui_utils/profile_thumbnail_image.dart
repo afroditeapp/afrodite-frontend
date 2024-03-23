@@ -12,10 +12,12 @@ class ProfileThumbnailImage extends StatefulWidget {
   final ProcessedAccountImage img;
   final CropResults cropResults;
   final double size;
+  final Widget? child;
   const ProfileThumbnailImage({
     required this.img,
     required this.cropResults,
     required this.size,
+    this.child,
     super.key,
   });
 
@@ -84,14 +86,16 @@ class _ProfileThumbnailImageState extends State<ProfileThumbnailImage> {
   Widget build(BuildContext context) {
     final img = info?.image;
     if (img != null) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(PROFILE_PICTURE_BORDER_RADIUS),
-        child: SizedBox(
-          width: widget.size,
-          height: widget.size,
-          child: CustomPaint(
-            painter: TestPainter(img, widget.cropResults),
-          ),
+      return Container(
+        width: widget.size,
+        height: widget.size,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(PROFILE_PICTURE_BORDER_RADIUS),
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: CustomPaint(
+          painter: CroppedImagePainter(img, widget.cropResults),
+          child: widget.child,
         ),
       );
     } else {
@@ -105,10 +109,10 @@ class _ProfileThumbnailImageState extends State<ProfileThumbnailImage> {
 }
 
 
-class TestPainter extends CustomPainter {
+class CroppedImagePainter extends CustomPainter {
   final ui.Image img;
   final CropResults cropResults;
-  TestPainter(this.img, this.cropResults);
+  CroppedImagePainter(this.img, this.cropResults);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -135,6 +139,7 @@ class TestPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+    final old = oldDelegate as CroppedImagePainter;
+    return old.cropResults != cropResults;
   }
 }

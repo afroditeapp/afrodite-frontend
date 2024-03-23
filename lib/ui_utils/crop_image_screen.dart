@@ -2,6 +2,7 @@
 import "dart:math";
 
 import "package:camera/camera.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:openapi/api.dart";
 
@@ -148,7 +149,7 @@ class _CropImageScreenState extends State<CropImageScreen> {
 
     log.info("Crop results: size: $gridCropSize, x: $gridCropX, y: $gridCropY");
 
-    return CropResults(gridCropSize, gridCropX, gridCropY);
+    return CropResults.fromValues(gridCropSize, gridCropX, gridCropY);
   }
 }
 
@@ -160,7 +161,7 @@ class CropState {
 }
 
 class CropResults {
-  /// Values are in the range [0.5, 1].
+  /// Values are in the range [0.75, 1].
   /// The shorter side of the image should be multiplied by this
   /// factor to get the crop side length.
   final double gridCropSize;
@@ -169,11 +170,19 @@ class CropResults {
   /// Top left corner location difference relative to the image height.
   final double gridCropY;
 
-  const CropResults(this.gridCropSize, this.gridCropX, this.gridCropY);
+  const CropResults._(this.gridCropSize, this.gridCropX, this.gridCropY);
+
+  static CropResults fromValues(double gridCropSize, double gridCropX, double gridCropY) {
+    return CropResults._(
+      clampDouble(gridCropSize, 0.75, 1.0),
+      gridCropX,
+      gridCropY
+    );
+  }
 
   /// Square image from top left corner.
   static const full =
-    CropResults(
+    CropResults._(
       1.0,
       0.0,
       0.0,
@@ -237,7 +246,6 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
               width: _size,
               height: _size,
               decoration: BoxDecoration(
-                // border: Border.all(color: Colors.white, width: 2),
                 borderRadius: BorderRadius.circular(PROFILE_PICTURE_BORDER_RADIUS),
                 color: Colors.grey.withOpacity(0.7),
               ),
@@ -281,26 +289,27 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
   }
 
   Widget handle(Alignment alignment) {
+    const r = Radius.circular(PROFILE_PICTURE_BORDER_RADIUS);
     final BorderRadius radius;
     final void Function(double, double) scaleAction;
     if (alignment == Alignment.topLeft) {
       radius = const BorderRadius.only(
-        topLeft: Radius.circular(PROFILE_PICTURE_BORDER_RADIUS),
+        topLeft: r,
       );
       scaleAction = scaleUsingTopLeftHandle;
     } else if (alignment == Alignment.topRight) {
       radius = const BorderRadius.only(
-        topRight: Radius.circular(PROFILE_PICTURE_BORDER_RADIUS),
+        topRight: r,
       );
       scaleAction = scaleUsingTopRightHandle;
     } else if (alignment == Alignment.bottomLeft) {
       radius = const BorderRadius.only(
-        bottomLeft: Radius.circular(PROFILE_PICTURE_BORDER_RADIUS),
+        bottomLeft: r,
       );
       scaleAction = scaleUsingBottomLeftHandle;
     } else {
       radius = const BorderRadius.only(
-        bottomRight: Radius.circular(PROFILE_PICTURE_BORDER_RADIUS),
+        bottomRight: r,
       );
       scaleAction = scaleUsingBottomRightHandle;
     }
@@ -381,6 +390,6 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
   }
 
   double selectionMinSize() {
-    return widget.selectionMaxSize / 2.0;
+    return widget.selectionMaxSize / 1.5;
   }
 }

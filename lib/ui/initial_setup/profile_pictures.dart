@@ -209,40 +209,6 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     );
   }
 
-  Future<void> openEditThumbnail(
-    BuildContext context,
-    ProcessedAccountImage img,
-    CropResults currentCrop,
-    int imgStateIndex,
-  ) async {
-    // TODO: Error handling
-    final bytes = await img.imgFile.readAsBytes();
-    final flutterImg = await decodeImageFromList(bytes);
-    if (!context.mounted) {
-      return;
-    }
-    final cropResults = await Navigator.push<CropResults>(
-      context,
-      MaterialPageRoute<CropResults>(
-        builder: (_) =>
-          CropImageScreen(
-            CropImageFileContent(
-                img.accountId,
-                img.contentId,
-                img.imgFile,
-                flutterImg.width,
-                flutterImg.height,
-                currentCrop,
-              )
-            )
-      )
-    );
-
-    if (cropResults != null && context.mounted) {
-      context.read<ProfilePicturesBloc>().add(UpdateCropResults(cropResults, imgStateIndex));
-    }
-  }
-
   ProcessedAccountImage? getProcessedAccountImage(BuildContext context, ImgState imgState) {
     if (imgState is ImageSelected) {
       final info = imgState.img;
@@ -298,6 +264,40 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
         }
       }
     );
+  }
+}
+
+Future<void> openEditThumbnail(
+  BuildContext context,
+  ProcessedAccountImage img,
+  CropResults currentCrop,
+  int imgStateIndex,
+) async {
+  // TODO: Error handling
+  final bytes = await img.imgFile.readAsBytes();
+  final flutterImg = await decodeImageFromList(bytes);
+  if (!context.mounted) {
+    return;
+  }
+  final cropResults = await Navigator.push<CropResults>(
+    context,
+    MaterialPageRoute<CropResults>(
+      builder: (_) =>
+        CropImageScreen(
+          CropImageFileContent(
+              img.accountId,
+              img.contentId,
+              img.imgFile,
+              flutterImg.width,
+              flutterImg.height,
+              currentCrop,
+            )
+          )
+    )
+  );
+
+  if (cropResults != null && context.mounted) {
+    context.read<ProfilePicturesBloc>().add(UpdateCropResults(cropResults, imgStateIndex));
   }
 }
 
@@ -555,6 +555,18 @@ class VisibleThumbnailPicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProfileThumbnailImage(img: img, cropResults: cropResults, size: THUMBNAIL_SIZE);
+    return ProfileThumbnailImage(
+      img: img,
+      cropResults: cropResults,
+      size: THUMBNAIL_SIZE,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            openEditThumbnail(context, img, cropResults, imgIndex);
+          },
+        ),
+      ),
+    );
   }
 }
