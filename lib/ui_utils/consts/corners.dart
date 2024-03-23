@@ -1,0 +1,4 @@
+
+
+
+const PROFILE_PICTURE_BORDER_RADIUS = 10.0;

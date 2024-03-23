@@ -5,6 +5,8 @@ import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/logic/media/profile_pictures.dart";
+import "package:pihka_frontend/ui_utils/consts/corners.dart";
+import "package:pihka_frontend/ui_utils/dialog.dart";
 import "package:pihka_frontend/ui_utils/image.dart";
 import "package:pihka_frontend/ui_utils/image_processing.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
@@ -116,7 +118,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
         child: Center(
           child: SizedBox(
             height: ROW_HEIGHT,
-            child: thumbnailArea()
+            child: thumbnailArea(context),
           ),
         ),
       )
@@ -145,14 +147,14 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     );
   }
 
-  Widget thumbnailArea() {
+  Widget thumbnailArea(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Flexible(
           child: Align(
             alignment: Alignment.topRight,
-            child: primaryImageInfoButton(),
+            child: primaryImageInfoButton(context),
           ),
         ),
         Row(
@@ -172,9 +174,11 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     );
   }
 
-  Widget primaryImageInfoButton() {
+  Widget primaryImageInfoButton(BuildContext context) {
     return IconButton(
-      onPressed: () {},
+      onPressed: () {
+        showInfoDialog(context, context.strings.initial_setup_screen_profile_pictures_primary_image_info_dialog_description);
+      },
       icon: const Icon(Icons.info)
     );
   }
@@ -373,7 +377,7 @@ class HiddenThumbnailPicture extends StatelessWidget {
           color: Colors.grey.shade400,
           width: 1.0,
         ),
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(PROFILE_PICTURE_BORDER_RADIUS),
       ),
     );
   }

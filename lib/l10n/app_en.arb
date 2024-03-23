@@ -153,6 +153,10 @@
   "@initial_setup_screen_email_title": {
     "description": "Title for initial setup email address info"
   },
+  "initial_setup_screen_profile_pictures_primary_image_info_dialog_description": "Adding at least of one profile image is required. The square shaped crop of the first profile image is displayed in profile grid and other places in the app.",
+  "@initial_setup_screen_profile_pictures_primary_image_info_dialog_description": {
+    "description": "Dialog description text about profile primary image"
+  },
   "initial_setup_screen_profile_pictures_select_picture_dialog_title": "Select picture…",
   "@initial_setup_screen_profile_pictures_select_picture_dialog_title": {
     "description": "Dialog title for initial setup profile picture selection dialog"
