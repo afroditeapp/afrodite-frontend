@@ -28,8 +28,7 @@ class ViewImageScreen extends StatefulWidget {
   State<ViewImageScreen> createState() => _ViewImageScreenState();
 }
 
-class _ViewImageScreenState extends State<ViewImageScreen>
-  with WidgetsBindingObserver {
+class _ViewImageScreenState extends State<ViewImageScreen> {
 
   @override
   void initState() {

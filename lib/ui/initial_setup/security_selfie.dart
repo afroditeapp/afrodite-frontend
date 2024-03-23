@@ -141,26 +141,18 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
           w = Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              AccountImage(
-                accountId: image.accountId,
-                contentId: image.contentId,
-                height: IMAGE_AREA_HEIGHT,
-                width: IMG_WIDTH,
-                imageBuilder: (file) {
-                  return Material(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (_) => ViewImageScreen(ViewImageAccountContent(image.accountId, image.contentId))
-                          )
-                        );
-                      },
-                      child: xfileImgWidgetInk(file, height: IMAGE_AREA_HEIGHT, width: IMG_WIDTH),
-                    ),
-                  );
-                }
+              Material(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (_) => ViewImageScreen(ViewImageAccountContent(image.accountId, image.contentId))
+                      )
+                    );
+                  },
+                  child: xfileImgWidgetInk(image.imgFile, height: IMAGE_AREA_HEIGHT, width: IMG_WIDTH),
+                ),
               ),
               IconButton(
                 onPressed: () => openCameraScreenAction(context),

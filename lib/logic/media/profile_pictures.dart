@@ -3,6 +3,7 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
+import "package:pihka_frontend/ui_utils/crop_image_screen.dart";
 
 part 'profile_pictures.freezed.dart';
 
@@ -38,6 +39,11 @@ class AddProcessedImage extends ProfilePicturesEvent {
   final SelectedImageInfo img;
   AddProcessedImage(this.img);
 }
+class UpdateCropResults extends ProfilePicturesEvent {
+  final CropResults cropResults;
+  final int imgIndex;
+  UpdateCropResults(this.cropResults, this.imgIndex);
+}
 class RemoveImage extends ProfilePicturesEvent {
   final int imgIndex;
   RemoveImage(this.imgIndex);
@@ -70,6 +76,14 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
         pictures[data.imgIndex] = Add();
       }
       _modifyPicturesListToHaveCorrectStates(pictures);
+      _emitPictureChanges(emit, pictures);
+    });
+    on<UpdateCropResults>((data, emit) async {
+      final pictures = _pictureList();
+      final img = pictures[data.imgIndex];
+      if (img is ImageSelected) {
+        pictures[data.imgIndex] = ImageSelected(img.img, cropResults: data.cropResults);
+      }
       _emitPictureChanges(emit, pictures);
     });
   }
@@ -126,7 +140,8 @@ class Add extends ImgState {
 }
 class ImageSelected extends ImgState {
   final SelectedImageInfo img;
-  const ImageSelected(this.img);
+  final CropResults cropResults;
+  const ImageSelected(this.img, {this.cropResults = CropResults.full});
 }
 
 sealed class SelectedImageInfo {}

@@ -1,4 +1,7 @@
+import "dart:io";
+
 import "package:flutter/material.dart";
+import "package:flutter/widgets.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:image_picker/image_picker.dart";
 import "package:pihka_frontend/localizations.dart";
@@ -6,10 +9,12 @@ import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/logic/media/profile_pictures.dart";
 import "package:pihka_frontend/ui_utils/consts/corners.dart";
+import "package:pihka_frontend/ui_utils/crop_image_screen.dart";
 import "package:pihka_frontend/ui_utils/dialog.dart";
 import "package:pihka_frontend/ui_utils/image.dart";
 import "package:pihka_frontend/ui_utils/image_processing.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
+import "package:pihka_frontend/ui_utils/profile_thumbnail_image.dart";
 import "package:pihka_frontend/ui_utils/view_image_screen.dart";
 
 class AskProfilePicturesScreen extends StatelessWidget {
@@ -38,6 +43,7 @@ class AskProfilePicturesScreen extends StatelessWidget {
 }
 
 const ROW_HEIGHT = 150.0;
+const THUMBNAIL_SIZE = 100.0;
 
 class AskProfilePictures extends StatefulWidget {
   @override
@@ -187,9 +193,13 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
       buildWhen: (previous, current) => previous.pictures()[imgStateIndex] != current.pictures()[imgStateIndex],
       builder: (context, state) {
-        if (state.pictures()[imgStateIndex] is ImageSelected) {
+        final imgState = state.pictures()[imgStateIndex];
+        final img = getProcessedAccountImage(context, imgState);
+        if (img != null && imgState is ImageSelected) {
           return IconButton(
-            onPressed: () {},
+            onPressed: () {
+              openEditThumbnail(context, img, imgState.cropResults, imgStateIndex);
+            },
             icon: const Icon(Icons.edit)
           );
         } else {
@@ -199,26 +209,70 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     );
   }
 
+  Future<void> openEditThumbnail(
+    BuildContext context,
+    ProcessedAccountImage img,
+    CropResults currentCrop,
+    int imgStateIndex,
+  ) async {
+    // TODO: Error handling
+    final bytes = await img.imgFile.readAsBytes();
+    final flutterImg = await decodeImageFromList(bytes);
+    if (!context.mounted) {
+      return;
+    }
+    final cropResults = await Navigator.push<CropResults>(
+      context,
+      MaterialPageRoute<CropResults>(
+        builder: (_) =>
+          CropImageScreen(
+            CropImageFileContent(
+                img.accountId,
+                img.contentId,
+                img.imgFile,
+                flutterImg.width,
+                flutterImg.height,
+                currentCrop,
+              )
+            )
+      )
+    );
+
+    if (cropResults != null && context.mounted) {
+      context.read<ProfilePicturesBloc>().add(UpdateCropResults(cropResults, imgStateIndex));
+    }
+  }
+
+  ProcessedAccountImage? getProcessedAccountImage(BuildContext context, ImgState imgState) {
+    if (imgState is ImageSelected) {
+      final info = imgState.img;
+      switch (info) {
+        case InitialSetupSecuritySelfie():
+          return context.read<InitialSetupBloc>().state.securitySelfie;
+        case ProfileImage(:final img):
+          return img;
+      }
+    } else {
+      return null;
+    }
+  }
+
   Widget imgStateToWidget(BuildContext context, int imgStateIndex) {
     return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
       buildWhen: (previous, current) => previous.pictures()[imgStateIndex] != current.pictures()[imgStateIndex],
       builder: (context, state) {
-        switch (state.pictures()[imgStateIndex]) {
+        final imgState = state.pictures()[imgStateIndex];
+        switch (imgState) {
           case Add():
             return AddPicture(imgIndex: imgStateIndex);
           case Hidden():
             return HiddenPicture();
-          case ImageSelected(:final img):
-            switch (img) {
-              case InitialSetupSecuritySelfie():
-                final currentSecuritySelfie = context.read<InitialSetupBloc>().state.securitySelfie;
-                if (currentSecuritySelfie != null) {
-                  return FilePicture(img: currentSecuritySelfie, imgIndex: imgStateIndex);
-                } else {
-                  return AddPicture(imgIndex: imgStateIndex);
-                }
-              case ProfileImage(:final img):
-                return FilePicture(img: img, imgIndex: imgStateIndex);
+          case ImageSelected():
+            final processedImg = getProcessedAccountImage(context, imgState);
+            if (processedImg != null) {
+              return FilePicture(img: processedImg, imgIndex: imgStateIndex);
+            } else {
+              return AddPicture(imgIndex: imgStateIndex);
             }
         }
       }
@@ -229,10 +283,18 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
       buildWhen: (previous, current) => previous.pictures()[imgStateIndex] != current.pictures()[imgStateIndex],
       builder: (context, state) {
-        switch (state.pictures()[imgStateIndex]) {
+        final imgState = state.pictures()[imgStateIndex];
+        switch (imgState) {
           case Add(): return HiddenThumbnailPicture();
           case Hidden(): return HiddenThumbnailPicture();
-          case ImageSelected(): return HiddenThumbnailPicture();
+          case ImageSelected(:final cropResults): {
+            final processedImg = getProcessedAccountImage(context, imgState);
+            if (processedImg != null) {
+              return VisibleThumbnailPicture(img: processedImg, imgIndex: imgStateIndex, cropResults: cropResults);
+            } else {
+              return const HiddenThumbnailPicture();
+            }
+          }
         }
       }
     );
@@ -370,8 +432,8 @@ class HiddenThumbnailPicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100,
-      height: 100,
+      width: THUMBNAIL_SIZE,
+      height: THUMBNAIL_SIZE,
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.grey.shade400,
@@ -436,11 +498,7 @@ class FilePicture extends StatelessWidget {
                         )
                       );
                     },
-                    child: AccountImage(
-                      accountId: img.accountId,
-                      contentId: img.contentId,
-                      imageBuilder: (file) => xfileImgWidgetInk(file, width: imgWidth, height: imgHeight, alignment: Alignment.topRight),
-                    ),
+                    child: xfileImgWidgetInk(img.imgFile, width: imgWidth, height: imgHeight, alignment: Alignment.topRight),
                   ),
                 ),
               ),
@@ -479,5 +537,24 @@ class FilePicture extends StatelessWidget {
           ],
         ),
       );
+  }
+}
+
+
+class VisibleThumbnailPicture extends StatelessWidget {
+  final ProcessedAccountImage img;
+  final CropResults cropResults;
+  final int imgIndex;
+
+  const VisibleThumbnailPicture({
+    required this.img,
+    required this.imgIndex,
+    required this.cropResults,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ProfileThumbnailImage(img: img, cropResults: cropResults, size: THUMBNAIL_SIZE);
   }
 }

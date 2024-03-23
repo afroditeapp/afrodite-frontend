@@ -112,4 +112,7 @@
     -->
     <string name="view_image_screen_title" description="Title for view image screen">View image</string>
 
+    <!-- Crop image screen -->
+    <string name="crop_image_screen_title" description="Title for crop image screen">Crop image</string>
+
 </resources>

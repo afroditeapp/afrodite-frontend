@@ -44,6 +44,10 @@
   "@camera_screen_take_photo_error": {
     "description": "Snackbar error text displayed when taking photo fails"
   },
+  "crop_image_screen_title": "Crop image",
+  "@crop_image_screen_title": {
+    "description": "Title for crop image screen"
+  },
   "demo_account_screen_confirm_logout_dialog_title": "Logout?",
   "@demo_account_screen_confirm_logout_dialog_title": {
     "description": "Dialog title text for confirming logout from demo account"

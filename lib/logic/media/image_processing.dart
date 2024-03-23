@@ -6,6 +6,7 @@ import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
+import "package:pihka_frontend/data/image_cache.dart";
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/media/send_to_slot.dart";
@@ -49,6 +50,7 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
   final LoginRepository login = LoginRepository.getInstance();
   final AccountRepository account = AccountRepository.getInstance();
   final MediaRepository media = MediaRepository.getInstance();
+  final ImageCacheData imageCache = ImageCacheData.getInstance();
 
   ImageProcessingBloc() : super(ImageProcessingData()) {
     on<ResetState>((data, emit) {
@@ -89,10 +91,17 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
             ));
           }
           case ProcessingCompleted(:final contentId): {
-            emit(state.copyWith(
-              processingState: null,
-              processedImage: ProcessedAccountImage(accountId, contentId, data.slot),
-            ));
+            final imgFile = await imageCache.getImage(accountId, contentId);
+            if (imgFile == null) {
+              emit(state.copyWith(
+                processingState: SendingFailed(),
+              ));
+            } else {
+              emit(state.copyWith(
+                processingState: null,
+                processedImage: ProcessedAccountImage(accountId, contentId, data.slot, imgFile),
+              ));
+            }
           }
           case SendToSlotError(): {
             emit(state.copyWith(
@@ -121,10 +130,11 @@ class SendingFailed extends ProcessingState {}
 
 /// Image which server has processed.
 class ProcessedAccountImage {
-  const ProcessedAccountImage(this.accountId, this.contentId, this.slot);
+  const ProcessedAccountImage(this.accountId, this.contentId, this.slot, this.imgFile);
   final AccountId accountId;
   final ContentId contentId;
   final int slot;
+  final XFile imgFile;
 }
 
 sealed class ContentUploadState {}
@@ -141,7 +151,6 @@ class ServerDataProcessingInProgress extends ContentUploadState {
     }
   }
 }
-
 
 class SecuritySelfieImageProcessingBloc extends ImageProcessingBloc {}
 class ProfilePicturesImageProcessingBloc extends ImageProcessingBloc {}
