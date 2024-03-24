@@ -157,6 +157,26 @@
   "@initial_setup_screen_email_title": {
     "description": "Title for initial setup email address info"
   },
+  "initial_setup_screen_profile_basic_info_age_hint_text": "Insert an age between 18-99",
+  "@initial_setup_screen_profile_basic_info_age_hint_text": {
+    "description": "Input field hint text for age"
+  },
+  "initial_setup_screen_profile_basic_info_age_title": "Age",
+  "@initial_setup_screen_profile_basic_info_age_title": {
+    "description": "Title text for asking age"
+  },
+  "initial_setup_screen_profile_basic_info_initial_hint_text": "Insert a Finnish letter",
+  "@initial_setup_screen_profile_basic_info_initial_hint_text": {
+    "description": "Input field hint text for profile initial"
+  },
+  "initial_setup_screen_profile_basic_info_initial_title": "Initial",
+  "@initial_setup_screen_profile_basic_info_initial_title": {
+    "description": "Title text for asking initial"
+  },
+  "initial_setup_screen_profile_basic_info_title": "My profile has this info…",
+  "@initial_setup_screen_profile_basic_info_title": {
+    "description": "Title text for asking profile information"
+  },
   "initial_setup_screen_profile_pictures_primary_image_info_dialog_description": "Adding at least of one profile image is required. The square shaped crop of the first profile image is displayed in profile grid and other places in the app.",
   "@initial_setup_screen_profile_pictures_primary_image_info_dialog_description": {
     "description": "Dialog description text about profile primary image"

@@ -17,12 +17,13 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$InitialSetupData {
   String? get email => throw _privateConstructorUsedError;
-  String get profileName => throw _privateConstructorUsedError;
   DateTime? get birthdate => throw _privateConstructorUsedError;
+  String? get profileInitial => throw _privateConstructorUsedError;
+  int? get profileAge => throw _privateConstructorUsedError;
   ProcessedAccountImage? get securitySelfie =>
       throw _privateConstructorUsedError;
-  XFile? get profileImage => throw _privateConstructorUsedError;
-  String? get sendError => throw _privateConstructorUsedError;
+  List<ImgState>? get profileImages => throw _privateConstructorUsedError;
+  String? get sendError => throw _privateConstructorUsedError; // TODO: remove?
   bool get sendingInProgress => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -38,10 +39,11 @@ abstract class $InitialSetupDataCopyWith<$Res> {
   @useResult
   $Res call(
       {String? email,
-      String profileName,
       DateTime? birthdate,
+      String? profileInitial,
+      int? profileAge,
       ProcessedAccountImage? securitySelfie,
-      XFile? profileImage,
+      List<ImgState>? profileImages,
       String? sendError,
       bool sendingInProgress});
 }
@@ -60,10 +62,11 @@ class _$InitialSetupDataCopyWithImpl<$Res, $Val extends InitialSetupData>
   @override
   $Res call({
     Object? email = freezed,
-    Object? profileName = null,
     Object? birthdate = freezed,
+    Object? profileInitial = freezed,
+    Object? profileAge = freezed,
     Object? securitySelfie = freezed,
-    Object? profileImage = freezed,
+    Object? profileImages = freezed,
     Object? sendError = freezed,
     Object? sendingInProgress = null,
   }) {
@@ -72,22 +75,26 @@ class _$InitialSetupDataCopyWithImpl<$Res, $Val extends InitialSetupData>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String?,
-      profileName: null == profileName
-          ? _value.profileName
-          : profileName // ignore: cast_nullable_to_non_nullable
-              as String,
       birthdate: freezed == birthdate
           ? _value.birthdate
           : birthdate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      profileInitial: freezed == profileInitial
+          ? _value.profileInitial
+          : profileInitial // ignore: cast_nullable_to_non_nullable
+              as String?,
+      profileAge: freezed == profileAge
+          ? _value.profileAge
+          : profileAge // ignore: cast_nullable_to_non_nullable
+              as int?,
       securitySelfie: freezed == securitySelfie
           ? _value.securitySelfie
           : securitySelfie // ignore: cast_nullable_to_non_nullable
               as ProcessedAccountImage?,
-      profileImage: freezed == profileImage
-          ? _value.profileImage
-          : profileImage // ignore: cast_nullable_to_non_nullable
-              as XFile?,
+      profileImages: freezed == profileImages
+          ? _value.profileImages
+          : profileImages // ignore: cast_nullable_to_non_nullable
+              as List<ImgState>?,
       sendError: freezed == sendError
           ? _value.sendError
           : sendError // ignore: cast_nullable_to_non_nullable
@@ -110,10 +117,11 @@ abstract class _$$InitialSetupDataImplCopyWith<$Res>
   @useResult
   $Res call(
       {String? email,
-      String profileName,
       DateTime? birthdate,
+      String? profileInitial,
+      int? profileAge,
       ProcessedAccountImage? securitySelfie,
-      XFile? profileImage,
+      List<ImgState>? profileImages,
       String? sendError,
       bool sendingInProgress});
 }
@@ -130,10 +138,11 @@ class __$$InitialSetupDataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? email = freezed,
-    Object? profileName = null,
     Object? birthdate = freezed,
+    Object? profileInitial = freezed,
+    Object? profileAge = freezed,
     Object? securitySelfie = freezed,
-    Object? profileImage = freezed,
+    Object? profileImages = freezed,
     Object? sendError = freezed,
     Object? sendingInProgress = null,
   }) {
@@ -142,22 +151,26 @@ class __$$InitialSetupDataImplCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String?,
-      profileName: null == profileName
-          ? _value.profileName
-          : profileName // ignore: cast_nullable_to_non_nullable
-              as String,
       birthdate: freezed == birthdate
           ? _value.birthdate
           : birthdate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      profileInitial: freezed == profileInitial
+          ? _value.profileInitial
+          : profileInitial // ignore: cast_nullable_to_non_nullable
+              as String?,
+      profileAge: freezed == profileAge
+          ? _value.profileAge
+          : profileAge // ignore: cast_nullable_to_non_nullable
+              as int?,
       securitySelfie: freezed == securitySelfie
           ? _value.securitySelfie
           : securitySelfie // ignore: cast_nullable_to_non_nullable
               as ProcessedAccountImage?,
-      profileImage: freezed == profileImage
-          ? _value.profileImage
-          : profileImage // ignore: cast_nullable_to_non_nullable
-              as XFile?,
+      profileImages: freezed == profileImages
+          ? _value._profileImages
+          : profileImages // ignore: cast_nullable_to_non_nullable
+              as List<ImgState>?,
       sendError: freezed == sendError
           ? _value.sendError
           : sendError // ignore: cast_nullable_to_non_nullable
@@ -175,33 +188,45 @@ class __$$InitialSetupDataImplCopyWithImpl<$Res>
 class _$InitialSetupDataImpl implements _InitialSetupData {
   _$InitialSetupDataImpl(
       {this.email,
-      this.profileName = "",
       this.birthdate,
+      this.profileInitial,
+      this.profileAge,
       this.securitySelfie,
-      this.profileImage,
+      final List<ImgState>? profileImages,
       this.sendError,
-      this.sendingInProgress = false});
+      this.sendingInProgress = false})
+      : _profileImages = profileImages;
 
   @override
   final String? email;
   @override
-  @JsonKey()
-  final String profileName;
-  @override
   final DateTime? birthdate;
   @override
-  final ProcessedAccountImage? securitySelfie;
+  final String? profileInitial;
   @override
-  final XFile? profileImage;
+  final int? profileAge;
+  @override
+  final ProcessedAccountImage? securitySelfie;
+  final List<ImgState>? _profileImages;
+  @override
+  List<ImgState>? get profileImages {
+    final value = _profileImages;
+    if (value == null) return null;
+    if (_profileImages is EqualUnmodifiableListView) return _profileImages;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final String? sendError;
+// TODO: remove?
   @override
   @JsonKey()
   final bool sendingInProgress;
 
   @override
   String toString() {
-    return 'InitialSetupData(email: $email, profileName: $profileName, birthdate: $birthdate, securitySelfie: $securitySelfie, profileImage: $profileImage, sendError: $sendError, sendingInProgress: $sendingInProgress)';
+    return 'InitialSetupData(email: $email, birthdate: $birthdate, profileInitial: $profileInitial, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, sendError: $sendError, sendingInProgress: $sendingInProgress)';
   }
 
   @override
@@ -210,14 +235,16 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
         (other.runtimeType == runtimeType &&
             other is _$InitialSetupDataImpl &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.profileName, profileName) ||
-                other.profileName == profileName) &&
             (identical(other.birthdate, birthdate) ||
                 other.birthdate == birthdate) &&
+            (identical(other.profileInitial, profileInitial) ||
+                other.profileInitial == profileInitial) &&
+            (identical(other.profileAge, profileAge) ||
+                other.profileAge == profileAge) &&
             (identical(other.securitySelfie, securitySelfie) ||
                 other.securitySelfie == securitySelfie) &&
-            (identical(other.profileImage, profileImage) ||
-                other.profileImage == profileImage) &&
+            const DeepCollectionEquality()
+                .equals(other._profileImages, _profileImages) &&
             (identical(other.sendError, sendError) ||
                 other.sendError == sendError) &&
             (identical(other.sendingInProgress, sendingInProgress) ||
@@ -225,8 +252,16 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, email, profileName, birthdate,
-      securitySelfie, profileImage, sendError, sendingInProgress);
+  int get hashCode => Object.hash(
+      runtimeType,
+      email,
+      birthdate,
+      profileInitial,
+      profileAge,
+      securitySelfie,
+      const DeepCollectionEquality().hash(_profileImages),
+      sendError,
+      sendingInProgress);
 
   @JsonKey(ignore: true)
   @override
@@ -239,26 +274,29 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
 abstract class _InitialSetupData implements InitialSetupData {
   factory _InitialSetupData(
       {final String? email,
-      final String profileName,
       final DateTime? birthdate,
+      final String? profileInitial,
+      final int? profileAge,
       final ProcessedAccountImage? securitySelfie,
-      final XFile? profileImage,
+      final List<ImgState>? profileImages,
       final String? sendError,
       final bool sendingInProgress}) = _$InitialSetupDataImpl;
 
   @override
   String? get email;
   @override
-  String get profileName;
-  @override
   DateTime? get birthdate;
+  @override
+  String? get profileInitial;
+  @override
+  int? get profileAge;
   @override
   ProcessedAccountImage? get securitySelfie;
   @override
-  XFile? get profileImage;
+  List<ImgState>? get profileImages;
   @override
   String? get sendError;
-  @override
+  @override // TODO: remove?
   bool get sendingInProgress;
   @override
   @JsonKey(ignore: true)

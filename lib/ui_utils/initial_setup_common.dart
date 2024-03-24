@@ -32,10 +32,21 @@ Widget commonInitialSetupScreenContent({
   );
 }
 
+void Function()? defaultAction(BuildContext context, InitialSetupData data) {
+  return null;
+}
+
 class QuestionAsker extends StatefulWidget {
   final Widget question;
   final void Function()? Function(BuildContext context, InitialSetupData state) getContinueButtonCallback;
-  const QuestionAsker({required this.getContinueButtonCallback, required this.question, super.key});
+  /// If this is set, the getContentButtonCallback is ignored.
+  final Widget Function(BuildContext)? continueButtonBuilder;
+  const QuestionAsker({
+    required this.question,
+    this.getContinueButtonCallback = defaultAction,
+    this.continueButtonBuilder,
+    super.key
+  });
 
   @override
   State<QuestionAsker> createState() => _QuestionAskerState();
@@ -44,23 +55,33 @@ class QuestionAsker extends StatefulWidget {
 class _QuestionAskerState extends State<QuestionAsker> {
   @override
   Widget build(BuildContext context) {
+    final Widget Function(BuildContext)? buttonBuilderFromWidget = widget.continueButtonBuilder;
+    final Widget Function(BuildContext) buttonBuilder;
+    if (buttonBuilderFromWidget != null) {
+      buttonBuilder = buttonBuilderFromWidget;
+    } else {
+      buttonBuilder = (BuildContext context) {
+        return BlocBuilder<InitialSetupBloc, InitialSetupData>(
+          builder: (context, state) {
+            final onPressed = widget.getContinueButtonCallback(context, state);
+            return ElevatedButton(
+              onPressed: onPressed,
+              child: Text(context.strings.generic_continue),
+            );
+          }
+        );
+      };
+    }
+
     return Column(
       verticalDirection: VerticalDirection.up,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Align(
           alignment: Alignment.centerRight,
-          child: BlocBuilder<InitialSetupBloc, InitialSetupData>(
-            builder: (context, state) {
-              final onPressed = widget.getContinueButtonCallback(context, state);
-              return Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: ElevatedButton(
-                  onPressed: onPressed,
-                  child: Text(context.strings.generic_continue),
-                ),
-              );
-            }
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: buttonBuilder(context),
           ),
         ),
         Expanded(child: widget.question),

@@ -10,6 +10,7 @@ import 'package:image/image.dart' as img;
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
+import "package:pihka_frontend/logic/media/profile_pictures.dart";
 import "package:pihka_frontend/utils.dart";
 import "package:pihka_frontend/utils/tmp_dir.dart";
 
@@ -26,12 +27,13 @@ final log = Logger("InitialSetupBloc");
 class InitialSetupData with _$InitialSetupData {
   factory InitialSetupData({
     String? email,
-    @Default("") String profileName,
     DateTime? birthdate,
+    String? profileInitial,
+    int? profileAge,
     ProcessedAccountImage? securitySelfie,
-    XFile? profileImage,
-    String? sendError,
-    @Default(false) bool sendingInProgress,
+    List<ImgState>? profileImages,
+    String? sendError, // TODO: remove?
+    @Default(false) bool sendingInProgress, // TODO: remove?
   }) = _InitialSetupData;
 }
 
@@ -45,9 +47,13 @@ class SetEmail extends InitialSetupEvent {
   final String email;
   SetEmail(this.email);
 }
-class SetProfileStep extends InitialSetupEvent {
-  final String profileName;
-  SetProfileStep(this.profileName);
+class SetInitialLetter extends InitialSetupEvent {
+  final String initial;
+  SetInitialLetter(this.initial);
+}
+class SetProfileAge extends InitialSetupEvent {
+  final int? age;
+  SetProfileAge(this.age);
 }
 class SetSecuritySelfie extends InitialSetupEvent {
   final ProcessedAccountImage securitySelfie;
@@ -57,16 +63,13 @@ class SendSecuritySelfie extends InitialSetupEvent {
   final File securitySelfie;
   SendSecuritySelfie(this.securitySelfie);
 }
-class SetProfileImageStep extends InitialSetupEvent {
-  final XFile profileImage;
-  SetProfileImageStep(this.profileImage);
+class SetProfileImages extends InitialSetupEvent {
+  final List<ImgState> profileImages;
+  SetProfileImages(this.profileImages);
 }
-class ResetState extends InitialSetupEvent {
-  ResetState();
-}
-class CreateDebugAdminAccount extends InitialSetupEvent {
-  CreateDebugAdminAccount();
-}
+class CompleteInitialSetup extends InitialSetupEvent {}
+class ResetState extends InitialSetupEvent {}
+class CreateDebugAdminAccount extends InitialSetupEvent {}
 
 class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
   final LoginRepository login = LoginRepository.getInstance();
@@ -87,9 +90,14 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
         email: data.email,
       ));
     });
-    on<SetProfileStep>((data, emit) {
+    on<SetInitialLetter>((data, emit) {
       emit(state.copyWith(
-        profileName: data.profileName,
+        profileInitial: data.initial,
+      ));
+    });
+    on<SetProfileAge>((data, emit) {
+      emit(state.copyWith(
+        profileAge: data.age,
       ));
     });
     on<SetSecuritySelfie>((data, emit) {
@@ -97,33 +105,12 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
         securitySelfie: data.securitySelfie,
       ));
     });
-
-    on<SetProfileImageStep>((data, emit) async {
+    on<SetProfileImages>((data, emit) async {
       emit(state.copyWith(
-        profileImage: data.profileImage,
-        sendingInProgress: true,
-        sendError: null,
+        profileImages: data.profileImages,
       ));
-
-
-      final securitySelfie = state.securitySelfie;
-      if (securitySelfie == null) {
-        emit(state.copyWith(
-          sendingInProgress: false,
-          sendError: "Missing security selfie",
-        ));
-        return;
-      }
-
-      final profileImage = state.profileImage;
-      if (profileImage == null) {
-        emit(state.copyWith(
-          sendingInProgress: false,
-          sendError: "Missing profile image",
-        ));
-        return;
-      }
-
+    });
+    on<CompleteInitialSetup>((data, emit) async {
       // //await Future.delayed(Duration(seconds: 5));
       // var error = await account.doInitialSetup(
       //   state.email ?? "",

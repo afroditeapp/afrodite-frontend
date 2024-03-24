@@ -8,6 +8,7 @@ import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/logic/media/profile_pictures.dart";
+import "package:pihka_frontend/ui/initial_setup/profile_basic_info.dart";
 import "package:pihka_frontend/ui_utils/consts/corners.dart";
 import "package:pihka_frontend/ui_utils/crop_image_screen.dart";
 import "package:pihka_frontend/ui_utils/dialog.dart";
@@ -25,16 +26,24 @@ class AskProfilePicturesScreen extends StatelessWidget {
     return commonInitialSetupScreenContent(
       context: context,
       child: QuestionAsker(
-        getContinueButtonCallback: (context, state) {
-          // final birthdate = state.birthdate;
-          // if (birthdate != null && birthdate.isNowAdult()) {
-          //   return () {
-          //     Navigator.push(context, MaterialPageRoute<void>(builder: (_) => screen))
-          //   };
-          // } else {
-          //   return null;
-          // }
-          return null;
+        continueButtonBuilder: (context) {
+          return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
+            builder: (context, state) {
+              void Function()? onPressed;
+              final pictures = state.pictures();
+              if (pictures[0] is ImageSelected) {
+                onPressed = () {
+                  context.read<InitialSetupBloc>().add(SetProfileImages(pictures));
+                  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const AskProfileBasicInfoScreen()));
+                };
+              }
+
+              return ElevatedButton(
+                onPressed: onPressed,
+                child: Text(context.strings.generic_continue),
+              );
+            }
+          );
         },
         question: AskProfilePictures(),
       ),
