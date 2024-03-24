@@ -326,8 +326,8 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
           });
         },
         child: Container(
-          width: 24,
-          height: 24,
+          width: 48,
+          height: 48,
           decoration: BoxDecoration(
             color: Colors.black45,
             borderRadius: radius,

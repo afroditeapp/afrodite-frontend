@@ -396,6 +396,9 @@ class AddPicture extends StatelessWidget {
               onTap: () async {
                 final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
                 Navigator.pop(context, null);
+                // TODO: Consider resizing image on client side?
+                // The built in ImagePicker resizing produces poor quality
+                // images at least on Android.
                 final image  = await ImagePicker().pickImage(
                   source: ImageSource.gallery,
                   requestFullMetadata: false

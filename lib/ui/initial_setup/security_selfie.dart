@@ -100,7 +100,7 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
             children: [
               const Expanded(
                 child: Align(
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.bottomRight,
                   child: Icon(Icons.person, size: 150.0, color: Colors.black45)
                 ),
               ),
