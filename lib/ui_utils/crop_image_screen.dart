@@ -21,6 +21,8 @@ class CropImageFileContent {
   final CropResults cropResults;
 }
 
+const MIN_CROP_ALLOWED_FACTOR = 0.75;
+
 
 /// When navigating away from this screen, the result will be a [CropResults] object.
 class CropImageScreen extends StatefulWidget {
@@ -161,7 +163,7 @@ class CropState {
 }
 
 class CropResults {
-  /// Values are in the range [0.75, 1].
+  /// Values are between [MIN_CROP_ALLOWED_FACTOR] and 1.
   /// The shorter side of the image should be multiplied by this
   /// factor to get the crop side length.
   final double gridCropSize;
@@ -174,7 +176,7 @@ class CropResults {
 
   static CropResults fromValues(double gridCropSize, double gridCropX, double gridCropY) {
     return CropResults._(
-      clampDouble(gridCropSize, 0.75, 1.0),
+      clampDouble(gridCropSize, MIN_CROP_ALLOWED_FACTOR, 1.0),
       gridCropX,
       gridCropY
     );
@@ -227,6 +229,7 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
 
   @override
   Widget build(BuildContext context) {
+    // Refresh selection when screen rotates
     checkSizeBounds();
     checkLocationBounds();
 
@@ -346,6 +349,12 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
       _size = newSize;
       _left += dx;
       _top += dx;
+    } else if (_size != selectionMinSize()) {
+      // The if condition prevents running this multiple times
+      _size = selectionMinSize();
+      // Calculate dx which matches selectionMinSize()
+      _left += dx + newSize - selectionMinSize();
+      _top += dx + newSize - selectionMinSize();
     }
 
     checkSizeBounds();
@@ -357,6 +366,11 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
     if (newSize >= selectionMinSize()) {
       _size = newSize;
       _top -= dx;
+    } else if (_size != selectionMinSize()) {
+      // The if condition prevents running this multiple times
+      _size = selectionMinSize();
+      // Calculate dx which matches selectionMinSize()
+      _top -= dx - newSize - selectionMinSize();
     }
 
     checkSizeBounds();
@@ -368,6 +382,11 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
     if (newSize >= selectionMinSize()) {
       _size = newSize;
       _left += dx;
+    } else if (_size != selectionMinSize()) {
+      // The if condition prevents running this multiple times
+      _size = selectionMinSize();
+      // Calculate dx which matches selectionMinSize()
+      _left += dx + newSize - selectionMinSize();
     }
 
     checkSizeBounds();
@@ -390,6 +409,6 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
   }
 
   double selectionMinSize() {
-    return widget.selectionMaxSize / 1.5;
+    return widget.selectionMaxSize * MIN_CROP_ALLOWED_FACTOR;
   }
 }

@@ -310,25 +310,51 @@ class AddPicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: InkWell(
-        onTap: () {
-          switch (context.read<ProfilePicturesBloc>().state.mode) {
-            case InitialSetupProfilePictures():
-              openInitialSetupActionDialog(context);
-            case NormalProfilePictures():
-              openActionDialog(context);
-          }
-        },
-        child: Ink(
-          width: 100,
-          height: ROW_HEIGHT,
-          color: Colors.grey,
-          child: const Center(
-            child: Icon(
-              Icons.add_a_photo,
-              size: 40,
-              color: Colors.white,
+    // Drag and drop to empty slot is disabled currently.
+
+    // return DragTarget<int>(
+    //   onAcceptWithDetails: (details) {
+    //     context.read<ProfilePicturesBloc>().add(MoveImageTo(details.data, imgIndex));
+    //   },
+    //   onWillAcceptWithDetails: (details) => true,
+    //   builder: (context, candidateData, rejectedData) {
+    //     final backgroundColor = candidateData.isEmpty ? Colors.transparent : Colors.grey.shade400;
+    //      return Container(
+    //        color: backgroundColor,
+    //        child: Center(
+    //          child: buildAddPictureButton(context),
+    //        ),
+    //      );
+    //   },
+    // );
+
+    return buildAddPictureButton(context);
+  }
+
+  Widget buildAddPictureButton(BuildContext context) {
+    return SizedBox(
+      width: 100,
+      height: ROW_HEIGHT,
+      child: Material(
+        child: InkWell(
+          onTap: () {
+            switch (context.read<ProfilePicturesBloc>().state.mode) {
+              case InitialSetupProfilePictures():
+                openInitialSetupActionDialog(context);
+              case NormalProfilePictures():
+                openActionDialog(context);
+            }
+          },
+          child: Ink(
+            width: 100,
+            height: ROW_HEIGHT,
+            color: Colors.grey,
+            child: const Center(
+              child: Icon(
+                Icons.add_a_photo,
+                size: 40,
+                color: Colors.white,
+              ),
             ),
           ),
         ),
@@ -477,66 +503,98 @@ class FilePicture extends StatelessWidget {
     double imgWidth,
     double imgHeight,
   ) {
+    return DragTarget<int>(
+      onAcceptWithDetails: (details) {
+        context.read<ProfilePicturesBloc>().add(MoveImageTo(details.data, imgIndex));
+      },
+      onWillAcceptWithDetails: (details) => details.data != imgIndex,
+      builder: (context, candidateData, rejectedData) {
+        final acceptedCandidate = candidateData.where((element) => element != imgIndex).firstOrNull;
+        final backgroundColor = acceptedCandidate == null ? Colors.transparent : Colors.grey.shade400;
+        return Container(
+          width: maxWidth,
+          height: maxHeight,
+          color: backgroundColor,
+          child: Stack(
+            alignment: Alignment.topRight,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: iconSize, right: iconSize, left: iconSize),
+                child: draggableImgWidget(context, imgWidth, imgHeight),
+              ),
+              closeButton(context),
+            ],
+          ),
+        );
+      }
+    );
+  }
+
+  Widget draggableImgWidget(BuildContext context, double imgWidth, double imgHeight) {
+    return LongPressDraggable<int>(
+      data: imgIndex,
+      feedback: xfileImgWidget(img.imgFile, width: imgWidth, height: imgHeight),
+      childWhenDragging: Container(
+        width: imgWidth,
+        height: imgHeight,
+        color: Colors.grey.shade400,
+      ),
+      child: imgWidget(context, imgWidth, imgHeight),
+    );
+  }
+
+  Widget imgWidget(BuildContext context, double imgWidth, double imgHeight) {
     return SizedBox(
-        width: maxWidth,
-        height: maxHeight,
-        child: Stack(
-          alignment: Alignment.topRight,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: iconSize, right: iconSize, left: iconSize),
-              child: SizedBox(
-                width: imgWidth,
-                height: imgHeight,
-                child: Material(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute<void>(
-                          builder: (_) => ViewImageScreen(ViewImageAccountContent(img.accountId, img.contentId))
-                        )
-                      );
-                    },
-                    child: xfileImgWidgetInk(img.imgFile, width: imgWidth, height: imgHeight, alignment: Alignment.topRight),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 0,
-              right: 0,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    width: 30,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 2,
-                          offset: const Offset(0, 1),
-                        ),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      context.read<ProfilePicturesBloc>().add(RemoveImage(imgIndex));
-                    },
-                    icon: const Icon(Icons.close),
-                  ),
-                ],
-              ),
-            ),
-          ],
+      width: imgWidth,
+      height: imgHeight,
+      child: Material(
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (_) => ViewImageScreen(ViewImageAccountContent(img.accountId, img.contentId))
+              )
+            );
+          },
+          child: xfileImgWidgetInk(img.imgFile, width: imgWidth, height: imgHeight, alignment: Alignment.topRight),
         ),
-      );
+      ),
+    );
+  }
+
+  Widget closeButton(BuildContext context) {
+    return Positioned(
+      top: 0,
+      right: 0,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: 30,
+            height: 30,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 2,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              context.read<ProfilePicturesBloc>().add(RemoveImage(imgIndex));
+            },
+            icon: const Icon(Icons.close),
+          ),
+        ],
+      ),
+    );
   }
 }
 

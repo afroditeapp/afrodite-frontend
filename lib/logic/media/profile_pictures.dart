@@ -48,6 +48,11 @@ class RemoveImage extends ProfilePicturesEvent {
   final int imgIndex;
   RemoveImage(this.imgIndex);
 }
+class MoveImageTo extends ProfilePicturesEvent {
+  final int src;
+  final int dst;
+  MoveImageTo(this.src, this.dst);
+}
 
 class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData> {
   ProfilePicturesBloc() : super(ProfilePicturesData()) {
@@ -86,6 +91,15 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
       }
       _emitPictureChanges(emit, pictures);
     });
+    on<MoveImageTo>((data, emit) async {
+      final pictures = _pictureList();
+      final srcImg = pictures[data.src];
+      final dstImg = pictures[data.dst];
+      pictures[data.src] = dstImg;
+      pictures[data.dst] = srcImg;
+      _modifyPicturesListToHaveCorrectStates(pictures);
+      _emitPictureChanges(emit, pictures);
+    });
   }
 
   List<ImgState> _pictureList() {
@@ -104,6 +118,11 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
       } else if (pictures[i - 1] is Add && pictures[i] is Add) {
         // Subsequent add image buttons
         pictures[i] = Hidden();
+      } else if (pictures[i - 1] is Add && pictures[i] is ImageSelected) {
+        // Image was drag and dropped to empty slot.
+        // This is currently prevented from UI code.
+        pictures[i - 1] = pictures[i];
+        pictures[i] = Add();
       }
     }
   }
