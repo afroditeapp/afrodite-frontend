@@ -1,6 +1,7 @@
 
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:logging/logging.dart";
 import "package:pihka_frontend/logic/account/demo_account.dart";
 import "package:pihka_frontend/ui_utils/dialog.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
@@ -8,11 +9,14 @@ import "package:pihka_frontend/ui_utils/app_bar/common_actions.dart";
 import "package:pihka_frontend/ui_utils/app_bar/menu_actions.dart";
 import 'package:pihka_frontend/localizations.dart';
 
+var log = Logger("DemoAccountScreen");
+
 class DemoAccountScreen extends RootScreen {
   const DemoAccountScreen({Key? key}) : super(key: key);
 
   @override
   void runOnceBeforeNavigatedTo(BuildContext context) {
+    log.info("runOnceBeforeNavigatedTo: DemoAccountScreen");
     context.read<DemoAccountBloc>().add(DoDemoAccountRefreshAccountList());
   }
 

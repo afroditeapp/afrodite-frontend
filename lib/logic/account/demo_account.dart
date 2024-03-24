@@ -1,6 +1,7 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
+import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/localizations.dart";
@@ -9,6 +10,8 @@ import "package:pihka_frontend/utils.dart";
 import "package:pihka_frontend/utils/result.dart";
 
 part 'demo_account.freezed.dart';
+
+var log = Logger("DemoAccountBloc");
 
 @freezed
 class DemoAccountBlocData with _$DemoAccountBlocData {
@@ -51,34 +54,31 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
   DemoAccountBloc() :
     super(DemoAccountBlocData()) {
     on<DoDemoAccountLogin>((data, emit) async {
-      await runOnce(() async {
-        // Possibly prevent displaying account info from another demo account.
-        emit(state.copyWith(accounts: []));
+      // Possibly prevent displaying account info from another demo account.
+      emit(state.copyWith(accounts: []));
 
-        switch (await login.demoAccountLogin(data.credentials)) {
-          case Ok(v: ()):
-            ();
-          case Err(e: _):
-            showSnackBar(R.strings.login_screen_demo_account_login_failed);
-        }
-      });
+      switch (await login.demoAccountLogin(data.credentials)) {
+        case Ok(v: ()):
+          ();
+        case Err(e: _):
+          showSnackBar(R.strings.login_screen_demo_account_login_failed);
+      }
     });
     on<DoDemoAccountLogout>((_, emit) async {
-      await runOnce(() async {
-        await login.demoAccountLogout();
-      });
+      await login.demoAccountLogout();
     });
     on<DoDemoAccountRefreshAccountList>((_, emit) async {
-      await runOnce(() async {
-        switch (await login.demoAccountGetAccounts()) {
-          case Ok(:final v):
-            emit(state.copyWith(accounts: v));
-          case Err(e: SessionExpired()):
-            showSnackBar(R.strings.login_screen_demo_account_login_session_expired);
-          case Err(e: OtherError()):
-            ();
-        }
-      });
+      log.info("Refreshing demo account list");
+      switch (await login.demoAccountGetAccounts()) {
+        case Ok(:final v):
+          log.info("Demo account list received");
+          emit(state.copyWith(accounts: v));
+        case Err(e: SessionExpired()):
+          log.info("Demo account session expired");
+          showSnackBar(R.strings.login_screen_demo_account_login_session_expired);
+        case Err(e: OtherError()):
+          log.info("Demo account account list refresh other error");
+      }
     });
     on<DoDemoAccountCreateNewAccount>((_, emit) async {
       await runOnce(() async {

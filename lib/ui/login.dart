@@ -17,18 +17,43 @@ const commonPadding = 5.0;
 class LoginScreenOld extends RootScreen {
   LoginScreenOld({Key? key}) : super(key: key);
 
+  final _serverAddressController = TextEditingController();
   final _serverAddressFormKey = GlobalKey<FormState>();
 
   @override
   Widget buildRootWidget(BuildContext context) {
     final loginPageWidgets = <Widget>[
       Text(context.strings.app_name),
-      ServerAddressField(_serverAddressFormKey),
+      ServerAddressField(_serverAddressFormKey, _serverAddressController),
       ElevatedButton(
         child: const Text(
             "Update address"
         ),
         onPressed: () {
+          final valid = _serverAddressFormKey.currentState?.validate();
+          if (valid != null && valid) {
+            _serverAddressFormKey.currentState?.save();
+          }
+        },
+      ),
+      ElevatedButton(
+        child: const Text(
+            "***REMOVED***"
+        ),
+        onPressed: () {
+          _serverAddressController.text = "***REMOVED***";
+          final valid = _serverAddressFormKey.currentState?.validate();
+          if (valid != null && valid) {
+            _serverAddressFormKey.currentState?.save();
+          }
+        },
+      ),
+      ElevatedButton(
+        child: const Text(
+            "http://192.168.0.13:3000"
+        ),
+        onPressed: () {
+          _serverAddressController.text = "http://192.168.0.13:3000";
           final valid = _serverAddressFormKey.currentState?.validate();
           if (valid != null && valid) {
             _serverAddressFormKey.currentState?.save();
@@ -67,28 +92,28 @@ class LoginScreenOld extends RootScreen {
           );
         }
       ),
-      const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
-      ElevatedButton(
-        child: const Text(
-            "Sign in with Google"
-        ),
-        onPressed: () {
-          context.read<SignInWithBloc>().add(SignInWithGoogle());
-        },
-      ),
-      const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
-      ElevatedButton(
-        child: const Text(
-            "Logout from Google"
-        ),
-        onPressed: () => context.read<SignInWithBloc>().add(LogOutFromGoogle()),
-      ),
-      const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
-      SignInWithAppleButton(
-        onPressed: () {
-          context.read<SignInWithBloc>().add(SignInWithAppleEvent());
-        },
-      ),
+      // const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
+      // ElevatedButton(
+      //   child: const Text(
+      //       "Sign in with Google"
+      //   ),
+      //   onPressed: () {
+      //     context.read<SignInWithBloc>().add(SignInWithGoogle());
+      //   },
+      // ),
+      // const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
+      // ElevatedButton(
+      //   child: const Text(
+      //       "Logout from Google"
+      //   ),
+      //   onPressed: () => context.read<SignInWithBloc>().add(LogOutFromGoogle()),
+      // ),
+      // const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
+      // SignInWithAppleButton(
+      //   onPressed: () {
+      //     context.read<SignInWithBloc>().add(SignInWithAppleEvent());
+      //   },
+      // ),
     ];
 
     return Scaffold(
@@ -109,14 +134,21 @@ class LoginScreenOld extends RootScreen {
 
 class ServerAddressField extends StatefulWidget {
   final GlobalKey<FormState> formKey;
-  const ServerAddressField(this.formKey, {Key? key}) : super(key: key);
+  final TextEditingController controller;
+  const ServerAddressField(this.formKey, this.controller, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ServerAddressFieldState();
 }
 
 class _ServerAddressFieldState extends State<ServerAddressField> {
-  final _serverAddressController = TextEditingController();
+  late TextEditingController _serverAddressController;
+
+  @override
+  void initState() {
+    super.initState();
+    _serverAddressController = widget.controller;
+  }
 
   @override
   Widget build(BuildContext context) {
