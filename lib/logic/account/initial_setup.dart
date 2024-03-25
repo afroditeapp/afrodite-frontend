@@ -1,6 +1,7 @@
 import "dart:io";
 
 import "package:camera/camera.dart";
+import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:pihka_frontend/data/account_repository.dart";
@@ -9,6 +10,7 @@ import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:image/image.dart' as img;
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
+import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/logic/media/profile_pictures.dart";
 import "package:pihka_frontend/utils.dart";
@@ -32,6 +34,7 @@ class InitialSetupData with _$InitialSetupData {
     int? profileAge,
     ProcessedAccountImage? securitySelfie,
     List<ImgState>? profileImages,
+    Gender? gender,
     String? sendError, // TODO: remove?
     @Default(false) bool sendingInProgress, // TODO: remove?
   }) = _InitialSetupData;
@@ -66,6 +69,10 @@ class SendSecuritySelfie extends InitialSetupEvent {
 class SetProfileImages extends InitialSetupEvent {
   final List<ImgState> profileImages;
   SetProfileImages(this.profileImages);
+}
+class SetGender extends InitialSetupEvent {
+  final Gender gender;
+  SetGender(this.gender);
 }
 class CompleteInitialSetup extends InitialSetupEvent {}
 class ResetState extends InitialSetupEvent {}
@@ -108,6 +115,11 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
     on<SetProfileImages>((data, emit) async {
       emit(state.copyWith(
         profileImages: data.profileImages,
+      ));
+    });
+    on<SetGender>((data, emit) async {
+      emit(state.copyWith(
+        gender: data.gender,
       ));
     });
     on<CompleteInitialSetup>((data, emit) async {
@@ -175,4 +187,19 @@ Future<XFile> createImage(String fileName, void Function(img.Pixel) pixelModifie
   final imgPath = await TmpDirUtils.initialSetupFilePath(fileName);
   await XFile.fromData(jpg).saveTo(imgPath);
   return XFile(imgPath);
+}
+
+
+enum Gender {
+  man,
+  woman,
+  nonBinary;
+
+  String uiText(BuildContext context) {
+    return switch (this) {
+      man => context.strings.generic_gender_man,
+      woman => context.strings.generic_gender_woman,
+      nonBinary => context.strings.generic_gender_nonbinary,
+    };
+  }
 }

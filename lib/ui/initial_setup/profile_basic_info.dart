@@ -3,6 +3,7 @@ import "package:flutter/services.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
+import "package:pihka_frontend/ui/initial_setup/gender.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
 
 const MIN_AGE = 18;
@@ -31,7 +32,7 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
           final initial = state.profileInitial;
           if (ageIsValid(age) && initialIsValid(initial)) {
             return () {
-              // Navigator.push(context, MaterialPageRoute<void>(builder: (_) => screen))
+              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => AskGenderScreen()));
             };
           } else {
             return null;

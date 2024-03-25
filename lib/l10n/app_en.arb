@@ -96,6 +96,18 @@
   "@generic_error_occurred": {
     "description": "Generic error occurred text"
   },
+  "generic_gender_man": "Man",
+  "@generic_gender_man": {
+    "description": "Generic man gender text"
+  },
+  "generic_gender_nonbinary": "Non-binary",
+  "@generic_gender_nonbinary": {
+    "description": "Generic non-binary gender text"
+  },
+  "generic_gender_woman": "Woman",
+  "@generic_gender_woman": {
+    "description": "Generic woman gender text"
+  },
   "generic_login": "Login",
   "@generic_login": {
     "description": "Generic login text"
@@ -156,6 +168,10 @@
   "initial_setup_screen_email_title": "My email address is…",
   "@initial_setup_screen_email_title": {
     "description": "Title for initial setup email address info"
+  },
+  "initial_setup_screen_gender_title": "I am…",
+  "@initial_setup_screen_gender_title": {
+    "description": "Title for ask gender screen"
   },
   "initial_setup_screen_profile_basic_info_age_hint_text": "Insert an age between 18-99",
   "@initial_setup_screen_profile_basic_info_age_hint_text": {

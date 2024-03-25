@@ -23,6 +23,7 @@ mixin _$InitialSetupData {
   ProcessedAccountImage? get securitySelfie =>
       throw _privateConstructorUsedError;
   List<ImgState>? get profileImages => throw _privateConstructorUsedError;
+  Gender? get gender => throw _privateConstructorUsedError;
   String? get sendError => throw _privateConstructorUsedError; // TODO: remove?
   bool get sendingInProgress => throw _privateConstructorUsedError;
 
@@ -44,6 +45,7 @@ abstract class $InitialSetupDataCopyWith<$Res> {
       int? profileAge,
       ProcessedAccountImage? securitySelfie,
       List<ImgState>? profileImages,
+      Gender? gender,
       String? sendError,
       bool sendingInProgress});
 }
@@ -67,6 +69,7 @@ class _$InitialSetupDataCopyWithImpl<$Res, $Val extends InitialSetupData>
     Object? profileAge = freezed,
     Object? securitySelfie = freezed,
     Object? profileImages = freezed,
+    Object? gender = freezed,
     Object? sendError = freezed,
     Object? sendingInProgress = null,
   }) {
@@ -95,6 +98,10 @@ class _$InitialSetupDataCopyWithImpl<$Res, $Val extends InitialSetupData>
           ? _value.profileImages
           : profileImages // ignore: cast_nullable_to_non_nullable
               as List<ImgState>?,
+      gender: freezed == gender
+          ? _value.gender
+          : gender // ignore: cast_nullable_to_non_nullable
+              as Gender?,
       sendError: freezed == sendError
           ? _value.sendError
           : sendError // ignore: cast_nullable_to_non_nullable
@@ -122,6 +129,7 @@ abstract class _$$InitialSetupDataImplCopyWith<$Res>
       int? profileAge,
       ProcessedAccountImage? securitySelfie,
       List<ImgState>? profileImages,
+      Gender? gender,
       String? sendError,
       bool sendingInProgress});
 }
@@ -143,6 +151,7 @@ class __$$InitialSetupDataImplCopyWithImpl<$Res>
     Object? profileAge = freezed,
     Object? securitySelfie = freezed,
     Object? profileImages = freezed,
+    Object? gender = freezed,
     Object? sendError = freezed,
     Object? sendingInProgress = null,
   }) {
@@ -171,6 +180,10 @@ class __$$InitialSetupDataImplCopyWithImpl<$Res>
           ? _value._profileImages
           : profileImages // ignore: cast_nullable_to_non_nullable
               as List<ImgState>?,
+      gender: freezed == gender
+          ? _value.gender
+          : gender // ignore: cast_nullable_to_non_nullable
+              as Gender?,
       sendError: freezed == sendError
           ? _value.sendError
           : sendError // ignore: cast_nullable_to_non_nullable
@@ -193,6 +206,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
       this.profileAge,
       this.securitySelfie,
       final List<ImgState>? profileImages,
+      this.gender,
       this.sendError,
       this.sendingInProgress = false})
       : _profileImages = profileImages;
@@ -218,6 +232,8 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   }
 
   @override
+  final Gender? gender;
+  @override
   final String? sendError;
 // TODO: remove?
   @override
@@ -226,7 +242,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
 
   @override
   String toString() {
-    return 'InitialSetupData(email: $email, birthdate: $birthdate, profileInitial: $profileInitial, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, sendError: $sendError, sendingInProgress: $sendingInProgress)';
+    return 'InitialSetupData(email: $email, birthdate: $birthdate, profileInitial: $profileInitial, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, sendError: $sendError, sendingInProgress: $sendingInProgress)';
   }
 
   @override
@@ -245,6 +261,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
                 other.securitySelfie == securitySelfie) &&
             const DeepCollectionEquality()
                 .equals(other._profileImages, _profileImages) &&
+            (identical(other.gender, gender) || other.gender == gender) &&
             (identical(other.sendError, sendError) ||
                 other.sendError == sendError) &&
             (identical(other.sendingInProgress, sendingInProgress) ||
@@ -260,6 +277,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
       profileAge,
       securitySelfie,
       const DeepCollectionEquality().hash(_profileImages),
+      gender,
       sendError,
       sendingInProgress);
 
@@ -279,6 +297,7 @@ abstract class _InitialSetupData implements InitialSetupData {
       final int? profileAge,
       final ProcessedAccountImage? securitySelfie,
       final List<ImgState>? profileImages,
+      final Gender? gender,
       final String? sendError,
       final bool sendingInProgress}) = _$InitialSetupDataImpl;
 
@@ -294,6 +313,8 @@ abstract class _InitialSetupData implements InitialSetupData {
   ProcessedAccountImage? get securitySelfie;
   @override
   List<ImgState>? get profileImages;
+  @override
+  Gender? get gender;
   @override
   String? get sendError;
   @override // TODO: remove?
