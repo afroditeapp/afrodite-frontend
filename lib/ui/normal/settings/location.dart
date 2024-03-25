@@ -5,7 +5,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/plugin_api.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
@@ -144,12 +144,14 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
     final initialMap = FlutterMap(
       mapController: _mapController,
       options: MapOptions(
-        center: initialLocation,
-        zoom: initialZoom,
+        initialCenter: initialLocation,
+        initialZoom: initialZoom,
         minZoom: 4,
         maxZoom: 15,
-        maxBounds: bounds,
-        interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+        cameraConstraint: CameraConstraint.contain(bounds: bounds),
+        interactionOptions: const InteractionOptions(
+          flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+        ),
         onTap: (tapPosition, point) {
           handleOnTap(context, point);
         },
@@ -157,17 +159,15 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
           handleOnTap(context, point);
         }
       ),
-      nonRotatedChildren: [
-        attributionWidget(),
-        floatingActionButtons(),
-        viewHelp(),
-      ],
       children: [
         TileLayer(
           maxNativeZoom: 13,
           tileProvider: CustomTileProvider(),
         ),
         markerLayer(),
+        attributionWidget(),
+        floatingActionButtons(),
+        viewHelp(),
       ],
     );
 
@@ -318,8 +318,8 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
         width: dotSize,
         height: dotSize,
         point: currentLocation,
-        anchorPos: AnchorPos.align(AnchorAlign.center),
-        builder: (ctx) => dot,
+        alignment: Alignment.center,
+        child: dot,
       ));
     }
 
@@ -330,8 +330,8 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
         width: locationSize,
         height: locationSize,
         point: profileLocation,
-        anchorPos: AnchorPos.align(AnchorAlign.top),
-        builder: (ctx) => const Icon(
+        alignment: Alignment.topCenter,
+        child: const Icon(
           Icons.location_on,
           color: Colors.lightBlue,
           size: locationSize,
@@ -418,11 +418,11 @@ class MapAnimationManager {
   ) {
     const locateMinZoom = 11.0;
     var targetZoom = locateMinZoom;
-    if (mapController.zoom > locateMinZoom) {
-      targetZoom = mapController.zoom;
+    if (mapController.camera.zoom > locateMinZoom) {
+      targetZoom = mapController.camera.zoom;
     }
     const locateMaxZoom = 13.0;
-    if (mapController.zoom > locateMaxZoom) {
+    if (mapController.camera.zoom > locateMaxZoom) {
       targetZoom = locateMaxZoom;
     }
 
@@ -430,9 +430,9 @@ class MapAnimationManager {
     // make map move slower
     double? middleZoom; // Disabled currently
     bool longDistance = false;
-    final locationIsOnVisibleMapArea = mapController.bounds?.contains(targetLocation) ?? false;
+    final locationIsOnVisibleMapArea = mapController.camera.visibleBounds.contains(targetLocation);
     const distance = DistanceHaversine();
-    final distanceToTargetLocation = distance.as(LengthUnit.Kilometer, mapController.center, targetLocation);
+    final distanceToTargetLocation = distance.as(LengthUnit.Kilometer, mapController.camera.center, targetLocation);
     if (!locationIsOnVisibleMapArea && distanceToTargetLocation > 100) {
       longDistance = true;
     }

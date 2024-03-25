@@ -73,7 +73,7 @@ dependencies:
   infinite_scroll_pagination: ^4.0.0
   sqflite: ^2.3.0
 
-  flutter_map: ^5.0.0
+  flutter_map: ^6.1.0
   latlong2: ^0.9.0
 
   url_launcher: ^6.2.5
