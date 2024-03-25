@@ -4,6 +4,7 @@ import "dart:math";
 import "package:camera/camera.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:latlong2/latlong.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
@@ -42,6 +43,7 @@ class InitialSetupData with _$InitialSetupData {
     @Default(false) bool searchAgeRangeInitDone,
     int? searchAgeRangeMin,
     int? searchAgeRangeMax,
+    LatLng? profileLocation,
     String? sendError, // TODO: remove?
     @Default(false) bool sendingInProgress, // TODO: remove?
   }) = _InitialSetupData;
@@ -97,6 +99,10 @@ class SetAgeRangeMin extends InitialSetupEvent {
 class SetAgeRangeMax extends InitialSetupEvent {
   final int? max;
   SetAgeRangeMax(this.max);
+}
+class SetLocation extends InitialSetupEvent {
+  final LatLng location;
+  SetLocation(this.location);
 }
 class CompleteInitialSetup extends InitialSetupEvent {}
 class ResetState extends InitialSetupEvent {}
@@ -167,6 +173,11 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
     on<SetAgeRangeMax>((data, emit) async {
       emit(state.copyWith(
         searchAgeRangeMax: data.max,
+      ));
+    });
+    on<SetLocation>((data, emit) async {
+      emit(state.copyWith(
+        profileLocation: data.location,
       ));
     });
     on<CompleteInitialSetup>((data, emit) async {

@@ -43,10 +43,12 @@ class QuestionAsker extends StatefulWidget {
   final void Function()? Function(BuildContext context, InitialSetupData state) getContinueButtonCallback;
   /// If this is set, the getContentButtonCallback is ignored.
   final Widget Function(BuildContext)? continueButtonBuilder;
+  final bool expandQuestion;
   const QuestionAsker({
     required this.question,
     this.getContinueButtonCallback = defaultAction,
     this.continueButtonBuilder,
+    this.expandQuestion = false,
     super.key
   });
 
@@ -84,25 +86,38 @@ class _QuestionAskerState extends State<QuestionAsker> {
       };
     }
 
-    return CustomScrollView(
-      physics: const ClampingScrollPhysics(),
-      slivers: [
-        SliverToBoxAdapter(
-          child: widget.question,
-        ),
-        SliverFillRemaining(
-          hasScrollBody: false,
-          fillOverscroll: true,
-          child: Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
-              child: buttonBuilder(context),
-            ),
-          ),
-        ),
-      ],
+    final continueButton = Align(
+      alignment: Alignment.bottomRight,
+      child: Padding(
+        padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
+        child: buttonBuilder(context),
+      ),
     );
+
+    if (widget.expandQuestion) {
+      return Column(
+        children: [
+          Expanded(
+            child: widget.question,
+          ),
+          continueButton,
+        ],
+      );
+    } else {
+      return CustomScrollView(
+        physics: const ClampingScrollPhysics(),
+        slivers: [
+          SliverToBoxAdapter(
+            child: widget.question,
+          ),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            fillOverscroll: true,
+            child: continueButton,
+          ),
+        ],
+      );
+    }
   }
 }
 

@@ -28,6 +28,10 @@ AppLocalizations getStrings() {
   return currentLocalizations;
 }
 
+/// Access resource strings using previously used locale.
+///
+/// Useful when there is no BuildContext available or the BuildContext
+/// can invalidate for example because navigating to another screen.
 class R {
   static AppLocalizations get strings => currentLocalizations;
 }

@@ -25,18 +25,18 @@ class LocationPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(context.strings.pageLocationTitle)),
       body: locationPage(context),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () => (),
-      //   tooltip: 'Like',
-      //   child: const Icon(Icons.favorite),
-      // )
     );
   }
 
   Widget locationPage(BuildContext context) {
     final profileLocation = context.read<LocationBloc>().state;
     final profileLocationLatLng = LatLng(profileLocation.latitude, profileLocation.longitude);
-    return LocationWidget(MapMode.selectLocation, profileLocationLatLng);
+    return LocationWidget(
+      mode: MapMode.selectLocation,
+      handler: LocationUploader(),
+      markerInitialLocation: profileLocationLatLng,
+      editingHelpText: context.strings.map_select_location_help_text,
+    );
   }
 }
 
@@ -45,10 +45,47 @@ enum MapMode {
   selectLocation,
 }
 
+class LocationUploader extends SelectedLocationHandler {
+  bool locationUploadInProgress = false;
+
+  @override
+  Future<void> handleLocationSelection({
+    required BuildContext context,
+    required LatLng location,
+    required void Function() onStart,
+    required void Function(bool) onComplete
+  }) async {
+    if (locationUploadInProgress) {
+      return;
+    }
+
+    locationUploadInProgress = true;
+    onStart();
+    final apiLocation = Location(latitude: location.latitude, longitude: location.longitude);
+    final result = await ProfileRepository.getInstance().updateLocation(apiLocation);
+    locationUploadInProgress = false;
+    onComplete(result);
+    // User might have navigated away from the map, so use R class for strings.
+    if (result) {
+      showSnackBar(R.strings.map_location_update_successful);
+    } else {
+      showSnackBar(R.strings.map_location_update_failed);
+    }
+  }
+}
+
 class LocationWidget extends StatefulWidget {
   final MapMode mode;
-  final LatLng profileLocation;
-  const LocationWidget(this.mode, this.profileLocation, {Key? key}) : super(key: key);
+  final LatLng? markerInitialLocation;
+  final SelectedLocationHandler handler;
+  final String? editingHelpText;
+  const LocationWidget({
+    required this.mode,
+    required this.handler,
+    this.markerInitialLocation,
+    this.editingHelpText,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<LocationWidget> createState() => _LocationWidgetState();
@@ -63,9 +100,8 @@ enum MapModeInternal {
 
 class _LocationWidgetState extends State<LocationWidget> with SingleTickerProviderStateMixin {
   final MapController _mapController = MapController();
-  final LocationManager _locationManager = LocationManager();
+  late final SelectedLocationHandler _locationSelectedHandler;
   MapAnimationManager? _animationManager = MapAnimationManager();
-  //bool _profileLocationSaveNeeded = false;
   LatLng? _profileLocationMarker;
   LatLng? _deviceLocationMarker;
   MapModeInternal _internalMode = MapModeInternal.selectLocation;
@@ -73,7 +109,8 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
   @override
   void initState() {
     super.initState();
-    _profileLocationMarker = widget.profileLocation;
+    _locationSelectedHandler = widget.handler;
+    _profileLocationMarker = widget.markerInitialLocation;
     _animationManager?.init(_mapController, this);
     switch (widget.mode) {
       case MapMode.selectInitialLocation: {
@@ -114,10 +151,10 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
         maxBounds: bounds,
         interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
         onTap: (tapPosition, point) {
-          handleOnTap(point);
+          handleOnTap(context, point);
         },
         onLongPress: (tapPosition, point) {
-          handleOnTap(point);
+          handleOnTap(context, point);
         }
       ),
       nonRotatedChildren: [
@@ -137,26 +174,26 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
     return initialMap;
   }
 
-  void handleOnTap(LatLng point) {
+  void handleOnTap(BuildContext context, LatLng point) {
     switch (_internalMode) {
       case MapModeInternal.selectLocationNoModeButton || MapModeInternal.selectLocation:
-        _locationManager.uploadLocation(
-          point,
+        _locationSelectedHandler.handleLocationSelection(
+          context: context,
+          location: point,
           onStart: () {
-            setState(() {
-              _profileLocationMarker = point;
-              _internalMode = MapModeInternal.viewLocationEditButtonDisabled;
-            });
+            if (mounted) {
+              setState(() {
+                _profileLocationMarker = point;
+                _internalMode = MapModeInternal.viewLocationEditButtonDisabled;
+              });
+            }
           },
           onComplete: (result) {
-            if (result) {
-              showSnackBar("Location update successful");
-            } else {
-              showSnackBar("Location update failed");
+            if (mounted) {
+              setState(() {
+                _internalMode = MapModeInternal.viewLocation;
+              });
             }
-            setState(() {
-              _internalMode = MapModeInternal.viewLocation;
-            });
           },
         );
       case MapModeInternal.viewLocation || MapModeInternal.viewLocationEditButtonDisabled: {}
@@ -195,9 +232,13 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
   }
 
   Widget viewHelp() {
-    // Create background color area
+    final helpTextString = widget.editingHelpText;
+    if (helpTextString == null) {
+      return Container();
+    }
 
-    const helpText = Text("Tap on the map to select a new location for your profile.");
+    final helpText = Text(helpTextString);
+
     switch (_internalMode) {
       case MapModeInternal.selectLocationNoModeButton || MapModeInternal.selectLocation:
         return Align(
@@ -322,22 +363,18 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
   }
 }
 
-class LocationManager {
-  bool locationUploadInProgress = false;
-
-  /// onComplete(true) is called if this succeeds, otherwise onComplete(false)
-  Future<void> uploadLocation(LatLng location, {required void Function() onStart, required void Function(bool) onComplete}) async {
-    if (locationUploadInProgress) {
-      return;
+abstract class SelectedLocationHandler {
+  /// onComplete(true) is called if this succeeds, otherwise onComplete(false).
+  ///
+  /// BuildContext is the [LocationWidget]'s context.
+  Future<void> handleLocationSelection(
+    {
+      required BuildContext context,
+      required LatLng location,
+      required void Function() onStart,
+      required void Function(bool) onComplete
     }
-
-    locationUploadInProgress = true;
-    onStart();
-    final apiLocation = Location(latitude: location.latitude, longitude: location.longitude);
-    final result = await ProfileRepository.getInstance().updateLocation(apiLocation);
-    locationUploadInProgress = false;
-    onComplete(result);
-  }
+  );
 }
 
 class MapAnimationManager {

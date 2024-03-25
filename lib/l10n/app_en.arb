@@ -141,7 +141,7 @@
   "@generic_take_photo": {
     "description": "Generic take photo text"
   },
-  "generic_text_field_age_hint_text": "Insert an age between 18-99",
+  "generic_text_field_age_hint_text": "Insert an age between 18–99",
   "@generic_text_field_age_hint_text": {
     "description": "Input field hint text for age"
   },
@@ -189,6 +189,14 @@
   "initial_setup_screen_gender_title": "I am…",
   "@initial_setup_screen_gender_title": {
     "description": "Title for ask gender screen"
+  },
+  "initial_setup_screen_location_help_dialog_text": "Select a location for your profile by tapping or long pressing the map.",
+  "@initial_setup_screen_location_help_dialog_text": {
+    "description": "Text for initial setup location help dialog"
+  },
+  "initial_setup_screen_location_title": "My profile's location is…",
+  "@initial_setup_screen_location_title": {
+    "description": "Title for initial setup location screen"
   },
   "initial_setup_screen_profile_basic_info_age_title": "Age",
   "@initial_setup_screen_profile_basic_info_age_title": {
@@ -309,6 +317,18 @@
   "login_screen_register_button": "Register",
   "@login_screen_register_button": {
     "description": "Register button text"
+  },
+  "map_location_update_failed": "Location update successful",
+  "@map_location_update_failed": {
+    "description": "Snackbar text about failed location update"
+  },
+  "map_location_update_successful": "Location update failed",
+  "@map_location_update_successful": {
+    "description": "Snackbar text about successful location update"
+  },
+  "map_select_location_help_text": "Tap or long press the map to select a location.",
+  "@map_select_location_help_text": {
+    "description": "Help text for selecting map location"
   },
   "pageAdminTitle": "Admin",
   "@pageAdminTitle": {
