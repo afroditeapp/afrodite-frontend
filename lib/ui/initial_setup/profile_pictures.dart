@@ -1,7 +1,4 @@
-import "dart:io";
-
 import "package:flutter/material.dart";
-import "package:flutter/widgets.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:image_picker/image_picker.dart";
 import "package:pihka_frontend/localizations.dart";
@@ -63,16 +60,14 @@ class _AskProfilePicturesState extends State<AskProfilePictures> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          questionTitleText(context, context.strings.initial_setup_screen_profile_pictures_title),
-          ProfilePictureSelection(
-            mode: InitialSetupProfilePictures(),
-            profilePicturesBloc: context.read<ProfilePicturesBloc>(),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        questionTitleText(context, context.strings.initial_setup_screen_profile_pictures_title),
+        ProfilePictureSelection(
+          mode: const InitialSetupProfilePictures(),
+          profilePicturesBloc: context.read<ProfilePicturesBloc>(),
+        ),
+      ],
     );
   }
 }

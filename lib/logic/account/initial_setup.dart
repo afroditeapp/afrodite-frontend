@@ -1,9 +1,11 @@
 import "dart:io";
+import "dart:math";
 
 import "package:camera/camera.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
+import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
@@ -13,6 +15,7 @@ import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/logic/media/profile_pictures.dart";
+import "package:pihka_frontend/ui/initial_setup/profile_basic_info.dart";
 import "package:pihka_frontend/utils.dart";
 import "package:pihka_frontend/utils/tmp_dir.dart";
 
@@ -35,6 +38,10 @@ class InitialSetupData with _$InitialSetupData {
     ProcessedAccountImage? securitySelfie,
     List<ImgState>? profileImages,
     Gender? gender,
+    @Default(GenderSearchSettingsAll()) GenderSearchSettingsAll genderSearchSetting,
+    @Default(false) bool searchAgeRangeInitDone,
+    int? searchAgeRangeMin,
+    int? searchAgeRangeMax,
     String? sendError, // TODO: remove?
     @Default(false) bool sendingInProgress, // TODO: remove?
   }) = _InitialSetupData;
@@ -73,6 +80,23 @@ class SetProfileImages extends InitialSetupEvent {
 class SetGender extends InitialSetupEvent {
   final Gender gender;
   SetGender(this.gender);
+}
+class SetGenderSearchSetting extends InitialSetupEvent {
+  final GenderSearchSettingsAll settings;
+  SetGenderSearchSetting(this.settings);
+}
+class InitAgeRange extends InitialSetupEvent {
+  final int min;
+  final int max;
+  InitAgeRange(this.min, this.max);
+}
+class SetAgeRangeMin extends InitialSetupEvent {
+  final int? min;
+  SetAgeRangeMin(this.min);
+}
+class SetAgeRangeMax extends InitialSetupEvent {
+  final int? max;
+  SetAgeRangeMax(this.max);
 }
 class CompleteInitialSetup extends InitialSetupEvent {}
 class ResetState extends InitialSetupEvent {}
@@ -120,6 +144,29 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
     on<SetGender>((data, emit) async {
       emit(state.copyWith(
         gender: data.gender,
+        genderSearchSetting: const GenderSearchSettingsAll(),
+      ));
+    });
+    on<SetGenderSearchSetting>((data, emit) async {
+      emit(state.copyWith(
+        genderSearchSetting: data.settings,
+      ));
+    });
+    on<InitAgeRange>((data, emit) async {
+      emit(state.copyWith(
+        searchAgeRangeMin: data.min,
+        searchAgeRangeMax: data.max,
+        searchAgeRangeInitDone: true,
+      ));
+    });
+    on<SetAgeRangeMin>((data, emit) async {
+      emit(state.copyWith(
+        searchAgeRangeMin: data.min,
+      ));
+    });
+    on<SetAgeRangeMax>((data, emit) async {
+      emit(state.copyWith(
+        searchAgeRangeMax: data.max,
       ));
     });
     on<CompleteInitialSetup>((data, emit) async {
@@ -195,11 +242,73 @@ enum Gender {
   woman,
   nonBinary;
 
-  String uiText(BuildContext context) {
+  String uiTextSingular(BuildContext context) {
     return switch (this) {
       man => context.strings.generic_gender_man,
       woman => context.strings.generic_gender_woman,
       nonBinary => context.strings.generic_gender_nonbinary,
     };
+  }
+
+  String uiTextPlural(BuildContext context) {
+    return switch (this) {
+      man => context.strings.generic_gender_man_plural,
+      woman => context.strings.generic_gender_woman_plural,
+      nonBinary => context.strings.generic_gender_nonbinary_plural,
+    };
+  }
+}
+
+enum GenderSearchSetting {
+  men,
+  women,
+  all;
+
+  String uiText(BuildContext context) {
+    return switch (this) {
+      men => context.strings.generic_gender_man_plural,
+      women => context.strings.generic_gender_woman_plural,
+      all => context.strings.generic_search_settings_looking_for_all_genders_text,
+    };
+  }
+
+  GenderSearchSettingsAll toGenderSearchSettingsAll() {
+    return switch (this) {
+      men => const GenderSearchSettingsAll(men: true),
+      women => const GenderSearchSettingsAll(women: true),
+      all => const GenderSearchSettingsAll(men: true, women: true, nonBinary: true),
+    };
+  }
+}
+
+class GenderSearchSettingsAll {
+  final bool men;
+  final bool women;
+  final bool nonBinary;
+  const GenderSearchSettingsAll({
+    this.men = false,
+    this.women = false,
+    this.nonBinary = false,
+  });
+
+  GenderSearchSetting? toGenderSearchSetting() {
+    return switch (this) {
+      GenderSearchSettingsAll(men: true, women: true, nonBinary: true) => GenderSearchSetting.all,
+      GenderSearchSettingsAll(men: true, women: false) => GenderSearchSetting.men,
+      GenderSearchSettingsAll(women: true, men: false) => GenderSearchSetting.women,
+      _ => null,
+    };
+  }
+
+  GenderSearchSettingsAll updateWith(bool value, Gender whatUpdated) {
+    return switch (whatUpdated) {
+      Gender.man => GenderSearchSettingsAll(men: value, women: women, nonBinary: nonBinary),
+      Gender.woman => GenderSearchSettingsAll(men: men, women: value, nonBinary: nonBinary),
+      Gender.nonBinary => GenderSearchSettingsAll(men: men, women: women, nonBinary: value),
+    };
+  }
+
+  bool notEmpty() {
+    return men || women || nonBinary;
   }
 }

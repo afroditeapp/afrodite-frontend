@@ -8,6 +8,7 @@ import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/ui/initial_setup/profile_pictures.dart";
+import "package:pihka_frontend/ui_utils/consts/padding.dart";
 import "package:pihka_frontend/ui_utils/image.dart";
 import "package:pihka_frontend/ui_utils/image_processing.dart";
 import "package:pihka_frontend/ui_utils/view_image_screen.dart";
@@ -70,51 +71,46 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          questionTitleText(context, context.strings.initial_setup_screen_security_selfie_title),
-          imageArea(context),
+    return Column(
+      children: [
+        questionTitleText(context, context.strings.initial_setup_screen_security_selfie_title),
+        imageArea(context),
+        const Padding(padding: EdgeInsets.all(8.0)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: INITIAL_SETUP_PADDING),
+          child: Text(context.strings.initial_setup_screen_security_selfie_description),
+        ),
 
-          // Zero sized widgets
-          ...imageProcessingUiWidgets<SecuritySelfieImageProcessingBloc>(
-            onComplete: (context, processedImg) {
-              if (processedImg.slot == 0) {
-                final bloc = context.read<InitialSetupBloc>();
-                bloc.add(SetSecuritySelfie(processedImg));
-              }
-            },
-          ),
-        ],
-      ),
+        // Zero sized widgets
+        ...imageProcessingUiWidgets<SecuritySelfieImageProcessingBloc>(
+          onComplete: (context, processedImg) {
+            if (processedImg.slot == 0) {
+              final bloc = context.read<InitialSetupBloc>();
+              bloc.add(SetSecuritySelfie(processedImg));
+            }
+          },
+        ),
+      ],
     );
   }
 
   Widget imageArea(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: IMAGE_AREA_HEIGHT,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Expanded(
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: Icon(Icons.person, size: 150.0, color: Colors.black45)
-                ),
-              ),
-              Expanded(
-                child: imageAndCameraButton(context)
-              ),
-            ],
+    return SizedBox(
+      height: IMAGE_AREA_HEIGHT,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Expanded(
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: Icon(Icons.person, size: 150.0, color: Colors.black45)
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(context.strings.initial_setup_screen_security_selfie_description),
-        ),
-      ],
+          Expanded(
+            child: imageAndCameraButton(context)
+          ),
+        ],
+      ),
     );
   }
 

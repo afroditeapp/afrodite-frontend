@@ -7,10 +7,12 @@ import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/common_actions.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/menu_actions.dart';
+import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 
 Widget commonInitialSetupScreenContent({
   required BuildContext context,
-  required Widget child
+  required Widget child,
+  bool resizeToAvoidBottomInset = true,
 }) {
   return Scaffold(
     appBar: AppBar(
@@ -28,7 +30,7 @@ Widget commonInitialSetupScreenContent({
       ],
     ),
     body: child,
-    resizeToAvoidBottomInset: false,
+    resizeToAvoidBottomInset: resizeToAvoidBottomInset,
   );
 }
 
@@ -64,8 +66,17 @@ class _QuestionAskerState extends State<QuestionAsker> {
         return BlocBuilder<InitialSetupBloc, InitialSetupData>(
           builder: (context, state) {
             final onPressed = widget.getContinueButtonCallback(context, state);
+            final void Function()? wrappedCallback;
+            if (onPressed == null) {
+              wrappedCallback = null;
+            } else {
+              wrappedCallback = () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                onPressed();
+              };
+            }
             return ElevatedButton(
-              onPressed: onPressed,
+              onPressed: wrappedCallback,
               child: Text(context.strings.generic_continue),
             );
           }
@@ -73,18 +84,23 @@ class _QuestionAskerState extends State<QuestionAsker> {
       };
     }
 
-    return Column(
-      verticalDirection: VerticalDirection.up,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: buttonBuilder(context),
+    return CustomScrollView(
+      physics: const ClampingScrollPhysics(),
+      slivers: [
+        SliverToBoxAdapter(
+          child: widget.question,
+        ),
+        SliverFillRemaining(
+          hasScrollBody: false,
+          fillOverscroll: true,
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
+              child: buttonBuilder(context),
+            ),
           ),
         ),
-        Expanded(child: widget.question),
       ],
     );
   }
@@ -95,7 +111,7 @@ Widget questionTitleText(BuildContext context, String title) {
   return Align(
     alignment: Alignment.centerLeft,
     child: Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
       child: Text(
         title,
         style: Theme.of(context).textTheme.headlineSmall

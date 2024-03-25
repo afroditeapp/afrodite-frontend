@@ -2,6 +2,8 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:pihka_frontend/localizations.dart';
 
 String _defaultInitialValue() {
   return "";
@@ -52,6 +54,53 @@ class _SimpleTextFieldState extends State<SimpleTextField> {
         onChanged: (newValue) {
           widget.onChanged(newValue);
         },
+      ),
+    );
+  }
+}
+
+class AgeTextField extends StatefulWidget {
+  final controller = TextEditingController();
+
+  final String Function() getInitialValue;
+  final void Function(String) onChanged;
+
+  AgeTextField({
+    this.getInitialValue = _defaultInitialValue,
+    this.onChanged = _defaultOnChanged,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _AgeTextFieldState();
+}
+
+class _AgeTextFieldState extends State<AgeTextField> {
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.text = widget.getInitialValue();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      child: TextFormField(
+        controller: widget.controller,
+        decoration: InputDecoration(
+          hintText: context.strings.generic_text_field_age_hint_text,
+        ),
+        keyboardType: TextInputType.number,
+        enableSuggestions: false,
+        autocorrect: false,
+        maxLength: 2,
+        onChanged: (newValue) {
+          widget.onChanged(newValue);
+        },
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+        ],
       ),
     );
   }

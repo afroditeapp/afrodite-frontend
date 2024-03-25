@@ -3,6 +3,7 @@ import "package:flutter/services.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
+import "package:pihka_frontend/ui/initial_setup/search_settings.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
 
 class AskGenderScreen extends StatelessWidget {
@@ -16,7 +17,7 @@ class AskGenderScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           if (state.gender != null) {
             return () {
-              // Navigator.push(context, MaterialPageRoute<void>(builder: (_) => screen))
+              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => AskSearchSettingsScreen()));
             };
           } else {
             return null;
@@ -77,7 +78,7 @@ Widget genderRadioButtons(BuildContext context, Gender? selected, void Function(
 
 Widget genderListTile(BuildContext context, Gender? selected, Gender gender, void Function(Gender?) onChanged) {
   return RadioListTile<Gender>(
-    title: Text(gender.uiText(context)),
+    title: Text(gender.uiTextSingular(context)),
     value: gender,
     groupValue: selected,
     onChanged: onChanged,

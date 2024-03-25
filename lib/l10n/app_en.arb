@@ -100,13 +100,25 @@
   "@generic_gender_man": {
     "description": "Generic man gender text"
   },
+  "generic_gender_man_plural": "Men",
+  "@generic_gender_man_plural": {
+    "description": "Generic man gender text in plural form"
+  },
   "generic_gender_nonbinary": "Non-binary",
   "@generic_gender_nonbinary": {
     "description": "Generic non-binary gender text"
   },
+  "generic_gender_nonbinary_plural": "Non-binaries",
+  "@generic_gender_nonbinary_plural": {
+    "description": "Generic non-binary gender text in plural form"
+  },
   "generic_gender_woman": "Woman",
   "@generic_gender_woman": {
     "description": "Generic woman gender text"
+  },
+  "generic_gender_woman_plural": "Women",
+  "@generic_gender_woman_plural": {
+    "description": "Generic woman gender text in plural form"
   },
   "generic_login": "Login",
   "@generic_login": {
@@ -124,9 +136,14 @@
   "@generic_ok": {
     "description": "Generic OK text"
   },
+  "generic_search_settings_looking_for_all_genders_text": "All",
   "generic_take_photo": "Take photo",
   "@generic_take_photo": {
     "description": "Generic take photo text"
+  },
+  "generic_text_field_age_hint_text": "Insert an age between 18-99",
+  "@generic_text_field_age_hint_text": {
+    "description": "Input field hint text for age"
   },
   "image_processing_ui_confirm_photo_dialog_title": "Continue with this photo?",
   "@image_processing_ui_confirm_photo_dialog_title": {
@@ -173,10 +190,6 @@
   "@initial_setup_screen_gender_title": {
     "description": "Title for ask gender screen"
   },
-  "initial_setup_screen_profile_basic_info_age_hint_text": "Insert an age between 18-99",
-  "@initial_setup_screen_profile_basic_info_age_hint_text": {
-    "description": "Input field hint text for age"
-  },
   "initial_setup_screen_profile_basic_info_age_title": "Age",
   "@initial_setup_screen_profile_basic_info_age_title": {
     "description": "Title text for asking age"
@@ -216,6 +229,18 @@
   "initial_setup_screen_profile_pictures_title": "My profile pictures are…",
   "@initial_setup_screen_profile_pictures_title": {
     "description": "Title for profile pictures selection screen"
+  },
+  "initial_setup_screen_search_settings_max_age_subtitle": "…with max age…",
+  "@initial_setup_screen_search_settings_max_age_subtitle": {
+    "description": "Subtitle for max age search setting"
+  },
+  "initial_setup_screen_search_settings_min_age_subtitle": "…with min age…",
+  "@initial_setup_screen_search_settings_min_age_subtitle": {
+    "description": "Subtitle for min age search setting"
+  },
+  "initial_setup_screen_search_settings_title": "I am searching for…",
+  "@initial_setup_screen_search_settings_title": {
+    "description": "Title for ask search settings screen"
   },
   "initial_setup_screen_security_selfie_description": "Take selfie with your phone's front camera. The selfie is used for moderating your profile images and by default it is only visible to content Moderators.",
   "@initial_setup_screen_security_selfie_description": {

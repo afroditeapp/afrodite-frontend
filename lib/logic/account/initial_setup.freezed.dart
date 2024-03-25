@@ -24,6 +24,11 @@ mixin _$InitialSetupData {
       throw _privateConstructorUsedError;
   List<ImgState>? get profileImages => throw _privateConstructorUsedError;
   Gender? get gender => throw _privateConstructorUsedError;
+  GenderSearchSettingsAll get genderSearchSetting =>
+      throw _privateConstructorUsedError;
+  bool get searchAgeRangeInitDone => throw _privateConstructorUsedError;
+  int? get searchAgeRangeMin => throw _privateConstructorUsedError;
+  int? get searchAgeRangeMax => throw _privateConstructorUsedError;
   String? get sendError => throw _privateConstructorUsedError; // TODO: remove?
   bool get sendingInProgress => throw _privateConstructorUsedError;
 
@@ -46,6 +51,10 @@ abstract class $InitialSetupDataCopyWith<$Res> {
       ProcessedAccountImage? securitySelfie,
       List<ImgState>? profileImages,
       Gender? gender,
+      GenderSearchSettingsAll genderSearchSetting,
+      bool searchAgeRangeInitDone,
+      int? searchAgeRangeMin,
+      int? searchAgeRangeMax,
       String? sendError,
       bool sendingInProgress});
 }
@@ -70,6 +79,10 @@ class _$InitialSetupDataCopyWithImpl<$Res, $Val extends InitialSetupData>
     Object? securitySelfie = freezed,
     Object? profileImages = freezed,
     Object? gender = freezed,
+    Object? genderSearchSetting = null,
+    Object? searchAgeRangeInitDone = null,
+    Object? searchAgeRangeMin = freezed,
+    Object? searchAgeRangeMax = freezed,
     Object? sendError = freezed,
     Object? sendingInProgress = null,
   }) {
@@ -102,6 +115,22 @@ class _$InitialSetupDataCopyWithImpl<$Res, $Val extends InitialSetupData>
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
               as Gender?,
+      genderSearchSetting: null == genderSearchSetting
+          ? _value.genderSearchSetting
+          : genderSearchSetting // ignore: cast_nullable_to_non_nullable
+              as GenderSearchSettingsAll,
+      searchAgeRangeInitDone: null == searchAgeRangeInitDone
+          ? _value.searchAgeRangeInitDone
+          : searchAgeRangeInitDone // ignore: cast_nullable_to_non_nullable
+              as bool,
+      searchAgeRangeMin: freezed == searchAgeRangeMin
+          ? _value.searchAgeRangeMin
+          : searchAgeRangeMin // ignore: cast_nullable_to_non_nullable
+              as int?,
+      searchAgeRangeMax: freezed == searchAgeRangeMax
+          ? _value.searchAgeRangeMax
+          : searchAgeRangeMax // ignore: cast_nullable_to_non_nullable
+              as int?,
       sendError: freezed == sendError
           ? _value.sendError
           : sendError // ignore: cast_nullable_to_non_nullable
@@ -130,6 +159,10 @@ abstract class _$$InitialSetupDataImplCopyWith<$Res>
       ProcessedAccountImage? securitySelfie,
       List<ImgState>? profileImages,
       Gender? gender,
+      GenderSearchSettingsAll genderSearchSetting,
+      bool searchAgeRangeInitDone,
+      int? searchAgeRangeMin,
+      int? searchAgeRangeMax,
       String? sendError,
       bool sendingInProgress});
 }
@@ -152,6 +185,10 @@ class __$$InitialSetupDataImplCopyWithImpl<$Res>
     Object? securitySelfie = freezed,
     Object? profileImages = freezed,
     Object? gender = freezed,
+    Object? genderSearchSetting = null,
+    Object? searchAgeRangeInitDone = null,
+    Object? searchAgeRangeMin = freezed,
+    Object? searchAgeRangeMax = freezed,
     Object? sendError = freezed,
     Object? sendingInProgress = null,
   }) {
@@ -184,6 +221,22 @@ class __$$InitialSetupDataImplCopyWithImpl<$Res>
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
               as Gender?,
+      genderSearchSetting: null == genderSearchSetting
+          ? _value.genderSearchSetting
+          : genderSearchSetting // ignore: cast_nullable_to_non_nullable
+              as GenderSearchSettingsAll,
+      searchAgeRangeInitDone: null == searchAgeRangeInitDone
+          ? _value.searchAgeRangeInitDone
+          : searchAgeRangeInitDone // ignore: cast_nullable_to_non_nullable
+              as bool,
+      searchAgeRangeMin: freezed == searchAgeRangeMin
+          ? _value.searchAgeRangeMin
+          : searchAgeRangeMin // ignore: cast_nullable_to_non_nullable
+              as int?,
+      searchAgeRangeMax: freezed == searchAgeRangeMax
+          ? _value.searchAgeRangeMax
+          : searchAgeRangeMax // ignore: cast_nullable_to_non_nullable
+              as int?,
       sendError: freezed == sendError
           ? _value.sendError
           : sendError // ignore: cast_nullable_to_non_nullable
@@ -207,6 +260,10 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
       this.securitySelfie,
       final List<ImgState>? profileImages,
       this.gender,
+      this.genderSearchSetting = const GenderSearchSettingsAll(),
+      this.searchAgeRangeInitDone = false,
+      this.searchAgeRangeMin,
+      this.searchAgeRangeMax,
       this.sendError,
       this.sendingInProgress = false})
       : _profileImages = profileImages;
@@ -234,6 +291,16 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   @override
   final Gender? gender;
   @override
+  @JsonKey()
+  final GenderSearchSettingsAll genderSearchSetting;
+  @override
+  @JsonKey()
+  final bool searchAgeRangeInitDone;
+  @override
+  final int? searchAgeRangeMin;
+  @override
+  final int? searchAgeRangeMax;
+  @override
   final String? sendError;
 // TODO: remove?
   @override
@@ -242,7 +309,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
 
   @override
   String toString() {
-    return 'InitialSetupData(email: $email, birthdate: $birthdate, profileInitial: $profileInitial, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, sendError: $sendError, sendingInProgress: $sendingInProgress)';
+    return 'InitialSetupData(email: $email, birthdate: $birthdate, profileInitial: $profileInitial, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, genderSearchSetting: $genderSearchSetting, searchAgeRangeInitDone: $searchAgeRangeInitDone, searchAgeRangeMin: $searchAgeRangeMin, searchAgeRangeMax: $searchAgeRangeMax, sendError: $sendError, sendingInProgress: $sendingInProgress)';
   }
 
   @override
@@ -262,6 +329,14 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
             const DeepCollectionEquality()
                 .equals(other._profileImages, _profileImages) &&
             (identical(other.gender, gender) || other.gender == gender) &&
+            (identical(other.genderSearchSetting, genderSearchSetting) ||
+                other.genderSearchSetting == genderSearchSetting) &&
+            (identical(other.searchAgeRangeInitDone, searchAgeRangeInitDone) ||
+                other.searchAgeRangeInitDone == searchAgeRangeInitDone) &&
+            (identical(other.searchAgeRangeMin, searchAgeRangeMin) ||
+                other.searchAgeRangeMin == searchAgeRangeMin) &&
+            (identical(other.searchAgeRangeMax, searchAgeRangeMax) ||
+                other.searchAgeRangeMax == searchAgeRangeMax) &&
             (identical(other.sendError, sendError) ||
                 other.sendError == sendError) &&
             (identical(other.sendingInProgress, sendingInProgress) ||
@@ -278,6 +353,10 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
       securitySelfie,
       const DeepCollectionEquality().hash(_profileImages),
       gender,
+      genderSearchSetting,
+      searchAgeRangeInitDone,
+      searchAgeRangeMin,
+      searchAgeRangeMax,
       sendError,
       sendingInProgress);
 
@@ -298,6 +377,10 @@ abstract class _InitialSetupData implements InitialSetupData {
       final ProcessedAccountImage? securitySelfie,
       final List<ImgState>? profileImages,
       final Gender? gender,
+      final GenderSearchSettingsAll genderSearchSetting,
+      final bool searchAgeRangeInitDone,
+      final int? searchAgeRangeMin,
+      final int? searchAgeRangeMax,
       final String? sendError,
       final bool sendingInProgress}) = _$InitialSetupDataImpl;
 
@@ -315,6 +398,14 @@ abstract class _InitialSetupData implements InitialSetupData {
   List<ImgState>? get profileImages;
   @override
   Gender? get gender;
+  @override
+  GenderSearchSettingsAll get genderSearchSetting;
+  @override
+  bool get searchAgeRangeInitDone;
+  @override
+  int? get searchAgeRangeMin;
+  @override
+  int? get searchAgeRangeMax;
   @override
   String? get sendError;
   @override // TODO: remove?

@@ -4,10 +4,11 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/ui/initial_setup/gender.dart";
+import "package:pihka_frontend/ui_utils/consts/padding.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
+import "package:pihka_frontend/ui_utils/text_field.dart";
+import "package:pihka_frontend/utils/age.dart";
 
-const MIN_AGE = 18;
-const MAX_AGE = 99;
 final initialLetterRegexp = RegExp("[a-zA-ZåäöÅÄÖ]");
 
 class AskProfileBasicInfoScreen extends StatelessWidget {
@@ -46,10 +47,6 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
     );
   }
 
-  bool ageIsValid(int? age) {
-    return age != null && age >= MIN_AGE && age <= MAX_AGE;
-  }
-
   bool initialIsValid(String? initial) {
     return initial != null && initialLetterRegexp.hasMatch(initial);
   }
@@ -81,7 +78,7 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
       children: [
         questionTitleText(context, context.strings.initial_setup_screen_profile_basic_info_title),
         Padding(
-          padding: const EdgeInsets.all(18.0),
+          padding: const EdgeInsets.symmetric(horizontal: INITIAL_SETUP_PADDING),
           child: askInfo(context),
         ),
       ],
@@ -110,22 +107,12 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
       ],
     );
 
-    final ageField = TextField(
-      decoration: InputDecoration(
-          hintText: context.strings.initial_setup_screen_profile_basic_info_age_hint_text,
-      ),
-      controller: ageTextController,
-      keyboardType: TextInputType.number,
-      enableSuggestions: false,
-      autocorrect: false,
-      maxLength: 2,
+    final ageField = AgeTextField(
+      getInitialValue: () => widget.ageInitialValue,
       onChanged: (value) {
         final age = int.tryParse(value);
         context.read<InitialSetupBloc>().add(SetProfileAge(age));
       },
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp("[0-9]")),
-      ],
     );
 
     return Column(
