@@ -165,7 +165,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
           tileProvider: CustomTileProvider(),
         ),
         markerLayer(),
-        attributionWidget(),
+        attributionWidget(context),
         floatingActionButtons(),
         viewHelp(),
       ],
@@ -546,11 +546,11 @@ class MapAnimationManager {
   }
 }
 
-Widget attributionWidget() {
+Widget attributionWidget(BuildContext context) {
   return RichAttributionWidget(
     attributions: [
       TextSourceAttribution(
-        "OpenStreetMap contributors",
+        context.strings.map_openstreetmap_data_attribution_link_text,
         onTap: () => launchUrl(Uri.parse("https://openstreetmap.org/copyright")),
       ),
     ],

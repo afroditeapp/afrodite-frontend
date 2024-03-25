@@ -326,6 +326,10 @@
   "@map_location_update_successful": {
     "description": "Snackbar text about successful location update"
   },
+  "map_openstreetmap_data_attribution_link_text": "OpenStreetMap contributors",
+  "@map_openstreetmap_data_attribution_link_text": {
+    "description": "OpenStreetMap data attribution link text"
+  },
   "map_select_location_help_text": "Tap or long press the map to select a location.",
   "@map_select_location_help_text": {
     "description": "Help text for selecting map location"
