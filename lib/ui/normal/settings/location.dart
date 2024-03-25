@@ -6,7 +6,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
@@ -66,7 +65,6 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
   final MapController _mapController = MapController();
   final LocationManager _locationManager = LocationManager();
   MapAnimationManager? _animationManager = MapAnimationManager();
-  final bool _locateButtonVisible = true;
   //bool _profileLocationSaveNeeded = false;
   LatLng? _profileLocationMarker;
   LatLng? _deviceLocationMarker;
@@ -115,13 +113,6 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
         maxZoom: 15,
         maxBounds: bounds,
         interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
-        onPositionChanged: (position, hasGesture) {
-          if (_locationManager.searchingLocation) {
-            // Prevent map animation in case where location is requested and map
-            // is moved after that.
-            _animationManager?.preventAnimation();
-          }
-        },
         onTap: (tapPosition, point) {
           handleOnTap(point);
         },
@@ -183,7 +174,6 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
               _internalMode = MapModeInternal.viewLocation;
             });
           },
-          heroTag: "mapModeButton",
           child: const Icon(Icons.check),
         );
       case MapModeInternal.viewLocation || MapModeInternal.viewLocationEditButtonDisabled: {
@@ -198,7 +188,6 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
 
         return FloatingActionButton(
           onPressed: editButtonAction,
-          heroTag: "mapModeButton",
           child: const Icon(Icons.edit),
         );
       }
@@ -235,36 +224,11 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
   }
 
   Widget floatingActionButtons() {
-    Widget? locateButton;
-    if (_locateButtonVisible) {
-      final Icon icon;
-      if (_deviceLocationMarker != null) {
-        icon = const Icon(Icons.my_location);
-      } else {
-        icon = const Icon(Icons.location_searching);
-      }
-      locateButton = FloatingActionButton(
-        onPressed: () {
-          _animationManager?.allowAnimation();
-          moveMapToDeviceLocation();
-        },
-        heroTag: "mapLocateButton",
-        child: icon,
-      );
-    }
-
     final List<Widget> buttons = [];
 
     final Widget? modeButton = this.modeButton();
     if (modeButton != null) {
       buttons.add(modeButton);
-    }
-
-    if (locateButton != null) {
-      if (buttons.isNotEmpty) {
-        buttons.add(const Padding(padding: EdgeInsets.all(8.0)));
-      }
-      buttons.add(locateButton);
     }
 
     return Align(
@@ -345,33 +309,6 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
     );
   }
 
-  Future<void> moveMapToDeviceLocation() async {
-    // Allow animation, but if the map is moved, it is prevented
-    _animationManager?.allowAnimation();
-
-    final currentLocation = _deviceLocationMarker;
-    if (currentLocation != null) {
-      _animationManager?.startLimitedMapAnimation(
-        _mapController,
-        currentLocation,
-      );
-    }
-
-    final location = await _locationManager.getLocation();
-    if (location != null && notDisposed()) {
-      setState(() {
-        _deviceLocationMarker = location;
-      });
-
-      if (currentLocation == null) {
-        _animationManager?.startLimitedMapAnimation(
-          _mapController,
-          location,
-        );
-      }
-    }
-  }
-
   bool notDisposed() {
     return _animationManager != null;
   }
@@ -386,20 +323,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
 }
 
 class LocationManager {
-  bool searchingLocation = false;
   bool locationUploadInProgress = false;
-
-  Future<LatLng?> getLocation() async {
-    if (searchingLocation) {
-      return null;
-    }
-
-    searchingLocation = true;
-    final location = await getDeviceLocation();
-    searchingLocation = false;
-
-    return location;
-  }
 
   /// onComplete(true) is called if this succeeds, otherwise onComplete(false)
   Future<void> uploadLocation(LatLng location, {required void Function() onStart, required void Function(bool) onComplete}) async {
@@ -596,31 +520,6 @@ Widget attributionWidget() {
     showFlutterMapAttribution: false,
     alignment: AttributionAlignment.bottomLeft,
   );
-}
-
-Future<LatLng?> getDeviceLocation() async {
-  final locationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!locationServiceEnabled) {
-    showSnackBar("Location services are disabled");
-    return null;
-  }
-  final checkLocationPermission = await Geolocator.checkPermission();
-  if (checkLocationPermission == LocationPermission.deniedForever) {
-    showSnackBar("No location permission. Allow the permission from system settings");
-    return null;
-  }
-
-  if (checkLocationPermission == LocationPermission.denied) {
-    final requestLocationPermission = await Geolocator.requestPermission();
-    if (requestLocationPermission == LocationPermission.denied ||
-        requestLocationPermission == LocationPermission.deniedForever) {
-      showSnackBar("No location permission");
-      return null;
-    }
-  }
-
-  final location = await Geolocator.getCurrentPosition();
-  return LatLng(location.latitude, location.longitude);
 }
 
 class CustomTileProvider extends TileProvider {
