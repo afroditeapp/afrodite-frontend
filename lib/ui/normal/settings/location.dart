@@ -438,8 +438,8 @@ class MapAnimationManager {
     }
 
     startMapAnimation(
-      mapController.center,
-      mapController.zoom,
+      mapController.camera.center,
+      mapController.camera.zoom,
       targetLocation,
       targetZoom,
       middleZoom,
