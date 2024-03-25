@@ -103,7 +103,6 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
   late final SelectedLocationHandler _locationSelectedHandler;
   MapAnimationManager? _animationManager = MapAnimationManager();
   LatLng? _profileLocationMarker;
-  LatLng? _deviceLocationMarker;
   MapModeInternal _internalMode = MapModeInternal.selectLocation;
 
   @override
@@ -285,43 +284,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
   }
 
   Widget markerLayer() {
-    const dotSize = 30.0;
-    const blueDot = Icon(
-      Icons.circle,
-      color: Colors.lightBlue,
-      size: dotSize - 10,
-    );
-    const whiteDot = Icon(
-      Icons.circle,
-      color: Colors.white,
-      size: dotSize,
-      shadows: [
-        Shadow(
-          blurRadius: 5.0,
-          color: Colors.black87,
-          offset: Offset(0.0, 0.0),
-        ),
-      ],
-    );
-
-    const dot = Stack(
-      children: [
-        Center(child: whiteDot),
-        Center(child: blueDot),
-      ],
-    );
-
     final markers = List<Marker>.empty(growable: true);
-    final currentLocation = _deviceLocationMarker;
-    if (currentLocation != null) {
-      markers.add(Marker(
-        width: dotSize,
-        height: dotSize,
-        point: currentLocation,
-        alignment: Alignment.center,
-        child: dot,
-      ));
-    }
 
     const locationSize = 70.0;
     final profileLocation = _profileLocationMarker;
