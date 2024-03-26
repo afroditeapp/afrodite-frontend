@@ -29,6 +29,7 @@ import 'package:pihka_frontend/logic/admin/image_moderation.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
 import 'package:pihka_frontend/logic/media/profile_pictures.dart';
+import 'package:pihka_frontend/logic/profile/attributes/attributes.dart';
 import 'package:pihka_frontend/logic/profile/location.dart';
 import 'package:pihka_frontend/logic/profile/profile.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_filtering_settings.dart';
@@ -89,6 +90,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => ConversationBloc(accountRepository, profileRepository, mediaRepository, chatRepository)),
         BlocProvider(create: (_) => ProfileFilteringSettingsBloc(profileRepository)),
         BlocProvider(create: (_) => LocationBloc(profileRepository), lazy: false),
+        BlocProvider(create: (_) => ProfileAttributesBloc(), lazy: false),
 
         // Login
         BlocProvider(create: (_) => SignInWithBloc()),
@@ -178,6 +180,10 @@ class GlobalInitManager {
 
     // Initializes formatting for other locales as well
     await initializeDateFormatting("en_US", null);
+
+    // Connect to server last to make sure that all events from
+    // server are handled.
+    await ApiManager.getInstance().restart();
   }
 
   /// Global init should be triggerred after when splash screen

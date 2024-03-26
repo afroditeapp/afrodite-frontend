@@ -128,10 +128,10 @@ class LoginRepository extends DataRepository {
 
     _api.serverEvents.listen((event) {
       switch (event) {
-          case EventToClientContainer e: {
-            AccountRepository.getInstance().handleEventToClient(e.event);
-          }
+        case EventToClientContainer e: {
+          AccountRepository.getInstance().handleEventToClient(e.event);
         }
+      }
     });
   }
 

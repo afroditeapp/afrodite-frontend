@@ -290,6 +290,7 @@ const forceSync = 255;
     SentLikes = 3,
     SentBlocks = 4,
     Matches = 5,
+    AvailableProfileAttributes = 6,
 */
 
 // TODO(prod): Implement sync data version handling
@@ -307,6 +308,8 @@ Uint8List syncDataBytes() {
     4, // SentBlocks
     forceSync,
     5, // Matches
+    forceSync,
+    6, // AvailableProfileAttributes
     forceSync,
   ];
   return Uint8List.fromList(bytes);

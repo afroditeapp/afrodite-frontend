@@ -198,6 +198,14 @@
   "@initial_setup_screen_location_title": {
     "description": "Title for initial setup location screen"
   },
+  "initial_setup_screen_profile_attributes_download_button": "Download questions",
+  "@initial_setup_screen_profile_attributes_download_button": {
+    "description": "Button text for downloading profile attributes"
+  },
+  "initial_setup_screen_profile_attributes_missing_error_text": "Profile questions are not yet downloaded.",
+  "@initial_setup_screen_profile_attributes_missing_error_text": {
+    "description": "Error text displayed when profile attributes are not yet downloaded"
+  },
   "initial_setup_screen_profile_basic_info_age_title": "Age",
   "@initial_setup_screen_profile_basic_info_age_title": {
     "description": "Title text for asking age"

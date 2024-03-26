@@ -42,7 +42,9 @@ enum KvString implements PreferenceKeyProvider<KvString, String> {
   chatAccessToken,
 
   // Location json
-  profileLocation;
+  profileLocation,
+  // Profile attributes json
+  profileAttributes;
 
   @override
   String sharedPreferencesKey() {

@@ -34,8 +34,6 @@ enum ApiManagerState {
   unsupportedClientVersion,
 }
 
-// sealed class ApiManagerEvent {}
-
 sealed class ServerWsEvent {}
 class EventToClientContainer implements ServerWsEvent {
   final EventToClient event;
@@ -62,8 +60,6 @@ class ApiManager extends AppSingleton {
 
   final BehaviorSubject<ApiManagerState> _state =
     BehaviorSubject.seeded(ApiManagerState.connecting);
-  // final PublishSubject<ApiManagerEvent> _events =
-  //   PublishSubject();
   final PublishSubject<ServerWsEvent> _serverEvents =
     PublishSubject();
 
@@ -108,19 +104,9 @@ class ApiManager extends AppSingleton {
 
     _connectEvents();
     await _loadAddressesFromConfig();
-    await _connect();
   }
 
   void _connectEvents() {
-    // _events
-    //   .stream
-    //   .asyncMap((event) {
-    //     switch (event) {
-    //       case _: return;
-    //     }
-    //   })
-    //   .listen((event) { });
-
       accountConnection.serverEvents.listen((event) {
         _serverEvents.add(event);
       });

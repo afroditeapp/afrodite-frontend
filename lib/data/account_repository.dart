@@ -8,6 +8,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
+import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
@@ -119,6 +120,8 @@ class AccountRepository extends DataRepository {
       ChatRepository.getInstance().receivedBlocksRefresh();
     } else if (event.event == EventType.newMessageReceived) {
       ChatRepository.getInstance().receiveNewMessages();
+    } else if (event.event == EventType.availableProfileAttributesChanged) {
+      ProfileRepository.getInstance().receiveProfileAttributes();
     } else {
       log.error("Unknown EventToClient");
     }

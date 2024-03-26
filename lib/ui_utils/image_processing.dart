@@ -77,8 +77,7 @@ Future<bool?> _confirmDialogForImage(BuildContext context, XFile image) async {
 }
 
 Widget sendSecuritySelfieProgressDialogListener<B extends Bloc<ImageProcessingEvent, ImageProcessingData>>() {
-  return ProgressDialogBlocListener<B, ImageProcessingData>(
-    child: const SizedBox.shrink(),
+  return ProgressDialogOpener<B, ImageProcessingData>(
     dialogVisibilityGetter: (context, state) => state.processingState is SendingInProgress,
     stateInfoBuilder: (context, state) {
       final selfieState = state.processingState;

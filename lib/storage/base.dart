@@ -64,6 +64,26 @@ abstract class KvStorageManager<K extends PreferenceKeyProvider<K, V>, V> {
       });
   }
 
+  Stream<T?> getUpdatesForWithConversionFailurePossible<T extends Object>(K key, T? Function(V) convert) async* {
+    final current = await getValue(key);
+    if (current != null) {
+      yield convert(current);
+    } else {
+      yield null;
+    }
+
+    yield* _updates
+      .where((event) => event.$1 == key)
+      .map((event) => event.$2)
+      .map((event) {
+        if (event != null) {
+          return convert(event);
+        } else {
+          return null;
+        }
+      });
+  }
+
   Stream<T> getUpdatesForWithConversionAndDefaultIfNull<T extends Object>(K key, T Function(V) convert, T defaultValue) async* {
     final current = await getValue(key);
     if (current != null) {

@@ -29,12 +29,16 @@ class LoginScreen extends RootScreen {
   @override
   Widget buildRootWidget(BuildContext context) {
     return Scaffold(
-      body: ProgressDialogBlocListener<DemoAccountBloc, DemoAccountBlocData>(
-        dialogVisibilityGetter:
-          (_, state) => state.loginProgressVisible,
-        loadingText:
-          context.strings.login_screen_demo_account_login_progress_dialog,
-        child: screenContent(),
+      body: Column(
+        children: [
+          Expanded(child: screenContent()),
+          ProgressDialogOpener<DemoAccountBloc, DemoAccountBlocData>(
+            dialogVisibilityGetter:
+              (_, state) => state.loginProgressVisible,
+            loadingText:
+              context.strings.login_screen_demo_account_login_progress_dialog,
+          ),
+        ],
       ),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(

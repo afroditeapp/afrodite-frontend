@@ -56,6 +56,19 @@ class ProfileRepository extends DataRepository {
       Location(latitude: 0.0, longitude: 0.0),
     );
 
+  Stream<AvailableProfileAttributes?> get profileAttributes => KvStringManager.getInstance()
+    .getUpdatesForWithConversionFailurePossible(
+      KvString.profileAttributes,
+      (value) {
+        final attributes = jsonDecode(value);
+        if (attributes == null) {
+          return null;
+        }
+        final parsedAttributes = AvailableProfileAttributes.fromJson(attributes);
+        return parsedAttributes;
+      },
+    );
+
   @override
   Future<void> init() async {
     final showOnlyFavorites = await KvBooleanManager.getInstance().getValue(
@@ -284,8 +297,19 @@ class ProfileRepository extends DataRepository {
       ));
     }
   }
-}
 
+  /// Save profile attributes from server to local storage and return them.
+  Future<AvailableProfileAttributes?> receiveProfileAttributes() async {
+    final profileAttributes = await _api.profile((api) => api.getAvailableProfileAttributes()).ok();
+    if (profileAttributes != null) {
+      await KvStringManager.getInstance().setValue(
+        KvString.profileAttributes,
+        jsonEncode(profileAttributes.toJson())
+      );
+    }
+    return profileAttributes;
+  }
+}
 
 sealed class GetProfileResult {}
 class GetProfileSuccess extends GetProfileResult {
