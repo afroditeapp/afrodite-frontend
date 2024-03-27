@@ -597,7 +597,7 @@ class FilePicture extends StatelessWidget {
             onPressed: () {
               context.read<ProfilePicturesBloc>().add(RemoveImage(imgIndex));
             },
-            icon: const Icon(Icons.close),
+            icon: const Icon(Icons.close_rounded),
           ),
         ],
       ),

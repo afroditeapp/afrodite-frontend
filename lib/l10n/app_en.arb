@@ -206,6 +206,10 @@
   "@initial_setup_screen_profile_attributes_missing_error_text": {
     "description": "Error text displayed when profile attributes are not yet downloaded"
   },
+  "initial_setup_screen_profile_attributes_no_questions_text": "All required questions already answered.",
+  "@initial_setup_screen_profile_attributes_no_questions_text": {
+    "description": "Info text that all required questions are already answered"
+  },
   "initial_setup_screen_profile_basic_info_age_title": "Age",
   "@initial_setup_screen_profile_basic_info_age_title": {
     "description": "Title text for asking age"

@@ -1,5 +1,4 @@
 import "dart:io";
-import "dart:math";
 
 import "package:camera/camera.dart";
 import "package:flutter/material.dart";
@@ -16,7 +15,6 @@ import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/logic/media/profile_pictures.dart";
-import "package:pihka_frontend/ui/initial_setup/profile_basic_info.dart";
 import "package:pihka_frontend/utils.dart";
 import "package:pihka_frontend/utils/tmp_dir.dart";
 
@@ -44,6 +42,7 @@ class InitialSetupData with _$InitialSetupData {
     int? searchAgeRangeMin,
     int? searchAgeRangeMax,
     LatLng? profileLocation,
+    @Default(PartiallyAnswered([]))ProfileAttributesState profileAttributes,
     String? sendError, // TODO: remove?
     @Default(false) bool sendingInProgress, // TODO: remove?
   }) = _InitialSetupData;
@@ -103,6 +102,17 @@ class SetAgeRangeMax extends InitialSetupEvent {
 class SetLocation extends InitialSetupEvent {
   final LatLng location;
   SetLocation(this.location);
+}
+class SetProfileAttributesState extends InitialSetupEvent {
+  final ProfileAttributesState attributeState;
+  SetProfileAttributesState(this.attributeState);
+}
+class ModifyProfileAttributeBitflagValue extends InitialSetupEvent {
+  final int requiredAttributeCount;
+  final Attribute attribute;
+  final AttributeValue attributeValue;
+  final bool value;
+  ModifyProfileAttributeBitflagValue(this.requiredAttributeCount, this.attribute, this.attributeValue, this.value);
 }
 class CompleteInitialSetup extends InitialSetupEvent {}
 class ResetState extends InitialSetupEvent {}
@@ -178,6 +188,16 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
     on<SetLocation>((data, emit) async {
       emit(state.copyWith(
         profileLocation: data.location,
+      ));
+    });
+    on<SetProfileAttributesState>((data, emit) async {
+      emit(state.copyWith(
+        profileAttributes: data.attributeState,
+      ));
+    });
+    on<ModifyProfileAttributeBitflagValue>((data, emit) async {
+      emit(state.copyWith(
+        profileAttributes: modifyAttributes(data, state.profileAttributes),
       ));
     });
     on<CompleteInitialSetup>((data, emit) async {
@@ -321,5 +341,54 @@ class GenderSearchSettingsAll {
 
   bool notEmpty() {
     return men || women || nonBinary;
+  }
+}
+
+
+sealed class ProfileAttributesState {
+  final List<ProfileAttributeValueUpdate> answers;
+  const ProfileAttributesState(this.answers);
+}
+class PartiallyAnswered extends ProfileAttributesState {
+  const PartiallyAnswered(super.answers);
+}
+class FullyAnswered extends ProfileAttributesState {
+  const FullyAnswered(super.answers);
+}
+
+ProfileAttributesState modifyAttributes(
+  ModifyProfileAttributeBitflagValue modifyCmd,
+  ProfileAttributesState currentState
+) {
+
+  final newAnswers = currentState.answers.toList();
+
+  bool updated = false;
+  for (final value in newAnswers) {
+    if (value.id == modifyCmd.attribute.id) {
+      updated = true;
+      if (modifyCmd.value) {
+        var v = value.valuePart1 ?? 0;
+        v |= modifyCmd.attributeValue.id;
+        value.valuePart1 = v;
+      } else {
+        var v = value.valuePart1 ?? 0;
+        v &= ~modifyCmd.attributeValue.id;
+        value.valuePart1 = v;
+      }
+    }
+  }
+
+  if (!updated) {
+    newAnswers.add(ProfileAttributeValueUpdate(
+      id: modifyCmd.attribute.id,
+      valuePart1: modifyCmd.value ? modifyCmd.attributeValue.id : 0,
+    ));
+  }
+
+  if (newAnswers.length == modifyCmd.requiredAttributeCount && newAnswers.every((v) => v.valuePart1 != 0)) {
+    return FullyAnswered(newAnswers);
+  } else {
+    return PartiallyAnswered(newAnswers);
   }
 }

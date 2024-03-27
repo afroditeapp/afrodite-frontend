@@ -30,6 +30,8 @@ mixin _$InitialSetupData {
   int? get searchAgeRangeMin => throw _privateConstructorUsedError;
   int? get searchAgeRangeMax => throw _privateConstructorUsedError;
   LatLng? get profileLocation => throw _privateConstructorUsedError;
+  ProfileAttributesState get profileAttributes =>
+      throw _privateConstructorUsedError;
   String? get sendError => throw _privateConstructorUsedError; // TODO: remove?
   bool get sendingInProgress => throw _privateConstructorUsedError;
 
@@ -57,6 +59,7 @@ abstract class $InitialSetupDataCopyWith<$Res> {
       int? searchAgeRangeMin,
       int? searchAgeRangeMax,
       LatLng? profileLocation,
+      ProfileAttributesState profileAttributes,
       String? sendError,
       bool sendingInProgress});
 }
@@ -86,6 +89,7 @@ class _$InitialSetupDataCopyWithImpl<$Res, $Val extends InitialSetupData>
     Object? searchAgeRangeMin = freezed,
     Object? searchAgeRangeMax = freezed,
     Object? profileLocation = freezed,
+    Object? profileAttributes = null,
     Object? sendError = freezed,
     Object? sendingInProgress = null,
   }) {
@@ -138,6 +142,10 @@ class _$InitialSetupDataCopyWithImpl<$Res, $Val extends InitialSetupData>
           ? _value.profileLocation
           : profileLocation // ignore: cast_nullable_to_non_nullable
               as LatLng?,
+      profileAttributes: null == profileAttributes
+          ? _value.profileAttributes
+          : profileAttributes // ignore: cast_nullable_to_non_nullable
+              as ProfileAttributesState,
       sendError: freezed == sendError
           ? _value.sendError
           : sendError // ignore: cast_nullable_to_non_nullable
@@ -171,6 +179,7 @@ abstract class _$$InitialSetupDataImplCopyWith<$Res>
       int? searchAgeRangeMin,
       int? searchAgeRangeMax,
       LatLng? profileLocation,
+      ProfileAttributesState profileAttributes,
       String? sendError,
       bool sendingInProgress});
 }
@@ -198,6 +207,7 @@ class __$$InitialSetupDataImplCopyWithImpl<$Res>
     Object? searchAgeRangeMin = freezed,
     Object? searchAgeRangeMax = freezed,
     Object? profileLocation = freezed,
+    Object? profileAttributes = null,
     Object? sendError = freezed,
     Object? sendingInProgress = null,
   }) {
@@ -250,6 +260,10 @@ class __$$InitialSetupDataImplCopyWithImpl<$Res>
           ? _value.profileLocation
           : profileLocation // ignore: cast_nullable_to_non_nullable
               as LatLng?,
+      profileAttributes: null == profileAttributes
+          ? _value.profileAttributes
+          : profileAttributes // ignore: cast_nullable_to_non_nullable
+              as ProfileAttributesState,
       sendError: freezed == sendError
           ? _value.sendError
           : sendError // ignore: cast_nullable_to_non_nullable
@@ -278,6 +292,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
       this.searchAgeRangeMin,
       this.searchAgeRangeMax,
       this.profileLocation,
+      this.profileAttributes = const PartiallyAnswered([]),
       this.sendError,
       this.sendingInProgress = false})
       : _profileImages = profileImages;
@@ -317,6 +332,9 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   @override
   final LatLng? profileLocation;
   @override
+  @JsonKey()
+  final ProfileAttributesState profileAttributes;
+  @override
   final String? sendError;
 // TODO: remove?
   @override
@@ -325,7 +343,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
 
   @override
   String toString() {
-    return 'InitialSetupData(email: $email, birthdate: $birthdate, profileInitial: $profileInitial, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, genderSearchSetting: $genderSearchSetting, searchAgeRangeInitDone: $searchAgeRangeInitDone, searchAgeRangeMin: $searchAgeRangeMin, searchAgeRangeMax: $searchAgeRangeMax, profileLocation: $profileLocation, sendError: $sendError, sendingInProgress: $sendingInProgress)';
+    return 'InitialSetupData(email: $email, birthdate: $birthdate, profileInitial: $profileInitial, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, genderSearchSetting: $genderSearchSetting, searchAgeRangeInitDone: $searchAgeRangeInitDone, searchAgeRangeMin: $searchAgeRangeMin, searchAgeRangeMax: $searchAgeRangeMax, profileLocation: $profileLocation, profileAttributes: $profileAttributes, sendError: $sendError, sendingInProgress: $sendingInProgress)';
   }
 
   @override
@@ -355,6 +373,8 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
                 other.searchAgeRangeMax == searchAgeRangeMax) &&
             (identical(other.profileLocation, profileLocation) ||
                 other.profileLocation == profileLocation) &&
+            (identical(other.profileAttributes, profileAttributes) ||
+                other.profileAttributes == profileAttributes) &&
             (identical(other.sendError, sendError) ||
                 other.sendError == sendError) &&
             (identical(other.sendingInProgress, sendingInProgress) ||
@@ -376,6 +396,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
       searchAgeRangeMin,
       searchAgeRangeMax,
       profileLocation,
+      profileAttributes,
       sendError,
       sendingInProgress);
 
@@ -401,6 +422,7 @@ abstract class _InitialSetupData implements InitialSetupData {
       final int? searchAgeRangeMin,
       final int? searchAgeRangeMax,
       final LatLng? profileLocation,
+      final ProfileAttributesState profileAttributes,
       final String? sendError,
       final bool sendingInProgress}) = _$InitialSetupDataImpl;
 
@@ -428,6 +450,8 @@ abstract class _InitialSetupData implements InitialSetupData {
   int? get searchAgeRangeMax;
   @override
   LatLng? get profileLocation;
+  @override
+  ProfileAttributesState get profileAttributes;
   @override
   String? get sendError;
   @override // TODO: remove?

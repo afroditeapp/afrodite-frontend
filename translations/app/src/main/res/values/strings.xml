@@ -91,6 +91,7 @@
     <string name="initial_setup_screen_location_help_dialog_text" description="Text for initial setup location help dialog">Select a location for your profile by tapping or long pressing the map.</string>
     <string name="initial_setup_screen_profile_attributes_missing_error_text" description="Error text displayed when profile attributes are not yet downloaded">Profile questions are not yet downloaded.</string>
     <string name="initial_setup_screen_profile_attributes_download_button" description="Button text for downloading profile attributes">Download questions</string>
+    <string name="initial_setup_screen_profile_attributes_no_questions_text" description="Info text that all required questions are already answered">All required questions already answered.</string>
 
     <!-- Camera screen -->
     <string name="camera_screen_camera_opening_already_in_progress_error" description="Snackbar error text displayed when user tries to open camera but camera initialization is already in progress">Camera opening in progress</string>
