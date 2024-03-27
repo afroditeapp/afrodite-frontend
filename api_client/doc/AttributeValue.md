@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **editable** | **bool** |  | [optional] [default to true]
 **groupValues** | [**GroupValues**](GroupValues.md) |  | [optional] 
-**icon** | [**IconResource**](IconResource.md) |  | [optional] 
+**icon** | **String** |  | [optional] 
 **id** | **int** | Numeric unique identifier for the attribute value. Note that the value must only be unique within a group of values, so value in top level group A, sub level group C and sub level group B can have the same ID. | 
 **key** | **String** | Unique string identifier for the attribute value. | 
 **orderNumber** | **int** | Order number for client to determine in what order the values should be displayed. | 

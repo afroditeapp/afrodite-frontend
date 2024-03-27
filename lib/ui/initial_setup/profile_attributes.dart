@@ -175,7 +175,7 @@ class _AskProfileAttributesState extends State<AskProfileAttributes> {
     if (icon != null) {
       title = Row(
         children: [
-          const Icon(icon),
+          Icon(icon),
           const Padding(padding: EdgeInsets.all(8.0)),
           text,
         ],
@@ -206,9 +206,7 @@ class _AskProfileAttributesState extends State<AskProfileAttributes> {
     // Group values are not supported in select multiple attributes.
     final widgets = <Widget>[];
     for (final value in attributeValues) {
-      // TODO: Fix this when API is fixed
-      // final icons = iconResourceToMaterialIcon(value.icon);
-      final IconData? icon = null;
+      final icon = iconResourceToMaterialIcon(value.icon);
       final text = attributeValueName(context, value, translations);
 
       final Widget title;

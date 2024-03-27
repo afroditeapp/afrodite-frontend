@@ -27,7 +27,7 @@ class AttributeValue {
 
   GroupValues? groupValues;
 
-  IconResource? icon;
+  String? icon;
 
   /// Numeric unique identifier for the attribute value. Note that the value must only be unique within a group of values, so value in top level group A, sub level group C and sub level group B can have the same ID.
   ///
@@ -115,7 +115,7 @@ class AttributeValue {
       return AttributeValue(
         editable: mapValueOfType<bool>(json, r'editable') ?? true,
         groupValues: GroupValues.fromJson(json[r'group_values']),
-        icon: IconResource.fromJson(json[r'icon']),
+        icon: mapValueOfType<String>(json, r'icon'),
         id: mapValueOfType<int>(json, r'id')!,
         key: mapValueOfType<String>(json, r'key')!,
         orderNumber: mapValueOfType<int>(json, r'order_number')!,
