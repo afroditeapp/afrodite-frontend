@@ -37,12 +37,14 @@ sealed class ImageProcessingEvent {}
 class ConfirmImage extends ImageProcessingEvent {
   final XFile img;
   final int slot;
-  ConfirmImage(this.img, this.slot);
+  final bool secureCapture;
+  ConfirmImage(this.img, this.slot, {this.secureCapture = false});
 }
 class SendImageToSlot extends ImageProcessingEvent {
   final XFile img;
   final int slot;
-  SendImageToSlot(this.img, this.slot);
+  final bool secureCapture;
+  SendImageToSlot(this.img, this.slot, {this.secureCapture = false});
 }
 class ResetState extends ImageProcessingEvent {}
 
@@ -58,7 +60,7 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
     });
     on<ConfirmImage>((data, emit) {
       emit(state.copyWith(
-        processingState: UnconfirmedImage(data.img, data.slot),
+        processingState: UnconfirmedImage(data.img, data.slot, secureCapture: data.secureCapture),
       ));
     });
     on<SendImageToSlot>((data, emit) async {
@@ -74,7 +76,7 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
         return;
       }
 
-      await for (final e in media.sendImageToSlot(data.img, data.slot)) {
+      await for (final e in media.sendImageToSlot(data.img, data.slot, secureCapture: data.secureCapture)) {
         switch (e) {
           case Uploading(): {}
           case UploadCompleted(): {}
@@ -119,7 +121,8 @@ sealed class ProcessingState {}
 class UnconfirmedImage extends ProcessingState {
   final XFile img;
   final int slot;
-  UnconfirmedImage(this.img, this.slot);
+  final bool secureCapture;
+  UnconfirmedImage(this.img, this.slot, {required this.secureCapture});
 }
 class SendingInProgress extends ProcessingState {
   final ContentUploadState state;

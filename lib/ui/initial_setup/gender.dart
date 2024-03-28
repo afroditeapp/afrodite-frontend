@@ -19,7 +19,7 @@ class AskGenderScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           if (state.gender != null) {
             return () {
-              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => AskProfileAttributesScreen()));
+              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => AskSearchSettingsScreen()));
             };
           } else {
             return null;

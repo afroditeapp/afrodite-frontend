@@ -353,8 +353,8 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
       // The if condition prevents running this multiple times
       _size = selectionMinSize();
       // Calculate dx which matches selectionMinSize()
-      _left += dx + newSize - selectionMinSize();
-      _top += dx + newSize - selectionMinSize();
+      _left += dx + (newSize - selectionMinSize());
+      _top += dx + (newSize - selectionMinSize());
     }
 
     checkSizeBounds();
@@ -370,7 +370,7 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
       // The if condition prevents running this multiple times
       _size = selectionMinSize();
       // Calculate dx which matches selectionMinSize()
-      _top -= dx - newSize - selectionMinSize();
+      _top -= dx - (newSize - selectionMinSize());
     }
 
     checkSizeBounds();
@@ -386,7 +386,7 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
       // The if condition prevents running this multiple times
       _size = selectionMinSize();
       // Calculate dx which matches selectionMinSize()
-      _left += dx + newSize - selectionMinSize();
+      _left += dx + (newSize - selectionMinSize());
     }
 
     checkSizeBounds();

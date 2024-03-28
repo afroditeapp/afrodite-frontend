@@ -5,6 +5,7 @@ import "package:latlong2/latlong.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/ui/initial_setup/gender.dart";
+import "package:pihka_frontend/ui/initial_setup/profile_attributes.dart";
 import "package:pihka_frontend/ui/initial_setup/search_settings.dart";
 import "package:pihka_frontend/ui/normal/settings/location.dart";
 import "package:pihka_frontend/ui_utils/dialog.dart";
@@ -21,7 +22,7 @@ class AskLocationScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           if (state.profileLocation != null) {
             return () {
-              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => AskGenderScreen()));
+              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => AskProfileAttributesScreen()));
             };
           } else {
             return null;

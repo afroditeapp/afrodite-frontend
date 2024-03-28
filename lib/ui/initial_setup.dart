@@ -16,6 +16,6 @@ class InitialSetupScreen extends RootScreen {
 
   @override
   Widget buildRootWidget(BuildContext context) {
-    return const AskProfileAttributesScreen();
+    return const AskEmailScreen();
   }
 }

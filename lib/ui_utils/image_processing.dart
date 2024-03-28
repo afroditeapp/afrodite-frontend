@@ -30,7 +30,11 @@ Widget confirmDialogOpener<B extends Bloc<ImageProcessingEvent, ImageProcessingD
         bloc.add(ResetState());
         final accepted = await _confirmDialogForImage(context, processingState.img);
         if (accepted == true) {
-          bloc.add(SendImageToSlot(processingState.img, processingState.slot));
+          bloc.add(SendImageToSlot(
+            processingState.img,
+            processingState.slot,
+            secureCapture: processingState.secureCapture,
+          ));
         }
       }
     },

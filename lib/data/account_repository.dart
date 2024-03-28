@@ -7,9 +7,11 @@ import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/account/initial_setup.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
+import 'package:pihka_frontend/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
@@ -134,74 +136,27 @@ class AccountRepository extends DataRepository {
     await KvStringManager.getInstance().setValue(KvString.accountState, null);
   }
 
-  /// Returns null on success. Returns String if error.
-  Future<WaitProcessingResult> _waitContentProcessing(int slot) async {
-    while (true) {
-      final state = await _api.media((api) => api.getContentSlotState(slot)).ok();
-      if (state == null) {
-        return ProcessingError("Server did not return content processing state");
-      }
-
-      switch (state.state) {
-        case ContentProcessingStateType.processing || ContentProcessingStateType.inQueue: {
-          await Future<void>.delayed(const Duration(seconds: 1));
-        }
-        case ContentProcessingStateType.failed: return ProcessingError("Security selfie processing failed");
-        case ContentProcessingStateType.empty: return ProcessingError("Slot is empty");
-        case ContentProcessingStateType.completed: {
-          final contentId = state.contentId;
-          if (contentId == null) {
-            return ProcessingError("Server did not return content ID");
-          } else {
-            return ProcessingSuccess(contentId);
-          }
-        }
-      }
-    }
+  /// Do quick initial setup with some predefined values.
+  ///
+  /// Return null on success. Return String if error.
+  Future<String?> doDeveloperInitialSetup(
+    String email,
+    String name,
+    XFile securitySelfieFile,
+    XFile profileImageFile
+  ) async {
+    return await InitialSetupUtils().doDeveloperInitialSetup(
+      email,
+      name,
+      securitySelfieFile,
+      profileImageFile
+    );
   }
 
-  /// Return null on success. Return String if error.
-  Future<String?> doInitialSetup(String email, String name, XFile securitySelfieFile, XFile profileImageFile) async {
-    final String securitySelfiePath = securitySelfieFile.path;
-    final String profileImagePath = profileImageFile.path;
-
-    await _api.account((api) => api.postAccountData(AccountData(email: email)));
-    await _api.account((api) => api.postAccountSetup(AccountSetup(birthdate: "123")));
-    final securitySelfie = await MultipartFile.fromPath("", securitySelfiePath);
-    final processingId = await _api.media((api) => api.putContentToContentSlot(0, true, MediaContentType.jpegImage, securitySelfie));
-    if (processingId case Err()) {
-      return "Server did not return content processing ID";
-    }
-    final result = await _waitContentProcessing(0);
-    final ContentId contentId0;
-    switch (result) {
-      case ProcessingError(): return result.message;
-      case ProcessingSuccess(): contentId0 = result.contentId;
-    }
-    await _api.media((api) => api.putPendingSecurityContentInfo(contentId0));
-
-    final profileImage = await MultipartFile.fromPath("", profileImagePath);
-    final processingId2 = await _api.media((api) => api.putContentToContentSlot(1, false, MediaContentType.jpegImage, profileImage));
-    if (processingId2 case Err()) {
-      return "Server did not return content processing ID";
-    }
-    final result2 = await _waitContentProcessing(1);
-    final ContentId contentId1;
-    switch (result2) {
-      case ProcessingError(): return result2.message;
-      case ProcessingSuccess(): contentId1 = result2.contentId;
-    }
-    await _api.media((api) => api.putPendingProfileContent(SetProfileContent(contentId0: contentId1)));
-
-    await _api.media((api) => api.putModerationRequest(ModerationRequestContent(content0: contentId0, content1: contentId1)));
-    await _api.account((api) => api.postCompleteSetup());
-
-    final state = await _api.account((api) => api.getAccountState()).ok();
-    if (state == null || state.state != AccountState.normal) {
-      return "Error";
-    }
-
-    return null;
+  Future<Result<(), ()>> doInitialSetup(
+    InitialSetupData data,
+  ) async {
+    return await InitialSetupUtils().doInitialSetup(data);
   }
 
   /// Returns true if successful.
@@ -212,14 +167,4 @@ class AccountRepository extends DataRepository {
 
     return result.isOk();
   }
-}
-
-sealed class WaitProcessingResult {}
-class ProcessingError extends WaitProcessingResult {
-  final String message;
-  ProcessingError(this.message);
-}
-class ProcessingSuccess extends WaitProcessingResult {
-  final ContentId contentId;
-  ProcessingSuccess(this.contentId);
 }

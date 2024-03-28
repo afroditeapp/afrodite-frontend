@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
+import "package:pihka_frontend/ui/initial_setup/location.dart";
 import "package:pihka_frontend/ui_utils/consts/padding.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
 import "package:pihka_frontend/ui_utils/text_field.dart";
@@ -39,7 +40,7 @@ class AskSearchSettingsScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           if (state.genderSearchSetting.notEmpty() && ageRangeIsValid(state.searchAgeRangeMin, state.searchAgeRangeMax)) {
             return () {
-              // Navigator.push(context, MaterialPageRoute<void>(builder: (_) => screen))
+              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => AskLocationScreen()));
             };
           } else {
             return null;

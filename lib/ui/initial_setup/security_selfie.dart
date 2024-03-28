@@ -186,7 +186,7 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
         );
 
         if (image != null) {
-          bloc.add(ConfirmImage(image, SECURITY_SELFIE_SLOT));
+          bloc.add(ConfirmImage(image, SECURITY_SELFIE_SLOT, secureCapture: true));
         }
 
         // Assume that CameraScreens will close the camera.

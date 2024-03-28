@@ -15,6 +15,7 @@ import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/logic/media/profile_pictures.dart";
+import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 import "package:pihka_frontend/utils/tmp_dir.dart";
 
@@ -43,8 +44,7 @@ class InitialSetupData with _$InitialSetupData {
     int? searchAgeRangeMax,
     LatLng? profileLocation,
     @Default(PartiallyAnswered([]))ProfileAttributesState profileAttributes,
-    String? sendError, // TODO: remove?
-    @Default(false) bool sendingInProgress, // TODO: remove?
+    @Default(false) bool sendingInProgress,
   }) = _InitialSetupData;
 }
 
@@ -118,7 +118,7 @@ class CompleteInitialSetup extends InitialSetupEvent {}
 class ResetState extends InitialSetupEvent {}
 class CreateDebugAdminAccount extends InitialSetupEvent {}
 
-class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
+class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with ActionRunner {
   final LoginRepository login = LoginRepository.getInstance();
   final AccountRepository account = AccountRepository.getInstance();
   final MediaRepository media = MediaRepository.getInstance();
@@ -201,21 +201,22 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
       ));
     });
     on<CompleteInitialSetup>((data, emit) async {
-      // //await Future.delayed(Duration(seconds: 5));
-      // var error = await account.doInitialSetup(
-      //   state.email ?? "",
-      //   state.profileName,
-      //   securitySelfie,
-      //   profileImage
-      // );
+      await runOnce(() async {
+        emit(state.copyWith(
+          sendingInProgress: true,
+        ));
+        var result = await account.doInitialSetup(
+          state,
+        );
 
-      // if (error != null) {
-      //   emit(state.copyWith(
-      //     sendingInProgress: false,
-      //     sendError: error,
-      //   ));
-      // }
-      log.error("TODO");
+        if (result.isErr()) {
+          showSnackBar(R.strings.generic_error_occurred);
+        }
+
+        emit(state.copyWith(
+          sendingInProgress: false,
+        ));
+      });
     });
     on<CreateDebugAdminAccount>((data, emit) async {
       emit(state.copyWith(
@@ -237,7 +238,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> {
              ..a = 255;
       });
 
-      var error = await account.doInitialSetup(
+      var error = await account.doDeveloperInitialSetup(
         "admin@example.com",
         "Admin",
         securitySelfie,

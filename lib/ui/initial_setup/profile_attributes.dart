@@ -25,7 +25,7 @@ class AskProfileAttributesScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           if (state.profileAttributes is FullyAnswered) {
             return () {
-              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => AskLocationScreen()));
+              context.read<InitialSetupBloc>().add(CompleteInitialSetup());
             };
           } else {
             return null;
@@ -66,7 +66,11 @@ class _AskProfileAttributesState extends State<AskProfileAttributes> {
         ProgressDialogOpener<ProfileAttributesBloc, AttributesData>(
           dialogVisibilityGetter: (context, state) =>
             state.refreshState is AttributeRefreshLoading,
-        )
+        ),
+        ProgressDialogOpener<InitialSetupBloc, InitialSetupData>(
+          dialogVisibilityGetter: (context, state) =>
+            state.sendingInProgress,
+        ),
       ],
     );
   }
