@@ -3,7 +3,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:camera/camera.dart';
-import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
@@ -68,6 +67,13 @@ class AccountRepository extends DataRepository {
       ProfileVisibility.pendingPrivate,
     );
 
+  Stream<bool> get notificationPermissionAsked => KvBooleanManager.getInstance()
+    .getUpdatesForWithConversionAndDefaultIfNull(
+      KvBoolean.accountNotificationPermissionAsked,
+      (value) => value,
+      false,
+    );
+
   // WebSocket related event streams
   final _contentProcessingStateChanges = PublishSubject<ContentProcessingStateChanged>();
   Stream<ContentProcessingStateChanged> get contentProcessingStateChanges => _contentProcessingStateChanges.stream;
@@ -129,11 +135,17 @@ class AccountRepository extends DataRepository {
     }
   }
 
+  // TODO(prod): Run onLogout when server connection has authentication failure
+
   @override
   Future<void> onLogout() async {
     await KvStringManager.getInstance().setValue(KvString.profileVisibility, null);
     await KvStringManager.getInstance().setValue(KvString.accountCapabilities, null);
     await KvStringManager.getInstance().setValue(KvString.accountState, null);
+    // TODO(prod): remove clearing of accountNotificationPermissionAsked, as
+    // probably system dialog about notifications will not be shown again
+    // if it is once denied.
+    await KvBooleanManager.getInstance().setValue(KvBoolean.accountNotificationPermissionAsked, null);
   }
 
   /// Do quick initial setup with some predefined values.

@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
@@ -11,6 +12,7 @@ import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
+import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/chat/matches_database.dart';
 import 'package:pihka_frontend/database/chat/message_database.dart';
@@ -26,6 +28,7 @@ import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/demo_account.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/logic/admin/image_moderation.dart';
+import 'package:pihka_frontend/logic/app/notification_permission.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
 import 'package:pihka_frontend/logic/media/profile_pictures.dart';
@@ -43,6 +46,7 @@ import 'package:pihka_frontend/ui/splash_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/camera.dart';
 
 import 'package:rxdart/rxdart.dart';
@@ -89,14 +93,17 @@ Future<void> main() async {
         BlocProvider(create: (_) => ViewProfileBloc(accountRepository, profileRepository, mediaRepository, chatRepository)),
         BlocProvider(create: (_) => ConversationBloc(accountRepository, profileRepository, mediaRepository, chatRepository)),
         BlocProvider(create: (_) => ProfileFilteringSettingsBloc(profileRepository)),
-        BlocProvider(create: (_) => LocationBloc(profileRepository), lazy: false),
-        BlocProvider(create: (_) => ProfileAttributesBloc(), lazy: false),
 
         // Login
         BlocProvider(create: (_) => SignInWithBloc()),
 
         // Admin features related blocs
         BlocProvider(create: (_) => ImageModerationBloc(mediaRepository)),
+
+        // Non-lazy
+        BlocProvider(create: (_) => LocationBloc(profileRepository), lazy: false),
+        BlocProvider(create: (_) => ProfileAttributesBloc(), lazy: false),
+        BlocProvider(create: (_) => NotificationPermissionBloc(), lazy: false),
       ],
       child: const MyApp(),
     )
@@ -161,6 +168,7 @@ class GlobalInitManager {
     await ApiManager.getInstance().init();
     await ImageCacheData.getInstance().init();
     await CameraManager.getInstance().init();
+    await NotificationManager.getInstance().init();
 
     await ProfileListDatabase.getInstance().init();
     await FavoriteProfilesDatabase.getInstance().init();

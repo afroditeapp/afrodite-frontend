@@ -221,7 +221,6 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
     on<CreateDebugAdminAccount>((data, emit) async {
       emit(state.copyWith(
         sendingInProgress: true,
-        sendError: null,
       ));
 
       final securitySelfie = await createImage("debug_security_selfie.jpg", (pixel) {
@@ -246,11 +245,13 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
       );
 
       if (error != null) {
-        emit(state.copyWith(
-          sendingInProgress: false,
-          sendError: error,
-        ));
+        log.error("Developer initial setup failed: $error");
+        showSnackBar(R.strings.generic_error_occurred);
       }
+
+      emit(state.copyWith(
+        sendingInProgress: false,
+      ));
     });
   }
 }

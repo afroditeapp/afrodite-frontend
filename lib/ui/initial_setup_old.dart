@@ -51,9 +51,9 @@ class InitialSetupScreenOld extends RootScreen {
               });
             } else if (!state.sendingInProgress && Navigator.canPop(context)) {
               Navigator.pop(context);
-              if (state.sendError != null) {
-                showSnackBar(state.sendError ?? "");
-              }
+              // if (state.sendError != null) {
+              //   showSnackBar(state.sendError ?? "");
+              // }
             }
           },
           child: const InitialSetupWidget(),

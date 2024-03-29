@@ -17,6 +17,7 @@ class AccountBlocData with _$AccountBlocData {
     AccountId? accountId,
     AccessToken? accessToken,
     String? email,
+    AccountState? accountState,
     required Capabilities capabilities,
     required ProfileVisibility visibility,
   }) = _AccountBlocData;
@@ -47,6 +48,10 @@ class NewCapabilitiesValue extends AccountEvent {
 class NewProfileVisibilityValue extends AccountEvent {
   final ProfileVisibility value;
   NewProfileVisibilityValue(this.value);
+}
+class NewAccountStateValue extends AccountEvent {
+  final AccountState? accountState;
+  NewAccountStateValue(this.accountState);
 }
 
 /// Do register/login operations
@@ -97,6 +102,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
     on<NewProfileVisibilityValue>((key, emit) {
       emit(state.copyWith(visibility: key.value));
     });
+    on<NewAccountStateValue>((key, emit) {
+      emit(state.copyWith(accountState: key.accountState));
+    });
 
 
     login.accountId.listen((event) {
@@ -110,6 +118,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
     });
     account.profileVisibility.listen((event) {
       add(NewProfileVisibilityValue(event));
+    });
+    account.accountState.listen((event) {
+      add(NewAccountStateValue(event));
     });
   }
 }

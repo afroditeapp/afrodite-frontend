@@ -75,6 +75,9 @@ enum KvDouble implements PreferenceKeyProvider<KvDouble, double> {
 enum KvBoolean implements PreferenceKeyProvider<KvBoolean, bool> {
   // If true show only favorite profiles.
   profileFilterFavorites,
+  // If true don't show notification permission asking dialog when
+  // app main view (bottom navigation is visible) is opened.
+  accountNotificationPermissionAsked,
   empty;
 
   /// Get shared preference key for this type

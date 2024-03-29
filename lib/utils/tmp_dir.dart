@@ -12,7 +12,13 @@ class TmpDirUtils {
 
   static Future<String> initialSetupFilePath(String fileName) async {
     final tmpDir = await getTemporaryDirectory();
-    return "${tmpDir.path}/initial_setup/$fileName";
+    final tmpDirPath = "${tmpDir.path}/initial_setup";
+    final dir = Directory(tmpDirPath);
+    if (!await dir.exists()) {
+      await dir.create(); // TODO: Error handling
+    }
+    final filePath = "$tmpDirPath/$fileName";
+    return filePath;
   }
 
   static Future<File> emptyMapTileFilePath() async {
