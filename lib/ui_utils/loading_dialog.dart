@@ -54,7 +54,7 @@ class _ProgressDialogOpenerState<B extends StateStreamable<S>, S> extends State<
       dialogRealState = true;
 
       // Check if the dialog should be opened multiple times (race conditions...)
-      while (true) {
+      while (context.mounted) {
         if (dialogIdealState) {
           await openDialog(context, latestState);
         } else {
@@ -67,6 +67,10 @@ class _ProgressDialogOpenerState<B extends StateStreamable<S>, S> extends State<
   }
 
   Future<void> openDialog(BuildContext context, S state) async {
+    if (!context.mounted) {
+      return;
+    }
+
     final Widget w;
     final text = widget.loadingText;
     final b = widget.stateInfoBuilder;
@@ -79,14 +83,18 @@ class _ProgressDialogOpenerState<B extends StateStreamable<S>, S> extends State<
     }
 
     await Future.delayed(Duration.zero, () async {
-      if (context.mounted) {
-        await _showLoadingDialog<B, S>(
-          context,
-          w,
-          widget.dialogVisibilityGetter,
-        );
-      }
+      await _showLoadingDialog<B, S>(
+        context,
+        w,
+        widget.dialogVisibilityGetter,
+      );
     });
+  }
+
+  @override
+  void dispose() {
+    dialogIdealState = false;
+    super.dispose();
   }
 }
 
@@ -95,6 +103,10 @@ Future<void> _showLoadingDialog<B extends StateStreamable<S>, S>(
   Widget loadingInfo,
   bool Function(BuildContext, S) dialogVisibilityGetter
 ) async {
+  if (!context.mounted) {
+    return;
+  }
+
   return await showDialog<void>(
     context: context,
     barrierDismissible: false,
