@@ -107,6 +107,8 @@ class InitialSetupUtils {
     );
     await _api.profile((api) => api.postSearchGroups(groups));
 
+    await _api.accountAction((api) => api.putSettingProfileVisiblity(BooleanSetting(value: true)));
+
     await _api.account((api) => api.postCompleteSetup());
 
     final state = await _api.account((api) => api.getAccountState()).ok();
@@ -180,6 +182,11 @@ class InitialSetupUtils {
       final groups = createSearchGroups(gender, data.genderSearchSetting);
       final r = await _api.profileAction((api) => api.postSearchGroups(groups));
       if (r.isErr()) return errAndLog("Setting search groups failed");
+    }
+
+    {
+      final r = await _api.accountAction((api) => api.putSettingProfileVisiblity(BooleanSetting(value: true)));
+      if (r.isErr()) return errAndLog("Setting profile visibility failed");
     }
 
     // Images

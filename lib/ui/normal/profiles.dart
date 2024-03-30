@@ -1,22 +1,18 @@
-import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/data/image_cache.dart';
-import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
+import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_filtering_settings.dart';
 import 'package:pihka_frontend/ui/normal/profiles/filter_profiles.dart';
-import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
+import 'package:pihka_frontend/ui/normal/profiles/profile_grid.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/ui_utils/image.dart';
+import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 
 var log = Logger("ProfileView");
 
@@ -28,7 +24,7 @@ class ProfileView extends BottomNavigationScreen {
 
   @override
   String title(BuildContext context) {
-    return context.strings.pageProfileGridTitle;
+    return context.strings.profile_grid_screen_title;
   }
 
   @override
@@ -55,144 +51,77 @@ class ProfileView extends BottomNavigationScreen {
 typedef ProfileViewEntry = (ProfileEntry profile, XFile img, int heroNumber);
 
 class _ProfileViewState extends State<ProfileView> {
-  PagingController<int, ProfileViewEntry>? _pagingController =
-    PagingController(firstPageKey: 0);
-  int _heroUniqueIdCounter = 0;
-  StreamSubscription<ProfileChange>? _profileChangesSubscription;
-  ProfileFilteringSettingsData currentFilteringSettings = ProfileFilteringSettingsData();
 
   @override
   void initState() {
     super.initState();
-    _heroUniqueIdCounter = 0;
-    _pagingController?.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
-    _profileChangesSubscription?.cancel();
-    _profileChangesSubscription = ProfileRepository.getInstance().profileChanges.listen((event) {
-        handleProfileChange(event);
-    });
-  }
-
-  void handleProfileChange(ProfileChange event) {
-    switch (event) {
-      case ProfileNowPrivate(): {
-        // Remove profile if it was made private
-        removeAccountIdFromList(event.profile);
-      }
-      case ProfileBlocked():
-        removeAccountIdFromList(event.profile);
-      case ProfileFavoriteStatusChange(): {
-        // Remove profile if favorites filter is enabled and favorite status is changed to false
-        final controller = _pagingController;
-        if (controller != null && event.isFavorite == false && currentFilteringSettings.showOnlyFavorites) {
-          setState(() {
-            controller.itemList?.removeWhere((item) => item.$1.uuid == event.profile.accountId);
-          });
-        }
-      }
-      case ProfileUnblocked() ||
-        ConversationChanged() ||
-        MatchesChanged() ||
-        LikesChanged(): {}
-    }
-  }
-
-  void removeAccountIdFromList(AccountId accountId) {
-    final controller = _pagingController;
-    if (controller != null) {
-      setState(() {
-        controller.itemList?.removeWhere((item) => item.$1.uuid == accountId.accountId);
-      });
-    }
-  }
-
-  Future<void> _fetchPage(int pageKey) async {
-    if (pageKey == 0) {
-      ProfileRepository.getInstance().resetIteratorToBeginning();
-    }
-
-    final profileList = await ProfileRepository.getInstance().nextList();
-
-    // Get images here instead of FutureBuilder because there was some weird
-    // Hero tag error even if the builder index is in the tag.
-    // Not sure does this image loading change affect the issue.
-    // The PagedChildBuilderDelegate seems to run the builder twice for some
-    // reason for the initial page.
-    final newList = List<ProfileViewEntry>.empty(growable: true);
-    for (final profile in profileList) {
-      final accountId = AccountId(accountId: profile.uuid);
-      final contentId = ContentId(contentId: profile.imageUuid);
-      final file = await ImageCacheData.getInstance().getImage(accountId, contentId);
-      if (file == null) {
-        log.warning("Skipping one profile because image loading failed");
-        continue;
-      }
-      newList.add((profile, file, _heroUniqueIdCounter));
-      _heroUniqueIdCounter++;
-    }
-
-    if (profileList.isEmpty) {
-      _pagingController?.appendLastPage([]);
-    } else {
-      _pagingController?.appendPage(newList, pageKey + 1);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        await ProfileRepository.getInstance().refreshProfileIterator();
-        // This might be disposed after resetProfileIterator completes.
-        _pagingController?.refresh();
-      },
-      child: BlocListener<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-        listener: (context, data) {
-          // Filtering settings changed
-          currentFilteringSettings = data;
-          setState(() {
-            _pagingController?.refresh();
-          });
-        },
-        child: grid(context),
+    return BlocBuilder<AccountBloc, AccountBlocData>(
+      builder: (context, data) {
+        if (data.visibility == ProfileVisibility.public) {
+          return const ProfileGrid();
+        } else if (data.visibility == ProfileVisibility.pendingPublic) {
+          return profileIsInModerationInfo(context);
+        } else {
+          return profileIsSetToPrivateInfo(context);
+        }
+      }
+    );
+  }
+
+  Widget profileIsSetToPrivateInfo(BuildContext context) {
+    return Align(
+      alignment: FractionalOffset(0.0, 0.25),
+      child: Padding(
+        padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(padding: EdgeInsets.all(16)),
+            Icon(Icons.public_off_rounded, size: 48),
+            Padding(padding: EdgeInsets.all(16)),
+            Text(context.strings.profile_grid_screen_profile_is_private_info),
+          ],
+        ),
       ),
     );
   }
 
-  Widget grid(BuildContext context) {
-    return PagedGridView(
-      pagingController: _pagingController!,
-      builderDelegate: PagedChildBuilderDelegate<ProfileViewEntry>(
-        animateTransitions: true,
-        itemBuilder: (context, item, index) {
-          final accountId = AccountId(accountId: item.$1.uuid);
-          final heroTag = (accountId, item.$3);
-          return GestureDetector(
-            onTap: () {
-              openProfileView(context, accountId, item.$1, item.$2, heroTag);
-            },
-            child: Hero(
-              tag: heroTag,
-              child: xfileImgWidget(item.$2)
-            )
-          );
-        },
-      ),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 4,
-        mainAxisSpacing: 4,
+  Widget profileIsInModerationInfo(BuildContext context) {
+    return Align(
+      alignment: FractionalOffset(0.0, 0.25),
+      child: Padding(
+        padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(padding: EdgeInsets.all(16)),
+            Icon(Icons.hourglass_top_rounded, size: 48),
+            Padding(padding: EdgeInsets.all(16)),
+            Text(context.strings.profile_grid_screen_initial_moderation_ongoing),
+            Padding(padding: EdgeInsets.all(16)),
+            ShowModerationQueueProgress(),
+          ],
+        ),
       ),
     );
   }
+}
+
+
+class ShowModerationQueueProgress extends StatefulWidget {
+  const ShowModerationQueueProgress({super.key});
 
   @override
-  void dispose() {
-    _pagingController?.dispose();
-    _pagingController = null;
-    _profileChangesSubscription?.cancel();
-    _profileChangesSubscription = null;
-    super.dispose();
+  State<ShowModerationQueueProgress> createState() => _ShowModerationQueueProgressState();
+}
+
+class _ShowModerationQueueProgressState extends State<ShowModerationQueueProgress> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.shrink();
   }
 }

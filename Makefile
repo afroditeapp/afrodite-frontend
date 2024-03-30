@@ -22,6 +22,9 @@ update-app-icon:
 watch-translations:
 	fswatch -o -e Updated translations/app/src/main/res | xargs -n1 -I{} make update-translations
 
+watch-translations-linux:
+	fswatch -m poll_monitor -o -e Updated translations/app/src/main/res/values/strings.xml | xargs -n1 -I{} make update-translations
+
 code-stats:
 	@/bin/echo -n "Lines:"
 	@find \

@@ -390,13 +390,30 @@
   "@pageMyProfileTitle": {
     "description": "Title for my profile page"
   },
-  "pageProfileGridTitle": "Profiles",
-  "@pageProfileGridTitle": {
-    "description": "Title for profile grid page"
-  },
   "pageSettingsTitle": "Settings",
   "@pageSettingsTitle": {
     "description": "Title for settings page"
+  },
+  "profile_grid_screen_initial_moderation_ongoing": "You can view profiles and others can see your profile after your profile images are moderated.",
+  "@profile_grid_screen_initial_moderation_ongoing": {
+    "description": "Info text that initial moderation is ongoing"
+  },
+  "profile_grid_screen_initial_moderation_status": "Your position in moderation queue: {param0}",
+  "@profile_grid_screen_initial_moderation_status": {
+    "description": "Info text that shows initial moderation queue number",
+    "placeholders": {
+      "param0": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_grid_screen_profile_is_private_info": "To view profiles, set your profile visibility to public from app settings.",
+  "@profile_grid_screen_profile_is_private_info": {
+    "description": "Info text which is shown when profile visibility is set to private"
+  },
+  "profile_grid_screen_title": "Profiles",
+  "@profile_grid_screen_title": {
+    "description": "Title for profile grid screen"
   },
   "url_app_privacy_policy_link": "https://example.com",
   "url_app_tos_link": "https://example.com",
