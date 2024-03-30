@@ -22,19 +22,22 @@ class ApiWrapper<T> {
   Future<Result<R, ValueApiError>> requestValue<R extends Object>(Future<R?> Function(T) action, {bool logError = true}) async {
     try {
       final value = await action(api);
+
       if (value == null) {
-        return Err(NullError());
+        final err = NullError();
+        if (logError) {
+          err.logError();
+        }
+        return Err(err);
       } else {
         return Ok(value);
       }
     } on ApiException catch (e) {
+      final err = ValueApiException(e);
       if (logError) {
-        log.error(e);
-        // TODO(prod): remove stack trace for production?
-        log.error(StackTrace.current);
-        ErrorManager.getInstance().send(ApiError());
+        err.logError();
       }
-      return Err(ValueApiException(e));
+      return Err(err);
     }
   }
 
@@ -54,43 +57,42 @@ class ApiWrapper<T> {
   }
 }
 
-class ApiHttpStatus {
-  final int httpStatus;
-
-  ApiHttpStatus(this.httpStatus);
-
-  /// Is status code HTTP 200
-  bool isSuccess() {
-    return httpStatus == 200;
-  }
-
-  /// Is status code HTTP 500
-  bool isInternalServerError() {
-    return httpStatus == 500;
-  }
-
-  /// Is status code something other than HTTP 200
-  bool isFailure() {
-    return !isSuccess();
-  }
-}
-
 class ActionApiError {
   final ApiException e;
   ActionApiError(this.e);
 }
 
 sealed class ValueApiError {
+  /// Is status code HTTP 304
+  bool isNotModified() { return false; }
+
   /// Is status code HTTP 404
   bool isNotFoundError() { return false; }
 
   /// Is status code HTTP 500
   bool isInternalServerError() { return false; }
+
+  void logError() {}
 }
-class NullError extends ValueApiError {}
+
+class NullError extends ValueApiError {
+  @override
+  void logError() {
+    log.error("API function returned null");
+    // TODO(prod): remove stack trace for production?
+    log.error(StackTrace.current);
+    ErrorManager.getInstance().send(ApiError());
+  }
+}
+
 class ValueApiException extends ValueApiError {
   final ApiException e;
   ValueApiException(this.e);
+
+  @override
+  bool isNotModified() {
+    return e.code == 304;
+  }
 
   @override
   bool isNotFoundError() {
@@ -100,5 +102,13 @@ class ValueApiException extends ValueApiError {
   @override
   bool isInternalServerError() {
     return e.code == 500;
+  }
+
+  @override
+  void logError() {
+    log.error(e);
+    // TODO(prod): remove stack trace for production?
+    log.error(StackTrace.current);
+    ErrorManager.getInstance().send(ApiError());
   }
 }

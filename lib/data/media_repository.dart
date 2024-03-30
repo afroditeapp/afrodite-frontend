@@ -117,6 +117,19 @@ class MediaRepository extends DataRepository {
     final task = SendImageToSlotTask();
     yield* task.sendImageToSlot(file, slot, secureCapture: secureCapture);
   }
+
+  Future<ModerationRequest?> currentModerationRequestState() async {
+    final result = await api.media((api) => api.getModerationRequest());
+    switch (result) {
+      case Ok(:final v):
+        return v;
+      case Err(:final e) when e.isNotModified():
+        return null;
+      case Err(:final e):
+        e.logError();
+        return null;
+    }
+  }
 }
 
 sealed class MapTileResult {}
