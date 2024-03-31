@@ -1,11 +1,13 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_filtering_settings.dart';
 import 'package:pihka_frontend/ui/normal/profiles/filter_profiles.dart';
 import 'package:pihka_frontend/ui/normal/profiles/profile_grid.dart';
@@ -64,7 +66,22 @@ class _ProfileViewState extends State<ProfileView> {
         if (data.visibility == ProfileVisibility.public) {
           return const ProfileGrid();
         } else if (data.visibility == ProfileVisibility.pendingPublic) {
-          return profileIsInModerationInfo(context);
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<CurrentModerationRequestBloc>().add(Reload());
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: SizedBox(
+                    height: constraints.maxHeight,
+                    child: profileIsInModerationInfo(context),
+                  ),
+                ),
+              );
+            }
+          );
         } else {
           return profileIsSetToPrivateInfo(context);
         }
@@ -122,6 +139,32 @@ class ShowModerationQueueProgress extends StatefulWidget {
 class _ShowModerationQueueProgressState extends State<ShowModerationQueueProgress> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox.shrink();
+    return blocWidgetForProcessingState();
+  }
+
+  Widget blocWidgetForProcessingState() {
+    return BlocBuilder<CurrentModerationRequestBloc, CurrentModerationRequestData>(
+      builder: (context, state) {
+        final s = state.moderationRequest;
+        if (s == null) {
+          return const SizedBox.shrink();
+        } else {
+          return widgetForProcessingState(context, s);
+        }
+      },
+    );
+  }
+
+  Widget widgetForProcessingState(BuildContext context, ModerationRequest request) {
+    if (request.state == ModerationRequestState.waiting) {
+      // TODO: moderation queue number
+      return Text(context.strings.profile_grid_screen_initial_moderation_waiting("0"));
+    } else if (request.state == ModerationRequestState.inProgress) {
+      return Text(context.strings.profile_grid_screen_initial_moderation_in_progress);
+    } else if (request.state == ModerationRequestState.denied) {
+      return Text(context.strings.profile_grid_screen_initial_moderation_denied);
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 }

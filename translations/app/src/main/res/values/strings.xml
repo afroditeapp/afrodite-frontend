@@ -119,7 +119,9 @@
     <string name="profile_grid_screen_title" description="Title for profile grid screen">Profiles</string>
     <string name="profile_grid_screen_profile_is_private_info" description="Info text which is shown when profile visibility is set to private">To view profiles, set your profile visibility to public from app settings.</string>
     <string name="profile_grid_screen_initial_moderation_ongoing" description="Info text that initial moderation is ongoing">You can view profiles and others can see your profile after your profile images are moderated.</string>
-    <string name="profile_grid_screen_initial_moderation_status" description="Info text that shows initial moderation queue number">Your position in moderation queue: %s</string>
+    <string name="profile_grid_screen_initial_moderation_waiting" description="Info text that shows initial moderation queue number">Your position in moderation queue: %s</string>
+    <string name="profile_grid_screen_initial_moderation_in_progress" description="Info text that initial moderation is in progress">Moderation in progress.</string>
+    <string name="profile_grid_screen_initial_moderation_denied" description="Info text that initial moderation was denied">Moderator did not accept some profile image. Make new moderation request in settings.</string>
 
     <!-- Likes page -->
     <string name="pageLikesTitle" description="Title for likes page">Likes</string>

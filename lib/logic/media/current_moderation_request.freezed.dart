@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$CurrentModerationRequestData {
-  ModerationRequest? get processingState => throw _privateConstructorUsedError;
+  ModerationRequest? get moderationRequest =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CurrentModerationRequestDataCopyWith<CurrentModerationRequestData>
@@ -31,7 +32,7 @@ abstract class $CurrentModerationRequestDataCopyWith<$Res> {
       _$CurrentModerationRequestDataCopyWithImpl<$Res,
           CurrentModerationRequestData>;
   @useResult
-  $Res call({ModerationRequest? processingState});
+  $Res call({ModerationRequest? moderationRequest});
 }
 
 /// @nodoc
@@ -48,12 +49,12 @@ class _$CurrentModerationRequestDataCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? processingState = freezed,
+    Object? moderationRequest = freezed,
   }) {
     return _then(_value.copyWith(
-      processingState: freezed == processingState
-          ? _value.processingState
-          : processingState // ignore: cast_nullable_to_non_nullable
+      moderationRequest: freezed == moderationRequest
+          ? _value.moderationRequest
+          : moderationRequest // ignore: cast_nullable_to_non_nullable
               as ModerationRequest?,
     ) as $Val);
   }
@@ -68,7 +69,7 @@ abstract class _$$CurrentModerationRequestDataImplCopyWith<$Res>
       __$$CurrentModerationRequestDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({ModerationRequest? processingState});
+  $Res call({ModerationRequest? moderationRequest});
 }
 
 /// @nodoc
@@ -84,12 +85,12 @@ class __$$CurrentModerationRequestDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? processingState = freezed,
+    Object? moderationRequest = freezed,
   }) {
     return _then(_$CurrentModerationRequestDataImpl(
-      processingState: freezed == processingState
-          ? _value.processingState
-          : processingState // ignore: cast_nullable_to_non_nullable
+      moderationRequest: freezed == moderationRequest
+          ? _value.moderationRequest
+          : moderationRequest // ignore: cast_nullable_to_non_nullable
               as ModerationRequest?,
     ));
   }
@@ -99,14 +100,14 @@ class __$$CurrentModerationRequestDataImplCopyWithImpl<$Res>
 
 class _$CurrentModerationRequestDataImpl
     implements _CurrentModerationRequestData {
-  _$CurrentModerationRequestDataImpl({this.processingState});
+  _$CurrentModerationRequestDataImpl({this.moderationRequest});
 
   @override
-  final ModerationRequest? processingState;
+  final ModerationRequest? moderationRequest;
 
   @override
   String toString() {
-    return 'CurrentModerationRequestData(processingState: $processingState)';
+    return 'CurrentModerationRequestData(moderationRequest: $moderationRequest)';
   }
 
   @override
@@ -114,12 +115,12 @@ class _$CurrentModerationRequestDataImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CurrentModerationRequestDataImpl &&
-            (identical(other.processingState, processingState) ||
-                other.processingState == processingState));
+            (identical(other.moderationRequest, moderationRequest) ||
+                other.moderationRequest == moderationRequest));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, processingState);
+  int get hashCode => Object.hash(runtimeType, moderationRequest);
 
   @JsonKey(ignore: true)
   @override
@@ -133,11 +134,11 @@ class _$CurrentModerationRequestDataImpl
 abstract class _CurrentModerationRequestData
     implements CurrentModerationRequestData {
   factory _CurrentModerationRequestData(
-          {final ModerationRequest? processingState}) =
+          {final ModerationRequest? moderationRequest}) =
       _$CurrentModerationRequestDataImpl;
 
   @override
-  ModerationRequest? get processingState;
+  ModerationRequest? get moderationRequest;
   @override
   @JsonKey(ignore: true)
   _$$CurrentModerationRequestDataImplCopyWith<

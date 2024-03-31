@@ -13,7 +13,7 @@ final log = Logger("CurrentModerationRequestBloc");
 @freezed
 class CurrentModerationRequestData with _$CurrentModerationRequestData {
   factory CurrentModerationRequestData({
-    ModerationRequest? processingState,
+    ModerationRequest? moderationRequest,
   }) = _CurrentModerationRequestData;
 }
 
@@ -24,10 +24,10 @@ class CurrentModerationRequestBloc extends Bloc<CurrentModerationRequestEvent, C
   final MediaRepository media = MediaRepository.getInstance();
 
   CurrentModerationRequestBloc() : super(CurrentModerationRequestData()) {
-    on<Reload>((data, emit) {
-      runOnce(() async {
+    on<Reload>((data, emit) async {
+      await runOnce(() async {
         final value = await media.currentModerationRequestState();
-        emit(state.copyWith(processingState: value));
+        emit(state.copyWith(moderationRequest: value));
       });
     });
   }

@@ -394,12 +394,20 @@
   "@pageSettingsTitle": {
     "description": "Title for settings page"
   },
+  "profile_grid_screen_initial_moderation_denied": "Moderator did not accept some profile image. Make new moderation request in settings.",
+  "@profile_grid_screen_initial_moderation_denied": {
+    "description": "Info text that initial moderation was denied"
+  },
+  "profile_grid_screen_initial_moderation_in_progress": "Moderation in progress.",
+  "@profile_grid_screen_initial_moderation_in_progress": {
+    "description": "Info text that initial moderation is in progress"
+  },
   "profile_grid_screen_initial_moderation_ongoing": "You can view profiles and others can see your profile after your profile images are moderated.",
   "@profile_grid_screen_initial_moderation_ongoing": {
     "description": "Info text that initial moderation is ongoing"
   },
-  "profile_grid_screen_initial_moderation_status": "Your position in moderation queue: {param0}",
-  "@profile_grid_screen_initial_moderation_status": {
+  "profile_grid_screen_initial_moderation_waiting": "Your position in moderation queue: {param0}",
+  "@profile_grid_screen_initial_moderation_waiting": {
     "description": "Info text that shows initial moderation queue number",
     "placeholders": {
       "param0": {
