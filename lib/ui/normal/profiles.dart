@@ -1,11 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_filtering_settings.dart';
@@ -22,7 +19,7 @@ class ProfileView extends BottomNavigationScreen {
   const ProfileView({Key? key}) : super(key: key);
 
   @override
-  _ProfileViewState createState() => _ProfileViewState();
+  State<ProfileView> createState() => _ProfileViewState();
 
   @override
   String title(BuildContext context) {
@@ -50,14 +47,7 @@ class ProfileView extends BottomNavigationScreen {
   }
 }
 
-typedef ProfileViewEntry = (ProfileEntry profile, XFile img, int heroNumber);
-
 class _ProfileViewState extends State<ProfileView> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,15 +81,15 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget profileIsSetToPrivateInfo(BuildContext context) {
     return Align(
-      alignment: FractionalOffset(0.0, 0.25),
+      alignment: const FractionalOffset(0.0, 0.25),
       child: Padding(
         padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Padding(padding: EdgeInsets.all(16)),
-            Icon(Icons.public_off_rounded, size: 48),
-            Padding(padding: EdgeInsets.all(16)),
+            const Padding(padding: EdgeInsets.all(16)),
+            const Icon(Icons.public_off_rounded, size: 48),
+            const Padding(padding: EdgeInsets.all(16)),
             Text(context.strings.profile_grid_screen_profile_is_private_info),
           ],
         ),
@@ -109,18 +99,18 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget profileIsInModerationInfo(BuildContext context) {
     return Align(
-      alignment: FractionalOffset(0.0, 0.25),
+      alignment: const FractionalOffset(0.0, 0.25),
       child: Padding(
         padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Padding(padding: EdgeInsets.all(16)),
-            Icon(Icons.hourglass_top_rounded, size: 48),
-            Padding(padding: EdgeInsets.all(16)),
+            const Padding(padding: EdgeInsets.all(16)),
+            const Icon(Icons.hourglass_top_rounded, size: 48),
+            const Padding(padding: EdgeInsets.all(16)),
             Text(context.strings.profile_grid_screen_initial_moderation_ongoing),
-            Padding(padding: EdgeInsets.all(16)),
-            ShowModerationQueueProgress(),
+            const Padding(padding: EdgeInsets.all(16)),
+            ShowModerationQueueProgress(bloc: context.read<CurrentModerationRequestBloc>()),
           ],
         ),
       ),
@@ -130,13 +120,21 @@ class _ProfileViewState extends State<ProfileView> {
 
 
 class ShowModerationQueueProgress extends StatefulWidget {
-  const ShowModerationQueueProgress({super.key});
+  final CurrentModerationRequestBloc bloc;
+  const ShowModerationQueueProgress({required this.bloc, super.key});
 
   @override
   State<ShowModerationQueueProgress> createState() => _ShowModerationQueueProgressState();
 }
 
 class _ShowModerationQueueProgressState extends State<ShowModerationQueueProgress> {
+
+  @override
+  void initState() {
+    super.initState();
+    widget.bloc.add(ReloadOnceConnected());
+  }
+
   @override
   Widget build(BuildContext context) {
     return blocWidgetForProcessingState();
@@ -147,7 +145,7 @@ class _ShowModerationQueueProgressState extends State<ShowModerationQueueProgres
       builder: (context, state) {
         final s = state.moderationRequest;
         if (s == null) {
-          return const SizedBox.shrink();
+          return const Text("");
         } else {
           return widgetForProcessingState(context, s);
         }
@@ -157,8 +155,8 @@ class _ShowModerationQueueProgressState extends State<ShowModerationQueueProgres
 
   Widget widgetForProcessingState(BuildContext context, ModerationRequest request) {
     if (request.state == ModerationRequestState.waiting) {
-      // TODO: moderation queue number
-      return Text(context.strings.profile_grid_screen_initial_moderation_waiting("0"));
+      final number = request.waitingPosition ?? 0;
+      return Text(context.strings.profile_grid_screen_initial_moderation_waiting(number.toString()));
     } else if (request.state == ModerationRequestState.inProgress) {
       return Text(context.strings.profile_grid_screen_initial_moderation_in_progress);
     } else if (request.state == ModerationRequestState.denied) {

@@ -15,30 +15,40 @@ class ModerationRequest {
   ModerationRequest({
     required this.content,
     required this.state,
+    this.waitingPosition,
   });
 
   ModerationRequestContent content;
 
   ModerationRequestState state;
 
+  int? waitingPosition;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is ModerationRequest &&
      other.content == content &&
-     other.state == state;
+     other.state == state &&
+     other.waitingPosition == waitingPosition;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (content.hashCode) +
-    (state.hashCode);
+    (state.hashCode) +
+    (waitingPosition == null ? 0 : waitingPosition!.hashCode);
 
   @override
-  String toString() => 'ModerationRequest[content=$content, state=$state]';
+  String toString() => 'ModerationRequest[content=$content, state=$state, waitingPosition=$waitingPosition]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'content'] = this.content;
       json[r'state'] = this.state;
+    if (this.waitingPosition != null) {
+      json[r'waiting_position'] = this.waitingPosition;
+    } else {
+      json[r'waiting_position'] = null;
+    }
     return json;
   }
 
@@ -63,6 +73,7 @@ class ModerationRequest {
       return ModerationRequest(
         content: ModerationRequestContent.fromJson(json[r'content'])!,
         state: ModerationRequestState.fromJson(json[r'state'])!,
+        waitingPosition: mapValueOfType<int>(json, r'waiting_position'),
       );
     }
     return null;

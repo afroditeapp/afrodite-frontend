@@ -758,7 +758,7 @@ No authorization required
 
 Update current or pending profile visiblity value.
 
-Update current or pending profile visiblity value.  Requirements: - Account state must be `Normal`.
+Update current or pending profile visiblity value.  NOTE: Client uses this in initial setup.
 
 ### Example
 ```dart
