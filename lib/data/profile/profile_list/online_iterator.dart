@@ -32,7 +32,7 @@ class OnlineIterator extends IteratorType {
   @override
   Future<List<ProfileEntry>> nextList() async {
     if (firstIterationAfterLogin) {
-      await ApiManager.getInstance().profile((api) => api.postResetProfilePaging());
+      await ApiManager.getInstance().profileAction((api) => api.postResetProfilePaging());
       firstIterationAfterLogin = false;
     }
 

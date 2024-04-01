@@ -67,7 +67,7 @@ class InitialSetupUtils {
       case ProcessingError(): return result.message;
       case ProcessingSuccess(): contentId0 = result.contentId;
     }
-    await _api.media((api) => api.putPendingSecurityContentInfo(contentId0));
+    await _api.mediaAction((api) => api.putPendingSecurityContentInfo(contentId0));
 
     final profileImage = await MultipartFile.fromPath("", profileImagePath);
     final processingId2 = await _api.media((api) => api.putContentToContentSlot(1, false, MediaContentType.jpegImage, profileImage));
@@ -80,13 +80,13 @@ class InitialSetupUtils {
       case ProcessingError(): return result2.message;
       case ProcessingSuccess(): contentId1 = result2.contentId;
     }
-    await _api.media((api) => api.putPendingProfileContent(SetProfileContent(contentId0: contentId1)));
-    await _api.media((api) => api.putModerationRequest(ModerationRequestContent(content0: contentId0, content1: contentId1)));
+    await _api.mediaAction((api) => api.putPendingProfileContent(SetProfileContent(contentId0: contentId1)));
+    await _api.mediaAction((api) => api.putModerationRequest(ModerationRequestContent(content0: contentId0, content1: contentId1)));
 
     // Other setup
 
-    await _api.account((api) => api.postAccountData(AccountData(email: email)));
-    await _api.account((api) => api.postAccountSetup(AccountSetup(birthdate: "1.1.2000")));
+    await _api.accountAction((api) => api.postAccountData(AccountData(email: email)));
+    await _api.accountAction((api) => api.postAccountSetup(AccountSetup(birthdate: "1.1.2000")));
 
 
     final update = ProfileUpdate(
@@ -95,21 +95,21 @@ class InitialSetupUtils {
       profileText: "",
       attributes: [],
     );
-    await _api.profile((api) => api.postProfile(update));
+    await _api.profileAction((api) => api.postProfile(update));
     final location = Location(latitude: 61, longitude: 24.5);
-    await _api.profile((api) => api.putLocation(location));
+    await _api.profileAction((api) => api.putLocation(location));
     final ageRange = ProfileSearchAgeRange(min: 18, max: 99);
-    await _api.profile((api) => api.postSearchAgeRange(ageRange));
+    await _api.profileAction((api) => api.postSearchAgeRange(ageRange));
     final groups = SearchGroups(
       manForMan: true,
       manForWoman: true,
       manForNonBinary: true,
     );
-    await _api.profile((api) => api.postSearchGroups(groups));
+    await _api.profileAction((api) => api.postSearchGroups(groups));
 
     await _api.accountAction((api) => api.putSettingProfileVisiblity(BooleanSetting(value: true)));
 
-    await _api.account((api) => api.postCompleteSetup());
+    await _api.accountAction((api) => api.postCompleteSetup());
 
     final state = await _api.account((api) => api.getAccountState()).ok();
     if (state == null || state.state != AccountState.normal) {

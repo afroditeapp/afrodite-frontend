@@ -100,7 +100,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => SignInWithBloc()),
 
         // Admin features related blocs
-        BlocProvider(create: (_) => ImageModerationBloc(mediaRepository)),
+        // empty
 
         // Non-lazy
         BlocProvider(create: (_) => LocationBloc(profileRepository), lazy: false),

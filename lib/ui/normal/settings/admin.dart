@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin/configure_backend.dart';
@@ -28,8 +29,11 @@ class AdminSettingsPage extends StatelessWidget {
         List<Setting> settings = [];
 
         if (state.capabilities.adminModerateImages) {
-          settings.add(Setting.createSetting(Icons.image, "Moderate images", () =>
-            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ModerateImagesPage()),)
+          settings.add(Setting.createSetting(Icons.image, "Moderate images (initial moderation)", () =>
+            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ModerateImagesPage(queueType: ModerationQueueType.initialMediaModeration)),)
+          ));
+          settings.add(Setting.createSetting(Icons.image, "Moderate images (normal)", () =>
+            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ModerateImagesPage(queueType: ModerationQueueType.mediaModeration)),)
           ));
         }
         if (state.capabilities.adminServerMaintenanceRebootBackend ||

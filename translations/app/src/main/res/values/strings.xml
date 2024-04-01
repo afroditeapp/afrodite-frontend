@@ -138,13 +138,6 @@
     <!-- Location page -->
     <string name="pageLocationTitle" description="Title for location page">Location</string>
 
-    <!-- Admin page -->
-    <string name="pageAdminTitle" description="Title for admin settings and tools page">Admin</string>
-
-    <!-- Moderate images page -->
-    <string name="pageModerateImagesTitle" description="Title for moderate images page">Moderate images</string>
-    <string name="pageModerateImagesDenyImageText" description="Deny image text">Deny</string>
-
     <!-- View image screen
         TODO: Does this page need a title?
     -->
@@ -152,5 +145,14 @@
 
     <!-- Crop image screen -->
     <string name="crop_image_screen_title" description="Title for crop image screen">Crop image</string>
+
+    <!-- Admin features -->
+
+    <!-- Admin page -->
+    <string name="pageAdminTitle" description="Title for admin settings and tools page">Admin</string>
+
+    <!-- Moderate images page -->
+    <string name="pageModerateImagesTitle" description="Title for moderate images page">Moderate images</string>
+    <string name="pageModerateImagesDenyImageText" description="Deny image text">Deny</string>
 
 </resources>

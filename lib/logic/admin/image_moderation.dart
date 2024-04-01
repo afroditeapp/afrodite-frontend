@@ -1,231 +1,233 @@
 import "dart:collection";
 
-import "package:flutter_bloc/flutter_bloc.dart";
+import "package:async/async.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/media_repository.dart";
-import "package:pihka_frontend/utils.dart";
+import "package:pihka_frontend/utils/api.dart";
 import "package:rxdart/rxdart.dart";
 
 
-
-import "package:freezed_annotation/freezed_annotation.dart";
-import 'package:flutter/foundation.dart';
-
-part 'image_moderation.freezed.dart';
-
-enum ImageModerationStatus { moderating, allModerated }
-
-@freezed
-class ImageModerationData with _$ImageModerationData {
-  factory ImageModerationData({
-    @Default(ImageModerationStatus.moderating) ImageModerationStatus state,
-    /// Keys are list item keys. Moderation entry is for moderating single
-    /// image in the moderation request. One moderation request has reference to
-    /// single ModerationRequestEntry, so multiple ModerationRequestEntry
-    /// references exists.
-  }) = _ImageModerationData;
+enum ImageModerationStatus {
+  loading,
+  moderating,
+  allModerated,
 }
 
-@freezed
-class ModerationEntry with _$ModerationEntry {
-  factory ModerationEntry({
-    ContentId? securitySelfie,
-    required ContentId target,
-    bool? status,
-  }) = _ModerationEntry;
-
-
+sealed class ContentStatus {}
+class ModerationDecicionNeeded implements ContentStatus {
+  const ModerationDecicionNeeded();
 }
+class Accepted implements ContentStatus {}
+class Denied implements ContentStatus {}
 
-class ModerationRequestEntry {
-    bool? content0;
-    bool? content1;
-    bool? content2;
-    bool? content3;
-    bool? content4;
-    bool? content5;
-    bool? content6;
-    Moderation m;
+class ModerationRequestState {
+    final List<ContentStatus> list;
+    final Moderation m;
+    bool sentToServer = false;
 
-    ModerationRequestEntry(this.m);
+    ModerationRequestState(this.m, this.list);
+
+    void sendToServer() async {
+      if (list.any((element) => element is ModerationDecicionNeeded)) {
+        return;
+      }
+
+      if (sentToServer) {
+        return;
+      }
+      sentToServer = true;
+
+      final accpeted = !list.any((element) => element is Denied);
+      await MediaRepository.getInstance().handleModerationRequest(m.requestCreatorId, accpeted);
+    }
 }
 
 sealed class ImageRowState {}
 class AllModerated implements ImageRowState {}
 class Loading implements ImageRowState {}
 class ImageRow implements ImageRowState {
-  final ModerationEntry entry;
-  final ModerationRequestEntry requestEntry;
-  ImageRow(this.entry, this.requestEntry);
+  /// Index to [ModerationRequestState.list]
+  final int stateIndex;
+  final ContentId? securitySelfie;
+  final ContentId target;
+  final ContentStatus status;
+  final ModerationRequestState state;
+  ImageRow(
+    this.stateIndex,
+    this.state,
+    {
+      required this.target,
+      required this.status,
+      this.securitySelfie,
+    }
+  );
 
-
+  ImageRow setContentStatus(ContentStatus status) {
+    state.list[stateIndex] = status;
+    return ImageRow(
+      stateIndex,
+      state,
+      target: target,
+      securitySelfie: securitySelfie,
+      status: status,
+    );
+  }
 }
 
-abstract class ImageModerationEvent {}
-class ModerateEntry extends ImageModerationEvent {
-  final int index;
-  final bool accept;
-  ModerateEntry(this.index, this.accept);
-}
-class NoMoreDataAvailable extends ImageModerationEvent {}
-class ResetImageModerationData extends ImageModerationEvent {}
 
-class ImageModerationBloc extends Bloc<ImageModerationEvent, ImageModerationData> with ActionRunner {
-  final MediaRepository media;
+class ImageModerationLogic {
+  ImageModerationLogic._private();
+  static final _instance = ImageModerationLogic._private();
+  factory ImageModerationLogic.getInstance() {
+    return _instance;
+  }
 
-  final LinkedHashMap<int, BehaviorSubject<ImageRowState>> moderationData = LinkedHashMap();
-  final HashSet<Moderation> alreadyStoredModerations = HashSet();
-  bool loadingFromServer = false;
-  bool currentLoadTheFirstLoad = true;
+  final media = MediaRepository.getInstance();
 
-  ImageModerationBloc(this.media) : super(ImageModerationData()) {
-    on<ResetImageModerationData>((_, emit) async {
-        moderationData.clear();
-        alreadyStoredModerations.clear();
-        currentLoadTheFirstLoad = true;
-        emit(ImageModerationData(
-          state: ImageModerationStatus.moderating,
-        ));
-    });
-    on<NoMoreDataAvailable>((data, emit) async {
-        emit(ImageModerationData(
-          state: ImageModerationStatus.allModerated,
-        ));
-    });
-    on<ModerateEntry>((data, emit) async {
-      final imageRowState = moderationData[data.index]?.value;
-      if (imageRowState is ImageRow && (imageRowState.entry.status == null)) {
-        var entry = imageRowState.entry;
-        var requestEntry = imageRowState.requestEntry;
+  final BehaviorSubject<ImageModerationStatus> _imageModerationStatus =
+    BehaviorSubject.seeded(ImageModerationStatus.loading);
 
-        // TODO(prod): Support other images than the first two
+  var cacher = ModerationCacher();
+  var qType = ModerationQueueType.initialMediaModeration;
+  var loadManager = LoadMoreManager();
 
-        entry = entry.copyWith(status: data.accept);
-        if (entry.target == requestEntry.m.content.content0) {
-          requestEntry.content0 = data.accept;
-        } else if (entry.target == requestEntry.m.content.content1) {
-          requestEntry.content1 = data.accept;
-        }
+  Stream<ImageModerationStatus> get imageModerationStatus => _imageModerationStatus.stream;
 
-        // Update background color
-        moderationData[data.index]?.add(ImageRow(entry, requestEntry));
-
-        // Check if all moderated
-        // TODO: Reject all if first is rejected?
-        if (requestEntry.m.content.content2 != null) {
-          final imageStatus1 = requestEntry.content0;
-          final imageStatus2 = requestEntry.content1;
-          if (imageStatus1 != null && imageStatus2 != null) {
-            await media.handleModerationRequest(requestEntry.m.requestCreatorId, imageStatus1 && imageStatus2);
-          }
-        } else {
-          final imageStatus1 = requestEntry.content0;
-          if (imageStatus1 != null) {
-            await media.handleModerationRequest(requestEntry.m.requestCreatorId, imageStatus1);
-          }
-        }
+  void reset(ModerationQueueType queueType) {
+    qType = queueType;
+    _imageModerationStatus.add(ImageModerationStatus.loading);
+    loadManager = LoadMoreManager();
+    cacher = ModerationCacher();
+    cacher.getMoreModerationRequests(queueType).then((value) {
+      final firstState = value.firstOrNull;
+      if (firstState == null || firstState is AllModerated) {
+        _imageModerationStatus.add(ImageModerationStatus.allModerated);
+      } else {
+        _imageModerationStatus.add(ImageModerationStatus.moderating);
+        loadManager.handleNewStates(value);
       }
     });
   }
 
   Stream<ImageRowState> getImageRow(int index) async* {
-    final relay = moderationData[index];
-
-    if (relay == null) {
-      for (int i = index; i < index + 100; i++) {
-        moderationData.putIfAbsent(i, () => BehaviorSubject.seeded(Loading(), sync: true));
-      }
-
-      if (await getMoreModerationRequests()) {
-        yield AllModerated();
-        return;
-      }
+    if (_imageModerationStatus.value == ImageModerationStatus.loading) {
+      return;
     }
 
-    final afterNewModerationRequests = moderationData[index];
+    yield* loadManager.getImageRow(index, qType, cacher);
+  }
 
-    if (afterNewModerationRequests != null) {
-      if (afterNewModerationRequests.value is Loading && await getMoreModerationRequests()) {
-        yield AllModerated();
-      } else {
-        yield* afterNewModerationRequests;
+  void moderateImageRow(int index, bool accept) {
+    final relay = loadManager.moderationData[index];
+    if (relay == null) {
+      return;
+    }
+
+    final currentState = relay.value;
+    if (currentState is ImageRow && currentState.status is ModerationDecicionNeeded) {
+      final status = accept ? Accepted() : Denied();
+      final newState = currentState.setContentStatus(status);
+      relay.add(newState);
+      newState.state.sendToServer();
+    }
+  }
+}
+
+sealed class LoadMoreState {}
+class Idle extends LoadMoreState {}
+class AlreadyLoading extends LoadMoreState {
+  final BehaviorSubject<bool> completed = BehaviorSubject.seeded(false);
+}
+
+class LoadMoreManager {
+  LoadMoreState state = Idle();
+  final LinkedHashMap<int, BehaviorSubject<ImageRowState>> moderationData = LinkedHashMap();
+
+  Stream<ImageRowState> getImageRow(
+    int i,
+    ModerationQueueType queueType,
+    ModerationCacher cacher,
+  ) async* {
+
+    while (true) {
+      final relay = moderationData[i];
+
+      if (relay != null) {
+        yield* relay;
+        return;
+      }
+
+      yield Loading();
+
+      switch (state) {
+        case Idle():
+          final newState = AlreadyLoading();
+          state = newState;
+          final imgStates = await cacher.getMoreModerationRequests(queueType);
+          handleNewStates(imgStates);
+          newState.completed.add(true);
+          state = Idle();
+        case AlreadyLoading(:final completed):
+          await completed.where((event) => event).firstOrNull;
       }
     }
   }
 
-  /// Returns true if no more data available
-  Future<bool> getMoreModerationRequests() async {
-    if (loadingFromServer) {
-      return false;
+  void handleNewStates(List<ImageRowState> newStates) {
+    var nextI = moderationData.length;
+    for (final s in newStates) {
+      moderationData.putIfAbsent(nextI++, () => BehaviorSubject.seeded(s));
     }
-    loadingFromServer = true;
+  }
+}
 
-    ModerationList requests = await media.nextModerationListFromServer(ModerationQueueType.initialMediaModeration);
+class ModerationCacher {
+  final HashSet<Moderation> alreadyStoredModerations = HashSet();
+  final MediaRepository media = MediaRepository.getInstance();
 
-    var noMoreDataAvailable = false;
+  /// Return only new ImageRowStates
+  Future<List<ImageRowState>> getMoreModerationRequests(ModerationQueueType queueType) async {
+    ModerationList requests = await media.nextModerationListFromServer(queueType);
 
     if (requests.list.isEmpty) {
-      noMoreDataAvailable = true;
-      if (currentLoadTheFirstLoad) {
-        add(NoMoreDataAvailable());
-      }
+      return List.generate(10, (index) => AllModerated());
     }
 
-    currentLoadTheFirstLoad = false;
+    final newStates = <ImageRowState>[];
 
     for (Moderation m in requests.list) {
       if (alreadyStoredModerations.contains(m)) {
         continue;
       }
 
-      ModerationRequestEntry requestEntry = ModerationRequestEntry(m);
-      final securitySelfie = await media.getSecuritySelfie(m.requestCreatorId);
-      if (securitySelfie != null) {
-        // Only one image per normal moderation request is supported currently.
-        // TODO(prod): support multiple images
-        final e = ModerationEntry(target: m.content.content0, securitySelfie: securitySelfie);
-        appendImageRow(e, requestEntry);
-      } else {
-        final pendingSecuritySelfie = await media.getPendingSecuritySelfie(m.requestCreatorId);
-        if (pendingSecuritySelfie != null && pendingSecuritySelfie.contentId == m.content.content0.contentId) {
-          // Initial moderation request
-          ModerationEntry e1 = ModerationEntry(target: m.content.content0);
-          appendImageRow(e1, requestEntry);
-          final c1 = m.content.content1;
-          if (c1 != null) {
-            ModerationEntry e2 = ModerationEntry(target: c1, securitySelfie: m.content.content0);
-            appendImageRow(e2, requestEntry);
-          }
-        }
+      var securitySelfie = await media.getSecuritySelfie(m.requestCreatorId);
+      securitySelfie ??= await media.getPendingSecuritySelfie(m.requestCreatorId);
+
+      final cList = m.contentList();
+      final List<ContentStatus> cStates = cList.map((e) => const ModerationDecicionNeeded() as ContentStatus).toList();
+      final ModerationRequestState requestEntry = ModerationRequestState(
+        m,
+        cStates,
+      );
+      for (final (cIndex, c) in cList.indexed) {
+        newStates.add(
+          ImageRow(
+            cIndex,
+            requestEntry,
+            target: c,
+            securitySelfie: securitySelfie,
+            status: requestEntry.list[cIndex],
+          )
+        );
       }
 
       alreadyStoredModerations.add(m);
     }
 
-    loadingFromServer = false;
-    return noMoreDataAvailable;
-  }
-
-  void appendImageRow(ModerationEntry e, ModerationRequestEntry requestEntry) {
-    try {
-      final first = moderationData.entries.firstWhere(
-        (element) {
-          return element.value.valueOrNull is Loading;
-        },
-      );
-      first.value.add(ImageRow(e, requestEntry));
-    } on StateError catch (_) {
-      final nextIndex = moderationData.length;
-      final relay = moderationData[nextIndex];
-      if (relay != null) {
-        relay.add(ImageRow(e, requestEntry));
-      } else {
-        moderationData[nextIndex] = BehaviorSubject.seeded(ImageRow(e, requestEntry), sync: true);
-      }
+    if (newStates.isEmpty) {
+      newStates.add(AllModerated());
     }
-  }
 
-  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id) async {
-    return media.getImage(imageOwner, id);
+    return newStates;
   }
 }

@@ -94,7 +94,7 @@ class MediaRepository extends DataRepository {
   }
 
   Future<void> handleModerationRequest(AccountId accountId, bool accept) async {
-    await api.mediaAdmin((api) => api.postHandleModerationRequest(accountId.accountId, HandleModerationRequest(accept: accept)));
+    await api.mediaAdminAction((api) => api.postHandleModerationRequest(accountId.accountId, HandleModerationRequest(accept: accept)));
   }
 
   Future<ContentId?> getSecuritySelfie(AccountId account) async {
