@@ -106,8 +106,9 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
 
   Widget newMessageArea(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Row(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+      child: Wrap(
+        direction: Axis.horizontal,
         children: [
           ElevatedButton(
             onPressed: () {
