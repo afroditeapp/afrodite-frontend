@@ -7,6 +7,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
+import 'package:pihka_frontend/ui/normal/settings/location.dart';
 import 'package:pihka_frontend/utils.dart';
 
 import 'package:image/image.dart' as img;
@@ -88,9 +89,9 @@ Future<File?> emptyMapTile() async {
   final imageBuffer = img.Image(width: 1, height: 1);
 
   for (var pixel in imageBuffer) {
-    pixel..r = 224
-        ..g = 224
-        ..b = 224
+    pixel..r = MAP_BACKGROUND_COLOR.red
+        ..g = MAP_BACKGROUND_COLOR.green
+        ..b = MAP_BACKGROUND_COLOR.blue
         ..a = 255;
   }
 
