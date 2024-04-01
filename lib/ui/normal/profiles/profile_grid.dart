@@ -8,10 +8,12 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
+import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_filtering_settings.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
+import 'package:pihka_frontend/ui_utils/list.dart';
 
 var log = Logger("ProfileGrid");
 
@@ -19,7 +21,7 @@ class ProfileGrid extends StatefulWidget {
   const ProfileGrid({Key? key}) : super(key: key);
 
   @override
-  _ProfileGridState createState() => _ProfileGridState();
+  State<ProfileGrid> createState() => _ProfileGridState();
 }
 
 typedef ProfileViewEntry = (ProfileEntry profile, XFile img, int heroNumber);
@@ -146,6 +148,32 @@ class _ProfileGridState extends State<ProfileGrid> {
               tag: heroTag,
               child: xfileImgWidget(item.$2)
             )
+          );
+        },
+        noItemsFoundIndicatorBuilder: (context) {
+          final filterStatus = context.read<ProfileFilteringSettingsBloc>().state.isSomeFilterEnabled();
+          final Widget descriptionText;
+          if (filterStatus) {
+            descriptionText = Text(
+              context.strings.profile_grid_screen_no_profiles_found_description_filters_enabled,
+            );
+          } else {
+            descriptionText = Text(
+              context.strings.profile_grid_screen_no_profiles_found_description_filters_disabled,
+            );
+          }
+          return buildListReplacementMessage(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  context.strings.profile_grid_screen_no_profiles_found_title,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const Padding(padding: EdgeInsets.all(8)),
+                descriptionText,
+              ],
+            ),
           );
         },
       ),

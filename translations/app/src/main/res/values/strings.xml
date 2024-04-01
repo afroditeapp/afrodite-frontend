@@ -122,6 +122,9 @@
     <string name="profile_grid_screen_initial_moderation_waiting" description="Info text that shows initial moderation queue number">Your position in moderation queue: %s</string>
     <string name="profile_grid_screen_initial_moderation_in_progress" description="Info text that initial moderation is in progress">Moderation in progress.</string>
     <string name="profile_grid_screen_initial_moderation_denied" description="Info text that initial moderation was denied">Moderator did not accept some profile image. Make new moderation request in settings.</string>
+    <string name="profile_grid_screen_no_profiles_found_title" description="Title that no profiles were found">No profiles found</string>
+    <string name="profile_grid_screen_no_profiles_found_description_filters_enabled" description="Description displayed when there is no profiles and some filter is enabled">Change or disable filter settings</string>
+    <string name="profile_grid_screen_no_profiles_found_description_filters_disabled" description="Description displayed when there is no profiles and there is no filters enabled">Spread the word about the app in social media</string>
 
     <!-- Likes page -->
     <string name="pageLikesTitle" description="Title for likes page">Likes</string>

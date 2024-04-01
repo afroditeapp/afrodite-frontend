@@ -11,7 +11,7 @@ import 'package:pihka_frontend/ui/normal/profiles/profile_grid.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/ui_utils/consts/padding.dart';
+import 'package:pihka_frontend/ui_utils/list.dart';
 
 var log = Logger("ProfileView");
 
@@ -32,10 +32,10 @@ class ProfileView extends BottomNavigationScreen {
       IconButton(
         icon: BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
           builder: (context, state) {
-            if (state == ProfileFilteringSettingsData()) {
-              return const Icon(Icons.filter_alt_outlined);
-            } else {
+            if (state.isSomeFilterEnabled()) {
               return const Icon(Icons.filter_alt_rounded);
+            } else {
+              return const Icon(Icons.filter_alt_outlined);
             }
           },
         ),
@@ -80,39 +80,31 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget profileIsSetToPrivateInfo(BuildContext context) {
-    return Align(
-      alignment: const FractionalOffset(0.0, 0.25),
-      child: Padding(
-        padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Padding(padding: EdgeInsets.all(16)),
-            const Icon(Icons.public_off_rounded, size: 48),
-            const Padding(padding: EdgeInsets.all(16)),
-            Text(context.strings.profile_grid_screen_profile_is_private_info),
-          ],
-        ),
-      ),
+    return buildListReplacementMessage(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Padding(padding: EdgeInsets.all(16)),
+          const Icon(Icons.public_off_rounded, size: 48),
+          const Padding(padding: EdgeInsets.all(16)),
+          Text(context.strings.profile_grid_screen_profile_is_private_info),
+        ],
+      )
     );
   }
 
   Widget profileIsInModerationInfo(BuildContext context) {
-    return Align(
-      alignment: const FractionalOffset(0.0, 0.25),
-      child: Padding(
-        padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Padding(padding: EdgeInsets.all(16)),
-            const Icon(Icons.hourglass_top_rounded, size: 48),
-            const Padding(padding: EdgeInsets.all(16)),
-            Text(context.strings.profile_grid_screen_initial_moderation_ongoing),
-            const Padding(padding: EdgeInsets.all(16)),
-            ShowModerationQueueProgress(bloc: context.read<CurrentModerationRequestBloc>()),
-          ],
-        ),
+    return buildListReplacementMessage(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Padding(padding: EdgeInsets.all(16)),
+          const Icon(Icons.hourglass_top_rounded, size: 48),
+          const Padding(padding: EdgeInsets.all(16)),
+          Text(context.strings.profile_grid_screen_initial_moderation_ongoing),
+          const Padding(padding: EdgeInsets.all(16)),
+          ShowModerationQueueProgress(bloc: context.read<CurrentModerationRequestBloc>()),
+        ],
       ),
     );
   }

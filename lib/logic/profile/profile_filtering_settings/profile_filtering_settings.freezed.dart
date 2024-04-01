@@ -97,10 +97,10 @@ class __$$ProfileFilteringSettingsDataImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ProfileFilteringSettingsDataImpl
-    with DiagnosticableTreeMixin
-    implements _ProfileFilteringSettingsData {
-  _$ProfileFilteringSettingsDataImpl({this.showOnlyFavorites = false});
+class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData
+    with DiagnosticableTreeMixin {
+  _$ProfileFilteringSettingsDataImpl({this.showOnlyFavorites = false})
+      : super._();
 
   @override
   @JsonKey()
@@ -141,9 +141,10 @@ class _$ProfileFilteringSettingsDataImpl
 }
 
 abstract class _ProfileFilteringSettingsData
-    implements ProfileFilteringSettingsData {
+    extends ProfileFilteringSettingsData {
   factory _ProfileFilteringSettingsData({final bool showOnlyFavorites}) =
       _$ProfileFilteringSettingsDataImpl;
+  _ProfileFilteringSettingsData._() : super._();
 
   @override
   bool get showOnlyFavorites;
