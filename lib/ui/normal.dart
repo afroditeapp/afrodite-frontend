@@ -47,7 +47,12 @@ class _NormalStateContentState extends State<NormalStateContent> {
       ),
       body: Column(
         children: [
-          Expanded(child: views[selectedView]),
+          Expanded(
+            child: IndexedStack(
+              index: selectedView,
+              children: views,
+            )
+          ),
           const NotificationPermissionDialogOpener(),
         ],
       ),
