@@ -20,9 +20,11 @@ import 'package:pihka_frontend/database/chat/received_blocks_database.dart';
 import 'package:pihka_frontend/database/chat/received_likes_database.dart';
 import 'package:pihka_frontend/database/chat/sent_blocks_database.dart';
 import 'package:pihka_frontend/database/chat/sent_likes_database.dart';
+import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/database/favorite_profiles_database.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
+import 'package:pihka_frontend/database/common_database.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/demo_account.dart';
@@ -165,6 +167,8 @@ class GlobalInitManager {
       return;
     }
     _globalInitDone = true;
+
+    await DatabaseManager.getInstance().init();
 
     await ErrorManager.getInstance().init();
     await ApiManager.getInstance().init();

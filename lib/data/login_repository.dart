@@ -9,6 +9,7 @@ import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
+import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
@@ -56,21 +57,14 @@ class LoginRepository extends DataRepository {
     );
 
   // Demo account
-  Stream<String?> get demoAccountUserId => KvStringManager.getInstance()
-    .getUpdatesForWithConversion(
-      KvString.demoAccountUserId,
-      (value) => value,
-    );
-  Stream<String?> get demoAccountPassword => KvStringManager.getInstance()
-    .getUpdatesForWithConversion(
-      KvString.demoAccountPassword,
-      (value) => value,
-    );
-  Stream<String?> get demoAccountToken => KvStringManager.getInstance()
-    .getUpdatesForWithConversion(
-      KvString.demoAccountToken,
-      (value) => value,
-    );
+  Stream<String?> get demoAccountUserId => DatabaseManager.getInstance()
+    .commonDataStream((db) => db.watchDemoAccountUserId());
+
+  Stream<String?> get demoAccountPassword => DatabaseManager.getInstance()
+    .commonDataStream((db) => db.watchDemoAccountPassword());
+
+  Stream<String?> get demoAccountToken => DatabaseManager.getInstance()
+    .commonDataStream((db) => db.watchDemoAccountToken());
   Stream<bool> get demoAccountLoginInProgress => _demoAccountLoginInProgress;
 
   // Account
@@ -255,9 +249,9 @@ class LoginRepository extends DataRepository {
       return Err(());
     }
 
-    await KvStringManager.getInstance().setValue(KvString.demoAccountToken, demoAccountToken);
-    await KvStringManager.getInstance().setValue(KvString.demoAccountUserId, credentials.id);
-    await KvStringManager.getInstance().setValue(KvString.demoAccountPassword, credentials.password);
+    await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountUserId(credentials.id));
+    await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountPassword(credentials.password));
+    await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountToken(demoAccountToken));
 
     return Ok(());
   }
@@ -268,7 +262,7 @@ class LoginRepository extends DataRepository {
     // TODO(prod): Uncomment
     // await KvStringManager.getInstance().setValue(KvString.demoAccountPassword, null);
     // await KvStringManager.getInstance().setValue(KvString.demoAccountUserId, null);
-    await KvStringManager.getInstance().setValue(KvString.demoAccountToken, null);
+    await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountToken(null));
 
     log.info("demo account logout completed");
   }

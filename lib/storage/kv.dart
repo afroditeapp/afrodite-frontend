@@ -6,11 +6,6 @@ import 'package:pihka_frontend/storage/base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum KvString implements PreferenceKeyProvider<KvString, String> {
-
-  demoAccountUserId,
-  demoAccountPassword,
-  demoAccountToken,
-
   /// Url
   accountServerAddress,
   /// Url
