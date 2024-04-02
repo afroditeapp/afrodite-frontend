@@ -203,11 +203,11 @@ class ApiManager extends AppSingleton {
   Future<void> _connect() async {
     _state.add(ApiManagerState.connecting);
 
-    final storage = KvStringManager.getInstance();
+    final storage = DatabaseManager.getInstance();
     final accountRefreshToken =
-      await storage.getValue(KvString.accountRefreshToken);
+      await storage.accountData((db) => db.watchRefreshTokenAccount());
     final accountAccessToken =
-      await storage.getValue(KvString.accountAccessToken);
+      await storage.accountData((db) => db.watchAccessTokenAccount());
 
     if (accountRefreshToken == null || accountAccessToken == null) {
       _state.add(ApiManagerState.waitingRefreshToken);
@@ -237,11 +237,11 @@ class ApiManager extends AppSingleton {
   }
 
   Future<void> setupTokens() async {
-    final storage = KvStringManager.getInstance();
+    final storage = DatabaseManager.getInstance();
 
-    final accountToken = await storage.getValue(KvString.accountAccessToken);
-    if (accountToken != null) {
-      _account.setAccessToken(AccessToken(accessToken: accountToken));
+    final accessTokenAccount = await storage.accountData((db) => db.watchAccessTokenAccount());
+    if (accessTokenAccount != null) {
+      _account.setAccessToken(AccessToken(accessToken: accessTokenAccount));
     }
   }
 

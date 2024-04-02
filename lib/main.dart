@@ -96,7 +96,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => ProfilePicturesBloc()),
         BlocProvider(create: (_) => ViewProfileBloc(accountRepository, profileRepository, mediaRepository, chatRepository)),
         BlocProvider(create: (_) => ConversationBloc(accountRepository, profileRepository, mediaRepository, chatRepository)),
-        BlocProvider(create: (_) => ProfileFilteringSettingsBloc(profileRepository)),
+        BlocProvider(create: (_) => ProfileFilteringSettingsBloc()),
         BlocProvider(create: (_) => CurrentModerationRequestBloc()),
         BlocProvider(create: (_) => NotificationPermissionBloc()),
 

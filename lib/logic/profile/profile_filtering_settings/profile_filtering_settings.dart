@@ -1,7 +1,6 @@
 
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
-import "package:pihka_frontend/storage/kv.dart";
 import "package:pihka_frontend/utils.dart";
 
 
@@ -31,9 +30,9 @@ class ShowOnlyFavoritesChange extends ProfileFilteringSettingsEvent {
 class LoadSavedFilterValues extends ProfileFilteringSettingsEvent {}
 
 class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, ProfileFilteringSettingsData> with ActionRunner {
-  final ProfileRepository profile;
+  final ProfileRepository profile = ProfileRepository.getInstance();
 
-  ProfileFilteringSettingsBloc(this.profile) : super(ProfileFilteringSettingsData()) {
+  ProfileFilteringSettingsBloc() : super(ProfileFilteringSettingsData()) {
     on<ShowOnlyFavoritesChange>((data, emit) async {
       await runOnce(() async {
         await profile.changeProfileFilteringSettings(data.showOnlyFavorites);
@@ -41,7 +40,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
       });
     });
     on<LoadSavedFilterValues>((data, emit) async {
-      final showOnlyFavorites = await KvBooleanManager.getInstance().getValue(KvBoolean.profileFilterFavorites) ?? false;
+      final showOnlyFavorites = await profile.getFilterFavoriteProfilesValue();
       emit(state.copyWith(showOnlyFavorites: showOnlyFavorites));
     });
 

@@ -74,7 +74,7 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
           requiredDuringInsert: false,
           defaultConstraints: GeneratedColumn.constraintIsAlways(
               'CHECK ("notification_permission_asked" IN (0, 1))'),
-          defaultValue: const Constant(false));
+          defaultValue: const Constant(NOTIFICATION_PERMISSION_ASKED_DEFAULT));
   @override
   List<GeneratedColumn> get $columns => [
         id,

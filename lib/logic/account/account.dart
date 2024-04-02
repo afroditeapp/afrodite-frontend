@@ -15,7 +15,6 @@ part 'account.freezed.dart';
 class AccountBlocData with _$AccountBlocData {
   factory AccountBlocData({
     AccountId? accountId,
-    AccessToken? accessToken,
     String? email,
     AccountState? accountState,
     required Capabilities capabilities,
@@ -36,10 +35,6 @@ class DoProfileVisiblityChange extends AccountEvent {
 class NewAccountIdValue extends AccountEvent {
   final AccountId? value;
   NewAccountIdValue(this.value);
-}
-class NewAccessTokenValue extends AccountEvent {
-  final AccessToken? value;
-  NewAccessTokenValue(this.value);
 }
 class NewCapabilitiesValue extends AccountEvent {
   final Capabilities value;
@@ -68,7 +63,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
       await runOnce(() async {
         emit(state.copyWith(
           accountId: await login.register(),
-          accessToken: null,
         ));
       });
     });
@@ -93,9 +87,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
     on<NewAccountIdValue>((id, emit) {
       emit(state.copyWith(accountId: id.value));
     });
-    on<NewAccessTokenValue>((key, emit) {
-      emit(state.copyWith(accessToken: key.value));
-    });
     on<NewCapabilitiesValue>((key, emit) {
       emit(state.copyWith(capabilities: key.value));
     });
@@ -109,9 +100,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
 
     login.accountId.listen((event) {
       add(NewAccountIdValue(event));
-    });
-    login.accountAccessToken.listen((event) {
-      add(NewAccessTokenValue(event));
     });
     account.capabilities.listen((event) {
       add(NewCapabilitiesValue(event));

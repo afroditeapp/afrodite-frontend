@@ -15,7 +15,8 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/assets.dart';
-import 'package:pihka_frontend/storage/kv.dart';
+import 'package:pihka_frontend/database/account_database.dart';
+import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:web_socket_channel/io.dart';
@@ -29,21 +30,39 @@ enum ServerSlot {
   media,
   chat;
 
-  KvString toRefreshTokenKey() {
+  Stream<String?> Function(AccountDatabase) getterForRefreshTokenKey() {
     switch (this) {
-      case ServerSlot.account: return KvString.accountRefreshToken;
-      case ServerSlot.media: return KvString.mediaRefreshToken;
-      case ServerSlot.profile: return KvString.profileRefreshToken;
-      case ServerSlot.chat: return KvString.chatRefreshToken;
+      case ServerSlot.account: return (db) => db.watchRefreshTokenAccount();
+      case ServerSlot.media: return (db) => db.watchRefreshTokenMedia();
+      case ServerSlot.profile: return (db) => db.watchRefreshTokenProfile();
+      case ServerSlot.chat: return (db) => db.watchRefreshTokenChat();
     }
   }
 
-  KvString toAccessTokenKey() {
+  Future<void> Function(AccountDatabase) setterForRefreshTokenKey(String newValue) {
     switch (this) {
-      case ServerSlot.account: return KvString.accountAccessToken;
-      case ServerSlot.media: return KvString.mediaAccessToken;
-      case ServerSlot.profile: return KvString.profileAccessToken;
-      case ServerSlot.chat: return KvString.chatAccessToken;
+      case ServerSlot.account: return (db) => db.updateRefreshTokenAccount(newValue);
+      case ServerSlot.media: return (db) => db.updateRefreshTokenMedia(newValue);
+      case ServerSlot.profile: return (db) => db.updateRefreshTokenProfile(newValue);
+      case ServerSlot.chat: return (db) => db.updateRefreshTokenChat(newValue);
+    }
+  }
+
+  Stream<String?> Function(AccountDatabase) getterForAccessTokenKey() {
+    switch (this) {
+      case ServerSlot.account: return (db) => db.watchAccessTokenAccount();
+      case ServerSlot.media: return (db) => db.watchAccessTokenMedia();
+      case ServerSlot.profile: return (db) => db.watchAccessTokenProfile();
+      case ServerSlot.chat: return (db) => db.watchAccessTokenChat();
+    }
+  }
+
+  Future<void> Function(AccountDatabase) setterForAccessTokenKey(String newValue) {
+    switch (this) {
+      case ServerSlot.account: return (db) => db.updateAccessTokenAccount(newValue);
+      case ServerSlot.media: return (db) => db.updateAccessTokenMedia(newValue);
+      case ServerSlot.profile: return (db) => db.updateAccessTokenProfile(newValue);
+      case ServerSlot.chat: return (db) => db.updateAccessTokenChat(newValue);
     }
   }
 }
@@ -102,14 +121,14 @@ class ServerConnection {
   }
 
   Future<void> _connect() async {
-    final storage = KvStringManager.getInstance();
+    final storage = DatabaseManager.getInstance();
 
-    final accessToken = await storage.getValue(_server.toAccessTokenKey());
+    final accessToken = await storage.accountData(_server.getterForAccessTokenKey());
     if (accessToken == null) {
       _state.add(Error(ServerConnectionError.invalidToken));
       return;
     }
-    final refreshToken = await storage.getValue(_server.toRefreshTokenKey());
+    final refreshToken = await storage.accountData(_server.getterForRefreshTokenKey());
     if (refreshToken == null) {
       _state.add(Error(ServerConnectionError.invalidToken));
       return;
@@ -167,7 +186,7 @@ class ServerConnection {
           case ConnectionProtocolState.receiveNewRefreshToken: {
             if (message is List<int>) {
               final newRefreshToken = base64Encode(message);
-              await storage.setValue(_server.toRefreshTokenKey(), newRefreshToken);
+              await storage.accountAction(_server.setterForRefreshTokenKey(newRefreshToken));
               _protocolState = ConnectionProtocolState.receiveNewAccessToken;
             } else if (message is String) {
               await _endConnectionToGeneralError(error: ServerConnectionError.unsupportedClientVersion);
@@ -177,7 +196,7 @@ class ServerConnection {
           }
           case ConnectionProtocolState.receiveNewAccessToken: {
             if (message is String) {
-              await storage.setValue(_server.toAccessTokenKey(), message);
+              await storage.accountAction(_server.setterForAccessTokenKey(message));
               ws.sink.add(syncDataBytes());
               _protocolState = ConnectionProtocolState.receiveEvents;
               _state.add(Ready());

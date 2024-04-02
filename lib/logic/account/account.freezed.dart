@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$AccountBlocData {
   AccountId? get accountId => throw _privateConstructorUsedError;
-  AccessToken? get accessToken => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   AccountState? get accountState => throw _privateConstructorUsedError;
   Capabilities get capabilities => throw _privateConstructorUsedError;
@@ -36,7 +35,6 @@ abstract class $AccountBlocDataCopyWith<$Res> {
   @useResult
   $Res call(
       {AccountId? accountId,
-      AccessToken? accessToken,
       String? email,
       AccountState? accountState,
       Capabilities capabilities,
@@ -57,7 +55,6 @@ class _$AccountBlocDataCopyWithImpl<$Res, $Val extends AccountBlocData>
   @override
   $Res call({
     Object? accountId = freezed,
-    Object? accessToken = freezed,
     Object? email = freezed,
     Object? accountState = freezed,
     Object? capabilities = null,
@@ -68,10 +65,6 @@ class _$AccountBlocDataCopyWithImpl<$Res, $Val extends AccountBlocData>
           ? _value.accountId
           : accountId // ignore: cast_nullable_to_non_nullable
               as AccountId?,
-      accessToken: freezed == accessToken
-          ? _value.accessToken
-          : accessToken // ignore: cast_nullable_to_non_nullable
-              as AccessToken?,
       email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -102,7 +95,6 @@ abstract class _$$AccountBlocDataImplCopyWith<$Res>
   @useResult
   $Res call(
       {AccountId? accountId,
-      AccessToken? accessToken,
       String? email,
       AccountState? accountState,
       Capabilities capabilities,
@@ -121,7 +113,6 @@ class __$$AccountBlocDataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? accountId = freezed,
-    Object? accessToken = freezed,
     Object? email = freezed,
     Object? accountState = freezed,
     Object? capabilities = null,
@@ -132,10 +123,6 @@ class __$$AccountBlocDataImplCopyWithImpl<$Res>
           ? _value.accountId
           : accountId // ignore: cast_nullable_to_non_nullable
               as AccountId?,
-      accessToken: freezed == accessToken
-          ? _value.accessToken
-          : accessToken // ignore: cast_nullable_to_non_nullable
-              as AccessToken?,
       email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -163,7 +150,6 @@ class _$AccountBlocDataImpl
     implements _AccountBlocData {
   _$AccountBlocDataImpl(
       {this.accountId,
-      this.accessToken,
       this.email,
       this.accountState,
       required this.capabilities,
@@ -171,8 +157,6 @@ class _$AccountBlocDataImpl
 
   @override
   final AccountId? accountId;
-  @override
-  final AccessToken? accessToken;
   @override
   final String? email;
   @override
@@ -184,7 +168,7 @@ class _$AccountBlocDataImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountBlocData(accountId: $accountId, accessToken: $accessToken, email: $email, accountState: $accountState, capabilities: $capabilities, visibility: $visibility)';
+    return 'AccountBlocData(accountId: $accountId, email: $email, accountState: $accountState, capabilities: $capabilities, visibility: $visibility)';
   }
 
   @override
@@ -193,7 +177,6 @@ class _$AccountBlocDataImpl
     properties
       ..add(DiagnosticsProperty('type', 'AccountBlocData'))
       ..add(DiagnosticsProperty('accountId', accountId))
-      ..add(DiagnosticsProperty('accessToken', accessToken))
       ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('accountState', accountState))
       ..add(DiagnosticsProperty('capabilities', capabilities))
@@ -207,8 +190,6 @@ class _$AccountBlocDataImpl
             other is _$AccountBlocDataImpl &&
             (identical(other.accountId, accountId) ||
                 other.accountId == accountId) &&
-            (identical(other.accessToken, accessToken) ||
-                other.accessToken == accessToken) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.accountState, accountState) ||
                 other.accountState == accountState) &&
@@ -219,8 +200,8 @@ class _$AccountBlocDataImpl
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, accountId, accessToken, email,
-      accountState, capabilities, visibility);
+  int get hashCode => Object.hash(
+      runtimeType, accountId, email, accountState, capabilities, visibility);
 
   @JsonKey(ignore: true)
   @override
@@ -233,7 +214,6 @@ class _$AccountBlocDataImpl
 abstract class _AccountBlocData implements AccountBlocData {
   factory _AccountBlocData(
       {final AccountId? accountId,
-      final AccessToken? accessToken,
       final String? email,
       final AccountState? accountState,
       required final Capabilities capabilities,
@@ -241,8 +221,6 @@ abstract class _AccountBlocData implements AccountBlocData {
 
   @override
   AccountId? get accountId;
-  @override
-  AccessToken? get accessToken;
   @override
   String? get email;
   @override

@@ -84,14 +84,6 @@ class LoginScreenOld extends RootScreen {
         }
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
-      BlocBuilder<AccountBloc, AccountBlocData>(
-        buildWhen: (previous, current) => previous.accessToken != current.accessToken,
-        builder: (_, state) {
-          return Text(
-            "Access token: ${state.accessToken ?? "not set"}"
-          );
-        }
-      ),
       // const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
       // ElevatedButton(
       //   child: const Text(

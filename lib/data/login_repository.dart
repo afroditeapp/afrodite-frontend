@@ -79,11 +79,6 @@ class LoginRepository extends DataRepository {
         }
       })
     );
-  Stream<AccessToken?> get accountAccessToken => KvStringManager.getInstance()
-    .getUpdatesForWithConversion(
-      KvString.accountAccessToken,
-      (value) => AccessToken(accessToken: value)
-    );
 
   @override
   Future<void> init() async {
@@ -174,9 +169,9 @@ class LoginRepository extends DataRepository {
     // shared preferences.
 
     // Login repository
-    await KvStringManager.getInstance().setValue(KvString.accountRefreshToken, loginResult.account.refresh.token);
-    await KvStringManager.getInstance().setValue(KvString.accountAccessToken, loginResult.account.access.accessToken);
-    // TODO: microservice support
+    await DatabaseManager.getInstance().accountAction((db) => db.updateRefreshTokenAccount(loginResult.account.refresh.token));
+    await DatabaseManager.getInstance().accountAction((db) => db.updateAccessTokenAccount(loginResult.account.access.accessToken));
+    // TODO(microservice): microservice support
     await onLogin();
     // Other repostories
     await CommonRepository.getInstance().onLogin();
@@ -195,10 +190,10 @@ class LoginRepository extends DataRepository {
     await _api.close();
 
     // Login repository
-    await KvStringManager.getInstance().setValue(KvString.accountRefreshToken, null);
-    await KvStringManager.getInstance().setValue(KvString.accountAccessToken, null);
+    await DatabaseManager.getInstance().accountAction((db) => db.updateRefreshTokenAccount(null));
+    await DatabaseManager.getInstance().accountAction((db) => db.updateAccessTokenAccount(null));
     await onLogout();
-    // TODO: microservice support
+    // TODO(microservice): microservice support
 
     // Other repositories
     await CommonRepository.getInstance().onLogout();

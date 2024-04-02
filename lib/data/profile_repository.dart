@@ -9,6 +9,8 @@ import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
 import 'package:pihka_frontend/data/utils.dart';
+import 'package:pihka_frontend/database/account_database.dart';
+import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/database/favorite_profiles_database.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
@@ -71,12 +73,8 @@ class ProfileRepository extends DataRepository {
 
   @override
   Future<void> init() async {
-    final showOnlyFavorites = await KvBooleanManager.getInstance().getValue(
-      KvBoolean.profileFilterFavorites
-    );
-    if (showOnlyFavorites != null) {
-      await changeProfileFilteringSettings(showOnlyFavorites);
-    }
+    final showOnlyFavorites = await getFilterFavoriteProfilesValue();
+    await changeProfileFilteringSettings(showOnlyFavorites);
   }
 
   @override
@@ -119,9 +117,8 @@ class ProfileRepository extends DataRepository {
     await mainProfilesViewIterator.reset(ModePublicProfiles(
       clearDatabase: true
     ));
-    await KvBooleanManager.getInstance().setValue(
-      KvBoolean.profileFilterFavorites,
-      null
+    await DatabaseManager.getInstance().accountAction(
+      (db) => db.updateProfileFilterFavorites(false),
     );
   }
 
@@ -285,9 +282,8 @@ class ProfileRepository extends DataRepository {
   }
 
   Future<void> changeProfileFilteringSettings(bool showOnlyFavorites) async {
-    await KvBooleanManager.getInstance().setValue(
-      KvBoolean.profileFilterFavorites,
-      showOnlyFavorites
+    await DatabaseManager.getInstance().accountAction(
+      (db) => db.updateProfileFilterFavorites(showOnlyFavorites),
     );
     if (showOnlyFavorites) {
       await mainProfilesViewIterator.reset(ModeFavorites());
@@ -296,6 +292,13 @@ class ProfileRepository extends DataRepository {
         clearDatabase: false
       ));
     }
+  }
+
+  Future<bool> getFilterFavoriteProfilesValue() async {
+    return await DatabaseManager.getInstance().accountDataOrDefault(
+      (db) => db.watchProfileFilterFavorites(),
+      PROFILE_FILTER_FAVORITES_DEFAULT,
+    );
   }
 
   /// Save profile attributes from server to local storage and return them.

@@ -1,8 +1,11 @@
 
 
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pihka_frontend/utils/cancellation_token.dart';
 
 class ProgressDialogOpener<B extends StateStreamable<S>, S> extends StatefulWidget {
   /// Listener which returns true if the dialog should be opened and
@@ -27,6 +30,7 @@ class _ProgressDialogOpenerState<B extends StateStreamable<S>, S> extends State<
   late S latestState;
   bool dialogIdealState = false;
   bool dialogRealState = false;
+  LoadingDialogManager? dialogManager;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +87,9 @@ class _ProgressDialogOpenerState<B extends StateStreamable<S>, S> extends State<
     }
 
     await Future.delayed(Duration.zero, () async {
-      await LoadingDialogManager().showLoadingDialog<B, S>(
+      dialogManager?.dispose();
+      dialogManager = LoadingDialogManager();
+      await dialogManager?.showLoadingDialog<B, S>(
         context,
         w,
         widget.dialogVisibilityGetter,
@@ -94,12 +100,18 @@ class _ProgressDialogOpenerState<B extends StateStreamable<S>, S> extends State<
   @override
   void dispose() {
     dialogIdealState = false;
+    dialogManager?.dispose();
     super.dispose();
   }
 }
 
 class LoadingDialogManager {
   late DialogRoute<void> _route;
+  final _waitDialog = CancellationToken();
+
+  void dispose() {
+    _waitDialog.cancel();
+  }
 
   Future<void> showLoadingDialog<B extends StateStreamable<S>, S>(
     BuildContext context,
@@ -118,7 +130,10 @@ class LoadingDialogManager {
       },
     );
 
-    await Navigator.push(context, _route);
+    // removeRoute does not return anything for Navigator.push
+    unawaited(Navigator.push(context, _route));
+
+    await _waitDialog.cancellationStatusStream.firstWhere((event) => event);
   }
 
   Widget _loadingDialogContent<B extends StateStreamable<S>, S>(
@@ -147,6 +162,7 @@ class LoadingDialogManager {
                     if (context.mounted) {
                       Navigator.removeRoute(context, _route);
                     }
+                    _waitDialog.cancel();
                   });
                 }
                 return const SizedBox.shrink();

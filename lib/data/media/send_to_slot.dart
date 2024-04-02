@@ -10,6 +10,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
+import 'package:pihka_frontend/utils/cancellation_token.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -28,19 +29,6 @@ class ProcessingCompleted extends SendToSlotEvent {
   ProcessingCompleted(this.contentId);
 }
 class SendToSlotError extends SendToSlotEvent {}
-
-
-
-class CancellationToken {
-  final _isCancelled = BehaviorSubject<bool>.seeded(false);
-  bool get isCancelled => _isCancelled.value;
-  Stream<bool> get cancellationStatusStream => _isCancelled;
-
-  void cancel() {
-    _isCancelled.add(true);
-  }
-}
-
 
 /// Asynchronous system for sending image to a slot
 class SendImageToSlotTask {
