@@ -4,11 +4,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Limitations: Make sure that all dialogs are closed when displaying progress dialog.
-/// Also account state changes will close the dialog.
-///
-/// Possible solution: Use ProgressDialogManager which is located near top of
-/// widget tree and display dialog if needed there using Stack or Overlay?
 class ProgressDialogOpener<B extends StateStreamable<S>, S> extends StatefulWidget {
   /// Listener which returns true if the dialog should be opened and
   /// false if it should be closed.
@@ -88,7 +83,7 @@ class _ProgressDialogOpenerState<B extends StateStreamable<S>, S> extends State<
     }
 
     await Future.delayed(Duration.zero, () async {
-      await _showLoadingDialog<B, S>(
+      await LoadingDialogManager().showLoadingDialog<B, S>(
         context,
         w,
         widget.dialogVisibilityGetter,
@@ -103,50 +98,63 @@ class _ProgressDialogOpenerState<B extends StateStreamable<S>, S> extends State<
   }
 }
 
-Future<void> _showLoadingDialog<B extends StateStreamable<S>, S>(
-  BuildContext context,
-  Widget loadingInfo,
-  bool Function(BuildContext, S) dialogVisibilityGetter
-) async {
-  if (!context.mounted) {
-    return;
+class LoadingDialogManager {
+  late DialogRoute<void> _route;
+
+  Future<void> showLoadingDialog<B extends StateStreamable<S>, S>(
+    BuildContext context,
+    Widget loadingInfo,
+    bool Function(BuildContext, S) dialogVisibilityGetter
+  ) async {
+    if (!context.mounted) {
+      return;
+    }
+
+    _route = DialogRoute<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return _loadingDialogContent<B, S>(loadingInfo, dialogVisibilityGetter, context);
+      },
+    );
+
+    await Navigator.push(context, _route);
   }
 
-  return await showDialog<void>(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return PopScope(
-        canPop: false,
-        child: AlertDialog(
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CircularProgressIndicator(),
-              ),
-              loadingInfo,
-              // Use BlocBuilder (instead of BlocListener) as it gets the initial state as well.
-              BlocBuilder<B, S>(
-                buildWhen: (previous, current) =>
-                  dialogVisibilityGetter(context, previous) != dialogVisibilityGetter(context, current),
-                builder: (context, state) {
-                  if (!dialogVisibilityGetter(context, state)) {
-                    // TODO: This might not work if there is two dialogs open at the same time.
-                    Future.delayed(Duration.zero, () {
-                      if (context.mounted && Navigator.canPop(context)) {
-                        Navigator.pop(context);
-                      }
-                    });
-                  }
-                  return const SizedBox.shrink();
-                },
-              )
-            ],
-          ),
+  Widget _loadingDialogContent<B extends StateStreamable<S>, S>(
+    Widget loadingInfo,
+    bool Function(BuildContext, S) dialogVisibilityGetter,
+    BuildContext context,
+  ) {
+    return PopScope(
+      canPop: false,
+      child: AlertDialog(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: CircularProgressIndicator(),
+            ),
+            loadingInfo,
+            // Use BlocBuilder (instead of BlocListener) as it gets the initial state as well.
+            BlocBuilder<B, S>(
+              buildWhen: (previous, current) =>
+                dialogVisibilityGetter(context, previous) != dialogVisibilityGetter(context, current),
+              builder: (context, state) {
+                if (!dialogVisibilityGetter(context, state)) {
+                  Future.delayed(Duration.zero, () {
+                    if (context.mounted) {
+                      Navigator.removeRoute(context, _route);
+                    }
+                  });
+                }
+                return const SizedBox.shrink();
+              },
+            )
+          ],
         ),
-      );
-    },
-  );
+      ),
+    );
+  }
 }
