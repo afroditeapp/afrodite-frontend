@@ -6,12 +6,23 @@ import 'package:pihka_frontend/database/utils.dart';
 part 'common_database.g.dart';
 
 const COMMON_DB_DATA_ID = Value(0);
+const NOTIFICATION_PERMISSION_ASKED_DEFAULT = false;
 
 class Common extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get demoAccountUserId => text().nullable()();
   TextColumn get demoAccountPassword => text().nullable()();
   TextColumn get demoAccountToken => text().nullable()();
+  TextColumn get serverUrlAccount => text().nullable()();
+  TextColumn get serverUrlMedia => text().nullable()();
+  TextColumn get serverUrlProfile => text().nullable()();
+  TextColumn get serverUrlChat => text().nullable()();
+  TextColumn get accountId => text().nullable()();
+
+  /// If true don't show notification permission asking dialog when
+  /// app main view (bottom navigation is visible) is opened.
+  BoolColumn get notificationPermissionAsked => boolean()
+    .withDefault(const Constant(NOTIFICATION_PERMISSION_ASKED_DEFAULT))();
 }
 
 @DriftDatabase(tables: [Common])
@@ -49,21 +60,66 @@ class CommonDatabase extends _$CommonDatabase {
     );
   }
 
+  Future<void> updateServerUrlAccount(String? url) async {
+    await into(common).insertOnConflictUpdate(
+      CommonCompanion.insert(
+        id: COMMON_DB_DATA_ID,
+        serverUrlAccount: Value(url),
+      ),
+    );
+  }
+
+  Future<void> updateAccountId(String? id) async {
+    await into(common).insertOnConflictUpdate(
+      CommonCompanion.insert(
+        id: COMMON_DB_DATA_ID,
+        accountId: Value(id),
+      ),
+    );
+  }
+
+  Future<void> updateNotificationPermissionAsked(bool value) async {
+    await into(common).insertOnConflictUpdate(
+      CommonCompanion.insert(
+        id: COMMON_DB_DATA_ID,
+        notificationPermissionAsked: Value(value),
+      ),
+    );
+  }
+
   Stream<String?> watchDemoAccountUserId() =>
-    watchStringColumn((r) => r.demoAccountUserId);
+    watchColumn((r) => r.demoAccountUserId);
 
   Stream<String?> watchDemoAccountPassword() =>
-    watchStringColumn((r) => r.demoAccountPassword);
+    watchColumn((r) => r.demoAccountPassword);
 
   Stream<String?> watchDemoAccountToken() =>
-    watchStringColumn((r) => r.demoAccountToken);
+    watchColumn((r) => r.demoAccountToken);
+
+  Stream<String?> watchServerUrlAccount() =>
+    watchColumn((r) => r.serverUrlAccount);
+
+  Stream<String?> watchServerUrlMedia() =>
+    watchColumn((r) => r.serverUrlMedia);
+
+  Stream<String?> watchServerUrlProfile() =>
+    watchColumn((r) => r.serverUrlProfile);
+
+  Stream<String?> watchServerUrlChat() =>
+    watchColumn((r) => r.serverUrlChat);
+
+  Stream<String?> watchAccountId() =>
+    watchColumn((r) => r.accountId);
+
+  Stream<bool?> watchNotificationPermissionAsked() =>
+    watchColumn((r) => r.notificationPermissionAsked);
 
   SimpleSelectStatement<$CommonTable, CommonData> _selectFromDataId() {
     return select(common)
       ..where((t) => t.id.equals(COMMON_DB_DATA_ID.value));
   }
 
-  Stream<String?> watchStringColumn(String? Function(CommonData) extractColumn) {
+  Stream<T?> watchColumn<T extends Object>(T? Function(CommonData) extractColumn) {
     return _selectFromDataId()
       .map(extractColumn)
       .watchSingleOrNull();

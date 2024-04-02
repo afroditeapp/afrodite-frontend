@@ -7,6 +7,7 @@ import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/api/api_wrapper.dart';
 import 'package:pihka_frontend/api/server_connection.dart';
 import 'package:pihka_frontend/config.dart';
+import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils.dart';
@@ -50,13 +51,13 @@ class ApiManager extends AppSingleton {
   }
 
   final ApiProvider _account =
-    ApiProvider(KvStringWithDefault.accountServerAddress.getDefault());
+    ApiProvider(defaultServerUrlAccount());
   final ApiProvider _media =
-    ApiProvider(KvStringWithDefault.mediaServerAddress.getDefault());
+    ApiProvider(defaultServerUrlMedia());
   final ApiProvider _profile =
-    ApiProvider(KvStringWithDefault.profileServerAddress.getDefault());
+    ApiProvider(defaultServerUrlProfile());
   final ApiProvider _chat =
-    ApiProvider(KvStringWithDefault.chatServerAddress.getDefault());
+    ApiProvider(defaultServerUrlChat());
 
   final BehaviorSubject<ApiManagerState> _state =
     BehaviorSubject.seeded(ApiManagerState.connecting);
@@ -167,25 +168,34 @@ class ApiManager extends AppSingleton {
   }
 
   Future<void> _loadAddressesFromConfig() async {
-    final storage = KvStringManager.getInstance();
+    final storage = DatabaseManager.getInstance();
 
-    final accountAddress =
-      await storage.getValueOrDefault(KvStringWithDefault.accountServerAddress);
+    // TODO(prod): hardcode address for production release?
+    final accountAddress = await storage.commonDataOrDefault(
+      (db) => db.watchServerUrlAccount(),
+      defaultServerUrlAccount(),
+    );
     _account.updateServerAddress(accountAddress);
     accountConnection.setAddress(toWebSocketUri(accountAddress));
 
-    final profileAddress =
-      await storage.getValueOrDefault(KvStringWithDefault.profileServerAddress);
+    final profileAddress = await storage.commonDataOrDefault(
+      (db) => db.watchServerUrlProfile(),
+      defaultServerUrlProfile(),
+    );
     _profile.updateServerAddress(profileAddress);
     profileConnection.setAddress(toWebSocketUri(profileAddress));
 
-    final mediaAddress =
-      await storage.getValueOrDefault(KvStringWithDefault.mediaServerAddress);
+    final mediaAddress = await storage.commonDataOrDefault(
+      (db) => db.watchServerUrlMedia(),
+      defaultServerUrlMedia(),
+    );
     _media.updateServerAddress(mediaAddress);
     mediaConnection.setAddress(toWebSocketUri(mediaAddress));
 
-    final chatAddress =
-      await storage.getValueOrDefault(KvStringWithDefault.chatServerAddress);
+    final chatAddress = await storage.commonDataOrDefault(
+      (db) => db.watchServerUrlChat(),
+      defaultServerUrlChat(),
+    );
     _chat.updateServerAddress(chatAddress);
     chatConnection.setAddress(toWebSocketUri(chatAddress));
   }

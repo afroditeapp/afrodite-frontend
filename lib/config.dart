@@ -2,13 +2,10 @@
 
 import 'dart:io';
 
-import 'package:pihka_frontend/storage/base.dart';
-import 'package:pihka_frontend/storage/kv.dart';
-
 const String _defaultAccountServerAddressAndroid = "https://localdev.***REMOVED***:3000"; // Should point to 10.0.2.2 (Android emulator host)
 const String _defaultAccountServerAddressIos = "https://192.168.0.1:3000";
 
-String defaultAccountServerAddress() {
+String defaultServerUrlAccount() {
   if (Platform.isAndroid) {
     return _defaultAccountServerAddressAndroid;
   } else if (Platform.isIOS) {
@@ -18,60 +15,14 @@ String defaultAccountServerAddress() {
   }
 }
 
-const String _defaultMediaServerAddress = "https://10.0.2.2:3000";
-const String _defaultProfileServerAddress = "https://10.0.2.2:3000";
-const String _defaultChatServerAddress = "https://10.0.2.2:3000";
-
-String defaultMediaServerAddress() {
-  return _defaultMediaServerAddress;
+String defaultServerUrlMedia() {
+  return defaultServerUrlAccount();
 }
 
-String defaultProfileServerAddress() {
-  return _defaultProfileServerAddress;
+String defaultServerUrlProfile() {
+  return defaultServerUrlAccount();
 }
 
-String defaultChatServerAddress() {
-  return _defaultChatServerAddress;
-}
-
-enum KvStringWithDefault implements DefaultProvider<KvString, String> {
-  accountServerAddress(
-    KvString.accountServerAddress,
-    defaultAccountServerAddress,
-  ),
-  mediaServerAddress(
-    KvString.mediaServerAddress,
-    defaultMediaServerAddress,
-  ),
-  profileServerAddress(
-    KvString.profileServerAddress,
-    defaultProfileServerAddress,
-  ),
-  chatServerAddress(
-    KvString.chatServerAddress,
-    defaultChatServerAddress,
-  );
-
-  const KvStringWithDefault(
-    this.key,
-    this.defaultValueGetter,
-  );
-
-  final KvString key;
-  final String Function() defaultValueGetter;
-
-  @override
-  String getDefault() {
-    return defaultValueGetter();
-  }
-
-  @override
-  KvString getKeyEnum() {
-    return key;
-  }
-
-  @override
-  String sharedPreferencesKey() {
-    return key.sharedPreferencesKey();
-  }
+String defaultServerUrlChat() {
+  return defaultServerUrlAccount();
 }

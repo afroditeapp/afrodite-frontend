@@ -67,13 +67,6 @@ class AccountRepository extends DataRepository {
       ProfileVisibility.pendingPrivate,
     );
 
-  Stream<bool> get notificationPermissionAsked => KvBooleanManager.getInstance()
-    .getUpdatesForWithConversionAndDefaultIfNull(
-      KvBoolean.accountNotificationPermissionAsked,
-      (value) => value,
-      false,
-    );
-
   // WebSocket related event streams
   final _contentProcessingStateChanges = PublishSubject<ContentProcessingStateChanged>();
   Stream<ContentProcessingStateChanged> get contentProcessingStateChanges => _contentProcessingStateChanges.stream;
@@ -142,10 +135,6 @@ class AccountRepository extends DataRepository {
     await KvStringManager.getInstance().setValue(KvString.profileVisibility, null);
     await KvStringManager.getInstance().setValue(KvString.accountCapabilities, null);
     await KvStringManager.getInstance().setValue(KvString.accountState, null);
-    // TODO(prod): remove clearing of accountNotificationPermissionAsked, as
-    // probably system dialog about notifications will not be shown again
-    // if it is once denied.
-    await KvBooleanManager.getInstance().setValue(KvBoolean.accountNotificationPermissionAsked, null);
   }
 
   /// Do quick initial setup with some predefined values.

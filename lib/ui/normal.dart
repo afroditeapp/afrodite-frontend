@@ -94,14 +94,22 @@ class _NotificationPermissionDialogOpenerState extends State<NotificationPermiss
           return const SizedBox.shrink();
         }
 
-        final storedPermissionAskedState = context.read<NotificationPermissionBloc>().state.notificationPermissionAsked;
-        final notificationPermissionSupported = NotificationManager.getInstance().osSupportsNotificationPermission;
-        if (notificationPermissionSupported && !storedPermissionAskedState && !askedOnce) {
-          askedOnce = true;
-          openNotificationPermissionDialog(context);
-        }
+        return BlocBuilder<NotificationPermissionBloc, NotificationPermissionAsked>(
+          builder: (context, state) {
+            final storedPermissionAskedState = state.notificationPermissionAsked;
+            if (storedPermissionAskedState == null) {
+              return const SizedBox.shrink();
+            }
 
-        return const SizedBox.shrink();
+            final notificationPermissionSupported = NotificationManager.getInstance().osSupportsNotificationPermission;
+            if (notificationPermissionSupported && !storedPermissionAskedState && !askedOnce) {
+              askedOnce = true;
+              openNotificationPermissionDialog(context);
+            }
+
+            return const SizedBox.shrink();
+          }
+        );
       }
     );
   }
@@ -130,7 +138,7 @@ class NotificationPermissionDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final dialogContent = Column(
       children: [
-        Icon(
+        const Icon(
           Icons.notifications_outlined,
           size: 48,
         ),

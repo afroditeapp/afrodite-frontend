@@ -4,6 +4,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Limitations: Make sure that all dialogs are closed when displaying progress dialog.
+/// Also account state changes will close the dialog.
+///
+/// Possible solution: Use ProgressDialogManager which is located near top of
+/// widget tree and display dialog if needed there using Stack or Overlay?
 class ProgressDialogOpener<B extends StateStreamable<S>, S> extends StatefulWidget {
   /// Listener which returns true if the dialog should be opened and
   /// false if it should be closed.
@@ -122,15 +127,18 @@ Future<void> _showLoadingDialog<B extends StateStreamable<S>, S>(
                 child: CircularProgressIndicator(),
               ),
               loadingInfo,
-              // Use BlocBuilder as it gets the initial state as well.
+              // Use BlocBuilder (instead of BlocListener) as it gets the initial state as well.
               BlocBuilder<B, S>(
                 buildWhen: (previous, current) =>
                   dialogVisibilityGetter(context, previous) != dialogVisibilityGetter(context, current),
                 builder: (context, state) {
                   if (!dialogVisibilityGetter(context, state)) {
-                    if (Navigator.canPop(context)) {
-                      Navigator.pop(context);
-                    }
+                    // TODO: This might not work if there is two dialogs open at the same time.
+                    Future.delayed(Duration.zero, () {
+                      if (context.mounted && Navigator.canPop(context)) {
+                        Navigator.pop(context);
+                      }
+                    });
                   }
                   return const SizedBox.shrink();
                 },

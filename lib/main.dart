@@ -9,6 +9,7 @@ import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
+import 'package:pihka_frontend/data/common_repository.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
@@ -97,6 +98,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => ConversationBloc(accountRepository, profileRepository, mediaRepository, chatRepository)),
         BlocProvider(create: (_) => ProfileFilteringSettingsBloc(profileRepository)),
         BlocProvider(create: (_) => CurrentModerationRequestBloc()),
+        BlocProvider(create: (_) => NotificationPermissionBloc()),
 
         // Login
         BlocProvider(create: (_) => SignInWithBloc()),
@@ -107,7 +109,6 @@ Future<void> main() async {
         // Non-lazy
         BlocProvider(create: (_) => LocationBloc(profileRepository), lazy: false),
         BlocProvider(create: (_) => ProfileAttributesBloc(), lazy: false),
-        BlocProvider(create: (_) => NotificationPermissionBloc(), lazy: false),
       ],
       child: const MyApp(),
     )
@@ -186,6 +187,7 @@ class GlobalInitManager {
     await SentBlocksDatabase.getInstance().init();
     await MessageDatabase.getInstance().init();
 
+    await CommonRepository.getInstance().init();
     await LoginRepository.getInstance().init();
     await AccountRepository.getInstance().init();
     await MediaRepository.getInstance().init();

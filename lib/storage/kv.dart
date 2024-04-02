@@ -6,17 +6,7 @@ import 'package:pihka_frontend/storage/base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum KvString implements PreferenceKeyProvider<KvString, String> {
-  /// Url
-  accountServerAddress,
-  /// Url
-  mediaServerAddress,
-  /// Url
-  profileServerAddress,
-  /// Url
-  chatServerAddress,
 
-  /// UUID string
-  accountId,
   /// Capabilities json
   accountCapabilities,
   /// AccountState json
@@ -70,9 +60,6 @@ enum KvDouble implements PreferenceKeyProvider<KvDouble, double> {
 enum KvBoolean implements PreferenceKeyProvider<KvBoolean, bool> {
   // If true show only favorite profiles.
   profileFilterFavorites,
-  // If true don't show notification permission asking dialog when
-  // app main view (bottom navigation is visible) is opened.
-  accountNotificationPermissionAsked,
   empty;
 
   /// Get shared preference key for this type

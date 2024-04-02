@@ -6,6 +6,7 @@ import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/config.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
+import 'package:pihka_frontend/data/common_repository.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
@@ -49,11 +50,10 @@ class LoginRepository extends DataRepository {
 
   // Main app state streams
   Stream<LoginState> get loginState => _loginState.distinct();
-  Stream<String> get accountServerAddress => KvStringManager.getInstance()
-    .getUpdatesForWithConversionAndDefaultIfNull(
-      KvString.accountServerAddress,
-      (value) => value,
-      defaultAccountServerAddress(),
+  Stream<String> get accountServerAddress => DatabaseManager.getInstance()
+    .commonDataStreamOrDefault(
+      (db) => db.watchServerUrlAccount(),
+      defaultServerUrlAccount(),
     );
 
   // Demo account
@@ -68,17 +68,21 @@ class LoginRepository extends DataRepository {
   Stream<bool> get demoAccountLoginInProgress => _demoAccountLoginInProgress;
 
   // Account
-  Stream<AccountId?> get accountId => KvStringManager.getInstance()
-    .getUpdatesForWithConversion(
-      KvString.accountId,
-      (value) => AccountId(accountId: value)
+  Stream<AccountId?> get accountId => DatabaseManager.getInstance()
+    .commonDataStream(
+      (db) => db.watchAccountId().map((event) {
+        if (event == null) {
+          return null;
+        } else {
+          return AccountId(accountId: event);
+        }
+      })
     );
   Stream<AccessToken?> get accountAccessToken => KvStringManager.getInstance()
     .getUpdatesForWithConversion(
       KvString.accountAccessToken,
       (value) => AccessToken(accessToken: value)
     );
-
 
   @override
   Future<void> init() async {
@@ -92,6 +96,7 @@ class LoginRepository extends DataRepository {
     if (previousState != null) {
       _loginState.add(LoginState.viewAccountStateOnceItExists);
       await onResumeAppUsage();
+      await CommonRepository.getInstance().onResumeAppUsage();
       await AccountRepository.getInstance().onResumeAppUsage();
       await ProfileRepository.getInstance().onResumeAppUsage();
       await MediaRepository.getInstance().onResumeAppUsage();
@@ -132,7 +137,7 @@ class LoginRepository extends DataRepository {
   Future<AccountId?> register() async {
     var id = await _api.account((api) => api.postRegister()).ok();
     if (id != null) {
-      await KvStringManager.getInstance().setValue(KvString.accountId, id.accountId);
+      await DatabaseManager.getInstance().commonAction((db) => db.updateAccountId(id.accountId));
     }
     return id;
   }
@@ -173,6 +178,7 @@ class LoginRepository extends DataRepository {
     // TODO: microservice support
     await onLogin();
     // Other repostories
+    await CommonRepository.getInstance().onLogin();
     await AccountRepository.getInstance().onLogin();
     await ProfileRepository.getInstance().onLogin();
     await MediaRepository.getInstance().onLogin();
@@ -194,6 +200,7 @@ class LoginRepository extends DataRepository {
     // TODO: microservice support
 
     // Other repositories
+    await CommonRepository.getInstance().onLogout();
     await AccountRepository.getInstance().onLogout();
     await ProfileRepository.getInstance().onLogout();
     await MediaRepository.getInstance().onLogout();
@@ -222,8 +229,8 @@ class LoginRepository extends DataRepository {
 
   // TODO(prod): Remove runtime server address changing?
   Future<void> setCurrentServerAddress(String serverAddress) async {
-    await KvStringManager.getInstance().setValue(
-      KvString.accountServerAddress, serverAddress
+    await DatabaseManager.getInstance().commonAction(
+      (db) => db.updateServerUrlAccount(serverAddress),
     );
     await _api.closeAndRefreshServerAddress();
   }
@@ -308,7 +315,7 @@ class LoginRepository extends DataRepository {
     final demoToken = DemoModeToken(token: token);
     final loginResult = await _api.account((api) => api.postDemoModeLoginToAccount(DemoModeLoginToAccount(accountId: id, token: demoToken))).ok();
     if (loginResult != null) {
-      await KvStringManager.getInstance().setValue(KvString.accountId, id.accountId);
+      await DatabaseManager.getInstance().commonAction((db) => db.updateAccountId(id.accountId));
       await _handleLoginResult(loginResult);
       return Ok(());
     } else {

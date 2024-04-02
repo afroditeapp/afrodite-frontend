@@ -11,7 +11,7 @@ class ChangeCachedServerAddress extends ServerAddressEvent {
 class ServerAddressBloc extends Bloc<ServerAddressEvent, String> {
   final LoginRepository login = LoginRepository.getInstance();
 
-  ServerAddressBloc() : super(defaultAccountServerAddress()) {
+  ServerAddressBloc() : super(defaultServerUrlAccount()) {
     on<ChangeCachedServerAddress>((data, emit) async {
       await login.setCurrentServerAddress(data.value);
       emit(data.value);

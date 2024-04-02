@@ -1,9 +1,8 @@
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:pihka_frontend/data/account_repository.dart";
+import "package:pihka_frontend/data/common_repository.dart";
 import "package:pihka_frontend/data/notification_manager.dart";
-import "package:pihka_frontend/storage/kv.dart";
 
-extension type NotificationPermissionAsked(bool notificationPermissionAsked) {}
+extension type NotificationPermissionAsked(bool? notificationPermissionAsked) {}
 
 abstract class NotificationPermissionEvent {}
 
@@ -16,19 +15,19 @@ class AcceptPermissions extends NotificationPermissionEvent {}
 
 /// Get current main state of the account/app
 class NotificationPermissionBloc extends Bloc<NotificationPermissionEvent, NotificationPermissionAsked> {
-  NotificationPermissionBloc() : super(NotificationPermissionAsked(false)) {
+  NotificationPermissionBloc() : super(NotificationPermissionAsked(null)) {
     on<SetNotificationPermissionAskedValue>((data, emit) =>
       emit(NotificationPermissionAsked(data.value)
     ));
     on<DenyPermissions>((_, emit) async {
-      await KvBooleanManager.getInstance().setValue(KvBoolean.accountNotificationPermissionAsked, true);
+      await CommonRepository.getInstance().setNotificationPermissionAsked(true);
     });
     on<AcceptPermissions>((_, emit) async {
-      await KvBooleanManager.getInstance().setValue(KvBoolean.accountNotificationPermissionAsked, true);
+      await CommonRepository.getInstance().setNotificationPermissionAsked(true);
       await NotificationManager.getInstance().askPermissions();
     });
 
-    AccountRepository.getInstance().notificationPermissionAsked.listen((state) {
+    CommonRepository.getInstance().notificationPermissionAsked.listen((state) {
       add(SetNotificationPermissionAskedValue(state));
     });
   }
