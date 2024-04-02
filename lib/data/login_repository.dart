@@ -54,7 +54,8 @@ class LoginRepository extends DataRepository {
     .commonDataStreamOrDefault(
       (db) => db.watchServerUrlAccount(),
       defaultServerUrlAccount(),
-    );
+    )
+    .distinct(); // Avoid loop in ServerAddressBloc
 
   // Demo account
   Stream<String?> get demoAccountUserId => DatabaseManager.getInstance()
