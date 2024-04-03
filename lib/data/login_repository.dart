@@ -11,7 +11,6 @@ import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
-import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -88,7 +87,7 @@ class LoginRepository extends DataRepository {
     _internalState.add(LoginRepositoryState.initComplete);
 
     // Restore previous state
-    final previousState = await KvStringManager.getInstance().getValue(KvString.accountState);
+    final previousState = await DatabaseManager.getInstance().accountData((db) => db.watchAccountState());
     if (previousState != null) {
       _loginState.add(LoginState.viewAccountStateOnceItExists);
       await onResumeAppUsage();

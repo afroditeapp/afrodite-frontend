@@ -25,6 +25,11 @@ class Account extends Table {
 
   RealColumn get profileLocationLatitude => real().nullable()();
   RealColumn get profileLocationLongitude => real().nullable()();
+
+  TextColumn get jsonAccountState => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
+  TextColumn get jsonCapabilities => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
+  TextColumn get jsonAvailableProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
+  TextColumn get jsonProfileVisibility => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
 }
 
 @DriftDatabase(tables: [Account])
@@ -126,6 +131,42 @@ class AccountDatabase extends _$AccountDatabase {
     );
   }
 
+  Future<void> updateAccountState(AccountState? value) async {
+    await into(account).insertOnConflictUpdate(
+      AccountCompanion.insert(
+        id: ACCOUNT_DB_DATA_ID,
+        jsonAccountState: Value(value?.toEnumString()),
+      ),
+    );
+  }
+
+  Future<void> updateCapabilities(Capabilities? value) async {
+    await into(account).insertOnConflictUpdate(
+      AccountCompanion.insert(
+        id: ACCOUNT_DB_DATA_ID,
+        jsonCapabilities: Value(value?.toJsonString()),
+      ),
+    );
+  }
+
+  Future<void> updateAvailableProfileAttributes(AvailableProfileAttributes? value) async {
+    await into(account).insertOnConflictUpdate(
+      AccountCompanion.insert(
+        id: ACCOUNT_DB_DATA_ID,
+        jsonAvailableProfileAttributes: Value(value?.toJsonString()),
+      ),
+    );
+  }
+
+  Future<void> updateProfileVisibility(ProfileVisibility? value) async {
+    await into(account).insertOnConflictUpdate(
+      AccountCompanion.insert(
+        id: ACCOUNT_DB_DATA_ID,
+        jsonProfileVisibility: Value(value?.toEnumString()),
+      ),
+    );
+  }
+
   Stream<String?> watchRefreshTokenAccount() =>
     watchColumn((r) => r.refreshTokenAccount);
 
@@ -153,6 +194,18 @@ class AccountDatabase extends _$AccountDatabase {
   Stream<bool?> watchProfileFilterFavorites() =>
     watchColumn((r) => r.profileFilterFavorites);
 
+  Stream<AccountState?> watchAccountState() =>
+    watchColumn((r) => r.jsonAccountState?.toAccountState());
+
+  Stream<Capabilities?> watchCapabilities() =>
+    watchColumn((r) => r.jsonCapabilities?.toCapabilities());
+
+  Stream<AvailableProfileAttributes?> watchAvailableProfileAttributes() =>
+    watchColumn((r) => r.jsonAvailableProfileAttributes?.toAvailableProfileAttributes());
+
+  Stream<ProfileVisibility?> watchProfileVisibility() =>
+    watchColumn((r) => r.jsonProfileVisibility?.toProfileVisibility());
+
   Stream<Location?> watchProfileLocation() =>
     _selectFromDataId()
       .map((r) {
@@ -175,5 +228,77 @@ class AccountDatabase extends _$AccountDatabase {
     return _selectFromDataId()
       .map(extractColumn)
       .watchSingleOrNull();
+  }
+}
+
+class JsonString {
+  final Map<String, Object?> jsonMap;
+  JsonString(this.jsonMap);
+
+  Capabilities? toCapabilities() {
+    return Capabilities.fromJson(jsonMap);
+  }
+
+  AvailableProfileAttributes? toAvailableProfileAttributes() {
+    return AvailableProfileAttributes.fromJson(jsonMap);
+  }
+
+  static TypeConverter<JsonString, String> driftConverter = TypeConverter.json(
+    fromJson: (json) => JsonString(json as Map<String, Object?>),
+    toJson: (object) => object.jsonMap,
+  );
+}
+
+extension CapabilitiesJson on Capabilities {
+  JsonString toJsonString() {
+    return JsonString(toJson());
+  }
+}
+
+extension AvailableProfileAttributesJson on AvailableProfileAttributes {
+  JsonString toJsonString() {
+    return JsonString(toJson());
+  }
+}
+
+
+class EnumString {
+  final String enumString;
+  EnumString(this.enumString);
+
+  AccountState? toAccountState() {
+    return AccountState.fromJson(enumString);
+  }
+
+  ProfileVisibility? toProfileVisibility() {
+    return ProfileVisibility.fromJson(enumString);
+  }
+
+  static TypeConverter<EnumString, String> driftConverter = const EnumStringConverter();
+}
+
+extension AccountStateConverter on AccountState {
+  EnumString toEnumString() {
+    return EnumString(toJson());
+  }
+}
+
+extension ProfileVisibilityConverter on ProfileVisibility {
+  EnumString toEnumString() {
+    return EnumString(toJson());
+  }
+}
+
+class EnumStringConverter extends TypeConverter<EnumString, String> {
+  const EnumStringConverter();
+
+  @override
+  EnumString fromSql(fromDb) {
+    return EnumString(fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.enumString;
   }
 }

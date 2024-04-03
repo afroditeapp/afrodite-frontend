@@ -14,7 +14,6 @@ import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/database/favorite_profiles_database.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
-import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -42,17 +41,9 @@ class ProfileRepository extends DataRepository {
       Location(latitude: 0.0, longitude: 0.0),
     );
 
-  Stream<AvailableProfileAttributes?> get profileAttributes => KvStringManager.getInstance()
-    .getUpdatesForWithConversionFailurePossible(
-      KvString.profileAttributes,
-      (value) {
-        final attributes = jsonDecode(value);
-        if (attributes == null) {
-          return null;
-        }
-        final parsedAttributes = AvailableProfileAttributes.fromJson(attributes);
-        return parsedAttributes;
-      },
+  Stream<AvailableProfileAttributes?> get profileAttributes => DatabaseManager.getInstance()
+    .accountDataStream(
+      (db) => db.watchAvailableProfileAttributes(),
     );
 
   @override
@@ -295,9 +286,8 @@ class ProfileRepository extends DataRepository {
   Future<AvailableProfileAttributes?> receiveProfileAttributes() async {
     final profileAttributes = await _api.profile((api) => api.getAvailableProfileAttributes()).ok();
     if (profileAttributes != null) {
-      await KvStringManager.getInstance().setValue(
-        KvString.profileAttributes,
-        jsonEncode(profileAttributes.toJson())
+      await DatabaseManager.getInstance().accountAction(
+        (db) => db.updateAvailableProfileAttributes(profileAttributes),
       );
     }
     return profileAttributes;

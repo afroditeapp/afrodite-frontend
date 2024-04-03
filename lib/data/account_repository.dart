@@ -1,6 +1,5 @@
 
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:camera/camera.dart';
 import 'package:logging/logging.dart';
@@ -10,8 +9,8 @@ import 'package:pihka_frontend/data/account/initial_setup.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
+import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
-import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -35,37 +34,15 @@ class AccountRepository extends DataRepository {
   final BehaviorSubject<AccountRepositoryState> _internalState =
     BehaviorSubject.seeded(AccountRepositoryState.initRequired);
 
-  Stream<AccountState?> get accountState =>  KvStringManager.getInstance()
-    .getUpdatesForWithConversion(
-      KvString.accountState,
-      (value) => AccountState.fromJson(value) ?? AccountState.initialSetup,
-    );
-  Stream<Capabilities> get capabilities => KvStringManager.getInstance()
-    .getUpdatesForWithConversionAndDefaultIfNull(
-      KvString.accountCapabilities,
-      (value) {
-        final map = jsonDecode(value);
-        if (map != null) {
-          final capabilities = Capabilities.fromJson(map);
-          if (capabilities != null) {
-            return capabilities;
-          } else {
-            log.error("Capabilities fromJson failed");
-            return Capabilities();
-          }
-        } else {
-          log.error("Capabilities jsonDecode failed");
-          return Capabilities();
-        }
-      },
+  Stream<AccountState?> get accountState => DatabaseManager.getInstance()
+    .accountDataStream((db) => db.watchAccountState());
+  Stream<Capabilities> get capabilities => DatabaseManager.getInstance()
+    .accountDataStreamOrDefault(
+      (db) => db.watchCapabilities(),
       Capabilities(),
     );
-  Stream<ProfileVisibility> get profileVisibility => KvStringManager.getInstance()
-    .getUpdatesForWithConversionAndDefaultIfNull(
-      KvString.profileVisibility,
-      (value) => ProfileVisibility.fromJson(value) ?? ProfileVisibility.pendingPrivate,
-      ProfileVisibility.pendingPrivate,
-    );
+  Stream<ProfileVisibility> get profileVisibility => DatabaseManager.getInstance()
+    .accountDataStreamOrDefault((db) => db.watchProfileVisibility(), ProfileVisibility.pendingPrivate);
 
   // WebSocket related event streams
   final _contentProcessingStateChanges = PublishSubject<ContentProcessingStateChanged>();
@@ -80,16 +57,15 @@ class AccountRepository extends DataRepository {
   }
 
   Future<void> _saveAccountState(AccountState state) async {
-    await KvStringManager.getInstance().setValue(KvString.accountState, state.toString());
+    await DatabaseManager.getInstance().accountAction((db) => db.updateAccountState(state));
   }
 
   Future<void> _saveAndUpdateCapabilities(Capabilities capabilities) async {
-    final jsonString = jsonEncode(capabilities.toJson());
-    await KvStringManager.getInstance().setValue(KvString.accountCapabilities, jsonString);
+    await DatabaseManager.getInstance().accountAction((db) => db.updateCapabilities(capabilities));
   }
 
   Future<void> _saveAndUpdateProfileVisibility(ProfileVisibility profileVisibility) async {
-    await KvStringManager.getInstance().setValue(KvString.profileVisibility, profileVisibility.toString());
+    await DatabaseManager.getInstance().accountAction((db) => db.updateProfileVisibility(profileVisibility));
   }
 
   // TODO: Background futures might cause issues
@@ -132,9 +108,9 @@ class AccountRepository extends DataRepository {
 
   @override
   Future<void> onLogout() async {
-    await KvStringManager.getInstance().setValue(KvString.profileVisibility, null);
-    await KvStringManager.getInstance().setValue(KvString.accountCapabilities, null);
-    await KvStringManager.getInstance().setValue(KvString.accountState, null);
+    await DatabaseManager.getInstance().accountAction((db) => db.updateProfileVisibility(null));
+    await DatabaseManager.getInstance().accountAction((db) => db.updateCapabilities(null));
+    await DatabaseManager.getInstance().accountAction((db) => db.updateAccountState(null));
   }
 
   /// Do quick initial setup with some predefined values.

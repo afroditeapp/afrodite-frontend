@@ -82,6 +82,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
         if (!successful) {
           showSnackBar("Failed to update profile visibility");
         }
+        // TODO: Add also success message?
+        // Should new profile visibility be sent only when navigating away from
+        // the settings page where the setting is located?
       });
     });
     on<NewAccountIdValue>((id, emit) {
