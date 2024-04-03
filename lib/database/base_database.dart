@@ -115,7 +115,7 @@ abstract class BaseDatabase extends AppSingleton {
         },
       );
     } on DatabaseException catch (e) {
-      ErrorManager.getInstance().send(DatabaseOpenError(databaseType, e));
+      ErrorManager.getInstance().send(DatabaseError());
       return null;
     }
 
@@ -130,7 +130,7 @@ abstract class BaseDatabase extends AppSingleton {
       try {
         return await database.close();
       } on DatabaseException catch (e) {
-        ErrorManager.getInstance().send(DatabaseCloseError(databaseType, e));
+        ErrorManager.getInstance().send(DatabaseError());
         return;
       }
     }
@@ -145,7 +145,7 @@ abstract class BaseDatabase extends AppSingleton {
     try {
       return action(database);
     } on DatabaseException catch (e) {
-      ErrorManager.getInstance().send(DatabaseActionError(databaseType, e));
+      ErrorManager.getInstance().send(DatabaseError());
       return null;
     }
   }

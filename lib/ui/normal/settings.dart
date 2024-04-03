@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/profile/location.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin.dart';
 import 'package:pihka_frontend/ui/normal/settings/blocked_profiles.dart';
 import 'package:pihka_frontend/ui/normal/settings/debug.dart';
@@ -46,7 +47,9 @@ class _SettingsViewState extends State<SettingsView> {
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const MyProfilePage()))
           ),
           Setting.createSetting(Icons.location_on, context.strings.pageLocationTitle, () =>
-            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const LocationPage()))
+            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const LocationPage())),
+            // Make sure that the Bloc has the location when map is opened
+            widgetWrapper: (widget) => BlocBuilder<LocationBloc, Location?>(builder: (c, data) => widget),
           ),
           Setting.createSetting(Icons.public, "Profile visiblity", () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ProfileVisibilityPage()))
@@ -94,7 +97,7 @@ class Setting {
   final void Function() action;
   Setting(this.widget, this.action);
 
-  factory Setting.createSetting(IconData icon, String text, void Function() action) {
+  factory Setting.createSetting(IconData icon, String text, void Function() action, {Widget Function(Widget)? widgetWrapper}) {
     Widget widget = Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
       child: Row(
@@ -105,6 +108,10 @@ class Setting {
         ],
       ),
     );
+
+    if (widgetWrapper != null) {
+      widget = widgetWrapper(widget);
+    }
     return Setting(widget, action);
   }
 }

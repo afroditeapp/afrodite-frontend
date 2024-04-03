@@ -14,8 +14,6 @@ enum KvString implements PreferenceKeyProvider<KvString, String> {
   /// ProfileVisiblity json
   profileVisibility,
 
-  // Location json
-  profileLocation,
   // Profile attributes json
   profileAttributes;
 

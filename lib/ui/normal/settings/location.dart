@@ -29,13 +29,22 @@ class LocationPage extends StatelessWidget {
   }
 
   Widget locationPage(BuildContext context) {
-    final profileLocation = context.read<LocationBloc>().state;
-    final profileLocationLatLng = LatLng(profileLocation.latitude, profileLocation.longitude);
-    return LocationWidget(
-      mode: MapMode.selectLocation,
-      handler: LocationUploader(),
-      markerInitialLocation: profileLocationLatLng,
-      editingHelpText: context.strings.map_select_location_help_text,
+    return BlocBuilder<LocationBloc, Location?>(
+      buildWhen: (previous, current) => previous == null && current != null,
+      builder: (context, state) {
+        final profileLocation = state;
+        if (profileLocation != null) {
+          final profileLocationLatLng = LatLng(profileLocation.latitude, profileLocation.longitude);
+          return LocationWidget(
+            mode: MapMode.selectLocation,
+            handler: LocationUploader(),
+            markerInitialLocation: profileLocationLatLng,
+            editingHelpText: context.strings.map_select_location_help_text,
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
     );
   }
 }

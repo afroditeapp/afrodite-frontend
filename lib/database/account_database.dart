@@ -1,5 +1,6 @@
 
 import 'package:drift/drift.dart';
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/utils.dart';
 
 part 'account_database.g.dart';
@@ -21,6 +22,9 @@ class Account extends Table {
   /// If true show only favorite profiles
   BoolColumn get profileFilterFavorites => boolean()
     .withDefault(const Constant(PROFILE_FILTER_FAVORITES_DEFAULT))();
+
+  RealColumn get profileLocationLatitude => real().nullable()();
+  RealColumn get profileLocationLongitude => real().nullable()();
 }
 
 @DriftDatabase(tables: [Account])
@@ -103,6 +107,16 @@ class AccountDatabase extends _$AccountDatabase {
     );
   }
 
+  Future<void> updateProfileLocation({required double latitude, required double longitude}) async {
+    await into(account).insertOnConflictUpdate(
+      AccountCompanion.insert(
+        id: ACCOUNT_DB_DATA_ID,
+        profileLocationLatitude: Value(latitude),
+        profileLocationLongitude: Value(longitude),
+      ),
+    );
+  }
+
   Future<void> updateProfileFilterFavorites(bool value) async {
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
@@ -138,6 +152,19 @@ class AccountDatabase extends _$AccountDatabase {
 
   Stream<bool?> watchProfileFilterFavorites() =>
     watchColumn((r) => r.profileFilterFavorites);
+
+  Stream<Location?> watchProfileLocation() =>
+    _selectFromDataId()
+      .map((r) {
+        final latitude = r.profileLocationLatitude;
+        final longitude = r.profileLocationLongitude;
+        if (latitude != null && longitude != null) {
+          return Location(latitude: latitude, longitude: longitude);
+        } else {
+          return null;
+        }
+      })
+      .watchSingleOrNull();
 
   SimpleSelectStatement<$AccountTable, AccountData> _selectFromDataId() {
     return select(account)

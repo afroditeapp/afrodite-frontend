@@ -15,7 +15,6 @@ import 'package:pihka_frontend/database/favorite_profiles_database.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/storage/kv.dart';
-import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -37,24 +36,9 @@ class ProfileRepository extends DataRepository {
   }
   Stream<ProfileChange> get profileChanges => _profileChangesRelay;
 
-  Stream<Location> get location => KvStringManager.getInstance()
-    .getUpdatesForWithConversionAndDefaultIfNull(
-      KvString.profileLocation,
-      (value) {
-        final map = jsonDecode(value);
-        if (map != null) {
-          final location = Location.fromJson(map);
-          if (location != null) {
-            return location;
-          } else {
-            log.error("Location fromJson failed");
-            return Location(latitude: 0.0, longitude: 0.0);
-          }
-        } else {
-          log.error("Location jsonDecode failed");
-          return Location(latitude: 0.0, longitude: 0.0);
-        }
-      },
+  Stream<Location> get location => DatabaseManager.getInstance()
+    .accountDataStreamOrDefault(
+      (db) => db.watchProfileLocation(),
       Location(latitude: 0.0, longitude: 0.0),
     );
 
@@ -93,8 +77,12 @@ class ProfileRepository extends DataRepository {
         // Download current location, so map will be positioned correctly.
         final location = await _api.profile((api) => api.getLocation()).ok();
         if (location != null) {
-          await KvStringManager.getInstance()
-            .setValue(KvString.profileLocation, jsonEncode(location.toJson()));
+          await DatabaseManager.getInstance().accountAction(
+            (db) => db.updateProfileLocation(
+              latitude: location.latitude,
+              longitude: location.longitude,
+            ),
+          );
         }
 
         // Download current favorites.
@@ -125,9 +113,11 @@ class ProfileRepository extends DataRepository {
   Future<bool> updateLocation(Location location) async {
     final requestSuccessful = await _api.profileAction((api) => api.putLocation(location)).isOk();
     if (requestSuccessful) {
-      await KvStringManager.getInstance().setValue(
-        KvString.profileLocation,
-        jsonEncode(location.toJson())
+      await DatabaseManager.getInstance().accountAction(
+        (db) => db.updateProfileLocation(
+          latitude: location.latitude,
+          longitude: location.longitude,
+        ),
       );
       mainProfilesViewIterator.resetServerSideIteratorWhenItIsNeededNextTime();
     }

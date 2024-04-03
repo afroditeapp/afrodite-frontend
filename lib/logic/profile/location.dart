@@ -19,10 +19,10 @@ class NewLocation extends LocationEvent {
   NewLocation(this.location);
 }
 
-class LocationBloc extends Bloc<LocationEvent, Location> with ActionRunner {
-  final ProfileRepository profile;
+class LocationBloc extends Bloc<LocationEvent, Location?> with ActionRunner {
+  final ProfileRepository profile = ProfileRepository.getInstance();
 
-  LocationBloc(this.profile) : super(Location(latitude: 0.0, longitude: 0.0)) {
+  LocationBloc() : super(null) {
     on<SetLocation>((data, emit) async {
       await ProfileRepository.getInstance().updateLocation(data.location);
     });

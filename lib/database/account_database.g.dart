@@ -75,6 +75,18 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           defaultConstraints: GeneratedColumn.constraintIsAlways(
               'CHECK ("profile_filter_favorites" IN (0, 1))'),
           defaultValue: const Constant(PROFILE_FILTER_FAVORITES_DEFAULT));
+  static const VerificationMeta _profileLocationLatitudeMeta =
+      const VerificationMeta('profileLocationLatitude');
+  @override
+  late final GeneratedColumn<double> profileLocationLatitude =
+      GeneratedColumn<double>('profile_location_latitude', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _profileLocationLongitudeMeta =
+      const VerificationMeta('profileLocationLongitude');
+  @override
+  late final GeneratedColumn<double> profileLocationLongitude =
+      GeneratedColumn<double>('profile_location_longitude', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -86,7 +98,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         accessTokenMedia,
         accessTokenProfile,
         accessTokenChat,
-        profileFilterFavorites
+        profileFilterFavorites,
+        profileLocationLatitude,
+        profileLocationLongitude
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -155,6 +169,20 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           profileFilterFavorites.isAcceptableOrUnknown(
               data['profile_filter_favorites']!, _profileFilterFavoritesMeta));
     }
+    if (data.containsKey('profile_location_latitude')) {
+      context.handle(
+          _profileLocationLatitudeMeta,
+          profileLocationLatitude.isAcceptableOrUnknown(
+              data['profile_location_latitude']!,
+              _profileLocationLatitudeMeta));
+    }
+    if (data.containsKey('profile_location_longitude')) {
+      context.handle(
+          _profileLocationLongitudeMeta,
+          profileLocationLongitude.isAcceptableOrUnknown(
+              data['profile_location_longitude']!,
+              _profileLocationLongitudeMeta));
+    }
     return context;
   }
 
@@ -185,6 +213,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       profileFilterFavorites: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
           data['${effectivePrefix}profile_filter_favorites'])!,
+      profileLocationLatitude: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}profile_location_latitude']),
+      profileLocationLongitude: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}profile_location_longitude']),
     );
   }
 
@@ -207,6 +241,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
 
   /// If true show only favorite profiles
   final bool profileFilterFavorites;
+  final double? profileLocationLatitude;
+  final double? profileLocationLongitude;
   const AccountData(
       {required this.id,
       this.refreshTokenAccount,
@@ -217,7 +253,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.accessTokenMedia,
       this.accessTokenProfile,
       this.accessTokenChat,
-      required this.profileFilterFavorites});
+      required this.profileFilterFavorites,
+      this.profileLocationLatitude,
+      this.profileLocationLongitude});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -247,6 +285,14 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['access_token_chat'] = Variable<String>(accessTokenChat);
     }
     map['profile_filter_favorites'] = Variable<bool>(profileFilterFavorites);
+    if (!nullToAbsent || profileLocationLatitude != null) {
+      map['profile_location_latitude'] =
+          Variable<double>(profileLocationLatitude);
+    }
+    if (!nullToAbsent || profileLocationLongitude != null) {
+      map['profile_location_longitude'] =
+          Variable<double>(profileLocationLongitude);
+    }
     return map;
   }
 
@@ -278,6 +324,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ? const Value.absent()
           : Value(accessTokenChat),
       profileFilterFavorites: Value(profileFilterFavorites),
+      profileLocationLatitude: profileLocationLatitude == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileLocationLatitude),
+      profileLocationLongitude: profileLocationLongitude == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileLocationLongitude),
     );
   }
 
@@ -301,6 +353,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       accessTokenChat: serializer.fromJson<String?>(json['accessTokenChat']),
       profileFilterFavorites:
           serializer.fromJson<bool>(json['profileFilterFavorites']),
+      profileLocationLatitude:
+          serializer.fromJson<double?>(json['profileLocationLatitude']),
+      profileLocationLongitude:
+          serializer.fromJson<double?>(json['profileLocationLongitude']),
     );
   }
   @override
@@ -317,6 +373,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'accessTokenProfile': serializer.toJson<String?>(accessTokenProfile),
       'accessTokenChat': serializer.toJson<String?>(accessTokenChat),
       'profileFilterFavorites': serializer.toJson<bool>(profileFilterFavorites),
+      'profileLocationLatitude':
+          serializer.toJson<double?>(profileLocationLatitude),
+      'profileLocationLongitude':
+          serializer.toJson<double?>(profileLocationLongitude),
     };
   }
 
@@ -330,7 +390,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<String?> accessTokenMedia = const Value.absent(),
           Value<String?> accessTokenProfile = const Value.absent(),
           Value<String?> accessTokenChat = const Value.absent(),
-          bool? profileFilterFavorites}) =>
+          bool? profileFilterFavorites,
+          Value<double?> profileLocationLatitude = const Value.absent(),
+          Value<double?> profileLocationLongitude = const Value.absent()}) =>
       AccountData(
         id: id ?? this.id,
         refreshTokenAccount: refreshTokenAccount.present
@@ -359,6 +421,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
             : this.accessTokenChat,
         profileFilterFavorites:
             profileFilterFavorites ?? this.profileFilterFavorites,
+        profileLocationLatitude: profileLocationLatitude.present
+            ? profileLocationLatitude.value
+            : this.profileLocationLatitude,
+        profileLocationLongitude: profileLocationLongitude.present
+            ? profileLocationLongitude.value
+            : this.profileLocationLongitude,
       );
   @override
   String toString() {
@@ -372,7 +440,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('accessTokenMedia: $accessTokenMedia, ')
           ..write('accessTokenProfile: $accessTokenProfile, ')
           ..write('accessTokenChat: $accessTokenChat, ')
-          ..write('profileFilterFavorites: $profileFilterFavorites')
+          ..write('profileFilterFavorites: $profileFilterFavorites, ')
+          ..write('profileLocationLatitude: $profileLocationLatitude, ')
+          ..write('profileLocationLongitude: $profileLocationLongitude')
           ..write(')'))
         .toString();
   }
@@ -388,7 +458,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       accessTokenMedia,
       accessTokenProfile,
       accessTokenChat,
-      profileFilterFavorites);
+      profileFilterFavorites,
+      profileLocationLatitude,
+      profileLocationLongitude);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -402,7 +474,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.accessTokenMedia == this.accessTokenMedia &&
           other.accessTokenProfile == this.accessTokenProfile &&
           other.accessTokenChat == this.accessTokenChat &&
-          other.profileFilterFavorites == this.profileFilterFavorites);
+          other.profileFilterFavorites == this.profileFilterFavorites &&
+          other.profileLocationLatitude == this.profileLocationLatitude &&
+          other.profileLocationLongitude == this.profileLocationLongitude);
 }
 
 class AccountCompanion extends UpdateCompanion<AccountData> {
@@ -416,6 +490,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<String?> accessTokenProfile;
   final Value<String?> accessTokenChat;
   final Value<bool> profileFilterFavorites;
+  final Value<double?> profileLocationLatitude;
+  final Value<double?> profileLocationLongitude;
   const AccountCompanion({
     this.id = const Value.absent(),
     this.refreshTokenAccount = const Value.absent(),
@@ -427,6 +503,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.accessTokenProfile = const Value.absent(),
     this.accessTokenChat = const Value.absent(),
     this.profileFilterFavorites = const Value.absent(),
+    this.profileLocationLatitude = const Value.absent(),
+    this.profileLocationLongitude = const Value.absent(),
   });
   AccountCompanion.insert({
     this.id = const Value.absent(),
@@ -439,6 +517,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.accessTokenProfile = const Value.absent(),
     this.accessTokenChat = const Value.absent(),
     this.profileFilterFavorites = const Value.absent(),
+    this.profileLocationLatitude = const Value.absent(),
+    this.profileLocationLongitude = const Value.absent(),
   });
   static Insertable<AccountData> custom({
     Expression<int>? id,
@@ -451,6 +531,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<String>? accessTokenProfile,
     Expression<String>? accessTokenChat,
     Expression<bool>? profileFilterFavorites,
+    Expression<double>? profileLocationLatitude,
+    Expression<double>? profileLocationLongitude,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -468,6 +550,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (accessTokenChat != null) 'access_token_chat': accessTokenChat,
       if (profileFilterFavorites != null)
         'profile_filter_favorites': profileFilterFavorites,
+      if (profileLocationLatitude != null)
+        'profile_location_latitude': profileLocationLatitude,
+      if (profileLocationLongitude != null)
+        'profile_location_longitude': profileLocationLongitude,
     });
   }
 
@@ -481,7 +567,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<String?>? accessTokenMedia,
       Value<String?>? accessTokenProfile,
       Value<String?>? accessTokenChat,
-      Value<bool>? profileFilterFavorites}) {
+      Value<bool>? profileFilterFavorites,
+      Value<double?>? profileLocationLatitude,
+      Value<double?>? profileLocationLongitude}) {
     return AccountCompanion(
       id: id ?? this.id,
       refreshTokenAccount: refreshTokenAccount ?? this.refreshTokenAccount,
@@ -494,6 +582,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       accessTokenChat: accessTokenChat ?? this.accessTokenChat,
       profileFilterFavorites:
           profileFilterFavorites ?? this.profileFilterFavorites,
+      profileLocationLatitude:
+          profileLocationLatitude ?? this.profileLocationLatitude,
+      profileLocationLongitude:
+          profileLocationLongitude ?? this.profileLocationLongitude,
     );
   }
 
@@ -533,6 +625,14 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['profile_filter_favorites'] =
           Variable<bool>(profileFilterFavorites.value);
     }
+    if (profileLocationLatitude.present) {
+      map['profile_location_latitude'] =
+          Variable<double>(profileLocationLatitude.value);
+    }
+    if (profileLocationLongitude.present) {
+      map['profile_location_longitude'] =
+          Variable<double>(profileLocationLongitude.value);
+    }
     return map;
   }
 
@@ -548,7 +648,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('accessTokenMedia: $accessTokenMedia, ')
           ..write('accessTokenProfile: $accessTokenProfile, ')
           ..write('accessTokenChat: $accessTokenChat, ')
-          ..write('profileFilterFavorites: $profileFilterFavorites')
+          ..write('profileFilterFavorites: $profileFilterFavorites, ')
+          ..write('profileLocationLatitude: $profileLocationLatitude, ')
+          ..write('profileLocationLongitude: $profileLocationLongitude')
           ..write(')'))
         .toString();
   }

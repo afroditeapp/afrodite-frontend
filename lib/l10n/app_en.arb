@@ -338,11 +338,11 @@
   "@login_screen_register_button": {
     "description": "Register button text"
   },
-  "map_location_update_failed": "Location update successful",
+  "map_location_update_failed": "Location update failed",
   "@map_location_update_failed": {
     "description": "Snackbar text about failed location update"
   },
-  "map_location_update_successful": "Location update failed",
+  "map_location_update_successful": "Location update successful",
   "@map_location_update_successful": {
     "description": "Snackbar text about successful location update"
   },

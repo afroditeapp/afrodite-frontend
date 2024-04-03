@@ -3,7 +3,6 @@ import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
@@ -25,12 +24,10 @@ import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/database/favorite_profiles_database.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
-import 'package:pihka_frontend/database/common_database.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/demo_account.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
-import 'package:pihka_frontend/logic/admin/image_moderation.dart';
 import 'package:pihka_frontend/logic/app/notification_permission.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
@@ -50,7 +47,6 @@ import 'package:pihka_frontend/ui/splash_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/camera.dart';
 
 import 'package:rxdart/rxdart.dart';
@@ -99,6 +95,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => ProfileFilteringSettingsBloc()),
         BlocProvider(create: (_) => CurrentModerationRequestBloc()),
         BlocProvider(create: (_) => NotificationPermissionBloc()),
+        BlocProvider(create: (_) => LocationBloc()),
 
         // Login
         BlocProvider(create: (_) => SignInWithBloc()),
@@ -107,7 +104,6 @@ Future<void> main() async {
         // empty
 
         // Non-lazy
-        BlocProvider(create: (_) => LocationBloc(profileRepository), lazy: false),
         BlocProvider(create: (_) => ProfileAttributesBloc(), lazy: false),
       ],
       child: const MyApp(),

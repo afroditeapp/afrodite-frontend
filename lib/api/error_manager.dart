@@ -58,28 +58,9 @@ class FileError extends Error {
 
 // Database errors
 
-sealed class DatabaseError extends Error {
-  final DatabaseType database;
-  final DatabaseException? exception;
-  DatabaseError(this.database, this.exception);
+class DatabaseError extends Error {
   @override
   String title() {
-    return database.databaseErrorTitle;
+    return "Database error";
   }
-  @override
-  String logMessage() {
-    return "${super.logMessage()}, ${exception?.toString()}";
-  }
-}
-class DatabaseOpenError extends DatabaseError {
-  DatabaseOpenError(DatabaseType database, DatabaseException exception) :
-    super(database, exception);
-}
-class DatabaseCloseError extends DatabaseError {
-  DatabaseCloseError(DatabaseType database, DatabaseException exception) :
-    super(database, exception);
-}
-class DatabaseActionError extends DatabaseError {
-  DatabaseActionError(DatabaseType database, DatabaseException exception) :
-    super(database, exception);
 }

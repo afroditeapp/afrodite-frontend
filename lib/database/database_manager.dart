@@ -1,7 +1,9 @@
 
 import 'dart:async';
 
+import 'package:drift/drift.dart';
 import 'package:logging/logging.dart';
+import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/database/account_database.dart';
 import 'package:pihka_frontend/database/common_database.dart';
 import 'package:pihka_frontend/database/utils.dart';
@@ -38,11 +40,18 @@ class DatabaseManager extends AppSingleton {
 
   Stream<T> commonDataStream<T>(Stream<T> Function(CommonDatabase) mapper) async* {
     final stream = mapper(commonDatabase);
-    yield* stream;
+    yield* stream
+    // try-catch does not work with *yield, so await for would be required, but
+    // events seem not to flow properly with that.
+    .doOnError((e, _) {
+      if (e is DriftWrappedException) {
+        handleDatabaseException(e);
+      }
+    });
   }
 
   Stream<T> commonDataStreamOrDefault<T extends Object>(Stream<T?> Function(CommonDatabase) mapper, T defaultValue) async* {
-    final stream = mapper(commonDatabase);
+    final stream = commonDataStream(mapper);
     yield* stream.map((event) {
       if (event == null) {
         return defaultValue;
@@ -53,28 +62,43 @@ class DatabaseManager extends AppSingleton {
   }
 
   Future<T> commonData<T>(Stream<T> Function(CommonDatabase) mapper) async {
-    final stream = mapper(commonDatabase);
+    final stream = commonDataStream(mapper);
     return await stream.first;
   }
 
   Future<T> commonDataOrDefault<T extends Object>(Stream<T?> Function(CommonDatabase) mapper, T defaultValue) async {
-    final stream = mapper(commonDatabase);
-    return await stream.first ?? defaultValue;
+    final first = await commonData(mapper);
+    return first ?? defaultValue;
   }
 
   Future<void> commonAction(Future<void> Function(CommonDatabase) action) async {
-    return await action(commonDatabase);
+    try {
+      await action(commonDatabase);
+    } on CouldNotRollBackException catch (e) {
+      handleDatabaseException(e);
+    } on DriftWrappedException catch (e) {
+      handleDatabaseException(e);
+    } on InvalidDataException catch (e) {
+      handleDatabaseException(e);
+    }
   }
 
   // Access current account database
 
   Stream<T?> accountDataStream<T extends Object>(Stream<T?> Function(AccountDatabase) mapper) async* {
-    yield* _accountStream((value) {
+    yield* _accountSwitchMapStream((value) {
       if (value == null) {
         return oneValueAndWaitForever(null);
       } else {
         final accountDatabase = _getAccountDatabaseUsingAccount(value);
         return mapper(accountDatabase);
+      }
+    })
+    // try-catch does not work with *yield, so await for would be required, but
+    // events seem not to flow properly with that.
+    .doOnError((e, _) {
+      if (e is DriftWrappedException) {
+        handleDatabaseException(e);
       }
     });
   }
@@ -102,15 +126,24 @@ class DatabaseManager extends AppSingleton {
 
   Future<void> accountAction(Future<void> Function(AccountDatabase) action) async {
     final accountId = await commonDataStream((db) => db.watchAccountId()).first;
-    if (accountId != null) {
+    if (accountId == null) {
+      log.warning("No AccountId found, action skipped");
+      return;
+    }
+
+    try {
       final db = _getAccountDatabaseUsingAccount(accountId);
       await action(db);
-    } else {
-      log.warning("No AccountId found, action skipped");
+    } on CouldNotRollBackException catch (e) {
+      handleDatabaseException(e);
+    } on DriftWrappedException catch (e) {
+      handleDatabaseException(e);
+    } on InvalidDataException catch (e) {
+      handleDatabaseException(e);
     }
   }
 
-  Stream<T?> _accountStream<T extends Object>(Stream<T?> Function(String? accountId) mapper) async* {
+  Stream<T?> _accountSwitchMapStream<T extends Object>(Stream<T?> Function(String? accountId) mapper) async* {
     yield* commonDataStream((db) => db.watchAccountId())
       .switchMap(mapper);
   }
@@ -131,4 +164,12 @@ Stream<T?> oneValueAndWaitForever<T>(T? value) async* {
   final completer = Completer<void>();
   yield value;
   await completer.future;
+}
+
+void handleDatabaseException(Exception e) {
+  // TODO(prod): remove exception printing for production?
+  log.error(e);
+  // TODO(prod): remove stack trace for production?
+  log.error(StackTrace.current);
+  ErrorManager.getInstance().send(DatabaseError());
 }
