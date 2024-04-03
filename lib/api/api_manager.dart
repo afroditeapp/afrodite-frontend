@@ -121,50 +121,53 @@ class ApiManager extends AppSingleton {
         _serverEvents.add(event);
       });
 
-      accountConnection.state.listen((event) {
-        log.info(event);
-        switch (event) {
-          // No connection states.
-          case ReadyToConnect():
-            _state.add(ApiManagerState.connecting); // TODO: try again at some point
-          case Error e: {
-            switch (e.error) {
-              case ServerConnectionError.connectionFailure: {
-                _state.add(ApiManagerState.reconnectWaitTime);
-                _reconnectInProgress = true;
-                showSnackBar("Connection error - reconnecting in 5 seconds");
-                // TODO: check that internet connectivity exists?
-                Future.delayed(const Duration(seconds: 5), () async {
-                  final currentState = await accountConnection.state.first;
+    _listenAccountConnectionEvents();
+    // TODO(microservice): handle media, proifle and chat
+  }
 
-                  if (currentState is Error && currentState.error == ServerConnectionError.connectionFailure) {
-                    await restart();
-                  }
-                })
-                  .then((value) => null);
-              }
-              case ServerConnectionError.invalidToken: {
-                _state.add(ApiManagerState.waitingRefreshToken);
-              }
-              case ServerConnectionError.unsupportedClientVersion: {
-                _state.add(ApiManagerState.unsupportedClientVersion);
-              }
+  Future<void> _listenAccountConnectionEvents() async {
+    await for (final event in accountConnection.state) {
+      log.info(event);
+      switch (event) {
+        // No connection states.
+        case ReadyToConnect():
+          _state.add(ApiManagerState.connecting); // TODO: try again at some point
+        case Error e: {
+          switch (e.error) {
+            case ServerConnectionError.connectionFailure: {
+              _state.add(ApiManagerState.reconnectWaitTime);
+              _reconnectInProgress = true;
+              showSnackBar("Connection error - reconnecting in 5 seconds");
+              // TODO: check that internet connectivity exists?
+              unawaited(Future.delayed(const Duration(seconds: 5), () async {
+                final currentState = await accountConnection.state.first;
+
+                if (currentState is Error && currentState.error == ServerConnectionError.connectionFailure) {
+                  await restart();
+                }
+              }));
             }
-          }
-          // Ongoing connection states
-          case Connecting():
-            _state.add(ApiManagerState.connecting);
-          case Ready(): {
-            if (_reconnectInProgress) {
-              showSnackBar("Connected");
-              _reconnectInProgress = false;
+            case ServerConnectionError.invalidToken: {
+              _state.add(ApiManagerState.waitingRefreshToken);
             }
-            setupTokens();
-            _state.add(ApiManagerState.connected);
+            case ServerConnectionError.unsupportedClientVersion: {
+              _state.add(ApiManagerState.unsupportedClientVersion);
+            }
           }
         }
-      });
-      // TODO: handle media, proifle and chat
+        // Ongoing connection states
+        case Connecting():
+          _state.add(ApiManagerState.connecting);
+        case Ready(): {
+          if (_reconnectInProgress) {
+            showSnackBar("Connected");
+            _reconnectInProgress = false;
+          }
+          await setupTokens();
+          _state.add(ApiManagerState.connected);
+        }
+      }
+    }
   }
 
   Future<void> _loadAddressesFromConfig() async {
