@@ -18,6 +18,7 @@ import 'package:pihka_frontend/assets.dart';
 import 'package:pihka_frontend/database/account_database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
@@ -123,12 +124,12 @@ class ServerConnection {
   Future<void> _connect() async {
     final storage = DatabaseManager.getInstance();
 
-    final accessToken = await storage.accountStreamSingle(_server.getterForAccessTokenKey());
+    final accessToken = await storage.accountStreamSingle(_server.getterForAccessTokenKey()).ok();
     if (accessToken == null) {
       _state.add(Error(ServerConnectionError.invalidToken));
       return;
     }
-    final refreshToken = await storage.accountStreamSingle(_server.getterForRefreshTokenKey());
+    final refreshToken = await storage.accountStreamSingle(_server.getterForRefreshTokenKey()).ok();
     if (refreshToken == null) {
       _state.add(Error(ServerConnectionError.invalidToken));
       return;

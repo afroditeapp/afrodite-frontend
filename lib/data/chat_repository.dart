@@ -28,11 +28,11 @@ class ChatRepository extends DataRepository {
   final ApiManager _api = ApiManager.getInstance();
   final profileEntryDownloader = ProfileEntryDownloader();
   final AccountIdDatabaseIterator sentBlocksIterator =
-    AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getSentBlocksList(startIndex, limit)));
+    AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getSentBlocksList(startIndex, limit)).ok());
   final AccountIdDatabaseIterator receivedLikesIterator =
-    AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getReceivedLikesList(startIndex, limit)));
+    AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getReceivedLikesList(startIndex, limit)).ok());
   final AccountIdDatabaseIterator matchesIterator =
-    AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getMatchesList(startIndex, limit)));
+    AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getMatchesList(startIndex, limit)).ok());
   final MessageDatabaseIterator messageIterator = MessageDatabaseIterator();
 
 
@@ -108,23 +108,23 @@ class ChatRepository extends DataRepository {
   }
 
   Future<bool> isInMatches(AccountId accountId) async {
-    return await db.profileData((db) => db.isInMatches(accountId)) ?? false;
+    return await db.profileData((db) => db.isInMatches(accountId)).ok() ?? false;
   }
 
   Future<bool> isInLikedProfiles(AccountId accountId) async {
-    return await db.profileData((db) => db.isInSentLikes(accountId)) ?? false;
+    return await db.profileData((db) => db.isInSentLikes(accountId)).ok() ?? false;
   }
 
   Future<bool> isInReceivedLikes(AccountId accountId) async {
-    return await db.profileData((db) => db.isInReceivedLikes(accountId)) ?? false;
+    return await db.profileData((db) => db.isInReceivedLikes(accountId)).ok() ?? false;
   }
 
   Future<bool> isInSentBlocks(AccountId accountId) async {
-    return await db.profileData((db) => db.isInSentBlocks(accountId)) ?? false;
+    return await db.profileData((db) => db.isInSentBlocks(accountId)).ok() ?? false;
   }
 
   Future<bool> isInReceivedBlocks(AccountId accountId) async {
-    return await db.profileData((db) => db.isInReceivedBlocks(accountId)) ?? false;
+    return await db.profileData((db) => db.isInReceivedBlocks(accountId)).ok() ?? false;
   }
 
   Future<bool> sendLikeTo(AccountId accountId) async {
@@ -186,7 +186,7 @@ class ChatRepository extends DataRepository {
   Future<void> receivedBlocksRefresh() async {
     final receivedBlocks = await _api.chat((api) => api.getReceivedBlocks()).ok();
     if (receivedBlocks != null) {
-      final currentReceivedBlocks = await db.profileData((db) => db.getReceivedBlocksListAll()) ?? [];
+      final currentReceivedBlocks = await db.profileData((db) => db.getReceivedBlocksListAll()).ok() ?? [];
       await db.profileAction((db) => db.setReceivedBlockStatusList(receivedBlocks.profiles, true, clear: true));
 
       for (final account in receivedBlocks.profiles) {
@@ -212,7 +212,7 @@ class ChatRepository extends DataRepository {
     final newList = <ProfileEntry>[];
     for (final accountId in accounts) {
       final profileData =
-        await db.profileData((db) => db.getProfileEntry(accountId)) ??
+        await db.profileData((db) => db.getProfileEntry(accountId)).ok() ??
         await profileEntryDownloader.download(accountId).ok();
       if (profileData != null) {
         newList.add(profileData);
@@ -242,7 +242,7 @@ class ChatRepository extends DataRepository {
     final newList = <ProfileEntry>[];
     for (final accountId in accounts) {
       final profileData =
-        await db.profileData((db) => db.getProfileEntry(accountId)) ??
+        await db.profileData((db) => db.getProfileEntry(accountId)).ok() ??
         await profileEntryDownloader.download(accountId, isMatch: true).ok();
       if (profileData != null) {
         newList.add(profileData);
@@ -354,7 +354,7 @@ class ChatRepository extends DataRepository {
       yield null;
       return;
     }
-    final messageList = await db.messageData((db) => db.getMessageListByLocalMessageId(currentUser, match, localId, 1)) ?? [];
+    final messageList = await db.messageData((db) => db.getMessageListByLocalMessageId(currentUser, match, localId, 1)).ok() ?? [];
     final message = messageList.firstOrNull;
     if (message == null) {
       yield null;
@@ -363,7 +363,7 @@ class ChatRepository extends DataRepository {
     yield message;
     await for (final event in ProfileRepository.getInstance().profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
-        final messageList = await db.messageData((db) => db.getMessageListByLocalMessageId(currentUser, match, localId, 1)) ?? [];
+        final messageList = await db.messageData((db) => db.getMessageListByLocalMessageId(currentUser, match, localId, 1)).ok() ?? [];
         final message = messageList.firstOrNull;
         if (message != null) {
           yield message;
@@ -380,7 +380,7 @@ class ChatRepository extends DataRepository {
       yield null;
       return;
     }
-    final message = await db.messageData((db) => db.getMessage(currentUser, match, index));
+    final message = await db.messageData((db) => db.getMessage(currentUser, match, index)).ok();
     final localId = message?.localId;
     if (message == null || localId == null) {
       yield null;
@@ -389,7 +389,7 @@ class ChatRepository extends DataRepository {
     yield message;
     await for (final event in ProfileRepository.getInstance().profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
-        final messageList = await db.messageData((db) => db.getMessageListByLocalMessageId(currentUser, match, localId, 1)) ?? [];
+        final messageList = await db.messageData((db) => db.getMessageListByLocalMessageId(currentUser, match, localId, 1)).ok() ?? [];
         final message = messageList.firstOrNull;
         if (message != null) {
           yield message;
@@ -406,12 +406,12 @@ class ChatRepository extends DataRepository {
       yield (0, null);
       return;
     }
-    final messageNumber = await db.messageData((db) => db.countMessagesInConversation(currentUser, match));
+    final messageNumber = await db.messageData((db) => db.countMessagesInConversation(currentUser, match)).ok();
     yield (messageNumber ?? 0, null);
 
     await for (final event in ProfileRepository.getInstance().profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
-        final messageNumber = await db.messageData((db) => db.countMessagesInConversation(currentUser, match));
+        final messageNumber = await db.messageData((db) => db.countMessagesInConversation(currentUser, match)).ok();
         yield (messageNumber ?? 0, event);
       }
     }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/message_entry.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/utils/result.dart';
 
 class MessageDatabaseIterator {
   int startLocalKey = 0;
@@ -21,7 +22,7 @@ class MessageDatabaseIterator {
 
   /// Resets the iterator to the latest message of the current conversation
   Future<void> resetToLatest() async {
-    final latestMessage = await db.messageData((db) => db.getMessage(localAccountId, remoteAccountId, 0));
+    final latestMessage = await db.messageData((db) => db.getMessage(localAccountId, remoteAccountId, 0)).ok();
     final id = latestMessage?.id;
     if (latestMessage != null && id != null) {
       startLocalKey = id;
@@ -57,7 +58,7 @@ class MessageDatabaseIterator {
       remoteAccountId,
       nextLocalKey,
       queryCount
-    )) ?? [];
+    )).ok() ?? [];
 
     final id = messages.lastOrNull?.id;
     if (id != null) {

@@ -118,7 +118,7 @@ class ProfileRepository extends DataRepository {
     // private profile can be handled.
 
     if (cache) {
-      final profile = await db.profileData((db) => db.getProfileEntry(id));
+      final profile = await db.profileData((db) => db.getProfileEntry(id)).ok();
       if (profile != null) {
         return profile;
       }
@@ -133,7 +133,7 @@ class ProfileRepository extends DataRepository {
     // TODO: perhaps more detailed error message, so that changes from public to
     // private profile can be handled.
 
-    final profile = await db.profileData((db) => db.getProfileEntry(id));
+    final profile = await db.profileData((db) => db.getProfileEntry(id)).ok();
     if (profile != null) {
       yield GetProfileSuccess(profile);
     }
@@ -202,7 +202,7 @@ class ProfileRepository extends DataRepository {
   }
 
   Future<bool> isInFavorites(AccountId accountId) async {
-    return await db.profileData((db) => db.isInFavorites(accountId)) ?? false;
+    return await db.profileData((db) => db.isInFavorites(accountId)).ok() ?? false;
   }
 
   Stream<bool> addToFavorites(AccountId accountId) async* {

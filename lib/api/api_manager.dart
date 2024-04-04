@@ -242,7 +242,7 @@ class ApiManager extends AppSingleton {
   Future<void> setupTokens() async {
     final storage = DatabaseManager.getInstance();
 
-    final accessTokenAccount = await storage.accountStreamSingle((db) => db.watchAccessTokenAccount());
+    final accessTokenAccount = await storage.accountStreamSingle((db) => db.watchAccessTokenAccount()).ok();
     if (accessTokenAccount != null) {
       _account.setAccessToken(AccessToken(accessToken: accessTokenAccount));
     }

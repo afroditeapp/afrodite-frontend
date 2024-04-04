@@ -123,7 +123,7 @@ class ProfileEntryDownloader {
 
     await db.profileAction((db) => db.updateProfileData(accountId, profileDetails));
     await db.profileAction((db) => db.updateProfileContent(accountId, contentInfo));
-    final dataEntry = await db.profileData((db) => db.getProfileEntry(accountId));
+    final dataEntry = await db.profileData((db) => db.getProfileEntry(accountId)).ok();
 
     if (dataEntry == null) {
       log.warning("Storing profile data to database failed");

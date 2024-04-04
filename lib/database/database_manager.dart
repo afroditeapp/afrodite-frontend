@@ -119,26 +119,31 @@ class DatabaseManager extends AppSingleton {
       });
   }
 
-  Future<T?> accountStreamSingle<T extends Object>(Stream<T?> Function(AccountDatabase) mapper) async {
+  Future<Result<T, ()>> accountStreamSingle<T extends Object>(Stream<T?> Function(AccountDatabase) mapper) async {
     final stream = accountStream(mapper);
-    return await stream.first;
+    final value = await stream.first;
+    if (value == null) {
+      return Err(());
+    } else {
+      return Ok(value);
+    }
   }
 
   Future<T> accountStreamSingleOrDefault<T extends Object>(Stream<T?> Function(AccountDatabase) mapper, T defaultValue) async {
     final value = await accountStreamSingle(mapper);
-    return value ?? defaultValue;
+    return value.ok() ?? defaultValue;
   }
 
-  Future<T?> accountData<T extends Object?>(Future<T> Function(AccountDatabase) action) async {
+  Future<Result<T, ()>> accountData<T extends Object?>(Future<T> Function(AccountDatabase) action) async {
     final accountId = await commonStream((db) => db.watchAccountId()).first;
     if (accountId == null) {
       log.warning("No AccountId found, data query skipped");
-      return null;
+      return Err(());
     }
 
     try {
       final db = _getAccountDatabaseUsingAccount(accountId);
-      return await action(db);
+      return Ok(await action(db));
     } on CouldNotRollBackException catch (e) {
       handleDatabaseException(e);
     } on DriftWrappedException catch (e) {
@@ -147,7 +152,7 @@ class DatabaseManager extends AppSingleton {
       handleDatabaseException(e);
     }
 
-    return null;
+    return Err(());
   }
 
   Future<Result<(), ()>> accountAction(Future<void> Function(AccountDatabase) action) async {
@@ -171,13 +176,13 @@ class DatabaseManager extends AppSingleton {
     return Err(());
   }
 
-  Future<T?> profileData<T extends Object?>(Future<T> Function(DaoProfiles) action) =>
+  Future<Result<T, ()>> profileData<T extends Object?>(Future<T> Function(DaoProfiles) action) =>
     accountData((db) => action(db.daoProfiles));
 
   Future<Result<(), ()>> profileAction(Future<void> Function(DaoProfiles) action) =>
     accountAction((db) => action(db.daoProfiles));
 
-  Future<T?> messageData<T extends Object?>(Future<T> Function(DaoMessages) action) =>
+  Future<Result<T, ()>> messageData<T extends Object?>(Future<T> Function(DaoMessages) action) =>
     accountData((db) => action(db.daoMessages));
 
   Future<Result<(), ()>> messageAction(Future<void> Function(DaoMessages) action) =>
