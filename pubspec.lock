@@ -1122,7 +1122,7 @@ packages:
     source: hosted
     version: "7.0.0"
   sqflite:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: sqflite
       sha256: a9016f495c927cb90557c909ff26a6d92d9bd54fc42ba92e19d4e79d61e798c6
