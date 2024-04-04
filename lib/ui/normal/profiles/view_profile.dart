@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/database/profile_database.dart';
+import 'package:pihka_frontend/database/profile_entry.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/logic/profile/view_profiles/view_profiles.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';

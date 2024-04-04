@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
-import 'package:pihka_frontend/database/profile_database.dart';
+import 'package:pihka_frontend/database/profile_entry.dart';
 
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';

@@ -3,7 +3,7 @@ import "package:openapi/api.dart";
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
-import "package:pihka_frontend/database/profile_database.dart";
+import "package:pihka_frontend/database/profile_entry.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 

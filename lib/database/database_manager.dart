@@ -6,7 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/database/account_database.dart';
 import 'package:pihka_frontend/database/common_database.dart';
-import 'package:pihka_frontend/database/favorite_profiles_database.dart';
+import 'package:pihka_frontend/database/profile_table.dart';
 import 'package:pihka_frontend/database/utils.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';

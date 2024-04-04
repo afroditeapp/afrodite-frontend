@@ -5,7 +5,7 @@ import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
-import 'package:pihka_frontend/database/profile_database.dart';
+import 'package:pihka_frontend/database/profile_entry.dart';
 
 sealed class ProfileIteratorMode {}
 class ModeFavorites extends ProfileIteratorMode {}

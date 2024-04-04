@@ -1,6 +1,6 @@
 
 
-import 'package:pihka_frontend/database/profile_database.dart';
+import 'package:pihka_frontend/database/profile_entry.dart';
 
 class IteratorType {
   /// Resets the iterator to the beginning

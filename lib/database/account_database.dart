@@ -1,7 +1,7 @@
 
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/database/favorite_profiles_database.dart';
+import 'package:pihka_frontend/database/profile_table.dart';
 import 'package:pihka_frontend/database/utils.dart';
 import 'package:pihka_frontend/utils/date.dart';
 

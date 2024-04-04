@@ -6,10 +6,10 @@ import 'package:openapi/api.dart' as api;
 import 'package:pihka_frontend/database/account_database.dart';
 
 import 'package:drift/drift.dart';
-import 'package:pihka_frontend/database/profile_database.dart';
+import 'package:pihka_frontend/database/profile_entry.dart';
 import 'package:pihka_frontend/utils/date.dart';
 
-part 'favorite_profiles_database.g.dart';
+part 'profile_table.g.dart';
 
 class Profiles extends Table {
   IntColumn get id => integer().autoIncrement()();
