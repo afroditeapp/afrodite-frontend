@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/database/chat/message_database.dart';
+import 'package:pihka_frontend/database/message_entry.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 
 class MessageDatabaseIterator {
