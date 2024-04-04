@@ -234,9 +234,9 @@ class MessageCache {
       state = null;
     }
     return MessageEntry(
-      AccountId(accountId: ""),
-      AccountId(accountId: ""),
-      text,
+      localAccountId: AccountId(accountId: ""),
+      remoteAccountId: AccountId(accountId: ""),
+      messageText: text,
       sentMessageState: state,
       id: counter++,
     );

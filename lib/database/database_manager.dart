@@ -6,9 +6,11 @@ import 'package:logging/logging.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/database/account_database.dart';
 import 'package:pihka_frontend/database/common_database.dart';
+import 'package:pihka_frontend/database/message_table.dart';
 import 'package:pihka_frontend/database/profile_table.dart';
 import 'package:pihka_frontend/database/utils.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
 final log = Logger("DatabaseManager");
@@ -72,9 +74,10 @@ class DatabaseManager extends AppSingleton {
     return first ?? defaultValue;
   }
 
-  Future<void> commonAction(Future<void> Function(CommonDatabase) action) async {
+  Future<Result<(), ()>> commonAction(Future<void> Function(CommonDatabase) action) async {
     try {
       await action(commonDatabase);
+      return Ok(());
     } on CouldNotRollBackException catch (e) {
       handleDatabaseException(e);
     } on DriftWrappedException catch (e) {
@@ -82,6 +85,7 @@ class DatabaseManager extends AppSingleton {
     } on InvalidDataException catch (e) {
       handleDatabaseException(e);
     }
+    return Err(());
   }
 
   // Access current account database
@@ -146,16 +150,17 @@ class DatabaseManager extends AppSingleton {
     return null;
   }
 
-  Future<void> accountAction(Future<void> Function(AccountDatabase) action) async {
+  Future<Result<(), ()>> accountAction(Future<void> Function(AccountDatabase) action) async {
     final accountId = await commonStream((db) => db.watchAccountId()).first;
     if (accountId == null) {
       log.warning("No AccountId found, action skipped");
-      return;
+      return Err(());
     }
 
     try {
       final db = _getAccountDatabaseUsingAccount(accountId);
       await action(db);
+      return Ok(());
     } on CouldNotRollBackException catch (e) {
       handleDatabaseException(e);
     } on DriftWrappedException catch (e) {
@@ -163,13 +168,20 @@ class DatabaseManager extends AppSingleton {
     } on InvalidDataException catch (e) {
       handleDatabaseException(e);
     }
+    return Err(());
   }
 
   Future<T?> profileData<T extends Object?>(Future<T> Function(DaoProfiles) action) =>
     accountData((db) => action(db.daoProfiles));
 
-  Future<void> profileAction(Future<void> Function(DaoProfiles) action) =>
+  Future<Result<(), ()>> profileAction(Future<void> Function(DaoProfiles) action) =>
     accountAction((db) => action(db.daoProfiles));
+
+  Future<T?> messageData<T extends Object?>(Future<T> Function(DaoMessages) action) =>
+    accountData((db) => action(db.daoMessages));
+
+  Future<Result<(), ()>> messageAction(Future<void> Function(DaoMessages) action) =>
+    accountAction((db) => action(db.daoMessages));
 
   Stream<T?> _accountSwitchMapStream<T extends Object>(Stream<T?> Function(String? accountId) mapper) async* {
     yield* commonStream((db) => db.watchAccountId())

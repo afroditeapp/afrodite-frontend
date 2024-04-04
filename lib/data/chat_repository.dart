@@ -33,8 +33,7 @@ class ChatRepository extends DataRepository {
     AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getReceivedLikesList(startIndex, limit)));
   final AccountIdDatabaseIterator matchesIterator =
     AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getMatchesList(startIndex, limit)));
-  final MessageDatabaseIterator messageIterator =
-    MessageDatabaseIterator(MessageDatabase.getInstance());
+  final MessageDatabaseIterator messageIterator = MessageDatabaseIterator();
 
 
   @override
@@ -274,7 +273,7 @@ class ChatRepository extends DataRepository {
     final newMessages = await _api.chat((api) => api.getPendingMessages()).ok();
     if (newMessages != null) {
       final toBeDeleted = <PendingMessageId>[];
-      final msgDb = MessageDatabase.getInstance();
+
       for (final message in newMessages.messages) {
         final isMatch = await isInMatches(message.id.accountIdSender);
         if (!isMatch) {
@@ -282,7 +281,8 @@ class ChatRepository extends DataRepository {
           ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
         }
 
-        if (await msgDb.insertPendingMessage(currentUser, message)) {
+        final r = await db.messageAction((db) => db.insertPendingMessage(currentUser, message));
+        if (r.isOk()) {
           toBeDeleted.add(message.id);
           ProfileRepository.getInstance().sendProfileChange(ConversationChanged(message.id.accountIdSender, ConversationChangeType.messageReceived));
         }
@@ -292,12 +292,12 @@ class ChatRepository extends DataRepository {
       final result = await _api.chatAction((api) => api.deletePendingMessages(toBeDeletedList));
       if (result.isOk()) {
         for (final message in newMessages.messages) {
-          await msgDb.updateReceivedMessageState(
+          await db.messageAction((db) => db.updateReceivedMessageState(
             currentUser,
             message.id.accountIdSender,
             message.id.messageNumber,
             ReceivedMessageState.deletedFromServer,
-          );
+          ));
         }
       }
       // TODO: If request fails try again at some point.
@@ -327,12 +327,12 @@ class ChatRepository extends DataRepository {
       }
     }
 
-    final saveMessageResult = await MessageDatabase.getInstance().insertToBeSentMessage(
+    final saveMessageResult = await db.messageAction((db) => db.insertToBeSentMessage(
       currentUser,
       accountId,
       message,
-    );
-    if (!saveMessageResult) {
+    ));
+    if (saveMessageResult.isErr()) {
       return;
     }
 
@@ -354,8 +354,7 @@ class ChatRepository extends DataRepository {
       yield null;
       return;
     }
-    final db = MessageDatabase.getInstance();
-    final messageList = await db.getMessageListByLocalMessageId(currentUser, match, localId, 1);
+    final messageList = await db.messageData((db) => db.getMessageListByLocalMessageId(currentUser, match, localId, 1)) ?? [];
     final message = messageList.firstOrNull;
     if (message == null) {
       yield null;
@@ -364,7 +363,7 @@ class ChatRepository extends DataRepository {
     yield message;
     await for (final event in ProfileRepository.getInstance().profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
-        final messageList = await db.getMessageListByLocalMessageId(currentUser, match, localId, 1);
+        final messageList = await db.messageData((db) => db.getMessageListByLocalMessageId(currentUser, match, localId, 1)) ?? [];
         final message = messageList.firstOrNull;
         if (message != null) {
           yield message;
@@ -381,8 +380,7 @@ class ChatRepository extends DataRepository {
       yield null;
       return;
     }
-    final db = MessageDatabase.getInstance();
-    final message = await db.getMessage(currentUser, match, index);
+    final message = await db.messageData((db) => db.getMessage(currentUser, match, index));
     final localId = message?.localId;
     if (message == null || localId == null) {
       yield null;
@@ -391,7 +389,7 @@ class ChatRepository extends DataRepository {
     yield message;
     await for (final event in ProfileRepository.getInstance().profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
-        final messageList = await db.getMessageListByLocalMessageId(currentUser, match, localId, 1);
+        final messageList = await db.messageData((db) => db.getMessageListByLocalMessageId(currentUser, match, localId, 1)) ?? [];
         final message = messageList.firstOrNull;
         if (message != null) {
           yield message;
@@ -408,13 +406,12 @@ class ChatRepository extends DataRepository {
       yield (0, null);
       return;
     }
-    final db = MessageDatabase.getInstance();
-    final messageNumber = await db.countMessagesInConversation(currentUser, match);
+    final messageNumber = await db.messageData((db) => db.countMessagesInConversation(currentUser, match));
     yield (messageNumber ?? 0, null);
 
     await for (final event in ProfileRepository.getInstance().profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
-        final messageNumber = await db.countMessagesInConversation(currentUser, match);
+        final messageNumber = await db.messageData((db) => db.countMessagesInConversation(currentUser, match));
         yield (messageNumber ?? 0, event);
       }
     }

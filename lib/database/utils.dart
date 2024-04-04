@@ -6,7 +6,9 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/storage/encryption.dart';
+import 'package:pihka_frontend/utils/date.dart';
 import 'package:pihka_frontend/utils/tmp_dir.dart';
 import 'package:sqlite3/open.dart';
 import 'package:sqlcipher_flutter_libs/sqlcipher_flutter_libs.dart';
@@ -67,4 +69,61 @@ LazyDatabase openDbConnection(DbFile db, {bool doInit = false}) {
       }
     );
   });
+}
+
+
+class AccountIdConverter extends TypeConverter<AccountId, String> {
+  const AccountIdConverter();
+
+  @override
+  AccountId fromSql(fromDb) {
+    return AccountId(accountId: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.accountId;
+  }
+}
+
+class ContentIdConverter extends TypeConverter<ContentId, String> {
+  const ContentIdConverter();
+
+  @override
+  ContentId fromSql(fromDb) {
+    return ContentId(contentId: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.contentId;
+  }
+}
+
+class MessageNumberConverter extends TypeConverter<MessageNumber, int> {
+  const MessageNumberConverter();
+
+  @override
+  MessageNumber fromSql(fromDb) {
+    return MessageNumber(messageNumber: fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.messageNumber;
+  }
+}
+
+class UtcDateTimeConverter extends TypeConverter<UtcDateTime, int> {
+  const UtcDateTimeConverter();
+
+  @override
+  UtcDateTime fromSql(fromDb) {
+    return UtcDateTime.fromUnixEpochMilliseconds(fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.toUnixEpochMilliseconds();
+  }
 }

@@ -1,12 +1,13 @@
 
 
 
-import 'package:openapi/api.dart' show AccountId, ContentId, ProfileContent;
+import 'package:openapi/api.dart' show AccountId, ProfileContent;
 import 'package:openapi/api.dart' as api;
 import 'package:pihka_frontend/database/account_database.dart';
 
 import 'package:drift/drift.dart';
 import 'package:pihka_frontend/database/profile_entry.dart';
+import 'package:pihka_frontend/database/utils.dart';
 import 'package:pihka_frontend/utils/date.dart';
 
 part 'profile_table.g.dart';
@@ -383,47 +384,5 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
       }
     }
     return data;
-  }
-}
-
-class AccountIdConverter extends TypeConverter<AccountId, String> {
-  const AccountIdConverter();
-
-  @override
-  AccountId fromSql(fromDb) {
-    return AccountId(accountId: fromDb);
-  }
-
-  @override
-  String toSql(value) {
-    return value.accountId;
-  }
-}
-
-class ContentIdConverter extends TypeConverter<ContentId, String> {
-  const ContentIdConverter();
-
-  @override
-  ContentId fromSql(fromDb) {
-    return ContentId(contentId: fromDb);
-  }
-
-  @override
-  String toSql(value) {
-    return value.contentId;
-  }
-}
-
-class UtcDateTimeConverter extends TypeConverter<UtcDateTime, int> {
-  const UtcDateTimeConverter();
-
-  @override
-  UtcDateTime fromSql(fromDb) {
-    return UtcDateTime.fromUnixEpochMilliseconds(fromDb);
-  }
-
-  @override
-  int toSql(value) {
-    return value.toUnixEpochMilliseconds();
   }
 }

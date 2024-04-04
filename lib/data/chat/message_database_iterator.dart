@@ -2,14 +2,15 @@ import 'dart:async';
 
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/chat/message_database.dart';
+import 'package:pihka_frontend/database/database_manager.dart';
 
 class MessageDatabaseIterator {
   int startLocalKey = 0;
   int nextLocalKey = 0;
   AccountId localAccountId = AccountId(accountId: "");
   AccountId remoteAccountId = AccountId(accountId: "");
-  final MessageDatabase db;
-  MessageDatabaseIterator(this.db);
+  final DatabaseManager db = DatabaseManager.getInstance();
+  MessageDatabaseIterator();
 
   /// Start iterating another conversation
   Future<void> switchConversation(AccountId local, AccountId remote) async {
@@ -20,7 +21,7 @@ class MessageDatabaseIterator {
 
   /// Resets the iterator to the latest message of the current conversation
   Future<void> resetToLatest() async {
-    final latestMessage = await db.getMessage(localAccountId, remoteAccountId, 0);
+    final latestMessage = await db.messageData((db) => db.getMessage(localAccountId, remoteAccountId, 0));
     final id = latestMessage?.id;
     if (latestMessage != null && id != null) {
       startLocalKey = id;
@@ -51,12 +52,12 @@ class MessageDatabaseIterator {
     }
 
     const queryCount = 10;
-    final messages = await db.getMessageListByLocalMessageId(
+    final messages = await db.messageData((db) => db.getMessageListByLocalMessageId(
       localAccountId,
       remoteAccountId,
       nextLocalKey,
       queryCount
-    );
+    )) ?? [];
 
     final id = messages.lastOrNull?.id;
     if (id != null) {

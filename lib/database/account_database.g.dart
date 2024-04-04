@@ -1803,14 +1803,473 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   }
 }
 
+class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MessagesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _uuidLocalAccountIdMeta =
+      const VerificationMeta('uuidLocalAccountId');
+  @override
+  late final GeneratedColumnWithTypeConverter<AccountId, String>
+      uuidLocalAccountId = GeneratedColumn<String>(
+              'uuid_local_account_id', aliasedName, false,
+              type: DriftSqlType.string, requiredDuringInsert: true)
+          .withConverter<AccountId>(
+              $MessagesTable.$converteruuidLocalAccountId);
+  static const VerificationMeta _uuidRemoteAccountIdMeta =
+      const VerificationMeta('uuidRemoteAccountId');
+  @override
+  late final GeneratedColumnWithTypeConverter<AccountId, String>
+      uuidRemoteAccountId = GeneratedColumn<String>(
+              'uuid_remote_account_id', aliasedName, false,
+              type: DriftSqlType.string, requiredDuringInsert: true)
+          .withConverter<AccountId>(
+              $MessagesTable.$converteruuidRemoteAccountId);
+  static const VerificationMeta _messageTextMeta =
+      const VerificationMeta('messageText');
+  @override
+  late final GeneratedColumn<String> messageText = GeneratedColumn<String>(
+      'message_text', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _sentMessageStateMeta =
+      const VerificationMeta('sentMessageState');
+  @override
+  late final GeneratedColumn<int> sentMessageState = GeneratedColumn<int>(
+      'sent_message_state', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _receivedMessageStateMeta =
+      const VerificationMeta('receivedMessageState');
+  @override
+  late final GeneratedColumn<int> receivedMessageState = GeneratedColumn<int>(
+      'received_message_state', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _messageNumberMeta =
+      const VerificationMeta('messageNumber');
+  @override
+  late final GeneratedColumnWithTypeConverter<MessageNumber?, int>
+      messageNumber = GeneratedColumn<int>('message_number', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<MessageNumber?>(
+              $MessagesTable.$convertermessageNumber);
+  static const VerificationMeta _unixTimeMeta =
+      const VerificationMeta('unixTime');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> unixTime =
+      GeneratedColumn<int>('unix_time', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>($MessagesTable.$converterunixTime);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        uuidLocalAccountId,
+        uuidRemoteAccountId,
+        messageText,
+        sentMessageState,
+        receivedMessageState,
+        messageNumber,
+        unixTime
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'messages';
+  @override
+  VerificationContext validateIntegrity(Insertable<Message> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    context.handle(_uuidLocalAccountIdMeta, const VerificationResult.success());
+    context.handle(
+        _uuidRemoteAccountIdMeta, const VerificationResult.success());
+    if (data.containsKey('message_text')) {
+      context.handle(
+          _messageTextMeta,
+          messageText.isAcceptableOrUnknown(
+              data['message_text']!, _messageTextMeta));
+    } else if (isInserting) {
+      context.missing(_messageTextMeta);
+    }
+    if (data.containsKey('sent_message_state')) {
+      context.handle(
+          _sentMessageStateMeta,
+          sentMessageState.isAcceptableOrUnknown(
+              data['sent_message_state']!, _sentMessageStateMeta));
+    }
+    if (data.containsKey('received_message_state')) {
+      context.handle(
+          _receivedMessageStateMeta,
+          receivedMessageState.isAcceptableOrUnknown(
+              data['received_message_state']!, _receivedMessageStateMeta));
+    }
+    context.handle(_messageNumberMeta, const VerificationResult.success());
+    context.handle(_unixTimeMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Message map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Message(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      uuidLocalAccountId: $MessagesTable.$converteruuidLocalAccountId.fromSql(
+          attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}uuid_local_account_id'])!),
+      uuidRemoteAccountId: $MessagesTable.$converteruuidRemoteAccountId.fromSql(
+          attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}uuid_remote_account_id'])!),
+      messageText: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}message_text'])!,
+      sentMessageState: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}sent_message_state']),
+      receivedMessageState: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}received_message_state']),
+      messageNumber: $MessagesTable.$convertermessageNumber.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.int, data['${effectivePrefix}message_number'])),
+      unixTime: $MessagesTable.$converterunixTime.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}unix_time'])),
+    );
+  }
+
+  @override
+  $MessagesTable createAlias(String alias) {
+    return $MessagesTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<AccountId, String> $converteruuidLocalAccountId =
+      const AccountIdConverter();
+  static TypeConverter<AccountId, String> $converteruuidRemoteAccountId =
+      const AccountIdConverter();
+  static TypeConverter<MessageNumber?, int?> $convertermessageNumber =
+      const NullAwareTypeConverter.wrap(MessageNumberConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterunixTime =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+}
+
+class Message extends DataClass implements Insertable<Message> {
+  final int id;
+  final AccountId uuidLocalAccountId;
+  final AccountId uuidRemoteAccountId;
+  final String messageText;
+  final int? sentMessageState;
+  final int? receivedMessageState;
+  final MessageNumber? messageNumber;
+  final UtcDateTime? unixTime;
+  const Message(
+      {required this.id,
+      required this.uuidLocalAccountId,
+      required this.uuidRemoteAccountId,
+      required this.messageText,
+      this.sentMessageState,
+      this.receivedMessageState,
+      this.messageNumber,
+      this.unixTime});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    {
+      map['uuid_local_account_id'] = Variable<String>($MessagesTable
+          .$converteruuidLocalAccountId
+          .toSql(uuidLocalAccountId));
+    }
+    {
+      map['uuid_remote_account_id'] = Variable<String>($MessagesTable
+          .$converteruuidRemoteAccountId
+          .toSql(uuidRemoteAccountId));
+    }
+    map['message_text'] = Variable<String>(messageText);
+    if (!nullToAbsent || sentMessageState != null) {
+      map['sent_message_state'] = Variable<int>(sentMessageState);
+    }
+    if (!nullToAbsent || receivedMessageState != null) {
+      map['received_message_state'] = Variable<int>(receivedMessageState);
+    }
+    if (!nullToAbsent || messageNumber != null) {
+      map['message_number'] = Variable<int>(
+          $MessagesTable.$convertermessageNumber.toSql(messageNumber));
+    }
+    if (!nullToAbsent || unixTime != null) {
+      map['unix_time'] =
+          Variable<int>($MessagesTable.$converterunixTime.toSql(unixTime));
+    }
+    return map;
+  }
+
+  MessagesCompanion toCompanion(bool nullToAbsent) {
+    return MessagesCompanion(
+      id: Value(id),
+      uuidLocalAccountId: Value(uuidLocalAccountId),
+      uuidRemoteAccountId: Value(uuidRemoteAccountId),
+      messageText: Value(messageText),
+      sentMessageState: sentMessageState == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sentMessageState),
+      receivedMessageState: receivedMessageState == null && nullToAbsent
+          ? const Value.absent()
+          : Value(receivedMessageState),
+      messageNumber: messageNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(messageNumber),
+      unixTime: unixTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(unixTime),
+    );
+  }
+
+  factory Message.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Message(
+      id: serializer.fromJson<int>(json['id']),
+      uuidLocalAccountId:
+          serializer.fromJson<AccountId>(json['uuidLocalAccountId']),
+      uuidRemoteAccountId:
+          serializer.fromJson<AccountId>(json['uuidRemoteAccountId']),
+      messageText: serializer.fromJson<String>(json['messageText']),
+      sentMessageState: serializer.fromJson<int?>(json['sentMessageState']),
+      receivedMessageState:
+          serializer.fromJson<int?>(json['receivedMessageState']),
+      messageNumber: serializer.fromJson<MessageNumber?>(json['messageNumber']),
+      unixTime: serializer.fromJson<UtcDateTime?>(json['unixTime']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'uuidLocalAccountId': serializer.toJson<AccountId>(uuidLocalAccountId),
+      'uuidRemoteAccountId': serializer.toJson<AccountId>(uuidRemoteAccountId),
+      'messageText': serializer.toJson<String>(messageText),
+      'sentMessageState': serializer.toJson<int?>(sentMessageState),
+      'receivedMessageState': serializer.toJson<int?>(receivedMessageState),
+      'messageNumber': serializer.toJson<MessageNumber?>(messageNumber),
+      'unixTime': serializer.toJson<UtcDateTime?>(unixTime),
+    };
+  }
+
+  Message copyWith(
+          {int? id,
+          AccountId? uuidLocalAccountId,
+          AccountId? uuidRemoteAccountId,
+          String? messageText,
+          Value<int?> sentMessageState = const Value.absent(),
+          Value<int?> receivedMessageState = const Value.absent(),
+          Value<MessageNumber?> messageNumber = const Value.absent(),
+          Value<UtcDateTime?> unixTime = const Value.absent()}) =>
+      Message(
+        id: id ?? this.id,
+        uuidLocalAccountId: uuidLocalAccountId ?? this.uuidLocalAccountId,
+        uuidRemoteAccountId: uuidRemoteAccountId ?? this.uuidRemoteAccountId,
+        messageText: messageText ?? this.messageText,
+        sentMessageState: sentMessageState.present
+            ? sentMessageState.value
+            : this.sentMessageState,
+        receivedMessageState: receivedMessageState.present
+            ? receivedMessageState.value
+            : this.receivedMessageState,
+        messageNumber:
+            messageNumber.present ? messageNumber.value : this.messageNumber,
+        unixTime: unixTime.present ? unixTime.value : this.unixTime,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Message(')
+          ..write('id: $id, ')
+          ..write('uuidLocalAccountId: $uuidLocalAccountId, ')
+          ..write('uuidRemoteAccountId: $uuidRemoteAccountId, ')
+          ..write('messageText: $messageText, ')
+          ..write('sentMessageState: $sentMessageState, ')
+          ..write('receivedMessageState: $receivedMessageState, ')
+          ..write('messageNumber: $messageNumber, ')
+          ..write('unixTime: $unixTime')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id,
+      uuidLocalAccountId,
+      uuidRemoteAccountId,
+      messageText,
+      sentMessageState,
+      receivedMessageState,
+      messageNumber,
+      unixTime);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Message &&
+          other.id == this.id &&
+          other.uuidLocalAccountId == this.uuidLocalAccountId &&
+          other.uuidRemoteAccountId == this.uuidRemoteAccountId &&
+          other.messageText == this.messageText &&
+          other.sentMessageState == this.sentMessageState &&
+          other.receivedMessageState == this.receivedMessageState &&
+          other.messageNumber == this.messageNumber &&
+          other.unixTime == this.unixTime);
+}
+
+class MessagesCompanion extends UpdateCompanion<Message> {
+  final Value<int> id;
+  final Value<AccountId> uuidLocalAccountId;
+  final Value<AccountId> uuidRemoteAccountId;
+  final Value<String> messageText;
+  final Value<int?> sentMessageState;
+  final Value<int?> receivedMessageState;
+  final Value<MessageNumber?> messageNumber;
+  final Value<UtcDateTime?> unixTime;
+  const MessagesCompanion({
+    this.id = const Value.absent(),
+    this.uuidLocalAccountId = const Value.absent(),
+    this.uuidRemoteAccountId = const Value.absent(),
+    this.messageText = const Value.absent(),
+    this.sentMessageState = const Value.absent(),
+    this.receivedMessageState = const Value.absent(),
+    this.messageNumber = const Value.absent(),
+    this.unixTime = const Value.absent(),
+  });
+  MessagesCompanion.insert({
+    this.id = const Value.absent(),
+    required AccountId uuidLocalAccountId,
+    required AccountId uuidRemoteAccountId,
+    required String messageText,
+    this.sentMessageState = const Value.absent(),
+    this.receivedMessageState = const Value.absent(),
+    this.messageNumber = const Value.absent(),
+    this.unixTime = const Value.absent(),
+  })  : uuidLocalAccountId = Value(uuidLocalAccountId),
+        uuidRemoteAccountId = Value(uuidRemoteAccountId),
+        messageText = Value(messageText);
+  static Insertable<Message> custom({
+    Expression<int>? id,
+    Expression<String>? uuidLocalAccountId,
+    Expression<String>? uuidRemoteAccountId,
+    Expression<String>? messageText,
+    Expression<int>? sentMessageState,
+    Expression<int>? receivedMessageState,
+    Expression<int>? messageNumber,
+    Expression<int>? unixTime,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (uuidLocalAccountId != null)
+        'uuid_local_account_id': uuidLocalAccountId,
+      if (uuidRemoteAccountId != null)
+        'uuid_remote_account_id': uuidRemoteAccountId,
+      if (messageText != null) 'message_text': messageText,
+      if (sentMessageState != null) 'sent_message_state': sentMessageState,
+      if (receivedMessageState != null)
+        'received_message_state': receivedMessageState,
+      if (messageNumber != null) 'message_number': messageNumber,
+      if (unixTime != null) 'unix_time': unixTime,
+    });
+  }
+
+  MessagesCompanion copyWith(
+      {Value<int>? id,
+      Value<AccountId>? uuidLocalAccountId,
+      Value<AccountId>? uuidRemoteAccountId,
+      Value<String>? messageText,
+      Value<int?>? sentMessageState,
+      Value<int?>? receivedMessageState,
+      Value<MessageNumber?>? messageNumber,
+      Value<UtcDateTime?>? unixTime}) {
+    return MessagesCompanion(
+      id: id ?? this.id,
+      uuidLocalAccountId: uuidLocalAccountId ?? this.uuidLocalAccountId,
+      uuidRemoteAccountId: uuidRemoteAccountId ?? this.uuidRemoteAccountId,
+      messageText: messageText ?? this.messageText,
+      sentMessageState: sentMessageState ?? this.sentMessageState,
+      receivedMessageState: receivedMessageState ?? this.receivedMessageState,
+      messageNumber: messageNumber ?? this.messageNumber,
+      unixTime: unixTime ?? this.unixTime,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (uuidLocalAccountId.present) {
+      map['uuid_local_account_id'] = Variable<String>($MessagesTable
+          .$converteruuidLocalAccountId
+          .toSql(uuidLocalAccountId.value));
+    }
+    if (uuidRemoteAccountId.present) {
+      map['uuid_remote_account_id'] = Variable<String>($MessagesTable
+          .$converteruuidRemoteAccountId
+          .toSql(uuidRemoteAccountId.value));
+    }
+    if (messageText.present) {
+      map['message_text'] = Variable<String>(messageText.value);
+    }
+    if (sentMessageState.present) {
+      map['sent_message_state'] = Variable<int>(sentMessageState.value);
+    }
+    if (receivedMessageState.present) {
+      map['received_message_state'] = Variable<int>(receivedMessageState.value);
+    }
+    if (messageNumber.present) {
+      map['message_number'] = Variable<int>(
+          $MessagesTable.$convertermessageNumber.toSql(messageNumber.value));
+    }
+    if (unixTime.present) {
+      map['unix_time'] = Variable<int>(
+          $MessagesTable.$converterunixTime.toSql(unixTime.value));
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MessagesCompanion(')
+          ..write('id: $id, ')
+          ..write('uuidLocalAccountId: $uuidLocalAccountId, ')
+          ..write('uuidRemoteAccountId: $uuidRemoteAccountId, ')
+          ..write('messageText: $messageText, ')
+          ..write('sentMessageState: $sentMessageState, ')
+          ..write('receivedMessageState: $receivedMessageState, ')
+          ..write('messageNumber: $messageNumber, ')
+          ..write('unixTime: $unixTime')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AccountDatabase extends GeneratedDatabase {
   _$AccountDatabase(QueryExecutor e) : super(e);
   late final $AccountTable account = $AccountTable(this);
   late final $ProfilesTable profiles = $ProfilesTable(this);
+  late final $MessagesTable messages = $MessagesTable(this);
   late final DaoProfiles daoProfiles = DaoProfiles(this as AccountDatabase);
+  late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [account, profiles];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [account, profiles, messages];
 }
