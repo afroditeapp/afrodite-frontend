@@ -33,12 +33,12 @@ class DatabaseManager extends AppSingleton {
 
     commonDatabase = CommonDatabase(doInit: true);
     // Make sure that the database libraries are initialized
-    await commonDataStream((db) => db.watchDemoAccountUserId()).first;
+    await commonStream((db) => db.watchDemoAccountUserId()).first;
   }
 
   // Common database
 
-  Stream<T> commonDataStream<T>(Stream<T> Function(CommonDatabase) mapper) async* {
+  Stream<T> commonStream<T>(Stream<T> Function(CommonDatabase) mapper) async* {
     final stream = mapper(commonDatabase);
     yield* stream
     // try-catch does not work with *yield, so await for would be required, but
@@ -50,8 +50,8 @@ class DatabaseManager extends AppSingleton {
     });
   }
 
-  Stream<T> commonDataStreamOrDefault<T extends Object>(Stream<T?> Function(CommonDatabase) mapper, T defaultValue) async* {
-    final stream = commonDataStream(mapper);
+  Stream<T> commonStreamOrDefault<T extends Object>(Stream<T?> Function(CommonDatabase) mapper, T defaultValue) async* {
+    final stream = commonStream(mapper);
     yield* stream.map((event) {
       if (event == null) {
         return defaultValue;
@@ -61,13 +61,13 @@ class DatabaseManager extends AppSingleton {
     });
   }
 
-  Future<T> commonData<T>(Stream<T> Function(CommonDatabase) mapper) async {
-    final stream = commonDataStream(mapper);
+  Future<T> commonStreamSingle<T>(Stream<T> Function(CommonDatabase) mapper) async {
+    final stream = commonStream(mapper);
     return await stream.first;
   }
 
-  Future<T> commonDataOrDefault<T extends Object>(Stream<T?> Function(CommonDatabase) mapper, T defaultValue) async {
-    final first = await commonData(mapper);
+  Future<T> commonStreamSingleOrDefault<T extends Object>(Stream<T?> Function(CommonDatabase) mapper, T defaultValue) async {
+    final first = await commonStreamSingle(mapper);
     return first ?? defaultValue;
   }
 
@@ -85,7 +85,7 @@ class DatabaseManager extends AppSingleton {
 
   // Access current account database
 
-  Stream<T?> accountDataStream<T extends Object>(Stream<T?> Function(AccountDatabase) mapper) async* {
+  Stream<T?> accountStream<T extends Object>(Stream<T?> Function(AccountDatabase) mapper) async* {
     yield* _accountSwitchMapStream((value) {
       if (value == null) {
         return oneValueAndWaitForever(null);
@@ -103,8 +103,8 @@ class DatabaseManager extends AppSingleton {
     });
   }
 
-  Stream<T> accountDataStreamOrDefault<T extends Object>(Stream<T?> Function(AccountDatabase) mapper, T defaultValue) async* {
-    yield* accountDataStream(mapper)
+  Stream<T> accountStreamOrDefault<T extends Object>(Stream<T?> Function(AccountDatabase) mapper, T defaultValue) async* {
+    yield* accountStream(mapper)
       .map((event) {
         if (event == null) {
           return defaultValue;
@@ -114,18 +114,39 @@ class DatabaseManager extends AppSingleton {
       });
   }
 
-  Future<T?> accountData<T extends Object>(Stream<T?> Function(AccountDatabase) mapper) async {
-    final stream = accountDataStream(mapper);
+  Future<T?> accountStreamSingle<T extends Object>(Stream<T?> Function(AccountDatabase) mapper) async {
+    final stream = accountStream(mapper);
     return await stream.first;
   }
 
-  Future<T> accountDataOrDefault<T extends Object>(Stream<T?> Function(AccountDatabase) mapper, T defaultValue) async {
-    final value = await accountData(mapper);
+  Future<T> accountStreamSingleOrDefault<T extends Object>(Stream<T?> Function(AccountDatabase) mapper, T defaultValue) async {
+    final value = await accountStreamSingle(mapper);
     return value ?? defaultValue;
   }
 
+  Future<T?> accountData<T extends Object>(Future<T> Function(AccountDatabase) action) async {
+    final accountId = await commonStream((db) => db.watchAccountId()).first;
+    if (accountId == null) {
+      log.warning("No AccountId found, data query skipped");
+      return null;
+    }
+
+    try {
+      final db = _getAccountDatabaseUsingAccount(accountId);
+      return await action(db);
+    } on CouldNotRollBackException catch (e) {
+      handleDatabaseException(e);
+    } on DriftWrappedException catch (e) {
+      handleDatabaseException(e);
+    } on InvalidDataException catch (e) {
+      handleDatabaseException(e);
+    }
+
+    return null;
+  }
+
   Future<void> accountAction(Future<void> Function(AccountDatabase) action) async {
-    final accountId = await commonDataStream((db) => db.watchAccountId()).first;
+    final accountId = await commonStream((db) => db.watchAccountId()).first;
     if (accountId == null) {
       log.warning("No AccountId found, action skipped");
       return;
@@ -144,7 +165,7 @@ class DatabaseManager extends AppSingleton {
   }
 
   Stream<T?> _accountSwitchMapStream<T extends Object>(Stream<T?> Function(String? accountId) mapper) async* {
-    yield* commonDataStream((db) => db.watchAccountId())
+    yield* commonStream((db) => db.watchAccountId())
       .switchMap(mapper);
   }
 

@@ -174,28 +174,28 @@ class ApiManager extends AppSingleton {
     final storage = DatabaseManager.getInstance();
 
     // TODO(prod): hardcode address for production release?
-    final accountAddress = await storage.commonDataOrDefault(
+    final accountAddress = await storage.commonStreamSingleOrDefault(
       (db) => db.watchServerUrlAccount(),
       defaultServerUrlAccount(),
     );
     _account.updateServerAddress(accountAddress);
     accountConnection.setAddress(toWebSocketUri(accountAddress));
 
-    final profileAddress = await storage.commonDataOrDefault(
+    final profileAddress = await storage.commonStreamSingleOrDefault(
       (db) => db.watchServerUrlProfile(),
       defaultServerUrlProfile(),
     );
     _profile.updateServerAddress(profileAddress);
     profileConnection.setAddress(toWebSocketUri(profileAddress));
 
-    final mediaAddress = await storage.commonDataOrDefault(
+    final mediaAddress = await storage.commonStreamSingleOrDefault(
       (db) => db.watchServerUrlMedia(),
       defaultServerUrlMedia(),
     );
     _media.updateServerAddress(mediaAddress);
     mediaConnection.setAddress(toWebSocketUri(mediaAddress));
 
-    final chatAddress = await storage.commonDataOrDefault(
+    final chatAddress = await storage.commonStreamSingleOrDefault(
       (db) => db.watchServerUrlChat(),
       defaultServerUrlChat(),
     );
@@ -208,9 +208,9 @@ class ApiManager extends AppSingleton {
 
     final storage = DatabaseManager.getInstance();
     final accountRefreshToken =
-      await storage.accountData((db) => db.watchRefreshTokenAccount());
+      await storage.accountStreamSingle((db) => db.watchRefreshTokenAccount());
     final accountAccessToken =
-      await storage.accountData((db) => db.watchAccessTokenAccount());
+      await storage.accountStreamSingle((db) => db.watchAccessTokenAccount());
 
     if (accountRefreshToken == null || accountAccessToken == null) {
       _state.add(ApiManagerState.waitingRefreshToken);
@@ -242,7 +242,7 @@ class ApiManager extends AppSingleton {
   Future<void> setupTokens() async {
     final storage = DatabaseManager.getInstance();
 
-    final accessTokenAccount = await storage.accountData((db) => db.watchAccessTokenAccount());
+    final accessTokenAccount = await storage.accountStreamSingle((db) => db.watchAccessTokenAccount());
     if (accessTokenAccount != null) {
       _account.setAccessToken(AccessToken(accessToken: accessTokenAccount));
     }

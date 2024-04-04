@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:async/async.dart';
 import 'package:logging/logging.dart';
@@ -11,7 +10,6 @@ import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/account_database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
-import 'package:pihka_frontend/database/favorite_profiles_database.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/utils/result.dart';
@@ -36,13 +34,13 @@ class ProfileRepository extends DataRepository {
   Stream<ProfileChange> get profileChanges => _profileChangesRelay;
 
   Stream<Location> get location => DatabaseManager.getInstance()
-    .accountDataStreamOrDefault(
+    .accountStreamOrDefault(
       (db) => db.watchProfileLocation(),
       Location(latitude: 0.0, longitude: 0.0),
     );
 
   Stream<AvailableProfileAttributes?> get profileAttributes => DatabaseManager.getInstance()
-    .accountDataStream(
+    .accountStream(
       (db) => db.watchAvailableProfileAttributes(),
     );
 
@@ -80,8 +78,7 @@ class ProfileRepository extends DataRepository {
         final favorites = await _api.profile((api) => api.getFavoriteProfiles()).ok();
         if (favorites != null) {
           for (final profile in favorites.profiles) {
-            await FavoriteProfilesDatabase.getInstance()
-              .insertProfile(profile);
+            await DatabaseManager.getInstance().accountAction((db) => db.daoFavoriteProfiles.insertProfile(profile));
           }
         }
       })
@@ -91,7 +88,7 @@ class ProfileRepository extends DataRepository {
   @override
   Future<void> onLogout() async {
     await ProfileListDatabase.getInstance().clearProfiles();
-    await FavoriteProfilesDatabase.getInstance().clearFavoriteProfiles();
+    await DatabaseManager.getInstance().accountAction((db) => db.daoFavoriteProfiles.clearFavoriteProfiles());
     await ProfileDatabase.getInstance().clearProfiles();
     await mainProfilesViewIterator.reset(ModePublicProfiles(
       clearDatabase: true
@@ -213,17 +210,16 @@ class ProfileRepository extends DataRepository {
   }
 
   Future<bool> isInFavorites(AccountId accountId) async {
-    return await FavoriteProfilesDatabase.getInstance()
-          .isInFavorites(accountId);
+    return await DatabaseManager.getInstance().accountData((db) => db.daoFavoriteProfiles.isInFavorites(accountId)) ?? false;
   }
 
   Stream<bool> addToFavorites(AccountId accountId) async* {
-    if (await FavoriteProfilesDatabase.getInstance().isInFavorites(accountId)) {
+    if (await isInFavorites(accountId)) {
       // In favorites already
       return;
     }
 
-    await FavoriteProfilesDatabase.getInstance().insertProfile(accountId);
+    await DatabaseManager.getInstance().accountAction((db) => db.daoFavoriteProfiles.insertProfile(accountId));
     yield true;
 
     final status = await _api.profileAction((api) => api.postFavoriteProfile(accountId));
@@ -231,22 +227,24 @@ class ProfileRepository extends DataRepository {
     if (status.isErr()) {
       // Revert local change
       yield false;
-      await FavoriteProfilesDatabase.getInstance().removeFromFavorites(accountId);
+      await DatabaseManager.getInstance().accountAction((db) => db.daoFavoriteProfiles.removeFromFavorites(accountId));
     } else {
       _profileChangesRelay.add(
         ProfileFavoriteStatusChange(accountId, true)
       );
     }
+
+    // TODO: Save change to db only when server has accepted it?
   }
 
   /// Returns new isFavorite status for AccountId.
   Stream<bool> removeFromFavorites(AccountId accountId) async* {
-    if (!await FavoriteProfilesDatabase.getInstance().isInFavorites(accountId)) {
+    if (!await isInFavorites(accountId)) {
       // Not in favorites already
       return;
     }
 
-    await FavoriteProfilesDatabase.getInstance().removeFromFavorites(accountId);
+    await DatabaseManager.getInstance().accountAction((db) => db.daoFavoriteProfiles.removeFromFavorites(accountId));
     yield false;
 
     final status = await _api.profileAction((api) => api.deleteFavoriteProfile(accountId));
@@ -254,7 +252,7 @@ class ProfileRepository extends DataRepository {
     if (status.isErr()) {
       // Revert local change
       yield true;
-      await FavoriteProfilesDatabase.getInstance().insertProfile(accountId);
+      await DatabaseManager.getInstance().accountAction((db) => db.daoFavoriteProfiles.insertProfile(accountId));
     } else {
       _profileChangesRelay.add(
         ProfileFavoriteStatusChange(accountId, false)
@@ -276,7 +274,7 @@ class ProfileRepository extends DataRepository {
   }
 
   Future<bool> getFilterFavoriteProfilesValue() async {
-    return await DatabaseManager.getInstance().accountDataOrDefault(
+    return await DatabaseManager.getInstance().accountStreamSingleOrDefault(
       (db) => db.watchProfileFilterFavorites(),
       PROFILE_FILTER_FAVORITES_DEFAULT,
     );

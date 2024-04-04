@@ -864,12 +864,195 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   }
 }
 
+class $FavoriteProfilesTable extends FavoriteProfiles
+    with TableInfo<$FavoriteProfilesTable, FavoriteProfile> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FavoriteProfilesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumnWithTypeConverter<AccountId, String> uuid =
+      GeneratedColumn<String>('uuid', aliasedName, false,
+              type: DriftSqlType.string,
+              requiredDuringInsert: true,
+              defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
+          .withConverter<AccountId>($FavoriteProfilesTable.$converteruuid);
+  @override
+  List<GeneratedColumn> get $columns => [id, uuid];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'favorite_profiles';
+  @override
+  VerificationContext validateIntegrity(Insertable<FavoriteProfile> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    context.handle(_uuidMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  FavoriteProfile map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return FavoriteProfile(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      uuid: $FavoriteProfilesTable.$converteruuid.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!),
+    );
+  }
+
+  @override
+  $FavoriteProfilesTable createAlias(String alias) {
+    return $FavoriteProfilesTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<AccountId, String> $converteruuid =
+      const AccountIdConverter();
+}
+
+class FavoriteProfile extends DataClass implements Insertable<FavoriteProfile> {
+  final int id;
+  final AccountId uuid;
+  const FavoriteProfile({required this.id, required this.uuid});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    {
+      map['uuid'] =
+          Variable<String>($FavoriteProfilesTable.$converteruuid.toSql(uuid));
+    }
+    return map;
+  }
+
+  FavoriteProfilesCompanion toCompanion(bool nullToAbsent) {
+    return FavoriteProfilesCompanion(
+      id: Value(id),
+      uuid: Value(uuid),
+    );
+  }
+
+  factory FavoriteProfile.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return FavoriteProfile(
+      id: serializer.fromJson<int>(json['id']),
+      uuid: serializer.fromJson<AccountId>(json['uuid']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'uuid': serializer.toJson<AccountId>(uuid),
+    };
+  }
+
+  FavoriteProfile copyWith({int? id, AccountId? uuid}) => FavoriteProfile(
+        id: id ?? this.id,
+        uuid: uuid ?? this.uuid,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('FavoriteProfile(')
+          ..write('id: $id, ')
+          ..write('uuid: $uuid')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, uuid);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is FavoriteProfile &&
+          other.id == this.id &&
+          other.uuid == this.uuid);
+}
+
+class FavoriteProfilesCompanion extends UpdateCompanion<FavoriteProfile> {
+  final Value<int> id;
+  final Value<AccountId> uuid;
+  const FavoriteProfilesCompanion({
+    this.id = const Value.absent(),
+    this.uuid = const Value.absent(),
+  });
+  FavoriteProfilesCompanion.insert({
+    this.id = const Value.absent(),
+    required AccountId uuid,
+  }) : uuid = Value(uuid);
+  static Insertable<FavoriteProfile> custom({
+    Expression<int>? id,
+    Expression<String>? uuid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (uuid != null) 'uuid': uuid,
+    });
+  }
+
+  FavoriteProfilesCompanion copyWith({Value<int>? id, Value<AccountId>? uuid}) {
+    return FavoriteProfilesCompanion(
+      id: id ?? this.id,
+      uuid: uuid ?? this.uuid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(
+          $FavoriteProfilesTable.$converteruuid.toSql(uuid.value));
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FavoriteProfilesCompanion(')
+          ..write('id: $id, ')
+          ..write('uuid: $uuid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AccountDatabase extends GeneratedDatabase {
   _$AccountDatabase(QueryExecutor e) : super(e);
   late final $AccountTable account = $AccountTable(this);
+  late final $FavoriteProfilesTable favoriteProfiles =
+      $FavoriteProfilesTable(this);
+  late final DaoFavoriteProfiles daoFavoriteProfiles =
+      DaoFavoriteProfiles(this as AccountDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [account];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [account, favoriteProfiles];
 }

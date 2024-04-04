@@ -35,14 +35,14 @@ class AccountRepository extends DataRepository {
     BehaviorSubject.seeded(AccountRepositoryState.initRequired);
 
   Stream<AccountState?> get accountState => DatabaseManager.getInstance()
-    .accountDataStream((db) => db.watchAccountState());
+    .accountStream((db) => db.watchAccountState());
   Stream<Capabilities> get capabilities => DatabaseManager.getInstance()
-    .accountDataStreamOrDefault(
+    .accountStreamOrDefault(
       (db) => db.watchCapabilities(),
       Capabilities(),
     );
   Stream<ProfileVisibility> get profileVisibility => DatabaseManager.getInstance()
-    .accountDataStreamOrDefault((db) => db.watchProfileVisibility(), ProfileVisibility.pendingPrivate);
+    .accountStreamOrDefault((db) => db.watchProfileVisibility(), ProfileVisibility.pendingPrivate);
 
   // WebSocket related event streams
   final _contentProcessingStateChanges = PublishSubject<ContentProcessingStateChanged>();

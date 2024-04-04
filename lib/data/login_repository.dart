@@ -50,7 +50,7 @@ class LoginRepository extends DataRepository {
   // Main app state streams
   Stream<LoginState> get loginState => _loginState.distinct();
   Stream<String> get accountServerAddress => DatabaseManager.getInstance()
-    .commonDataStreamOrDefault(
+    .commonStreamOrDefault(
       (db) => db.watchServerUrlAccount(),
       defaultServerUrlAccount(),
     )
@@ -58,18 +58,18 @@ class LoginRepository extends DataRepository {
 
   // Demo account
   Stream<String?> get demoAccountUserId => DatabaseManager.getInstance()
-    .commonDataStream((db) => db.watchDemoAccountUserId());
+    .commonStream((db) => db.watchDemoAccountUserId());
 
   Stream<String?> get demoAccountPassword => DatabaseManager.getInstance()
-    .commonDataStream((db) => db.watchDemoAccountPassword());
+    .commonStream((db) => db.watchDemoAccountPassword());
 
   Stream<String?> get demoAccountToken => DatabaseManager.getInstance()
-    .commonDataStream((db) => db.watchDemoAccountToken());
+    .commonStream((db) => db.watchDemoAccountToken());
   Stream<bool> get demoAccountLoginInProgress => _demoAccountLoginInProgress;
 
   // Account
   Stream<AccountId?> get accountId => DatabaseManager.getInstance()
-    .commonDataStream(
+    .commonStream(
       (db) => db.watchAccountId().map((event) {
         if (event == null) {
           return null;
@@ -87,7 +87,7 @@ class LoginRepository extends DataRepository {
     _internalState.add(LoginRepositoryState.initComplete);
 
     // Restore previous state
-    final previousState = await DatabaseManager.getInstance().accountData((db) => db.watchAccountState());
+    final previousState = await DatabaseManager.getInstance().accountStreamSingle((db) => db.watchAccountState());
     if (previousState != null) {
       _loginState.add(LoginState.viewAccountStateOnceItExists);
       await onResumeAppUsage();

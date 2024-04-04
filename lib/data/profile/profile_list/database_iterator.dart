@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:pihka_frontend/database/favorite_profiles_database.dart';
+import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
@@ -38,7 +38,7 @@ class DatabaseIterator extends IteratorType {
 
   Future<List<ProfileEntry>> nextListFromFavorites() async {
     const queryCount = 10;
-    final profiles = await FavoriteProfilesDatabase.getInstance().getFavoriteProfilesList(currentIndex, queryCount);
+    final profiles = await DatabaseManager.getInstance().accountData((db) => db.daoFavoriteProfiles.getFavoriteProfilesList(currentIndex, queryCount));
     if (profiles != null) {
       currentIndex += queryCount;
       return await ProfileDatabase.getInstance().convertListOfFavoriteProfiles(profiles);

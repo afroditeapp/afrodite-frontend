@@ -21,7 +21,6 @@ import 'package:pihka_frontend/database/chat/received_likes_database.dart';
 import 'package:pihka_frontend/database/chat/sent_blocks_database.dart';
 import 'package:pihka_frontend/database/chat/sent_likes_database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
-import 'package:pihka_frontend/database/favorite_profiles_database.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/localizations.dart';
@@ -174,7 +173,6 @@ class GlobalInitManager {
     await NotificationManager.getInstance().init();
 
     await ProfileListDatabase.getInstance().init();
-    await FavoriteProfilesDatabase.getInstance().init();
     await ProfileDatabase.getInstance().init();
     await MatchesDatabase.getInstance().init();
     await ReceivedBlocksDatabase.getInstance().init();

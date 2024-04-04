@@ -19,7 +19,7 @@ class CommonRepository extends DataRepository {
   bool initDone = false;
 
   Stream<bool> get notificationPermissionAsked => DatabaseManager.getInstance()
-    .commonDataStreamOrDefault(
+    .commonStreamOrDefault(
       (db) => db.watchNotificationPermissionAsked(),
       NOTIFICATION_PERMISSION_ASKED_DEFAULT,
     );

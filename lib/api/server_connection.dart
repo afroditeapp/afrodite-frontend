@@ -123,12 +123,12 @@ class ServerConnection {
   Future<void> _connect() async {
     final storage = DatabaseManager.getInstance();
 
-    final accessToken = await storage.accountData(_server.getterForAccessTokenKey());
+    final accessToken = await storage.accountStreamSingle(_server.getterForAccessTokenKey());
     if (accessToken == null) {
       _state.add(Error(ServerConnectionError.invalidToken));
       return;
     }
-    final refreshToken = await storage.accountData(_server.getterForRefreshTokenKey());
+    final refreshToken = await storage.accountStreamSingle(_server.getterForRefreshTokenKey());
     if (refreshToken == null) {
       _state.add(Error(ServerConnectionError.invalidToken));
       return;
