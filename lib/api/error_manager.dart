@@ -1,11 +1,9 @@
 
 
 import 'package:logging/logging.dart';
-import 'package:pihka_frontend/database/base_database.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sqflite/sqflite.dart';
 
 final log = Logger("ErrorManager");
 
