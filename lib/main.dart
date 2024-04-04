@@ -14,12 +14,7 @@ import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
-import 'package:pihka_frontend/database/chat/matches_database.dart';
 import 'package:pihka_frontend/database/chat/message_database.dart';
-import 'package:pihka_frontend/database/chat/received_blocks_database.dart';
-import 'package:pihka_frontend/database/chat/received_likes_database.dart';
-import 'package:pihka_frontend/database/chat/sent_blocks_database.dart';
-import 'package:pihka_frontend/database/chat/sent_likes_database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/database/profile_list_database.dart';
@@ -174,11 +169,6 @@ class GlobalInitManager {
 
     await ProfileListDatabase.getInstance().init();
     await ProfileDatabase.getInstance().init();
-    await MatchesDatabase.getInstance().init();
-    await ReceivedBlocksDatabase.getInstance().init();
-    await ReceivedLikesDatabase.getInstance().init();
-    await SentLikesDatabase.getInstance().init();
-    await SentBlocksDatabase.getInstance().init();
     await MessageDatabase.getInstance().init();
 
     await CommonRepository.getInstance().init();

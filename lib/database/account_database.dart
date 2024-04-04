@@ -3,6 +3,7 @@ import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/favorite_profiles_database.dart';
 import 'package:pihka_frontend/database/utils.dart';
+import 'package:pihka_frontend/utils/date.dart';
 
 part 'account_database.g.dart';
 
@@ -33,7 +34,7 @@ class Account extends Table {
   TextColumn get jsonProfileVisibility => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
 }
 
-@DriftDatabase(tables: [Account, FavoriteProfiles], daos: [DaoFavoriteProfiles])
+@DriftDatabase(tables: [Account, Profiles], daos: [DaoProfiles])
 class AccountDatabase extends _$AccountDatabase {
   AccountDatabase(DbFile dbFile) :
     super(openDbConnection(dbFile));

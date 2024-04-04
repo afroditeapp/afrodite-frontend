@@ -6,6 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/database/account_database.dart';
 import 'package:pihka_frontend/database/common_database.dart';
+import 'package:pihka_frontend/database/favorite_profiles_database.dart';
 import 'package:pihka_frontend/database/utils.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
@@ -163,6 +164,12 @@ class DatabaseManager extends AppSingleton {
       handleDatabaseException(e);
     }
   }
+
+  Future<T?> profileData<T extends Object>(Future<T> Function(DaoProfiles) action) =>
+    accountData((db) => action(db.daoProfiles));
+
+  Future<void> profileAction(Future<void> Function(DaoProfiles) action) =>
+    accountAction((db) => action(db.daoProfiles));
 
   Stream<T?> _accountSwitchMapStream<T extends Object>(Stream<T?> Function(String? accountId) mapper) async* {
     yield* commonStream((db) => db.watchAccountId())

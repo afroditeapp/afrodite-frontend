@@ -38,7 +38,7 @@ class DatabaseIterator extends IteratorType {
 
   Future<List<ProfileEntry>> nextListFromFavorites() async {
     const queryCount = 10;
-    final profiles = await DatabaseManager.getInstance().accountData((db) => db.daoFavoriteProfiles.getFavoriteProfilesList(currentIndex, queryCount));
+    final profiles = await DatabaseManager.getInstance().profileData((db) => db.getFavoritesList(currentIndex, queryCount));
     if (profiles != null) {
       currentIndex += queryCount;
       return await ProfileDatabase.getInstance().convertListOfFavoriteProfiles(profiles);

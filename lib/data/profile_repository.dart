@@ -24,6 +24,7 @@ class ProfileRepository extends DataRepository {
     return _instance;
   }
 
+  final DatabaseManager db = DatabaseManager.getInstance();
   final ApiManager _api = ApiManager.getInstance();
   final ProfileIteratorManager mainProfilesViewIterator = ProfileIteratorManager();
 
@@ -33,13 +34,13 @@ class ProfileRepository extends DataRepository {
   }
   Stream<ProfileChange> get profileChanges => _profileChangesRelay;
 
-  Stream<Location> get location => DatabaseManager.getInstance()
+  Stream<Location> get location => db
     .accountStreamOrDefault(
       (db) => db.watchProfileLocation(),
       Location(latitude: 0.0, longitude: 0.0),
     );
 
-  Stream<AvailableProfileAttributes?> get profileAttributes => DatabaseManager.getInstance()
+  Stream<AvailableProfileAttributes?> get profileAttributes => db
     .accountStream(
       (db) => db.watchAvailableProfileAttributes(),
     );
@@ -66,7 +67,7 @@ class ProfileRepository extends DataRepository {
         // Download current location, so map will be positioned correctly.
         final location = await _api.profile((api) => api.getLocation()).ok();
         if (location != null) {
-          await DatabaseManager.getInstance().accountAction(
+          await db.accountAction(
             (db) => db.updateProfileLocation(
               latitude: location.latitude,
               longitude: location.longitude,
@@ -78,7 +79,7 @@ class ProfileRepository extends DataRepository {
         final favorites = await _api.profile((api) => api.getFavoriteProfiles()).ok();
         if (favorites != null) {
           for (final profile in favorites.profiles) {
-            await DatabaseManager.getInstance().accountAction((db) => db.daoFavoriteProfiles.insertProfile(profile));
+            await db.profileAction((db) => db.setFavoriteStatus(profile, true));
           }
         }
       })
@@ -87,13 +88,13 @@ class ProfileRepository extends DataRepository {
 
   @override
   Future<void> onLogout() async {
-    await ProfileListDatabase.getInstance().clearProfiles();
-    await DatabaseManager.getInstance().accountAction((db) => db.daoFavoriteProfiles.clearFavoriteProfiles());
-    await ProfileDatabase.getInstance().clearProfiles();
+    // await ProfileListDatabase.getInstance().clearProfiles();
+    // await db.accountAction((db) => db.daoFavoriteProfiles.clear());
+    // await ProfileDatabase.getInstance().clearProfiles();
     await mainProfilesViewIterator.reset(ModePublicProfiles(
       clearDatabase: true
     ));
-    await DatabaseManager.getInstance().accountAction(
+    await db.accountAction(
       (db) => db.updateProfileFilterFavorites(false),
     );
   }
@@ -101,7 +102,7 @@ class ProfileRepository extends DataRepository {
   Future<bool> updateLocation(Location location) async {
     final requestSuccessful = await _api.profileAction((api) => api.putLocation(location)).isOk();
     if (requestSuccessful) {
-      await DatabaseManager.getInstance().accountAction(
+      await db.accountAction(
         (db) => db.updateProfileLocation(
           latitude: location.latitude,
           longitude: location.longitude,
@@ -210,7 +211,7 @@ class ProfileRepository extends DataRepository {
   }
 
   Future<bool> isInFavorites(AccountId accountId) async {
-    return await DatabaseManager.getInstance().accountData((db) => db.daoFavoriteProfiles.isInFavorites(accountId)) ?? false;
+    return await db.profileData((db) => db.isInFavorites(accountId)) ?? false;
   }
 
   Stream<bool> addToFavorites(AccountId accountId) async* {
@@ -219,7 +220,7 @@ class ProfileRepository extends DataRepository {
       return;
     }
 
-    await DatabaseManager.getInstance().accountAction((db) => db.daoFavoriteProfiles.insertProfile(accountId));
+    await db.profileAction((db) => db.setFavoriteStatus(accountId, true));
     yield true;
 
     final status = await _api.profileAction((api) => api.postFavoriteProfile(accountId));
@@ -227,7 +228,7 @@ class ProfileRepository extends DataRepository {
     if (status.isErr()) {
       // Revert local change
       yield false;
-      await DatabaseManager.getInstance().accountAction((db) => db.daoFavoriteProfiles.removeFromFavorites(accountId));
+      await db.profileAction((db) => db.setFavoriteStatus(accountId, false));
     } else {
       _profileChangesRelay.add(
         ProfileFavoriteStatusChange(accountId, true)
@@ -244,7 +245,7 @@ class ProfileRepository extends DataRepository {
       return;
     }
 
-    await DatabaseManager.getInstance().accountAction((db) => db.daoFavoriteProfiles.removeFromFavorites(accountId));
+    await db.profileAction((db) => db.setFavoriteStatus(accountId, false));
     yield false;
 
     final status = await _api.profileAction((api) => api.deleteFavoriteProfile(accountId));
@@ -252,7 +253,7 @@ class ProfileRepository extends DataRepository {
     if (status.isErr()) {
       // Revert local change
       yield true;
-      await DatabaseManager.getInstance().accountAction((db) => db.daoFavoriteProfiles.insertProfile(accountId));
+      await db.profileAction((db) => db.setFavoriteStatus(accountId, true));
     } else {
       _profileChangesRelay.add(
         ProfileFavoriteStatusChange(accountId, false)
@@ -261,7 +262,7 @@ class ProfileRepository extends DataRepository {
   }
 
   Future<void> changeProfileFilteringSettings(bool showOnlyFavorites) async {
-    await DatabaseManager.getInstance().accountAction(
+    await db.accountAction(
       (db) => db.updateProfileFilterFavorites(showOnlyFavorites),
     );
     if (showOnlyFavorites) {
@@ -274,7 +275,7 @@ class ProfileRepository extends DataRepository {
   }
 
   Future<bool> getFilterFavoriteProfilesValue() async {
-    return await DatabaseManager.getInstance().accountStreamSingleOrDefault(
+    return await db.accountStreamSingleOrDefault(
       (db) => db.watchProfileFilterFavorites(),
       PROFILE_FILTER_FAVORITES_DEFAULT,
     );
@@ -284,7 +285,7 @@ class ProfileRepository extends DataRepository {
   Future<AvailableProfileAttributes?> receiveProfileAttributes() async {
     final profileAttributes = await _api.profile((api) => api.getAvailableProfileAttributes()).ok();
     if (profileAttributes != null) {
-      await DatabaseManager.getInstance().accountAction(
+      await db.accountAction(
         (db) => db.updateAvailableProfileAttributes(profileAttributes),
       );
     }

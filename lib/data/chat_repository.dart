@@ -4,19 +4,14 @@ import 'package:async/async.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/chat/message_database_iterator.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile/account_id_database_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
-import 'package:pihka_frontend/database/chat/matches_database.dart';
 import 'package:pihka_frontend/database/chat/message_database.dart';
-import 'package:pihka_frontend/database/chat/received_blocks_database.dart';
-import 'package:pihka_frontend/database/chat/received_likes_database.dart';
-import 'package:pihka_frontend/database/chat/sent_blocks_database.dart';
-import 'package:pihka_frontend/database/chat/sent_likes_database.dart';
+import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
@@ -28,17 +23,19 @@ class ChatRepository extends DataRepository {
   factory ChatRepository.getInstance() {
     return _instance;
   }
+  final db = DatabaseManager.getInstance();
 
   final ApiManager _api = ApiManager.getInstance();
   final profileEntryDownloader = ProfileEntryDownloader();
   final AccountIdDatabaseIterator sentBlocksIterator =
-    AccountIdDatabaseIterator(SentBlocksDatabase.getInstance());
+    AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getSentBlocksList(startIndex, limit)));
   final AccountIdDatabaseIterator receivedLikesIterator =
-    AccountIdDatabaseIterator(ReceivedLikesDatabase.getInstance());
+    AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getReceivedLikesList(startIndex, limit)));
   final AccountIdDatabaseIterator matchesIterator =
-    AccountIdDatabaseIterator(MatchesDatabase.getInstance());
+    AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getMatchesList(startIndex, limit)));
   final MessageDatabaseIterator messageIterator =
     MessageDatabaseIterator(MessageDatabase.getInstance());
+
 
   @override
   Future<void> init() async {
@@ -62,11 +59,12 @@ class ChatRepository extends DataRepository {
 
   @override
   Future<void> onLogout() async {
-    await SentBlocksDatabase.getInstance().clearAccountIds();
-    await SentLikesDatabase.getInstance().clearAccountIds();
-    await ReceivedBlocksDatabase.getInstance().clearAccountIds();
-    await ReceivedLikesDatabase.getInstance().clearAccountIds();
-    await MatchesDatabase.getInstance().clearAccountIds();
+    // await SentBlocksDatabase.getInstance().clearAccountIds();
+    // await SentLikesDatabase.getInstance().clearAccountIds();
+    // await ReceivedBlocksDatabase.getInstance().clearAccountIds();
+    // await ReceivedLikesDatabase.getInstance().clearAccountIds();
+    // await MatchesDatabase.getInstance().clearAccountIds();
+
     // NOTE: MessageDatabase is not cleared.
   }
 
@@ -94,14 +92,14 @@ class ChatRepository extends DataRepository {
 
     // Download sent blocks.
     final sentBlocks = await _api.chat((api) => api.getSentBlocks()).ok();
-    await SentBlocksDatabase.getInstance().insertAccountIdList(sentBlocks?.profiles);
+    await db.profileAction((db) => db.setSentBlockStatusList(sentBlocks?.profiles, true));
 
     // Download received likes.
     await receivedLikesRefresh();
 
     // Download sent likes.
     final sentLikes = await _api.chat((api) => api.getSentLikes()).ok();
-    await SentLikesDatabase.getInstance().insertAccountIdList(sentLikes?.profiles);
+    await db.profileAction((db) => db.setSentLikeStatusList(sentLikes?.profiles, true));
 
     // Download current matches.
     await receivedMatchesRefresh();
@@ -111,33 +109,33 @@ class ChatRepository extends DataRepository {
   }
 
   Future<bool> isInMatches(AccountId accountId) async {
-    return await MatchesDatabase.getInstance().exists(accountId);
+    return await db.profileData((db) => db.isInMatches(accountId)) ?? false;
   }
 
   Future<bool> isInLikedProfiles(AccountId accountId) async {
-    return await SentLikesDatabase.getInstance().exists(accountId);
+    return await db.profileData((db) => db.isInSentLikes(accountId)) ?? false;
   }
 
   Future<bool> isInReceivedLikes(AccountId accountId) async {
-    return await ReceivedLikesDatabase.getInstance().exists(accountId);
+    return await db.profileData((db) => db.isInReceivedLikes(accountId)) ?? false;
   }
 
   Future<bool> isInSentBlocks(AccountId accountId) async {
-    return await SentBlocksDatabase.getInstance().exists(accountId);
+    return await db.profileData((db) => db.isInSentBlocks(accountId)) ?? false;
   }
 
   Future<bool> isInReceivedBlocks(AccountId accountId) async {
-    return await ReceivedBlocksDatabase.getInstance().exists(accountId);
+    return await db.profileData((db) => db.isInReceivedBlocks(accountId)) ?? false;
   }
 
   Future<bool> sendLikeTo(AccountId accountId) async {
     final result = await _api.chatAction((api) => api.postSendLike(accountId));
     if (result.isOk()) {
-      final isReceivedLike = await ReceivedLikesDatabase.getInstance().exists(accountId);
+      final isReceivedLike = await isInReceivedLikes(accountId);
       if (isReceivedLike) {
-        await MatchesDatabase.getInstance().insertAccountId(accountId);
+        await db.profileAction((db) => db.setMatchStatus(accountId, true));
       } else {
-        await SentLikesDatabase.getInstance().insertAccountId(accountId);
+        await db.profileAction((db) => db.setSentLikeStatus(accountId, true));
       }
     }
     return result.isOk();
@@ -146,7 +144,7 @@ class ChatRepository extends DataRepository {
   Future<bool> removeLikeFrom(AccountId accountId) async {
     final result = await _api.chatAction((api) => api.deleteLike(accountId));
     if (result.isOk()) {
-      await SentLikesDatabase.getInstance().removeAccountId(accountId);
+      await db.profileAction((db) => db.setSentLikeStatus(accountId, false));
     }
     return result.isOk();
   }
@@ -154,8 +152,8 @@ class ChatRepository extends DataRepository {
   Future<bool> sendBlockTo(AccountId accountId) async {
     final result = await _api.chatAction((api) => api.postBlockProfile(accountId));
     if (result.isOk()) {
-      await SentBlocksDatabase.getInstance().insertAccountId(accountId);
-      await ReceivedLikesDatabase.getInstance().removeAccountId(accountId);
+      await db.profileAction((db) => db.setSentBlockStatus(accountId, true));
+      await db.profileAction((db) => db.setReceivedLikeStatus(accountId, false));
       ProfileRepository.getInstance().sendProfileChange(ProfileBlocked(accountId));
     }
     return result.isOk();
@@ -164,7 +162,7 @@ class ChatRepository extends DataRepository {
   Future<bool> removeBlockFrom(AccountId accountId) async {
     final result = await _api.chatAction((api) => api.postUnblockProfile(accountId));
     if (result.isOk()) {
-      await SentBlocksDatabase.getInstance().removeAccountId(accountId);
+      await db.profileAction((db) => db.setSentBlockStatus(accountId, false));
       ProfileRepository.getInstance().sendProfileChange(ProfileUnblocked(accountId));
     }
     return result.isOk();
@@ -189,20 +187,17 @@ class ChatRepository extends DataRepository {
   Future<void> receivedBlocksRefresh() async {
     final receivedBlocks = await _api.chat((api) => api.getReceivedBlocks()).ok();
     if (receivedBlocks != null) {
-      final db = ReceivedBlocksDatabase.getInstance();
-
-      final currentReceivedBlocks = await db.getAccountIdList(0, null) ?? [];
-      await db.clearAccountIds();
-      await db.insertAccountIdList(receivedBlocks.profiles);
+      final currentReceivedBlocks = await db.profileData((db) => db.getReceivedBlocksListAll()) ?? [];
+      await db.profileAction((db) => db.setReceivedBlockStatusList(receivedBlocks.profiles, true, clear: true));
 
       for (final account in receivedBlocks.profiles) {
         if (!currentReceivedBlocks.contains(account)) {
-          await ReceivedLikesDatabase.getInstance().removeAccountId(account);
-          await MatchesDatabase.getInstance().removeAccountId(account);
-          await SentLikesDatabase.getInstance().removeAccountId(account);
+          await db.profileAction((db) => db.setReceivedLikeStatus(account, false));
+          await db.profileAction((db) => db.setMatchStatus(account, false));
+          await db.profileAction((db) => db.setSentLikeStatus(account, false));
           // Perhaps if both users blocks same time, the same account could be
           // in both sent and received blocks. This handles that case.
-          await SentBlocksDatabase.getInstance().removeAccountId(account);
+          await db.profileAction((db) => db.setSentBlockStatus(account, false));
           ProfileRepository.getInstance().sendProfileChange(ProfileBlocked(account));
         }
       }
@@ -234,9 +229,7 @@ class ChatRepository extends DataRepository {
   Future<void> receivedLikesRefresh() async {
     final receivedLikes = await _api.chat((api) => api.getReceivedLikes()).ok();
     if (receivedLikes != null) {
-      final db = ReceivedLikesDatabase.getInstance();
-      await db.clearAccountIds();
-      await db.insertAccountIdList(receivedLikes.profiles);
+      await db.profileAction((db) => db.setReceivedLikeStatusList(receivedLikes.profiles, true, clear: true));
       ProfileRepository.getInstance().sendProfileChange(LikesChanged());
     }
   }
@@ -266,9 +259,7 @@ class ChatRepository extends DataRepository {
   Future<void> receivedMatchesRefresh() async {
     final data = await _api.chat((api) => api.getMatches()).ok();
     if (data != null) {
-      final db = MatchesDatabase.getInstance();
-      await db.clearAccountIds();
-      await db.insertAccountIdList(data.profiles);
+      await db.profileAction((db) => db.setMatchStatusList(data.profiles, true, clear: true));
       ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
     }
   }
@@ -283,15 +274,15 @@ class ChatRepository extends DataRepository {
     final newMessages = await _api.chat((api) => api.getPendingMessages()).ok();
     if (newMessages != null) {
       final toBeDeleted = <PendingMessageId>[];
-      final db = MessageDatabase.getInstance();
+      final msgDb = MessageDatabase.getInstance();
       for (final message in newMessages.messages) {
         final isMatch = await isInMatches(message.id.accountIdSender);
         if (!isMatch) {
-          await MatchesDatabase.getInstance().insertAccountId(message.id.accountIdSender);
+          await db.profileAction((db) => db.setMatchStatus(message.id.accountIdSender, true));
           ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
         }
 
-        if (await db.insertPendingMessage(currentUser, message)) {
+        if (await msgDb.insertPendingMessage(currentUser, message)) {
           toBeDeleted.add(message.id);
           ProfileRepository.getInstance().sendProfileChange(ConversationChanged(message.id.accountIdSender, ConversationChangeType.messageReceived));
         }
@@ -301,7 +292,7 @@ class ChatRepository extends DataRepository {
       final result = await _api.chatAction((api) => api.deletePendingMessages(toBeDeletedList));
       if (result.isOk()) {
         for (final message in newMessages.messages) {
-          await db.updateReceivedMessageState(
+          await msgDb.updateReceivedMessageState(
             currentUser,
             message.id.accountIdSender,
             message.id.messageNumber,
@@ -326,9 +317,9 @@ class ChatRepository extends DataRepository {
     if (!isMatch) {
       final resultSendLike = await _api.chatAction((api) => api.postSendLike(accountId));
       if (resultSendLike.isOk()) {
-        await MatchesDatabase.getInstance().insertAccountId(accountId);
+        await db.profileAction((db) => db.setMatchStatus(accountId, true));
         ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
-        await ReceivedLikesDatabase.getInstance().removeAccountId(accountId);
+        await db.profileAction((db) => db.setReceivedLikeStatus(accountId, false));
         ProfileRepository.getInstance().sendProfileChange(LikesChanged());
       } else {
         // Notify about error
