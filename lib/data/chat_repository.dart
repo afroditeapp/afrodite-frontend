@@ -174,7 +174,7 @@ class ChatRepository extends DataRepository {
     final accounts = await sentBlocksIterator.nextList();
     final newList = List<(AccountId, ProfileEntry?)>.empty(growable: true);
     for (final accountId in accounts) {
-      final profileData = await profileEntryDownloader.download(accountId);
+      final profileData = await profileEntryDownloader.download(accountId).ok();
       newList.add((accountId, profileData));
     }
     return newList;
@@ -213,8 +213,8 @@ class ChatRepository extends DataRepository {
     final newList = <ProfileEntry>[];
     for (final accountId in accounts) {
       final profileData =
-        await ProfileDatabase.getInstance().getProfileEntry(accountId) ??
-        await profileEntryDownloader.download(accountId);
+        await db.profileData((db) => db.getProfileEntry(accountId)) ??
+        await profileEntryDownloader.download(accountId).ok();
       if (profileData != null) {
         newList.add(profileData);
       }
@@ -243,8 +243,8 @@ class ChatRepository extends DataRepository {
     final newList = <ProfileEntry>[];
     for (final accountId in accounts) {
       final profileData =
-        await ProfileDatabase.getInstance().getProfileEntry(accountId) ??
-        await profileEntryDownloader.download(accountId, isMatch: true);
+        await db.profileData((db) => db.getProfileEntry(accountId)) ??
+        await profileEntryDownloader.download(accountId, isMatch: true).ok();
       if (profileData != null) {
         newList.add(profileData);
       }

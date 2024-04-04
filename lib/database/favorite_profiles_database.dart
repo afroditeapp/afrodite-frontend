@@ -1,10 +1,12 @@
 
 
 
-import 'package:openapi/api.dart';
+import 'package:openapi/api.dart' show AccountId, ContentId, ProfileContent;
+import 'package:openapi/api.dart' as api;
 import 'package:pihka_frontend/database/account_database.dart';
 
 import 'package:drift/drift.dart';
+import 'package:pihka_frontend/database/profile_database.dart';
 import 'package:pihka_frontend/utils/date.dart';
 
 part 'favorite_profiles_database.g.dart';
@@ -13,9 +15,19 @@ class Profiles extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuidAccountId => text().map(const AccountIdConverter()).unique()();
 
-  TextColumn get uuidPrimaryImage => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
-  TextColumn get profileName => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
-  TextColumn get profileText => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  /// Primary content ID for the profile.
+  TextColumn get uuidContentId0 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidContentId1 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidContentId2 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidContentId3 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidContentId4 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidContentId5 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+
+  TextColumn get profileName => text().nullable()();
+  TextColumn get profileText => text().nullable()();
+  TextColumn get profileVersion => text().nullable()();
+  IntColumn get profileAge => integer().nullable()();
+  // TextColumn get jsonProfileAttributes => text().nullable()();
 
   // If column is not null, then it is in the specific group.
   // The time is the time when the profile was added to the group.
@@ -25,6 +37,7 @@ class Profiles extends Table {
   IntColumn get isInReceivedLikes => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInSentBlocks => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInSentLikes => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  IntColumn get isInProfileGrid => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 }
 
 @DriftAccessor(tables: [Profiles])
@@ -38,7 +51,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     await into(profiles).insertOnConflictUpdate(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
-        isInFavorites: toGroupValue(value),
+        isInFavorites: _toGroupValue(value),
       ),
     );
   }
@@ -50,7 +63,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     await into(profiles).insertOnConflictUpdate(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
-        isInMatches: toGroupValue(value),
+        isInMatches: _toGroupValue(value),
       ),
     );
   }
@@ -62,7 +75,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     await into(profiles).insertOnConflictUpdate(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
-        isInReceivedBlocks: toGroupValue(value),
+        isInReceivedBlocks: _toGroupValue(value),
       ),
     );
   }
@@ -74,7 +87,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     await into(profiles).insertOnConflictUpdate(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
-        isInReceivedLikes: toGroupValue(value),
+        isInReceivedLikes: _toGroupValue(value),
       ),
     );
   }
@@ -86,7 +99,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     await into(profiles).insertOnConflictUpdate(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
-        isInSentBlocks: toGroupValue(value),
+        isInSentBlocks: _toGroupValue(value),
       ),
     );
   }
@@ -98,7 +111,19 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     await into(profiles).insertOnConflictUpdate(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
-        isInSentLikes: toGroupValue(value),
+        isInSentLikes: _toGroupValue(value),
+      ),
+    );
+  }
+
+  Future<void> setProfileGridStatus(
+    AccountId accountId,
+    bool value,
+  ) async {
+    await into(profiles).insertOnConflictUpdate(
+      ProfilesCompanion.insert(
+        uuidAccountId: accountId,
+        isInProfileGrid: _toGroupValue(value),
       ),
     );
   }
@@ -175,6 +200,18 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     });
   }
 
+  Future<void> setProfileGridStatusList(List<AccountId>? accounts, bool value, {bool clear = false}) async {
+    await transaction(() async {
+      if (clear) {
+        await update(profiles)
+          .write(const ProfilesCompanion(isInProfileGrid: Value(null)));
+      }
+      for (final a in accounts ?? <AccountId>[]) {
+        await setProfileGridStatus(a, value);
+      }
+    });
+  }
+
   Future<bool> isInFavorites(AccountId accountId) =>
     _existenceCheck(accountId, (t) => t.isInFavorites.isNotNull());
 
@@ -193,6 +230,9 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
   Future<bool> isInSentLikes(AccountId accountId) =>
     _existenceCheck(accountId, (t) => t.isInSentLikes.isNotNull());
 
+  Future<bool> isInProfileGrid(AccountId accountId) =>
+    _existenceCheck(accountId, (t) => t.isInProfileGrid.isNotNull());
+
   Future<List<AccountId>> getFavoritesList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInFavorites);
 
@@ -210,6 +250,9 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
 
   Future<List<AccountId>> getSentLikesList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInSentLikes);
+
+  Future<List<AccountId>> getProfileGridList(int startIndex, int limit) =>
+    _getProfilesList(startIndex, limit, (t) => t.isInProfileGrid);
 
   Future<List<AccountId>> getReceivedBlocksListAll() =>
     _getProfilesList(null, null, (t) => t.isInReceivedBlocks);
@@ -245,12 +288,101 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     return r != null;
   }
 
-  Value<UtcDateTime?> toGroupValue(bool value) {
+  Value<UtcDateTime?> _toGroupValue(bool value) {
     if (value) {
       return Value(UtcDateTime.now());
     } else {
       return const Value(null);
     }
+  }
+
+  Future<void> removeProfileData(AccountId accountId) async {
+    await (update(profiles)..where((t) => t.uuidAccountId.equals(accountId.accountId)))
+      .write(const ProfilesCompanion(
+        uuidContentId0: Value(null),
+        uuidContentId1: Value(null),
+        uuidContentId2: Value(null),
+        uuidContentId3: Value(null),
+        uuidContentId4: Value(null),
+        uuidContentId5: Value(null),
+        profileName: Value(null),
+        profileText: Value(null),
+        profileAge: Value(null),
+        profileVersion: Value(null),
+        // jsonProfileAttributes: Value(null),
+      ));
+  }
+
+  Future<void> updateProfileData(AccountId accountId, api.Profile profile) async {
+    await into(profiles).insertOnConflictUpdate(
+      ProfilesCompanion.insert(
+        uuidAccountId: accountId,
+        profileName: Value(profile.name),
+        profileText: Value(profile.profileText),
+        profileAge: Value(profile.age),
+        profileVersion: Value(profile.version),
+      ),
+    );
+  }
+
+  Future<void> updateProfileContent(AccountId accountId, ProfileContent content) async {
+    await into(profiles).insertOnConflictUpdate(
+      ProfilesCompanion.insert(
+        uuidAccountId: accountId,
+        uuidContentId0: Value(content.contentId0?.id),
+        uuidContentId1: Value(content.contentId1?.id),
+        uuidContentId2: Value(content.contentId2?.id),
+        uuidContentId3: Value(content.contentId3?.id),
+        uuidContentId4: Value(content.contentId4?.id),
+        uuidContentId5: Value(content.contentId5?.id),
+      ),
+    );
+  }
+
+  Future<ProfileEntry?> getProfileEntry(AccountId accountId) async {
+    final r = await (select(profiles)
+      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+    )
+      .getSingleOrNull();
+
+    if (r == null) {
+      return null;
+    }
+
+    final content0 = r.uuidContentId0;
+    final profileName = r.profileName;
+    final profileText = r.profileText;
+    final profileAge = r.profileAge;
+    final profileVersion = r.profileVersion;
+
+    if (content0 != null && profileName != null && profileText != null && profileAge != null && profileVersion != null) {
+      return ProfileEntry(
+        uuid: r.uuidAccountId,
+        imageUuid: content0,
+        name: profileName,
+        profileText: profileText,
+        version: profileVersion,
+        age: profileAge,
+        content1: r.uuidContentId1,
+        content2: r.uuidContentId2,
+        content3: r.uuidContentId3,
+        content4: r.uuidContentId4,
+        content5: r.uuidContentId5,
+      );
+    } else {
+      return null;
+    }
+  }
+
+  Future<List<ProfileEntry>> convertToProfileEntries(List<AccountId> accounts) async {
+    final data = <ProfileEntry>[];
+    for (final a in accounts) {
+      final entry = await getProfileEntry(a);
+      if (entry != null) {
+        data.add(entry);
+      }
+    }
+    return data;
   }
 }
 

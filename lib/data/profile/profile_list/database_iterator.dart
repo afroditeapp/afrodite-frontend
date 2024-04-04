@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
-import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 
 
@@ -27,10 +26,10 @@ class DatabaseIterator extends IteratorType {
 
   Future<List<ProfileEntry>> nextListFromPublicProfiles() async {
     const queryCount = 10;
-    final profiles = await ProfileListDatabase.getInstance().getProfileList(currentIndex, queryCount);
+    final profiles = await DatabaseManager.getInstance().profileData((db) => db.getProfileGridList(currentIndex, queryCount));
     if (profiles != null) {
       currentIndex += queryCount;
-      return await ProfileDatabase.getInstance().convertList(profiles);
+      return await DatabaseManager.getInstance().profileData((db) => db.convertToProfileEntries(profiles)) ?? [];
     } else {
       return [];
     }
@@ -41,7 +40,7 @@ class DatabaseIterator extends IteratorType {
     final profiles = await DatabaseManager.getInstance().profileData((db) => db.getFavoritesList(currentIndex, queryCount));
     if (profiles != null) {
       currentIndex += queryCount;
-      return await ProfileDatabase.getInstance().convertListOfFavoriteProfiles(profiles);
+      return await DatabaseManager.getInstance().profileData((db) => db.convertToProfileEntries(profiles)) ?? [];
     } else {
       return [];
     }

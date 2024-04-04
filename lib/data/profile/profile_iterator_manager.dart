@@ -4,9 +4,8 @@ import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
+import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
-import 'package:pihka_frontend/database/profile_list_database.dart';
-
 
 sealed class ProfileIteratorMode {}
 class ModeFavorites extends ProfileIteratorMode {}
@@ -17,6 +16,7 @@ class ModePublicProfiles extends ProfileIteratorMode {
 
 class ProfileIteratorManager {
   final ApiManager _api = ApiManager.getInstance();
+  final DatabaseManager db = DatabaseManager.getInstance();
 
   ProfileIteratorMode _currentMode =
     ModePublicProfiles(clearDatabase: false);
@@ -39,11 +39,11 @@ class ProfileIteratorManager {
       }
       case ModePublicProfiles(): {
         if (_pendingServerSideIteratorReset) {
-          await ProfileListDatabase.getInstance().clearProfiles();
+          await db.profileAction((db) => db.setProfileGridStatusList(null, false, clear: true));
           _currentIterator = OnlineIterator(firstIterationAfterLogin: true);
           _pendingServerSideIteratorReset = false;
         } else if (mode.clearDatabase) {
-          await ProfileListDatabase.getInstance().clearProfiles();
+          await db.profileAction((db) => db.setProfileGridStatusList(null, false, clear: true));
           _currentIterator = OnlineIterator(firstIterationAfterLogin: mode.clearDatabase);
         } else {
           if (_currentMode is ModeFavorites) {

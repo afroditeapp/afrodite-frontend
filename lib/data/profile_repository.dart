@@ -7,11 +7,11 @@ import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
+import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/account_database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
-import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -118,19 +118,14 @@ class ProfileRepository extends DataRepository {
     // private profile can be handled.
 
     if (cache) {
-      final profile = await ProfileDatabase.getInstance().getProfileEntry(id);
+      final profile = await db.profileData((db) => db.getProfileEntry(id));
       if (profile != null) {
         return profile;
       }
     }
 
-    final profile = await _api.profile((api) => api.getProfile(id.accountId)).ok();
-    if (profile != null) {
-      await ProfileDatabase.getInstance().updateProfile(id, profile);
-      final updatedProfile = await ProfileDatabase.getInstance().getProfileEntry(id);
-      return updatedProfile;
-    }
-    return null;
+    final entry = await ProfileEntryDownloader().download(id).ok();
+    return entry;
   }
 
   /// Get cached (if available) and then latest profile (if available).
@@ -138,33 +133,30 @@ class ProfileRepository extends DataRepository {
     // TODO: perhaps more detailed error message, so that changes from public to
     // private profile can be handled.
 
-    final profile = await ProfileDatabase.getInstance().getProfileEntry(id);
+    final profile = await db.profileData((db) => db.getProfileEntry(id));
     if (profile != null) {
       yield GetProfileSuccess(profile);
     }
 
-    final result = await _api.profileWrapper().requestValue(logError: false, (api) => api.getProfile(id.accountId));
 
-    if (result case Ok(v:final latestProfile)) {
-      await ProfileDatabase.getInstance().updateProfile(id, latestProfile);
-      final updatedEntry = await ProfileDatabase.getInstance().getProfileEntry(id);
-      if (updatedEntry != null) {
-        yield GetProfileSuccess(updatedEntry);
-      } else {
-        yield GetProfileFailed();
-      }
-    } else if (result case Err(:final e) when e.isInternalServerError()) {
-      // Accessing profile failed (not public or something else)
-      await ProfileDatabase.getInstance().removeProfile(id);
-      await ProfileListDatabase.getInstance().removeProfile(id);
-      // Favorites are not changed even if profile will become private
-      yield GetProfileDoesNotExist();
-      _profileChangesRelay.add(
-        ProfileNowPrivate(id)
-      );
-    } else {
-      // Request failed
-      yield GetProfileFailed();
+    final result = await ProfileEntryDownloader().download(id);
+    switch (result) {
+      case Ok(:final v):
+        yield GetProfileSuccess(v);
+      case Err(:final e):
+        switch (e) {
+          case PrivateProfile():
+            // Accessing profile failed (not public or something else)
+            await db.profileAction((db) => db.removeProfileData(id));
+            await db.profileAction((db) => db.setProfileGridStatus(id, false));
+            // Favorites are not changed even if profile will become private
+            yield GetProfileDoesNotExist();
+            _profileChangesRelay.add(
+              ProfileNowPrivate(id)
+            );
+          case OtherProfileDownloadError():
+            yield GetProfileFailed();
+        }
     }
   }
 
@@ -193,13 +185,12 @@ class ProfileRepository extends DataRepository {
         return [];
       }
       final toBeRemoved = <ProfileEntry>[];
-      for (final profile in list) {
-        final accountId = AccountId(accountId: profile.uuid);
-        final isBlocked = await ChatRepository.getInstance().isInReceivedBlocks(accountId) ||
-          await ChatRepository.getInstance().isInSentBlocks(accountId);
+      for (final p in list) {
+        final isBlocked = await ChatRepository.getInstance().isInReceivedBlocks(p.uuid) ||
+          await ChatRepository.getInstance().isInSentBlocks(p.uuid);
 
-        if (isBlocked || accountId == ownAccountId) {
-          toBeRemoved.add(profile);
+        if (isBlocked || p.uuid == ownAccountId) {
+          toBeRemoved.add(p);
         }
       }
       list.removeWhere((element) => toBeRemoved.contains(element));

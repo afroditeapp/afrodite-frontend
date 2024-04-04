@@ -887,28 +887,78 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
               requiredDuringInsert: true,
               defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
           .withConverter<AccountId>($ProfilesTable.$converteruuidAccountId);
-  static const VerificationMeta _uuidPrimaryImageMeta =
-      const VerificationMeta('uuidPrimaryImage');
+  static const VerificationMeta _uuidContentId0Meta =
+      const VerificationMeta('uuidContentId0');
   @override
   late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidPrimaryImage = GeneratedColumn<String>(
-              'uuid_primary_image', aliasedName, true,
+      uuidContentId0 = GeneratedColumn<String>(
+              'uuid_content_id0', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>($ProfilesTable.$converteruuidPrimaryImage);
+          .withConverter<ContentId?>($ProfilesTable.$converteruuidContentId0);
+  static const VerificationMeta _uuidContentId1Meta =
+      const VerificationMeta('uuidContentId1');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidContentId1 = GeneratedColumn<String>(
+              'uuid_content_id1', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>($ProfilesTable.$converteruuidContentId1);
+  static const VerificationMeta _uuidContentId2Meta =
+      const VerificationMeta('uuidContentId2');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidContentId2 = GeneratedColumn<String>(
+              'uuid_content_id2', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>($ProfilesTable.$converteruuidContentId2);
+  static const VerificationMeta _uuidContentId3Meta =
+      const VerificationMeta('uuidContentId3');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidContentId3 = GeneratedColumn<String>(
+              'uuid_content_id3', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>($ProfilesTable.$converteruuidContentId3);
+  static const VerificationMeta _uuidContentId4Meta =
+      const VerificationMeta('uuidContentId4');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidContentId4 = GeneratedColumn<String>(
+              'uuid_content_id4', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>($ProfilesTable.$converteruuidContentId4);
+  static const VerificationMeta _uuidContentId5Meta =
+      const VerificationMeta('uuidContentId5');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidContentId5 = GeneratedColumn<String>(
+              'uuid_content_id5', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>($ProfilesTable.$converteruuidContentId5);
   static const VerificationMeta _profileNameMeta =
       const VerificationMeta('profileName');
   @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String> profileName =
-      GeneratedColumn<String>('profile_name', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>($ProfilesTable.$converterprofileName);
+  late final GeneratedColumn<String> profileName = GeneratedColumn<String>(
+      'profile_name', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _profileTextMeta =
       const VerificationMeta('profileText');
   @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String> profileText =
-      GeneratedColumn<String>('profile_text', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>($ProfilesTable.$converterprofileText);
+  late final GeneratedColumn<String> profileText = GeneratedColumn<String>(
+      'profile_text', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _profileVersionMeta =
+      const VerificationMeta('profileVersion');
+  @override
+  late final GeneratedColumn<String> profileVersion = GeneratedColumn<String>(
+      'profile_version', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _profileAgeMeta =
+      const VerificationMeta('profileAge');
+  @override
+  late final GeneratedColumn<int> profileAge = GeneratedColumn<int>(
+      'profile_age', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _isInFavoritesMeta =
       const VerificationMeta('isInFavorites');
   @override
@@ -956,19 +1006,36 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       GeneratedColumn<int>('is_in_sent_likes', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>($ProfilesTable.$converterisInSentLikes);
+  static const VerificationMeta _isInProfileGridMeta =
+      const VerificationMeta('isInProfileGrid');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+      isInProfileGrid = GeneratedColumn<int>(
+              'is_in_profile_grid', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $ProfilesTable.$converterisInProfileGrid);
   @override
   List<GeneratedColumn> get $columns => [
         id,
         uuidAccountId,
-        uuidPrimaryImage,
+        uuidContentId0,
+        uuidContentId1,
+        uuidContentId2,
+        uuidContentId3,
+        uuidContentId4,
+        uuidContentId5,
         profileName,
         profileText,
+        profileVersion,
+        profileAge,
         isInFavorites,
         isInMatches,
         isInReceivedBlocks,
         isInReceivedLikes,
         isInSentBlocks,
-        isInSentLikes
+        isInSentLikes,
+        isInProfileGrid
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -984,15 +1051,43 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     context.handle(_uuidAccountIdMeta, const VerificationResult.success());
-    context.handle(_uuidPrimaryImageMeta, const VerificationResult.success());
-    context.handle(_profileNameMeta, const VerificationResult.success());
-    context.handle(_profileTextMeta, const VerificationResult.success());
+    context.handle(_uuidContentId0Meta, const VerificationResult.success());
+    context.handle(_uuidContentId1Meta, const VerificationResult.success());
+    context.handle(_uuidContentId2Meta, const VerificationResult.success());
+    context.handle(_uuidContentId3Meta, const VerificationResult.success());
+    context.handle(_uuidContentId4Meta, const VerificationResult.success());
+    context.handle(_uuidContentId5Meta, const VerificationResult.success());
+    if (data.containsKey('profile_name')) {
+      context.handle(
+          _profileNameMeta,
+          profileName.isAcceptableOrUnknown(
+              data['profile_name']!, _profileNameMeta));
+    }
+    if (data.containsKey('profile_text')) {
+      context.handle(
+          _profileTextMeta,
+          profileText.isAcceptableOrUnknown(
+              data['profile_text']!, _profileTextMeta));
+    }
+    if (data.containsKey('profile_version')) {
+      context.handle(
+          _profileVersionMeta,
+          profileVersion.isAcceptableOrUnknown(
+              data['profile_version']!, _profileVersionMeta));
+    }
+    if (data.containsKey('profile_age')) {
+      context.handle(
+          _profileAgeMeta,
+          profileAge.isAcceptableOrUnknown(
+              data['profile_age']!, _profileAgeMeta));
+    }
     context.handle(_isInFavoritesMeta, const VerificationResult.success());
     context.handle(_isInMatchesMeta, const VerificationResult.success());
     context.handle(_isInReceivedBlocksMeta, const VerificationResult.success());
     context.handle(_isInReceivedLikesMeta, const VerificationResult.success());
     context.handle(_isInSentBlocksMeta, const VerificationResult.success());
     context.handle(_isInSentLikesMeta, const VerificationResult.success());
+    context.handle(_isInProfileGridMeta, const VerificationResult.success());
     return context;
   }
 
@@ -1007,15 +1102,32 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       uuidAccountId: $ProfilesTable.$converteruuidAccountId.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
-      uuidPrimaryImage: $ProfilesTable.$converteruuidPrimaryImage.fromSql(
-          attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}uuid_primary_image'])),
-      profileName: $ProfilesTable.$converterprofileName.fromSql(attachedDatabase
-          .typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}profile_name'])),
-      profileText: $ProfilesTable.$converterprofileText.fromSql(attachedDatabase
-          .typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}profile_text'])),
+      uuidContentId0: $ProfilesTable.$converteruuidContentId0.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_content_id0'])),
+      uuidContentId1: $ProfilesTable.$converteruuidContentId1.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_content_id1'])),
+      uuidContentId2: $ProfilesTable.$converteruuidContentId2.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_content_id2'])),
+      uuidContentId3: $ProfilesTable.$converteruuidContentId3.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_content_id3'])),
+      uuidContentId4: $ProfilesTable.$converteruuidContentId4.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_content_id4'])),
+      uuidContentId5: $ProfilesTable.$converteruuidContentId5.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_content_id5'])),
+      profileName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}profile_name']),
+      profileText: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}profile_text']),
+      profileVersion: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}profile_version']),
+      profileAge: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}profile_age']),
       isInFavorites: $ProfilesTable.$converterisInFavorites.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}is_in_favorites'])),
@@ -1034,6 +1146,9 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       isInSentLikes: $ProfilesTable.$converterisInSentLikes.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}is_in_sent_likes'])),
+      isInProfileGrid: $ProfilesTable.$converterisInProfileGrid.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.int, data['${effectivePrefix}is_in_profile_grid'])),
     );
   }
 
@@ -1044,11 +1159,17 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
 
   static TypeConverter<AccountId, String> $converteruuidAccountId =
       const AccountIdConverter();
-  static TypeConverter<ContentId?, String?> $converteruuidPrimaryImage =
+  static TypeConverter<ContentId?, String?> $converteruuidContentId0 =
       const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converterprofileName =
+  static TypeConverter<ContentId?, String?> $converteruuidContentId1 =
       const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converterprofileText =
+  static TypeConverter<ContentId?, String?> $converteruuidContentId2 =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidContentId3 =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidContentId4 =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidContentId5 =
       const NullAwareTypeConverter.wrap(ContentIdConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInFavorites =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
@@ -1062,32 +1183,52 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInSentLikes =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterisInProfileGrid =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
 
 class Profile extends DataClass implements Insertable<Profile> {
   final int id;
   final AccountId uuidAccountId;
-  final ContentId? uuidPrimaryImage;
-  final ContentId? profileName;
-  final ContentId? profileText;
+
+  /// Primary content ID for the profile.
+  final ContentId? uuidContentId0;
+  final ContentId? uuidContentId1;
+  final ContentId? uuidContentId2;
+  final ContentId? uuidContentId3;
+  final ContentId? uuidContentId4;
+  final ContentId? uuidContentId5;
+  final String? profileName;
+  final String? profileText;
+  final String? profileVersion;
+  final int? profileAge;
   final UtcDateTime? isInFavorites;
   final UtcDateTime? isInMatches;
   final UtcDateTime? isInReceivedBlocks;
   final UtcDateTime? isInReceivedLikes;
   final UtcDateTime? isInSentBlocks;
   final UtcDateTime? isInSentLikes;
+  final UtcDateTime? isInProfileGrid;
   const Profile(
       {required this.id,
       required this.uuidAccountId,
-      this.uuidPrimaryImage,
+      this.uuidContentId0,
+      this.uuidContentId1,
+      this.uuidContentId2,
+      this.uuidContentId3,
+      this.uuidContentId4,
+      this.uuidContentId5,
       this.profileName,
       this.profileText,
+      this.profileVersion,
+      this.profileAge,
       this.isInFavorites,
       this.isInMatches,
       this.isInReceivedBlocks,
       this.isInReceivedLikes,
       this.isInSentBlocks,
-      this.isInSentLikes});
+      this.isInSentLikes,
+      this.isInProfileGrid});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1096,17 +1237,41 @@ class Profile extends DataClass implements Insertable<Profile> {
       map['uuid_account_id'] = Variable<String>(
           $ProfilesTable.$converteruuidAccountId.toSql(uuidAccountId));
     }
-    if (!nullToAbsent || uuidPrimaryImage != null) {
-      map['uuid_primary_image'] = Variable<String>(
-          $ProfilesTable.$converteruuidPrimaryImage.toSql(uuidPrimaryImage));
+    if (!nullToAbsent || uuidContentId0 != null) {
+      map['uuid_content_id0'] = Variable<String>(
+          $ProfilesTable.$converteruuidContentId0.toSql(uuidContentId0));
+    }
+    if (!nullToAbsent || uuidContentId1 != null) {
+      map['uuid_content_id1'] = Variable<String>(
+          $ProfilesTable.$converteruuidContentId1.toSql(uuidContentId1));
+    }
+    if (!nullToAbsent || uuidContentId2 != null) {
+      map['uuid_content_id2'] = Variable<String>(
+          $ProfilesTable.$converteruuidContentId2.toSql(uuidContentId2));
+    }
+    if (!nullToAbsent || uuidContentId3 != null) {
+      map['uuid_content_id3'] = Variable<String>(
+          $ProfilesTable.$converteruuidContentId3.toSql(uuidContentId3));
+    }
+    if (!nullToAbsent || uuidContentId4 != null) {
+      map['uuid_content_id4'] = Variable<String>(
+          $ProfilesTable.$converteruuidContentId4.toSql(uuidContentId4));
+    }
+    if (!nullToAbsent || uuidContentId5 != null) {
+      map['uuid_content_id5'] = Variable<String>(
+          $ProfilesTable.$converteruuidContentId5.toSql(uuidContentId5));
     }
     if (!nullToAbsent || profileName != null) {
-      map['profile_name'] = Variable<String>(
-          $ProfilesTable.$converterprofileName.toSql(profileName));
+      map['profile_name'] = Variable<String>(profileName);
     }
     if (!nullToAbsent || profileText != null) {
-      map['profile_text'] = Variable<String>(
-          $ProfilesTable.$converterprofileText.toSql(profileText));
+      map['profile_text'] = Variable<String>(profileText);
+    }
+    if (!nullToAbsent || profileVersion != null) {
+      map['profile_version'] = Variable<String>(profileVersion);
+    }
+    if (!nullToAbsent || profileAge != null) {
+      map['profile_age'] = Variable<int>(profileAge);
     }
     if (!nullToAbsent || isInFavorites != null) {
       map['is_in_favorites'] = Variable<int>(
@@ -1133,6 +1298,10 @@ class Profile extends DataClass implements Insertable<Profile> {
       map['is_in_sent_likes'] = Variable<int>(
           $ProfilesTable.$converterisInSentLikes.toSql(isInSentLikes));
     }
+    if (!nullToAbsent || isInProfileGrid != null) {
+      map['is_in_profile_grid'] = Variable<int>(
+          $ProfilesTable.$converterisInProfileGrid.toSql(isInProfileGrid));
+    }
     return map;
   }
 
@@ -1140,15 +1309,36 @@ class Profile extends DataClass implements Insertable<Profile> {
     return ProfilesCompanion(
       id: Value(id),
       uuidAccountId: Value(uuidAccountId),
-      uuidPrimaryImage: uuidPrimaryImage == null && nullToAbsent
+      uuidContentId0: uuidContentId0 == null && nullToAbsent
           ? const Value.absent()
-          : Value(uuidPrimaryImage),
+          : Value(uuidContentId0),
+      uuidContentId1: uuidContentId1 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId1),
+      uuidContentId2: uuidContentId2 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId2),
+      uuidContentId3: uuidContentId3 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId3),
+      uuidContentId4: uuidContentId4 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId4),
+      uuidContentId5: uuidContentId5 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId5),
       profileName: profileName == null && nullToAbsent
           ? const Value.absent()
           : Value(profileName),
       profileText: profileText == null && nullToAbsent
           ? const Value.absent()
           : Value(profileText),
+      profileVersion: profileVersion == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileVersion),
+      profileAge: profileAge == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileAge),
       isInFavorites: isInFavorites == null && nullToAbsent
           ? const Value.absent()
           : Value(isInFavorites),
@@ -1167,6 +1357,9 @@ class Profile extends DataClass implements Insertable<Profile> {
       isInSentLikes: isInSentLikes == null && nullToAbsent
           ? const Value.absent()
           : Value(isInSentLikes),
+      isInProfileGrid: isInProfileGrid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isInProfileGrid),
     );
   }
 
@@ -1176,10 +1369,16 @@ class Profile extends DataClass implements Insertable<Profile> {
     return Profile(
       id: serializer.fromJson<int>(json['id']),
       uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
-      uuidPrimaryImage:
-          serializer.fromJson<ContentId?>(json['uuidPrimaryImage']),
-      profileName: serializer.fromJson<ContentId?>(json['profileName']),
-      profileText: serializer.fromJson<ContentId?>(json['profileText']),
+      uuidContentId0: serializer.fromJson<ContentId?>(json['uuidContentId0']),
+      uuidContentId1: serializer.fromJson<ContentId?>(json['uuidContentId1']),
+      uuidContentId2: serializer.fromJson<ContentId?>(json['uuidContentId2']),
+      uuidContentId3: serializer.fromJson<ContentId?>(json['uuidContentId3']),
+      uuidContentId4: serializer.fromJson<ContentId?>(json['uuidContentId4']),
+      uuidContentId5: serializer.fromJson<ContentId?>(json['uuidContentId5']),
+      profileName: serializer.fromJson<String?>(json['profileName']),
+      profileText: serializer.fromJson<String?>(json['profileText']),
+      profileVersion: serializer.fromJson<String?>(json['profileVersion']),
+      profileAge: serializer.fromJson<int?>(json['profileAge']),
       isInFavorites: serializer.fromJson<UtcDateTime?>(json['isInFavorites']),
       isInMatches: serializer.fromJson<UtcDateTime?>(json['isInMatches']),
       isInReceivedBlocks:
@@ -1188,6 +1387,8 @@ class Profile extends DataClass implements Insertable<Profile> {
           serializer.fromJson<UtcDateTime?>(json['isInReceivedLikes']),
       isInSentBlocks: serializer.fromJson<UtcDateTime?>(json['isInSentBlocks']),
       isInSentLikes: serializer.fromJson<UtcDateTime?>(json['isInSentLikes']),
+      isInProfileGrid:
+          serializer.fromJson<UtcDateTime?>(json['isInProfileGrid']),
     );
   }
   @override
@@ -1196,38 +1397,66 @@ class Profile extends DataClass implements Insertable<Profile> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
-      'uuidPrimaryImage': serializer.toJson<ContentId?>(uuidPrimaryImage),
-      'profileName': serializer.toJson<ContentId?>(profileName),
-      'profileText': serializer.toJson<ContentId?>(profileText),
+      'uuidContentId0': serializer.toJson<ContentId?>(uuidContentId0),
+      'uuidContentId1': serializer.toJson<ContentId?>(uuidContentId1),
+      'uuidContentId2': serializer.toJson<ContentId?>(uuidContentId2),
+      'uuidContentId3': serializer.toJson<ContentId?>(uuidContentId3),
+      'uuidContentId4': serializer.toJson<ContentId?>(uuidContentId4),
+      'uuidContentId5': serializer.toJson<ContentId?>(uuidContentId5),
+      'profileName': serializer.toJson<String?>(profileName),
+      'profileText': serializer.toJson<String?>(profileText),
+      'profileVersion': serializer.toJson<String?>(profileVersion),
+      'profileAge': serializer.toJson<int?>(profileAge),
       'isInFavorites': serializer.toJson<UtcDateTime?>(isInFavorites),
       'isInMatches': serializer.toJson<UtcDateTime?>(isInMatches),
       'isInReceivedBlocks': serializer.toJson<UtcDateTime?>(isInReceivedBlocks),
       'isInReceivedLikes': serializer.toJson<UtcDateTime?>(isInReceivedLikes),
       'isInSentBlocks': serializer.toJson<UtcDateTime?>(isInSentBlocks),
       'isInSentLikes': serializer.toJson<UtcDateTime?>(isInSentLikes),
+      'isInProfileGrid': serializer.toJson<UtcDateTime?>(isInProfileGrid),
     };
   }
 
   Profile copyWith(
           {int? id,
           AccountId? uuidAccountId,
-          Value<ContentId?> uuidPrimaryImage = const Value.absent(),
-          Value<ContentId?> profileName = const Value.absent(),
-          Value<ContentId?> profileText = const Value.absent(),
+          Value<ContentId?> uuidContentId0 = const Value.absent(),
+          Value<ContentId?> uuidContentId1 = const Value.absent(),
+          Value<ContentId?> uuidContentId2 = const Value.absent(),
+          Value<ContentId?> uuidContentId3 = const Value.absent(),
+          Value<ContentId?> uuidContentId4 = const Value.absent(),
+          Value<ContentId?> uuidContentId5 = const Value.absent(),
+          Value<String?> profileName = const Value.absent(),
+          Value<String?> profileText = const Value.absent(),
+          Value<String?> profileVersion = const Value.absent(),
+          Value<int?> profileAge = const Value.absent(),
           Value<UtcDateTime?> isInFavorites = const Value.absent(),
           Value<UtcDateTime?> isInMatches = const Value.absent(),
           Value<UtcDateTime?> isInReceivedBlocks = const Value.absent(),
           Value<UtcDateTime?> isInReceivedLikes = const Value.absent(),
           Value<UtcDateTime?> isInSentBlocks = const Value.absent(),
-          Value<UtcDateTime?> isInSentLikes = const Value.absent()}) =>
+          Value<UtcDateTime?> isInSentLikes = const Value.absent(),
+          Value<UtcDateTime?> isInProfileGrid = const Value.absent()}) =>
       Profile(
         id: id ?? this.id,
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
-        uuidPrimaryImage: uuidPrimaryImage.present
-            ? uuidPrimaryImage.value
-            : this.uuidPrimaryImage,
+        uuidContentId0:
+            uuidContentId0.present ? uuidContentId0.value : this.uuidContentId0,
+        uuidContentId1:
+            uuidContentId1.present ? uuidContentId1.value : this.uuidContentId1,
+        uuidContentId2:
+            uuidContentId2.present ? uuidContentId2.value : this.uuidContentId2,
+        uuidContentId3:
+            uuidContentId3.present ? uuidContentId3.value : this.uuidContentId3,
+        uuidContentId4:
+            uuidContentId4.present ? uuidContentId4.value : this.uuidContentId4,
+        uuidContentId5:
+            uuidContentId5.present ? uuidContentId5.value : this.uuidContentId5,
         profileName: profileName.present ? profileName.value : this.profileName,
         profileText: profileText.present ? profileText.value : this.profileText,
+        profileVersion:
+            profileVersion.present ? profileVersion.value : this.profileVersion,
+        profileAge: profileAge.present ? profileAge.value : this.profileAge,
         isInFavorites:
             isInFavorites.present ? isInFavorites.value : this.isInFavorites,
         isInMatches: isInMatches.present ? isInMatches.value : this.isInMatches,
@@ -1241,21 +1470,32 @@ class Profile extends DataClass implements Insertable<Profile> {
             isInSentBlocks.present ? isInSentBlocks.value : this.isInSentBlocks,
         isInSentLikes:
             isInSentLikes.present ? isInSentLikes.value : this.isInSentLikes,
+        isInProfileGrid: isInProfileGrid.present
+            ? isInProfileGrid.value
+            : this.isInProfileGrid,
       );
   @override
   String toString() {
     return (StringBuffer('Profile(')
           ..write('id: $id, ')
           ..write('uuidAccountId: $uuidAccountId, ')
-          ..write('uuidPrimaryImage: $uuidPrimaryImage, ')
+          ..write('uuidContentId0: $uuidContentId0, ')
+          ..write('uuidContentId1: $uuidContentId1, ')
+          ..write('uuidContentId2: $uuidContentId2, ')
+          ..write('uuidContentId3: $uuidContentId3, ')
+          ..write('uuidContentId4: $uuidContentId4, ')
+          ..write('uuidContentId5: $uuidContentId5, ')
           ..write('profileName: $profileName, ')
           ..write('profileText: $profileText, ')
+          ..write('profileVersion: $profileVersion, ')
+          ..write('profileAge: $profileAge, ')
           ..write('isInFavorites: $isInFavorites, ')
           ..write('isInMatches: $isInMatches, ')
           ..write('isInReceivedBlocks: $isInReceivedBlocks, ')
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
           ..write('isInSentBlocks: $isInSentBlocks, ')
-          ..write('isInSentLikes: $isInSentLikes')
+          ..write('isInSentLikes: $isInSentLikes, ')
+          ..write('isInProfileGrid: $isInProfileGrid')
           ..write(')'))
         .toString();
   }
@@ -1264,89 +1504,144 @@ class Profile extends DataClass implements Insertable<Profile> {
   int get hashCode => Object.hash(
       id,
       uuidAccountId,
-      uuidPrimaryImage,
+      uuidContentId0,
+      uuidContentId1,
+      uuidContentId2,
+      uuidContentId3,
+      uuidContentId4,
+      uuidContentId5,
       profileName,
       profileText,
+      profileVersion,
+      profileAge,
       isInFavorites,
       isInMatches,
       isInReceivedBlocks,
       isInReceivedLikes,
       isInSentBlocks,
-      isInSentLikes);
+      isInSentLikes,
+      isInProfileGrid);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Profile &&
           other.id == this.id &&
           other.uuidAccountId == this.uuidAccountId &&
-          other.uuidPrimaryImage == this.uuidPrimaryImage &&
+          other.uuidContentId0 == this.uuidContentId0 &&
+          other.uuidContentId1 == this.uuidContentId1 &&
+          other.uuidContentId2 == this.uuidContentId2 &&
+          other.uuidContentId3 == this.uuidContentId3 &&
+          other.uuidContentId4 == this.uuidContentId4 &&
+          other.uuidContentId5 == this.uuidContentId5 &&
           other.profileName == this.profileName &&
           other.profileText == this.profileText &&
+          other.profileVersion == this.profileVersion &&
+          other.profileAge == this.profileAge &&
           other.isInFavorites == this.isInFavorites &&
           other.isInMatches == this.isInMatches &&
           other.isInReceivedBlocks == this.isInReceivedBlocks &&
           other.isInReceivedLikes == this.isInReceivedLikes &&
           other.isInSentBlocks == this.isInSentBlocks &&
-          other.isInSentLikes == this.isInSentLikes);
+          other.isInSentLikes == this.isInSentLikes &&
+          other.isInProfileGrid == this.isInProfileGrid);
 }
 
 class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<int> id;
   final Value<AccountId> uuidAccountId;
-  final Value<ContentId?> uuidPrimaryImage;
-  final Value<ContentId?> profileName;
-  final Value<ContentId?> profileText;
+  final Value<ContentId?> uuidContentId0;
+  final Value<ContentId?> uuidContentId1;
+  final Value<ContentId?> uuidContentId2;
+  final Value<ContentId?> uuidContentId3;
+  final Value<ContentId?> uuidContentId4;
+  final Value<ContentId?> uuidContentId5;
+  final Value<String?> profileName;
+  final Value<String?> profileText;
+  final Value<String?> profileVersion;
+  final Value<int?> profileAge;
   final Value<UtcDateTime?> isInFavorites;
   final Value<UtcDateTime?> isInMatches;
   final Value<UtcDateTime?> isInReceivedBlocks;
   final Value<UtcDateTime?> isInReceivedLikes;
   final Value<UtcDateTime?> isInSentBlocks;
   final Value<UtcDateTime?> isInSentLikes;
+  final Value<UtcDateTime?> isInProfileGrid;
   const ProfilesCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
-    this.uuidPrimaryImage = const Value.absent(),
+    this.uuidContentId0 = const Value.absent(),
+    this.uuidContentId1 = const Value.absent(),
+    this.uuidContentId2 = const Value.absent(),
+    this.uuidContentId3 = const Value.absent(),
+    this.uuidContentId4 = const Value.absent(),
+    this.uuidContentId5 = const Value.absent(),
     this.profileName = const Value.absent(),
     this.profileText = const Value.absent(),
+    this.profileVersion = const Value.absent(),
+    this.profileAge = const Value.absent(),
     this.isInFavorites = const Value.absent(),
     this.isInMatches = const Value.absent(),
     this.isInReceivedBlocks = const Value.absent(),
     this.isInReceivedLikes = const Value.absent(),
     this.isInSentBlocks = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
+    this.isInProfileGrid = const Value.absent(),
   });
   ProfilesCompanion.insert({
     this.id = const Value.absent(),
     required AccountId uuidAccountId,
-    this.uuidPrimaryImage = const Value.absent(),
+    this.uuidContentId0 = const Value.absent(),
+    this.uuidContentId1 = const Value.absent(),
+    this.uuidContentId2 = const Value.absent(),
+    this.uuidContentId3 = const Value.absent(),
+    this.uuidContentId4 = const Value.absent(),
+    this.uuidContentId5 = const Value.absent(),
     this.profileName = const Value.absent(),
     this.profileText = const Value.absent(),
+    this.profileVersion = const Value.absent(),
+    this.profileAge = const Value.absent(),
     this.isInFavorites = const Value.absent(),
     this.isInMatches = const Value.absent(),
     this.isInReceivedBlocks = const Value.absent(),
     this.isInReceivedLikes = const Value.absent(),
     this.isInSentBlocks = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
+    this.isInProfileGrid = const Value.absent(),
   }) : uuidAccountId = Value(uuidAccountId);
   static Insertable<Profile> custom({
     Expression<int>? id,
     Expression<String>? uuidAccountId,
-    Expression<String>? uuidPrimaryImage,
+    Expression<String>? uuidContentId0,
+    Expression<String>? uuidContentId1,
+    Expression<String>? uuidContentId2,
+    Expression<String>? uuidContentId3,
+    Expression<String>? uuidContentId4,
+    Expression<String>? uuidContentId5,
     Expression<String>? profileName,
     Expression<String>? profileText,
+    Expression<String>? profileVersion,
+    Expression<int>? profileAge,
     Expression<int>? isInFavorites,
     Expression<int>? isInMatches,
     Expression<int>? isInReceivedBlocks,
     Expression<int>? isInReceivedLikes,
     Expression<int>? isInSentBlocks,
     Expression<int>? isInSentLikes,
+    Expression<int>? isInProfileGrid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
-      if (uuidPrimaryImage != null) 'uuid_primary_image': uuidPrimaryImage,
+      if (uuidContentId0 != null) 'uuid_content_id0': uuidContentId0,
+      if (uuidContentId1 != null) 'uuid_content_id1': uuidContentId1,
+      if (uuidContentId2 != null) 'uuid_content_id2': uuidContentId2,
+      if (uuidContentId3 != null) 'uuid_content_id3': uuidContentId3,
+      if (uuidContentId4 != null) 'uuid_content_id4': uuidContentId4,
+      if (uuidContentId5 != null) 'uuid_content_id5': uuidContentId5,
       if (profileName != null) 'profile_name': profileName,
       if (profileText != null) 'profile_text': profileText,
+      if (profileVersion != null) 'profile_version': profileVersion,
+      if (profileAge != null) 'profile_age': profileAge,
       if (isInFavorites != null) 'is_in_favorites': isInFavorites,
       if (isInMatches != null) 'is_in_matches': isInMatches,
       if (isInReceivedBlocks != null)
@@ -1354,33 +1649,50 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       if (isInReceivedLikes != null) 'is_in_received_likes': isInReceivedLikes,
       if (isInSentBlocks != null) 'is_in_sent_blocks': isInSentBlocks,
       if (isInSentLikes != null) 'is_in_sent_likes': isInSentLikes,
+      if (isInProfileGrid != null) 'is_in_profile_grid': isInProfileGrid,
     });
   }
 
   ProfilesCompanion copyWith(
       {Value<int>? id,
       Value<AccountId>? uuidAccountId,
-      Value<ContentId?>? uuidPrimaryImage,
-      Value<ContentId?>? profileName,
-      Value<ContentId?>? profileText,
+      Value<ContentId?>? uuidContentId0,
+      Value<ContentId?>? uuidContentId1,
+      Value<ContentId?>? uuidContentId2,
+      Value<ContentId?>? uuidContentId3,
+      Value<ContentId?>? uuidContentId4,
+      Value<ContentId?>? uuidContentId5,
+      Value<String?>? profileName,
+      Value<String?>? profileText,
+      Value<String?>? profileVersion,
+      Value<int?>? profileAge,
       Value<UtcDateTime?>? isInFavorites,
       Value<UtcDateTime?>? isInMatches,
       Value<UtcDateTime?>? isInReceivedBlocks,
       Value<UtcDateTime?>? isInReceivedLikes,
       Value<UtcDateTime?>? isInSentBlocks,
-      Value<UtcDateTime?>? isInSentLikes}) {
+      Value<UtcDateTime?>? isInSentLikes,
+      Value<UtcDateTime?>? isInProfileGrid}) {
     return ProfilesCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
-      uuidPrimaryImage: uuidPrimaryImage ?? this.uuidPrimaryImage,
+      uuidContentId0: uuidContentId0 ?? this.uuidContentId0,
+      uuidContentId1: uuidContentId1 ?? this.uuidContentId1,
+      uuidContentId2: uuidContentId2 ?? this.uuidContentId2,
+      uuidContentId3: uuidContentId3 ?? this.uuidContentId3,
+      uuidContentId4: uuidContentId4 ?? this.uuidContentId4,
+      uuidContentId5: uuidContentId5 ?? this.uuidContentId5,
       profileName: profileName ?? this.profileName,
       profileText: profileText ?? this.profileText,
+      profileVersion: profileVersion ?? this.profileVersion,
+      profileAge: profileAge ?? this.profileAge,
       isInFavorites: isInFavorites ?? this.isInFavorites,
       isInMatches: isInMatches ?? this.isInMatches,
       isInReceivedBlocks: isInReceivedBlocks ?? this.isInReceivedBlocks,
       isInReceivedLikes: isInReceivedLikes ?? this.isInReceivedLikes,
       isInSentBlocks: isInSentBlocks ?? this.isInSentBlocks,
       isInSentLikes: isInSentLikes ?? this.isInSentLikes,
+      isInProfileGrid: isInProfileGrid ?? this.isInProfileGrid,
     );
   }
 
@@ -1394,18 +1706,41 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       map['uuid_account_id'] = Variable<String>(
           $ProfilesTable.$converteruuidAccountId.toSql(uuidAccountId.value));
     }
-    if (uuidPrimaryImage.present) {
-      map['uuid_primary_image'] = Variable<String>($ProfilesTable
-          .$converteruuidPrimaryImage
-          .toSql(uuidPrimaryImage.value));
+    if (uuidContentId0.present) {
+      map['uuid_content_id0'] = Variable<String>(
+          $ProfilesTable.$converteruuidContentId0.toSql(uuidContentId0.value));
+    }
+    if (uuidContentId1.present) {
+      map['uuid_content_id1'] = Variable<String>(
+          $ProfilesTable.$converteruuidContentId1.toSql(uuidContentId1.value));
+    }
+    if (uuidContentId2.present) {
+      map['uuid_content_id2'] = Variable<String>(
+          $ProfilesTable.$converteruuidContentId2.toSql(uuidContentId2.value));
+    }
+    if (uuidContentId3.present) {
+      map['uuid_content_id3'] = Variable<String>(
+          $ProfilesTable.$converteruuidContentId3.toSql(uuidContentId3.value));
+    }
+    if (uuidContentId4.present) {
+      map['uuid_content_id4'] = Variable<String>(
+          $ProfilesTable.$converteruuidContentId4.toSql(uuidContentId4.value));
+    }
+    if (uuidContentId5.present) {
+      map['uuid_content_id5'] = Variable<String>(
+          $ProfilesTable.$converteruuidContentId5.toSql(uuidContentId5.value));
     }
     if (profileName.present) {
-      map['profile_name'] = Variable<String>(
-          $ProfilesTable.$converterprofileName.toSql(profileName.value));
+      map['profile_name'] = Variable<String>(profileName.value);
     }
     if (profileText.present) {
-      map['profile_text'] = Variable<String>(
-          $ProfilesTable.$converterprofileText.toSql(profileText.value));
+      map['profile_text'] = Variable<String>(profileText.value);
+    }
+    if (profileVersion.present) {
+      map['profile_version'] = Variable<String>(profileVersion.value);
+    }
+    if (profileAge.present) {
+      map['profile_age'] = Variable<int>(profileAge.value);
     }
     if (isInFavorites.present) {
       map['is_in_favorites'] = Variable<int>(
@@ -1433,6 +1768,11 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       map['is_in_sent_likes'] = Variable<int>(
           $ProfilesTable.$converterisInSentLikes.toSql(isInSentLikes.value));
     }
+    if (isInProfileGrid.present) {
+      map['is_in_profile_grid'] = Variable<int>($ProfilesTable
+          .$converterisInProfileGrid
+          .toSql(isInProfileGrid.value));
+    }
     return map;
   }
 
@@ -1441,15 +1781,23 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     return (StringBuffer('ProfilesCompanion(')
           ..write('id: $id, ')
           ..write('uuidAccountId: $uuidAccountId, ')
-          ..write('uuidPrimaryImage: $uuidPrimaryImage, ')
+          ..write('uuidContentId0: $uuidContentId0, ')
+          ..write('uuidContentId1: $uuidContentId1, ')
+          ..write('uuidContentId2: $uuidContentId2, ')
+          ..write('uuidContentId3: $uuidContentId3, ')
+          ..write('uuidContentId4: $uuidContentId4, ')
+          ..write('uuidContentId5: $uuidContentId5, ')
           ..write('profileName: $profileName, ')
           ..write('profileText: $profileText, ')
+          ..write('profileVersion: $profileVersion, ')
+          ..write('profileAge: $profileAge, ')
           ..write('isInFavorites: $isInFavorites, ')
           ..write('isInMatches: $isInMatches, ')
           ..write('isInReceivedBlocks: $isInReceivedBlocks, ')
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
           ..write('isInSentBlocks: $isInSentBlocks, ')
-          ..write('isInSentLikes: $isInSentLikes')
+          ..write('isInSentLikes: $isInSentLikes, ')
+          ..write('isInProfileGrid: $isInProfileGrid')
           ..write(')'))
         .toString();
   }

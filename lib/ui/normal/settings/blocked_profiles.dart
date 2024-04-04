@@ -78,9 +78,7 @@ class _BlockedProfilesPage extends State<BlockedProfilesPage> {
         newList.add((dataRow.$1, null, null));
         continue;
       }
-      final accountId = AccountId(accountId: profile.uuid);
-      final contentId = ContentId(contentId: profile.imageUuid);
-      final file = await ImageCacheData.getInstance().getImage(accountId, contentId);
+      final file = await ImageCacheData.getInstance().getImage(profile.uuid, profile.imageUuid);
       if (file == null) {
         log.warning("Skipping one profile because image loading failed");
         newList.add((dataRow.$1, null, null));

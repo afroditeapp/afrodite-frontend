@@ -85,14 +85,12 @@ class _ChatViewState extends State<ChatView> {
 
     final newList = List<MatchEntry>.empty(growable: true);
     for (final profile in profileList) {
-      final accountId = AccountId(accountId: profile.uuid);
-      final contentId = ContentId(contentId: profile.imageUuid);
-      final file = await ImageCacheData.getInstance().getImage(accountId, contentId);
+      final file = await ImageCacheData.getInstance().getImage(profile.uuid, profile.imageUuid);
       if (file == null) {
         log.warning("Skipping one profile because image loading failed");
         continue;
       }
-      newList.add((accountId, profile, file));
+      newList.add((profile.uuid, profile, file));
     }
 
     if (profileList.isEmpty) {

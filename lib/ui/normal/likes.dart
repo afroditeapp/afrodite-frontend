@@ -89,9 +89,7 @@ class _LikeViewState extends State<LikeView> {
     final profileList = await ChatRepository.getInstance().receivedLikesIteratorNext();
     final newList = List<LikeViewEntry>.empty(growable: true);
     for (final profile in profileList) {
-      final accountId = AccountId(accountId: profile.uuid);
-      final contentId = ContentId(contentId: profile.imageUuid);
-      final file = await ImageCacheData.getInstance().getImage(accountId, contentId);
+      final file = await ImageCacheData.getInstance().getImage(profile.uuid, profile.imageUuid);
       if (file == null) {
         log.warning("Skipping one profile because image loading failed");
         continue;
@@ -125,7 +123,7 @@ class _LikeViewState extends State<LikeView> {
       builderDelegate: PagedChildBuilderDelegate<LikeViewEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
-          final accountId = AccountId(accountId: item.$1.uuid);
+          final accountId = item.$1.uuid;
           final heroTag = (accountId, item.$3);
           return GestureDetector(
             onTap: () {

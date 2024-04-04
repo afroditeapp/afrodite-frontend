@@ -125,7 +125,7 @@ class DatabaseManager extends AppSingleton {
     return value ?? defaultValue;
   }
 
-  Future<T?> accountData<T extends Object>(Future<T> Function(AccountDatabase) action) async {
+  Future<T?> accountData<T extends Object?>(Future<T> Function(AccountDatabase) action) async {
     final accountId = await commonStream((db) => db.watchAccountId()).first;
     if (accountId == null) {
       log.warning("No AccountId found, data query skipped");
@@ -165,7 +165,7 @@ class DatabaseManager extends AppSingleton {
     }
   }
 
-  Future<T?> profileData<T extends Object>(Future<T> Function(DaoProfiles) action) =>
+  Future<T?> profileData<T extends Object?>(Future<T> Function(DaoProfiles) action) =>
     accountData((db) => action(db.daoProfiles));
 
   Future<void> profileAction(Future<void> Function(DaoProfiles) action) =>

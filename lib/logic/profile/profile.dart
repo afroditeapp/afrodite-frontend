@@ -1,6 +1,5 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
-import "package:pihka_frontend/data/account_repository.dart";
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
@@ -8,10 +7,8 @@ import "package:pihka_frontend/database/profile_database.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 
-
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
-
 
 part 'profile.freezed.dart';
 
@@ -44,7 +41,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileData> with ActionRunner {
         final oldState = state;
         final oldProfile = state.profile;
         if (oldProfile != null) {
-          emit(state.copyWith(profile: oldProfile.copyWith(profileText: data.profile.profileText)));
+          // TODO: perhaps show a progress dialog?
+          // emit(state.copyWith(profile: oldProfile.copyWith(profileText: data.profile.profileText)));
         }
 
         if (await profile.updateProfile(data.profile)) {
@@ -74,18 +72,4 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileData> with ActionRunner {
       });
     });
   }
-
-  // Future<Uint8List?> getImage(AccountId imageOwner, ContentId id) async {
-  //   return media.getImage(imageOwner, id);
-  // }
-
-  // Future<Uint8List?> getProfileImage(AccountId imageOwner) async {
-  //   final contentId = await media.getProfileImage(imageOwner, false);
-
-  //   if (contentId != null) {
-  //     return await getImage(imageOwner, contentId);
-  //   } else {
-  //     return null;
-  //   }
-  // }
 }

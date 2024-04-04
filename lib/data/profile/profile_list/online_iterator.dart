@@ -1,19 +1,22 @@
 import 'dart:async';
 
+import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
+import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/database/profile_database.dart';
-import 'package:pihka_frontend/database/profile_list_database.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
+final log = Logger("OnlineIterator");
 
 class OnlineIterator extends IteratorType {
   int currentIndex = 0;
   DatabaseIterator? databaseIterator;
   bool firstIterationAfterLogin;
   final ApiManager api = ApiManager.getInstance();
+  final DatabaseManager db = DatabaseManager.getInstance();
   final downloader = ProfileEntryDownloader();
 
   /// If [firstIterationAfterLogin] is true, the iterator will reset the
@@ -61,14 +64,11 @@ class OnlineIterator extends IteratorType {
         }
 
         for (final p in profiles.profiles) {
-          final entry = await downloader.download(p.id);
+          final entry = await downloader.download(p.id).ok();
           if (entry == null) {
             continue;
           }
-
-          final listEntry = ProfileListEntry(p.id.accountId);
-          await ProfileListDatabase.getInstance().insertProfile(listEntry);
-
+          await db.profileAction((db) => db.setProfileGridStatus(p.id, true));
           list.add(entry);
         }
 
@@ -86,22 +86,34 @@ class OnlineIterator extends IteratorType {
 
 class ProfileEntryDownloader {
   final ApiManager api = ApiManager.getInstance();
+  final DatabaseManager db = DatabaseManager.getInstance();
 
   /// Download profile entry, save to databases and return it.
-  Future<ProfileEntry?> download(AccountId accountId, {bool isMatch = false}) async {
-    final primaryImageInfo = await api.media((api) => api.getProfileContentInfo(accountId.accountId, isMatch)).ok();
-    final imageUuid = primaryImageInfo?.contentId0?.id.contentId;
-    if (imageUuid == null) {
-      return null;
+  Future<Result<ProfileEntry, ProfileDownloadError>> download(AccountId accountId, {bool isMatch = false}) async {
+    final contentInfoResult = await api.media((api) => api.getProfileContentInfo(accountId.accountId, isMatch));
+    final ProfileContent contentInfo;
+    switch (contentInfoResult) {
+      case Ok(:final v):
+        contentInfo = v;
+      // case Err(:final e):
+        // TODO: Test private profile error once the server supports it.
+      case Err():
+        return Err(OtherProfileDownloadError());
     }
 
     // Prevent displaying error when profile is made private while iterating
-    final profileDetails = await api
+    final profileDetailsResult = await api
       .profileWrapper()
-      .requestValue(logError: false, (api) => api.getProfile(accountId.accountId))
-      .ok();
-    if (profileDetails == null) {
-      return null;
+      .requestValue(logError: false, (api) => api.getProfile(accountId.accountId));
+
+    final Profile profileDetails;
+    switch (profileDetailsResult) {
+      case Ok(:final v):
+        profileDetails = v;
+      case Err(:final e) when e.isInternalServerError():
+        return Err(PrivateProfile());
+      case Err():
+        return Err(OtherProfileDownloadError());
     }
     // TODO: Compare cached profile data with the one from the server.
     //       Update: perhaps another database for profiles? With current
@@ -109,9 +121,19 @@ class ProfileEntryDownloader {
     //       new profile request be made every time profile is opened and
     //       use the cache check there?
 
-    final dataEntry = ProfileEntry(accountId.accountId, imageUuid, profileDetails.name, profileDetails.profileText);
-    await ProfileDatabase.getInstance().insertProfile(dataEntry);
+    await db.profileAction((db) => db.updateProfileData(accountId, profileDetails));
+    await db.profileAction((db) => db.updateProfileContent(accountId, contentInfo));
+    final dataEntry = await db.profileData((db) => db.getProfileEntry(accountId));
 
-    return dataEntry;
+    if (dataEntry == null) {
+      log.warning("Storing profile data to database failed");
+      return Err(OtherProfileDownloadError());
+    }
+
+    return Ok(dataEntry);
   }
 }
+
+sealed class ProfileDownloadError {}
+class PrivateProfile extends ProfileDownloadError {}
+class OtherProfileDownloadError extends ProfileDownloadError {}

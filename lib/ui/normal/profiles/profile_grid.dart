@@ -93,9 +93,7 @@ class _ProfileGridState extends State<ProfileGrid> {
     // reason for the initial page.
     final newList = List<ProfileViewEntry>.empty(growable: true);
     for (final profile in profileList) {
-      final accountId = AccountId(accountId: profile.uuid);
-      final contentId = ContentId(contentId: profile.imageUuid);
-      final file = await ImageCacheData.getInstance().getImage(accountId, contentId);
+      final file = await ImageCacheData.getInstance().getImage(profile.uuid, profile.imageUuid);
       if (file == null) {
         log.warning("Skipping one profile because image loading failed");
         continue;
@@ -138,7 +136,7 @@ class _ProfileGridState extends State<ProfileGrid> {
       builderDelegate: PagedChildBuilderDelegate<ProfileViewEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
-          final accountId = AccountId(accountId: item.$1.uuid);
+          final accountId = item.$1.uuid;
           final heroTag = (accountId, item.$3);
           return GestureDetector(
             onTap: () {
