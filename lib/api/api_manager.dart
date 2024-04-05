@@ -208,9 +208,9 @@ class ApiManager extends AppSingleton {
 
     final storage = DatabaseManager.getInstance();
     final accountRefreshToken =
-      await storage.accountStreamSingle((db) => db.watchRefreshTokenAccount());
+      await storage.accountStreamSingle((db) => db.watchRefreshTokenAccount()).ok();
     final accountAccessToken =
-      await storage.accountStreamSingle((db) => db.watchAccessTokenAccount());
+      await storage.accountStreamSingle((db) => db.watchAccessTokenAccount()).ok();
 
     if (accountRefreshToken == null || accountAccessToken == null) {
       _state.add(ApiManagerState.waitingRefreshToken);

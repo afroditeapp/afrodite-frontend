@@ -49,10 +49,15 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     AccountId accountId,
     bool value,
   ) async {
-    await into(profiles).insertOnConflictUpdate(
+    await into(profiles).insert(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
         isInFavorites: _toGroupValue(value),
+      ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        isInFavorites: _toGroupValue(value),
+      ),
+        target: [profiles.uuidAccountId]
       ),
     );
   }
@@ -61,10 +66,15 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     AccountId accountId,
     bool value,
   ) async {
-    await into(profiles).insertOnConflictUpdate(
+    await into(profiles).insert(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
         isInMatches: _toGroupValue(value),
+      ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        isInMatches: _toGroupValue(value),
+      ),
+        target: [profiles.uuidAccountId]
       ),
     );
   }
@@ -73,10 +83,15 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     AccountId accountId,
     bool value,
   ) async {
-    await into(profiles).insertOnConflictUpdate(
+    await into(profiles).insert(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
         isInReceivedBlocks: _toGroupValue(value),
+      ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        isInReceivedBlocks: _toGroupValue(value),
+      ),
+        target: [profiles.uuidAccountId]
       ),
     );
   }
@@ -85,10 +100,15 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     AccountId accountId,
     bool value,
   ) async {
-    await into(profiles).insertOnConflictUpdate(
+    await into(profiles).insert(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
         isInReceivedLikes: _toGroupValue(value),
+      ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        isInReceivedLikes: _toGroupValue(value),
+      ),
+        target: [profiles.uuidAccountId]
       ),
     );
   }
@@ -97,10 +117,15 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     AccountId accountId,
     bool value,
   ) async {
-    await into(profiles).insertOnConflictUpdate(
+    await into(profiles).insert(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
         isInSentBlocks: _toGroupValue(value),
+      ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        isInSentBlocks: _toGroupValue(value),
+      ),
+        target: [profiles.uuidAccountId]
       ),
     );
   }
@@ -109,10 +134,15 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     AccountId accountId,
     bool value,
   ) async {
-    await into(profiles).insertOnConflictUpdate(
+    await into(profiles).insert(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
         isInSentLikes: _toGroupValue(value),
+      ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        isInSentLikes: _toGroupValue(value),
+      ),
+        target: [profiles.uuidAccountId]
       ),
     );
   }
@@ -121,10 +151,15 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     AccountId accountId,
     bool value,
   ) async {
-    await into(profiles).insertOnConflictUpdate(
+    await into(profiles).insert(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
         isInProfileGrid: _toGroupValue(value),
+      ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        isInProfileGrid: _toGroupValue(value),
+      ),
+        target: [profiles.uuidAccountId]
       ),
     );
   }
@@ -315,7 +350,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
   }
 
   Future<void> updateProfileData(AccountId accountId, api.Profile profile) async {
-    await into(profiles).insertOnConflictUpdate(
+    await into(profiles).insert(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
         profileName: Value(profile.name),
@@ -323,11 +358,19 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         profileAge: Value(profile.age),
         profileVersion: Value(profile.version),
       ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        profileName: Value(profile.name),
+        profileText: Value(profile.profileText),
+        profileAge: Value(profile.age),
+        profileVersion: Value(profile.version),
+      ),
+        target: [profiles.uuidAccountId]
+      ),
     );
   }
 
   Future<void> updateProfileContent(AccountId accountId, ProfileContent content) async {
-    await into(profiles).insertOnConflictUpdate(
+    await into(profiles).insert(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
         uuidContentId0: Value(content.contentId0?.id),
@@ -336,6 +379,16 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         uuidContentId3: Value(content.contentId3?.id),
         uuidContentId4: Value(content.contentId4?.id),
         uuidContentId5: Value(content.contentId5?.id),
+      ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        uuidContentId0: Value(content.contentId0?.id),
+        uuidContentId1: Value(content.contentId1?.id),
+        uuidContentId2: Value(content.contentId2?.id),
+        uuidContentId3: Value(content.contentId3?.id),
+        uuidContentId4: Value(content.contentId4?.id),
+        uuidContentId5: Value(content.contentId5?.id),
+      ),
+        target: [profiles.uuidAccountId]
       ),
     );
   }

@@ -87,7 +87,7 @@ class LoginRepository extends DataRepository {
     _internalState.add(LoginRepositoryState.initComplete);
 
     // Restore previous state
-    final previousState = await DatabaseManager.getInstance().accountStreamSingle((db) => db.watchAccountState());
+    final previousState = await DatabaseManager.getInstance().accountStreamSingle((db) => db.watchAccountState()).ok();
     if (previousState != null) {
       _loginState.add(LoginState.viewAccountStateOnceItExists);
       await onResumeAppUsage();
