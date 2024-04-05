@@ -33,6 +33,7 @@ import 'package:pihka_frontend/logic/server/address.dart';
 import 'package:pihka_frontend/logic/sign_in_with.dart';
 
 import 'package:pihka_frontend/logic/app/main_state.dart';
+import 'package:pihka_frontend/storage/encryption.dart';
 import 'package:pihka_frontend/ui/splash_screen.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -156,6 +157,7 @@ class GlobalInitManager {
     }
     _globalInitDone = true;
 
+    await SecureStorageManager.getInstance().init();
     await DatabaseManager.getInstance().init();
 
     await ErrorManager.getInstance().init();

@@ -40,8 +40,8 @@ class AccountDbFile extends DbFile {
 
 LazyDatabase openDbConnection(DbFile db, {bool doInit = false}) {
   return LazyDatabase(() async {
+    final encryptionKey = await SecureStorageManager.getInstance().getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir();
     final dbFile = await db.getFile();
-    final encryptionKey = await databaseEncryptionKey();
     final isolateToken = RootIsolateToken.instance!;
     return NativeDatabase.createInBackground(
       dbFile,
