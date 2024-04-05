@@ -18,6 +18,7 @@ class Common extends Table {
   TextColumn get serverUrlProfile => text().nullable()();
   TextColumn get serverUrlChat => text().nullable()();
   TextColumn get accountId => text().nullable()();
+  TextColumn get imageEncryptionKey => text().nullable()();
 
   /// If true don't show notification permission asking dialog when
   /// app main view (bottom navigation is visible) is opened.
@@ -78,6 +79,15 @@ class CommonDatabase extends _$CommonDatabase {
     );
   }
 
+  Future<void> updateImageEncryptionKey(String key) async {
+    await into(common).insertOnConflictUpdate(
+      CommonCompanion.insert(
+        id: COMMON_DB_DATA_ID,
+        imageEncryptionKey: Value(key),
+      ),
+    );
+  }
+
   Future<void> updateNotificationPermissionAsked(bool value) async {
     await into(common).insertOnConflictUpdate(
       CommonCompanion.insert(
@@ -110,6 +120,9 @@ class CommonDatabase extends _$CommonDatabase {
 
   Stream<String?> watchAccountId() =>
     watchColumn((r) => r.accountId);
+
+  Stream<String?> watchImageEncryptionKey() =>
+    watchColumn((r) => r.imageEncryptionKey);
 
   Stream<bool?> watchNotificationPermissionAsked() =>
     watchColumn((r) => r.notificationPermissionAsked);

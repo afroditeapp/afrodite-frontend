@@ -5,8 +5,10 @@
 
 
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/db_dir.dart';
 
@@ -51,8 +53,6 @@ class SecureStorageManager extends AppSingleton {
       aOptions: androidOptions,
       iOptions: iosOptions,
     );
-
-    await _getStorageKeyForDbEncryptionKey();
   }
 
   Future<String> getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir() async {
@@ -75,6 +75,76 @@ class SecureStorageManager extends AppSingleton {
   }
 
   Future<String> _generateDbEncryptionKey() async {
+    // TODO(prod): replace with real key generation
+    return "test";
+  }
+}
+
+
+class ImageEncryptionManager extends AppSingleton {
+  static final _instance = ImageEncryptionManager._private();
+  ImageEncryptionManager._private();
+  factory ImageEncryptionManager.getInstance() {
+    return _instance;
+  }
+
+  // The key is frequently used so keep it in RAM.
+  String? _imageEncryptionKey;
+
+  @override
+  Future<void> init() async {
+    await _getOrLoadOrGenerateImageEncryptionKey();
+  }
+
+  Future<Uint8List> encryptImageData(Uint8List data) async {
+    final key = await _getOrLoadOrGenerateImageEncryptionKey();
+    // TODO(prod): replace with real encryption
+
+    Uint8List encryptedData = data;
+    for (var i = 0; i < key.length; i++) {
+      final s = base64.encode(encryptedData);
+      encryptedData = utf8.encode(s);
+    }
+
+    return encryptedData;
+  }
+
+  Future<Uint8List> decryptImageData(Uint8List data) async {
+    final key = await _getOrLoadOrGenerateImageEncryptionKey();
+    // TODO(prod): replace with real decoding
+
+    Uint8List decodedData = data;
+    for (var i = 0; i < key.length; i++) {
+      final s = utf8.decode(decodedData.toList());
+      decodedData = base64.decode(s);
+    }
+
+    return decodedData;
+  }
+
+  Future<String> _getOrLoadOrGenerateImageEncryptionKey() async {
+    final currentKey = _imageEncryptionKey;
+    if (currentKey == null) {
+      final existingKey = await DatabaseManager.getInstance().commonStreamSingle((db) => db.watchImageEncryptionKey());
+      if (existingKey == null) {
+        final newKey = await _generateImageEncryptionKey();
+        await DatabaseManager.getInstance().commonAction((db) => db.updateImageEncryptionKey(newKey));
+        final testNewKey = await DatabaseManager.getInstance().commonStreamSingle((db) => db.watchImageEncryptionKey());
+        if (testNewKey != newKey) {
+          throw Exception("Failed to read the key that was just written");
+        }
+        _imageEncryptionKey = newKey;
+        return newKey;
+      } else {
+        _imageEncryptionKey = existingKey;
+        return existingKey;
+      }
+    } else {
+      return currentKey;
+    }
+  }
+
+  Future<String> _generateImageEncryptionKey() async {
     // TODO(prod): replace with real key generation
     return "test";
   }

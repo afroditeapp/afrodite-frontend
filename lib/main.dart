@@ -159,6 +159,7 @@ class GlobalInitManager {
 
     await SecureStorageManager.getInstance().init();
     await DatabaseManager.getInstance().init();
+    await ImageEncryptionManager.getInstance().init();
 
     await ErrorManager.getInstance().init();
     await ApiManager.getInstance().init();

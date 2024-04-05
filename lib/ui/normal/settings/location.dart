@@ -553,14 +553,14 @@ class CustomImageProvider extends ImageProvider<(int, int, int)> {
   ImageStreamCompleter loadImage((int, int, int) key, ImageDecoderCallback decode) {
     return OneFrameImageStreamCompleter(
       () async {
-        final file =
+        final pngBytes =
           await ImageCacheData.getInstance().getMapTile(coordinates.z, coordinates.x, coordinates.y);
 
-        if (file == null) {
+        if (pngBytes == null) {
           return Future<ImageInfo>.error("Failed to load map tile");
         }
 
-        final buffer = await ImmutableBuffer.fromFilePath(file.path);
+        final buffer = await ImmutableBuffer.fromUint8List(pngBytes);
         final codec = await decode(buffer);
         final frame = await codec.getNextFrame();
 

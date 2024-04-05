@@ -7,6 +7,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
+import 'package:pihka_frontend/storage/encryption.dart';
 import 'package:pihka_frontend/ui/normal/settings/location.dart';
 import 'package:pihka_frontend/utils.dart';
 
@@ -51,18 +52,23 @@ class ImageCacheData extends AppSingleton {
     return XFile(file.path);
   }
 
-  Future<File?> getMapTile(int z, int x, int y) async {
+  /// Get PNG file bytes for map tile.
+  Future<Uint8List?> getMapTile(int z, int x, int y) async {
     final key = createMapTileKey(z, x, y);
     final fileInfo = await cacheManager.getFileFromCache(key);
     if (fileInfo != null) {
       // TODO: error handling?
-      return fileInfo.file;
+      final encryptedImgBytes = await fileInfo.file.readAsBytes();
+      final decryptedImgBytes = await ImageEncryptionManager.getInstance().decryptImageData(encryptedImgBytes);
+      return decryptedImgBytes;
     }
 
     final tileResult = await MediaRepository.getInstance().getMapTile(z, x, y);
     switch (tileResult) {
       case MapTileSuccess tileResult:
-        return await cacheManager.putFile("null", tileResult.pngData, key: key);
+        final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(tileResult.pngData);
+        await cacheManager.putFile("null", encryptedImgBytes, key: key);
+        return tileResult.pngData;
       case MapTileNotAvailable():
         return await emptyMapTile();
       case MapTileError():
@@ -80,10 +86,12 @@ String createMapTileKey(int z, int x, int y) {
   return "map_tile_${z}_${x}_$y";
 }
 
-Future<File?> emptyMapTile() async {
+Future<Uint8List?> emptyMapTile() async {
   final imgFile = await TmpDirUtils.emptyMapTileFilePath();
   if (await imgFile.exists()) {
-    return imgFile;
+    final encryptedImgBytes = await imgFile.readAsBytes();
+    final decryptedImgBytes = await ImageEncryptionManager.getInstance().decryptImageData(encryptedImgBytes);
+    return decryptedImgBytes;
   }
 
   final imageBuffer = img.Image(width: 1, height: 1);
@@ -95,10 +103,12 @@ Future<File?> emptyMapTile() async {
         ..a = 255;
   }
 
-  final png = img.encodePng(imageBuffer);
+  final pngBytes = img.encodePng(imageBuffer);
+  final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(pngBytes);
 
   try {
-    return await imgFile.writeAsBytes(png.toList());
+    await imgFile.writeAsBytes(encryptedImgBytes.toList());
+    return pngBytes;
   } on IOException catch (e) {
     log.error(e);
     ErrorManager.getInstance().send(FileError());

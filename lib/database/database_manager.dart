@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:drift/drift.dart';
+import 'package:drift/isolate.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/database/account_database.dart';
@@ -84,7 +85,10 @@ class DatabaseManager extends AppSingleton {
       handleDatabaseException(e);
     } on InvalidDataException catch (e) {
       handleDatabaseException(e);
+    } on DriftRemoteException catch (e) {
+      handleDatabaseException(e);
     }
+
     return Err(());
   }
 
@@ -150,6 +154,8 @@ class DatabaseManager extends AppSingleton {
       handleDatabaseException(e);
     } on InvalidDataException catch (e) {
       handleDatabaseException(e);
+    } on DriftRemoteException catch (e) {
+      handleDatabaseException(e);
     }
 
     return Err(());
@@ -171,6 +177,8 @@ class DatabaseManager extends AppSingleton {
     } on DriftWrappedException catch (e) {
       handleDatabaseException(e);
     } on InvalidDataException catch (e) {
+      handleDatabaseException(e);
+    } on DriftRemoteException catch (e) {
       handleDatabaseException(e);
     }
     return Err(());
