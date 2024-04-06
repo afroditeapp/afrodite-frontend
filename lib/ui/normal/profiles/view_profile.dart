@@ -21,11 +21,10 @@ void openProfileView(
   BuildContext context,
   AccountId accountId,
   ProfileEntry profile,
-  XFile primaryProfileImage,
   ProfileHeroTag? imgTag,
   {bool noAction = false}
 ) {
-  context.read<ViewProfileBloc>().add(SetProfileView(accountId, profile, primaryProfileImage, imgTag));
+  context.read<ViewProfileBloc>().add(SetProfileView(accountId, profile, imgTag));
   Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ViewProfilePage(noAction: noAction)));
 }
 
@@ -139,8 +138,8 @@ class ViewProfilePage extends StatelessWidget {
           case ProfileActionState.makeMatch:
             return FloatingActionButton(
               onPressed: () {
-                context.read<ConversationBloc>().add(SetConversationView(currentState.accountId, currentState.profile.name, currentState.primaryProfileImage));
-                Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(currentState.accountId, currentState.profile, currentState.primaryProfileImage)));
+                context.read<ConversationBloc>().add(SetConversationView(currentState.accountId, currentState.profile.imageUuid, currentState.profile.name));
+                Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(currentState.accountId, currentState.profile)));
               },
               tooltip: 'Send message to make a match',
               child: const Icon(Icons.waving_hand),
@@ -148,8 +147,8 @@ class ViewProfilePage extends StatelessWidget {
           case ProfileActionState.chat:
             return FloatingActionButton(
               onPressed: () {
-                context.read<ConversationBloc>().add(SetConversationView(currentState.accountId, currentState.profile.name, currentState.primaryProfileImage));
-                Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(currentState.accountId, currentState.profile, currentState.primaryProfileImage)));
+                context.read<ConversationBloc>().add(SetConversationView(currentState.accountId, currentState.profile.imageUuid, currentState.profile.name));
+                Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(currentState.accountId, currentState.profile)));
               },
               tooltip: 'Open chat',
               child: const Icon(Icons.chat_rounded),
@@ -166,16 +165,12 @@ class ViewProfilePage extends StatelessWidget {
       return Container();
     }
 
-    final accountId = state.accountId;
-    final primaryProfileImage = state.primaryProfileImage;
-
     return BlocBuilder<ViewProfileBloc, ViewProfilesData?>(
       builder: (context, state) {
         if (state == null) {
           return Container();
         }
 
-        final img = PrimaryImageFile(primaryProfileImage, heroTransition: state.imgTag);
         if (state.isNotAvailable) {
           Future.delayed(Duration.zero, () {
             showInfoDialog(context, "Profile not available").then((value) {
@@ -202,7 +197,7 @@ class ViewProfilePage extends StatelessWidget {
           });
         }
 
-        return viewProifle(context, accountId, state.profile, img, true);
+        return viewProifle(context, state.accountId, state.profile, state.imgTag, true);
       }
     );
   }

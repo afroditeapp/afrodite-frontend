@@ -32,7 +32,7 @@ class ChatView extends BottomNavigationScreen {
   }
 }
 
-typedef MatchEntry = (AccountId account, ProfileEntry profile, XFile img);
+typedef MatchEntry = (AccountId account, ProfileEntry profile);
 
 
 class _ChatViewState extends State<ChatView> {
@@ -90,7 +90,7 @@ class _ChatViewState extends State<ChatView> {
         log.warning("Skipping one profile because image loading failed");
         continue;
       }
-      newList.add((profile.uuid, profile, file));
+      newList.add((profile.uuid, profile));
     }
 
     if (profileList.isEmpty) {
@@ -114,10 +114,10 @@ class _ChatViewState extends State<ChatView> {
         animateTransitions: true,
         itemBuilder: (context, item, index) {
           final profileEntry = item.$2;
-          final image = item.$3;
           final String name = profileEntry.name;
-          final Widget imageWidget = xfileImgWidget(
-            image,
+          final Widget imageWidget = accountImgWidget(
+            profileEntry.uuid,
+            profileEntry.imageUuid,
             width: 100,
           );
 
@@ -137,8 +137,8 @@ class _ChatViewState extends State<ChatView> {
 
           return InkWell(
             onTap: () {
-              context.read<ConversationBloc>().add(SetConversationView(item.$1, name, image));
-              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(item.$1, item.$2, item.$3)));
+              context.read<ConversationBloc>().add(SetConversationView(profileEntry.uuid, profileEntry.imageUuid, name));
+              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(profileEntry.uuid, profileEntry)));
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),

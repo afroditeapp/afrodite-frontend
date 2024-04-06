@@ -147,7 +147,7 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
                       )
                     );
                   },
-                  child: xfileImgWidgetInk(image.imgFile, height: IMAGE_AREA_HEIGHT, width: IMG_WIDTH),
+                  child: accountImgWidgetInk(image.accountId, image.contentId, height: IMAGE_AREA_HEIGHT, width: IMG_WIDTH),
                 ),
               ),
               IconButton(

@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:image_picker/image_picker.dart";
+import "package:pihka_frontend/data/image_cache.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
@@ -13,6 +14,7 @@ import "package:pihka_frontend/ui_utils/image.dart";
 import "package:pihka_frontend/ui_utils/image_processing.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
 import "package:pihka_frontend/ui_utils/profile_thumbnail_image.dart";
+import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/ui_utils/view_image_screen.dart";
 
 class AskProfilePicturesScreen extends StatelessWidget {
@@ -277,8 +279,16 @@ Future<void> openEditThumbnail(
   CropResults currentCrop,
   int imgStateIndex,
 ) async {
-  // TODO: Error handling
-  final bytes = await img.imgFile.readAsBytes();
+  // TODO: Error handling (now done?)
+
+  final bytes = await ImageCacheData.getInstance().getImage(img.accountId, img.contentId);
+  if (!context.mounted) {
+    return;
+  }
+  if (bytes == null) {
+    showSnackBar(context.strings.generic_error_occurred);
+    return;
+  }
   final flutterImg = await decodeImageFromList(bytes);
   if (!context.mounted) {
     return;
@@ -291,7 +301,6 @@ Future<void> openEditThumbnail(
           CropImageFileContent(
               img.accountId,
               img.contentId,
-              img.imgFile,
               flutterImg.width,
               flutterImg.height,
               currentCrop,
@@ -400,6 +409,8 @@ class AddPicture extends StatelessWidget {
               onTap: () async {
                 final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
                 Navigator.pop(context, null);
+                // TODO: Read image on client side and show error if
+                // image is not JPEG.
                 // TODO: Consider resizing image on client side?
                 // The built in ImagePicker resizing produces poor quality
                 // images at least on Android.
@@ -540,7 +551,7 @@ class FilePicture extends StatelessWidget {
   Widget draggableImgWidget(BuildContext context, double imgWidth, double imgHeight) {
     return LongPressDraggable<int>(
       data: imgIndex,
-      feedback: xfileImgWidget(img.imgFile, width: imgWidth, height: imgHeight),
+      feedback: accountImgWidget(img.accountId, img.contentId, width: imgWidth, height: imgHeight),
       childWhenDragging: Container(
         width: imgWidth,
         height: imgHeight,
@@ -564,7 +575,7 @@ class FilePicture extends StatelessWidget {
               )
             );
           },
-          child: xfileImgWidgetInk(img.imgFile, width: imgWidth, height: imgHeight, alignment: Alignment.topRight),
+          child: accountImgWidgetInk(img.accountId, img.contentId, width: imgWidth, height: imgHeight, alignment: Alignment.topRight),
         ),
       ),
     );

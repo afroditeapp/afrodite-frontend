@@ -101,7 +101,7 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
             } else {
               emit(state.copyWith(
                 processingState: null,
-                processedImage: ProcessedAccountImage(accountId, contentId, data.slot, imgFile),
+                processedImage: ProcessedAccountImage(accountId, contentId, data.slot),
               ));
             }
           }
@@ -133,11 +133,10 @@ class SendingFailed extends ProcessingState {}
 
 /// Image which server has processed.
 class ProcessedAccountImage {
-  const ProcessedAccountImage(this.accountId, this.contentId, this.slot, this.imgFile);
+  const ProcessedAccountImage(this.accountId, this.contentId, this.slot);
   final AccountId accountId;
   final ContentId contentId;
   final int slot;
-  final XFile imgFile;
 }
 
 sealed class ContentUploadState {}

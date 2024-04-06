@@ -30,7 +30,7 @@ class LikeView extends BottomNavigationScreen {
   }
 }
 
-typedef LikeViewEntry = (ProfileEntry profile, XFile img, int heroNumber);
+typedef LikeViewEntry = (ProfileEntry profile, int heroNumber);
 
 class _LikeViewState extends State<LikeView> {
   PagingController<int, LikeViewEntry>? _pagingController =
@@ -94,7 +94,7 @@ class _LikeViewState extends State<LikeView> {
         log.warning("Skipping one profile because image loading failed");
         continue;
       }
-      newList.add((profile, file, _heroUniqueIdCounter));
+      newList.add((profile, _heroUniqueIdCounter));
       _heroUniqueIdCounter++;
     }
 
@@ -124,14 +124,14 @@ class _LikeViewState extends State<LikeView> {
         animateTransitions: true,
         itemBuilder: (context, item, index) {
           final accountId = item.$1.uuid;
-          final heroTag = (accountId, item.$3);
+          final heroTag = (accountId, item.$2);
           return GestureDetector(
             onTap: () {
-              openProfileView(context, accountId, item.$1, item.$2, heroTag);
+              openProfileView(context, accountId, item.$1, heroTag);
             },
             child: Hero(
               tag: heroTag,
-              child: xfileImgWidget(item.$2)
+              child: accountImgWidget(accountId, item.$1.imageUuid)
             )
           );
         },

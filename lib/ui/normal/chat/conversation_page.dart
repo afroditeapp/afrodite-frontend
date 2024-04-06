@@ -21,8 +21,7 @@ var log = Logger("ConversationPage");
 class ConversationPage extends StatefulWidget {
   final AccountId accountId;
   final ProfileEntry profileEntry;
-  final XFile img;
-  const ConversationPage(this.accountId, this.profileEntry, this.img, {Key? key}) : super(key: key);
+  const ConversationPage(this.accountId, this.profileEntry, {Key? key}) : super(key: key);
 
   @override
   ConversationPageState createState() => ConversationPageState();
@@ -48,7 +47,7 @@ class ConversationPageState extends State<ConversationPage> {
           children: [
             InkWell(
               onTap: () {
-                openProfileView(context, widget.accountId, widget.profileEntry, widget.img, null, noAction: true);
+                openProfileView(context, widget.accountId, widget.profileEntry, null, noAction: true);
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -56,8 +55,9 @@ class ConversationPageState extends State<ConversationPage> {
                   height: AppBar().preferredSize.height,
                   child: Row(
                     children: [
-                      xfileImgWidget(
-                        widget.img,
+                      accountImgWidget(
+                        widget.profileEntry.uuid,
+                        widget.profileEntry.imageUuid,
                         width: 40,
                         height: 40,
                       ),

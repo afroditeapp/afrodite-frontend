@@ -12,10 +12,9 @@ import "package:pihka_frontend/ui_utils/image.dart";
 
 
 class CropImageFileContent {
-  CropImageFileContent(this.imageOwner, this.imageId, this.imageFile, this.imgWidth, this.imgHeight, this.cropResults);
+  CropImageFileContent(this.imageOwner, this.imageId, this.imgWidth, this.imgHeight, this.cropResults);
   final AccountId imageOwner;
   final ContentId imageId;
-  final XFile imageFile;
   final int imgWidth;
   final int imgHeight;
   final CropResults cropResults;
@@ -63,10 +62,11 @@ class _CropImageScreenState extends State<CropImageScreen> {
   Widget buildCropArea() {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final (imgFile, imgWidth, imgHeight) = switch (widget.info) {
-          CropImageFileContent(:final imageFile, :final imgWidth, :final imgHeight) =>
+        final (imageOwner, imageId, imgWidth, imgHeight) = switch (widget.info) {
+          CropImageFileContent(:final imageOwner, :final imageId, :final imgWidth, :final imgHeight) =>
             (
-              imageFile,
+              imageOwner,
+              imageId,
               imgWidth,
               imgHeight
             ),
@@ -92,8 +92,9 @@ class _CropImageScreenState extends State<CropImageScreen> {
           imgWidgetHeight = constraints.maxHeight;
         }
 
-        final imgWidget = xfileImgWidget(
-          imgFile,
+        final imgWidget = accountImgWidget(
+          imageOwner,
+          imageId,
           width: imgWidgetWidth,
           height: imgWidgetHeight,
           alignment: Alignment.topLeft

@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -12,6 +13,7 @@ import 'package:pihka_frontend/ui/normal/settings/location.dart';
 import 'package:pihka_frontend/utils.dart';
 
 import 'package:image/image.dart' as img;
+import 'package:pihka_frontend/utils/account_img_key.dart';
 import 'package:pihka_frontend/utils/tmp_dir.dart';
 
 var log = Logger("ImageCacheData");
@@ -31,7 +33,8 @@ class ImageCacheData extends AppSingleton {
 
   final CacheManager cacheManager;
 
-  Future<XFile?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) async {
+  /// Get image bytes for profile picture.
+  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) async {
     if (kIsWeb) {
       throw UnsupportedError("getImage is not supported on web");
     }
@@ -40,7 +43,9 @@ class ImageCacheData extends AppSingleton {
     if (fileInfo != null) {
       // TODO: error handling?
 
-      return XFile(fileInfo.file.path);
+      final encryptedImgBytes = await fileInfo.file.readAsBytes();
+      final decryptedImgBytes = await ImageEncryptionManager.getInstance().decryptImageData(encryptedImgBytes);
+      return decryptedImgBytes;
     }
 
     final imageData = await MediaRepository.getInstance().getImage(imageOwner, id, isMatch: isMatch);
@@ -48,8 +53,9 @@ class ImageCacheData extends AppSingleton {
       return null;
     }
 
-    final file = await cacheManager.putFile("null", imageData, key: id.contentId);
-    return XFile(file.path);
+    final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(imageData);
+    await cacheManager.putFile("null", encryptedImgBytes, key: id.contentId);
+    return imageData;
   }
 
   /// Get PNG file bytes for map tile.
@@ -114,4 +120,35 @@ Future<Uint8List?> emptyMapTile() async {
     ErrorManager.getInstance().send(FileError());
     return null;
   }
+}
+
+class AccountImageProvider extends ImageProvider<AccountImgKey> {
+  final AccountImgKey imgInfo;
+  final bool isMatch;
+
+  AccountImageProvider(this.imgInfo, {this.isMatch = false});
+
+  @override
+  ImageStreamCompleter loadImage(AccountImgKey key, ImageDecoderCallback decode) {
+    return OneFrameImageStreamCompleter(
+      () async {
+        final imgBytes =
+          await ImageCacheData.getInstance().getImage(imgInfo.accountId, imgInfo.contentId, isMatch: isMatch);
+
+        if (imgBytes == null) {
+          return Future<ImageInfo>.error("Failed to load the image");
+        }
+
+        final buffer = await ImmutableBuffer.fromUint8List(imgBytes);
+        final codec = await decode(buffer);
+        final frame = await codec.getNextFrame();
+
+        return ImageInfo(image: frame.image);
+      }(),
+    );
+  }
+
+  @override
+  Future<AccountImgKey> obtainKey(ImageConfiguration configuration) =>
+    SynchronousFuture(imgInfo);
 }

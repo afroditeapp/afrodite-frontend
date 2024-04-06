@@ -25,7 +25,7 @@ class ConversationData with _$ConversationData {
   factory ConversationData({
     required AccountId accountId,
     required String profileName,
-    required XFile primaryProfileImage,
+    required ContentId primaryProfileImage,
     @Default(true) bool isMatch,
     @Default(false) bool isBlocked,
     /// Resets chat box to empty state
@@ -45,9 +45,9 @@ class MessageList {
 sealed class ConversationEvent {}
 class SetConversationView extends ConversationEvent {
   final AccountId accountId;
+  final ContentId contentId;
   final String profileName;
-  final XFile primaryProfileImage;
-  SetConversationView(this.accountId, this.profileName, this.primaryProfileImage);
+  SetConversationView(this.accountId, this.contentId, this.profileName);
 }
 class SendMessageTo extends ConversationEvent {
   final AccountId accountId;
@@ -88,8 +88,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData?> with A
       final newState = ConversationData(
         accountId: data.accountId,
         profileName: data.profileName,
-        primaryProfileImage:
-        data.primaryProfileImage,
+        primaryProfileImage: data.contentId,
         initialMessages: const MessageList([]),
       );
 

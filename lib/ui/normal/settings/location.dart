@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -547,8 +548,6 @@ class CustomImageProvider extends ImageProvider<(int, int, int)> {
 
   CustomImageProvider(this.coordinates);
 
-  File? file;
-
   @override
   ImageStreamCompleter loadImage((int, int, int) key, ImageDecoderCallback decode) {
     return OneFrameImageStreamCompleter(
@@ -570,7 +569,7 @@ class CustomImageProvider extends ImageProvider<(int, int, int)> {
   }
 
   @override
-  Future<(int, int, int)> obtainKey(ImageConfiguration configuration) async {
-    return (coordinates.z, coordinates.x, coordinates.y);
-  }
+  Future<(int, int, int)> obtainKey(ImageConfiguration configuration) =>
+    SynchronousFuture((coordinates.z, coordinates.x, coordinates.y));
+
 }

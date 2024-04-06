@@ -3,9 +3,11 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
 import 'package:pihka_frontend/ui_utils/consts/corners.dart';
 import 'package:pihka_frontend/ui_utils/crop_image_screen.dart';
+import 'package:pihka_frontend/utils/account_img_key.dart';
 
 
 class ProfileThumbnailImage extends StatefulWidget {
@@ -46,7 +48,8 @@ class _ProfileThumbnailImageState extends State<ProfileThumbnailImage> {
   }
 
   void loadImage() {
-    final newStream = FileImage(File(widget.img.imgFile.path)).resolve(createLocalImageConfiguration(context));
+    final k = AccountImgKey(accountId: widget.img.accountId, contentId: widget.img.contentId);
+    final newStream = AccountImageProvider(k).resolve(createLocalImageConfiguration(context));
     if (newStream.key != imgStream?.key) {
       // Remove listener from old stream
       final currentListener = imgListener;

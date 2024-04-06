@@ -23,7 +23,7 @@ class BlockedProfilesPage extends StatefulWidget {
   _BlockedProfilesPage createState() => _BlockedProfilesPage();
 }
 
-typedef BlockedProfileEntry = (AccountId account, ProfileEntry? profile, XFile? img);
+typedef BlockedProfileEntry = (AccountId account, ProfileEntry? profile);
 
 class _BlockedProfilesPage extends State<BlockedProfilesPage> {
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
@@ -75,16 +75,16 @@ class _BlockedProfilesPage extends State<BlockedProfilesPage> {
     for (final dataRow in profileList) {
       final profile = dataRow.$2;
       if (profile == null) {
-        newList.add((dataRow.$1, null, null));
+        newList.add((dataRow.$1, null));
         continue;
       }
       final file = await ImageCacheData.getInstance().getImage(profile.uuid, profile.imageUuid);
       if (file == null) {
         log.warning("Skipping one profile because image loading failed");
-        newList.add((dataRow.$1, null, null));
+        newList.add((dataRow.$1, null));
         continue;
       }
-      newList.add((dataRow.$1, profile, file));
+      newList.add((dataRow.$1, profile));
     }
 
     if (profileList.isEmpty) {
@@ -120,13 +120,13 @@ class _BlockedProfilesPage extends State<BlockedProfilesPage> {
         animateTransitions: true,
         itemBuilder: (context, item, index) {
           final profileEntry = item.$2;
-          final image = item.$3;
           final String name;
           final Widget imageWidget;
-          if (profileEntry != null && image != null) {
+          if (profileEntry != null) {
             name = profileEntry.name;
-            imageWidget = xfileImgWidget(
-              image,
+            imageWidget = accountImgWidget(
+              profileEntry.uuid,
+              profileEntry.imageUuid,
               width: 100,
             );
           } else {

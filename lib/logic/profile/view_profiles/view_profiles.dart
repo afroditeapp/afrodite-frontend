@@ -30,7 +30,6 @@ class ViewProfilesData with _$ViewProfilesData {
   factory ViewProfilesData({
     required AccountId accountId,
     required ProfileEntry profile,
-    required XFile primaryProfileImage,
     required ProfileHeroTag? imgTag,
     @Default(false) bool isFavorite,
     @Default(ProfileActionState.like) ProfileActionState profileActionState,
@@ -46,9 +45,8 @@ sealed class ViewProfileEvent {}
 class SetProfileView extends ViewProfileEvent {
   final AccountId accountId;
   final ProfileEntry profile;
-  final XFile primaryProfileImage;
   final ProfileHeroTag? imgTag;
-  SetProfileView(this.accountId, this.profile, this.primaryProfileImage, this.imgTag);
+  SetProfileView(this.accountId, this.profile, this.imgTag);
 }
 class HandleProfileResult extends ViewProfileEvent {
   final GetProfileResult result;
@@ -87,8 +85,6 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
       final newState = ViewProfilesData(
         accountId: data.accountId,
         profile: data.profile,
-        primaryProfileImage:
-        data.primaryProfileImage,
         imgTag: data.imgTag,
       );
       emit(newState);

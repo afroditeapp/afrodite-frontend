@@ -16,34 +16,10 @@ import 'package:pihka_frontend/ui_utils/view_image_screen.dart';
 
 const double imgHeight = 400;
 
-Widget viewProifle(BuildContext context, AccountId account, ProfileEntry profile, PrimaryImageProvider img, bool showGridImage) {
+Widget viewProifle(BuildContext context, AccountId account, ProfileEntry profile, ProfileHeroTag? heroTransition, bool showGridImage) {
   return LayoutBuilder(
     builder: (context, constraints) {
-
-      final Widget imgWidget;
-      switch (img) {
-        case PrimaryImageFile():
-
-          final tag = img.heroTransition;
-          if (tag != null) {
-            imgWidget = Hero(
-              tag: tag,
-              child: xfileImgWidget(
-                img.file,
-                width: constraints.maxWidth,
-                height: imgHeight,
-              ),
-            );
-          } else {
-            imgWidget = xfileImgWidget(
-              img.file,
-              width: constraints.maxWidth,
-              height: imgHeight,
-            );
-          }
-        case PrimaryImageInfo():
-          imgWidget = viewProifleImage(context, account, profile, img, showGridImage, constraints);
-      }
+      final Widget imgWidget = viewProifleImage(context, profile, heroTransition, showGridImage, constraints);
       String profileText;
       if (profile.profileText.isEmpty) {
         profileText = "";
@@ -76,7 +52,7 @@ Widget viewProifle(BuildContext context, AccountId account, ProfileEntry profile
   );
 }
 
-Widget viewProifleImage(BuildContext context, AccountId account, ProfileEntry profile, PrimaryImageInfo img, bool showGridImage, BoxConstraints constraints) {
+Widget viewProifleImage(BuildContext context, ProfileEntry profile, ProfileHeroTag? heroTransition, bool showGridImage, BoxConstraints constraints) {
 
   final double imgMaxWidth;
   if (showGridImage) {
@@ -85,40 +61,26 @@ Widget viewProifleImage(BuildContext context, AccountId account, ProfileEntry pr
     imgMaxWidth = constraints.maxWidth;
   }
 
-  final Widget primaryImageWidget;
-  final imgContentId = img.img;
-
-  primaryImageWidget = FutureBuilder(
-    future: ImageCacheData.getInstance().getImage(account, imgContentId),
-    builder: (context, snapshot) {
-      switch (snapshot.connectionState) {
-        case ConnectionState.active || ConnectionState.waiting: {
-          return buildProgressIndicator(imgMaxWidth);
-        }
-        case ConnectionState.none || ConnectionState.done: {
-          final imageFile = snapshot.data;
-          if (imageFile != null) {
-            return InkWell( // TODO: remove?
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ViewImageScreen(ViewImageAccountContent(account, imgContentId))));
-              },
-              child: xfileImgWidget(
-                imageFile,
-                width: imgMaxWidth,
-                height: imgHeight,
-              ),
-            );
-          } else {
-            return Text(context.strings.generic_error);
-          }
-        }
-      }
-    },
+  final Widget primaryImageWidget = accountImgWidget(
+    profile.uuid,
+    profile.imageUuid,
+    width: imgMaxWidth,
+    height: imgHeight,
   );
+
+  final Widget imgWidget;
+  if (heroTransition != null) {
+    imgWidget = Hero(
+      tag: heroTransition,
+      child: primaryImageWidget
+    );
+  } else {
+    imgWidget = primaryImageWidget;
+  }
 
   return Row(
     children: [
-      primaryImageWidget,
+      imgWidget,
     ]
   );
 }
@@ -130,18 +92,4 @@ Widget buildProgressIndicator(double imgMaxWidth) {
       CircularProgressIndicator(),
     ],
   ));
-}
-
-
-sealed class PrimaryImageProvider {}
-
-class PrimaryImageFile extends PrimaryImageProvider {
-  final XFile file;
-  final ProfileHeroTag? heroTransition;
-  PrimaryImageFile(this.file, {this.heroTransition});
-}
-
-class PrimaryImageInfo extends PrimaryImageProvider {
-  final ContentId img;
-  PrimaryImageInfo(this.img);
 }

@@ -41,7 +41,7 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
       ViewImageAccountContent(:final imageOwner, :final imageId) =>
         buildImage(context, imageOwner, imageId),
       ViewImageFileContent(:final imageFile) =>
-        viewerForFile(imageFile),
+        viewerForWidget(xfileImgWidget(imageFile)),
     };
 
     return Scaffold(
@@ -51,15 +51,15 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
   }
 
   Widget buildImage(BuildContext contex, AccountId imageOwner, ContentId image) {
-    return AccountImage(accountId: imageOwner, contentId: image, imageBuilder: viewerForFile);
+    return accountImgWidget(imageOwner, image);
   }
 
-  Widget viewerForFile(XFile imageFile) {
+  Widget viewerForWidget(Widget child) {
     return InteractiveViewer(
       panEnabled: false,
       minScale: 1.0,
       maxScale: 2.0,
-      child: xfileImgWidget(imageFile),
+      child: child,
     );
   }
 }

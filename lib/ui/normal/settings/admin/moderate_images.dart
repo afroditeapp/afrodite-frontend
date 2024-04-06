@@ -149,31 +149,26 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
   }
 
   Widget buildImage(BuildContext contex, AccountId imageOwner, ContentId image, int? index, double width, double height) {
-    return AccountImage(
-      accountId: imageOwner,
-      contentId: image,
-      imageBuilder: (file) {
-        return InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute<void>(
-                builder: (_) => ViewImageScreen(ViewImageAccountContent(imageOwner, image))
-              ),
-            );
-          },
-          onLongPress: () {
-            if (index != null) {
-              showActionDialog(imageOwner, image, index);
-            }
-          },
-          child: xfileImgWidget(
-            file,
-            width: width,
-            height: height,
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute<void>(
+            builder: (_) => ViewImageScreen(ViewImageAccountContent(imageOwner, image))
           ),
         );
       },
+      onLongPress: () {
+        if (index != null) {
+          showActionDialog(imageOwner, image, index);
+        }
+      },
+      child: accountImgWidget(
+        imageOwner,
+        image,
+        width: width,
+        height: height,
+      ),
     );
   }
 
