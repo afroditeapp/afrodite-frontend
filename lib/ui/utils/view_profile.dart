@@ -6,6 +6,7 @@ import 'package:pihka_frontend/database/profile_entry.dart';
 
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
+import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 
 const double PROFILE_IMG_HEIGHT = 400;
 
@@ -22,7 +23,11 @@ Widget viewProifle(BuildContext context, ProfileEntry profile, {ProfileHeroTag? 
       return SingleChildScrollView(
         child: Column(
           children: [
-            imgWidget,
+            SizedBox(
+              height: PROFILE_IMG_HEIGHT,
+              width: constraints.maxWidth,
+              child: imgWidget,
+            ),
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -37,7 +42,6 @@ Widget viewProifle(BuildContext context, ProfileEntry profile, {ProfileHeroTag? 
                 child: Text(profileText, style: Theme.of(context).textTheme.bodyLarge),
               ),
             ),
-
           ]
         ),
       );
@@ -56,15 +60,15 @@ Widget viewProifleImage(BuildContext context, ProfileEntry profile, ProfileHeroT
   if (heroTag != null) {
     imgWidget = Hero(
       tag: heroTag.value,
-      child: primaryImageWidget
+      child: ProfileThumbnailImage.fromProfileEntry(
+        entry: profile,
+        borderRadius: null,
+        squareFactor: 0.0,
+      )
     );
   } else {
     imgWidget = primaryImageWidget;
   }
 
-  return Row(
-    children: [
-      imgWidget,
-    ]
-  );
+  return imgWidget;
 }

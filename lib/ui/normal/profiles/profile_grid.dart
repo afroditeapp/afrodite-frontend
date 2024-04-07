@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,8 +11,10 @@ import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_filtering_settings.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:pihka_frontend/ui_utils/image.dart';
+import 'package:pihka_frontend/ui_utils/consts/corners.dart';
+import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
+import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 
 var log = Logger("ProfileGrid");
 
@@ -126,16 +129,42 @@ class _ProfileGridState extends State<ProfileGrid> {
   Widget grid(BuildContext context) {
     return PagedGridView(
       pagingController: _pagingController!,
+      padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
       builderDelegate: PagedChildBuilderDelegate<ProfileViewEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
           return GestureDetector(
-            onTap: () {
-              openProfileView(context, item.profile, heroTag: item.heroTag);
-            },
+            // onTap: () {
+            //   openProfileView(context, item.profile, heroTag: item.heroTag);
+            // },
             child: Hero(
               tag: item.heroTag.value,
-              child: accountImgWidget(item.profile.uuid, item.profile.imageUuid),
+              flightShuttleBuilder: (flightContext, animation, flightDirection, fromHeroContext, toHeroContext) {
+                return AnimatedBuilder(
+                  animation: animation,
+                  builder: (context, child) {
+                    final squareFactor = lerpDouble(1.0, 0.0, animation.value) ?? 0.0;
+                    final radius = lerpDouble(PROFILE_PICTURE_BORDER_RADIUS, 0.0, animation.value) ?? 0.0;
+                    return ProfileThumbnailImage.fromProfileEntry(
+                      entry: item.profile,
+                      squareFactor: squareFactor,
+                      borderRadius: BorderRadius.all(Radius.circular(radius)),
+                    );
+                  }
+                );
+              },
+              child: ProfileThumbnailImage.fromProfileEntry(
+                entry: item.profile,
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      // openProfileView(context, item.profile, heroTag: item.heroTag);
+                      openProfileView(context, item.profile, heroTag: null);
+                    },
+                  ),
+                ),
+              ),
             )
           );
         },
@@ -168,8 +197,8 @@ class _ProfileGridState extends State<ProfileGrid> {
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 4,
-        mainAxisSpacing: 4,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
       ),
     );
   }

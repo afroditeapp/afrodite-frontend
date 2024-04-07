@@ -631,10 +631,11 @@ class VisibleThumbnailPicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProfileThumbnailImage(
+    return ProfileThumbnailImage.fromProcessedImage(
       img: img,
       cropResults: cropResults,
-      size: THUMBNAIL_SIZE,
+      width: THUMBNAIL_SIZE,
+      height: THUMBNAIL_SIZE,
       child: Material(
         color: Colors.transparent,
         child: InkWell(

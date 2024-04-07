@@ -29,15 +29,17 @@ void openProfileView(
   ProfileEntry profile,
   {
     ProfileHeroTag? heroTag,
-    bool noAction = false
+    bool noAction = false,
   }
 ) {
   context.read<ViewProfileBloc>().add(SetProfileView(profile, heroTag));
+  final Route<void> route;
+  route = MaterialPageRoute<void>(
+    builder: (_) => ViewProfilePage(initialProfile: profile, noAction: noAction)
+  );
   Navigator.push(
     context,
-    MaterialPageRoute<void>(
-      builder: (_) => ViewProfilePage(initialProfile: profile, noAction: noAction)
-    )
+    route,
   );
 }
 

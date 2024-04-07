@@ -28,7 +28,11 @@ class Profiles extends Table {
   TextColumn get profileText => text().nullable()();
   TextColumn get profileVersion => text().nullable()();
   IntColumn get profileAge => integer().nullable()();
-  // TextColumn get jsonProfileAttributes => text().nullable()();
+  TextColumn get jsonProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonList.driftConverter)).nullable()();
+
+  RealColumn get primaryContentGridCropSize => real().nullable()();
+  RealColumn get primaryContentGridCropX => real().nullable()();
+  RealColumn get primaryContentGridCropY => real().nullable()();
 
   // If column is not null, then it is in the specific group.
   // The time is the time when the profile was added to the group.
@@ -345,7 +349,10 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         profileText: Value(null),
         profileAge: Value(null),
         profileVersion: Value(null),
-        // jsonProfileAttributes: Value(null),
+        jsonProfileAttributes: Value(null),
+        primaryContentGridCropSize: Value(null),
+        primaryContentGridCropX: Value(null),
+        primaryContentGridCropY: Value(null),
       ));
   }
 
@@ -357,12 +364,14 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         profileText: Value(profile.profileText),
         profileAge: Value(profile.age),
         profileVersion: Value(profile.version),
+        jsonProfileAttributes: Value(profile.attributes.toJsonList()),
       ),
       onConflict: DoUpdate((old) => ProfilesCompanion(
         profileName: Value(profile.name),
         profileText: Value(profile.profileText),
         profileAge: Value(profile.age),
         profileVersion: Value(profile.version),
+        jsonProfileAttributes: Value(profile.attributes.toJsonList()),
       ),
         target: [profiles.uuidAccountId]
       ),
@@ -379,6 +388,9 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         uuidContentId3: Value(content.contentId3?.id),
         uuidContentId4: Value(content.contentId4?.id),
         uuidContentId5: Value(content.contentId5?.id),
+        primaryContentGridCropSize: Value(content.gridCropSize),
+        primaryContentGridCropX: Value(content.gridCropX),
+        primaryContentGridCropY: Value(content.gridCropY),
       ),
       onConflict: DoUpdate((old) => ProfilesCompanion(
         uuidContentId0: Value(content.contentId0?.id),
@@ -387,6 +399,9 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         uuidContentId3: Value(content.contentId3?.id),
         uuidContentId4: Value(content.contentId4?.id),
         uuidContentId5: Value(content.contentId5?.id),
+        primaryContentGridCropSize: Value(content.gridCropSize),
+        primaryContentGridCropX: Value(content.gridCropX),
+        primaryContentGridCropY: Value(content.gridCropY),
       ),
         target: [profiles.uuidAccountId]
       ),
@@ -404,19 +419,27 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     }
 
     final content0 = r.uuidContentId0;
+    final gridCropSize = r.primaryContentGridCropSize ?? 1.0;
+    final gridCropX = r.primaryContentGridCropX ?? 0.0;
+    final gridCropY = r.primaryContentGridCropY ?? 0.0;
     final profileName = r.profileName;
     final profileText = r.profileText;
     final profileAge = r.profileAge;
     final profileVersion = r.profileVersion;
+    final profileAttributes = r.jsonProfileAttributes?.toProfileAttributes();
 
-    if (content0 != null && profileName != null && profileText != null && profileAge != null && profileVersion != null) {
+    if (content0 != null && profileName != null && profileText != null && profileAge != null && profileVersion != null && profileAttributes != null) {
       return ProfileEntry(
         uuid: r.uuidAccountId,
         imageUuid: content0,
+        primaryContentGridCropSize: gridCropSize,
+        primaryContentGridCropX: gridCropX,
+        primaryContentGridCropY: gridCropY,
         name: profileName,
         profileText: profileText,
         version: profileVersion,
         age: profileAge,
+        attributes: profileAttributes,
         content1: r.uuidContentId1,
         content2: r.uuidContentId2,
         content3: r.uuidContentId3,

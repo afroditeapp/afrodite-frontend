@@ -28,11 +28,46 @@ class Account extends Table {
 
   RealColumn get profileLocationLatitude => real().nullable()();
   RealColumn get profileLocationLongitude => real().nullable()();
+  IntColumn get profileSearchAgeRangeMin => integer().nullable()();
+  IntColumn get profileSearchAgeRangeMax => integer().nullable()();
 
   TextColumn get jsonAccountState => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
   TextColumn get jsonCapabilities => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
   TextColumn get jsonAvailableProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
   TextColumn get jsonProfileVisibility => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
+  TextColumn get jsonSearchGroups => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
+
+  RealColumn get pendingPrimaryContentGridCropSize => real().nullable()();
+  RealColumn get pendingPrimaryContentGridCropX => real().nullable()();
+  RealColumn get pendingPrimaryContentGridCropY => real().nullable()();
+
+  TextColumn get uuidPendingContentId0 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidPendingContentId1 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidPendingContentId2 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidPendingContentId3 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidPendingContentId4 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidPendingContentId5 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidPendingSecurityContentId => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+
+  TextColumn get uuidSecurityContentId => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+
+  // Data which is public
+
+  TextColumn get uuidContentId0 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidContentId1 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidContentId2 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidContentId3 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidContentId4 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidContentId5 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+
+  TextColumn get profileName => text().nullable()();
+  TextColumn get profileText => text().nullable()();
+  IntColumn get profileAge => integer().nullable()();
+  TextColumn get jsonProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonList.driftConverter)).nullable()();
+
+  RealColumn get primaryContentGridCropSize => real().nullable()();
+  RealColumn get primaryContentGridCropX => real().nullable()();
+  RealColumn get primaryContentGridCropY => real().nullable()();
 }
 
 @DriftDatabase(tables: [Account, Profiles, Messages], daos: [DaoProfiles, DaoMessages])
@@ -303,5 +338,25 @@ class EnumStringConverter extends TypeConverter<EnumString, String> {
   @override
   String toSql(value) {
     return value.enumString;
+  }
+}
+
+class JsonList {
+  final List<Object?> jsonList;
+  JsonList(this.jsonList);
+
+  List<ProfileAttributeValue>? toProfileAttributes() {
+    return ProfileAttributeValue.listFromJson(jsonList);
+  }
+
+  static TypeConverter<JsonList, String> driftConverter = TypeConverter.json(
+    fromJson: (json) => JsonList(json as List<Object?>),
+    toJson: (object) => object.jsonList,
+  );
+}
+
+extension ProfileAttributeValueListJson on List<ProfileAttributeValue> {
+  JsonList toJsonList() {
+    return JsonList(map((e) => e.toJson()).toList());
   }
 }

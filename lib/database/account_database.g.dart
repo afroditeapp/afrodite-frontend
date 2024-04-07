@@ -87,6 +87,18 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<double> profileLocationLongitude =
       GeneratedColumn<double>('profile_location_longitude', aliasedName, true,
           type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _profileSearchAgeRangeMinMeta =
+      const VerificationMeta('profileSearchAgeRangeMin');
+  @override
+  late final GeneratedColumn<int> profileSearchAgeRangeMin =
+      GeneratedColumn<int>('profile_search_age_range_min', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _profileSearchAgeRangeMaxMeta =
+      const VerificationMeta('profileSearchAgeRangeMax');
+  @override
+  late final GeneratedColumn<int> profileSearchAgeRangeMax =
+      GeneratedColumn<int>('profile_search_age_range_max', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _jsonAccountStateMeta =
       const VerificationMeta('jsonAccountState');
   @override
@@ -121,6 +133,201 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<EnumString?>(
               $AccountTable.$converterjsonProfileVisibility);
+  static const VerificationMeta _jsonSearchGroupsMeta =
+      const VerificationMeta('jsonSearchGroups');
+  @override
+  late final GeneratedColumnWithTypeConverter<JsonString?, String>
+      jsonSearchGroups = GeneratedColumn<String>(
+              'json_search_groups', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<JsonString?>($AccountTable.$converterjsonSearchGroups);
+  static const VerificationMeta _pendingPrimaryContentGridCropSizeMeta =
+      const VerificationMeta('pendingPrimaryContentGridCropSize');
+  @override
+  late final GeneratedColumn<double> pendingPrimaryContentGridCropSize =
+      GeneratedColumn<double>(
+          'pending_primary_content_grid_crop_size', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _pendingPrimaryContentGridCropXMeta =
+      const VerificationMeta('pendingPrimaryContentGridCropX');
+  @override
+  late final GeneratedColumn<double> pendingPrimaryContentGridCropX =
+      GeneratedColumn<double>(
+          'pending_primary_content_grid_crop_x', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _pendingPrimaryContentGridCropYMeta =
+      const VerificationMeta('pendingPrimaryContentGridCropY');
+  @override
+  late final GeneratedColumn<double> pendingPrimaryContentGridCropY =
+      GeneratedColumn<double>(
+          'pending_primary_content_grid_crop_y', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _uuidPendingContentId0Meta =
+      const VerificationMeta('uuidPendingContentId0');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidPendingContentId0 = GeneratedColumn<String>(
+              'uuid_pending_content_id0', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>(
+              $AccountTable.$converteruuidPendingContentId0);
+  static const VerificationMeta _uuidPendingContentId1Meta =
+      const VerificationMeta('uuidPendingContentId1');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidPendingContentId1 = GeneratedColumn<String>(
+              'uuid_pending_content_id1', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>(
+              $AccountTable.$converteruuidPendingContentId1);
+  static const VerificationMeta _uuidPendingContentId2Meta =
+      const VerificationMeta('uuidPendingContentId2');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidPendingContentId2 = GeneratedColumn<String>(
+              'uuid_pending_content_id2', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>(
+              $AccountTable.$converteruuidPendingContentId2);
+  static const VerificationMeta _uuidPendingContentId3Meta =
+      const VerificationMeta('uuidPendingContentId3');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidPendingContentId3 = GeneratedColumn<String>(
+              'uuid_pending_content_id3', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>(
+              $AccountTable.$converteruuidPendingContentId3);
+  static const VerificationMeta _uuidPendingContentId4Meta =
+      const VerificationMeta('uuidPendingContentId4');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidPendingContentId4 = GeneratedColumn<String>(
+              'uuid_pending_content_id4', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>(
+              $AccountTable.$converteruuidPendingContentId4);
+  static const VerificationMeta _uuidPendingContentId5Meta =
+      const VerificationMeta('uuidPendingContentId5');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidPendingContentId5 = GeneratedColumn<String>(
+              'uuid_pending_content_id5', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>(
+              $AccountTable.$converteruuidPendingContentId5);
+  static const VerificationMeta _uuidPendingSecurityContentIdMeta =
+      const VerificationMeta('uuidPendingSecurityContentId');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidPendingSecurityContentId = GeneratedColumn<String>(
+              'uuid_pending_security_content_id', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>(
+              $AccountTable.$converteruuidPendingSecurityContentId);
+  static const VerificationMeta _uuidSecurityContentIdMeta =
+      const VerificationMeta('uuidSecurityContentId');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidSecurityContentId = GeneratedColumn<String>(
+              'uuid_security_content_id', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>(
+              $AccountTable.$converteruuidSecurityContentId);
+  static const VerificationMeta _uuidContentId0Meta =
+      const VerificationMeta('uuidContentId0');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidContentId0 = GeneratedColumn<String>(
+              'uuid_content_id0', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>($AccountTable.$converteruuidContentId0);
+  static const VerificationMeta _uuidContentId1Meta =
+      const VerificationMeta('uuidContentId1');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidContentId1 = GeneratedColumn<String>(
+              'uuid_content_id1', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>($AccountTable.$converteruuidContentId1);
+  static const VerificationMeta _uuidContentId2Meta =
+      const VerificationMeta('uuidContentId2');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidContentId2 = GeneratedColumn<String>(
+              'uuid_content_id2', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>($AccountTable.$converteruuidContentId2);
+  static const VerificationMeta _uuidContentId3Meta =
+      const VerificationMeta('uuidContentId3');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidContentId3 = GeneratedColumn<String>(
+              'uuid_content_id3', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>($AccountTable.$converteruuidContentId3);
+  static const VerificationMeta _uuidContentId4Meta =
+      const VerificationMeta('uuidContentId4');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidContentId4 = GeneratedColumn<String>(
+              'uuid_content_id4', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>($AccountTable.$converteruuidContentId4);
+  static const VerificationMeta _uuidContentId5Meta =
+      const VerificationMeta('uuidContentId5');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidContentId5 = GeneratedColumn<String>(
+              'uuid_content_id5', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>($AccountTable.$converteruuidContentId5);
+  static const VerificationMeta _profileNameMeta =
+      const VerificationMeta('profileName');
+  @override
+  late final GeneratedColumn<String> profileName = GeneratedColumn<String>(
+      'profile_name', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _profileTextMeta =
+      const VerificationMeta('profileText');
+  @override
+  late final GeneratedColumn<String> profileText = GeneratedColumn<String>(
+      'profile_text', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _profileAgeMeta =
+      const VerificationMeta('profileAge');
+  @override
+  late final GeneratedColumn<int> profileAge = GeneratedColumn<int>(
+      'profile_age', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _jsonProfileAttributesMeta =
+      const VerificationMeta('jsonProfileAttributes');
+  @override
+  late final GeneratedColumnWithTypeConverter<JsonList?, String>
+      jsonProfileAttributes = GeneratedColumn<String>(
+              'json_profile_attributes', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<JsonList?>(
+              $AccountTable.$converterjsonProfileAttributes);
+  static const VerificationMeta _primaryContentGridCropSizeMeta =
+      const VerificationMeta('primaryContentGridCropSize');
+  @override
+  late final GeneratedColumn<double> primaryContentGridCropSize =
+      GeneratedColumn<double>(
+          'primary_content_grid_crop_size', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _primaryContentGridCropXMeta =
+      const VerificationMeta('primaryContentGridCropX');
+  @override
+  late final GeneratedColumn<double> primaryContentGridCropX =
+      GeneratedColumn<double>('primary_content_grid_crop_x', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _primaryContentGridCropYMeta =
+      const VerificationMeta('primaryContentGridCropY');
+  @override
+  late final GeneratedColumn<double> primaryContentGridCropY =
+      GeneratedColumn<double>('primary_content_grid_crop_y', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -135,10 +342,37 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         profileFilterFavorites,
         profileLocationLatitude,
         profileLocationLongitude,
+        profileSearchAgeRangeMin,
+        profileSearchAgeRangeMax,
         jsonAccountState,
         jsonCapabilities,
         jsonAvailableProfileAttributes,
-        jsonProfileVisibility
+        jsonProfileVisibility,
+        jsonSearchGroups,
+        pendingPrimaryContentGridCropSize,
+        pendingPrimaryContentGridCropX,
+        pendingPrimaryContentGridCropY,
+        uuidPendingContentId0,
+        uuidPendingContentId1,
+        uuidPendingContentId2,
+        uuidPendingContentId3,
+        uuidPendingContentId4,
+        uuidPendingContentId5,
+        uuidPendingSecurityContentId,
+        uuidSecurityContentId,
+        uuidContentId0,
+        uuidContentId1,
+        uuidContentId2,
+        uuidContentId3,
+        uuidContentId4,
+        uuidContentId5,
+        profileName,
+        profileText,
+        profileAge,
+        jsonProfileAttributes,
+        primaryContentGridCropSize,
+        primaryContentGridCropX,
+        primaryContentGridCropY
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -221,12 +455,111 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['profile_location_longitude']!,
               _profileLocationLongitudeMeta));
     }
+    if (data.containsKey('profile_search_age_range_min')) {
+      context.handle(
+          _profileSearchAgeRangeMinMeta,
+          profileSearchAgeRangeMin.isAcceptableOrUnknown(
+              data['profile_search_age_range_min']!,
+              _profileSearchAgeRangeMinMeta));
+    }
+    if (data.containsKey('profile_search_age_range_max')) {
+      context.handle(
+          _profileSearchAgeRangeMaxMeta,
+          profileSearchAgeRangeMax.isAcceptableOrUnknown(
+              data['profile_search_age_range_max']!,
+              _profileSearchAgeRangeMaxMeta));
+    }
     context.handle(_jsonAccountStateMeta, const VerificationResult.success());
     context.handle(_jsonCapabilitiesMeta, const VerificationResult.success());
     context.handle(_jsonAvailableProfileAttributesMeta,
         const VerificationResult.success());
     context.handle(
         _jsonProfileVisibilityMeta, const VerificationResult.success());
+    context.handle(_jsonSearchGroupsMeta, const VerificationResult.success());
+    if (data.containsKey('pending_primary_content_grid_crop_size')) {
+      context.handle(
+          _pendingPrimaryContentGridCropSizeMeta,
+          pendingPrimaryContentGridCropSize.isAcceptableOrUnknown(
+              data['pending_primary_content_grid_crop_size']!,
+              _pendingPrimaryContentGridCropSizeMeta));
+    }
+    if (data.containsKey('pending_primary_content_grid_crop_x')) {
+      context.handle(
+          _pendingPrimaryContentGridCropXMeta,
+          pendingPrimaryContentGridCropX.isAcceptableOrUnknown(
+              data['pending_primary_content_grid_crop_x']!,
+              _pendingPrimaryContentGridCropXMeta));
+    }
+    if (data.containsKey('pending_primary_content_grid_crop_y')) {
+      context.handle(
+          _pendingPrimaryContentGridCropYMeta,
+          pendingPrimaryContentGridCropY.isAcceptableOrUnknown(
+              data['pending_primary_content_grid_crop_y']!,
+              _pendingPrimaryContentGridCropYMeta));
+    }
+    context.handle(
+        _uuidPendingContentId0Meta, const VerificationResult.success());
+    context.handle(
+        _uuidPendingContentId1Meta, const VerificationResult.success());
+    context.handle(
+        _uuidPendingContentId2Meta, const VerificationResult.success());
+    context.handle(
+        _uuidPendingContentId3Meta, const VerificationResult.success());
+    context.handle(
+        _uuidPendingContentId4Meta, const VerificationResult.success());
+    context.handle(
+        _uuidPendingContentId5Meta, const VerificationResult.success());
+    context.handle(
+        _uuidPendingSecurityContentIdMeta, const VerificationResult.success());
+    context.handle(
+        _uuidSecurityContentIdMeta, const VerificationResult.success());
+    context.handle(_uuidContentId0Meta, const VerificationResult.success());
+    context.handle(_uuidContentId1Meta, const VerificationResult.success());
+    context.handle(_uuidContentId2Meta, const VerificationResult.success());
+    context.handle(_uuidContentId3Meta, const VerificationResult.success());
+    context.handle(_uuidContentId4Meta, const VerificationResult.success());
+    context.handle(_uuidContentId5Meta, const VerificationResult.success());
+    if (data.containsKey('profile_name')) {
+      context.handle(
+          _profileNameMeta,
+          profileName.isAcceptableOrUnknown(
+              data['profile_name']!, _profileNameMeta));
+    }
+    if (data.containsKey('profile_text')) {
+      context.handle(
+          _profileTextMeta,
+          profileText.isAcceptableOrUnknown(
+              data['profile_text']!, _profileTextMeta));
+    }
+    if (data.containsKey('profile_age')) {
+      context.handle(
+          _profileAgeMeta,
+          profileAge.isAcceptableOrUnknown(
+              data['profile_age']!, _profileAgeMeta));
+    }
+    context.handle(
+        _jsonProfileAttributesMeta, const VerificationResult.success());
+    if (data.containsKey('primary_content_grid_crop_size')) {
+      context.handle(
+          _primaryContentGridCropSizeMeta,
+          primaryContentGridCropSize.isAcceptableOrUnknown(
+              data['primary_content_grid_crop_size']!,
+              _primaryContentGridCropSizeMeta));
+    }
+    if (data.containsKey('primary_content_grid_crop_x')) {
+      context.handle(
+          _primaryContentGridCropXMeta,
+          primaryContentGridCropX.isAcceptableOrUnknown(
+              data['primary_content_grid_crop_x']!,
+              _primaryContentGridCropXMeta));
+    }
+    if (data.containsKey('primary_content_grid_crop_y')) {
+      context.handle(
+          _primaryContentGridCropYMeta,
+          primaryContentGridCropY.isAcceptableOrUnknown(
+              data['primary_content_grid_crop_y']!,
+              _primaryContentGridCropYMeta));
+    }
     return context;
   }
 
@@ -263,6 +596,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       profileLocationLongitude: attachedDatabase.typeMapping.read(
           DriftSqlType.double,
           data['${effectivePrefix}profile_location_longitude']),
+      profileSearchAgeRangeMin: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}profile_search_age_range_min']),
+      profileSearchAgeRangeMax: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}profile_search_age_range_max']),
       jsonAccountState: $AccountTable.$converterjsonAccountState.fromSql(
           attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}json_account_state'])),
@@ -276,6 +615,79 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       jsonProfileVisibility: $AccountTable.$converterjsonProfileVisibility
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}json_profile_visibility'])),
+      jsonSearchGroups: $AccountTable.$converterjsonSearchGroups.fromSql(
+          attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}json_search_groups'])),
+      pendingPrimaryContentGridCropSize: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}pending_primary_content_grid_crop_size']),
+      pendingPrimaryContentGridCropX: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}pending_primary_content_grid_crop_x']),
+      pendingPrimaryContentGridCropY: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}pending_primary_content_grid_crop_y']),
+      uuidPendingContentId0: $AccountTable.$converteruuidPendingContentId0
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}uuid_pending_content_id0'])),
+      uuidPendingContentId1: $AccountTable.$converteruuidPendingContentId1
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}uuid_pending_content_id1'])),
+      uuidPendingContentId2: $AccountTable.$converteruuidPendingContentId2
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}uuid_pending_content_id2'])),
+      uuidPendingContentId3: $AccountTable.$converteruuidPendingContentId3
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}uuid_pending_content_id3'])),
+      uuidPendingContentId4: $AccountTable.$converteruuidPendingContentId4
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}uuid_pending_content_id4'])),
+      uuidPendingContentId5: $AccountTable.$converteruuidPendingContentId5
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}uuid_pending_content_id5'])),
+      uuidPendingSecurityContentId: $AccountTable
+          .$converteruuidPendingSecurityContentId
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}uuid_pending_security_content_id'])),
+      uuidSecurityContentId: $AccountTable.$converteruuidSecurityContentId
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}uuid_security_content_id'])),
+      uuidContentId0: $AccountTable.$converteruuidContentId0.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_content_id0'])),
+      uuidContentId1: $AccountTable.$converteruuidContentId1.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_content_id1'])),
+      uuidContentId2: $AccountTable.$converteruuidContentId2.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_content_id2'])),
+      uuidContentId3: $AccountTable.$converteruuidContentId3.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_content_id3'])),
+      uuidContentId4: $AccountTable.$converteruuidContentId4.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_content_id4'])),
+      uuidContentId5: $AccountTable.$converteruuidContentId5.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_content_id5'])),
+      profileName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}profile_name']),
+      profileText: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}profile_text']),
+      profileAge: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}profile_age']),
+      jsonProfileAttributes: $AccountTable.$converterjsonProfileAttributes
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}json_profile_attributes'])),
+      primaryContentGridCropSize: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}primary_content_grid_crop_size']),
+      primaryContentGridCropX: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}primary_content_grid_crop_x']),
+      primaryContentGridCropY: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}primary_content_grid_crop_y']),
     );
   }
 
@@ -293,6 +705,39 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
   static TypeConverter<EnumString?, String?> $converterjsonProfileVisibility =
       NullAwareTypeConverter.wrap(EnumString.driftConverter);
+  static TypeConverter<JsonString?, String?> $converterjsonSearchGroups =
+      NullAwareTypeConverter.wrap(JsonString.driftConverter);
+  static TypeConverter<ContentId?, String?> $converteruuidPendingContentId0 =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidPendingContentId1 =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidPendingContentId2 =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidPendingContentId3 =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidPendingContentId4 =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidPendingContentId5 =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?>
+      $converteruuidPendingSecurityContentId =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidSecurityContentId =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidContentId0 =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidContentId1 =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidContentId2 =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidContentId3 =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidContentId4 =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidContentId5 =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
+      NullAwareTypeConverter.wrap(JsonList.driftConverter);
 }
 
 class AccountData extends DataClass implements Insertable<AccountData> {
@@ -310,10 +755,37 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final bool profileFilterFavorites;
   final double? profileLocationLatitude;
   final double? profileLocationLongitude;
+  final int? profileSearchAgeRangeMin;
+  final int? profileSearchAgeRangeMax;
   final EnumString? jsonAccountState;
   final JsonString? jsonCapabilities;
   final JsonString? jsonAvailableProfileAttributes;
   final EnumString? jsonProfileVisibility;
+  final JsonString? jsonSearchGroups;
+  final double? pendingPrimaryContentGridCropSize;
+  final double? pendingPrimaryContentGridCropX;
+  final double? pendingPrimaryContentGridCropY;
+  final ContentId? uuidPendingContentId0;
+  final ContentId? uuidPendingContentId1;
+  final ContentId? uuidPendingContentId2;
+  final ContentId? uuidPendingContentId3;
+  final ContentId? uuidPendingContentId4;
+  final ContentId? uuidPendingContentId5;
+  final ContentId? uuidPendingSecurityContentId;
+  final ContentId? uuidSecurityContentId;
+  final ContentId? uuidContentId0;
+  final ContentId? uuidContentId1;
+  final ContentId? uuidContentId2;
+  final ContentId? uuidContentId3;
+  final ContentId? uuidContentId4;
+  final ContentId? uuidContentId5;
+  final String? profileName;
+  final String? profileText;
+  final int? profileAge;
+  final JsonList? jsonProfileAttributes;
+  final double? primaryContentGridCropSize;
+  final double? primaryContentGridCropX;
+  final double? primaryContentGridCropY;
   const AccountData(
       {required this.id,
       this.refreshTokenAccount,
@@ -327,10 +799,37 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       required this.profileFilterFavorites,
       this.profileLocationLatitude,
       this.profileLocationLongitude,
+      this.profileSearchAgeRangeMin,
+      this.profileSearchAgeRangeMax,
       this.jsonAccountState,
       this.jsonCapabilities,
       this.jsonAvailableProfileAttributes,
-      this.jsonProfileVisibility});
+      this.jsonProfileVisibility,
+      this.jsonSearchGroups,
+      this.pendingPrimaryContentGridCropSize,
+      this.pendingPrimaryContentGridCropX,
+      this.pendingPrimaryContentGridCropY,
+      this.uuidPendingContentId0,
+      this.uuidPendingContentId1,
+      this.uuidPendingContentId2,
+      this.uuidPendingContentId3,
+      this.uuidPendingContentId4,
+      this.uuidPendingContentId5,
+      this.uuidPendingSecurityContentId,
+      this.uuidSecurityContentId,
+      this.uuidContentId0,
+      this.uuidContentId1,
+      this.uuidContentId2,
+      this.uuidContentId3,
+      this.uuidContentId4,
+      this.uuidContentId5,
+      this.profileName,
+      this.profileText,
+      this.profileAge,
+      this.jsonProfileAttributes,
+      this.primaryContentGridCropSize,
+      this.primaryContentGridCropX,
+      this.primaryContentGridCropY});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -368,6 +867,14 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['profile_location_longitude'] =
           Variable<double>(profileLocationLongitude);
     }
+    if (!nullToAbsent || profileSearchAgeRangeMin != null) {
+      map['profile_search_age_range_min'] =
+          Variable<int>(profileSearchAgeRangeMin);
+    }
+    if (!nullToAbsent || profileSearchAgeRangeMax != null) {
+      map['profile_search_age_range_max'] =
+          Variable<int>(profileSearchAgeRangeMax);
+    }
     if (!nullToAbsent || jsonAccountState != null) {
       map['json_account_state'] = Variable<String>(
           $AccountTable.$converterjsonAccountState.toSql(jsonAccountState));
@@ -385,6 +892,112 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['json_profile_visibility'] = Variable<String>($AccountTable
           .$converterjsonProfileVisibility
           .toSql(jsonProfileVisibility));
+    }
+    if (!nullToAbsent || jsonSearchGroups != null) {
+      map['json_search_groups'] = Variable<String>(
+          $AccountTable.$converterjsonSearchGroups.toSql(jsonSearchGroups));
+    }
+    if (!nullToAbsent || pendingPrimaryContentGridCropSize != null) {
+      map['pending_primary_content_grid_crop_size'] =
+          Variable<double>(pendingPrimaryContentGridCropSize);
+    }
+    if (!nullToAbsent || pendingPrimaryContentGridCropX != null) {
+      map['pending_primary_content_grid_crop_x'] =
+          Variable<double>(pendingPrimaryContentGridCropX);
+    }
+    if (!nullToAbsent || pendingPrimaryContentGridCropY != null) {
+      map['pending_primary_content_grid_crop_y'] =
+          Variable<double>(pendingPrimaryContentGridCropY);
+    }
+    if (!nullToAbsent || uuidPendingContentId0 != null) {
+      map['uuid_pending_content_id0'] = Variable<String>($AccountTable
+          .$converteruuidPendingContentId0
+          .toSql(uuidPendingContentId0));
+    }
+    if (!nullToAbsent || uuidPendingContentId1 != null) {
+      map['uuid_pending_content_id1'] = Variable<String>($AccountTable
+          .$converteruuidPendingContentId1
+          .toSql(uuidPendingContentId1));
+    }
+    if (!nullToAbsent || uuidPendingContentId2 != null) {
+      map['uuid_pending_content_id2'] = Variable<String>($AccountTable
+          .$converteruuidPendingContentId2
+          .toSql(uuidPendingContentId2));
+    }
+    if (!nullToAbsent || uuidPendingContentId3 != null) {
+      map['uuid_pending_content_id3'] = Variable<String>($AccountTable
+          .$converteruuidPendingContentId3
+          .toSql(uuidPendingContentId3));
+    }
+    if (!nullToAbsent || uuidPendingContentId4 != null) {
+      map['uuid_pending_content_id4'] = Variable<String>($AccountTable
+          .$converteruuidPendingContentId4
+          .toSql(uuidPendingContentId4));
+    }
+    if (!nullToAbsent || uuidPendingContentId5 != null) {
+      map['uuid_pending_content_id5'] = Variable<String>($AccountTable
+          .$converteruuidPendingContentId5
+          .toSql(uuidPendingContentId5));
+    }
+    if (!nullToAbsent || uuidPendingSecurityContentId != null) {
+      map['uuid_pending_security_content_id'] = Variable<String>($AccountTable
+          .$converteruuidPendingSecurityContentId
+          .toSql(uuidPendingSecurityContentId));
+    }
+    if (!nullToAbsent || uuidSecurityContentId != null) {
+      map['uuid_security_content_id'] = Variable<String>($AccountTable
+          .$converteruuidSecurityContentId
+          .toSql(uuidSecurityContentId));
+    }
+    if (!nullToAbsent || uuidContentId0 != null) {
+      map['uuid_content_id0'] = Variable<String>(
+          $AccountTable.$converteruuidContentId0.toSql(uuidContentId0));
+    }
+    if (!nullToAbsent || uuidContentId1 != null) {
+      map['uuid_content_id1'] = Variable<String>(
+          $AccountTable.$converteruuidContentId1.toSql(uuidContentId1));
+    }
+    if (!nullToAbsent || uuidContentId2 != null) {
+      map['uuid_content_id2'] = Variable<String>(
+          $AccountTable.$converteruuidContentId2.toSql(uuidContentId2));
+    }
+    if (!nullToAbsent || uuidContentId3 != null) {
+      map['uuid_content_id3'] = Variable<String>(
+          $AccountTable.$converteruuidContentId3.toSql(uuidContentId3));
+    }
+    if (!nullToAbsent || uuidContentId4 != null) {
+      map['uuid_content_id4'] = Variable<String>(
+          $AccountTable.$converteruuidContentId4.toSql(uuidContentId4));
+    }
+    if (!nullToAbsent || uuidContentId5 != null) {
+      map['uuid_content_id5'] = Variable<String>(
+          $AccountTable.$converteruuidContentId5.toSql(uuidContentId5));
+    }
+    if (!nullToAbsent || profileName != null) {
+      map['profile_name'] = Variable<String>(profileName);
+    }
+    if (!nullToAbsent || profileText != null) {
+      map['profile_text'] = Variable<String>(profileText);
+    }
+    if (!nullToAbsent || profileAge != null) {
+      map['profile_age'] = Variable<int>(profileAge);
+    }
+    if (!nullToAbsent || jsonProfileAttributes != null) {
+      map['json_profile_attributes'] = Variable<String>($AccountTable
+          .$converterjsonProfileAttributes
+          .toSql(jsonProfileAttributes));
+    }
+    if (!nullToAbsent || primaryContentGridCropSize != null) {
+      map['primary_content_grid_crop_size'] =
+          Variable<double>(primaryContentGridCropSize);
+    }
+    if (!nullToAbsent || primaryContentGridCropX != null) {
+      map['primary_content_grid_crop_x'] =
+          Variable<double>(primaryContentGridCropX);
+    }
+    if (!nullToAbsent || primaryContentGridCropY != null) {
+      map['primary_content_grid_crop_y'] =
+          Variable<double>(primaryContentGridCropY);
     }
     return map;
   }
@@ -423,6 +1036,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileLocationLongitude: profileLocationLongitude == null && nullToAbsent
           ? const Value.absent()
           : Value(profileLocationLongitude),
+      profileSearchAgeRangeMin: profileSearchAgeRangeMin == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileSearchAgeRangeMin),
+      profileSearchAgeRangeMax: profileSearchAgeRangeMax == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileSearchAgeRangeMax),
       jsonAccountState: jsonAccountState == null && nullToAbsent
           ? const Value.absent()
           : Value(jsonAccountState),
@@ -436,6 +1055,86 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       jsonProfileVisibility: jsonProfileVisibility == null && nullToAbsent
           ? const Value.absent()
           : Value(jsonProfileVisibility),
+      jsonSearchGroups: jsonSearchGroups == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jsonSearchGroups),
+      pendingPrimaryContentGridCropSize:
+          pendingPrimaryContentGridCropSize == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pendingPrimaryContentGridCropSize),
+      pendingPrimaryContentGridCropX:
+          pendingPrimaryContentGridCropX == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pendingPrimaryContentGridCropX),
+      pendingPrimaryContentGridCropY:
+          pendingPrimaryContentGridCropY == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pendingPrimaryContentGridCropY),
+      uuidPendingContentId0: uuidPendingContentId0 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidPendingContentId0),
+      uuidPendingContentId1: uuidPendingContentId1 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidPendingContentId1),
+      uuidPendingContentId2: uuidPendingContentId2 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidPendingContentId2),
+      uuidPendingContentId3: uuidPendingContentId3 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidPendingContentId3),
+      uuidPendingContentId4: uuidPendingContentId4 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidPendingContentId4),
+      uuidPendingContentId5: uuidPendingContentId5 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidPendingContentId5),
+      uuidPendingSecurityContentId:
+          uuidPendingSecurityContentId == null && nullToAbsent
+              ? const Value.absent()
+              : Value(uuidPendingSecurityContentId),
+      uuidSecurityContentId: uuidSecurityContentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidSecurityContentId),
+      uuidContentId0: uuidContentId0 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId0),
+      uuidContentId1: uuidContentId1 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId1),
+      uuidContentId2: uuidContentId2 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId2),
+      uuidContentId3: uuidContentId3 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId3),
+      uuidContentId4: uuidContentId4 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId4),
+      uuidContentId5: uuidContentId5 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId5),
+      profileName: profileName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileName),
+      profileText: profileText == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileText),
+      profileAge: profileAge == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileAge),
+      jsonProfileAttributes: jsonProfileAttributes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jsonProfileAttributes),
+      primaryContentGridCropSize:
+          primaryContentGridCropSize == null && nullToAbsent
+              ? const Value.absent()
+              : Value(primaryContentGridCropSize),
+      primaryContentGridCropX: primaryContentGridCropX == null && nullToAbsent
+          ? const Value.absent()
+          : Value(primaryContentGridCropX),
+      primaryContentGridCropY: primaryContentGridCropY == null && nullToAbsent
+          ? const Value.absent()
+          : Value(primaryContentGridCropY),
     );
   }
 
@@ -463,6 +1162,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<double?>(json['profileLocationLatitude']),
       profileLocationLongitude:
           serializer.fromJson<double?>(json['profileLocationLongitude']),
+      profileSearchAgeRangeMin:
+          serializer.fromJson<int?>(json['profileSearchAgeRangeMin']),
+      profileSearchAgeRangeMax:
+          serializer.fromJson<int?>(json['profileSearchAgeRangeMax']),
       jsonAccountState:
           serializer.fromJson<EnumString?>(json['jsonAccountState']),
       jsonCapabilities:
@@ -471,6 +1174,47 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .fromJson<JsonString?>(json['jsonAvailableProfileAttributes']),
       jsonProfileVisibility:
           serializer.fromJson<EnumString?>(json['jsonProfileVisibility']),
+      jsonSearchGroups:
+          serializer.fromJson<JsonString?>(json['jsonSearchGroups']),
+      pendingPrimaryContentGridCropSize: serializer
+          .fromJson<double?>(json['pendingPrimaryContentGridCropSize']),
+      pendingPrimaryContentGridCropX:
+          serializer.fromJson<double?>(json['pendingPrimaryContentGridCropX']),
+      pendingPrimaryContentGridCropY:
+          serializer.fromJson<double?>(json['pendingPrimaryContentGridCropY']),
+      uuidPendingContentId0:
+          serializer.fromJson<ContentId?>(json['uuidPendingContentId0']),
+      uuidPendingContentId1:
+          serializer.fromJson<ContentId?>(json['uuidPendingContentId1']),
+      uuidPendingContentId2:
+          serializer.fromJson<ContentId?>(json['uuidPendingContentId2']),
+      uuidPendingContentId3:
+          serializer.fromJson<ContentId?>(json['uuidPendingContentId3']),
+      uuidPendingContentId4:
+          serializer.fromJson<ContentId?>(json['uuidPendingContentId4']),
+      uuidPendingContentId5:
+          serializer.fromJson<ContentId?>(json['uuidPendingContentId5']),
+      uuidPendingSecurityContentId:
+          serializer.fromJson<ContentId?>(json['uuidPendingSecurityContentId']),
+      uuidSecurityContentId:
+          serializer.fromJson<ContentId?>(json['uuidSecurityContentId']),
+      uuidContentId0: serializer.fromJson<ContentId?>(json['uuidContentId0']),
+      uuidContentId1: serializer.fromJson<ContentId?>(json['uuidContentId1']),
+      uuidContentId2: serializer.fromJson<ContentId?>(json['uuidContentId2']),
+      uuidContentId3: serializer.fromJson<ContentId?>(json['uuidContentId3']),
+      uuidContentId4: serializer.fromJson<ContentId?>(json['uuidContentId4']),
+      uuidContentId5: serializer.fromJson<ContentId?>(json['uuidContentId5']),
+      profileName: serializer.fromJson<String?>(json['profileName']),
+      profileText: serializer.fromJson<String?>(json['profileText']),
+      profileAge: serializer.fromJson<int?>(json['profileAge']),
+      jsonProfileAttributes:
+          serializer.fromJson<JsonList?>(json['jsonProfileAttributes']),
+      primaryContentGridCropSize:
+          serializer.fromJson<double?>(json['primaryContentGridCropSize']),
+      primaryContentGridCropX:
+          serializer.fromJson<double?>(json['primaryContentGridCropX']),
+      primaryContentGridCropY:
+          serializer.fromJson<double?>(json['primaryContentGridCropY']),
     );
   }
   @override
@@ -491,12 +1235,56 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.toJson<double?>(profileLocationLatitude),
       'profileLocationLongitude':
           serializer.toJson<double?>(profileLocationLongitude),
+      'profileSearchAgeRangeMin':
+          serializer.toJson<int?>(profileSearchAgeRangeMin),
+      'profileSearchAgeRangeMax':
+          serializer.toJson<int?>(profileSearchAgeRangeMax),
       'jsonAccountState': serializer.toJson<EnumString?>(jsonAccountState),
       'jsonCapabilities': serializer.toJson<JsonString?>(jsonCapabilities),
       'jsonAvailableProfileAttributes':
           serializer.toJson<JsonString?>(jsonAvailableProfileAttributes),
       'jsonProfileVisibility':
           serializer.toJson<EnumString?>(jsonProfileVisibility),
+      'jsonSearchGroups': serializer.toJson<JsonString?>(jsonSearchGroups),
+      'pendingPrimaryContentGridCropSize':
+          serializer.toJson<double?>(pendingPrimaryContentGridCropSize),
+      'pendingPrimaryContentGridCropX':
+          serializer.toJson<double?>(pendingPrimaryContentGridCropX),
+      'pendingPrimaryContentGridCropY':
+          serializer.toJson<double?>(pendingPrimaryContentGridCropY),
+      'uuidPendingContentId0':
+          serializer.toJson<ContentId?>(uuidPendingContentId0),
+      'uuidPendingContentId1':
+          serializer.toJson<ContentId?>(uuidPendingContentId1),
+      'uuidPendingContentId2':
+          serializer.toJson<ContentId?>(uuidPendingContentId2),
+      'uuidPendingContentId3':
+          serializer.toJson<ContentId?>(uuidPendingContentId3),
+      'uuidPendingContentId4':
+          serializer.toJson<ContentId?>(uuidPendingContentId4),
+      'uuidPendingContentId5':
+          serializer.toJson<ContentId?>(uuidPendingContentId5),
+      'uuidPendingSecurityContentId':
+          serializer.toJson<ContentId?>(uuidPendingSecurityContentId),
+      'uuidSecurityContentId':
+          serializer.toJson<ContentId?>(uuidSecurityContentId),
+      'uuidContentId0': serializer.toJson<ContentId?>(uuidContentId0),
+      'uuidContentId1': serializer.toJson<ContentId?>(uuidContentId1),
+      'uuidContentId2': serializer.toJson<ContentId?>(uuidContentId2),
+      'uuidContentId3': serializer.toJson<ContentId?>(uuidContentId3),
+      'uuidContentId4': serializer.toJson<ContentId?>(uuidContentId4),
+      'uuidContentId5': serializer.toJson<ContentId?>(uuidContentId5),
+      'profileName': serializer.toJson<String?>(profileName),
+      'profileText': serializer.toJson<String?>(profileText),
+      'profileAge': serializer.toJson<int?>(profileAge),
+      'jsonProfileAttributes':
+          serializer.toJson<JsonList?>(jsonProfileAttributes),
+      'primaryContentGridCropSize':
+          serializer.toJson<double?>(primaryContentGridCropSize),
+      'primaryContentGridCropX':
+          serializer.toJson<double?>(primaryContentGridCropX),
+      'primaryContentGridCropY':
+          serializer.toJson<double?>(primaryContentGridCropY),
     };
   }
 
@@ -513,11 +1301,39 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           bool? profileFilterFavorites,
           Value<double?> profileLocationLatitude = const Value.absent(),
           Value<double?> profileLocationLongitude = const Value.absent(),
+          Value<int?> profileSearchAgeRangeMin = const Value.absent(),
+          Value<int?> profileSearchAgeRangeMax = const Value.absent(),
           Value<EnumString?> jsonAccountState = const Value.absent(),
           Value<JsonString?> jsonCapabilities = const Value.absent(),
           Value<JsonString?> jsonAvailableProfileAttributes =
               const Value.absent(),
-          Value<EnumString?> jsonProfileVisibility = const Value.absent()}) =>
+          Value<EnumString?> jsonProfileVisibility = const Value.absent(),
+          Value<JsonString?> jsonSearchGroups = const Value.absent(),
+          Value<double?> pendingPrimaryContentGridCropSize =
+              const Value.absent(),
+          Value<double?> pendingPrimaryContentGridCropX = const Value.absent(),
+          Value<double?> pendingPrimaryContentGridCropY = const Value.absent(),
+          Value<ContentId?> uuidPendingContentId0 = const Value.absent(),
+          Value<ContentId?> uuidPendingContentId1 = const Value.absent(),
+          Value<ContentId?> uuidPendingContentId2 = const Value.absent(),
+          Value<ContentId?> uuidPendingContentId3 = const Value.absent(),
+          Value<ContentId?> uuidPendingContentId4 = const Value.absent(),
+          Value<ContentId?> uuidPendingContentId5 = const Value.absent(),
+          Value<ContentId?> uuidPendingSecurityContentId = const Value.absent(),
+          Value<ContentId?> uuidSecurityContentId = const Value.absent(),
+          Value<ContentId?> uuidContentId0 = const Value.absent(),
+          Value<ContentId?> uuidContentId1 = const Value.absent(),
+          Value<ContentId?> uuidContentId2 = const Value.absent(),
+          Value<ContentId?> uuidContentId3 = const Value.absent(),
+          Value<ContentId?> uuidContentId4 = const Value.absent(),
+          Value<ContentId?> uuidContentId5 = const Value.absent(),
+          Value<String?> profileName = const Value.absent(),
+          Value<String?> profileText = const Value.absent(),
+          Value<int?> profileAge = const Value.absent(),
+          Value<JsonList?> jsonProfileAttributes = const Value.absent(),
+          Value<double?> primaryContentGridCropSize = const Value.absent(),
+          Value<double?> primaryContentGridCropX = const Value.absent(),
+          Value<double?> primaryContentGridCropY = const Value.absent()}) =>
       AccountData(
         id: id ?? this.id,
         refreshTokenAccount: refreshTokenAccount.present
@@ -552,6 +1368,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileLocationLongitude: profileLocationLongitude.present
             ? profileLocationLongitude.value
             : this.profileLocationLongitude,
+        profileSearchAgeRangeMin: profileSearchAgeRangeMin.present
+            ? profileSearchAgeRangeMin.value
+            : this.profileSearchAgeRangeMin,
+        profileSearchAgeRangeMax: profileSearchAgeRangeMax.present
+            ? profileSearchAgeRangeMax.value
+            : this.profileSearchAgeRangeMax,
         jsonAccountState: jsonAccountState.present
             ? jsonAccountState.value
             : this.jsonAccountState,
@@ -564,6 +1386,70 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         jsonProfileVisibility: jsonProfileVisibility.present
             ? jsonProfileVisibility.value
             : this.jsonProfileVisibility,
+        jsonSearchGroups: jsonSearchGroups.present
+            ? jsonSearchGroups.value
+            : this.jsonSearchGroups,
+        pendingPrimaryContentGridCropSize:
+            pendingPrimaryContentGridCropSize.present
+                ? pendingPrimaryContentGridCropSize.value
+                : this.pendingPrimaryContentGridCropSize,
+        pendingPrimaryContentGridCropX: pendingPrimaryContentGridCropX.present
+            ? pendingPrimaryContentGridCropX.value
+            : this.pendingPrimaryContentGridCropX,
+        pendingPrimaryContentGridCropY: pendingPrimaryContentGridCropY.present
+            ? pendingPrimaryContentGridCropY.value
+            : this.pendingPrimaryContentGridCropY,
+        uuidPendingContentId0: uuidPendingContentId0.present
+            ? uuidPendingContentId0.value
+            : this.uuidPendingContentId0,
+        uuidPendingContentId1: uuidPendingContentId1.present
+            ? uuidPendingContentId1.value
+            : this.uuidPendingContentId1,
+        uuidPendingContentId2: uuidPendingContentId2.present
+            ? uuidPendingContentId2.value
+            : this.uuidPendingContentId2,
+        uuidPendingContentId3: uuidPendingContentId3.present
+            ? uuidPendingContentId3.value
+            : this.uuidPendingContentId3,
+        uuidPendingContentId4: uuidPendingContentId4.present
+            ? uuidPendingContentId4.value
+            : this.uuidPendingContentId4,
+        uuidPendingContentId5: uuidPendingContentId5.present
+            ? uuidPendingContentId5.value
+            : this.uuidPendingContentId5,
+        uuidPendingSecurityContentId: uuidPendingSecurityContentId.present
+            ? uuidPendingSecurityContentId.value
+            : this.uuidPendingSecurityContentId,
+        uuidSecurityContentId: uuidSecurityContentId.present
+            ? uuidSecurityContentId.value
+            : this.uuidSecurityContentId,
+        uuidContentId0:
+            uuidContentId0.present ? uuidContentId0.value : this.uuidContentId0,
+        uuidContentId1:
+            uuidContentId1.present ? uuidContentId1.value : this.uuidContentId1,
+        uuidContentId2:
+            uuidContentId2.present ? uuidContentId2.value : this.uuidContentId2,
+        uuidContentId3:
+            uuidContentId3.present ? uuidContentId3.value : this.uuidContentId3,
+        uuidContentId4:
+            uuidContentId4.present ? uuidContentId4.value : this.uuidContentId4,
+        uuidContentId5:
+            uuidContentId5.present ? uuidContentId5.value : this.uuidContentId5,
+        profileName: profileName.present ? profileName.value : this.profileName,
+        profileText: profileText.present ? profileText.value : this.profileText,
+        profileAge: profileAge.present ? profileAge.value : this.profileAge,
+        jsonProfileAttributes: jsonProfileAttributes.present
+            ? jsonProfileAttributes.value
+            : this.jsonProfileAttributes,
+        primaryContentGridCropSize: primaryContentGridCropSize.present
+            ? primaryContentGridCropSize.value
+            : this.primaryContentGridCropSize,
+        primaryContentGridCropX: primaryContentGridCropX.present
+            ? primaryContentGridCropX.value
+            : this.primaryContentGridCropX,
+        primaryContentGridCropY: primaryContentGridCropY.present
+            ? primaryContentGridCropY.value
+            : this.primaryContentGridCropY,
       );
   @override
   String toString() {
@@ -580,33 +1466,92 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('profileFilterFavorites: $profileFilterFavorites, ')
           ..write('profileLocationLatitude: $profileLocationLatitude, ')
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
+          ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
+          ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
           ..write('jsonAccountState: $jsonAccountState, ')
           ..write('jsonCapabilities: $jsonCapabilities, ')
           ..write(
               'jsonAvailableProfileAttributes: $jsonAvailableProfileAttributes, ')
-          ..write('jsonProfileVisibility: $jsonProfileVisibility')
+          ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
+          ..write('jsonSearchGroups: $jsonSearchGroups, ')
+          ..write(
+              'pendingPrimaryContentGridCropSize: $pendingPrimaryContentGridCropSize, ')
+          ..write(
+              'pendingPrimaryContentGridCropX: $pendingPrimaryContentGridCropX, ')
+          ..write(
+              'pendingPrimaryContentGridCropY: $pendingPrimaryContentGridCropY, ')
+          ..write('uuidPendingContentId0: $uuidPendingContentId0, ')
+          ..write('uuidPendingContentId1: $uuidPendingContentId1, ')
+          ..write('uuidPendingContentId2: $uuidPendingContentId2, ')
+          ..write('uuidPendingContentId3: $uuidPendingContentId3, ')
+          ..write('uuidPendingContentId4: $uuidPendingContentId4, ')
+          ..write('uuidPendingContentId5: $uuidPendingContentId5, ')
+          ..write(
+              'uuidPendingSecurityContentId: $uuidPendingSecurityContentId, ')
+          ..write('uuidSecurityContentId: $uuidSecurityContentId, ')
+          ..write('uuidContentId0: $uuidContentId0, ')
+          ..write('uuidContentId1: $uuidContentId1, ')
+          ..write('uuidContentId2: $uuidContentId2, ')
+          ..write('uuidContentId3: $uuidContentId3, ')
+          ..write('uuidContentId4: $uuidContentId4, ')
+          ..write('uuidContentId5: $uuidContentId5, ')
+          ..write('profileName: $profileName, ')
+          ..write('profileText: $profileText, ')
+          ..write('profileAge: $profileAge, ')
+          ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
+          ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
+          ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
+          ..write('primaryContentGridCropY: $primaryContentGridCropY')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id,
-      refreshTokenAccount,
-      refreshTokenMedia,
-      refreshTokenProfile,
-      refreshTokenChat,
-      accessTokenAccount,
-      accessTokenMedia,
-      accessTokenProfile,
-      accessTokenChat,
-      profileFilterFavorites,
-      profileLocationLatitude,
-      profileLocationLongitude,
-      jsonAccountState,
-      jsonCapabilities,
-      jsonAvailableProfileAttributes,
-      jsonProfileVisibility);
+  int get hashCode => Object.hashAll([
+        id,
+        refreshTokenAccount,
+        refreshTokenMedia,
+        refreshTokenProfile,
+        refreshTokenChat,
+        accessTokenAccount,
+        accessTokenMedia,
+        accessTokenProfile,
+        accessTokenChat,
+        profileFilterFavorites,
+        profileLocationLatitude,
+        profileLocationLongitude,
+        profileSearchAgeRangeMin,
+        profileSearchAgeRangeMax,
+        jsonAccountState,
+        jsonCapabilities,
+        jsonAvailableProfileAttributes,
+        jsonProfileVisibility,
+        jsonSearchGroups,
+        pendingPrimaryContentGridCropSize,
+        pendingPrimaryContentGridCropX,
+        pendingPrimaryContentGridCropY,
+        uuidPendingContentId0,
+        uuidPendingContentId1,
+        uuidPendingContentId2,
+        uuidPendingContentId3,
+        uuidPendingContentId4,
+        uuidPendingContentId5,
+        uuidPendingSecurityContentId,
+        uuidSecurityContentId,
+        uuidContentId0,
+        uuidContentId1,
+        uuidContentId2,
+        uuidContentId3,
+        uuidContentId4,
+        uuidContentId5,
+        profileName,
+        profileText,
+        profileAge,
+        jsonProfileAttributes,
+        primaryContentGridCropSize,
+        primaryContentGridCropX,
+        primaryContentGridCropY
+      ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -623,11 +1568,42 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.profileFilterFavorites == this.profileFilterFavorites &&
           other.profileLocationLatitude == this.profileLocationLatitude &&
           other.profileLocationLongitude == this.profileLocationLongitude &&
+          other.profileSearchAgeRangeMin == this.profileSearchAgeRangeMin &&
+          other.profileSearchAgeRangeMax == this.profileSearchAgeRangeMax &&
           other.jsonAccountState == this.jsonAccountState &&
           other.jsonCapabilities == this.jsonCapabilities &&
           other.jsonAvailableProfileAttributes ==
               this.jsonAvailableProfileAttributes &&
-          other.jsonProfileVisibility == this.jsonProfileVisibility);
+          other.jsonProfileVisibility == this.jsonProfileVisibility &&
+          other.jsonSearchGroups == this.jsonSearchGroups &&
+          other.pendingPrimaryContentGridCropSize ==
+              this.pendingPrimaryContentGridCropSize &&
+          other.pendingPrimaryContentGridCropX ==
+              this.pendingPrimaryContentGridCropX &&
+          other.pendingPrimaryContentGridCropY ==
+              this.pendingPrimaryContentGridCropY &&
+          other.uuidPendingContentId0 == this.uuidPendingContentId0 &&
+          other.uuidPendingContentId1 == this.uuidPendingContentId1 &&
+          other.uuidPendingContentId2 == this.uuidPendingContentId2 &&
+          other.uuidPendingContentId3 == this.uuidPendingContentId3 &&
+          other.uuidPendingContentId4 == this.uuidPendingContentId4 &&
+          other.uuidPendingContentId5 == this.uuidPendingContentId5 &&
+          other.uuidPendingSecurityContentId ==
+              this.uuidPendingSecurityContentId &&
+          other.uuidSecurityContentId == this.uuidSecurityContentId &&
+          other.uuidContentId0 == this.uuidContentId0 &&
+          other.uuidContentId1 == this.uuidContentId1 &&
+          other.uuidContentId2 == this.uuidContentId2 &&
+          other.uuidContentId3 == this.uuidContentId3 &&
+          other.uuidContentId4 == this.uuidContentId4 &&
+          other.uuidContentId5 == this.uuidContentId5 &&
+          other.profileName == this.profileName &&
+          other.profileText == this.profileText &&
+          other.profileAge == this.profileAge &&
+          other.jsonProfileAttributes == this.jsonProfileAttributes &&
+          other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
+          other.primaryContentGridCropX == this.primaryContentGridCropX &&
+          other.primaryContentGridCropY == this.primaryContentGridCropY);
 }
 
 class AccountCompanion extends UpdateCompanion<AccountData> {
@@ -643,10 +1619,37 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<bool> profileFilterFavorites;
   final Value<double?> profileLocationLatitude;
   final Value<double?> profileLocationLongitude;
+  final Value<int?> profileSearchAgeRangeMin;
+  final Value<int?> profileSearchAgeRangeMax;
   final Value<EnumString?> jsonAccountState;
   final Value<JsonString?> jsonCapabilities;
   final Value<JsonString?> jsonAvailableProfileAttributes;
   final Value<EnumString?> jsonProfileVisibility;
+  final Value<JsonString?> jsonSearchGroups;
+  final Value<double?> pendingPrimaryContentGridCropSize;
+  final Value<double?> pendingPrimaryContentGridCropX;
+  final Value<double?> pendingPrimaryContentGridCropY;
+  final Value<ContentId?> uuidPendingContentId0;
+  final Value<ContentId?> uuidPendingContentId1;
+  final Value<ContentId?> uuidPendingContentId2;
+  final Value<ContentId?> uuidPendingContentId3;
+  final Value<ContentId?> uuidPendingContentId4;
+  final Value<ContentId?> uuidPendingContentId5;
+  final Value<ContentId?> uuidPendingSecurityContentId;
+  final Value<ContentId?> uuidSecurityContentId;
+  final Value<ContentId?> uuidContentId0;
+  final Value<ContentId?> uuidContentId1;
+  final Value<ContentId?> uuidContentId2;
+  final Value<ContentId?> uuidContentId3;
+  final Value<ContentId?> uuidContentId4;
+  final Value<ContentId?> uuidContentId5;
+  final Value<String?> profileName;
+  final Value<String?> profileText;
+  final Value<int?> profileAge;
+  final Value<JsonList?> jsonProfileAttributes;
+  final Value<double?> primaryContentGridCropSize;
+  final Value<double?> primaryContentGridCropX;
+  final Value<double?> primaryContentGridCropY;
   const AccountCompanion({
     this.id = const Value.absent(),
     this.refreshTokenAccount = const Value.absent(),
@@ -660,10 +1663,37 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileFilterFavorites = const Value.absent(),
     this.profileLocationLatitude = const Value.absent(),
     this.profileLocationLongitude = const Value.absent(),
+    this.profileSearchAgeRangeMin = const Value.absent(),
+    this.profileSearchAgeRangeMax = const Value.absent(),
     this.jsonAccountState = const Value.absent(),
     this.jsonCapabilities = const Value.absent(),
     this.jsonAvailableProfileAttributes = const Value.absent(),
     this.jsonProfileVisibility = const Value.absent(),
+    this.jsonSearchGroups = const Value.absent(),
+    this.pendingPrimaryContentGridCropSize = const Value.absent(),
+    this.pendingPrimaryContentGridCropX = const Value.absent(),
+    this.pendingPrimaryContentGridCropY = const Value.absent(),
+    this.uuidPendingContentId0 = const Value.absent(),
+    this.uuidPendingContentId1 = const Value.absent(),
+    this.uuidPendingContentId2 = const Value.absent(),
+    this.uuidPendingContentId3 = const Value.absent(),
+    this.uuidPendingContentId4 = const Value.absent(),
+    this.uuidPendingContentId5 = const Value.absent(),
+    this.uuidPendingSecurityContentId = const Value.absent(),
+    this.uuidSecurityContentId = const Value.absent(),
+    this.uuidContentId0 = const Value.absent(),
+    this.uuidContentId1 = const Value.absent(),
+    this.uuidContentId2 = const Value.absent(),
+    this.uuidContentId3 = const Value.absent(),
+    this.uuidContentId4 = const Value.absent(),
+    this.uuidContentId5 = const Value.absent(),
+    this.profileName = const Value.absent(),
+    this.profileText = const Value.absent(),
+    this.profileAge = const Value.absent(),
+    this.jsonProfileAttributes = const Value.absent(),
+    this.primaryContentGridCropSize = const Value.absent(),
+    this.primaryContentGridCropX = const Value.absent(),
+    this.primaryContentGridCropY = const Value.absent(),
   });
   AccountCompanion.insert({
     this.id = const Value.absent(),
@@ -678,10 +1708,37 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileFilterFavorites = const Value.absent(),
     this.profileLocationLatitude = const Value.absent(),
     this.profileLocationLongitude = const Value.absent(),
+    this.profileSearchAgeRangeMin = const Value.absent(),
+    this.profileSearchAgeRangeMax = const Value.absent(),
     this.jsonAccountState = const Value.absent(),
     this.jsonCapabilities = const Value.absent(),
     this.jsonAvailableProfileAttributes = const Value.absent(),
     this.jsonProfileVisibility = const Value.absent(),
+    this.jsonSearchGroups = const Value.absent(),
+    this.pendingPrimaryContentGridCropSize = const Value.absent(),
+    this.pendingPrimaryContentGridCropX = const Value.absent(),
+    this.pendingPrimaryContentGridCropY = const Value.absent(),
+    this.uuidPendingContentId0 = const Value.absent(),
+    this.uuidPendingContentId1 = const Value.absent(),
+    this.uuidPendingContentId2 = const Value.absent(),
+    this.uuidPendingContentId3 = const Value.absent(),
+    this.uuidPendingContentId4 = const Value.absent(),
+    this.uuidPendingContentId5 = const Value.absent(),
+    this.uuidPendingSecurityContentId = const Value.absent(),
+    this.uuidSecurityContentId = const Value.absent(),
+    this.uuidContentId0 = const Value.absent(),
+    this.uuidContentId1 = const Value.absent(),
+    this.uuidContentId2 = const Value.absent(),
+    this.uuidContentId3 = const Value.absent(),
+    this.uuidContentId4 = const Value.absent(),
+    this.uuidContentId5 = const Value.absent(),
+    this.profileName = const Value.absent(),
+    this.profileText = const Value.absent(),
+    this.profileAge = const Value.absent(),
+    this.jsonProfileAttributes = const Value.absent(),
+    this.primaryContentGridCropSize = const Value.absent(),
+    this.primaryContentGridCropX = const Value.absent(),
+    this.primaryContentGridCropY = const Value.absent(),
   });
   static Insertable<AccountData> custom({
     Expression<int>? id,
@@ -696,10 +1753,37 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<bool>? profileFilterFavorites,
     Expression<double>? profileLocationLatitude,
     Expression<double>? profileLocationLongitude,
+    Expression<int>? profileSearchAgeRangeMin,
+    Expression<int>? profileSearchAgeRangeMax,
     Expression<String>? jsonAccountState,
     Expression<String>? jsonCapabilities,
     Expression<String>? jsonAvailableProfileAttributes,
     Expression<String>? jsonProfileVisibility,
+    Expression<String>? jsonSearchGroups,
+    Expression<double>? pendingPrimaryContentGridCropSize,
+    Expression<double>? pendingPrimaryContentGridCropX,
+    Expression<double>? pendingPrimaryContentGridCropY,
+    Expression<String>? uuidPendingContentId0,
+    Expression<String>? uuidPendingContentId1,
+    Expression<String>? uuidPendingContentId2,
+    Expression<String>? uuidPendingContentId3,
+    Expression<String>? uuidPendingContentId4,
+    Expression<String>? uuidPendingContentId5,
+    Expression<String>? uuidPendingSecurityContentId,
+    Expression<String>? uuidSecurityContentId,
+    Expression<String>? uuidContentId0,
+    Expression<String>? uuidContentId1,
+    Expression<String>? uuidContentId2,
+    Expression<String>? uuidContentId3,
+    Expression<String>? uuidContentId4,
+    Expression<String>? uuidContentId5,
+    Expression<String>? profileName,
+    Expression<String>? profileText,
+    Expression<int>? profileAge,
+    Expression<String>? jsonProfileAttributes,
+    Expression<double>? primaryContentGridCropSize,
+    Expression<double>? primaryContentGridCropX,
+    Expression<double>? primaryContentGridCropY,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -721,12 +1805,57 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'profile_location_latitude': profileLocationLatitude,
       if (profileLocationLongitude != null)
         'profile_location_longitude': profileLocationLongitude,
+      if (profileSearchAgeRangeMin != null)
+        'profile_search_age_range_min': profileSearchAgeRangeMin,
+      if (profileSearchAgeRangeMax != null)
+        'profile_search_age_range_max': profileSearchAgeRangeMax,
       if (jsonAccountState != null) 'json_account_state': jsonAccountState,
       if (jsonCapabilities != null) 'json_capabilities': jsonCapabilities,
       if (jsonAvailableProfileAttributes != null)
         'json_available_profile_attributes': jsonAvailableProfileAttributes,
       if (jsonProfileVisibility != null)
         'json_profile_visibility': jsonProfileVisibility,
+      if (jsonSearchGroups != null) 'json_search_groups': jsonSearchGroups,
+      if (pendingPrimaryContentGridCropSize != null)
+        'pending_primary_content_grid_crop_size':
+            pendingPrimaryContentGridCropSize,
+      if (pendingPrimaryContentGridCropX != null)
+        'pending_primary_content_grid_crop_x': pendingPrimaryContentGridCropX,
+      if (pendingPrimaryContentGridCropY != null)
+        'pending_primary_content_grid_crop_y': pendingPrimaryContentGridCropY,
+      if (uuidPendingContentId0 != null)
+        'uuid_pending_content_id0': uuidPendingContentId0,
+      if (uuidPendingContentId1 != null)
+        'uuid_pending_content_id1': uuidPendingContentId1,
+      if (uuidPendingContentId2 != null)
+        'uuid_pending_content_id2': uuidPendingContentId2,
+      if (uuidPendingContentId3 != null)
+        'uuid_pending_content_id3': uuidPendingContentId3,
+      if (uuidPendingContentId4 != null)
+        'uuid_pending_content_id4': uuidPendingContentId4,
+      if (uuidPendingContentId5 != null)
+        'uuid_pending_content_id5': uuidPendingContentId5,
+      if (uuidPendingSecurityContentId != null)
+        'uuid_pending_security_content_id': uuidPendingSecurityContentId,
+      if (uuidSecurityContentId != null)
+        'uuid_security_content_id': uuidSecurityContentId,
+      if (uuidContentId0 != null) 'uuid_content_id0': uuidContentId0,
+      if (uuidContentId1 != null) 'uuid_content_id1': uuidContentId1,
+      if (uuidContentId2 != null) 'uuid_content_id2': uuidContentId2,
+      if (uuidContentId3 != null) 'uuid_content_id3': uuidContentId3,
+      if (uuidContentId4 != null) 'uuid_content_id4': uuidContentId4,
+      if (uuidContentId5 != null) 'uuid_content_id5': uuidContentId5,
+      if (profileName != null) 'profile_name': profileName,
+      if (profileText != null) 'profile_text': profileText,
+      if (profileAge != null) 'profile_age': profileAge,
+      if (jsonProfileAttributes != null)
+        'json_profile_attributes': jsonProfileAttributes,
+      if (primaryContentGridCropSize != null)
+        'primary_content_grid_crop_size': primaryContentGridCropSize,
+      if (primaryContentGridCropX != null)
+        'primary_content_grid_crop_x': primaryContentGridCropX,
+      if (primaryContentGridCropY != null)
+        'primary_content_grid_crop_y': primaryContentGridCropY,
     });
   }
 
@@ -743,10 +1872,37 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<bool>? profileFilterFavorites,
       Value<double?>? profileLocationLatitude,
       Value<double?>? profileLocationLongitude,
+      Value<int?>? profileSearchAgeRangeMin,
+      Value<int?>? profileSearchAgeRangeMax,
       Value<EnumString?>? jsonAccountState,
       Value<JsonString?>? jsonCapabilities,
       Value<JsonString?>? jsonAvailableProfileAttributes,
-      Value<EnumString?>? jsonProfileVisibility}) {
+      Value<EnumString?>? jsonProfileVisibility,
+      Value<JsonString?>? jsonSearchGroups,
+      Value<double?>? pendingPrimaryContentGridCropSize,
+      Value<double?>? pendingPrimaryContentGridCropX,
+      Value<double?>? pendingPrimaryContentGridCropY,
+      Value<ContentId?>? uuidPendingContentId0,
+      Value<ContentId?>? uuidPendingContentId1,
+      Value<ContentId?>? uuidPendingContentId2,
+      Value<ContentId?>? uuidPendingContentId3,
+      Value<ContentId?>? uuidPendingContentId4,
+      Value<ContentId?>? uuidPendingContentId5,
+      Value<ContentId?>? uuidPendingSecurityContentId,
+      Value<ContentId?>? uuidSecurityContentId,
+      Value<ContentId?>? uuidContentId0,
+      Value<ContentId?>? uuidContentId1,
+      Value<ContentId?>? uuidContentId2,
+      Value<ContentId?>? uuidContentId3,
+      Value<ContentId?>? uuidContentId4,
+      Value<ContentId?>? uuidContentId5,
+      Value<String?>? profileName,
+      Value<String?>? profileText,
+      Value<int?>? profileAge,
+      Value<JsonList?>? jsonProfileAttributes,
+      Value<double?>? primaryContentGridCropSize,
+      Value<double?>? primaryContentGridCropX,
+      Value<double?>? primaryContentGridCropY}) {
     return AccountCompanion(
       id: id ?? this.id,
       refreshTokenAccount: refreshTokenAccount ?? this.refreshTokenAccount,
@@ -763,12 +1919,56 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           profileLocationLatitude ?? this.profileLocationLatitude,
       profileLocationLongitude:
           profileLocationLongitude ?? this.profileLocationLongitude,
+      profileSearchAgeRangeMin:
+          profileSearchAgeRangeMin ?? this.profileSearchAgeRangeMin,
+      profileSearchAgeRangeMax:
+          profileSearchAgeRangeMax ?? this.profileSearchAgeRangeMax,
       jsonAccountState: jsonAccountState ?? this.jsonAccountState,
       jsonCapabilities: jsonCapabilities ?? this.jsonCapabilities,
       jsonAvailableProfileAttributes:
           jsonAvailableProfileAttributes ?? this.jsonAvailableProfileAttributes,
       jsonProfileVisibility:
           jsonProfileVisibility ?? this.jsonProfileVisibility,
+      jsonSearchGroups: jsonSearchGroups ?? this.jsonSearchGroups,
+      pendingPrimaryContentGridCropSize: pendingPrimaryContentGridCropSize ??
+          this.pendingPrimaryContentGridCropSize,
+      pendingPrimaryContentGridCropX:
+          pendingPrimaryContentGridCropX ?? this.pendingPrimaryContentGridCropX,
+      pendingPrimaryContentGridCropY:
+          pendingPrimaryContentGridCropY ?? this.pendingPrimaryContentGridCropY,
+      uuidPendingContentId0:
+          uuidPendingContentId0 ?? this.uuidPendingContentId0,
+      uuidPendingContentId1:
+          uuidPendingContentId1 ?? this.uuidPendingContentId1,
+      uuidPendingContentId2:
+          uuidPendingContentId2 ?? this.uuidPendingContentId2,
+      uuidPendingContentId3:
+          uuidPendingContentId3 ?? this.uuidPendingContentId3,
+      uuidPendingContentId4:
+          uuidPendingContentId4 ?? this.uuidPendingContentId4,
+      uuidPendingContentId5:
+          uuidPendingContentId5 ?? this.uuidPendingContentId5,
+      uuidPendingSecurityContentId:
+          uuidPendingSecurityContentId ?? this.uuidPendingSecurityContentId,
+      uuidSecurityContentId:
+          uuidSecurityContentId ?? this.uuidSecurityContentId,
+      uuidContentId0: uuidContentId0 ?? this.uuidContentId0,
+      uuidContentId1: uuidContentId1 ?? this.uuidContentId1,
+      uuidContentId2: uuidContentId2 ?? this.uuidContentId2,
+      uuidContentId3: uuidContentId3 ?? this.uuidContentId3,
+      uuidContentId4: uuidContentId4 ?? this.uuidContentId4,
+      uuidContentId5: uuidContentId5 ?? this.uuidContentId5,
+      profileName: profileName ?? this.profileName,
+      profileText: profileText ?? this.profileText,
+      profileAge: profileAge ?? this.profileAge,
+      jsonProfileAttributes:
+          jsonProfileAttributes ?? this.jsonProfileAttributes,
+      primaryContentGridCropSize:
+          primaryContentGridCropSize ?? this.primaryContentGridCropSize,
+      primaryContentGridCropX:
+          primaryContentGridCropX ?? this.primaryContentGridCropX,
+      primaryContentGridCropY:
+          primaryContentGridCropY ?? this.primaryContentGridCropY,
     );
   }
 
@@ -816,6 +2016,14 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['profile_location_longitude'] =
           Variable<double>(profileLocationLongitude.value);
     }
+    if (profileSearchAgeRangeMin.present) {
+      map['profile_search_age_range_min'] =
+          Variable<int>(profileSearchAgeRangeMin.value);
+    }
+    if (profileSearchAgeRangeMax.present) {
+      map['profile_search_age_range_max'] =
+          Variable<int>(profileSearchAgeRangeMax.value);
+    }
     if (jsonAccountState.present) {
       map['json_account_state'] = Variable<String>($AccountTable
           .$converterjsonAccountState
@@ -836,6 +2044,113 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           .$converterjsonProfileVisibility
           .toSql(jsonProfileVisibility.value));
     }
+    if (jsonSearchGroups.present) {
+      map['json_search_groups'] = Variable<String>($AccountTable
+          .$converterjsonSearchGroups
+          .toSql(jsonSearchGroups.value));
+    }
+    if (pendingPrimaryContentGridCropSize.present) {
+      map['pending_primary_content_grid_crop_size'] =
+          Variable<double>(pendingPrimaryContentGridCropSize.value);
+    }
+    if (pendingPrimaryContentGridCropX.present) {
+      map['pending_primary_content_grid_crop_x'] =
+          Variable<double>(pendingPrimaryContentGridCropX.value);
+    }
+    if (pendingPrimaryContentGridCropY.present) {
+      map['pending_primary_content_grid_crop_y'] =
+          Variable<double>(pendingPrimaryContentGridCropY.value);
+    }
+    if (uuidPendingContentId0.present) {
+      map['uuid_pending_content_id0'] = Variable<String>($AccountTable
+          .$converteruuidPendingContentId0
+          .toSql(uuidPendingContentId0.value));
+    }
+    if (uuidPendingContentId1.present) {
+      map['uuid_pending_content_id1'] = Variable<String>($AccountTable
+          .$converteruuidPendingContentId1
+          .toSql(uuidPendingContentId1.value));
+    }
+    if (uuidPendingContentId2.present) {
+      map['uuid_pending_content_id2'] = Variable<String>($AccountTable
+          .$converteruuidPendingContentId2
+          .toSql(uuidPendingContentId2.value));
+    }
+    if (uuidPendingContentId3.present) {
+      map['uuid_pending_content_id3'] = Variable<String>($AccountTable
+          .$converteruuidPendingContentId3
+          .toSql(uuidPendingContentId3.value));
+    }
+    if (uuidPendingContentId4.present) {
+      map['uuid_pending_content_id4'] = Variable<String>($AccountTable
+          .$converteruuidPendingContentId4
+          .toSql(uuidPendingContentId4.value));
+    }
+    if (uuidPendingContentId5.present) {
+      map['uuid_pending_content_id5'] = Variable<String>($AccountTable
+          .$converteruuidPendingContentId5
+          .toSql(uuidPendingContentId5.value));
+    }
+    if (uuidPendingSecurityContentId.present) {
+      map['uuid_pending_security_content_id'] = Variable<String>($AccountTable
+          .$converteruuidPendingSecurityContentId
+          .toSql(uuidPendingSecurityContentId.value));
+    }
+    if (uuidSecurityContentId.present) {
+      map['uuid_security_content_id'] = Variable<String>($AccountTable
+          .$converteruuidSecurityContentId
+          .toSql(uuidSecurityContentId.value));
+    }
+    if (uuidContentId0.present) {
+      map['uuid_content_id0'] = Variable<String>(
+          $AccountTable.$converteruuidContentId0.toSql(uuidContentId0.value));
+    }
+    if (uuidContentId1.present) {
+      map['uuid_content_id1'] = Variable<String>(
+          $AccountTable.$converteruuidContentId1.toSql(uuidContentId1.value));
+    }
+    if (uuidContentId2.present) {
+      map['uuid_content_id2'] = Variable<String>(
+          $AccountTable.$converteruuidContentId2.toSql(uuidContentId2.value));
+    }
+    if (uuidContentId3.present) {
+      map['uuid_content_id3'] = Variable<String>(
+          $AccountTable.$converteruuidContentId3.toSql(uuidContentId3.value));
+    }
+    if (uuidContentId4.present) {
+      map['uuid_content_id4'] = Variable<String>(
+          $AccountTable.$converteruuidContentId4.toSql(uuidContentId4.value));
+    }
+    if (uuidContentId5.present) {
+      map['uuid_content_id5'] = Variable<String>(
+          $AccountTable.$converteruuidContentId5.toSql(uuidContentId5.value));
+    }
+    if (profileName.present) {
+      map['profile_name'] = Variable<String>(profileName.value);
+    }
+    if (profileText.present) {
+      map['profile_text'] = Variable<String>(profileText.value);
+    }
+    if (profileAge.present) {
+      map['profile_age'] = Variable<int>(profileAge.value);
+    }
+    if (jsonProfileAttributes.present) {
+      map['json_profile_attributes'] = Variable<String>($AccountTable
+          .$converterjsonProfileAttributes
+          .toSql(jsonProfileAttributes.value));
+    }
+    if (primaryContentGridCropSize.present) {
+      map['primary_content_grid_crop_size'] =
+          Variable<double>(primaryContentGridCropSize.value);
+    }
+    if (primaryContentGridCropX.present) {
+      map['primary_content_grid_crop_x'] =
+          Variable<double>(primaryContentGridCropX.value);
+    }
+    if (primaryContentGridCropY.present) {
+      map['primary_content_grid_crop_y'] =
+          Variable<double>(primaryContentGridCropY.value);
+    }
     return map;
   }
 
@@ -854,11 +2169,42 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('profileFilterFavorites: $profileFilterFavorites, ')
           ..write('profileLocationLatitude: $profileLocationLatitude, ')
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
+          ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
+          ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
           ..write('jsonAccountState: $jsonAccountState, ')
           ..write('jsonCapabilities: $jsonCapabilities, ')
           ..write(
               'jsonAvailableProfileAttributes: $jsonAvailableProfileAttributes, ')
-          ..write('jsonProfileVisibility: $jsonProfileVisibility')
+          ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
+          ..write('jsonSearchGroups: $jsonSearchGroups, ')
+          ..write(
+              'pendingPrimaryContentGridCropSize: $pendingPrimaryContentGridCropSize, ')
+          ..write(
+              'pendingPrimaryContentGridCropX: $pendingPrimaryContentGridCropX, ')
+          ..write(
+              'pendingPrimaryContentGridCropY: $pendingPrimaryContentGridCropY, ')
+          ..write('uuidPendingContentId0: $uuidPendingContentId0, ')
+          ..write('uuidPendingContentId1: $uuidPendingContentId1, ')
+          ..write('uuidPendingContentId2: $uuidPendingContentId2, ')
+          ..write('uuidPendingContentId3: $uuidPendingContentId3, ')
+          ..write('uuidPendingContentId4: $uuidPendingContentId4, ')
+          ..write('uuidPendingContentId5: $uuidPendingContentId5, ')
+          ..write(
+              'uuidPendingSecurityContentId: $uuidPendingSecurityContentId, ')
+          ..write('uuidSecurityContentId: $uuidSecurityContentId, ')
+          ..write('uuidContentId0: $uuidContentId0, ')
+          ..write('uuidContentId1: $uuidContentId1, ')
+          ..write('uuidContentId2: $uuidContentId2, ')
+          ..write('uuidContentId3: $uuidContentId3, ')
+          ..write('uuidContentId4: $uuidContentId4, ')
+          ..write('uuidContentId5: $uuidContentId5, ')
+          ..write('profileName: $profileName, ')
+          ..write('profileText: $profileText, ')
+          ..write('profileAge: $profileAge, ')
+          ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
+          ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
+          ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
+          ..write('primaryContentGridCropY: $primaryContentGridCropY')
           ..write(')'))
         .toString();
   }
@@ -959,6 +2305,34 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   late final GeneratedColumn<int> profileAge = GeneratedColumn<int>(
       'profile_age', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _jsonProfileAttributesMeta =
+      const VerificationMeta('jsonProfileAttributes');
+  @override
+  late final GeneratedColumnWithTypeConverter<JsonList?, String>
+      jsonProfileAttributes = GeneratedColumn<String>(
+              'json_profile_attributes', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<JsonList?>(
+              $ProfilesTable.$converterjsonProfileAttributes);
+  static const VerificationMeta _primaryContentGridCropSizeMeta =
+      const VerificationMeta('primaryContentGridCropSize');
+  @override
+  late final GeneratedColumn<double> primaryContentGridCropSize =
+      GeneratedColumn<double>(
+          'primary_content_grid_crop_size', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _primaryContentGridCropXMeta =
+      const VerificationMeta('primaryContentGridCropX');
+  @override
+  late final GeneratedColumn<double> primaryContentGridCropX =
+      GeneratedColumn<double>('primary_content_grid_crop_x', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _primaryContentGridCropYMeta =
+      const VerificationMeta('primaryContentGridCropY');
+  @override
+  late final GeneratedColumn<double> primaryContentGridCropY =
+      GeneratedColumn<double>('primary_content_grid_crop_y', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
   static const VerificationMeta _isInFavoritesMeta =
       const VerificationMeta('isInFavorites');
   @override
@@ -1029,6 +2403,10 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
         profileText,
         profileVersion,
         profileAge,
+        jsonProfileAttributes,
+        primaryContentGridCropSize,
+        primaryContentGridCropX,
+        primaryContentGridCropY,
         isInFavorites,
         isInMatches,
         isInReceivedBlocks,
@@ -1081,6 +2459,29 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
           profileAge.isAcceptableOrUnknown(
               data['profile_age']!, _profileAgeMeta));
     }
+    context.handle(
+        _jsonProfileAttributesMeta, const VerificationResult.success());
+    if (data.containsKey('primary_content_grid_crop_size')) {
+      context.handle(
+          _primaryContentGridCropSizeMeta,
+          primaryContentGridCropSize.isAcceptableOrUnknown(
+              data['primary_content_grid_crop_size']!,
+              _primaryContentGridCropSizeMeta));
+    }
+    if (data.containsKey('primary_content_grid_crop_x')) {
+      context.handle(
+          _primaryContentGridCropXMeta,
+          primaryContentGridCropX.isAcceptableOrUnknown(
+              data['primary_content_grid_crop_x']!,
+              _primaryContentGridCropXMeta));
+    }
+    if (data.containsKey('primary_content_grid_crop_y')) {
+      context.handle(
+          _primaryContentGridCropYMeta,
+          primaryContentGridCropY.isAcceptableOrUnknown(
+              data['primary_content_grid_crop_y']!,
+              _primaryContentGridCropYMeta));
+    }
     context.handle(_isInFavoritesMeta, const VerificationResult.success());
     context.handle(_isInMatchesMeta, const VerificationResult.success());
     context.handle(_isInReceivedBlocksMeta, const VerificationResult.success());
@@ -1128,6 +2529,18 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
           .read(DriftSqlType.string, data['${effectivePrefix}profile_version']),
       profileAge: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}profile_age']),
+      jsonProfileAttributes: $ProfilesTable.$converterjsonProfileAttributes
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}json_profile_attributes'])),
+      primaryContentGridCropSize: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}primary_content_grid_crop_size']),
+      primaryContentGridCropX: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}primary_content_grid_crop_x']),
+      primaryContentGridCropY: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}primary_content_grid_crop_y']),
       isInFavorites: $ProfilesTable.$converterisInFavorites.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}is_in_favorites'])),
@@ -1171,6 +2584,8 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       const NullAwareTypeConverter.wrap(ContentIdConverter());
   static TypeConverter<ContentId?, String?> $converteruuidContentId5 =
       const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
+      NullAwareTypeConverter.wrap(JsonList.driftConverter);
   static TypeConverter<UtcDateTime?, int?> $converterisInFavorites =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInMatches =
@@ -1202,6 +2617,10 @@ class Profile extends DataClass implements Insertable<Profile> {
   final String? profileText;
   final String? profileVersion;
   final int? profileAge;
+  final JsonList? jsonProfileAttributes;
+  final double? primaryContentGridCropSize;
+  final double? primaryContentGridCropX;
+  final double? primaryContentGridCropY;
   final UtcDateTime? isInFavorites;
   final UtcDateTime? isInMatches;
   final UtcDateTime? isInReceivedBlocks;
@@ -1222,6 +2641,10 @@ class Profile extends DataClass implements Insertable<Profile> {
       this.profileText,
       this.profileVersion,
       this.profileAge,
+      this.jsonProfileAttributes,
+      this.primaryContentGridCropSize,
+      this.primaryContentGridCropX,
+      this.primaryContentGridCropY,
       this.isInFavorites,
       this.isInMatches,
       this.isInReceivedBlocks,
@@ -1272,6 +2695,23 @@ class Profile extends DataClass implements Insertable<Profile> {
     }
     if (!nullToAbsent || profileAge != null) {
       map['profile_age'] = Variable<int>(profileAge);
+    }
+    if (!nullToAbsent || jsonProfileAttributes != null) {
+      map['json_profile_attributes'] = Variable<String>($ProfilesTable
+          .$converterjsonProfileAttributes
+          .toSql(jsonProfileAttributes));
+    }
+    if (!nullToAbsent || primaryContentGridCropSize != null) {
+      map['primary_content_grid_crop_size'] =
+          Variable<double>(primaryContentGridCropSize);
+    }
+    if (!nullToAbsent || primaryContentGridCropX != null) {
+      map['primary_content_grid_crop_x'] =
+          Variable<double>(primaryContentGridCropX);
+    }
+    if (!nullToAbsent || primaryContentGridCropY != null) {
+      map['primary_content_grid_crop_y'] =
+          Variable<double>(primaryContentGridCropY);
     }
     if (!nullToAbsent || isInFavorites != null) {
       map['is_in_favorites'] = Variable<int>(
@@ -1339,6 +2779,19 @@ class Profile extends DataClass implements Insertable<Profile> {
       profileAge: profileAge == null && nullToAbsent
           ? const Value.absent()
           : Value(profileAge),
+      jsonProfileAttributes: jsonProfileAttributes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jsonProfileAttributes),
+      primaryContentGridCropSize:
+          primaryContentGridCropSize == null && nullToAbsent
+              ? const Value.absent()
+              : Value(primaryContentGridCropSize),
+      primaryContentGridCropX: primaryContentGridCropX == null && nullToAbsent
+          ? const Value.absent()
+          : Value(primaryContentGridCropX),
+      primaryContentGridCropY: primaryContentGridCropY == null && nullToAbsent
+          ? const Value.absent()
+          : Value(primaryContentGridCropY),
       isInFavorites: isInFavorites == null && nullToAbsent
           ? const Value.absent()
           : Value(isInFavorites),
@@ -1379,6 +2832,14 @@ class Profile extends DataClass implements Insertable<Profile> {
       profileText: serializer.fromJson<String?>(json['profileText']),
       profileVersion: serializer.fromJson<String?>(json['profileVersion']),
       profileAge: serializer.fromJson<int?>(json['profileAge']),
+      jsonProfileAttributes:
+          serializer.fromJson<JsonList?>(json['jsonProfileAttributes']),
+      primaryContentGridCropSize:
+          serializer.fromJson<double?>(json['primaryContentGridCropSize']),
+      primaryContentGridCropX:
+          serializer.fromJson<double?>(json['primaryContentGridCropX']),
+      primaryContentGridCropY:
+          serializer.fromJson<double?>(json['primaryContentGridCropY']),
       isInFavorites: serializer.fromJson<UtcDateTime?>(json['isInFavorites']),
       isInMatches: serializer.fromJson<UtcDateTime?>(json['isInMatches']),
       isInReceivedBlocks:
@@ -1407,6 +2868,14 @@ class Profile extends DataClass implements Insertable<Profile> {
       'profileText': serializer.toJson<String?>(profileText),
       'profileVersion': serializer.toJson<String?>(profileVersion),
       'profileAge': serializer.toJson<int?>(profileAge),
+      'jsonProfileAttributes':
+          serializer.toJson<JsonList?>(jsonProfileAttributes),
+      'primaryContentGridCropSize':
+          serializer.toJson<double?>(primaryContentGridCropSize),
+      'primaryContentGridCropX':
+          serializer.toJson<double?>(primaryContentGridCropX),
+      'primaryContentGridCropY':
+          serializer.toJson<double?>(primaryContentGridCropY),
       'isInFavorites': serializer.toJson<UtcDateTime?>(isInFavorites),
       'isInMatches': serializer.toJson<UtcDateTime?>(isInMatches),
       'isInReceivedBlocks': serializer.toJson<UtcDateTime?>(isInReceivedBlocks),
@@ -1430,6 +2899,10 @@ class Profile extends DataClass implements Insertable<Profile> {
           Value<String?> profileText = const Value.absent(),
           Value<String?> profileVersion = const Value.absent(),
           Value<int?> profileAge = const Value.absent(),
+          Value<JsonList?> jsonProfileAttributes = const Value.absent(),
+          Value<double?> primaryContentGridCropSize = const Value.absent(),
+          Value<double?> primaryContentGridCropX = const Value.absent(),
+          Value<double?> primaryContentGridCropY = const Value.absent(),
           Value<UtcDateTime?> isInFavorites = const Value.absent(),
           Value<UtcDateTime?> isInMatches = const Value.absent(),
           Value<UtcDateTime?> isInReceivedBlocks = const Value.absent(),
@@ -1457,6 +2930,18 @@ class Profile extends DataClass implements Insertable<Profile> {
         profileVersion:
             profileVersion.present ? profileVersion.value : this.profileVersion,
         profileAge: profileAge.present ? profileAge.value : this.profileAge,
+        jsonProfileAttributes: jsonProfileAttributes.present
+            ? jsonProfileAttributes.value
+            : this.jsonProfileAttributes,
+        primaryContentGridCropSize: primaryContentGridCropSize.present
+            ? primaryContentGridCropSize.value
+            : this.primaryContentGridCropSize,
+        primaryContentGridCropX: primaryContentGridCropX.present
+            ? primaryContentGridCropX.value
+            : this.primaryContentGridCropX,
+        primaryContentGridCropY: primaryContentGridCropY.present
+            ? primaryContentGridCropY.value
+            : this.primaryContentGridCropY,
         isInFavorites:
             isInFavorites.present ? isInFavorites.value : this.isInFavorites,
         isInMatches: isInMatches.present ? isInMatches.value : this.isInMatches,
@@ -1489,6 +2974,10 @@ class Profile extends DataClass implements Insertable<Profile> {
           ..write('profileText: $profileText, ')
           ..write('profileVersion: $profileVersion, ')
           ..write('profileAge: $profileAge, ')
+          ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
+          ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
+          ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
+          ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
           ..write('isInFavorites: $isInFavorites, ')
           ..write('isInMatches: $isInMatches, ')
           ..write('isInReceivedBlocks: $isInReceivedBlocks, ')
@@ -1501,26 +2990,31 @@ class Profile extends DataClass implements Insertable<Profile> {
   }
 
   @override
-  int get hashCode => Object.hash(
-      id,
-      uuidAccountId,
-      uuidContentId0,
-      uuidContentId1,
-      uuidContentId2,
-      uuidContentId3,
-      uuidContentId4,
-      uuidContentId5,
-      profileName,
-      profileText,
-      profileVersion,
-      profileAge,
-      isInFavorites,
-      isInMatches,
-      isInReceivedBlocks,
-      isInReceivedLikes,
-      isInSentBlocks,
-      isInSentLikes,
-      isInProfileGrid);
+  int get hashCode => Object.hashAll([
+        id,
+        uuidAccountId,
+        uuidContentId0,
+        uuidContentId1,
+        uuidContentId2,
+        uuidContentId3,
+        uuidContentId4,
+        uuidContentId5,
+        profileName,
+        profileText,
+        profileVersion,
+        profileAge,
+        jsonProfileAttributes,
+        primaryContentGridCropSize,
+        primaryContentGridCropX,
+        primaryContentGridCropY,
+        isInFavorites,
+        isInMatches,
+        isInReceivedBlocks,
+        isInReceivedLikes,
+        isInSentBlocks,
+        isInSentLikes,
+        isInProfileGrid
+      ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1537,6 +3031,10 @@ class Profile extends DataClass implements Insertable<Profile> {
           other.profileText == this.profileText &&
           other.profileVersion == this.profileVersion &&
           other.profileAge == this.profileAge &&
+          other.jsonProfileAttributes == this.jsonProfileAttributes &&
+          other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
+          other.primaryContentGridCropX == this.primaryContentGridCropX &&
+          other.primaryContentGridCropY == this.primaryContentGridCropY &&
           other.isInFavorites == this.isInFavorites &&
           other.isInMatches == this.isInMatches &&
           other.isInReceivedBlocks == this.isInReceivedBlocks &&
@@ -1559,6 +3057,10 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<String?> profileText;
   final Value<String?> profileVersion;
   final Value<int?> profileAge;
+  final Value<JsonList?> jsonProfileAttributes;
+  final Value<double?> primaryContentGridCropSize;
+  final Value<double?> primaryContentGridCropX;
+  final Value<double?> primaryContentGridCropY;
   final Value<UtcDateTime?> isInFavorites;
   final Value<UtcDateTime?> isInMatches;
   final Value<UtcDateTime?> isInReceivedBlocks;
@@ -1579,6 +3081,10 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.profileText = const Value.absent(),
     this.profileVersion = const Value.absent(),
     this.profileAge = const Value.absent(),
+    this.jsonProfileAttributes = const Value.absent(),
+    this.primaryContentGridCropSize = const Value.absent(),
+    this.primaryContentGridCropX = const Value.absent(),
+    this.primaryContentGridCropY = const Value.absent(),
     this.isInFavorites = const Value.absent(),
     this.isInMatches = const Value.absent(),
     this.isInReceivedBlocks = const Value.absent(),
@@ -1600,6 +3106,10 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.profileText = const Value.absent(),
     this.profileVersion = const Value.absent(),
     this.profileAge = const Value.absent(),
+    this.jsonProfileAttributes = const Value.absent(),
+    this.primaryContentGridCropSize = const Value.absent(),
+    this.primaryContentGridCropX = const Value.absent(),
+    this.primaryContentGridCropY = const Value.absent(),
     this.isInFavorites = const Value.absent(),
     this.isInMatches = const Value.absent(),
     this.isInReceivedBlocks = const Value.absent(),
@@ -1621,6 +3131,10 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     Expression<String>? profileText,
     Expression<String>? profileVersion,
     Expression<int>? profileAge,
+    Expression<String>? jsonProfileAttributes,
+    Expression<double>? primaryContentGridCropSize,
+    Expression<double>? primaryContentGridCropX,
+    Expression<double>? primaryContentGridCropY,
     Expression<int>? isInFavorites,
     Expression<int>? isInMatches,
     Expression<int>? isInReceivedBlocks,
@@ -1642,6 +3156,14 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       if (profileText != null) 'profile_text': profileText,
       if (profileVersion != null) 'profile_version': profileVersion,
       if (profileAge != null) 'profile_age': profileAge,
+      if (jsonProfileAttributes != null)
+        'json_profile_attributes': jsonProfileAttributes,
+      if (primaryContentGridCropSize != null)
+        'primary_content_grid_crop_size': primaryContentGridCropSize,
+      if (primaryContentGridCropX != null)
+        'primary_content_grid_crop_x': primaryContentGridCropX,
+      if (primaryContentGridCropY != null)
+        'primary_content_grid_crop_y': primaryContentGridCropY,
       if (isInFavorites != null) 'is_in_favorites': isInFavorites,
       if (isInMatches != null) 'is_in_matches': isInMatches,
       if (isInReceivedBlocks != null)
@@ -1666,6 +3188,10 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       Value<String?>? profileText,
       Value<String?>? profileVersion,
       Value<int?>? profileAge,
+      Value<JsonList?>? jsonProfileAttributes,
+      Value<double?>? primaryContentGridCropSize,
+      Value<double?>? primaryContentGridCropX,
+      Value<double?>? primaryContentGridCropY,
       Value<UtcDateTime?>? isInFavorites,
       Value<UtcDateTime?>? isInMatches,
       Value<UtcDateTime?>? isInReceivedBlocks,
@@ -1686,6 +3212,14 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       profileText: profileText ?? this.profileText,
       profileVersion: profileVersion ?? this.profileVersion,
       profileAge: profileAge ?? this.profileAge,
+      jsonProfileAttributes:
+          jsonProfileAttributes ?? this.jsonProfileAttributes,
+      primaryContentGridCropSize:
+          primaryContentGridCropSize ?? this.primaryContentGridCropSize,
+      primaryContentGridCropX:
+          primaryContentGridCropX ?? this.primaryContentGridCropX,
+      primaryContentGridCropY:
+          primaryContentGridCropY ?? this.primaryContentGridCropY,
       isInFavorites: isInFavorites ?? this.isInFavorites,
       isInMatches: isInMatches ?? this.isInMatches,
       isInReceivedBlocks: isInReceivedBlocks ?? this.isInReceivedBlocks,
@@ -1742,6 +3276,23 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     if (profileAge.present) {
       map['profile_age'] = Variable<int>(profileAge.value);
     }
+    if (jsonProfileAttributes.present) {
+      map['json_profile_attributes'] = Variable<String>($ProfilesTable
+          .$converterjsonProfileAttributes
+          .toSql(jsonProfileAttributes.value));
+    }
+    if (primaryContentGridCropSize.present) {
+      map['primary_content_grid_crop_size'] =
+          Variable<double>(primaryContentGridCropSize.value);
+    }
+    if (primaryContentGridCropX.present) {
+      map['primary_content_grid_crop_x'] =
+          Variable<double>(primaryContentGridCropX.value);
+    }
+    if (primaryContentGridCropY.present) {
+      map['primary_content_grid_crop_y'] =
+          Variable<double>(primaryContentGridCropY.value);
+    }
     if (isInFavorites.present) {
       map['is_in_favorites'] = Variable<int>(
           $ProfilesTable.$converterisInFavorites.toSql(isInFavorites.value));
@@ -1791,6 +3342,10 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           ..write('profileText: $profileText, ')
           ..write('profileVersion: $profileVersion, ')
           ..write('profileAge: $profileAge, ')
+          ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
+          ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
+          ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
+          ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
           ..write('isInFavorites: $isInFavorites, ')
           ..write('isInMatches: $isInMatches, ')
           ..write('isInReceivedBlocks: $isInReceivedBlocks, ')

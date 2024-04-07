@@ -1,9 +1,10 @@
 
-import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
+import 'package:pihka_frontend/database/profile_entry.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
 import 'package:pihka_frontend/ui_utils/consts/corners.dart';
 import 'package:pihka_frontend/ui_utils/crop_image_screen.dart';
@@ -11,17 +12,56 @@ import 'package:pihka_frontend/utils/account_img_key.dart';
 
 
 class ProfileThumbnailImage extends StatefulWidget {
-  final ProcessedAccountImage img;
+  final AccountId accountId;
+  final ContentId contentId;
   final CropResults cropResults;
-  final double size;
+  /// 1.0 means square image, 0.0 means original aspect ratio
+  final double squareFactor;
+  final double? width;
+  final double? height;
   final Widget? child;
+  final BorderRadius? borderRadius;
   const ProfileThumbnailImage({
-    required this.img,
+    required this.accountId,
+    required this.contentId,
     required this.cropResults,
-    required this.size,
+    this.width,
+    this.height,
     this.child,
+    this.squareFactor = 1.0,
+    this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
     super.key,
   });
+
+  ProfileThumbnailImage.fromProcessedImage({
+    required ProcessedAccountImage img,
+    required this.cropResults,
+    this.width,
+    this.height,
+    this.child,
+    this.squareFactor = 1.0,
+    this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
+    super.key,
+  }) :
+    accountId = img.accountId,
+    contentId = img.contentId;
+
+  ProfileThumbnailImage.fromProfileEntry({
+    required ProfileEntry entry,
+    this.width,
+    this.height,
+    this.child,
+    this.squareFactor = 1.0,
+    this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
+    super.key,
+  }) :
+    accountId = entry.uuid,
+    contentId = entry.imageUuid,
+    cropResults = CropResults.fromValues(
+      entry.primaryContentGridCropSize,
+      entry.primaryContentGridCropX,
+      entry.primaryContentGridCropY,
+    );
 
   @override
   State<ProfileThumbnailImage> createState() => _ProfileThumbnailImageState();
@@ -42,13 +82,13 @@ class _ProfileThumbnailImageState extends State<ProfileThumbnailImage> {
   @override
   void didUpdateWidget(ProfileThumbnailImage oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.img != widget.img) {
+    if ((widget.accountId, widget.contentId) != (oldWidget.accountId, oldWidget.contentId)) {
       loadImage();
     }
   }
 
   void loadImage() {
-    final k = AccountImgKey(accountId: widget.img.accountId, contentId: widget.img.contentId);
+    final k = AccountImgKey(accountId: widget.accountId, contentId: widget.contentId);
     final newStream = AccountImageProvider(k).resolve(createLocalImageConfiguration(context));
     if (newStream.key != imgStream?.key) {
       // Remove listener from old stream
@@ -89,47 +129,54 @@ class _ProfileThumbnailImageState extends State<ProfileThumbnailImage> {
   Widget build(BuildContext context) {
     final img = info?.image;
     if (img != null) {
-      return Container(
-        width: widget.size,
-        height: widget.size,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(PROFILE_PICTURE_BORDER_RADIUS),
-        ),
-        clipBehavior: Clip.hardEdge,
-        child: CustomPaint(
-          painter: CroppedImagePainter(img, widget.cropResults),
-          child: widget.child,
+      final imgAspect = img.width.toDouble() / img.height.toDouble();
+      final aspect = ui.lerpDouble(imgAspect, 1.0, widget.squareFactor) ?? imgAspect;
+      return Align(
+        alignment: Alignment.center,
+        child: SizedBox(
+          width: widget.width,
+          height: widget.height,
+          child: AspectRatio(
+            aspectRatio: aspect,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: widget.borderRadius,
+              ),
+              clipBehavior: Clip.hardEdge,
+              child: CustomPaint(
+                painter: CroppedImagePainter(img, widget.cropResults, widget.squareFactor),
+                child: widget.child,
+              ),
+            ),
+          ),
         ),
       );
     } else {
-      return Container(
-        width: widget.size,
-        height: widget.size,
-        color: Colors.transparent,
+      return Align(
+        alignment: Alignment.center,
+        child: Container(
+          width: widget.width,
+          height: widget.height,
+          color: Colors.transparent,
+        ),
       );
     }
   }
 }
 
-
 class CroppedImagePainter extends CustomPainter {
   final ui.Image img;
   final CropResults cropResults;
-  CroppedImagePainter(this.img, this.cropResults);
+  final double squareFactor;
+  CroppedImagePainter(this.img, this.cropResults, this.squareFactor);
 
   @override
   void paint(Canvas canvas, Size size) {
-    final imgSize = Size(img.width.toDouble(), img.height.toDouble());
-    final areaWidth = imgSize.shortestSide * cropResults.gridCropSize;
-    final xOffset = img.width.toDouble() * cropResults.gridCropX;
-    final yOffset = img.height.toDouble() * cropResults.gridCropY;
+    final squareRect = calculateSquareSrcRect(img, cropResults);
+    final fullImgRect = Rect.fromLTWH(0, 0, img.width.toDouble(), img.height.toDouble());
 
-    final src = Rect.fromLTWH(
-      xOffset,
-      yOffset,
-      areaWidth,
-      areaWidth,
-    );
+    final animatedSrc = RectTween(begin: fullImgRect, end: squareRect).lerp(squareFactor);
+    final src = animatedSrc ?? fullImgRect;
 
     final dst = Rect.fromLTWH(
       0,
@@ -143,6 +190,22 @@ class CroppedImagePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     final old = oldDelegate as CroppedImagePainter;
-    return old.cropResults != cropResults;
+    return old.cropResults != cropResults || old.squareFactor != squareFactor;
   }
+}
+
+Rect calculateSquareSrcRect(ui.Image img, CropResults cropResults) {
+  final imgSize = Size(img.width.toDouble(), img.height.toDouble());
+  final areaWidth = imgSize.shortestSide * cropResults.gridCropSize;
+  final xOffset = img.width.toDouble() * cropResults.gridCropX;
+  final yOffset = img.height.toDouble() * cropResults.gridCropY;
+
+  final src = Rect.fromLTWH(
+    xOffset,
+    yOffset,
+    areaWidth,
+    areaWidth,
+  );
+
+  return src;
 }

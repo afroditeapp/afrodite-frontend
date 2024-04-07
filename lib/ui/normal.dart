@@ -42,6 +42,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
 
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0.0,
         title: Text(views[selectedView].title(context)),
         actions: views[selectedView].actions(context),
       ),
