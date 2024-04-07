@@ -174,11 +174,11 @@ class ViewProfilePage extends StatelessWidget {
 
         handleStateAction(context, state);
 
-        if (state.isNotAvailable || state.isBlocked) {
-          return const SizedBox.shrink();
-        } else {
-          return viewProifle(context, state.profile, heroTag: state.imgTag);
-        }
+        return AnimatedOpacity(
+          duration: const Duration(milliseconds: 150),
+          opacity: state.isNotAvailable ? 0.0 : 1.0,
+          child: viewProifle(context, state.profile, heroTag: state.imgTag),
+        );
       }
     );
   }
@@ -199,17 +199,22 @@ class ViewProfilePage extends StatelessWidget {
         context.read<ViewProfileBloc>().add(ResetShowMessages());
       }
 
+      // Added canPop tests here because testing emitting isBlocked with delay
+      // resulted a black screen once.
+
       if (state.isNotAvailable) {
         await showInfoDialog(
           context,
           context.strings.view_profile_screen_profile_not_available_dialog_description
         );
-        if (context.mounted) {
+        if (context.mounted && Navigator.canPop(context)) {
           Navigator.pop(context);
         }
       } else if (state.isBlocked) {
         showSnackBar(context.strings.view_profile_screen_block_action_successful);
-        Navigator.pop(context);
+        if (context.mounted && Navigator.canPop(context)) {
+          Navigator.pop(context);
+        }
       }
     });
   }
