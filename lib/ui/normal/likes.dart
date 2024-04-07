@@ -30,7 +30,7 @@ class LikeView extends BottomNavigationScreen {
   }
 }
 
-typedef LikeViewEntry = (ProfileEntry profile, int heroNumber);
+typedef LikeViewEntry = ({ProfileEntry profile, ProfileHeroTag heroTag});
 
 class _LikeViewState extends State<LikeView> {
   PagingController<int, LikeViewEntry>? _pagingController =
@@ -70,7 +70,7 @@ class _LikeViewState extends State<LikeView> {
     final controller = _pagingController;
     if (controller != null) {
       setState(() {
-        controller.itemList?.removeWhere((item) => item.$1.uuid == accountId.accountId);
+        controller.itemList?.removeWhere((item) => item.profile.uuid == accountId);
       });
     }
   }
@@ -89,12 +89,7 @@ class _LikeViewState extends State<LikeView> {
     final profileList = await ChatRepository.getInstance().receivedLikesIteratorNext();
     final newList = List<LikeViewEntry>.empty(growable: true);
     for (final profile in profileList) {
-      final file = await ImageCacheData.getInstance().getImage(profile.uuid, profile.imageUuid);
-      if (file == null) {
-        log.warning("Skipping one profile because image loading failed");
-        continue;
-      }
-      newList.add((profile, _heroUniqueIdCounter));
+      newList.add((profile: profile, heroTag: ProfileHeroTag.from(profile.uuid, _heroUniqueIdCounter)));
       _heroUniqueIdCounter++;
     }
 
@@ -123,15 +118,11 @@ class _LikeViewState extends State<LikeView> {
       builderDelegate: PagedChildBuilderDelegate<LikeViewEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
-          final accountId = item.$1.uuid;
-          final heroTag = (accountId, item.$2);
           return GestureDetector(
-            onTap: () {
-              openProfileView(context, accountId, item.$1, heroTag);
-            },
+            onTap: () => openProfileView(context, item.profile, heroTag: item.heroTag),
             child: Hero(
-              tag: heroTag,
-              child: accountImgWidget(accountId, item.$1.imageUuid)
+              tag: item.heroTag.value,
+              child: accountImgWidget(item.profile.uuid, item.profile.imageUuid)
             )
           );
         },

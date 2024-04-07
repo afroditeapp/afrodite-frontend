@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
@@ -101,6 +102,18 @@ class ProfileEntryDownloader {
         return Err(OtherProfileDownloadError());
     }
 
+    final primaryContentId = contentInfo.contentId0?.id;
+    if (primaryContentId == null) {
+      log.warning("Profile content info is missing");
+      return Err(OtherProfileDownloadError());
+    }
+
+    final bytes = await ImageCacheData.getInstance().getImage(accountId, primaryContentId);
+    if (bytes == null) {
+      log.warning("Skipping one profile because image loading failed");
+      return Err(OtherProfileDownloadError());
+    }
+
     // Prevent displaying error when profile is made private while iterating
     final profileDetailsResult = await api
       .profileWrapper()
@@ -112,7 +125,8 @@ class ProfileEntryDownloader {
         profileDetails = v;
       case Err(:final e) when e.isInternalServerError():
         return Err(PrivateProfile());
-      case Err():
+      case Err(:final e):
+        e.logError();
         return Err(OtherProfileDownloadError());
     }
     // TODO: Compare cached profile data with the one from the server.

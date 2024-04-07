@@ -16,15 +16,13 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ViewProfilesData {
-  AccountId get accountId => throw _privateConstructorUsedError;
   ProfileEntry get profile => throw _privateConstructorUsedError;
-  (AccountId, int)? get imgTag => throw _privateConstructorUsedError;
+  ProfileHeroTag? get imgTag => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
   ProfileActionState get profileActionState =>
       throw _privateConstructorUsedError;
   bool get isNotAvailable => throw _privateConstructorUsedError;
   bool get isBlocked => throw _privateConstructorUsedError;
-  bool get showLoadingError => throw _privateConstructorUsedError;
   bool get showLikeCompleted => throw _privateConstructorUsedError;
   bool get showRemoveLikeCompleted => throw _privateConstructorUsedError;
 
@@ -40,14 +38,12 @@ abstract class $ViewProfilesDataCopyWith<$Res> {
       _$ViewProfilesDataCopyWithImpl<$Res, ViewProfilesData>;
   @useResult
   $Res call(
-      {AccountId accountId,
-      ProfileEntry profile,
-      (AccountId, int)? imgTag,
+      {ProfileEntry profile,
+      ProfileHeroTag? imgTag,
       bool isFavorite,
       ProfileActionState profileActionState,
       bool isNotAvailable,
       bool isBlocked,
-      bool showLoadingError,
       bool showLikeCompleted,
       bool showRemoveLikeCompleted});
 }
@@ -65,22 +61,16 @@ class _$ViewProfilesDataCopyWithImpl<$Res, $Val extends ViewProfilesData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? accountId = null,
     Object? profile = null,
     Object? imgTag = freezed,
     Object? isFavorite = null,
     Object? profileActionState = null,
     Object? isNotAvailable = null,
     Object? isBlocked = null,
-    Object? showLoadingError = null,
     Object? showLikeCompleted = null,
     Object? showRemoveLikeCompleted = null,
   }) {
     return _then(_value.copyWith(
-      accountId: null == accountId
-          ? _value.accountId
-          : accountId // ignore: cast_nullable_to_non_nullable
-              as AccountId,
       profile: null == profile
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
@@ -88,7 +78,7 @@ class _$ViewProfilesDataCopyWithImpl<$Res, $Val extends ViewProfilesData>
       imgTag: freezed == imgTag
           ? _value.imgTag
           : imgTag // ignore: cast_nullable_to_non_nullable
-              as (AccountId, int)?,
+              as ProfileHeroTag?,
       isFavorite: null == isFavorite
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -104,10 +94,6 @@ class _$ViewProfilesDataCopyWithImpl<$Res, $Val extends ViewProfilesData>
       isBlocked: null == isBlocked
           ? _value.isBlocked
           : isBlocked // ignore: cast_nullable_to_non_nullable
-              as bool,
-      showLoadingError: null == showLoadingError
-          ? _value.showLoadingError
-          : showLoadingError // ignore: cast_nullable_to_non_nullable
               as bool,
       showLikeCompleted: null == showLikeCompleted
           ? _value.showLikeCompleted
@@ -130,14 +116,12 @@ abstract class _$$ViewProfilesDataImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {AccountId accountId,
-      ProfileEntry profile,
-      (AccountId, int)? imgTag,
+      {ProfileEntry profile,
+      ProfileHeroTag? imgTag,
       bool isFavorite,
       ProfileActionState profileActionState,
       bool isNotAvailable,
       bool isBlocked,
-      bool showLoadingError,
       bool showLikeCompleted,
       bool showRemoveLikeCompleted});
 }
@@ -153,22 +137,16 @@ class __$$ViewProfilesDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? accountId = null,
     Object? profile = null,
     Object? imgTag = freezed,
     Object? isFavorite = null,
     Object? profileActionState = null,
     Object? isNotAvailable = null,
     Object? isBlocked = null,
-    Object? showLoadingError = null,
     Object? showLikeCompleted = null,
     Object? showRemoveLikeCompleted = null,
   }) {
     return _then(_$ViewProfilesDataImpl(
-      accountId: null == accountId
-          ? _value.accountId
-          : accountId // ignore: cast_nullable_to_non_nullable
-              as AccountId,
       profile: null == profile
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
@@ -176,7 +154,7 @@ class __$$ViewProfilesDataImplCopyWithImpl<$Res>
       imgTag: freezed == imgTag
           ? _value.imgTag
           : imgTag // ignore: cast_nullable_to_non_nullable
-              as (AccountId, int)?,
+              as ProfileHeroTag?,
       isFavorite: null == isFavorite
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -192,10 +170,6 @@ class __$$ViewProfilesDataImplCopyWithImpl<$Res>
       isBlocked: null == isBlocked
           ? _value.isBlocked
           : isBlocked // ignore: cast_nullable_to_non_nullable
-              as bool,
-      showLoadingError: null == showLoadingError
-          ? _value.showLoadingError
-          : showLoadingError // ignore: cast_nullable_to_non_nullable
               as bool,
       showLikeCompleted: null == showLikeCompleted
           ? _value.showLikeCompleted
@@ -215,23 +189,19 @@ class _$ViewProfilesDataImpl
     with DiagnosticableTreeMixin
     implements _ViewProfilesData {
   _$ViewProfilesDataImpl(
-      {required this.accountId,
-      required this.profile,
+      {required this.profile,
       required this.imgTag,
       this.isFavorite = false,
       this.profileActionState = ProfileActionState.like,
       this.isNotAvailable = false,
       this.isBlocked = false,
-      this.showLoadingError = false,
       this.showLikeCompleted = false,
       this.showRemoveLikeCompleted = false});
 
   @override
-  final AccountId accountId;
-  @override
   final ProfileEntry profile;
   @override
-  final (AccountId, int)? imgTag;
+  final ProfileHeroTag? imgTag;
   @override
   @JsonKey()
   final bool isFavorite;
@@ -246,9 +216,6 @@ class _$ViewProfilesDataImpl
   final bool isBlocked;
   @override
   @JsonKey()
-  final bool showLoadingError;
-  @override
-  @JsonKey()
   final bool showLikeCompleted;
   @override
   @JsonKey()
@@ -256,7 +223,7 @@ class _$ViewProfilesDataImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ViewProfilesData(accountId: $accountId, profile: $profile, imgTag: $imgTag, isFavorite: $isFavorite, profileActionState: $profileActionState, isNotAvailable: $isNotAvailable, isBlocked: $isBlocked, showLoadingError: $showLoadingError, showLikeCompleted: $showLikeCompleted, showRemoveLikeCompleted: $showRemoveLikeCompleted)';
+    return 'ViewProfilesData(profile: $profile, imgTag: $imgTag, isFavorite: $isFavorite, profileActionState: $profileActionState, isNotAvailable: $isNotAvailable, isBlocked: $isBlocked, showLikeCompleted: $showLikeCompleted, showRemoveLikeCompleted: $showRemoveLikeCompleted)';
   }
 
   @override
@@ -264,14 +231,12 @@ class _$ViewProfilesDataImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ViewProfilesData'))
-      ..add(DiagnosticsProperty('accountId', accountId))
       ..add(DiagnosticsProperty('profile', profile))
       ..add(DiagnosticsProperty('imgTag', imgTag))
       ..add(DiagnosticsProperty('isFavorite', isFavorite))
       ..add(DiagnosticsProperty('profileActionState', profileActionState))
       ..add(DiagnosticsProperty('isNotAvailable', isNotAvailable))
       ..add(DiagnosticsProperty('isBlocked', isBlocked))
-      ..add(DiagnosticsProperty('showLoadingError', showLoadingError))
       ..add(DiagnosticsProperty('showLikeCompleted', showLikeCompleted))
       ..add(DiagnosticsProperty(
           'showRemoveLikeCompleted', showRemoveLikeCompleted));
@@ -282,8 +247,6 @@ class _$ViewProfilesDataImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ViewProfilesDataImpl &&
-            (identical(other.accountId, accountId) ||
-                other.accountId == accountId) &&
             (identical(other.profile, profile) || other.profile == profile) &&
             (identical(other.imgTag, imgTag) || other.imgTag == imgTag) &&
             (identical(other.isFavorite, isFavorite) ||
@@ -294,8 +257,6 @@ class _$ViewProfilesDataImpl
                 other.isNotAvailable == isNotAvailable) &&
             (identical(other.isBlocked, isBlocked) ||
                 other.isBlocked == isBlocked) &&
-            (identical(other.showLoadingError, showLoadingError) ||
-                other.showLoadingError == showLoadingError) &&
             (identical(other.showLikeCompleted, showLikeCompleted) ||
                 other.showLikeCompleted == showLikeCompleted) &&
             (identical(
@@ -306,14 +267,12 @@ class _$ViewProfilesDataImpl
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      accountId,
       profile,
       imgTag,
       isFavorite,
       profileActionState,
       isNotAvailable,
       isBlocked,
-      showLoadingError,
       showLikeCompleted,
       showRemoveLikeCompleted);
 
@@ -327,23 +286,19 @@ class _$ViewProfilesDataImpl
 
 abstract class _ViewProfilesData implements ViewProfilesData {
   factory _ViewProfilesData(
-      {required final AccountId accountId,
-      required final ProfileEntry profile,
-      required final (AccountId, int)? imgTag,
+      {required final ProfileEntry profile,
+      required final ProfileHeroTag? imgTag,
       final bool isFavorite,
       final ProfileActionState profileActionState,
       final bool isNotAvailable,
       final bool isBlocked,
-      final bool showLoadingError,
       final bool showLikeCompleted,
       final bool showRemoveLikeCompleted}) = _$ViewProfilesDataImpl;
 
   @override
-  AccountId get accountId;
-  @override
   ProfileEntry get profile;
   @override
-  (AccountId, int)? get imgTag;
+  ProfileHeroTag? get imgTag;
   @override
   bool get isFavorite;
   @override
@@ -352,8 +307,6 @@ abstract class _ViewProfilesData implements ViewProfilesData {
   bool get isNotAvailable;
   @override
   bool get isBlocked;
-  @override
-  bool get showLoadingError;
   @override
   bool get showLikeCompleted;
   @override

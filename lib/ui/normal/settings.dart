@@ -43,7 +43,7 @@ class _SettingsViewState extends State<SettingsView> {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
         List<Setting> settings = [
-          Setting.createSetting(Icons.account_circle, context.strings.pageMyProfileTitle, () =>
+          Setting.createSetting(Icons.account_circle, context.strings.view_profile_screen_my_profile_title, () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const MyProfilePage()))
           ),
           Setting.createSetting(Icons.location_on, context.strings.pageLocationTitle, () =>

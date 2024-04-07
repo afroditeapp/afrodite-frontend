@@ -27,7 +27,6 @@ class AccountImage extends StatelessWidget {
   final ContentId contentId;
   final double? width;
   final double? height;
-  // final Widget Function(XFile file) imageBuilder;
 
   @override
   Widget build(BuildContext context) {

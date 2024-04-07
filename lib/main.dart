@@ -46,7 +46,7 @@ import 'package:rxdart/rxdart.dart';
 final log = Logger("main");
 
 Future<void> main() async {
-  // TODO: change log level before release?
+  // TODO(prod): change log level before release?
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) {
       developer.log(
@@ -64,12 +64,6 @@ Future<void> main() async {
 
   await GlobalInitManager.getInstance().init();
 
-  // TODO: remove and get instances in Bloc
-  var accountRepository = AccountRepository.getInstance();
-  var mediaRepository = MediaRepository.getInstance();
-  var profileRepository = ProfileRepository.getInstance();
-  var chatRepository = ChatRepository.getInstance();
-
   runApp(
     MultiBlocProvider(
       providers: [
@@ -82,8 +76,8 @@ Future<void> main() async {
         BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
         BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
         BlocProvider(create: (_) => ProfilePicturesBloc()),
-        BlocProvider(create: (_) => ViewProfileBloc(accountRepository, profileRepository, mediaRepository, chatRepository)),
-        BlocProvider(create: (_) => ConversationBloc(accountRepository, profileRepository, mediaRepository, chatRepository)),
+        BlocProvider(create: (_) => ViewProfileBloc()),
+        BlocProvider(create: (_) => ConversationBloc()),
         BlocProvider(create: (_) => ProfileFilteringSettingsBloc()),
         BlocProvider(create: (_) => CurrentModerationRequestBloc()),
         BlocProvider(create: (_) => NotificationPermissionBloc()),
@@ -96,6 +90,7 @@ Future<void> main() async {
         // empty
 
         // Non-lazy
+        // TOOD(prod): Change lazy to true as db is accessed to early?
         BlocProvider(create: (_) => ProfileAttributesBloc(), lazy: false),
       ],
       child: const MyApp(),

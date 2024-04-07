@@ -25,9 +25,7 @@ class SetProfile extends ProfileEvent {
   final ProfileUpdate profile;
   SetProfile(this.profile);
 }
-class LoadProfile extends ProfileEvent {
-  LoadProfile();
-}
+class LoadProfile extends ProfileEvent {}
 
 /// Do register/login operations
 class ProfileBloc extends Bloc<ProfileEvent, ProfileData> with ActionRunner {

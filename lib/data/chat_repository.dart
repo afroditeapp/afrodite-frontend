@@ -167,17 +167,33 @@ class ChatRepository extends DataRepository {
     return result.isOk();
   }
 
-  /// Returns AccountId for all blocked profiles. ProfileEntry is returned only
-  /// if the blocked profile is public.
-  Future<List<(AccountId, ProfileEntry?)>> sentBlocksIteratorNext() async {
-    final accounts = await sentBlocksIterator.nextList();
-    final newList = List<(AccountId, ProfileEntry?)>.empty(growable: true);
+  Future<List<(AccountId, ProfileEntry?)>> _genericIteratorNext(
+    AccountIdDatabaseIterator iterator,
+    {
+      bool cache = false,
+      bool download = false,
+      bool isMatch = false,
+    }
+  ) async {
+    final accounts = await iterator.nextList();
+    final newList = <(AccountId, ProfileEntry?)>[];
     for (final accountId in accounts) {
-      final profileData = await profileEntryDownloader.download(accountId).ok();
+      ProfileEntry? profileData;
+      if (cache) {
+        profileData = await db.profileData((db) => db.getProfileEntry(accountId)).ok();
+      }
+      if (download) {
+        profileData ??= await profileEntryDownloader.download(accountId, isMatch: isMatch).ok();
+      }
       newList.add((accountId, profileData));
     }
     return newList;
   }
+
+  /// Returns AccountId for all blocked profiles. ProfileEntry is returned only
+  /// if the blocked profile is public.
+  Future<List<(AccountId, ProfileEntry?)>> sentBlocksIteratorNext() =>
+    _genericIteratorNext(sentBlocksIterator, download: true);
 
   void sentBlocksIteratorReset() {
     sentBlocksIterator.reset();
@@ -203,27 +219,38 @@ class ChatRepository extends DataRepository {
     }
   }
 
+  Future<List<ProfileEntry>> _genericIteratorNextOnlySuccessful(
+    AccountIdDatabaseIterator iterator,
+    {
+      bool cache = false,
+      bool download = false,
+      bool isMatch = false,
+    }
+  ) async {
+    var profiles = <ProfileEntry>[];
+    while (true) {
+      final list = await _genericIteratorNext(receivedLikesIterator, cache: cache, download: download, isMatch: isMatch);
+      if (list.isEmpty) {
+        return profiles;
+      }
+      profiles = list.map((e) => e.$2).nonNulls.toList();
+      if (profiles.isEmpty) {
+        continue;
+      } else {
+        return profiles;
+      }
+    }
+  }
+
   /// ProfileEntry is returned if a profile of the like sender
   /// is cached or the profile is public.
   ///
   /// Private profiles are not returned (except the cached ones).
-  Future<List<ProfileEntry>> receivedLikesIteratorNext() async {
-    final accounts = await receivedLikesIterator.nextList();
-    final newList = <ProfileEntry>[];
-    for (final accountId in accounts) {
-      final profileData =
-        await db.profileData((db) => db.getProfileEntry(accountId)).ok() ??
-        await profileEntryDownloader.download(accountId).ok();
-      if (profileData != null) {
-        newList.add(profileData);
-      }
-    }
-    return newList;
-  }
+  Future<List<ProfileEntry>> receivedLikesIteratorNext() =>
+    _genericIteratorNextOnlySuccessful(receivedLikesIterator, cache: true, download: true);
 
-  void receivedLikesIteratorReset() {
+  void receivedLikesIteratorReset() =>
     receivedLikesIterator.reset();
-  }
 
   Future<void> receivedLikesRefresh() async {
     final receivedLikes = await _api.chat((api) => api.getReceivedLikes()).ok();
@@ -237,23 +264,11 @@ class ChatRepository extends DataRepository {
   ///
   /// Matches can see the profiles of each other even if one/both are
   /// set as private.
-  Future<List<ProfileEntry>> matchesIteratorNext() async {
-    final accounts = await matchesIterator.nextList();
-    final newList = <ProfileEntry>[];
-    for (final accountId in accounts) {
-      final profileData =
-        await db.profileData((db) => db.getProfileEntry(accountId)).ok() ??
-        await profileEntryDownloader.download(accountId, isMatch: true).ok();
-      if (profileData != null) {
-        newList.add(profileData);
-      }
-    }
-    return newList;
-  }
+  Future<List<ProfileEntry>> matchesIteratorNext() =>
+    _genericIteratorNextOnlySuccessful(matchesIterator, cache: true, download: true, isMatch: true);
 
-  void matchesIteratorReset() {
+  void matchesIteratorReset() =>
     matchesIterator.reset();
-  }
 
   Future<void> receivedMatchesRefresh() async {
     final data = await _api.chat((api) => api.getMatches()).ok();

@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
-import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/profile_entry.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
@@ -18,10 +16,15 @@ import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
 var log = Logger("ConversationPage");
 
+
+void openConversationScreen(BuildContext context, ProfileEntry profile) {
+  context.read<ConversationBloc>().add(SetConversationView(profile.uuid, profile.imageUuid, profile.name));
+  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(profile)));
+}
+
 class ConversationPage extends StatefulWidget {
-  final AccountId accountId;
   final ProfileEntry profileEntry;
-  const ConversationPage(this.accountId, this.profileEntry, {Key? key}) : super(key: key);
+  const ConversationPage(this.profileEntry, {Key? key}) : super(key: key);
 
   @override
   ConversationPageState createState() => ConversationPageState();
@@ -35,8 +38,7 @@ class ConversationPageState extends State<ConversationPage> {
   @override
   void initState() {
     super.initState();
-    cache = MessageCache(widget.accountId);
-    log.info("Opening conversation to ${widget.accountId.accountId}");
+    cache = MessageCache(widget.profileEntry.uuid);
   }
 
   @override
@@ -47,7 +49,7 @@ class ConversationPageState extends State<ConversationPage> {
           children: [
             InkWell(
               onTap: () {
-                openProfileView(context, widget.accountId, widget.profileEntry, null, noAction: true);
+                openProfileView(context, widget.profileEntry, noAction: true);
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -83,7 +85,7 @@ class ConversationPageState extends State<ConversationPage> {
                   showConfirmDialog(context, "Block profile?")
                     .then((value) {
                       if (value == true) {
-                        context.read<ConversationBloc>().add(BlockProfile(widget.accountId));
+                        context.read<ConversationBloc>().add(BlockProfile(widget.profileEntry.uuid));
                       }
                     });
                 }
@@ -114,7 +116,7 @@ class ConversationPageState extends State<ConversationPage> {
                   previous?.messageCount != current?.messageCount ||
                   previous?.isBlocked != current?.isBlocked,
                 builder: (context, state) {
-                  if (state == null || state.accountId != widget.accountId) {
+                  if (state == null || state.accountId != widget.profileEntry.uuid) {
                     return Container();
                   } else if (state.isBlocked) {
                     Future.delayed(Duration.zero, () {

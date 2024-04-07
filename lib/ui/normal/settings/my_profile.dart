@@ -15,14 +15,18 @@ class MyProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: remove this?
     context.read<ProfileBloc>().add(LoadProfile());
 
     return Scaffold(
-      appBar: AppBar(title: Text(context.strings.pageMyProfileTitle)),
+      appBar: AppBar(title: Text(context.strings.view_profile_screen_my_profile_title)),
       body: myProfilePage(context),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const EditProfilePage()),),
-        tooltip: 'Edit profile',
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute<void>(builder: (_) => const EditProfilePage())
+        ),
+        tooltip: context.strings.view_profile_screen_my_profile_edit_action,
         child: const Icon(Icons.edit),
       ),
     );
@@ -38,9 +42,8 @@ class MyProfilePage extends StatelessWidget {
           return BlocBuilder<ProfileBloc, ProfileData>(
             builder: (context, profileState) {
               final profile = profileState.profile;
-              final img = profileState.primaryImage;
-              if (profile != null && img != null) {
-                return viewProifle(context, id, profile, null, false);
+              if (profile != null) {
+                return viewProifle(context, profile);
               } else {
                 return Text(context.strings.generic_empty);
               }

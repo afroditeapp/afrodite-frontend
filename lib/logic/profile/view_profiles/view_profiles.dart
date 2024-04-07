@@ -1,8 +1,7 @@
 import "dart:async";
-import "dart:io";
 
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:image_picker/image_picker.dart";
+import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
 import "package:pihka_frontend/data/chat_repository.dart";
@@ -18,6 +17,8 @@ import 'package:flutter/foundation.dart';
 
 part 'view_profiles.freezed.dart';
 
+final log = Logger("ViewProfilesBloc");
+
 enum ProfileActionState {
   like,
   removeLike,
@@ -28,14 +29,12 @@ enum ProfileActionState {
 @freezed
 class ViewProfilesData with _$ViewProfilesData {
   factory ViewProfilesData({
-    required AccountId accountId,
     required ProfileEntry profile,
     required ProfileHeroTag? imgTag,
     @Default(false) bool isFavorite,
     @Default(ProfileActionState.like) ProfileActionState profileActionState,
     @Default(false) bool isNotAvailable,
     @Default(false) bool isBlocked,
-    @Default(false) bool showLoadingError,
     @Default(false) bool showLikeCompleted,
     @Default(false) bool showRemoveLikeCompleted,
   }) = _ViewProfilesData;
@@ -43,10 +42,9 @@ class ViewProfilesData with _$ViewProfilesData {
 
 sealed class ViewProfileEvent {}
 class SetProfileView extends ViewProfileEvent {
-  final AccountId accountId;
   final ProfileEntry profile;
   final ProfileHeroTag? imgTag;
-  SetProfileView(this.accountId, this.profile, this.imgTag);
+  SetProfileView(this.profile, this.imgTag);
 }
 class HandleProfileResult extends ViewProfileEvent {
   final GetProfileResult result;
@@ -70,29 +68,28 @@ class ResetShowMessages extends ViewProfileEvent {}
 
 
 class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with ActionRunner {
-  final AccountRepository account;
-  final ProfileRepository profile;
-  final MediaRepository media;
-  final ChatRepository chat;
+  final AccountRepository account = AccountRepository.getInstance();
+  final ProfileRepository profile = ProfileRepository.getInstance();
+  final MediaRepository media = MediaRepository.getInstance();
+  final ChatRepository chat = ChatRepository.getInstance();
 
   StreamSubscription<GetProfileResult>? _getProfileDataSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
 
-  ViewProfileBloc(this.account, this.profile, this.media, this.chat) : super(null) {
+  ViewProfileBloc() : super(null) {
     on<SetProfileView>((data, emit) async {
       await _getProfileDataSubscription?.cancel();
 
       final newState = ViewProfilesData(
-        accountId: data.accountId,
         profile: data.profile,
         imgTag: data.imgTag,
       );
       emit(newState);
 
-      final isInFavorites = await profile.isInFavorites(newState.accountId);
-      final isBlocked = await chat.isInSentBlocks(newState.accountId) ||
-        await chat.isInReceivedBlocks(newState.accountId);
-      final ProfileActionState action = await resolveProfileAction(newState.accountId);
+      final isInFavorites = await profile.isInFavorites(newState.profile.uuid);
+      final isBlocked = await chat.isInSentBlocks(newState.profile.uuid) ||
+        await chat.isInReceivedBlocks(newState.profile.uuid);
+      final ProfileActionState action = await resolveProfileAction(newState.profile.uuid);
 
       emit(newState.copyWith(
         isFavorite: isInFavorites,
@@ -101,7 +98,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
       ));
 
       _getProfileDataSubscription = ProfileRepository.getInstance()
-        .getProfileStream(newState.accountId)
+        .getProfileStream(newState.profile.uuid)
         .listen((event) {
           add(HandleProfileResult(event));
         });
@@ -113,11 +110,11 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
           return;
         }
         if (currentState.isFavorite) {
-          await for (final inFavorites in profile.removeFromFavorites(currentState.accountId)) {
+          await for (final inFavorites in profile.removeFromFavorites(currentState.profile.uuid)) {
             emit(currentState.copyWith(isFavorite: inFavorites));
           }
         } else {
-          await for (final inFavorites in profile.addToFavorites(currentState.accountId)) {
+          await for (final inFavorites in profile.addToFavorites(currentState.profile.uuid)) {
             emit(currentState.copyWith(isFavorite: inFavorites));
           }
         }
@@ -140,7 +137,8 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
           ));
         }
         case GetProfileFailed():
-          emit(currentState.copyWith(showLoadingError: true));
+          // No extra logic needed for errors as global error messages are enough.
+          log.warning("Received GetProfileFailed");
       }
     });
     on<HandleProfileChange>((data, emit) async {
@@ -151,12 +149,12 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
       final change = data.change;
       switch (change) {
         case ProfileBlocked(): {
-          if (change.profile == currentState.accountId) {
+          if (change.profile == currentState.profile.uuid) {
             emit(currentState.copyWith(isBlocked: true));
           }
         }
         case LikesChanged() || MatchesChanged(): {
-          final ProfileActionState action = await resolveProfileAction(currentState.accountId);
+          final ProfileActionState action = await resolveProfileAction(currentState.profile.uuid);
           emit(currentState.copyWith(
             profileActionState: action,
           ));
@@ -169,7 +167,6 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
     });
     on<ResetShowMessages>((data, emit) async {
       emit(state?.copyWith(
-        showLoadingError: false,
         showLikeCompleted: false,
         showRemoveLikeCompleted: false,
       ));
@@ -180,7 +177,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
         if (currentState == null) {
           return;
         }
-        if (await chat.sendBlockTo(currentState.accountId)) {
+        if (await chat.sendBlockTo(currentState.profile.uuid)) {
           emit(currentState.copyWith(
             isBlocked: true,
           ));

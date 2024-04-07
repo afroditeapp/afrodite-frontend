@@ -115,7 +115,7 @@
     <string name="map_location_update_failed" description="Snackbar text about failed location update">Location update failed</string>
     <string name="map_openstreetmap_data_attribution_link_text" description="OpenStreetMap data attribution link text">OpenStreetMap contributors</string>
 
-    <!-- Profile grid page -->
+    <!-- Profile grid screen -->
     <string name="profile_grid_screen_title" description="Title for profile grid screen">Profiles</string>
     <string name="profile_grid_screen_profile_is_private_info" description="Info text which is shown when profile visibility is set to private">To view profiles, set your profile visibility to public from app settings.</string>
     <string name="profile_grid_screen_initial_moderation_ongoing" description="Info text that initial moderation is ongoing">You can view profiles and others can see your profile after your profile images are moderated.</string>
@@ -126,19 +126,34 @@
     <string name="profile_grid_screen_no_profiles_found_description_filters_enabled" description="Description displayed when there is no profiles and some filter is enabled">Change or disable filter settings</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_disabled" description="Description displayed when there is no profiles and there is no filters enabled">Spread the word about the app in social media</string>
 
-    <!-- Likes page -->
+    <!-- View profile screen -->
+    <string name="view_profile_screen_my_profile_title" description="Title for view profile screen when my profile is viewed">My Profile</string>
+    <string name="view_profile_screen_my_profile_edit_action" description="Text for view profile screen edit my profile action">Edit profile</string>
+    <string name="view_profile_screen_block_action" description="Text for view profile screen block action">Block</string>
+    <string name="view_profile_screen_block_action_dialog_title" description="Title for view profile screen block action dialog">Block profile?</string>
+    <string name="view_profile_screen_like_action" description="Text for view profile screen like action">Like</string>
+    <string name="view_profile_screen_like_action_dialog_title" description="Title for view profile screen like action dialog">Like profile?</string>
+    <string name="view_profile_screen_remove_like_action" description="Text for view profile screen remove like action">Remove like</string>
+    <string name="view_profile_screen_remove_like_action_dialog_title" description="Title for view profile screen remove like action dialog">Remove like?</string>
+    <string name="view_profile_screen_match_with_message_action" description="Text for view profile screen match with message action">Match with message</string>
+    <string name="view_profile_screen_chat_action" description="Text for view profile screen chat action">Chat</string>
+    <string name="view_profile_screen_add_to_favorites_action" description="Text for view profile screen add to favorites action">Add to favorites</string>
+    <string name="view_profile_screen_remove_from_favorites_action" description="Text for view profile screen remove from favorites action">Remove from favorites</string>
+    <string name="view_profile_screen_profile_not_available_dialog_description" description="Text for view profile screen profile not available dialog">Profile not available</string>
+    <string name="view_profile_screen_like_action_successful" description="Snackbar text for view profile screen like action successful">Like sent</string>
+    <string name="view_profile_screen_remove_like_action_successful" description="Snackbar text for view profile screen remove like action successful">Like removed</string>
+    <string name="view_profile_screen_block_action_successful" description="Snackbar text for view profile screen block action successful">Profile blocked</string>
+
+    <!-- Likes -->
     <string name="pageLikesTitle" description="Title for likes page">Likes</string>
 
-    <!-- Chat list page -->
+    <!-- Chat list -->
     <string name="pageChatListTitle" description="Title for chat list page">Chats</string>
 
-    <!-- Settings page -->
+    <!-- Settings -->
     <string name="pageSettingsTitle" description="Title for settings page">Settings</string>
 
-    <!-- My profile page -->
-    <string name="pageMyProfileTitle" description="Title for my profile page">My Profile</string>
-
-    <!-- Location page -->
+    <!-- Location settings screen -->
     <string name="pageLocationTitle" description="Title for location page">Location</string>
 
     <!-- View image screen
@@ -151,10 +166,10 @@
 
     <!-- Admin features -->
 
-    <!-- Admin page -->
+    <!-- Admin screen -->
     <string name="pageAdminTitle" description="Title for admin settings and tools page">Admin</string>
 
-    <!-- Moderate images page -->
+    <!-- Moderate images screen -->
     <string name="pageModerateImagesTitle" description="Title for moderate images page">Moderate images</string>
     <string name="pageModerateImagesDenyImageText" description="Deny image text">Deny</string>
 

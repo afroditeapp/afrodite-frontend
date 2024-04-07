@@ -136,10 +136,7 @@ class _ChatViewState extends State<ChatView> {
           );
 
           return InkWell(
-            onTap: () {
-              context.read<ConversationBloc>().add(SetConversationView(profileEntry.uuid, profileEntry.imageUuid, name));
-              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ConversationPage(profileEntry.uuid, profileEntry)));
-            },
+            onTap: () => openConversationScreen(context, profileEntry),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(

@@ -2,10 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/profile_entry.dart';
 import 'package:pihka_frontend/localizations.dart';
@@ -24,7 +22,7 @@ class ProfileGrid extends StatefulWidget {
   State<ProfileGrid> createState() => _ProfileGridState();
 }
 
-typedef ProfileViewEntry = (ProfileEntry profile, int heroNumber);
+typedef ProfileViewEntry = ({ProfileEntry profile, ProfileHeroTag heroTag});
 
 class _ProfileGridState extends State<ProfileGrid> {
   PagingController<int, ProfileViewEntry>? _pagingController =
@@ -59,7 +57,7 @@ class _ProfileGridState extends State<ProfileGrid> {
         final controller = _pagingController;
         if (controller != null && event.isFavorite == false && currentFilteringSettings.showOnlyFavorites) {
           setState(() {
-            controller.itemList?.removeWhere((item) => item.$1.uuid == event.profile.accountId);
+            controller.itemList?.removeWhere((item) => item.profile.uuid == event.profile);
           });
         }
       }
@@ -74,7 +72,7 @@ class _ProfileGridState extends State<ProfileGrid> {
     final controller = _pagingController;
     if (controller != null) {
       setState(() {
-        controller.itemList?.removeWhere((item) => item.$1.uuid == accountId.accountId);
+        controller.itemList?.removeWhere((item) => item.profile.uuid == accountId);
       });
     }
   }
@@ -93,12 +91,7 @@ class _ProfileGridState extends State<ProfileGrid> {
     // reason for the initial page.
     final newList = List<ProfileViewEntry>.empty(growable: true);
     for (final profile in profileList) {
-      final file = await ImageCacheData.getInstance().getImage(profile.uuid, profile.imageUuid);
-      if (file == null) {
-        log.warning("Skipping one profile because image loading failed");
-        continue;
-      }
-      newList.add((profile, _heroUniqueIdCounter));
+      newList.add((profile: profile, heroTag: ProfileHeroTag.from(profile.uuid, _heroUniqueIdCounter)));
       _heroUniqueIdCounter++;
     }
 
@@ -136,15 +129,13 @@ class _ProfileGridState extends State<ProfileGrid> {
       builderDelegate: PagedChildBuilderDelegate<ProfileViewEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
-          final accountId = item.$1.uuid;
-          final heroTag = (accountId, item.$2);
           return GestureDetector(
             onTap: () {
-              openProfileView(context, accountId, item.$1, heroTag);
+              openProfileView(context, item.profile, heroTag: item.heroTag);
             },
             child: Hero(
-              tag: heroTag,
-              child: accountImgWidget(accountId, item.$1.imageUuid),
+              tag: item.heroTag.value,
+              child: accountImgWidget(item.profile.uuid, item.profile.imageUuid),
             )
           );
         },

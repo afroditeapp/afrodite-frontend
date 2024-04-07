@@ -1,25 +1,18 @@
 
 
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:openapi/api.dart';
-import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/database/profile_entry.dart';
 
-import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
-import 'package:pihka_frontend/ui_utils/view_image_screen.dart';
 
-const double imgHeight = 400;
+const double PROFILE_IMG_HEIGHT = 400;
 
-Widget viewProifle(BuildContext context, AccountId account, ProfileEntry profile, ProfileHeroTag? heroTransition, bool showGridImage) {
+Widget viewProifle(BuildContext context, ProfileEntry profile, {ProfileHeroTag? heroTag}) {
   return LayoutBuilder(
     builder: (context, constraints) {
-      final Widget imgWidget = viewProifleImage(context, profile, heroTransition, showGridImage, constraints);
+      final Widget imgWidget = viewProifleImage(context, profile, heroTag);
       String profileText;
       if (profile.profileText.isEmpty) {
         profileText = "";
@@ -52,26 +45,17 @@ Widget viewProifle(BuildContext context, AccountId account, ProfileEntry profile
   );
 }
 
-Widget viewProifleImage(BuildContext context, ProfileEntry profile, ProfileHeroTag? heroTransition, bool showGridImage, BoxConstraints constraints) {
-
-  final double imgMaxWidth;
-  if (showGridImage) {
-    imgMaxWidth = constraints.maxWidth / 2.0;
-  } else {
-    imgMaxWidth = constraints.maxWidth;
-  }
-
+Widget viewProifleImage(BuildContext context, ProfileEntry profile, ProfileHeroTag? heroTag) {
   final Widget primaryImageWidget = accountImgWidget(
     profile.uuid,
     profile.imageUuid,
-    width: imgMaxWidth,
-    height: imgHeight,
+    height: PROFILE_IMG_HEIGHT,
   );
 
   final Widget imgWidget;
-  if (heroTransition != null) {
+  if (heroTag != null) {
     imgWidget = Hero(
-      tag: heroTransition,
+      tag: heroTag.value,
       child: primaryImageWidget
     );
   } else {
@@ -83,13 +67,4 @@ Widget viewProifleImage(BuildContext context, ProfileEntry profile, ProfileHeroT
       imgWidget,
     ]
   );
-}
-
-Widget buildProgressIndicator(double imgMaxWidth) {
-  return SizedBox(width: imgMaxWidth, child: const Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      CircularProgressIndicator(),
-    ],
-  ));
 }

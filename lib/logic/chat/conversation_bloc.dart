@@ -70,15 +70,15 @@ class BlockProfile extends ConversationEvent {
 class NotifyChatBoxCleared extends ConversationEvent {}
 
 class ConversationBloc extends Bloc<ConversationEvent, ConversationData?> with ActionRunner {
-  final AccountRepository account;
-  final ProfileRepository profile;
-  final MediaRepository media;
-  final ChatRepository chat;
+  final AccountRepository account = AccountRepository.getInstance();
+  final ProfileRepository profile = ProfileRepository.getInstance();
+  final MediaRepository media = MediaRepository.getInstance();
+  final ChatRepository chat = ChatRepository.getInstance();
 
   StreamSubscription<(int, ConversationChanged?)>? _messageCountSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
 
-  ConversationBloc(this.account, this.profile, this.media, this.chat) : super(null) {
+  ConversationBloc() : super(null) {
     on<SetConversationView>((data, emit) async {
       log.info("Set conversation bloc initial state");
       emit(null);

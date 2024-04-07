@@ -386,10 +386,6 @@
   "@pageModerateImagesTitle": {
     "description": "Title for moderate images page"
   },
-  "pageMyProfileTitle": "My Profile",
-  "@pageMyProfileTitle": {
-    "description": "Title for my profile page"
-  },
   "pageSettingsTitle": "Settings",
   "@pageSettingsTitle": {
     "description": "Title for settings page"
@@ -440,5 +436,69 @@
   "view_image_screen_title": "View image",
   "@view_image_screen_title": {
     "description": "Title for view image screen"
+  },
+  "view_profile_screen_add_to_favorites_action": "Add to favorites",
+  "@view_profile_screen_add_to_favorites_action": {
+    "description": "Text for view profile screen add to favorites action"
+  },
+  "view_profile_screen_block_action": "Block",
+  "@view_profile_screen_block_action": {
+    "description": "Text for view profile screen block action"
+  },
+  "view_profile_screen_block_action_dialog_title": "Block profile?",
+  "@view_profile_screen_block_action_dialog_title": {
+    "description": "Title for view profile screen block action dialog"
+  },
+  "view_profile_screen_block_action_successful": "Profile blocked",
+  "@view_profile_screen_block_action_successful": {
+    "description": "Snackbar text for view profile screen block action successful"
+  },
+  "view_profile_screen_chat_action": "Chat",
+  "@view_profile_screen_chat_action": {
+    "description": "Text for view profile screen chat action"
+  },
+  "view_profile_screen_like_action": "Like",
+  "@view_profile_screen_like_action": {
+    "description": "Text for view profile screen like action"
+  },
+  "view_profile_screen_like_action_dialog_title": "Like profile?",
+  "@view_profile_screen_like_action_dialog_title": {
+    "description": "Title for view profile screen like action dialog"
+  },
+  "view_profile_screen_like_action_successful": "Like sent",
+  "@view_profile_screen_like_action_successful": {
+    "description": "Snackbar text for view profile screen like action successful"
+  },
+  "view_profile_screen_match_with_message_action": "Match with message",
+  "@view_profile_screen_match_with_message_action": {
+    "description": "Text for view profile screen match with message action"
+  },
+  "view_profile_screen_my_profile_edit_action": "Edit profile",
+  "@view_profile_screen_my_profile_edit_action": {
+    "description": "Text for view profile screen edit my profile action"
+  },
+  "view_profile_screen_my_profile_title": "My Profile",
+  "@view_profile_screen_my_profile_title": {
+    "description": "Title for view profile screen when my profile is viewed"
+  },
+  "view_profile_screen_profile_not_available_dialog_description": "Profile not available",
+  "@view_profile_screen_profile_not_available_dialog_description": {
+    "description": "Text for view profile screen profile not available dialog"
+  },
+  "view_profile_screen_remove_from_favorites_action": "Remove from favorites",
+  "@view_profile_screen_remove_from_favorites_action": {
+    "description": "Text for view profile screen remove from favorites action"
+  },
+  "view_profile_screen_remove_like_action": "Remove like",
+  "@view_profile_screen_remove_like_action": {
+    "description": "Text for view profile screen remove like action"
+  },
+  "view_profile_screen_remove_like_action_dialog_title": "Remove like?",
+  "@view_profile_screen_remove_like_action_dialog_title": {
+    "description": "Title for view profile screen remove like action dialog"
+  },
+  "view_profile_screen_remove_like_action_successful": "Like removed",
+  "@view_profile_screen_remove_like_action_successful": {
+    "description": "Snackbar text for view profile screen remove like action successful"
   }
 }
