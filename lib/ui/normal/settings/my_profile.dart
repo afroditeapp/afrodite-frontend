@@ -43,7 +43,7 @@ class MyProfilePage extends StatelessWidget {
             builder: (context, profileState) {
               final profile = profileState.profile;
               if (profile != null) {
-                return viewProifle(context, profile);
+                return ViewProfileEntry(profile: profile);
               } else {
                 return Text(context.strings.generic_empty);
               }

@@ -63,4 +63,8 @@ class ProfileEntry {
     }
     return contentList;
   }
+
+  String profileTitle() {
+    return '$name$age';
+  }
 }

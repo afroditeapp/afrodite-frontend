@@ -184,7 +184,7 @@ class ViewProfilePage extends StatelessWidget {
         return AnimatedOpacity(
           duration: const Duration(milliseconds: 150),
           opacity: state.isNotAvailable ? 0.0 : 1.0,
-          child: viewProifle(context, state.profile, heroTag: heroTag),
+          child: ViewProfileEntry(profile: state.profile, heroTag: heroTag),
         );
       }
     );
