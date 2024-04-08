@@ -6,10 +6,13 @@ import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/account.dart";
 
 import "package:pihka_frontend/logic/app/notification_permission.dart";
+import "package:pihka_frontend/logic/media/content.dart";
 import "package:pihka_frontend/ui/normal/chat.dart";
 import "package:pihka_frontend/ui/normal/likes.dart";
 import "package:pihka_frontend/ui/normal/profiles.dart";
 import "package:pihka_frontend/ui/normal/settings.dart";
+import "package:pihka_frontend/ui/normal/settings/my_profile.dart";
+import "package:pihka_frontend/ui_utils/profile_thumbnail_image.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
 
 class NormalStateScreen extends RootScreen {
@@ -31,6 +34,8 @@ class NormalStateContent extends StatefulWidget {
 class _NormalStateContentState extends State<NormalStateContent> {
   int selectedView = 0;
 
+  bool myProfilePictureReloaded = false;
+
   @override
   Widget build(BuildContext context) {
     const views = [
@@ -43,6 +48,10 @@ class _NormalStateContentState extends State<NormalStateContent> {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0.0,
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 8, bottom: 8, left: 8),
+          child: primaryImageButton(),
+        ),
         title: Text(views[selectedView].title(context)),
         actions: views[selectedView].actions(context),
       ),
@@ -73,6 +82,39 @@ class _NormalStateContentState extends State<NormalStateContent> {
           });
         },
       ),
+    );
+  }
+
+  Widget primaryImageButton() {
+    return BlocBuilder<AccountBloc, AccountBlocData>(
+      builder: (context, accountState) {
+        final id = accountState.accountId;
+        return BlocBuilder<ContentBloc, ContentData>(
+          builder: (context, state) {
+            final img = state.primaryProfilePicture;
+            final cropInfo = state.primaryProfilePictureCropInfo;
+            if (id != null && img != null) {
+              return ProfileThumbnailImage(
+                accountId: id,
+                contentId: img,
+                cropResults: cropInfo,
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const MyProfilePage()))
+                  ),
+                )
+              );
+            } else {
+              if (myProfilePictureReloaded) {
+                myProfilePictureReloaded = true;
+                context.read<ContentBloc>().add(ReloadProfileContentIfNull());
+              }
+              return const SizedBox.shrink();
+            }
+          }
+        );
+      }
     );
   }
 }

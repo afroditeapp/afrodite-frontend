@@ -22,6 +22,7 @@ import 'package:pihka_frontend/logic/account/demo_account.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/logic/app/notification_permission.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
+import 'package:pihka_frontend/logic/media/content.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
 import 'package:pihka_frontend/logic/media/profile_pictures.dart';
@@ -84,6 +85,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => CurrentModerationRequestBloc()),
         BlocProvider(create: (_) => NotificationPermissionBloc()),
         BlocProvider(create: (_) => LocationBloc()),
+        BlocProvider(create: (_) => ContentBloc()),
 
         // Login
         BlocProvider(create: (_) => SignInWithBloc()),
