@@ -38,4 +38,29 @@ class ProfileEntry {
       this.content6,
     }
   );
+
+  List<ContentId> primaryImgAndPossibleOtherImgs() {
+    final List<ContentId> contentList = [imageUuid];
+    final c1 = content1;
+    if (c1 != null) {
+      contentList.add(c1);
+    }
+    final c2 = content2;
+    if (c2 != null) {
+      contentList.add(c2);
+    }
+    final c3 = content3;
+    if (c3 != null) {
+      contentList.add(c3);
+    }
+    final c4 = content4;
+    if (c4 != null) {
+      contentList.add(c4);
+    }
+    final c5 = content5;
+    if (c5 != null) {
+      contentList.add(c5);
+    }
+    return contentList;
+  }
 }

@@ -24,7 +24,7 @@ class ProfileThumbnailImage extends StatefulWidget {
   const ProfileThumbnailImage({
     required this.accountId,
     required this.contentId,
-    required this.cropResults,
+    this.cropResults = CropResults.full,
     this.width,
     this.height,
     this.child,
