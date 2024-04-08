@@ -2,34 +2,54 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/profile_entry.dart';
+import 'package:pihka_frontend/logic/profile/attributes/attributes.dart';
+import 'package:pihka_frontend/ui/initial_setup/profile_attributes.dart';
 
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
+import 'package:pihka_frontend/ui_utils/loading_dialog.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
+import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
 const double PROFILE_IMG_HEIGHT = 400;
 
-class ViewProfileEntry extends StatelessWidget {
+// TODO: Check that IconButtons have tooltips
+// TODO(prod): Set scrolledUnderElevation: 0 to app bar theme
+
+class ViewProfileEntry extends StatefulWidget {
   final ProfileEntry profile;
   final ProfileHeroTag? heroTag;
   const ViewProfileEntry({required this.profile, this.heroTag, super.key});
+
+  @override
+  State<ViewProfileEntry> createState() => _ViewProfileEntryState();
+}
+
+class _ViewProfileEntryState extends State<ViewProfileEntry> {
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProfileAttributesBloc>().add(RefreshAttributesIfNeeded());
+  }
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         List<Widget> profileTextWidgets;
-        if (profile.profileText.isEmpty) {
+        if (widget.profile.profileText.trim().isNotEmpty) {
           profileTextWidgets = [
             const Padding(padding: EdgeInsets.all(8)),
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
-                child: Text(profile.profileText, style: Theme.of(context).textTheme.bodyLarge),
+                child: Text(widget.profile.profileText, style: Theme.of(context).textTheme.bodyLarge),
               ),
             )
           ];
@@ -42,11 +62,19 @@ class ViewProfileEntry extends StatelessWidget {
               SizedBox(
                 height: PROFILE_IMG_HEIGHT,
                 width: constraints.maxWidth,
-                child: ViewProfileImgViewer(profile: profile, heroTag: heroTag),
+                child: ViewProfileImgViewer(profile: widget.profile, heroTag: widget.heroTag),
               ),
-              const Padding(padding: EdgeInsets.all(16)),
+              const Padding(padding: EdgeInsets.all(8)),
               title(context),
               ...profileTextWidgets,
+              const Padding(padding: EdgeInsets.all(8)),
+              attributes(),
+              const Padding(padding: EdgeInsets.all(8)),
+              // Zero sized widgets
+              ProgressDialogOpener<ProfileAttributesBloc, AttributesData>(
+                dialogVisibilityGetter: (context, state) =>
+                  state.refreshState is AttributeRefreshLoading,
+              ),
             ]
           ),
         );
@@ -61,11 +89,27 @@ class ViewProfileEntry extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
         child: Row(
           children: [
-            Text(profile.profileTitle(), style: Theme.of(context).textTheme.titleLarge),
+            Text(widget.profile.profileTitle(), style: Theme.of(context).textTheme.titleLarge),
             // TODO: Spacer and infinity icon if limitless likes are enabled
           ],
         ),
       ),
+    );
+  }
+
+  Widget attributes() {
+    return BlocBuilder<ProfileAttributesBloc, AttributesData>(
+      builder: (context, state) {
+        final info = state.attributes?.info;
+        if (info == null) {
+          return const SizedBox.shrink();
+        } else {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
+            child: AttributeList(availableAttributes: info, attributes: widget.profile.attributes),
+          );
+        }
+      }
     );
   }
 }
@@ -204,5 +248,145 @@ class SelectedImgIndicator extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: indicators,
     );
+  }
+}
+
+class AttributeList extends StatelessWidget {
+  final ProfileAttributes availableAttributes;
+  final List<ProfileAttributeValue> attributes;
+  const AttributeList({required this.availableAttributes, required this.attributes, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> attributeWidgets = <Widget>[];
+
+    final l = AttributeAndValue.sortedListFrom(availableAttributes, attributes);
+    for (final a in l) {
+      attributeWidgets.add(attributeWidget(context, a));
+      attributeWidgets.add(const Divider());
+    }
+
+    if (attributeWidgets.isNotEmpty) {
+      attributeWidgets.removeLast();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        children: attributeWidgets,
+      ),
+    );
+  }
+
+  Widget attributeWidget(BuildContext context, AttributeAndValue a) {
+    final attributeText = a.title(context);
+    final icon = iconResourceToMaterialIcon(a.attribute.icon);
+    if (icon == null) {
+      return const SizedBox.shrink();
+    }
+    return Row(
+      children: [
+        IconButton(
+          icon: Icon(icon),
+          onPressed: () => showSnackBar(attributeText),
+          tooltip: attributeText
+        ),
+        const Padding(padding: EdgeInsets.only(right: COMMON_SCREEN_EDGE_PADDING)),
+        Expanded(child: attributeValuesArea(context, a)),
+      ],
+    );
+  }
+
+  Widget attributeValuesArea(BuildContext c, AttributeAndValue a) {
+    final values = a.sortedSelectedValues();
+    final List<Widget> valueWidgets = [];
+    for (final v in values) {
+      final text = attributeValueName(c, v, a.attribute.translations);
+      final iconData = iconResourceToMaterialIcon(v.icon);
+      final Widget? avatar;
+      if (iconData != null) {
+        avatar = Icon(iconData);
+      } else {
+        avatar = null;
+      }
+      final w = Chip(
+        avatar: avatar,
+        label: Text(text),
+      );
+      valueWidgets.add(w);
+    }
+
+    return Wrap(
+      spacing: 8,
+      children: valueWidgets,
+    );
+  }
+}
+
+class AttributeAndValue {
+  final Attribute attribute;
+  final ProfileAttributeValue value;
+  const AttributeAndValue({required this.attribute, required this.value});
+
+  /// Get sorted list of attributes and values
+  static List<AttributeAndValue> sortedListFrom(
+    ProfileAttributes availableAttributes,
+    List<ProfileAttributeValue> attributes
+  ) {
+    final List<AttributeAndValue> result = [];
+    for (final a in attributes) {
+      final attribute = availableAttributes.attributes.where((attr) => attr.id == a.id).firstOrNull;
+      if (attribute == null) {
+        continue;
+      }
+      result.add(AttributeAndValue(attribute: attribute, value: a));
+    }
+
+    if (availableAttributes.attributeOrder == AttributeOrderMode.orderNumber) {
+      result.sort((a, b) {
+        return a.attribute.orderNumber.compareTo(b.attribute.orderNumber);
+      });
+    }
+
+    return result;
+  }
+
+  String title(BuildContext context) {
+    return attributeName(context, attribute);
+  }
+
+  List<AttributeValue> sortedSelectedValues() {
+    final List<AttributeValue> result = [];
+
+    if (attribute.mode == AttributeMode.selectSingleFilterSingle || attribute.mode == AttributeMode.selectSingleFilterMultiple) {
+      for (final v in attribute.values) {
+        if (v.id != value.valuePart1) {
+          continue;
+        }
+
+        result.add(v);
+
+        // Only second level is supported
+        final secondLevelValues = v.groupValues;
+        if (secondLevelValues != null) {
+          for (final v2 in secondLevelValues.values) {
+            if (v2.id == value.valuePart2) {
+              result.add(v2);
+              break;
+            }
+          }
+        }
+      }
+    } else if (attribute.mode == AttributeMode.selectMultipleFilterMultiple) {
+      for (final bitflag in attribute.values) {
+        if (bitflag.id & value.valuePart1 != 0) {
+          result.add(bitflag);
+        }
+      }
+    }
+
+    reorderValues(result, attribute.valueOrder);
+
+    return result;
   }
 }
