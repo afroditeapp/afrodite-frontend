@@ -33,37 +33,37 @@ enum ServerSlot {
 
   Stream<String?> Function(AccountDatabase) getterForRefreshTokenKey() {
     switch (this) {
-      case ServerSlot.account: return (db) => db.watchRefreshTokenAccount();
-      case ServerSlot.media: return (db) => db.watchRefreshTokenMedia();
-      case ServerSlot.profile: return (db) => db.watchRefreshTokenProfile();
-      case ServerSlot.chat: return (db) => db.watchRefreshTokenChat();
+      case ServerSlot.account: return (db) => db.daoTokens.watchRefreshTokenAccount();
+      case ServerSlot.media: return (db) => db.daoTokens.watchRefreshTokenMedia();
+      case ServerSlot.profile: return (db) => db.daoTokens.watchRefreshTokenProfile();
+      case ServerSlot.chat: return (db) => db.daoTokens.watchRefreshTokenChat();
     }
   }
 
   Future<void> Function(AccountDatabase) setterForRefreshTokenKey(String newValue) {
     switch (this) {
-      case ServerSlot.account: return (db) => db.updateRefreshTokenAccount(newValue);
-      case ServerSlot.media: return (db) => db.updateRefreshTokenMedia(newValue);
-      case ServerSlot.profile: return (db) => db.updateRefreshTokenProfile(newValue);
-      case ServerSlot.chat: return (db) => db.updateRefreshTokenChat(newValue);
+      case ServerSlot.account: return (db) => db.daoTokens.updateRefreshTokenAccount(newValue);
+      case ServerSlot.media: return (db) => db.daoTokens.updateRefreshTokenMedia(newValue);
+      case ServerSlot.profile: return (db) => db.daoTokens.updateRefreshTokenProfile(newValue);
+      case ServerSlot.chat: return (db) => db.daoTokens.updateRefreshTokenChat(newValue);
     }
   }
 
   Stream<String?> Function(AccountDatabase) getterForAccessTokenKey() {
     switch (this) {
-      case ServerSlot.account: return (db) => db.watchAccessTokenAccount();
-      case ServerSlot.media: return (db) => db.watchAccessTokenMedia();
-      case ServerSlot.profile: return (db) => db.watchAccessTokenProfile();
-      case ServerSlot.chat: return (db) => db.watchAccessTokenChat();
+      case ServerSlot.account: return (db) => db.daoTokens.watchAccessTokenAccount();
+      case ServerSlot.media: return (db) => db.daoTokens.watchAccessTokenMedia();
+      case ServerSlot.profile: return (db) => db.daoTokens.watchAccessTokenProfile();
+      case ServerSlot.chat: return (db) => db.daoTokens.watchAccessTokenChat();
     }
   }
 
   Future<void> Function(AccountDatabase) setterForAccessTokenKey(String newValue) {
     switch (this) {
-      case ServerSlot.account: return (db) => db.updateAccessTokenAccount(newValue);
-      case ServerSlot.media: return (db) => db.updateAccessTokenMedia(newValue);
-      case ServerSlot.profile: return (db) => db.updateAccessTokenProfile(newValue);
-      case ServerSlot.chat: return (db) => db.updateAccessTokenChat(newValue);
+      case ServerSlot.account: return (db) => db.daoTokens.updateAccessTokenAccount(newValue);
+      case ServerSlot.media: return (db) => db.daoTokens.updateAccessTokenMedia(newValue);
+      case ServerSlot.profile: return (db) => db.daoTokens.updateAccessTokenProfile(newValue);
+      case ServerSlot.chat: return (db) => db.daoTokens.updateAccessTokenChat(newValue);
     }
   }
 }

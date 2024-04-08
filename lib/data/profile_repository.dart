@@ -36,7 +36,7 @@ class ProfileRepository extends DataRepository {
 
   Stream<Location> get location => db
     .accountStreamOrDefault(
-      (db) => db.watchProfileLocation(),
+      (db) => db.daoProfileSettings.watchProfileLocation(),
       Location(latitude: 0.0, longitude: 0.0),
     );
 
@@ -68,7 +68,7 @@ class ProfileRepository extends DataRepository {
         final location = await _api.profile((api) => api.getLocation()).ok();
         if (location != null) {
           await db.accountAction(
-            (db) => db.updateProfileLocation(
+            (db) => db.daoProfileSettings.updateProfileLocation(
               latitude: location.latitude,
               longitude: location.longitude,
             ),
@@ -103,7 +103,7 @@ class ProfileRepository extends DataRepository {
     final requestSuccessful = await _api.profileAction((api) => api.putLocation(location)).isOk();
     if (requestSuccessful) {
       await db.accountAction(
-        (db) => db.updateProfileLocation(
+        (db) => db.daoProfileSettings.updateProfileLocation(
           latitude: location.latitude,
           longitude: location.longitude,
         ),

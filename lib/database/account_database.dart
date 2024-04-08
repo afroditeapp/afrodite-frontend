@@ -1,6 +1,11 @@
 
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
+import 'package:pihka_frontend/database/account/dao_current_content.dart';
+import 'package:pihka_frontend/database/account/dao_my_profile.dart';
+import 'package:pihka_frontend/database/account/dao_pending_content.dart';
+import 'package:pihka_frontend/database/account/dao_profile_settings.dart';
+import 'package:pihka_frontend/database/account/dao_tokens.dart';
 import 'package:pihka_frontend/database/message_table.dart';
 import 'package:pihka_frontend/database/profile_table.dart';
 import 'package:pihka_frontend/database/utils.dart';
@@ -13,33 +18,16 @@ const PROFILE_FILTER_FAVORITES_DEFAULT = false;
 
 class Account extends Table {
   IntColumn get id => integer().autoIncrement()();
-  TextColumn get refreshTokenAccount => text().nullable()();
-  TextColumn get refreshTokenMedia => text().nullable()();
-  TextColumn get refreshTokenProfile => text().nullable()();
-  TextColumn get refreshTokenChat => text().nullable()();
-  TextColumn get accessTokenAccount => text().nullable()();
-  TextColumn get accessTokenMedia => text().nullable()();
-  TextColumn get accessTokenProfile => text().nullable()();
-  TextColumn get accessTokenChat => text().nullable()();
+
+  TextColumn get jsonAccountState => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
+  TextColumn get jsonCapabilities => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
+  TextColumn get jsonAvailableProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
 
   /// If true show only favorite profiles
   BoolColumn get profileFilterFavorites => boolean()
     .withDefault(const Constant(PROFILE_FILTER_FAVORITES_DEFAULT))();
 
-  RealColumn get profileLocationLatitude => real().nullable()();
-  RealColumn get profileLocationLongitude => real().nullable()();
-  IntColumn get profileSearchAgeRangeMin => integer().nullable()();
-  IntColumn get profileSearchAgeRangeMax => integer().nullable()();
-
-  TextColumn get jsonAccountState => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
-  TextColumn get jsonCapabilities => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
-  TextColumn get jsonAvailableProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
-  TextColumn get jsonProfileVisibility => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
-  TextColumn get jsonSearchGroups => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
-
-  RealColumn get pendingPrimaryContentGridCropSize => real().nullable()();
-  RealColumn get pendingPrimaryContentGridCropX => real().nullable()();
-  RealColumn get pendingPrimaryContentGridCropY => real().nullable()();
+  // DaoPendingContent
 
   TextColumn get uuidPendingContentId0 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   TextColumn get uuidPendingContentId1 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
@@ -48,10 +36,11 @@ class Account extends Table {
   TextColumn get uuidPendingContentId4 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   TextColumn get uuidPendingContentId5 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   TextColumn get uuidPendingSecurityContentId => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  RealColumn get pendingPrimaryContentGridCropSize => real().nullable()();
+  RealColumn get pendingPrimaryContentGridCropX => real().nullable()();
+  RealColumn get pendingPrimaryContentGridCropY => real().nullable()();
 
-  TextColumn get uuidSecurityContentId => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
-
-  // Data which is public
+  // DaoCurrentContent
 
   TextColumn get uuidContentId0 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   TextColumn get uuidContentId1 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
@@ -59,106 +48,63 @@ class Account extends Table {
   TextColumn get uuidContentId3 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   TextColumn get uuidContentId4 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   TextColumn get uuidContentId5 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get uuidSecurityContentId => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  RealColumn get primaryContentGridCropSize => real().nullable()();
+  RealColumn get primaryContentGridCropX => real().nullable()();
+  RealColumn get primaryContentGridCropY => real().nullable()();
+
+  // DaoMyProfile
 
   TextColumn get profileName => text().nullable()();
   TextColumn get profileText => text().nullable()();
   IntColumn get profileAge => integer().nullable()();
   TextColumn get jsonProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonList.driftConverter)).nullable()();
 
-  RealColumn get primaryContentGridCropSize => real().nullable()();
-  RealColumn get primaryContentGridCropX => real().nullable()();
-  RealColumn get primaryContentGridCropY => real().nullable()();
+  // DaoProfileSettings
+
+  RealColumn get profileLocationLatitude => real().nullable()();
+  RealColumn get profileLocationLongitude => real().nullable()();
+  TextColumn get jsonProfileVisibility => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
+  TextColumn get jsonSearchGroups => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
+  IntColumn get profileSearchAgeRangeMin => integer().nullable()();
+  IntColumn get profileSearchAgeRangeMax => integer().nullable()();
+
+  // DaoTokens
+
+  TextColumn get refreshTokenAccount => text().nullable()();
+  TextColumn get refreshTokenMedia => text().nullable()();
+  TextColumn get refreshTokenProfile => text().nullable()();
+  TextColumn get refreshTokenChat => text().nullable()();
+  TextColumn get accessTokenAccount => text().nullable()();
+  TextColumn get accessTokenMedia => text().nullable()();
+  TextColumn get accessTokenProfile => text().nullable()();
+  TextColumn get accessTokenChat => text().nullable()();
 }
 
-@DriftDatabase(tables: [Account, Profiles, Messages], daos: [DaoProfiles, DaoMessages])
+@DriftDatabase(
+  tables: [
+    Account,
+    Profiles,
+    Messages
+  ],
+  daos: [
+    // Account table
+    DaoCurrentContent,
+    DaoPendingContent,
+    DaoMyProfile,
+    DaoProfileSettings,
+    DaoTokens,
+    // Other tables
+    DaoProfiles,
+    DaoMessages,
+  ],
+)
 class AccountDatabase extends _$AccountDatabase {
   AccountDatabase(DbFile dbFile) :
     super(openDbConnection(dbFile));
 
   @override
   int get schemaVersion => 1;
-
-  Future<void> updateRefreshTokenAccount(String? token) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        refreshTokenAccount: Value(token),
-      ),
-    );
-  }
-
-  Future<void> updateRefreshTokenMedia(String? token) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        refreshTokenMedia: Value(token),
-      ),
-    );
-  }
-
-  Future<void> updateRefreshTokenProfile(String? token) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        refreshTokenProfile: Value(token),
-      ),
-    );
-  }
-
-  Future<void> updateRefreshTokenChat(String? token) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        refreshTokenChat: Value(token),
-      ),
-    );
-  }
-
-  Future<void> updateAccessTokenAccount(String? token) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        accessTokenAccount: Value(token),
-      ),
-    );
-  }
-
-  Future<void> updateAccessTokenMedia(String? token) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        accessTokenMedia: Value(token),
-      ),
-    );
-  }
-
-  Future<void> updateAccessTokenProfile(String? token) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        accessTokenProfile: Value(token),
-      ),
-    );
-  }
-
-  Future<void> updateAccessTokenChat(String? token) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        accessTokenChat: Value(token),
-      ),
-    );
-  }
-
-  Future<void> updateProfileLocation({required double latitude, required double longitude}) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        profileLocationLatitude: Value(latitude),
-        profileLocationLongitude: Value(longitude),
-      ),
-    );
-  }
 
   Future<void> updateProfileFilterFavorites(bool value) async {
     await into(account).insertOnConflictUpdate(
@@ -196,39 +142,6 @@ class AccountDatabase extends _$AccountDatabase {
     );
   }
 
-  Future<void> updateProfileVisibility(ProfileVisibility? value) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        jsonProfileVisibility: Value(value?.toEnumString()),
-      ),
-    );
-  }
-
-  Stream<String?> watchRefreshTokenAccount() =>
-    watchColumn((r) => r.refreshTokenAccount);
-
-  Stream<String?> watchRefreshTokenMedia() =>
-    watchColumn((r) => r.refreshTokenMedia);
-
-  Stream<String?> watchRefreshTokenProfile() =>
-    watchColumn((r) => r.refreshTokenProfile);
-
-  Stream<String?> watchRefreshTokenChat() =>
-    watchColumn((r) => r.refreshTokenChat);
-
-  Stream<String?> watchAccessTokenAccount() =>
-    watchColumn((r) => r.accessTokenAccount);
-
-  Stream<String?> watchAccessTokenMedia() =>
-    watchColumn((r) => r.accessTokenMedia);
-
-  Stream<String?> watchAccessTokenProfile() =>
-    watchColumn((r) => r.accessTokenProfile);
-
-  Stream<String?> watchAccessTokenChat() =>
-    watchColumn((r) => r.accessTokenChat);
-
   Stream<bool?> watchProfileFilterFavorites() =>
     watchColumn((r) => r.profileFilterFavorites);
 
@@ -241,21 +154,6 @@ class AccountDatabase extends _$AccountDatabase {
   Stream<AvailableProfileAttributes?> watchAvailableProfileAttributes() =>
     watchColumn((r) => r.jsonAvailableProfileAttributes?.toAvailableProfileAttributes());
 
-  Stream<ProfileVisibility?> watchProfileVisibility() =>
-    watchColumn((r) => r.jsonProfileVisibility?.toProfileVisibility());
-
-  Stream<Location?> watchProfileLocation() =>
-    _selectFromDataId()
-      .map((r) {
-        final latitude = r.profileLocationLatitude;
-        final longitude = r.profileLocationLongitude;
-        if (latitude != null && longitude != null) {
-          return Location(latitude: latitude, longitude: longitude);
-        } else {
-          return null;
-        }
-      })
-      .watchSingleOrNull();
 
   SimpleSelectStatement<$AccountTable, AccountData> _selectFromDataId() {
     return select(account)
@@ -358,5 +256,21 @@ class JsonList {
 extension ProfileAttributeValueListJson on List<ProfileAttributeValue> {
   JsonList toJsonList() {
     return JsonList(map((e) => e.toJson()).toList());
+  }
+}
+
+
+mixin AccountTools on DatabaseAccessor<AccountDatabase> {
+  $AccountTable get _account => attachedDatabase.account;
+
+  SimpleSelectStatement<$AccountTable, AccountData> selectFromDataId() {
+    return select(_account)
+      ..where((t) => t.id.equals(ACCOUNT_DB_DATA_ID.value));
+  }
+
+  Stream<T?> watchColumn<T extends Object>(T? Function(AccountData) extractColumn) {
+    return selectFromDataId()
+      .map(extractColumn)
+      .watchSingleOrNull();
   }
 }

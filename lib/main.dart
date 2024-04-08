@@ -17,6 +17,7 @@ import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/account/account_details.dart';
 import 'package:pihka_frontend/logic/account/demo_account.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/logic/app/notification_permission.dart';
@@ -69,6 +70,7 @@ Future<void> main() async {
       providers: [
         BlocProvider(create: (_) => MainStateBloc()),
         BlocProvider(create: (_) => AccountBloc()),
+        BlocProvider(create: (_) => AccountDetailsBloc()),
         BlocProvider(create: (_) => DemoAccountBloc()),
         BlocProvider(create: (_) => InitialSetupBloc()),
         BlocProvider(create: (_) => ServerAddressBloc()),

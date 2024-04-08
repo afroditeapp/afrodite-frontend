@@ -168,8 +168,8 @@ class LoginRepository extends DataRepository {
     // shared preferences.
 
     // Login repository
-    await DatabaseManager.getInstance().accountAction((db) => db.updateRefreshTokenAccount(loginResult.account.refresh.token));
-    await DatabaseManager.getInstance().accountAction((db) => db.updateAccessTokenAccount(loginResult.account.access.accessToken));
+    await DatabaseManager.getInstance().accountAction((db) => db.daoTokens.updateRefreshTokenAccount(loginResult.account.refresh.token));
+    await DatabaseManager.getInstance().accountAction((db) => db.daoTokens.updateAccessTokenAccount(loginResult.account.access.accessToken));
     // TODO(microservice): microservice support
     await onLogin();
     // Other repostories
@@ -189,8 +189,8 @@ class LoginRepository extends DataRepository {
     await _api.close();
 
     // Login repository
-    await DatabaseManager.getInstance().accountAction((db) => db.updateRefreshTokenAccount(null));
-    await DatabaseManager.getInstance().accountAction((db) => db.updateAccessTokenAccount(null));
+    await DatabaseManager.getInstance().accountAction((db) => db.daoTokens.updateRefreshTokenAccount(null));
+    await DatabaseManager.getInstance().accountAction((db) => db.daoTokens.updateAccessTokenAccount(null));
     await onLogout();
     // TODO(microservice): microservice support
 

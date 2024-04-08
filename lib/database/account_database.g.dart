@@ -17,88 +17,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _refreshTokenAccountMeta =
-      const VerificationMeta('refreshTokenAccount');
-  @override
-  late final GeneratedColumn<String> refreshTokenAccount =
-      GeneratedColumn<String>('refresh_token_account', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _refreshTokenMediaMeta =
-      const VerificationMeta('refreshTokenMedia');
-  @override
-  late final GeneratedColumn<String> refreshTokenMedia =
-      GeneratedColumn<String>('refresh_token_media', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _refreshTokenProfileMeta =
-      const VerificationMeta('refreshTokenProfile');
-  @override
-  late final GeneratedColumn<String> refreshTokenProfile =
-      GeneratedColumn<String>('refresh_token_profile', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _refreshTokenChatMeta =
-      const VerificationMeta('refreshTokenChat');
-  @override
-  late final GeneratedColumn<String> refreshTokenChat = GeneratedColumn<String>(
-      'refresh_token_chat', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _accessTokenAccountMeta =
-      const VerificationMeta('accessTokenAccount');
-  @override
-  late final GeneratedColumn<String> accessTokenAccount =
-      GeneratedColumn<String>('access_token_account', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _accessTokenMediaMeta =
-      const VerificationMeta('accessTokenMedia');
-  @override
-  late final GeneratedColumn<String> accessTokenMedia = GeneratedColumn<String>(
-      'access_token_media', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _accessTokenProfileMeta =
-      const VerificationMeta('accessTokenProfile');
-  @override
-  late final GeneratedColumn<String> accessTokenProfile =
-      GeneratedColumn<String>('access_token_profile', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _accessTokenChatMeta =
-      const VerificationMeta('accessTokenChat');
-  @override
-  late final GeneratedColumn<String> accessTokenChat = GeneratedColumn<String>(
-      'access_token_chat', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _profileFilterFavoritesMeta =
-      const VerificationMeta('profileFilterFavorites');
-  @override
-  late final GeneratedColumn<bool> profileFilterFavorites =
-      GeneratedColumn<bool>('profile_filter_favorites', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("profile_filter_favorites" IN (0, 1))'),
-          defaultValue: const Constant(PROFILE_FILTER_FAVORITES_DEFAULT));
-  static const VerificationMeta _profileLocationLatitudeMeta =
-      const VerificationMeta('profileLocationLatitude');
-  @override
-  late final GeneratedColumn<double> profileLocationLatitude =
-      GeneratedColumn<double>('profile_location_latitude', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
-  static const VerificationMeta _profileLocationLongitudeMeta =
-      const VerificationMeta('profileLocationLongitude');
-  @override
-  late final GeneratedColumn<double> profileLocationLongitude =
-      GeneratedColumn<double>('profile_location_longitude', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
-  static const VerificationMeta _profileSearchAgeRangeMinMeta =
-      const VerificationMeta('profileSearchAgeRangeMin');
-  @override
-  late final GeneratedColumn<int> profileSearchAgeRangeMin =
-      GeneratedColumn<int>('profile_search_age_range_min', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _profileSearchAgeRangeMaxMeta =
-      const VerificationMeta('profileSearchAgeRangeMax');
-  @override
-  late final GeneratedColumn<int> profileSearchAgeRangeMax =
-      GeneratedColumn<int>('profile_search_age_range_max', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _jsonAccountStateMeta =
       const VerificationMeta('jsonAccountState');
   @override
@@ -124,44 +42,16 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<JsonString?>(
               $AccountTable.$converterjsonAvailableProfileAttributes);
-  static const VerificationMeta _jsonProfileVisibilityMeta =
-      const VerificationMeta('jsonProfileVisibility');
+  static const VerificationMeta _profileFilterFavoritesMeta =
+      const VerificationMeta('profileFilterFavorites');
   @override
-  late final GeneratedColumnWithTypeConverter<EnumString?, String>
-      jsonProfileVisibility = GeneratedColumn<String>(
-              'json_profile_visibility', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<EnumString?>(
-              $AccountTable.$converterjsonProfileVisibility);
-  static const VerificationMeta _jsonSearchGroupsMeta =
-      const VerificationMeta('jsonSearchGroups');
-  @override
-  late final GeneratedColumnWithTypeConverter<JsonString?, String>
-      jsonSearchGroups = GeneratedColumn<String>(
-              'json_search_groups', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<JsonString?>($AccountTable.$converterjsonSearchGroups);
-  static const VerificationMeta _pendingPrimaryContentGridCropSizeMeta =
-      const VerificationMeta('pendingPrimaryContentGridCropSize');
-  @override
-  late final GeneratedColumn<double> pendingPrimaryContentGridCropSize =
-      GeneratedColumn<double>(
-          'pending_primary_content_grid_crop_size', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
-  static const VerificationMeta _pendingPrimaryContentGridCropXMeta =
-      const VerificationMeta('pendingPrimaryContentGridCropX');
-  @override
-  late final GeneratedColumn<double> pendingPrimaryContentGridCropX =
-      GeneratedColumn<double>(
-          'pending_primary_content_grid_crop_x', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
-  static const VerificationMeta _pendingPrimaryContentGridCropYMeta =
-      const VerificationMeta('pendingPrimaryContentGridCropY');
-  @override
-  late final GeneratedColumn<double> pendingPrimaryContentGridCropY =
-      GeneratedColumn<double>(
-          'pending_primary_content_grid_crop_y', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
+  late final GeneratedColumn<bool> profileFilterFavorites =
+      GeneratedColumn<bool>('profile_filter_favorites', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("profile_filter_favorites" IN (0, 1))'),
+          defaultValue: const Constant(PROFILE_FILTER_FAVORITES_DEFAULT));
   static const VerificationMeta _uuidPendingContentId0Meta =
       const VerificationMeta('uuidPendingContentId0');
   @override
@@ -225,15 +115,27 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<ContentId?>(
               $AccountTable.$converteruuidPendingSecurityContentId);
-  static const VerificationMeta _uuidSecurityContentIdMeta =
-      const VerificationMeta('uuidSecurityContentId');
+  static const VerificationMeta _pendingPrimaryContentGridCropSizeMeta =
+      const VerificationMeta('pendingPrimaryContentGridCropSize');
   @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidSecurityContentId = GeneratedColumn<String>(
-              'uuid_security_content_id', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>(
-              $AccountTable.$converteruuidSecurityContentId);
+  late final GeneratedColumn<double> pendingPrimaryContentGridCropSize =
+      GeneratedColumn<double>(
+          'pending_primary_content_grid_crop_size', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _pendingPrimaryContentGridCropXMeta =
+      const VerificationMeta('pendingPrimaryContentGridCropX');
+  @override
+  late final GeneratedColumn<double> pendingPrimaryContentGridCropX =
+      GeneratedColumn<double>(
+          'pending_primary_content_grid_crop_x', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _pendingPrimaryContentGridCropYMeta =
+      const VerificationMeta('pendingPrimaryContentGridCropY');
+  @override
+  late final GeneratedColumn<double> pendingPrimaryContentGridCropY =
+      GeneratedColumn<double>(
+          'pending_primary_content_grid_crop_y', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
   static const VerificationMeta _uuidContentId0Meta =
       const VerificationMeta('uuidContentId0');
   @override
@@ -282,6 +184,34 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               'uuid_content_id5', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<ContentId?>($AccountTable.$converteruuidContentId5);
+  static const VerificationMeta _uuidSecurityContentIdMeta =
+      const VerificationMeta('uuidSecurityContentId');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId?, String>
+      uuidSecurityContentId = GeneratedColumn<String>(
+              'uuid_security_content_id', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ContentId?>(
+              $AccountTable.$converteruuidSecurityContentId);
+  static const VerificationMeta _primaryContentGridCropSizeMeta =
+      const VerificationMeta('primaryContentGridCropSize');
+  @override
+  late final GeneratedColumn<double> primaryContentGridCropSize =
+      GeneratedColumn<double>(
+          'primary_content_grid_crop_size', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _primaryContentGridCropXMeta =
+      const VerificationMeta('primaryContentGridCropX');
+  @override
+  late final GeneratedColumn<double> primaryContentGridCropX =
+      GeneratedColumn<double>('primary_content_grid_crop_x', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _primaryContentGridCropYMeta =
+      const VerificationMeta('primaryContentGridCropY');
+  @override
+  late final GeneratedColumn<double> primaryContentGridCropY =
+      GeneratedColumn<double>('primary_content_grid_crop_y', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
   static const VerificationMeta _profileNameMeta =
       const VerificationMeta('profileName');
   @override
@@ -309,49 +239,102 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<JsonList?>(
               $AccountTable.$converterjsonProfileAttributes);
-  static const VerificationMeta _primaryContentGridCropSizeMeta =
-      const VerificationMeta('primaryContentGridCropSize');
+  static const VerificationMeta _profileLocationLatitudeMeta =
+      const VerificationMeta('profileLocationLatitude');
   @override
-  late final GeneratedColumn<double> primaryContentGridCropSize =
-      GeneratedColumn<double>(
-          'primary_content_grid_crop_size', aliasedName, true,
+  late final GeneratedColumn<double> profileLocationLatitude =
+      GeneratedColumn<double>('profile_location_latitude', aliasedName, true,
           type: DriftSqlType.double, requiredDuringInsert: false);
-  static const VerificationMeta _primaryContentGridCropXMeta =
-      const VerificationMeta('primaryContentGridCropX');
+  static const VerificationMeta _profileLocationLongitudeMeta =
+      const VerificationMeta('profileLocationLongitude');
   @override
-  late final GeneratedColumn<double> primaryContentGridCropX =
-      GeneratedColumn<double>('primary_content_grid_crop_x', aliasedName, true,
+  late final GeneratedColumn<double> profileLocationLongitude =
+      GeneratedColumn<double>('profile_location_longitude', aliasedName, true,
           type: DriftSqlType.double, requiredDuringInsert: false);
-  static const VerificationMeta _primaryContentGridCropYMeta =
-      const VerificationMeta('primaryContentGridCropY');
+  static const VerificationMeta _jsonProfileVisibilityMeta =
+      const VerificationMeta('jsonProfileVisibility');
   @override
-  late final GeneratedColumn<double> primaryContentGridCropY =
-      GeneratedColumn<double>('primary_content_grid_crop_y', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
+  late final GeneratedColumnWithTypeConverter<EnumString?, String>
+      jsonProfileVisibility = GeneratedColumn<String>(
+              'json_profile_visibility', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<EnumString?>(
+              $AccountTable.$converterjsonProfileVisibility);
+  static const VerificationMeta _jsonSearchGroupsMeta =
+      const VerificationMeta('jsonSearchGroups');
+  @override
+  late final GeneratedColumnWithTypeConverter<JsonString?, String>
+      jsonSearchGroups = GeneratedColumn<String>(
+              'json_search_groups', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<JsonString?>($AccountTable.$converterjsonSearchGroups);
+  static const VerificationMeta _profileSearchAgeRangeMinMeta =
+      const VerificationMeta('profileSearchAgeRangeMin');
+  @override
+  late final GeneratedColumn<int> profileSearchAgeRangeMin =
+      GeneratedColumn<int>('profile_search_age_range_min', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _profileSearchAgeRangeMaxMeta =
+      const VerificationMeta('profileSearchAgeRangeMax');
+  @override
+  late final GeneratedColumn<int> profileSearchAgeRangeMax =
+      GeneratedColumn<int>('profile_search_age_range_max', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _refreshTokenAccountMeta =
+      const VerificationMeta('refreshTokenAccount');
+  @override
+  late final GeneratedColumn<String> refreshTokenAccount =
+      GeneratedColumn<String>('refresh_token_account', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _refreshTokenMediaMeta =
+      const VerificationMeta('refreshTokenMedia');
+  @override
+  late final GeneratedColumn<String> refreshTokenMedia =
+      GeneratedColumn<String>('refresh_token_media', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _refreshTokenProfileMeta =
+      const VerificationMeta('refreshTokenProfile');
+  @override
+  late final GeneratedColumn<String> refreshTokenProfile =
+      GeneratedColumn<String>('refresh_token_profile', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _refreshTokenChatMeta =
+      const VerificationMeta('refreshTokenChat');
+  @override
+  late final GeneratedColumn<String> refreshTokenChat = GeneratedColumn<String>(
+      'refresh_token_chat', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _accessTokenAccountMeta =
+      const VerificationMeta('accessTokenAccount');
+  @override
+  late final GeneratedColumn<String> accessTokenAccount =
+      GeneratedColumn<String>('access_token_account', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _accessTokenMediaMeta =
+      const VerificationMeta('accessTokenMedia');
+  @override
+  late final GeneratedColumn<String> accessTokenMedia = GeneratedColumn<String>(
+      'access_token_media', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _accessTokenProfileMeta =
+      const VerificationMeta('accessTokenProfile');
+  @override
+  late final GeneratedColumn<String> accessTokenProfile =
+      GeneratedColumn<String>('access_token_profile', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _accessTokenChatMeta =
+      const VerificationMeta('accessTokenChat');
+  @override
+  late final GeneratedColumn<String> accessTokenChat = GeneratedColumn<String>(
+      'access_token_chat', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
-        refreshTokenAccount,
-        refreshTokenMedia,
-        refreshTokenProfile,
-        refreshTokenChat,
-        accessTokenAccount,
-        accessTokenMedia,
-        accessTokenProfile,
-        accessTokenChat,
-        profileFilterFavorites,
-        profileLocationLatitude,
-        profileLocationLongitude,
-        profileSearchAgeRangeMin,
-        profileSearchAgeRangeMax,
         jsonAccountState,
         jsonCapabilities,
         jsonAvailableProfileAttributes,
-        jsonProfileVisibility,
-        jsonSearchGroups,
-        pendingPrimaryContentGridCropSize,
-        pendingPrimaryContentGridCropX,
-        pendingPrimaryContentGridCropY,
+        profileFilterFavorites,
         uuidPendingContentId0,
         uuidPendingContentId1,
         uuidPendingContentId2,
@@ -359,20 +342,37 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         uuidPendingContentId4,
         uuidPendingContentId5,
         uuidPendingSecurityContentId,
-        uuidSecurityContentId,
+        pendingPrimaryContentGridCropSize,
+        pendingPrimaryContentGridCropX,
+        pendingPrimaryContentGridCropY,
         uuidContentId0,
         uuidContentId1,
         uuidContentId2,
         uuidContentId3,
         uuidContentId4,
         uuidContentId5,
+        uuidSecurityContentId,
+        primaryContentGridCropSize,
+        primaryContentGridCropX,
+        primaryContentGridCropY,
         profileName,
         profileText,
         profileAge,
         jsonProfileAttributes,
-        primaryContentGridCropSize,
-        primaryContentGridCropX,
-        primaryContentGridCropY
+        profileLocationLatitude,
+        profileLocationLongitude,
+        jsonProfileVisibility,
+        jsonSearchGroups,
+        profileSearchAgeRangeMin,
+        profileSearchAgeRangeMax,
+        refreshTokenAccount,
+        refreshTokenMedia,
+        refreshTokenProfile,
+        refreshTokenChat,
+        accessTokenAccount,
+        accessTokenMedia,
+        accessTokenProfile,
+        accessTokenChat
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -386,6 +386,131 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    context.handle(_jsonAccountStateMeta, const VerificationResult.success());
+    context.handle(_jsonCapabilitiesMeta, const VerificationResult.success());
+    context.handle(_jsonAvailableProfileAttributesMeta,
+        const VerificationResult.success());
+    if (data.containsKey('profile_filter_favorites')) {
+      context.handle(
+          _profileFilterFavoritesMeta,
+          profileFilterFavorites.isAcceptableOrUnknown(
+              data['profile_filter_favorites']!, _profileFilterFavoritesMeta));
+    }
+    context.handle(
+        _uuidPendingContentId0Meta, const VerificationResult.success());
+    context.handle(
+        _uuidPendingContentId1Meta, const VerificationResult.success());
+    context.handle(
+        _uuidPendingContentId2Meta, const VerificationResult.success());
+    context.handle(
+        _uuidPendingContentId3Meta, const VerificationResult.success());
+    context.handle(
+        _uuidPendingContentId4Meta, const VerificationResult.success());
+    context.handle(
+        _uuidPendingContentId5Meta, const VerificationResult.success());
+    context.handle(
+        _uuidPendingSecurityContentIdMeta, const VerificationResult.success());
+    if (data.containsKey('pending_primary_content_grid_crop_size')) {
+      context.handle(
+          _pendingPrimaryContentGridCropSizeMeta,
+          pendingPrimaryContentGridCropSize.isAcceptableOrUnknown(
+              data['pending_primary_content_grid_crop_size']!,
+              _pendingPrimaryContentGridCropSizeMeta));
+    }
+    if (data.containsKey('pending_primary_content_grid_crop_x')) {
+      context.handle(
+          _pendingPrimaryContentGridCropXMeta,
+          pendingPrimaryContentGridCropX.isAcceptableOrUnknown(
+              data['pending_primary_content_grid_crop_x']!,
+              _pendingPrimaryContentGridCropXMeta));
+    }
+    if (data.containsKey('pending_primary_content_grid_crop_y')) {
+      context.handle(
+          _pendingPrimaryContentGridCropYMeta,
+          pendingPrimaryContentGridCropY.isAcceptableOrUnknown(
+              data['pending_primary_content_grid_crop_y']!,
+              _pendingPrimaryContentGridCropYMeta));
+    }
+    context.handle(_uuidContentId0Meta, const VerificationResult.success());
+    context.handle(_uuidContentId1Meta, const VerificationResult.success());
+    context.handle(_uuidContentId2Meta, const VerificationResult.success());
+    context.handle(_uuidContentId3Meta, const VerificationResult.success());
+    context.handle(_uuidContentId4Meta, const VerificationResult.success());
+    context.handle(_uuidContentId5Meta, const VerificationResult.success());
+    context.handle(
+        _uuidSecurityContentIdMeta, const VerificationResult.success());
+    if (data.containsKey('primary_content_grid_crop_size')) {
+      context.handle(
+          _primaryContentGridCropSizeMeta,
+          primaryContentGridCropSize.isAcceptableOrUnknown(
+              data['primary_content_grid_crop_size']!,
+              _primaryContentGridCropSizeMeta));
+    }
+    if (data.containsKey('primary_content_grid_crop_x')) {
+      context.handle(
+          _primaryContentGridCropXMeta,
+          primaryContentGridCropX.isAcceptableOrUnknown(
+              data['primary_content_grid_crop_x']!,
+              _primaryContentGridCropXMeta));
+    }
+    if (data.containsKey('primary_content_grid_crop_y')) {
+      context.handle(
+          _primaryContentGridCropYMeta,
+          primaryContentGridCropY.isAcceptableOrUnknown(
+              data['primary_content_grid_crop_y']!,
+              _primaryContentGridCropYMeta));
+    }
+    if (data.containsKey('profile_name')) {
+      context.handle(
+          _profileNameMeta,
+          profileName.isAcceptableOrUnknown(
+              data['profile_name']!, _profileNameMeta));
+    }
+    if (data.containsKey('profile_text')) {
+      context.handle(
+          _profileTextMeta,
+          profileText.isAcceptableOrUnknown(
+              data['profile_text']!, _profileTextMeta));
+    }
+    if (data.containsKey('profile_age')) {
+      context.handle(
+          _profileAgeMeta,
+          profileAge.isAcceptableOrUnknown(
+              data['profile_age']!, _profileAgeMeta));
+    }
+    context.handle(
+        _jsonProfileAttributesMeta, const VerificationResult.success());
+    if (data.containsKey('profile_location_latitude')) {
+      context.handle(
+          _profileLocationLatitudeMeta,
+          profileLocationLatitude.isAcceptableOrUnknown(
+              data['profile_location_latitude']!,
+              _profileLocationLatitudeMeta));
+    }
+    if (data.containsKey('profile_location_longitude')) {
+      context.handle(
+          _profileLocationLongitudeMeta,
+          profileLocationLongitude.isAcceptableOrUnknown(
+              data['profile_location_longitude']!,
+              _profileLocationLongitudeMeta));
+    }
+    context.handle(
+        _jsonProfileVisibilityMeta, const VerificationResult.success());
+    context.handle(_jsonSearchGroupsMeta, const VerificationResult.success());
+    if (data.containsKey('profile_search_age_range_min')) {
+      context.handle(
+          _profileSearchAgeRangeMinMeta,
+          profileSearchAgeRangeMin.isAcceptableOrUnknown(
+              data['profile_search_age_range_min']!,
+              _profileSearchAgeRangeMinMeta));
+    }
+    if (data.containsKey('profile_search_age_range_max')) {
+      context.handle(
+          _profileSearchAgeRangeMaxMeta,
+          profileSearchAgeRangeMax.isAcceptableOrUnknown(
+              data['profile_search_age_range_max']!,
+              _profileSearchAgeRangeMaxMeta));
     }
     if (data.containsKey('refresh_token_account')) {
       context.handle(
@@ -435,131 +560,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           accessTokenChat.isAcceptableOrUnknown(
               data['access_token_chat']!, _accessTokenChatMeta));
     }
-    if (data.containsKey('profile_filter_favorites')) {
-      context.handle(
-          _profileFilterFavoritesMeta,
-          profileFilterFavorites.isAcceptableOrUnknown(
-              data['profile_filter_favorites']!, _profileFilterFavoritesMeta));
-    }
-    if (data.containsKey('profile_location_latitude')) {
-      context.handle(
-          _profileLocationLatitudeMeta,
-          profileLocationLatitude.isAcceptableOrUnknown(
-              data['profile_location_latitude']!,
-              _profileLocationLatitudeMeta));
-    }
-    if (data.containsKey('profile_location_longitude')) {
-      context.handle(
-          _profileLocationLongitudeMeta,
-          profileLocationLongitude.isAcceptableOrUnknown(
-              data['profile_location_longitude']!,
-              _profileLocationLongitudeMeta));
-    }
-    if (data.containsKey('profile_search_age_range_min')) {
-      context.handle(
-          _profileSearchAgeRangeMinMeta,
-          profileSearchAgeRangeMin.isAcceptableOrUnknown(
-              data['profile_search_age_range_min']!,
-              _profileSearchAgeRangeMinMeta));
-    }
-    if (data.containsKey('profile_search_age_range_max')) {
-      context.handle(
-          _profileSearchAgeRangeMaxMeta,
-          profileSearchAgeRangeMax.isAcceptableOrUnknown(
-              data['profile_search_age_range_max']!,
-              _profileSearchAgeRangeMaxMeta));
-    }
-    context.handle(_jsonAccountStateMeta, const VerificationResult.success());
-    context.handle(_jsonCapabilitiesMeta, const VerificationResult.success());
-    context.handle(_jsonAvailableProfileAttributesMeta,
-        const VerificationResult.success());
-    context.handle(
-        _jsonProfileVisibilityMeta, const VerificationResult.success());
-    context.handle(_jsonSearchGroupsMeta, const VerificationResult.success());
-    if (data.containsKey('pending_primary_content_grid_crop_size')) {
-      context.handle(
-          _pendingPrimaryContentGridCropSizeMeta,
-          pendingPrimaryContentGridCropSize.isAcceptableOrUnknown(
-              data['pending_primary_content_grid_crop_size']!,
-              _pendingPrimaryContentGridCropSizeMeta));
-    }
-    if (data.containsKey('pending_primary_content_grid_crop_x')) {
-      context.handle(
-          _pendingPrimaryContentGridCropXMeta,
-          pendingPrimaryContentGridCropX.isAcceptableOrUnknown(
-              data['pending_primary_content_grid_crop_x']!,
-              _pendingPrimaryContentGridCropXMeta));
-    }
-    if (data.containsKey('pending_primary_content_grid_crop_y')) {
-      context.handle(
-          _pendingPrimaryContentGridCropYMeta,
-          pendingPrimaryContentGridCropY.isAcceptableOrUnknown(
-              data['pending_primary_content_grid_crop_y']!,
-              _pendingPrimaryContentGridCropYMeta));
-    }
-    context.handle(
-        _uuidPendingContentId0Meta, const VerificationResult.success());
-    context.handle(
-        _uuidPendingContentId1Meta, const VerificationResult.success());
-    context.handle(
-        _uuidPendingContentId2Meta, const VerificationResult.success());
-    context.handle(
-        _uuidPendingContentId3Meta, const VerificationResult.success());
-    context.handle(
-        _uuidPendingContentId4Meta, const VerificationResult.success());
-    context.handle(
-        _uuidPendingContentId5Meta, const VerificationResult.success());
-    context.handle(
-        _uuidPendingSecurityContentIdMeta, const VerificationResult.success());
-    context.handle(
-        _uuidSecurityContentIdMeta, const VerificationResult.success());
-    context.handle(_uuidContentId0Meta, const VerificationResult.success());
-    context.handle(_uuidContentId1Meta, const VerificationResult.success());
-    context.handle(_uuidContentId2Meta, const VerificationResult.success());
-    context.handle(_uuidContentId3Meta, const VerificationResult.success());
-    context.handle(_uuidContentId4Meta, const VerificationResult.success());
-    context.handle(_uuidContentId5Meta, const VerificationResult.success());
-    if (data.containsKey('profile_name')) {
-      context.handle(
-          _profileNameMeta,
-          profileName.isAcceptableOrUnknown(
-              data['profile_name']!, _profileNameMeta));
-    }
-    if (data.containsKey('profile_text')) {
-      context.handle(
-          _profileTextMeta,
-          profileText.isAcceptableOrUnknown(
-              data['profile_text']!, _profileTextMeta));
-    }
-    if (data.containsKey('profile_age')) {
-      context.handle(
-          _profileAgeMeta,
-          profileAge.isAcceptableOrUnknown(
-              data['profile_age']!, _profileAgeMeta));
-    }
-    context.handle(
-        _jsonProfileAttributesMeta, const VerificationResult.success());
-    if (data.containsKey('primary_content_grid_crop_size')) {
-      context.handle(
-          _primaryContentGridCropSizeMeta,
-          primaryContentGridCropSize.isAcceptableOrUnknown(
-              data['primary_content_grid_crop_size']!,
-              _primaryContentGridCropSizeMeta));
-    }
-    if (data.containsKey('primary_content_grid_crop_x')) {
-      context.handle(
-          _primaryContentGridCropXMeta,
-          primaryContentGridCropX.isAcceptableOrUnknown(
-              data['primary_content_grid_crop_x']!,
-              _primaryContentGridCropXMeta));
-    }
-    if (data.containsKey('primary_content_grid_crop_y')) {
-      context.handle(
-          _primaryContentGridCropYMeta,
-          primaryContentGridCropY.isAcceptableOrUnknown(
-              data['primary_content_grid_crop_y']!,
-              _primaryContentGridCropYMeta));
-    }
     return context;
   }
 
@@ -571,37 +571,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     return AccountData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      refreshTokenAccount: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}refresh_token_account']),
-      refreshTokenMedia: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}refresh_token_media']),
-      refreshTokenProfile: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}refresh_token_profile']),
-      refreshTokenChat: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}refresh_token_chat']),
-      accessTokenAccount: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}access_token_account']),
-      accessTokenMedia: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}access_token_media']),
-      accessTokenProfile: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}access_token_profile']),
-      accessTokenChat: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}access_token_chat']),
-      profileFilterFavorites: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}profile_filter_favorites'])!,
-      profileLocationLatitude: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}profile_location_latitude']),
-      profileLocationLongitude: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}profile_location_longitude']),
-      profileSearchAgeRangeMin: attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}profile_search_age_range_min']),
-      profileSearchAgeRangeMax: attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}profile_search_age_range_max']),
       jsonAccountState: $AccountTable.$converterjsonAccountState.fromSql(
           attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}json_account_state'])),
@@ -612,21 +581,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           .$converterjsonAvailableProfileAttributes
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}json_available_profile_attributes'])),
-      jsonProfileVisibility: $AccountTable.$converterjsonProfileVisibility
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}json_profile_visibility'])),
-      jsonSearchGroups: $AccountTable.$converterjsonSearchGroups.fromSql(
-          attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}json_search_groups'])),
-      pendingPrimaryContentGridCropSize: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}pending_primary_content_grid_crop_size']),
-      pendingPrimaryContentGridCropX: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}pending_primary_content_grid_crop_x']),
-      pendingPrimaryContentGridCropY: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}pending_primary_content_grid_crop_y']),
+      profileFilterFavorites: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}profile_filter_favorites'])!,
       uuidPendingContentId0: $AccountTable.$converteruuidPendingContentId0
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}uuid_pending_content_id0'])),
@@ -649,9 +606,15 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           .$converteruuidPendingSecurityContentId
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}uuid_pending_security_content_id'])),
-      uuidSecurityContentId: $AccountTable.$converteruuidSecurityContentId
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}uuid_security_content_id'])),
+      pendingPrimaryContentGridCropSize: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}pending_primary_content_grid_crop_size']),
+      pendingPrimaryContentGridCropX: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}pending_primary_content_grid_crop_x']),
+      pendingPrimaryContentGridCropY: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}pending_primary_content_grid_crop_y']),
       uuidContentId0: $AccountTable.$converteruuidContentId0.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}uuid_content_id0'])),
@@ -670,15 +633,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       uuidContentId5: $AccountTable.$converteruuidContentId5.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}uuid_content_id5'])),
-      profileName: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}profile_name']),
-      profileText: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}profile_text']),
-      profileAge: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}profile_age']),
-      jsonProfileAttributes: $AccountTable.$converterjsonProfileAttributes
+      uuidSecurityContentId: $AccountTable.$converteruuidSecurityContentId
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}json_profile_attributes'])),
+              data['${effectivePrefix}uuid_security_content_id'])),
       primaryContentGridCropSize: attachedDatabase.typeMapping.read(
           DriftSqlType.double,
           data['${effectivePrefix}primary_content_grid_crop_size']),
@@ -688,6 +645,49 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       primaryContentGridCropY: attachedDatabase.typeMapping.read(
           DriftSqlType.double,
           data['${effectivePrefix}primary_content_grid_crop_y']),
+      profileName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}profile_name']),
+      profileText: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}profile_text']),
+      profileAge: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}profile_age']),
+      jsonProfileAttributes: $AccountTable.$converterjsonProfileAttributes
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}json_profile_attributes'])),
+      profileLocationLatitude: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}profile_location_latitude']),
+      profileLocationLongitude: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}profile_location_longitude']),
+      jsonProfileVisibility: $AccountTable.$converterjsonProfileVisibility
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}json_profile_visibility'])),
+      jsonSearchGroups: $AccountTable.$converterjsonSearchGroups.fromSql(
+          attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}json_search_groups'])),
+      profileSearchAgeRangeMin: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}profile_search_age_range_min']),
+      profileSearchAgeRangeMax: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}profile_search_age_range_max']),
+      refreshTokenAccount: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}refresh_token_account']),
+      refreshTokenMedia: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}refresh_token_media']),
+      refreshTokenProfile: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}refresh_token_profile']),
+      refreshTokenChat: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}refresh_token_chat']),
+      accessTokenAccount: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}access_token_account']),
+      accessTokenMedia: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}access_token_media']),
+      accessTokenProfile: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}access_token_profile']),
+      accessTokenChat: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}access_token_chat']),
     );
   }
 
@@ -702,10 +702,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
   static TypeConverter<JsonString?, String?>
       $converterjsonAvailableProfileAttributes =
-      NullAwareTypeConverter.wrap(JsonString.driftConverter);
-  static TypeConverter<EnumString?, String?> $converterjsonProfileVisibility =
-      NullAwareTypeConverter.wrap(EnumString.driftConverter);
-  static TypeConverter<JsonString?, String?> $converterjsonSearchGroups =
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
   static TypeConverter<ContentId?, String?> $converteruuidPendingContentId0 =
       const NullAwareTypeConverter.wrap(ContentIdConverter());
@@ -722,8 +718,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<ContentId?, String?>
       $converteruuidPendingSecurityContentId =
       const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidSecurityContentId =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
   static TypeConverter<ContentId?, String?> $converteruuidContentId0 =
       const NullAwareTypeConverter.wrap(ContentIdConverter());
   static TypeConverter<ContentId?, String?> $converteruuidContentId1 =
@@ -736,12 +730,54 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       const NullAwareTypeConverter.wrap(ContentIdConverter());
   static TypeConverter<ContentId?, String?> $converteruuidContentId5 =
       const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ContentId?, String?> $converteruuidSecurityContentId =
+      const NullAwareTypeConverter.wrap(ContentIdConverter());
   static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
       NullAwareTypeConverter.wrap(JsonList.driftConverter);
+  static TypeConverter<EnumString?, String?> $converterjsonProfileVisibility =
+      NullAwareTypeConverter.wrap(EnumString.driftConverter);
+  static TypeConverter<JsonString?, String?> $converterjsonSearchGroups =
+      NullAwareTypeConverter.wrap(JsonString.driftConverter);
 }
 
 class AccountData extends DataClass implements Insertable<AccountData> {
   final int id;
+  final EnumString? jsonAccountState;
+  final JsonString? jsonCapabilities;
+  final JsonString? jsonAvailableProfileAttributes;
+
+  /// If true show only favorite profiles
+  final bool profileFilterFavorites;
+  final ContentId? uuidPendingContentId0;
+  final ContentId? uuidPendingContentId1;
+  final ContentId? uuidPendingContentId2;
+  final ContentId? uuidPendingContentId3;
+  final ContentId? uuidPendingContentId4;
+  final ContentId? uuidPendingContentId5;
+  final ContentId? uuidPendingSecurityContentId;
+  final double? pendingPrimaryContentGridCropSize;
+  final double? pendingPrimaryContentGridCropX;
+  final double? pendingPrimaryContentGridCropY;
+  final ContentId? uuidContentId0;
+  final ContentId? uuidContentId1;
+  final ContentId? uuidContentId2;
+  final ContentId? uuidContentId3;
+  final ContentId? uuidContentId4;
+  final ContentId? uuidContentId5;
+  final ContentId? uuidSecurityContentId;
+  final double? primaryContentGridCropSize;
+  final double? primaryContentGridCropX;
+  final double? primaryContentGridCropY;
+  final String? profileName;
+  final String? profileText;
+  final int? profileAge;
+  final JsonList? jsonProfileAttributes;
+  final double? profileLocationLatitude;
+  final double? profileLocationLongitude;
+  final EnumString? jsonProfileVisibility;
+  final JsonString? jsonSearchGroups;
+  final int? profileSearchAgeRangeMin;
+  final int? profileSearchAgeRangeMax;
   final String? refreshTokenAccount;
   final String? refreshTokenMedia;
   final String? refreshTokenProfile;
@@ -750,65 +786,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final String? accessTokenMedia;
   final String? accessTokenProfile;
   final String? accessTokenChat;
-
-  /// If true show only favorite profiles
-  final bool profileFilterFavorites;
-  final double? profileLocationLatitude;
-  final double? profileLocationLongitude;
-  final int? profileSearchAgeRangeMin;
-  final int? profileSearchAgeRangeMax;
-  final EnumString? jsonAccountState;
-  final JsonString? jsonCapabilities;
-  final JsonString? jsonAvailableProfileAttributes;
-  final EnumString? jsonProfileVisibility;
-  final JsonString? jsonSearchGroups;
-  final double? pendingPrimaryContentGridCropSize;
-  final double? pendingPrimaryContentGridCropX;
-  final double? pendingPrimaryContentGridCropY;
-  final ContentId? uuidPendingContentId0;
-  final ContentId? uuidPendingContentId1;
-  final ContentId? uuidPendingContentId2;
-  final ContentId? uuidPendingContentId3;
-  final ContentId? uuidPendingContentId4;
-  final ContentId? uuidPendingContentId5;
-  final ContentId? uuidPendingSecurityContentId;
-  final ContentId? uuidSecurityContentId;
-  final ContentId? uuidContentId0;
-  final ContentId? uuidContentId1;
-  final ContentId? uuidContentId2;
-  final ContentId? uuidContentId3;
-  final ContentId? uuidContentId4;
-  final ContentId? uuidContentId5;
-  final String? profileName;
-  final String? profileText;
-  final int? profileAge;
-  final JsonList? jsonProfileAttributes;
-  final double? primaryContentGridCropSize;
-  final double? primaryContentGridCropX;
-  final double? primaryContentGridCropY;
   const AccountData(
       {required this.id,
-      this.refreshTokenAccount,
-      this.refreshTokenMedia,
-      this.refreshTokenProfile,
-      this.refreshTokenChat,
-      this.accessTokenAccount,
-      this.accessTokenMedia,
-      this.accessTokenProfile,
-      this.accessTokenChat,
-      required this.profileFilterFavorites,
-      this.profileLocationLatitude,
-      this.profileLocationLongitude,
-      this.profileSearchAgeRangeMin,
-      this.profileSearchAgeRangeMax,
       this.jsonAccountState,
       this.jsonCapabilities,
       this.jsonAvailableProfileAttributes,
-      this.jsonProfileVisibility,
-      this.jsonSearchGroups,
-      this.pendingPrimaryContentGridCropSize,
-      this.pendingPrimaryContentGridCropX,
-      this.pendingPrimaryContentGridCropY,
+      required this.profileFilterFavorites,
       this.uuidPendingContentId0,
       this.uuidPendingContentId1,
       this.uuidPendingContentId2,
@@ -816,65 +799,41 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.uuidPendingContentId4,
       this.uuidPendingContentId5,
       this.uuidPendingSecurityContentId,
-      this.uuidSecurityContentId,
+      this.pendingPrimaryContentGridCropSize,
+      this.pendingPrimaryContentGridCropX,
+      this.pendingPrimaryContentGridCropY,
       this.uuidContentId0,
       this.uuidContentId1,
       this.uuidContentId2,
       this.uuidContentId3,
       this.uuidContentId4,
       this.uuidContentId5,
+      this.uuidSecurityContentId,
+      this.primaryContentGridCropSize,
+      this.primaryContentGridCropX,
+      this.primaryContentGridCropY,
       this.profileName,
       this.profileText,
       this.profileAge,
       this.jsonProfileAttributes,
-      this.primaryContentGridCropSize,
-      this.primaryContentGridCropX,
-      this.primaryContentGridCropY});
+      this.profileLocationLatitude,
+      this.profileLocationLongitude,
+      this.jsonProfileVisibility,
+      this.jsonSearchGroups,
+      this.profileSearchAgeRangeMin,
+      this.profileSearchAgeRangeMax,
+      this.refreshTokenAccount,
+      this.refreshTokenMedia,
+      this.refreshTokenProfile,
+      this.refreshTokenChat,
+      this.accessTokenAccount,
+      this.accessTokenMedia,
+      this.accessTokenProfile,
+      this.accessTokenChat});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    if (!nullToAbsent || refreshTokenAccount != null) {
-      map['refresh_token_account'] = Variable<String>(refreshTokenAccount);
-    }
-    if (!nullToAbsent || refreshTokenMedia != null) {
-      map['refresh_token_media'] = Variable<String>(refreshTokenMedia);
-    }
-    if (!nullToAbsent || refreshTokenProfile != null) {
-      map['refresh_token_profile'] = Variable<String>(refreshTokenProfile);
-    }
-    if (!nullToAbsent || refreshTokenChat != null) {
-      map['refresh_token_chat'] = Variable<String>(refreshTokenChat);
-    }
-    if (!nullToAbsent || accessTokenAccount != null) {
-      map['access_token_account'] = Variable<String>(accessTokenAccount);
-    }
-    if (!nullToAbsent || accessTokenMedia != null) {
-      map['access_token_media'] = Variable<String>(accessTokenMedia);
-    }
-    if (!nullToAbsent || accessTokenProfile != null) {
-      map['access_token_profile'] = Variable<String>(accessTokenProfile);
-    }
-    if (!nullToAbsent || accessTokenChat != null) {
-      map['access_token_chat'] = Variable<String>(accessTokenChat);
-    }
-    map['profile_filter_favorites'] = Variable<bool>(profileFilterFavorites);
-    if (!nullToAbsent || profileLocationLatitude != null) {
-      map['profile_location_latitude'] =
-          Variable<double>(profileLocationLatitude);
-    }
-    if (!nullToAbsent || profileLocationLongitude != null) {
-      map['profile_location_longitude'] =
-          Variable<double>(profileLocationLongitude);
-    }
-    if (!nullToAbsent || profileSearchAgeRangeMin != null) {
-      map['profile_search_age_range_min'] =
-          Variable<int>(profileSearchAgeRangeMin);
-    }
-    if (!nullToAbsent || profileSearchAgeRangeMax != null) {
-      map['profile_search_age_range_max'] =
-          Variable<int>(profileSearchAgeRangeMax);
-    }
     if (!nullToAbsent || jsonAccountState != null) {
       map['json_account_state'] = Variable<String>(
           $AccountTable.$converterjsonAccountState.toSql(jsonAccountState));
@@ -888,27 +847,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .$converterjsonAvailableProfileAttributes
           .toSql(jsonAvailableProfileAttributes));
     }
-    if (!nullToAbsent || jsonProfileVisibility != null) {
-      map['json_profile_visibility'] = Variable<String>($AccountTable
-          .$converterjsonProfileVisibility
-          .toSql(jsonProfileVisibility));
-    }
-    if (!nullToAbsent || jsonSearchGroups != null) {
-      map['json_search_groups'] = Variable<String>(
-          $AccountTable.$converterjsonSearchGroups.toSql(jsonSearchGroups));
-    }
-    if (!nullToAbsent || pendingPrimaryContentGridCropSize != null) {
-      map['pending_primary_content_grid_crop_size'] =
-          Variable<double>(pendingPrimaryContentGridCropSize);
-    }
-    if (!nullToAbsent || pendingPrimaryContentGridCropX != null) {
-      map['pending_primary_content_grid_crop_x'] =
-          Variable<double>(pendingPrimaryContentGridCropX);
-    }
-    if (!nullToAbsent || pendingPrimaryContentGridCropY != null) {
-      map['pending_primary_content_grid_crop_y'] =
-          Variable<double>(pendingPrimaryContentGridCropY);
-    }
+    map['profile_filter_favorites'] = Variable<bool>(profileFilterFavorites);
     if (!nullToAbsent || uuidPendingContentId0 != null) {
       map['uuid_pending_content_id0'] = Variable<String>($AccountTable
           .$converteruuidPendingContentId0
@@ -944,10 +883,17 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .$converteruuidPendingSecurityContentId
           .toSql(uuidPendingSecurityContentId));
     }
-    if (!nullToAbsent || uuidSecurityContentId != null) {
-      map['uuid_security_content_id'] = Variable<String>($AccountTable
-          .$converteruuidSecurityContentId
-          .toSql(uuidSecurityContentId));
+    if (!nullToAbsent || pendingPrimaryContentGridCropSize != null) {
+      map['pending_primary_content_grid_crop_size'] =
+          Variable<double>(pendingPrimaryContentGridCropSize);
+    }
+    if (!nullToAbsent || pendingPrimaryContentGridCropX != null) {
+      map['pending_primary_content_grid_crop_x'] =
+          Variable<double>(pendingPrimaryContentGridCropX);
+    }
+    if (!nullToAbsent || pendingPrimaryContentGridCropY != null) {
+      map['pending_primary_content_grid_crop_y'] =
+          Variable<double>(pendingPrimaryContentGridCropY);
     }
     if (!nullToAbsent || uuidContentId0 != null) {
       map['uuid_content_id0'] = Variable<String>(
@@ -973,6 +919,23 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['uuid_content_id5'] = Variable<String>(
           $AccountTable.$converteruuidContentId5.toSql(uuidContentId5));
     }
+    if (!nullToAbsent || uuidSecurityContentId != null) {
+      map['uuid_security_content_id'] = Variable<String>($AccountTable
+          .$converteruuidSecurityContentId
+          .toSql(uuidSecurityContentId));
+    }
+    if (!nullToAbsent || primaryContentGridCropSize != null) {
+      map['primary_content_grid_crop_size'] =
+          Variable<double>(primaryContentGridCropSize);
+    }
+    if (!nullToAbsent || primaryContentGridCropX != null) {
+      map['primary_content_grid_crop_x'] =
+          Variable<double>(primaryContentGridCropX);
+    }
+    if (!nullToAbsent || primaryContentGridCropY != null) {
+      map['primary_content_grid_crop_y'] =
+          Variable<double>(primaryContentGridCropY);
+    }
     if (!nullToAbsent || profileName != null) {
       map['profile_name'] = Variable<String>(profileName);
     }
@@ -987,17 +950,54 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .$converterjsonProfileAttributes
           .toSql(jsonProfileAttributes));
     }
-    if (!nullToAbsent || primaryContentGridCropSize != null) {
-      map['primary_content_grid_crop_size'] =
-          Variable<double>(primaryContentGridCropSize);
+    if (!nullToAbsent || profileLocationLatitude != null) {
+      map['profile_location_latitude'] =
+          Variable<double>(profileLocationLatitude);
     }
-    if (!nullToAbsent || primaryContentGridCropX != null) {
-      map['primary_content_grid_crop_x'] =
-          Variable<double>(primaryContentGridCropX);
+    if (!nullToAbsent || profileLocationLongitude != null) {
+      map['profile_location_longitude'] =
+          Variable<double>(profileLocationLongitude);
     }
-    if (!nullToAbsent || primaryContentGridCropY != null) {
-      map['primary_content_grid_crop_y'] =
-          Variable<double>(primaryContentGridCropY);
+    if (!nullToAbsent || jsonProfileVisibility != null) {
+      map['json_profile_visibility'] = Variable<String>($AccountTable
+          .$converterjsonProfileVisibility
+          .toSql(jsonProfileVisibility));
+    }
+    if (!nullToAbsent || jsonSearchGroups != null) {
+      map['json_search_groups'] = Variable<String>(
+          $AccountTable.$converterjsonSearchGroups.toSql(jsonSearchGroups));
+    }
+    if (!nullToAbsent || profileSearchAgeRangeMin != null) {
+      map['profile_search_age_range_min'] =
+          Variable<int>(profileSearchAgeRangeMin);
+    }
+    if (!nullToAbsent || profileSearchAgeRangeMax != null) {
+      map['profile_search_age_range_max'] =
+          Variable<int>(profileSearchAgeRangeMax);
+    }
+    if (!nullToAbsent || refreshTokenAccount != null) {
+      map['refresh_token_account'] = Variable<String>(refreshTokenAccount);
+    }
+    if (!nullToAbsent || refreshTokenMedia != null) {
+      map['refresh_token_media'] = Variable<String>(refreshTokenMedia);
+    }
+    if (!nullToAbsent || refreshTokenProfile != null) {
+      map['refresh_token_profile'] = Variable<String>(refreshTokenProfile);
+    }
+    if (!nullToAbsent || refreshTokenChat != null) {
+      map['refresh_token_chat'] = Variable<String>(refreshTokenChat);
+    }
+    if (!nullToAbsent || accessTokenAccount != null) {
+      map['access_token_account'] = Variable<String>(accessTokenAccount);
+    }
+    if (!nullToAbsent || accessTokenMedia != null) {
+      map['access_token_media'] = Variable<String>(accessTokenMedia);
+    }
+    if (!nullToAbsent || accessTokenProfile != null) {
+      map['access_token_profile'] = Variable<String>(accessTokenProfile);
+    }
+    if (!nullToAbsent || accessTokenChat != null) {
+      map['access_token_chat'] = Variable<String>(accessTokenChat);
     }
     return map;
   }
@@ -1005,6 +1005,112 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   AccountCompanion toCompanion(bool nullToAbsent) {
     return AccountCompanion(
       id: Value(id),
+      jsonAccountState: jsonAccountState == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jsonAccountState),
+      jsonCapabilities: jsonCapabilities == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jsonCapabilities),
+      jsonAvailableProfileAttributes:
+          jsonAvailableProfileAttributes == null && nullToAbsent
+              ? const Value.absent()
+              : Value(jsonAvailableProfileAttributes),
+      profileFilterFavorites: Value(profileFilterFavorites),
+      uuidPendingContentId0: uuidPendingContentId0 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidPendingContentId0),
+      uuidPendingContentId1: uuidPendingContentId1 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidPendingContentId1),
+      uuidPendingContentId2: uuidPendingContentId2 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidPendingContentId2),
+      uuidPendingContentId3: uuidPendingContentId3 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidPendingContentId3),
+      uuidPendingContentId4: uuidPendingContentId4 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidPendingContentId4),
+      uuidPendingContentId5: uuidPendingContentId5 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidPendingContentId5),
+      uuidPendingSecurityContentId:
+          uuidPendingSecurityContentId == null && nullToAbsent
+              ? const Value.absent()
+              : Value(uuidPendingSecurityContentId),
+      pendingPrimaryContentGridCropSize:
+          pendingPrimaryContentGridCropSize == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pendingPrimaryContentGridCropSize),
+      pendingPrimaryContentGridCropX:
+          pendingPrimaryContentGridCropX == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pendingPrimaryContentGridCropX),
+      pendingPrimaryContentGridCropY:
+          pendingPrimaryContentGridCropY == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pendingPrimaryContentGridCropY),
+      uuidContentId0: uuidContentId0 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId0),
+      uuidContentId1: uuidContentId1 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId1),
+      uuidContentId2: uuidContentId2 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId2),
+      uuidContentId3: uuidContentId3 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId3),
+      uuidContentId4: uuidContentId4 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId4),
+      uuidContentId5: uuidContentId5 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidContentId5),
+      uuidSecurityContentId: uuidSecurityContentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidSecurityContentId),
+      primaryContentGridCropSize:
+          primaryContentGridCropSize == null && nullToAbsent
+              ? const Value.absent()
+              : Value(primaryContentGridCropSize),
+      primaryContentGridCropX: primaryContentGridCropX == null && nullToAbsent
+          ? const Value.absent()
+          : Value(primaryContentGridCropX),
+      primaryContentGridCropY: primaryContentGridCropY == null && nullToAbsent
+          ? const Value.absent()
+          : Value(primaryContentGridCropY),
+      profileName: profileName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileName),
+      profileText: profileText == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileText),
+      profileAge: profileAge == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileAge),
+      jsonProfileAttributes: jsonProfileAttributes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jsonProfileAttributes),
+      profileLocationLatitude: profileLocationLatitude == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileLocationLatitude),
+      profileLocationLongitude: profileLocationLongitude == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileLocationLongitude),
+      jsonProfileVisibility: jsonProfileVisibility == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jsonProfileVisibility),
+      jsonSearchGroups: jsonSearchGroups == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jsonSearchGroups),
+      profileSearchAgeRangeMin: profileSearchAgeRangeMin == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileSearchAgeRangeMin),
+      profileSearchAgeRangeMax: profileSearchAgeRangeMax == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileSearchAgeRangeMax),
       refreshTokenAccount: refreshTokenAccount == null && nullToAbsent
           ? const Value.absent()
           : Value(refreshTokenAccount),
@@ -1029,112 +1135,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       accessTokenChat: accessTokenChat == null && nullToAbsent
           ? const Value.absent()
           : Value(accessTokenChat),
-      profileFilterFavorites: Value(profileFilterFavorites),
-      profileLocationLatitude: profileLocationLatitude == null && nullToAbsent
-          ? const Value.absent()
-          : Value(profileLocationLatitude),
-      profileLocationLongitude: profileLocationLongitude == null && nullToAbsent
-          ? const Value.absent()
-          : Value(profileLocationLongitude),
-      profileSearchAgeRangeMin: profileSearchAgeRangeMin == null && nullToAbsent
-          ? const Value.absent()
-          : Value(profileSearchAgeRangeMin),
-      profileSearchAgeRangeMax: profileSearchAgeRangeMax == null && nullToAbsent
-          ? const Value.absent()
-          : Value(profileSearchAgeRangeMax),
-      jsonAccountState: jsonAccountState == null && nullToAbsent
-          ? const Value.absent()
-          : Value(jsonAccountState),
-      jsonCapabilities: jsonCapabilities == null && nullToAbsent
-          ? const Value.absent()
-          : Value(jsonCapabilities),
-      jsonAvailableProfileAttributes:
-          jsonAvailableProfileAttributes == null && nullToAbsent
-              ? const Value.absent()
-              : Value(jsonAvailableProfileAttributes),
-      jsonProfileVisibility: jsonProfileVisibility == null && nullToAbsent
-          ? const Value.absent()
-          : Value(jsonProfileVisibility),
-      jsonSearchGroups: jsonSearchGroups == null && nullToAbsent
-          ? const Value.absent()
-          : Value(jsonSearchGroups),
-      pendingPrimaryContentGridCropSize:
-          pendingPrimaryContentGridCropSize == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pendingPrimaryContentGridCropSize),
-      pendingPrimaryContentGridCropX:
-          pendingPrimaryContentGridCropX == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pendingPrimaryContentGridCropX),
-      pendingPrimaryContentGridCropY:
-          pendingPrimaryContentGridCropY == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pendingPrimaryContentGridCropY),
-      uuidPendingContentId0: uuidPendingContentId0 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidPendingContentId0),
-      uuidPendingContentId1: uuidPendingContentId1 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidPendingContentId1),
-      uuidPendingContentId2: uuidPendingContentId2 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidPendingContentId2),
-      uuidPendingContentId3: uuidPendingContentId3 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidPendingContentId3),
-      uuidPendingContentId4: uuidPendingContentId4 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidPendingContentId4),
-      uuidPendingContentId5: uuidPendingContentId5 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidPendingContentId5),
-      uuidPendingSecurityContentId:
-          uuidPendingSecurityContentId == null && nullToAbsent
-              ? const Value.absent()
-              : Value(uuidPendingSecurityContentId),
-      uuidSecurityContentId: uuidSecurityContentId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidSecurityContentId),
-      uuidContentId0: uuidContentId0 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId0),
-      uuidContentId1: uuidContentId1 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId1),
-      uuidContentId2: uuidContentId2 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId2),
-      uuidContentId3: uuidContentId3 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId3),
-      uuidContentId4: uuidContentId4 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId4),
-      uuidContentId5: uuidContentId5 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId5),
-      profileName: profileName == null && nullToAbsent
-          ? const Value.absent()
-          : Value(profileName),
-      profileText: profileText == null && nullToAbsent
-          ? const Value.absent()
-          : Value(profileText),
-      profileAge: profileAge == null && nullToAbsent
-          ? const Value.absent()
-          : Value(profileAge),
-      jsonProfileAttributes: jsonProfileAttributes == null && nullToAbsent
-          ? const Value.absent()
-          : Value(jsonProfileAttributes),
-      primaryContentGridCropSize:
-          primaryContentGridCropSize == null && nullToAbsent
-              ? const Value.absent()
-              : Value(primaryContentGridCropSize),
-      primaryContentGridCropX: primaryContentGridCropX == null && nullToAbsent
-          ? const Value.absent()
-          : Value(primaryContentGridCropX),
-      primaryContentGridCropY: primaryContentGridCropY == null && nullToAbsent
-          ? const Value.absent()
-          : Value(primaryContentGridCropY),
     );
   }
 
@@ -1143,45 +1143,14 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return AccountData(
       id: serializer.fromJson<int>(json['id']),
-      refreshTokenAccount:
-          serializer.fromJson<String?>(json['refreshTokenAccount']),
-      refreshTokenMedia:
-          serializer.fromJson<String?>(json['refreshTokenMedia']),
-      refreshTokenProfile:
-          serializer.fromJson<String?>(json['refreshTokenProfile']),
-      refreshTokenChat: serializer.fromJson<String?>(json['refreshTokenChat']),
-      accessTokenAccount:
-          serializer.fromJson<String?>(json['accessTokenAccount']),
-      accessTokenMedia: serializer.fromJson<String?>(json['accessTokenMedia']),
-      accessTokenProfile:
-          serializer.fromJson<String?>(json['accessTokenProfile']),
-      accessTokenChat: serializer.fromJson<String?>(json['accessTokenChat']),
-      profileFilterFavorites:
-          serializer.fromJson<bool>(json['profileFilterFavorites']),
-      profileLocationLatitude:
-          serializer.fromJson<double?>(json['profileLocationLatitude']),
-      profileLocationLongitude:
-          serializer.fromJson<double?>(json['profileLocationLongitude']),
-      profileSearchAgeRangeMin:
-          serializer.fromJson<int?>(json['profileSearchAgeRangeMin']),
-      profileSearchAgeRangeMax:
-          serializer.fromJson<int?>(json['profileSearchAgeRangeMax']),
       jsonAccountState:
           serializer.fromJson<EnumString?>(json['jsonAccountState']),
       jsonCapabilities:
           serializer.fromJson<JsonString?>(json['jsonCapabilities']),
       jsonAvailableProfileAttributes: serializer
           .fromJson<JsonString?>(json['jsonAvailableProfileAttributes']),
-      jsonProfileVisibility:
-          serializer.fromJson<EnumString?>(json['jsonProfileVisibility']),
-      jsonSearchGroups:
-          serializer.fromJson<JsonString?>(json['jsonSearchGroups']),
-      pendingPrimaryContentGridCropSize: serializer
-          .fromJson<double?>(json['pendingPrimaryContentGridCropSize']),
-      pendingPrimaryContentGridCropX:
-          serializer.fromJson<double?>(json['pendingPrimaryContentGridCropX']),
-      pendingPrimaryContentGridCropY:
-          serializer.fromJson<double?>(json['pendingPrimaryContentGridCropY']),
+      profileFilterFavorites:
+          serializer.fromJson<bool>(json['profileFilterFavorites']),
       uuidPendingContentId0:
           serializer.fromJson<ContentId?>(json['uuidPendingContentId0']),
       uuidPendingContentId1:
@@ -1196,25 +1165,56 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<ContentId?>(json['uuidPendingContentId5']),
       uuidPendingSecurityContentId:
           serializer.fromJson<ContentId?>(json['uuidPendingSecurityContentId']),
-      uuidSecurityContentId:
-          serializer.fromJson<ContentId?>(json['uuidSecurityContentId']),
+      pendingPrimaryContentGridCropSize: serializer
+          .fromJson<double?>(json['pendingPrimaryContentGridCropSize']),
+      pendingPrimaryContentGridCropX:
+          serializer.fromJson<double?>(json['pendingPrimaryContentGridCropX']),
+      pendingPrimaryContentGridCropY:
+          serializer.fromJson<double?>(json['pendingPrimaryContentGridCropY']),
       uuidContentId0: serializer.fromJson<ContentId?>(json['uuidContentId0']),
       uuidContentId1: serializer.fromJson<ContentId?>(json['uuidContentId1']),
       uuidContentId2: serializer.fromJson<ContentId?>(json['uuidContentId2']),
       uuidContentId3: serializer.fromJson<ContentId?>(json['uuidContentId3']),
       uuidContentId4: serializer.fromJson<ContentId?>(json['uuidContentId4']),
       uuidContentId5: serializer.fromJson<ContentId?>(json['uuidContentId5']),
-      profileName: serializer.fromJson<String?>(json['profileName']),
-      profileText: serializer.fromJson<String?>(json['profileText']),
-      profileAge: serializer.fromJson<int?>(json['profileAge']),
-      jsonProfileAttributes:
-          serializer.fromJson<JsonList?>(json['jsonProfileAttributes']),
+      uuidSecurityContentId:
+          serializer.fromJson<ContentId?>(json['uuidSecurityContentId']),
       primaryContentGridCropSize:
           serializer.fromJson<double?>(json['primaryContentGridCropSize']),
       primaryContentGridCropX:
           serializer.fromJson<double?>(json['primaryContentGridCropX']),
       primaryContentGridCropY:
           serializer.fromJson<double?>(json['primaryContentGridCropY']),
+      profileName: serializer.fromJson<String?>(json['profileName']),
+      profileText: serializer.fromJson<String?>(json['profileText']),
+      profileAge: serializer.fromJson<int?>(json['profileAge']),
+      jsonProfileAttributes:
+          serializer.fromJson<JsonList?>(json['jsonProfileAttributes']),
+      profileLocationLatitude:
+          serializer.fromJson<double?>(json['profileLocationLatitude']),
+      profileLocationLongitude:
+          serializer.fromJson<double?>(json['profileLocationLongitude']),
+      jsonProfileVisibility:
+          serializer.fromJson<EnumString?>(json['jsonProfileVisibility']),
+      jsonSearchGroups:
+          serializer.fromJson<JsonString?>(json['jsonSearchGroups']),
+      profileSearchAgeRangeMin:
+          serializer.fromJson<int?>(json['profileSearchAgeRangeMin']),
+      profileSearchAgeRangeMax:
+          serializer.fromJson<int?>(json['profileSearchAgeRangeMax']),
+      refreshTokenAccount:
+          serializer.fromJson<String?>(json['refreshTokenAccount']),
+      refreshTokenMedia:
+          serializer.fromJson<String?>(json['refreshTokenMedia']),
+      refreshTokenProfile:
+          serializer.fromJson<String?>(json['refreshTokenProfile']),
+      refreshTokenChat: serializer.fromJson<String?>(json['refreshTokenChat']),
+      accessTokenAccount:
+          serializer.fromJson<String?>(json['accessTokenAccount']),
+      accessTokenMedia: serializer.fromJson<String?>(json['accessTokenMedia']),
+      accessTokenProfile:
+          serializer.fromJson<String?>(json['accessTokenProfile']),
+      accessTokenChat: serializer.fromJson<String?>(json['accessTokenChat']),
     );
   }
   @override
@@ -1222,36 +1222,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'refreshTokenAccount': serializer.toJson<String?>(refreshTokenAccount),
-      'refreshTokenMedia': serializer.toJson<String?>(refreshTokenMedia),
-      'refreshTokenProfile': serializer.toJson<String?>(refreshTokenProfile),
-      'refreshTokenChat': serializer.toJson<String?>(refreshTokenChat),
-      'accessTokenAccount': serializer.toJson<String?>(accessTokenAccount),
-      'accessTokenMedia': serializer.toJson<String?>(accessTokenMedia),
-      'accessTokenProfile': serializer.toJson<String?>(accessTokenProfile),
-      'accessTokenChat': serializer.toJson<String?>(accessTokenChat),
-      'profileFilterFavorites': serializer.toJson<bool>(profileFilterFavorites),
-      'profileLocationLatitude':
-          serializer.toJson<double?>(profileLocationLatitude),
-      'profileLocationLongitude':
-          serializer.toJson<double?>(profileLocationLongitude),
-      'profileSearchAgeRangeMin':
-          serializer.toJson<int?>(profileSearchAgeRangeMin),
-      'profileSearchAgeRangeMax':
-          serializer.toJson<int?>(profileSearchAgeRangeMax),
       'jsonAccountState': serializer.toJson<EnumString?>(jsonAccountState),
       'jsonCapabilities': serializer.toJson<JsonString?>(jsonCapabilities),
       'jsonAvailableProfileAttributes':
           serializer.toJson<JsonString?>(jsonAvailableProfileAttributes),
-      'jsonProfileVisibility':
-          serializer.toJson<EnumString?>(jsonProfileVisibility),
-      'jsonSearchGroups': serializer.toJson<JsonString?>(jsonSearchGroups),
-      'pendingPrimaryContentGridCropSize':
-          serializer.toJson<double?>(pendingPrimaryContentGridCropSize),
-      'pendingPrimaryContentGridCropX':
-          serializer.toJson<double?>(pendingPrimaryContentGridCropX),
-      'pendingPrimaryContentGridCropY':
-          serializer.toJson<double?>(pendingPrimaryContentGridCropY),
+      'profileFilterFavorites': serializer.toJson<bool>(profileFilterFavorites),
       'uuidPendingContentId0':
           serializer.toJson<ContentId?>(uuidPendingContentId0),
       'uuidPendingContentId1':
@@ -1266,53 +1241,60 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.toJson<ContentId?>(uuidPendingContentId5),
       'uuidPendingSecurityContentId':
           serializer.toJson<ContentId?>(uuidPendingSecurityContentId),
-      'uuidSecurityContentId':
-          serializer.toJson<ContentId?>(uuidSecurityContentId),
+      'pendingPrimaryContentGridCropSize':
+          serializer.toJson<double?>(pendingPrimaryContentGridCropSize),
+      'pendingPrimaryContentGridCropX':
+          serializer.toJson<double?>(pendingPrimaryContentGridCropX),
+      'pendingPrimaryContentGridCropY':
+          serializer.toJson<double?>(pendingPrimaryContentGridCropY),
       'uuidContentId0': serializer.toJson<ContentId?>(uuidContentId0),
       'uuidContentId1': serializer.toJson<ContentId?>(uuidContentId1),
       'uuidContentId2': serializer.toJson<ContentId?>(uuidContentId2),
       'uuidContentId3': serializer.toJson<ContentId?>(uuidContentId3),
       'uuidContentId4': serializer.toJson<ContentId?>(uuidContentId4),
       'uuidContentId5': serializer.toJson<ContentId?>(uuidContentId5),
-      'profileName': serializer.toJson<String?>(profileName),
-      'profileText': serializer.toJson<String?>(profileText),
-      'profileAge': serializer.toJson<int?>(profileAge),
-      'jsonProfileAttributes':
-          serializer.toJson<JsonList?>(jsonProfileAttributes),
+      'uuidSecurityContentId':
+          serializer.toJson<ContentId?>(uuidSecurityContentId),
       'primaryContentGridCropSize':
           serializer.toJson<double?>(primaryContentGridCropSize),
       'primaryContentGridCropX':
           serializer.toJson<double?>(primaryContentGridCropX),
       'primaryContentGridCropY':
           serializer.toJson<double?>(primaryContentGridCropY),
+      'profileName': serializer.toJson<String?>(profileName),
+      'profileText': serializer.toJson<String?>(profileText),
+      'profileAge': serializer.toJson<int?>(profileAge),
+      'jsonProfileAttributes':
+          serializer.toJson<JsonList?>(jsonProfileAttributes),
+      'profileLocationLatitude':
+          serializer.toJson<double?>(profileLocationLatitude),
+      'profileLocationLongitude':
+          serializer.toJson<double?>(profileLocationLongitude),
+      'jsonProfileVisibility':
+          serializer.toJson<EnumString?>(jsonProfileVisibility),
+      'jsonSearchGroups': serializer.toJson<JsonString?>(jsonSearchGroups),
+      'profileSearchAgeRangeMin':
+          serializer.toJson<int?>(profileSearchAgeRangeMin),
+      'profileSearchAgeRangeMax':
+          serializer.toJson<int?>(profileSearchAgeRangeMax),
+      'refreshTokenAccount': serializer.toJson<String?>(refreshTokenAccount),
+      'refreshTokenMedia': serializer.toJson<String?>(refreshTokenMedia),
+      'refreshTokenProfile': serializer.toJson<String?>(refreshTokenProfile),
+      'refreshTokenChat': serializer.toJson<String?>(refreshTokenChat),
+      'accessTokenAccount': serializer.toJson<String?>(accessTokenAccount),
+      'accessTokenMedia': serializer.toJson<String?>(accessTokenMedia),
+      'accessTokenProfile': serializer.toJson<String?>(accessTokenProfile),
+      'accessTokenChat': serializer.toJson<String?>(accessTokenChat),
     };
   }
 
   AccountData copyWith(
           {int? id,
-          Value<String?> refreshTokenAccount = const Value.absent(),
-          Value<String?> refreshTokenMedia = const Value.absent(),
-          Value<String?> refreshTokenProfile = const Value.absent(),
-          Value<String?> refreshTokenChat = const Value.absent(),
-          Value<String?> accessTokenAccount = const Value.absent(),
-          Value<String?> accessTokenMedia = const Value.absent(),
-          Value<String?> accessTokenProfile = const Value.absent(),
-          Value<String?> accessTokenChat = const Value.absent(),
-          bool? profileFilterFavorites,
-          Value<double?> profileLocationLatitude = const Value.absent(),
-          Value<double?> profileLocationLongitude = const Value.absent(),
-          Value<int?> profileSearchAgeRangeMin = const Value.absent(),
-          Value<int?> profileSearchAgeRangeMax = const Value.absent(),
           Value<EnumString?> jsonAccountState = const Value.absent(),
           Value<JsonString?> jsonCapabilities = const Value.absent(),
           Value<JsonString?> jsonAvailableProfileAttributes =
               const Value.absent(),
-          Value<EnumString?> jsonProfileVisibility = const Value.absent(),
-          Value<JsonString?> jsonSearchGroups = const Value.absent(),
-          Value<double?> pendingPrimaryContentGridCropSize =
-              const Value.absent(),
-          Value<double?> pendingPrimaryContentGridCropX = const Value.absent(),
-          Value<double?> pendingPrimaryContentGridCropY = const Value.absent(),
+          bool? profileFilterFavorites,
           Value<ContentId?> uuidPendingContentId0 = const Value.absent(),
           Value<ContentId?> uuidPendingContentId1 = const Value.absent(),
           Value<ContentId?> uuidPendingContentId2 = const Value.absent(),
@@ -1320,22 +1302,130 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<ContentId?> uuidPendingContentId4 = const Value.absent(),
           Value<ContentId?> uuidPendingContentId5 = const Value.absent(),
           Value<ContentId?> uuidPendingSecurityContentId = const Value.absent(),
-          Value<ContentId?> uuidSecurityContentId = const Value.absent(),
+          Value<double?> pendingPrimaryContentGridCropSize =
+              const Value.absent(),
+          Value<double?> pendingPrimaryContentGridCropX = const Value.absent(),
+          Value<double?> pendingPrimaryContentGridCropY = const Value.absent(),
           Value<ContentId?> uuidContentId0 = const Value.absent(),
           Value<ContentId?> uuidContentId1 = const Value.absent(),
           Value<ContentId?> uuidContentId2 = const Value.absent(),
           Value<ContentId?> uuidContentId3 = const Value.absent(),
           Value<ContentId?> uuidContentId4 = const Value.absent(),
           Value<ContentId?> uuidContentId5 = const Value.absent(),
+          Value<ContentId?> uuidSecurityContentId = const Value.absent(),
+          Value<double?> primaryContentGridCropSize = const Value.absent(),
+          Value<double?> primaryContentGridCropX = const Value.absent(),
+          Value<double?> primaryContentGridCropY = const Value.absent(),
           Value<String?> profileName = const Value.absent(),
           Value<String?> profileText = const Value.absent(),
           Value<int?> profileAge = const Value.absent(),
           Value<JsonList?> jsonProfileAttributes = const Value.absent(),
-          Value<double?> primaryContentGridCropSize = const Value.absent(),
-          Value<double?> primaryContentGridCropX = const Value.absent(),
-          Value<double?> primaryContentGridCropY = const Value.absent()}) =>
+          Value<double?> profileLocationLatitude = const Value.absent(),
+          Value<double?> profileLocationLongitude = const Value.absent(),
+          Value<EnumString?> jsonProfileVisibility = const Value.absent(),
+          Value<JsonString?> jsonSearchGroups = const Value.absent(),
+          Value<int?> profileSearchAgeRangeMin = const Value.absent(),
+          Value<int?> profileSearchAgeRangeMax = const Value.absent(),
+          Value<String?> refreshTokenAccount = const Value.absent(),
+          Value<String?> refreshTokenMedia = const Value.absent(),
+          Value<String?> refreshTokenProfile = const Value.absent(),
+          Value<String?> refreshTokenChat = const Value.absent(),
+          Value<String?> accessTokenAccount = const Value.absent(),
+          Value<String?> accessTokenMedia = const Value.absent(),
+          Value<String?> accessTokenProfile = const Value.absent(),
+          Value<String?> accessTokenChat = const Value.absent()}) =>
       AccountData(
         id: id ?? this.id,
+        jsonAccountState: jsonAccountState.present
+            ? jsonAccountState.value
+            : this.jsonAccountState,
+        jsonCapabilities: jsonCapabilities.present
+            ? jsonCapabilities.value
+            : this.jsonCapabilities,
+        jsonAvailableProfileAttributes: jsonAvailableProfileAttributes.present
+            ? jsonAvailableProfileAttributes.value
+            : this.jsonAvailableProfileAttributes,
+        profileFilterFavorites:
+            profileFilterFavorites ?? this.profileFilterFavorites,
+        uuidPendingContentId0: uuidPendingContentId0.present
+            ? uuidPendingContentId0.value
+            : this.uuidPendingContentId0,
+        uuidPendingContentId1: uuidPendingContentId1.present
+            ? uuidPendingContentId1.value
+            : this.uuidPendingContentId1,
+        uuidPendingContentId2: uuidPendingContentId2.present
+            ? uuidPendingContentId2.value
+            : this.uuidPendingContentId2,
+        uuidPendingContentId3: uuidPendingContentId3.present
+            ? uuidPendingContentId3.value
+            : this.uuidPendingContentId3,
+        uuidPendingContentId4: uuidPendingContentId4.present
+            ? uuidPendingContentId4.value
+            : this.uuidPendingContentId4,
+        uuidPendingContentId5: uuidPendingContentId5.present
+            ? uuidPendingContentId5.value
+            : this.uuidPendingContentId5,
+        uuidPendingSecurityContentId: uuidPendingSecurityContentId.present
+            ? uuidPendingSecurityContentId.value
+            : this.uuidPendingSecurityContentId,
+        pendingPrimaryContentGridCropSize:
+            pendingPrimaryContentGridCropSize.present
+                ? pendingPrimaryContentGridCropSize.value
+                : this.pendingPrimaryContentGridCropSize,
+        pendingPrimaryContentGridCropX: pendingPrimaryContentGridCropX.present
+            ? pendingPrimaryContentGridCropX.value
+            : this.pendingPrimaryContentGridCropX,
+        pendingPrimaryContentGridCropY: pendingPrimaryContentGridCropY.present
+            ? pendingPrimaryContentGridCropY.value
+            : this.pendingPrimaryContentGridCropY,
+        uuidContentId0:
+            uuidContentId0.present ? uuidContentId0.value : this.uuidContentId0,
+        uuidContentId1:
+            uuidContentId1.present ? uuidContentId1.value : this.uuidContentId1,
+        uuidContentId2:
+            uuidContentId2.present ? uuidContentId2.value : this.uuidContentId2,
+        uuidContentId3:
+            uuidContentId3.present ? uuidContentId3.value : this.uuidContentId3,
+        uuidContentId4:
+            uuidContentId4.present ? uuidContentId4.value : this.uuidContentId4,
+        uuidContentId5:
+            uuidContentId5.present ? uuidContentId5.value : this.uuidContentId5,
+        uuidSecurityContentId: uuidSecurityContentId.present
+            ? uuidSecurityContentId.value
+            : this.uuidSecurityContentId,
+        primaryContentGridCropSize: primaryContentGridCropSize.present
+            ? primaryContentGridCropSize.value
+            : this.primaryContentGridCropSize,
+        primaryContentGridCropX: primaryContentGridCropX.present
+            ? primaryContentGridCropX.value
+            : this.primaryContentGridCropX,
+        primaryContentGridCropY: primaryContentGridCropY.present
+            ? primaryContentGridCropY.value
+            : this.primaryContentGridCropY,
+        profileName: profileName.present ? profileName.value : this.profileName,
+        profileText: profileText.present ? profileText.value : this.profileText,
+        profileAge: profileAge.present ? profileAge.value : this.profileAge,
+        jsonProfileAttributes: jsonProfileAttributes.present
+            ? jsonProfileAttributes.value
+            : this.jsonProfileAttributes,
+        profileLocationLatitude: profileLocationLatitude.present
+            ? profileLocationLatitude.value
+            : this.profileLocationLatitude,
+        profileLocationLongitude: profileLocationLongitude.present
+            ? profileLocationLongitude.value
+            : this.profileLocationLongitude,
+        jsonProfileVisibility: jsonProfileVisibility.present
+            ? jsonProfileVisibility.value
+            : this.jsonProfileVisibility,
+        jsonSearchGroups: jsonSearchGroups.present
+            ? jsonSearchGroups.value
+            : this.jsonSearchGroups,
+        profileSearchAgeRangeMin: profileSearchAgeRangeMin.present
+            ? profileSearchAgeRangeMin.value
+            : this.profileSearchAgeRangeMin,
+        profileSearchAgeRangeMax: profileSearchAgeRangeMax.present
+            ? profileSearchAgeRangeMax.value
+            : this.profileSearchAgeRangeMax,
         refreshTokenAccount: refreshTokenAccount.present
             ? refreshTokenAccount.value
             : this.refreshTokenAccount,
@@ -1360,126 +1450,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         accessTokenChat: accessTokenChat.present
             ? accessTokenChat.value
             : this.accessTokenChat,
-        profileFilterFavorites:
-            profileFilterFavorites ?? this.profileFilterFavorites,
-        profileLocationLatitude: profileLocationLatitude.present
-            ? profileLocationLatitude.value
-            : this.profileLocationLatitude,
-        profileLocationLongitude: profileLocationLongitude.present
-            ? profileLocationLongitude.value
-            : this.profileLocationLongitude,
-        profileSearchAgeRangeMin: profileSearchAgeRangeMin.present
-            ? profileSearchAgeRangeMin.value
-            : this.profileSearchAgeRangeMin,
-        profileSearchAgeRangeMax: profileSearchAgeRangeMax.present
-            ? profileSearchAgeRangeMax.value
-            : this.profileSearchAgeRangeMax,
-        jsonAccountState: jsonAccountState.present
-            ? jsonAccountState.value
-            : this.jsonAccountState,
-        jsonCapabilities: jsonCapabilities.present
-            ? jsonCapabilities.value
-            : this.jsonCapabilities,
-        jsonAvailableProfileAttributes: jsonAvailableProfileAttributes.present
-            ? jsonAvailableProfileAttributes.value
-            : this.jsonAvailableProfileAttributes,
-        jsonProfileVisibility: jsonProfileVisibility.present
-            ? jsonProfileVisibility.value
-            : this.jsonProfileVisibility,
-        jsonSearchGroups: jsonSearchGroups.present
-            ? jsonSearchGroups.value
-            : this.jsonSearchGroups,
-        pendingPrimaryContentGridCropSize:
-            pendingPrimaryContentGridCropSize.present
-                ? pendingPrimaryContentGridCropSize.value
-                : this.pendingPrimaryContentGridCropSize,
-        pendingPrimaryContentGridCropX: pendingPrimaryContentGridCropX.present
-            ? pendingPrimaryContentGridCropX.value
-            : this.pendingPrimaryContentGridCropX,
-        pendingPrimaryContentGridCropY: pendingPrimaryContentGridCropY.present
-            ? pendingPrimaryContentGridCropY.value
-            : this.pendingPrimaryContentGridCropY,
-        uuidPendingContentId0: uuidPendingContentId0.present
-            ? uuidPendingContentId0.value
-            : this.uuidPendingContentId0,
-        uuidPendingContentId1: uuidPendingContentId1.present
-            ? uuidPendingContentId1.value
-            : this.uuidPendingContentId1,
-        uuidPendingContentId2: uuidPendingContentId2.present
-            ? uuidPendingContentId2.value
-            : this.uuidPendingContentId2,
-        uuidPendingContentId3: uuidPendingContentId3.present
-            ? uuidPendingContentId3.value
-            : this.uuidPendingContentId3,
-        uuidPendingContentId4: uuidPendingContentId4.present
-            ? uuidPendingContentId4.value
-            : this.uuidPendingContentId4,
-        uuidPendingContentId5: uuidPendingContentId5.present
-            ? uuidPendingContentId5.value
-            : this.uuidPendingContentId5,
-        uuidPendingSecurityContentId: uuidPendingSecurityContentId.present
-            ? uuidPendingSecurityContentId.value
-            : this.uuidPendingSecurityContentId,
-        uuidSecurityContentId: uuidSecurityContentId.present
-            ? uuidSecurityContentId.value
-            : this.uuidSecurityContentId,
-        uuidContentId0:
-            uuidContentId0.present ? uuidContentId0.value : this.uuidContentId0,
-        uuidContentId1:
-            uuidContentId1.present ? uuidContentId1.value : this.uuidContentId1,
-        uuidContentId2:
-            uuidContentId2.present ? uuidContentId2.value : this.uuidContentId2,
-        uuidContentId3:
-            uuidContentId3.present ? uuidContentId3.value : this.uuidContentId3,
-        uuidContentId4:
-            uuidContentId4.present ? uuidContentId4.value : this.uuidContentId4,
-        uuidContentId5:
-            uuidContentId5.present ? uuidContentId5.value : this.uuidContentId5,
-        profileName: profileName.present ? profileName.value : this.profileName,
-        profileText: profileText.present ? profileText.value : this.profileText,
-        profileAge: profileAge.present ? profileAge.value : this.profileAge,
-        jsonProfileAttributes: jsonProfileAttributes.present
-            ? jsonProfileAttributes.value
-            : this.jsonProfileAttributes,
-        primaryContentGridCropSize: primaryContentGridCropSize.present
-            ? primaryContentGridCropSize.value
-            : this.primaryContentGridCropSize,
-        primaryContentGridCropX: primaryContentGridCropX.present
-            ? primaryContentGridCropX.value
-            : this.primaryContentGridCropX,
-        primaryContentGridCropY: primaryContentGridCropY.present
-            ? primaryContentGridCropY.value
-            : this.primaryContentGridCropY,
       );
   @override
   String toString() {
     return (StringBuffer('AccountData(')
           ..write('id: $id, ')
-          ..write('refreshTokenAccount: $refreshTokenAccount, ')
-          ..write('refreshTokenMedia: $refreshTokenMedia, ')
-          ..write('refreshTokenProfile: $refreshTokenProfile, ')
-          ..write('refreshTokenChat: $refreshTokenChat, ')
-          ..write('accessTokenAccount: $accessTokenAccount, ')
-          ..write('accessTokenMedia: $accessTokenMedia, ')
-          ..write('accessTokenProfile: $accessTokenProfile, ')
-          ..write('accessTokenChat: $accessTokenChat, ')
-          ..write('profileFilterFavorites: $profileFilterFavorites, ')
-          ..write('profileLocationLatitude: $profileLocationLatitude, ')
-          ..write('profileLocationLongitude: $profileLocationLongitude, ')
-          ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
-          ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
           ..write('jsonAccountState: $jsonAccountState, ')
           ..write('jsonCapabilities: $jsonCapabilities, ')
           ..write(
               'jsonAvailableProfileAttributes: $jsonAvailableProfileAttributes, ')
-          ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
-          ..write('jsonSearchGroups: $jsonSearchGroups, ')
-          ..write(
-              'pendingPrimaryContentGridCropSize: $pendingPrimaryContentGridCropSize, ')
-          ..write(
-              'pendingPrimaryContentGridCropX: $pendingPrimaryContentGridCropX, ')
-          ..write(
-              'pendingPrimaryContentGridCropY: $pendingPrimaryContentGridCropY, ')
+          ..write('profileFilterFavorites: $profileFilterFavorites, ')
           ..write('uuidPendingContentId0: $uuidPendingContentId0, ')
           ..write('uuidPendingContentId1: $uuidPendingContentId1, ')
           ..write('uuidPendingContentId2: $uuidPendingContentId2, ')
@@ -1488,20 +1468,40 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('uuidPendingContentId5: $uuidPendingContentId5, ')
           ..write(
               'uuidPendingSecurityContentId: $uuidPendingSecurityContentId, ')
-          ..write('uuidSecurityContentId: $uuidSecurityContentId, ')
+          ..write(
+              'pendingPrimaryContentGridCropSize: $pendingPrimaryContentGridCropSize, ')
+          ..write(
+              'pendingPrimaryContentGridCropX: $pendingPrimaryContentGridCropX, ')
+          ..write(
+              'pendingPrimaryContentGridCropY: $pendingPrimaryContentGridCropY, ')
           ..write('uuidContentId0: $uuidContentId0, ')
           ..write('uuidContentId1: $uuidContentId1, ')
           ..write('uuidContentId2: $uuidContentId2, ')
           ..write('uuidContentId3: $uuidContentId3, ')
           ..write('uuidContentId4: $uuidContentId4, ')
           ..write('uuidContentId5: $uuidContentId5, ')
+          ..write('uuidSecurityContentId: $uuidSecurityContentId, ')
+          ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
+          ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
+          ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
           ..write('profileName: $profileName, ')
           ..write('profileText: $profileText, ')
           ..write('profileAge: $profileAge, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
-          ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
-          ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
-          ..write('primaryContentGridCropY: $primaryContentGridCropY')
+          ..write('profileLocationLatitude: $profileLocationLatitude, ')
+          ..write('profileLocationLongitude: $profileLocationLongitude, ')
+          ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
+          ..write('jsonSearchGroups: $jsonSearchGroups, ')
+          ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
+          ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
+          ..write('refreshTokenAccount: $refreshTokenAccount, ')
+          ..write('refreshTokenMedia: $refreshTokenMedia, ')
+          ..write('refreshTokenProfile: $refreshTokenProfile, ')
+          ..write('refreshTokenChat: $refreshTokenChat, ')
+          ..write('accessTokenAccount: $accessTokenAccount, ')
+          ..write('accessTokenMedia: $accessTokenMedia, ')
+          ..write('accessTokenProfile: $accessTokenProfile, ')
+          ..write('accessTokenChat: $accessTokenChat')
           ..write(')'))
         .toString();
   }
@@ -1509,27 +1509,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   @override
   int get hashCode => Object.hashAll([
         id,
-        refreshTokenAccount,
-        refreshTokenMedia,
-        refreshTokenProfile,
-        refreshTokenChat,
-        accessTokenAccount,
-        accessTokenMedia,
-        accessTokenProfile,
-        accessTokenChat,
-        profileFilterFavorites,
-        profileLocationLatitude,
-        profileLocationLongitude,
-        profileSearchAgeRangeMin,
-        profileSearchAgeRangeMax,
         jsonAccountState,
         jsonCapabilities,
         jsonAvailableProfileAttributes,
-        jsonProfileVisibility,
-        jsonSearchGroups,
-        pendingPrimaryContentGridCropSize,
-        pendingPrimaryContentGridCropX,
-        pendingPrimaryContentGridCropY,
+        profileFilterFavorites,
         uuidPendingContentId0,
         uuidPendingContentId1,
         uuidPendingContentId2,
@@ -1537,51 +1520,48 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         uuidPendingContentId4,
         uuidPendingContentId5,
         uuidPendingSecurityContentId,
-        uuidSecurityContentId,
+        pendingPrimaryContentGridCropSize,
+        pendingPrimaryContentGridCropX,
+        pendingPrimaryContentGridCropY,
         uuidContentId0,
         uuidContentId1,
         uuidContentId2,
         uuidContentId3,
         uuidContentId4,
         uuidContentId5,
+        uuidSecurityContentId,
+        primaryContentGridCropSize,
+        primaryContentGridCropX,
+        primaryContentGridCropY,
         profileName,
         profileText,
         profileAge,
         jsonProfileAttributes,
-        primaryContentGridCropSize,
-        primaryContentGridCropX,
-        primaryContentGridCropY
+        profileLocationLatitude,
+        profileLocationLongitude,
+        jsonProfileVisibility,
+        jsonSearchGroups,
+        profileSearchAgeRangeMin,
+        profileSearchAgeRangeMax,
+        refreshTokenAccount,
+        refreshTokenMedia,
+        refreshTokenProfile,
+        refreshTokenChat,
+        accessTokenAccount,
+        accessTokenMedia,
+        accessTokenProfile,
+        accessTokenChat
       ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AccountData &&
           other.id == this.id &&
-          other.refreshTokenAccount == this.refreshTokenAccount &&
-          other.refreshTokenMedia == this.refreshTokenMedia &&
-          other.refreshTokenProfile == this.refreshTokenProfile &&
-          other.refreshTokenChat == this.refreshTokenChat &&
-          other.accessTokenAccount == this.accessTokenAccount &&
-          other.accessTokenMedia == this.accessTokenMedia &&
-          other.accessTokenProfile == this.accessTokenProfile &&
-          other.accessTokenChat == this.accessTokenChat &&
-          other.profileFilterFavorites == this.profileFilterFavorites &&
-          other.profileLocationLatitude == this.profileLocationLatitude &&
-          other.profileLocationLongitude == this.profileLocationLongitude &&
-          other.profileSearchAgeRangeMin == this.profileSearchAgeRangeMin &&
-          other.profileSearchAgeRangeMax == this.profileSearchAgeRangeMax &&
           other.jsonAccountState == this.jsonAccountState &&
           other.jsonCapabilities == this.jsonCapabilities &&
           other.jsonAvailableProfileAttributes ==
               this.jsonAvailableProfileAttributes &&
-          other.jsonProfileVisibility == this.jsonProfileVisibility &&
-          other.jsonSearchGroups == this.jsonSearchGroups &&
-          other.pendingPrimaryContentGridCropSize ==
-              this.pendingPrimaryContentGridCropSize &&
-          other.pendingPrimaryContentGridCropX ==
-              this.pendingPrimaryContentGridCropX &&
-          other.pendingPrimaryContentGridCropY ==
-              this.pendingPrimaryContentGridCropY &&
+          other.profileFilterFavorites == this.profileFilterFavorites &&
           other.uuidPendingContentId0 == this.uuidPendingContentId0 &&
           other.uuidPendingContentId1 == this.uuidPendingContentId1 &&
           other.uuidPendingContentId2 == this.uuidPendingContentId2 &&
@@ -1590,24 +1570,78 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.uuidPendingContentId5 == this.uuidPendingContentId5 &&
           other.uuidPendingSecurityContentId ==
               this.uuidPendingSecurityContentId &&
-          other.uuidSecurityContentId == this.uuidSecurityContentId &&
+          other.pendingPrimaryContentGridCropSize ==
+              this.pendingPrimaryContentGridCropSize &&
+          other.pendingPrimaryContentGridCropX ==
+              this.pendingPrimaryContentGridCropX &&
+          other.pendingPrimaryContentGridCropY ==
+              this.pendingPrimaryContentGridCropY &&
           other.uuidContentId0 == this.uuidContentId0 &&
           other.uuidContentId1 == this.uuidContentId1 &&
           other.uuidContentId2 == this.uuidContentId2 &&
           other.uuidContentId3 == this.uuidContentId3 &&
           other.uuidContentId4 == this.uuidContentId4 &&
           other.uuidContentId5 == this.uuidContentId5 &&
+          other.uuidSecurityContentId == this.uuidSecurityContentId &&
+          other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
+          other.primaryContentGridCropX == this.primaryContentGridCropX &&
+          other.primaryContentGridCropY == this.primaryContentGridCropY &&
           other.profileName == this.profileName &&
           other.profileText == this.profileText &&
           other.profileAge == this.profileAge &&
           other.jsonProfileAttributes == this.jsonProfileAttributes &&
-          other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
-          other.primaryContentGridCropX == this.primaryContentGridCropX &&
-          other.primaryContentGridCropY == this.primaryContentGridCropY);
+          other.profileLocationLatitude == this.profileLocationLatitude &&
+          other.profileLocationLongitude == this.profileLocationLongitude &&
+          other.jsonProfileVisibility == this.jsonProfileVisibility &&
+          other.jsonSearchGroups == this.jsonSearchGroups &&
+          other.profileSearchAgeRangeMin == this.profileSearchAgeRangeMin &&
+          other.profileSearchAgeRangeMax == this.profileSearchAgeRangeMax &&
+          other.refreshTokenAccount == this.refreshTokenAccount &&
+          other.refreshTokenMedia == this.refreshTokenMedia &&
+          other.refreshTokenProfile == this.refreshTokenProfile &&
+          other.refreshTokenChat == this.refreshTokenChat &&
+          other.accessTokenAccount == this.accessTokenAccount &&
+          other.accessTokenMedia == this.accessTokenMedia &&
+          other.accessTokenProfile == this.accessTokenProfile &&
+          other.accessTokenChat == this.accessTokenChat);
 }
 
 class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<int> id;
+  final Value<EnumString?> jsonAccountState;
+  final Value<JsonString?> jsonCapabilities;
+  final Value<JsonString?> jsonAvailableProfileAttributes;
+  final Value<bool> profileFilterFavorites;
+  final Value<ContentId?> uuidPendingContentId0;
+  final Value<ContentId?> uuidPendingContentId1;
+  final Value<ContentId?> uuidPendingContentId2;
+  final Value<ContentId?> uuidPendingContentId3;
+  final Value<ContentId?> uuidPendingContentId4;
+  final Value<ContentId?> uuidPendingContentId5;
+  final Value<ContentId?> uuidPendingSecurityContentId;
+  final Value<double?> pendingPrimaryContentGridCropSize;
+  final Value<double?> pendingPrimaryContentGridCropX;
+  final Value<double?> pendingPrimaryContentGridCropY;
+  final Value<ContentId?> uuidContentId0;
+  final Value<ContentId?> uuidContentId1;
+  final Value<ContentId?> uuidContentId2;
+  final Value<ContentId?> uuidContentId3;
+  final Value<ContentId?> uuidContentId4;
+  final Value<ContentId?> uuidContentId5;
+  final Value<ContentId?> uuidSecurityContentId;
+  final Value<double?> primaryContentGridCropSize;
+  final Value<double?> primaryContentGridCropX;
+  final Value<double?> primaryContentGridCropY;
+  final Value<String?> profileName;
+  final Value<String?> profileText;
+  final Value<int?> profileAge;
+  final Value<JsonList?> jsonProfileAttributes;
+  final Value<double?> profileLocationLatitude;
+  final Value<double?> profileLocationLongitude;
+  final Value<EnumString?> jsonProfileVisibility;
+  final Value<JsonString?> jsonSearchGroups;
+  final Value<int?> profileSearchAgeRangeMin;
+  final Value<int?> profileSearchAgeRangeMax;
   final Value<String?> refreshTokenAccount;
   final Value<String?> refreshTokenMedia;
   final Value<String?> refreshTokenProfile;
@@ -1616,42 +1650,42 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<String?> accessTokenMedia;
   final Value<String?> accessTokenProfile;
   final Value<String?> accessTokenChat;
-  final Value<bool> profileFilterFavorites;
-  final Value<double?> profileLocationLatitude;
-  final Value<double?> profileLocationLongitude;
-  final Value<int?> profileSearchAgeRangeMin;
-  final Value<int?> profileSearchAgeRangeMax;
-  final Value<EnumString?> jsonAccountState;
-  final Value<JsonString?> jsonCapabilities;
-  final Value<JsonString?> jsonAvailableProfileAttributes;
-  final Value<EnumString?> jsonProfileVisibility;
-  final Value<JsonString?> jsonSearchGroups;
-  final Value<double?> pendingPrimaryContentGridCropSize;
-  final Value<double?> pendingPrimaryContentGridCropX;
-  final Value<double?> pendingPrimaryContentGridCropY;
-  final Value<ContentId?> uuidPendingContentId0;
-  final Value<ContentId?> uuidPendingContentId1;
-  final Value<ContentId?> uuidPendingContentId2;
-  final Value<ContentId?> uuidPendingContentId3;
-  final Value<ContentId?> uuidPendingContentId4;
-  final Value<ContentId?> uuidPendingContentId5;
-  final Value<ContentId?> uuidPendingSecurityContentId;
-  final Value<ContentId?> uuidSecurityContentId;
-  final Value<ContentId?> uuidContentId0;
-  final Value<ContentId?> uuidContentId1;
-  final Value<ContentId?> uuidContentId2;
-  final Value<ContentId?> uuidContentId3;
-  final Value<ContentId?> uuidContentId4;
-  final Value<ContentId?> uuidContentId5;
-  final Value<String?> profileName;
-  final Value<String?> profileText;
-  final Value<int?> profileAge;
-  final Value<JsonList?> jsonProfileAttributes;
-  final Value<double?> primaryContentGridCropSize;
-  final Value<double?> primaryContentGridCropX;
-  final Value<double?> primaryContentGridCropY;
   const AccountCompanion({
     this.id = const Value.absent(),
+    this.jsonAccountState = const Value.absent(),
+    this.jsonCapabilities = const Value.absent(),
+    this.jsonAvailableProfileAttributes = const Value.absent(),
+    this.profileFilterFavorites = const Value.absent(),
+    this.uuidPendingContentId0 = const Value.absent(),
+    this.uuidPendingContentId1 = const Value.absent(),
+    this.uuidPendingContentId2 = const Value.absent(),
+    this.uuidPendingContentId3 = const Value.absent(),
+    this.uuidPendingContentId4 = const Value.absent(),
+    this.uuidPendingContentId5 = const Value.absent(),
+    this.uuidPendingSecurityContentId = const Value.absent(),
+    this.pendingPrimaryContentGridCropSize = const Value.absent(),
+    this.pendingPrimaryContentGridCropX = const Value.absent(),
+    this.pendingPrimaryContentGridCropY = const Value.absent(),
+    this.uuidContentId0 = const Value.absent(),
+    this.uuidContentId1 = const Value.absent(),
+    this.uuidContentId2 = const Value.absent(),
+    this.uuidContentId3 = const Value.absent(),
+    this.uuidContentId4 = const Value.absent(),
+    this.uuidContentId5 = const Value.absent(),
+    this.uuidSecurityContentId = const Value.absent(),
+    this.primaryContentGridCropSize = const Value.absent(),
+    this.primaryContentGridCropX = const Value.absent(),
+    this.primaryContentGridCropY = const Value.absent(),
+    this.profileName = const Value.absent(),
+    this.profileText = const Value.absent(),
+    this.profileAge = const Value.absent(),
+    this.jsonProfileAttributes = const Value.absent(),
+    this.profileLocationLatitude = const Value.absent(),
+    this.profileLocationLongitude = const Value.absent(),
+    this.jsonProfileVisibility = const Value.absent(),
+    this.jsonSearchGroups = const Value.absent(),
+    this.profileSearchAgeRangeMin = const Value.absent(),
+    this.profileSearchAgeRangeMax = const Value.absent(),
     this.refreshTokenAccount = const Value.absent(),
     this.refreshTokenMedia = const Value.absent(),
     this.refreshTokenProfile = const Value.absent(),
@@ -1660,43 +1694,43 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.accessTokenMedia = const Value.absent(),
     this.accessTokenProfile = const Value.absent(),
     this.accessTokenChat = const Value.absent(),
-    this.profileFilterFavorites = const Value.absent(),
-    this.profileLocationLatitude = const Value.absent(),
-    this.profileLocationLongitude = const Value.absent(),
-    this.profileSearchAgeRangeMin = const Value.absent(),
-    this.profileSearchAgeRangeMax = const Value.absent(),
-    this.jsonAccountState = const Value.absent(),
-    this.jsonCapabilities = const Value.absent(),
-    this.jsonAvailableProfileAttributes = const Value.absent(),
-    this.jsonProfileVisibility = const Value.absent(),
-    this.jsonSearchGroups = const Value.absent(),
-    this.pendingPrimaryContentGridCropSize = const Value.absent(),
-    this.pendingPrimaryContentGridCropX = const Value.absent(),
-    this.pendingPrimaryContentGridCropY = const Value.absent(),
-    this.uuidPendingContentId0 = const Value.absent(),
-    this.uuidPendingContentId1 = const Value.absent(),
-    this.uuidPendingContentId2 = const Value.absent(),
-    this.uuidPendingContentId3 = const Value.absent(),
-    this.uuidPendingContentId4 = const Value.absent(),
-    this.uuidPendingContentId5 = const Value.absent(),
-    this.uuidPendingSecurityContentId = const Value.absent(),
-    this.uuidSecurityContentId = const Value.absent(),
-    this.uuidContentId0 = const Value.absent(),
-    this.uuidContentId1 = const Value.absent(),
-    this.uuidContentId2 = const Value.absent(),
-    this.uuidContentId3 = const Value.absent(),
-    this.uuidContentId4 = const Value.absent(),
-    this.uuidContentId5 = const Value.absent(),
-    this.profileName = const Value.absent(),
-    this.profileText = const Value.absent(),
-    this.profileAge = const Value.absent(),
-    this.jsonProfileAttributes = const Value.absent(),
-    this.primaryContentGridCropSize = const Value.absent(),
-    this.primaryContentGridCropX = const Value.absent(),
-    this.primaryContentGridCropY = const Value.absent(),
   });
   AccountCompanion.insert({
     this.id = const Value.absent(),
+    this.jsonAccountState = const Value.absent(),
+    this.jsonCapabilities = const Value.absent(),
+    this.jsonAvailableProfileAttributes = const Value.absent(),
+    this.profileFilterFavorites = const Value.absent(),
+    this.uuidPendingContentId0 = const Value.absent(),
+    this.uuidPendingContentId1 = const Value.absent(),
+    this.uuidPendingContentId2 = const Value.absent(),
+    this.uuidPendingContentId3 = const Value.absent(),
+    this.uuidPendingContentId4 = const Value.absent(),
+    this.uuidPendingContentId5 = const Value.absent(),
+    this.uuidPendingSecurityContentId = const Value.absent(),
+    this.pendingPrimaryContentGridCropSize = const Value.absent(),
+    this.pendingPrimaryContentGridCropX = const Value.absent(),
+    this.pendingPrimaryContentGridCropY = const Value.absent(),
+    this.uuidContentId0 = const Value.absent(),
+    this.uuidContentId1 = const Value.absent(),
+    this.uuidContentId2 = const Value.absent(),
+    this.uuidContentId3 = const Value.absent(),
+    this.uuidContentId4 = const Value.absent(),
+    this.uuidContentId5 = const Value.absent(),
+    this.uuidSecurityContentId = const Value.absent(),
+    this.primaryContentGridCropSize = const Value.absent(),
+    this.primaryContentGridCropX = const Value.absent(),
+    this.primaryContentGridCropY = const Value.absent(),
+    this.profileName = const Value.absent(),
+    this.profileText = const Value.absent(),
+    this.profileAge = const Value.absent(),
+    this.jsonProfileAttributes = const Value.absent(),
+    this.profileLocationLatitude = const Value.absent(),
+    this.profileLocationLongitude = const Value.absent(),
+    this.jsonProfileVisibility = const Value.absent(),
+    this.jsonSearchGroups = const Value.absent(),
+    this.profileSearchAgeRangeMin = const Value.absent(),
+    this.profileSearchAgeRangeMax = const Value.absent(),
     this.refreshTokenAccount = const Value.absent(),
     this.refreshTokenMedia = const Value.absent(),
     this.refreshTokenProfile = const Value.absent(),
@@ -1705,43 +1739,43 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.accessTokenMedia = const Value.absent(),
     this.accessTokenProfile = const Value.absent(),
     this.accessTokenChat = const Value.absent(),
-    this.profileFilterFavorites = const Value.absent(),
-    this.profileLocationLatitude = const Value.absent(),
-    this.profileLocationLongitude = const Value.absent(),
-    this.profileSearchAgeRangeMin = const Value.absent(),
-    this.profileSearchAgeRangeMax = const Value.absent(),
-    this.jsonAccountState = const Value.absent(),
-    this.jsonCapabilities = const Value.absent(),
-    this.jsonAvailableProfileAttributes = const Value.absent(),
-    this.jsonProfileVisibility = const Value.absent(),
-    this.jsonSearchGroups = const Value.absent(),
-    this.pendingPrimaryContentGridCropSize = const Value.absent(),
-    this.pendingPrimaryContentGridCropX = const Value.absent(),
-    this.pendingPrimaryContentGridCropY = const Value.absent(),
-    this.uuidPendingContentId0 = const Value.absent(),
-    this.uuidPendingContentId1 = const Value.absent(),
-    this.uuidPendingContentId2 = const Value.absent(),
-    this.uuidPendingContentId3 = const Value.absent(),
-    this.uuidPendingContentId4 = const Value.absent(),
-    this.uuidPendingContentId5 = const Value.absent(),
-    this.uuidPendingSecurityContentId = const Value.absent(),
-    this.uuidSecurityContentId = const Value.absent(),
-    this.uuidContentId0 = const Value.absent(),
-    this.uuidContentId1 = const Value.absent(),
-    this.uuidContentId2 = const Value.absent(),
-    this.uuidContentId3 = const Value.absent(),
-    this.uuidContentId4 = const Value.absent(),
-    this.uuidContentId5 = const Value.absent(),
-    this.profileName = const Value.absent(),
-    this.profileText = const Value.absent(),
-    this.profileAge = const Value.absent(),
-    this.jsonProfileAttributes = const Value.absent(),
-    this.primaryContentGridCropSize = const Value.absent(),
-    this.primaryContentGridCropX = const Value.absent(),
-    this.primaryContentGridCropY = const Value.absent(),
   });
   static Insertable<AccountData> custom({
     Expression<int>? id,
+    Expression<String>? jsonAccountState,
+    Expression<String>? jsonCapabilities,
+    Expression<String>? jsonAvailableProfileAttributes,
+    Expression<bool>? profileFilterFavorites,
+    Expression<String>? uuidPendingContentId0,
+    Expression<String>? uuidPendingContentId1,
+    Expression<String>? uuidPendingContentId2,
+    Expression<String>? uuidPendingContentId3,
+    Expression<String>? uuidPendingContentId4,
+    Expression<String>? uuidPendingContentId5,
+    Expression<String>? uuidPendingSecurityContentId,
+    Expression<double>? pendingPrimaryContentGridCropSize,
+    Expression<double>? pendingPrimaryContentGridCropX,
+    Expression<double>? pendingPrimaryContentGridCropY,
+    Expression<String>? uuidContentId0,
+    Expression<String>? uuidContentId1,
+    Expression<String>? uuidContentId2,
+    Expression<String>? uuidContentId3,
+    Expression<String>? uuidContentId4,
+    Expression<String>? uuidContentId5,
+    Expression<String>? uuidSecurityContentId,
+    Expression<double>? primaryContentGridCropSize,
+    Expression<double>? primaryContentGridCropX,
+    Expression<double>? primaryContentGridCropY,
+    Expression<String>? profileName,
+    Expression<String>? profileText,
+    Expression<int>? profileAge,
+    Expression<String>? jsonProfileAttributes,
+    Expression<double>? profileLocationLatitude,
+    Expression<double>? profileLocationLongitude,
+    Expression<String>? jsonProfileVisibility,
+    Expression<String>? jsonSearchGroups,
+    Expression<int>? profileSearchAgeRangeMin,
+    Expression<int>? profileSearchAgeRangeMax,
     Expression<String>? refreshTokenAccount,
     Expression<String>? refreshTokenMedia,
     Expression<String>? refreshTokenProfile,
@@ -1750,79 +1784,15 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<String>? accessTokenMedia,
     Expression<String>? accessTokenProfile,
     Expression<String>? accessTokenChat,
-    Expression<bool>? profileFilterFavorites,
-    Expression<double>? profileLocationLatitude,
-    Expression<double>? profileLocationLongitude,
-    Expression<int>? profileSearchAgeRangeMin,
-    Expression<int>? profileSearchAgeRangeMax,
-    Expression<String>? jsonAccountState,
-    Expression<String>? jsonCapabilities,
-    Expression<String>? jsonAvailableProfileAttributes,
-    Expression<String>? jsonProfileVisibility,
-    Expression<String>? jsonSearchGroups,
-    Expression<double>? pendingPrimaryContentGridCropSize,
-    Expression<double>? pendingPrimaryContentGridCropX,
-    Expression<double>? pendingPrimaryContentGridCropY,
-    Expression<String>? uuidPendingContentId0,
-    Expression<String>? uuidPendingContentId1,
-    Expression<String>? uuidPendingContentId2,
-    Expression<String>? uuidPendingContentId3,
-    Expression<String>? uuidPendingContentId4,
-    Expression<String>? uuidPendingContentId5,
-    Expression<String>? uuidPendingSecurityContentId,
-    Expression<String>? uuidSecurityContentId,
-    Expression<String>? uuidContentId0,
-    Expression<String>? uuidContentId1,
-    Expression<String>? uuidContentId2,
-    Expression<String>? uuidContentId3,
-    Expression<String>? uuidContentId4,
-    Expression<String>? uuidContentId5,
-    Expression<String>? profileName,
-    Expression<String>? profileText,
-    Expression<int>? profileAge,
-    Expression<String>? jsonProfileAttributes,
-    Expression<double>? primaryContentGridCropSize,
-    Expression<double>? primaryContentGridCropX,
-    Expression<double>? primaryContentGridCropY,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (refreshTokenAccount != null)
-        'refresh_token_account': refreshTokenAccount,
-      if (refreshTokenMedia != null) 'refresh_token_media': refreshTokenMedia,
-      if (refreshTokenProfile != null)
-        'refresh_token_profile': refreshTokenProfile,
-      if (refreshTokenChat != null) 'refresh_token_chat': refreshTokenChat,
-      if (accessTokenAccount != null)
-        'access_token_account': accessTokenAccount,
-      if (accessTokenMedia != null) 'access_token_media': accessTokenMedia,
-      if (accessTokenProfile != null)
-        'access_token_profile': accessTokenProfile,
-      if (accessTokenChat != null) 'access_token_chat': accessTokenChat,
-      if (profileFilterFavorites != null)
-        'profile_filter_favorites': profileFilterFavorites,
-      if (profileLocationLatitude != null)
-        'profile_location_latitude': profileLocationLatitude,
-      if (profileLocationLongitude != null)
-        'profile_location_longitude': profileLocationLongitude,
-      if (profileSearchAgeRangeMin != null)
-        'profile_search_age_range_min': profileSearchAgeRangeMin,
-      if (profileSearchAgeRangeMax != null)
-        'profile_search_age_range_max': profileSearchAgeRangeMax,
       if (jsonAccountState != null) 'json_account_state': jsonAccountState,
       if (jsonCapabilities != null) 'json_capabilities': jsonCapabilities,
       if (jsonAvailableProfileAttributes != null)
         'json_available_profile_attributes': jsonAvailableProfileAttributes,
-      if (jsonProfileVisibility != null)
-        'json_profile_visibility': jsonProfileVisibility,
-      if (jsonSearchGroups != null) 'json_search_groups': jsonSearchGroups,
-      if (pendingPrimaryContentGridCropSize != null)
-        'pending_primary_content_grid_crop_size':
-            pendingPrimaryContentGridCropSize,
-      if (pendingPrimaryContentGridCropX != null)
-        'pending_primary_content_grid_crop_x': pendingPrimaryContentGridCropX,
-      if (pendingPrimaryContentGridCropY != null)
-        'pending_primary_content_grid_crop_y': pendingPrimaryContentGridCropY,
+      if (profileFilterFavorites != null)
+        'profile_filter_favorites': profileFilterFavorites,
       if (uuidPendingContentId0 != null)
         'uuid_pending_content_id0': uuidPendingContentId0,
       if (uuidPendingContentId1 != null)
@@ -1837,51 +1807,64 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'uuid_pending_content_id5': uuidPendingContentId5,
       if (uuidPendingSecurityContentId != null)
         'uuid_pending_security_content_id': uuidPendingSecurityContentId,
-      if (uuidSecurityContentId != null)
-        'uuid_security_content_id': uuidSecurityContentId,
+      if (pendingPrimaryContentGridCropSize != null)
+        'pending_primary_content_grid_crop_size':
+            pendingPrimaryContentGridCropSize,
+      if (pendingPrimaryContentGridCropX != null)
+        'pending_primary_content_grid_crop_x': pendingPrimaryContentGridCropX,
+      if (pendingPrimaryContentGridCropY != null)
+        'pending_primary_content_grid_crop_y': pendingPrimaryContentGridCropY,
       if (uuidContentId0 != null) 'uuid_content_id0': uuidContentId0,
       if (uuidContentId1 != null) 'uuid_content_id1': uuidContentId1,
       if (uuidContentId2 != null) 'uuid_content_id2': uuidContentId2,
       if (uuidContentId3 != null) 'uuid_content_id3': uuidContentId3,
       if (uuidContentId4 != null) 'uuid_content_id4': uuidContentId4,
       if (uuidContentId5 != null) 'uuid_content_id5': uuidContentId5,
-      if (profileName != null) 'profile_name': profileName,
-      if (profileText != null) 'profile_text': profileText,
-      if (profileAge != null) 'profile_age': profileAge,
-      if (jsonProfileAttributes != null)
-        'json_profile_attributes': jsonProfileAttributes,
+      if (uuidSecurityContentId != null)
+        'uuid_security_content_id': uuidSecurityContentId,
       if (primaryContentGridCropSize != null)
         'primary_content_grid_crop_size': primaryContentGridCropSize,
       if (primaryContentGridCropX != null)
         'primary_content_grid_crop_x': primaryContentGridCropX,
       if (primaryContentGridCropY != null)
         'primary_content_grid_crop_y': primaryContentGridCropY,
+      if (profileName != null) 'profile_name': profileName,
+      if (profileText != null) 'profile_text': profileText,
+      if (profileAge != null) 'profile_age': profileAge,
+      if (jsonProfileAttributes != null)
+        'json_profile_attributes': jsonProfileAttributes,
+      if (profileLocationLatitude != null)
+        'profile_location_latitude': profileLocationLatitude,
+      if (profileLocationLongitude != null)
+        'profile_location_longitude': profileLocationLongitude,
+      if (jsonProfileVisibility != null)
+        'json_profile_visibility': jsonProfileVisibility,
+      if (jsonSearchGroups != null) 'json_search_groups': jsonSearchGroups,
+      if (profileSearchAgeRangeMin != null)
+        'profile_search_age_range_min': profileSearchAgeRangeMin,
+      if (profileSearchAgeRangeMax != null)
+        'profile_search_age_range_max': profileSearchAgeRangeMax,
+      if (refreshTokenAccount != null)
+        'refresh_token_account': refreshTokenAccount,
+      if (refreshTokenMedia != null) 'refresh_token_media': refreshTokenMedia,
+      if (refreshTokenProfile != null)
+        'refresh_token_profile': refreshTokenProfile,
+      if (refreshTokenChat != null) 'refresh_token_chat': refreshTokenChat,
+      if (accessTokenAccount != null)
+        'access_token_account': accessTokenAccount,
+      if (accessTokenMedia != null) 'access_token_media': accessTokenMedia,
+      if (accessTokenProfile != null)
+        'access_token_profile': accessTokenProfile,
+      if (accessTokenChat != null) 'access_token_chat': accessTokenChat,
     });
   }
 
   AccountCompanion copyWith(
       {Value<int>? id,
-      Value<String?>? refreshTokenAccount,
-      Value<String?>? refreshTokenMedia,
-      Value<String?>? refreshTokenProfile,
-      Value<String?>? refreshTokenChat,
-      Value<String?>? accessTokenAccount,
-      Value<String?>? accessTokenMedia,
-      Value<String?>? accessTokenProfile,
-      Value<String?>? accessTokenChat,
-      Value<bool>? profileFilterFavorites,
-      Value<double?>? profileLocationLatitude,
-      Value<double?>? profileLocationLongitude,
-      Value<int?>? profileSearchAgeRangeMin,
-      Value<int?>? profileSearchAgeRangeMax,
       Value<EnumString?>? jsonAccountState,
       Value<JsonString?>? jsonCapabilities,
       Value<JsonString?>? jsonAvailableProfileAttributes,
-      Value<EnumString?>? jsonProfileVisibility,
-      Value<JsonString?>? jsonSearchGroups,
-      Value<double?>? pendingPrimaryContentGridCropSize,
-      Value<double?>? pendingPrimaryContentGridCropX,
-      Value<double?>? pendingPrimaryContentGridCropY,
+      Value<bool>? profileFilterFavorites,
       Value<ContentId?>? uuidPendingContentId0,
       Value<ContentId?>? uuidPendingContentId1,
       Value<ContentId?>? uuidPendingContentId2,
@@ -1889,53 +1872,45 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<ContentId?>? uuidPendingContentId4,
       Value<ContentId?>? uuidPendingContentId5,
       Value<ContentId?>? uuidPendingSecurityContentId,
-      Value<ContentId?>? uuidSecurityContentId,
+      Value<double?>? pendingPrimaryContentGridCropSize,
+      Value<double?>? pendingPrimaryContentGridCropX,
+      Value<double?>? pendingPrimaryContentGridCropY,
       Value<ContentId?>? uuidContentId0,
       Value<ContentId?>? uuidContentId1,
       Value<ContentId?>? uuidContentId2,
       Value<ContentId?>? uuidContentId3,
       Value<ContentId?>? uuidContentId4,
       Value<ContentId?>? uuidContentId5,
+      Value<ContentId?>? uuidSecurityContentId,
+      Value<double?>? primaryContentGridCropSize,
+      Value<double?>? primaryContentGridCropX,
+      Value<double?>? primaryContentGridCropY,
       Value<String?>? profileName,
       Value<String?>? profileText,
       Value<int?>? profileAge,
       Value<JsonList?>? jsonProfileAttributes,
-      Value<double?>? primaryContentGridCropSize,
-      Value<double?>? primaryContentGridCropX,
-      Value<double?>? primaryContentGridCropY}) {
+      Value<double?>? profileLocationLatitude,
+      Value<double?>? profileLocationLongitude,
+      Value<EnumString?>? jsonProfileVisibility,
+      Value<JsonString?>? jsonSearchGroups,
+      Value<int?>? profileSearchAgeRangeMin,
+      Value<int?>? profileSearchAgeRangeMax,
+      Value<String?>? refreshTokenAccount,
+      Value<String?>? refreshTokenMedia,
+      Value<String?>? refreshTokenProfile,
+      Value<String?>? refreshTokenChat,
+      Value<String?>? accessTokenAccount,
+      Value<String?>? accessTokenMedia,
+      Value<String?>? accessTokenProfile,
+      Value<String?>? accessTokenChat}) {
     return AccountCompanion(
       id: id ?? this.id,
-      refreshTokenAccount: refreshTokenAccount ?? this.refreshTokenAccount,
-      refreshTokenMedia: refreshTokenMedia ?? this.refreshTokenMedia,
-      refreshTokenProfile: refreshTokenProfile ?? this.refreshTokenProfile,
-      refreshTokenChat: refreshTokenChat ?? this.refreshTokenChat,
-      accessTokenAccount: accessTokenAccount ?? this.accessTokenAccount,
-      accessTokenMedia: accessTokenMedia ?? this.accessTokenMedia,
-      accessTokenProfile: accessTokenProfile ?? this.accessTokenProfile,
-      accessTokenChat: accessTokenChat ?? this.accessTokenChat,
-      profileFilterFavorites:
-          profileFilterFavorites ?? this.profileFilterFavorites,
-      profileLocationLatitude:
-          profileLocationLatitude ?? this.profileLocationLatitude,
-      profileLocationLongitude:
-          profileLocationLongitude ?? this.profileLocationLongitude,
-      profileSearchAgeRangeMin:
-          profileSearchAgeRangeMin ?? this.profileSearchAgeRangeMin,
-      profileSearchAgeRangeMax:
-          profileSearchAgeRangeMax ?? this.profileSearchAgeRangeMax,
       jsonAccountState: jsonAccountState ?? this.jsonAccountState,
       jsonCapabilities: jsonCapabilities ?? this.jsonCapabilities,
       jsonAvailableProfileAttributes:
           jsonAvailableProfileAttributes ?? this.jsonAvailableProfileAttributes,
-      jsonProfileVisibility:
-          jsonProfileVisibility ?? this.jsonProfileVisibility,
-      jsonSearchGroups: jsonSearchGroups ?? this.jsonSearchGroups,
-      pendingPrimaryContentGridCropSize: pendingPrimaryContentGridCropSize ??
-          this.pendingPrimaryContentGridCropSize,
-      pendingPrimaryContentGridCropX:
-          pendingPrimaryContentGridCropX ?? this.pendingPrimaryContentGridCropX,
-      pendingPrimaryContentGridCropY:
-          pendingPrimaryContentGridCropY ?? this.pendingPrimaryContentGridCropY,
+      profileFilterFavorites:
+          profileFilterFavorites ?? this.profileFilterFavorites,
       uuidPendingContentId0:
           uuidPendingContentId0 ?? this.uuidPendingContentId0,
       uuidPendingContentId1:
@@ -1950,25 +1925,50 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           uuidPendingContentId5 ?? this.uuidPendingContentId5,
       uuidPendingSecurityContentId:
           uuidPendingSecurityContentId ?? this.uuidPendingSecurityContentId,
-      uuidSecurityContentId:
-          uuidSecurityContentId ?? this.uuidSecurityContentId,
+      pendingPrimaryContentGridCropSize: pendingPrimaryContentGridCropSize ??
+          this.pendingPrimaryContentGridCropSize,
+      pendingPrimaryContentGridCropX:
+          pendingPrimaryContentGridCropX ?? this.pendingPrimaryContentGridCropX,
+      pendingPrimaryContentGridCropY:
+          pendingPrimaryContentGridCropY ?? this.pendingPrimaryContentGridCropY,
       uuidContentId0: uuidContentId0 ?? this.uuidContentId0,
       uuidContentId1: uuidContentId1 ?? this.uuidContentId1,
       uuidContentId2: uuidContentId2 ?? this.uuidContentId2,
       uuidContentId3: uuidContentId3 ?? this.uuidContentId3,
       uuidContentId4: uuidContentId4 ?? this.uuidContentId4,
       uuidContentId5: uuidContentId5 ?? this.uuidContentId5,
-      profileName: profileName ?? this.profileName,
-      profileText: profileText ?? this.profileText,
-      profileAge: profileAge ?? this.profileAge,
-      jsonProfileAttributes:
-          jsonProfileAttributes ?? this.jsonProfileAttributes,
+      uuidSecurityContentId:
+          uuidSecurityContentId ?? this.uuidSecurityContentId,
       primaryContentGridCropSize:
           primaryContentGridCropSize ?? this.primaryContentGridCropSize,
       primaryContentGridCropX:
           primaryContentGridCropX ?? this.primaryContentGridCropX,
       primaryContentGridCropY:
           primaryContentGridCropY ?? this.primaryContentGridCropY,
+      profileName: profileName ?? this.profileName,
+      profileText: profileText ?? this.profileText,
+      profileAge: profileAge ?? this.profileAge,
+      jsonProfileAttributes:
+          jsonProfileAttributes ?? this.jsonProfileAttributes,
+      profileLocationLatitude:
+          profileLocationLatitude ?? this.profileLocationLatitude,
+      profileLocationLongitude:
+          profileLocationLongitude ?? this.profileLocationLongitude,
+      jsonProfileVisibility:
+          jsonProfileVisibility ?? this.jsonProfileVisibility,
+      jsonSearchGroups: jsonSearchGroups ?? this.jsonSearchGroups,
+      profileSearchAgeRangeMin:
+          profileSearchAgeRangeMin ?? this.profileSearchAgeRangeMin,
+      profileSearchAgeRangeMax:
+          profileSearchAgeRangeMax ?? this.profileSearchAgeRangeMax,
+      refreshTokenAccount: refreshTokenAccount ?? this.refreshTokenAccount,
+      refreshTokenMedia: refreshTokenMedia ?? this.refreshTokenMedia,
+      refreshTokenProfile: refreshTokenProfile ?? this.refreshTokenProfile,
+      refreshTokenChat: refreshTokenChat ?? this.refreshTokenChat,
+      accessTokenAccount: accessTokenAccount ?? this.accessTokenAccount,
+      accessTokenMedia: accessTokenMedia ?? this.accessTokenMedia,
+      accessTokenProfile: accessTokenProfile ?? this.accessTokenProfile,
+      accessTokenChat: accessTokenChat ?? this.accessTokenChat,
     );
   }
 
@@ -1977,52 +1977,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
-    }
-    if (refreshTokenAccount.present) {
-      map['refresh_token_account'] =
-          Variable<String>(refreshTokenAccount.value);
-    }
-    if (refreshTokenMedia.present) {
-      map['refresh_token_media'] = Variable<String>(refreshTokenMedia.value);
-    }
-    if (refreshTokenProfile.present) {
-      map['refresh_token_profile'] =
-          Variable<String>(refreshTokenProfile.value);
-    }
-    if (refreshTokenChat.present) {
-      map['refresh_token_chat'] = Variable<String>(refreshTokenChat.value);
-    }
-    if (accessTokenAccount.present) {
-      map['access_token_account'] = Variable<String>(accessTokenAccount.value);
-    }
-    if (accessTokenMedia.present) {
-      map['access_token_media'] = Variable<String>(accessTokenMedia.value);
-    }
-    if (accessTokenProfile.present) {
-      map['access_token_profile'] = Variable<String>(accessTokenProfile.value);
-    }
-    if (accessTokenChat.present) {
-      map['access_token_chat'] = Variable<String>(accessTokenChat.value);
-    }
-    if (profileFilterFavorites.present) {
-      map['profile_filter_favorites'] =
-          Variable<bool>(profileFilterFavorites.value);
-    }
-    if (profileLocationLatitude.present) {
-      map['profile_location_latitude'] =
-          Variable<double>(profileLocationLatitude.value);
-    }
-    if (profileLocationLongitude.present) {
-      map['profile_location_longitude'] =
-          Variable<double>(profileLocationLongitude.value);
-    }
-    if (profileSearchAgeRangeMin.present) {
-      map['profile_search_age_range_min'] =
-          Variable<int>(profileSearchAgeRangeMin.value);
-    }
-    if (profileSearchAgeRangeMax.present) {
-      map['profile_search_age_range_max'] =
-          Variable<int>(profileSearchAgeRangeMax.value);
     }
     if (jsonAccountState.present) {
       map['json_account_state'] = Variable<String>($AccountTable
@@ -2039,27 +1993,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           .$converterjsonAvailableProfileAttributes
           .toSql(jsonAvailableProfileAttributes.value));
     }
-    if (jsonProfileVisibility.present) {
-      map['json_profile_visibility'] = Variable<String>($AccountTable
-          .$converterjsonProfileVisibility
-          .toSql(jsonProfileVisibility.value));
-    }
-    if (jsonSearchGroups.present) {
-      map['json_search_groups'] = Variable<String>($AccountTable
-          .$converterjsonSearchGroups
-          .toSql(jsonSearchGroups.value));
-    }
-    if (pendingPrimaryContentGridCropSize.present) {
-      map['pending_primary_content_grid_crop_size'] =
-          Variable<double>(pendingPrimaryContentGridCropSize.value);
-    }
-    if (pendingPrimaryContentGridCropX.present) {
-      map['pending_primary_content_grid_crop_x'] =
-          Variable<double>(pendingPrimaryContentGridCropX.value);
-    }
-    if (pendingPrimaryContentGridCropY.present) {
-      map['pending_primary_content_grid_crop_y'] =
-          Variable<double>(pendingPrimaryContentGridCropY.value);
+    if (profileFilterFavorites.present) {
+      map['profile_filter_favorites'] =
+          Variable<bool>(profileFilterFavorites.value);
     }
     if (uuidPendingContentId0.present) {
       map['uuid_pending_content_id0'] = Variable<String>($AccountTable
@@ -2096,10 +2032,17 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           .$converteruuidPendingSecurityContentId
           .toSql(uuidPendingSecurityContentId.value));
     }
-    if (uuidSecurityContentId.present) {
-      map['uuid_security_content_id'] = Variable<String>($AccountTable
-          .$converteruuidSecurityContentId
-          .toSql(uuidSecurityContentId.value));
+    if (pendingPrimaryContentGridCropSize.present) {
+      map['pending_primary_content_grid_crop_size'] =
+          Variable<double>(pendingPrimaryContentGridCropSize.value);
+    }
+    if (pendingPrimaryContentGridCropX.present) {
+      map['pending_primary_content_grid_crop_x'] =
+          Variable<double>(pendingPrimaryContentGridCropX.value);
+    }
+    if (pendingPrimaryContentGridCropY.present) {
+      map['pending_primary_content_grid_crop_y'] =
+          Variable<double>(pendingPrimaryContentGridCropY.value);
     }
     if (uuidContentId0.present) {
       map['uuid_content_id0'] = Variable<String>(
@@ -2125,6 +2068,23 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['uuid_content_id5'] = Variable<String>(
           $AccountTable.$converteruuidContentId5.toSql(uuidContentId5.value));
     }
+    if (uuidSecurityContentId.present) {
+      map['uuid_security_content_id'] = Variable<String>($AccountTable
+          .$converteruuidSecurityContentId
+          .toSql(uuidSecurityContentId.value));
+    }
+    if (primaryContentGridCropSize.present) {
+      map['primary_content_grid_crop_size'] =
+          Variable<double>(primaryContentGridCropSize.value);
+    }
+    if (primaryContentGridCropX.present) {
+      map['primary_content_grid_crop_x'] =
+          Variable<double>(primaryContentGridCropX.value);
+    }
+    if (primaryContentGridCropY.present) {
+      map['primary_content_grid_crop_y'] =
+          Variable<double>(primaryContentGridCropY.value);
+    }
     if (profileName.present) {
       map['profile_name'] = Variable<String>(profileName.value);
     }
@@ -2139,17 +2099,57 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           .$converterjsonProfileAttributes
           .toSql(jsonProfileAttributes.value));
     }
-    if (primaryContentGridCropSize.present) {
-      map['primary_content_grid_crop_size'] =
-          Variable<double>(primaryContentGridCropSize.value);
+    if (profileLocationLatitude.present) {
+      map['profile_location_latitude'] =
+          Variable<double>(profileLocationLatitude.value);
     }
-    if (primaryContentGridCropX.present) {
-      map['primary_content_grid_crop_x'] =
-          Variable<double>(primaryContentGridCropX.value);
+    if (profileLocationLongitude.present) {
+      map['profile_location_longitude'] =
+          Variable<double>(profileLocationLongitude.value);
     }
-    if (primaryContentGridCropY.present) {
-      map['primary_content_grid_crop_y'] =
-          Variable<double>(primaryContentGridCropY.value);
+    if (jsonProfileVisibility.present) {
+      map['json_profile_visibility'] = Variable<String>($AccountTable
+          .$converterjsonProfileVisibility
+          .toSql(jsonProfileVisibility.value));
+    }
+    if (jsonSearchGroups.present) {
+      map['json_search_groups'] = Variable<String>($AccountTable
+          .$converterjsonSearchGroups
+          .toSql(jsonSearchGroups.value));
+    }
+    if (profileSearchAgeRangeMin.present) {
+      map['profile_search_age_range_min'] =
+          Variable<int>(profileSearchAgeRangeMin.value);
+    }
+    if (profileSearchAgeRangeMax.present) {
+      map['profile_search_age_range_max'] =
+          Variable<int>(profileSearchAgeRangeMax.value);
+    }
+    if (refreshTokenAccount.present) {
+      map['refresh_token_account'] =
+          Variable<String>(refreshTokenAccount.value);
+    }
+    if (refreshTokenMedia.present) {
+      map['refresh_token_media'] = Variable<String>(refreshTokenMedia.value);
+    }
+    if (refreshTokenProfile.present) {
+      map['refresh_token_profile'] =
+          Variable<String>(refreshTokenProfile.value);
+    }
+    if (refreshTokenChat.present) {
+      map['refresh_token_chat'] = Variable<String>(refreshTokenChat.value);
+    }
+    if (accessTokenAccount.present) {
+      map['access_token_account'] = Variable<String>(accessTokenAccount.value);
+    }
+    if (accessTokenMedia.present) {
+      map['access_token_media'] = Variable<String>(accessTokenMedia.value);
+    }
+    if (accessTokenProfile.present) {
+      map['access_token_profile'] = Variable<String>(accessTokenProfile.value);
+    }
+    if (accessTokenChat.present) {
+      map['access_token_chat'] = Variable<String>(accessTokenChat.value);
     }
     return map;
   }
@@ -2158,31 +2158,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   String toString() {
     return (StringBuffer('AccountCompanion(')
           ..write('id: $id, ')
-          ..write('refreshTokenAccount: $refreshTokenAccount, ')
-          ..write('refreshTokenMedia: $refreshTokenMedia, ')
-          ..write('refreshTokenProfile: $refreshTokenProfile, ')
-          ..write('refreshTokenChat: $refreshTokenChat, ')
-          ..write('accessTokenAccount: $accessTokenAccount, ')
-          ..write('accessTokenMedia: $accessTokenMedia, ')
-          ..write('accessTokenProfile: $accessTokenProfile, ')
-          ..write('accessTokenChat: $accessTokenChat, ')
-          ..write('profileFilterFavorites: $profileFilterFavorites, ')
-          ..write('profileLocationLatitude: $profileLocationLatitude, ')
-          ..write('profileLocationLongitude: $profileLocationLongitude, ')
-          ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
-          ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
           ..write('jsonAccountState: $jsonAccountState, ')
           ..write('jsonCapabilities: $jsonCapabilities, ')
           ..write(
               'jsonAvailableProfileAttributes: $jsonAvailableProfileAttributes, ')
-          ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
-          ..write('jsonSearchGroups: $jsonSearchGroups, ')
-          ..write(
-              'pendingPrimaryContentGridCropSize: $pendingPrimaryContentGridCropSize, ')
-          ..write(
-              'pendingPrimaryContentGridCropX: $pendingPrimaryContentGridCropX, ')
-          ..write(
-              'pendingPrimaryContentGridCropY: $pendingPrimaryContentGridCropY, ')
+          ..write('profileFilterFavorites: $profileFilterFavorites, ')
           ..write('uuidPendingContentId0: $uuidPendingContentId0, ')
           ..write('uuidPendingContentId1: $uuidPendingContentId1, ')
           ..write('uuidPendingContentId2: $uuidPendingContentId2, ')
@@ -2191,20 +2171,40 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('uuidPendingContentId5: $uuidPendingContentId5, ')
           ..write(
               'uuidPendingSecurityContentId: $uuidPendingSecurityContentId, ')
-          ..write('uuidSecurityContentId: $uuidSecurityContentId, ')
+          ..write(
+              'pendingPrimaryContentGridCropSize: $pendingPrimaryContentGridCropSize, ')
+          ..write(
+              'pendingPrimaryContentGridCropX: $pendingPrimaryContentGridCropX, ')
+          ..write(
+              'pendingPrimaryContentGridCropY: $pendingPrimaryContentGridCropY, ')
           ..write('uuidContentId0: $uuidContentId0, ')
           ..write('uuidContentId1: $uuidContentId1, ')
           ..write('uuidContentId2: $uuidContentId2, ')
           ..write('uuidContentId3: $uuidContentId3, ')
           ..write('uuidContentId4: $uuidContentId4, ')
           ..write('uuidContentId5: $uuidContentId5, ')
+          ..write('uuidSecurityContentId: $uuidSecurityContentId, ')
+          ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
+          ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
+          ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
           ..write('profileName: $profileName, ')
           ..write('profileText: $profileText, ')
           ..write('profileAge: $profileAge, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
-          ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
-          ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
-          ..write('primaryContentGridCropY: $primaryContentGridCropY')
+          ..write('profileLocationLatitude: $profileLocationLatitude, ')
+          ..write('profileLocationLongitude: $profileLocationLongitude, ')
+          ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
+          ..write('jsonSearchGroups: $jsonSearchGroups, ')
+          ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
+          ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
+          ..write('refreshTokenAccount: $refreshTokenAccount, ')
+          ..write('refreshTokenMedia: $refreshTokenMedia, ')
+          ..write('refreshTokenProfile: $refreshTokenProfile, ')
+          ..write('refreshTokenChat: $refreshTokenChat, ')
+          ..write('accessTokenAccount: $accessTokenAccount, ')
+          ..write('accessTokenMedia: $accessTokenMedia, ')
+          ..write('accessTokenProfile: $accessTokenProfile, ')
+          ..write('accessTokenChat: $accessTokenChat')
           ..write(')'))
         .toString();
   }
@@ -3819,6 +3819,14 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $AccountTable account = $AccountTable(this);
   late final $ProfilesTable profiles = $ProfilesTable(this);
   late final $MessagesTable messages = $MessagesTable(this);
+  late final DaoCurrentContent daoCurrentContent =
+      DaoCurrentContent(this as AccountDatabase);
+  late final DaoPendingContent daoPendingContent =
+      DaoPendingContent(this as AccountDatabase);
+  late final DaoMyProfile daoMyProfile = DaoMyProfile(this as AccountDatabase);
+  late final DaoProfileSettings daoProfileSettings =
+      DaoProfileSettings(this as AccountDatabase);
+  late final DaoTokens daoTokens = DaoTokens(this as AccountDatabase);
   late final DaoProfiles daoProfiles = DaoProfiles(this as AccountDatabase);
   late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
   @override

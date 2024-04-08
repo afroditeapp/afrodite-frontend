@@ -42,7 +42,7 @@ class AccountRepository extends DataRepository {
       Capabilities(),
     );
   Stream<ProfileVisibility> get profileVisibility => DatabaseManager.getInstance()
-    .accountStreamOrDefault((db) => db.watchProfileVisibility(), ProfileVisibility.pendingPrivate);
+    .accountStreamOrDefault((db) => db.daoProfileSettings.watchProfileVisibility(), ProfileVisibility.pendingPrivate);
 
   // WebSocket related event streams
   final _contentProcessingStateChanges = PublishSubject<ContentProcessingStateChanged>();
@@ -65,7 +65,7 @@ class AccountRepository extends DataRepository {
   }
 
   Future<void> _saveAndUpdateProfileVisibility(ProfileVisibility profileVisibility) async {
-    await DatabaseManager.getInstance().accountAction((db) => db.updateProfileVisibility(profileVisibility));
+    await DatabaseManager.getInstance().accountAction((db) => db.daoProfileSettings.updateProfileVisibility(profileVisibility));
   }
 
   // TODO: Background futures might cause issues
@@ -108,7 +108,7 @@ class AccountRepository extends DataRepository {
 
   @override
   Future<void> onLogout() async {
-    await DatabaseManager.getInstance().accountAction((db) => db.updateProfileVisibility(null));
+    await DatabaseManager.getInstance().accountAction((db) => db.daoProfileSettings.updateProfileVisibility(null));
     await DatabaseManager.getInstance().accountAction((db) => db.updateCapabilities(null));
     await DatabaseManager.getInstance().accountAction((db) => db.updateAccountState(null));
   }
