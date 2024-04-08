@@ -32,7 +32,7 @@ void openProfileView(
     bool noAction = false,
   }
 ) {
-  context.read<ViewProfileBloc>().add(SetProfileView(profile, heroTag));
+  context.read<ViewProfileBloc>().add(SetProfileView(profile));
   final Route<void> route;
   route = MaterialPageRoute<void>(
     builder: (_) => ViewProfilePage(initialProfile: profile, noAction: noAction)
@@ -46,8 +46,9 @@ void openProfileView(
 class ViewProfilePage extends StatelessWidget {
   final bool noAction;
   final ProfileEntry initialProfile;
+  final ProfileHeroTag? heroTag;
 
-  const ViewProfilePage({required this.initialProfile, this.noAction = false, super.key});
+  const ViewProfilePage({required this.initialProfile, this.heroTag, this.noAction = false, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +67,7 @@ class ViewProfilePage extends StatelessWidget {
             }
             final Icon icon;
             final String tooltip;
-            if (s.isFavorite) {
+            if (s.isFavorite.isFavorite) {
               icon = const Icon(Icons.star_rounded);
               tooltip = context.strings.view_profile_screen_remove_from_favorites_action;
             } else {
@@ -74,8 +75,14 @@ class ViewProfilePage extends StatelessWidget {
               tooltip = context.strings.view_profile_screen_add_to_favorites_action;
             }
             return IconButton(
-              onPressed: () =>
-                context.read<ViewProfileBloc>().add(ToggleFavoriteStatus(s.profile.uuid)),
+              onPressed: () {
+                switch (s.isFavorite) {
+                  case FavoriteStateIdle():
+                    context.read<ViewProfileBloc>().add(ToggleFavoriteStatus(s.profile.uuid));
+                  case FavoriteStateChangeInProgress():
+                    showSnackBar(context.strings.generic_previous_action_in_progress);
+                }
+              },
               icon: icon,
               tooltip: tooltip,
             );
@@ -87,7 +94,7 @@ class ViewProfilePage extends StatelessWidget {
                   onTap: () async {
                     final accepted = await showConfirmDialog(context, context.strings.view_profile_screen_block_action_dialog_title);
                     if (context.mounted && accepted == true) {
-                      context.read<ViewProfileBloc>().add(BlockCurrentProfile());
+                      context.read<ViewProfileBloc>().add(BlockProfile(initialProfile.uuid));
                     }
                   },
                   child: Text(context.strings.view_profile_screen_block_action),
@@ -177,7 +184,7 @@ class ViewProfilePage extends StatelessWidget {
         return AnimatedOpacity(
           duration: const Duration(milliseconds: 150),
           opacity: state.isNotAvailable ? 0.0 : 1.0,
-          child: viewProifle(context, state.profile, heroTag: state.imgTag),
+          child: viewProifle(context, state.profile, heroTag: heroTag),
         );
       }
     );

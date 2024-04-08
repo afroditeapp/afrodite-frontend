@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:async/async.dart';
+import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/api/api_wrapper.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
@@ -205,50 +206,27 @@ class ProfileRepository extends DataRepository {
     return await db.profileData((db) => db.isInFavorites(accountId)).ok() ?? false;
   }
 
-  Stream<bool> addToFavorites(AccountId accountId) async* {
-    if (await isInFavorites(accountId)) {
-      // In favorites already
-      return;
+  // Returns new isFavorite status for account. The status might not change
+  // if the operation fails.
+  Future<bool> toggleFavoriteStatus(AccountId accountId) async {
+    final currentValue = await isInFavorites(accountId);
+
+    final Result<void, ActionApiError> status;
+    if (currentValue) {
+      status = await _api.profileAction((api) => api.postFavoriteProfile(accountId));
+    } else {
+      status = await _api.profileAction((api) => api.deleteFavoriteProfile(accountId));
     }
-
-    await db.profileAction((db) => db.setFavoriteStatus(accountId, true));
-    yield true;
-
-    final status = await _api.profileAction((api) => api.postFavoriteProfile(accountId));
 
     if (status.isErr()) {
-      // Revert local change
-      yield false;
-      await db.profileAction((db) => db.setFavoriteStatus(accountId, false));
+      return currentValue;
     } else {
+      final newValue = !currentValue;
+      await db.profileAction((db) => db.setFavoriteStatus(accountId, newValue));
       _profileChangesRelay.add(
-        ProfileFavoriteStatusChange(accountId, true)
+        ProfileFavoriteStatusChange(accountId, newValue)
       );
-    }
-
-    // TODO: Save change to db only when server has accepted it?
-  }
-
-  /// Returns new isFavorite status for AccountId.
-  Stream<bool> removeFromFavorites(AccountId accountId) async* {
-    if (!await isInFavorites(accountId)) {
-      // Not in favorites already
-      return;
-    }
-
-    await db.profileAction((db) => db.setFavoriteStatus(accountId, false));
-    yield false;
-
-    final status = await _api.profileAction((api) => api.deleteFavoriteProfile(accountId));
-
-    if (status.isErr()) {
-      // Revert local change
-      yield true;
-      await db.profileAction((db) => db.setFavoriteStatus(accountId, true));
-    } else {
-      _profileChangesRelay.add(
-        ProfileFavoriteStatusChange(accountId, false)
-      );
+      return newValue;
     }
   }
 

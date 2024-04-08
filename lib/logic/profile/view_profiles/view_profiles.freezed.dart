@@ -17,8 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ViewProfilesData {
   ProfileEntry get profile => throw _privateConstructorUsedError;
-  ProfileHeroTag? get imgTag => throw _privateConstructorUsedError;
-  bool get isFavorite => throw _privateConstructorUsedError;
+  FavoriteState get isFavorite => throw _privateConstructorUsedError;
   ProfileActionState get profileActionState =>
       throw _privateConstructorUsedError;
   bool get isNotAvailable => throw _privateConstructorUsedError;
@@ -39,8 +38,7 @@ abstract class $ViewProfilesDataCopyWith<$Res> {
   @useResult
   $Res call(
       {ProfileEntry profile,
-      ProfileHeroTag? imgTag,
-      bool isFavorite,
+      FavoriteState isFavorite,
       ProfileActionState profileActionState,
       bool isNotAvailable,
       bool isBlocked,
@@ -62,7 +60,6 @@ class _$ViewProfilesDataCopyWithImpl<$Res, $Val extends ViewProfilesData>
   @override
   $Res call({
     Object? profile = null,
-    Object? imgTag = freezed,
     Object? isFavorite = null,
     Object? profileActionState = null,
     Object? isNotAvailable = null,
@@ -75,14 +72,10 @@ class _$ViewProfilesDataCopyWithImpl<$Res, $Val extends ViewProfilesData>
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
               as ProfileEntry,
-      imgTag: freezed == imgTag
-          ? _value.imgTag
-          : imgTag // ignore: cast_nullable_to_non_nullable
-              as ProfileHeroTag?,
       isFavorite: null == isFavorite
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as FavoriteState,
       profileActionState: null == profileActionState
           ? _value.profileActionState
           : profileActionState // ignore: cast_nullable_to_non_nullable
@@ -117,8 +110,7 @@ abstract class _$$ViewProfilesDataImplCopyWith<$Res>
   @useResult
   $Res call(
       {ProfileEntry profile,
-      ProfileHeroTag? imgTag,
-      bool isFavorite,
+      FavoriteState isFavorite,
       ProfileActionState profileActionState,
       bool isNotAvailable,
       bool isBlocked,
@@ -138,7 +130,6 @@ class __$$ViewProfilesDataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? profile = null,
-    Object? imgTag = freezed,
     Object? isFavorite = null,
     Object? profileActionState = null,
     Object? isNotAvailable = null,
@@ -151,14 +142,10 @@ class __$$ViewProfilesDataImplCopyWithImpl<$Res>
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
               as ProfileEntry,
-      imgTag: freezed == imgTag
-          ? _value.imgTag
-          : imgTag // ignore: cast_nullable_to_non_nullable
-              as ProfileHeroTag?,
       isFavorite: null == isFavorite
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as FavoriteState,
       profileActionState: null == profileActionState
           ? _value.profileActionState
           : profileActionState // ignore: cast_nullable_to_non_nullable
@@ -190,8 +177,7 @@ class _$ViewProfilesDataImpl
     implements _ViewProfilesData {
   _$ViewProfilesDataImpl(
       {required this.profile,
-      required this.imgTag,
-      this.isFavorite = false,
+      this.isFavorite = const FavoriteStateIdle(false),
       this.profileActionState = ProfileActionState.like,
       this.isNotAvailable = false,
       this.isBlocked = false,
@@ -201,10 +187,8 @@ class _$ViewProfilesDataImpl
   @override
   final ProfileEntry profile;
   @override
-  final ProfileHeroTag? imgTag;
-  @override
   @JsonKey()
-  final bool isFavorite;
+  final FavoriteState isFavorite;
   @override
   @JsonKey()
   final ProfileActionState profileActionState;
@@ -223,7 +207,7 @@ class _$ViewProfilesDataImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ViewProfilesData(profile: $profile, imgTag: $imgTag, isFavorite: $isFavorite, profileActionState: $profileActionState, isNotAvailable: $isNotAvailable, isBlocked: $isBlocked, showLikeCompleted: $showLikeCompleted, showRemoveLikeCompleted: $showRemoveLikeCompleted)';
+    return 'ViewProfilesData(profile: $profile, isFavorite: $isFavorite, profileActionState: $profileActionState, isNotAvailable: $isNotAvailable, isBlocked: $isBlocked, showLikeCompleted: $showLikeCompleted, showRemoveLikeCompleted: $showRemoveLikeCompleted)';
   }
 
   @override
@@ -232,7 +216,6 @@ class _$ViewProfilesDataImpl
     properties
       ..add(DiagnosticsProperty('type', 'ViewProfilesData'))
       ..add(DiagnosticsProperty('profile', profile))
-      ..add(DiagnosticsProperty('imgTag', imgTag))
       ..add(DiagnosticsProperty('isFavorite', isFavorite))
       ..add(DiagnosticsProperty('profileActionState', profileActionState))
       ..add(DiagnosticsProperty('isNotAvailable', isNotAvailable))
@@ -248,7 +231,6 @@ class _$ViewProfilesDataImpl
         (other.runtimeType == runtimeType &&
             other is _$ViewProfilesDataImpl &&
             (identical(other.profile, profile) || other.profile == profile) &&
-            (identical(other.imgTag, imgTag) || other.imgTag == imgTag) &&
             (identical(other.isFavorite, isFavorite) ||
                 other.isFavorite == isFavorite) &&
             (identical(other.profileActionState, profileActionState) ||
@@ -268,7 +250,6 @@ class _$ViewProfilesDataImpl
   int get hashCode => Object.hash(
       runtimeType,
       profile,
-      imgTag,
       isFavorite,
       profileActionState,
       isNotAvailable,
@@ -287,8 +268,7 @@ class _$ViewProfilesDataImpl
 abstract class _ViewProfilesData implements ViewProfilesData {
   factory _ViewProfilesData(
       {required final ProfileEntry profile,
-      required final ProfileHeroTag? imgTag,
-      final bool isFavorite,
+      final FavoriteState isFavorite,
       final ProfileActionState profileActionState,
       final bool isNotAvailable,
       final bool isBlocked,
@@ -298,9 +278,7 @@ abstract class _ViewProfilesData implements ViewProfilesData {
   @override
   ProfileEntry get profile;
   @override
-  ProfileHeroTag? get imgTag;
-  @override
-  bool get isFavorite;
+  FavoriteState get isFavorite;
   @override
   ProfileActionState get profileActionState;
   @override

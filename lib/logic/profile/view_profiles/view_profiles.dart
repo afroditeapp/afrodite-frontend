@@ -8,9 +8,7 @@ import "package:pihka_frontend/data/chat_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/database/profile_entry.dart";
-import "package:pihka_frontend/ui/normal/profiles/view_profile.dart";
 import "package:pihka_frontend/utils.dart";
-
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
@@ -30,8 +28,7 @@ enum ProfileActionState {
 class ViewProfilesData with _$ViewProfilesData {
   factory ViewProfilesData({
     required ProfileEntry profile,
-    required ProfileHeroTag? imgTag,
-    @Default(false) bool isFavorite,
+    @Default(FavoriteStateIdle(false)) FavoriteState isFavorite,
     @Default(ProfileActionState.like) ProfileActionState profileActionState,
     @Default(false) bool isNotAvailable,
     @Default(false) bool isBlocked,
@@ -43,8 +40,7 @@ class ViewProfilesData with _$ViewProfilesData {
 sealed class ViewProfileEvent {}
 class SetProfileView extends ViewProfileEvent {
   final ProfileEntry profile;
-  final ProfileHeroTag? imgTag;
-  SetProfileView(this.profile, this.imgTag);
+  SetProfileView(this.profile);
 }
 class HandleProfileResult extends ViewProfileEvent {
   final GetProfileResult result;
@@ -63,7 +59,10 @@ class DoProfileAction extends ViewProfileEvent {
   final ProfileActionState action;
   DoProfileAction(this.accountId, this.action);
 }
-class BlockCurrentProfile extends ViewProfileEvent {}
+class BlockProfile extends ViewProfileEvent {
+  final AccountId accountId;
+  BlockProfile(this.accountId);
+}
 class ResetShowMessages extends ViewProfileEvent {}
 
 
@@ -82,7 +81,6 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
 
       final newState = ViewProfilesData(
         profile: data.profile,
-        imgTag: data.imgTag,
       );
       emit(newState);
 
@@ -92,7 +90,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
       final ProfileActionState action = await resolveProfileAction(newState.profile.uuid);
 
       emit(newState.copyWith(
-        isFavorite: isInFavorites,
+        isFavorite: FavoriteStateIdle(isInFavorites),
         isBlocked: isBlocked,
         profileActionState: action
       ));
@@ -105,18 +103,21 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
     });
     on<ToggleFavoriteStatus>((data, emit) async {
       await runOnce(() async {
-        final currentState = state;
-        if (currentState == null) {
+        final currentIsFavorite = state?.isFavorite.isFavorite;
+        final accountId = state?.profile.uuid;
+        if (currentIsFavorite == null || accountId == null) {
           return;
         }
-        if (currentState.isFavorite) {
-          await for (final inFavorites in profile.removeFromFavorites(currentState.profile.uuid)) {
-            emit(currentState.copyWith(isFavorite: inFavorites));
-          }
-        } else {
-          await for (final inFavorites in profile.addToFavorites(currentState.profile.uuid)) {
-            emit(currentState.copyWith(isFavorite: inFavorites));
-          }
+
+        emit(state?.copyWith(
+          isFavorite: FavoriteStateChangeInProgress(!currentIsFavorite),
+        ));
+
+        final newValue = await profile.toggleFavoriteStatus(accountId);
+        if (accountIdNotChanged(accountId)) {
+          emit(state?.copyWith(
+            isFavorite: FavoriteStateIdle(newValue),
+          ));
         }
       });
     });
@@ -125,14 +126,13 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
       if (currentState == null) {
         return;
       }
-      final result = data.result;
-      switch (result) {
-        case GetProfileSuccess():
-          emit(currentState.copyWith(profile: result.profile));
+      switch (data.result) {
+        case GetProfileSuccess(:final profile):
+          emit(state?.copyWith(profile: profile));
         case GetProfileDoesNotExist(): {
           // TODO: Remove once backend supports getting private profiles
           //       of matches.
-          emit(currentState.copyWith(
+          emit(state?.copyWith(
             isNotAvailable: currentState.profileActionState != ProfileActionState.chat
           ));
         }
@@ -142,22 +142,24 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
       }
     });
     on<HandleProfileChange>((data, emit) async {
-      final currentState = state;
-      if (currentState == null) {
+      final accountId = state?.profile.uuid;
+      if (accountId == null) {
         return;
       }
       final change = data.change;
       switch (change) {
         case ProfileBlocked(): {
-          if (change.profile == currentState.profile.uuid) {
-            emit(currentState.copyWith(isBlocked: true));
+          if (change.profile == accountId) {
+            emit(state?.copyWith(isBlocked: true));
           }
         }
         case LikesChanged() || MatchesChanged(): {
-          final ProfileActionState action = await resolveProfileAction(currentState.profile.uuid);
-          emit(currentState.copyWith(
-            profileActionState: action,
-          ));
+          final ProfileActionState action = await resolveProfileAction(accountId);
+          if (accountIdNotChanged(accountId)) {
+            emit(state?.copyWith(
+              profileActionState: action,
+            ));
+          }
         }
         case ProfileNowPrivate() ||
           ProfileUnblocked() ||
@@ -171,14 +173,11 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
         showRemoveLikeCompleted: false,
       ));
     });
-    on<BlockCurrentProfile>((data, emit) async {
+    on<BlockProfile>((data, emit) async {
       await runOnce(() async {
-        final currentState = state;
-        if (currentState == null) {
-          return;
-        }
-        if (await chat.sendBlockTo(currentState.profile.uuid)) {
-          emit(currentState.copyWith(
+        final currentAccountId = state?.profile.uuid;
+        if (await chat.sendBlockTo(data.accountId) && accountIdNotChanged(currentAccountId)) {
+          emit(state?.copyWith(
             isBlocked: true,
           ));
         }
@@ -186,25 +185,28 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
     });
     on<DoProfileAction>((data, emit) async {
       await runOnce(() async {
-        final currentState = state;
-        if (currentState == null) {
-          return;
-        }
+        final currentAccountId = state?.profile.uuid;
         switch (data.action) {
           case ProfileActionState.like: {
             if (await chat.sendLikeTo(data.accountId)) {
-              emit(currentState.copyWith(
-                profileActionState: await resolveProfileAction(data.accountId),
-                showLikeCompleted: true,
-              ));
+              final newAction = await resolveProfileAction(data.accountId);
+              if (accountIdNotChanged(currentAccountId)) {
+                emit(state?.copyWith(
+                  profileActionState: newAction,
+                  showLikeCompleted: true,
+                ));
+              }
             }
           }
           case ProfileActionState.removeLike: {
             if (await chat.removeLikeFrom(data.accountId)) {
-              emit(currentState.copyWith(
-                profileActionState: await resolveProfileAction(data.accountId),
-                showRemoveLikeCompleted: true,
-              ));
+              final newAction = await resolveProfileAction(data.accountId);
+              if (accountIdNotChanged(currentAccountId)) {
+                  emit(state?.copyWith(
+                  profileActionState: newAction,
+                  showRemoveLikeCompleted: true,
+                ));
+              }
             }
           }
           case ProfileActionState.makeMatch: {}
@@ -218,6 +220,10 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
       .listen((event) {
         add(HandleProfileChange(event));
       });
+  }
+
+  bool accountIdNotChanged(AccountId? accountId) {
+    return accountId == state?.profile.uuid;
   }
 
   Future<ProfileActionState> resolveProfileAction(AccountId accountId) async {
@@ -238,4 +244,17 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
     await _profileChangeSubscription?.cancel();
     return super.close();
   }
+}
+
+sealed class FavoriteState {
+  final bool isFavorite;
+  const FavoriteState(this.isFavorite);
+}
+
+class FavoriteStateChangeInProgress extends FavoriteState {
+  const FavoriteStateChangeInProgress(super.isFavorite);
+}
+
+class FavoriteStateIdle extends FavoriteState {
+  const FavoriteStateIdle(super.isFavorite);
 }
