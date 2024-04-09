@@ -35,6 +35,11 @@ class DatabaseManager extends AppSingleton {
     }
     initDone = true;
 
+    // DatabaseManager handles one instance per database file, so disable
+    // warning. This should be safe to do as told by
+    // in: https://github.com/simolus3/drift/discussions/2596
+    driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
+
     commonDatabase = CommonDatabase(doInit: true);
     // Make sure that the database libraries are initialized
     await commonStream((db) => db.watchDemoAccountUserId()).first;
