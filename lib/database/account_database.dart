@@ -204,14 +204,33 @@ class AccountDatabase extends _$AccountDatabase {
   Stream<ProfileEntry?> getProfileEntryForMyProfile() =>
     watchColumn((r) {
       final id = r.uuidAccountId;
-      final content0 = r.uuidContentId0;
-      final gridCropSize = r.primaryContentGridCropSize ?? 1.0;
-      final gridCropX = r.primaryContentGridCropX ?? 0.0;
-      final gridCropY = r.primaryContentGridCropY ?? 0.0;
       final profileName = r.profileName;
       final profileText = r.profileText;
       final profileAge = r.profileAge;
       final profileAttributes = r.jsonProfileAttributes?.toProfileAttributes();
+
+      var content0 = r.uuidContentId0;
+      var content1 = r.uuidContentId1;
+      var content2 = r.uuidContentId2;
+      var content3 = r.uuidContentId3;
+      var content4 = r.uuidContentId4;
+      var content5 = r.uuidContentId5;
+      var gridCropSize = r.primaryContentGridCropSize ?? 1.0;
+      var gridCropX = r.primaryContentGridCropX ?? 0.0;
+      var gridCropY = r.primaryContentGridCropY ?? 0.0;
+      if (content0 == null) {
+        // Initial moderation not done yet
+        content0 = r.uuidPendingContentId0;
+        content1 = r.uuidPendingContentId1;
+        content2 = r.uuidPendingContentId2;
+        content3 = r.uuidPendingContentId3;
+        content4 = r.uuidPendingContentId4;
+        content5 = r.uuidPendingContentId5;
+        gridCropSize = r.pendingPrimaryContentGridCropSize ?? 1.0;
+        gridCropX = r.pendingPrimaryContentGridCropX ?? 0.0;
+        gridCropY = r.pendingPrimaryContentGridCropY ?? 0.0;
+      }
+
 
       if (id != null && content0 != null && profileName != null && profileText != null && profileAge != null && profileAttributes != null) {
         return ProfileEntry(
@@ -224,11 +243,11 @@ class AccountDatabase extends _$AccountDatabase {
           profileText: profileText,
           age: profileAge,
           attributes: profileAttributes,
-          content1: r.uuidContentId1,
-          content2: r.uuidContentId2,
-          content3: r.uuidContentId3,
-          content4: r.uuidContentId4,
-          content5: r.uuidContentId5,
+          content1: content1,
+          content2: content2,
+          content3: content3,
+          content4: content4,
+          content5: content5,
         );
       } else {
         return null;
