@@ -9,9 +9,9 @@ class ProfileEntry {
   final double primaryContentGridCropY;
   final String name;
   final String profileText;
-  final String version;
   final int age;
   final List<ProfileAttributeValue> attributes;
+  final String? version;
   final ContentId? content1;
   final ContentId? content2;
   final ContentId? content3;
@@ -27,9 +27,9 @@ class ProfileEntry {
       required this.primaryContentGridCropY,
       required this.name,
       required this.profileText,
-      required this.version,
       required this.age,
       required this.attributes,
+      this.version,
       this.content1,
       this.content2,
       this.content3,

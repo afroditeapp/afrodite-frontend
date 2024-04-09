@@ -1,6 +1,7 @@
 
 
 import 'package:drift/drift.dart';
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/utils.dart';
 
 part 'common_database.g.dart';
@@ -17,7 +18,7 @@ class Common extends Table {
   TextColumn get serverUrlMedia => text().nullable()();
   TextColumn get serverUrlProfile => text().nullable()();
   TextColumn get serverUrlChat => text().nullable()();
-  TextColumn get accountId => text().nullable()();
+  TextColumn get uuidAccountId => text().map(const NullAwareTypeConverter.wrap(AccountIdConverter())).nullable()();
   TextColumn get imageEncryptionKey => text().nullable()();
 
   /// If true don't show notification permission asking dialog when
@@ -70,11 +71,11 @@ class CommonDatabase extends _$CommonDatabase {
     );
   }
 
-  Future<void> updateAccountId(String? id) async {
+  Future<void> updateAccountIdUseOnlyFromDatabaseManager(AccountId? id) async {
     await into(common).insertOnConflictUpdate(
       CommonCompanion.insert(
         id: COMMON_DB_DATA_ID,
-        accountId: Value(id),
+        uuidAccountId: Value(id),
       ),
     );
   }
@@ -118,8 +119,8 @@ class CommonDatabase extends _$CommonDatabase {
   Stream<String?> watchServerUrlChat() =>
     watchColumn((r) => r.serverUrlChat);
 
-  Stream<String?> watchAccountId() =>
-    watchColumn((r) => r.accountId);
+  Stream<AccountId?> watchAccountId() =>
+    watchColumn((r) => r.uuidAccountId);
 
   Stream<String?> watchImageEncryptionKey() =>
     watchColumn((r) => r.imageEncryptionKey);

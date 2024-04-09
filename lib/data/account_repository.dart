@@ -7,6 +7,8 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/account/initial_setup.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
+import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
@@ -56,6 +58,8 @@ class AccountRepository extends DataRepository {
     _internalState.add(AccountRepositoryState.initComplete);
   }
 
+  // TODO(prod): Run onLogout when server connection has authentication failure
+
   Future<void> _saveAccountState(AccountState state) async {
     await DatabaseManager.getInstance().accountAction((db) => db.updateAccountState(state));
   }
@@ -104,15 +108,6 @@ class AccountRepository extends DataRepository {
     }
   }
 
-  // TODO(prod): Run onLogout when server connection has authentication failure
-
-  @override
-  Future<void> onLogout() async {
-    await DatabaseManager.getInstance().accountAction((db) => db.daoProfileSettings.updateProfileVisibility(null));
-    await DatabaseManager.getInstance().accountAction((db) => db.updateCapabilities(null));
-    await DatabaseManager.getInstance().accountAction((db) => db.updateAccountState(null));
-  }
-
   /// Do quick initial setup with some predefined values.
   ///
   /// Return null on success. Return String if error.
@@ -122,18 +117,36 @@ class AccountRepository extends DataRepository {
     XFile securitySelfieFile,
     XFile profileImageFile
   ) async {
-    return await InitialSetupUtils().doDeveloperInitialSetup(
+    final resultString = await InitialSetupUtils().doDeveloperInitialSetup(
       email,
       name,
       securitySelfieFile,
       profileImageFile
     );
+
+    if (resultString == null) {
+      // Success
+      await LoginRepository.getInstance().onInitialSetupComplete();
+      await AccountRepository.getInstance().onInitialSetupComplete();
+      await MediaRepository.getInstance().onInitialSetupComplete();
+      await ProfileRepository.getInstance().onInitialSetupComplete();
+      await ChatRepository.getInstance().onInitialSetupComplete();
+    }
+    return resultString;
   }
 
   Future<Result<(), ()>> doInitialSetup(
     InitialSetupData data,
   ) async {
-    return await InitialSetupUtils().doInitialSetup(data);
+    final result = await InitialSetupUtils().doInitialSetup(data);
+    if (result.isOk()) {
+      await LoginRepository.getInstance().onInitialSetupComplete();
+      await AccountRepository.getInstance().onInitialSetupComplete();
+      await MediaRepository.getInstance().onInitialSetupComplete();
+      await ProfileRepository.getInstance().onInitialSetupComplete();
+      await ChatRepository.getInstance().onInitialSetupComplete();
+    }
+    return result;
   }
 
   /// Returns true if successful.

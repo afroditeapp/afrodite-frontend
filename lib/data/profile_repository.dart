@@ -25,6 +25,8 @@ class ProfileRepository extends DataRepository {
     return _instance;
   }
 
+  final syncHandler = ConnectedActionScheduler();
+
   final DatabaseManager db = DatabaseManager.getInstance();
   final ApiManager _api = ApiManager.getInstance();
   final ProfileIteratorManager mainProfilesViewIterator = ProfileIteratorManager();
@@ -59,39 +61,49 @@ class ProfileRepository extends DataRepository {
       clearDatabase: true
     ));
 
-    _api.state
-      .firstWhere((element) => element == ApiManagerState.connected)
-      .then((value) async {
-        // TODO: Perhps client should track these operations and retry
-        // these if needed.
+    // TODO(prod): reset sync versions to "force sync"
 
-        // Download current location, so map will be positioned correctly.
-        final location = await _api.profile((api) => api.getLocation()).ok();
-        if (location != null) {
-          await db.accountAction(
-            (db) => db.daoProfileSettings.updateProfileLocation(
-              latitude: location.latitude,
-              longitude: location.longitude,
-            ),
-          );
-        }
+    syncHandler.onLoginSync(() async {
+      // No Result checking needed for these calls as db null value is checked
+      // onResumeAppUsage.
+      await reloadLocation();
+      await reloadMyProfile();
+      final result = await reloadFavoriteProfiles();
+      if (result.isOk()) {
+        await db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(true));
+      }
+    });
+  }
 
-        // Download current favorites.
-        final favorites = await _api.profile((api) => api.getFavoriteProfiles()).ok();
-        if (favorites != null) {
-          for (final profile in favorites.profiles) {
-            await db.profileAction((db) => db.setFavoriteStatus(profile, true));
-          }
-        }
-      })
-      .ignore();
+  @override
+  Future<void> onResumeAppUsage() async {
+    syncHandler.onResumeAppUsageSync(() async {
+      final result = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileLocation()).ok();
+      if (result == null) {
+        await reloadLocation();
+      }
+
+      final attributes = await db.accountStreamSingle((db) => db.daoMyProfile.watchProfileAttributes()).ok();
+      if (attributes == null) {
+        await reloadMyProfile();
+      }
+
+      final syncDone = await db.accountStreamSingle((db) => db.daoInitialSync.watchProfileSyncDone()).ok() ?? false;
+      if (!syncDone) {
+        await reloadFavoriteProfiles();
+        await db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(true));
+      }
+    });
+  }
+
+  @override
+  Future<void> onInitialSetupComplete() async {
+    await reloadLocation();
+    await reloadMyProfile();
   }
 
   @override
   Future<void> onLogout() async {
-    // await ProfileListDatabase.getInstance().clearProfiles();
-    // await db.accountAction((db) => db.daoFavoriteProfiles.clear());
-    // await ProfileDatabase.getInstance().clearProfiles();
     await mainProfilesViewIterator.reset(ModePublicProfiles(
       clearDatabase: true
     ));
@@ -259,6 +271,44 @@ class ProfileRepository extends DataRepository {
       );
     }
     return profileAttributes;
+  }
+
+  Future<Result<(), ()>> reloadMyProfile() async {
+    final ownAccountId = await LoginRepository.getInstance().accountId.firstOrNull;
+    if (ownAccountId == null) {
+      log.warning("reloadMyProfile: accountId is null");
+      return Err(());
+    }
+
+    final profile = await _api.profile((api) => api.getProfile(ownAccountId.accountId)).ok();
+    if (profile != null) {
+      return await db.accountAction((db) => db.daoMyProfile.setApiProfile(profile: profile));
+    } else {
+      return Err(());
+    }
+  }
+
+  Future<Result<(), ()>> reloadFavoriteProfiles() async {
+    final favorites = await _api.profile((api) => api.getFavoriteProfiles()).ok();
+    if (favorites != null) {
+      return await db.profileAction((db) => db.setFavoriteStatusList(favorites.profiles, true, clear: true));
+    } else {
+      return Err(());
+    }
+  }
+
+  Future<Result<(), ()>> reloadLocation() async {
+    final location = await _api.profile((api) => api.getLocation()).ok();
+    if (location != null) {
+      return await db.accountAction(
+        (db) => db.daoProfileSettings.updateProfileLocation(
+          latitude: location.latitude,
+          longitude: location.longitude,
+        ),
+      );
+    } else {
+      return Err(());
+    }
   }
 }
 

@@ -1,12 +1,15 @@
 
+import 'package:async/async.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/account/dao_current_content.dart';
+import 'package:pihka_frontend/database/account/dao_initial_sync.dart';
 import 'package:pihka_frontend/database/account/dao_my_profile.dart';
 import 'package:pihka_frontend/database/account/dao_pending_content.dart';
 import 'package:pihka_frontend/database/account/dao_profile_settings.dart';
 import 'package:pihka_frontend/database/account/dao_tokens.dart';
 import 'package:pihka_frontend/database/message_table.dart';
+import 'package:pihka_frontend/database/profile_entry.dart';
 import 'package:pihka_frontend/database/profile_table.dart';
 import 'package:pihka_frontend/database/utils.dart';
 import 'package:pihka_frontend/utils/date.dart';
@@ -19,6 +22,7 @@ const PROFILE_FILTER_FAVORITES_DEFAULT = false;
 class Account extends Table {
   IntColumn get id => integer().autoIncrement()();
 
+  TextColumn get uuidAccountId => text().map(const NullAwareTypeConverter.wrap(AccountIdConverter())).nullable()();
   TextColumn get jsonAccountState => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
   TextColumn get jsonCapabilities => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
   TextColumn get jsonAvailableProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
@@ -26,6 +30,19 @@ class Account extends Table {
   /// If true show only favorite profiles
   BoolColumn get profileFilterFavorites => boolean()
     .withDefault(const Constant(PROFILE_FILTER_FAVORITES_DEFAULT))();
+
+  // DaoInitialSync
+
+  BoolColumn get initialSyncDoneLoginRepository => boolean()
+    .withDefault(const Constant(false))();
+  BoolColumn get initialSyncDoneAccountRepository => boolean()
+    .withDefault(const Constant(false))();
+  BoolColumn get initialSyncDoneMediaRepository => boolean()
+    .withDefault(const Constant(false))();
+  BoolColumn get initialSyncDoneProfileRepository => boolean()
+    .withDefault(const Constant(false))();
+  BoolColumn get initialSyncDoneChatRepository => boolean()
+    .withDefault(const Constant(false))();
 
   // DaoPendingContent
 
@@ -94,6 +111,7 @@ class Account extends Table {
     DaoMyProfile,
     DaoProfileSettings,
     DaoTokens,
+    DaoInitialSync,
     // Other tables
     DaoProfiles,
     DaoMessages,
@@ -105,6 +123,20 @@ class AccountDatabase extends _$AccountDatabase {
 
   @override
   int get schemaVersion => 1;
+
+  Future<void> setAccountIdIfNull(AccountId id) async {
+    await transaction(() async {
+      final currentAccountId = await watchAccountId().firstOrNull;
+      if (currentAccountId == null) {
+        await into(account).insertOnConflictUpdate(
+          AccountCompanion.insert(
+            id: ACCOUNT_DB_DATA_ID,
+            uuidAccountId: Value(id),
+          ),
+        );
+      }
+    });
+  }
 
   Future<void> updateProfileFilterFavorites(bool value) async {
     await into(account).insertOnConflictUpdate(
@@ -142,6 +174,9 @@ class AccountDatabase extends _$AccountDatabase {
     );
   }
 
+  Stream<AccountId?> watchAccountId() =>
+    watchColumn((r) => r.uuidAccountId);
+
   Stream<bool?> watchProfileFilterFavorites() =>
     watchColumn((r) => r.profileFilterFavorites);
 
@@ -154,7 +189,6 @@ class AccountDatabase extends _$AccountDatabase {
   Stream<AvailableProfileAttributes?> watchAvailableProfileAttributes() =>
     watchColumn((r) => r.jsonAvailableProfileAttributes?.toAvailableProfileAttributes());
 
-
   SimpleSelectStatement<$AccountTable, AccountData> _selectFromDataId() {
     return select(account)
       ..where((t) => t.id.equals(ACCOUNT_DB_DATA_ID.value));
@@ -165,6 +199,41 @@ class AccountDatabase extends _$AccountDatabase {
       .map(extractColumn)
       .watchSingleOrNull();
   }
+
+  /// Get ProileEntry for my profile (version not included)
+  Stream<ProfileEntry?> getProfileEntryForMyProfile() =>
+    watchColumn((r) {
+      final id = r.uuidAccountId;
+      final content0 = r.uuidContentId0;
+      final gridCropSize = r.primaryContentGridCropSize ?? 1.0;
+      final gridCropX = r.primaryContentGridCropX ?? 0.0;
+      final gridCropY = r.primaryContentGridCropY ?? 0.0;
+      final profileName = r.profileName;
+      final profileText = r.profileText;
+      final profileAge = r.profileAge;
+      final profileAttributes = r.jsonProfileAttributes?.toProfileAttributes();
+
+      if (id != null && content0 != null && profileName != null && profileText != null && profileAge != null && profileAttributes != null) {
+        return ProfileEntry(
+          uuid: id,
+          imageUuid: content0,
+          primaryContentGridCropSize: gridCropSize,
+          primaryContentGridCropX: gridCropX,
+          primaryContentGridCropY: gridCropY,
+          name: profileName,
+          profileText: profileText,
+          age: profileAge,
+          attributes: profileAttributes,
+          content1: r.uuidContentId1,
+          content2: r.uuidContentId2,
+          content3: r.uuidContentId3,
+          content4: r.uuidContentId4,
+          content5: r.uuidContentId5,
+        );
+      } else {
+        return null;
+      }
+    });
 }
 
 class JsonString {

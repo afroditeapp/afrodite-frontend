@@ -34,8 +34,6 @@ class NormalStateContent extends StatefulWidget {
 class _NormalStateContentState extends State<NormalStateContent> {
   int selectedView = 0;
 
-  bool myProfilePictureReloaded = false;
-
   @override
   Widget build(BuildContext context) {
     const views = [
@@ -106,10 +104,6 @@ class _NormalStateContentState extends State<NormalStateContent> {
                 )
               );
             } else {
-              if (myProfilePictureReloaded) {
-                myProfilePictureReloaded = true;
-                context.read<ContentBloc>().add(ReloadProfileContentIfNull());
-              }
               return const SizedBox.shrink();
             }
           }

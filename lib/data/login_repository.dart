@@ -69,15 +69,7 @@ class LoginRepository extends DataRepository {
 
   // Account
   Stream<AccountId?> get accountId => DatabaseManager.getInstance()
-    .commonStream(
-      (db) => db.watchAccountId().map((event) {
-        if (event == null) {
-          return null;
-        } else {
-          return AccountId(accountId: event);
-        }
-      })
-    );
+    .commonStream((db) => db.watchAccountId());
 
   @override
   Future<void> init() async {
@@ -132,7 +124,10 @@ class LoginRepository extends DataRepository {
   Future<AccountId?> register() async {
     var id = await _api.account((api) => api.postRegister()).ok();
     if (id != null) {
-      await DatabaseManager.getInstance().commonAction((db) => db.updateAccountId(id.accountId));
+      final result = await DatabaseManager.getInstance().setAccountId(id);
+      if (result.isErr()) {
+        return null;
+      }
     }
     return id;
   }
@@ -310,7 +305,10 @@ class LoginRepository extends DataRepository {
     final demoToken = DemoModeToken(token: token);
     final loginResult = await _api.account((api) => api.postDemoModeLoginToAccount(DemoModeLoginToAccount(accountId: id, token: demoToken))).ok();
     if (loginResult != null) {
-      await DatabaseManager.getInstance().commonAction((db) => db.updateAccountId(id.accountId));
+      final r = await DatabaseManager.getInstance().setAccountId(id);
+      if (r.isErr()) {
+        return Err(OtherError());
+      }
       await _handleLoginResult(loginResult);
       return Ok(());
     } else {

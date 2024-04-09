@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/media/content.dart';
 import 'package:pihka_frontend/logic/profile/profile.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
@@ -15,8 +16,7 @@ class MyProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: remove this?
-    context.read<ProfileBloc>().add(LoadProfile());
+    context.read<MyProfileBloc>().add(RefreshIfNull());
 
     return Scaffold(
       appBar: AppBar(title: Text(context.strings.view_profile_screen_my_profile_title)),
@@ -33,22 +33,13 @@ class MyProfilePage extends StatelessWidget {
   }
 
   Widget myProfilePage(BuildContext context) {
-    return BlocBuilder<AccountBloc, AccountBlocData>(
-      builder: (context, accountState) {
-        final id = accountState.accountId;
-        if (id == null) {
-          return Text(context.strings.generic_error);
+    return BlocBuilder<MyProfileBloc, MyProfileData>(
+      builder: (context, profileState) {
+        final profile = profileState.profile;
+        if (profile != null) {
+          return ViewProfileEntry(profile: profile);
         } else {
-          return BlocBuilder<ProfileBloc, ProfileData>(
-            builder: (context, profileState) {
-              final profile = profileState.profile;
-              if (profile != null) {
-                return ViewProfileEntry(profile: profile);
-              } else {
-                return Text(context.strings.generic_empty);
-              }
-            }
-          );
+          return Text(context.strings.generic_empty);
         }
       }
     );

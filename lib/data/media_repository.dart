@@ -2,25 +2,20 @@
 
 
 import 'dart:async';
-import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:drift/drift.dart';
-import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
-import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/media/send_to_slot.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
-import 'package:rxdart/rxdart.dart';
 
 var log = Logger("MediaRepository");
 
@@ -31,12 +26,45 @@ class MediaRepository extends DataRepository {
     return _instance;
   }
 
+  final syncHandler = ConnectedActionScheduler();
+
   final ApiManager api = ApiManager.getInstance();
   final DatabaseManager db = DatabaseManager.getInstance();
 
   @override
   Future<void> init() async {
     // nothing to do
+  }
+
+  @override
+  Future<void> onLogin() async {
+    syncHandler.onLoginSync(() async {
+      final r1 = await reloadMyProfileContent();
+      final r2 = await reloadMySecurityContent();
+      if (r1.isOk() && r2.isOk()) {
+        await db.accountAction((db) => db.daoInitialSync.updateMediaSyncDone(true));
+      }
+    });
+  }
+
+  @override
+  Future<void> onResumeAppUsage() async {
+    syncHandler.onResumeAppUsageSync(() async {
+      final syncDone = await db.accountStreamSingle((db) => db.daoInitialSync.watchMediaSyncDone()).ok() ?? false;
+      if (!syncDone) {
+        final r1 = await reloadMyProfileContent();
+        final r2 = await reloadMySecurityContent();
+        if (r1.isOk() && r2.isOk()) {
+          await db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(true));
+        }
+      }
+    });
+  }
+
+  @override
+  Future<void> onInitialSetupComplete() async {
+    await reloadMyProfileContent();
+    await reloadMySecurityContent();
   }
 
   Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) async {
@@ -117,41 +145,55 @@ class MediaRepository extends DataRepository {
   }
 
   /// Reload current and pending profile content.
-  Future<void> reloadMyProfileContent() async {
+  Future<Result<(), ()>> reloadMyProfileContent() async {
     final accountId = await LoginRepository.getInstance().accountId.first;
     if (accountId == null) {
       log.error("reloadMyProfileContent: accountId is null");
-      return;
+      return Err(());
     }
 
     final info = await api.media((api) => api.getProfileContentInfo(accountId.accountId, false)).ok();
-    if (info != null) {
-      await db.accountAction((db) => db.daoCurrentContent.setApiProfileContent(content: info));
+    if (info == null) {
+      return Err(());
+    }
+
+    final r1 = await db.accountAction((db) => db.daoCurrentContent.setApiProfileContent(content: info));
+    if (r1.isErr()) {
+      return Err(());
     }
 
     final pendingInfo = await api.media((api) => api.getPendingProfileContentInfo(accountId.accountId)).ok();
-    if (pendingInfo != null) {
-      await db.accountAction((db) => db.daoPendingContent.setApiPendingProfileContent(pendingContent: pendingInfo));
+    if (pendingInfo == null) {
+      return Err(());
     }
+
+    return await db.accountAction((db) => db.daoPendingContent.setApiPendingProfileContent(pendingContent: pendingInfo));
   }
 
   /// Reload current and pending security content.
-  Future<void> reloadMySecurityContent() async {
+  Future<Result<(), ()>> reloadMySecurityContent() async {
     final accountId = await LoginRepository.getInstance().accountId.first;
     if (accountId == null) {
       log.error("reloadMyProfileContent: accountId is null");
-      return;
+      return Err(());
     }
 
     final info = await api.media((api) => api.getSecurityContentInfo(accountId.accountId)).ok();
-    if (info != null) {
-      await db.accountAction((db) => db.daoCurrentContent.setSecurityContent(securityContent: Value(info.contentId?.id)));
+    if (info == null) {
+      return Err(());
+    }
+
+    final r = await db.accountAction((db) => db.daoCurrentContent.setSecurityContent(securityContent: Value(info.contentId?.id)));
+    if (r.isErr()) {
+      return Err(());
     }
 
     final pendingInfo = await api.media((api) => api.getPendingSecurityContentInfo(accountId.accountId)).ok();
-    if (pendingInfo != null) {
-      await db.accountAction((db) => db.daoPendingContent.setPendingSecurityContent(pendingSecurityContent: Value(pendingInfo.contentId?.id)));
+    if (pendingInfo == null) {
+      return Err(());
     }
+
+    return await db.accountAction((db) => db.daoPendingContent.setPendingSecurityContent(pendingSecurityContent: Value(pendingInfo.contentId?.id)));
   }
 
   /// Last event from stream is ProcessingCompleted or SendToSlotError.

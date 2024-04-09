@@ -15,28 +15,27 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$ProfileData {
+mixin _$MyProfileData {
   ProfileEntry? get profile => throw _privateConstructorUsedError;
-  ContentId? get primaryImage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $ProfileDataCopyWith<ProfileData> get copyWith =>
+  $MyProfileDataCopyWith<MyProfileData> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ProfileDataCopyWith<$Res> {
-  factory $ProfileDataCopyWith(
-          ProfileData value, $Res Function(ProfileData) then) =
-      _$ProfileDataCopyWithImpl<$Res, ProfileData>;
+abstract class $MyProfileDataCopyWith<$Res> {
+  factory $MyProfileDataCopyWith(
+          MyProfileData value, $Res Function(MyProfileData) then) =
+      _$MyProfileDataCopyWithImpl<$Res, MyProfileData>;
   @useResult
-  $Res call({ProfileEntry? profile, ContentId? primaryImage});
+  $Res call({ProfileEntry? profile});
 }
 
 /// @nodoc
-class _$ProfileDataCopyWithImpl<$Res, $Val extends ProfileData>
-    implements $ProfileDataCopyWith<$Res> {
-  _$ProfileDataCopyWithImpl(this._value, this._then);
+class _$MyProfileDataCopyWithImpl<$Res, $Val extends MyProfileData>
+    implements $MyProfileDataCopyWith<$Res> {
+  _$MyProfileDataCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -47,35 +46,30 @@ class _$ProfileDataCopyWithImpl<$Res, $Val extends ProfileData>
   @override
   $Res call({
     Object? profile = freezed,
-    Object? primaryImage = freezed,
   }) {
     return _then(_value.copyWith(
       profile: freezed == profile
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
               as ProfileEntry?,
-      primaryImage: freezed == primaryImage
-          ? _value.primaryImage
-          : primaryImage // ignore: cast_nullable_to_non_nullable
-              as ContentId?,
     ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$ProfileDataImplCopyWith<$Res>
-    implements $ProfileDataCopyWith<$Res> {
+    implements $MyProfileDataCopyWith<$Res> {
   factory _$$ProfileDataImplCopyWith(
           _$ProfileDataImpl value, $Res Function(_$ProfileDataImpl) then) =
       __$$ProfileDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({ProfileEntry? profile, ContentId? primaryImage});
+  $Res call({ProfileEntry? profile});
 }
 
 /// @nodoc
 class __$$ProfileDataImplCopyWithImpl<$Res>
-    extends _$ProfileDataCopyWithImpl<$Res, _$ProfileDataImpl>
+    extends _$MyProfileDataCopyWithImpl<$Res, _$ProfileDataImpl>
     implements _$$ProfileDataImplCopyWith<$Res> {
   __$$ProfileDataImplCopyWithImpl(
       _$ProfileDataImpl _value, $Res Function(_$ProfileDataImpl) _then)
@@ -85,17 +79,12 @@ class __$$ProfileDataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? profile = freezed,
-    Object? primaryImage = freezed,
   }) {
     return _then(_$ProfileDataImpl(
       profile: freezed == profile
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
               as ProfileEntry?,
-      primaryImage: freezed == primaryImage
-          ? _value.primaryImage
-          : primaryImage // ignore: cast_nullable_to_non_nullable
-              as ContentId?,
     ));
   }
 }
@@ -103,25 +92,22 @@ class __$$ProfileDataImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ProfileDataImpl with DiagnosticableTreeMixin implements _ProfileData {
-  _$ProfileDataImpl({this.profile, this.primaryImage});
+  _$ProfileDataImpl({this.profile});
 
   @override
   final ProfileEntry? profile;
-  @override
-  final ContentId? primaryImage;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProfileData(profile: $profile, primaryImage: $primaryImage)';
+    return 'MyProfileData(profile: $profile)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'ProfileData'))
-      ..add(DiagnosticsProperty('profile', profile))
-      ..add(DiagnosticsProperty('primaryImage', primaryImage));
+      ..add(DiagnosticsProperty('type', 'MyProfileData'))
+      ..add(DiagnosticsProperty('profile', profile));
   }
 
   @override
@@ -129,13 +115,11 @@ class _$ProfileDataImpl with DiagnosticableTreeMixin implements _ProfileData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ProfileDataImpl &&
-            (identical(other.profile, profile) || other.profile == profile) &&
-            (identical(other.primaryImage, primaryImage) ||
-                other.primaryImage == primaryImage));
+            (identical(other.profile, profile) || other.profile == profile));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, profile, primaryImage);
+  int get hashCode => Object.hash(runtimeType, profile);
 
   @JsonKey(ignore: true)
   @override
@@ -144,15 +128,11 @@ class _$ProfileDataImpl with DiagnosticableTreeMixin implements _ProfileData {
       __$$ProfileDataImplCopyWithImpl<_$ProfileDataImpl>(this, _$identity);
 }
 
-abstract class _ProfileData implements ProfileData {
-  factory _ProfileData(
-      {final ProfileEntry? profile,
-      final ContentId? primaryImage}) = _$ProfileDataImpl;
+abstract class _ProfileData implements MyProfileData {
+  factory _ProfileData({final ProfileEntry? profile}) = _$ProfileDataImpl;
 
   @override
   ProfileEntry? get profile;
-  @override
-  ContentId? get primaryImage;
   @override
   @JsonKey(ignore: true)
   _$$ProfileDataImplCopyWith<_$ProfileDataImpl> get copyWith =>

@@ -48,8 +48,6 @@ class _SettingsViewState extends State<SettingsView> {
           ),
           Setting.createSetting(Icons.location_on, context.strings.pageLocationTitle, () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const LocationPage())),
-            // Make sure that the Bloc has the location when map is opened
-            widgetWrapper: (widget) => BlocBuilder<LocationBloc, Location?>(builder: (c, data) => widget),
           ),
           Setting.createSetting(Icons.public, "Profile visiblity", () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ProfileVisibilityPage()))

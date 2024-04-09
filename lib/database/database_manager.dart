@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:drift/drift.dart';
 import 'package:drift/isolate.dart';
 import 'package:logging/logging.dart';
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/database/account_database.dart';
 import 'package:pihka_frontend/database/common_database.dart';
@@ -25,8 +26,7 @@ class DatabaseManager extends AppSingleton {
 
   bool initDone = false;
   late final CommonDatabase commonDatabase;
-  /// Key is AccountId
-  final accountDatabases = <String, AccountDatabase>{};
+  final accountDatabases = <AccountId, AccountDatabase>{};
 
   @override
   Future<void> init() async {
@@ -196,19 +196,32 @@ class DatabaseManager extends AppSingleton {
   Future<Result<(), ()>> messageAction(Future<void> Function(DaoMessages) action) =>
     accountAction((db) => action(db.daoMessages));
 
-  Stream<T?> _accountSwitchMapStream<T extends Object>(Stream<T?> Function(String? accountId) mapper) async* {
+  Stream<T?> _accountSwitchMapStream<T extends Object>(Stream<T?> Function(AccountId? accountId) mapper) async* {
     yield* commonStream((db) => db.watchAccountId())
       .switchMap(mapper);
   }
 
-  AccountDatabase _getAccountDatabaseUsingAccount(String accountId) {
+  AccountDatabase _getAccountDatabaseUsingAccount(AccountId accountId) {
     final db = accountDatabases[accountId];
     if (db != null) {
       return db;
     } else {
-      final newDb = AccountDatabase(AccountDbFile(accountId));
+      final newDb = AccountDatabase(AccountDbFile(accountId.accountId));
       accountDatabases[accountId] = newDb;
       return newDb;
+    }
+  }
+
+  Future<Result<(), ()>> setAccountId(AccountId accountId) async {
+    final result = await commonAction((db) async {
+      await db.updateAccountIdUseOnlyFromDatabaseManager(accountId);
+    });
+
+    switch (result) {
+      case Ok():
+        return await accountAction((db) => db.setAccountIdIfNull(accountId));
+      case Err():
+        return Err(());
     }
   }
 }

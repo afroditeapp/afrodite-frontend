@@ -47,6 +47,9 @@ import 'package:rxdart/rxdart.dart';
 
 final log = Logger("main");
 
+// TODO: what blocs store state that needs to be cleared on logout?
+// Initial setup?
+
 Future<void> main() async {
   // TODO(prod): change log level before release?
   Logger.root.level = Level.ALL;
@@ -75,7 +78,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => DemoAccountBloc()),
         BlocProvider(create: (_) => InitialSetupBloc()),
         BlocProvider(create: (_) => ServerAddressBloc()),
-        BlocProvider(create: (_) => ProfileBloc()),
+        BlocProvider(create: (_) => MyProfileBloc()),
         BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
         BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
         BlocProvider(create: (_) => ProfilePicturesBloc()),

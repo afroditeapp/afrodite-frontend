@@ -26,7 +26,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return WillPopScope(
       onWillPop: () async {
         // TODO: Update ProfileUpdate to have proper values
-        context.read<ProfileBloc>().add(SetProfile(ProfileUpdate(
+        context.read<MyProfileBloc>().add(SetProfile(ProfileUpdate(
           profileText: _profileTextController.text,
           age: 18,
           name: "name",
@@ -35,7 +35,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       },
       child: Scaffold(
         appBar: AppBar(title: const Text("Edit proifle")),
-        body: BlocBuilder<ProfileBloc, ProfileData>(
+        body: BlocBuilder<MyProfileBloc, MyProfileData>(
           builder: (context, state) {
             _profileTextController.text = state.profile?.profileText ?? "";
 

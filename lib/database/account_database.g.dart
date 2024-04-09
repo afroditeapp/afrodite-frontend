@@ -17,6 +17,14 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _uuidAccountIdMeta =
+      const VerificationMeta('uuidAccountId');
+  @override
+  late final GeneratedColumnWithTypeConverter<AccountId?, String>
+      uuidAccountId = GeneratedColumn<String>(
+              'uuid_account_id', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<AccountId?>($AccountTable.$converteruuidAccountId);
   static const VerificationMeta _jsonAccountStateMeta =
       const VerificationMeta('jsonAccountState');
   @override
@@ -52,6 +60,61 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           defaultConstraints: GeneratedColumn.constraintIsAlways(
               'CHECK ("profile_filter_favorites" IN (0, 1))'),
           defaultValue: const Constant(PROFILE_FILTER_FAVORITES_DEFAULT));
+  static const VerificationMeta _initialSyncDoneLoginRepositoryMeta =
+      const VerificationMeta('initialSyncDoneLoginRepository');
+  @override
+  late final GeneratedColumn<bool> initialSyncDoneLoginRepository =
+      GeneratedColumn<bool>(
+          'initial_sync_done_login_repository', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("initial_sync_done_login_repository" IN (0, 1))'),
+          defaultValue: const Constant(false));
+  static const VerificationMeta _initialSyncDoneAccountRepositoryMeta =
+      const VerificationMeta('initialSyncDoneAccountRepository');
+  @override
+  late final GeneratedColumn<bool> initialSyncDoneAccountRepository =
+      GeneratedColumn<bool>(
+          'initial_sync_done_account_repository', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("initial_sync_done_account_repository" IN (0, 1))'),
+          defaultValue: const Constant(false));
+  static const VerificationMeta _initialSyncDoneMediaRepositoryMeta =
+      const VerificationMeta('initialSyncDoneMediaRepository');
+  @override
+  late final GeneratedColumn<bool> initialSyncDoneMediaRepository =
+      GeneratedColumn<bool>(
+          'initial_sync_done_media_repository', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("initial_sync_done_media_repository" IN (0, 1))'),
+          defaultValue: const Constant(false));
+  static const VerificationMeta _initialSyncDoneProfileRepositoryMeta =
+      const VerificationMeta('initialSyncDoneProfileRepository');
+  @override
+  late final GeneratedColumn<bool> initialSyncDoneProfileRepository =
+      GeneratedColumn<bool>(
+          'initial_sync_done_profile_repository', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("initial_sync_done_profile_repository" IN (0, 1))'),
+          defaultValue: const Constant(false));
+  static const VerificationMeta _initialSyncDoneChatRepositoryMeta =
+      const VerificationMeta('initialSyncDoneChatRepository');
+  @override
+  late final GeneratedColumn<bool> initialSyncDoneChatRepository =
+      GeneratedColumn<bool>(
+          'initial_sync_done_chat_repository', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("initial_sync_done_chat_repository" IN (0, 1))'),
+          defaultValue: const Constant(false));
   static const VerificationMeta _uuidPendingContentId0Meta =
       const VerificationMeta('uuidPendingContentId0');
   @override
@@ -331,10 +394,16 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   @override
   List<GeneratedColumn> get $columns => [
         id,
+        uuidAccountId,
         jsonAccountState,
         jsonCapabilities,
         jsonAvailableProfileAttributes,
         profileFilterFavorites,
+        initialSyncDoneLoginRepository,
+        initialSyncDoneAccountRepository,
+        initialSyncDoneMediaRepository,
+        initialSyncDoneProfileRepository,
+        initialSyncDoneChatRepository,
         uuidPendingContentId0,
         uuidPendingContentId1,
         uuidPendingContentId2,
@@ -387,6 +456,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
+    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
     context.handle(_jsonAccountStateMeta, const VerificationResult.success());
     context.handle(_jsonCapabilitiesMeta, const VerificationResult.success());
     context.handle(_jsonAvailableProfileAttributesMeta,
@@ -396,6 +466,41 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           _profileFilterFavoritesMeta,
           profileFilterFavorites.isAcceptableOrUnknown(
               data['profile_filter_favorites']!, _profileFilterFavoritesMeta));
+    }
+    if (data.containsKey('initial_sync_done_login_repository')) {
+      context.handle(
+          _initialSyncDoneLoginRepositoryMeta,
+          initialSyncDoneLoginRepository.isAcceptableOrUnknown(
+              data['initial_sync_done_login_repository']!,
+              _initialSyncDoneLoginRepositoryMeta));
+    }
+    if (data.containsKey('initial_sync_done_account_repository')) {
+      context.handle(
+          _initialSyncDoneAccountRepositoryMeta,
+          initialSyncDoneAccountRepository.isAcceptableOrUnknown(
+              data['initial_sync_done_account_repository']!,
+              _initialSyncDoneAccountRepositoryMeta));
+    }
+    if (data.containsKey('initial_sync_done_media_repository')) {
+      context.handle(
+          _initialSyncDoneMediaRepositoryMeta,
+          initialSyncDoneMediaRepository.isAcceptableOrUnknown(
+              data['initial_sync_done_media_repository']!,
+              _initialSyncDoneMediaRepositoryMeta));
+    }
+    if (data.containsKey('initial_sync_done_profile_repository')) {
+      context.handle(
+          _initialSyncDoneProfileRepositoryMeta,
+          initialSyncDoneProfileRepository.isAcceptableOrUnknown(
+              data['initial_sync_done_profile_repository']!,
+              _initialSyncDoneProfileRepositoryMeta));
+    }
+    if (data.containsKey('initial_sync_done_chat_repository')) {
+      context.handle(
+          _initialSyncDoneChatRepositoryMeta,
+          initialSyncDoneChatRepository.isAcceptableOrUnknown(
+              data['initial_sync_done_chat_repository']!,
+              _initialSyncDoneChatRepositoryMeta));
     }
     context.handle(
         _uuidPendingContentId0Meta, const VerificationResult.success());
@@ -571,6 +676,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     return AccountData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      uuidAccountId: $AccountTable.$converteruuidAccountId.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])),
       jsonAccountState: $AccountTable.$converterjsonAccountState.fromSql(
           attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}json_account_state'])),
@@ -584,6 +692,21 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       profileFilterFavorites: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
           data['${effectivePrefix}profile_filter_favorites'])!,
+      initialSyncDoneLoginRepository: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}initial_sync_done_login_repository'])!,
+      initialSyncDoneAccountRepository: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}initial_sync_done_account_repository'])!,
+      initialSyncDoneMediaRepository: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}initial_sync_done_media_repository'])!,
+      initialSyncDoneProfileRepository: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}initial_sync_done_profile_repository'])!,
+      initialSyncDoneChatRepository: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}initial_sync_done_chat_repository'])!,
       uuidPendingContentId0: $AccountTable.$converteruuidPendingContentId0
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}uuid_pending_content_id0'])),
@@ -696,6 +819,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     return $AccountTable(attachedDatabase, alias);
   }
 
+  static TypeConverter<AccountId?, String?> $converteruuidAccountId =
+      const NullAwareTypeConverter.wrap(AccountIdConverter());
   static TypeConverter<EnumString?, String?> $converterjsonAccountState =
       NullAwareTypeConverter.wrap(EnumString.driftConverter);
   static TypeConverter<JsonString?, String?> $converterjsonCapabilities =
@@ -742,12 +867,18 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
 
 class AccountData extends DataClass implements Insertable<AccountData> {
   final int id;
+  final AccountId? uuidAccountId;
   final EnumString? jsonAccountState;
   final JsonString? jsonCapabilities;
   final JsonString? jsonAvailableProfileAttributes;
 
   /// If true show only favorite profiles
   final bool profileFilterFavorites;
+  final bool initialSyncDoneLoginRepository;
+  final bool initialSyncDoneAccountRepository;
+  final bool initialSyncDoneMediaRepository;
+  final bool initialSyncDoneProfileRepository;
+  final bool initialSyncDoneChatRepository;
   final ContentId? uuidPendingContentId0;
   final ContentId? uuidPendingContentId1;
   final ContentId? uuidPendingContentId2;
@@ -788,10 +919,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final String? accessTokenChat;
   const AccountData(
       {required this.id,
+      this.uuidAccountId,
       this.jsonAccountState,
       this.jsonCapabilities,
       this.jsonAvailableProfileAttributes,
       required this.profileFilterFavorites,
+      required this.initialSyncDoneLoginRepository,
+      required this.initialSyncDoneAccountRepository,
+      required this.initialSyncDoneMediaRepository,
+      required this.initialSyncDoneProfileRepository,
+      required this.initialSyncDoneChatRepository,
       this.uuidPendingContentId0,
       this.uuidPendingContentId1,
       this.uuidPendingContentId2,
@@ -834,6 +971,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    if (!nullToAbsent || uuidAccountId != null) {
+      map['uuid_account_id'] = Variable<String>(
+          $AccountTable.$converteruuidAccountId.toSql(uuidAccountId));
+    }
     if (!nullToAbsent || jsonAccountState != null) {
       map['json_account_state'] = Variable<String>(
           $AccountTable.$converterjsonAccountState.toSql(jsonAccountState));
@@ -848,6 +989,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .toSql(jsonAvailableProfileAttributes));
     }
     map['profile_filter_favorites'] = Variable<bool>(profileFilterFavorites);
+    map['initial_sync_done_login_repository'] =
+        Variable<bool>(initialSyncDoneLoginRepository);
+    map['initial_sync_done_account_repository'] =
+        Variable<bool>(initialSyncDoneAccountRepository);
+    map['initial_sync_done_media_repository'] =
+        Variable<bool>(initialSyncDoneMediaRepository);
+    map['initial_sync_done_profile_repository'] =
+        Variable<bool>(initialSyncDoneProfileRepository);
+    map['initial_sync_done_chat_repository'] =
+        Variable<bool>(initialSyncDoneChatRepository);
     if (!nullToAbsent || uuidPendingContentId0 != null) {
       map['uuid_pending_content_id0'] = Variable<String>($AccountTable
           .$converteruuidPendingContentId0
@@ -1005,6 +1156,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   AccountCompanion toCompanion(bool nullToAbsent) {
     return AccountCompanion(
       id: Value(id),
+      uuidAccountId: uuidAccountId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uuidAccountId),
       jsonAccountState: jsonAccountState == null && nullToAbsent
           ? const Value.absent()
           : Value(jsonAccountState),
@@ -1016,6 +1170,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
               ? const Value.absent()
               : Value(jsonAvailableProfileAttributes),
       profileFilterFavorites: Value(profileFilterFavorites),
+      initialSyncDoneLoginRepository: Value(initialSyncDoneLoginRepository),
+      initialSyncDoneAccountRepository: Value(initialSyncDoneAccountRepository),
+      initialSyncDoneMediaRepository: Value(initialSyncDoneMediaRepository),
+      initialSyncDoneProfileRepository: Value(initialSyncDoneProfileRepository),
+      initialSyncDoneChatRepository: Value(initialSyncDoneChatRepository),
       uuidPendingContentId0: uuidPendingContentId0 == null && nullToAbsent
           ? const Value.absent()
           : Value(uuidPendingContentId0),
@@ -1143,6 +1302,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return AccountData(
       id: serializer.fromJson<int>(json['id']),
+      uuidAccountId: serializer.fromJson<AccountId?>(json['uuidAccountId']),
       jsonAccountState:
           serializer.fromJson<EnumString?>(json['jsonAccountState']),
       jsonCapabilities:
@@ -1151,6 +1311,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .fromJson<JsonString?>(json['jsonAvailableProfileAttributes']),
       profileFilterFavorites:
           serializer.fromJson<bool>(json['profileFilterFavorites']),
+      initialSyncDoneLoginRepository:
+          serializer.fromJson<bool>(json['initialSyncDoneLoginRepository']),
+      initialSyncDoneAccountRepository:
+          serializer.fromJson<bool>(json['initialSyncDoneAccountRepository']),
+      initialSyncDoneMediaRepository:
+          serializer.fromJson<bool>(json['initialSyncDoneMediaRepository']),
+      initialSyncDoneProfileRepository:
+          serializer.fromJson<bool>(json['initialSyncDoneProfileRepository']),
+      initialSyncDoneChatRepository:
+          serializer.fromJson<bool>(json['initialSyncDoneChatRepository']),
       uuidPendingContentId0:
           serializer.fromJson<ContentId?>(json['uuidPendingContentId0']),
       uuidPendingContentId1:
@@ -1222,11 +1392,22 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'uuidAccountId': serializer.toJson<AccountId?>(uuidAccountId),
       'jsonAccountState': serializer.toJson<EnumString?>(jsonAccountState),
       'jsonCapabilities': serializer.toJson<JsonString?>(jsonCapabilities),
       'jsonAvailableProfileAttributes':
           serializer.toJson<JsonString?>(jsonAvailableProfileAttributes),
       'profileFilterFavorites': serializer.toJson<bool>(profileFilterFavorites),
+      'initialSyncDoneLoginRepository':
+          serializer.toJson<bool>(initialSyncDoneLoginRepository),
+      'initialSyncDoneAccountRepository':
+          serializer.toJson<bool>(initialSyncDoneAccountRepository),
+      'initialSyncDoneMediaRepository':
+          serializer.toJson<bool>(initialSyncDoneMediaRepository),
+      'initialSyncDoneProfileRepository':
+          serializer.toJson<bool>(initialSyncDoneProfileRepository),
+      'initialSyncDoneChatRepository':
+          serializer.toJson<bool>(initialSyncDoneChatRepository),
       'uuidPendingContentId0':
           serializer.toJson<ContentId?>(uuidPendingContentId0),
       'uuidPendingContentId1':
@@ -1290,11 +1471,17 @@ class AccountData extends DataClass implements Insertable<AccountData> {
 
   AccountData copyWith(
           {int? id,
+          Value<AccountId?> uuidAccountId = const Value.absent(),
           Value<EnumString?> jsonAccountState = const Value.absent(),
           Value<JsonString?> jsonCapabilities = const Value.absent(),
           Value<JsonString?> jsonAvailableProfileAttributes =
               const Value.absent(),
           bool? profileFilterFavorites,
+          bool? initialSyncDoneLoginRepository,
+          bool? initialSyncDoneAccountRepository,
+          bool? initialSyncDoneMediaRepository,
+          bool? initialSyncDoneProfileRepository,
+          bool? initialSyncDoneChatRepository,
           Value<ContentId?> uuidPendingContentId0 = const Value.absent(),
           Value<ContentId?> uuidPendingContentId1 = const Value.absent(),
           Value<ContentId?> uuidPendingContentId2 = const Value.absent(),
@@ -1336,6 +1523,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<String?> accessTokenChat = const Value.absent()}) =>
       AccountData(
         id: id ?? this.id,
+        uuidAccountId:
+            uuidAccountId.present ? uuidAccountId.value : this.uuidAccountId,
         jsonAccountState: jsonAccountState.present
             ? jsonAccountState.value
             : this.jsonAccountState,
@@ -1347,6 +1536,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
             : this.jsonAvailableProfileAttributes,
         profileFilterFavorites:
             profileFilterFavorites ?? this.profileFilterFavorites,
+        initialSyncDoneLoginRepository: initialSyncDoneLoginRepository ??
+            this.initialSyncDoneLoginRepository,
+        initialSyncDoneAccountRepository: initialSyncDoneAccountRepository ??
+            this.initialSyncDoneAccountRepository,
+        initialSyncDoneMediaRepository: initialSyncDoneMediaRepository ??
+            this.initialSyncDoneMediaRepository,
+        initialSyncDoneProfileRepository: initialSyncDoneProfileRepository ??
+            this.initialSyncDoneProfileRepository,
+        initialSyncDoneChatRepository:
+            initialSyncDoneChatRepository ?? this.initialSyncDoneChatRepository,
         uuidPendingContentId0: uuidPendingContentId0.present
             ? uuidPendingContentId0.value
             : this.uuidPendingContentId0,
@@ -1455,11 +1654,22 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   String toString() {
     return (StringBuffer('AccountData(')
           ..write('id: $id, ')
+          ..write('uuidAccountId: $uuidAccountId, ')
           ..write('jsonAccountState: $jsonAccountState, ')
           ..write('jsonCapabilities: $jsonCapabilities, ')
           ..write(
               'jsonAvailableProfileAttributes: $jsonAvailableProfileAttributes, ')
           ..write('profileFilterFavorites: $profileFilterFavorites, ')
+          ..write(
+              'initialSyncDoneLoginRepository: $initialSyncDoneLoginRepository, ')
+          ..write(
+              'initialSyncDoneAccountRepository: $initialSyncDoneAccountRepository, ')
+          ..write(
+              'initialSyncDoneMediaRepository: $initialSyncDoneMediaRepository, ')
+          ..write(
+              'initialSyncDoneProfileRepository: $initialSyncDoneProfileRepository, ')
+          ..write(
+              'initialSyncDoneChatRepository: $initialSyncDoneChatRepository, ')
           ..write('uuidPendingContentId0: $uuidPendingContentId0, ')
           ..write('uuidPendingContentId1: $uuidPendingContentId1, ')
           ..write('uuidPendingContentId2: $uuidPendingContentId2, ')
@@ -1509,10 +1719,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   @override
   int get hashCode => Object.hashAll([
         id,
+        uuidAccountId,
         jsonAccountState,
         jsonCapabilities,
         jsonAvailableProfileAttributes,
         profileFilterFavorites,
+        initialSyncDoneLoginRepository,
+        initialSyncDoneAccountRepository,
+        initialSyncDoneMediaRepository,
+        initialSyncDoneProfileRepository,
+        initialSyncDoneChatRepository,
         uuidPendingContentId0,
         uuidPendingContentId1,
         uuidPendingContentId2,
@@ -1557,11 +1773,22 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       identical(this, other) ||
       (other is AccountData &&
           other.id == this.id &&
+          other.uuidAccountId == this.uuidAccountId &&
           other.jsonAccountState == this.jsonAccountState &&
           other.jsonCapabilities == this.jsonCapabilities &&
           other.jsonAvailableProfileAttributes ==
               this.jsonAvailableProfileAttributes &&
           other.profileFilterFavorites == this.profileFilterFavorites &&
+          other.initialSyncDoneLoginRepository ==
+              this.initialSyncDoneLoginRepository &&
+          other.initialSyncDoneAccountRepository ==
+              this.initialSyncDoneAccountRepository &&
+          other.initialSyncDoneMediaRepository ==
+              this.initialSyncDoneMediaRepository &&
+          other.initialSyncDoneProfileRepository ==
+              this.initialSyncDoneProfileRepository &&
+          other.initialSyncDoneChatRepository ==
+              this.initialSyncDoneChatRepository &&
           other.uuidPendingContentId0 == this.uuidPendingContentId0 &&
           other.uuidPendingContentId1 == this.uuidPendingContentId1 &&
           other.uuidPendingContentId2 == this.uuidPendingContentId2 &&
@@ -1608,10 +1835,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
 
 class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<int> id;
+  final Value<AccountId?> uuidAccountId;
   final Value<EnumString?> jsonAccountState;
   final Value<JsonString?> jsonCapabilities;
   final Value<JsonString?> jsonAvailableProfileAttributes;
   final Value<bool> profileFilterFavorites;
+  final Value<bool> initialSyncDoneLoginRepository;
+  final Value<bool> initialSyncDoneAccountRepository;
+  final Value<bool> initialSyncDoneMediaRepository;
+  final Value<bool> initialSyncDoneProfileRepository;
+  final Value<bool> initialSyncDoneChatRepository;
   final Value<ContentId?> uuidPendingContentId0;
   final Value<ContentId?> uuidPendingContentId1;
   final Value<ContentId?> uuidPendingContentId2;
@@ -1652,10 +1885,16 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<String?> accessTokenChat;
   const AccountCompanion({
     this.id = const Value.absent(),
+    this.uuidAccountId = const Value.absent(),
     this.jsonAccountState = const Value.absent(),
     this.jsonCapabilities = const Value.absent(),
     this.jsonAvailableProfileAttributes = const Value.absent(),
     this.profileFilterFavorites = const Value.absent(),
+    this.initialSyncDoneLoginRepository = const Value.absent(),
+    this.initialSyncDoneAccountRepository = const Value.absent(),
+    this.initialSyncDoneMediaRepository = const Value.absent(),
+    this.initialSyncDoneProfileRepository = const Value.absent(),
+    this.initialSyncDoneChatRepository = const Value.absent(),
     this.uuidPendingContentId0 = const Value.absent(),
     this.uuidPendingContentId1 = const Value.absent(),
     this.uuidPendingContentId2 = const Value.absent(),
@@ -1697,10 +1936,16 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   });
   AccountCompanion.insert({
     this.id = const Value.absent(),
+    this.uuidAccountId = const Value.absent(),
     this.jsonAccountState = const Value.absent(),
     this.jsonCapabilities = const Value.absent(),
     this.jsonAvailableProfileAttributes = const Value.absent(),
     this.profileFilterFavorites = const Value.absent(),
+    this.initialSyncDoneLoginRepository = const Value.absent(),
+    this.initialSyncDoneAccountRepository = const Value.absent(),
+    this.initialSyncDoneMediaRepository = const Value.absent(),
+    this.initialSyncDoneProfileRepository = const Value.absent(),
+    this.initialSyncDoneChatRepository = const Value.absent(),
     this.uuidPendingContentId0 = const Value.absent(),
     this.uuidPendingContentId1 = const Value.absent(),
     this.uuidPendingContentId2 = const Value.absent(),
@@ -1742,10 +1987,16 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   });
   static Insertable<AccountData> custom({
     Expression<int>? id,
+    Expression<String>? uuidAccountId,
     Expression<String>? jsonAccountState,
     Expression<String>? jsonCapabilities,
     Expression<String>? jsonAvailableProfileAttributes,
     Expression<bool>? profileFilterFavorites,
+    Expression<bool>? initialSyncDoneLoginRepository,
+    Expression<bool>? initialSyncDoneAccountRepository,
+    Expression<bool>? initialSyncDoneMediaRepository,
+    Expression<bool>? initialSyncDoneProfileRepository,
+    Expression<bool>? initialSyncDoneChatRepository,
     Expression<String>? uuidPendingContentId0,
     Expression<String>? uuidPendingContentId1,
     Expression<String>? uuidPendingContentId2,
@@ -1787,12 +2038,25 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
       if (jsonAccountState != null) 'json_account_state': jsonAccountState,
       if (jsonCapabilities != null) 'json_capabilities': jsonCapabilities,
       if (jsonAvailableProfileAttributes != null)
         'json_available_profile_attributes': jsonAvailableProfileAttributes,
       if (profileFilterFavorites != null)
         'profile_filter_favorites': profileFilterFavorites,
+      if (initialSyncDoneLoginRepository != null)
+        'initial_sync_done_login_repository': initialSyncDoneLoginRepository,
+      if (initialSyncDoneAccountRepository != null)
+        'initial_sync_done_account_repository':
+            initialSyncDoneAccountRepository,
+      if (initialSyncDoneMediaRepository != null)
+        'initial_sync_done_media_repository': initialSyncDoneMediaRepository,
+      if (initialSyncDoneProfileRepository != null)
+        'initial_sync_done_profile_repository':
+            initialSyncDoneProfileRepository,
+      if (initialSyncDoneChatRepository != null)
+        'initial_sync_done_chat_repository': initialSyncDoneChatRepository,
       if (uuidPendingContentId0 != null)
         'uuid_pending_content_id0': uuidPendingContentId0,
       if (uuidPendingContentId1 != null)
@@ -1861,10 +2125,16 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
 
   AccountCompanion copyWith(
       {Value<int>? id,
+      Value<AccountId?>? uuidAccountId,
       Value<EnumString?>? jsonAccountState,
       Value<JsonString?>? jsonCapabilities,
       Value<JsonString?>? jsonAvailableProfileAttributes,
       Value<bool>? profileFilterFavorites,
+      Value<bool>? initialSyncDoneLoginRepository,
+      Value<bool>? initialSyncDoneAccountRepository,
+      Value<bool>? initialSyncDoneMediaRepository,
+      Value<bool>? initialSyncDoneProfileRepository,
+      Value<bool>? initialSyncDoneChatRepository,
       Value<ContentId?>? uuidPendingContentId0,
       Value<ContentId?>? uuidPendingContentId1,
       Value<ContentId?>? uuidPendingContentId2,
@@ -1905,12 +2175,23 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<String?>? accessTokenChat}) {
     return AccountCompanion(
       id: id ?? this.id,
+      uuidAccountId: uuidAccountId ?? this.uuidAccountId,
       jsonAccountState: jsonAccountState ?? this.jsonAccountState,
       jsonCapabilities: jsonCapabilities ?? this.jsonCapabilities,
       jsonAvailableProfileAttributes:
           jsonAvailableProfileAttributes ?? this.jsonAvailableProfileAttributes,
       profileFilterFavorites:
           profileFilterFavorites ?? this.profileFilterFavorites,
+      initialSyncDoneLoginRepository:
+          initialSyncDoneLoginRepository ?? this.initialSyncDoneLoginRepository,
+      initialSyncDoneAccountRepository: initialSyncDoneAccountRepository ??
+          this.initialSyncDoneAccountRepository,
+      initialSyncDoneMediaRepository:
+          initialSyncDoneMediaRepository ?? this.initialSyncDoneMediaRepository,
+      initialSyncDoneProfileRepository: initialSyncDoneProfileRepository ??
+          this.initialSyncDoneProfileRepository,
+      initialSyncDoneChatRepository:
+          initialSyncDoneChatRepository ?? this.initialSyncDoneChatRepository,
       uuidPendingContentId0:
           uuidPendingContentId0 ?? this.uuidPendingContentId0,
       uuidPendingContentId1:
@@ -1978,6 +2259,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
+    if (uuidAccountId.present) {
+      map['uuid_account_id'] = Variable<String>(
+          $AccountTable.$converteruuidAccountId.toSql(uuidAccountId.value));
+    }
     if (jsonAccountState.present) {
       map['json_account_state'] = Variable<String>($AccountTable
           .$converterjsonAccountState
@@ -1996,6 +2281,26 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (profileFilterFavorites.present) {
       map['profile_filter_favorites'] =
           Variable<bool>(profileFilterFavorites.value);
+    }
+    if (initialSyncDoneLoginRepository.present) {
+      map['initial_sync_done_login_repository'] =
+          Variable<bool>(initialSyncDoneLoginRepository.value);
+    }
+    if (initialSyncDoneAccountRepository.present) {
+      map['initial_sync_done_account_repository'] =
+          Variable<bool>(initialSyncDoneAccountRepository.value);
+    }
+    if (initialSyncDoneMediaRepository.present) {
+      map['initial_sync_done_media_repository'] =
+          Variable<bool>(initialSyncDoneMediaRepository.value);
+    }
+    if (initialSyncDoneProfileRepository.present) {
+      map['initial_sync_done_profile_repository'] =
+          Variable<bool>(initialSyncDoneProfileRepository.value);
+    }
+    if (initialSyncDoneChatRepository.present) {
+      map['initial_sync_done_chat_repository'] =
+          Variable<bool>(initialSyncDoneChatRepository.value);
     }
     if (uuidPendingContentId0.present) {
       map['uuid_pending_content_id0'] = Variable<String>($AccountTable
@@ -2158,11 +2463,22 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   String toString() {
     return (StringBuffer('AccountCompanion(')
           ..write('id: $id, ')
+          ..write('uuidAccountId: $uuidAccountId, ')
           ..write('jsonAccountState: $jsonAccountState, ')
           ..write('jsonCapabilities: $jsonCapabilities, ')
           ..write(
               'jsonAvailableProfileAttributes: $jsonAvailableProfileAttributes, ')
           ..write('profileFilterFavorites: $profileFilterFavorites, ')
+          ..write(
+              'initialSyncDoneLoginRepository: $initialSyncDoneLoginRepository, ')
+          ..write(
+              'initialSyncDoneAccountRepository: $initialSyncDoneAccountRepository, ')
+          ..write(
+              'initialSyncDoneMediaRepository: $initialSyncDoneMediaRepository, ')
+          ..write(
+              'initialSyncDoneProfileRepository: $initialSyncDoneProfileRepository, ')
+          ..write(
+              'initialSyncDoneChatRepository: $initialSyncDoneChatRepository, ')
           ..write('uuidPendingContentId0: $uuidPendingContentId0, ')
           ..write('uuidPendingContentId1: $uuidPendingContentId1, ')
           ..write('uuidPendingContentId2: $uuidPendingContentId2, ')
@@ -3827,6 +4143,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final DaoProfileSettings daoProfileSettings =
       DaoProfileSettings(this as AccountDatabase);
   late final DaoTokens daoTokens = DaoTokens(this as AccountDatabase);
+  late final DaoInitialSync daoInitialSync =
+      DaoInitialSync(this as AccountDatabase);
   late final DaoProfiles daoProfiles = DaoProfiles(this as AccountDatabase);
   late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
   @override

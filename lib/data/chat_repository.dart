@@ -23,6 +23,9 @@ class ChatRepository extends DataRepository {
   factory ChatRepository.getInstance() {
     return _instance;
   }
+
+  final syncHandler = ConnectedActionScheduler();
+
   final db = DatabaseManager.getInstance();
 
   final ApiManager _api = ApiManager.getInstance();
@@ -48,41 +51,26 @@ class ChatRepository extends DataRepository {
     matchesIterator.reset();
     messageIterator.resetToInitialState();
 
-    _api.state
-      .firstWhere((element) => element == ApiManagerState.connected)
-      .then((value) async {
-        await _syncData();
-      })
-      .ignore();
-  }
-
-  @override
-  Future<void> onLogout() async {
-    // await SentBlocksDatabase.getInstance().clearAccountIds();
-    // await SentLikesDatabase.getInstance().clearAccountIds();
-    // await ReceivedBlocksDatabase.getInstance().clearAccountIds();
-    // await ReceivedLikesDatabase.getInstance().clearAccountIds();
-    // await MatchesDatabase.getInstance().clearAccountIds();
-
-    // NOTE: MessageDatabase is not cleared.
+    syncHandler.onLoginSync(() async {
+      await _syncData();
+    });
   }
 
   @override
   Future<void> onResumeAppUsage() async {
-    _api.state
-      .firstWhere((element) =>
-        element == ApiManagerState.connected ||
-        element == ApiManagerState.waitingRefreshToken
-      )
-      .then((value) async {
-        if (value == ApiManagerState.connected) {
-          await _syncData();
-        }
-      })
-      .ignore();
+    syncHandler.onResumeAppUsageSync(() async {
+      await _syncData();
+    });
+  }
+
+  @override
+  Future<void> onInitialSetupComplete() async {
+    await _syncData();
   }
 
   Future<void> _syncData() async {
+    // TODO(prod): Update to use database initial sync flag.
+
     // TODO: Perhps client should track these operations and retry
     // these if needed.
 
