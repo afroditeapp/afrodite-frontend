@@ -55,7 +55,6 @@ class NewPendingSecurityContent extends ContentEvent {
   final ContentId? content;
   NewPendingSecurityContent(this.content);
 }
-class ReloadProfileContentIfNull extends ContentEvent {}
 
 class ContentBloc extends Bloc<ContentEvent, ContentData> {
   final DatabaseManager db = DatabaseManager.getInstance();
@@ -81,13 +80,6 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> {
       emit(state.copyWith(
         pendingSecurityContent: data.content,
       ));
-    });
-    on<ReloadProfileContentIfNull>((data, emit) async {
-      final beforeFirstModeration = state.content?.contentId0 == null && state.pendingContent?.pendingContentId0 == null;
-      final afterFirstModeration = state.content?.contentId0 == null;
-      if (beforeFirstModeration || afterFirstModeration) {
-        await media.reloadMyProfileContent();
-      }
     });
 
     db.accountStream((db) => db.daoCurrentContent.watchCurrentProfileContent()).listen((event) {

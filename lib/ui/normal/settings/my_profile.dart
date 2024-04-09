@@ -16,8 +16,6 @@ class MyProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<MyProfileBloc>().add(RefreshIfNull());
-
     return Scaffold(
       appBar: AppBar(title: Text(context.strings.view_profile_screen_my_profile_title)),
       body: myProfilePage(context),
