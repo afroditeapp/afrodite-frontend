@@ -8,7 +8,7 @@ import 'package:openapi/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**age** | [**ProfileAge**](ProfileAge.md) |  | [optional] 
+**age** | **int** |  | [optional] 
 **id** | [**AccountId**](AccountId.md) |  | 
 **name** | **String** |  | [optional] 
 

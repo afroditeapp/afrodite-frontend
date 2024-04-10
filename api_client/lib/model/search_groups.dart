@@ -163,3 +163,4 @@ class SearchGroups {
   static const requiredKeys = <String>{
   };
 }
+

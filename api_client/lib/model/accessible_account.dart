@@ -18,7 +18,7 @@ class AccessibleAccount {
     this.name,
   });
 
-  ProfileAge? age;
+  int? age;
 
   AccountId id;
 
@@ -75,7 +75,7 @@ class AccessibleAccount {
       }());
 
       return AccessibleAccount(
-        age: ProfileAge.fromJson(json[r'age']),
+        age: mapValueOfType<int>(json, r'age'),
         id: AccountId.fromJson(json[r'id'])!,
         name: mapValueOfType<String>(json, r'name'),
       );

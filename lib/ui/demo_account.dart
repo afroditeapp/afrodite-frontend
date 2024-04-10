@@ -92,7 +92,7 @@ Widget content(BuildContext context) {
           itemBuilder: (context, index) {
             final account = data.accounts[index];
             return ListTile(
-              title: Text("${account.name}, ${account.age?.value}"),
+              title: Text("${account.name}, ${account.age}"),
               subtitle: Text(account.id.accountId),
               onTap: () =>
                 showConfirmDialogAdvanced(
