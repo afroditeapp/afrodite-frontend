@@ -6,6 +6,12 @@ targets:
           include:
             - lib/database/**.dart
       freezed:
+        options:
+          map: false
+          when:
+            when: false
+            maybe_when: false
+            when_or_null: false
         generate_for:
           include:
             - lib/model/freezed/**.dart
