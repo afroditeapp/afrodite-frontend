@@ -1,7 +1,6 @@
 .gitignore
 .travis.yml
 README.md
-analysis_options.yaml
 doc/AccessToken.md
 doc/AccessibleAccount.md
 doc/Account.md
