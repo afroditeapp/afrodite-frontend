@@ -44,7 +44,7 @@ dependencies:
 
   # API client for server API
   openapi:
-    path: "api_client"
+    path: "packages/api_client"
 
   http: '1.0.0'
 

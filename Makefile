@@ -7,7 +7,7 @@ update-api-bindings:
 	openapi-generator-cli generate \
 	-i http://localhost:3000/api-doc/pihka_api.json \
 	-g dart \
-	-o api_client
+	-o packages/api_client
 
 update-generated-code:
 	dart run build_runner build
