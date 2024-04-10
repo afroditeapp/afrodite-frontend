@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/ui/normal/chat/cache.dart';

@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
 
 class AccountBannedScreen extends RootScreen {

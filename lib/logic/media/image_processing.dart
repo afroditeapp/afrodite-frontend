@@ -1,16 +1,12 @@
 import "package:camera/camera.dart";
-import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
-import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
 
-import "package:freezed_annotation/freezed_annotation.dart";
 import "package:pihka_frontend/data/image_cache.dart";
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/media/send_to_slot.dart";
-import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/model/freezed/logic/media/image_processing.dart";
 
 

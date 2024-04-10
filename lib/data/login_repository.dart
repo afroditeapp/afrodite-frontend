@@ -10,7 +10,6 @@ import 'package:pihka_frontend/data/common_repository.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
-import 'package:database/database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';

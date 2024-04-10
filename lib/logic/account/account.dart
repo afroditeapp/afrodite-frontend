@@ -3,8 +3,6 @@ import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
 
 
-import "package:freezed_annotation/freezed_annotation.dart";
-import 'package:flutter/foundation.dart';
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/model/freezed/logic/account/account.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";

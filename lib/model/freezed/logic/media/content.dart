@@ -1,11 +1,7 @@
-import "package:flutter_bloc/flutter_bloc.dart";
-import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
-import "package:pihka_frontend/data/media_repository.dart";
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
 import "package:pihka_frontend/ui_utils/crop_image_screen.dart";
 
 

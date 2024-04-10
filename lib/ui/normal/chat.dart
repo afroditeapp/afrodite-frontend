@@ -1,17 +1,12 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
-import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';

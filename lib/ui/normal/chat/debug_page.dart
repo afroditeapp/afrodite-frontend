@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/ui/normal/chat/cache.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_renderer.dart';

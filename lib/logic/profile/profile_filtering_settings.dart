@@ -5,8 +5,6 @@ import "package:pihka_frontend/model/freezed/logic/profile/profile_filtering_set
 import "package:pihka_frontend/utils.dart";
 
 
-import "package:freezed_annotation/freezed_annotation.dart";
-import 'package:flutter/foundation.dart';
 
 
 sealed class ProfileFilteringSettingsEvent {}

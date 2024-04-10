@@ -1,14 +1,11 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:intl/intl.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/account.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/model/freezed/logic/account/account.dart";
 import "package:pihka_frontend/ui/initial_setup/birthdate.dart";
-import "package:pihka_frontend/ui/initial_setup/gender.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
-import "package:pihka_frontend/utils/date.dart";
 
 class AskEmailScreen extends StatelessWidget {
   const AskEmailScreen({Key? key}) : super(key: key);

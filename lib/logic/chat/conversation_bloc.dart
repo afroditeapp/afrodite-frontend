@@ -1,8 +1,6 @@
 import "dart:async";
-import "dart:io";
 
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:image_picker/image_picker.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
@@ -13,8 +11,6 @@ import "package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart";
 import "package:pihka_frontend/utils.dart";
 
 
-import "package:freezed_annotation/freezed_annotation.dart";
-import 'package:flutter/foundation.dart';
 
 var log = Logger("ConversationBloc");
 

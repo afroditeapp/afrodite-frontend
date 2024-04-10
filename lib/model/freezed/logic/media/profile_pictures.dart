@@ -1,9 +1,6 @@
 
-import "package:flutter_bloc/flutter_bloc.dart";
-import "package:logging/logging.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
 import "package:openapi/api.dart";
-import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/ui_utils/crop_image_screen.dart";
 
 part 'profile_pictures.freezed.dart';

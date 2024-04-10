@@ -1,6 +1,4 @@
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:freezed_annotation/freezed_annotation.dart";
-import 'package:flutter/foundation.dart';
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/login_repository.dart";

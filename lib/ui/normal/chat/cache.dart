@@ -5,8 +5,6 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
-import 'package:pihka_frontend/ui/normal/chat.dart';
 
 var log = Logger("MessageCache");
 

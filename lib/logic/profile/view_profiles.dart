@@ -8,12 +8,9 @@ import "package:pihka_frontend/data/chat_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
 import "package:pihka_frontend/model/freezed/logic/profile/view_profiles.dart";
 import "package:pihka_frontend/utils.dart";
 
-import "package:freezed_annotation/freezed_annotation.dart";
-import 'package:flutter/foundation.dart';
 
 
 final log = Logger("ViewProfilesBloc");

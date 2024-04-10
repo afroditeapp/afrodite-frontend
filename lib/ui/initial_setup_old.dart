@@ -1,17 +1,14 @@
 import "dart:io";
 
-import "package:camera/camera.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:image_picker/image_picker.dart";
 import "package:logging/logging.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
-import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/model/freezed/logic/account/initial_setup.dart";
 import "package:pihka_frontend/ui_utils/camera_screen.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
 
-import "package:pihka_frontend/ui_utils/snack_bar.dart";
 
 var log = Logger("InitialSetupWidget");
 

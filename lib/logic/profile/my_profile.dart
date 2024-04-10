@@ -9,8 +9,6 @@ import "package:pihka_frontend/model/freezed/logic/profile/my_profile.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 
-import "package:freezed_annotation/freezed_annotation.dart";
-import 'package:flutter/foundation.dart';
 
 sealed class MyProfileEvent {}
 class SetProfile extends MyProfileEvent {

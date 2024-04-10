@@ -1,11 +1,8 @@
 
 
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
 
 
 typedef MessageViewEntry = (String message, int? localId, bool isSent);

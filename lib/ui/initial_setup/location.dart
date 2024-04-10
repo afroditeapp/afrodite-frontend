@@ -1,12 +1,9 @@
 import "package:flutter/material.dart";
-import "package:flutter/services.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:latlong2/latlong.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
-import "package:pihka_frontend/ui/initial_setup/gender.dart";
 import "package:pihka_frontend/ui/initial_setup/profile_attributes.dart";
-import "package:pihka_frontend/ui/initial_setup/search_settings.dart";
 import "package:pihka_frontend/ui/normal/settings/location.dart";
 import "package:pihka_frontend/ui_utils/dialog.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";

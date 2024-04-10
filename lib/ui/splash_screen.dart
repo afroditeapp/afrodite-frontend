@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import "package:pihka_frontend/assets.dart";
-import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/main.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
 

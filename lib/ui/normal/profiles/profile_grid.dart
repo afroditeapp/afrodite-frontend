@@ -7,7 +7,6 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/profile_filtering_settings.dart';
