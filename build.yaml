@@ -1,0 +1,11 @@
+targets:
+  $default:
+    builders:
+      drift_dev:
+        generate_for:
+          include:
+            - lib/database/**.dart
+      freezed:
+        generate_for:
+          include:
+            - lib/model/freezed/**.dart
