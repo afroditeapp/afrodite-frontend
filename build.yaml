@@ -1,10 +1,6 @@
 targets:
   $default:
     builders:
-      drift_dev:
-        generate_for:
-          include:
-            - lib/database/**.dart
       freezed:
         options:
           map: false

@@ -9,7 +9,11 @@ update-api-bindings:
 	-g dart \
 	-o packages/api_client
 
-update-generated-code:
+update-freezed-code:
+	dart run build_runner build
+
+update-drift-code:
+	cd packages/database
 	dart run build_runner build
 
 update-translations:
