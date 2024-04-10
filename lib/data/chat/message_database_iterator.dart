@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/database/message_entry.dart';
+import 'package:database/database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils/result.dart';
 

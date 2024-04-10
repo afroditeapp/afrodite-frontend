@@ -8,6 +8,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:database/database.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
@@ -15,7 +16,6 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/assets.dart';
-import 'package:pihka_frontend/database/account_database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';

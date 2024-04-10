@@ -1,7 +1,5 @@
 
-import 'package:openapi/api.dart' show AccountId, ProfileContent, ProfileVisibility, Location;
-import 'package:openapi/api.dart' as api;
-import 'package:pihka_frontend/database/account_database.dart';
+import '../account_database.dart';
 
 import 'package:drift/drift.dart';
 
@@ -9,7 +7,7 @@ part 'dao_initial_sync.g.dart';
 
 @DriftAccessor(tables: [Account])
 class DaoInitialSync extends DatabaseAccessor<AccountDatabase> with _$DaoInitialSyncMixin, AccountTools {
-  DaoInitialSync(AccountDatabase db) : super(db);
+  DaoInitialSync(super.db);
 
   Future<void> updateLoginSyncDone(bool value) async {
     await into(account).insertOnConflictUpdate(

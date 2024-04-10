@@ -2,7 +2,7 @@
 
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/database/utils.dart';
+import 'utils.dart';
 
 part 'common_database.g.dart';
 
@@ -29,8 +29,8 @@ class Common extends Table {
 
 @DriftDatabase(tables: [Common])
 class CommonDatabase extends _$CommonDatabase {
-  CommonDatabase({required bool doInit}) :
-    super(openDbConnection(CommonDbFile(), doInit: doInit));
+  CommonDatabase(LazyDatabaseProvider dbProvider) :
+    super(dbProvider.getLazyDatabase());
 
   @override
   int get schemaVersion => 1;

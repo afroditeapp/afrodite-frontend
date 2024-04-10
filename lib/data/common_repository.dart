@@ -3,7 +3,7 @@ import 'dart:async';
 
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/utils.dart';
-import 'package:pihka_frontend/database/common_database.dart';
+import 'package:database/database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 
 var log = Logger("CommonRepository");

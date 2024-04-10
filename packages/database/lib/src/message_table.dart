@@ -2,12 +2,12 @@
 
 
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/database/account_database.dart';
+import 'package:utils/utils.dart';
+import 'account_database.dart';
 
 import 'package:drift/drift.dart';
-import 'package:pihka_frontend/database/message_entry.dart';
-import 'package:pihka_frontend/database/utils.dart';
-import 'package:pihka_frontend/utils/date.dart';
+import 'message_entry.dart';
+import 'utils.dart';
 
 part 'message_table.g.dart';
 

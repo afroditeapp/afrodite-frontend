@@ -2,7 +2,7 @@
 
 
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/utils/date.dart';
+import 'package:utils/utils.dart';
 
 class MessageEntry {
   /// Local database ID of the message.

@@ -8,7 +8,6 @@ import 'package:pihka_frontend/api/api_wrapper.dart';
 import 'package:pihka_frontend/api/server_connection.dart';
 import 'package:pihka_frontend/config.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
-import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';

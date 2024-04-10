@@ -3,12 +3,12 @@
 
 import 'package:openapi/api.dart' show AccountId, ProfileContent;
 import 'package:openapi/api.dart' as api;
-import 'package:pihka_frontend/database/account_database.dart';
+import 'package:utils/utils.dart';
+import 'account_database.dart';
 
 import 'package:drift/drift.dart';
-import 'package:pihka_frontend/database/profile_entry.dart';
-import 'package:pihka_frontend/database/utils.dart';
-import 'package:pihka_frontend/utils/date.dart';
+import 'profile_entry.dart';
+import 'utils.dart';
 
 part 'profile_table.g.dart';
 

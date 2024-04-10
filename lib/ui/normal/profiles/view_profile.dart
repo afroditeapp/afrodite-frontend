@@ -4,7 +4,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/database/profile_entry.dart';
+import 'package:database/database.dart';
+import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/profile/view_profiles.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/view_profiles.dart';

@@ -4,9 +4,8 @@ import "package:openapi/api.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import "package:pihka_frontend/data/media_repository.dart";
-import "package:pihka_frontend/database/account/dao_current_content.dart";
-import "package:pihka_frontend/database/account/dao_pending_content.dart";
-import "package:pihka_frontend/database/database_manager.dart";
+import 'package:database/database.dart';
+import 'package:pihka_frontend/database/database_manager.dart';
 import "package:pihka_frontend/model/freezed/logic/media/content.dart";
 import "package:pihka_frontend/ui_utils/crop_image_screen.dart";
 

@@ -1,18 +1,19 @@
 
+
 import 'package:async/async.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/database/account/dao_current_content.dart';
-import 'package:pihka_frontend/database/account/dao_initial_sync.dart';
-import 'package:pihka_frontend/database/account/dao_my_profile.dart';
-import 'package:pihka_frontend/database/account/dao_pending_content.dart';
-import 'package:pihka_frontend/database/account/dao_profile_settings.dart';
-import 'package:pihka_frontend/database/account/dao_tokens.dart';
-import 'package:pihka_frontend/database/message_table.dart';
-import 'package:pihka_frontend/database/profile_entry.dart';
-import 'package:pihka_frontend/database/profile_table.dart';
-import 'package:pihka_frontend/database/utils.dart';
-import 'package:pihka_frontend/utils/date.dart';
+import 'package:utils/utils.dart';
+import 'account/dao_current_content.dart';
+import 'account/dao_initial_sync.dart';
+import 'account/dao_my_profile.dart';
+import 'account/dao_pending_content.dart';
+import 'account/dao_profile_settings.dart';
+import 'account/dao_tokens.dart';
+import 'message_table.dart';
+import 'profile_entry.dart';
+import 'profile_table.dart';
+import 'utils.dart';
 
 part 'account_database.g.dart';
 
@@ -118,8 +119,8 @@ class Account extends Table {
   ],
 )
 class AccountDatabase extends _$AccountDatabase {
-  AccountDatabase(DbFile dbFile) :
-    super(openDbConnection(dbFile));
+  AccountDatabase(LazyDatabaseProvider dbProvider) :
+    super(dbProvider.getLazyDatabase());
 
   @override
   int get schemaVersion => 1;

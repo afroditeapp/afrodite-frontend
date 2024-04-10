@@ -10,9 +10,8 @@ import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/utils.dart';
-import 'package:pihka_frontend/database/account_database.dart';
+import 'package:database/database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
-import 'package:pihka_frontend/database/profile_entry.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 

@@ -1,7 +1,6 @@
 
 import 'package:openapi/api.dart' show ContentId, PendingProfileContent;
-import 'package:openapi/api.dart' as api;
-import 'package:pihka_frontend/database/account_database.dart';
+import '../account_database.dart';
 
 import 'package:drift/drift.dart';
 
@@ -11,7 +10,7 @@ part 'dao_pending_content.g.dart';
 
 @DriftAccessor(tables: [Account])
 class DaoPendingContent extends DatabaseAccessor<AccountDatabase> with _$DaoPendingContentMixin, AccountTools {
-  DaoPendingContent(AccountDatabase db) : super(db);
+  DaoPendingContent(super.db);
 
 
   Future<void> setApiPendingProfileContent({

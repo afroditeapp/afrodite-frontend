@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:database/database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
-import 'package:pihka_frontend/database/profile_entry.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/utils/result.dart';
 

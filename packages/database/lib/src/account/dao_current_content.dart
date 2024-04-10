@@ -1,6 +1,6 @@
 
 import 'package:openapi/api.dart' show ContentId, ProfileContent;
-import 'package:pihka_frontend/database/account_database.dart';
+import '../account_database.dart';
 
 import 'package:drift/drift.dart';
 

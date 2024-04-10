@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/database/profile_entry.dart';
+import 'package:database/database.dart';
+import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
@@ -15,6 +16,7 @@ import 'package:pihka_frontend/ui/initial_setup/profile_pictures.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils/age.dart';
+import 'package:pihka_frontend/utils/profile_entry.dart';
 
 
 class EditProfilePage extends StatefulWidget {

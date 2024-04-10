@@ -3,13 +3,10 @@ import 'dart:async';
 
 import 'package:drift/drift.dart';
 import 'package:drift/isolate.dart';
+import 'package:database/database.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
-import 'package:pihka_frontend/database/account_database.dart';
-import 'package:pihka_frontend/database/common_database.dart';
-import 'package:pihka_frontend/database/message_table.dart';
-import 'package:pihka_frontend/database/profile_table.dart';
 import 'package:pihka_frontend/database/utils.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
@@ -40,7 +37,7 @@ class DatabaseManager extends AppSingleton {
     // in: https://github.com/simolus3/drift/discussions/2596
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
 
-    commonDatabase = CommonDatabase(doInit: true);
+    commonDatabase = CommonDatabase(CommonDbFile(doInit: true));
     // Make sure that the database libraries are initialized
     await commonStream((db) => db.watchDemoAccountUserId()).first;
   }

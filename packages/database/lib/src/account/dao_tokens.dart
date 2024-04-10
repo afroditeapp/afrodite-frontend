@@ -1,12 +1,8 @@
 
-import 'package:openapi/api.dart' show AccountId, ProfileContent;
-import 'package:openapi/api.dart' as api;
-import 'package:pihka_frontend/database/account_database.dart';
+
+import '../account_database.dart';
 
 import 'package:drift/drift.dart';
-import 'package:pihka_frontend/database/profile_entry.dart';
-import 'package:pihka_frontend/database/utils.dart';
-import 'package:pihka_frontend/utils/date.dart';
 
 
 
@@ -15,7 +11,7 @@ part 'dao_tokens.g.dart';
 
 @DriftAccessor(tables: [Account])
 class DaoTokens extends DatabaseAccessor<AccountDatabase> with _$DaoTokensMixin, AccountTools {
-  DaoTokens(AccountDatabase db) : super(db);
+  DaoTokens(super.db);
 
 
    Future<void> updateRefreshTokenAccount(String? token) async {
