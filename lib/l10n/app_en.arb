@@ -72,6 +72,18 @@
   "@demo_account_screen_no_accounts_available": {
     "description": "Text displayed when available accounts list is empty"
   },
+  "edit_profile_screen_invalid_age": "Invalid age",
+  "@edit_profile_screen_invalid_age": {
+    "description": "Snackbar text for notifying about invalid age"
+  },
+  "edit_profile_screen_invalid_initial": "Invalid initial",
+  "@edit_profile_screen_invalid_initial": {
+    "description": "Snackbar text for notifying about invalid initial"
+  },
+  "edit_profile_screen_title": "Edit profile",
+  "@edit_profile_screen_title": {
+    "description": "Title for edit profile screen"
+  },
   "generic_cancel": "Cancel",
   "@generic_cancel": {
     "description": "Generic cancel text"
@@ -238,7 +250,7 @@
   "@initial_setup_screen_profile_basic_info_title": {
     "description": "Title text for asking profile information"
   },
-  "initial_setup_screen_profile_pictures_primary_image_info_dialog_description": "Adding at least of one profile image is required. The square shaped crop of the first profile image is displayed in profile grid and other places in the app.",
+  "initial_setup_screen_profile_pictures_primary_image_info_dialog_description": "Adding at least of one profile image is required. The square shaped crop of the first profile image is displayed in profile grid and some other places in the app.",
   "@initial_setup_screen_profile_pictures_primary_image_info_dialog_description": {
     "description": "Dialog description text about profile primary image"
   },
@@ -481,9 +493,13 @@
   "@view_profile_screen_my_profile_edit_action": {
     "description": "Text for view profile screen edit my profile action"
   },
-  "view_profile_screen_my_profile_title": "My Profile",
+  "view_profile_screen_my_profile_title": "My profile",
   "@view_profile_screen_my_profile_title": {
     "description": "Title for view profile screen when my profile is viewed"
+  },
+  "view_profile_screen_profile_edit_failed": "Profile editing failed",
+  "@view_profile_screen_profile_edit_failed": {
+    "description": "Snackbar text for notifying about failed profile edit"
   },
   "view_profile_screen_profile_not_available_dialog_description": "Profile not available",
   "@view_profile_screen_profile_not_available_dialog_description": {

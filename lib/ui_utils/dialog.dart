@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/assets.dart';
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/ui_utils/loading_dialog.dart';
 
 void showAppAboutDialog(BuildContext context) {
   // TODO(prod): Finish about dialog information
@@ -91,5 +92,42 @@ Future<bool?> showInfoDialog(BuildContext context, String text) {
         ),
       ],
     )
+  );
+}
+
+void showLoadingDialogWithAutoDismiss<B extends StateStreamable<S>, S>(
+  BuildContext context,
+  {
+    required bool Function(S) dialogVisibilityGetter,
+    required void Function() dismissAction,
+  }
+) {
+  showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return PopScope(
+        canPop: false,
+        child: AlertDialog(
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              BlocBuilder<B, S>(
+                buildWhen: (previous, current) =>
+                  dialogVisibilityGetter(previous) != dialogVisibilityGetter(current),
+                builder: (context, state) {
+                  if (!dialogVisibilityGetter(state)) {
+                    Future.delayed(Duration.zero, () {
+                      dismissAction();
+                    });
+                  }
+                  return commonLoadingDialogIndicator();
+                }
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   );
 }

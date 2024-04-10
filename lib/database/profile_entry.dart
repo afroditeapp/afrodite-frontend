@@ -1,5 +1,6 @@
 
 import 'package:openapi/api.dart';
+import 'package:pihka_frontend/ui_utils/crop_image_screen.dart';
 
 class ProfileEntry {
   final AccountId uuid;
@@ -66,5 +67,13 @@ class ProfileEntry {
 
   String profileTitle() {
     return '$name$age';
+  }
+
+  CropResults primaryImageCropInfo() {
+    return CropResults.fromValues(
+      primaryContentGridCropSize,
+      primaryContentGridCropX,
+      primaryContentGridCropY
+    );
   }
 }

@@ -6,6 +6,7 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/database/profile_entry.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
+import 'package:pihka_frontend/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/ui_utils/consts/corners.dart';
 import 'package:pihka_frontend/ui_utils/crop_image_screen.dart';
 import 'package:pihka_frontend/utils/account_img_key.dart';
@@ -33,8 +34,8 @@ class ProfileThumbnailImage extends StatefulWidget {
     super.key,
   });
 
-  ProfileThumbnailImage.fromProcessedImage({
-    required ProcessedAccountImage img,
+  ProfileThumbnailImage.fromAccountImageId({
+    required AccountImageId img,
     required this.cropResults,
     this.width,
     this.height,

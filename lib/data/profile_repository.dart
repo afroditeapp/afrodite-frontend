@@ -176,7 +176,12 @@ class ProfileRepository extends DataRepository {
   /// Returns true if profile update was successful
   Future<bool> updateProfile(ProfileUpdate profileUpdate) async {
     final result = await _api.profileAction((api) => api.postProfile(profileUpdate));
-    return result.isOk();
+    if (result.isOk()) {
+      await reloadMyProfile();
+      return true;
+    }
+
+    return false;
   }
 
   Future<void> refreshProfileIterator() async {

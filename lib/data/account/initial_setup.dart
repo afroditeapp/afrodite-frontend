@@ -302,7 +302,7 @@ SearchGroups createSearchGroups(Gender gender, GenderSearchSettingsAll genderSea
 ContentId getId(SelectedImageInfo info, ContentId securitySelfie) {
   return switch (info) {
     InitialSetupSecuritySelfie() => securitySelfie,
-    ProfileImage(:final img) => img.contentId,
+    ProfileImage(:final id) => id.contentId,
   };
 }
 

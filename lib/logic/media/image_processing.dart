@@ -136,6 +136,7 @@ class ProcessedAccountImage {
   const ProcessedAccountImage(this.accountId, this.contentId, this.slot);
   final AccountId accountId;
   final ContentId contentId;
+  /// Slot where the image was uploaded.
   final int slot;
 }
 

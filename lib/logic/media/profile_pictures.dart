@@ -2,6 +2,7 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
+import "package:openapi/api.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/ui_utils/crop_image_screen.dart";
 
@@ -55,10 +56,12 @@ class MoveImageTo extends ProfilePicturesEvent {
 }
 
 class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData> {
-  ProfilePicturesBloc() : super(ProfilePicturesData()) {
+  ProfilePicturesBloc() : super(const ProfilePicturesData()) {
     on<ResetIfModeChanges>((data, emit) {
       if (state.mode.runtimeType != data.mode.runtimeType) {
-        emit(ProfilePicturesData());
+        emit(ProfilePicturesData(
+          mode: data.mode,
+        ));
       }
     });
     on<AddProcessedImage>((data, emit) {
@@ -67,8 +70,8 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
        case InitialSetupSecuritySelfie(:final profileImagesIndex): {
           pictures[profileImagesIndex] = ImageSelected(data.img);
         }
-        case ProfileImage(:final img): {
-          pictures[img.slot - 1] = ImageSelected(data.img);
+        case ProfileImage(:final profileImagesIndex): {
+          pictures[profileImagesIndex] = ImageSelected(data.img);
         }
       }
       _modifyPicturesListToHaveCorrectStates(pictures);
@@ -78,7 +81,7 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
       final pictures = _pictureList();
       final img = pictures[data.imgIndex];
       if (img is ImageSelected) {
-        pictures[data.imgIndex] = Add();
+        pictures[data.imgIndex] = const Add();
       }
       _modifyPicturesListToHaveCorrectStates(pictures);
       _emitPictureChanges(emit, pictures);
@@ -110,19 +113,19 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
     for (var i = 1; i < pictures.length; i++) {
       if (pictures[i - 1] is ImageSelected && pictures[i] is Hidden) {
         // If previous slot has image, show add button
-        pictures[i] = Add();
+        pictures[i] = const Add();
       } else if (pictures[i - 1] is Add && pictures[i] is ImageSelected) {
         // If previous slot image was removed, move image to previous slot
         pictures[i - 1] = pictures[i];
-        pictures[i] = Add();
+        pictures[i] = const Add();
       } else if (pictures[i - 1] is Add && pictures[i] is Add) {
         // Subsequent add image buttons
-        pictures[i] = Hidden();
+        pictures[i] = const Hidden();
       } else if (pictures[i - 1] is Add && pictures[i] is ImageSelected) {
         // Image was drag and dropped to empty slot.
         // This is currently prevented from UI code.
         pictures[i - 1] = pictures[i];
-        pictures[i] = Add();
+        pictures[i] = const Add();
       }
     }
   }
@@ -169,6 +172,13 @@ class InitialSetupSecuritySelfie extends SelectedImageInfo {
   InitialSetupSecuritySelfie(this.profileImagesIndex);
 }
 class ProfileImage extends SelectedImageInfo {
-  final ProcessedAccountImage img;
-  ProfileImage(this.img);
+  final AccountImageId id;
+  final int profileImagesIndex;
+  ProfileImage(this.id, this.profileImagesIndex);
+}
+
+class AccountImageId {
+  final AccountId accountId;
+  final ContentId contentId;
+  AccountImageId(this.accountId, this.contentId);
 }

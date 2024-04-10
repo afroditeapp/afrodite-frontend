@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
-import 'package:pihka_frontend/logic/profile/location.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin.dart';
 import 'package:pihka_frontend/ui/normal/settings/blocked_profiles.dart';
 import 'package:pihka_frontend/ui/normal/settings/debug.dart';
@@ -20,7 +19,7 @@ class SettingsView extends BottomNavigationScreen {
   const SettingsView({Key? key}) : super(key: key);
 
   @override
-  _SettingsViewState createState() => _SettingsViewState();
+  State<SettingsView> createState() => _SettingsViewState();
 
   @override
   List<Widget> actions(BuildContext context) {

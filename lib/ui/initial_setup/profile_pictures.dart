@@ -7,6 +7,7 @@ import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/logic/media/profile_pictures.dart";
 import "package:pihka_frontend/ui/initial_setup/profile_basic_info.dart";
+import "package:pihka_frontend/ui/normal/settings/media/select_content.dart";
 import "package:pihka_frontend/ui_utils/consts/corners.dart";
 import "package:pihka_frontend/ui_utils/crop_image_screen.dart";
 import "package:pihka_frontend/ui_utils/dialog.dart";
@@ -76,16 +77,18 @@ class _AskProfilePicturesState extends State<AskProfilePictures> {
 
 
 class ProfilePictureSelection extends StatefulWidget {
-  final PictureSelectionMode mode;
+  /// If [mode] is null, the [ProfilePicturesBloc] should be used manually to
+  /// init state.
+  final PictureSelectionMode? mode;
   final ProfilePicturesBloc profilePicturesBloc;
   const ProfilePictureSelection({
-    required this.mode,
+    this.mode,
     required this.profilePicturesBloc,
     Key? key,
   }) : super(key: key);
 
   @override
-  _ProfilePictureSelection createState() => _ProfilePictureSelection();
+  State<ProfilePictureSelection> createState() => _ProfilePictureSelection();
 }
 
 class _ProfilePictureSelection extends State<ProfilePictureSelection> {
@@ -93,7 +96,10 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
   @override
   void initState() {
     super.initState();
-    widget.profilePicturesBloc.add(ResetIfModeChanges(widget.mode));
+    final mode = widget.mode;
+    if (mode != null) {
+      widget.profilePicturesBloc.add(ResetIfModeChanges(mode));
+    }
   }
 
   @override
@@ -110,7 +116,11 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
         // Zero sized widgets
         ...imageProcessingUiWidgets<ProfilePicturesImageProcessingBloc>(
           onComplete: (context, processedImg) {
-            widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(processedImg)));
+            final id = AccountImageId(processedImg.accountId, processedImg.contentId);
+            // Initial setup uses slot 0 for security selfie.
+            // Other uploads are in slots 1-4. The UI logic uses 0-3 indexes.
+            final index = processedImg.slot - 1;
+            widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(id, index)));
           },
         ),
       ],
@@ -215,14 +225,18 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     );
   }
 
-  ProcessedAccountImage? getProcessedAccountImage(BuildContext context, ImgState imgState) {
+  AccountImageId? getProcessedAccountImage(BuildContext context, ImgState imgState) {
     if (imgState is ImageSelected) {
-      final info = imgState.img;
-      switch (info) {
+      switch (imgState.img) {
         case InitialSetupSecuritySelfie():
-          return context.read<InitialSetupBloc>().state.securitySelfie;
-        case ProfileImage(:final img):
-          return img;
+          final securitySelfie = context.read<InitialSetupBloc>().state.securitySelfie;
+          if (securitySelfie != null) {
+            return AccountImageId(securitySelfie.accountId, securitySelfie.contentId);
+          } else {
+            return null;
+          }
+        case ProfileImage(:final id):
+          return id;
       }
     } else {
       return null;
@@ -275,7 +289,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
 
 Future<void> openEditThumbnail(
   BuildContext context,
-  ProcessedAccountImage img,
+  AccountImageId img,
   CropResults currentCrop,
   int imgStateIndex,
 ) async {
@@ -445,8 +459,12 @@ class AddPicture extends StatelessWidget {
     );
   }
 
-  void openActionDialog(BuildContext context) {
-
+  void openActionDialog(BuildContext context) async {
+    final bloc = context.read<ProfilePicturesBloc>();
+    final selectedImg = await Navigator.push(context, MaterialPageRoute<AccountImageId?>(builder: (_) => const SelectContentPage()));
+    if (selectedImg != null) {
+      bloc.add(AddProcessedImage(ProfileImage(selectedImg, imgIndex)));
+    }
   }
 }
 
@@ -491,7 +509,7 @@ class HiddenThumbnailPicture extends StatelessWidget {
 
 
 class FilePicture extends StatelessWidget {
-  final ProcessedAccountImage img;
+  final AccountImageId img;
   final int imgIndex;
 
   const FilePicture({required this.img, required this.imgIndex, Key? key}) : super(key: key);
@@ -618,7 +636,7 @@ class FilePicture extends StatelessWidget {
 
 
 class VisibleThumbnailPicture extends StatelessWidget {
-  final ProcessedAccountImage img;
+  final AccountImageId img;
   final CropResults cropResults;
   final int imgIndex;
 
@@ -631,7 +649,7 @@ class VisibleThumbnailPicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProfileThumbnailImage.fromProcessedImage(
+    return ProfileThumbnailImage.fromAccountImageId(
       img: img,
       cropResults: cropResults,
       width: THUMBNAIL_SIZE,

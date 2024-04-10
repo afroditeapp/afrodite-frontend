@@ -33,29 +33,48 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
           final initial = state.profileInitial;
           if (ageIsValid(age) && initialIsValid(initial)) {
             return () {
-              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => AskGenderScreen()));
+              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const AskGenderScreen()));
             };
           } else {
             return null;
           }
         },
-        question: AskProfileBasicInfo(
-          profileInitialInitialValue: profileInitial,
-          ageInitialValue: ageString
+        question: Column(
+          children: [
+            questionTitleText(context, context.strings.initial_setup_screen_profile_basic_info_title),
+            AskProfileBasicInfo(
+              profileInitialInitialValue: profileInitial,
+              setterProfileInitial: (value) {
+                context.read<InitialSetupBloc>().add(SetInitialLetter(value));
+              },
+              ageInitialValue: ageString,
+              setterProfileAge: (value) {
+                context.read<InitialSetupBloc>().add(SetProfileAge(value));
+              },
+            ),
+          ],
         ),
       ),
     );
   }
+}
 
-  bool initialIsValid(String? initial) {
-    return initial != null && initialLetterRegexp.hasMatch(initial);
-  }
+bool initialIsValid(String? initial) {
+  return initial != null && initialLetterRegexp.hasMatch(initial);
 }
 
 class AskProfileBasicInfo extends StatefulWidget {
   final String profileInitialInitialValue;
   final String ageInitialValue;
-  const AskProfileBasicInfo({required this.profileInitialInitialValue, required this.ageInitialValue, super.key});
+  final void Function(String) setterProfileInitial;
+  final void Function(int?) setterProfileAge;
+  const AskProfileBasicInfo({
+    required this.profileInitialInitialValue,
+    required this.ageInitialValue,
+    required this.setterProfileInitial,
+    required this.setterProfileAge,
+    super.key,
+  });
 
   @override
   State<AskProfileBasicInfo> createState() => _AskProfileBasicInfoState();
@@ -76,7 +95,6 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        questionTitleText(context, context.strings.initial_setup_screen_profile_basic_info_title),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: INITIAL_SETUP_PADDING),
           child: askInfo(context),
@@ -88,7 +106,7 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
   Widget askInfo(BuildContext context) {
     final initialField = TextField(
       decoration: InputDecoration(
-          hintText: context.strings.initial_setup_screen_profile_basic_info_initial_hint_text,
+        hintText: context.strings.initial_setup_screen_profile_basic_info_initial_hint_text,
       ),
       controller: initialTextController,
       textCapitalization: TextCapitalization.characters,
@@ -100,7 +118,7 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
         if (value != inUppercase) {
           initialTextController.text = inUppercase;
         }
-        context.read<InitialSetupBloc>().add(SetInitialLetter(inUppercase));
+        widget.setterProfileInitial(inUppercase);
       },
       inputFormatters: [
         FilteringTextInputFormatter.allow(initialLetterRegexp),
@@ -111,7 +129,7 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
       getInitialValue: () => widget.ageInitialValue,
       onChanged: (value) {
         final age = int.tryParse(value);
-        context.read<InitialSetupBloc>().add(SetProfileAge(age));
+        widget.setterProfileAge(age);
       },
     );
 

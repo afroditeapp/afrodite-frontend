@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/media/content.dart';
-import 'package:pihka_frontend/logic/profile/profile.dart';
+import 'package:pihka_frontend/logic/media/profile_pictures.dart';
+import 'package:pihka_frontend/logic/profile/edit_my_profile/edit_my_profile.dart';
+import 'package:pihka_frontend/logic/profile/my_profile/my_profile.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
@@ -19,13 +21,27 @@ class MyProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(context.strings.view_profile_screen_my_profile_title)),
       body: myProfilePage(context),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute<void>(builder: (_) => const EditProfilePage())
-        ),
-        tooltip: context.strings.view_profile_screen_my_profile_edit_action,
-        child: const Icon(Icons.edit),
+      floatingActionButton: BlocBuilder<MyProfileBloc, MyProfileData>(
+        builder: ((context, state) {
+          final profile = state.profile;
+          void Function()? onPressed;
+          if (profile != null) {
+            onPressed = () => Navigator.push(
+              context,
+              MaterialPageRoute<void>(builder: (_) => EditProfilePage(
+                initialProfile: profile,
+                profilePicturesBloc: context.read<ProfilePicturesBloc>(),
+                editMyProfileBloc: context.read<EditMyProfileBloc>(),
+              ))
+            );
+          }
+
+          return FloatingActionButton(
+            onPressed: onPressed,
+            tooltip: context.strings.view_profile_screen_my_profile_edit_action,
+            child: const Icon(Icons.edit),
+          );
+        })
       ),
     );
   }

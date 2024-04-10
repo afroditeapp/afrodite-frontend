@@ -147,10 +147,7 @@ class LoadingDialogManager {
         content: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: CircularProgressIndicator(),
-            ),
+            commonLoadingDialogIndicator(),
             loadingInfo,
             // Use BlocBuilder (instead of BlocListener) as it gets the initial state as well.
             BlocBuilder<B, S>(
@@ -173,4 +170,12 @@ class LoadingDialogManager {
       ),
     );
   }
+}
+
+
+Widget commonLoadingDialogIndicator() {
+  return const Padding(
+    padding: EdgeInsets.all(8.0),
+    child: CircularProgressIndicator(),
+  );
 }
