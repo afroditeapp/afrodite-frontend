@@ -4,6 +4,7 @@ import "package:intl/intl.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/account.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
+import "package:pihka_frontend/model/freezed/logic/account/account.dart";
 import "package:pihka_frontend/ui/initial_setup/birthdate.dart";
 import "package:pihka_frontend/ui/initial_setup/gender.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";

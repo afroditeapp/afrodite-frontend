@@ -6,7 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/profile_entry.dart';
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/profile/view_profiles/view_profiles.dart';
+import 'package:pihka_frontend/logic/profile/view_profiles.dart';
+import 'package:pihka_frontend/model/freezed/logic/profile/view_profiles.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
 

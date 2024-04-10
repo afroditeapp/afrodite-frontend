@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:pihka_frontend/logic/account/demo_account.dart";
+import "package:pihka_frontend/model/freezed/logic/account/demo_account.dart";
 import "package:pihka_frontend/ui_utils/dialog.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
 import "package:pihka_frontend/ui_utils/app_bar/common_actions.dart";

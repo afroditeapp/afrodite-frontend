@@ -7,6 +7,8 @@ import "package:logging/logging.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
+import "package:pihka_frontend/model/freezed/logic/account/initial_setup.dart";
+import "package:pihka_frontend/model/freezed/logic/media/image_processing.dart";
 import "package:pihka_frontend/ui/initial_setup/profile_pictures.dart";
 import "package:pihka_frontend/ui_utils/consts/padding.dart";
 import "package:pihka_frontend/ui_utils/image.dart";

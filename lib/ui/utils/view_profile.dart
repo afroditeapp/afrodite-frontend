@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/profile_entry.dart';
-import 'package:pihka_frontend/logic/profile/attributes/attributes.dart';
+import 'package:pihka_frontend/logic/profile/attributes.dart';
+import 'package:pihka_frontend/model/freezed/logic/profile/attributes.dart';
 import 'package:pihka_frontend/ui/initial_setup/profile_attributes.dart';
 
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';

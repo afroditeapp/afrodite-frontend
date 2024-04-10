@@ -5,23 +5,13 @@ import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/localizations.dart";
+import "package:pihka_frontend/model/freezed/logic/account/demo_account.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 import "package:pihka_frontend/utils/result.dart";
 
-part 'demo_account.freezed.dart';
 
 var log = Logger("DemoAccountBloc");
-
-@freezed
-class DemoAccountBlocData with _$DemoAccountBlocData {
-  factory DemoAccountBlocData({
-    String? userId,
-    String? password,
-    @Default(false) bool loginProgressVisible,
-    @Default([]) List<AccessibleAccount> accounts,
-  }) = _DemoAccountBlocData;
-}
 
 abstract class DemoAccountEvent {}
 class DoDemoAccountLogin extends DemoAccountEvent {

@@ -5,8 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/media/content.dart';
 import 'package:pihka_frontend/logic/media/profile_pictures.dart';
-import 'package:pihka_frontend/logic/profile/edit_my_profile/edit_my_profile.dart';
-import 'package:pihka_frontend/logic/profile/my_profile/my_profile.dart';
+import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
+import 'package:pihka_frontend/logic/profile/my_profile.dart';
+import 'package:pihka_frontend/model/freezed/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
 

@@ -4,20 +4,11 @@ import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/database/database_manager.dart";
 import "package:pihka_frontend/database/profile_entry.dart";
+import "package:pihka_frontend/model/freezed/logic/profile/edit_my_profile.dart";
 import "package:pihka_frontend/utils.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
-
-part 'edit_my_profile.freezed.dart';
-
-@freezed
-class EditMyProfileData with _$EditMyProfileData {
-  factory EditMyProfileData({
-    int? age,
-    String? initial,
-  }) = _EditMyProfileData;
-}
 
 sealed class EditMyProfileEvent {}
 class SetInitialValues extends EditMyProfileEvent {

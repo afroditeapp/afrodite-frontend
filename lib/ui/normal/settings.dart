@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin.dart';
 import 'package:pihka_frontend/ui/normal/settings/blocked_profiles.dart';
 import 'package:pihka_frontend/ui/normal/settings/debug.dart';

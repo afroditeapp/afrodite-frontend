@@ -1,26 +1,13 @@
 
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
+import "package:pihka_frontend/model/freezed/logic/profile/profile_filtering_settings.dart";
 import "package:pihka_frontend/utils.dart";
 
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 
-part 'profile_filtering_settings.freezed.dart';
-
-@freezed
-class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData {
-  const ProfileFilteringSettingsData._();
-
-  factory ProfileFilteringSettingsData({
-    @Default(false) bool showOnlyFavorites,
-  }) = _ProfileFilteringSettingsData;
-
-  bool isSomeFilterEnabled() {
-    return showOnlyFavorites;
-  }
-}
 
 sealed class ProfileFilteringSettingsEvent {}
 class ShowOnlyFavoritesChange extends ProfileFilteringSettingsEvent {

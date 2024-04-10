@@ -8,34 +8,14 @@ import "package:pihka_frontend/data/chat_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/database/profile_entry.dart";
+import "package:pihka_frontend/model/freezed/logic/profile/view_profiles.dart";
 import "package:pihka_frontend/utils.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 
-part 'view_profiles.freezed.dart';
 
 final log = Logger("ViewProfilesBloc");
-
-enum ProfileActionState {
-  like,
-  removeLike,
-  makeMatch,
-  chat,
-}
-
-@freezed
-class ViewProfilesData with _$ViewProfilesData {
-  factory ViewProfilesData({
-    required ProfileEntry profile,
-    @Default(FavoriteStateIdle(false)) FavoriteState isFavorite,
-    @Default(ProfileActionState.like) ProfileActionState profileActionState,
-    @Default(false) bool isNotAvailable,
-    @Default(false) bool isBlocked,
-    @Default(false) bool showLikeCompleted,
-    @Default(false) bool showRemoveLikeCompleted,
-  }) = _ViewProfilesData;
-}
 
 sealed class ViewProfileEvent {}
 class SetProfileView extends ViewProfileEvent {
@@ -244,17 +224,4 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
     await _profileChangeSubscription?.cancel();
     return super.close();
   }
-}
-
-sealed class FavoriteState {
-  final bool isFavorite;
-  const FavoriteState(this.isFavorite);
-}
-
-class FavoriteStateChangeInProgress extends FavoriteState {
-  const FavoriteStateChangeInProgress(super.isFavorite);
-}
-
-class FavoriteStateIdle extends FavoriteState {
-  const FavoriteStateIdle(super.isFavorite);
 }

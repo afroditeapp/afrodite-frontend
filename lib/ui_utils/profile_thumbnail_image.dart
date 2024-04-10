@@ -7,9 +7,10 @@ import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/database/profile_entry.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
 import 'package:pihka_frontend/logic/media/profile_pictures.dart';
+import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/ui_utils/consts/corners.dart';
 import 'package:pihka_frontend/ui_utils/crop_image_screen.dart';
-import 'package:pihka_frontend/utils/account_img_key.dart';
+import 'package:pihka_frontend/model/freezed/utils/account_img_key.dart';
 
 
 class ProfileThumbnailImage extends StatefulWidget {

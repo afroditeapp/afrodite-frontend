@@ -13,7 +13,7 @@ import 'package:pihka_frontend/ui/normal/settings/location.dart';
 import 'package:pihka_frontend/utils.dart';
 
 import 'package:image/image.dart' as img;
-import 'package:pihka_frontend/utils/account_img_key.dart';
+import 'package:pihka_frontend/model/freezed/utils/account_img_key.dart';
 import 'package:pihka_frontend/utils/tmp_dir.dart';
 
 var log = Logger("ImageCacheData");

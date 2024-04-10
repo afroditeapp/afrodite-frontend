@@ -6,6 +6,7 @@ import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/logic/media/profile_pictures.dart";
+import "package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart";
 import "package:pihka_frontend/ui/initial_setup/profile_basic_info.dart";
 import "package:pihka_frontend/ui/normal/settings/media/select_content.dart";
 import "package:pihka_frontend/ui_utils/consts/corners.dart";

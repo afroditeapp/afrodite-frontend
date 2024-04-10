@@ -7,6 +7,8 @@ import "package:pihka_frontend/logic/account/account.dart";
 
 import "package:pihka_frontend/logic/app/notification_permission.dart";
 import "package:pihka_frontend/logic/media/content.dart";
+import "package:pihka_frontend/model/freezed/logic/account/account.dart";
+import "package:pihka_frontend/model/freezed/logic/media/content.dart";
 import "package:pihka_frontend/ui/normal/chat.dart";
 import "package:pihka_frontend/ui/normal/likes.dart";
 import "package:pihka_frontend/ui/normal/profiles.dart";

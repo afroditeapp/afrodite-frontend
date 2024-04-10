@@ -6,6 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/profile_entry.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
+import 'package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/ui/normal/chat/cache.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_renderer.dart';
 import 'package:pihka_frontend/ui/normal/chat/one_ended_list.dart';

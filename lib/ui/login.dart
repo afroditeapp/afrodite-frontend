@@ -5,6 +5,7 @@ import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/logic/server/address.dart";
 import "package:pihka_frontend/logic/sign_in_with.dart";
+import "package:pihka_frontend/model/freezed/logic/account/account.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
 
 import "package:sign_in_with_apple/sign_in_with_apple.dart";

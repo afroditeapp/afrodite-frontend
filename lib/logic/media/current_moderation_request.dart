@@ -5,18 +5,11 @@ import "package:openapi/api.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
 import "package:pihka_frontend/api/api_manager.dart";
 import "package:pihka_frontend/data/media_repository.dart";
+import "package:pihka_frontend/model/freezed/logic/media/current_moderation_request.dart";
 import "package:pihka_frontend/utils.dart";
-
-part 'current_moderation_request.freezed.dart';
 
 final log = Logger("CurrentModerationRequestBloc");
 
-@freezed
-class CurrentModerationRequestData with _$CurrentModerationRequestData {
-  factory CurrentModerationRequestData({
-    ModerationRequest? moderationRequest,
-  }) = _CurrentModerationRequestData;
-}
 
 sealed class CurrentModerationRequestEvent {}
 class Reload extends CurrentModerationRequestEvent {}

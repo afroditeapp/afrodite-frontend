@@ -26,12 +26,12 @@ import 'package:pihka_frontend/logic/media/content.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
 import 'package:pihka_frontend/logic/media/profile_pictures.dart';
-import 'package:pihka_frontend/logic/profile/attributes/attributes.dart';
-import 'package:pihka_frontend/logic/profile/edit_my_profile/edit_my_profile.dart';
+import 'package:pihka_frontend/logic/profile/attributes.dart';
+import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
 import 'package:pihka_frontend/logic/profile/location.dart';
-import 'package:pihka_frontend/logic/profile/my_profile/my_profile.dart';
-import 'package:pihka_frontend/logic/profile/profile_filtering_settings/profile_filtering_settings.dart';
-import 'package:pihka_frontend/logic/profile/view_profiles/view_profiles.dart';
+import 'package:pihka_frontend/logic/profile/my_profile.dart';
+import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
+import 'package:pihka_frontend/logic/profile/view_profiles.dart';
 import 'package:pihka_frontend/logic/server/address.dart';
 import 'package:pihka_frontend/logic/sign_in_with.dart';
 

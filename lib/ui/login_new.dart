@@ -7,6 +7,7 @@ import "package:pihka_frontend/assets.dart";
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/logic/account/demo_account.dart";
 import "package:pihka_frontend/logic/sign_in_with.dart";
+import "package:pihka_frontend/model/freezed/logic/account/demo_account.dart";
 import "package:pihka_frontend/ui/login.dart";
 import "package:pihka_frontend/ui_utils/consts/colors.dart";
 import "package:pihka_frontend/ui_utils/loading_dialog.dart";

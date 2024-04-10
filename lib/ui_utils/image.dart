@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/utils/account_img_key.dart';
+import 'package:pihka_frontend/model/freezed/utils/account_img_key.dart';
 
 /// Widget for showing account image. It will show progress indicator while
 /// image is being loaded.
