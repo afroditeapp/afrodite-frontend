@@ -6,6 +6,7 @@ import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/model/freezed/logic/account/demo_account.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
+import "package:pihka_frontend/utils/immutable_list.dart";
 import "package:pihka_frontend/utils/result.dart";
 
 
@@ -43,7 +44,7 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
     super(DemoAccountBlocData()) {
     on<DoDemoAccountLogin>((data, emit) async {
       // Possibly prevent displaying account info from another demo account.
-      emit(state.copyWith(accounts: []));
+      emit(state.copyWith(accounts: const UnmodifiableList.empty()));
 
       switch (await login.demoAccountLogin(data.credentials)) {
         case Ok(v: ()):
@@ -60,7 +61,7 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
       switch (await login.demoAccountGetAccounts()) {
         case Ok(:final v):
           log.info("Demo account list received");
-          emit(state.copyWith(accounts: v));
+          emit(state.copyWith(accounts: UnmodifiableList(v)));
         case Err(e: SessionExpired()):
           log.info("Demo account session expired");
           showSnackBar(R.strings.login_screen_demo_account_login_session_expired);

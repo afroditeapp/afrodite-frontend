@@ -24,13 +24,13 @@ mixin _$DemoAccountBlocData {
   String? get userId => throw _privateConstructorErrorDemoAccountBlocData;
   String? get password => throw _privateConstructorErrorDemoAccountBlocData;
   bool get loginProgressVisible => throw _privateConstructorErrorDemoAccountBlocData;
-  List<AccessibleAccount> get accounts => throw _privateConstructorErrorDemoAccountBlocData;
+  UnmodifiableList<AccessibleAccount> get accounts => throw _privateConstructorErrorDemoAccountBlocData;
 
   DemoAccountBlocData copyWith({
     String? userId,
     String? password,
     bool? loginProgressVisible,
-    List<AccessibleAccount>? accounts,
+    UnmodifiableList<AccessibleAccount>? accounts,
   }) => throw _privateConstructorErrorDemoAccountBlocData;
 }
 
@@ -40,14 +40,14 @@ abstract class _DemoAccountBlocData implements DemoAccountBlocData {
     String? userId,
     String? password,
     bool loginProgressVisible,
-    List<AccessibleAccount> accounts,
+    UnmodifiableList<AccessibleAccount> accounts,
   }) = _$DemoAccountBlocDataImpl;
 }
 
 /// @nodoc
 class _$DemoAccountBlocDataImpl with DiagnosticableTreeMixin implements _DemoAccountBlocData {
   static const bool _loginProgressVisibleDefaultValue = false;
-  static const List<AccessibleAccount> _accountsDefaultValue = [];
+  static const UnmodifiableList<AccessibleAccount> _accountsDefaultValue = UnmodifiableList<AccessibleAccount>.empty();
   
   _$DemoAccountBlocDataImpl({
     this.userId,
@@ -63,7 +63,7 @@ class _$DemoAccountBlocDataImpl with DiagnosticableTreeMixin implements _DemoAcc
   @override
   final bool loginProgressVisible;
   @override
-  final List<AccessibleAccount> accounts;
+  final UnmodifiableList<AccessibleAccount> accounts;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -116,6 +116,6 @@ class _$DemoAccountBlocDataImpl with DiagnosticableTreeMixin implements _DemoAcc
     userId: (userId == _detectDefaultValueInCopyWith ? this.userId : userId) as String?,
     password: (password == _detectDefaultValueInCopyWith ? this.password : password) as String?,
     loginProgressVisible: (loginProgressVisible ?? this.loginProgressVisible) as bool,
-    accounts: (accounts ?? this.accounts) as List<AccessibleAccount>,
+    accounts: (accounts ?? this.accounts) as UnmodifiableList<AccessibleAccount>,
   );
 }

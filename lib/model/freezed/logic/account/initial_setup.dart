@@ -7,6 +7,7 @@ import "package:freezed_annotation/freezed_annotation.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/model/freezed/logic/media/image_processing.dart";
 import "package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart";
+import "package:pihka_frontend/utils/immutable_list.dart";
 
 part 'initial_setup.freezed.dart';
 
@@ -18,7 +19,7 @@ class InitialSetupData with _$InitialSetupData {
     String? profileInitial,
     int? profileAge,
     ProcessedAccountImage? securitySelfie,
-    List<ImgState>? profileImages,
+    ImmutableList<ImgState>? profileImages,
     Gender? gender,
     @Default(GenderSearchSettingsAll()) GenderSearchSettingsAll genderSearchSetting,
     @Default(false) bool searchAgeRangeInitDone,

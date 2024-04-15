@@ -37,8 +37,8 @@ class NormalProfilePictures extends PictureSelectionMode {
   const NormalProfilePictures();
 }
 
-
-sealed class ImgState {
+@immutable
+sealed class ImgState extends Immutable {
   const ImgState();
 }
 class Hidden extends ImgState {

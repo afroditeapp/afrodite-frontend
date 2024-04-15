@@ -9,6 +9,7 @@ import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/utils/immutable_list.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("InitialSetupUtils");
@@ -228,7 +229,7 @@ class InitialSetupUtils {
 
 Result<SetProfileContent, ()> createProfileContent(
   ContentId securitySelfie,
-  List<ImgState> imgs,
+  ImmutableList<ImgState> imgs,
 ) {
   double? gridCropSize;
   double? gridCropX;

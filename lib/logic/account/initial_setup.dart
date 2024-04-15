@@ -16,6 +16,7 @@ import "package:pihka_frontend/model/freezed/logic/media/image_processing.dart";
 import "package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
+import "package:pihka_frontend/utils/immutable_list.dart";
 import "package:pihka_frontend/utils/tmp_dir.dart";
 
 
@@ -132,7 +133,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
     });
     on<SetProfileImages>((data, emit) async {
       emit(state.copyWith(
-        profileImages: data.profileImages,
+        profileImages: ImmutableList(data.profileImages),
       ));
     });
     on<SetGender>((data, emit) async {

@@ -26,7 +26,7 @@ mixin _$InitialSetupData {
   String? get profileInitial => throw _privateConstructorErrorInitialSetupData;
   int? get profileAge => throw _privateConstructorErrorInitialSetupData;
   ProcessedAccountImage? get securitySelfie => throw _privateConstructorErrorInitialSetupData;
-  List<ImgState>? get profileImages => throw _privateConstructorErrorInitialSetupData;
+  ImmutableList<ImgState>? get profileImages => throw _privateConstructorErrorInitialSetupData;
   Gender? get gender => throw _privateConstructorErrorInitialSetupData;
   GenderSearchSettingsAll get genderSearchSetting => throw _privateConstructorErrorInitialSetupData;
   bool get searchAgeRangeInitDone => throw _privateConstructorErrorInitialSetupData;
@@ -42,7 +42,7 @@ mixin _$InitialSetupData {
     String? profileInitial,
     int? profileAge,
     ProcessedAccountImage? securitySelfie,
-    List<ImgState>? profileImages,
+    ImmutableList<ImgState>? profileImages,
     Gender? gender,
     GenderSearchSettingsAll? genderSearchSetting,
     bool? searchAgeRangeInitDone,
@@ -62,7 +62,7 @@ abstract class _InitialSetupData implements InitialSetupData {
     String? profileInitial,
     int? profileAge,
     ProcessedAccountImage? securitySelfie,
-    List<ImgState>? profileImages,
+    ImmutableList<ImgState>? profileImages,
     Gender? gender,
     GenderSearchSettingsAll genderSearchSetting,
     bool searchAgeRangeInitDone,
@@ -109,7 +109,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   @override
   final ProcessedAccountImage? securitySelfie;
   @override
-  final List<ImgState>? profileImages;
+  final ImmutableList<ImgState>? profileImages;
   @override
   final Gender? gender;
   @override
@@ -209,7 +209,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
     profileInitial: (profileInitial == _detectDefaultValueInCopyWith ? this.profileInitial : profileInitial) as String?,
     profileAge: (profileAge == _detectDefaultValueInCopyWith ? this.profileAge : profileAge) as int?,
     securitySelfie: (securitySelfie == _detectDefaultValueInCopyWith ? this.securitySelfie : securitySelfie) as ProcessedAccountImage?,
-    profileImages: (profileImages == _detectDefaultValueInCopyWith ? this.profileImages : profileImages) as List<ImgState>?,
+    profileImages: (profileImages == _detectDefaultValueInCopyWith ? this.profileImages : profileImages) as ImmutableList<ImgState>?,
     gender: (gender == _detectDefaultValueInCopyWith ? this.gender : gender) as Gender?,
     genderSearchSetting: (genderSearchSetting ?? this.genderSearchSetting) as GenderSearchSettingsAll,
     searchAgeRangeInitDone: (searchAgeRangeInitDone ?? this.searchAgeRangeInitDone) as bool,

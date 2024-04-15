@@ -86,6 +86,8 @@ dependencies:
 
   flutter_secure_storage: ^9.0.0
 
+  meta: ^1.14.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
