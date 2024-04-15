@@ -15,11 +15,11 @@
   "@camera_screen_camera_initialization_error": {
     "description": "Error text displayed when camera initialization fails"
   },
-  "camera_screen_camera_initialization_error_with_error_code": "Camera initialization failed. Error code: {param0}",
+  "camera_screen_camera_initialization_error_with_error_code": "Camera initialization failed. Error code: {p0}",
   "@camera_screen_camera_initialization_error_with_error_code": {
     "description": "Error text displayed when camera initialization fails and error code exists",
     "placeholders": {
-      "param0": {
+      "p0": {
         "type": "String"
       }
     }
@@ -177,11 +177,11 @@
   "@image_processing_ui_upload_failed_dialog_title": {
     "description": "Progress dialog info text that security selfie upload failed"
   },
-  "image_processing_ui_upload_in_processing_queue_dialog_description": "Waiting for processing. Queue number: {param0}",
+  "image_processing_ui_upload_in_processing_queue_dialog_description": "Waiting for processing. Queue number: {p0}",
   "@image_processing_ui_upload_in_processing_queue_dialog_description": {
     "description": "Progress dialog info text that security selfie is currently in server's processing queue",
     "placeholders": {
-      "param0": {
+      "p0": {
         "type": "String"
       }
     }
@@ -418,11 +418,11 @@
   "@profile_grid_screen_initial_moderation_ongoing": {
     "description": "Info text that initial moderation is ongoing"
   },
-  "profile_grid_screen_initial_moderation_waiting": "Your position in moderation queue: {param0}",
+  "profile_grid_screen_initial_moderation_waiting": "Your position in moderation queue: {p0}",
   "@profile_grid_screen_initial_moderation_waiting": {
     "description": "Info text that shows initial moderation queue number",
     "placeholders": {
-      "param0": {
+      "p0": {
         "type": "String"
       }
     }
