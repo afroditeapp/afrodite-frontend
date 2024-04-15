@@ -1,218 +1,83 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'conversation_bloc.dart';
 
 // **************************************************************************
-// FreezedGenerator
+// Generated with Icegen
 // **************************************************************************
 
-T _$identity<T>(T value) => value;
+/// @nodoc
+class _DetectDefaultValueInCopyWith {
+  const _DetectDefaultValueInCopyWith();
+}
 
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+/// @nodoc
+const _detectDefaultValueInCopyWith = _DetectDefaultValueInCopyWith();
+
+/// @nodoc
+final _privateConstructorErrorConversationData = UnsupportedError(
+    'Private constructor ConversationData._() was called. Please call factory constructor instead.');
 
 /// @nodoc
 mixin _$ConversationData {
-  AccountId get accountId => throw _privateConstructorUsedError;
-  String get profileName => throw _privateConstructorUsedError;
-  ContentId get primaryProfileImage => throw _privateConstructorUsedError;
-  bool get isMatch => throw _privateConstructorUsedError;
-  bool get isBlocked => throw _privateConstructorUsedError;
+  AccountId get accountId => throw _privateConstructorErrorConversationData;
+  String get profileName => throw _privateConstructorErrorConversationData;
+  ContentId get primaryProfileImage => throw _privateConstructorErrorConversationData;
+  bool get isMatch => throw _privateConstructorErrorConversationData;
+  bool get isBlocked => throw _privateConstructorErrorConversationData;
+  bool get isSendSuccessful => throw _privateConstructorErrorConversationData;
+  int get messageCount => throw _privateConstructorErrorConversationData;
+  ConversationChangeType? get messageCountChangeInfo => throw _privateConstructorErrorConversationData;
+  MessageList get initialMessages => throw _privateConstructorErrorConversationData;
 
-  /// Resets chat box to empty state
-  bool get isSendSuccessful => throw _privateConstructorUsedError;
-  int get messageCount => throw _privateConstructorUsedError;
-  ConversationChangeType? get messageCountChangeInfo =>
-      throw _privateConstructorUsedError;
-  MessageList get initialMessages => throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $ConversationDataCopyWith<ConversationData> get copyWith =>
-      throw _privateConstructorUsedError;
+  ConversationData copyWith({
+    AccountId? accountId,
+    String? profileName,
+    ContentId? primaryProfileImage,
+    bool? isMatch,
+    bool? isBlocked,
+    bool? isSendSuccessful,
+    int? messageCount,
+    ConversationChangeType? messageCountChangeInfo,
+    MessageList? initialMessages,
+  }) => throw _privateConstructorErrorConversationData;
 }
 
 /// @nodoc
-abstract class $ConversationDataCopyWith<$Res> {
-  factory $ConversationDataCopyWith(
-          ConversationData value, $Res Function(ConversationData) then) =
-      _$ConversationDataCopyWithImpl<$Res, ConversationData>;
-  @useResult
-  $Res call(
-      {AccountId accountId,
-      String profileName,
-      ContentId primaryProfileImage,
-      bool isMatch,
-      bool isBlocked,
-      bool isSendSuccessful,
-      int messageCount,
-      ConversationChangeType? messageCountChangeInfo,
-      MessageList initialMessages});
+abstract class _ConversationData implements ConversationData {
+  factory _ConversationData({
+    required AccountId accountId,
+    required String profileName,
+    required ContentId primaryProfileImage,
+    bool isMatch,
+    bool isBlocked,
+    bool isSendSuccessful,
+    int messageCount,
+    ConversationChangeType? messageCountChangeInfo,
+    MessageList initialMessages,
+  }) = _$ConversationDataImpl;
 }
 
 /// @nodoc
-class _$ConversationDataCopyWithImpl<$Res, $Val extends ConversationData>
-    implements $ConversationDataCopyWith<$Res> {
-  _$ConversationDataCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? accountId = null,
-    Object? profileName = null,
-    Object? primaryProfileImage = null,
-    Object? isMatch = null,
-    Object? isBlocked = null,
-    Object? isSendSuccessful = null,
-    Object? messageCount = null,
-    Object? messageCountChangeInfo = freezed,
-    Object? initialMessages = null,
-  }) {
-    return _then(_value.copyWith(
-      accountId: null == accountId
-          ? _value.accountId
-          : accountId // ignore: cast_nullable_to_non_nullable
-              as AccountId,
-      profileName: null == profileName
-          ? _value.profileName
-          : profileName // ignore: cast_nullable_to_non_nullable
-              as String,
-      primaryProfileImage: null == primaryProfileImage
-          ? _value.primaryProfileImage
-          : primaryProfileImage // ignore: cast_nullable_to_non_nullable
-              as ContentId,
-      isMatch: null == isMatch
-          ? _value.isMatch
-          : isMatch // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isBlocked: null == isBlocked
-          ? _value.isBlocked
-          : isBlocked // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isSendSuccessful: null == isSendSuccessful
-          ? _value.isSendSuccessful
-          : isSendSuccessful // ignore: cast_nullable_to_non_nullable
-              as bool,
-      messageCount: null == messageCount
-          ? _value.messageCount
-          : messageCount // ignore: cast_nullable_to_non_nullable
-              as int,
-      messageCountChangeInfo: freezed == messageCountChangeInfo
-          ? _value.messageCountChangeInfo
-          : messageCountChangeInfo // ignore: cast_nullable_to_non_nullable
-              as ConversationChangeType?,
-      initialMessages: null == initialMessages
-          ? _value.initialMessages
-          : initialMessages // ignore: cast_nullable_to_non_nullable
-              as MessageList,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$ConversationDataImplCopyWith<$Res>
-    implements $ConversationDataCopyWith<$Res> {
-  factory _$$ConversationDataImplCopyWith(_$ConversationDataImpl value,
-          $Res Function(_$ConversationDataImpl) then) =
-      __$$ConversationDataImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {AccountId accountId,
-      String profileName,
-      ContentId primaryProfileImage,
-      bool isMatch,
-      bool isBlocked,
-      bool isSendSuccessful,
-      int messageCount,
-      ConversationChangeType? messageCountChangeInfo,
-      MessageList initialMessages});
-}
-
-/// @nodoc
-class __$$ConversationDataImplCopyWithImpl<$Res>
-    extends _$ConversationDataCopyWithImpl<$Res, _$ConversationDataImpl>
-    implements _$$ConversationDataImplCopyWith<$Res> {
-  __$$ConversationDataImplCopyWithImpl(_$ConversationDataImpl _value,
-      $Res Function(_$ConversationDataImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? accountId = null,
-    Object? profileName = null,
-    Object? primaryProfileImage = null,
-    Object? isMatch = null,
-    Object? isBlocked = null,
-    Object? isSendSuccessful = null,
-    Object? messageCount = null,
-    Object? messageCountChangeInfo = freezed,
-    Object? initialMessages = null,
-  }) {
-    return _then(_$ConversationDataImpl(
-      accountId: null == accountId
-          ? _value.accountId
-          : accountId // ignore: cast_nullable_to_non_nullable
-              as AccountId,
-      profileName: null == profileName
-          ? _value.profileName
-          : profileName // ignore: cast_nullable_to_non_nullable
-              as String,
-      primaryProfileImage: null == primaryProfileImage
-          ? _value.primaryProfileImage
-          : primaryProfileImage // ignore: cast_nullable_to_non_nullable
-              as ContentId,
-      isMatch: null == isMatch
-          ? _value.isMatch
-          : isMatch // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isBlocked: null == isBlocked
-          ? _value.isBlocked
-          : isBlocked // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isSendSuccessful: null == isSendSuccessful
-          ? _value.isSendSuccessful
-          : isSendSuccessful // ignore: cast_nullable_to_non_nullable
-              as bool,
-      messageCount: null == messageCount
-          ? _value.messageCount
-          : messageCount // ignore: cast_nullable_to_non_nullable
-              as int,
-      messageCountChangeInfo: freezed == messageCountChangeInfo
-          ? _value.messageCountChangeInfo
-          : messageCountChangeInfo // ignore: cast_nullable_to_non_nullable
-              as ConversationChangeType?,
-      initialMessages: null == initialMessages
-          ? _value.initialMessages
-          : initialMessages // ignore: cast_nullable_to_non_nullable
-              as MessageList,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$ConversationDataImpl
-    with DiagnosticableTreeMixin
-    implements _ConversationData {
-  _$ConversationDataImpl(
-      {required this.accountId,
-      required this.profileName,
-      required this.primaryProfileImage,
-      this.isMatch = true,
-      this.isBlocked = false,
-      this.isSendSuccessful = false,
-      this.messageCount = 0,
-      this.messageCountChangeInfo,
-      this.initialMessages = const MessageList([])});
+class _$ConversationDataImpl with DiagnosticableTreeMixin implements _ConversationData {
+  static const bool _isMatchDefaultValue = true;
+  static const bool _isBlockedDefaultValue = false;
+  static const bool _isSendSuccessfulDefaultValue = false;
+  static const int _messageCountDefaultValue = 0;
+  static const MessageList _initialMessagesDefaultValue = MessageList([]);
+  
+  _$ConversationDataImpl({
+    required this.accountId,
+    required this.profileName,
+    required this.primaryProfileImage,
+    this.isMatch = _isMatchDefaultValue,
+    this.isBlocked = _isBlockedDefaultValue,
+    this.isSendSuccessful = _isSendSuccessfulDefaultValue,
+    this.messageCount = _messageCountDefaultValue,
+    this.messageCountChangeInfo,
+    this.initialMessages = _initialMessagesDefaultValue,
+  });
 
   @override
   final AccountId accountId;
@@ -221,23 +86,16 @@ class _$ConversationDataImpl
   @override
   final ContentId primaryProfileImage;
   @override
-  @JsonKey()
   final bool isMatch;
   @override
-  @JsonKey()
   final bool isBlocked;
-
-  /// Resets chat box to empty state
   @override
-  @JsonKey()
   final bool isSendSuccessful;
   @override
-  @JsonKey()
   final int messageCount;
   @override
   final ConversationChangeType? messageCountChangeInfo;
   @override
-  @JsonKey()
   final MessageList initialMessages;
 
   @override
@@ -257,90 +115,70 @@ class _$ConversationDataImpl
       ..add(DiagnosticsProperty('isBlocked', isBlocked))
       ..add(DiagnosticsProperty('isSendSuccessful', isSendSuccessful))
       ..add(DiagnosticsProperty('messageCount', messageCount))
-      ..add(
-          DiagnosticsProperty('messageCountChangeInfo', messageCountChangeInfo))
+      ..add(DiagnosticsProperty('messageCountChangeInfo', messageCountChangeInfo))
       ..add(DiagnosticsProperty('initialMessages', initialMessages));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ConversationDataImpl &&
-            (identical(other.accountId, accountId) ||
-                other.accountId == accountId) &&
-            (identical(other.profileName, profileName) ||
-                other.profileName == profileName) &&
-            (identical(other.primaryProfileImage, primaryProfileImage) ||
-                other.primaryProfileImage == primaryProfileImage) &&
-            (identical(other.isMatch, isMatch) || other.isMatch == isMatch) &&
-            (identical(other.isBlocked, isBlocked) ||
-                other.isBlocked == isBlocked) &&
-            (identical(other.isSendSuccessful, isSendSuccessful) ||
-                other.isSendSuccessful == isSendSuccessful) &&
-            (identical(other.messageCount, messageCount) ||
-                other.messageCount == messageCount) &&
-            (identical(other.messageCountChangeInfo, messageCountChangeInfo) ||
-                other.messageCountChangeInfo == messageCountChangeInfo) &&
-            (identical(other.initialMessages, initialMessages) ||
-                other.initialMessages == initialMessages));
+      (other.runtimeType == runtimeType &&
+        other is _$ConversationDataImpl &&
+        (identical(other.accountId, accountId) ||
+          other.accountId == accountId) &&
+        (identical(other.profileName, profileName) ||
+          other.profileName == profileName) &&
+        (identical(other.primaryProfileImage, primaryProfileImage) ||
+          other.primaryProfileImage == primaryProfileImage) &&
+        (identical(other.isMatch, isMatch) ||
+          other.isMatch == isMatch) &&
+        (identical(other.isBlocked, isBlocked) ||
+          other.isBlocked == isBlocked) &&
+        (identical(other.isSendSuccessful, isSendSuccessful) ||
+          other.isSendSuccessful == isSendSuccessful) &&
+        (identical(other.messageCount, messageCount) ||
+          other.messageCount == messageCount) &&
+        (identical(other.messageCountChangeInfo, messageCountChangeInfo) ||
+          other.messageCountChangeInfo == messageCountChangeInfo) &&
+        (identical(other.initialMessages, initialMessages) ||
+          other.initialMessages == initialMessages)
+    );
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      accountId,
-      profileName,
-      primaryProfileImage,
-      isMatch,
-      isBlocked,
-      isSendSuccessful,
-      messageCount,
-      messageCountChangeInfo,
-      initialMessages);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ConversationDataImplCopyWith<_$ConversationDataImpl> get copyWith =>
-      __$$ConversationDataImplCopyWithImpl<_$ConversationDataImpl>(
-          this, _$identity);
-}
-
-abstract class _ConversationData implements ConversationData {
-  factory _ConversationData(
-      {required final AccountId accountId,
-      required final String profileName,
-      required final ContentId primaryProfileImage,
-      final bool isMatch,
-      final bool isBlocked,
-      final bool isSendSuccessful,
-      final int messageCount,
-      final ConversationChangeType? messageCountChangeInfo,
-      final MessageList initialMessages}) = _$ConversationDataImpl;
+    runtimeType,
+    accountId,
+    profileName,
+    primaryProfileImage,
+    isMatch,
+    isBlocked,
+    isSendSuccessful,
+    messageCount,
+    messageCountChangeInfo,
+    initialMessages,
+  );
 
   @override
-  AccountId get accountId;
-  @override
-  String get profileName;
-  @override
-  ContentId get primaryProfileImage;
-  @override
-  bool get isMatch;
-  @override
-  bool get isBlocked;
-  @override
-
-  /// Resets chat box to empty state
-  bool get isSendSuccessful;
-  @override
-  int get messageCount;
-  @override
-  ConversationChangeType? get messageCountChangeInfo;
-  @override
-  MessageList get initialMessages;
-  @override
-  @JsonKey(ignore: true)
-  _$$ConversationDataImplCopyWith<_$ConversationDataImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  ConversationData copyWith({
+    Object? accountId,
+    Object? profileName,
+    Object? primaryProfileImage,
+    Object? isMatch,
+    Object? isBlocked,
+    Object? isSendSuccessful,
+    Object? messageCount,
+    Object? messageCountChangeInfo = _detectDefaultValueInCopyWith,
+    Object? initialMessages,
+  }) => _$ConversationDataImpl(
+    accountId: (accountId ?? this.accountId) as AccountId,
+    profileName: (profileName ?? this.profileName) as String,
+    primaryProfileImage: (primaryProfileImage ?? this.primaryProfileImage) as ContentId,
+    isMatch: (isMatch ?? this.isMatch) as bool,
+    isBlocked: (isBlocked ?? this.isBlocked) as bool,
+    isSendSuccessful: (isSendSuccessful ?? this.isSendSuccessful) as bool,
+    messageCount: (messageCount ?? this.messageCount) as int,
+    messageCountChangeInfo: (messageCountChangeInfo == _detectDefaultValueInCopyWith ? this.messageCountChangeInfo : messageCountChangeInfo) as ConversationChangeType?,
+    initialMessages: (initialMessages ?? this.initialMessages) as MessageList,
+  );
 }

@@ -10,7 +10,7 @@ update-api-bindings:
 	-o packages/api_client
 
 update-freezed-code:
-	dart run build_runner build
+	icegen --code-dir lib/model/freezed
 
 update-drift-code:
 	cd packages/database
@@ -28,6 +28,9 @@ watch-translations:
 
 watch-translations-linux:
 	fswatch -m poll_monitor -o -e Updated translations/app/src/main/res/values/strings.xml | xargs -n1 -I{} make update-translations
+
+watch-freezed-code:
+	fswatch -o -e Updated lib/model/freezed | xargs -n1 -I{} make update-freezed-code
 
 code-stats:
 	@/bin/echo -n "Lines:"

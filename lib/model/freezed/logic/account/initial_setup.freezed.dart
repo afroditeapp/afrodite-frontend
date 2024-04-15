@@ -1,287 +1,102 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'initial_setup.dart';
 
 // **************************************************************************
-// FreezedGenerator
+// Generated with Icegen
 // **************************************************************************
 
-T _$identity<T>(T value) => value;
+/// @nodoc
+class _DetectDefaultValueInCopyWith {
+  const _DetectDefaultValueInCopyWith();
+}
 
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+/// @nodoc
+const _detectDefaultValueInCopyWith = _DetectDefaultValueInCopyWith();
+
+/// @nodoc
+final _privateConstructorErrorInitialSetupData = UnsupportedError(
+    'Private constructor InitialSetupData._() was called. Please call factory constructor instead.');
 
 /// @nodoc
 mixin _$InitialSetupData {
-  String? get email => throw _privateConstructorUsedError;
-  DateTime? get birthdate => throw _privateConstructorUsedError;
-  String? get profileInitial => throw _privateConstructorUsedError;
-  int? get profileAge => throw _privateConstructorUsedError;
-  ProcessedAccountImage? get securitySelfie =>
-      throw _privateConstructorUsedError;
-  List<ImgState>? get profileImages => throw _privateConstructorUsedError;
-  Gender? get gender => throw _privateConstructorUsedError;
-  GenderSearchSettingsAll get genderSearchSetting =>
-      throw _privateConstructorUsedError;
-  bool get searchAgeRangeInitDone => throw _privateConstructorUsedError;
-  int? get searchAgeRangeMin => throw _privateConstructorUsedError;
-  int? get searchAgeRangeMax => throw _privateConstructorUsedError;
-  LatLng? get profileLocation => throw _privateConstructorUsedError;
-  ProfileAttributesState get profileAttributes =>
-      throw _privateConstructorUsedError;
-  bool get sendingInProgress => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorErrorInitialSetupData;
+  DateTime? get birthdate => throw _privateConstructorErrorInitialSetupData;
+  String? get profileInitial => throw _privateConstructorErrorInitialSetupData;
+  int? get profileAge => throw _privateConstructorErrorInitialSetupData;
+  ProcessedAccountImage? get securitySelfie => throw _privateConstructorErrorInitialSetupData;
+  List<ImgState>? get profileImages => throw _privateConstructorErrorInitialSetupData;
+  Gender? get gender => throw _privateConstructorErrorInitialSetupData;
+  GenderSearchSettingsAll get genderSearchSetting => throw _privateConstructorErrorInitialSetupData;
+  bool get searchAgeRangeInitDone => throw _privateConstructorErrorInitialSetupData;
+  int? get searchAgeRangeMin => throw _privateConstructorErrorInitialSetupData;
+  int? get searchAgeRangeMax => throw _privateConstructorErrorInitialSetupData;
+  LatLng? get profileLocation => throw _privateConstructorErrorInitialSetupData;
+  ProfileAttributesState get profileAttributes => throw _privateConstructorErrorInitialSetupData;
+  bool get sendingInProgress => throw _privateConstructorErrorInitialSetupData;
 
-  @JsonKey(ignore: true)
-  $InitialSetupDataCopyWith<InitialSetupData> get copyWith =>
-      throw _privateConstructorUsedError;
+  InitialSetupData copyWith({
+    String? email,
+    DateTime? birthdate,
+    String? profileInitial,
+    int? profileAge,
+    ProcessedAccountImage? securitySelfie,
+    List<ImgState>? profileImages,
+    Gender? gender,
+    GenderSearchSettingsAll? genderSearchSetting,
+    bool? searchAgeRangeInitDone,
+    int? searchAgeRangeMin,
+    int? searchAgeRangeMax,
+    LatLng? profileLocation,
+    ProfileAttributesState? profileAttributes,
+    bool? sendingInProgress,
+  }) => throw _privateConstructorErrorInitialSetupData;
 }
 
 /// @nodoc
-abstract class $InitialSetupDataCopyWith<$Res> {
-  factory $InitialSetupDataCopyWith(
-          InitialSetupData value, $Res Function(InitialSetupData) then) =
-      _$InitialSetupDataCopyWithImpl<$Res, InitialSetupData>;
-  @useResult
-  $Res call(
-      {String? email,
-      DateTime? birthdate,
-      String? profileInitial,
-      int? profileAge,
-      ProcessedAccountImage? securitySelfie,
-      List<ImgState>? profileImages,
-      Gender? gender,
-      GenderSearchSettingsAll genderSearchSetting,
-      bool searchAgeRangeInitDone,
-      int? searchAgeRangeMin,
-      int? searchAgeRangeMax,
-      LatLng? profileLocation,
-      ProfileAttributesState profileAttributes,
-      bool sendingInProgress});
+abstract class _InitialSetupData implements InitialSetupData {
+  factory _InitialSetupData({
+    String? email,
+    DateTime? birthdate,
+    String? profileInitial,
+    int? profileAge,
+    ProcessedAccountImage? securitySelfie,
+    List<ImgState>? profileImages,
+    Gender? gender,
+    GenderSearchSettingsAll genderSearchSetting,
+    bool searchAgeRangeInitDone,
+    int? searchAgeRangeMin,
+    int? searchAgeRangeMax,
+    LatLng? profileLocation,
+    ProfileAttributesState profileAttributes,
+    bool sendingInProgress,
+  }) = _$InitialSetupDataImpl;
 }
 
 /// @nodoc
-class _$InitialSetupDataCopyWithImpl<$Res, $Val extends InitialSetupData>
-    implements $InitialSetupDataCopyWith<$Res> {
-  _$InitialSetupDataCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? email = freezed,
-    Object? birthdate = freezed,
-    Object? profileInitial = freezed,
-    Object? profileAge = freezed,
-    Object? securitySelfie = freezed,
-    Object? profileImages = freezed,
-    Object? gender = freezed,
-    Object? genderSearchSetting = null,
-    Object? searchAgeRangeInitDone = null,
-    Object? searchAgeRangeMin = freezed,
-    Object? searchAgeRangeMax = freezed,
-    Object? profileLocation = freezed,
-    Object? profileAttributes = null,
-    Object? sendingInProgress = null,
-  }) {
-    return _then(_value.copyWith(
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      birthdate: freezed == birthdate
-          ? _value.birthdate
-          : birthdate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      profileInitial: freezed == profileInitial
-          ? _value.profileInitial
-          : profileInitial // ignore: cast_nullable_to_non_nullable
-              as String?,
-      profileAge: freezed == profileAge
-          ? _value.profileAge
-          : profileAge // ignore: cast_nullable_to_non_nullable
-              as int?,
-      securitySelfie: freezed == securitySelfie
-          ? _value.securitySelfie
-          : securitySelfie // ignore: cast_nullable_to_non_nullable
-              as ProcessedAccountImage?,
-      profileImages: freezed == profileImages
-          ? _value.profileImages
-          : profileImages // ignore: cast_nullable_to_non_nullable
-              as List<ImgState>?,
-      gender: freezed == gender
-          ? _value.gender
-          : gender // ignore: cast_nullable_to_non_nullable
-              as Gender?,
-      genderSearchSetting: null == genderSearchSetting
-          ? _value.genderSearchSetting
-          : genderSearchSetting // ignore: cast_nullable_to_non_nullable
-              as GenderSearchSettingsAll,
-      searchAgeRangeInitDone: null == searchAgeRangeInitDone
-          ? _value.searchAgeRangeInitDone
-          : searchAgeRangeInitDone // ignore: cast_nullable_to_non_nullable
-              as bool,
-      searchAgeRangeMin: freezed == searchAgeRangeMin
-          ? _value.searchAgeRangeMin
-          : searchAgeRangeMin // ignore: cast_nullable_to_non_nullable
-              as int?,
-      searchAgeRangeMax: freezed == searchAgeRangeMax
-          ? _value.searchAgeRangeMax
-          : searchAgeRangeMax // ignore: cast_nullable_to_non_nullable
-              as int?,
-      profileLocation: freezed == profileLocation
-          ? _value.profileLocation
-          : profileLocation // ignore: cast_nullable_to_non_nullable
-              as LatLng?,
-      profileAttributes: null == profileAttributes
-          ? _value.profileAttributes
-          : profileAttributes // ignore: cast_nullable_to_non_nullable
-              as ProfileAttributesState,
-      sendingInProgress: null == sendingInProgress
-          ? _value.sendingInProgress
-          : sendingInProgress // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$InitialSetupDataImplCopyWith<$Res>
-    implements $InitialSetupDataCopyWith<$Res> {
-  factory _$$InitialSetupDataImplCopyWith(_$InitialSetupDataImpl value,
-          $Res Function(_$InitialSetupDataImpl) then) =
-      __$$InitialSetupDataImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String? email,
-      DateTime? birthdate,
-      String? profileInitial,
-      int? profileAge,
-      ProcessedAccountImage? securitySelfie,
-      List<ImgState>? profileImages,
-      Gender? gender,
-      GenderSearchSettingsAll genderSearchSetting,
-      bool searchAgeRangeInitDone,
-      int? searchAgeRangeMin,
-      int? searchAgeRangeMax,
-      LatLng? profileLocation,
-      ProfileAttributesState profileAttributes,
-      bool sendingInProgress});
-}
-
-/// @nodoc
-class __$$InitialSetupDataImplCopyWithImpl<$Res>
-    extends _$InitialSetupDataCopyWithImpl<$Res, _$InitialSetupDataImpl>
-    implements _$$InitialSetupDataImplCopyWith<$Res> {
-  __$$InitialSetupDataImplCopyWithImpl(_$InitialSetupDataImpl _value,
-      $Res Function(_$InitialSetupDataImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? email = freezed,
-    Object? birthdate = freezed,
-    Object? profileInitial = freezed,
-    Object? profileAge = freezed,
-    Object? securitySelfie = freezed,
-    Object? profileImages = freezed,
-    Object? gender = freezed,
-    Object? genderSearchSetting = null,
-    Object? searchAgeRangeInitDone = null,
-    Object? searchAgeRangeMin = freezed,
-    Object? searchAgeRangeMax = freezed,
-    Object? profileLocation = freezed,
-    Object? profileAttributes = null,
-    Object? sendingInProgress = null,
-  }) {
-    return _then(_$InitialSetupDataImpl(
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      birthdate: freezed == birthdate
-          ? _value.birthdate
-          : birthdate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      profileInitial: freezed == profileInitial
-          ? _value.profileInitial
-          : profileInitial // ignore: cast_nullable_to_non_nullable
-              as String?,
-      profileAge: freezed == profileAge
-          ? _value.profileAge
-          : profileAge // ignore: cast_nullable_to_non_nullable
-              as int?,
-      securitySelfie: freezed == securitySelfie
-          ? _value.securitySelfie
-          : securitySelfie // ignore: cast_nullable_to_non_nullable
-              as ProcessedAccountImage?,
-      profileImages: freezed == profileImages
-          ? _value._profileImages
-          : profileImages // ignore: cast_nullable_to_non_nullable
-              as List<ImgState>?,
-      gender: freezed == gender
-          ? _value.gender
-          : gender // ignore: cast_nullable_to_non_nullable
-              as Gender?,
-      genderSearchSetting: null == genderSearchSetting
-          ? _value.genderSearchSetting
-          : genderSearchSetting // ignore: cast_nullable_to_non_nullable
-              as GenderSearchSettingsAll,
-      searchAgeRangeInitDone: null == searchAgeRangeInitDone
-          ? _value.searchAgeRangeInitDone
-          : searchAgeRangeInitDone // ignore: cast_nullable_to_non_nullable
-              as bool,
-      searchAgeRangeMin: freezed == searchAgeRangeMin
-          ? _value.searchAgeRangeMin
-          : searchAgeRangeMin // ignore: cast_nullable_to_non_nullable
-              as int?,
-      searchAgeRangeMax: freezed == searchAgeRangeMax
-          ? _value.searchAgeRangeMax
-          : searchAgeRangeMax // ignore: cast_nullable_to_non_nullable
-              as int?,
-      profileLocation: freezed == profileLocation
-          ? _value.profileLocation
-          : profileLocation // ignore: cast_nullable_to_non_nullable
-              as LatLng?,
-      profileAttributes: null == profileAttributes
-          ? _value.profileAttributes
-          : profileAttributes // ignore: cast_nullable_to_non_nullable
-              as ProfileAttributesState,
-      sendingInProgress: null == sendingInProgress
-          ? _value.sendingInProgress
-          : sendingInProgress // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
-}
-
-/// @nodoc
-
 class _$InitialSetupDataImpl implements _InitialSetupData {
-  _$InitialSetupDataImpl(
-      {this.email,
-      this.birthdate,
-      this.profileInitial,
-      this.profileAge,
-      this.securitySelfie,
-      final List<ImgState>? profileImages,
-      this.gender,
-      this.genderSearchSetting = const GenderSearchSettingsAll(),
-      this.searchAgeRangeInitDone = false,
-      this.searchAgeRangeMin,
-      this.searchAgeRangeMax,
-      this.profileLocation,
-      this.profileAttributes = const PartiallyAnswered([]),
-      this.sendingInProgress = false})
-      : _profileImages = profileImages;
+  static const GenderSearchSettingsAll _genderSearchSettingDefaultValue = GenderSearchSettingsAll();
+  static const bool _searchAgeRangeInitDoneDefaultValue = false;
+  static const ProfileAttributesState _profileAttributesDefaultValue = PartiallyAnswered([]);
+  static const bool _sendingInProgressDefaultValue = false;
+  
+  _$InitialSetupDataImpl({
+    this.email,
+    this.birthdate,
+    this.profileInitial,
+    this.profileAge,
+    this.securitySelfie,
+    this.profileImages,
+    this.gender,
+    this.genderSearchSetting = _genderSearchSettingDefaultValue,
+    this.searchAgeRangeInitDone = _searchAgeRangeInitDoneDefaultValue,
+    this.searchAgeRangeMin,
+    this.searchAgeRangeMax,
+    this.profileLocation,
+    this.profileAttributes = _profileAttributesDefaultValue,
+    this.sendingInProgress = _sendingInProgressDefaultValue,
+  });
 
   @override
   final String? email;
@@ -293,23 +108,13 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   final int? profileAge;
   @override
   final ProcessedAccountImage? securitySelfie;
-  final List<ImgState>? _profileImages;
   @override
-  List<ImgState>? get profileImages {
-    final value = _profileImages;
-    if (value == null) return null;
-    if (_profileImages is EqualUnmodifiableListView) return _profileImages;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
+  final List<ImgState>? profileImages;
   @override
   final Gender? gender;
   @override
-  @JsonKey()
   final GenderSearchSettingsAll genderSearchSetting;
   @override
-  @JsonKey()
   final bool searchAgeRangeInitDone;
   @override
   final int? searchAgeRangeMin;
@@ -318,10 +123,8 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   @override
   final LatLng? profileLocation;
   @override
-  @JsonKey()
   final ProfileAttributesState profileAttributes;
   @override
-  @JsonKey()
   final bool sendingInProgress;
 
   @override
@@ -332,109 +135,88 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$InitialSetupDataImpl &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.birthdate, birthdate) ||
-                other.birthdate == birthdate) &&
-            (identical(other.profileInitial, profileInitial) ||
-                other.profileInitial == profileInitial) &&
-            (identical(other.profileAge, profileAge) ||
-                other.profileAge == profileAge) &&
-            (identical(other.securitySelfie, securitySelfie) ||
-                other.securitySelfie == securitySelfie) &&
-            const DeepCollectionEquality()
-                .equals(other._profileImages, _profileImages) &&
-            (identical(other.gender, gender) || other.gender == gender) &&
-            (identical(other.genderSearchSetting, genderSearchSetting) ||
-                other.genderSearchSetting == genderSearchSetting) &&
-            (identical(other.searchAgeRangeInitDone, searchAgeRangeInitDone) ||
-                other.searchAgeRangeInitDone == searchAgeRangeInitDone) &&
-            (identical(other.searchAgeRangeMin, searchAgeRangeMin) ||
-                other.searchAgeRangeMin == searchAgeRangeMin) &&
-            (identical(other.searchAgeRangeMax, searchAgeRangeMax) ||
-                other.searchAgeRangeMax == searchAgeRangeMax) &&
-            (identical(other.profileLocation, profileLocation) ||
-                other.profileLocation == profileLocation) &&
-            (identical(other.profileAttributes, profileAttributes) ||
-                other.profileAttributes == profileAttributes) &&
-            (identical(other.sendingInProgress, sendingInProgress) ||
-                other.sendingInProgress == sendingInProgress));
+      (other.runtimeType == runtimeType &&
+        other is _$InitialSetupDataImpl &&
+        (identical(other.email, email) ||
+          other.email == email) &&
+        (identical(other.birthdate, birthdate) ||
+          other.birthdate == birthdate) &&
+        (identical(other.profileInitial, profileInitial) ||
+          other.profileInitial == profileInitial) &&
+        (identical(other.profileAge, profileAge) ||
+          other.profileAge == profileAge) &&
+        (identical(other.securitySelfie, securitySelfie) ||
+          other.securitySelfie == securitySelfie) &&
+        (identical(other.profileImages, profileImages) ||
+          other.profileImages == profileImages) &&
+        (identical(other.gender, gender) ||
+          other.gender == gender) &&
+        (identical(other.genderSearchSetting, genderSearchSetting) ||
+          other.genderSearchSetting == genderSearchSetting) &&
+        (identical(other.searchAgeRangeInitDone, searchAgeRangeInitDone) ||
+          other.searchAgeRangeInitDone == searchAgeRangeInitDone) &&
+        (identical(other.searchAgeRangeMin, searchAgeRangeMin) ||
+          other.searchAgeRangeMin == searchAgeRangeMin) &&
+        (identical(other.searchAgeRangeMax, searchAgeRangeMax) ||
+          other.searchAgeRangeMax == searchAgeRangeMax) &&
+        (identical(other.profileLocation, profileLocation) ||
+          other.profileLocation == profileLocation) &&
+        (identical(other.profileAttributes, profileAttributes) ||
+          other.profileAttributes == profileAttributes) &&
+        (identical(other.sendingInProgress, sendingInProgress) ||
+          other.sendingInProgress == sendingInProgress)
+    );
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      email,
-      birthdate,
-      profileInitial,
-      profileAge,
-      securitySelfie,
-      const DeepCollectionEquality().hash(_profileImages),
-      gender,
-      genderSearchSetting,
-      searchAgeRangeInitDone,
-      searchAgeRangeMin,
-      searchAgeRangeMax,
-      profileLocation,
-      profileAttributes,
-      sendingInProgress);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$InitialSetupDataImplCopyWith<_$InitialSetupDataImpl> get copyWith =>
-      __$$InitialSetupDataImplCopyWithImpl<_$InitialSetupDataImpl>(
-          this, _$identity);
-}
-
-abstract class _InitialSetupData implements InitialSetupData {
-  factory _InitialSetupData(
-      {final String? email,
-      final DateTime? birthdate,
-      final String? profileInitial,
-      final int? profileAge,
-      final ProcessedAccountImage? securitySelfie,
-      final List<ImgState>? profileImages,
-      final Gender? gender,
-      final GenderSearchSettingsAll genderSearchSetting,
-      final bool searchAgeRangeInitDone,
-      final int? searchAgeRangeMin,
-      final int? searchAgeRangeMax,
-      final LatLng? profileLocation,
-      final ProfileAttributesState profileAttributes,
-      final bool sendingInProgress}) = _$InitialSetupDataImpl;
+    runtimeType,
+    email,
+    birthdate,
+    profileInitial,
+    profileAge,
+    securitySelfie,
+    profileImages,
+    gender,
+    genderSearchSetting,
+    searchAgeRangeInitDone,
+    searchAgeRangeMin,
+    searchAgeRangeMax,
+    profileLocation,
+    profileAttributes,
+    sendingInProgress,
+  );
 
   @override
-  String? get email;
-  @override
-  DateTime? get birthdate;
-  @override
-  String? get profileInitial;
-  @override
-  int? get profileAge;
-  @override
-  ProcessedAccountImage? get securitySelfie;
-  @override
-  List<ImgState>? get profileImages;
-  @override
-  Gender? get gender;
-  @override
-  GenderSearchSettingsAll get genderSearchSetting;
-  @override
-  bool get searchAgeRangeInitDone;
-  @override
-  int? get searchAgeRangeMin;
-  @override
-  int? get searchAgeRangeMax;
-  @override
-  LatLng? get profileLocation;
-  @override
-  ProfileAttributesState get profileAttributes;
-  @override
-  bool get sendingInProgress;
-  @override
-  @JsonKey(ignore: true)
-  _$$InitialSetupDataImplCopyWith<_$InitialSetupDataImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  InitialSetupData copyWith({
+    Object? email = _detectDefaultValueInCopyWith,
+    Object? birthdate = _detectDefaultValueInCopyWith,
+    Object? profileInitial = _detectDefaultValueInCopyWith,
+    Object? profileAge = _detectDefaultValueInCopyWith,
+    Object? securitySelfie = _detectDefaultValueInCopyWith,
+    Object? profileImages = _detectDefaultValueInCopyWith,
+    Object? gender = _detectDefaultValueInCopyWith,
+    Object? genderSearchSetting,
+    Object? searchAgeRangeInitDone,
+    Object? searchAgeRangeMin = _detectDefaultValueInCopyWith,
+    Object? searchAgeRangeMax = _detectDefaultValueInCopyWith,
+    Object? profileLocation = _detectDefaultValueInCopyWith,
+    Object? profileAttributes,
+    Object? sendingInProgress,
+  }) => _$InitialSetupDataImpl(
+    email: (email == _detectDefaultValueInCopyWith ? this.email : email) as String?,
+    birthdate: (birthdate == _detectDefaultValueInCopyWith ? this.birthdate : birthdate) as DateTime?,
+    profileInitial: (profileInitial == _detectDefaultValueInCopyWith ? this.profileInitial : profileInitial) as String?,
+    profileAge: (profileAge == _detectDefaultValueInCopyWith ? this.profileAge : profileAge) as int?,
+    securitySelfie: (securitySelfie == _detectDefaultValueInCopyWith ? this.securitySelfie : securitySelfie) as ProcessedAccountImage?,
+    profileImages: (profileImages == _detectDefaultValueInCopyWith ? this.profileImages : profileImages) as List<ImgState>?,
+    gender: (gender == _detectDefaultValueInCopyWith ? this.gender : gender) as Gender?,
+    genderSearchSetting: (genderSearchSetting ?? this.genderSearchSetting) as GenderSearchSettingsAll,
+    searchAgeRangeInitDone: (searchAgeRangeInitDone ?? this.searchAgeRangeInitDone) as bool,
+    searchAgeRangeMin: (searchAgeRangeMin == _detectDefaultValueInCopyWith ? this.searchAgeRangeMin : searchAgeRangeMin) as int?,
+    searchAgeRangeMax: (searchAgeRangeMax == _detectDefaultValueInCopyWith ? this.searchAgeRangeMax : searchAgeRangeMax) as int?,
+    profileLocation: (profileLocation == _detectDefaultValueInCopyWith ? this.profileLocation : profileLocation) as LatLng?,
+    profileAttributes: (profileAttributes ?? this.profileAttributes) as ProfileAttributesState,
+    sendingInProgress: (sendingInProgress ?? this.sendingInProgress) as bool,
+  );
 }
