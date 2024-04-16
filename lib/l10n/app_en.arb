@@ -72,6 +72,10 @@
   "@demo_account_screen_no_accounts_available": {
     "description": "Text displayed when available accounts list is empty"
   },
+  "edit_attribute_value_screen_one_value_must_be_selected": "At least one selection is required",
+  "@edit_attribute_value_screen_one_value_must_be_selected": {
+    "description": "Snackbar text for notifying that one at least one option must be selected"
+  },
   "edit_profile_screen_invalid_age": "Invalid age",
   "@edit_profile_screen_invalid_age": {
     "description": "Snackbar text for notifying about invalid age"

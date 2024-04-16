@@ -23,12 +23,12 @@ final _privateConstructorErrorEditMyProfileData = UnsupportedError(
 mixin _$EditMyProfileData {
   int? get age => throw _privateConstructorErrorEditMyProfileData;
   String? get initial => throw _privateConstructorErrorEditMyProfileData;
-  UnmodifiableList<ProfileAttributeValue> get attributes => throw _privateConstructorErrorEditMyProfileData;
+  UnmodifiableList<ProfileAttributeValueUpdate> get attributes => throw _privateConstructorErrorEditMyProfileData;
 
   EditMyProfileData copyWith({
     int? age,
     String? initial,
-    UnmodifiableList<ProfileAttributeValue>? attributes,
+    UnmodifiableList<ProfileAttributeValueUpdate>? attributes,
   }) => throw _privateConstructorErrorEditMyProfileData;
 }
 
@@ -37,13 +37,13 @@ abstract class _EditMyProfileData implements EditMyProfileData {
   factory _EditMyProfileData({
     int? age,
     String? initial,
-    UnmodifiableList<ProfileAttributeValue> attributes,
+    UnmodifiableList<ProfileAttributeValueUpdate> attributes,
   }) = _$EditMyProfileDataImpl;
 }
 
 /// @nodoc
 class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyProfileData {
-  static const UnmodifiableList<ProfileAttributeValue> _attributesDefaultValue = UnmodifiableList<ProfileAttributeValue>.empty();
+  static const UnmodifiableList<ProfileAttributeValueUpdate> _attributesDefaultValue = UnmodifiableList<ProfileAttributeValueUpdate>.empty();
   
   _$EditMyProfileDataImpl({
     this.age,
@@ -56,7 +56,7 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
   @override
   final String? initial;
   @override
-  final UnmodifiableList<ProfileAttributeValue> attributes;
+  final UnmodifiableList<ProfileAttributeValueUpdate> attributes;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -103,6 +103,6 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
   }) => _$EditMyProfileDataImpl(
     age: (age == _detectDefaultValueInCopyWith ? this.age : age) as int?,
     initial: (initial == _detectDefaultValueInCopyWith ? this.initial : initial) as String?,
-    attributes: (attributes ?? this.attributes) as UnmodifiableList<ProfileAttributeValue>,
+    attributes: (attributes ?? this.attributes) as UnmodifiableList<ProfileAttributeValueUpdate>,
   );
 }

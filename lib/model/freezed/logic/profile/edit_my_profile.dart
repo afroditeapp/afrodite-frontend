@@ -11,7 +11,7 @@ class EditMyProfileData with _$EditMyProfileData {
   factory EditMyProfileData({
     int? age,
     String? initial,
-    @Default(UnmodifiableList<ProfileAttributeValue>.empty())
-      UnmodifiableList<ProfileAttributeValue> attributes,
+    @Default(UnmodifiableList<ProfileAttributeValueUpdate>.empty())
+      UnmodifiableList<ProfileAttributeValueUpdate> attributes,
   }) = _EditMyProfileData;
 }

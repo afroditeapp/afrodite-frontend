@@ -16,6 +16,7 @@ import 'package:pihka_frontend/model/freezed/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/ui/initial_setup/profile_attributes.dart';
 import 'package:pihka_frontend/ui/initial_setup/profile_basic_info.dart';
 import 'package:pihka_frontend/ui/initial_setup/profile_pictures.dart';
+import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile_attribute.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
@@ -24,6 +25,9 @@ import 'package:pihka_frontend/utils/age.dart';
 import 'package:pihka_frontend/utils/immutable_list.dart';
 import 'package:pihka_frontend/utils/profile_entry.dart';
 
+
+// TODO: Logout leaves some profile images to Bloc, so previous account's
+// profile images are visible in the new account's edit profile screen.
 
 class EditProfilePage extends StatefulWidget {
   final ProfileEntry initialProfile;
@@ -41,8 +45,6 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-
-  bool saveStarted = false;
 
   @override
   void initState() {
@@ -86,18 +88,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
       return;
     }
 
-    final attributes = widget
-      .initialProfile
-      .attributes
-      .map((e) => ProfileAttributeValueUpdate(id: e.id, valuePart1: e.valuePart1, valuePart2: e.valuePart2))
-      .toList();
-
     context.read<MyProfileBloc>().add(SetProfile(
       ProfileUpdate(
         age: age,
         name: initial,
         profileText: widget.initialProfile.profileText,
-        attributes: attributes,
+        attributes: s.attributes.toList(),
       )
     ));
   }
@@ -208,13 +204,25 @@ class EditAttributes extends StatelessWidget {
   List<Widget> attributeTiles(
     BuildContext context,
     ProfileAttributes availableAttributes,
-    UnmodifiableList<ProfileAttributeValue> myAttributes,
+    UnmodifiableList<ProfileAttributeValueUpdate> myAttributes,
   ) {
     final List<Widget> attributeWidgets = <Widget>[];
+    final convertedAttributes = myAttributes.map((e) {
+      final value = e.valuePart1;
+      if (value == null) {
+        return null;
+      } else {
+        return ProfileAttributeValue(
+          id: e.id,
+          valuePart1: value,
+          valuePart2: e.valuePart2,
+        );
+      }
+    }).nonNulls;
 
     final l = AttributeAndValue.sortedListFrom(
       availableAttributes,
-      myAttributes,
+      convertedAttributes,
       includeNullAttributes: true,
     );
     for (final a in l) {
@@ -272,16 +280,21 @@ class EditAttributes extends StatelessWidget {
           child: IconButton(
             icon: const Icon(Icons.edit_rounded),
             // color: buttonColor,
-            onPressed: () => (),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute<void>(builder: (_) => EditProfileAttributeScreen(a: a))
+            ),
           ),
         ),
       ],
     );
 
     return InkWell(
-      onTap: () {
-        showSnackBar(attributeText);
-      },
+      onTap: () =>
+        Navigator.push(
+          context,
+          MaterialPageRoute<void>(builder: (_) => EditProfileAttributeScreen(a: a))
+        ),
       child: attributeWidget,
     );
   }
