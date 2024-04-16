@@ -6,15 +6,22 @@ import 'package:openapi/api.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/media/profile_pictures.dart';
+import 'package:pihka_frontend/logic/profile/attributes.dart';
 import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
 import 'package:pihka_frontend/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
+import 'package:pihka_frontend/model/freezed/logic/profile/attributes.dart';
+import 'package:pihka_frontend/model/freezed/logic/profile/edit_my_profile.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/my_profile.dart';
+import 'package:pihka_frontend/ui/initial_setup/profile_attributes.dart';
 import 'package:pihka_frontend/ui/initial_setup/profile_basic_info.dart';
 import 'package:pihka_frontend/ui/initial_setup/profile_pictures.dart';
+import 'package:pihka_frontend/ui/utils/view_profile.dart';
+import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils/age.dart';
+import 'package:pihka_frontend/utils/immutable_list.dart';
 import 'package:pihka_frontend/utils/profile_entry.dart';
 
 
@@ -118,8 +125,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   s.profileUpdateState is ProfileUpdateStarted ||
                   s.profileUpdateState is ProfileUpdateInProgress,
                 dismissAction: () {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
+                  Navigator.pop(context); // Dialog
+                  Navigator.pop(context); // Edit profile screen
                 }
               );
             }
@@ -149,13 +156,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
             setterProfileAge: (value) {
               widget.editMyProfileBloc.add(NewAge(value));
             },
-          )
+          ),
+          const Padding(padding: EdgeInsets.all(8)),
+          const Divider(),
+          const EditAttributes(),
+          const Padding(padding: EdgeInsets.all(8)),
         ],
       ),
     );
   }
-
-
 
   // Profile text is disabled for now
 
@@ -173,4 +182,107 @@ class _EditProfilePageState extends State<EditProfilePage> {
   //     ),
   //   );
   // }
+}
+
+class EditAttributes extends StatelessWidget {
+  const EditAttributes({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProfileAttributesBloc, AttributesData>(
+      builder: (context, data) {
+        final availableAttributes = data.attributes?.info;
+        if (availableAttributes == null) {
+          return const SizedBox.shrink();
+        }
+
+        return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(builder: (context, myProfileData) {
+          return Column(
+            children: attributeTiles(context, availableAttributes, myProfileData.attributes)
+          );
+        });
+      },
+    );
+  }
+
+  List<Widget> attributeTiles(
+    BuildContext context,
+    ProfileAttributes availableAttributes,
+    UnmodifiableList<ProfileAttributeValue> myAttributes,
+  ) {
+    final List<Widget> attributeWidgets = <Widget>[];
+
+    final l = AttributeAndValue.sortedListFrom(
+      availableAttributes,
+      myAttributes,
+      includeNullAttributes: true,
+    );
+    for (final a in l) {
+      attributeWidgets.add(attributeWidget(context, a));
+      attributeWidgets.add(const Divider());
+    }
+
+    if (attributeWidgets.isNotEmpty) {
+      attributeWidgets.removeLast();
+    }
+
+    return attributeWidgets;
+  }
+
+  Widget attributeWidget(BuildContext context, AttributeAndValue a) {
+    final attributeText = a.title(context);
+    final icon = iconResourceToMaterialIcon(a.attribute.icon);
+    if (icon == null) {
+      return const SizedBox.shrink();
+    }
+
+    final attributeWidget = Row(
+      children: [
+        Expanded(
+          child: Column(
+            children: [
+              const Padding(padding: EdgeInsets.all(4)),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: COMMON_SCREEN_EDGE_PADDING),
+                  child: Text(attributeText, style: Theme.of(context).textTheme.bodyLarge),
+                ),
+              ),
+              const Padding(padding: EdgeInsets.all(4)),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4.0),
+                    child: IconButton(
+                      icon: Icon(icon),
+                      onPressed: () => (),
+                      tooltip: attributeText,
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.only(right: 8)),
+                  Expanded(child: AttributeValuesArea(a: a)),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 4.0),
+          child: IconButton(
+            icon: const Icon(Icons.edit_rounded),
+            // color: buttonColor,
+            onPressed: () => (),
+          ),
+        ),
+      ],
+    );
+
+    return InkWell(
+      onTap: () {
+        showSnackBar(attributeText);
+      },
+      child: attributeWidget,
+    );
+  }
 }

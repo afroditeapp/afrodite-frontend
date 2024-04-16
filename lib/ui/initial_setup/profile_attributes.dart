@@ -328,12 +328,14 @@ IconData? iconResourceToMaterialIcon(String? iconResouce) {
   final identifier = iconResouce.substring(PREFIX.length);
 
   final IconData? iconObject = switch (identifier) {
-    "close_rounded" => Icons.close_rounded,
-    "favorite_rounded" => Icons.favorite_rounded,
     "celebration_rounded" => Icons.celebration_rounded,
-    "waving_hand_rounded" => Icons.waving_hand_rounded,
+    "close_rounded" => Icons.close_rounded,
+    "color_lens_rounded" => Icons.color_lens_rounded,
+    "favorite_rounded" => Icons.favorite_rounded,
+    "location_city_rounded" => Icons.location_city_rounded,
     "question_mark_rounded" => Icons.question_mark_rounded,
     "search_rounded" => Icons.search_rounded,
+    "waving_hand_rounded" => Icons.waving_hand_rounded,
     _ => null,
   };
 

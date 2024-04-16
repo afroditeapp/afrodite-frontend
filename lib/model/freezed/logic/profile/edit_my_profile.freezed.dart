@@ -23,10 +23,12 @@ final _privateConstructorErrorEditMyProfileData = UnsupportedError(
 mixin _$EditMyProfileData {
   int? get age => throw _privateConstructorErrorEditMyProfileData;
   String? get initial => throw _privateConstructorErrorEditMyProfileData;
+  UnmodifiableList<ProfileAttributeValue> get attributes => throw _privateConstructorErrorEditMyProfileData;
 
   EditMyProfileData copyWith({
     int? age,
     String? initial,
+    UnmodifiableList<ProfileAttributeValue>? attributes,
   }) => throw _privateConstructorErrorEditMyProfileData;
 }
 
@@ -35,24 +37,30 @@ abstract class _EditMyProfileData implements EditMyProfileData {
   factory _EditMyProfileData({
     int? age,
     String? initial,
+    UnmodifiableList<ProfileAttributeValue> attributes,
   }) = _$EditMyProfileDataImpl;
 }
 
 /// @nodoc
 class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyProfileData {
+  static const UnmodifiableList<ProfileAttributeValue> _attributesDefaultValue = UnmodifiableList<ProfileAttributeValue>.empty();
+  
   _$EditMyProfileDataImpl({
     this.age,
     this.initial,
+    this.attributes = _attributesDefaultValue,
   });
 
   @override
   final int? age;
   @override
   final String? initial;
+  @override
+  final UnmodifiableList<ProfileAttributeValue> attributes;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditMyProfileData(age: $age, initial: $initial)';
+    return 'EditMyProfileData(age: $age, initial: $initial, attributes: $attributes)';
   }
 
   @override
@@ -61,7 +69,8 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
     properties
       ..add(DiagnosticsProperty('type', 'EditMyProfileData'))
       ..add(DiagnosticsProperty('age', age))
-      ..add(DiagnosticsProperty('initial', initial));
+      ..add(DiagnosticsProperty('initial', initial))
+      ..add(DiagnosticsProperty('attributes', attributes));
   }
 
   @override
@@ -72,7 +81,9 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
         (identical(other.age, age) ||
           other.age == age) &&
         (identical(other.initial, initial) ||
-          other.initial == initial)
+          other.initial == initial) &&
+        (identical(other.attributes, attributes) ||
+          other.attributes == attributes)
     );
   }
 
@@ -81,14 +92,17 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
     runtimeType,
     age,
     initial,
+    attributes,
   );
 
   @override
   EditMyProfileData copyWith({
     Object? age = _detectDefaultValueInCopyWith,
     Object? initial = _detectDefaultValueInCopyWith,
+    Object? attributes,
   }) => _$EditMyProfileDataImpl(
     age: (age == _detectDefaultValueInCopyWith ? this.age : age) as int?,
     initial: (initial == _detectDefaultValueInCopyWith ? this.initial : initial) as String?,
+    attributes: (attributes ?? this.attributes) as UnmodifiableList<ProfileAttributeValue>,
   );
 }

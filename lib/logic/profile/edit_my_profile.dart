@@ -5,6 +5,7 @@ import 'package:database/database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import "package:pihka_frontend/model/freezed/logic/profile/edit_my_profile.dart";
 import "package:pihka_frontend/utils.dart";
+import "package:pihka_frontend/utils/immutable_list.dart";
 
 
 sealed class EditMyProfileEvent {}
@@ -31,6 +32,7 @@ class EditMyProfileBloc extends Bloc<EditMyProfileEvent, EditMyProfileData> with
       emit(EditMyProfileData(
         age: data.profile.age,
         initial: data.profile.name,
+        attributes: UnmodifiableList(data.profile.attributes),
       ));
     });
     on<NewAge>((data, emit) async {

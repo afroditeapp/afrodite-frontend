@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/profile/attributes.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/attributes.dart';
 import 'package:pihka_frontend/ui/initial_setup/profile_attributes.dart';
@@ -293,9 +294,19 @@ class AttributeList extends StatelessWidget {
           tooltip: attributeText
         ),
         const Padding(padding: EdgeInsets.only(right: COMMON_SCREEN_EDGE_PADDING)),
-        Expanded(child: attributeValuesArea(context, a)),
+        Expanded(child: AttributeValuesArea(a: a)),
       ],
     );
+  }
+}
+
+class AttributeValuesArea extends StatelessWidget {
+  final AttributeAndValue a;
+  const AttributeValuesArea({required this.a, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return attributeValuesArea(context, a);
   }
 
   Widget attributeValuesArea(BuildContext c, AttributeAndValue a) {
@@ -317,30 +328,36 @@ class AttributeList extends StatelessWidget {
       valueWidgets.add(w);
     }
 
-    return Wrap(
-      spacing: 8,
-      children: valueWidgets,
-    );
+    if (valueWidgets.isEmpty) {
+      return Text(c.strings.generic_empty);
+    } else {
+      return Wrap(
+        spacing: 8,
+        children: valueWidgets,
+      );
+    }
   }
 }
 
 class AttributeAndValue {
   final Attribute attribute;
-  final ProfileAttributeValue value;
+  final ProfileAttributeValue? value;
   const AttributeAndValue({required this.attribute, required this.value});
 
   /// Get sorted list of attributes and values
   static List<AttributeAndValue> sortedListFrom(
     ProfileAttributes availableAttributes,
-    List<ProfileAttributeValue> attributes
+    Iterable<ProfileAttributeValue> attributes,
+    {bool includeNullAttributes = false}
   ) {
     final List<AttributeAndValue> result = [];
-    for (final a in attributes) {
-      final attribute = availableAttributes.attributes.where((attr) => attr.id == a.id).firstOrNull;
-      if (attribute == null) {
+
+    for (final a in availableAttributes.attributes) {
+      final currentValue = attributes.where((attr) => attr.id == a.id).firstOrNull;
+      if (!includeNullAttributes && currentValue == null) {
         continue;
       }
-      result.add(AttributeAndValue(attribute: attribute, value: a));
+      result.add(AttributeAndValue(attribute: a, value: currentValue));
     }
 
     if (availableAttributes.attributeOrder == AttributeOrderMode.orderNumber) {
@@ -358,6 +375,11 @@ class AttributeAndValue {
 
   List<AttributeValue> sortedSelectedValues() {
     final List<AttributeValue> result = [];
+
+    final value = this.value;
+    if (value == null) {
+      return result;
+    }
 
     if (attribute.mode == AttributeMode.selectSingleFilterSingle || attribute.mode == AttributeMode.selectSingleFilterMultiple) {
       for (final v in attribute.values) {
