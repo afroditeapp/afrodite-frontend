@@ -8,6 +8,7 @@ part 'account.freezed.dart';
 
 @freezed
 class AccountBlocData with _$AccountBlocData {
+  AccountBlocData._();
   factory AccountBlocData({
     AccountId? accountId,
     String? email,
@@ -15,4 +16,9 @@ class AccountBlocData with _$AccountBlocData {
     required Capabilities capabilities,
     required ProfileVisibility visibility,
   }) = _AccountBlocData;
+
+  bool isInitialModerationOngoing() {
+    return visibility == ProfileVisibility.pendingPrivate ||
+      visibility == ProfileVisibility.pendingPublic;
+  }
 }

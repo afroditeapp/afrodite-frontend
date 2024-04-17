@@ -37,7 +37,7 @@ mixin _$AccountBlocData {
 }
 
 /// @nodoc
-abstract class _AccountBlocData implements AccountBlocData {
+abstract class _AccountBlocData extends AccountBlocData {
   factory _AccountBlocData({
     AccountId? accountId,
     String? email,
@@ -45,17 +45,18 @@ abstract class _AccountBlocData implements AccountBlocData {
     required Capabilities capabilities,
     required ProfileVisibility visibility,
   }) = _$AccountBlocDataImpl;
+  _AccountBlocData._() : super._();
 }
 
 /// @nodoc
-class _$AccountBlocDataImpl with DiagnosticableTreeMixin implements _AccountBlocData {
+class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixin {
   _$AccountBlocDataImpl({
     this.accountId,
     this.email,
     this.accountState,
     required this.capabilities,
     required this.visibility,
-  });
+  }) : super._();
 
   @override
   final AccountId? accountId;

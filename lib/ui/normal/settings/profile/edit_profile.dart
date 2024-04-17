@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/logic/profile/attributes.dart';
 import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
@@ -28,6 +29,8 @@ import 'package:pihka_frontend/utils/profile_entry.dart';
 
 // TODO: Logout leaves some profile images to Bloc, so previous account's
 // profile images are visible in the new account's edit profile screen.
+// Update: there is now RemoveImage event which should reset the data but
+// other blocs should also be checked.
 
 class EditProfilePage extends StatefulWidget {
   final ProfileEntry initialProfile;
@@ -68,6 +71,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   void setImgToBloc(ContentId? contentId, int index) {
     if (contentId == null) {
+      widget.profilePicturesBloc.add(RemoveImage(index));
       return;
     }
     final imgId = AccountImageId(widget.initialProfile.uuid, contentId);
@@ -88,13 +92,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
       return;
     }
 
+    final imgUpdate = widget.profilePicturesBloc.state.toSetProfileContent();
+    if (imgUpdate == null) {
+      showSnackBar(context.strings.edit_profile_screen_one_profile_image_required);
+      return;
+    }
+
     context.read<MyProfileBloc>().add(SetProfile(
       ProfileUpdate(
         age: age,
         name: initial,
         profileText: widget.initialProfile.profileText,
         attributes: s.attributes.toList(),
-      )
+      ),
+      imgUpdate,
+      context.read<AccountBloc>().state.isInitialModerationOngoing(),
     ));
   }
 

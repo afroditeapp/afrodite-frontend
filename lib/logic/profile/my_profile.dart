@@ -8,12 +8,15 @@ import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/model/freezed/logic/profile/my_profile.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
+import "package:pihka_frontend/utils/result.dart";
 
 
 sealed class MyProfileEvent {}
 class SetProfile extends MyProfileEvent {
   final ProfileUpdate profile;
-  SetProfile(this.profile);
+  final SetProfileContent pictures;
+  final bool initialModerationOngoing;
+  SetProfile(this.profile, this.pictures, this.initialModerationOngoing);
 }
 class NewMyProfile extends MyProfileEvent {
   final ProfileEntry? profile;
@@ -54,6 +57,16 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
 
         if (!await profile.updateProfile(data.profile)) {
           failureDetected = true;
+        }
+
+        if (data.initialModerationOngoing) {
+          if (await media.setPendingProfileContent(data.pictures).isErr()) {
+            failureDetected = true;
+          }
+        } else {
+          if (await media.setProfileContent(data.pictures).isErr()) {
+            failureDetected = true;
+          }
         }
 
         if (failureDetected) {

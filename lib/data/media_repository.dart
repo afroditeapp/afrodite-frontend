@@ -214,6 +214,26 @@ class MediaRepository extends DataRepository {
         return null;
     }
   }
+
+  Future<Result<(), ()>> setProfileContent(SetProfileContent imgInfo) async {
+    switch (await api.mediaAction((api) => api.putProfileContent(imgInfo))) {
+      case Ok():
+        await reloadMyProfileContent();
+        return Ok(());
+      case Err():
+        return Err(());
+    }
+  }
+
+  Future<Result<(), ()>> setPendingProfileContent(SetProfileContent imgInfo) async {
+    switch (await api.mediaAction((api) => api.putPendingProfileContent(imgInfo))) {
+      case Ok():
+        await reloadMyProfileContent();
+        return Ok(());
+      case Err():
+        return Err(());
+    }
+  }
 }
 
 sealed class MapTileResult {}

@@ -132,13 +132,23 @@ class ViewProfileImgViewer extends StatefulWidget {
 class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
   int selectedImg = 0;
 
-  late final List<ContentId> contentList;
+  List<ContentId> contentList = [];
 
   @override
   void initState() {
     super.initState();
 
     contentList = widget.profile.primaryImgAndPossibleOtherImgs();
+  }
+
+  @override
+  void didUpdateWidget(covariant ViewProfileImgViewer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.profile != widget.profile) {
+      contentList = widget.profile.primaryImgAndPossibleOtherImgs();
+      selectedImg = 0;
+    }
   }
 
   @override

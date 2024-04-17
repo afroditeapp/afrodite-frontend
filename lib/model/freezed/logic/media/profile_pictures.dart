@@ -24,8 +24,39 @@ class ProfilePicturesData with _$ProfilePicturesData {
       picture3,
     ];
   }
+
+  SetProfileContent? toSetProfileContent() {
+    final img0 = picture0;
+    if (img0 is! ImageSelected) {
+      return null;
+    }
+    final img0Info = img0.img;
+    if (img0Info is! ProfileImage) {
+      return null;
+    }
+
+    return SetProfileContent(
+      contentId0: img0Info.id.contentId,
+      gridCropSize: img0.cropResults.gridCropSize,
+      gridCropX: img0.cropResults.gridCropX,
+      gridCropY: img0.cropResults.gridCropY,
+
+      contentId1: imgStateToContentId(picture1),
+      contentId2: imgStateToContentId(picture2),
+      contentId3: imgStateToContentId(picture3),
+    );
+  }
 }
 
+ContentId? imgStateToContentId(ImgState state) {
+  if (state is ImageSelected) {
+    final info = state.img;
+    if (info is ProfileImage) {
+      return info.id.contentId;
+    }
+  }
+  return null;
+}
 
 sealed class PictureSelectionMode {
   const PictureSelectionMode();

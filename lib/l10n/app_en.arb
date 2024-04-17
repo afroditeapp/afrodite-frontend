@@ -88,6 +88,10 @@
   "@edit_profile_screen_invalid_initial": {
     "description": "Snackbar text for notifying about invalid initial"
   },
+  "edit_profile_screen_one_profile_image_required": "One profile image is required",
+  "@edit_profile_screen_one_profile_image_required": {
+    "description": "Snackbar text for notifying about that one profile image is required"
+  },
   "edit_profile_screen_title": "Edit profile",
   "@edit_profile_screen_title": {
     "description": "Title for edit profile screen"
