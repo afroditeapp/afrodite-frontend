@@ -387,7 +387,9 @@ class AttributeAndValue {
           continue;
         }
 
-        result.add(v);
+        if (value.valuePart2 == null) {
+          result.add(v);
+        }
 
         // Only second level is supported
         final secondLevelValues = v.groupValues;

@@ -90,21 +90,21 @@ class EditSingleAttribute extends StatefulWidget {
 }
 
 class _EditSingleAttributeState extends State<EditSingleAttribute> {
-  int valuePart1 = 0;
-  int valuePart2 = 0;
+  int? valuePart1;
+  int? valuePart2;
 
   @override
   void initState() {
     super.initState();
 
-    valuePart1 = widget.a.value?.valuePart1 ?? 0;
-    valuePart2 = widget.a.value?.valuePart2 ?? 0;
+    valuePart1 = widget.a.value?.valuePart1;
+    valuePart2 = widget.a.value?.valuePart2;
   }
 
   bool attributeValueStateForBitflagAttributes(
     AttributeValue attributeValue
   ) {
-    final currentValue = valuePart1;
+    final currentValue = valuePart1 ?? 0;
     return currentValue & attributeValue.id != 0;
   }
 
@@ -112,20 +112,74 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
     bool newValue,
     AttributeValue attributeValue,
   ) {
-    final int currentNumberValue = valuePart1;
+    final int currentNumberValue = valuePart1 ?? 0;
     final int newNumberValue;
     if (newValue) {
-      var v = valuePart1;
+      var v = valuePart1 ?? 0;
       v |= attributeValue.id;
       newNumberValue = v;
     } else {
-      var v = valuePart1;
+      var v = valuePart1 ?? 0;
       v &= ~attributeValue.id;
       newNumberValue = v;
     }
 
     if (currentNumberValue != newNumberValue) {
       valuePart1 = newNumberValue;
+      widget.onNewAttributeValue(
+        ProfileAttributeValueUpdate(
+          id: widget.a.attribute.id,
+          valuePart1: valuePart1,
+          valuePart2: valuePart2,
+        )
+      );
+    }
+  }
+
+  bool? firstLevelButtonValue(
+    AttributeValue attributeValue
+  ) {
+    if (valuePart1 == attributeValue.id) {
+      if (valuePart2 == null) {
+        return true;
+      } else {
+        return null; // Indeterminate
+      }
+    } else {
+      return false;
+    }
+  }
+
+  bool secondLevelButtonValue(
+    AttributeValue parentAttributeValue,
+    AttributeValue attributeValue,
+  ) {
+    return valuePart1 == parentAttributeValue.id && valuePart2 == attributeValue.id;
+  }
+
+  void updateFirstLevelButtonValue(
+    int? newPart1Value,
+  ) {
+    if (valuePart1 != newPart1Value) {
+      valuePart1 = newPart1Value;
+      valuePart2 = null;
+      widget.onNewAttributeValue(
+        ProfileAttributeValueUpdate(
+          id: widget.a.attribute.id,
+          valuePart1: valuePart1,
+          valuePart2: valuePart2,
+        )
+      );
+    }
+  }
+
+  void updateSecondLevelButtonValue(
+    int? newPart1Value,
+    int? newPart2Value,
+  ) {
+    if (valuePart2 != newPart2Value || valuePart1 != newPart1Value) {
+      valuePart1 = newPart1Value;
+      valuePart2 = newPart2Value;
       widget.onNewAttributeValue(
         ProfileAttributeValueUpdate(
           id: widget.a.attribute.id,
@@ -148,13 +202,18 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
     final List<Widget> widgetList;
     if (attribute.mode == AttributeMode.selectSingleFilterSingle ||
       attribute.mode == AttributeMode.selectSingleFilterMultiple) {
-      widgetList = widgetsForSelectSingleAttribute(context);
+      final valueList = attribute.values.toList();
+      reorderValues(valueList, attribute.valueOrder);
+      widgetList = widgetsForSelectSingleAttribute(
+        context,
+        attribute,
+        valueList,
+      );
     } else if (attribute.mode == AttributeMode.selectMultipleFilterMultiple) {
       final valueList = attribute.values.toList();
       reorderValues(valueList, attribute.valueOrder);
       widgetList = widgetsForSelectMultipleAttribute(
         context,
-        attribute,
         valueList,
         attribute.translations,
       );
@@ -196,15 +255,101 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
     );
   }
 
-  List<Widget> widgetsForSelectSingleAttribute(BuildContext context) {
-    // log.error("Select single attributes are unsupported");
-    showSnackBar(context.strings.generic_error);
-    return [];
+  List<Widget> widgetsForSelectSingleAttribute(
+    BuildContext context,
+    Attribute attribute,
+    List<AttributeValue> attributeValues,
+  ) {
+    final widgets = <Widget>[];
+    for (final value in attributeValues) {
+      final checkbox = CheckboxListTile(
+        title: singleSelectTitle(attribute, value),
+        tristate: true,
+        controlAffinity: ListTileControlAffinity.leading,
+        value: firstLevelButtonValue(value),
+        onChanged: (newValue) {
+          setState(() {
+            if (valuePart1 == value.id) {
+              updateFirstLevelButtonValue(null);
+            } else {
+              updateFirstLevelButtonValue(value.id);
+            }
+          });
+        },
+      );
+
+      widgets.add(checkbox);
+
+      final groupValues = value.groupValues?.values.toList();
+      if (groupValues != null) {
+        reorderValues(groupValues, attribute.valueOrder);
+        final groupWidgets = widgetsForSelectSingleAttributeSecondLevel(
+          context,
+          attribute,
+          value,
+          groupValues,
+        );
+        widgets.addAll(groupWidgets);
+      }
+    }
+    return widgets;
+  }
+
+  List<Widget> widgetsForSelectSingleAttributeSecondLevel(
+    BuildContext context,
+    Attribute attribute,
+    AttributeValue parentValue,
+    List<AttributeValue> attributeValues,
+  ) {
+    final widgets = <Widget>[];
+    for (final value in attributeValues) {
+      final checkbox = CheckboxListTile(
+        title: singleSelectTitle(attribute, value),
+        tristate: true,
+        controlAffinity: ListTileControlAffinity.leading,
+        value: secondLevelButtonValue(parentValue, value),
+        onChanged: (newValue) {
+          setState(() {
+            if (valuePart1 == parentValue.id && valuePart2 == value.id) {
+              updateSecondLevelButtonValue(null, null);
+            } else {
+              updateSecondLevelButtonValue(parentValue.id, value.id);
+            }
+          });
+        },
+      );
+
+      widgets.add(
+        Padding(
+          padding: const EdgeInsets.only(left: 24),
+          child: checkbox
+        )
+      );
+    }
+    return widgets;
+  }
+
+  Widget singleSelectTitle(
+    Attribute attribute,
+    AttributeValue value,
+  ) {
+      final icon = iconResourceToMaterialIcon(value.icon);
+      final text = attributeValueName(context, value, attribute.translations);
+      if (icon != null) {
+        return Row(
+          children: [
+            Icon(icon),
+            const Padding(padding: EdgeInsets.all(8.0)),
+            Text(text),
+          ],
+        );
+      } else {
+        return Text(text);
+      }
   }
 
   List<Widget> widgetsForSelectMultipleAttribute(
     BuildContext context,
-    Attribute attribute,
     List<AttributeValue> attributeValues,
     List<Language> translations,
   ) {
