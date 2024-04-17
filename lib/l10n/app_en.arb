@@ -459,6 +459,14 @@
   "@profile_grid_screen_title": {
     "description": "Title for profile grid screen"
   },
+  "select_content_screen_initial_moderation_ongoing_info": "Adding new images is possible once current images are moderated.",
+  "@select_content_screen_initial_moderation_ongoing_info": {
+    "description": "Info text about restrictions when initial moderation is ongoing"
+  },
+  "select_content_screen_title": "Select image",
+  "@select_content_screen_title": {
+    "description": "Title for select content screen"
+  },
   "url_app_privacy_policy_link": "https://example.com",
   "url_app_tos_link": "https://example.com",
   "view_image_screen_title": "View image",

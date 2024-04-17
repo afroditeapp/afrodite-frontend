@@ -234,6 +234,20 @@ class MediaRepository extends DataRepository {
         return Err(());
     }
   }
+
+  Future<Result<AccountContent, ()>> loadAllContent() async {
+    final accountId = await LoginRepository.getInstance().accountId.first;
+    if (accountId == null) {
+      log.error("reloadMyProfileContent: accountId is null");
+      return Err(());
+    }
+    switch (await api.media((api) => api.getAllAccountMediaContent(accountId.accountId))) {
+      case Ok(:final v):
+        return Ok(v);
+      case Err():
+        return Err(());
+    }
+  }
 }
 
 sealed class MapTileResult {}

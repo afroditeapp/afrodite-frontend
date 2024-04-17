@@ -26,6 +26,7 @@ import 'package:pihka_frontend/logic/media/content.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
 import 'package:pihka_frontend/logic/media/profile_pictures.dart';
+import 'package:pihka_frontend/logic/media/select_content.dart';
 import 'package:pihka_frontend/logic/profile/attributes.dart';
 import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
 import 'package:pihka_frontend/logic/profile/location.dart';
@@ -91,6 +92,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => NotificationPermissionBloc()),
         BlocProvider(create: (_) => LocationBloc()),
         BlocProvider(create: (_) => ContentBloc()),
+        BlocProvider(create: (_) => SelectContentBloc()),
 
         // Login
         BlocProvider(create: (_) => SignInWithBloc()),

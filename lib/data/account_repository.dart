@@ -14,6 +14,7 @@ import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/utils/api.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -156,5 +157,10 @@ class AccountRepository extends DataRepository {
     );
 
     return result.isOk();
+  }
+
+  Future<bool> isInitialModerationOngoing() async {
+    final visibility = await profileVisibility.first;
+    return visibility.isInitialModerationOngoing();
   }
 }

@@ -20,3 +20,10 @@ extension ModerationExtensions on Moderation {
 void _addNotNull<T>(List<T> l, T? e) {
   if (e != null) l.add(e);
 }
+
+extension ProfileVisibilityExtensions on ProfileVisibility {
+  bool isInitialModerationOngoing() {
+    return this == ProfileVisibility.pendingPrivate ||
+      this == ProfileVisibility.pendingPublic;
+  }
+}
