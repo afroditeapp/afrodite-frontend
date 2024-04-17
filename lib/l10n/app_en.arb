@@ -76,6 +76,10 @@
   "@edit_attribute_value_screen_one_value_must_be_selected": {
     "description": "Snackbar text for notifying that one at least one option must be selected"
   },
+  "edit_attribute_value_screen_search_placeholder_text": "Search…",
+  "@edit_attribute_value_screen_search_placeholder_text": {
+    "description": "Attribute value search box placeholder text"
+  },
   "edit_profile_screen_invalid_age": "Invalid age",
   "@edit_profile_screen_invalid_age": {
     "description": "Snackbar text for notifying about invalid age"

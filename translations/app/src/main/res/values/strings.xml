@@ -153,6 +153,7 @@
 
     <!-- Edit attribute value screen -->
     <string name="edit_attribute_value_screen_one_value_must_be_selected" description="Snackbar text for notifying that one at least one option must be selected">At least one selection is required</string>
+    <string name="edit_attribute_value_screen_search_placeholder_text" description="Attribute value search box placeholder text">Search…</string>
 
     <!-- Likes -->
     <string name="pageLikesTitle" description="Title for likes page">Likes</string>

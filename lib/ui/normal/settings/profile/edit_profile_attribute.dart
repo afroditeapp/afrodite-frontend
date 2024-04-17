@@ -33,6 +33,15 @@ class EditProfileAttributeScreen extends StatefulWidget {
 }
 
 class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen> {
+  bool searchPossible = false;
+  bool searchActive = false;
+  TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    searchPossible = widget.a.attribute.mode == AttributeMode.selectSingleFilterSingle;
+  }
 
   void validateAndSaveData(BuildContext context) {
     final currentAttributes = context.read<EditMyProfileBloc>().state.attributes;
@@ -49,6 +58,41 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> actions;
+    final Widget title;
+    if (searchPossible) {
+      actions = [
+        IconButton(
+          icon: Icon(searchActive ? Icons.close : Icons.search),
+          onPressed: () {
+            setState(() {
+              if (searchActive) {
+                searchController.clear();
+              }
+              searchActive = !searchActive;
+            });
+          },
+        ),
+      ];
+      if (searchActive) {
+        title = TextField(
+          controller: searchController,
+          autofocus: true,
+          decoration: InputDecoration(
+            hintText: context.strings.edit_attribute_value_screen_search_placeholder_text,
+          ),
+          onChanged: (value) {
+            setState(() {});
+          },
+        );
+      } else {
+        title = Text(context.strings.edit_profile_screen_title);
+      }
+    } else {
+      actions = [];
+      title = Text(context.strings.edit_profile_screen_title);
+    }
+
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
@@ -58,18 +102,34 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
         validateAndSaveData(context);
       },
       child: Scaffold(
-        appBar: AppBar(title: Text(context.strings.edit_profile_screen_title)),
+        appBar: AppBar(
+          title: title,
+          actions: actions,
+        ),
         body: edit(context),
       ),
     );
   }
 
   Widget edit(BuildContext context) {
+    final String? filterValue;
+    if (searchActive) {
+      final processedFilter = searchController.text.trim().toLowerCase();
+      if (processedFilter.isEmpty) {
+        filterValue = null;
+      } else {
+        filterValue = processedFilter;
+      }
+    } else {
+      filterValue = null;
+    }
+
     return SingleChildScrollView(
       child: Column(
         children: [
           EditSingleAttribute(
             a: widget.a,
+            valueFilter: filterValue,
             onNewAttributeValue: (value) {
               context.read<EditMyProfileBloc>().add(NewAttributeValue(value));
             },
@@ -82,8 +142,14 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
 
 class EditSingleAttribute extends StatefulWidget {
   final AttributeAndValue a;
+  final String? valueFilter;
   final void Function(ProfileAttributeValueUpdate) onNewAttributeValue;
-  const EditSingleAttribute({required this.a, required this.onNewAttributeValue, super.key});
+  const EditSingleAttribute({
+    required this.a,
+    required this.valueFilter,
+    required this.onNewAttributeValue,
+    super.key,
+  });
 
   @override
   State<EditSingleAttribute> createState() => _EditSingleAttributeState();
@@ -262,11 +328,14 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
   ) {
     final widgets = <Widget>[];
     for (final value in attributeValues) {
+      final isSelected = firstLevelButtonValue(value);
+      final text = attributeValueName(context, value, attribute.translations);
+
       final checkbox = CheckboxListTile(
-        title: singleSelectTitle(attribute, value),
+        title: singleSelectTitle(value, text),
         tristate: true,
         controlAffinity: ListTileControlAffinity.leading,
-        value: firstLevelButtonValue(value),
+        value: isSelected,
         onChanged: (newValue) {
           setState(() {
             if (valuePart1 == value.id) {
@@ -278,19 +347,30 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
         },
       );
 
-      widgets.add(checkbox);
-
       final groupValues = value.groupValues?.values.toList();
+      final List<Widget> groupWidgets;
       if (groupValues != null) {
         reorderValues(groupValues, attribute.valueOrder);
-        final groupWidgets = widgetsForSelectSingleAttributeSecondLevel(
+        groupWidgets = widgetsForSelectSingleAttributeSecondLevel(
           context,
           attribute,
           value,
           groupValues,
         );
-        widgets.addAll(groupWidgets);
+      } else {
+        groupWidgets = [];
       }
+
+      final filter = widget.valueFilter;
+      if (filter != null && (text.toLowerCase().contains(filter.trim().toLowerCase()))) {
+        widgets.add(checkbox);
+      } else if (groupWidgets.isNotEmpty) {
+        widgets.add(checkbox);
+      } else if (filter == null) {
+        widgets.add(checkbox);
+      }
+
+      widgets.addAll(groupWidgets);
     }
     return widgets;
   }
@@ -303,11 +383,18 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
   ) {
     final widgets = <Widget>[];
     for (final value in attributeValues) {
+      final isSelected = secondLevelButtonValue(parentValue, value);
+      final text = attributeValueName(context, value, attribute.translations);
+      final filter = widget.valueFilter;
+      if (filter != null && !(text.toLowerCase().contains(filter.trim().toLowerCase()))) {
+        continue;
+      }
+
       final checkbox = CheckboxListTile(
-        title: singleSelectTitle(attribute, value),
+        title: singleSelectTitle(value, text),
         tristate: true,
         controlAffinity: ListTileControlAffinity.leading,
-        value: secondLevelButtonValue(parentValue, value),
+        value: isSelected,
         onChanged: (newValue) {
           setState(() {
             if (valuePart1 == parentValue.id && valuePart2 == value.id) {
@@ -330,11 +417,10 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
   }
 
   Widget singleSelectTitle(
-    Attribute attribute,
     AttributeValue value,
+    String text,
   ) {
       final icon = iconResourceToMaterialIcon(value.icon);
-      final text = attributeValueName(context, value, attribute.translations);
       if (icon != null) {
         return Row(
           children: [
