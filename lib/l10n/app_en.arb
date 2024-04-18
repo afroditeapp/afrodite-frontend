@@ -48,6 +48,39 @@
   "@crop_image_screen_title": {
     "description": "Title for crop image screen"
   },
+  "current_moderation_request_screen_moderation_queue_position": "Your position in moderation queue: {p0}",
+  "@current_moderation_request_screen_moderation_queue_position": {
+    "description": "Text for current moderation queue position",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "current_moderation_request_screen_new_request_action": "Add new images",
+  "@current_moderation_request_screen_new_request_action": {
+    "description": "Text for new moderation request action when current request is moderated"
+  },
+  "current_moderation_request_screen_new_request_action_when_current_request_denied": "Try again",
+  "@current_moderation_request_screen_new_request_action_when_current_request_denied": {
+    "description": "Text for new moderation request action when current request is denied"
+  },
+  "current_moderation_request_screen_request_accepted": "All images accepted",
+  "@current_moderation_request_screen_request_accepted": {
+    "description": "Text for accepted moderation request"
+  },
+  "current_moderation_request_screen_request_denied": "Some image was rejected",
+  "@current_moderation_request_screen_request_denied": {
+    "description": "Text for denied moderation request"
+  },
+  "current_moderation_request_screen_request_waiting": "Images are waiting moderation",
+  "@current_moderation_request_screen_request_waiting": {
+    "description": "Text for waiting moderation request"
+  },
+  "current_moderation_request_screen_title": "Image moderation status",
+  "@current_moderation_request_screen_title": {
+    "description": "Title for current moderation request screen"
+  },
   "demo_account_screen_confirm_logout_dialog_title": "Logout?",
   "@demo_account_screen_confirm_logout_dialog_title": {
     "description": "Dialog title text for confirming logout from demo account"

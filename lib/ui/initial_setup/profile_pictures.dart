@@ -465,10 +465,8 @@ class AddPicture extends StatelessWidget {
   void openActionDialog(BuildContext context) async {
     final bloc = context.read<ProfilePicturesBloc>();
     final selectContentBloc = context.read<SelectContentBloc>();
-    final currentModerationRequestBloc = context.read<CurrentModerationRequestBloc>();
     final selectedImg = await Navigator.push(context, MaterialPageRoute<AccountImageId?>(builder: (_) => SelectContentPage(
       selectContentBloc: selectContentBloc,
-      currentModerationRequestBloc: currentModerationRequestBloc,
     )));
     if (selectedImg != null) {
       bloc.add(AddProcessedImage(ProfileImage(selectedImg, imgIndex)));
@@ -593,14 +591,7 @@ class FilePicture extends StatelessWidget {
       height: imgHeight,
       child: Material(
         child: InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute<void>(
-                builder: (_) => ViewImageScreen(ViewImageAccountContent(img.accountId, img.contentId))
-              )
-            );
-          },
+          onTap: () => openViewImageScreenForAccountImage(context, img.accountId, img.contentId),
           child: accountImgWidgetInk(img.accountId, img.contentId, width: imgWidth, height: imgHeight, alignment: Alignment.topRight),
         ),
       ),

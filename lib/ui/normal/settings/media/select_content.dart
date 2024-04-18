@@ -14,16 +14,14 @@ import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
-const IMAGE_HEIGTH = 200.0;
-const IMAGE_WIDTH = 150.0;
+const SELECT_CONTENT_IMAGE_HEIGTH = 200.0;
+const SELECT_CONTENT_IMAGE_WIDTH = 150.0;
 
 /// Returns [AccountImageId?]
 class SelectContentPage extends StatefulWidget {
   final SelectContentBloc selectContentBloc;
-  final CurrentModerationRequestBloc currentModerationRequestBloc;
   const SelectContentPage({
     required this.selectContentBloc,
-    required this.currentModerationRequestBloc,
     Key? key,
   }) : super(key: key);
 
@@ -37,7 +35,6 @@ class _SelectContentPageState extends State<SelectContentPage> {
   void initState() {
     super.initState();
     widget.selectContentBloc.add(ReloadAvailableContent());
-    widget.currentModerationRequestBloc.add(Reload());
   }
 
   @override
@@ -85,11 +82,21 @@ class _SelectContentPageState extends State<SelectContentPage> {
     }
 
     gridWidgets.addAll(
-      pendingContent.map((e) => buildPendingImg(context, accountId, e))
+      pendingContent.map((e) => buildPendingImg(
+        context,
+        accountId,
+        e,
+        onTap: () => showSnackBar(context.strings.select_content_screen_info_waiting_moderation),
+      ))
     );
 
     gridWidgets.addAll(
-      content.map((e) => buildAvailableImg(context, accountId, e))
+      content.map((e) => buildAvailableImg(
+        context,
+        accountId,
+        e,
+        onTap: () => Navigator.of(context).pop(AccountImageId(accountId, e))
+      ))
     );
 
     final grid = GridView.count(
@@ -121,16 +128,16 @@ class _SelectContentPageState extends State<SelectContentPage> {
   Widget buildNewModerationRequestButton(BuildContext context) {
     return Center(
       child: SizedBox(
-        width: IMAGE_WIDTH,
-        height: IMAGE_HEIGTH,
+        width: SELECT_CONTENT_IMAGE_WIDTH,
+        height: SELECT_CONTENT_IMAGE_HEIGTH,
         child: Material(
           child: InkWell(
             onTap: () {
               // TODO: Open create new moderation request screen
             },
             child: Ink(
-              width: IMAGE_WIDTH,
-              height: IMAGE_HEIGTH,
+              width: SELECT_CONTENT_IMAGE_WIDTH,
+              height: SELECT_CONTENT_IMAGE_HEIGTH,
               color: Colors.grey,
               child: const Center(
                 child: Icon(
@@ -145,51 +152,62 @@ class _SelectContentPageState extends State<SelectContentPage> {
       ),
     );
   }
+}
 
-  Widget buildAvailableImg(BuildContext context, AccountId accountId, ContentId contentId) {
-    return Center(
-      child: SizedBox(
-        width: IMAGE_WIDTH,
-        height: IMAGE_HEIGTH,
-        child: Material(
-          child: InkWell(
-            onTap: () {
-              Navigator.of(context).pop(AccountImageId(accountId, contentId));
-            },
-            child: accountImgWidgetInk(accountId, contentId),
-          ),
+Widget buildAvailableImg(
+  BuildContext context,
+  AccountId accountId,
+  ContentId contentId,
+  {
+    required void Function() onTap
+  }
+) {
+  return Center(
+    child: SizedBox(
+      width: SELECT_CONTENT_IMAGE_WIDTH,
+      height: SELECT_CONTENT_IMAGE_HEIGTH,
+      child: Material(
+        child: InkWell(
+          onTap: onTap,
+          child: accountImgWidgetInk(accountId, contentId),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget buildPendingImg(BuildContext context, AccountId accountId, ContentId contentId) {
-     return Center(
-      child: SizedBox(
-        width: IMAGE_WIDTH,
-        height: IMAGE_HEIGTH,
-        child: Material(
-          child: InkWell(
-            onTap: () =>
-              showSnackBar(context.strings.select_content_screen_info_waiting_moderation),
-            child: Stack(
-              children: [
-                accountImgWidgetInk(accountId, contentId),
-                Container(
-                  color: Colors.black54,
-                  child: const Center(
-                    child: Icon(
-                      Icons.hourglass_top_rounded,
-                      size: 40,
-                      color: Colors.white,
-                    ),
+Widget buildPendingImg(
+  BuildContext context,
+  AccountId accountId,
+  ContentId contentId,
+  {
+    required void Function() onTap
+  }
+) {
+    return Center(
+    child: SizedBox(
+      width: SELECT_CONTENT_IMAGE_WIDTH,
+      height: SELECT_CONTENT_IMAGE_HEIGTH,
+      child: Material(
+        child: InkWell(
+          onTap: onTap,
+          child: Stack(
+            children: [
+              accountImgWidgetInk(accountId, contentId),
+              Container(
+                color: Colors.black54,
+                child: const Center(
+                  child: Icon(
+                    Icons.hourglass_top_rounded,
+                    size: 40,
+                    color: Colors.white,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }

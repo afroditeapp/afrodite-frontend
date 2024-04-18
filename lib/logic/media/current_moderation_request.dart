@@ -20,16 +20,31 @@ class CurrentModerationRequestBloc extends Bloc<CurrentModerationRequestEvent, C
   CurrentModerationRequestBloc() : super(CurrentModerationRequestData()) {
     on<Reload>((data, emit) async {
       await runOnce(() async {
-        final value = await media.currentModerationRequestState();
-        emit(state.copyWith(moderationRequest: value));
+        emit(CurrentModerationRequestData().copyWith(isLoading: true));
+        await reload(emit);
       });
     });
     on<ReloadOnceConnected>((data, emit) async {
       await runOnce(() async {
+        emit(CurrentModerationRequestData().copyWith(isLoading: true));
         await ApiManager.getInstance().state.firstWhere((element) => element == ApiManagerState.connected);
-        final value = await media.currentModerationRequestState();
-        emit(state.copyWith(moderationRequest: value));
+        await reload(emit);
       });
     });
+  }
+
+  Future<void> reload(Emitter<CurrentModerationRequestData> emit) async {
+    final value = await media.currentModerationRequestState();
+    if (value == null) {
+      emit(state.copyWith(
+        isLoading: false,
+        isError: true
+      ));
+    } else {
+      emit(state.copyWith(
+        moderationRequest: value,
+        isLoading: false
+      ));
+    }
   }
 }

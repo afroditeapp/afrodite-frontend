@@ -18,6 +18,15 @@ class ViewImageFileContent extends ViewImageScreenMode {
   final XFile imageFile;
 }
 
+void openViewImageScreenForAccountImage(BuildContext context, AccountId accountId, ContentId contentId) {
+  Navigator.push(
+    context,
+    MaterialPageRoute<void>(
+      builder: (_) => ViewImageScreen(ViewImageAccountContent(accountId, contentId))
+    )
+  );
+}
+
 class ViewImageScreen extends StatefulWidget {
   const ViewImageScreen(this.mode, {super.key});
   final ViewImageScreenMode mode;

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin.dart';
 import 'package:pihka_frontend/ui/normal/settings/blocked_profiles.dart';
 import 'package:pihka_frontend/ui/normal/settings/debug.dart';
 import 'package:pihka_frontend/ui/normal/settings/location.dart';
+import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
 import 'package:pihka_frontend/ui/normal/settings/my_profile.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile_visibility.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
@@ -51,6 +53,13 @@ class _SettingsViewState extends State<SettingsView> {
           ),
           Setting.createSetting(Icons.public, "Profile visiblity", () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ProfileVisibilityPage()))
+          ),
+          Setting.createSetting(Icons.image_rounded, context.strings.current_moderation_request_screen_title, () {
+              final currentModerationRequestBloc = context.read<CurrentModerationRequestBloc>();
+              Navigator.push(context, MaterialPageRoute<void>(builder: (_) =>
+                CurrentModerationRequestScreen(currentModerationRequestBloc: currentModerationRequestBloc)
+              ));
+            }
           ),
           Setting.createSetting(Icons.block, "Blocked profiles", () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const BlockedProfilesPage()))

@@ -204,15 +204,7 @@ class InitialSetupUtils {
       final r2 = await _api.mediaAction((api) => api.putPendingProfileContent(newProfileContent));
       if (r2.isErr()) return errAndLog("Setting profile images failed");
 
-      final moderationRequest = ModerationRequestContent(
-        content0: securitySelfie,
-        content1: newProfileContent.contentId0,
-        content2: newProfileContent.contentId1,
-        content3: newProfileContent.contentId2,
-        content4: newProfileContent.contentId3,
-        content5: newProfileContent.contentId4,
-        content6: newProfileContent.contentId5,
-      );
+      final moderationRequest = createModerationRequest(securitySelfie, newProfileContent);
 
       final r3 = await _api.mediaAction((api) => api.putModerationRequest(moderationRequest));
       if (r3.isErr()) return errAndLog("Moderation request sending failed");
@@ -225,6 +217,45 @@ class InitialSetupUtils {
 
     return Ok(());
   }
+}
+
+void _addNotEqualOrNull(ContentId securitySelfie, ContentId? c, List<ContentId> list) {
+  if (c != securitySelfie && c != null) {
+    list.add(c);
+  }
+}
+
+ContentId? _getIndex(List<ContentId> list, int index) {
+  if (index < list.length) {
+    return list[index];
+  } else {
+    return null;
+  }
+}
+
+/// Prevent adding security selfie to request more than once.
+ModerationRequestContent createModerationRequest(
+  ContentId securitySelfie,
+  SetProfileContent profileContent,
+) {
+  final List<ContentId> l = [];
+
+  _addNotEqualOrNull(securitySelfie, profileContent.contentId0, l);
+  _addNotEqualOrNull(securitySelfie, profileContent.contentId1, l);
+  _addNotEqualOrNull(securitySelfie, profileContent.contentId2, l);
+  _addNotEqualOrNull(securitySelfie, profileContent.contentId3, l);
+  _addNotEqualOrNull(securitySelfie, profileContent.contentId4, l);
+  _addNotEqualOrNull(securitySelfie, profileContent.contentId5, l);
+
+  return ModerationRequestContent(
+    content0: securitySelfie,
+    content1: _getIndex(l, 0),
+    content2: _getIndex(l, 1),
+    content3: _getIndex(l, 2),
+    content4: _getIndex(l, 3),
+    content5: _getIndex(l, 4),
+    content6: _getIndex(l, 5),
+  );
 }
 
 Result<SetProfileContent, ()> createProfileContent(

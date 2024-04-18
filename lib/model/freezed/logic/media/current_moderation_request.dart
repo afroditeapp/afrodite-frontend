@@ -9,5 +9,7 @@ part 'current_moderation_request.freezed.dart';
 class CurrentModerationRequestData with _$CurrentModerationRequestData {
   factory CurrentModerationRequestData({
     ModerationRequest? moderationRequest,
+    @Default(false) bool isError,
+    @Default(false) bool isLoading,
   }) = _CurrentModerationRequestData;
 }
