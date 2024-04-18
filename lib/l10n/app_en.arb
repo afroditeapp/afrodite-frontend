@@ -459,6 +459,10 @@
   "@profile_grid_screen_title": {
     "description": "Title for profile grid screen"
   },
+  "select_content_screen_info_waiting_moderation": "Image is waiting moderation",
+  "@select_content_screen_info_waiting_moderation": {
+    "description": "Snackbar text that image is waiting moderation"
+  },
   "select_content_screen_initial_moderation_ongoing_info": "Adding new images is possible once current images are moderated.",
   "@select_content_screen_initial_moderation_ongoing_info": {
     "description": "Info text about restrictions when initial moderation is ongoing"

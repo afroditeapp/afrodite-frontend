@@ -159,6 +159,7 @@
     <!-- Select picture screen -->
     <string name="select_content_screen_title" description="Title for select content screen">Select image</string>
     <string name="select_content_screen_initial_moderation_ongoing_info" description="Info text about restrictions when initial moderation is ongoing">Adding new images is possible once current images are moderated.</string>
+    <string name="select_content_screen_info_waiting_moderation" description="Snackbar text that image is waiting moderation">Image is waiting moderation</string>
 
     <!-- Likes -->
     <string name="pageLikesTitle" description="Title for likes page">Likes</string>

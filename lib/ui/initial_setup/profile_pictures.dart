@@ -4,6 +4,7 @@ import "package:image_picker/image_picker.dart";
 import "package:pihka_frontend/data/image_cache.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
+import "package:pihka_frontend/logic/media/current_moderation_request.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/logic/media/profile_pictures.dart";
 import "package:pihka_frontend/logic/media/select_content.dart";
@@ -464,8 +465,10 @@ class AddPicture extends StatelessWidget {
   void openActionDialog(BuildContext context) async {
     final bloc = context.read<ProfilePicturesBloc>();
     final selectContentBloc = context.read<SelectContentBloc>();
+    final currentModerationRequestBloc = context.read<CurrentModerationRequestBloc>();
     final selectedImg = await Navigator.push(context, MaterialPageRoute<AccountImageId?>(builder: (_) => SelectContentPage(
       selectContentBloc: selectContentBloc,
+      currentModerationRequestBloc: currentModerationRequestBloc,
     )));
     if (selectedImg != null) {
       bloc.add(AddProcessedImage(ProfileImage(selectedImg, imgIndex)));

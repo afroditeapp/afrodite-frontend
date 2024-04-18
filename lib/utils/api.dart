@@ -27,3 +27,23 @@ extension ProfileVisibilityExtensions on ProfileVisibility {
       this == ProfileVisibility.pendingPublic;
   }
 }
+
+extension ModerationRequestStateExtensions on ModerationRequest {
+  bool isOngoing() {
+    return state == ModerationRequestState.waiting ||
+      state == ModerationRequestState.inProgress;
+  }
+
+  List<ContentId> contentList() {
+    final l = [
+      content.content0,
+    ];
+    _addNotNull(l, content.content1);
+    _addNotNull(l, content.content2);
+    _addNotNull(l, content.content3);
+    _addNotNull(l, content.content4);
+    _addNotNull(l, content.content5);
+    _addNotNull(l, content.content6);
+    return l;
+  }
+}
