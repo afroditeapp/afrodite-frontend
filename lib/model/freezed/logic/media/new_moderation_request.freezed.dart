@@ -13,30 +13,30 @@ final _privateConstructorErrorNewModerationRequestData = UnsupportedError(
 
 /// @nodoc
 mixin _$NewModerationRequestData {
-  UnmodifiableList<ContentId> get selectedImgs => throw _privateConstructorErrorNewModerationRequestData;
+  AddedImages get selectedImgs => throw _privateConstructorErrorNewModerationRequestData;
 
   NewModerationRequestData copyWith({
-    UnmodifiableList<ContentId>? selectedImgs,
+    AddedImages? selectedImgs,
   }) => throw _privateConstructorErrorNewModerationRequestData;
 }
 
 /// @nodoc
 abstract class _NewModerationRequestData implements NewModerationRequestData {
   factory _NewModerationRequestData({
-    UnmodifiableList<ContentId> selectedImgs,
+    AddedImages selectedImgs,
   }) = _$NewModerationRequestDataImpl;
 }
 
 /// @nodoc
 class _$NewModerationRequestDataImpl implements _NewModerationRequestData {
-  static const UnmodifiableList<ContentId> _selectedImgsDefaultValue = UnmodifiableList<ContentId>.empty();
+  static const AddedImages _selectedImgsDefaultValue = AddedImages();
   
   _$NewModerationRequestDataImpl({
     this.selectedImgs = _selectedImgsDefaultValue,
   });
 
   @override
-  final UnmodifiableList<ContentId> selectedImgs;
+  final AddedImages selectedImgs;
 
   @override
   String toString() {
@@ -63,6 +63,6 @@ class _$NewModerationRequestDataImpl implements _NewModerationRequestData {
   NewModerationRequestData copyWith({
     Object? selectedImgs,
   }) => _$NewModerationRequestDataImpl(
-    selectedImgs: (selectedImgs ?? this.selectedImgs) as UnmodifiableList<ContentId>,
+    selectedImgs: (selectedImgs ?? this.selectedImgs) as AddedImages,
   );
 }

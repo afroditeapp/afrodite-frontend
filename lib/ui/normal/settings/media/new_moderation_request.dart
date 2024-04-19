@@ -44,7 +44,7 @@ class _NewModerationRequestScreenState extends State<NewModerationRequestScreen>
   }
 
   void closeScreen(BuildContext context, {bool popOnCancel = true}) async {
-    final imgs = context.read<NewModerationRequestBloc>().state.selectedImgs.toList();
+    final imgs = context.read<NewModerationRequestBloc>().state.selectedImgs.contentList().toList();
     if (imgs.isNotEmpty) {
       final accepted = await showConfirmDialog(context, context.strings.new_moderation_request_screen_send_content_confirm_dialog_title);
       if (!context.mounted) {
@@ -100,7 +100,7 @@ class _NewModerationRequestScreenState extends State<NewModerationRequestScreen>
             // Zero sized widgets
           ...imageProcessingUiWidgets<ProfilePicturesImageProcessingBloc>(
             onComplete: (context, processedImg) {
-              context.read<NewModerationRequestBloc>().add(AddImg(processedImg.contentId));
+              context.read<NewModerationRequestBloc>().add(AddImg(processedImg.slot, processedImg.contentId));
             },
           ),
           ],
@@ -112,13 +112,13 @@ class _NewModerationRequestScreenState extends State<NewModerationRequestScreen>
   Widget addContentPage(
     BuildContext context,
     AccountId accountId,
-    UnmodifiableList<ContentId> currentContent,
+    AddedImages currentContent,
   ) {
     final List<Widget> gridWidgets = [];
     final iconSize = IconTheme.of(context).size ?? 24.0;
 
     gridWidgets.addAll(
-      currentContent.indexed.map((e) =>
+      currentContent.contentList().indexed.map((e) =>
         Center(
           child: ImgWithCloseButton(
             onCloseButtonPressed: () => context.read<NewModerationRequestBloc>().add(RemoveImg(e.$1)),
@@ -130,11 +130,14 @@ class _NewModerationRequestScreenState extends State<NewModerationRequestScreen>
       )
     );
 
-    gridWidgets.add(
-      buildAddNewButton(context, onTap: () {
-        openSelectPictureDialog(context, serverSlotIndex: currentContent.length);
-      })
-    );
+    final availableSlot = currentContent.nextAvailableSlot();
+    if (availableSlot != null) {
+      gridWidgets.add(
+        buildAddNewButton(context, onTap: () {
+          openSelectPictureDialog(context, serverSlotIndex: availableSlot);
+        })
+      );
+    }
 
     final grid = GridView.count(
       physics: const NeverScrollableScrollPhysics(),
@@ -145,7 +148,7 @@ class _NewModerationRequestScreenState extends State<NewModerationRequestScreen>
 
     final List<Widget> widgets = [grid];
 
-    if (currentContent.isNotEmpty) {
+    if (currentContent.contentList().isNotEmpty) {
       widgets.add(
         Padding(
           padding: const EdgeInsets.only(

@@ -6,6 +6,9 @@ import "package:pihka_frontend/ui_utils/crop_image_screen.dart";
 
 final log = Logger("ProfilePicturesBloc");
 
+// TODO(prod): Check that is not possible to upload another image on top
+// of some other image if some previous images are removed
+
 sealed class ProfilePicturesEvent {}
 class ResetIfModeChanges extends ProfilePicturesEvent {
   final PictureSelectionMode mode;
