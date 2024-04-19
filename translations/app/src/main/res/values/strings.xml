@@ -169,6 +169,8 @@
     <string name="current_moderation_request_screen_moderation_queue_position" description="Text for current moderation queue position">Your position in moderation queue: %s</string>
     <string name="current_moderation_request_screen_new_request_action_when_current_request_denied" description="Text for new moderation request action when current request is denied">Try again</string>
     <string name="current_moderation_request_screen_new_request_action" description="Text for new moderation request action when current request is moderated">Add new images</string>
+    <string name="current_moderation_request_screen_delete_request_action" description="Text for delete moderation request action">Delete moderation request</string>
+    <string name="current_moderation_request_screen_delete_request_dialog_title" description="Dialog title for confirming current moderation request deleting">Delete moderation request?</string>
 
     <!-- New moderation request screen -->
     <string name="new_moderation_request_screen_title" description="Title for new moderation request screen">New moderation request</string>

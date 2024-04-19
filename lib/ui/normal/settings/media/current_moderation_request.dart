@@ -12,6 +12,7 @@ import 'package:pihka_frontend/model/freezed/logic/media/current_moderation_requ
 import 'package:pihka_frontend/ui/normal/settings/media/new_moderation_request.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/select_content.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
+import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/view_image_screen.dart';
 import 'package:pihka_frontend/utils/api.dart';
 
@@ -40,7 +41,7 @@ class _CurrentModerationRequestScreenState extends State<CurrentModerationReques
       appBar: AppBar(
         title: Text(context.strings.current_moderation_request_screen_title),
         actions: [
-           BlocBuilder<CurrentModerationRequestBloc, CurrentModerationRequestData>(
+          BlocBuilder<CurrentModerationRequestBloc, CurrentModerationRequestData>(
             builder: (context, state) {
               final request = state.moderationRequest;
               if (request == null || request.isOngoing()) {
@@ -53,7 +54,30 @@ class _CurrentModerationRequestScreenState extends State<CurrentModerationReques
                 );
               }
             }
-          )
+          ),
+          BlocBuilder<AccountBloc, AccountBlocData>(
+            builder: (context, aState) {
+              return BlocBuilder<CurrentModerationRequestBloc, CurrentModerationRequestData>(
+                builder: (context, state) {
+                  final request = state.moderationRequest;
+                  if (request == null || !request.isOngoing() || aState.isInitialModerationOngoing()) {
+                    return const SizedBox.shrink();
+                  } else {
+                    return IconButton(
+                      icon: const Icon(Icons.delete_rounded),
+                      onPressed: () async {
+                        final accepted = await showConfirmDialog(context, context.strings.current_moderation_request_screen_delete_request_dialog_title);
+                        if (accepted == true) {
+                          widget.currentModerationRequestBloc.add(DeleteCurrentModerationRequest());
+                        }
+                      },
+                      tooltip: context.strings.current_moderation_request_screen_delete_request_action,
+                    );
+                  }
+                }
+              );
+            }
+          ),
         ],
       ),
       body: BlocBuilder<AccountBloc, AccountBlocData>(

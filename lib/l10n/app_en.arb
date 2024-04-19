@@ -48,6 +48,14 @@
   "@crop_image_screen_title": {
     "description": "Title for crop image screen"
   },
+  "current_moderation_request_screen_delete_request_action": "Delete moderation request",
+  "@current_moderation_request_screen_delete_request_action": {
+    "description": "Text for delete moderation request action"
+  },
+  "current_moderation_request_screen_delete_request_dialog_title": "Delete moderation request?",
+  "@current_moderation_request_screen_delete_request_dialog_title": {
+    "description": "Dialog title for confirming current moderation request deleting"
+  },
   "current_moderation_request_screen_moderation_queue_position": "Your position in moderation queue: {p0}",
   "@current_moderation_request_screen_moderation_queue_position": {
     "description": "Text for current moderation queue position",

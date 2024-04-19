@@ -18,6 +18,7 @@ class SendNewModerationRequest extends CurrentModerationRequestEvent {
   Iterable<ContentId> data;
   SendNewModerationRequest(this.data);
 }
+class DeleteCurrentModerationRequest extends CurrentModerationRequestEvent {}
 
 
 class CurrentModerationRequestBloc extends Bloc<CurrentModerationRequestEvent, CurrentModerationRequestData> with ActionRunner {
@@ -41,6 +42,18 @@ class CurrentModerationRequestBloc extends Bloc<CurrentModerationRequestEvent, C
       await runOnce(() async {
         emit(CurrentModerationRequestData().copyWith(isLoading: true));
         final result = await media.createNewModerationRequest(data.data.toList());
+        switch (result) {
+          case Ok():
+            await reload(emit);
+          case Err():
+            emit(CurrentModerationRequestData().copyWith(isLoading: false, isError: true));
+        }
+      });
+    });
+    on<DeleteCurrentModerationRequest>((data, emit) async {
+      await runOnce(() async {
+        emit(CurrentModerationRequestData().copyWith(isLoading: true));
+        final result = await media.deleteCurrentModerationRequest();
         switch (result) {
           case Ok():
             await reload(emit);

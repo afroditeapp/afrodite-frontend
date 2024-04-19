@@ -269,6 +269,19 @@ class MediaRepository extends DataRepository {
         return Err(());
     }
   }
+
+  Future<Result<(), ()>> deleteCurrentModerationRequest() async {
+    // TODO
+
+    // switch (await api.mediaAction((api) => api.deleteModerationRequest())) {
+    //   case Ok():
+    //     return Ok(());
+    //   case Err():
+    //     return Err(());
+    // }
+
+    return Ok(());
+  }
 }
 
 sealed class MapTileResult {}
