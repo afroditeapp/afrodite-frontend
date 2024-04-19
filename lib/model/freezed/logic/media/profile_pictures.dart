@@ -25,6 +25,24 @@ class ProfilePicturesData with _$ProfilePicturesData {
     ];
   }
 
+  int? nextAvailableSlotInInitialSetup() {
+    // 0 is for security selfie
+    final availableSlots = [1, 2, 3, 4];
+    for (final img in pictures()) {
+      if (img is ImageSelected) {
+        final info = img.img;
+        if (info is ProfileImage) {
+          final slot = info.slot;
+          if (slot != null) {
+            availableSlots.remove(slot);
+          }
+        }
+      }
+    }
+
+    return availableSlots.firstOrNull;
+  }
+
   SetProfileContent? toSetProfileContent() {
     final img0 = picture0;
     if (img0 is! ImageSelected) {
@@ -85,14 +103,12 @@ class ImageSelected extends ImgState {
 }
 
 sealed class SelectedImageInfo {}
-class InitialSetupSecuritySelfie extends SelectedImageInfo {
-  final int profileImagesIndex;
-  InitialSetupSecuritySelfie(this.profileImagesIndex);
-}
+class InitialSetupSecuritySelfie extends SelectedImageInfo {}
 class ProfileImage extends SelectedImageInfo {
   final AccountImageId id;
-  final int profileImagesIndex;
-  ProfileImage(this.id, this.profileImagesIndex);
+  /// Slot where image is uploaded to.
+  final int? slot;
+  ProfileImage(this.id, this.slot);
 }
 
 class AccountImageId {

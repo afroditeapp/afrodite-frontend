@@ -75,7 +75,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       return;
     }
     final imgId = AccountImageId(widget.initialProfile.uuid, contentId);
-    widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(imgId, index)));
+    widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(imgId, null), index));
   }
 
   void validateAndSaveData(BuildContext context) {

@@ -6,9 +6,6 @@ import "package:pihka_frontend/ui_utils/crop_image_screen.dart";
 
 final log = Logger("ProfilePicturesBloc");
 
-// TODO(prod): Check that is not possible to upload another image on top
-// of some other image if some previous images are removed
-
 sealed class ProfilePicturesEvent {}
 class ResetIfModeChanges extends ProfilePicturesEvent {
   final PictureSelectionMode mode;
@@ -16,7 +13,8 @@ class ResetIfModeChanges extends ProfilePicturesEvent {
 }
 class AddProcessedImage extends ProfilePicturesEvent {
   final SelectedImageInfo img;
-  AddProcessedImage(this.img);
+  final int profileImagesIndex;
+  AddProcessedImage(this.img, this.profileImagesIndex);
 }
 class UpdateCropResults extends ProfilePicturesEvent {
   final CropResults cropResults;
@@ -45,11 +43,11 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
     on<AddProcessedImage>((data, emit) {
       final pictures = _pictureList();
       switch (data.img) {
-       case InitialSetupSecuritySelfie(:final profileImagesIndex): {
-          pictures[profileImagesIndex] = ImageSelected(data.img);
+       case InitialSetupSecuritySelfie(): {
+          pictures[data.profileImagesIndex] = ImageSelected(data.img);
         }
-        case ProfileImage(:final profileImagesIndex): {
-          pictures[profileImagesIndex] = ImageSelected(data.img);
+        case ProfileImage(): {
+          pictures[data.profileImagesIndex] = ImageSelected(data.img);
         }
       }
       _modifyPicturesListToHaveCorrectStates(pictures);

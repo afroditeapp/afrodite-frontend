@@ -117,7 +117,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
           // Initial setup uses slot 0 for security selfie.
           // Other uploads are in slots 1-4. The UI logic uses 0-3 indexes.
           final index = processedImg.slot - 1;
-          widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(id, index)));
+          widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(id, processedImg.slot), index));
         },
       );
     } else {
@@ -377,9 +377,13 @@ class AddPicture extends StatelessWidget {
       child: Material(
         child: InkWell(
           onTap: () {
-            switch (context.read<ProfilePicturesBloc>().state.mode) {
+            final state = context.read<ProfilePicturesBloc>().state;
+            switch (state.mode) {
               case InitialSetupProfilePictures():
-                openInitialSetupActionDialog(context);
+                final nextSlotIndex = state.nextAvailableSlotInInitialSetup();
+                if (nextSlotIndex != null) {
+                  openInitialSetupActionDialog(context, nextSlotIndex);
+                }
               case NormalProfilePictures():
                 openActionDialog(context);
             }
@@ -401,7 +405,7 @@ class AddPicture extends StatelessWidget {
     );
   }
 
-  void openInitialSetupActionDialog(BuildContext context) {
+  void openInitialSetupActionDialog(BuildContext context, int nextSlotIndex) {
     final securitySelfie = context.read<InitialSetupBloc>().state.securitySelfie;
     final Widget lastOption;
     if (securitySelfie != null) {
@@ -416,7 +420,7 @@ class AddPicture extends StatelessWidget {
         ),
         title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_security_selfie_title),
         onTap: () {
-          context.read<ProfilePicturesBloc>().add(AddProcessedImage(InitialSetupSecuritySelfie(imgIndex)));
+          context.read<ProfilePicturesBloc>().add(AddProcessedImage(InitialSetupSecuritySelfie(), imgIndex));
           Navigator.pop(context, null);
         },
       );
@@ -424,7 +428,7 @@ class AddPicture extends StatelessWidget {
       lastOption = const SizedBox.shrink();
     }
 
-    openSelectPictureDialog(context, lastOption: lastOption, serverSlotIndex: imgIndex + 1);
+    openSelectPictureDialog(context, lastOption: lastOption, serverSlotIndex: nextSlotIndex);
   }
 
   void openActionDialog(BuildContext context) async {
@@ -434,7 +438,7 @@ class AddPicture extends StatelessWidget {
       selectContentBloc: selectContentBloc,
     )));
     if (selectedImg != null) {
-      bloc.add(AddProcessedImage(ProfileImage(selectedImg, imgIndex)));
+      bloc.add(AddProcessedImage(ProfileImage(selectedImg, null), imgIndex));
     }
   }
 }
