@@ -203,16 +203,14 @@ class MediaRepository extends DataRepository {
     yield* task.sendImageToSlot(file, slot, secureCapture: secureCapture);
   }
 
-  Future<ModerationRequest?> currentModerationRequestState() async {
+  Future<Result<ModerationRequest?, ()>> currentModerationRequestState() async {
     final result = await api.media((api) => api.getModerationRequest());
     switch (result) {
       case Ok(:final v):
-        return v;
-      case Err(:final e) when e.isNotModified():
-        return null;
+        return Ok(v.request);
       case Err(:final e):
         e.logError();
-        return null;
+        return Err(());
     }
   }
 
@@ -271,16 +269,12 @@ class MediaRepository extends DataRepository {
   }
 
   Future<Result<(), ()>> deleteCurrentModerationRequest() async {
-    // TODO
-
-    // switch (await api.mediaAction((api) => api.deleteModerationRequest())) {
-    //   case Ok():
-    //     return Ok(());
-    //   case Err():
-    //     return Err(());
-    // }
-
-    return Ok(());
+    switch (await api.mediaAction((api) => api.deleteModerationRequest())) {
+      case Ok():
+        return Ok(());
+      case Err():
+        return Err(());
+    }
   }
 }
 

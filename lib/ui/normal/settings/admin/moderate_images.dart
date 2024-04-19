@@ -57,7 +57,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.strings.pageModerateImagesTitle)),
+      appBar: AppBar(title: Text(context.strings.moderate_images_screen_title)),
       body: list(context),
     );
   }
@@ -208,7 +208,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
                 Navigator.pop(context);
                 showConfirmDialog(
                   context,
-                  context.strings.pageModerateImagesDenyImageText,
+                  context.strings.moderate_images_screen_reject_image_dialog_title,
                   details: "Note that if when all moderation request's image rows are green, you have to ban the profile if you want to make sure that other users can't see the image.",
                 )
                 .then(
@@ -219,7 +219,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
                     }
                 );
               },
-              child: const Text("Deny image"),
+              child: const Text("Reject image"),
             ),
             SimpleDialogOption(
               onPressed: () {

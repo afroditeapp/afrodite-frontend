@@ -26,14 +26,14 @@ class ContentState {
   static const inSlot = ContentState._(r'InSlot');
   static const inModeration = ContentState._(r'InModeration');
   static const moderatedAsAccepted = ContentState._(r'ModeratedAsAccepted');
-  static const moderatedAsDenied = ContentState._(r'ModeratedAsDenied');
+  static const moderatedAsRejected = ContentState._(r'ModeratedAsRejected');
 
   /// List of all possible values in this [enum][ContentState].
   static const values = <ContentState>[
     inSlot,
     inModeration,
     moderatedAsAccepted,
-    moderatedAsDenied,
+    moderatedAsRejected,
   ];
 
   static ContentState? fromJson(dynamic value) => ContentStateTypeTransformer().decode(value);
@@ -75,7 +75,7 @@ class ContentStateTypeTransformer {
         case r'InSlot': return ContentState.inSlot;
         case r'InModeration': return ContentState.inModeration;
         case r'ModeratedAsAccepted': return ContentState.moderatedAsAccepted;
-        case r'ModeratedAsDenied': return ContentState.moderatedAsDenied;
+        case r'ModeratedAsRejected': return ContentState.moderatedAsRejected;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

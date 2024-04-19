@@ -66,16 +66,18 @@ class CurrentModerationRequestBloc extends Bloc<CurrentModerationRequestEvent, C
 
   Future<void> reload(Emitter<CurrentModerationRequestData> emit) async {
     final value = await media.currentModerationRequestState();
-    if (value == null) {
-      emit(state.copyWith(
-        isLoading: false,
-        isError: true
-      ));
-    } else {
-      emit(state.copyWith(
-        moderationRequest: value,
-        isLoading: false
-      ));
+
+    switch (value) {
+      case Ok(:final v):
+        emit(state.copyWith(
+          moderationRequest: v,
+          isLoading: false
+        ));
+      case Err():
+        emit(state.copyWith(
+          isLoading: false,
+          isError: true
+        ));
     }
   }
 }

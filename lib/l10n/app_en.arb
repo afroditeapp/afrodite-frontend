@@ -69,17 +69,21 @@
   "@current_moderation_request_screen_new_request_action": {
     "description": "Text for new moderation request action when current request is moderated"
   },
-  "current_moderation_request_screen_new_request_action_when_current_request_denied": "Try again",
-  "@current_moderation_request_screen_new_request_action_when_current_request_denied": {
-    "description": "Text for new moderation request action when current request is denied"
+  "current_moderation_request_screen_new_request_action_when_current_request_rejected": "Try again",
+  "@current_moderation_request_screen_new_request_action_when_current_request_rejected": {
+    "description": "Text for new moderation request action when current request is rejected"
+  },
+  "current_moderation_request_screen_no_request": "No images in moderation",
+  "@current_moderation_request_screen_no_request": {
+    "description": "Text displayed when no moderation request is found"
   },
   "current_moderation_request_screen_request_accepted": "All images accepted",
   "@current_moderation_request_screen_request_accepted": {
     "description": "Text for accepted moderation request"
   },
-  "current_moderation_request_screen_request_denied": "Some image was rejected",
-  "@current_moderation_request_screen_request_denied": {
-    "description": "Text for denied moderation request"
+  "current_moderation_request_screen_request_rejected": "Some image was rejected",
+  "@current_moderation_request_screen_request_rejected": {
+    "description": "Text for rejected moderation request"
   },
   "current_moderation_request_screen_request_waiting": "Images are waiting moderation",
   "@current_moderation_request_screen_request_waiting": {
@@ -423,6 +427,14 @@
   "@map_select_location_help_text": {
     "description": "Help text for selecting map location"
   },
+  "moderate_images_screen_reject_image_dialog_title": "Reject?",
+  "@moderate_images_screen_reject_image_dialog_title": {
+    "description": "Dialog title for confirming image rejection"
+  },
+  "moderate_images_screen_title": "Moderate images",
+  "@moderate_images_screen_title": {
+    "description": "Title for moderate images page"
+  },
   "new_moderation_request_screen_send_content_button": "Send to be moderated",
   "@new_moderation_request_screen_send_content_button": {
     "description": "Text for send images to be moderated button"
@@ -459,21 +471,9 @@
   "@pageLocationTitle": {
     "description": "Title for location page"
   },
-  "pageModerateImagesDenyImageText": "Deny",
-  "@pageModerateImagesDenyImageText": {
-    "description": "Deny image text"
-  },
-  "pageModerateImagesTitle": "Moderate images",
-  "@pageModerateImagesTitle": {
-    "description": "Title for moderate images page"
-  },
   "pageSettingsTitle": "Settings",
   "@pageSettingsTitle": {
     "description": "Title for settings page"
-  },
-  "profile_grid_screen_initial_moderation_denied": "Moderator did not accept some profile image. Make new moderation request in settings.",
-  "@profile_grid_screen_initial_moderation_denied": {
-    "description": "Info text that initial moderation was denied"
   },
   "profile_grid_screen_initial_moderation_in_progress": "Moderation in progress.",
   "@profile_grid_screen_initial_moderation_in_progress": {
@@ -482,6 +482,10 @@
   "profile_grid_screen_initial_moderation_ongoing": "You can view profiles and others can see your profile after your profile images are moderated.",
   "@profile_grid_screen_initial_moderation_ongoing": {
     "description": "Info text that initial moderation is ongoing"
+  },
+  "profile_grid_screen_initial_moderation_rejected": "Moderator did not accept some profile image. Make new moderation request in settings.",
+  "@profile_grid_screen_initial_moderation_rejected": {
+    "description": "Info text that initial moderation was rejected"
   },
   "profile_grid_screen_initial_moderation_waiting": "Your position in moderation queue: {p0}",
   "@profile_grid_screen_initial_moderation_waiting": {

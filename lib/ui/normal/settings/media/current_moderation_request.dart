@@ -44,7 +44,7 @@ class _CurrentModerationRequestScreenState extends State<CurrentModerationReques
           BlocBuilder<CurrentModerationRequestBloc, CurrentModerationRequestData>(
             builder: (context, state) {
               final request = state.moderationRequest;
-              if (request == null || request.isOngoing()) {
+              if (state.isLoading || state.isError || (request != null && request.isOngoing())) {
                 return const SizedBox.shrink();
               } else {
                 return IconButton(
@@ -60,7 +60,7 @@ class _CurrentModerationRequestScreenState extends State<CurrentModerationReques
               return BlocBuilder<CurrentModerationRequestBloc, CurrentModerationRequestData>(
                 builder: (context, state) {
                   final request = state.moderationRequest;
-                  if (request == null || !request.isOngoing() || aState.isInitialModerationOngoing()) {
+                  if (request == null || request.state != ModerationRequestState.waiting || aState.isInitialModerationOngoing()) {
                     return const SizedBox.shrink();
                   } else {
                     return IconButton(
@@ -88,8 +88,10 @@ class _CurrentModerationRequestScreenState extends State<CurrentModerationReques
               final moderationRequest = state.moderationRequest;
               if (state.isLoading) {
                 return const Center(child: CircularProgressIndicator());
-              } else if (state.isError || moderationRequest == null || accountId == null) {
+              } else if (state.isError || accountId == null) {
                 return Center(child: Text(context.strings.generic_error));
+              } else if (moderationRequest == null) {
+                return Center(child: Text(context.strings.current_moderation_request_screen_no_request));
               } else {
                 return selectContentPage(
                   context,
@@ -153,7 +155,7 @@ class _CurrentModerationRequestScreenState extends State<CurrentModerationReques
       child: statusInfo(context, request),
     ));
 
-    if (request.state == ModerationRequestState.denied) {
+    if (request.state == ModerationRequestState.rejected) {
       widgets.add(
         Padding(
           padding: const EdgeInsets.only(
@@ -164,7 +166,7 @@ class _CurrentModerationRequestScreenState extends State<CurrentModerationReques
           child: ElevatedButton.icon(
             onPressed: () => _openNewModerationRequestInitialOrAfter(context),
             icon: const Icon(Icons.add_a_photo_rounded),
-            label: Text(context.strings.current_moderation_request_screen_new_request_action_when_current_request_denied),
+            label: Text(context.strings.current_moderation_request_screen_new_request_action_when_current_request_rejected),
           ),
         )
       );
@@ -189,9 +191,9 @@ class _CurrentModerationRequestScreenState extends State<CurrentModerationReques
       iconData = Icons.check_rounded;
       statusText = Text(context.strings.current_moderation_request_screen_request_accepted);
       statusColor = Colors.green;
-    } else if (moderationRequest.state == ModerationRequestState.denied) {
+    } else if (moderationRequest.state == ModerationRequestState.rejected) {
       iconData = Icons.block_rounded;
-      statusText = Text(context.strings.current_moderation_request_screen_request_denied);
+      statusText = Text(context.strings.current_moderation_request_screen_request_rejected);
       statusColor = Colors.red;
     } else {
       iconData = Icons.hourglass_top_rounded;

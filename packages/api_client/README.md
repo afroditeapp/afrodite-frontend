@@ -179,6 +179,7 @@ Class | Method | HTTP request | Description
  - [ContentProcessingStateType](doc//ContentProcessingStateType.md)
  - [ContentSlot](doc//ContentSlot.md)
  - [ContentState](doc//ContentState.md)
+ - [CurrentModerationRequest](doc//CurrentModerationRequest.md)
  - [DeleteStatus](doc//DeleteStatus.md)
  - [DemoModeConfirmLogin](doc//DemoModeConfirmLogin.md)
  - [DemoModeConfirmLoginResult](doc//DemoModeConfirmLoginResult.md)

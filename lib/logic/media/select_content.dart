@@ -48,13 +48,21 @@ class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with
     emit(SelectContentData().copyWith(isLoading: true));
 
     final isInitialModerationOngoing = await account.isInitialModerationOngoing();
-    final currentModerationRequest = await media.currentModerationRequestState();
-    if (currentModerationRequest == null) {
-      emit(state.copyWith(isLoading: false, isError: true));
-      return;
+    final bool isModerationRequestOngoing;
+    final List<ContentId> imgsInCurrentModerationRequest;
+    switch (await media.currentModerationRequestState()) {
+      case Ok(:final v):
+        if (v == null) {
+          isModerationRequestOngoing = false;
+          imgsInCurrentModerationRequest = [];
+        } else {
+          isModerationRequestOngoing = v.isOngoing();
+          imgsInCurrentModerationRequest = v.contentList();
+        }
+      case Err():
+        emit(state.copyWith(isLoading: false, isError: true));
+        return;
     }
-    final isModerationRequestOngoing = currentModerationRequest.isOngoing();
-    final imgsInCurrentModerationRequest = currentModerationRequest.contentList();
 
     final value = await media.loadAllContent().ok();
     final List<ContentId> allContent = [];

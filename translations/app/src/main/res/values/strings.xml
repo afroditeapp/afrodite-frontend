@@ -122,7 +122,7 @@
     <string name="profile_grid_screen_initial_moderation_ongoing" description="Info text that initial moderation is ongoing">You can view profiles and others can see your profile after your profile images are moderated.</string>
     <string name="profile_grid_screen_initial_moderation_waiting" description="Info text that shows initial moderation queue number">Your position in moderation queue: %s</string>
     <string name="profile_grid_screen_initial_moderation_in_progress" description="Info text that initial moderation is in progress">Moderation in progress.</string>
-    <string name="profile_grid_screen_initial_moderation_denied" description="Info text that initial moderation was denied">Moderator did not accept some profile image. Make new moderation request in settings.</string>
+    <string name="profile_grid_screen_initial_moderation_rejected" description="Info text that initial moderation was rejected">Moderator did not accept some profile image. Make new moderation request in settings.</string>
     <string name="profile_grid_screen_no_profiles_found_title" description="Title that no profiles were found">No profiles found</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_enabled" description="Description displayed when there is no profiles and some filter is enabled">Change or disable filter settings</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_disabled" description="Description displayed when there is no profiles and there is no filters enabled">Spread the word about the app in social media</string>
@@ -164,13 +164,14 @@
     <!-- Current moderation request screen -->
     <string name="current_moderation_request_screen_title" description="Title for current moderation request screen">Image moderation status</string>
     <string name="current_moderation_request_screen_request_accepted" description="Text for accepted moderation request">All images accepted</string>
-    <string name="current_moderation_request_screen_request_denied" description="Text for denied moderation request">Some image was rejected</string>
+    <string name="current_moderation_request_screen_request_rejected" description="Text for rejected moderation request">Some image was rejected</string>
     <string name="current_moderation_request_screen_request_waiting" description="Text for waiting moderation request">Images are waiting moderation</string>
     <string name="current_moderation_request_screen_moderation_queue_position" description="Text for current moderation queue position">Your position in moderation queue: %s</string>
-    <string name="current_moderation_request_screen_new_request_action_when_current_request_denied" description="Text for new moderation request action when current request is denied">Try again</string>
+    <string name="current_moderation_request_screen_new_request_action_when_current_request_rejected" description="Text for new moderation request action when current request is rejected">Try again</string>
     <string name="current_moderation_request_screen_new_request_action" description="Text for new moderation request action when current request is moderated">Add new images</string>
     <string name="current_moderation_request_screen_delete_request_action" description="Text for delete moderation request action">Delete moderation request</string>
     <string name="current_moderation_request_screen_delete_request_dialog_title" description="Dialog title for confirming current moderation request deleting">Delete moderation request?</string>
+    <string name="current_moderation_request_screen_no_request" description="Text displayed when no moderation request is found">No images in moderation</string>
 
     <!-- New moderation request screen -->
     <string name="new_moderation_request_screen_title" description="Title for new moderation request screen">New moderation request</string>
@@ -203,7 +204,7 @@
     <string name="pageAdminTitle" description="Title for admin settings and tools page">Admin</string>
 
     <!-- Moderate images screen -->
-    <string name="pageModerateImagesTitle" description="Title for moderate images page">Moderate images</string>
-    <string name="pageModerateImagesDenyImageText" description="Deny image text">Deny</string>
+    <string name="moderate_images_screen_title" description="Title for moderate images page">Moderate images</string>
+    <string name="moderate_images_screen_reject_image_dialog_title" description="Dialog title for confirming image rejection">Reject?</string>
 
 </resources>

@@ -434,7 +434,7 @@ class MediaApi {
   /// Get current moderation request.
   ///
   /// Get current moderation request. 
-  Future<ModerationRequest?> getModerationRequest() async {
+  Future<CurrentModerationRequest?> getModerationRequest() async {
     final response = await getModerationRequestWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -443,7 +443,7 @@ class MediaApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ModerationRequest',) as ModerationRequest;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'CurrentModerationRequest',) as CurrentModerationRequest;
     
     }
     return null;
@@ -809,7 +809,7 @@ class MediaApi {
 
   /// Set new pending profile content for current account.
   ///
-  /// Set new pending profile content for current account. Server will switch to pending content when next moderation request is accepted.  # Restrictions - All content must not be moderated as denied. - All content must be owned by the account. - All content must be images.
+  /// Set new pending profile content for current account. Server will switch to pending content when next moderation request is accepted.  # Restrictions - All content must not be moderated as rejected. - All content must be owned by the account. - All content must be images.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -843,7 +843,7 @@ class MediaApi {
 
   /// Set new pending profile content for current account.
   ///
-  /// Set new pending profile content for current account. Server will switch to pending content when next moderation request is accepted.  # Restrictions - All content must not be moderated as denied. - All content must be owned by the account. - All content must be images.
+  /// Set new pending profile content for current account. Server will switch to pending content when next moderation request is accepted.  # Restrictions - All content must not be moderated as rejected. - All content must be owned by the account. - All content must be images.
   ///
   /// Parameters:
   ///

@@ -154,8 +154,8 @@ class _ShowModerationQueueProgressState extends State<ShowModerationQueueProgres
       return Text(context.strings.profile_grid_screen_initial_moderation_waiting(number.toString()));
     } else if (request.state == ModerationRequestState.inProgress) {
       return Text(context.strings.profile_grid_screen_initial_moderation_in_progress);
-    } else if (request.state == ModerationRequestState.denied) {
-      return Text(context.strings.profile_grid_screen_initial_moderation_denied);
+    } else if (request.state == ModerationRequestState.rejected) {
+      return Text(context.strings.profile_grid_screen_initial_moderation_rejected);
     } else {
       return const SizedBox.shrink();
     }

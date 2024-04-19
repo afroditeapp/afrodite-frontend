@@ -38,6 +38,7 @@ doc/ContentProcessingStateChanged.md
 doc/ContentProcessingStateType.md
 doc/ContentSlot.md
 doc/ContentState.md
+doc/CurrentModerationRequest.md
 doc/DeleteStatus.md
 doc/DemoModeConfirmLogin.md
 doc/DemoModeConfirmLoginResult.md
@@ -184,6 +185,7 @@ lib/model/content_processing_state_changed.dart
 lib/model/content_processing_state_type.dart
 lib/model/content_slot.dart
 lib/model/content_state.dart
+lib/model/current_moderation_request.dart
 lib/model/delete_status.dart
 lib/model/demo_mode_confirm_login.dart
 lib/model/demo_mode_confirm_login_result.dart
@@ -275,3 +277,4 @@ lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
+test/current_moderation_request_test.dart

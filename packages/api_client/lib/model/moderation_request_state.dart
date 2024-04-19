@@ -26,14 +26,14 @@ class ModerationRequestState {
   static const waiting = ModerationRequestState._(r'Waiting');
   static const inProgress = ModerationRequestState._(r'InProgress');
   static const accepted = ModerationRequestState._(r'Accepted');
-  static const denied = ModerationRequestState._(r'Denied');
+  static const rejected = ModerationRequestState._(r'Rejected');
 
   /// List of all possible values in this [enum][ModerationRequestState].
   static const values = <ModerationRequestState>[
     waiting,
     inProgress,
     accepted,
-    denied,
+    rejected,
   ];
 
   static ModerationRequestState? fromJson(dynamic value) => ModerationRequestStateTypeTransformer().decode(value);
@@ -75,7 +75,7 @@ class ModerationRequestStateTypeTransformer {
         case r'Waiting': return ModerationRequestState.waiting;
         case r'InProgress': return ModerationRequestState.inProgress;
         case r'Accepted': return ModerationRequestState.accepted;
-        case r'Denied': return ModerationRequestState.denied;
+        case r'Rejected': return ModerationRequestState.rejected;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');
