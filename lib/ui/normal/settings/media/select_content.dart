@@ -5,16 +5,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
-import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/media/select_content.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/select_content.dart';
+import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
-const SELECT_CONTENT_IMAGE_HEIGTH = 200.0;
+const SELECT_CONTENT_IMAGE_HEIGHT = 200.0;
 const SELECT_CONTENT_IMAGE_WIDTH = 150.0;
 
 /// Returns [AccountImageId?]
@@ -78,7 +78,19 @@ class _SelectContentPageState extends State<SelectContentPage> {
     final List<Widget> gridWidgets = [];
 
     if (showAddNewModerationRequest) {
-      gridWidgets.add(Center(child: buildNewModerationRequestButton(context)));
+      gridWidgets.add(
+        Center(
+          child: buildAddNewButton(
+            context,
+            onTap: () async {
+              final list = await openNewModerationRequest(context);
+              if (list != null && list.isNotEmpty) {
+                widget.selectContentBloc.add(NewModerationRequest(list));
+              }
+            }
+          )
+        )
+      );
     }
 
     gridWidgets.addAll(
@@ -124,34 +136,37 @@ class _SelectContentPageState extends State<SelectContentPage> {
       ),
     );
   }
+}
 
-  Widget buildNewModerationRequestButton(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: SELECT_CONTENT_IMAGE_WIDTH,
-        height: SELECT_CONTENT_IMAGE_HEIGTH,
-        child: Material(
-          child: InkWell(
-            onTap: () {
-              // TODO: Open create new moderation request screen
-            },
-            child: Ink(
-              width: SELECT_CONTENT_IMAGE_WIDTH,
-              height: SELECT_CONTENT_IMAGE_HEIGTH,
-              color: Colors.grey,
-              child: const Center(
-                child: Icon(
-                  Icons.add_a_photo,
-                  size: 40,
-                  color: Colors.white,
-                ),
+Widget buildAddNewButton(
+  BuildContext context,
+  {
+    required void Function() onTap,
+  }
+) {
+  return Center(
+    child: SizedBox(
+      width: SELECT_CONTENT_IMAGE_WIDTH,
+      height: SELECT_CONTENT_IMAGE_HEIGHT,
+      child: Material(
+        child: InkWell(
+          onTap: onTap,
+          child: Ink(
+            width: SELECT_CONTENT_IMAGE_WIDTH,
+            height: SELECT_CONTENT_IMAGE_HEIGHT,
+            color: Colors.grey,
+            child: const Center(
+              child: Icon(
+                Icons.add_a_photo,
+                size: 40,
+                color: Colors.white,
               ),
             ),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
 
 Widget buildAvailableImg(
@@ -165,7 +180,7 @@ Widget buildAvailableImg(
   return Center(
     child: SizedBox(
       width: SELECT_CONTENT_IMAGE_WIDTH,
-      height: SELECT_CONTENT_IMAGE_HEIGTH,
+      height: SELECT_CONTENT_IMAGE_HEIGHT,
       child: Material(
         child: InkWell(
           onTap: onTap,
@@ -187,7 +202,7 @@ Widget buildPendingImg(
     return Center(
     child: SizedBox(
       width: SELECT_CONTENT_IMAGE_WIDTH,
-      height: SELECT_CONTENT_IMAGE_HEIGTH,
+      height: SELECT_CONTENT_IMAGE_HEIGHT,
       child: Material(
         child: InkWell(
           onTap: onTap,

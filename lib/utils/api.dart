@@ -1,6 +1,7 @@
 
 
 import 'package:openapi/api.dart';
+import 'package:pihka_frontend/utils/list.dart';
 
 extension ModerationExtensions on Moderation {
   List<ContentId> contentList() {
@@ -45,5 +46,22 @@ extension ModerationRequestStateExtensions on ModerationRequest {
     _addNotNull(l, content.content5);
     _addNotNull(l, content.content6);
     return l;
+  }
+}
+
+extension ModerationRequestContentExtensions on ModerationRequestContent {
+  static ModerationRequestContent? fromList(List<ContentId> content) {
+    if (content.isEmpty) {
+      return null;
+    }
+    return ModerationRequestContent(
+      content0: content[0],
+      content1: content.getAtOrNull(1),
+      content2: content.getAtOrNull(2),
+      content3: content.getAtOrNull(3),
+      content4: content.getAtOrNull(4),
+      content5: content.getAtOrNull(5),
+      content6: content.getAtOrNull(6),
+    );
   }
 }

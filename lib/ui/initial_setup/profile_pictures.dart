@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:image_picker/image_picker.dart";
+import "package:openapi/api.dart";
+import "package:path/path.dart";
 import "package:pihka_frontend/data/image_cache.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
@@ -107,6 +109,21 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> zeroSizedWidgets;
+    if (widget.mode is InitialSetupProfilePictures) {
+      zeroSizedWidgets = imageProcessingUiWidgets<ProfilePicturesImageProcessingBloc>(
+        onComplete: (context, processedImg) {
+          final id = AccountImageId(processedImg.accountId, processedImg.contentId);
+          // Initial setup uses slot 0 for security selfie.
+          // Other uploads are in slots 1-4. The UI logic uses 0-3 indexes.
+          final index = processedImg.slot - 1;
+          widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(id, index)));
+        },
+      );
+    } else {
+      zeroSizedWidgets = [];
+    }
+
     return Column(
       children: [
         topRow(context),
@@ -117,15 +134,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
         bottomRow(context),
 
         // Zero sized widgets
-        ...imageProcessingUiWidgets<ProfilePicturesImageProcessingBloc>(
-          onComplete: (context, processedImg) {
-            final id = AccountImageId(processedImg.accountId, processedImg.contentId);
-            // Initial setup uses slot 0 for security selfie.
-            // Other uploads are in slots 1-4. The UI logic uses 0-3 indexes.
-            final index = processedImg.slot - 1;
-            widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(id, index)));
-          },
-        ),
+        ...zeroSizedWidgets,
       ],
     );
   }
@@ -415,51 +424,7 @@ class AddPicture extends StatelessWidget {
       lastOption = const SizedBox.shrink();
     }
 
-    showDialog<void>(
-      context: context,
-      builder: (context) => SimpleDialog(
-        title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_dialog_title),
-          children: [
-            ListTile(
-              leading: const Icon(Icons.photo),
-              title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_from_gallery_title),
-              onTap: () async {
-                final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
-                Navigator.pop(context, null);
-                // TODO: Read image on client side and show error if
-                // image is not JPEG.
-                // TODO: Consider resizing image on client side?
-                // The built in ImagePicker resizing produces poor quality
-                // images at least on Android.
-                final image  = await ImagePicker().pickImage(
-                  source: ImageSource.gallery,
-                  requestFullMetadata: false
-                );
-                if (image != null) {
-                  imageProcessingBloc.add(SendImageToSlot(image, imgIndex + 1));
-                }
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.camera_alt),
-              title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_take_new_picture_title),
-              onTap: () async {
-                final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
-                Navigator.pop(context, null);
-                final image  = await ImagePicker().pickImage(
-                  source: ImageSource.camera,
-                  requestFullMetadata: false,
-                  preferredCameraDevice: CameraDevice.front,
-                );
-                if (image != null) {
-                  imageProcessingBloc.add(ConfirmImage(image, imgIndex + 1));
-                }
-              }
-            ),
-            lastOption,
-          ],
-      )
-    );
+    openSelectPictureDialog(context, lastOption: lastOption, serverSlotIndex: imgIndex + 1);
   }
 
   void openActionDialog(BuildContext context) async {
@@ -472,6 +437,60 @@ class AddPicture extends StatelessWidget {
       bloc.add(AddProcessedImage(ProfileImage(selectedImg, imgIndex)));
     }
   }
+}
+
+void openSelectPictureDialog(
+  BuildContext context,
+  {
+    Widget lastOption = const SizedBox.shrink(),
+    required int serverSlotIndex,
+  }
+) {
+  showDialog<void>(
+    context: context,
+    builder: (context) => SimpleDialog(
+      title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_dialog_title),
+        children: [
+          ListTile(
+            leading: const Icon(Icons.photo),
+            title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_from_gallery_title),
+            onTap: () async {
+              final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
+              Navigator.pop(context, null);
+              // TODO: Read image on client side and show error if
+              // image is not JPEG.
+              // TODO: Consider resizing image on client side?
+              // The built in ImagePicker resizing produces poor quality
+              // images at least on Android.
+              final image  = await ImagePicker().pickImage(
+                source: ImageSource.gallery,
+                requestFullMetadata: false
+              );
+              if (image != null) {
+                imageProcessingBloc.add(SendImageToSlot(image, serverSlotIndex));
+              }
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.camera_alt),
+            title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_take_new_picture_title),
+            onTap: () async {
+              final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
+              Navigator.pop(context, null);
+              final image  = await ImagePicker().pickImage(
+                source: ImageSource.camera,
+                requestFullMetadata: false,
+                preferredCameraDevice: CameraDevice.front,
+              );
+              if (image != null) {
+                imageProcessingBloc.add(ConfirmImage(image, serverSlotIndex));
+              }
+            }
+          ),
+          lastOption,
+        ],
+    )
+  );
 }
 
 class HiddenPicture extends StatelessWidget {
@@ -522,28 +541,20 @@ class FilePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconSize = IconTheme.of(context).size ?? 24.0;
     const maxWidth = 150.0;
     const maxHeight = ROW_HEIGHT;
-    final imgWidth = maxWidth - iconSize;
-    final imgHeight = maxHeight - iconSize;
+
     return imgAndDeleteButton(
       context,
-      iconSize,
       maxWidth,
       maxHeight,
-      imgWidth,
-      imgHeight,
     );
   }
 
   Widget imgAndDeleteButton(
     BuildContext context,
-    double iconSize,
     double maxWidth,
     double maxHeight,
-    double imgWidth,
-    double imgHeight,
   ) {
     return DragTarget<int>(
       onAcceptWithDetails: (details) {
@@ -553,20 +564,13 @@ class FilePicture extends StatelessWidget {
       builder: (context, candidateData, rejectedData) {
         final acceptedCandidate = candidateData.where((element) => element != imgIndex).firstOrNull;
         final backgroundColor = acceptedCandidate == null ? Colors.transparent : Colors.grey.shade400;
-        return Container(
-          width: maxWidth,
-          height: maxHeight,
-          color: backgroundColor,
-          child: Stack(
-            alignment: Alignment.topRight,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: iconSize, right: iconSize, left: iconSize),
-                child: draggableImgWidget(context, imgWidth, imgHeight),
-              ),
-              closeButton(context),
-            ],
-          ),
+        return ImgWithCloseButton(
+            onCloseButtonPressed: () =>
+              context.read<ProfilePicturesBloc>().add(RemoveImage(imgIndex)),
+            imgWidgetBuilder: (c, width, height) => draggableImgWidget(context, width, height),
+            maxHeight: maxHeight,
+            maxWidth: maxWidth,
+            backgroundColor: backgroundColor,
         );
       }
     );
@@ -581,19 +585,45 @@ class FilePicture extends StatelessWidget {
         height: imgHeight,
         color: Colors.grey.shade400,
       ),
-      child: imgWidget(context, imgWidth, imgHeight),
+      child: ImgWithCloseButton.defaultImgWidgetBuilder(context, imgWidth, imgHeight, img.accountId, img.contentId),
     );
   }
+}
 
-  Widget imgWidget(BuildContext context, double imgWidth, double imgHeight) {
-    return SizedBox(
-      width: imgWidth,
-      height: imgHeight,
-      child: Material(
-        child: InkWell(
-          onTap: () => openViewImageScreenForAccountImage(context, img.accountId, img.contentId),
-          child: accountImgWidgetInk(img.accountId, img.contentId, width: imgWidth, height: imgHeight, alignment: Alignment.topRight),
-        ),
+class ImgWithCloseButton extends StatelessWidget {
+  final void Function() onCloseButtonPressed;
+  final Widget Function(BuildContext context, double imgWidth, double imgHeight) imgWidgetBuilder;
+  final double maxWidth;
+  final double maxHeight;
+  final Color backgroundColor;
+
+  const ImgWithCloseButton({
+    required this.onCloseButtonPressed,
+    required this.imgWidgetBuilder,
+    required this.maxWidth,
+    required this.maxHeight,
+    this.backgroundColor = Colors.transparent,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final iconSize = IconTheme.of(context).size ?? 24.0;
+    final imgWidth = maxWidth - iconSize;
+    final imgHeight = maxHeight - iconSize;
+    return Container(
+      width: maxWidth,
+      height: maxHeight,
+      color: backgroundColor,
+      child: Stack(
+          alignment: Alignment.topRight,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: iconSize, right: iconSize, left: iconSize),
+              child: imgWidgetBuilder(context, imgWidth, imgHeight),
+            ),
+            closeButton(context),
+          ],
       ),
     );
   }
@@ -622,17 +652,27 @@ class FilePicture extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {
-              context.read<ProfilePicturesBloc>().add(RemoveImage(imgIndex));
-            },
+            onPressed: onCloseButtonPressed,
             icon: const Icon(Icons.close_rounded),
           ),
         ],
       ),
     );
   }
-}
 
+  static Widget defaultImgWidgetBuilder(BuildContext context, double imgWidth, double imgHeight, AccountId accountId, ContentId contentId) {
+    return SizedBox(
+      width: imgWidth,
+      height: imgHeight,
+      child: Material(
+        child: InkWell(
+          onTap: () => openViewImageScreenForAccountImage(context, accountId, contentId),
+          child: accountImgWidgetInk(accountId, contentId, width: imgWidth, height: imgHeight, alignment: Alignment.topRight),
+        ),
+      ),
+    );
+  }
+}
 
 class VisibleThumbnailPicture extends StatelessWidget {
   final AccountImageId img;

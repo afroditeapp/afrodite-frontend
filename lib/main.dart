@@ -25,6 +25,7 @@ import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/logic/media/content.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
+import 'package:pihka_frontend/logic/media/new_moderation_request.dart';
 import 'package:pihka_frontend/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/logic/media/select_content.dart';
 import 'package:pihka_frontend/logic/profile/attributes.dart';
@@ -93,6 +94,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => LocationBloc()),
         BlocProvider(create: (_) => ContentBloc()),
         BlocProvider(create: (_) => SelectContentBloc()),
+        BlocProvider(create: (_) => NewModerationRequestBloc()),
 
         // Login
         BlocProvider(create: (_) => SignInWithBloc()),

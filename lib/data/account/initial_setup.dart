@@ -10,6 +10,7 @@ import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/immutable_list.dart';
+import 'package:pihka_frontend/utils/list.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("InitialSetupUtils");
@@ -225,14 +226,6 @@ void _addNotEqualOrNull(ContentId securitySelfie, ContentId? c, List<ContentId> 
   }
 }
 
-ContentId? _getIndex(List<ContentId> list, int index) {
-  if (index < list.length) {
-    return list[index];
-  } else {
-    return null;
-  }
-}
-
 /// Prevent adding security selfie to request more than once.
 ModerationRequestContent createModerationRequest(
   ContentId securitySelfie,
@@ -249,12 +242,12 @@ ModerationRequestContent createModerationRequest(
 
   return ModerationRequestContent(
     content0: securitySelfie,
-    content1: _getIndex(l, 0),
-    content2: _getIndex(l, 1),
-    content3: _getIndex(l, 2),
-    content4: _getIndex(l, 3),
-    content5: _getIndex(l, 4),
-    content6: _getIndex(l, 5),
+    content1: l.getAtOrNull(0),
+    content2: l.getAtOrNull(1),
+    content3: l.getAtOrNull(2),
+    content4: l.getAtOrNull(3),
+    content5: l.getAtOrNull(4),
+    content6: l.getAtOrNull(5),
   );
 }
 

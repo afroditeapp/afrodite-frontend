@@ -415,6 +415,18 @@
   "@map_select_location_help_text": {
     "description": "Help text for selecting map location"
   },
+  "new_moderation_request_screen_send_content_button": "Send to be moderated",
+  "@new_moderation_request_screen_send_content_button": {
+    "description": "Text for send images to be moderated button"
+  },
+  "new_moderation_request_screen_send_content_confirm_dialog_title": "Send to be moderated?",
+  "@new_moderation_request_screen_send_content_confirm_dialog_title": {
+    "description": "Dialog title for confirming send images to be moderated action"
+  },
+  "new_moderation_request_screen_title": "New moderation request",
+  "@new_moderation_request_screen_title": {
+    "description": "Title for new moderation request screen"
+  },
   "notification_permission_dialog_description": "Allow notifications to receive notifications for example from new likes and messages.",
   "@notification_permission_dialog_description": {
     "description": "Description text for notification permission dialog"

@@ -15,6 +15,7 @@ import 'package:pihka_frontend/data/media/send_to_slot.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/utils/api.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("MediaRepository");
@@ -174,7 +175,7 @@ class MediaRepository extends DataRepository {
   Future<Result<(), ()>> reloadMySecurityContent() async {
     final accountId = await LoginRepository.getInstance().accountId.first;
     if (accountId == null) {
-      log.error("reloadMyProfileContent: accountId is null");
+      log.error("reloadMySecurityContent: accountId is null");
       return Err(());
     }
 
@@ -238,12 +239,32 @@ class MediaRepository extends DataRepository {
   Future<Result<AccountContent, ()>> loadAllContent() async {
     final accountId = await LoginRepository.getInstance().accountId.first;
     if (accountId == null) {
-      log.error("reloadMyProfileContent: accountId is null");
+      log.error("loadAllContent: accountId is null");
       return Err(());
     }
     switch (await api.media((api) => api.getAllAccountMediaContent(accountId.accountId))) {
       case Ok(:final v):
         return Ok(v);
+      case Err():
+        return Err(());
+    }
+  }
+
+  Future<Result<(), ()>> createNewModerationRequest(List<ContentId> content) async {
+    final accountId = await LoginRepository.getInstance().accountId.first;
+    if (accountId == null) {
+      log.error("createNewModerationRequest: accountId is null");
+      return Err(());
+    }
+    final request = ModerationRequestContentExtensions.fromList(content);
+    if (request == null) {
+      log.error("createNewModerationRequest: request is null");
+      return Err(());
+    }
+
+    switch (await api.mediaAction((api) => api.putModerationRequest(request))) {
+      case Ok():
+        return Ok(());
       case Err():
         return Err(());
     }

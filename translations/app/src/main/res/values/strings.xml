@@ -170,6 +170,11 @@
     <string name="current_moderation_request_screen_new_request_action_when_current_request_denied" description="Text for new moderation request action when current request is denied">Try again</string>
     <string name="current_moderation_request_screen_new_request_action" description="Text for new moderation request action when current request is moderated">Add new images</string>
 
+    <!-- New moderation request screen -->
+    <string name="new_moderation_request_screen_title" description="Title for new moderation request screen">New moderation request</string>
+    <string name="new_moderation_request_screen_send_content_button" description="Text for send images to be moderated button">Send to be moderated</string>
+    <string name="new_moderation_request_screen_send_content_confirm_dialog_title" description="Dialog title for confirming send images to be moderated action">Send to be moderated?</string>
+
     <!-- Likes -->
     <string name="pageLikesTitle" description="Title for likes page">Likes</string>
 
