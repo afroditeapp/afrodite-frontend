@@ -70,6 +70,46 @@ class MediaApi {
     }
   }
 
+  /// Delete current moderation request which is not yet in moderation.
+  ///
+  /// Delete current moderation request which is not yet in moderation.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> deleteModerationRequestWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/moderation/request';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'DELETE',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Delete current moderation request which is not yet in moderation.
+  ///
+  /// Delete current moderation request which is not yet in moderation.
+  Future<void> deleteModerationRequest() async {
+    final response = await deleteModerationRequestWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Delete pending security content for current account.
   ///
   /// Delete pending security content for current account. Server will not change the security content when next moderation request is moderated as accepted.

@@ -104,6 +104,7 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**postRequestRestartOrResetBackend**](doc//CommonAdminApi.md#postrequestrestartorresetbackend) | **POST** /common_api/request_restart_or_reset_backend | Request restarting or reseting backend through app-manager instance.
 *CommonAdminApi* | [**postRequestUpdateSoftware**](doc//CommonAdminApi.md#postrequestupdatesoftware) | **POST** /common_api/request_update_software | Request updating new software from manager instance.
 *MediaApi* | [**deleteContent**](doc//MediaApi.md#deletecontent) | **DELETE** /media_api/content/{account_id}/{content_id} | Delete content data. Content can be removed after specific time has passed
+*MediaApi* | [**deleteModerationRequest**](doc//MediaApi.md#deletemoderationrequest) | **DELETE** /media_api/moderation/request | Delete current moderation request which is not yet in moderation.
 *MediaApi* | [**deletePendingSecurityContentInfo**](doc//MediaApi.md#deletependingsecuritycontentinfo) | **DELETE** /media_api/pending_security_content_info | Delete pending security content for current account.
 *MediaApi* | [**getAllAccountMediaContent**](doc//MediaApi.md#getallaccountmediacontent) | **GET** /media_api/all_account_media_content/{account_id} | Get list of all media content on the server for one account.
 *MediaApi* | [**getContent**](doc//MediaApi.md#getcontent) | **GET** /media_api/content/{account_id}/{content_id} | Get content data
