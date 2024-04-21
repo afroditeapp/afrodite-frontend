@@ -13,8 +13,7 @@ update-freezed-code:
 	icegen --code-dir lib/model/freezed
 
 update-drift-code:
-	cd packages/database
-	dart run build_runner build
+	cd packages/database && dart run build_runner build
 
 update-translations:
 	xml2arb --input-dir translations/app/src/main/res --output-dir lib/l10n --arb-file-name-template app_en.arb

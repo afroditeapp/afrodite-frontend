@@ -2,6 +2,7 @@
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
 
 part 'profile_filtering_settings.freezed.dart';
@@ -13,7 +14,7 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
   factory ProfileFilteringSettingsData({
     @Default(UpdateIdle()) UpdateState updateState,
     @Default(false) bool showOnlyFavorites,
-    @Default(false) bool showOnlyFavorites2,
+    ProfileAttributeFilterList? attributeFilters,
   }) = _ProfileFilteringSettingsData;
 
   bool isSomeFilterEnabled() {

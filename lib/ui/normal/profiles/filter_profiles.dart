@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/profile/edit_profile_filtering_settings.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
@@ -28,14 +29,24 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
   @override
   void initState() {
     super.initState();
+
+    final attributesFilters = widget.profileFilteringSettingsBloc.state.attributeFilters?.filters.map((e) => ProfileAttributeFilterValueUpdate(
+      acceptMissingAttribute: e.acceptMissingAttribute,
+      filterPart1: e.filterPart1,
+      filterPart2: e.filterPart2,
+      id: e.id,
+    )).toList() ?? [];
+
     widget.editProfileFilteringSettingsBloc.add(ResetStateWith(
       widget.profileFilteringSettingsBloc.state.showOnlyFavorites,
+      attributesFilters,
     ));
   }
 
   void validateAndSaveData(BuildContext context) {
     widget.profileFilteringSettingsBloc.add(SaveNewFilterSettings(
       widget.editProfileFilteringSettingsBloc.state.showOnlyFavorites,
+      widget.editProfileFilteringSettingsBloc.state.attributeFilters.toList(),
     ));
   }
 

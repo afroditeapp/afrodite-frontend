@@ -1,5 +1,6 @@
 
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:openapi/api.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/model/freezed/logic/profile/edit_profile_filtering_settings.dart";
 import "package:pihka_frontend/utils.dart";
@@ -7,7 +8,8 @@ import "package:pihka_frontend/utils.dart";
 sealed class EditProfileFilteringSettingsEvent {}
 class ResetStateWith extends EditProfileFilteringSettingsEvent {
   final bool showOnlyFavorites;
-  ResetStateWith(this.showOnlyFavorites);
+  final List<ProfileAttributeFilterValueUpdate> attributeFilters;
+  ResetStateWith(this.showOnlyFavorites, this.attributeFilters);
 }
 
 class SetFavoriteProfilesFilter extends EditProfileFilteringSettingsEvent {

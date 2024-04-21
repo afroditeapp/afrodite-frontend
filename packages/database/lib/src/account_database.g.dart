@@ -331,6 +331,15 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               'json_search_groups', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<JsonString?>($AccountTable.$converterjsonSearchGroups);
+  static const VerificationMeta _jsonProfileAttributeFiltersMeta =
+      const VerificationMeta('jsonProfileAttributeFilters');
+  @override
+  late final GeneratedColumnWithTypeConverter<JsonString?, String>
+      jsonProfileAttributeFilters = GeneratedColumn<String>(
+              'json_profile_attribute_filters', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<JsonString?>(
+              $AccountTable.$converterjsonProfileAttributeFilters);
   static const VerificationMeta _profileSearchAgeRangeMinMeta =
       const VerificationMeta('profileSearchAgeRangeMin');
   @override
@@ -432,6 +441,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         profileLocationLongitude,
         jsonProfileVisibility,
         jsonSearchGroups,
+        jsonProfileAttributeFilters,
         profileSearchAgeRangeMin,
         profileSearchAgeRangeMax,
         refreshTokenAccount,
@@ -603,6 +613,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     context.handle(
         _jsonProfileVisibilityMeta, const VerificationResult.success());
     context.handle(_jsonSearchGroupsMeta, const VerificationResult.success());
+    context.handle(
+        _jsonProfileAttributeFiltersMeta, const VerificationResult.success());
     if (data.containsKey('profile_search_age_range_min')) {
       context.handle(
           _profileSearchAgeRangeMinMeta,
@@ -789,6 +801,10 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       jsonSearchGroups: $AccountTable.$converterjsonSearchGroups.fromSql(
           attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}json_search_groups'])),
+      jsonProfileAttributeFilters: $AccountTable
+          .$converterjsonProfileAttributeFilters
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}json_profile_attribute_filters'])),
       profileSearchAgeRangeMin: attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}profile_search_age_range_min']),
@@ -863,6 +879,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       NullAwareTypeConverter.wrap(EnumString.driftConverter);
   static TypeConverter<JsonString?, String?> $converterjsonSearchGroups =
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
+  static TypeConverter<JsonString?, String?>
+      $converterjsonProfileAttributeFilters =
+      NullAwareTypeConverter.wrap(JsonString.driftConverter);
 }
 
 class AccountData extends DataClass implements Insertable<AccountData> {
@@ -907,6 +926,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final double? profileLocationLongitude;
   final EnumString? jsonProfileVisibility;
   final JsonString? jsonSearchGroups;
+  final JsonString? jsonProfileAttributeFilters;
   final int? profileSearchAgeRangeMin;
   final int? profileSearchAgeRangeMax;
   final String? refreshTokenAccount;
@@ -957,6 +977,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.profileLocationLongitude,
       this.jsonProfileVisibility,
       this.jsonSearchGroups,
+      this.jsonProfileAttributeFilters,
       this.profileSearchAgeRangeMin,
       this.profileSearchAgeRangeMax,
       this.refreshTokenAccount,
@@ -1118,6 +1139,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['json_search_groups'] = Variable<String>(
           $AccountTable.$converterjsonSearchGroups.toSql(jsonSearchGroups));
     }
+    if (!nullToAbsent || jsonProfileAttributeFilters != null) {
+      map['json_profile_attribute_filters'] = Variable<String>($AccountTable
+          .$converterjsonProfileAttributeFilters
+          .toSql(jsonProfileAttributeFilters));
+    }
     if (!nullToAbsent || profileSearchAgeRangeMin != null) {
       map['profile_search_age_range_min'] =
           Variable<int>(profileSearchAgeRangeMin);
@@ -1264,6 +1290,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       jsonSearchGroups: jsonSearchGroups == null && nullToAbsent
           ? const Value.absent()
           : Value(jsonSearchGroups),
+      jsonProfileAttributeFilters:
+          jsonProfileAttributeFilters == null && nullToAbsent
+              ? const Value.absent()
+              : Value(jsonProfileAttributeFilters),
       profileSearchAgeRangeMin: profileSearchAgeRangeMin == null && nullToAbsent
           ? const Value.absent()
           : Value(profileSearchAgeRangeMin),
@@ -1368,6 +1398,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<EnumString?>(json['jsonProfileVisibility']),
       jsonSearchGroups:
           serializer.fromJson<JsonString?>(json['jsonSearchGroups']),
+      jsonProfileAttributeFilters:
+          serializer.fromJson<JsonString?>(json['jsonProfileAttributeFilters']),
       profileSearchAgeRangeMin:
           serializer.fromJson<int?>(json['profileSearchAgeRangeMin']),
       profileSearchAgeRangeMax:
@@ -1454,6 +1486,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'jsonProfileVisibility':
           serializer.toJson<EnumString?>(jsonProfileVisibility),
       'jsonSearchGroups': serializer.toJson<JsonString?>(jsonSearchGroups),
+      'jsonProfileAttributeFilters':
+          serializer.toJson<JsonString?>(jsonProfileAttributeFilters),
       'profileSearchAgeRangeMin':
           serializer.toJson<int?>(profileSearchAgeRangeMin),
       'profileSearchAgeRangeMax':
@@ -1511,6 +1545,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<double?> profileLocationLongitude = const Value.absent(),
           Value<EnumString?> jsonProfileVisibility = const Value.absent(),
           Value<JsonString?> jsonSearchGroups = const Value.absent(),
+          Value<JsonString?> jsonProfileAttributeFilters = const Value.absent(),
           Value<int?> profileSearchAgeRangeMin = const Value.absent(),
           Value<int?> profileSearchAgeRangeMax = const Value.absent(),
           Value<String?> refreshTokenAccount = const Value.absent(),
@@ -1619,6 +1654,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         jsonSearchGroups: jsonSearchGroups.present
             ? jsonSearchGroups.value
             : this.jsonSearchGroups,
+        jsonProfileAttributeFilters: jsonProfileAttributeFilters.present
+            ? jsonProfileAttributeFilters.value
+            : this.jsonProfileAttributeFilters,
         profileSearchAgeRangeMin: profileSearchAgeRangeMin.present
             ? profileSearchAgeRangeMin.value
             : this.profileSearchAgeRangeMin,
@@ -1702,6 +1740,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
           ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
           ..write('jsonSearchGroups: $jsonSearchGroups, ')
+          ..write('jsonProfileAttributeFilters: $jsonProfileAttributeFilters, ')
           ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
           ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
           ..write('refreshTokenAccount: $refreshTokenAccount, ')
@@ -1757,6 +1796,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileLocationLongitude,
         jsonProfileVisibility,
         jsonSearchGroups,
+        jsonProfileAttributeFilters,
         profileSearchAgeRangeMin,
         profileSearchAgeRangeMax,
         refreshTokenAccount,
@@ -1821,6 +1861,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.profileLocationLongitude == this.profileLocationLongitude &&
           other.jsonProfileVisibility == this.jsonProfileVisibility &&
           other.jsonSearchGroups == this.jsonSearchGroups &&
+          other.jsonProfileAttributeFilters ==
+              this.jsonProfileAttributeFilters &&
           other.profileSearchAgeRangeMin == this.profileSearchAgeRangeMin &&
           other.profileSearchAgeRangeMax == this.profileSearchAgeRangeMax &&
           other.refreshTokenAccount == this.refreshTokenAccount &&
@@ -1873,6 +1915,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<double?> profileLocationLongitude;
   final Value<EnumString?> jsonProfileVisibility;
   final Value<JsonString?> jsonSearchGroups;
+  final Value<JsonString?> jsonProfileAttributeFilters;
   final Value<int?> profileSearchAgeRangeMin;
   final Value<int?> profileSearchAgeRangeMax;
   final Value<String?> refreshTokenAccount;
@@ -1923,6 +1966,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileLocationLongitude = const Value.absent(),
     this.jsonProfileVisibility = const Value.absent(),
     this.jsonSearchGroups = const Value.absent(),
+    this.jsonProfileAttributeFilters = const Value.absent(),
     this.profileSearchAgeRangeMin = const Value.absent(),
     this.profileSearchAgeRangeMax = const Value.absent(),
     this.refreshTokenAccount = const Value.absent(),
@@ -1974,6 +2018,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileLocationLongitude = const Value.absent(),
     this.jsonProfileVisibility = const Value.absent(),
     this.jsonSearchGroups = const Value.absent(),
+    this.jsonProfileAttributeFilters = const Value.absent(),
     this.profileSearchAgeRangeMin = const Value.absent(),
     this.profileSearchAgeRangeMax = const Value.absent(),
     this.refreshTokenAccount = const Value.absent(),
@@ -2025,6 +2070,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<double>? profileLocationLongitude,
     Expression<String>? jsonProfileVisibility,
     Expression<String>? jsonSearchGroups,
+    Expression<String>? jsonProfileAttributeFilters,
     Expression<int>? profileSearchAgeRangeMin,
     Expression<int>? profileSearchAgeRangeMax,
     Expression<String>? refreshTokenAccount,
@@ -2104,6 +2150,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (jsonProfileVisibility != null)
         'json_profile_visibility': jsonProfileVisibility,
       if (jsonSearchGroups != null) 'json_search_groups': jsonSearchGroups,
+      if (jsonProfileAttributeFilters != null)
+        'json_profile_attribute_filters': jsonProfileAttributeFilters,
       if (profileSearchAgeRangeMin != null)
         'profile_search_age_range_min': profileSearchAgeRangeMin,
       if (profileSearchAgeRangeMax != null)
@@ -2163,6 +2211,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<double?>? profileLocationLongitude,
       Value<EnumString?>? jsonProfileVisibility,
       Value<JsonString?>? jsonSearchGroups,
+      Value<JsonString?>? jsonProfileAttributeFilters,
       Value<int?>? profileSearchAgeRangeMin,
       Value<int?>? profileSearchAgeRangeMax,
       Value<String?>? refreshTokenAccount,
@@ -2238,6 +2287,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       jsonProfileVisibility:
           jsonProfileVisibility ?? this.jsonProfileVisibility,
       jsonSearchGroups: jsonSearchGroups ?? this.jsonSearchGroups,
+      jsonProfileAttributeFilters:
+          jsonProfileAttributeFilters ?? this.jsonProfileAttributeFilters,
       profileSearchAgeRangeMin:
           profileSearchAgeRangeMin ?? this.profileSearchAgeRangeMin,
       profileSearchAgeRangeMax:
@@ -2422,6 +2473,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           .$converterjsonSearchGroups
           .toSql(jsonSearchGroups.value));
     }
+    if (jsonProfileAttributeFilters.present) {
+      map['json_profile_attribute_filters'] = Variable<String>($AccountTable
+          .$converterjsonProfileAttributeFilters
+          .toSql(jsonProfileAttributeFilters.value));
+    }
     if (profileSearchAgeRangeMin.present) {
       map['profile_search_age_range_min'] =
           Variable<int>(profileSearchAgeRangeMin.value);
@@ -2511,6 +2567,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
           ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
           ..write('jsonSearchGroups: $jsonSearchGroups, ')
+          ..write('jsonProfileAttributeFilters: $jsonProfileAttributeFilters, ')
           ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
           ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
           ..write('refreshTokenAccount: $refreshTokenAccount, ')

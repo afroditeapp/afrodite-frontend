@@ -67,6 +67,7 @@ class ProfileRepository extends DataRepository {
       // onResumeAppUsage.
       await reloadLocation();
       await reloadMyProfile();
+      await reloadAttributeFilters();
       final result = await reloadFavoriteProfiles();
       if (result.isOk()) {
         await db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(true));
@@ -87,6 +88,11 @@ class ProfileRepository extends DataRepository {
         await reloadMyProfile();
       }
 
+      final attributeFilters = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileAttributeFilters()).ok();
+      if (attributeFilters == null) {
+        await reloadAttributeFilters();
+      }
+
       final syncDone = await db.accountStreamSingle((db) => db.daoInitialSync.watchProfileSyncDone()).ok() ?? false;
       if (!syncDone) {
         await reloadFavoriteProfiles();
@@ -99,6 +105,7 @@ class ProfileRepository extends DataRepository {
   Future<void> onInitialSetupComplete() async {
     await reloadLocation();
     await reloadMyProfile();
+    await reloadAttributeFilters();
   }
 
   @override
@@ -312,6 +319,32 @@ class ProfileRepository extends DataRepository {
       );
     } else {
       return Err(());
+    }
+  }
+
+  Future<Result<(), ()>> reloadAttributeFilters() async {
+    final value = await _api.profile((api) => api.getProfileAttributeFilters()).ok();
+    if (value != null) {
+      return await db.accountAction(
+        (db) => db.daoProfileSettings.updateProfileAttributeFilters(value),
+      );
+    } else {
+      return Err(());
+    }
+  }
+
+  Future<Result<(), ()>> updateAttributeFilters(List<ProfileAttributeFilterValueUpdate> newValues) async {
+    if (newValues.isEmpty) {
+      return Ok(());
+    }
+
+    final update = ProfileAttributeFilterListUpdate(filters: newValues);
+    switch (await _api.profileAction((api) => api.postProfileAttributeFilters(update))) {
+      case Ok():
+        await reloadAttributeFilters();
+        return Ok(());
+      case Err():
+        return Err(());
     }
   }
 }

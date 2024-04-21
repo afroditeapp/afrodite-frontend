@@ -84,6 +84,7 @@ class Account extends Table {
   RealColumn get profileLocationLongitude => real().nullable()();
   TextColumn get jsonProfileVisibility => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
   TextColumn get jsonSearchGroups => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
+  TextColumn get jsonProfileAttributeFilters => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
   IntColumn get profileSearchAgeRangeMin => integer().nullable()();
   IntColumn get profileSearchAgeRangeMax => integer().nullable()();
 
@@ -268,6 +269,10 @@ class JsonString {
     return AvailableProfileAttributes.fromJson(jsonMap);
   }
 
+  ProfileAttributeFilterList? toProfileAttributeFilterList() {
+    return ProfileAttributeFilterList.fromJson(jsonMap);
+  }
+
   static TypeConverter<JsonString, String> driftConverter = TypeConverter.json(
     fromJson: (json) => JsonString(json as Map<String, Object?>),
     toJson: (object) => object.jsonMap,
@@ -286,6 +291,11 @@ extension AvailableProfileAttributesJson on AvailableProfileAttributes {
   }
 }
 
+extension ProfileAttributeFilterListJson on ProfileAttributeFilterList {
+  JsonString toJsonString() {
+    return JsonString(toJson());
+  }
+}
 
 class EnumString {
   final String enumString;

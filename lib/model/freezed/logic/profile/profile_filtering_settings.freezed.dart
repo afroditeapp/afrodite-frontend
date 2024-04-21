@@ -8,6 +8,14 @@ part of 'profile_filtering_settings.dart';
 // **************************************************************************
 
 /// @nodoc
+class _DetectDefaultValueInCopyWith {
+  const _DetectDefaultValueInCopyWith();
+}
+
+/// @nodoc
+const _detectDefaultValueInCopyWith = _DetectDefaultValueInCopyWith();
+
+/// @nodoc
 final _privateConstructorErrorProfileFilteringSettingsData = UnsupportedError(
     'Private constructor ProfileFilteringSettingsData._() was called. Please call factory constructor instead.');
 
@@ -15,12 +23,12 @@ final _privateConstructorErrorProfileFilteringSettingsData = UnsupportedError(
 mixin _$ProfileFilteringSettingsData {
   UpdateState get updateState => throw _privateConstructorErrorProfileFilteringSettingsData;
   bool get showOnlyFavorites => throw _privateConstructorErrorProfileFilteringSettingsData;
-  bool get showOnlyFavorites2 => throw _privateConstructorErrorProfileFilteringSettingsData;
+  ProfileAttributeFilterList? get attributeFilters => throw _privateConstructorErrorProfileFilteringSettingsData;
 
   ProfileFilteringSettingsData copyWith({
     UpdateState? updateState,
     bool? showOnlyFavorites,
-    bool? showOnlyFavorites2,
+    ProfileAttributeFilterList? attributeFilters,
   }) => throw _privateConstructorErrorProfileFilteringSettingsData;
 }
 
@@ -29,7 +37,7 @@ abstract class _ProfileFilteringSettingsData extends ProfileFilteringSettingsDat
   factory _ProfileFilteringSettingsData({
     UpdateState updateState,
     bool showOnlyFavorites,
-    bool showOnlyFavorites2,
+    ProfileAttributeFilterList? attributeFilters,
   }) = _$ProfileFilteringSettingsDataImpl;
   const _ProfileFilteringSettingsData._() : super._();
 }
@@ -38,12 +46,11 @@ abstract class _ProfileFilteringSettingsData extends ProfileFilteringSettingsDat
 class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData with DiagnosticableTreeMixin {
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
   static const bool _showOnlyFavoritesDefaultValue = false;
-  static const bool _showOnlyFavorites2DefaultValue = false;
   
   _$ProfileFilteringSettingsDataImpl({
     this.updateState = _updateStateDefaultValue,
     this.showOnlyFavorites = _showOnlyFavoritesDefaultValue,
-    this.showOnlyFavorites2 = _showOnlyFavorites2DefaultValue,
+    this.attributeFilters,
   }) : super._();
 
   @override
@@ -51,11 +58,11 @@ class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData w
   @override
   final bool showOnlyFavorites;
   @override
-  final bool showOnlyFavorites2;
+  final ProfileAttributeFilterList? attributeFilters;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProfileFilteringSettingsData(updateState: $updateState, showOnlyFavorites: $showOnlyFavorites, showOnlyFavorites2: $showOnlyFavorites2)';
+    return 'ProfileFilteringSettingsData(updateState: $updateState, showOnlyFavorites: $showOnlyFavorites, attributeFilters: $attributeFilters)';
   }
 
   @override
@@ -65,7 +72,7 @@ class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData w
       ..add(DiagnosticsProperty('type', 'ProfileFilteringSettingsData'))
       ..add(DiagnosticsProperty('updateState', updateState))
       ..add(DiagnosticsProperty('showOnlyFavorites', showOnlyFavorites))
-      ..add(DiagnosticsProperty('showOnlyFavorites2', showOnlyFavorites2));
+      ..add(DiagnosticsProperty('attributeFilters', attributeFilters));
   }
 
   @override
@@ -77,8 +84,8 @@ class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData w
           other.updateState == updateState) &&
         (identical(other.showOnlyFavorites, showOnlyFavorites) ||
           other.showOnlyFavorites == showOnlyFavorites) &&
-        (identical(other.showOnlyFavorites2, showOnlyFavorites2) ||
-          other.showOnlyFavorites2 == showOnlyFavorites2)
+        (identical(other.attributeFilters, attributeFilters) ||
+          other.attributeFilters == attributeFilters)
     );
   }
 
@@ -87,17 +94,17 @@ class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData w
     runtimeType,
     updateState,
     showOnlyFavorites,
-    showOnlyFavorites2,
+    attributeFilters,
   );
 
   @override
   ProfileFilteringSettingsData copyWith({
     Object? updateState,
     Object? showOnlyFavorites,
-    Object? showOnlyFavorites2,
+    Object? attributeFilters = _detectDefaultValueInCopyWith,
   }) => _$ProfileFilteringSettingsDataImpl(
     updateState: (updateState ?? this.updateState) as UpdateState,
     showOnlyFavorites: (showOnlyFavorites ?? this.showOnlyFavorites) as bool,
-    showOnlyFavorites2: (showOnlyFavorites2 ?? this.showOnlyFavorites2) as bool,
+    attributeFilters: (attributeFilters == _detectDefaultValueInCopyWith ? this.attributeFilters : attributeFilters) as ProfileAttributeFilterList?,
   );
 }
