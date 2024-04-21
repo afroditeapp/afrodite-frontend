@@ -30,6 +30,7 @@ class MoveImageTo extends ProfilePicturesEvent {
   final int dst;
   MoveImageTo(this.src, this.dst);
 }
+class ResetProfilePicturesBloc extends ProfilePicturesEvent {}
 
 class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData> {
   ProfilePicturesBloc() : super(const ProfilePicturesData()) {
@@ -39,6 +40,9 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
           mode: data.mode,
         ));
       }
+    });
+    on<ResetProfilePicturesBloc>((data, emit) {
+      emit(const ProfilePicturesData());
     });
     on<AddProcessedImage>((data, emit) {
       final pictures = _pictureList();

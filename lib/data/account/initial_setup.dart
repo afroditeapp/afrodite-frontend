@@ -193,28 +193,33 @@ class InitialSetupUtils {
 
     // Images
     {
-      final securitySelfie = data.securitySelfie?.contentId;
-      if (securitySelfie == null) return errAndLog("Security selfie is null");
-      final r1 = await _api.mediaAction((api) => api.putPendingSecurityContentInfo(securitySelfie));
-      if (r1.isErr()) return errAndLog("Setting security selfie failed");
-
-      final profileImages = data.profileImages;
-      if (profileImages == null) return errAndLog("Profile images is null");
-      final newProfileContent = createProfileContent(securitySelfie, profileImages).ok();
-      if (newProfileContent == null) return errAndLog("Creating profile content failed");
-      final r2 = await _api.mediaAction((api) => api.putPendingProfileContent(newProfileContent));
-      if (r2.isErr()) return errAndLog("Setting profile images failed");
-
-      final moderationRequest = createModerationRequest(securitySelfie, newProfileContent);
-
-      final r3 = await _api.mediaAction((api) => api.putModerationRequest(moderationRequest));
-      if (r3.isErr()) return errAndLog("Moderation request sending failed");
+      final r1 = await handleInitialSetupImages(data.securitySelfie?.contentId, data.profileImages);
+      if (r1.isErr()) return errAndLog("Image related error detected");
     }
 
     {
       final r = await _api.accountAction((api) => api.postCompleteSetup());
       if (r.isErr()) return errAndLog("Completing setup failed");
     }
+
+    return Ok(());
+  }
+
+  Future<Result<(), ()>> handleInitialSetupImages(ContentId? securitySelfie, Iterable<ImgState>? profileImages) async {
+    if (securitySelfie == null) return errAndLog("Security selfie is null");
+    final r1 = await _api.mediaAction((api) => api.putPendingSecurityContentInfo(securitySelfie));
+    if (r1.isErr()) return errAndLog("Setting security selfie failed");
+
+    if (profileImages == null) return errAndLog("Profile images is null");
+    final newProfileContent = createProfileContent(securitySelfie, profileImages).ok();
+    if (newProfileContent == null) return errAndLog("Creating profile content failed");
+    final r2 = await _api.mediaAction((api) => api.putPendingProfileContent(newProfileContent));
+    if (r2.isErr()) return errAndLog("Setting profile images failed");
+
+    final moderationRequest = createModerationRequest(securitySelfie, newProfileContent);
+
+    final r3 = await _api.mediaAction((api) => api.putModerationRequest(moderationRequest));
+    if (r3.isErr()) return errAndLog("Moderation request sending failed");
 
     return Ok(());
   }
@@ -253,7 +258,7 @@ ModerationRequestContent createModerationRequest(
 
 Result<SetProfileContent, ()> createProfileContent(
   ContentId securitySelfie,
-  ImmutableList<ImgState> imgs,
+  Iterable<ImgState> imgs,
 ) {
   double? gridCropSize;
   double? gridCropX;

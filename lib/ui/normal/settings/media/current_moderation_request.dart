@@ -10,6 +10,7 @@ import 'package:pihka_frontend/logic/media/new_moderation_request.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/new_moderation_request.dart';
+import 'package:pihka_frontend/ui/normal/settings/media/retry_initial_setup_images.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/select_content.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
@@ -157,18 +158,7 @@ class _CurrentModerationRequestScreenState extends State<CurrentModerationReques
 
     if (request.state == ModerationRequestState.rejected) {
       widgets.add(
-        Padding(
-          padding: const EdgeInsets.only(
-            left: COMMON_SCREEN_EDGE_PADDING,
-            right: COMMON_SCREEN_EDGE_PADDING,
-            bottom: 16,
-          ),
-          child: ElevatedButton.icon(
-            onPressed: () => _openNewModerationRequestInitialOrAfter(context),
-            icon: const Icon(Icons.add_a_photo_rounded),
-            label: Text(context.strings.current_moderation_request_screen_new_request_action_when_current_request_rejected),
-          ),
-        )
+        retryModerationRequestButton(context)
       );
     }
 
@@ -224,21 +214,39 @@ class _CurrentModerationRequestScreenState extends State<CurrentModerationReques
       ],
     );
   }
+}
 
-  void _openNewModerationRequestInitialOrAfter(BuildContext context) async {
-    final isInitialModerationOngoing = context.read<AccountBloc>().state.isInitialModerationOngoing();
-    if (isInitialModerationOngoing) {
-      // TODO
-    } else {
-      final bloc = context.read<CurrentModerationRequestBloc>();
-      final list = await openNewModerationRequest(context);
-      if (list != null && list.isNotEmpty) {
-        bloc.add(SendNewModerationRequest(list));
-      }
+Widget retryModerationRequestButton(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.only(
+      left: COMMON_SCREEN_EDGE_PADDING,
+      right: COMMON_SCREEN_EDGE_PADDING,
+      bottom: 16,
+    ),
+    child: ElevatedButton.icon(
+      onPressed: () => _openNewModerationRequestInitialOrAfter(context),
+      icon: const Icon(Icons.add_a_photo_rounded),
+      label: Text(context.strings.current_moderation_request_screen_new_request_action_when_current_request_rejected),
+    ),
+  );
+}
+
+void _openNewModerationRequestInitialOrAfter(BuildContext context) async {
+  final isInitialModerationOngoing = context.read<AccountBloc>().state.isInitialModerationOngoing();
+  if (isInitialModerationOngoing) {
+    final bloc = context.read<CurrentModerationRequestBloc>();
+    final newImgs = await openRetryInitialSetupImages(context);
+    if (newImgs != null) {
+      bloc.add(SendRetryInitialSetupImages(newImgs));
+    }
+  } else {
+    final bloc = context.read<CurrentModerationRequestBloc>();
+    final list = await openNewModerationRequest(context);
+    if (list != null && list.isNotEmpty) {
+      bloc.add(SendNewModerationRequest(list));
     }
   }
 }
-
 
 Future<List<ContentId>?> openNewModerationRequest(BuildContext context) async {
   final bloc = context.read<NewModerationRequestBloc>();

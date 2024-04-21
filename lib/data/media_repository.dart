@@ -10,10 +10,12 @@ import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
+import 'package:pihka_frontend/data/account/initial_setup.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/media/send_to_slot.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/ui/normal/settings/media/retry_initial_setup_images.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/api.dart';
 import 'package:pihka_frontend/utils/result.dart';
@@ -249,11 +251,6 @@ class MediaRepository extends DataRepository {
   }
 
   Future<Result<(), ()>> createNewModerationRequest(List<ContentId> content) async {
-    final accountId = await LoginRepository.getInstance().accountId.first;
-    if (accountId == null) {
-      log.error("createNewModerationRequest: accountId is null");
-      return Err(());
-    }
     final request = ModerationRequestContentExtensions.fromList(content);
     if (request == null) {
       log.error("createNewModerationRequest: request is null");
@@ -275,6 +272,10 @@ class MediaRepository extends DataRepository {
       case Err():
         return Err(());
     }
+  }
+
+  Future<Result<(), ()>> retryInitialSetupImages(RetryInitialSetupImages content) async {
+    return await InitialSetupUtils().handleInitialSetupImages(content.securitySelfie, content.profileImgs);
   }
 }
 

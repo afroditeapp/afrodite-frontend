@@ -60,8 +60,10 @@ const ROW_HEIGHT = 150.0;
 const THUMBNAIL_SIZE = 100.0;
 
 class AskProfilePictures extends StatefulWidget {
+  const AskProfilePictures({Key? key}) : super(key: key);
+
   @override
-  _AskProfilePicturesState createState() => _AskProfilePicturesState();
+  State<AskProfilePictures> createState() => _AskProfilePicturesState();
 }
 
 class _AskProfilePicturesState extends State<AskProfilePictures> {
@@ -114,9 +116,13 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
       zeroSizedWidgets = imageProcessingUiWidgets<ProfilePicturesImageProcessingBloc>(
         onComplete: (context, processedImg) {
           final id = AccountImageId(processedImg.accountId, processedImg.contentId);
-          // Initial setup uses slot 0 for security selfie.
-          // Other uploads are in slots 1-4. The UI logic uses 0-3 indexes.
-          final index = processedImg.slot - 1;
+          final nextAddImgState = widget.profilePicturesBloc.state.pictures().indexed.where((element) => element.$2 is Add).firstOrNull;
+          final int index;
+          if (nextAddImgState != null) {
+            index = nextAddImgState.$1;
+          } else {
+            return;
+          }
           widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(id, processedImg.slot), index));
         },
       );

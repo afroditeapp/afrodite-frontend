@@ -5,23 +5,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
-import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
 import 'package:pihka_frontend/logic/media/new_moderation_request.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
-import 'package:pihka_frontend/model/freezed/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/new_moderation_request.dart';
-import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/ui/initial_setup/profile_pictures.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/select_content.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
-import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/image_processing.dart';
-import 'package:pihka_frontend/ui_utils/view_image_screen.dart';
-import 'package:pihka_frontend/utils/api.dart';
-import 'package:pihka_frontend/utils/immutable_list.dart';
-
 
 /// Returns [List<ContentId>?]
 class NewModerationRequestScreen extends StatefulWidget {

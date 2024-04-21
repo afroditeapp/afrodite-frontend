@@ -5,6 +5,7 @@ import "package:openapi/api.dart";
 import "package:pihka_frontend/api/api_manager.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/model/freezed/logic/media/current_moderation_request.dart";
+import "package:pihka_frontend/ui/normal/settings/media/retry_initial_setup_images.dart";
 import "package:pihka_frontend/utils.dart";
 import "package:pihka_frontend/utils/result.dart";
 
@@ -17,6 +18,10 @@ class ReloadOnceConnected extends CurrentModerationRequestEvent {}
 class SendNewModerationRequest extends CurrentModerationRequestEvent {
   Iterable<ContentId> data;
   SendNewModerationRequest(this.data);
+}
+class SendRetryInitialSetupImages extends CurrentModerationRequestEvent {
+  RetryInitialSetupImages data;
+  SendRetryInitialSetupImages(this.data);
 }
 class DeleteCurrentModerationRequest extends CurrentModerationRequestEvent {}
 
@@ -54,6 +59,18 @@ class CurrentModerationRequestBloc extends Bloc<CurrentModerationRequestEvent, C
       await runOnce(() async {
         emit(CurrentModerationRequestData().copyWith(isLoading: true));
         final result = await media.deleteCurrentModerationRequest();
+        switch (result) {
+          case Ok():
+            await reload(emit);
+          case Err():
+            emit(CurrentModerationRequestData().copyWith(isLoading: false, isError: true));
+        }
+      });
+    });
+    on<SendRetryInitialSetupImages>((data, emit) async {
+      await runOnce(() async {
+        emit(CurrentModerationRequestData().copyWith(isLoading: true));
+        final result = await media.retryInitialSetupImages(data.data);
         switch (result) {
           case Ok():
             await reload(emit);

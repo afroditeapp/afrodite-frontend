@@ -11,12 +11,16 @@ import 'package:pihka_frontend/model/freezed/logic/media/current_moderation_requ
 import 'package:pihka_frontend/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/ui/normal/profiles/filter_profiles.dart';
 import 'package:pihka_frontend/ui/normal/profiles/profile_grid.dart';
+import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
 
 var log = Logger("ProfileView");
+
+// TODO(prod): Make sure that after initial moderation the profile grid
+// is refreshed automatically.
 
 class ProfileView extends BottomNavigationScreen {
   const ProfileView({Key? key}) : super(key: key);
@@ -67,10 +71,7 @@ class _ProfileViewState extends State<ProfileView> {
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  child: SizedBox(
-                    height: constraints.maxHeight,
-                    child: profileIsInModerationInfo(context),
-                  ),
+                  child: profileIsInModerationInfo(context),
                 ),
               );
             }
@@ -124,6 +125,8 @@ class ShowModerationQueueProgress extends StatefulWidget {
 
 class _ShowModerationQueueProgressState extends State<ShowModerationQueueProgress> {
 
+  ModerationRequest? cachedCurrentRequest;
+
   @override
   void initState() {
     super.initState();
@@ -138,11 +141,19 @@ class _ShowModerationQueueProgressState extends State<ShowModerationQueueProgres
   Widget blocWidgetForProcessingState() {
     return BlocBuilder<CurrentModerationRequestBloc, CurrentModerationRequestData>(
       builder: (context, state) {
-        final s = state.moderationRequest;
-        if (s == null) {
-          return const Text("");
+        final newRequest = state.moderationRequest;
+        final previousRequest = cachedCurrentRequest;
+        if (newRequest == null) {
+          if (state.isError) {
+            return Text(context.strings.generic_error);
+          } else if (state.isLoading && previousRequest != null) {
+            return widgetForProcessingState(context, previousRequest);
+          } else {
+            return const Text("");
+          }
         } else {
-          return widgetForProcessingState(context, s);
+          cachedCurrentRequest = newRequest;
+          return widgetForProcessingState(context, newRequest);
         }
       },
     );
@@ -155,7 +166,13 @@ class _ShowModerationQueueProgressState extends State<ShowModerationQueueProgres
     } else if (request.state == ModerationRequestState.inProgress) {
       return Text(context.strings.profile_grid_screen_initial_moderation_in_progress);
     } else if (request.state == ModerationRequestState.rejected) {
-      return Text(context.strings.profile_grid_screen_initial_moderation_rejected);
+      return Column(
+        children: [
+          Text(context.strings.profile_grid_screen_initial_moderation_rejected),
+          const Padding(padding: EdgeInsets.all(8)),
+          retryModerationRequestButton(context),
+        ],
+      );
     } else {
       return const SizedBox.shrink();
     }
