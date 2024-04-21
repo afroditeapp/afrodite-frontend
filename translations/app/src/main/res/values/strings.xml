@@ -178,6 +178,11 @@
     <string name="new_moderation_request_screen_send_content_button" description="Text for send images to be moderated button">Send to be moderated</string>
     <string name="new_moderation_request_screen_send_content_confirm_dialog_title" description="Dialog title for confirming send images to be moderated action">Send to be moderated?</string>
 
+    <!-- Profile filtering settings screen -->
+    <string name="profile_filtering_settings_screen_title" description="Title for profile filtering settings screen">Filtering settings</string>
+    <string name="profile_filtering_settings_screen_favorite_profile_filter" description="Title for favorite profile filter">Favorite profile</string>
+    <string name="profile_filtering_settings_screen_updating_filters_failed" description="Snackbar text for notifying about failed profile filters update">Updating profile filters failed</string>
+
     <!-- Likes -->
     <string name="pageLikesTitle" description="Title for likes page">Likes</string>
 

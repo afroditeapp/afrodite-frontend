@@ -19,8 +19,8 @@ import 'package:pihka_frontend/ui/initial_setup/profile_basic_info.dart';
 import 'package:pihka_frontend/ui/initial_setup/profile_pictures.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile_attribute.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
+import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
-import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils/age.dart';
 import 'package:pihka_frontend/utils/immutable_list.dart';
@@ -122,23 +122,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       },
       child: Scaffold(
         appBar: AppBar(title: Text(context.strings.edit_profile_screen_title)),
-        body: BlocListener<MyProfileBloc, MyProfileData>(
-          listenWhen: (previous, current) => previous.profileUpdateState != current.profileUpdateState,
-          listener: (context, state) {
-            final updateState = state.profileUpdateState;
-            if (updateState is ProfileUpdateStarted) {
-              showLoadingDialogWithAutoDismiss<MyProfileBloc, MyProfileData>(
-                context,
-                dialogVisibilityGetter: (s) =>
-                  s.profileUpdateState is ProfileUpdateStarted ||
-                  s.profileUpdateState is ProfileUpdateInProgress,
-                dismissAction: () {
-                  Navigator.pop(context); // Dialog
-                  Navigator.pop(context); // Edit profile screen
-                }
-              );
-            }
-          },
+        body: updateStateHandler<MyProfileBloc, MyProfileData>(
           child: edit(context),
         ),
       ),

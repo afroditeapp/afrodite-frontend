@@ -6,9 +6,11 @@ import 'package:database/database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/model/freezed/logic/profile/my_profile.dart";
+import "package:pihka_frontend/ui_utils/common_update_logic.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 import "package:pihka_frontend/utils/result.dart";
+import "package:pihka_frontend/utils/time.dart";
 
 
 sealed class MyProfileEvent {}
@@ -43,15 +45,15 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
         }
 
         emit(state.copyWith(
-          profileUpdateState: const ProfileUpdateStarted(),
+          updateState: const UpdateStarted(),
         ));
 
-        final startTime = DateTime.now();
+        final waitTime = WantedWaitingTimeManager();
 
         var failureDetected = false;
 
         emit(state.copyWith(
-          profileUpdateState: const ProfileUpdateInProgress(),
+          updateState: const UpdateInProgress(),
         ));
 
 
@@ -73,14 +75,10 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
           showSnackBar(R.strings.view_profile_screen_profile_edit_failed);
         }
 
-        const wantedDurationMillis = 500;
-        final remainingTime = wantedDurationMillis - DateTime.now().difference(startTime).inMilliseconds;
-        if (remainingTime > 0) {
-          await Future.delayed(Duration(milliseconds: remainingTime), () => null);
-        }
+        await waitTime.waitIfNeeded();
 
         emit(state.copyWith(
-          profileUpdateState: const ProfileUpdateIdle(),
+          updateState: const UpdateIdle(),
         ));
       });
     });

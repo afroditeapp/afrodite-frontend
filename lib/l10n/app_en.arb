@@ -475,6 +475,18 @@
   "@pageSettingsTitle": {
     "description": "Title for settings page"
   },
+  "profile_filtering_settings_screen_favorite_profile_filter": "Favorite profile",
+  "@profile_filtering_settings_screen_favorite_profile_filter": {
+    "description": "Title for favorite profile filter"
+  },
+  "profile_filtering_settings_screen_title": "Filtering settings",
+  "@profile_filtering_settings_screen_title": {
+    "description": "Title for profile filtering settings screen"
+  },
+  "profile_filtering_settings_screen_updating_filters_failed": "Updating profile filters failed",
+  "@profile_filtering_settings_screen_updating_filters_failed": {
+    "description": "Snackbar text for notifying about failed profile filters update"
+  },
   "profile_grid_screen_initial_moderation_in_progress": "Moderation in progress.",
   "@profile_grid_screen_initial_moderation_in_progress": {
     "description": "Info text that initial moderation is in progress"

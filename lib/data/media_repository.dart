@@ -275,7 +275,10 @@ class MediaRepository extends DataRepository {
   }
 
   Future<Result<(), ()>> retryInitialSetupImages(RetryInitialSetupImages content) async {
-    return await InitialSetupUtils().handleInitialSetupImages(content.securitySelfie, content.profileImgs);
+    final result = await InitialSetupUtils().handleInitialSetupImages(content.securitySelfie, content.profileImgs);
+    await reloadMyProfileContent();
+    await reloadMySecurityContent();
+    return result;
   }
 }
 

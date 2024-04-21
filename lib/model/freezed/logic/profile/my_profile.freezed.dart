@@ -21,11 +21,11 @@ final _privateConstructorErrorMyProfileData = UnsupportedError(
 
 /// @nodoc
 mixin _$MyProfileData {
-  ProfileUpdateState get profileUpdateState => throw _privateConstructorErrorMyProfileData;
+  UpdateState get updateState => throw _privateConstructorErrorMyProfileData;
   ProfileEntry? get profile => throw _privateConstructorErrorMyProfileData;
 
   MyProfileData copyWith({
-    ProfileUpdateState? profileUpdateState,
+    UpdateState? updateState,
     ProfileEntry? profile,
   }) => throw _privateConstructorErrorMyProfileData;
 }
@@ -33,7 +33,7 @@ mixin _$MyProfileData {
 /// @nodoc
 abstract class _MyProfileData extends MyProfileData {
   factory _MyProfileData({
-    ProfileUpdateState profileUpdateState,
+    UpdateState updateState,
     ProfileEntry? profile,
   }) = _$MyProfileDataImpl;
   _MyProfileData._() : super._();
@@ -41,21 +41,21 @@ abstract class _MyProfileData extends MyProfileData {
 
 /// @nodoc
 class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
-  static const ProfileUpdateState _profileUpdateStateDefaultValue = ProfileUpdateIdle();
+  static const UpdateState _updateStateDefaultValue = UpdateIdle();
   
   _$MyProfileDataImpl({
-    this.profileUpdateState = _profileUpdateStateDefaultValue,
+    this.updateState = _updateStateDefaultValue,
     this.profile,
   }) : super._();
 
   @override
-  final ProfileUpdateState profileUpdateState;
+  final UpdateState updateState;
   @override
   final ProfileEntry? profile;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MyProfileData(profileUpdateState: $profileUpdateState, profile: $profile)';
+    return 'MyProfileData(updateState: $updateState, profile: $profile)';
   }
 
   @override
@@ -63,7 +63,7 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'MyProfileData'))
-      ..add(DiagnosticsProperty('profileUpdateState', profileUpdateState))
+      ..add(DiagnosticsProperty('updateState', updateState))
       ..add(DiagnosticsProperty('profile', profile));
   }
 
@@ -72,8 +72,8 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
     return identical(this, other) ||
       (other.runtimeType == runtimeType &&
         other is _$MyProfileDataImpl &&
-        (identical(other.profileUpdateState, profileUpdateState) ||
-          other.profileUpdateState == profileUpdateState) &&
+        (identical(other.updateState, updateState) ||
+          other.updateState == updateState) &&
         (identical(other.profile, profile) ||
           other.profile == profile)
     );
@@ -82,16 +82,16 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    profileUpdateState,
+    updateState,
     profile,
   );
 
   @override
   MyProfileData copyWith({
-    Object? profileUpdateState,
+    Object? updateState,
     Object? profile = _detectDefaultValueInCopyWith,
   }) => _$MyProfileDataImpl(
-    profileUpdateState: (profileUpdateState ?? this.profileUpdateState) as ProfileUpdateState,
+    updateState: (updateState ?? this.updateState) as UpdateState,
     profile: (profile == _detectDefaultValueInCopyWith ? this.profile : profile) as ProfileEntry?,
   );
 }

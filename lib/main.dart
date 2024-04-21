@@ -30,6 +30,7 @@ import 'package:pihka_frontend/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/logic/media/select_content.dart';
 import 'package:pihka_frontend/logic/profile/attributes.dart';
 import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
+import 'package:pihka_frontend/logic/profile/edit_profile_filtering_settings.dart';
 import 'package:pihka_frontend/logic/profile/location.dart';
 import 'package:pihka_frontend/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
@@ -89,6 +90,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => ViewProfileBloc()),
         BlocProvider(create: (_) => ConversationBloc()),
         BlocProvider(create: (_) => ProfileFilteringSettingsBloc()),
+        BlocProvider(create: (_) => EditProfileFilteringSettingsBloc()),
         BlocProvider(create: (_) => CurrentModerationRequestBloc()),
         BlocProvider(create: (_) => NotificationPermissionBloc()),
         BlocProvider(create: (_) => LocationBloc()),

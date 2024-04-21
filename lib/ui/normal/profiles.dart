@@ -5,6 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
+import 'package:pihka_frontend/logic/profile/edit_profile_filtering_settings.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/current_moderation_request.dart';
@@ -47,7 +48,12 @@ class ProfileView extends BottomNavigationScreen {
           },
         ),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ProfileFilteringSettingsPage()));
+          final filteringSettingsBloc = context.read<ProfileFilteringSettingsBloc>();
+          final editFilteringSettingsBloc = context.read<EditProfileFilteringSettingsBloc>();
+          Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ProfileFilteringSettingsPage(
+            profileFilteringSettingsBloc: filteringSettingsBloc,
+            editProfileFilteringSettingsBloc: editFilteringSettingsBloc,
+          )));
         },
       )
     ];
