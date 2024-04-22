@@ -2,20 +2,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:path/path.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/profile/attributes.dart';
 import 'package:pihka_frontend/logic/profile/edit_profile_filtering_settings.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/attributes.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/edit_profile_filtering_settings.dart';
-import 'package:pihka_frontend/model/freezed/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/ui/normal/profiles/edit_profile_attribute_filter.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
-import 'package:pihka_frontend/ui_utils/dialog.dart';
 
 class ProfileFilteringSettingsPage extends StatefulWidget {
   final ProfileFilteringSettingsBloc profileFilteringSettingsBloc;
@@ -197,7 +194,7 @@ class AttributeFilterInfo implements AttributeInfoProvider {
 
   @override
   List<AttributeValue> sortedSelectedValues() {
-    return attributeAndValue.sortedSelectedValues();
+    return attributeAndValue.sortedSelectedValuesWithSettings(filterValues: true);
   }
 
   @override

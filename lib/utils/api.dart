@@ -65,3 +65,10 @@ extension ModerationRequestContentExtensions on ModerationRequestContent {
     );
   }
 }
+
+extension AttributeExtensions on Attribute {
+  bool isBitflagAttributeWhenFiltering() {
+    return mode == AttributeMode.selectMultipleFilterMultiple ||
+      mode == AttributeMode.selectSingleFilterMultiple;
+  }
+}

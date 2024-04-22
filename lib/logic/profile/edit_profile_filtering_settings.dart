@@ -4,6 +4,7 @@ import "package:openapi/api.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/model/freezed/logic/profile/edit_profile_filtering_settings.dart";
 import "package:pihka_frontend/utils.dart";
+import "package:pihka_frontend/utils/api.dart";
 import "package:pihka_frontend/utils/immutable_list.dart";
 
 sealed class EditProfileFilteringSettingsEvent {}
@@ -18,8 +19,9 @@ class SetFavoriteProfilesFilter extends EditProfileFilteringSettingsEvent {
   SetFavoriteProfilesFilter(this.value);
 }
 class SetAttributeFilterValue extends EditProfileFilteringSettingsEvent {
+  final Attribute a;
   final ProfileAttributeValueUpdate value;
-  SetAttributeFilterValue(this.value);
+  SetAttributeFilterValue(this.a, this.value);
 }
 class SetMatchWithEmpty extends EditProfileFilteringSettingsEvent {
   final Attribute a;
@@ -43,7 +45,7 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
     on<SetAttributeFilterValue>((data, emit) async {
       final newAttributes = updateAttributesFiltersList(
         state.attributeFilters,
-        data.value.id,
+        data.a,
         data.value,
         null,
       );
@@ -52,7 +54,7 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
     on<SetMatchWithEmpty>((data, emit) async {
       final newAttributes = updateAttributesFiltersList(
         state.attributeFilters,
-        data.a.id,
+        data.a,
         null,
         data.value,
       );
@@ -62,23 +64,21 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
 
   UnmodifiableList<ProfileAttributeFilterValueUpdate> updateAttributesFiltersList(
     Iterable<ProfileAttributeFilterValueUpdate> current,
-    int attributeId,
+    Attribute attribute,
     ProfileAttributeValueUpdate? newFilterValue,
     bool? acceptMissingAttribute,
   ) {
       final useOldFilterValue = newFilterValue == null;
-      final int? part1 = newFilterValue?.valuePart1;
-      final int? part2 = newFilterValue?.valuePart2;
 
       final newAttributes = <ProfileAttributeFilterValueUpdate>[];
       var found = false;
       for (final a in state.attributeFilters) {
-        if (a.id == attributeId) {
-          newAttributes.add(ProfileAttributeFilterValueUpdate(
-            id: attributeId,
-            acceptMissingAttribute: acceptMissingAttribute ?? a.acceptMissingAttribute,
-            filterPart1: useOldFilterValue ? a.filterPart1 : part1,
-            filterPart2: useOldFilterValue ? a.filterPart2 : part2,
+        if (a.id == attribute.id) {
+          newAttributes.add(createFilterValueUpdate(
+            a: attribute,
+            acceptMissingAttribute: acceptMissingAttribute ?? (a.acceptMissingAttribute ?? false),
+            filterPart1: useOldFilterValue ? a.filterPart1 : newFilterValue.valuePart1,
+            filterPart2: useOldFilterValue ? a.filterPart2 : newFilterValue.valuePart2,
           ));
           found = true;
         } else {
@@ -86,14 +86,40 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
         }
       }
       if (!found) {
-        newAttributes.add(ProfileAttributeFilterValueUpdate(
-            id: attributeId,
+        newAttributes.add(createFilterValueUpdate(
+            a: attribute,
             acceptMissingAttribute: acceptMissingAttribute ?? false,
-            filterPart1: useOldFilterValue ? null : part1,
-            filterPart2: useOldFilterValue ? null : part2,
+            filterPart1: useOldFilterValue ? null : newFilterValue.valuePart1,
+            filterPart2: useOldFilterValue ? null : newFilterValue.valuePart2,
         ));
       }
 
     return UnmodifiableList(newAttributes);
   }
+}
+
+
+ProfileAttributeFilterValueUpdate createFilterValueUpdate({
+  required Attribute a,
+  required bool acceptMissingAttribute,
+  int? filterPart1,
+  int? filterPart2,
+}) {
+  final value = ProfileAttributeFilterValueUpdate(
+    id: a.id,
+    filterPart1: filterPart1,
+    filterPart2: filterPart2,
+    acceptMissingAttribute: acceptMissingAttribute,
+  );
+
+  // Disable filter if it is empty
+  final bitflagFilterDisabled = a.isBitflagAttributeWhenFiltering() && (filterPart1 == 0 || filterPart1 == null) && !acceptMissingAttribute;
+  final valueFilterDisabled = !a.isBitflagAttributeWhenFiltering() && filterPart1 == null && !acceptMissingAttribute;
+  if (bitflagFilterDisabled || valueFilterDisabled) {
+    value.acceptMissingAttribute = null;
+    value.filterPart1 = null;
+    value.filterPart2 = null;
+  }
+
+  return value;
 }

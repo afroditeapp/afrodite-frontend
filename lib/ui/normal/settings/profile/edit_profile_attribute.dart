@@ -38,7 +38,7 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
     final currentAttributes = context.read<EditMyProfileBloc>().state.attributes;
 
     for (final a in currentAttributes) {
-      if (a.id == widget.a.attribute.id && widget.a.attribute.required_ && a.valuePart1 == 0) {
+      if (a.id == widget.a.attribute.id && widget.a.attribute.required_ && (a.valuePart1 == 0 || a.valuePart1 == null)) {
         showSnackBar(context.strings.edit_attribute_value_screen_one_value_must_be_selected);
         return;
       }
@@ -221,36 +221,37 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: attributeToWidget(context, widget.a.attribute),
+      children: attributeToWidget(context),
     );
   }
 
-  List<Widget> attributeToWidget(BuildContext context, Attribute attribute) {
-    final List<Widget> widgetList;
-    if (attribute.mode == AttributeMode.selectSingleFilterSingle ||
-      attribute.mode == AttributeMode.selectSingleFilterMultiple) {
-      final valueList = attribute.values.toList();
-      reorderValues(valueList, attribute.valueOrder);
-      widgetList = widgetsForSelectSingleAttribute(
+  List<Widget> attributeToWidget(BuildContext context) {
+    final attribute = widget.a.attribute;
+
+    final valueList = attribute.values.toList();
+    reorderValues(valueList, attribute.valueOrder);
+
+    bool showSingleSelect = attribute.mode == AttributeMode.selectSingleFilterSingle ||
+      (!widget.a.isFilter && attribute.mode == AttributeMode.selectSingleFilterMultiple);
+
+    bool showMultipleSelect = attribute.mode == AttributeMode.selectMultipleFilterMultiple ||
+      (widget.a.isFilter && attribute.mode == AttributeMode.selectSingleFilterMultiple);
+
+    if (showSingleSelect) {
+      return widgetsForSelectSingleAttribute(
         context,
         attribute,
         valueList,
       );
-    } else if (attribute.mode == AttributeMode.selectMultipleFilterMultiple) {
-      final valueList = attribute.values.toList();
-      reorderValues(valueList, attribute.valueOrder);
-      widgetList = widgetsForSelectMultipleAttribute(
+    } else if (showMultipleSelect) {
+      return widgetsForSelectMultipleAttribute(
         context,
         valueList,
         attribute.translations,
       );
     } else {
-      widgetList = [];
+      return [];
     }
-
-    return [
-      ...widgetList,
-    ];
   }
 
   List<Widget> widgetsForSelectSingleAttribute(

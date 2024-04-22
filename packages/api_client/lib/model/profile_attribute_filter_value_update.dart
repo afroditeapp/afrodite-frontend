@@ -13,13 +13,14 @@ part of openapi.api;
 class ProfileAttributeFilterValueUpdate {
   /// Returns a new [ProfileAttributeFilterValueUpdate] instance.
   ProfileAttributeFilterValueUpdate({
-    required this.acceptMissingAttribute,
+    this.acceptMissingAttribute,
     this.filterPart1,
     this.filterPart2,
     required this.id,
   });
 
-  bool acceptMissingAttribute;
+  /// Should missing attribute be accepted.  Setting this to `None` disables the filter.
+  bool? acceptMissingAttribute;
 
   /// Bitflags value or top level attribute value ID filter.
   ///
@@ -46,7 +47,7 @@ class ProfileAttributeFilterValueUpdate {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (acceptMissingAttribute.hashCode) +
+    (acceptMissingAttribute == null ? 0 : acceptMissingAttribute!.hashCode) +
     (filterPart1 == null ? 0 : filterPart1!.hashCode) +
     (filterPart2 == null ? 0 : filterPart2!.hashCode) +
     (id.hashCode);
@@ -56,7 +57,11 @@ class ProfileAttributeFilterValueUpdate {
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.acceptMissingAttribute != null) {
       json[r'accept_missing_attribute'] = this.acceptMissingAttribute;
+    } else {
+      json[r'accept_missing_attribute'] = null;
+    }
     if (this.filterPart1 != null) {
       json[r'filter_part1'] = this.filterPart1;
     } else {
@@ -90,7 +95,7 @@ class ProfileAttributeFilterValueUpdate {
       }());
 
       return ProfileAttributeFilterValueUpdate(
-        acceptMissingAttribute: mapValueOfType<bool>(json, r'accept_missing_attribute')!,
+        acceptMissingAttribute: mapValueOfType<bool>(json, r'accept_missing_attribute'),
         filterPart1: mapValueOfType<int>(json, r'filter_part1'),
         filterPart2: mapValueOfType<int>(json, r'filter_part2'),
         id: mapValueOfType<int>(json, r'id')!,
@@ -143,7 +148,6 @@ class ProfileAttributeFilterValueUpdate {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'accept_missing_attribute',
     'id',
   };
 }

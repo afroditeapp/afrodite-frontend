@@ -80,7 +80,7 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
             a: widget.a,
             valueFilter: filterValue,
             onNewAttributeValue: (value) =>
-              context.read<EditProfileFilteringSettingsBloc>().add(SetAttributeFilterValue(value))
+              context.read<EditProfileFilteringSettingsBloc>().add(SetAttributeFilterValue(widget.a.attribute, value))
           ),
         ],
       ),

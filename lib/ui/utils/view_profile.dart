@@ -398,7 +398,10 @@ class AttributeAndValue implements AttributeInfoProvider {
   }
 
   @override
-  List<AttributeValue> sortedSelectedValues() {
+  List<AttributeValue> sortedSelectedValues() =>
+    sortedSelectedValuesWithSettings(filterValues: false);
+
+  List<AttributeValue> sortedSelectedValuesWithSettings({required bool filterValues}) {
     final List<AttributeValue> result = [];
 
     final value = this.value;
@@ -406,7 +409,13 @@ class AttributeAndValue implements AttributeInfoProvider {
       return result;
     }
 
-    if (attribute.mode == AttributeMode.selectSingleFilterSingle || attribute.mode == AttributeMode.selectSingleFilterMultiple) {
+    bool showSingleSelect = attribute.mode == AttributeMode.selectSingleFilterSingle ||
+      (!filterValues && attribute.mode == AttributeMode.selectSingleFilterMultiple);
+
+    bool showMultipleSelect = attribute.mode == AttributeMode.selectMultipleFilterMultiple ||
+      (filterValues && attribute.mode == AttributeMode.selectSingleFilterMultiple);
+
+    if (showSingleSelect) {
       for (final v in attribute.values) {
         if (v.id != value.valuePart1) {
           continue;
@@ -427,7 +436,7 @@ class AttributeAndValue implements AttributeInfoProvider {
           }
         }
       }
-    } else if (attribute.mode == AttributeMode.selectMultipleFilterMultiple) {
+    } else if (showMultipleSelect) {
       for (final bitflag in attribute.values) {
         if (bitflag.id & value.valuePart1 != 0) {
           result.add(bitflag);
