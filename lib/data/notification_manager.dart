@@ -7,8 +7,7 @@ import 'package:pihka_frontend/utils.dart';
 
 var log = Logger("NotificationManager");
 
-// TODO(prod): Check local notifications README and do required ProGuard
-// config changes.
+// TODO(prod): Check local notifications README
 
 class NotificationManager extends AppSingleton {
   NotificationManager._private();
