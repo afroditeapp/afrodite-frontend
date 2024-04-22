@@ -11,6 +11,7 @@ import 'package:pihka_frontend/model/freezed/logic/profile/attributes.dart';
 import 'package:pihka_frontend/ui/initial_setup/profile_attributes.dart';
 
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
+import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/loading_dialog.dart';
@@ -311,7 +312,7 @@ class AttributeList extends StatelessWidget {
 }
 
 class AttributeValuesArea extends StatelessWidget {
-  final AttributeAndValue a;
+  final AttributeInfoProvider a;
   const AttributeValuesArea({required this.a, super.key});
 
   @override
@@ -319,10 +320,16 @@ class AttributeValuesArea extends StatelessWidget {
     return attributeValuesArea(context, a);
   }
 
-  Widget attributeValuesArea(BuildContext c, AttributeAndValue a) {
-    final values = a.sortedSelectedValues();
+  Widget attributeValuesArea(BuildContext c, AttributeInfoProvider a) {
     final List<Widget> valueWidgets = [];
-    for (final v in values) {
+      for (final v in a.extraValues(c)) {
+      final w = Chip(
+        label: Text(v),
+      );
+      valueWidgets.add(w);
+    }
+
+    for (final v in a.sortedSelectedValues()) {
       final text = attributeValueName(c, v, a.attribute.translations);
       final iconData = iconResourceToMaterialIcon(v.icon);
       final Widget? avatar;
@@ -339,7 +346,11 @@ class AttributeValuesArea extends StatelessWidget {
     }
 
     if (valueWidgets.isEmpty) {
-      return Text(c.strings.generic_empty);
+      if (a.isFilter) {
+        return Text(c.strings.generic_disabled);
+      } else {
+        return Text(c.strings.generic_empty);
+      }
     } else {
       return Wrap(
         spacing: 8,
@@ -349,8 +360,10 @@ class AttributeValuesArea extends StatelessWidget {
   }
 }
 
-class AttributeAndValue {
+class AttributeAndValue implements AttributeInfoProvider {
+  @override
   final Attribute attribute;
+  @override
   final ProfileAttributeValue? value;
   const AttributeAndValue({required this.attribute, required this.value});
 
@@ -379,10 +392,12 @@ class AttributeAndValue {
     return result;
   }
 
+  @override
   String title(BuildContext context) {
     return attributeName(context, attribute);
   }
 
+  @override
   List<AttributeValue> sortedSelectedValues() {
     final List<AttributeValue> result = [];
 
@@ -424,4 +439,12 @@ class AttributeAndValue {
 
     return result;
   }
+
+  @override
+  List<String> extraValues(BuildContext c) {
+    return [];
+  }
+
+  @override
+  bool get isFilter => false;
 }

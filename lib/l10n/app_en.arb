@@ -117,6 +117,14 @@
   "@demo_account_screen_no_accounts_available": {
     "description": "Text displayed when available accounts list is empty"
   },
+  "edit_attribute_filter_value_screen_search_placeholder_text": "Search…",
+  "@edit_attribute_filter_value_screen_search_placeholder_text": {
+    "description": "Attribute value search box placeholder text"
+  },
+  "edit_attribute_filter_value_screen_title": "Edit filter",
+  "@edit_attribute_filter_value_screen_title": {
+    "description": "Title for edit attribute filter screen"
+  },
   "edit_attribute_value_screen_one_value_must_be_selected": "At least one selection is required",
   "@edit_attribute_value_screen_one_value_must_be_selected": {
     "description": "Snackbar text for notifying that one at least one option must be selected"
@@ -152,6 +160,10 @@
   "generic_continue": "Continue",
   "@generic_continue": {
     "description": "Generic continue text"
+  },
+  "generic_disabled": "Disabled",
+  "@generic_disabled": {
+    "description": "Generic disabled text"
   },
   "generic_empty": "Empty",
   "@generic_empty": {

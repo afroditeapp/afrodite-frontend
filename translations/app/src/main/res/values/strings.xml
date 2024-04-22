@@ -11,6 +11,7 @@
     <!-- Generic texts -->
     <string name="generic_error" description="Generic error message">Error</string>
     <string name="generic_empty" description="Generic empty text">Empty</string>
+    <string name="generic_disabled" description="Generic disabled text">Disabled</string>
     <string name="generic_cancel" description="Generic cancel text">Cancel</string>
     <string name="generic_close" description="Generic close text">Close</string>
     <string name="generic_ok" description="Generic OK text">OK</string>
@@ -182,6 +183,10 @@
     <string name="profile_filtering_settings_screen_title" description="Title for profile filtering settings screen">Filtering settings</string>
     <string name="profile_filtering_settings_screen_favorite_profile_filter" description="Title for favorite profile filter">Favorite profile</string>
     <string name="profile_filtering_settings_screen_updating_filters_failed" description="Snackbar text for notifying about failed profile filters update">Updating profile filters failed</string>
+
+    <!-- Edit profile attribute filter value screen -->
+    <string name="edit_attribute_filter_value_screen_title" description="Title for edit attribute filter screen">Edit filter</string>
+    <string name="edit_attribute_filter_value_screen_search_placeholder_text" description="Attribute value search box placeholder text">Search…</string>
 
     <!-- Likes -->
     <string name="pageLikesTitle" description="Title for likes page">Likes</string>

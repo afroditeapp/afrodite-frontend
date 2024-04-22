@@ -200,7 +200,7 @@ class EditAttributes extends StatelessWidget {
   List<Widget> attributeTiles(
     BuildContext context,
     ProfileAttributes availableAttributes,
-    UnmodifiableList<ProfileAttributeValueUpdate> myAttributes,
+    Iterable<ProfileAttributeValueUpdate> myAttributes,
   ) {
     final List<Widget> attributeWidgets = <Widget>[];
     final convertedAttributes = myAttributes.map((e) {
@@ -222,7 +222,17 @@ class EditAttributes extends StatelessWidget {
       includeNullAttributes: true,
     );
     for (final a in l) {
-      attributeWidgets.add(attributeWidget(context, a));
+      attributeWidgets.add(
+        EditAttributeRow(
+          a: a,
+          onStartEditor: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(builder: (_) => EditProfileAttributeScreen(a: a))
+            );
+          }
+        )
+      );
       attributeWidgets.add(const Divider());
     }
 
@@ -232,12 +242,45 @@ class EditAttributes extends StatelessWidget {
 
     return attributeWidgets;
   }
+}
 
-  Widget attributeWidget(BuildContext context, AttributeAndValue a) {
+class EditAttributeRow extends StatelessWidget {
+  final AttributeInfoProvider a;
+  final void Function() onStartEditor;
+  final bool isEnabled;
+  const EditAttributeRow({
+    required this.a,
+    required this.onStartEditor,
+    this.isEnabled = true,
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
     final attributeText = a.title(context);
     final icon = iconResourceToMaterialIcon(a.attribute.icon);
     if (icon == null) {
       return const SizedBox.shrink();
+    }
+
+    final void Function()? infoButtonCallback;
+    final void Function()? startEditorCallback;
+    final Widget valueWidget;
+    final TextStyle? titleStyle;
+    if (isEnabled) {
+      infoButtonCallback = () => ();
+      startEditorCallback = onStartEditor;
+      valueWidget = AttributeValuesArea(a: a);
+      titleStyle = Theme.of(context).textTheme.bodyLarge;
+    } else {
+      infoButtonCallback = null;
+      startEditorCallback = null;
+      final disabledTextColor = Theme.of(context).disabledColor;
+      valueWidget = Text(
+        context.strings.generic_disabled,
+        style: TextStyle(color: disabledTextColor),
+      );
+      titleStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(color: disabledTextColor);
     }
 
     final attributeWidget = Row(
@@ -250,7 +293,7 @@ class EditAttributes extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.only(left: COMMON_SCREEN_EDGE_PADDING),
-                  child: Text(attributeText, style: Theme.of(context).textTheme.bodyLarge),
+                  child: Text(attributeText, style: titleStyle),
                 ),
               ),
               const Padding(padding: EdgeInsets.all(4)),
@@ -260,12 +303,12 @@ class EditAttributes extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 4.0),
                     child: IconButton(
                       icon: Icon(icon),
-                      onPressed: () => (),
+                      onPressed: infoButtonCallback,
                       tooltip: attributeText,
                     ),
                   ),
                   const Padding(padding: EdgeInsets.only(right: 8)),
-                  Expanded(child: AttributeValuesArea(a: a)),
+                  Expanded(child: valueWidget),
                 ],
               ),
             ],
@@ -275,23 +318,27 @@ class EditAttributes extends StatelessWidget {
           padding: const EdgeInsets.only(right: 4.0),
           child: IconButton(
             icon: const Icon(Icons.edit_rounded),
-            // color: buttonColor,
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute<void>(builder: (_) => EditProfileAttributeScreen(a: a))
-            ),
+            onPressed: startEditorCallback,
           ),
         ),
       ],
     );
 
     return InkWell(
-      onTap: () =>
-        Navigator.push(
-          context,
-          MaterialPageRoute<void>(builder: (_) => EditProfileAttributeScreen(a: a))
-        ),
+      onTap: startEditorCallback,
       child: attributeWidget,
     );
   }
+}
+
+abstract class AttributeInfoProvider {
+  Attribute get attribute;
+  ProfileAttributeValue? get value;
+
+  String title(BuildContext context);
+  List<AttributeValue> sortedSelectedValues();
+
+  List<String> extraValues(BuildContext context);
+
+  bool get isFilter;
 }

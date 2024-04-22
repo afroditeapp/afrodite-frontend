@@ -4,22 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/media/profile_pictures.dart';
-import 'package:pihka_frontend/logic/profile/attributes.dart';
 import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
-import 'package:pihka_frontend/logic/profile/my_profile.dart';
-import 'package:pihka_frontend/model/freezed/logic/profile/attributes.dart';
-import 'package:pihka_frontend/model/freezed/logic/profile/edit_my_profile.dart';
-import 'package:pihka_frontend/model/freezed/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/ui/initial_setup/profile_attributes.dart';
-import 'package:pihka_frontend/ui/initial_setup/profile_basic_info.dart';
-import 'package:pihka_frontend/ui/initial_setup/profile_pictures.dart';
+import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
+import 'package:pihka_frontend/ui_utils/app_bar/search.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
-import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
-import 'package:pihka_frontend/utils/age.dart';
-import 'package:pihka_frontend/utils/immutable_list.dart';
 
 class EditProfileAttributeScreen extends StatefulWidget {
   final AttributeAndValue a;
@@ -34,13 +25,13 @@ class EditProfileAttributeScreen extends StatefulWidget {
 
 class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen> {
   bool searchPossible = false;
-  bool searchActive = false;
-  TextEditingController searchController = TextEditingController();
+  late AppBarSearchController searchController;
 
   @override
   void initState() {
     super.initState();
     searchPossible = widget.a.attribute.mode == AttributeMode.selectSingleFilterSingle;
+    searchController = AppBarSearchController(onChanged: () => setState(() {}));
   }
 
   void validateAndSaveData(BuildContext context) {
@@ -58,41 +49,6 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> actions;
-    final Widget title;
-    if (searchPossible) {
-      actions = [
-        IconButton(
-          icon: Icon(searchActive ? Icons.close : Icons.search),
-          onPressed: () {
-            setState(() {
-              if (searchActive) {
-                searchController.clear();
-              }
-              searchActive = !searchActive;
-            });
-          },
-        ),
-      ];
-      if (searchActive) {
-        title = TextField(
-          controller: searchController,
-          autofocus: true,
-          decoration: InputDecoration(
-            hintText: context.strings.edit_attribute_value_screen_search_placeholder_text,
-          ),
-          onChanged: (value) {
-            setState(() {});
-          },
-        );
-      } else {
-        title = Text(context.strings.edit_profile_screen_title);
-      }
-    } else {
-      actions = [];
-      title = Text(context.strings.edit_profile_screen_title);
-    }
-
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
@@ -102,9 +58,11 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
         validateAndSaveData(context);
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: title,
-          actions: actions,
+        appBar: AppBarWithSearch(
+          controller: searchController,
+          searchPossible: searchPossible,
+          title: Text(context.strings.edit_profile_screen_title),
+          searchHintText: context.strings.edit_attribute_value_screen_search_placeholder_text,
         ),
         body: edit(context),
       ),
@@ -113,8 +71,8 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
 
   Widget edit(BuildContext context) {
     final String? filterValue;
-    if (searchActive) {
-      final processedFilter = searchController.text.trim().toLowerCase();
+    if (searchController.searchActive) {
+      final processedFilter = searchController.searchController.text.trim().toLowerCase();
       if (processedFilter.isEmpty) {
         filterValue = null;
       } else {
@@ -126,7 +84,9 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
 
     return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          EditAttributeTitle(a: widget.a.attribute),
           EditSingleAttribute(
             a: widget.a,
             valueFilter: filterValue,
@@ -141,9 +101,10 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
 }
 
 class EditSingleAttribute extends StatefulWidget {
-  final AttributeAndValue a;
+  final AttributeInfoProvider a;
   final String? valueFilter;
   final void Function(ProfileAttributeValueUpdate) onNewAttributeValue;
+
   const EditSingleAttribute({
     required this.a,
     required this.valueFilter,
@@ -288,37 +249,8 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
     }
 
     return [
-      questionTitle(context, attribute),
       ...widgetList,
     ];
-  }
-
-  Widget questionTitle(BuildContext context, Attribute attribute) {
-    final text = Text(
-      attributeName(context, attribute),
-      style: Theme.of(context).textTheme.bodyLarge,
-    );
-    // Title icon is disabled
-    // final IconData? icon = iconResourceToMaterialIcon(attribute.icon);
-    const IconData? icon = null;
-
-    final Widget title;
-    if (icon != null) {
-      title = Row(
-        children: [
-          Icon(icon),
-          const Padding(padding: EdgeInsets.all(8.0)),
-          text,
-        ],
-      );
-    } else {
-      title = text;
-    }
-
-    return Padding(
-      padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
-      child: title
-    );
   }
 
   List<Widget> widgetsForSelectSingleAttribute(
@@ -460,6 +392,7 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
 
       final checkbox = CheckboxListTile(
         title: title,
+        controlAffinity: ListTileControlAffinity.leading,
         value: attributeValueStateForBitflagAttributes(value),
         onChanged: (bitflagValue) {
           setState(() {
@@ -471,5 +404,44 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
       widgets.add(checkbox);
     }
     return widgets;
+  }
+}
+
+
+class EditAttributeTitle extends StatelessWidget {
+  final Attribute a;
+  const EditAttributeTitle({required this.a, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return questionTitle(context, a);
+  }
+
+  Widget questionTitle(BuildContext context, Attribute attribute) {
+    final text = Text(
+      attributeName(context, attribute),
+      style: Theme.of(context).textTheme.bodyLarge,
+    );
+    // Title icon is disabled
+    // final IconData? icon = iconResourceToMaterialIcon(attribute.icon);
+    const IconData? icon = null;
+
+    final Widget title;
+    if (icon != null) {
+      title = Row(
+        children: [
+          Icon(icon),
+          const Padding(padding: EdgeInsets.all(8.0)),
+          text,
+        ],
+      );
+    } else {
+      title = text;
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
+      child: title
+    );
   }
 }
