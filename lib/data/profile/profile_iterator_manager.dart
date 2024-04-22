@@ -11,7 +11,8 @@ sealed class ProfileIteratorMode {}
 class ModeFavorites extends ProfileIteratorMode {}
 class ModePublicProfiles extends ProfileIteratorMode {
   final bool clearDatabase;
-  ModePublicProfiles({required this.clearDatabase});
+  final bool waitConnection;
+  ModePublicProfiles({required this.clearDatabase, this.waitConnection = false});
 }
 
 class ProfileIteratorManager {
@@ -26,7 +27,7 @@ class ProfileIteratorManager {
   void resetServerSideIteratorWhenItIsNeededNextTime() {
     if (_currentIterator is OnlineIterator) {
       _pendingServerSideIteratorReset = false;
-      _currentIterator = OnlineIterator(firstIterationAfterLogin: true);
+      _currentIterator = OnlineIterator(resetServerIterator: true);
     } else {
       _pendingServerSideIteratorReset = true;
     }
@@ -40,14 +41,22 @@ class ProfileIteratorManager {
       case ModePublicProfiles(): {
         if (_pendingServerSideIteratorReset) {
           await db.profileAction((db) => db.setProfileGridStatusList(null, false, clear: true));
-          _currentIterator = OnlineIterator(firstIterationAfterLogin: true);
+          _currentIterator = OnlineIterator(
+            resetServerIterator: true,
+            waitConnectionOnce: mode.waitConnection,
+          );
           _pendingServerSideIteratorReset = false;
         } else if (mode.clearDatabase) {
           await db.profileAction((db) => db.setProfileGridStatusList(null, false, clear: true));
-          _currentIterator = OnlineIterator(firstIterationAfterLogin: mode.clearDatabase);
+          _currentIterator = OnlineIterator(
+            resetServerIterator: true,
+            waitConnectionOnce: mode.waitConnection,
+          );
         } else {
           if (_currentMode is ModeFavorites) {
-            _currentIterator = OnlineIterator();
+            _currentIterator = OnlineIterator(
+              waitConnectionOnce: mode.waitConnection,
+            );
           } else {
             _currentIterator.reset();
           }

@@ -53,6 +53,8 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
           failureDetected = true;
         }
 
+        await profile.resetMainProfileIteratorAfterModifyingFilters();
+
         if (failureDetected) {
           showSnackBar(R.strings.profile_filtering_settings_screen_updating_filters_failed);
         }

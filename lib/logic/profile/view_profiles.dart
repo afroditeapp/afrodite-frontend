@@ -142,6 +142,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData?> with Act
         case ProfileNowPrivate() ||
           ProfileUnblocked() ||
           ConversationChanged() ||
+          ReloadMainProfileView() ||
           ProfileFavoriteStatusChange(): {}
       }
     });

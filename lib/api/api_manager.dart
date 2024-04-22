@@ -443,6 +443,15 @@ class ApiManager extends AppSingleton {
     return await ApiWrapper(_mediaApiProvider().commonAdmin).requestAction(action);
   }
 
+  /// Returns true if connected, false if not connected within the timeout.
+  Future<bool> tryWaitUntilConnected({required int waitTimeoutSeconds}) async {
+    return await Future.any([
+      Future.delayed(Duration(seconds: waitTimeoutSeconds), () => false),
+      state
+        .firstWhere((element) => element == ApiManagerState.connected)
+        .then((value) => true),
+    ]);
+  }
 }
 
 String toWebSocketUri(String baseUrl) {

@@ -67,7 +67,9 @@ class _ProfileViewState extends State<ProfileView> {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, data) {
         if (data.visibility == ProfileVisibility.public) {
-          return const ProfileGrid();
+          return ProfileGrid(
+            filteringSettingsBloc: context.read<ProfileFilteringSettingsBloc>(),
+          );
         } else if (data.visibility == ProfileVisibility.pendingPublic) {
           return LayoutBuilder(
             builder: (context, constraints) {

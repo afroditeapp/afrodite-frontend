@@ -15,18 +15,19 @@ final log = Logger("OnlineIterator");
 class OnlineIterator extends IteratorType {
   int currentIndex = 0;
   DatabaseIterator? databaseIterator;
-  bool firstIterationAfterLogin;
+  bool resetServerIterator;
+  bool waitConnectionOnce;
   final ApiManager api = ApiManager.getInstance();
   final DatabaseManager db = DatabaseManager.getInstance();
   final downloader = ProfileEntryDownloader();
 
-  /// If [firstIterationAfterLogin] is true, the iterator will reset the
+  /// If [resetServerIterator] is true, the iterator will reset the
   /// server iterator to the beginning.
-  OnlineIterator({this.firstIterationAfterLogin = false});
+  OnlineIterator({this.resetServerIterator = false, this.waitConnectionOnce = false});
 
   @override
   void reset() {
-    if (!firstIterationAfterLogin) {
+    if (!resetServerIterator) {
       /// Reset to use database iterator and then continue online profile
       /// iterating.
       databaseIterator = DatabaseIterator();
@@ -35,9 +36,15 @@ class OnlineIterator extends IteratorType {
 
   @override
   Future<List<ProfileEntry>> nextList() async {
-    if (firstIterationAfterLogin) {
+    if (resetServerIterator) {
+      if (waitConnectionOnce) {
+        if (!await api.tryWaitUntilConnected(waitTimeoutSeconds: 5)) {
+          log.warning("Connection waiting timeout");
+        }
+      }
       await ApiManager.getInstance().profileAction((api) => api.postResetProfilePaging());
-      firstIterationAfterLogin = false;
+      waitConnectionOnce = false;
+      resetServerIterator = false;
     }
 
     // Handle case where iterator has been reseted in the middle

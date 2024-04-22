@@ -103,6 +103,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData?> with A
           LikesChanged() ||
           ConversationChanged() ||
           MatchesChanged() ||
+          ReloadMainProfileView() ||
           ProfileFavoriteStatusChange(): {}
       }
     });

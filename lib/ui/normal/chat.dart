@@ -59,6 +59,7 @@ class _ChatViewState extends State<ChatView> {
         ProfileUnblocked() ||
         ProfileFavoriteStatusChange() ||
         ConversationChanged() ||
+        ReloadMainProfileView() ||
         LikesChanged(): {}
     }
   }

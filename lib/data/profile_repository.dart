@@ -49,16 +49,14 @@ class ProfileRepository extends DataRepository {
 
   @override
   Future<void> init() async {
-    final showOnlyFavorites = await getFilterFavoriteProfilesValue();
-    await changeProfileFilteringSettings(showOnlyFavorites);
+    // Reset profile iterator
+    await resetMainProfileIteratorAfterModifyingFilters(waitConnection: true);
   }
 
   @override
   Future<void> onLogin() async {
     // Reset profile iterator
-    await mainProfilesViewIterator.reset(ModePublicProfiles(
-      clearDatabase: true
-    ));
+    await resetMainProfileIteratorAfterModifyingFilters();
 
     // TODO(prod): reset sync versions to "force sync"
 
@@ -128,6 +126,7 @@ class ProfileRepository extends DataRepository {
         ),
       );
       mainProfilesViewIterator.resetServerSideIteratorWhenItIsNeededNextTime();
+      sendProfileChange(ReloadMainProfileView());
     }
     return requestSuccessful;
   }
@@ -257,13 +256,6 @@ class ProfileRepository extends DataRepository {
     await db.accountAction(
       (db) => db.updateProfileFilterFavorites(showOnlyFavorites),
     );
-    if (showOnlyFavorites) {
-      await mainProfilesViewIterator.reset(ModeFavorites());
-    } else {
-      await mainProfilesViewIterator.reset(ModePublicProfiles(
-        clearDatabase: false
-      ));
-    }
   }
 
   Future<bool> getFilterFavoriteProfilesValue() async {
@@ -347,6 +339,19 @@ class ProfileRepository extends DataRepository {
         return Err(());
     }
   }
+
+  Future<void> resetMainProfileIteratorAfterModifyingFilters({bool waitConnection = false}) async {
+    final showOnlyFavorites = await getFilterFavoriteProfilesValue();
+    if (showOnlyFavorites) {
+      await mainProfilesViewIterator.reset(ModeFavorites());
+    } else {
+      await mainProfilesViewIterator.reset(ModePublicProfiles(
+        clearDatabase: true,
+        waitConnection: waitConnection,
+      ));
+    }
+    sendProfileChange(ReloadMainProfileView());
+  }
 }
 
 sealed class GetProfileResult {}
@@ -388,6 +393,7 @@ class ProfileFavoriteStatusChange extends ProfileChange {
   final bool isFavorite;
   ProfileFavoriteStatusChange(this.profile, this.isFavorite);
 }
+class ReloadMainProfileView extends ProfileChange {}
 
 enum ConversationChangeType {
   messageSent,

@@ -18,6 +18,6 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
   }) = _ProfileFilteringSettingsData;
 
   bool isSomeFilterEnabled() {
-    return showOnlyFavorites;
+    return showOnlyFavorites || attributeFilters?.filters.isNotEmpty == true;
   }
 }

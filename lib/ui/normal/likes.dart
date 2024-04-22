@@ -59,6 +59,7 @@ class _LikeViewState extends State<LikeView> {
       case ProfileUnblocked() ||
         ConversationChanged() ||
         MatchesChanged() ||
+        ReloadMainProfileView() ||
         ProfileFavoriteStatusChange(): {}
     }
   }

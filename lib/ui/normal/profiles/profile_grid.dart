@@ -12,6 +12,7 @@ import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
 import 'package:pihka_frontend/ui_utils/consts/corners.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
@@ -20,7 +21,8 @@ import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 var log = Logger("ProfileGrid");
 
 class ProfileGrid extends StatefulWidget {
-  const ProfileGrid({Key? key}) : super(key: key);
+  final ProfileFilteringSettingsBloc filteringSettingsBloc;
+  const ProfileGrid({required this.filteringSettingsBloc, Key? key}) : super(key: key);
 
   @override
   State<ProfileGrid> createState() => _ProfileGridState();
@@ -33,7 +35,6 @@ class _ProfileGridState extends State<ProfileGrid> {
     PagingController(firstPageKey: 0);
   int _heroUniqueIdCounter = 0;
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
-  ProfileFilteringSettingsData currentFilteringSettings = ProfileFilteringSettingsData();
 
   @override
   void initState() {
@@ -59,12 +60,16 @@ class _ProfileGridState extends State<ProfileGrid> {
       case ProfileFavoriteStatusChange(): {
         // Remove profile if favorites filter is enabled and favorite status is changed to false
         final controller = _pagingController;
-        if (controller != null && event.isFavorite == false && currentFilteringSettings.showOnlyFavorites) {
+        if (controller != null && event.isFavorite == false && widget.filteringSettingsBloc.state.showOnlyFavorites) {
           setState(() {
             controller.itemList?.removeWhere((item) => item.profile.uuid == event.profile);
           });
         }
       }
+      case ReloadMainProfileView():
+        setState(() {
+          _pagingController?.refresh();
+        });
       case ProfileUnblocked() ||
         ConversationChanged() ||
         MatchesChanged() ||
@@ -114,16 +119,7 @@ class _ProfileGridState extends State<ProfileGrid> {
         // This might be disposed after resetProfileIterator completes.
         _pagingController?.refresh();
       },
-      child: BlocListener<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-        listener: (context, data) {
-          // Filtering settings changed
-          currentFilteringSettings = data;
-          setState(() {
-            _pagingController?.refresh();
-          });
-        },
-        child: grid(context),
-      ),
+      child: grid(context),
     );
   }
 
