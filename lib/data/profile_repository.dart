@@ -50,13 +50,13 @@ class ProfileRepository extends DataRepository {
   @override
   Future<void> init() async {
     // Reset profile iterator
-    await resetMainProfileIteratorAfterModifyingFilters(waitConnection: true);
+    await resetMainProfileIterator(waitConnection: true);
   }
 
   @override
   Future<void> onLogin() async {
     // Reset profile iterator
-    await resetMainProfileIteratorAfterModifyingFilters();
+    await resetMainProfileIterator();
 
     // TODO(prod): reset sync versions to "force sync"
 
@@ -125,8 +125,7 @@ class ProfileRepository extends DataRepository {
           longitude: location.longitude,
         ),
       );
-      mainProfilesViewIterator.resetServerSideIteratorWhenItIsNeededNextTime();
-      sendProfileChange(ReloadMainProfileView());
+      await resetMainProfileIterator();
     }
     return requestSuccessful;
   }
@@ -340,7 +339,7 @@ class ProfileRepository extends DataRepository {
     }
   }
 
-  Future<void> resetMainProfileIteratorAfterModifyingFilters({bool waitConnection = false}) async {
+  Future<void> resetMainProfileIterator({bool waitConnection = false}) async {
     final showOnlyFavorites = await getFilterFavoriteProfilesValue();
     if (showOnlyFavorites) {
       await mainProfilesViewIterator.reset(ModeFavorites());

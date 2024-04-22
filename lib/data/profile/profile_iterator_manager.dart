@@ -22,16 +22,6 @@ class ProfileIteratorManager {
   ProfileIteratorMode _currentMode =
     ModePublicProfiles(clearDatabase: false);
   IteratorType _currentIterator = DatabaseIterator();
-  bool _pendingServerSideIteratorReset = false;
-
-  void resetServerSideIteratorWhenItIsNeededNextTime() {
-    if (_currentIterator is OnlineIterator) {
-      _pendingServerSideIteratorReset = false;
-      _currentIterator = OnlineIterator(resetServerIterator: true);
-    } else {
-      _pendingServerSideIteratorReset = true;
-    }
-  }
 
   Future<void> reset(ProfileIteratorMode mode) async {
     switch (mode) {
@@ -39,14 +29,7 @@ class ProfileIteratorManager {
         _currentIterator = DatabaseIterator(iterateFavorites: true);
       }
       case ModePublicProfiles(): {
-        if (_pendingServerSideIteratorReset) {
-          await db.profileAction((db) => db.setProfileGridStatusList(null, false, clear: true));
-          _currentIterator = OnlineIterator(
-            resetServerIterator: true,
-            waitConnectionOnce: mode.waitConnection,
-          );
-          _pendingServerSideIteratorReset = false;
-        } else if (mode.clearDatabase) {
+        if (mode.clearDatabase) {
           await db.profileAction((db) => db.setProfileGridStatusList(null, false, clear: true));
           _currentIterator = OnlineIterator(
             resetServerIterator: true,
