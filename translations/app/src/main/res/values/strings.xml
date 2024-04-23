@@ -207,6 +207,13 @@
 
     <!-- Bocked profiles screen -->
     <string name="blocked_profiles_screen_title" description="Title for blocked profiles screen">Blocked profiles</string>
+    <string name="blocked_profiles_screen_placeholder_for_private_profile" description="Placeholder text for private profile">Private profile</string>
+    <string name="blocked_profiles_screen_unblock_profile_dialog_title" description="Title for unblock profile dialog">Unblock profile?</string>
+    <string name="blocked_profiles_screen_unblock_profile_dialog_description" description="Description for unblock profile dialog">Unblock %s</string>
+    <string name="blocked_profiles_screen_unblock_profile_successful" description="Snackbar text displayed when profile unblocking was successful">Unblock successful</string>
+    <string name="blocked_profiles_screen_unblock_profile_failed" description="Snackbar text displayed when profile unblocking failed">Unblock failed</string>
+    <string name="blocked_profiles_screen_unblock_profile_in_progress" description="Snackbar text displayed when profile unblocking failed">Previous unblock is in progress</string>
+    <string name="blocked_profiles_screen_no_blocked_profiles" description="Info text displayed when there is no blocked profiles">No blocked profiles</string>
 
     <!-- Profile location screen -->
     <string name="profile_location_screen_title" description="Title for profile location screen">My profile\'s location</string>

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
@@ -8,10 +9,12 @@ import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
+import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/logic/settings/blocked_profiles.dart';
+import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
-import 'package:pihka_frontend/ui_utils/snack_bar.dart';
+import 'package:pihka_frontend/ui_utils/list.dart';
 
 var log = Logger("BlockedProfilesScreen");
 
@@ -19,12 +22,12 @@ class BlockedProfilesScreen extends StatefulWidget {
   const BlockedProfilesScreen({Key? key}) : super(key: key);
 
   @override
-  _BlockedProfilesPage createState() => _BlockedProfilesPage();
+  State<BlockedProfilesScreen> createState() => _BlockedProfilesScreen();
 }
 
 typedef BlockedProfileEntry = (AccountId account, ProfileEntry? profile);
 
-class _BlockedProfilesPage extends State<BlockedProfilesScreen> {
+class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
   PagingController<int, BlockedProfileEntry>? _pagingController =
     PagingController(firstPageKey: 0);
@@ -97,7 +100,7 @@ class _BlockedProfilesPage extends State<BlockedProfilesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Blocked profiles")),
+      appBar: AppBar(title: Text(context.strings.blocked_profiles_screen_title)),
       body: page(context),
     );
   }
@@ -123,14 +126,14 @@ class _BlockedProfilesPage extends State<BlockedProfilesScreen> {
           final String name;
           final Widget imageWidget;
           if (profileEntry != null) {
-            name = profileEntry.name;
+            name = profileEntry.profileTitle();
             imageWidget = accountImgWidget(
               profileEntry.uuid,
               profileEntry.imageUuid,
               width: 100,
             );
           } else {
-            name = "Private profile $index";
+            name = context.strings.blocked_profiles_screen_placeholder_for_private_profile;
             imageWidget = SizedBox(
               width: 100,
               child: Container(
@@ -150,29 +153,31 @@ class _BlockedProfilesPage extends State<BlockedProfilesScreen> {
             children: [
               imageWidget,
               textWidget,
-              // Expanded(
-              //   child: Align(
-              //     alignment: Alignment.centerRight,
-              //     child: Padding(
-              //       padding: const EdgeInsets.all(16.0),
-              //       child: Icon(
-              //         Icons.undo_rounded,
-              //       ),
-              //     ),
-              //   )
-              // )
+              const Expanded(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
+                    child: Icon(
+                      Icons.undo_rounded,
+                    ),
+                  ),
+                )
+              )
             ],
           );
 
           return InkWell(
-            onTap: () {
-              showConfirmDialog(context, "Unblock profile?", details: "Unblock $name").then((value) async {
-                if (value == true) {
-                  if (await ChatRepository.getInstance().removeBlockFrom(item.$1)) {
-                    showSnackBar("Unblock successfull");
-                  }
-                }
-              });
+            onTap: () async {
+              final bloc = context.read<BlockedProfilesBloc>();
+              final accepted = await showConfirmDialog(
+                context,
+                context.strings.blocked_profiles_screen_unblock_profile_dialog_title,
+                details: context.strings.blocked_profiles_screen_unblock_profile_dialog_description(name),
+              );
+              if (accepted == true) {
+                bloc.add(UnblockProfile(item.$1));
+              }
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -180,6 +185,19 @@ class _BlockedProfilesPage extends State<BlockedProfilesScreen> {
                 height: 125,
                 child: rowWidget,
               ),
+            ),
+          );
+        },
+        noItemsFoundIndicatorBuilder: (context) {
+          return buildListReplacementMessage(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  context.strings.blocked_profiles_screen_no_blocked_profiles,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ],
             ),
           );
         },

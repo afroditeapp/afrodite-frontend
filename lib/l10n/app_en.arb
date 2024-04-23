@@ -15,9 +15,42 @@
   "@app_slogan": {
     "description": "Slogan for the app"
   },
+  "blocked_profiles_screen_no_blocked_profiles": "No blocked profiles",
+  "@blocked_profiles_screen_no_blocked_profiles": {
+    "description": "Info text displayed when there is no blocked profiles"
+  },
+  "blocked_profiles_screen_placeholder_for_private_profile": "Private profile",
+  "@blocked_profiles_screen_placeholder_for_private_profile": {
+    "description": "Placeholder text for private profile"
+  },
   "blocked_profiles_screen_title": "Blocked profiles",
   "@blocked_profiles_screen_title": {
     "description": "Title for blocked profiles screen"
+  },
+  "blocked_profiles_screen_unblock_profile_dialog_description": "Unblock {p0}",
+  "@blocked_profiles_screen_unblock_profile_dialog_description": {
+    "description": "Description for unblock profile dialog",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "blocked_profiles_screen_unblock_profile_dialog_title": "Unblock profile?",
+  "@blocked_profiles_screen_unblock_profile_dialog_title": {
+    "description": "Title for unblock profile dialog"
+  },
+  "blocked_profiles_screen_unblock_profile_failed": "Unblock failed",
+  "@blocked_profiles_screen_unblock_profile_failed": {
+    "description": "Snackbar text displayed when profile unblocking failed"
+  },
+  "blocked_profiles_screen_unblock_profile_in_progress": "Previous unblock is in progress",
+  "@blocked_profiles_screen_unblock_profile_in_progress": {
+    "description": "Snackbar text displayed when profile unblocking failed"
+  },
+  "blocked_profiles_screen_unblock_profile_successful": "Unblock successful",
+  "@blocked_profiles_screen_unblock_profile_successful": {
+    "description": "Snackbar text displayed when profile unblocking was successful"
   },
   "camera_screen_camera_initialization_error": "Camera initialization failed",
   "@camera_screen_camera_initialization_error": {

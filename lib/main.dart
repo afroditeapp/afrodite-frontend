@@ -36,6 +36,7 @@ import 'package:pihka_frontend/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/logic/profile/view_profiles.dart';
 import 'package:pihka_frontend/logic/server/address.dart';
+import 'package:pihka_frontend/logic/settings/blocked_profiles.dart';
 import 'package:pihka_frontend/logic/settings/privacy_settings.dart';
 import 'package:pihka_frontend/logic/sign_in_with.dart';
 
@@ -106,6 +107,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => NewModerationRequestBloc()),
         BlocProvider(create: (_) => ProfilePicturesBloc()),
         BlocProvider(create: (_) => PrivacySettingsBloc()),
+        BlocProvider(create: (_) => BlockedProfilesBloc()),
 
         // Login
         BlocProvider(create: (_) => SignInWithBloc()),
