@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
+import 'package:pihka_frontend/logic/settings/privacy_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin.dart';
 import 'package:pihka_frontend/ui/normal/settings/debug.dart';
-import 'package:pihka_frontend/ui/normal/settings/location.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
 import 'package:pihka_frontend/ui/normal/settings/my_profile.dart';
 import 'package:pihka_frontend/ui/normal/settings/privacy_settings.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
-
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/common_actions.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/menu_actions.dart';
-import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/utils/api.dart';
 
 class SettingsView extends BottomNavigationScreen {
@@ -48,9 +46,14 @@ class _SettingsViewState extends State<SettingsView> {
           Setting.createSetting(Icons.account_circle_rounded, context.strings.view_profile_screen_my_profile_title, () =>
             Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const MyProfileScreen()))
           ),
-          Setting.createSetting(Icons.lock_rounded, context.strings.privacy_settings_screen_title, () =>
-            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const PrivacySettingsScreen()))
-          ),
+          Setting.createSetting(Icons.lock_rounded, context.strings.privacy_settings_screen_title, () {
+            final privacySettingsBloc = context.read<PrivacySettingsBloc>();
+            final accountBloc = context.read<AccountBloc>();
+            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => PrivacySettingsScreen(
+              privacySettingsBloc: privacySettingsBloc,
+              accountBloc: accountBloc,
+            )));
+          }),
           Setting.createSetting(Icons.image_rounded, context.strings.current_moderation_request_screen_title, () {
               final currentModerationRequestBloc = context.read<CurrentModerationRequestBloc>();
               Navigator.push(context, MaterialPageRoute<void>(builder: (_) =>

@@ -499,6 +499,10 @@
   "@privacy_settings_screen_profile_visiblity_setting": {
     "description": "Title for profile visibility setting"
   },
+  "privacy_settings_screen_settings_updating_failed": "Updating privacy and security settings failed",
+  "@privacy_settings_screen_settings_updating_failed": {
+    "description": "Snackbar text about failed settings update"
+  },
   "privacy_settings_screen_title": "Privacy and security",
   "@privacy_settings_screen_title": {
     "description": "Title for privacy settings screen"

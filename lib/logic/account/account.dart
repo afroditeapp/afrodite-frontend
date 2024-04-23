@@ -5,19 +5,12 @@ import "package:pihka_frontend/data/account_repository.dart";
 
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/model/freezed/logic/account/account.dart";
-import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 
-abstract class AccountEvent {}
-class DoRegister extends AccountEvent {
-  DoRegister();
-}
+sealed class AccountEvent {}
+class DoRegister extends AccountEvent {}
 class DoLogin extends AccountEvent {}
 class DoLogout extends AccountEvent {}
-class DoProfileVisiblityChange extends AccountEvent {
-  final bool profileVisiblity;
-  DoProfileVisiblityChange(this.profileVisiblity);
-}
 class NewAccountIdValue extends AccountEvent {
   final AccountId? value;
   NewAccountIdValue(this.value);
@@ -60,17 +53,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
     on<DoLogout>((_, emit) async {
       await runOnce(() async {
         await login.logout();
-      });
-    });
-    on<DoProfileVisiblityChange>((state, emit) async {
-      await runOnce(() async {
-        final successful = await account.doProfileVisibilityChange(state.profileVisiblity);
-        if (!successful) {
-          showSnackBar("Failed to update profile visibility");
-        }
-        // TODO: Add also success message?
-        // Should new profile visibility be sent only when navigating away from
-        // the settings page where the setting is located?
       });
     });
     on<NewAccountIdValue>((id, emit) {

@@ -36,6 +36,7 @@ import 'package:pihka_frontend/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/logic/profile/view_profiles.dart';
 import 'package:pihka_frontend/logic/server/address.dart';
+import 'package:pihka_frontend/logic/settings/privacy_settings.dart';
 import 'package:pihka_frontend/logic/sign_in_with.dart';
 
 import 'package:pihka_frontend/logic/app/main_state.dart';
@@ -76,27 +77,35 @@ Future<void> main() async {
   runApp(
     MultiBlocProvider(
       providers: [
+        // General
         BlocProvider(create: (_) => MainStateBloc()),
-        BlocProvider(create: (_) => AccountBloc()),
-        BlocProvider(create: (_) => AccountDetailsBloc()),
         BlocProvider(create: (_) => DemoAccountBloc()),
         BlocProvider(create: (_) => InitialSetupBloc()),
         BlocProvider(create: (_) => ServerAddressBloc()),
-        BlocProvider(create: (_) => MyProfileBloc()),
-        BlocProvider(create: (_) => EditMyProfileBloc()),
         BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
         BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
-        BlocProvider(create: (_) => ProfilePicturesBloc()),
+        BlocProvider(create: (_) => NotificationPermissionBloc()),
+
+        // Main UI
         BlocProvider(create: (_) => ViewProfileBloc()),
         BlocProvider(create: (_) => ConversationBloc()),
+
+        // Account data
+        BlocProvider(create: (_) => AccountBloc()),
+        BlocProvider(create: (_) => ContentBloc()),
+        BlocProvider(create: (_) => LocationBloc()),
+        BlocProvider(create: (_) => MyProfileBloc()),
+        BlocProvider(create: (_) => AccountDetailsBloc()),
         BlocProvider(create: (_) => ProfileFilteringSettingsBloc()),
+
+        // Settings
+        BlocProvider(create: (_) => EditMyProfileBloc()),
         BlocProvider(create: (_) => EditProfileFilteringSettingsBloc()),
         BlocProvider(create: (_) => CurrentModerationRequestBloc()),
-        BlocProvider(create: (_) => NotificationPermissionBloc()),
-        BlocProvider(create: (_) => LocationBloc()),
-        BlocProvider(create: (_) => ContentBloc()),
         BlocProvider(create: (_) => SelectContentBloc()),
         BlocProvider(create: (_) => NewModerationRequestBloc()),
+        BlocProvider(create: (_) => ProfilePicturesBloc()),
+        BlocProvider(create: (_) => PrivacySettingsBloc()),
 
         // Login
         BlocProvider(create: (_) => SignInWithBloc()),

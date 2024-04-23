@@ -5,39 +5,72 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
-import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
+import 'package:pihka_frontend/logic/settings/privacy_settings.dart';
+import 'package:pihka_frontend/model/freezed/logic/settings/privacy_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/blocked_profiles.dart';
-
+import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
+import 'package:pihka_frontend/utils/api.dart';
 
 class PrivacySettingsScreen extends StatefulWidget {
-  const PrivacySettingsScreen({super.key});
+  final PrivacySettingsBloc privacySettingsBloc;
+  final AccountBloc accountBloc;
+  const PrivacySettingsScreen({
+    required this.privacySettingsBloc,
+    required this.accountBloc,
+    super.key
+  });
 
   @override
   State<PrivacySettingsScreen> createState() => _PrivacySettingsScreenState();
 }
 
 class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
-  ProfileVisibility _tmpProfileVisiblity = ProfileVisibility.pendingPrivate;
 
   @override
   void initState() {
     super.initState();
-    _tmpProfileVisiblity = context.read<AccountBloc>().state.visibility;
+    widget.privacySettingsBloc.add(
+      ResetEditablePrivacySettings(widget.accountBloc.state.visibility),
+    );
+  }
+
+  void validateAndSaveData(BuildContext context) {
+    final state = widget.privacySettingsBloc.state;
+    if (state.currentVisibility == state.initialVisibility) {
+      Navigator.pop(context);
+      return;
+    }
+    widget.privacySettingsBloc.add(SaveSettings(state.currentVisibility));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(context.strings.privacy_settings_screen_title)),
-      body: content(context),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          return;
+        }
+        validateAndSaveData(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(title: Text(context.strings.privacy_settings_screen_title)),
+        body: updateStateHandler<PrivacySettingsBloc, PrivacySettingsData>(
+          child: content(context),
+        ),
+      ),
     );
   }
 
   Widget content(BuildContext context) {
     return Column(
       children: [
-        profileVisibilitySetting(context),
+        BlocBuilder<PrivacySettingsBloc, PrivacySettingsData>(
+          builder: (context, state) {
+            return profileVisibilitySetting(context, state.currentVisibility);
+          }
+        ),
         blockedProfiles(),
       ],
     );
@@ -49,9 +82,8 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
     ).toListTile();
   }
 
-  Widget profileVisibilitySetting(BuildContext context) {
-    final bool visibilityEnabled = _tmpProfileVisiblity == ProfileVisibility.pendingPublic || _tmpProfileVisiblity == ProfileVisibility.public;
-    final String descriptionForVisibility = switch (_tmpProfileVisiblity) {
+  Widget profileVisibilitySetting(BuildContext context, ProfileVisibility visibility) {
+    final String descriptionForVisibility = switch (visibility) {
       ProfileVisibility.pendingPrivate || ProfileVisibility.private =>
         context.strings.privacy_settings_screen_profile_visiblity_private_description,
       ProfileVisibility.pendingPublic =>
@@ -61,44 +93,14 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
       _ => context.strings.generic_error,
     };
 
-    return BlocListener<AccountBloc, AccountBlocData>(
-      listener: (context, state) {
-        if (_tmpProfileVisiblity != state.visibility) {
-          setState(() {
-            _tmpProfileVisiblity = state.visibility;
-          });
-        }
+    return SwitchListTile(
+      title: Text(context.strings.privacy_settings_screen_profile_visiblity_setting),
+      value: visibility.isPublic(),
+      subtitle: Text(descriptionForVisibility),
+      onChanged: (bool value) {
+        context.read<PrivacySettingsBloc>().add(ToggleVisibility());
       },
-      child: SwitchListTile(
-        title: Text(context.strings.privacy_settings_screen_profile_visiblity_setting),
-        value: visibilityEnabled,
-        subtitle: Text(descriptionForVisibility),
-        onChanged: (bool value) {
-          context.read<AccountBloc>().add(DoProfileVisiblityChange(value));
-          setState(() {
-            _updateTmpVisibilityToMakeUiLookResponsive(value);
-          });
-        },
-        secondary: const Icon(Icons.public),
-      ),
+      secondary: const Icon(Icons.public),
     );
-  }
-
-  void _updateTmpVisibilityToMakeUiLookResponsive(bool value) {
-    // Update from server will override this update.
-
-    if (value) {
-      if (_tmpProfileVisiblity == ProfileVisibility.pendingPrivate) {
-        _tmpProfileVisiblity = ProfileVisibility.pendingPublic;
-      } else if (_tmpProfileVisiblity == ProfileVisibility.private) {
-        _tmpProfileVisiblity = ProfileVisibility.public;
-      }
-    } else {
-      if (_tmpProfileVisiblity == ProfileVisibility.pendingPublic) {
-        _tmpProfileVisiblity = ProfileVisibility.pendingPrivate;
-      } else if (_tmpProfileVisiblity == ProfileVisibility.public) {
-        _tmpProfileVisiblity = ProfileVisibility.private;
-      }
-    }
   }
 }

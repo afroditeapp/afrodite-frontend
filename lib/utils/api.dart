@@ -27,6 +27,12 @@ extension ProfileVisibilityExtensions on ProfileVisibility {
     return this == ProfileVisibility.pendingPrivate ||
       this == ProfileVisibility.pendingPublic;
   }
+
+  /// Convert visibility to boolean without the pending state
+  bool isPublic() {
+    return this == ProfileVisibility.public ||
+      this == ProfileVisibility.pendingPublic;
+  }
 }
 
 extension ModerationRequestStateExtensions on ModerationRequest {
@@ -73,7 +79,7 @@ extension AttributeExtensions on Attribute {
   }
 }
 
-extension GetCapabilities on Capabilities {
+extension CapabilitiesExtensions on Capabilities {
   bool adminSettingsVisible() {
     // TODO(prod): Add missing capabilities once
     // capability properies are non-nullable

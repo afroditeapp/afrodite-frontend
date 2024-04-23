@@ -203,6 +203,7 @@
     <string name="privacy_settings_screen_profile_visiblity_private_description" description="Description for private profile visibility">Your profile is not visible in profile grid</string>
     <string name="privacy_settings_screen_profile_visiblity_pending_public_description" description="Description for pending public profile visibility">Your profile will be visible in profile grid once your images are moderated as accepted</string>
     <string name="privacy_settings_screen_profile_visiblity_public_description" description="Description for public profile visibility">Your profile is visible in profile grid</string>
+    <string name="privacy_settings_screen_settings_updating_failed" description="Snackbar text about failed settings update">Updating privacy and security settings failed</string>
 
     <!-- Bocked profiles screen -->
     <string name="blocked_profiles_screen_title" description="Title for blocked profiles screen">Blocked profiles</string>
