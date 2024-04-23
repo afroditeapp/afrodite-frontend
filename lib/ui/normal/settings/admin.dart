@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
+import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
@@ -19,7 +20,7 @@ class AdminSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Admin")),
+      appBar: AppBar(title: Text(context.strings.admin_settings_title)),
       body: settingsList(context),
     );
   }
@@ -61,16 +62,12 @@ class AdminSettingsPage extends StatelessWidget {
           ));
         }
 
-        return ListView.builder(
-          itemCount: settings.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              onTap: () {
-                settings[index].action();
-              },
-              title: settings[index].widget,
-            );
-          },
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              ...settings.map((setting) => setting.toListTile()),
+            ],
+          ),
         );
       }
     );

@@ -189,16 +189,26 @@
     <string name="edit_attribute_filter_value_screen_search_placeholder_text" description="Attribute value search box placeholder text">Search…</string>
 
     <!-- Likes -->
-    <string name="pageLikesTitle" description="Title for likes page">Likes</string>
+    <string name="likes_screen_title" description="Title for likes screen">Likes</string>
 
     <!-- Chat list -->
-    <string name="pageChatListTitle" description="Title for chat list page">Chats</string>
+    <string name="chat_list_screen_title" description="Title for chat list screen">Chats</string>
 
     <!-- Settings -->
-    <string name="pageSettingsTitle" description="Title for settings page">Settings</string>
+    <string name="settings_screen_title" description="Title for settings screen">Settings</string>
 
-    <!-- Location settings screen -->
-    <string name="pageLocationTitle" description="Title for location page">Location</string>
+    <!-- Privacy settings screen -->
+    <string name="privacy_settings_screen_title" description="Title for privacy settings screen">Privacy and security</string>
+    <string name="privacy_settings_screen_profile_visiblity_setting" description="Title for profile visibility setting">Profile visibility</string>
+    <string name="privacy_settings_screen_profile_visiblity_private_description" description="Description for private profile visibility">Your profile is not visible in profile grid</string>
+    <string name="privacy_settings_screen_profile_visiblity_pending_public_description" description="Description for pending public profile visibility">Your profile will be visible in profile grid once your images are moderated as accepted</string>
+    <string name="privacy_settings_screen_profile_visiblity_public_description" description="Description for public profile visibility">Your profile is visible in profile grid</string>
+
+    <!-- Bocked profiles screen -->
+    <string name="blocked_profiles_screen_title" description="Title for blocked profiles screen">Blocked profiles</string>
+
+    <!-- Profile location screen -->
+    <string name="profile_location_screen_title" description="Title for profile location screen">My profile\'s location</string>
 
     <!-- View image screen
         TODO: Does this page need a title?
@@ -211,7 +221,7 @@
     <!-- Admin features -->
 
     <!-- Admin screen -->
-    <string name="pageAdminTitle" description="Title for admin settings and tools page">Admin</string>
+    <string name="admin_settings_title" description="Title for admin settings screen">Admin</string>
 
     <!-- Moderate images screen -->
     <string name="moderate_images_screen_title" description="Title for moderate images page">Moderate images</string>

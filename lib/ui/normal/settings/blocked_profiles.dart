@@ -13,10 +13,10 @@ import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
-var log = Logger("BlockedProfilesPage");
+var log = Logger("BlockedProfilesScreen");
 
-class BlockedProfilesPage extends StatefulWidget {
-  const BlockedProfilesPage({Key? key}) : super(key: key);
+class BlockedProfilesScreen extends StatefulWidget {
+  const BlockedProfilesScreen({Key? key}) : super(key: key);
 
   @override
   _BlockedProfilesPage createState() => _BlockedProfilesPage();
@@ -24,7 +24,7 @@ class BlockedProfilesPage extends StatefulWidget {
 
 typedef BlockedProfileEntry = (AccountId account, ProfileEntry? profile);
 
-class _BlockedProfilesPage extends State<BlockedProfilesPage> {
+class _BlockedProfilesPage extends State<BlockedProfilesScreen> {
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
   PagingController<int, BlockedProfileEntry>? _pagingController =
     PagingController(firstPageKey: 0);

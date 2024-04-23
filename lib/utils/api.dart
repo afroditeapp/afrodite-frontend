@@ -72,3 +72,11 @@ extension AttributeExtensions on Attribute {
       mode == AttributeMode.selectSingleFilterMultiple;
   }
 }
+
+extension GetCapabilities on Capabilities {
+  bool adminSettingsVisible() {
+    // TODO(prod): Add missing capabilities once
+    // capability properies are non-nullable
+    return adminModerateImages;
+  }
+}

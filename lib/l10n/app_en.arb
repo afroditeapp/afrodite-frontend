@@ -1,4 +1,8 @@
 {
+  "admin_settings_title": "Admin",
+  "@admin_settings_title": {
+    "description": "Title for admin settings screen"
+  },
   "app_bar_action_about": "About",
   "@app_bar_action_about": {
     "description": "Title for app bar action which opens about dialog"
@@ -10,6 +14,10 @@
   "app_slogan": "Finland's fairest dating app",
   "@app_slogan": {
     "description": "Slogan for the app"
+  },
+  "blocked_profiles_screen_title": "Blocked profiles",
+  "@blocked_profiles_screen_title": {
+    "description": "Title for blocked profiles screen"
   },
   "camera_screen_camera_initialization_error": "Camera initialization failed",
   "@camera_screen_camera_initialization_error": {
@@ -43,6 +51,10 @@
   "camera_screen_take_photo_error": "Taking photo failed",
   "@camera_screen_take_photo_error": {
     "description": "Snackbar error text displayed when taking photo fails"
+  },
+  "chat_list_screen_title": "Chats",
+  "@chat_list_screen_title": {
+    "description": "Title for chat list screen"
   },
   "crop_image_screen_title": "Crop image",
   "@crop_image_screen_title": {
@@ -367,6 +379,10 @@
   "@initial_setup_screen_too_young_error": {
     "description": "Error text displayed when age is under 18."
   },
+  "likes_screen_title": "Likes",
+  "@likes_screen_title": {
+    "description": "Title for likes screen"
+  },
   "login_screen_action_demo_account_login": "Demo account login",
   "@login_screen_action_demo_account_login": {
     "description": "Text for demo account login action"
@@ -467,25 +483,25 @@
   "@notification_permission_dialog_title": {
     "description": "Title for notification permission dialog"
   },
-  "pageAdminTitle": "Admin",
-  "@pageAdminTitle": {
-    "description": "Title for admin settings and tools page"
+  "privacy_settings_screen_profile_visiblity_pending_public_description": "Your profile will be visible in profile grid once your images are moderated as accepted",
+  "@privacy_settings_screen_profile_visiblity_pending_public_description": {
+    "description": "Description for pending public profile visibility"
   },
-  "pageChatListTitle": "Chats",
-  "@pageChatListTitle": {
-    "description": "Title for chat list page"
+  "privacy_settings_screen_profile_visiblity_private_description": "Your profile is not visible in profile grid",
+  "@privacy_settings_screen_profile_visiblity_private_description": {
+    "description": "Description for private profile visibility"
   },
-  "pageLikesTitle": "Likes",
-  "@pageLikesTitle": {
-    "description": "Title for likes page"
+  "privacy_settings_screen_profile_visiblity_public_description": "Your profile is visible in profile grid",
+  "@privacy_settings_screen_profile_visiblity_public_description": {
+    "description": "Description for public profile visibility"
   },
-  "pageLocationTitle": "Location",
-  "@pageLocationTitle": {
-    "description": "Title for location page"
+  "privacy_settings_screen_profile_visiblity_setting": "Profile visibility",
+  "@privacy_settings_screen_profile_visiblity_setting": {
+    "description": "Title for profile visibility setting"
   },
-  "pageSettingsTitle": "Settings",
-  "@pageSettingsTitle": {
-    "description": "Title for settings page"
+  "privacy_settings_screen_title": "Privacy and security",
+  "@privacy_settings_screen_title": {
+    "description": "Title for privacy settings screen"
   },
   "profile_filtering_settings_screen_favorite_profile_filter": "Favorite profile",
   "@profile_filtering_settings_screen_favorite_profile_filter": {
@@ -540,6 +556,10 @@
   "@profile_grid_screen_title": {
     "description": "Title for profile grid screen"
   },
+  "profile_location_screen_title": "My profile's location",
+  "@profile_location_screen_title": {
+    "description": "Title for profile location screen"
+  },
   "select_content_screen_info_waiting_moderation": "Image is waiting moderation",
   "@select_content_screen_info_waiting_moderation": {
     "description": "Snackbar text that image is waiting moderation"
@@ -551,6 +571,10 @@
   "select_content_screen_title": "Select image",
   "@select_content_screen_title": {
     "description": "Title for select content screen"
+  },
+  "settings_screen_title": "Settings",
+  "@settings_screen_title": {
+    "description": "Title for settings screen"
   },
   "url_app_privacy_policy_link": "https://example.com",
   "url_app_tos_link": "https://example.com",

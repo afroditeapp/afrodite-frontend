@@ -33,16 +33,12 @@ class DebugSettingsPage extends StatelessWidget {
       NotificationManager.getInstance().sendNotification()
     ));
 
-    return ListView.builder(
-      itemCount: settings.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          onTap: () {
-            settings[index].action();
-          },
-          title: settings[index].widget,
-        );
-      },
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          ...settings.map((setting) => setting.toListTile()),
+        ],
+      ),
     );
   }
 }

@@ -20,11 +20,11 @@ class ChatView extends BottomNavigationScreen {
   const ChatView({Key? key}) : super(key: key);
 
   @override
-  _ChatViewState createState() => _ChatViewState();
+  State<ChatView> createState() => _ChatViewState();
 
   @override
   String title(BuildContext context) {
-    return context.strings.pageChatListTitle;
+    return context.strings.chat_list_screen_title;
   }
 }
 

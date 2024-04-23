@@ -17,13 +17,13 @@ import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-class LocationPage extends StatelessWidget {
-  const LocationPage({super.key});
+class LocationScreen extends StatelessWidget {
+  const LocationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.strings.pageLocationTitle)),
+      appBar: AppBar(title: Text(context.strings.profile_location_screen_title)),
       body: locationPage(context),
     );
   }

@@ -19,11 +19,11 @@ class LikeView extends BottomNavigationScreen {
   const LikeView({Key? key}) : super(key: key);
 
   @override
-  _LikeViewState createState() => _LikeViewState();
+  State<LikeView> createState() => _LikeViewState();
 
   @override
   String title(BuildContext context) {
-    return context.strings.pageLikesTitle;
+    return context.strings.likes_screen_title;
   }
 }
 

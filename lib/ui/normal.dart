@@ -101,7 +101,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () => Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const MyProfilePage()))
+                    onTap: () => Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const MyProfileScreen()))
                   ),
                 )
               );

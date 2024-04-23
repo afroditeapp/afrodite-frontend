@@ -6,17 +6,9 @@
     <string name="generic_ok">OK</string>
     <string name="login_screen_login_button">Kirjaudu</string>
     <string name="login_screen_register_button">Rekisteröidy</string>
-    <string name="pageProfileGridTitle">Profiilit</string>
-    <string name="pageLikesTitle">Tykkäykset</string>
-    <string name="pageChatListTitle">Keskustelut</string>
-    <string name="pageSettingsTitle">Asetukset</string>
-    <string name="pageSettingsLogoutTitle">Kirjaudu ulos</string>
-    <string name="pageSettingsAboutAction">Tietoja</string>
-    <string name="pageMyProfileTitle">Minun profiili</string>
-    <string name="pageLocationTitle">Sijainti</string>
-    <string name="pageAdminTitle">Ylläpitäjä</string>
-    <string name="pageModerateImagesTitle">Moderoi kuvia</string>
-    <string name="pageModerateImagesDenyImageText">Hylkää</string>
+    <string name="likes_screen_title">Tykkäykset</string>
+    <string name="chat_list_screen_title">Keskustelut</string>
+    <string name="settings_screen_title">Asetukset</string>
     <string name="view_image_screen_title">Kuva</string>
     <string name="app_slogan">Suomen reiluin deittisovellus</string>
 </resources>

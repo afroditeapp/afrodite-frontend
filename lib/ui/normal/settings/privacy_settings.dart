@@ -3,19 +3,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
+import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
+import 'package:pihka_frontend/ui/normal/settings.dart';
+import 'package:pihka_frontend/ui/normal/settings/blocked_profiles.dart';
 
 
-
-class ProfileVisibilityPage extends StatefulWidget {
-  const ProfileVisibilityPage({super.key});
+class PrivacySettingsScreen extends StatefulWidget {
+  const PrivacySettingsScreen({super.key});
 
   @override
-  _ProfileVisibilityPageState createState() => _ProfileVisibilityPageState();
+  State<PrivacySettingsScreen> createState() => _PrivacySettingsScreenState();
 }
 
-class _ProfileVisibilityPageState extends State<ProfileVisibilityPage> {
+class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
   ProfileVisibility _tmpProfileVisiblity = ProfileVisibility.pendingPrivate;
 
   @override
@@ -27,21 +29,36 @@ class _ProfileVisibilityPageState extends State<ProfileVisibilityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Profile visibility")),
-      body: visibilitySettingsPage(context),
+      appBar: AppBar(title: Text(context.strings.privacy_settings_screen_title)),
+      body: content(context),
     );
   }
 
-  Widget visibilitySettingsPage(BuildContext context) {
+  Widget content(BuildContext context) {
+    return Column(
+      children: [
+        profileVisibilitySetting(context),
+        blockedProfiles(),
+      ],
+    );
+  }
+
+  Widget blockedProfiles() {
+    return Setting.createSetting(Icons.block, context.strings.blocked_profiles_screen_title, () =>
+      Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const BlockedProfilesScreen()))
+    ).toListTile();
+  }
+
+  Widget profileVisibilitySetting(BuildContext context) {
     final bool visibilityEnabled = _tmpProfileVisiblity == ProfileVisibility.pendingPublic || _tmpProfileVisiblity == ProfileVisibility.public;
     final String descriptionForVisibility = switch (_tmpProfileVisiblity) {
       ProfileVisibility.pendingPrivate || ProfileVisibility.private =>
-        "Your profile is currently private. No one can see it.",
+        context.strings.privacy_settings_screen_profile_visiblity_private_description,
       ProfileVisibility.pendingPublic =>
-        "Your profile will be set to public after your images are moderated as accepted.",
+        context.strings.privacy_settings_screen_profile_visiblity_pending_public_description,
       ProfileVisibility.public =>
-        "Your profile is public. Everyone can see it.",
-      _ => "",
+        context.strings.privacy_settings_screen_profile_visiblity_public_description,
+      _ => context.strings.generic_error,
     };
 
     return BlocListener<AccountBloc, AccountBlocData>(
@@ -53,7 +70,7 @@ class _ProfileVisibilityPageState extends State<ProfileVisibilityPage> {
         }
       },
       child: SwitchListTile(
-        title: Text("Public profile"),
+        title: Text(context.strings.privacy_settings_screen_profile_visiblity_setting),
         value: visibilityEnabled,
         subtitle: Text(descriptionForVisibility),
         onChanged: (bool value) {

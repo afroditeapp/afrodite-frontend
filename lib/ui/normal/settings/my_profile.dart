@@ -6,19 +6,30 @@ import 'package:pihka_frontend/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
 import 'package:pihka_frontend/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/my_profile.dart';
+import 'package:pihka_frontend/ui/normal/settings/location.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
 import 'package:pihka_frontend/localizations.dart';
 
 
-class MyProfilePage extends StatelessWidget {
-  const MyProfilePage({super.key});
+class MyProfileScreen extends StatelessWidget {
+  const MyProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.strings.view_profile_screen_my_profile_title)),
+      appBar: AppBar(
+        title: Text(context.strings.view_profile_screen_my_profile_title),
+        actions: [
+          IconButton(
+            onPressed: () =>
+              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const LocationScreen())),
+            icon: const Icon(Icons.location_on),
+            tooltip: context.strings.profile_location_screen_title,
+          )
+        ],
+      ),
       body: myProfilePage(context),
       floatingActionButton: BlocBuilder<MyProfileBloc, MyProfileData>(
         builder: ((context, state) {
