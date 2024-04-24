@@ -585,6 +585,10 @@
   "@profile_grid_screen_no_profiles_found_title": {
     "description": "Title that no profiles were found"
   },
+  "profile_grid_screen_profile_filter_settings_update_ongoing": "Profile filter settings update is ongoing",
+  "@profile_grid_screen_profile_filter_settings_update_ongoing": {
+    "description": "Snakcbar text that profile filter settings update is ongoing"
+  },
   "profile_grid_screen_profile_is_private_info": "To view profiles, set your profile visibility to public from app settings.",
   "@profile_grid_screen_profile_is_private_info": {
     "description": "Info text which is shown when profile visibility is set to private"

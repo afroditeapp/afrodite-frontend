@@ -18,7 +18,9 @@ import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_reque
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
+import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
 var log = Logger("ProfileView");
 
@@ -51,6 +53,11 @@ class ProfileView extends BottomNavigationScreen {
         ),
         onPressed: () {
           final filteringSettingsBloc = context.read<ProfileFilteringSettingsBloc>();
+          if (filteringSettingsBloc.state.updateState is! UpdateIdle) {
+            showSnackBar(context.strings.profile_grid_screen_profile_filter_settings_update_ongoing);
+            return;
+          }
+
           final editFilteringSettingsBloc = context.read<EditProfileFilteringSettingsBloc>();
           final pageKey = PageKey();
           MyNavigator.pushWithKey(

@@ -127,6 +127,7 @@
     <string name="profile_grid_screen_no_profiles_found_title" description="Title that no profiles were found">No profiles found</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_enabled" description="Description displayed when there is no profiles and some filter is enabled">Change or disable filter settings</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_disabled" description="Description displayed when there is no profiles and there is no filters enabled">Spread the word about the app in social media</string>
+    <string name="profile_grid_screen_profile_filter_settings_update_ongoing" description="Snakcbar text that profile filter settings update is ongoing">Profile filter settings update is ongoing</string>
 
     <!-- View profile screen -->
     <string name="view_profile_screen_my_profile_title" description="Title for view profile screen when my profile is viewed">My profile</string>

@@ -9,8 +9,10 @@ import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
+import 'package:pihka_frontend/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
 import 'package:pihka_frontend/ui_utils/consts/corners.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
@@ -33,6 +35,10 @@ class _ProfileGridState extends State<ProfileGrid> {
     PagingController(firstPageKey: 0);
   int _heroUniqueIdCounter = 0;
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
+
+  // Use same progress indicator state that transition between
+  // filter settings progress and grid progress is smooth.
+  final GlobalKey _progressKey = GlobalKey();
 
   @override
   void initState() {
@@ -117,7 +123,15 @@ class _ProfileGridState extends State<ProfileGrid> {
         // This might be disposed after resetProfileIterator completes.
         _pagingController?.refresh();
       },
-      child: grid(context),
+      child: BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+        builder: (context, state) {
+          if (state.updateState is UpdateIdle) {
+            return grid(context);
+          } else {
+            return Center(child: CircularProgressIndicator(key: _progressKey));
+          }
+        }
+      ),
     );
   }
 
@@ -188,6 +202,9 @@ class _ProfileGridState extends State<ProfileGrid> {
               ],
             ),
           );
+        },
+        firstPageProgressIndicatorBuilder: (context) {
+          return Center(child: CircularProgressIndicator(key: _progressKey));
         },
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

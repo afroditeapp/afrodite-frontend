@@ -69,9 +69,13 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       },
       child: Scaffold(
         appBar: AppBar(title: Text(context.strings.profile_filtering_settings_screen_title)),
-        body: updateStateHandler<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-          context: context,
-          pageKey: widget.pageKey,
+        body: BlocListener<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+          listenWhen: (previous, current) => previous.updateState != current.updateState,
+          listener: (context, state) {
+            if (state.updateState is UpdateStarted) {
+              MyNavigator.pop(context);
+            }
+          },
           child: filteringSettingsWidget(context),
         ),
       ),
