@@ -3,6 +3,7 @@ import "package:flutter/services.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
+import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/ui/initial_setup/gender.dart";
 import "package:pihka_frontend/ui_utils/consts/padding.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
@@ -33,7 +34,7 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
           final initial = state.profileInitial;
           if (ageIsValid(age) && initialIsValid(initial)) {
             return () {
-              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const AskGenderScreen()));
+              MyNavigator.push(context, MaterialPage<void>(child: const AskGenderScreen()));
             };
           } else {
             return null;

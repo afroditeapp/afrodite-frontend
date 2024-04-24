@@ -4,10 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/profile/edit_profile_filtering_settings.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/ui/normal/profiles/filter_profiles.dart';
@@ -50,10 +52,16 @@ class ProfileView extends BottomNavigationScreen {
         onPressed: () {
           final filteringSettingsBloc = context.read<ProfileFilteringSettingsBloc>();
           final editFilteringSettingsBloc = context.read<EditProfileFilteringSettingsBloc>();
-          Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ProfileFilteringSettingsPage(
-            profileFilteringSettingsBloc: filteringSettingsBloc,
-            editProfileFilteringSettingsBloc: editFilteringSettingsBloc,
-          )));
+          final pageKey = PageKey();
+          MyNavigator.pushWithKey(
+            context,
+            MaterialPage<void>(child: ProfileFilteringSettingsPage(
+              pageKey: pageKey,
+              profileFilteringSettingsBloc: filteringSettingsBloc,
+              editProfileFilteringSettingsBloc: editFilteringSettingsBloc,
+            )),
+            pageKey,
+          );
         },
       )
     ];

@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
+import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/ui/account_banned.dart";
 import "package:pihka_frontend/ui/demo_account.dart";
 import "package:pihka_frontend/ui/initial_setup.dart";
@@ -35,10 +36,9 @@ abstract class RootScreen extends StatelessWidget {
         if (screen != null) {
           screen.runOnceBeforeNavigatedTo(context);
 
-          Navigator.pushAndRemoveUntil(
+          MyNavigator.replaceAllWith(
             context,
-            MaterialPageRoute<void>(builder: (_) => screen),
-            (_) => false,
+            MaterialPage<void>(child: screen),
           );
         }
       },

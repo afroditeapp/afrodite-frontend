@@ -3,6 +3,7 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/account.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
+import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/model/freezed/logic/account/account.dart";
 import "package:pihka_frontend/ui/initial_setup/birthdate.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
@@ -22,7 +23,7 @@ class AskEmailScreen extends StatelessWidget {
               final email = state.email;
               if ((email != null && isValidEmail(email)) || currentAccountEmail != null) {
                 return () {
-                  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const AskBirthdateScreen()));
+                  MyNavigator.push(context, MaterialPage<void>(child: const AskBirthdateScreen()));
                 };
               } else {
                 return null;

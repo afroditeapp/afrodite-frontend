@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/media/select_content.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
@@ -107,7 +108,7 @@ class _SelectContentPageState extends State<SelectContentPage> {
         context,
         accountId,
         e,
-        onTap: () => Navigator.of(context).pop(AccountImageId(accountId, e))
+        onTap: () => MyNavigator.pop(context, AccountImageId(accountId, e))
       ))
     );
 

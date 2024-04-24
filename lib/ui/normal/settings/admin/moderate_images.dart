@@ -6,6 +6,8 @@ import 'package:pihka_frontend/logic/admin/image_moderation.dart';
 
 
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/view_image_screen.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
@@ -151,11 +153,9 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
   Widget buildImage(BuildContext contex, AccountId imageOwner, ContentId image, int? index, double width, double height) {
     return InkWell(
       onTap: () {
-        Navigator.push(
+        MyNavigator.push(
           context,
-          MaterialPageRoute<void>(
-            builder: (_) => ViewImageScreen(ViewImageAccountContent(imageOwner, image))
-          ),
+          MaterialPage<void>(child: ViewImageScreen(ViewImageAccountContent(imageOwner, image))),
         );
       },
       onLongPress: () {
@@ -197,15 +197,17 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
   }
 
   Future<void> showActionDialog(AccountId account, ContentId contentId, int index) {
-    return showDialog(
+    final pageKey = PageKey();
+    return MyNavigator.showDialog(
       context: context,
+      pageKey: pageKey,
       builder: (BuildContext context) {
         return SimpleDialog(
           title: const Text("Select action"),
           children: <Widget>[
             SimpleDialogOption(
               onPressed: () {
-                Navigator.pop(context);
+                MyNavigator.removePage(context, pageKey);
                 showConfirmDialog(
                   context,
                   context.strings.moderate_images_screen_reject_image_dialog_title,
@@ -223,7 +225,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
             ),
             SimpleDialogOption(
               onPressed: () {
-                Navigator.pop(context);
+                MyNavigator.removePage(context, pageKey);
                 showInfoDialog(context, "Account ID\n\n${account.accountId}\n\nContent ID\n\n${contentId.contentId}");
               },
               child: const Text("Show info"),

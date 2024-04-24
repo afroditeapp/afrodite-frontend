@@ -5,6 +5,7 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:image_picker/image_picker.dart";
 import "package:logging/logging.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
+import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/model/freezed/logic/account/initial_setup.dart";
 import "package:pihka_frontend/ui_utils/camera_screen.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
@@ -15,50 +16,50 @@ var log = Logger("InitialSetupWidget");
 // TODO: save initial setup values, so that it will be possible to restore state
 //       if system kills the app when selecting profile photo
 
-class InitialSetupScreenOld extends RootScreen {
-  const InitialSetupScreenOld({Key? key}) : super(key: key);
+// class InitialSetupScreenOld extends RootScreen {
+//   const InitialSetupScreenOld({Key? key}) : super(key: key);
 
-  @override
-  Widget buildRootWidget(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Setup your new account"),
-          actions: [
-            // TODO: Hide this from release build
-            IconButton(
-              icon: const Icon(Icons.skip_next),
-              onPressed: () {
-                context.read<InitialSetupBloc>().add(CreateDebugAdminAccount());
-              },
-            ),],
-        ),
-        body: BlocListener<InitialSetupBloc, InitialSetupData>(
-          listener: (context, state) {
-            if (state.sendingInProgress && !Navigator.canPop(context)) {
-              showDialog<void>(context: context, barrierDismissible: false, builder: (context) {
-                return WillPopScope(
-                  onWillPop: () async => false,
-                  child: const AlertDialog(
-                    title: Text("Sending in progress..."),
-                    content: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      CircularProgressIndicator(),
-                    ]),
-                    actions: [],
-                  ),
-                );
-              });
-            } else if (!state.sendingInProgress && Navigator.canPop(context)) {
-              Navigator.pop(context);
-              // if (state.sendError != null) {
-              //   showSnackBar(state.sendError ?? "");
-              // }
-            }
-          },
-          child: const InitialSetupWidget(),
-        ),
-      );
-  }
-}
+//   @override
+//   Widget buildRootWidget(BuildContext context) {
+//     return Scaffold(
+//         appBar: AppBar(
+//           title: const Text("Setup your new account"),
+//           actions: [
+//             // TODO: Hide this from release build
+//             IconButton(
+//               icon: const Icon(Icons.skip_next),
+//               onPressed: () {
+//                 context.read<InitialSetupBloc>().add(CreateDebugAdminAccount());
+//               },
+//             ),],
+//         ),
+//         body: BlocListener<InitialSetupBloc, InitialSetupData>(
+//           listener: (context, state) {
+//             if (state.sendingInProgress && !MyNavigator.canPop(context)) {
+//               showDialog<void>(context: context, barrierDismissible: false, builder: (context) {
+//                 return WillPopScope(
+//                   onWillPop: () async => false,
+//                   child: const AlertDialog(
+//                     title: Text("Sending in progress..."),
+//                     content: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+//                       CircularProgressIndicator(),
+//                     ]),
+//                     actions: [],
+//                   ),
+//                 );
+//               });
+//             } else if (!state.sendingInProgress && MyNavigator.canPop(context)) {
+//               MyNavigator.pop(context);
+//               // if (state.sendError != null) {
+//               //   showSnackBar(state.sendError ?? "");
+//               // }
+//             }
+//           },
+//           child: const InitialSetupWidget(),
+//         ),
+//       );
+//   }
+// }
 
 class InitialSetupWidget extends StatefulWidget {
   const InitialSetupWidget({super.key});
@@ -247,12 +248,9 @@ class _InitialSetupWidgetState extends State<InitialSetupWidget> {
 
   Step createTakeSelfieStep(int id, InitialSetupData state) {
     Widget cameraButton = ElevatedButton.icon(label: Text("Camera"), icon: Icon(Icons.camera_alt), onPressed: () async {
-      final image = await Navigator.push<XFile?>(
+      final image = await MyNavigator.push<XFile?>(
           context,
-          MaterialPageRoute<XFile?>(builder: (_) {
-            CameraScreen camera = CameraScreen();
-            return camera;
-          }),
+          MaterialPage<XFile?>(child: CameraScreen()),
       );
       setState(() {
         // Update to display current image

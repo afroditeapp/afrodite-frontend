@@ -65,11 +65,11 @@ class _AskProfileAttributesState extends State<AskProfileAttributes> {
 
         // Zero sized widgets
         ProgressDialogOpener<ProfileAttributesBloc, AttributesData>(
-          dialogVisibilityGetter: (context, state) =>
+          dialogVisibilityGetter: (state) =>
             state.refreshState is AttributeRefreshLoading,
         ),
         ProgressDialogOpener<InitialSetupBloc, InitialSetupData>(
-          dialogVisibilityGetter: (context, state) =>
+          dialogVisibilityGetter: (state) =>
             state.sendingInProgress,
         ),
       ],

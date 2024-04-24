@@ -2,40 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/assets.dart';
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui_utils/loading_dialog.dart';
 
 void showAppAboutDialog(BuildContext context) {
   // TODO(prod): Finish about dialog information
   const double ICON_SIZE = 80.0;
-  showAboutDialog(
+
+  // TODO: Test about dialog with notification related navigation.
+
+  // About dialog uses root navigator as there is navigation related to
+  // viewing licenses.
+  showDialog<void>(
     context: context,
-    applicationName: context.strings.app_name,
-    applicationVersion: "0.1.0",
-    applicationIcon: Image.asset(
-      ImageAsset.appLogo.path,
-      width: ICON_SIZE,
-      height: ICON_SIZE,
+    builder: (context) => AboutDialog(
+      applicationName: context.strings.app_name,
+      applicationVersion: "0.1.0",
+      applicationIcon: Image.asset(
+        ImageAsset.appLogo.path,
+        width: ICON_SIZE,
+        height: ICON_SIZE,
+      ),
+      applicationLegalese: "© 2024 Pihka",
     ),
-    applicationLegalese: "© 2024 Pihka",
   );
 }
 
 Future<bool?> showConfirmDialog(BuildContext context, String titleText, {String? details}) {
-  return showDialog<bool>(
+  final pageKey = PageKey();
+  return MyNavigator.showDialog<bool>(
     context: context,
+    pageKey: pageKey,
     builder: (context) => AlertDialog(
       title: Text(titleText),
       content: details != null ? Text(details) : null,
       actions: <Widget>[
         TextButton(
           onPressed: () {
-            Navigator.pop(context, false);
+            MyNavigator.removePage(context, pageKey, false);
           },
           child: Text(context.strings.generic_cancel)
         ),
         TextButton(
           onPressed: () {
-            Navigator.pop(context, true);
+            MyNavigator.removePage(context, pageKey, true);
           },
           child: Text(context.strings.generic_ok)
         )
@@ -52,21 +63,23 @@ Future<void> showConfirmDialogAdvanced(
     void Function()? onSuccess,
   }
 ) {
-  return showDialog<void>(
+  final pageKey = PageKey();
+  return MyNavigator.showDialog<void>(
     context: context,
+    pageKey: pageKey,
     builder: (context) => AlertDialog(
       title: Text(title),
       content: details != null ? Text(details) : null,
       actions: <Widget>[
         TextButton(
           onPressed: () {
-            Navigator.pop(context, null);
+            MyNavigator.removePage(context, pageKey);
           },
           child: Text(context.strings.generic_cancel)
         ),
         TextButton(
           onPressed: () {
-            Navigator.pop(context, null);
+            MyNavigator.removePage(context, pageKey);
             if (onSuccess != null) {
               onSuccess();
             }
@@ -79,14 +92,16 @@ Future<void> showConfirmDialogAdvanced(
 }
 
 Future<bool?> showInfoDialog(BuildContext context, String text) {
-  return showDialog<bool>(
+  final pageKey = PageKey();
+  return MyNavigator.showDialog<bool>(
     context: context,
+    pageKey: pageKey,
     builder: (context) => AlertDialog(
       content: SelectableText(text),
       actions: <Widget>[
         TextButton(
           onPressed: () {
-            Navigator.pop(context, false);
+            MyNavigator.removePage(context, pageKey, false);
           },
           child: Text(context.strings.generic_close)
         ),
@@ -95,39 +110,56 @@ Future<bool?> showInfoDialog(BuildContext context, String text) {
   );
 }
 
-void showLoadingDialogWithAutoDismiss<B extends StateStreamable<S>, S>(
+/// When dismiss action runs the dialog is already dismissed.
+Future<void> showLoadingDialogWithAutoDismiss<B extends StateStreamable<S>, S>(
   BuildContext context,
   {
     required bool Function(S) dialogVisibilityGetter,
-    required void Function() dismissAction,
+    required PageKey removeAlsoThisPage,
   }
-) {
-  showDialog<void>(
+) async {
+  final pageKey = PageKey();
+  return await MyNavigator.showDialog<void>(
     context: context,
-    barrierDismissible: false,
+    pageKey: pageKey,
+    barrierDismissable: false,
     builder: (context) {
-      return PopScope(
-        canPop: false,
-        child: AlertDialog(
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              BlocBuilder<B, S>(
-                buildWhen: (previous, current) =>
-                  dialogVisibilityGetter(previous) != dialogVisibilityGetter(current),
-                builder: (context, state) {
-                  if (!dialogVisibilityGetter(state)) {
-                    Future.delayed(Duration.zero, () {
-                      dismissAction();
-                    });
-                  }
-                  return commonLoadingDialogIndicator();
-                }
-              ),
-            ],
-          ),
-        ),
+      return _loadingDialogContent<B, S>(
+        context,
+        pageKey: pageKey,
+        dialogVisibilityGetter: dialogVisibilityGetter,
+        removeAlsoThisPage: removeAlsoThisPage,
       );
     }
+  );
+}
+
+Widget _loadingDialogContent<B extends StateStreamable<S>, S>(
+  BuildContext context,
+  {
+    required PageKey pageKey,
+    required bool Function(S) dialogVisibilityGetter,
+    required PageKey removeAlsoThisPage,
+  }
+) {
+  return PopScope(
+    canPop: false,
+    child: AlertDialog(
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          BlocBuilder<B, S>(
+            buildWhen: (previous, current) =>
+              dialogVisibilityGetter(previous) != dialogVisibilityGetter(current),
+            builder: (context, state) {
+              if (!dialogVisibilityGetter(state)) {
+                MyNavigator.removeMultiplePages(context, [removeAlsoThisPage, pageKey]);
+              }
+              return commonLoadingDialogIndicator();
+            }
+          ),
+        ],
+      ),
+    ),
   );
 }

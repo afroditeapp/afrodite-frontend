@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/ui/initial_setup/profile_pictures.dart';
@@ -17,9 +18,9 @@ import 'package:pihka_frontend/utils/camera.dart';
 Future<RetryInitialSetupImages?> openRetryInitialSetupImages(BuildContext context) async {
   final initialSetupBloc = context.read<InitialSetupBloc>();
   final profilePicturesBloc = context.read<ProfilePicturesBloc>();
-  return await Navigator.push(
+  return await MyNavigator.push(
     context,
-    MaterialPageRoute<RetryInitialSetupImages>(builder: (_) => RetrySecuritySelfieScreen(
+    MaterialPage<RetryInitialSetupImages>(child: RetrySecuritySelfieScreen(
       initialSetupBloc: initialSetupBloc,
       profilePicturesBloc: profilePicturesBloc,
     )),
@@ -60,9 +61,9 @@ class _RetrySecuritySelfieScreenState extends State<RetrySecuritySelfieScreen> {
           if (selfie != null) {
             return () async {
               CameraManager.getInstance().sendCmd(CloseCmd());
-              final imgStateList = await Navigator.push(context, MaterialPageRoute<List<ImgState>>(builder: (_) => const RetryProfilePicturesScreen()));
+              final imgStateList = await MyNavigator.push(context, const MaterialPage<List<ImgState>>(child: RetryProfilePicturesScreen()));
               if (context.mounted && imgStateList != null) {
-                Navigator.pop(context, RetryInitialSetupImages(imgStateList, selfie.contentId));
+                MyNavigator.pop(context, RetryInitialSetupImages(imgStateList, selfie.contentId));
               }
             };
           } else {
@@ -104,7 +105,7 @@ class _RetryProfilePicturesScreen extends State<RetryProfilePicturesScreen> {
               final pictures = state.pictures();
               if (pictures[0] is ImageSelected) {
                 onPressed = () {
-                  Navigator.pop(context, pictures);
+                  MyNavigator.pop(context, pictures);
                 };
               }
 

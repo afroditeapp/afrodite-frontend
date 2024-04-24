@@ -6,6 +6,7 @@ import "package:flutter/material.dart";
 import "package:openapi/api.dart";
 
 import 'package:pihka_frontend/localizations.dart';
+import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/ui_utils/consts/corners.dart";
 import "package:pihka_frontend/ui_utils/image.dart";
 
@@ -49,7 +50,7 @@ class _CropImageScreenState extends State<CropImageScreen> {
         if (didPop) {
           return;
         }
-        Navigator.pop(context, calculateCropResults());
+        MyNavigator.pop(context, calculateCropResults());
       },
       child: Scaffold(
         appBar: AppBar(title: Text(context.strings.crop_image_screen_title)),

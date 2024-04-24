@@ -6,8 +6,10 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/assets.dart";
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/logic/account/demo_account.dart";
+import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/logic/sign_in_with.dart";
 import "package:pihka_frontend/model/freezed/logic/account/demo_account.dart";
+import "package:pihka_frontend/model/freezed/logic/main/navigator_state.dart";
 import "package:pihka_frontend/ui/login.dart";
 import "package:pihka_frontend/ui_utils/consts/colors.dart";
 import "package:pihka_frontend/ui_utils/loading_dialog.dart";
@@ -35,7 +37,7 @@ class LoginScreen extends RootScreen {
           Expanded(child: screenContent()),
           ProgressDialogOpener<DemoAccountBloc, DemoAccountBlocData>(
             dialogVisibilityGetter:
-              (_, state) => state.loginProgressVisible,
+              (state) => state.loginProgressVisible,
             loadingText:
               context.strings.login_screen_demo_account_login_progress_dialog,
           ),
@@ -62,7 +64,7 @@ class LoginScreen extends RootScreen {
             MenuItemButton(
               child: Text("Old login"),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute<void>(builder: (_) => LoginScreenOld()));
+                MyNavigator.push(context, MaterialPage<void>(child: LoginScreenOld()));
               },
             ),
             ...commonActionsWhenLoggedOut(context),
@@ -237,9 +239,10 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
     obscureText: true,
     getInitialValue: () => context.read<DemoAccountBloc>().state.password ?? "",
   );
-
-  return showDialog<DemoAccountCredentials?>(
+  final pageKey = PageKey();
+  return MyNavigator.showDialog<DemoAccountCredentials?>(
     context: context,
+    pageKey: pageKey,
     builder: (context) => AlertDialog(
       title: Text(context.strings.login_screen_demo_account_dialog_title),
       content: Column(
@@ -252,14 +255,15 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
       actions: <Widget>[
         TextButton(
           onPressed: () {
-            Navigator.pop(context, null);
+            MyNavigator.removePage(context, pageKey);
           },
           child: Text(context.strings.generic_cancel)
         ),
         TextButton(
           onPressed: () {
-            Navigator.pop(
+            MyNavigator.removePage(
               context,
+              pageKey,
               DemoAccountCredentials(
                 idField.controller.text,
                 passwordField.controller.text

@@ -5,6 +5,7 @@ import "package:flutter/material.dart";
 import "package:openapi/api.dart";
 
 import 'package:pihka_frontend/localizations.dart';
+import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/ui_utils/image.dart";
 
 sealed class ViewImageScreenMode {}
@@ -19,10 +20,10 @@ class ViewImageFileContent extends ViewImageScreenMode {
 }
 
 void openViewImageScreenForAccountImage(BuildContext context, AccountId accountId, ContentId contentId) {
-  Navigator.push(
+  MyNavigator.push(
     context,
-    MaterialPageRoute<void>(
-      builder: (_) => ViewImageScreen(ViewImageAccountContent(accountId, contentId))
+    MaterialPage<void>(
+      child: ViewImageScreen(ViewImageAccountContent(accountId, contentId))
     )
   );
 }

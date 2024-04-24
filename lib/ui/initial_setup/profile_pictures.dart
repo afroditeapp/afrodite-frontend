@@ -6,10 +6,12 @@ import "package:path/path.dart";
 import "package:pihka_frontend/data/image_cache.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
+import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/logic/media/current_moderation_request.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/logic/media/profile_pictures.dart";
 import "package:pihka_frontend/logic/media/select_content.dart";
+import "package:pihka_frontend/model/freezed/logic/main/navigator_state.dart";
 import "package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart";
 import "package:pihka_frontend/ui/initial_setup/profile_basic_info.dart";
 import "package:pihka_frontend/ui/normal/settings/media/select_content.dart";
@@ -39,7 +41,7 @@ class AskProfilePicturesScreen extends StatelessWidget {
               if (pictures[0] is ImageSelected) {
                 onPressed = () {
                   context.read<InitialSetupBloc>().add(SetProfileImages(pictures));
-                  Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const AskProfileBasicInfoScreen()));
+                  MyNavigator.push(context, MaterialPage<void>(child: const AskProfileBasicInfoScreen()));
                 };
               }
 
@@ -325,10 +327,10 @@ Future<void> openEditThumbnail(
   if (!context.mounted) {
     return;
   }
-  final cropResults = await Navigator.push<CropResults>(
+  final cropResults = await MyNavigator.push<CropResults>(
     context,
-    MaterialPageRoute<CropResults>(
-      builder: (_) =>
+    MaterialPage<CropResults>(
+      child:
         CropImageScreen(
           CropImageFileContent(
               img.accountId,
@@ -427,7 +429,7 @@ class AddPicture extends StatelessWidget {
         title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_security_selfie_title),
         onTap: () {
           context.read<ProfilePicturesBloc>().add(AddProcessedImage(InitialSetupSecuritySelfie(), imgIndex));
-          Navigator.pop(context, null);
+          MyNavigator.pop(context, null);
         },
       );
     } else {
@@ -440,7 +442,7 @@ class AddPicture extends StatelessWidget {
   void openActionDialog(BuildContext context) async {
     final bloc = context.read<ProfilePicturesBloc>();
     final selectContentBloc = context.read<SelectContentBloc>();
-    final selectedImg = await Navigator.push(context, MaterialPageRoute<AccountImageId?>(builder: (_) => SelectContentPage(
+    final selectedImg = await MyNavigator.push(context, MaterialPage<AccountImageId?>(child: SelectContentPage(
       selectContentBloc: selectContentBloc,
     )));
     if (selectedImg != null) {
@@ -456,8 +458,10 @@ void openSelectPictureDialog(
     required int serverSlotIndex,
   }
 ) {
-  showDialog<void>(
+  final pageKey = PageKey();
+  MyNavigator.showDialog<void>(
     context: context,
+    pageKey: pageKey,
     builder: (context) => SimpleDialog(
       title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_dialog_title),
         children: [
@@ -466,7 +470,7 @@ void openSelectPictureDialog(
             title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_from_gallery_title),
             onTap: () async {
               final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
-              Navigator.pop(context, null);
+              MyNavigator.removePage(context, pageKey, null);
               // TODO: Read image on client side and show error if
               // image is not JPEG.
               // TODO: Consider resizing image on client side?
@@ -486,7 +490,7 @@ void openSelectPictureDialog(
             title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_take_new_picture_title),
             onTap: () async {
               final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
-              Navigator.pop(context, null);
+              MyNavigator.removePage(context, pageKey, null);
               final image  = await ImagePicker().pickImage(
                 source: ImageSource.camera,
                 requestFullMetadata: false,

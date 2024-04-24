@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/settings/privacy_settings.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/settings/privacy_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/blocked_profiles.dart';
@@ -13,9 +15,11 @@ import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
 import 'package:pihka_frontend/utils/api.dart';
 
 class PrivacySettingsScreen extends StatefulWidget {
+  final PageKey pageKey;
   final PrivacySettingsBloc privacySettingsBloc;
   final AccountBloc accountBloc;
   const PrivacySettingsScreen({
+    required this.pageKey,
     required this.privacySettingsBloc,
     required this.accountBloc,
     super.key
@@ -38,7 +42,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
   void validateAndSaveData(BuildContext context) {
     final state = widget.privacySettingsBloc.state;
     if (state.currentVisibility == state.initialVisibility) {
-      Navigator.pop(context);
+      MyNavigator.pop(context);
       return;
     }
     widget.privacySettingsBloc.add(SaveSettings(state.currentVisibility));
@@ -57,6 +61,8 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
       child: Scaffold(
         appBar: AppBar(title: Text(context.strings.privacy_settings_screen_title)),
         body: updateStateHandler<PrivacySettingsBloc, PrivacySettingsData>(
+          context: context,
+          pageKey: widget.pageKey,
           child: content(context),
         ),
       ),
@@ -78,7 +84,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
 
   Widget blockedProfiles() {
     return Setting.createSetting(Icons.block, context.strings.blocked_profiles_screen_title, () =>
-      Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const BlockedProfilesScreen()))
+      MyNavigator.push(context, MaterialPage<void>(child: const BlockedProfilesScreen()))
     ).toListTile();
   }
 

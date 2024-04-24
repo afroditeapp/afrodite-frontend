@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/profile/attributes.dart';
 import 'package:pihka_frontend/logic/profile/edit_profile_filtering_settings.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/attributes.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/edit_profile_filtering_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/profile_filtering_settings.dart';
@@ -15,9 +17,11 @@ import 'package:pihka_frontend/ui/utils/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
 
 class ProfileFilteringSettingsPage extends StatefulWidget {
+  final PageKey pageKey;
   final ProfileFilteringSettingsBloc profileFilteringSettingsBloc;
   final EditProfileFilteringSettingsBloc editProfileFilteringSettingsBloc;
   const ProfileFilteringSettingsPage({
+    required this.pageKey,
     required this.profileFilteringSettingsBloc,
     required this.editProfileFilteringSettingsBloc,
     super.key,
@@ -66,6 +70,8 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       child: Scaffold(
         appBar: AppBar(title: Text(context.strings.profile_filtering_settings_screen_title)),
         body: updateStateHandler<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+          context: context,
+          pageKey: widget.pageKey,
           child: filteringSettingsWidget(context),
         ),
       ),
@@ -158,9 +164,9 @@ class EditAttributeFilters extends StatelessWidget {
           a: a,
           isEnabled: isEnabled,
           onStartEditor: () {
-            Navigator.push(
+            MyNavigator.push(
               context,
-              MaterialPageRoute<void>(builder: (_) => EditProfileAttributeFilterScreen(a: a))
+              MaterialPage<void>(child: EditProfileAttributeFilterScreen(a: a)),
             );
           }
         )

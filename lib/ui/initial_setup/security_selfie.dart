@@ -6,6 +6,7 @@ import "package:image_picker/image_picker.dart";
 import "package:logging/logging.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
+import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/model/freezed/logic/account/initial_setup.dart";
 import "package:pihka_frontend/model/freezed/logic/media/image_processing.dart";
@@ -40,7 +41,7 @@ class AskSecuritySelfieScreen extends StatelessWidget {
           if (selfie != null) {
             return () {
               CameraManager.getInstance().sendCmd(CloseCmd());
-              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const AskProfilePicturesScreen()));
+              MyNavigator.push(context, MaterialPage<void>(child: const AskProfilePicturesScreen()));
             };
           } else {
             return null;
@@ -142,10 +143,10 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
               Material(
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
+                    MyNavigator.push(
                       context,
-                      MaterialPageRoute<void>(
-                        builder: (_) => ViewImageScreen(ViewImageAccountContent(image.accountId, image.contentId))
+                      MaterialPage<void>(
+                        child: ViewImageScreen(ViewImageAccountContent(image.accountId, image.contentId))
                       )
                     );
                   },
@@ -180,11 +181,9 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
           return;
         }
 
-        final image = await Navigator.push<XFile?>(
+        final image = await MyNavigator.push<XFile?>(
           context,
-          MaterialPageRoute<XFile?>(builder: (_) {
-            return CameraScreen(controller: controller);
-          }),
+          MaterialPage<XFile?>(child: CameraScreen(controller: controller)),
         );
 
         if (image != null) {

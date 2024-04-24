@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/profile/view_profiles.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/view_profiles.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
@@ -34,13 +35,9 @@ void openProfileView(
   }
 ) {
   context.read<ViewProfileBloc>().add(SetProfileView(profile));
-  final Route<void> route;
-  route = MaterialPageRoute<void>(
-    builder: (_) => ViewProfilePage(initialProfile: profile, noAction: noAction)
-  );
-  Navigator.push(
+  MyNavigator.push(
     context,
-    route,
+    MaterialPage<void>(child: ViewProfilePage(initialProfile: profile, noAction: noAction)),
   );
 }
 
@@ -215,13 +212,13 @@ class ViewProfilePage extends StatelessWidget {
           context,
           context.strings.view_profile_screen_profile_not_available_dialog_description
         );
-        if (context.mounted && Navigator.canPop(context)) {
-          Navigator.pop(context);
+        if (context.mounted && MyNavigator.canPop(context)) {
+          MyNavigator.pop(context);
         }
       } else if (state.isBlocked) {
         showSnackBar(context.strings.view_profile_screen_block_action_successful);
-        if (context.mounted && Navigator.canPop(context)) {
-          Navigator.pop(context);
+        if (context.mounted && MyNavigator.canPop(context)) {
+          MyNavigator.pop(context);
         }
       }
     });

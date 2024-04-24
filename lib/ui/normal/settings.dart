@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/settings/privacy_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin.dart';
 import 'package:pihka_frontend/ui/normal/settings/debug.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
@@ -44,19 +46,25 @@ class _SettingsViewState extends State<SettingsView> {
       builder: (context, state) {
         List<Setting> settings = [
           Setting.createSetting(Icons.account_circle_rounded, context.strings.view_profile_screen_my_profile_title, () =>
-            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const MyProfileScreen()))
+            MyNavigator.push(context, MaterialPage<void>(child: const MyProfileScreen()))
           ),
           Setting.createSetting(Icons.lock_rounded, context.strings.privacy_settings_screen_title, () {
             final privacySettingsBloc = context.read<PrivacySettingsBloc>();
             final accountBloc = context.read<AccountBloc>();
-            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => PrivacySettingsScreen(
-              privacySettingsBloc: privacySettingsBloc,
-              accountBloc: accountBloc,
-            )));
+            final pageKey = PageKey();
+            MyNavigator.pushWithKey(
+              context,
+              MaterialPage<void>(child: PrivacySettingsScreen(
+                pageKey: pageKey,
+                privacySettingsBloc: privacySettingsBloc,
+                accountBloc: accountBloc,
+              )),
+              pageKey,
+            );
           }),
           Setting.createSetting(Icons.image_rounded, context.strings.current_moderation_request_screen_title, () {
               final currentModerationRequestBloc = context.read<CurrentModerationRequestBloc>();
-              Navigator.push(context, MaterialPageRoute<void>(builder: (_) =>
+              MyNavigator.push(context, MaterialPage<void>(child:
                 CurrentModerationRequestScreen(currentModerationRequestBloc: currentModerationRequestBloc)
               ));
             }
@@ -66,13 +74,13 @@ class _SettingsViewState extends State<SettingsView> {
         // TODO(prod): Remove/hide admin settings from production build?
         if (state.capabilities.adminSettingsVisible()) {
           settings.add(Setting.createSetting(Icons.admin_panel_settings, context.strings.admin_settings_title, () =>
-            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const AdminSettingsPage()))
+            MyNavigator.push(context, MaterialPage<void>(child: const AdminSettingsPage()))
           ));
         }
 
         // TODO(prod): Remove/hide debug settings
         settings.add(Setting.createSetting(Icons.bug_report_rounded, "Debug", () =>
-          Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const DebugSettingsPage()))
+          MyNavigator.push(context, MaterialPage<void>(child: const DebugSettingsPage()))
         ));
 
         return SingleChildScrollView(

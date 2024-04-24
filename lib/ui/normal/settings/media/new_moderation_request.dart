@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
 import 'package:pihka_frontend/logic/media/new_moderation_request.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
@@ -43,14 +44,14 @@ class _NewModerationRequestScreenState extends State<NewModerationRequestScreen>
         return;
       }
       if (accepted == true) {
-        Navigator.of(context).pop(imgs);
+        MyNavigator.pop(context, imgs);
       } else {
         if (popOnCancel) {
-          Navigator.of(context).pop();
+          MyNavigator.pop(context);
         }
       }
     } else {
-      Navigator.of(context).pop();
+      MyNavigator.pop(context);
     }
   }
 

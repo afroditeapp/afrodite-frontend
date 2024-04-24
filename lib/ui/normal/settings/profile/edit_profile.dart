@@ -6,10 +6,12 @@ import 'package:openapi/api.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/logic/profile/attributes.dart';
 import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
 import 'package:pihka_frontend/logic/profile/my_profile.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/attributes.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/edit_my_profile.dart';
@@ -33,10 +35,12 @@ import 'package:pihka_frontend/utils/profile_entry.dart';
 // other blocs should also be checked.
 
 class EditProfilePage extends StatefulWidget {
+  final PageKey pageKey;
   final ProfileEntry initialProfile;
   final ProfilePicturesBloc profilePicturesBloc;
   final EditMyProfileBloc editMyProfileBloc;
   const EditProfilePage({
+    required this.pageKey,
     required this.initialProfile,
     required this.profilePicturesBloc,
     required this.editMyProfileBloc,
@@ -123,6 +127,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
       child: Scaffold(
         appBar: AppBar(title: Text(context.strings.edit_profile_screen_title)),
         body: updateStateHandler<MyProfileBloc, MyProfileData>(
+          context: context,
+          pageKey: widget.pageKey,
           child: edit(context),
         ),
       ),
@@ -226,9 +232,9 @@ class EditAttributes extends StatelessWidget {
         EditAttributeRow(
           a: a,
           onStartEditor: () {
-            Navigator.push(
+            MyNavigator.push(
               context,
-              MaterialPageRoute<void>(builder: (_) => EditProfileAttributeScreen(a: a))
+              MaterialPage<void>(child: EditProfileAttributeScreen(a: a))
             );
           }
         )

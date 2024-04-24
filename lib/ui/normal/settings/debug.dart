@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/ui/normal/chat/debug_page.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
 
@@ -22,11 +23,11 @@ class DebugSettingsPage extends StatelessWidget {
     List<Setting> settings = [];
 
     settings.add(Setting.createSetting(Icons.chat_bubble_outline_rounded, "Chat without messages", () =>
-      Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ChatViewDebuggerPage(AccountId(accountId: ""))))
+      MyNavigator.push(context, MaterialPage<void>(child: ChatViewDebuggerPage(AccountId(accountId: ""))))
     ));
 
     settings.add(Setting.createSetting(Icons.chat_bubble_rounded, "Chat with messages", () =>
-      Navigator.push(context, MaterialPageRoute<void>(builder: (_) => ChatViewDebuggerPage(AccountId(accountId: ""), initialMsgCount: 5)))
+      MyNavigator.push(context, MaterialPage<void>(child: ChatViewDebuggerPage(AccountId(accountId: ""), initialMsgCount: 5)))
     ));
 
     settings.add(Setting.createSetting(Icons.notification_add, "Test notification", () =>

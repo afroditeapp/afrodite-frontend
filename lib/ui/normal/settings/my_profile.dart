@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
 import 'package:pihka_frontend/logic/profile/my_profile.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/ui/normal/settings/location.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
@@ -24,7 +26,7 @@ class MyProfileScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () =>
-              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const LocationScreen())),
+              MyNavigator.push(context, const MaterialPage<void>(child: LocationScreen())),
             icon: const Icon(Icons.location_on),
             tooltip: context.strings.profile_location_screen_title,
           )
@@ -36,14 +38,19 @@ class MyProfileScreen extends StatelessWidget {
           final profile = state.profile;
           void Function()? onPressed;
           if (profile != null) {
-            onPressed = () => Navigator.push(
-              context,
-              MaterialPageRoute<void>(builder: (_) => EditProfilePage(
-                initialProfile: profile,
-                profilePicturesBloc: context.read<ProfilePicturesBloc>(),
-                editMyProfileBloc: context.read<EditMyProfileBloc>(),
-              ))
-            );
+            onPressed = () {
+              final pageKey = PageKey();
+              MyNavigator.pushWithKey(
+                context,
+                MaterialPage<void>(child: EditProfilePage(
+                  pageKey: pageKey,
+                  initialProfile: profile,
+                  profilePicturesBloc: context.read<ProfilePicturesBloc>(),
+                  editMyProfileBloc: context.read<EditMyProfileBloc>(),
+                )),
+                pageKey,
+              );
+            };
           }
 
           return FloatingActionButton(

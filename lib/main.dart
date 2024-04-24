@@ -20,6 +20,7 @@ import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/account_details.dart';
 import 'package:pihka_frontend/logic/account/demo_account.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/app/notification_permission.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/logic/media/content.dart';
@@ -41,8 +42,8 @@ import 'package:pihka_frontend/logic/settings/privacy_settings.dart';
 import 'package:pihka_frontend/logic/sign_in_with.dart';
 
 import 'package:pihka_frontend/logic/app/main_state.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/storage/encryption.dart';
-import 'package:pihka_frontend/ui/splash_screen.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -86,6 +87,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
         BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
         BlocProvider(create: (_) => NotificationPermissionBloc()),
+        BlocProvider(create: (_) => NavigatorStateBloc()),
 
         // Main UI
         BlocProvider(create: (_) => ViewProfileBloc()),
@@ -144,13 +146,49 @@ class MyApp extends StatelessWidget {
           },
         ),
       ),
-      home: const SplashScreen(),
+      home: const AppNavigator(),
       scaffoldMessengerKey: globalScaffoldMessengerKey,
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
+class AppNavigator extends StatelessWidget {
+  const AppNavigator({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<NavigatorStateBloc, NavigatorStateData>(
+        builder: (context, state) {
+          return PopScope(
+            canPop: state.pages.length <= 1,
+            onPopInvoked: (didPop) {
+              if (didPop) {
+                return;
+              }
+              context.read<NavigatorStateBloc>().add(PopPage(null));
+            },
+            child: createNavigator(context, state),
+          );
+        }
+      );
+  }
+
+  Widget createNavigator(BuildContext context, NavigatorStateData state) {
+    return Navigator(
+      pages: state.getPages(),
+      onPopPage: (route, result) {
+        if (!route.didPop(result)) {
+          return false;
+        }
+
+        context.read<NavigatorStateBloc>().add(PopPage(null));
+
+        return true;
+      }
+    );
+  }
+}
 
 // TODO(prod); Remove bloc state change printing
 class DebugObserver extends BlocObserver {

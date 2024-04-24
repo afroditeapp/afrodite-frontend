@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin/configure_backend.dart';
@@ -32,33 +33,33 @@ class AdminSettingsPage extends StatelessWidget {
 
         if (state.capabilities.adminModerateImages) {
           settings.add(Setting.createSetting(Icons.image, "Moderate images (initial moderation)", () =>
-            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ModerateImagesPage(queueType: ModerationQueueType.initialMediaModeration)),)
+            MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.initialMediaModeration)),)
           ));
           settings.add(Setting.createSetting(Icons.image, "Moderate images (normal)", () =>
-            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ModerateImagesPage(queueType: ModerationQueueType.mediaModeration)),)
+            MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.mediaModeration)),)
           ));
         }
         if (state.capabilities.adminServerMaintenanceRebootBackend ||
             state.capabilities.adminServerMaintenanceSaveBackendConfig ||
             state.capabilities.adminServerMaintenanceViewBackendConfig) {
           settings.add(Setting.createSetting(Icons.settings, "Configure backend", () =>
-            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ConfigureBackendPage()),)
+            MyNavigator.push(context, MaterialPage<void>(child: const ConfigureBackendPage()),)
           ));
         }
         if (state.capabilities.adminServerMaintenanceViewInfo) {
           settings.add(Setting.createSetting(Icons.info_outline, "Server system info", () =>
-            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ServerSystemInfoPage()),)
+            MyNavigator.push(context, MaterialPage<void>(child: const ServerSystemInfoPage()),)
           ));
         }
         if (state.capabilities.adminServerMaintenanceViewInfo &&
             state.capabilities.adminServerMaintenanceUpdateSoftware) {
           settings.add(Setting.createSetting(Icons.system_update_alt, "Server software update", () =>
-            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ServerSoftwareUpdatePage()),)
+            MyNavigator.push(context, MaterialPage<void>(child: const ServerSoftwareUpdatePage()),)
           ));
         }
         if (state.capabilities.adminServerMaintenanceViewInfo) {
           settings.add(Setting.createSetting(Icons.query_stats, "View server perf data", () =>
-            Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const ViewPerfDataPage()))
+            MyNavigator.push(context, MaterialPage<void>(child: const ViewPerfDataPage()))
           ));
         }
 

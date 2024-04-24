@@ -4,10 +4,12 @@ import "package:openapi/api.dart";
 import "package:pihka_frontend/data/notification_manager.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/account.dart";
+import "package:pihka_frontend/logic/app/navigator_state.dart";
 
 import "package:pihka_frontend/logic/app/notification_permission.dart";
 import "package:pihka_frontend/logic/media/content.dart";
 import "package:pihka_frontend/model/freezed/logic/account/account.dart";
+import "package:pihka_frontend/model/freezed/logic/main/navigator_state.dart";
 import "package:pihka_frontend/model/freezed/logic/media/content.dart";
 import "package:pihka_frontend/ui/normal/chat.dart";
 import "package:pihka_frontend/ui/normal/likes.dart";
@@ -101,7 +103,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () => Navigator.push(context, MaterialPageRoute<void>(builder: (_) => const MyProfileScreen()))
+                    onTap: () => MyNavigator.push(context, MaterialPage<void>(child: const MyProfileScreen()))
                   ),
                 )
               );
@@ -155,10 +157,12 @@ class _NotificationPermissionDialogOpenerState extends State<NotificationPermiss
 
   void openNotificationPermissionDialog(BuildContext context) {
     final bloc = context.read<NotificationPermissionBloc>();
-    Future.delayed(Duration.zero, () => showDialog<bool>(
+    final pageKey = PageKey();
+    Future.delayed(Duration.zero, () => MyNavigator.showDialog<bool>(
       context: context,
+      pageKey: pageKey,
       builder: (context) {
-        return const NotificationPermissionDialog();
+        return NotificationPermissionDialog(pageKey: pageKey);
       },
     ).then((value) {
       if (value == true) {
@@ -171,7 +175,8 @@ class _NotificationPermissionDialogOpenerState extends State<NotificationPermiss
 }
 
 class NotificationPermissionDialog extends StatelessWidget {
-  const NotificationPermissionDialog({super.key});
+  final PageKey pageKey;
+  const NotificationPermissionDialog({required this.pageKey, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -197,13 +202,13 @@ class NotificationPermissionDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.pop(context, false);
+            MyNavigator.removePage(context, pageKey, false);
           },
           child: Text(context.strings.generic_no),
         ),
         TextButton(
           onPressed: () {
-            Navigator.pop(context, true);
+            MyNavigator.removePage(context, pageKey, true);
           },
           child: Text(context.strings.generic_yes),
         ),

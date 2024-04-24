@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/media/new_moderation_request.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
@@ -250,10 +251,10 @@ void _openNewModerationRequestInitialOrAfter(BuildContext context) async {
 
 Future<List<ContentId>?> openNewModerationRequest(BuildContext context) async {
   final bloc = context.read<NewModerationRequestBloc>();
-  final list = await Navigator.push(
+  final list = await MyNavigator.push(
     context,
-    MaterialPageRoute<List<ContentId>?>(
-      builder: (_) => NewModerationRequestScreen(newModerationRequestBloc: bloc)
+    MaterialPage<List<ContentId>?>(
+      child: NewModerationRequestScreen(newModerationRequestBloc: bloc)
     )
   );
 

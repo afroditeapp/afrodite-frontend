@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
 import 'package:pihka_frontend/ui/initial_setup/profile_attributes.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
@@ -44,7 +45,7 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
       }
     }
 
-    Navigator.pop(context);
+    MyNavigator.pop(context);
   }
 
   @override

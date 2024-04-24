@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
+import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/model/freezed/logic/account/initial_setup.dart";
 import "package:pihka_frontend/ui/initial_setup/search_settings.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
@@ -17,7 +18,7 @@ class AskGenderScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           if (state.gender != null) {
             return () {
-              Navigator.push(context, MaterialPageRoute<void>(builder: (_) => AskSearchSettingsScreen()));
+              MyNavigator.push(context, MaterialPage<void>(child: AskSearchSettingsScreen()));
             };
           } else {
             return null;

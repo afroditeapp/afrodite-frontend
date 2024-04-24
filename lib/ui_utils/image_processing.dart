@@ -4,6 +4,7 @@ import "package:camera/camera.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/localizations.dart";
+import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/model/freezed/logic/media/image_processing.dart";
 import "package:pihka_frontend/ui_utils/image.dart";
@@ -46,10 +47,10 @@ Widget confirmDialogOpener<B extends Bloc<ImageProcessingEvent, ImageProcessingD
 Future<bool?> _confirmDialogForImage(BuildContext context, XFile image) async {
   Widget img = InkWell(
     onTap: () {
-      Navigator.push(
+      MyNavigator.push(
         context,
-        MaterialPageRoute<void>(
-          builder: (_) => ViewImageScreen(ViewImageFileContent(image))
+        MaterialPage<void>(
+          child: ViewImageScreen(ViewImageFileContent(image))
         )
       );
     },
@@ -62,13 +63,13 @@ Future<bool?> _confirmDialogForImage(BuildContext context, XFile image) async {
     actions: [
       TextButton(
         onPressed: () {
-          Navigator.pop(context, false);
+          MyNavigator.pop(context, false);
         },
         child: Text(context.strings.generic_cancel),
       ),
       TextButton(
         onPressed: () {
-          Navigator.pop(context, true);
+          MyNavigator.pop(context, true);
         },
         child: Text(context.strings.generic_continue),
       ),
@@ -83,7 +84,7 @@ Future<bool?> _confirmDialogForImage(BuildContext context, XFile image) async {
 
 Widget sendSecuritySelfieProgressDialogListener<B extends Bloc<ImageProcessingEvent, ImageProcessingData>>() {
   return ProgressDialogOpener<B, ImageProcessingData>(
-    dialogVisibilityGetter: (context, state) => state.processingState is SendingInProgress,
+    dialogVisibilityGetter: (state) => state.processingState is SendingInProgress,
     stateInfoBuilder: (context, state) {
       final selfieState = state.processingState;
       if (selfieState is SendingInProgress) {

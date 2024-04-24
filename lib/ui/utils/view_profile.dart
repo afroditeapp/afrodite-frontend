@@ -75,7 +75,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               const Padding(padding: EdgeInsets.all(8)),
               // Zero sized widgets
               ProgressDialogOpener<ProfileAttributesBloc, AttributesData>(
-                dialogVisibilityGetter: (context, state) =>
+                dialogVisibilityGetter: (state) =>
                   state.refreshState is AttributeRefreshLoading,
               ),
             ]

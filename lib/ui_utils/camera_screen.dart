@@ -7,6 +7,7 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:logging/logging.dart";
 import "package:pihka_frontend/localizations.dart";
+import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/ui_utils/dialog.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
@@ -131,7 +132,7 @@ class _CameraScreenState extends State<CameraScreen>
            showInfoDialog(context, initState.error.message)
             .then((_) {
               if (context.mounted) {
-                Navigator.pop(context, null);
+                MyNavigator.pop(context, null);
               }
             });
         });
@@ -251,7 +252,7 @@ class _CameraScreenState extends State<CameraScreen>
         }
         final file = await takePhoto(currentCamera);
         if (context.mounted) {
-          Future.delayed(Duration.zero, () => Navigator.pop(context, file));
+          Future.delayed(Duration.zero, () => MyNavigator.pop(context, file));
         }
       };
     }
