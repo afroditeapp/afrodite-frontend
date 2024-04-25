@@ -1,6 +1,7 @@
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
+import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
 
 part 'edit_search_settings.freezed.dart';
 
@@ -10,6 +11,7 @@ class EditSearchSettingsData with _$EditSearchSettingsData {
   factory EditSearchSettingsData({
     int? minAge,
     int? maxAge,
-    SearchGroups? searchGroups,
+    Gender? gender,
+    @Default(GenderSearchSettingsAll()) GenderSearchSettingsAll genderSearchSetting,
   }) = _EditSearchSettingsData;
 }

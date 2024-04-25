@@ -1,8 +1,9 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import 'package:pihka_frontend/database/database_manager.dart';
+import "package:pihka_frontend/model/freezed/logic/account/initial_setup.dart";
 import "package:pihka_frontend/model/freezed/logic/settings/edit_search_settings.dart";
-
+import "package:pihka_frontend/utils/api.dart";
 
 sealed class EditSearchSettingsEvent {}
 class SetInitialValues extends EditSearchSettingsEvent {
@@ -25,9 +26,13 @@ class UpdateMaxAge extends EditSearchSettingsEvent {
   final int? value;
   UpdateMaxAge(this.value);
 }
-class UpdateSearchGroups extends EditSearchSettingsEvent {
-  final SearchGroups value;
-  UpdateSearchGroups(this.value);
+class UpdateGender extends EditSearchSettingsEvent {
+  final Gender value;
+  UpdateGender(this.value);
+}
+class UpdateGenderSearchSettingAll extends EditSearchSettingsEvent {
+  final GenderSearchSettingsAll settings;
+  UpdateGenderSearchSettingAll(this.settings);
 }
 
 class EditSearchSettingsBloc extends Bloc<EditSearchSettingsEvent, EditSearchSettingsData> {
@@ -38,7 +43,8 @@ class EditSearchSettingsBloc extends Bloc<EditSearchSettingsEvent, EditSearchSet
       emit(EditSearchSettingsData(
         minAge: data.minAge,
         maxAge: data.maxAge,
-        searchGroups: data.searchGroups,
+        gender: data.searchGroups?.toGender(),
+        genderSearchSetting: data.searchGroups?.toGenderSearchSettingsAll() ?? const GenderSearchSettingsAll(),
       ));
     });
     on<UpdateMinAge>((data, emit) async {
@@ -47,8 +53,16 @@ class EditSearchSettingsBloc extends Bloc<EditSearchSettingsEvent, EditSearchSet
     on<UpdateMaxAge>((data, emit) async {
       emit(state.copyWith(maxAge: data.value));
     });
-    on<UpdateSearchGroups>((data, emit) async {
-      emit(state.copyWith(searchGroups: data.value));
+    on<UpdateGenderSearchSettingAll>((data, emit) async {
+      emit(state.copyWith(genderSearchSetting: data.settings));
+    });
+    on<UpdateGender>((data, emit) async {
+      emit(
+        state.copyWith(
+          gender: data.value,
+          genderSearchSetting: const GenderSearchSettingsAll(),
+        )
+      );
     });
   }
 }

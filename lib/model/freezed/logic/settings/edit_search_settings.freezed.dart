@@ -23,12 +23,14 @@ final _privateConstructorErrorEditSearchSettingsData = UnsupportedError(
 mixin _$EditSearchSettingsData {
   int? get minAge => throw _privateConstructorErrorEditSearchSettingsData;
   int? get maxAge => throw _privateConstructorErrorEditSearchSettingsData;
-  SearchGroups? get searchGroups => throw _privateConstructorErrorEditSearchSettingsData;
+  Gender? get gender => throw _privateConstructorErrorEditSearchSettingsData;
+  GenderSearchSettingsAll get genderSearchSetting => throw _privateConstructorErrorEditSearchSettingsData;
 
   EditSearchSettingsData copyWith({
     int? minAge,
     int? maxAge,
-    SearchGroups? searchGroups,
+    Gender? gender,
+    GenderSearchSettingsAll? genderSearchSetting,
   }) => throw _privateConstructorErrorEditSearchSettingsData;
 }
 
@@ -37,17 +39,21 @@ abstract class _EditSearchSettingsData extends EditSearchSettingsData {
   factory _EditSearchSettingsData({
     int? minAge,
     int? maxAge,
-    SearchGroups? searchGroups,
+    Gender? gender,
+    GenderSearchSettingsAll genderSearchSetting,
   }) = _$EditSearchSettingsDataImpl;
   _EditSearchSettingsData._() : super._();
 }
 
 /// @nodoc
 class _$EditSearchSettingsDataImpl extends _EditSearchSettingsData with DiagnosticableTreeMixin {
+  static const GenderSearchSettingsAll _genderSearchSettingDefaultValue = GenderSearchSettingsAll();
+  
   _$EditSearchSettingsDataImpl({
     this.minAge,
     this.maxAge,
-    this.searchGroups,
+    this.gender,
+    this.genderSearchSetting = _genderSearchSettingDefaultValue,
   }) : super._();
 
   @override
@@ -55,11 +61,13 @@ class _$EditSearchSettingsDataImpl extends _EditSearchSettingsData with Diagnost
   @override
   final int? maxAge;
   @override
-  final SearchGroups? searchGroups;
+  final Gender? gender;
+  @override
+  final GenderSearchSettingsAll genderSearchSetting;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditSearchSettingsData(minAge: $minAge, maxAge: $maxAge, searchGroups: $searchGroups)';
+    return 'EditSearchSettingsData(minAge: $minAge, maxAge: $maxAge, gender: $gender, genderSearchSetting: $genderSearchSetting)';
   }
 
   @override
@@ -69,7 +77,8 @@ class _$EditSearchSettingsDataImpl extends _EditSearchSettingsData with Diagnost
       ..add(DiagnosticsProperty('type', 'EditSearchSettingsData'))
       ..add(DiagnosticsProperty('minAge', minAge))
       ..add(DiagnosticsProperty('maxAge', maxAge))
-      ..add(DiagnosticsProperty('searchGroups', searchGroups));
+      ..add(DiagnosticsProperty('gender', gender))
+      ..add(DiagnosticsProperty('genderSearchSetting', genderSearchSetting));
   }
 
   @override
@@ -81,8 +90,10 @@ class _$EditSearchSettingsDataImpl extends _EditSearchSettingsData with Diagnost
           other.minAge == minAge) &&
         (identical(other.maxAge, maxAge) ||
           other.maxAge == maxAge) &&
-        (identical(other.searchGroups, searchGroups) ||
-          other.searchGroups == searchGroups)
+        (identical(other.gender, gender) ||
+          other.gender == gender) &&
+        (identical(other.genderSearchSetting, genderSearchSetting) ||
+          other.genderSearchSetting == genderSearchSetting)
     );
   }
 
@@ -91,17 +102,20 @@ class _$EditSearchSettingsDataImpl extends _EditSearchSettingsData with Diagnost
     runtimeType,
     minAge,
     maxAge,
-    searchGroups,
+    gender,
+    genderSearchSetting,
   );
 
   @override
   EditSearchSettingsData copyWith({
     Object? minAge = _detectDefaultValueInCopyWith,
     Object? maxAge = _detectDefaultValueInCopyWith,
-    Object? searchGroups = _detectDefaultValueInCopyWith,
+    Object? gender = _detectDefaultValueInCopyWith,
+    Object? genderSearchSetting,
   }) => _$EditSearchSettingsDataImpl(
     minAge: (minAge == _detectDefaultValueInCopyWith ? this.minAge : minAge) as int?,
     maxAge: (maxAge == _detectDefaultValueInCopyWith ? this.maxAge : maxAge) as int?,
-    searchGroups: (searchGroups == _detectDefaultValueInCopyWith ? this.searchGroups : searchGroups) as SearchGroups?,
+    gender: (gender == _detectDefaultValueInCopyWith ? this.gender : gender) as Gender?,
+    genderSearchSetting: (genderSearchSetting ?? this.genderSearchSetting) as GenderSearchSettingsAll,
   );
 }

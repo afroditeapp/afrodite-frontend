@@ -27,9 +27,11 @@ class NewSearchGroups extends SearchSettingsEvent {
 class SaveSearchSettings extends SearchSettingsEvent {
   final int minAge;
   final int maxAge;
+  final SearchGroups searchGroups;
   SaveSearchSettings({
     required this.minAge,
     required this.maxAge,
+    required this.searchGroups,
   });
 }
 
@@ -53,6 +55,10 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
         ));
 
         if (!await profile.updateSearchAgeRange(data.minAge, data.maxAge).isOk()) {
+          failureDetected = true;
+        }
+
+        if (!await profile.updateSearchGroups(data.searchGroups).isOk()) {
           failureDetected = true;
         }
 

@@ -6,14 +6,20 @@ import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/settings/edit_search_settings.dart';
 import 'package:pihka_frontend/logic/settings/search_settings.dart';
+import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
+import 'package:pihka_frontend/model/freezed/logic/settings/edit_search_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/settings/search_settings.dart';
+import 'package:pihka_frontend/ui/normal/settings/profile/search_settings/edit_gender_filter.dart';
+import 'package:pihka_frontend/ui/normal/settings/profile/search_settings/edit_my_gender.dart';
+import 'package:pihka_frontend/ui_utils/app_bar/menu_actions.dart';
 import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
+import 'package:pihka_frontend/ui_utils/padding.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/ui_utils/text_field.dart';
 import 'package:pihka_frontend/utils/age.dart';
-
+import 'package:pihka_frontend/utils/api.dart';
 
 class SearchSettingsScreen extends StatefulWidget {
   final PageKey pageKey;
@@ -61,9 +67,21 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
       return;
     }
 
+    final gender = s.gender;
+    if (gender == null) {
+      showSnackBar(context.strings.search_settings_screen_gender_is_not_selected);
+      return;
+    }
+
+    final searchGroups = SearchGroupsExtensions.createFrom(gender, s.genderSearchSetting);
+    if (!searchGroups.somethingIsSelected()) {
+      showSnackBar(context.strings.search_settings_screen_gender_filter_is_not_selected);
+      return;
+    }
+
     // Check is setting saving needed
     final currentState = widget.searchSettingsBloc.state;
-    if (minAge == currentState.minAge && maxAge == currentState.maxAge) {
+    if (minAge == currentState.minAge && maxAge == currentState.maxAge && searchGroups == currentState.searchGroups) {
       MyNavigator.pop(context);
       return;
     }
@@ -71,6 +89,7 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
     context.read<SearchSettingsBloc>().add(SaveSearchSettings(
       minAge: minAge,
       maxAge: maxAge,
+      searchGroups: searchGroups,
     ));
   }
 
@@ -85,7 +104,17 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
         validateAndSaveData(context);
       },
       child: Scaffold(
-        appBar: AppBar(title: Text(context.strings.search_settings_screen_title)),
+        appBar: AppBar(
+          title: Text(context.strings.search_settings_screen_title),
+          actions: [
+            menuActions([
+              MenuItemButton(
+                child: Text(context.strings.search_settings_screen_change_my_gender_action_title),
+                onPressed: () => MyNavigator.push(context, const MaterialPage<void>(child: EditMyGenderScreen())),
+              )
+            ]),
+          ],
+        ),
         body: updateStateHandler<SearchSettingsBloc, SearchSettingsData>(
           context: context,
           pageKey: widget.pageKey,
@@ -101,19 +130,29 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(padding: EdgeInsets.all(8)),
-          withPadding(Text(context.strings.search_settings_screen_age_range_min_value_title)),
-          withPadding(minAgeField()),
-          withPadding(Text(context.strings.search_settings_screen_age_range_max_value_title)),
-          withPadding(maxAgeField()),
+          hPad(Text(context.strings.search_settings_screen_age_range_min_value_title)),
+          hPad(minAgeField()),
+          hPad(Text(context.strings.search_settings_screen_age_range_max_value_title)),
+          hPad(maxAgeField()),
+          hPad(Text(context.strings.search_settings_screen_change_gender_filter_action_tile)),
+          const Padding(padding: EdgeInsets.all(4)),
+          editGenderFilter(),
+          const Padding(padding: EdgeInsets.all(4)),
+          hPad(Text(context.strings.search_settings_screen_help_text)),
         ],
       ),
     );
   }
 
-  Widget withPadding(Widget child) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
-      child: child,
+  Widget editGenderFilter() {
+    return BlocBuilder<EditSearchSettingsBloc, EditSearchSettingsData>(
+      builder: (context, state) {
+        return EditGenderFilter(
+          onStartEditor: () => MyNavigator.push(context, const MaterialPage<void>(child: EditGenderFilterScreen())),
+          genderSearchSetting: state.genderSearchSetting,
+          gender: state.gender,
+        );
+      }
     );
   }
 
@@ -134,6 +173,54 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
         final max = int.tryParse(value);
         context.read<EditSearchSettingsBloc>().add(UpdateMaxAge(max));
       },
+    );
+  }
+}
+
+
+class EditGenderFilter extends StatelessWidget {
+  final void Function() onStartEditor;
+  final Gender? gender;
+  final GenderSearchSettingsAll genderSearchSetting;
+  const EditGenderFilter({
+    required this.onStartEditor,
+    required this.gender,
+    required this.genderSearchSetting,
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final attributeWidget = Row(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: COMMON_SCREEN_EDGE_PADDING),
+            child: visibleValues(context),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 4.0),
+          child: IconButton(
+            icon: const Icon(Icons.edit_rounded),
+            onPressed: onStartEditor,
+          ),
+        ),
+      ],
+    );
+
+    return InkWell(
+      onTap: onStartEditor,
+      child: attributeWidget,
+    );
+  }
+
+  Widget visibleValues(BuildContext context) {
+    final values = genderSearchSetting.toUiTexts(context, gender);
+    final valueWidgets = values.map((e) => Chip(label: Text(e))).toList();
+    return Wrap(
+      spacing: 8,
+      children: valueWidgets,
     );
   }
 }

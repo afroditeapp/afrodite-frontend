@@ -121,7 +121,8 @@ class _AskSearchSettingsState extends State<AskSearchSettings> {
               if (selected != null) {
                 context.read<InitialSetupBloc>().add(SetGenderSearchSetting(selected.toGenderSearchSettingsAll()));
               }
-            }
+            },
+            () => context.read<InitialSetupBloc>().state.gender,
           );
         }
       }
@@ -153,12 +154,13 @@ Widget searchingRadioButtonsForMenAndWomen(
   BuildContext context,
   GenderSearchSetting? selected,
   void Function(GenderSearchSetting?) onChanged,
+  Gender? Function() getGender,
 ) {
   final men = searchSettingRadioButton(context, selected, GenderSearchSetting.men, onChanged);
   final women = searchSettingRadioButton(context, selected, GenderSearchSetting.women, onChanged);
   final Widget first;
   final Widget second;
-  if (context.read<InitialSetupBloc>().state.gender == Gender.man) {
+  if (getGender() == Gender.man) {
     first = women;
     second = men;
   } else {

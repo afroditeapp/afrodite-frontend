@@ -9,6 +9,7 @@ import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/utils/api.dart';
 import 'package:pihka_frontend/utils/list.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
@@ -180,7 +181,7 @@ class InitialSetupUtils {
     {
       final gender = data.gender;
       if (gender == null) return errAndLog("Gender is null");
-      final groups = createSearchGroups(gender, data.genderSearchSetting);
+      final groups = SearchGroupsExtensions.createFrom(gender, data.genderSearchSetting);
       final r = await _api.profileAction((api) => api.postSearchGroups(groups));
       if (r.isErr()) return errAndLog("Setting search groups failed");
     }
@@ -303,29 +304,6 @@ Result<SetProfileContent, ()> createProfileContent(
     gridCropX: gridCropX,
     gridCropY: gridCropY,
   ));
-}
-
-SearchGroups createSearchGroups(Gender gender, GenderSearchSettingsAll genderSearchSetting) {
-  switch (gender) {
-    case Gender.man:
-      return SearchGroups(
-        manForMan: genderSearchSetting.men,
-        manForWoman: genderSearchSetting.women,
-        manForNonBinary: genderSearchSetting.nonBinary,
-      );
-    case Gender.woman:
-      return SearchGroups(
-        womanForMan: genderSearchSetting.men,
-        womanForWoman: genderSearchSetting.women,
-        womanForNonBinary: genderSearchSetting.nonBinary,
-      );
-    case Gender.nonBinary:
-      return SearchGroups(
-        nonBinaryForMan: genderSearchSetting.men,
-        nonBinaryForWoman: genderSearchSetting.women,
-        nonBinaryForNonBinary: genderSearchSetting.nonBinary,
-      );
-  }
 }
 
 ContentId getId(SelectedImageInfo info, ContentId securitySelfie) {

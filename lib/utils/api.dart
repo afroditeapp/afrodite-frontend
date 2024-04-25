@@ -1,6 +1,7 @@
 
 
 import 'package:openapi/api.dart';
+import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/utils/list.dart';
 
 extension ModerationExtensions on Moderation {
@@ -84,5 +85,79 @@ extension CapabilitiesExtensions on Capabilities {
     // TODO(prod): Add missing capabilities once
     // capability properies are non-nullable
     return adminModerateImages;
+  }
+}
+
+extension SearchGroupsExtensions on SearchGroups {
+  Gender? toGender() {
+    if (manForMan || manForWoman || manForNonBinary) {
+      return Gender.man;
+    } else if (womanForMan || womanForWoman || womanForNonBinary) {
+      return Gender.woman;
+    } else if (nonBinaryForMan || nonBinaryForWoman || nonBinaryForNonBinary) {
+      return Gender.nonBinary;
+    }
+
+    return null;
+  }
+
+  GenderSearchSettingsAll? toGenderSearchSettingsAll() {
+    switch (toGender()) {
+      case Gender.man:
+        return GenderSearchSettingsAll(
+          men: manForMan,
+          women: manForWoman,
+          nonBinary: manForNonBinary,
+        );
+      case Gender.woman:
+        return GenderSearchSettingsAll(
+          men: womanForMan,
+          women: womanForWoman,
+          nonBinary: womanForNonBinary,
+        );
+      case Gender.nonBinary:
+        return GenderSearchSettingsAll(
+          men: nonBinaryForMan,
+          women: nonBinaryForWoman,
+          nonBinary: nonBinaryForNonBinary,
+        );
+      case null:
+        return null;
+    }
+  }
+
+  bool somethingIsSelected() {
+    return manForMan ||
+      manForWoman ||
+      manForNonBinary ||
+      womanForMan ||
+      womanForWoman ||
+      womanForNonBinary ||
+      nonBinaryForMan ||
+      nonBinaryForWoman ||
+      nonBinaryForNonBinary;
+  }
+
+  static SearchGroups createFrom(Gender gender, GenderSearchSettingsAll genderSearchSetting) {
+    switch (gender) {
+      case Gender.man:
+        return SearchGroups(
+          manForMan: genderSearchSetting.men,
+          manForWoman: genderSearchSetting.women,
+          manForNonBinary: genderSearchSetting.nonBinary,
+        );
+      case Gender.woman:
+        return SearchGroups(
+          womanForMan: genderSearchSetting.men,
+          womanForWoman: genderSearchSetting.women,
+          womanForNonBinary: genderSearchSetting.nonBinary,
+        );
+      case Gender.nonBinary:
+        return SearchGroups(
+          nonBinaryForMan: genderSearchSetting.men,
+          nonBinaryForWoman: genderSearchSetting.women,
+          nonBinaryForNonBinary: genderSearchSetting.nonBinary,
+        );
+    }
   }
 }

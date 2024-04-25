@@ -401,6 +401,16 @@ class ProfileRepository extends DataRepository {
         return Err(());
     }
   }
+
+  Future<Result<(), ()>> updateSearchGroups(SearchGroups groups) async {
+    switch (await _api.profileAction((api) => api.postSearchGroups(groups))) {
+      case Ok():
+        await reloadSearchGroups();
+        return Ok(());
+      case Err():
+        return Err(());
+    }
+  }
 }
 
 sealed class GetProfileResult {}

@@ -107,8 +107,29 @@ class GenderSearchSettingsAll {
   bool notEmpty() {
     return men || women || nonBinary;
   }
-}
 
+  List<String> toUiTexts(BuildContext context, Gender? gender) {
+    if (gender == Gender.nonBinary) {
+      final selected = <String>[];
+      if (nonBinary) {
+        selected.add(Gender.nonBinary.uiTextPlural(context));
+      }
+      if (men) {
+        selected.add(Gender.man.uiTextPlural(context));
+      }
+      if (women) {
+        selected.add(Gender.woman.uiTextPlural(context));
+      }
+      return selected;
+    } else {
+      final setting = toGenderSearchSetting();
+      if (setting == null) {
+        return [];
+      }
+      return [setting.uiText(context)];
+    }
+  }
+}
 
 sealed class ProfileAttributesState {
   final List<ProfileAttributeValueUpdate> answers;

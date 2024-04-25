@@ -191,10 +191,18 @@
 
     <!-- Search settings screen -->
     <string name="search_settings_screen_title" description="Title for search settings">Search options</string>
-    <string name="search_settings_screen_age_range_min_value_title" description="Title text search age range min value">Min age</string>
-    <string name="search_settings_screen_age_range_max_value_title" description="Title text search age range max value">Max age</string>
+    <string name="search_settings_screen_help_text" description="Note about search behavior">Profile grid only shows profiles which match with the above values.</string>
+    <string name="search_settings_screen_age_range_min_value_title" description="Title for search age range min value text field">Min age</string>
+    <string name="search_settings_screen_age_range_max_value_title" description="Title for search age range max value text field">Max age</string>
+    <string name="search_settings_screen_change_gender_filter_action_tile" description="Title for change gender filter value action">Gender filter</string>
+    <string name="search_settings_screen_change_my_gender_action_title" description="Title for change my profile's gender action">Change my profile\'s gender</string>
     <string name="search_settings_screen_age_range_is_invalid" description="Snackbar text about invalid age range">Age range is invalid</string>
+    <string name="search_settings_screen_gender_is_not_selected" description="Snackbar text about missing gender information">Your gender information is not set</string>
+    <string name="search_settings_screen_gender_filter_is_not_selected" description="Snackbar text about missing gender filter value">Gender filter is not selected</string>
     <string name="search_settings_screen_search_settings_update_failed" description="Snackbar text about failed search settings update">Updating search settings failed</string>
+
+    <!-- Edit my gender screen -->
+    <string name="edit_my_gender_screen_gender_setting_title" description="Title for gender setting">My profile\'s gender</string>
 
     <!-- Likes -->
     <string name="likes_screen_title" description="Title for likes screen">Likes</string>

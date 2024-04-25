@@ -178,6 +178,10 @@
   "@edit_attribute_value_screen_search_placeholder_text": {
     "description": "Attribute value search box placeholder text"
   },
+  "edit_my_gender_screen_gender_setting_title": "My profile's gender",
+  "@edit_my_gender_screen_gender_setting_title": {
+    "description": "Title for gender setting"
+  },
   "edit_profile_screen_invalid_age": "Invalid age",
   "@edit_profile_screen_invalid_age": {
     "description": "Snackbar text for notifying about invalid age"
@@ -607,11 +611,31 @@
   },
   "search_settings_screen_age_range_max_value_title": "Max age",
   "@search_settings_screen_age_range_max_value_title": {
-    "description": "Title text search age range max value"
+    "description": "Title for search age range max value text field"
   },
   "search_settings_screen_age_range_min_value_title": "Min age",
   "@search_settings_screen_age_range_min_value_title": {
-    "description": "Title text search age range min value"
+    "description": "Title for search age range min value text field"
+  },
+  "search_settings_screen_change_gender_filter_action_tile": "Gender filter",
+  "@search_settings_screen_change_gender_filter_action_tile": {
+    "description": "Title for change gender filter value action"
+  },
+  "search_settings_screen_change_my_gender_action_title": "Change my profile's gender",
+  "@search_settings_screen_change_my_gender_action_title": {
+    "description": "Title for change my profile's gender action"
+  },
+  "search_settings_screen_gender_filter_is_not_selected": "Gender filter is not selected",
+  "@search_settings_screen_gender_filter_is_not_selected": {
+    "description": "Snackbar text about missing gender filter value"
+  },
+  "search_settings_screen_gender_is_not_selected": "Your gender information is not set",
+  "@search_settings_screen_gender_is_not_selected": {
+    "description": "Snackbar text about missing gender information"
+  },
+  "search_settings_screen_help_text": "Profile grid only shows profiles which match with the above values.",
+  "@search_settings_screen_help_text": {
+    "description": "Note about search behavior"
   },
   "search_settings_screen_search_settings_update_failed": "Updating search settings failed",
   "@search_settings_screen_search_settings_update_failed": {
