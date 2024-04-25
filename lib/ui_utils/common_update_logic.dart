@@ -10,12 +10,24 @@ sealed class UpdateState {
   const UpdateState();
 }
 class UpdateIdle extends UpdateState {
+  /// There is no update ongoing.
+  ///
+  /// Next event is [UpdateStarted].
   const UpdateIdle();
 }
 class UpdateStarted extends UpdateState {
+  /// Update started.
+  ///
+  /// This event should open a dialog with loading indicator.
+  ///
+  /// Next event is [UpdateInProgress].
   const UpdateStarted();
 }
+
 class UpdateInProgress extends UpdateState {
+  /// Update is in progress.
+  ///
+  /// Next event is [UpdateIdle].
   const UpdateInProgress();
 }
 

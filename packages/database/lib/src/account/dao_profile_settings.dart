@@ -1,5 +1,5 @@
 
-import 'package:openapi/api.dart' show ProfileVisibility, Location, ProfileAttributeFilterList;
+import 'package:openapi/api.dart' show ProfileVisibility, Location, ProfileAttributeFilterList, SearchGroups, ProfileSearchAgeRange;
 import '../account_database.dart';
 
 import 'package:drift/drift.dart';
@@ -40,6 +40,25 @@ class DaoProfileSettings extends DatabaseAccessor<AccountDatabase> with _$DaoPro
     );
   }
 
+  Future<void> updateProfileSearchAgeRange(ProfileSearchAgeRange? value) async {
+    await into(account).insertOnConflictUpdate(
+      AccountCompanion.insert(
+        id: ACCOUNT_DB_DATA_ID,
+        profileSearchAgeRangeMin: Value(value?.min),
+        profileSearchAgeRangeMax: Value(value?.max),
+      ),
+    );
+  }
+
+  Future<void> updateSearchGroups(SearchGroups? value) async {
+    await into(account).insertOnConflictUpdate(
+      AccountCompanion.insert(
+        id: ACCOUNT_DB_DATA_ID,
+        jsonSearchGroups: Value(value?.toJsonString()),
+      ),
+    );
+  }
+
   Stream<ProfileVisibility?> watchProfileVisibility() =>
     watchColumn((r) => r.jsonProfileVisibility?.toProfileVisibility());
 
@@ -58,4 +77,13 @@ class DaoProfileSettings extends DatabaseAccessor<AccountDatabase> with _$DaoPro
 
   Stream<ProfileAttributeFilterList?> watchProfileAttributeFilters() =>
     watchColumn((r) => r.jsonProfileAttributeFilters?.toProfileAttributeFilterList());
+
+  Stream<int?> watchProfileSearchAgeRangeMin() =>
+    watchColumn((r) => r.profileSearchAgeRangeMin);
+
+  Stream<int?> watchProfileSearchAgeRangeMax() =>
+    watchColumn((r) => r.profileSearchAgeRangeMax);
+
+  Stream<SearchGroups?> watchSearchGroups() =>
+    watchColumn((r) => r.jsonSearchGroups?.toSearchGroups());
 }

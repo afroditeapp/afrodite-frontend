@@ -66,6 +66,8 @@ class ProfileRepository extends DataRepository {
       await reloadLocation();
       await reloadMyProfile();
       await reloadAttributeFilters();
+      await reloadSearchAgeRange();
+      await reloadSearchGroups();
       final result = await reloadFavoriteProfiles();
       if (result.isOk()) {
         await db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(true));
@@ -91,6 +93,17 @@ class ProfileRepository extends DataRepository {
         await reloadAttributeFilters();
       }
 
+      final searchAgeRangeMin = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileSearchAgeRangeMin()).ok();
+      final searchAgeRangeMax = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileSearchAgeRangeMax()).ok();
+      if (searchAgeRangeMin == null || searchAgeRangeMax == null) {
+        await reloadSearchAgeRange();
+      }
+
+      final searchGroups = await db.accountStreamSingle((db) => db.daoProfileSettings.watchSearchGroups()).ok();
+      if (searchGroups == null) {
+        await reloadSearchGroups();
+      }
+
       final syncDone = await db.accountStreamSingle((db) => db.daoInitialSync.watchProfileSyncDone()).ok() ?? false;
       if (!syncDone) {
         await reloadFavoriteProfiles();
@@ -104,6 +117,8 @@ class ProfileRepository extends DataRepository {
     await reloadLocation();
     await reloadMyProfile();
     await reloadAttributeFilters();
+    await reloadSearchAgeRange();
+    await reloadSearchGroups();
   }
 
   @override
@@ -350,6 +365,41 @@ class ProfileRepository extends DataRepository {
       ));
     }
     sendProfileChange(ReloadMainProfileView());
+  }
+
+  // Search settings
+
+  Future<Result<(), ()>> reloadSearchAgeRange() async {
+    final value = await _api.profile((api) => api.getSearchAgeRange()).ok();
+    if (value != null) {
+      return await db.accountAction(
+        (db) => db.daoProfileSettings.updateProfileSearchAgeRange(value),
+      );
+    } else {
+      return Err(());
+    }
+  }
+
+  Future<Result<(), ()>> reloadSearchGroups() async {
+    final value = await _api.profile((api) => api.getSearchGroups()).ok();
+    if (value != null) {
+      return await db.accountAction(
+        (db) => db.daoProfileSettings.updateSearchGroups(value),
+      );
+    } else {
+      return Err(());
+    }
+  }
+
+  Future<Result<(), ()>> updateSearchAgeRange(int minAge, int maxAge) async {
+    final update = ProfileSearchAgeRange(min: minAge, max: maxAge);
+    switch (await _api.profileAction((api) => api.postSearchAgeRange(update))) {
+      case Ok():
+        await reloadSearchAgeRange();
+        return Ok(());
+      case Err():
+        return Err(());
+    }
   }
 }
 

@@ -273,6 +273,10 @@ class JsonString {
     return ProfileAttributeFilterList.fromJson(jsonMap);
   }
 
+  SearchGroups? toSearchGroups() {
+    return SearchGroups.fromJson(jsonMap);
+  }
+
   static TypeConverter<JsonString, String> driftConverter = TypeConverter.json(
     fromJson: (json) => JsonString(json as Map<String, Object?>),
     toJson: (object) => object.jsonMap,
@@ -292,6 +296,12 @@ extension AvailableProfileAttributesJson on AvailableProfileAttributes {
 }
 
 extension ProfileAttributeFilterListJson on ProfileAttributeFilterList {
+  JsonString toJsonString() {
+    return JsonString(toJson());
+  }
+}
+
+extension SearchGroupsJson on SearchGroups {
   JsonString toJsonString() {
     return JsonString(toJson());
   }

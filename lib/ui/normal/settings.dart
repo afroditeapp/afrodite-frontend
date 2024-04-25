@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
+import 'package:pihka_frontend/logic/settings/edit_search_settings.dart';
 import 'package:pihka_frontend/logic/settings/privacy_settings.dart';
+import 'package:pihka_frontend/logic/settings/search_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin.dart';
@@ -11,6 +13,7 @@ import 'package:pihka_frontend/ui/normal/settings/debug.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
 import 'package:pihka_frontend/ui/normal/settings/my_profile.dart';
 import 'package:pihka_frontend/ui/normal/settings/privacy_settings.dart';
+import 'package:pihka_frontend/ui/normal/settings/profile/search_settings.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/common_actions.dart';
@@ -46,12 +49,26 @@ class _SettingsViewState extends State<SettingsView> {
       builder: (context, state) {
         List<Setting> settings = [
           Setting.createSetting(Icons.account_circle_rounded, context.strings.view_profile_screen_my_profile_title, () =>
-            MyNavigator.push(context, MaterialPage<void>(child: const MyProfileScreen()))
+            MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()))
           ),
+          Setting.createSetting(Icons.search, context.strings.search_settings_screen_title, () {
+            final pageKey = PageKey();
+            final searchSettingsBloc = context.read<SearchSettingsBloc>();
+            final editSearchSettingsBloc = context.read<EditSearchSettingsBloc>();
+            MyNavigator.pushWithKey(
+              context,
+              MaterialPage<void>(child: SearchSettingsScreen(
+                pageKey: pageKey,
+                searchSettingsBloc: searchSettingsBloc,
+                editSearchSettingsBloc: editSearchSettingsBloc,
+              )),
+              pageKey,
+            );
+          }),
           Setting.createSetting(Icons.lock_rounded, context.strings.privacy_settings_screen_title, () {
+            final pageKey = PageKey();
             final privacySettingsBloc = context.read<PrivacySettingsBloc>();
             final accountBloc = context.read<AccountBloc>();
-            final pageKey = PageKey();
             MyNavigator.pushWithKey(
               context,
               MaterialPage<void>(child: PrivacySettingsScreen(

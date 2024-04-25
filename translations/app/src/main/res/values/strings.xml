@@ -189,6 +189,13 @@
     <string name="edit_attribute_filter_value_screen_title" description="Title for edit attribute filter screen">Edit filter</string>
     <string name="edit_attribute_filter_value_screen_search_placeholder_text" description="Attribute value search box placeholder text">Search…</string>
 
+    <!-- Search settings screen -->
+    <string name="search_settings_screen_title" description="Title for search settings">Search options</string>
+    <string name="search_settings_screen_age_range_min_value_title" description="Title text search age range min value">Min age</string>
+    <string name="search_settings_screen_age_range_max_value_title" description="Title text search age range max value">Max age</string>
+    <string name="search_settings_screen_age_range_is_invalid" description="Snackbar text about invalid age range">Age range is invalid</string>
+    <string name="search_settings_screen_search_settings_update_failed" description="Snackbar text about failed search settings update">Updating search settings failed</string>
+
     <!-- Likes -->
     <string name="likes_screen_title" description="Title for likes screen">Likes</string>
 

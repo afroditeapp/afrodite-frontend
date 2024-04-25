@@ -62,6 +62,7 @@ class _SimpleTextFieldState extends State<SimpleTextField> {
 class AgeTextField extends StatefulWidget {
   final controller = TextEditingController();
 
+  /// Called only once when the widget is initialized.
   final String Function() getInitialValue;
   final void Function(String) onChanged;
 
