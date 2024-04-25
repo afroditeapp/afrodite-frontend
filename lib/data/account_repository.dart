@@ -25,6 +25,10 @@ enum AccountRepositoryState {
   initComplete,
 }
 
+// TODO: Add automatic sync version incrementing to
+// sentLikesChanged and sentBlocksChanged as only client
+// makes operations to those lists.
+
 class AccountRepository extends DataRepository {
   AccountRepository._private();
   static final _instance = AccountRepository._private();
