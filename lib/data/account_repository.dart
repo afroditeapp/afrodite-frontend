@@ -32,19 +32,20 @@ class AccountRepository extends DataRepository {
     return _instance;
   }
 
-  final _api = ApiManager.getInstance();
+  final api = ApiManager.getInstance();
+  final db = DatabaseManager.getInstance();
 
   final BehaviorSubject<AccountRepositoryState> _internalState =
     BehaviorSubject.seeded(AccountRepositoryState.initRequired);
 
-  Stream<AccountState?> get accountState => DatabaseManager.getInstance()
+  Stream<AccountState?> get accountState => db
     .accountStream((db) => db.watchAccountState());
-  Stream<Capabilities> get capabilities => DatabaseManager.getInstance()
+  Stream<Capabilities> get capabilities => db
     .accountStreamOrDefault(
       (db) => db.watchCapabilities(),
       Capabilities(),
     );
-  Stream<ProfileVisibility> get profileVisibility => DatabaseManager.getInstance()
+  Stream<ProfileVisibility> get profileVisibility => db
     .accountStreamOrDefault((db) => db.daoProfileSettings.watchProfileVisibility(), ProfileVisibility.pendingPrivate);
 
   // WebSocket related event streams
@@ -62,15 +63,19 @@ class AccountRepository extends DataRepository {
   // TODO(prod): Run onLogout when server connection has authentication failure
 
   Future<void> _saveAccountState(AccountState state) async {
-    await DatabaseManager.getInstance().accountAction((db) => db.updateAccountState(state));
+    await db.accountAction((db) => db.updateAccountState(state));
   }
 
-  Future<void> _saveAndUpdateCapabilities(Capabilities capabilities) async {
-    await DatabaseManager.getInstance().accountAction((db) => db.updateCapabilities(capabilities));
+  Future<void> _saveCapabilities(Capabilities capabilities) async {
+    await db.accountAction((db) => db.updateCapabilities(capabilities));
   }
 
-  Future<void> _saveAndUpdateProfileVisibility(ProfileVisibility profileVisibility) async {
-    await DatabaseManager.getInstance().accountAction((db) => db.daoProfileSettings.updateProfileVisibility(profileVisibility));
+  Future<void> _saveProfileVisibility(ProfileVisibility profileVisibility) async {
+    await db.accountAction((db) => db.daoProfileSettings.updateProfileVisibility(profileVisibility));
+  }
+
+  Future<void> _saveAccountSyncVersion(AccountSyncVersion version) async {
+    await db.accountAction((db) => db.daoSyncVersions.updateSyncVersionAccount(version));
   }
 
   // TODO: Background futures might cause issues
@@ -80,30 +85,42 @@ class AccountRepository extends DataRepository {
   void handleEventToClient(EventToClient event) {
     log.finer("Event from server: $event");
 
+    final chat = ChatRepository.getInstance();
+    final profile = ProfileRepository.getInstance();
+
     final accountState = event.accountState;
     final capabilities = event.capabilities;
     final visibility = event.visibility;
+    final accountSyncVersion = event.accountSyncVersion;
     final latestViewedMessageChanged = event.latestViewedMessageChanged;
     final contentProcessingEvent = event.contentProcessingStateChanged;
     if (event.event == EventType.accountStateChanged && accountState != null) {
       _saveAccountState(accountState);
     } else if (event.event == EventType.accountCapabilitiesChanged && capabilities != null) {
-      _saveAndUpdateCapabilities(capabilities);
+      _saveCapabilities(capabilities);
     } else if (event.event == EventType.profileVisibilityChanged && visibility != null) {
-      _saveAndUpdateProfileVisibility(visibility);
+      _saveProfileVisibility(visibility);
+    } else if (event.event == EventType.accountSyncVersionChanged && accountSyncVersion != null) {
+      _saveAccountSyncVersion(accountSyncVersion);
     } else if (event.event == EventType.latestViewedMessageChanged && latestViewedMessageChanged != null) {
       // TODO
       log.warning("Unhandled event");
     } else if (event.event == EventType.contentProcessingStateChanged && contentProcessingEvent != null) {
       _contentProcessingStateChanges.add(contentProcessingEvent);
     } else if (event.event == EventType.receivedLikesChanged) {
-      ChatRepository.getInstance().receivedLikesRefresh();
+      chat.receivedLikesRefresh();
     } else if (event.event == EventType.receivedBlocksChanged) {
-      ChatRepository.getInstance().receivedBlocksRefresh();
+      chat.receivedBlocksRefresh();
+    } else if (event.event == EventType.sentLikesChanged) {
+      chat.sentLikesRefresh();
+    } else if (event.event == EventType.sentBlocksChanged) {
+      chat.sentBlocksRefresh();
+    } else if (event.event == EventType.matchesChanged) {
+      chat.receivedMatchesRefresh();
     } else if (event.event == EventType.newMessageReceived) {
-      ChatRepository.getInstance().receiveNewMessages();
+      chat.receiveNewMessages();
     } else if (event.event == EventType.availableProfileAttributesChanged) {
-      ProfileRepository.getInstance().receiveProfileAttributes();
+      profile.receiveProfileAttributes();
     } else {
       log.error("Unknown EventToClient");
     }
@@ -152,7 +169,7 @@ class AccountRepository extends DataRepository {
 
   /// Returns true if successful.
   Future<bool> doProfileVisibilityChange(bool profileVisiblity) async {
-    final result = await ApiManager.getInstance().accountAction((api) =>
+    final result = await api.accountAction((api) =>
       api.putSettingProfileVisiblity(BooleanSetting(value: profileVisiblity))
     );
 

@@ -180,63 +180,73 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     });
   }
 
-  Future<void> setMatchStatusList(List<AccountId>? accounts, bool value, {bool clear = false}) async {
+  Future<void> setMatchStatusList(api.MatchesPage matches) async {
     await transaction(() async {
-      if (clear) {
-        await update(profiles)
-          .write(const ProfilesCompanion(isInMatches: Value(null)));
+      // Clear
+      await update(profiles)
+        .write(const ProfilesCompanion(isInMatches: Value(null)));
+
+      for (final a in matches.profiles) {
+        await setMatchStatus(a, true);
       }
-      for (final a in accounts ?? <AccountId>[]) {
-        await setMatchStatus(a, value);
-      }
+
+      await db.daoSyncVersions.updateSyncVersionMatches(matches.version);
     });
   }
 
-  Future<void> setReceivedBlockStatusList(List<AccountId>? accounts, bool value, {bool clear = false}) async {
+  Future<void> setReceivedBlockStatusList(api.ReceivedBlocksPage receivedBlocs) async {
     await transaction(() async {
-      if (clear) {
-        await update(profiles)
-          .write(const ProfilesCompanion(isInReceivedBlocks: Value(null)));
+      // Clear
+      await update(profiles)
+        .write(const ProfilesCompanion(isInReceivedBlocks: Value(null)));
+
+      for (final a in receivedBlocs.profiles) {
+        await setReceivedBlockStatus(a, true);
       }
-      for (final a in accounts ?? <AccountId>[]) {
-        await setReceivedBlockStatus(a, value);
-      }
+
+      await db.daoSyncVersions.updateSyncVersionReceivedBlocks(receivedBlocs.version);
     });
   }
 
-  Future<void> setReceivedLikeStatusList(List<AccountId>? accounts, bool value, {bool clear = false}) async {
+  Future<void> setReceivedLikeStatusList(api.ReceivedLikesPage receivedLikes) async {
     await transaction(() async {
-      if (clear) {
-        await update(profiles)
-          .write(const ProfilesCompanion(isInReceivedLikes: Value(null)));
+      // Clear
+      await update(profiles)
+        .write(const ProfilesCompanion(isInReceivedLikes: Value(null)));
+
+      for (final a in receivedLikes.profiles) {
+        await setReceivedLikeStatus(a, true);
       }
-      for (final a in accounts ?? <AccountId>[]) {
-        await setReceivedLikeStatus(a, value);
-      }
+
+      await db.daoSyncVersions.updateSyncVersionReceivedLikes(receivedLikes.version);
     });
   }
 
-  Future<void> setSentBlockStatusList(List<AccountId>? accounts, bool value, {bool clear = false}) async {
+  Future<void> setSentBlockStatusList(api.SentBlocksPage sentBlocks) async {
     await transaction(() async {
-      if (clear) {
-        await update(profiles)
-          .write(const ProfilesCompanion(isInSentBlocks: Value(null)));
+      // Clear
+      await update(profiles)
+        .write(const ProfilesCompanion(isInSentBlocks: Value(null)));
+
+      for (final a in sentBlocks.profiles) {
+        await setSentBlockStatus(a, true);
       }
-      for (final a in accounts ?? <AccountId>[]) {
-        await setSentBlockStatus(a, value);
-      }
+
+      await db.daoSyncVersions.updateSyncVersionSentBlocks(sentBlocks.version);
     });
   }
 
-  Future<void> setSentLikeStatusList(List<AccountId>? accounts, bool value, {bool clear = false}) async {
+  Future<void> setSentLikeStatusList(api.SentLikesPage sentLikes) async {
     await transaction(() async {
-      if (clear) {
-        await update(profiles)
-          .write(const ProfilesCompanion(isInSentLikes: Value(null)));
+      // Clear
+      await update(profiles)
+        .write(const ProfilesCompanion(isInSentLikes: Value(null)));
+
+      for (final a in sentLikes.profiles) {
+        await setSentLikeStatus(a, true);
       }
-      for (final a in accounts ?? <AccountId>[]) {
-        await setSentLikeStatus(a, value);
-      }
+
+      await db.daoSyncVersions.updateSyncVersionSentLikes(sentLikes.version);
     });
   }
 

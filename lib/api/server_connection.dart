@@ -198,7 +198,7 @@ class ServerConnection {
           case ConnectionProtocolState.receiveNewAccessToken: {
             if (message is String) {
               await storage.accountAction(_server.setterForAccessTokenKey(message));
-              ws.sink.add(syncDataBytes());
+              ws.sink.add(await syncDataBytes());
               _protocolState = ConnectionProtocolState.receiveEvents;
               _state.add(Ready());
             } else {
@@ -315,22 +315,46 @@ const forceSync = 255;
 
 // TODO(prod): Implement sync data version handling
 
-Uint8List syncDataBytes() {
+Future<Uint8List> syncDataBytes() async {
+  final db = DatabaseManager.getInstance();
+  final syncVersionAccount = await db.accountStreamSingle(
+    (db) => db.daoSyncVersions.watchSyncVersionAccount()
+  ).ok() ?? forceSync;
+  final syncVersionReceivedLikes = await db.accountStreamSingle(
+    (db) => db.daoSyncVersions.watchSyncVersionReceivedLikes()
+  ).ok() ?? forceSync;
+  final syncVersionReceivedBlocks = await db.accountStreamSingle(
+    (db) => db.daoSyncVersions.watchSyncVersionReceivedBlocks()
+  ).ok() ?? forceSync;
+  final syncVersionSentLikes = await db.accountStreamSingle(
+    (db) => db.daoSyncVersions.watchSyncVersionSentLikes()
+  ).ok() ?? forceSync;
+  final syncVersionSentBlocks = await db.accountStreamSingle(
+    (db) => db.daoSyncVersions.watchSyncVersionSentBlocks()
+  ).ok() ?? forceSync;
+  final syncVersionMatches = await db.accountStreamSingle(
+    (db) => db.daoSyncVersions.watchSyncVersionMatches()
+  ).ok() ?? forceSync;
+  final syncVersionAvailableProfileAttributes = await db.accountStreamSingle(
+    (db) => db.daoSyncVersions.watchSyncVersionAvailableProfileAttributes()
+  ).ok() ?? forceSync;
+
   final bytes = <int>[
     0, // Account
-    forceSync,
+    syncVersionAccount,
     1, // ReveivedLikes
-    forceSync,
+    syncVersionReceivedLikes,
     2, // ReveivedBlocks
-    forceSync,
+    syncVersionReceivedBlocks,
     3, // SentLikes
-    forceSync,
+    syncVersionSentLikes,
     4, // SentBlocks
-    forceSync,
+    syncVersionSentBlocks,
     5, // Matches
-    forceSync,
+    syncVersionMatches,
     6, // AvailableProfileAttributes
-    forceSync,
+    syncVersionAvailableProfileAttributes,
   ];
+
   return Uint8List.fromList(bytes);
 }

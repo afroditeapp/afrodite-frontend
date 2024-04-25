@@ -68,30 +68,7 @@ class ChatRepository extends DataRepository {
   }
 
   Future<void> _syncData() async {
-    // TODO(prod): Update to use database initial sync flag.
-
-    // TODO: Perhps client should track these operations and retry
-    // these if needed.
-
-    // Download received blocks.
-    await receivedBlocksRefresh();
-
-    // Download sent blocks.
-    final sentBlocks = await _api.chat((api) => api.getSentBlocks()).ok();
-    await db.profileAction((db) => db.setSentBlockStatusList(sentBlocks?.profiles, true));
-
-    // Download received likes.
-    await receivedLikesRefresh();
-
-    // Download sent likes.
-    final sentLikes = await _api.chat((api) => api.getSentLikes()).ok();
-    await db.profileAction((db) => db.setSentLikeStatusList(sentLikes?.profiles, true));
-
-    // Download current matches.
-    await receivedMatchesRefresh();
-
-    // Download pending messages and remove those from server.
-    await receiveNewMessages();
+    // Empty as server events handle all chat related syncing.
   }
 
   Future<bool> isInMatches(AccountId accountId) async {
@@ -190,7 +167,7 @@ class ChatRepository extends DataRepository {
     final receivedBlocks = await _api.chat((api) => api.getReceivedBlocks()).ok();
     if (receivedBlocks != null) {
       final currentReceivedBlocks = await db.profileData((db) => db.getReceivedBlocksListAll()).ok() ?? [];
-      await db.profileAction((db) => db.setReceivedBlockStatusList(receivedBlocks.profiles, true, clear: true));
+      await db.profileAction((db) => db.setReceivedBlockStatusList(receivedBlocks));
 
       for (final account in receivedBlocks.profiles) {
         if (!currentReceivedBlocks.contains(account)) {
@@ -203,6 +180,20 @@ class ChatRepository extends DataRepository {
           ProfileRepository.getInstance().sendProfileChange(ProfileBlocked(account));
         }
       }
+    }
+  }
+
+  Future<void> sentBlocksRefresh() async {
+    final sentBlocks = await _api.chat((api) => api.getSentBlocks()).ok();
+    if (sentBlocks != null) {
+      await db.profileAction((db) => db.setSentBlockStatusList(sentBlocks));
+    }
+  }
+
+  Future<void> sentLikesRefresh() async {
+    final sentLikes = await _api.chat((api) => api.getSentLikes()).ok();
+    if (sentLikes != null) {
+      await db.profileAction((db) => db.setSentLikeStatusList(sentLikes));
     }
   }
 
@@ -242,7 +233,7 @@ class ChatRepository extends DataRepository {
   Future<void> receivedLikesRefresh() async {
     final receivedLikes = await _api.chat((api) => api.getReceivedLikes()).ok();
     if (receivedLikes != null) {
-      await db.profileAction((db) => db.setReceivedLikeStatusList(receivedLikes.profiles, true, clear: true));
+      await db.profileAction((db) => db.setReceivedLikeStatusList(receivedLikes));
       ProfileRepository.getInstance().sendProfileChange(LikesChanged());
     }
   }
@@ -260,7 +251,7 @@ class ChatRepository extends DataRepository {
   Future<void> receivedMatchesRefresh() async {
     final data = await _api.chat((api) => api.getMatches()).ok();
     if (data != null) {
-      await db.profileAction((db) => db.setMatchStatusList(data.profiles, true, clear: true));
+      await db.profileAction((db) => db.setMatchStatusList(data));
       ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
     }
   }

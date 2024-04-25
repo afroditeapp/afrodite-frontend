@@ -1,6 +1,7 @@
 
 
 import 'package:async/async.dart';
+import 'package:database/src/account/dao_sync_versions.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
@@ -44,6 +45,16 @@ class Account extends Table {
     .withDefault(const Constant(false))();
   BoolColumn get initialSyncDoneChatRepository => boolean()
     .withDefault(const Constant(false))();
+
+  // DaoSyncVersions
+
+  IntColumn get syncVersionAccount => integer().nullable()();
+  IntColumn get syncVersionReceivedLikes => integer().nullable()();
+  IntColumn get syncVersionReceivedBlocks => integer().nullable()();
+  IntColumn get syncVersionSentLikes => integer().nullable()();
+  IntColumn get syncVersionSentBlocks => integer().nullable()();
+  IntColumn get syncVersionMatches => integer().nullable()();
+  IntColumn get syncVersionAvailableProfileAttributes => integer().nullable()();
 
   // DaoPendingContent
 
@@ -114,6 +125,7 @@ class Account extends Table {
     DaoProfileSettings,
     DaoTokens,
     DaoInitialSync,
+    DaoSyncVersions,
     // Other tables
     DaoProfiles,
     DaoMessages,
@@ -167,13 +179,16 @@ class AccountDatabase extends _$AccountDatabase {
     );
   }
 
-  Future<void> updateAvailableProfileAttributes(AvailableProfileAttributes? value) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        jsonAvailableProfileAttributes: Value(value?.toJsonString()),
-      ),
-    );
+  Future<void> updateAvailableProfileAttributes(AvailableProfileAttributes value) async {
+    await transaction(() async {
+      await into(account).insertOnConflictUpdate(
+        AccountCompanion.insert(
+          id: ACCOUNT_DB_DATA_ID,
+          jsonAvailableProfileAttributes: Value(value.toJsonString()),
+        ),
+      );
+      await daoSyncVersions.updateSyncVersionAvailableProfileAttributes(value.syncVersion);
+    });
   }
 
   Stream<AccountId?> watchAccountId() =>

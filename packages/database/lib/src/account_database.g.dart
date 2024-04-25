@@ -115,6 +115,49 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           defaultConstraints: GeneratedColumn.constraintIsAlways(
               'CHECK ("initial_sync_done_chat_repository" IN (0, 1))'),
           defaultValue: const Constant(false));
+  static const VerificationMeta _syncVersionAccountMeta =
+      const VerificationMeta('syncVersionAccount');
+  @override
+  late final GeneratedColumn<int> syncVersionAccount = GeneratedColumn<int>(
+      'sync_version_account', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _syncVersionReceivedLikesMeta =
+      const VerificationMeta('syncVersionReceivedLikes');
+  @override
+  late final GeneratedColumn<int> syncVersionReceivedLikes =
+      GeneratedColumn<int>('sync_version_received_likes', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _syncVersionReceivedBlocksMeta =
+      const VerificationMeta('syncVersionReceivedBlocks');
+  @override
+  late final GeneratedColumn<int> syncVersionReceivedBlocks =
+      GeneratedColumn<int>('sync_version_received_blocks', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _syncVersionSentLikesMeta =
+      const VerificationMeta('syncVersionSentLikes');
+  @override
+  late final GeneratedColumn<int> syncVersionSentLikes = GeneratedColumn<int>(
+      'sync_version_sent_likes', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _syncVersionSentBlocksMeta =
+      const VerificationMeta('syncVersionSentBlocks');
+  @override
+  late final GeneratedColumn<int> syncVersionSentBlocks = GeneratedColumn<int>(
+      'sync_version_sent_blocks', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _syncVersionMatchesMeta =
+      const VerificationMeta('syncVersionMatches');
+  @override
+  late final GeneratedColumn<int> syncVersionMatches = GeneratedColumn<int>(
+      'sync_version_matches', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _syncVersionAvailableProfileAttributesMeta =
+      const VerificationMeta('syncVersionAvailableProfileAttributes');
+  @override
+  late final GeneratedColumn<int> syncVersionAvailableProfileAttributes =
+      GeneratedColumn<int>(
+          'sync_version_available_profile_attributes', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _uuidPendingContentId0Meta =
       const VerificationMeta('uuidPendingContentId0');
   @override
@@ -413,6 +456,13 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         initialSyncDoneMediaRepository,
         initialSyncDoneProfileRepository,
         initialSyncDoneChatRepository,
+        syncVersionAccount,
+        syncVersionReceivedLikes,
+        syncVersionReceivedBlocks,
+        syncVersionSentLikes,
+        syncVersionSentBlocks,
+        syncVersionMatches,
+        syncVersionAvailableProfileAttributes,
         uuidPendingContentId0,
         uuidPendingContentId1,
         uuidPendingContentId2,
@@ -511,6 +561,51 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           initialSyncDoneChatRepository.isAcceptableOrUnknown(
               data['initial_sync_done_chat_repository']!,
               _initialSyncDoneChatRepositoryMeta));
+    }
+    if (data.containsKey('sync_version_account')) {
+      context.handle(
+          _syncVersionAccountMeta,
+          syncVersionAccount.isAcceptableOrUnknown(
+              data['sync_version_account']!, _syncVersionAccountMeta));
+    }
+    if (data.containsKey('sync_version_received_likes')) {
+      context.handle(
+          _syncVersionReceivedLikesMeta,
+          syncVersionReceivedLikes.isAcceptableOrUnknown(
+              data['sync_version_received_likes']!,
+              _syncVersionReceivedLikesMeta));
+    }
+    if (data.containsKey('sync_version_received_blocks')) {
+      context.handle(
+          _syncVersionReceivedBlocksMeta,
+          syncVersionReceivedBlocks.isAcceptableOrUnknown(
+              data['sync_version_received_blocks']!,
+              _syncVersionReceivedBlocksMeta));
+    }
+    if (data.containsKey('sync_version_sent_likes')) {
+      context.handle(
+          _syncVersionSentLikesMeta,
+          syncVersionSentLikes.isAcceptableOrUnknown(
+              data['sync_version_sent_likes']!, _syncVersionSentLikesMeta));
+    }
+    if (data.containsKey('sync_version_sent_blocks')) {
+      context.handle(
+          _syncVersionSentBlocksMeta,
+          syncVersionSentBlocks.isAcceptableOrUnknown(
+              data['sync_version_sent_blocks']!, _syncVersionSentBlocksMeta));
+    }
+    if (data.containsKey('sync_version_matches')) {
+      context.handle(
+          _syncVersionMatchesMeta,
+          syncVersionMatches.isAcceptableOrUnknown(
+              data['sync_version_matches']!, _syncVersionMatchesMeta));
+    }
+    if (data.containsKey('sync_version_available_profile_attributes')) {
+      context.handle(
+          _syncVersionAvailableProfileAttributesMeta,
+          syncVersionAvailableProfileAttributes.isAcceptableOrUnknown(
+              data['sync_version_available_profile_attributes']!,
+              _syncVersionAvailableProfileAttributesMeta));
     }
     context.handle(
         _uuidPendingContentId0Meta, const VerificationResult.success());
@@ -719,6 +814,23 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       initialSyncDoneChatRepository: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
           data['${effectivePrefix}initial_sync_done_chat_repository'])!,
+      syncVersionAccount: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}sync_version_account']),
+      syncVersionReceivedLikes: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}sync_version_received_likes']),
+      syncVersionReceivedBlocks: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}sync_version_received_blocks']),
+      syncVersionSentLikes: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}sync_version_sent_likes']),
+      syncVersionSentBlocks: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}sync_version_sent_blocks']),
+      syncVersionMatches: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}sync_version_matches']),
+      syncVersionAvailableProfileAttributes: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}sync_version_available_profile_attributes']),
       uuidPendingContentId0: $AccountTable.$converteruuidPendingContentId0
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}uuid_pending_content_id0'])),
@@ -898,6 +1010,13 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final bool initialSyncDoneMediaRepository;
   final bool initialSyncDoneProfileRepository;
   final bool initialSyncDoneChatRepository;
+  final int? syncVersionAccount;
+  final int? syncVersionReceivedLikes;
+  final int? syncVersionReceivedBlocks;
+  final int? syncVersionSentLikes;
+  final int? syncVersionSentBlocks;
+  final int? syncVersionMatches;
+  final int? syncVersionAvailableProfileAttributes;
   final ContentId? uuidPendingContentId0;
   final ContentId? uuidPendingContentId1;
   final ContentId? uuidPendingContentId2;
@@ -949,6 +1068,13 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       required this.initialSyncDoneMediaRepository,
       required this.initialSyncDoneProfileRepository,
       required this.initialSyncDoneChatRepository,
+      this.syncVersionAccount,
+      this.syncVersionReceivedLikes,
+      this.syncVersionReceivedBlocks,
+      this.syncVersionSentLikes,
+      this.syncVersionSentBlocks,
+      this.syncVersionMatches,
+      this.syncVersionAvailableProfileAttributes,
       this.uuidPendingContentId0,
       this.uuidPendingContentId1,
       this.uuidPendingContentId2,
@@ -1020,6 +1146,30 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         Variable<bool>(initialSyncDoneProfileRepository);
     map['initial_sync_done_chat_repository'] =
         Variable<bool>(initialSyncDoneChatRepository);
+    if (!nullToAbsent || syncVersionAccount != null) {
+      map['sync_version_account'] = Variable<int>(syncVersionAccount);
+    }
+    if (!nullToAbsent || syncVersionReceivedLikes != null) {
+      map['sync_version_received_likes'] =
+          Variable<int>(syncVersionReceivedLikes);
+    }
+    if (!nullToAbsent || syncVersionReceivedBlocks != null) {
+      map['sync_version_received_blocks'] =
+          Variable<int>(syncVersionReceivedBlocks);
+    }
+    if (!nullToAbsent || syncVersionSentLikes != null) {
+      map['sync_version_sent_likes'] = Variable<int>(syncVersionSentLikes);
+    }
+    if (!nullToAbsent || syncVersionSentBlocks != null) {
+      map['sync_version_sent_blocks'] = Variable<int>(syncVersionSentBlocks);
+    }
+    if (!nullToAbsent || syncVersionMatches != null) {
+      map['sync_version_matches'] = Variable<int>(syncVersionMatches);
+    }
+    if (!nullToAbsent || syncVersionAvailableProfileAttributes != null) {
+      map['sync_version_available_profile_attributes'] =
+          Variable<int>(syncVersionAvailableProfileAttributes);
+    }
     if (!nullToAbsent || uuidPendingContentId0 != null) {
       map['uuid_pending_content_id0'] = Variable<String>($AccountTable
           .$converteruuidPendingContentId0
@@ -1201,6 +1351,29 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       initialSyncDoneMediaRepository: Value(initialSyncDoneMediaRepository),
       initialSyncDoneProfileRepository: Value(initialSyncDoneProfileRepository),
       initialSyncDoneChatRepository: Value(initialSyncDoneChatRepository),
+      syncVersionAccount: syncVersionAccount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncVersionAccount),
+      syncVersionReceivedLikes: syncVersionReceivedLikes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncVersionReceivedLikes),
+      syncVersionReceivedBlocks:
+          syncVersionReceivedBlocks == null && nullToAbsent
+              ? const Value.absent()
+              : Value(syncVersionReceivedBlocks),
+      syncVersionSentLikes: syncVersionSentLikes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncVersionSentLikes),
+      syncVersionSentBlocks: syncVersionSentBlocks == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncVersionSentBlocks),
+      syncVersionMatches: syncVersionMatches == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncVersionMatches),
+      syncVersionAvailableProfileAttributes:
+          syncVersionAvailableProfileAttributes == null && nullToAbsent
+              ? const Value.absent()
+              : Value(syncVersionAvailableProfileAttributes),
       uuidPendingContentId0: uuidPendingContentId0 == null && nullToAbsent
           ? const Value.absent()
           : Value(uuidPendingContentId0),
@@ -1351,6 +1524,18 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<bool>(json['initialSyncDoneProfileRepository']),
       initialSyncDoneChatRepository:
           serializer.fromJson<bool>(json['initialSyncDoneChatRepository']),
+      syncVersionAccount: serializer.fromJson<int?>(json['syncVersionAccount']),
+      syncVersionReceivedLikes:
+          serializer.fromJson<int?>(json['syncVersionReceivedLikes']),
+      syncVersionReceivedBlocks:
+          serializer.fromJson<int?>(json['syncVersionReceivedBlocks']),
+      syncVersionSentLikes:
+          serializer.fromJson<int?>(json['syncVersionSentLikes']),
+      syncVersionSentBlocks:
+          serializer.fromJson<int?>(json['syncVersionSentBlocks']),
+      syncVersionMatches: serializer.fromJson<int?>(json['syncVersionMatches']),
+      syncVersionAvailableProfileAttributes: serializer
+          .fromJson<int?>(json['syncVersionAvailableProfileAttributes']),
       uuidPendingContentId0:
           serializer.fromJson<ContentId?>(json['uuidPendingContentId0']),
       uuidPendingContentId1:
@@ -1440,6 +1625,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.toJson<bool>(initialSyncDoneProfileRepository),
       'initialSyncDoneChatRepository':
           serializer.toJson<bool>(initialSyncDoneChatRepository),
+      'syncVersionAccount': serializer.toJson<int?>(syncVersionAccount),
+      'syncVersionReceivedLikes':
+          serializer.toJson<int?>(syncVersionReceivedLikes),
+      'syncVersionReceivedBlocks':
+          serializer.toJson<int?>(syncVersionReceivedBlocks),
+      'syncVersionSentLikes': serializer.toJson<int?>(syncVersionSentLikes),
+      'syncVersionSentBlocks': serializer.toJson<int?>(syncVersionSentBlocks),
+      'syncVersionMatches': serializer.toJson<int?>(syncVersionMatches),
+      'syncVersionAvailableProfileAttributes':
+          serializer.toJson<int?>(syncVersionAvailableProfileAttributes),
       'uuidPendingContentId0':
           serializer.toJson<ContentId?>(uuidPendingContentId0),
       'uuidPendingContentId1':
@@ -1516,6 +1711,14 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           bool? initialSyncDoneMediaRepository,
           bool? initialSyncDoneProfileRepository,
           bool? initialSyncDoneChatRepository,
+          Value<int?> syncVersionAccount = const Value.absent(),
+          Value<int?> syncVersionReceivedLikes = const Value.absent(),
+          Value<int?> syncVersionReceivedBlocks = const Value.absent(),
+          Value<int?> syncVersionSentLikes = const Value.absent(),
+          Value<int?> syncVersionSentBlocks = const Value.absent(),
+          Value<int?> syncVersionMatches = const Value.absent(),
+          Value<int?> syncVersionAvailableProfileAttributes =
+              const Value.absent(),
           Value<ContentId?> uuidPendingContentId0 = const Value.absent(),
           Value<ContentId?> uuidPendingContentId1 = const Value.absent(),
           Value<ContentId?> uuidPendingContentId2 = const Value.absent(),
@@ -1581,6 +1784,28 @@ class AccountData extends DataClass implements Insertable<AccountData> {
             this.initialSyncDoneProfileRepository,
         initialSyncDoneChatRepository:
             initialSyncDoneChatRepository ?? this.initialSyncDoneChatRepository,
+        syncVersionAccount: syncVersionAccount.present
+            ? syncVersionAccount.value
+            : this.syncVersionAccount,
+        syncVersionReceivedLikes: syncVersionReceivedLikes.present
+            ? syncVersionReceivedLikes.value
+            : this.syncVersionReceivedLikes,
+        syncVersionReceivedBlocks: syncVersionReceivedBlocks.present
+            ? syncVersionReceivedBlocks.value
+            : this.syncVersionReceivedBlocks,
+        syncVersionSentLikes: syncVersionSentLikes.present
+            ? syncVersionSentLikes.value
+            : this.syncVersionSentLikes,
+        syncVersionSentBlocks: syncVersionSentBlocks.present
+            ? syncVersionSentBlocks.value
+            : this.syncVersionSentBlocks,
+        syncVersionMatches: syncVersionMatches.present
+            ? syncVersionMatches.value
+            : this.syncVersionMatches,
+        syncVersionAvailableProfileAttributes:
+            syncVersionAvailableProfileAttributes.present
+                ? syncVersionAvailableProfileAttributes.value
+                : this.syncVersionAvailableProfileAttributes,
         uuidPendingContentId0: uuidPendingContentId0.present
             ? uuidPendingContentId0.value
             : this.uuidPendingContentId0,
@@ -1708,6 +1933,14 @@ class AccountData extends DataClass implements Insertable<AccountData> {
               'initialSyncDoneProfileRepository: $initialSyncDoneProfileRepository, ')
           ..write(
               'initialSyncDoneChatRepository: $initialSyncDoneChatRepository, ')
+          ..write('syncVersionAccount: $syncVersionAccount, ')
+          ..write('syncVersionReceivedLikes: $syncVersionReceivedLikes, ')
+          ..write('syncVersionReceivedBlocks: $syncVersionReceivedBlocks, ')
+          ..write('syncVersionSentLikes: $syncVersionSentLikes, ')
+          ..write('syncVersionSentBlocks: $syncVersionSentBlocks, ')
+          ..write('syncVersionMatches: $syncVersionMatches, ')
+          ..write(
+              'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
           ..write('uuidPendingContentId0: $uuidPendingContentId0, ')
           ..write('uuidPendingContentId1: $uuidPendingContentId1, ')
           ..write('uuidPendingContentId2: $uuidPendingContentId2, ')
@@ -1768,6 +2001,13 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         initialSyncDoneMediaRepository,
         initialSyncDoneProfileRepository,
         initialSyncDoneChatRepository,
+        syncVersionAccount,
+        syncVersionReceivedLikes,
+        syncVersionReceivedBlocks,
+        syncVersionSentLikes,
+        syncVersionSentBlocks,
+        syncVersionMatches,
+        syncVersionAvailableProfileAttributes,
         uuidPendingContentId0,
         uuidPendingContentId1,
         uuidPendingContentId2,
@@ -1829,6 +2069,14 @@ class AccountData extends DataClass implements Insertable<AccountData> {
               this.initialSyncDoneProfileRepository &&
           other.initialSyncDoneChatRepository ==
               this.initialSyncDoneChatRepository &&
+          other.syncVersionAccount == this.syncVersionAccount &&
+          other.syncVersionReceivedLikes == this.syncVersionReceivedLikes &&
+          other.syncVersionReceivedBlocks == this.syncVersionReceivedBlocks &&
+          other.syncVersionSentLikes == this.syncVersionSentLikes &&
+          other.syncVersionSentBlocks == this.syncVersionSentBlocks &&
+          other.syncVersionMatches == this.syncVersionMatches &&
+          other.syncVersionAvailableProfileAttributes ==
+              this.syncVersionAvailableProfileAttributes &&
           other.uuidPendingContentId0 == this.uuidPendingContentId0 &&
           other.uuidPendingContentId1 == this.uuidPendingContentId1 &&
           other.uuidPendingContentId2 == this.uuidPendingContentId2 &&
@@ -1887,6 +2135,13 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<bool> initialSyncDoneMediaRepository;
   final Value<bool> initialSyncDoneProfileRepository;
   final Value<bool> initialSyncDoneChatRepository;
+  final Value<int?> syncVersionAccount;
+  final Value<int?> syncVersionReceivedLikes;
+  final Value<int?> syncVersionReceivedBlocks;
+  final Value<int?> syncVersionSentLikes;
+  final Value<int?> syncVersionSentBlocks;
+  final Value<int?> syncVersionMatches;
+  final Value<int?> syncVersionAvailableProfileAttributes;
   final Value<ContentId?> uuidPendingContentId0;
   final Value<ContentId?> uuidPendingContentId1;
   final Value<ContentId?> uuidPendingContentId2;
@@ -1938,6 +2193,13 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.initialSyncDoneMediaRepository = const Value.absent(),
     this.initialSyncDoneProfileRepository = const Value.absent(),
     this.initialSyncDoneChatRepository = const Value.absent(),
+    this.syncVersionAccount = const Value.absent(),
+    this.syncVersionReceivedLikes = const Value.absent(),
+    this.syncVersionReceivedBlocks = const Value.absent(),
+    this.syncVersionSentLikes = const Value.absent(),
+    this.syncVersionSentBlocks = const Value.absent(),
+    this.syncVersionMatches = const Value.absent(),
+    this.syncVersionAvailableProfileAttributes = const Value.absent(),
     this.uuidPendingContentId0 = const Value.absent(),
     this.uuidPendingContentId1 = const Value.absent(),
     this.uuidPendingContentId2 = const Value.absent(),
@@ -1990,6 +2252,13 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.initialSyncDoneMediaRepository = const Value.absent(),
     this.initialSyncDoneProfileRepository = const Value.absent(),
     this.initialSyncDoneChatRepository = const Value.absent(),
+    this.syncVersionAccount = const Value.absent(),
+    this.syncVersionReceivedLikes = const Value.absent(),
+    this.syncVersionReceivedBlocks = const Value.absent(),
+    this.syncVersionSentLikes = const Value.absent(),
+    this.syncVersionSentBlocks = const Value.absent(),
+    this.syncVersionMatches = const Value.absent(),
+    this.syncVersionAvailableProfileAttributes = const Value.absent(),
     this.uuidPendingContentId0 = const Value.absent(),
     this.uuidPendingContentId1 = const Value.absent(),
     this.uuidPendingContentId2 = const Value.absent(),
@@ -2042,6 +2311,13 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<bool>? initialSyncDoneMediaRepository,
     Expression<bool>? initialSyncDoneProfileRepository,
     Expression<bool>? initialSyncDoneChatRepository,
+    Expression<int>? syncVersionAccount,
+    Expression<int>? syncVersionReceivedLikes,
+    Expression<int>? syncVersionReceivedBlocks,
+    Expression<int>? syncVersionSentLikes,
+    Expression<int>? syncVersionSentBlocks,
+    Expression<int>? syncVersionMatches,
+    Expression<int>? syncVersionAvailableProfileAttributes,
     Expression<String>? uuidPendingContentId0,
     Expression<String>? uuidPendingContentId1,
     Expression<String>? uuidPendingContentId2,
@@ -2103,6 +2379,21 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
             initialSyncDoneProfileRepository,
       if (initialSyncDoneChatRepository != null)
         'initial_sync_done_chat_repository': initialSyncDoneChatRepository,
+      if (syncVersionAccount != null)
+        'sync_version_account': syncVersionAccount,
+      if (syncVersionReceivedLikes != null)
+        'sync_version_received_likes': syncVersionReceivedLikes,
+      if (syncVersionReceivedBlocks != null)
+        'sync_version_received_blocks': syncVersionReceivedBlocks,
+      if (syncVersionSentLikes != null)
+        'sync_version_sent_likes': syncVersionSentLikes,
+      if (syncVersionSentBlocks != null)
+        'sync_version_sent_blocks': syncVersionSentBlocks,
+      if (syncVersionMatches != null)
+        'sync_version_matches': syncVersionMatches,
+      if (syncVersionAvailableProfileAttributes != null)
+        'sync_version_available_profile_attributes':
+            syncVersionAvailableProfileAttributes,
       if (uuidPendingContentId0 != null)
         'uuid_pending_content_id0': uuidPendingContentId0,
       if (uuidPendingContentId1 != null)
@@ -2183,6 +2474,13 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<bool>? initialSyncDoneMediaRepository,
       Value<bool>? initialSyncDoneProfileRepository,
       Value<bool>? initialSyncDoneChatRepository,
+      Value<int?>? syncVersionAccount,
+      Value<int?>? syncVersionReceivedLikes,
+      Value<int?>? syncVersionReceivedBlocks,
+      Value<int?>? syncVersionSentLikes,
+      Value<int?>? syncVersionSentBlocks,
+      Value<int?>? syncVersionMatches,
+      Value<int?>? syncVersionAvailableProfileAttributes,
       Value<ContentId?>? uuidPendingContentId0,
       Value<ContentId?>? uuidPendingContentId1,
       Value<ContentId?>? uuidPendingContentId2,
@@ -2241,6 +2539,18 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           this.initialSyncDoneProfileRepository,
       initialSyncDoneChatRepository:
           initialSyncDoneChatRepository ?? this.initialSyncDoneChatRepository,
+      syncVersionAccount: syncVersionAccount ?? this.syncVersionAccount,
+      syncVersionReceivedLikes:
+          syncVersionReceivedLikes ?? this.syncVersionReceivedLikes,
+      syncVersionReceivedBlocks:
+          syncVersionReceivedBlocks ?? this.syncVersionReceivedBlocks,
+      syncVersionSentLikes: syncVersionSentLikes ?? this.syncVersionSentLikes,
+      syncVersionSentBlocks:
+          syncVersionSentBlocks ?? this.syncVersionSentBlocks,
+      syncVersionMatches: syncVersionMatches ?? this.syncVersionMatches,
+      syncVersionAvailableProfileAttributes:
+          syncVersionAvailableProfileAttributes ??
+              this.syncVersionAvailableProfileAttributes,
       uuidPendingContentId0:
           uuidPendingContentId0 ?? this.uuidPendingContentId0,
       uuidPendingContentId1:
@@ -2352,6 +2662,32 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (initialSyncDoneChatRepository.present) {
       map['initial_sync_done_chat_repository'] =
           Variable<bool>(initialSyncDoneChatRepository.value);
+    }
+    if (syncVersionAccount.present) {
+      map['sync_version_account'] = Variable<int>(syncVersionAccount.value);
+    }
+    if (syncVersionReceivedLikes.present) {
+      map['sync_version_received_likes'] =
+          Variable<int>(syncVersionReceivedLikes.value);
+    }
+    if (syncVersionReceivedBlocks.present) {
+      map['sync_version_received_blocks'] =
+          Variable<int>(syncVersionReceivedBlocks.value);
+    }
+    if (syncVersionSentLikes.present) {
+      map['sync_version_sent_likes'] =
+          Variable<int>(syncVersionSentLikes.value);
+    }
+    if (syncVersionSentBlocks.present) {
+      map['sync_version_sent_blocks'] =
+          Variable<int>(syncVersionSentBlocks.value);
+    }
+    if (syncVersionMatches.present) {
+      map['sync_version_matches'] = Variable<int>(syncVersionMatches.value);
+    }
+    if (syncVersionAvailableProfileAttributes.present) {
+      map['sync_version_available_profile_attributes'] =
+          Variable<int>(syncVersionAvailableProfileAttributes.value);
     }
     if (uuidPendingContentId0.present) {
       map['uuid_pending_content_id0'] = Variable<String>($AccountTable
@@ -2535,6 +2871,14 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
               'initialSyncDoneProfileRepository: $initialSyncDoneProfileRepository, ')
           ..write(
               'initialSyncDoneChatRepository: $initialSyncDoneChatRepository, ')
+          ..write('syncVersionAccount: $syncVersionAccount, ')
+          ..write('syncVersionReceivedLikes: $syncVersionReceivedLikes, ')
+          ..write('syncVersionReceivedBlocks: $syncVersionReceivedBlocks, ')
+          ..write('syncVersionSentLikes: $syncVersionSentLikes, ')
+          ..write('syncVersionSentBlocks: $syncVersionSentBlocks, ')
+          ..write('syncVersionMatches: $syncVersionMatches, ')
+          ..write(
+              'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
           ..write('uuidPendingContentId0: $uuidPendingContentId0, ')
           ..write('uuidPendingContentId1: $uuidPendingContentId1, ')
           ..write('uuidPendingContentId2: $uuidPendingContentId2, ')
@@ -4202,6 +4546,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final DaoTokens daoTokens = DaoTokens(this as AccountDatabase);
   late final DaoInitialSync daoInitialSync =
       DaoInitialSync(this as AccountDatabase);
+  late final DaoSyncVersions daoSyncVersions =
+      DaoSyncVersions(this as AccountDatabase);
   late final DaoProfiles daoProfiles = DaoProfiles(this as AccountDatabase);
   late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
   @override
