@@ -1,6 +1,8 @@
 
 
 sealed class Result<Success, Error> {
+  const Result();
+
   bool isErr() {
     return this is Err;
   }
@@ -33,13 +35,13 @@ sealed class Result<Success, Error> {
 
 final class Ok<Success, Err> extends Result<Success, Err> {
   final Success value;
-  Ok(this.value);
+  const Ok(this.value);
   Success get v => value;
 }
 
 final class Err<Ok, E> extends Result<Ok, E> {
   final E error;
-  Err(this.error);
+  const Err(this.error);
   E get e => error;
 }
 
