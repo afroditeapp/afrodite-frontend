@@ -11,6 +11,7 @@ import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/settings/privacy_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/blocked_profiles.dart';
+import 'package:pihka_frontend/ui/normal/settings/media/current_security_selfie.dart';
 import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
 import 'package:pihka_frontend/utils/api.dart';
 
@@ -78,13 +79,20 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
           }
         ),
         blockedProfiles(),
+        securitySelfie(),
       ],
     );
   }
 
   Widget blockedProfiles() {
     return Setting.createSetting(Icons.block, context.strings.blocked_profiles_screen_title, () =>
-      MyNavigator.push(context, MaterialPage<void>(child: const BlockedProfilesScreen()))
+      MyNavigator.push(context, const MaterialPage<void>(child: BlockedProfilesScreen()))
+    ).toListTile();
+  }
+
+  Widget securitySelfie() {
+    return Setting.createSetting(Icons.image_rounded, context.strings.current_security_selfie_screen_title, () =>
+      MyNavigator.push(context, const MaterialPage<void>(child: CurrentSecuritySelfie()))
     ).toListTile();
   }
 

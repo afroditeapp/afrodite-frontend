@@ -138,6 +138,10 @@
   "@current_moderation_request_screen_title": {
     "description": "Title for current moderation request screen"
   },
+  "current_security_selfie_screen_title": "Security selfie",
+  "@current_security_selfie_screen_title": {
+    "description": "Current security selfie screen title"
+  },
   "demo_account_screen_confirm_logout_dialog_title": "Logout?",
   "@demo_account_screen_confirm_logout_dialog_title": {
     "description": "Dialog title text for confirming logout from demo account"

@@ -231,6 +231,9 @@
     <string name="blocked_profiles_screen_unblock_profile_in_progress" description="Snackbar text displayed when profile unblocking failed">Previous unblock is in progress</string>
     <string name="blocked_profiles_screen_no_blocked_profiles" description="Info text displayed when there is no blocked profiles">No blocked profiles</string>
 
+    <!-- Current security selfie -->
+    <string name="current_security_selfie_screen_title" description="Current security selfie screen title">Security selfie</string>
+
     <!-- Profile location screen -->
     <string name="profile_location_screen_title" description="Title for profile location screen">My profile\'s location</string>
 

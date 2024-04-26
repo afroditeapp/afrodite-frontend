@@ -29,4 +29,8 @@ class ContentData with _$ContentData {
     final y = content?.gridCropY ?? pendingContent?.pendingGridCropY ?? 0.0;
     return CropResults.fromValues(size, x, y);
   }
+
+  ContentId? get currentOrPendingSecurityContent {
+    return securityContent ?? pendingSecurityContent;
+  }
 }
