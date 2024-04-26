@@ -376,25 +376,25 @@ class ApiManager extends AppSingleton {
 
   // Actions
 
-  Future<Result<void, ValueApiError>> commonAction(Server server, Future<void> Function(CommonApi) action) async {
+  Future<Result<void, ActionApiError>> commonAction(Server server, Future<void> Function(CommonApi) action) async {
     switch (server) {
       case Server.account:
-        return accountCommon(action);
+        return accountCommonAction(action);
       case Server.media:
-        return mediaCommon(action);
+        return mediaCommonAction(action);
       case Server.profile:
-        return profileCommon(action);
+        return profileCommonAction(action);
     }
   }
 
-  Future<Result<void, ValueApiError>> commonAdminAction(Server server, Future<void> Function(CommonAdminApi) action) async {
+  Future<Result<void, ActionApiError>> commonAdminAction(Server server, Future<void> Function(CommonAdminApi) action) async {
     switch (server) {
       case Server.account:
-        return accountCommonAdmin(action);
+        return accountCommonAdminAction(action);
       case Server.media:
-        return mediaCommonAdmin(action);
+        return mediaCommonAdminAction(action);
       case Server.profile:
-        return profileCommonAdmin(action);
+        return profileCommonAdminAction(action);
     }
   }
 
