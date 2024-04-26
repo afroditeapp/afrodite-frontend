@@ -184,4 +184,20 @@ class AccountRepository extends DataRepository {
     final visibility = await profileVisibility.first;
     return visibility.isInitialModerationOngoing();
   }
+
+  Future<Result<AccountSetup, ()>> downloadAccountSetup() async {
+    return await api.account((api) => api.getAccountSetup())
+      .mapErr((_) => ());
+  }
+
+  Future<Result<AccountData, ()>> downloadAccountData() async {
+    return await api.account((api) => api.getAccountData())
+      .mapErr((_) => ());
+  }
+
+  Future<Result<(), ()>> moveAccountToPendingDeletionState() async {
+    return await api.accountAction((api) => api.postDelete())
+      .mapErr((_) => ())
+      .mapOk((_) => ());
+  }
 }

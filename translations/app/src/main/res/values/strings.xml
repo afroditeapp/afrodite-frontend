@@ -242,6 +242,11 @@
 
     <!-- Account settings selfie -->
     <string name="account_settings_screen" description="Title for account settings">Account</string>
+    <string name="account_settings_screen_email_title" description="Title for email text">Email address</string>
+    <string name="account_settings_screen_birthdate_title" description="Title for birthdate text">Birthdate</string>
+    <string name="account_settings_screen_delete_account_action" description="Title for delete account action">Request account deletion</string>
+    <string name="account_settings_screen_delete_account_action_error" description="Snackbar text about delete account action failure">Requesting account deletion failed</string>
+    <string name="account_settings_screen_delete_account_confirm_dialog_title" description="Title for delete account confirm dialog title">Request account deletion?</string>
 
     <!-- View image screen
         TODO: Does this page need a title?

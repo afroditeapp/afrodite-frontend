@@ -15,6 +15,20 @@ sealed class Result<Success, Error> {
       Err() => null
     };
   }
+
+  Result<Success, NextErr> mapErr<NextErr>(NextErr Function(Error) errMap) {
+    return switch (this) {
+      Ok(:final v) => Ok(v),
+      Err(:final e) => Err(errMap(e)),
+    };
+  }
+
+  Result<NextSuccess, Error> mapOk<NextSuccess>(NextSuccess Function(Success) okMap) {
+    return switch (this) {
+      Ok(:final v) => Ok(okMap(v)),
+      Err(:final e) => Err(e),
+    };
+  }
 }
 
 final class Ok<Success, Err> extends Result<Success, Err> {
@@ -43,9 +57,17 @@ extension FutureResultExt<Success, Error> on Future<Result<Success, Error>> {
   }
 
   Future<Success?> ok() async {
-    return switch (await this) {
-      Ok(:final v) => v,
-      Err() => null
-    };
+    final result = await this;
+    return result.ok();
+  }
+
+  Future<Result<Success, NextErr>> mapErr<NextErr>(NextErr Function(Error) errMap) async {
+    final result = await this;
+    return result.mapErr(errMap);
+  }
+
+  Future<Result<NextSuccess, Error>> mapOk<NextSuccess>(NextSuccess Function(Success) okMap) async {
+    final result = await this;
+    return result.mapOk(okMap);
   }
 }

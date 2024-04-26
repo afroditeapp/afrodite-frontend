@@ -3,6 +3,26 @@
   "@account_settings_screen": {
     "description": "Title for account settings"
   },
+  "account_settings_screen_birthdate_title": "Birthdate",
+  "@account_settings_screen_birthdate_title": {
+    "description": "Title for birthdate text"
+  },
+  "account_settings_screen_delete_account_action": "Request account deletion",
+  "@account_settings_screen_delete_account_action": {
+    "description": "Title for delete account action"
+  },
+  "account_settings_screen_delete_account_action_error": "Requesting account deletion failed",
+  "@account_settings_screen_delete_account_action_error": {
+    "description": "Snackbar text about delete account action failure"
+  },
+  "account_settings_screen_delete_account_confirm_dialog_title": "Request account deletion?",
+  "@account_settings_screen_delete_account_confirm_dialog_title": {
+    "description": "Title for delete account confirm dialog title"
+  },
+  "account_settings_screen_email_title": "Email address",
+  "@account_settings_screen_email_title": {
+    "description": "Title for email text"
+  },
   "admin_settings_title": "Admin",
   "@admin_settings_title": {
     "description": "Title for admin settings screen"

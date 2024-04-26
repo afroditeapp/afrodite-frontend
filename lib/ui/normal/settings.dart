@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/account/account_details.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/settings/edit_search_settings.dart';
@@ -13,7 +14,6 @@ import 'package:pihka_frontend/ui/normal/settings/admin.dart';
 import 'package:pihka_frontend/ui/normal/settings/data_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/debug.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
-import 'package:pihka_frontend/ui/normal/settings/my_profile.dart';
 import 'package:pihka_frontend/ui/normal/settings/privacy_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/search_settings.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
@@ -51,8 +51,11 @@ class _SettingsViewState extends State<SettingsView> {
       builder: (context, state) {
         List<Setting> settings = [
           Setting.createSetting(Icons.person, context.strings.account_settings_screen, () {
-              MyNavigator.push(context, const MaterialPage<void>(child:
-                AccountSettingsScreen()
+              final accountDetailsBloc = context.read<AccountDetailsBloc>();
+              MyNavigator.push(context, MaterialPage<void>(child:
+                AccountSettingsScreen(
+                  accountDetailsBloc: accountDetailsBloc,
+                )
               ));
             }
           ),

@@ -8,6 +8,8 @@ part 'account_details.freezed.dart';
 @freezed
 class AccountDetailsBlocData with _$AccountDetailsBlocData {
   factory AccountDetailsBlocData({
+    @Default(false) bool isLoading,
+    @Default(false) bool isError,
     String? email,
     String? birthdate,
   }) = _AccountDetailsBlocData;

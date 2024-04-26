@@ -1,38 +1,49 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/data/account_repository.dart";
-
-
+import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/model/freezed/logic/account/account_details.dart";
+import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
+import "package:pihka_frontend/utils/result.dart";
 
 abstract class AccountDetailsEvent {}
-class NewEmailValue extends AccountDetailsEvent {
-  final String value;
-  NewEmailValue(this.value);
-}
-class NewBirthdateValue extends AccountDetailsEvent {
-  final String value;
-  NewBirthdateValue(this.value);
-}
-
+class Reload extends AccountDetailsEvent {}
+class MoveAccountToPendingDeletionState extends AccountDetailsEvent {}
 
 class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocData> with ActionRunner {
   final AccountRepository account = AccountRepository.getInstance();
 
-  AccountDetailsBloc() :
-    super(AccountDetailsBlocData()) {
+  AccountDetailsBloc() : super(AccountDetailsBlocData()) {
+    on<Reload>((key, emit) async {
+      await runOnce(() async {
+        emit(AccountDetailsBlocData().copyWith(isLoading: true));
 
-    on<NewEmailValue>((key, emit) {
-      emit(state.copyWith(email: key.value));
+        final accountData = await account.downloadAccountData().ok();
+        if (accountData == null) {
+          emit(state.copyWith(isLoading: false, isError: true));
+          return;
+        }
+
+        final accountSetup = await account.downloadAccountSetup().ok();
+        if (accountSetup == null) {
+          emit(state.copyWith(isLoading: false, isError: true));
+          return;
+        }
+
+        emit(state.copyWith(
+          isLoading: false,
+          isError: false,
+          email: accountData.email,
+          birthdate: accountSetup.birthdate,
+        ));
+      });
     });
-    on<NewBirthdateValue>((key, emit) {
-      emit(state.copyWith(birthdate: key.value));
+    on<MoveAccountToPendingDeletionState>((key, emit) async {
+      await runOnce(() async {
+        if (await account.moveAccountToPendingDeletionState().isErr()) {
+          showSnackBar(R.strings.account_settings_screen_delete_account_action_error);
+        }
+      });
     });
-
-
-    // account.capabilities.listen((event) {
-    //   add(NewCapabilitiesValue(event));
-    // });
-    // TODO: listening
   }
 }
