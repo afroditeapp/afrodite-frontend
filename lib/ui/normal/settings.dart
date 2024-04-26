@@ -8,7 +8,9 @@ import 'package:pihka_frontend/logic/settings/privacy_settings.dart';
 import 'package:pihka_frontend/logic/settings/search_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
+import 'package:pihka_frontend/ui/normal/settings/account_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin.dart';
+import 'package:pihka_frontend/ui/normal/settings/data_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/debug.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
 import 'package:pihka_frontend/ui/normal/settings/my_profile.dart';
@@ -48,8 +50,11 @@ class _SettingsViewState extends State<SettingsView> {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
         List<Setting> settings = [
-          Setting.createSetting(Icons.account_circle_rounded, context.strings.view_profile_screen_my_profile_title, () =>
-            MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()))
+          Setting.createSetting(Icons.person, context.strings.account_settings_screen, () {
+              MyNavigator.push(context, const MaterialPage<void>(child:
+                AccountSettingsScreen()
+              ));
+            }
           ),
           Setting.createSetting(Icons.search, context.strings.search_settings_screen_title, () {
             final pageKey = PageKey();
@@ -86,18 +91,24 @@ class _SettingsViewState extends State<SettingsView> {
               ));
             }
           ),
+          Setting.createSetting(Icons.storage, context.strings.data_settings_screen, () {
+              MyNavigator.push(context, const MaterialPage<void>(child:
+                DataSettingsScreen()
+              ));
+            }
+          ),
         ];
 
         // TODO(prod): Remove/hide admin settings from production build?
         if (state.capabilities.adminSettingsVisible()) {
           settings.add(Setting.createSetting(Icons.admin_panel_settings, context.strings.admin_settings_title, () =>
-            MyNavigator.push(context, MaterialPage<void>(child: const AdminSettingsPage()))
+            MyNavigator.push(context, const MaterialPage<void>(child: AdminSettingsPage()))
           ));
         }
 
         // TODO(prod): Remove/hide debug settings
         settings.add(Setting.createSetting(Icons.bug_report_rounded, "Debug", () =>
-          MyNavigator.push(context, MaterialPage<void>(child: const DebugSettingsPage()))
+          MyNavigator.push(context, const MaterialPage<void>(child: DebugSettingsPage()))
         ));
 
         return SingleChildScrollView(

@@ -237,6 +237,12 @@
     <!-- Profile location screen -->
     <string name="profile_location_screen_title" description="Title for profile location screen">My profile\'s location</string>
 
+    <!-- Data settings selfie -->
+    <string name="data_settings_screen" description="Title for data settings">Data management</string>
+
+    <!-- Account settings selfie -->
+    <string name="account_settings_screen" description="Title for account settings">Account</string>
+
     <!-- View image screen
         TODO: Does this page need a title?
     -->

@@ -1,4 +1,8 @@
 {
+  "account_settings_screen": "Account",
+  "@account_settings_screen": {
+    "description": "Title for account settings"
+  },
   "admin_settings_title": "Admin",
   "@admin_settings_title": {
     "description": "Title for admin settings screen"
@@ -141,6 +145,10 @@
   "current_security_selfie_screen_title": "Security selfie",
   "@current_security_selfie_screen_title": {
     "description": "Current security selfie screen title"
+  },
+  "data_settings_screen": "Data management",
+  "@data_settings_screen": {
+    "description": "Title for data settings"
   },
   "demo_account_screen_confirm_logout_dialog_title": "Logout?",
   "@demo_account_screen_confirm_logout_dialog_title": {
