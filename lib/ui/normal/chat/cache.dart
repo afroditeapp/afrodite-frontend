@@ -46,7 +46,7 @@ class MessageCache {
       log.info("Setting initial messages: ${initialMessages.length}");
       _topMessages = initialMessages.map((e) => MessageContainer(e)).toList();
       size = initialMessages.length;
-      initialMsgLocalKey = initialMessages.firstOrNull?.id;
+      initialMsgLocalKey = initialMessages.firstOrNull?.localId;
     }
   }
 
@@ -71,7 +71,7 @@ class MessageCache {
 
       // ignore: prefer_conditional_assignment
       if (initialMsgLocalKey == null) {
-        initialMsgLocalKey = messages.first.id;
+        initialMsgLocalKey = messages.first.localId;
       }
 
       if (initialLoad) {
@@ -80,7 +80,7 @@ class MessageCache {
         }
       } else {
         for (final message in messages) {
-          if (message.id == initialMsgLocalKey) {
+          if (message.localId == initialMsgLocalKey) {
             useBottom = false;
           }
           if (useBottom) {
@@ -136,7 +136,7 @@ class MessageCache {
 
   /// Start rendering again if needed.
   void completeOneRendering(MessageContainer message, double totalHeight) {
-    log.info("Submit rendering: ${message.entry.id}, $totalHeight");
+    log.info("Submit rendering: ${message.entry.localId}, $totalHeight");
 
     _bottomMessages.add(message);
 
@@ -209,7 +209,7 @@ class MessageCache {
 
   void moveBottomMessagesToTop() async {
     _topMessages = [..._bottomMessages, ..._topMessages];
-    initialMsgLocalKey = _topMessages.firstOrNull?.entry?.id;
+    initialMsgLocalKey = _topMessages.firstOrNull?.entry.localId;
     _bottomMessages = [];
     _triggerUpdateCallback(null);
     log.info("Moved bottom messages to top");
@@ -238,7 +238,7 @@ class MessageCache {
       remoteAccountId: AccountId(accountId: ""),
       messageText: text,
       sentMessageState: state,
-      id: counter++,
+      localId: counter++,
     );
   }
 

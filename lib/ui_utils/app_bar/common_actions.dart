@@ -43,3 +43,15 @@ MenuItemButton commonActionLogout(BuildContext context) {
     ),
   );
 }
+
+MenuItemButton commonActionBlockProfile(BuildContext context, void Function() blockAction) {
+  return MenuItemButton(
+    onPressed: () async {
+      final accepted = await showConfirmDialog(context, context.strings.view_profile_screen_block_action_dialog_title);
+      if (context.mounted && accepted == true) {
+        blockAction();
+      }
+    },
+    child: Text(context.strings.view_profile_screen_block_action),
+  );
+}

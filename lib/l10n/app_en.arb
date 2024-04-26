@@ -109,9 +109,25 @@
   "@camera_screen_take_photo_error": {
     "description": "Snackbar error text displayed when taking photo fails"
   },
+  "chat_list_screen_no_chats_or_matches_found": "No chats or matches found",
+  "@chat_list_screen_no_chats_or_matches_found": {
+    "description": "Info text displayed when there is no chats or matches"
+  },
   "chat_list_screen_title": "Chats",
   "@chat_list_screen_title": {
     "description": "Title for chat list screen"
+  },
+  "conversation_screen_chat_box_placeholder_text": "Type a message…",
+  "@conversation_screen_chat_box_placeholder_text": {
+    "description": "Message input text field placeholder text"
+  },
+  "conversation_screen_make_match_instruction": "Send a message to make a match!",
+  "@conversation_screen_make_match_instruction": {
+    "description": "Instruction text how to make a match"
+  },
+  "conversation_screen_profile_blocked": "Profile was blocked",
+  "@conversation_screen_profile_blocked": {
+    "description": "Snackbar text displayed when profile blocking is successful"
   },
   "crop_image_screen_title": "Crop image",
   "@crop_image_screen_title": {
@@ -447,6 +463,10 @@
   "initial_setup_screen_too_young_error": "To use the app you must be 18 years old.",
   "@initial_setup_screen_too_young_error": {
     "description": "Error text displayed when age is under 18."
+  },
+  "likes_screen_no_received_likes_found": "No received likes found",
+  "@likes_screen_no_received_likes_found": {
+    "description": "Info text displayed when there is no received likes"
   },
   "likes_screen_title": "Likes",
   "@likes_screen_title": {

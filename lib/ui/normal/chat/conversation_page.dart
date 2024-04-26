@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart';
@@ -12,7 +13,8 @@ import 'package:pihka_frontend/ui/normal/chat/cache.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_renderer.dart';
 import 'package:pihka_frontend/ui/normal/chat/one_ended_list.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
-import 'package:pihka_frontend/ui_utils/dialog.dart';
+import 'package:pihka_frontend/ui_utils/app_bar/common_actions.dart';
+import 'package:pihka_frontend/ui_utils/app_bar/menu_actions.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
@@ -66,7 +68,7 @@ class ConversationPageState extends State<ConversationPage> {
                         height: 40,
                       ),
                       const Padding(padding: EdgeInsets.all(8.0)),
-                      Text(widget.profileEntry.name),
+                      Text(widget.profileEntry.profileTitle()),
                     ],
                   ),
                 ),
@@ -75,32 +77,18 @@ class ConversationPageState extends State<ConversationPage> {
           ],
         ),
         actions: [
-          PopupMenuButton(
-            itemBuilder: (context) {
-              return const [
-                PopupMenuItem(value: "block", child: Text("Block")),
-              ];
-            },
-            onSelected: (value) {
-              switch (value) {
-                case "block": {
-                  showConfirmDialog(context, "Block profile?")
-                    .then((value) {
-                      if (value == true) {
-                        context.read<ConversationBloc>().add(BlockProfile(widget.profileEntry.uuid));
-                      }
-                    });
-                }
-              }
-            },
-          ),
+          menuActions([
+            commonActionBlockProfile(context, () {
+              context.read<ConversationBloc>().add(BlockProfile(widget.profileEntry.uuid));
+            })
+          ]),
         ],
       ),
-      body: page(),
+      body: page(context),
     );
   }
 
-  Widget page() {
+  Widget page(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -122,16 +110,17 @@ class ConversationPageState extends State<ConversationPage> {
                     return Container();
                   } else if (state.isBlocked) {
                     Future.delayed(Duration.zero, () {
-                      showSnackBar("Profile was blocked");
-                      MyNavigator.pop(context);
+                      showSnackBar(R.strings.conversation_screen_profile_blocked);
+                      if (context.mounted) {
+                        MyNavigator.pop(context);
+                      }
                     });
                     return Container();
                   } else if (!state.isMatch) {
-                    return const Center(
-                      child: Text('Send a message to make a match!'),
+                    return Center(
+                      child: Text(context.strings.conversation_screen_make_match_instruction),
                     );
                   } else {
-                    log.info("Message count: ${state.messageCount}");
                     cache.setInitialMessagesIfNotSet(state.initialMessages.messages);
                     // It does not matter if this is called right after.
                     // Messages will not be fetched because size of message
@@ -163,7 +152,7 @@ class ConversationPageState extends State<ConversationPage> {
             child: TextField(
               controller: _textEditingController,
               decoration: InputDecoration(
-                hintText: 'Type a message...',
+                hintText: context.strings.conversation_screen_chat_box_placeholder_text,
               ),
               keyboardType: TextInputType.multiline,
               maxLines: 4,
@@ -173,15 +162,16 @@ class ConversationPageState extends State<ConversationPage> {
           IconButton(
             icon: const Icon(Icons.send),
             onPressed: () {
-              final message = _textEditingController.text;
-              if (message.trim().isNotEmpty) {
+              final message = _textEditingController.text.trim();
+              if (message.isNotEmpty) {
                 final bloc = context.read<ConversationBloc>();
                 final state = bloc.state;
                 if (state != null) {
-                  log.info("Sending message to ${state.accountId.accountId}");
                   bloc.add(SendMessageTo(state.accountId, message));
                   _textEditingController.clear();
                 }
+              } else {
+                _textEditingController.clear();
               }
             },
           ),

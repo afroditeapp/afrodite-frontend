@@ -42,7 +42,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
   }
 
   /// Returns ID of last inserted row.
-  Future<int> _insert(MessageEntry entry) async {
+  Future<int> _insert(NewMessageEntry entry) async {
     return await into(messages).insert(MessagesCompanion.insert(
       uuidLocalAccountId: entry.localAccountId,
       uuidRemoteAccountId: entry.remoteAccountId,
@@ -59,7 +59,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     AccountId remoteAccountId,
     String messageText,
   ) async {
-    final message = MessageEntry(
+    final message = NewMessageEntry(
       localAccountId: localAccountId,
       remoteAccountId: remoteAccountId,
       messageText: messageText,
@@ -70,7 +70,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
 
   Future<void> insertPendingMessage(AccountId localAccountId, PendingMessage entry) async {
     final unixTime = UtcDateTime.fromUnixEpochMilliseconds(entry.unixTime.unixTime * 1000);
-    final message = MessageEntry(
+    final message = NewMessageEntry(
       localAccountId: localAccountId,
       remoteAccountId: entry.id.accountIdSender,
       messageText: entry.message,
@@ -154,6 +154,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     }
 
     return MessageEntry(
+      localId: m.id,
       localAccountId: m.uuidLocalAccountId,
       remoteAccountId: m.uuidRemoteAccountId,
       messageText: m.messageText,

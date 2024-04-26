@@ -207,7 +207,7 @@ class ChatRepository extends DataRepository {
   ) async {
     var profiles = <ProfileEntry>[];
     while (true) {
-      final list = await _genericIteratorNext(receivedLikesIterator, cache: cache, download: download, isMatch: isMatch);
+      final list = await _genericIteratorNext(iterator, cache: cache, download: download, isMatch: isMatch);
       if (list.isEmpty) {
         return profiles;
       }

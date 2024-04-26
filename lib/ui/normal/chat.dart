@@ -13,6 +13,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
+import 'package:pihka_frontend/ui_utils/list.dart';
 
 var log = Logger("ChatView");
 
@@ -140,6 +141,19 @@ class _ChatViewState extends State<ChatView> {
                 height: 125,
                 child: rowWidget,
               ),
+            ),
+          );
+        },
+        noItemsFoundIndicatorBuilder: (context) {
+          return buildListReplacementMessage(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  context.strings.chat_list_screen_no_chats_or_matches_found,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ],
             ),
           );
         },

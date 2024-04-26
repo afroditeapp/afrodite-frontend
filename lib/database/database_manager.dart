@@ -14,6 +14,15 @@ import 'package:rxdart/rxdart.dart';
 
 final log = Logger("DatabaseManager");
 
+// TODO: It is fine that wal file is not closed properly, so consider enabling
+// WAL mode.
+
+// TODO: If Android back button is pressed main isolate closes but database
+// isolate does not close. Perhaps this is not an issue as the isolates are
+// not used after the main isolate is closed. Android home button does not
+// close the main isolate. Did this behavor start after Navigator 2.0
+// support was added?
+
 class DatabaseManager extends AppSingleton {
   DatabaseManager._private();
   static final _instance = DatabaseManager._private();

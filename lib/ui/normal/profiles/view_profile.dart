@@ -11,6 +11,8 @@ import 'package:pihka_frontend/logic/profile/view_profiles.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/view_profiles.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
+import 'package:pihka_frontend/ui_utils/app_bar/common_actions.dart';
+import 'package:pihka_frontend/ui_utils/app_bar/menu_actions.dart';
 
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
@@ -85,21 +87,11 @@ class ViewProfilePage extends StatelessWidget {
               tooltip: tooltip,
             );
           }),
-          PopupMenuButton(
-            itemBuilder: (context) {
-              return [
-                PopupMenuItem<void>(
-                  onTap: () async {
-                    final accepted = await showConfirmDialog(context, context.strings.view_profile_screen_block_action_dialog_title);
-                    if (context.mounted && accepted == true) {
-                      context.read<ViewProfileBloc>().add(BlockProfile(initialProfile.uuid));
-                    }
-                  },
-                  child: Text(context.strings.view_profile_screen_block_action),
-                ),
-              ];
-            },
-          ),
+          menuActions([
+            commonActionBlockProfile(context, () {
+              context.read<ViewProfileBloc>().add(BlockProfile(initialProfile.uuid));
+            })
+          ]),
         ],
       ),
       body: myProfilePage(context),

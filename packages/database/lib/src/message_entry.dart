@@ -6,9 +6,7 @@ import 'package:utils/utils.dart';
 
 class MessageEntry {
   /// Local database ID of the message.
-  /// This really is not null. Null is to avoid setting ID when inserting.
-  final int? id;
-  int get localId => id!;
+  final int localId;
 
   final AccountId localAccountId;
   final AccountId remoteAccountId;
@@ -24,6 +22,7 @@ class MessageEntry {
 
   MessageEntry(
     {
+      required this.localId,
       required this.localAccountId,
       required this.remoteAccountId,
       required this.messageText,
@@ -31,13 +30,12 @@ class MessageEntry {
       this.receivedMessageState,
       this.messageNumber,
       this.unixTime,
-      this.id,
     }
   );
 
   @override
   String toString() {
-    return "MessageEntry(id: $id, localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, sentMessageState: $sentMessageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime)";
+    return "MessageEntry(localId: $localId, localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, sentMessageState: $sentMessageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime)";
   }
 }
 
@@ -65,4 +63,35 @@ enum ReceivedMessageState {
 
   const ReceivedMessageState(this.number);
   final int number;
+}
+
+class NewMessageEntry {
+  final AccountId localAccountId;
+  final AccountId remoteAccountId;
+  final String messageText;
+  /// Null if message was received.
+  final SentMessageState? sentMessageState;
+  /// Null if message was sent.
+  final ReceivedMessageState? receivedMessageState;
+  /// Message number in a conversation. Server sets this value.
+  final MessageNumber? messageNumber;
+  /// Time since Unix epoch. Server sets this falue.
+  final UtcDateTime? unixTime;
+
+  NewMessageEntry(
+    {
+      required this.localAccountId,
+      required this.remoteAccountId,
+      required this.messageText,
+      this.sentMessageState,
+      this.receivedMessageState,
+      this.messageNumber,
+      this.unixTime,
+    }
+  );
+
+  @override
+  String toString() {
+    return "NewMessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, sentMessageState: $sentMessageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime)";
+  }
 }

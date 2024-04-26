@@ -12,6 +12,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
+import 'package:pihka_frontend/ui_utils/list.dart';
 
 var log = Logger("LikeView");
 
@@ -122,6 +123,19 @@ class _LikeViewState extends State<LikeView> {
               tag: item.heroTag.value,
               child: accountImgWidget(item.profile.uuid, item.profile.imageUuid)
             )
+          );
+        },
+        noItemsFoundIndicatorBuilder: (context) {
+          return buildListReplacementMessage(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  context.strings.likes_screen_no_received_likes_found,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ],
+            ),
           );
         },
       ),
