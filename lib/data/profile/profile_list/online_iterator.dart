@@ -133,7 +133,7 @@ class ProfileEntryDownloader {
       case Err(:final e) when e.isInternalServerError():
         return Err(PrivateProfile());
       case Err(:final e):
-        e.logError();
+        e.logError(log);
         return Err(OtherProfileDownloadError());
     }
     // TODO: Compare cached profile data with the one from the server.

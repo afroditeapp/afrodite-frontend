@@ -14,6 +14,7 @@ import 'package:pihka_frontend/utils.dart';
 
 import 'package:image/image.dart' as img;
 import 'package:pihka_frontend/model/freezed/utils/account_img_key.dart';
+import 'package:pihka_frontend/utils/app_error.dart';
 import 'package:pihka_frontend/utils/tmp_dir.dart';
 
 var log = Logger("ImageCacheData");
@@ -117,7 +118,7 @@ Future<Uint8List?> emptyMapTile() async {
     return pngBytes;
   } on IOException catch (e) {
     log.error(e);
-    ErrorManager.getInstance().send(FileError());
+    ErrorManager.getInstance().show(const FileError());
     return null;
   }
 }

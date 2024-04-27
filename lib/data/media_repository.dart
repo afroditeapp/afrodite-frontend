@@ -118,7 +118,7 @@ class MediaRepository extends DataRepository {
           // No map tile available
           return MapTileNotAvailable();
         } else {
-          ErrorManager.getInstance().send(ApiError());
+          ErrorManager.getInstance().show(e);
           return MapTileError();
         }
     }
@@ -205,23 +205,17 @@ class MediaRepository extends DataRepository {
     yield* task.sendImageToSlot(file, slot, secureCapture: secureCapture);
   }
 
-  Future<Result<ModerationRequest?, void>> currentModerationRequestState() async {
-    return await api.media((api) => api.getModerationRequest())
-      .mapErr((e) => e.logError())
+  Future<Result<ModerationRequest?, void>> currentModerationRequestState() =>
+    api.media((api) => api.getModerationRequest())
       .mapOk((v) => v.request);
-  }
 
-  Future<Result<void, void>> setProfileContent(SetProfileContent imgInfo) async {
-    return await api.mediaAction((api) => api.putProfileContent(imgInfo))
-      .onOk(() => reloadMyProfileContent())
-      .empty();
-  }
+  Future<Result<void, void>> setProfileContent(SetProfileContent imgInfo) =>
+    api.mediaAction((api) => api.putProfileContent(imgInfo))
+      .onOk(() => reloadMyProfileContent());
 
-  Future<Result<void, void>> setPendingProfileContent(SetProfileContent imgInfo) async {
-    return await api.mediaAction((api) => api.putPendingProfileContent(imgInfo))
-      .onOk(() => reloadMyProfileContent())
-      .empty();
-  }
+  Future<Result<void, void>> setPendingProfileContent(SetProfileContent imgInfo) =>
+    api.mediaAction((api) => api.putPendingProfileContent(imgInfo))
+      .onOk(() => reloadMyProfileContent());
 
   Future<Result<AccountContent, void>> loadAllContent() async {
     final accountId = await LoginRepository.getInstance().accountId.first;
@@ -229,8 +223,7 @@ class MediaRepository extends DataRepository {
       log.error("loadAllContent: accountId is null");
       return const Err(null);
     }
-    return await api.media((api) => api.getAllAccountMediaContent(accountId.accountId))
-      .mapErr((_) => ());
+    return await api.media((api) => api.getAllAccountMediaContent(accountId.accountId));
   }
 
   Future<Result<void, void>> createNewModerationRequest(List<ContentId> content) async {
@@ -240,14 +233,11 @@ class MediaRepository extends DataRepository {
       return const Err(null);
     }
 
-    return await api.mediaAction((api) => api.putModerationRequest(request))
-      .mapErr((_) => ());
+    return await api.mediaAction((api) => api.putModerationRequest(request));
   }
 
-  Future<Result<void, void>> deleteCurrentModerationRequest() async {
-    return await api.mediaAction((api) => api.deleteModerationRequest())
-      .mapErr((_) => ());
-  }
+  Future<Result<void, void>> deleteCurrentModerationRequest() =>
+    api.mediaAction((api) => api.deleteModerationRequest());
 
   Future<Result<void, void>> retryInitialSetupImages(RetryInitialSetupImages content) async {
     final result = await InitialSetupUtils().handleInitialSetupImages(content.securitySelfie, content.profileImgs);

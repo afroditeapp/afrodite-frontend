@@ -4,8 +4,7 @@
 
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/api/error_manager.dart';
-import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/utils/app_error.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 final log = Logger("ApiWrapper");
@@ -24,18 +23,18 @@ class ApiWrapper<T> {
       final value = await action(api);
 
       if (value == null) {
-        final err = NullError();
+        const err = NullError();
         if (logError) {
-          err.logError();
+          err.logError(log);
         }
-        return Err(err);
+        return const Err(err);
       } else {
         return Ok(value);
       }
     } on ApiException catch (e) {
       final err = ValueApiException(e);
       if (logError) {
-        err.logError();
+        err.logError(log);
       }
       return Err(err);
     }
@@ -46,69 +45,11 @@ class ApiWrapper<T> {
     try {
       return Ok(await action(api));
     } on ApiException catch (e) {
+      final err = ActionApiError(e);
       if (logError) {
-        log.error(e);
-        // TODO(prod): remove stack trace for production?
-        log.error(StackTrace.current);
-        ErrorManager.getInstance().send(ApiError());
+        err.logError(log);
       }
-      return Err(ActionApiError(e));
+      return Err(err);
     }
-  }
-}
-
-class ActionApiError {
-  final ApiException e;
-  ActionApiError(this.e);
-}
-
-sealed class ValueApiError {
-  /// Is status code HTTP 304
-  bool isNotModified() { return false; }
-
-  /// Is status code HTTP 404
-  bool isNotFoundError() { return false; }
-
-  /// Is status code HTTP 500
-  bool isInternalServerError() { return false; }
-
-  void logError() {}
-}
-
-class NullError extends ValueApiError {
-  @override
-  void logError() {
-    log.error("API function returned null");
-    // TODO(prod): remove stack trace for production?
-    log.error(StackTrace.current);
-    ErrorManager.getInstance().send(ApiError());
-  }
-}
-
-class ValueApiException extends ValueApiError {
-  final ApiException e;
-  ValueApiException(this.e);
-
-  @override
-  bool isNotModified() {
-    return e.code == 304;
-  }
-
-  @override
-  bool isNotFoundError() {
-    return e.code == 404;
-  }
-
-  @override
-  bool isInternalServerError() {
-    return e.code == 500;
-  }
-
-  @override
-  void logError() {
-    log.error(e);
-    // TODO(prod): remove stack trace for production?
-    log.error(StackTrace.current);
-    ErrorManager.getInstance().send(ApiError());
   }
 }

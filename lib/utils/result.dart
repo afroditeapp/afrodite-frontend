@@ -2,6 +2,8 @@
 
 import 'dart:async';
 
+import 'package:pihka_frontend/utils/app_error.dart';
+
 sealed class Result<Success, Error> {
   const Result();
 
@@ -137,6 +139,18 @@ extension FutureResultExt<Success, Error> on Future<Result<Success, Error>> {
   }
 
   Future<Result<NextSuccess, Error>> andThen<NextSuccess>(FutureOr<Result<NextSuccess, Error>> Function(Success) andThenAction) async {
+    final result = await this;
+    switch (result) {
+      case Ok(:final v):
+        return await andThenAction(v);
+      case Err(:final e):
+        return Err(e);
+    }
+  }
+}
+
+extension ResultExtAppError<Success, Error extends AppError> on Future<Result<Success, Error>> {
+  Future<Result<NextSuccess, AppError>> andThen<NextSuccess, NextErr extends AppError>(FutureOr<Result<NextSuccess, NextErr>> Function(Success) andThenAction) async {
     final result = await this;
     switch (result) {
       case Ok(:final v):

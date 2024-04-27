@@ -12,6 +12,7 @@ import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/utils/app_error.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -363,7 +364,6 @@ class ProfileRepository extends DataRepository {
 
   Future<Result<void, void>> reloadSearchGroups() async {
     return await _api.profile((api) => api.getSearchGroups())
-      .emptyErr()
       .andThen((v) => db.accountAction(
         (db) => db.daoProfileSettings.updateSearchGroups(v),
       ));
@@ -372,14 +372,12 @@ class ProfileRepository extends DataRepository {
   Future<Result<void, void>> updateSearchAgeRange(int minAge, int maxAge) async {
     final update = ProfileSearchAgeRange(min: minAge, max: maxAge);
     return await _api.profileAction((api) => api.postSearchAgeRange(update))
-      .onOk(() => reloadSearchAgeRange())
-      .empty();
+      .onOk(() => reloadSearchAgeRange());
   }
 
   Future<Result<void, void>> updateSearchGroups(SearchGroups groups) async {
     return await _api.profileAction((api) => api.postSearchGroups(groups))
-      .onOk(() => reloadSearchGroups())
-      .empty();
+      .onOk(() => reloadSearchGroups());
   }
 }
 

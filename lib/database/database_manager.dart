@@ -9,6 +9,7 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/database/utils.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/utils/app_error.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -60,7 +61,7 @@ class DatabaseManager extends AppSingleton {
     // events seem not to flow properly with that.
     .doOnError((e, _) {
       if (e is DriftWrappedException) {
-        handleDatabaseException(e);
+        handleDbException<void>(e);
       }
     });
   }
@@ -86,21 +87,19 @@ class DatabaseManager extends AppSingleton {
     return first ?? defaultValue;
   }
 
-  Future<Result<void, void>> commonAction(Future<void> Function(CommonDatabase) action) async {
+  Future<Result<void, DatabaseError>> commonAction(Future<void> Function(CommonDatabase) action) async {
     try {
       await action(commonDatabase);
       return const Ok(null);
     } on CouldNotRollBackException catch (e) {
-      handleDatabaseException(e);
+      return handleDbException(e);
     } on DriftWrappedException catch (e) {
-      handleDatabaseException(e);
+      return handleDbException(e);
     } on InvalidDataException catch (e) {
-      handleDatabaseException(e);
+      return handleDbException(e);
     } on DriftRemoteException catch (e) {
-      handleDatabaseException(e);
+      return handleDbException(e);
     }
-
-    return const Err(null);
   }
 
   // Access current account database
@@ -118,7 +117,7 @@ class DatabaseManager extends AppSingleton {
     // events seem not to flow properly with that.
     .doOnError((e, _) {
       if (e is DriftWrappedException) {
-        handleDatabaseException(e);
+        handleDbException<void>(e);
       }
     });
   }
@@ -134,11 +133,11 @@ class DatabaseManager extends AppSingleton {
       });
   }
 
-  Future<Result<T, void>> accountStreamSingle<T extends Object>(Stream<T?> Function(AccountDatabase) mapper) async {
+  Future<Result<T, DatabaseError>> accountStreamSingle<T extends Object>(Stream<T?> Function(AccountDatabase) mapper) async {
     final stream = accountStream(mapper);
     final value = await stream.first;
     if (value == null) {
-      return const Err(null);
+      return const Err(MissingRequiredValue());
     } else {
       return Ok(value);
     }
@@ -149,34 +148,32 @@ class DatabaseManager extends AppSingleton {
     return value.ok() ?? defaultValue;
   }
 
-  Future<Result<T, void>> accountData<T extends Object?>(Future<T> Function(AccountDatabase) action) async {
+  Future<Result<T, DatabaseError>> accountData<T extends Object?>(Future<T> Function(AccountDatabase) action) async {
     final accountId = await commonStream((db) => db.watchAccountId()).first;
     if (accountId == null) {
       log.warning("No AccountId found, data query skipped");
-      return const Err(null);
+      return const Err(MissingAccountId());
     }
 
     try {
       final db = _getAccountDatabaseUsingAccount(accountId);
       return Ok(await action(db));
     } on CouldNotRollBackException catch (e) {
-      handleDatabaseException(e);
+      return Err(DatabaseException(e));
     } on DriftWrappedException catch (e) {
-      handleDatabaseException(e);
+      return handleDbException(e);
     } on InvalidDataException catch (e) {
-      handleDatabaseException(e);
+      return handleDbException(e);
     } on DriftRemoteException catch (e) {
-      handleDatabaseException(e);
+      return handleDbException(e);
     }
-
-    return const Err(null);
   }
 
-  Future<Result<void, void>> accountAction(Future<void> Function(AccountDatabase) action) async {
+  Future<Result<void, DatabaseError>> accountAction(Future<void> Function(AccountDatabase) action) async {
     final accountId = await commonStream((db) => db.watchAccountId()).first;
     if (accountId == null) {
       log.warning("No AccountId found, action skipped");
-      return const Err(null);
+      return const Err(MissingAccountId());
     }
 
     try {
@@ -184,27 +181,26 @@ class DatabaseManager extends AppSingleton {
       await action(db);
       return const Ok(null);
     } on CouldNotRollBackException catch (e) {
-      handleDatabaseException(e);
+      return handleDbException(e);
     } on DriftWrappedException catch (e) {
-      handleDatabaseException(e);
+      return handleDbException(e);
     } on InvalidDataException catch (e) {
-      handleDatabaseException(e);
+      return handleDbException(e);
     } on DriftRemoteException catch (e) {
-      handleDatabaseException(e);
+      return handleDbException(e);
     }
-    return const Err(null);
   }
 
-  Future<Result<T, void>> profileData<T extends Object?>(Future<T> Function(DaoProfiles) action) =>
+  Future<Result<T, DatabaseError>> profileData<T extends Object?>(Future<T> Function(DaoProfiles) action) =>
     accountData((db) => action(db.daoProfiles));
 
-  Future<Result<void, void>> profileAction(Future<void> Function(DaoProfiles) action) =>
+  Future<Result<void, DatabaseError>> profileAction(Future<void> Function(DaoProfiles) action) =>
     accountAction((db) => action(db.daoProfiles));
 
-  Future<Result<T, void>> messageData<T extends Object?>(Future<T> Function(DaoMessages) action) =>
+  Future<Result<T, DatabaseError>> messageData<T extends Object?>(Future<T> Function(DaoMessages) action) =>
     accountData((db) => action(db.daoMessages));
 
-  Future<Result<void, void>> messageAction(Future<void> Function(DaoMessages) action) =>
+  Future<Result<void, DatabaseError>> messageAction(Future<void> Function(DaoMessages) action) =>
     accountAction((db) => action(db.daoMessages));
 
   Stream<T?> _accountSwitchMapStream<T extends Object>(Stream<T?> Function(AccountId? accountId) mapper) async* {
@@ -223,18 +219,9 @@ class DatabaseManager extends AppSingleton {
     }
   }
 
-  Future<Result<void, void>> setAccountId(AccountId accountId) async {
-    final result = await commonAction((db) async {
-      await db.updateAccountIdUseOnlyFromDatabaseManager(accountId);
-    });
-
-    switch (result) {
-      case Ok():
-        return await accountAction((db) => db.setAccountIdIfNull(accountId));
-      case Err():
-        return const Err(null);
-    }
-  }
+  Future<Result<void, AppError>> setAccountId(AccountId accountId) =>
+    commonAction((db) => db.updateAccountIdUseOnlyFromDatabaseManager(accountId))
+      .andThen((_) => accountAction((db) => db.setAccountIdIfNull(accountId)));
 }
 
 Stream<T?> oneValueAndWaitForever<T>(T? value) async* {
@@ -243,10 +230,8 @@ Stream<T?> oneValueAndWaitForever<T>(T? value) async* {
   await completer.future;
 }
 
-void handleDatabaseException(Exception e) {
-  // TODO(prod): remove exception printing for production?
-  log.error(e);
-  // TODO(prod): remove stack trace for production?
-  log.error(StackTrace.current);
-  ErrorManager.getInstance().send(DatabaseError());
+Result<Success, DatabaseException> handleDbException<Success>(Exception e) {
+  final dbException = DatabaseException(e);
+  dbException.logError(log);
+  return Err(dbException);
 }
