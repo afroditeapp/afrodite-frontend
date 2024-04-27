@@ -209,3 +209,31 @@ Rect calculateSquareSrcRect(ui.Image img, CropResults cropResults) {
 
   return src;
 }
+
+// TODO: Images are too high resolution for cacheing as cache has decoded
+// data. Cache needs smaller img data if the image is small on UI.
+// Perhaps use full HD max width 1920 as max dimension for image and scale
+// that down depending on UI img size. The small profile img on top left
+// corner could be 4x downscaled and perhaps 2x or 3x for profile img
+// thumbnails. The profile view could display the original img size?
+// Perhaps the downscaling could be controlled from settings at least for
+// thumbnails.
+
+/*
+
+  @override
+  void initState() {
+    debugInvertOversizedImages = true;
+    cacheDebug();
+  }
+
+  void cacheDebug() async {
+    while (true) {
+      await Future<void>.delayed(const Duration(seconds: 1));
+      final c = imageCache;
+      log.info("max: ${c.maximumSize}, current: ${c.currentSize}, live: ${c.liveImageCount}, pending: ${c.pendingImageCount}");
+    }
+  }
+
+  final newStream = ResizeImage(AccountImageProvider(k), width: 64, policy: ResizeImagePolicy.fit).resolve(createLocalImageConfiguration(context));
+*/

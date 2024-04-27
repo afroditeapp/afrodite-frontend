@@ -122,14 +122,17 @@ Future<Uint8List?> emptyMapTile() async {
   }
 }
 
-class AccountImageProvider extends ImageProvider<AccountImgKey> {
+// Use only ContentId as key for image cache as that is most likely
+// faster than using both AccountId and ContentId. Also all images
+// have unique ContentId.
+class AccountImageProvider extends ImageProvider<ContentId> {
   final AccountImgKey imgInfo;
   final bool isMatch;
 
   AccountImageProvider(this.imgInfo, {this.isMatch = false});
 
   @override
-  ImageStreamCompleter loadImage(AccountImgKey key, ImageDecoderCallback decode) {
+  ImageStreamCompleter loadImage(ContentId key, ImageDecoderCallback decode) {
     return OneFrameImageStreamCompleter(
       () async {
         final imgBytes =
@@ -149,6 +152,6 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
   }
 
   @override
-  Future<AccountImgKey> obtainKey(ImageConfiguration configuration) =>
-    SynchronousFuture(imgInfo);
+  Future<ContentId> obtainKey(ImageConfiguration configuration) =>
+    SynchronousFuture(imgInfo.contentId);
 }
