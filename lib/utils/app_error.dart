@@ -145,3 +145,24 @@ class MissingRequiredValue extends DatabaseError {
     ErrorManager.getInstance().show(this);
   }
 }
+
+// TODO(prod): translate error titles
+
+sealed class LogicError extends AppError {
+  const LogicError();
+
+  @override
+  String title() => "Logic error";
+}
+
+class MissingValue extends LogicError {
+  const MissingValue();
+
+  @override
+  void logError(Logger log) {
+    log.error(this);
+    // TODO(prod): remove stack trace for production?
+    log.error(StackTrace.current);
+    ErrorManager.getInstance().show(this);
+  }
+}

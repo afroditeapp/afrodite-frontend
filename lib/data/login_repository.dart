@@ -31,8 +31,6 @@ enum LoginRepositoryState {
   initComplete,
 }
 
-// TODO: Change () types to void.
-
 // TODO: Check didRequestAppExit, onDetach and end of main function. Could
 // any be used to quit connection to server and close databases.
 

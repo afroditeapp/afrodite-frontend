@@ -160,3 +160,15 @@ extension ResultExtAppError<Success, Error extends AppError> on Future<Result<Su
     }
   }
 }
+
+extension ResultExtAppErrorFlatten<Success, ErrorInner extends AppError, ErrorOuter extends AppError> on Future<Result<Result<Success, ErrorInner>, ErrorOuter>> {
+  Future<Result<Success, AppError>> flatten() async {
+    final result = await this;
+    switch (result) {
+      case Ok(:final v):
+        return v;
+      case Err(:final e):
+        return Err(e);
+    }
+  }
+}

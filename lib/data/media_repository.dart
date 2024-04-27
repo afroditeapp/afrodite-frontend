@@ -3,6 +3,7 @@
 
 import 'dart:async';
 
+import 'package:async/async.dart' show StreamExtensions;
 import 'package:camera/camera.dart';
 import 'package:drift/drift.dart';
 import 'package:logging/logging.dart';
@@ -18,6 +19,8 @@ import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/retry_initial_setup_images.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/api.dart';
+import 'package:pihka_frontend/utils/app_error.dart';
+import 'package:pihka_frontend/utils/option.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("MediaRepository");
@@ -70,26 +73,23 @@ class MediaRepository extends DataRepository {
     await reloadMySecurityContent();
   }
 
-  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) async {
-    final data = await api.media((api) => api.getContentFixed(
+  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) =>
+    api.media((api) => api.getContentFixed(
       imageOwner.accountId,
       id.contentId,
       isMatch,
-    )).ok();
-    if (data != null) {
-      return data;
-    } else {
-      log.error("Image loading error");
-      return null;
-    }
-  }
+    ))
+    .onErr(() => log.error("Image loading error"))
+    .ok();
 
-  Future<ContentId?> getProfileImage(AccountId imageOwner, bool isMatch) async {
-    final data = await api.media((api) => api.getProfileContentInfo(
+  Future<ContentId?> getProfileImage(AccountId imageOwner, bool isMatch) =>
+    api.media((api) => api.getProfileContentInfo(
       imageOwner.accountId,
       isMatch
-    )).ok();
-    if (data != null) {
+    ))
+    .onErr(() => log.error("Image loading error"))
+    .ok()
+    .map((data) {
       final contentId = data.contentId0;
       if (contentId == null) {
         log.error("Image loading error: no contentId0");
@@ -97,11 +97,7 @@ class MediaRepository extends DataRepository {
       } else {
         return contentId.id;
       }
-    } else {
-      log.error("Image loading error");
-      return null;
-    }
-  }
+    });
 
   Future<MapTileResult> getMapTile(int z, int x, int y) async {
     final data = await api.mediaWrapper().requestValue((api) => api.getMapTileFixed(
@@ -124,28 +120,29 @@ class MediaRepository extends DataRepository {
     }
   }
 
-  Future<ModerationList> nextModerationListFromServer(ModerationQueueType queue) async {
-    return await api.mediaAdmin((api) => api.patchModerationRequestList(queue)).ok() ?? ModerationList();
-  }
+  Future<ModerationList> nextModerationListFromServer(ModerationQueueType queue) async =>
+    await api.mediaAdmin((api) => api.patchModerationRequestList(queue)).ok() ?? ModerationList();
 
-  Future<void> handleModerationRequest(AccountId accountId, bool accept) async {
-    await api.mediaAdminAction((api) => api.postHandleModerationRequest(accountId.accountId, HandleModerationRequest(accept: accept)));
-  }
+  Future<void> handleModerationRequest(AccountId accountId, bool accept) =>
+    api.mediaAdminAction((api) => api.postHandleModerationRequest(
+      accountId.accountId,
+      HandleModerationRequest(accept: accept))
+    );
 
-  Future<ContentId?> getSecuritySelfie(AccountId account) async {
-    final img = await api.media((api) => api.getSecurityContentInfo(account.accountId)).ok();
-    return img?.contentId?.id;
-  }
+  Future<ContentId?> getSecuritySelfie(AccountId account) =>
+    api.media((api) => api.getSecurityContentInfo(account.accountId))
+      .ok()
+      .map((img) => img.contentId?.id);
 
-  Future<ContentId?> getPendingSecuritySelfie(AccountId account) async {
-    final img = await api.media((api) => api.getPendingSecurityContentInfo(account.accountId)).ok();
-    return img?.contentId?.id;
-  }
+  Future<ContentId?> getPendingSecuritySelfie(AccountId account) =>
+    api.media((api) => api.getPendingSecurityContentInfo(account.accountId))
+      .ok()
+      .map((img) => img.contentId?.id);
 
-  Future<ContentId?> getPrimaryImage(AccountId account, bool isMatch) async {
-    final info = await api.media((api) => api.getProfileContentInfo(account.accountId, isMatch)).ok();
-    return info?.contentId0?.id;
-  }
+  Future<ContentId?> getPrimaryImage(AccountId account, bool isMatch) =>
+    api.media((api) => api.getProfileContentInfo(account.accountId, isMatch))
+      .ok()
+      .map((info) => info.contentId0?.id);
 
   /// Reload current and pending profile content.
   Future<Result<void, void>> reloadMyProfileContent() async {
@@ -217,24 +214,17 @@ class MediaRepository extends DataRepository {
     api.mediaAction((api) => api.putPendingProfileContent(imgInfo))
       .onOk(() => reloadMyProfileContent());
 
-  Future<Result<AccountContent, void>> loadAllContent() async {
-    final accountId = await LoginRepository.getInstance().accountId.first;
-    if (accountId == null) {
-      log.error("loadAllContent: accountId is null");
-      return const Err(null);
-    }
-    return await api.media((api) => api.getAllAccountMediaContent(accountId.accountId));
-  }
+  Future<Result<AccountContent, void>> loadAllContent() =>
+    LoginRepository.getInstance().accountId.firstOrNull
+      .okOr(const MissingValue())
+      .inspectErr((e) => e.logError(log))
+      .andThen((accountId) => api.media((api) => api.getAllAccountMediaContent(accountId.accountId)));
 
-  Future<Result<void, void>> createNewModerationRequest(List<ContentId> content) async {
-    final request = ModerationRequestContentExtensions.fromList(content);
-    if (request == null) {
-      log.error("createNewModerationRequest: request is null");
-      return const Err(null);
-    }
-
-    return await api.mediaAction((api) => api.putModerationRequest(request));
-  }
+  Future<Result<void, void>> createNewModerationRequest(List<ContentId> content) =>
+    Future.value(ModerationRequestContentExtensions.fromList(content))
+      .okOr(const MissingValue())
+      .inspectErr((e) => e.logError(log))
+      .andThen((r) => api.mediaAction((api) => api.putModerationRequest(r)));
 
   Future<Result<void, void>> deleteCurrentModerationRequest() =>
     api.mediaAction((api) => api.deleteModerationRequest());
