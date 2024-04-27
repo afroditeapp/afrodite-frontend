@@ -121,7 +121,7 @@ class InitialSetupUtils {
     return null;
   }
 
-  Future<Result<(), ()>> doInitialSetup(
+  Future<Result<void, void>> doInitialSetup(
     InitialSetupData data,
   ) async {
 
@@ -202,10 +202,10 @@ class InitialSetupUtils {
       if (r.isErr()) return errAndLog("Completing setup failed");
     }
 
-    return Ok(());
+    return Ok(null);
   }
 
-  Future<Result<(), ()>> handleInitialSetupImages(ContentId? securitySelfie, Iterable<ImgState>? profileImages) async {
+  Future<Result<void, void>> handleInitialSetupImages(ContentId? securitySelfie, Iterable<ImgState>? profileImages) async {
     if (securitySelfie == null) return errAndLog("Security selfie is null");
     final r1 = await _api.mediaAction((api) => api.putPendingSecurityContentInfo(securitySelfie));
     if (r1.isErr()) return errAndLog("Setting security selfie failed");
@@ -221,7 +221,7 @@ class InitialSetupUtils {
     final r3 = await _api.mediaAction((api) => api.putModerationRequest(moderationRequest));
     if (r3.isErr()) return errAndLog("Moderation request sending failed");
 
-    return Ok(());
+    return Ok(null);
   }
 }
 
@@ -256,7 +256,7 @@ ModerationRequestContent createModerationRequest(
   );
 }
 
-Result<SetProfileContent, ()> createProfileContent(
+Result<SetProfileContent, void> createProfileContent(
   ContentId securitySelfie,
   Iterable<ImgState> imgs,
 ) {
@@ -313,9 +313,9 @@ ContentId getId(SelectedImageInfo info, ContentId securitySelfie) {
   };
 }
 
-Result<T, ()> errAndLog<T>(String message) {
+Result<T, void> errAndLog<T>(String message) {
   log.error(message);
-  return Err(());
+  return const Err(null);
 }
 
 sealed class WaitProcessingResult {}

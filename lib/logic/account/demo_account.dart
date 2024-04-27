@@ -47,9 +47,9 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
       emit(state.copyWith(accounts: const UnmodifiableList.empty()));
 
       switch (await login.demoAccountLogin(data.credentials)) {
-        case Ok(v: ()):
-          ();
-        case Err(e: _):
+        case Ok():
+          null;
+        case Err():
           showSnackBar(R.strings.login_screen_demo_account_login_failed);
       }
     });
@@ -105,10 +105,10 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
   }
 }
 
-void handleErrors(Result<(), SessionOrOtherError> result) {
+void handleErrors(Result<void, SessionOrOtherError> result) {
   switch (result) {
-    case Ok(v: ()):
-      ();
+    case Ok():
+      null;
     case Err(e: SessionExpired()):
       showSnackBar(R.strings.login_screen_demo_account_login_session_expired);
     case Err(e: OtherError()):

@@ -232,14 +232,14 @@ class LoginRepository extends DataRepository {
     await _api.closeAndRefreshServerAddress();
   }
 
-  Future<Result<(), ()>> demoAccountLogin(DemoAccountCredentials credentials) async {
+  Future<Result<void, void>> demoAccountLogin(DemoAccountCredentials credentials) async {
     _demoAccountLoginInProgress.add(true);
     final loginResult = await _api.account((api) => api.postDemoModeLogin(DemoModePassword(password: credentials.id))).ok();
     _demoAccountLoginInProgress.add(false);
 
     final loginToken = loginResult?.token;
     if (loginToken == null) {
-      return Err(());
+      return const Err(null);
     }
 
     final loginResult2 = await _api.account((api) => api.postDemoModeConfirmLogin(
@@ -250,14 +250,14 @@ class LoginRepository extends DataRepository {
     )).ok();
     final demoAccountToken = loginResult2?.token?.token;
     if (demoAccountToken == null) {
-      return Err(());
+      return const Err(null);
     }
 
     await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountUserId(credentials.id));
     await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountPassword(credentials.password));
     await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountToken(demoAccountToken));
 
-    return Ok(());
+    return const Ok(null);
   }
 
   Future<void> demoAccountLogout() async {
@@ -287,7 +287,7 @@ class LoginRepository extends DataRepository {
     }
   }
 
-  Future<Result<(), SessionOrOtherError>> demoAccountRegisterAndLogin() async {
+  Future<Result<void, SessionOrOtherError>> demoAccountRegisterAndLogin() async {
     final token = await demoAccountToken.first;
     if (token == null) {
       return Err(OtherError());
@@ -304,7 +304,7 @@ class LoginRepository extends DataRepository {
     }
   }
 
-  Future<Result<(), SessionOrOtherError>> demoAccountLoginToAccount(AccountId id) async {
+  Future<Result<void, SessionOrOtherError>> demoAccountLoginToAccount(AccountId id) async {
     final token = await demoAccountToken.first;
     if (token == null) {
       return Err(OtherError());
@@ -317,7 +317,7 @@ class LoginRepository extends DataRepository {
         return Err(OtherError());
       }
       await _handleLoginResult(loginResult);
-      return Ok(());
+      return const Ok(null);
     } else {
       // TODO: Better error handling
       // Assume session expiration every time for now.

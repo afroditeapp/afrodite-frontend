@@ -86,10 +86,10 @@ class DatabaseManager extends AppSingleton {
     return first ?? defaultValue;
   }
 
-  Future<Result<(), ()>> commonAction(Future<void> Function(CommonDatabase) action) async {
+  Future<Result<void, void>> commonAction(Future<void> Function(CommonDatabase) action) async {
     try {
       await action(commonDatabase);
-      return Ok(());
+      return const Ok(null);
     } on CouldNotRollBackException catch (e) {
       handleDatabaseException(e);
     } on DriftWrappedException catch (e) {
@@ -100,7 +100,7 @@ class DatabaseManager extends AppSingleton {
       handleDatabaseException(e);
     }
 
-    return Err(());
+    return const Err(null);
   }
 
   // Access current account database
@@ -134,11 +134,11 @@ class DatabaseManager extends AppSingleton {
       });
   }
 
-  Future<Result<T, ()>> accountStreamSingle<T extends Object>(Stream<T?> Function(AccountDatabase) mapper) async {
+  Future<Result<T, void>> accountStreamSingle<T extends Object>(Stream<T?> Function(AccountDatabase) mapper) async {
     final stream = accountStream(mapper);
     final value = await stream.first;
     if (value == null) {
-      return Err(());
+      return const Err(null);
     } else {
       return Ok(value);
     }
@@ -149,11 +149,11 @@ class DatabaseManager extends AppSingleton {
     return value.ok() ?? defaultValue;
   }
 
-  Future<Result<T, ()>> accountData<T extends Object?>(Future<T> Function(AccountDatabase) action) async {
+  Future<Result<T, void>> accountData<T extends Object?>(Future<T> Function(AccountDatabase) action) async {
     final accountId = await commonStream((db) => db.watchAccountId()).first;
     if (accountId == null) {
       log.warning("No AccountId found, data query skipped");
-      return Err(());
+      return const Err(null);
     }
 
     try {
@@ -169,20 +169,20 @@ class DatabaseManager extends AppSingleton {
       handleDatabaseException(e);
     }
 
-    return Err(());
+    return const Err(null);
   }
 
-  Future<Result<(), ()>> accountAction(Future<void> Function(AccountDatabase) action) async {
+  Future<Result<void, void>> accountAction(Future<void> Function(AccountDatabase) action) async {
     final accountId = await commonStream((db) => db.watchAccountId()).first;
     if (accountId == null) {
       log.warning("No AccountId found, action skipped");
-      return Err(());
+      return const Err(null);
     }
 
     try {
       final db = _getAccountDatabaseUsingAccount(accountId);
       await action(db);
-      return Ok(());
+      return const Ok(null);
     } on CouldNotRollBackException catch (e) {
       handleDatabaseException(e);
     } on DriftWrappedException catch (e) {
@@ -192,19 +192,19 @@ class DatabaseManager extends AppSingleton {
     } on DriftRemoteException catch (e) {
       handleDatabaseException(e);
     }
-    return Err(());
+    return const Err(null);
   }
 
-  Future<Result<T, ()>> profileData<T extends Object?>(Future<T> Function(DaoProfiles) action) =>
+  Future<Result<T, void>> profileData<T extends Object?>(Future<T> Function(DaoProfiles) action) =>
     accountData((db) => action(db.daoProfiles));
 
-  Future<Result<(), ()>> profileAction(Future<void> Function(DaoProfiles) action) =>
+  Future<Result<void, void>> profileAction(Future<void> Function(DaoProfiles) action) =>
     accountAction((db) => action(db.daoProfiles));
 
-  Future<Result<T, ()>> messageData<T extends Object?>(Future<T> Function(DaoMessages) action) =>
+  Future<Result<T, void>> messageData<T extends Object?>(Future<T> Function(DaoMessages) action) =>
     accountData((db) => action(db.daoMessages));
 
-  Future<Result<(), ()>> messageAction(Future<void> Function(DaoMessages) action) =>
+  Future<Result<void, void>> messageAction(Future<void> Function(DaoMessages) action) =>
     accountAction((db) => action(db.daoMessages));
 
   Stream<T?> _accountSwitchMapStream<T extends Object>(Stream<T?> Function(AccountId? accountId) mapper) async* {
@@ -223,7 +223,7 @@ class DatabaseManager extends AppSingleton {
     }
   }
 
-  Future<Result<(), ()>> setAccountId(AccountId accountId) async {
+  Future<Result<void, void>> setAccountId(AccountId accountId) async {
     final result = await commonAction((db) async {
       await db.updateAccountIdUseOnlyFromDatabaseManager(accountId);
     });
@@ -232,7 +232,7 @@ class DatabaseManager extends AppSingleton {
       case Ok():
         return await accountAction((db) => db.setAccountIdIfNull(accountId));
       case Err():
-        return Err(());
+        return const Err(null);
     }
   }
 }

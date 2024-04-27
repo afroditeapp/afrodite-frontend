@@ -290,68 +290,52 @@ class ProfileRepository extends DataRepository {
     return profileAttributes;
   }
 
-  Future<Result<(), ()>> reloadMyProfile() async {
+  Future<Result<void, void>> reloadMyProfile() async {
     final ownAccountId = await LoginRepository.getInstance().accountId.firstOrNull;
     if (ownAccountId == null) {
       log.warning("reloadMyProfile: accountId is null");
-      return Err(());
+      return const Err(null);
     }
 
-    final profile = await _api.profile((api) => api.getProfile(ownAccountId.accountId)).ok();
-    if (profile != null) {
-      return await db.accountAction((db) => db.daoMyProfile.setApiProfile(profile: profile));
-    } else {
-      return Err(());
-    }
+    return await _api.profile((api) => api.getProfile(ownAccountId.accountId))
+      .emptyErr()
+      .andThen((p) => db.accountAction((db) => db.daoMyProfile.setApiProfile(profile: p)));
   }
 
-  Future<Result<(), ()>> reloadFavoriteProfiles() async {
-    final favorites = await _api.profile((api) => api.getFavoriteProfiles()).ok();
-    if (favorites != null) {
-      return await db.profileAction((db) => db.setFavoriteStatusList(favorites.profiles, true, clear: true));
-    } else {
-      return Err(());
-    }
+  Future<Result<void, void>> reloadFavoriteProfiles() async {
+    return await _api.profile((api) => api.getFavoriteProfiles())
+      .emptyErr()
+      .andThen((f) => db.profileAction((db) => db.setFavoriteStatusList(f.profiles, true, clear: true)));
   }
 
-  Future<Result<(), ()>> reloadLocation() async {
-    final location = await _api.profile((api) => api.getLocation()).ok();
-    if (location != null) {
-      return await db.accountAction(
+  Future<Result<void, void>> reloadLocation() async {
+    return await _api.profile((api) => api.getLocation())
+      .emptyErr()
+      .andThen((l) => db.accountAction(
         (db) => db.daoProfileSettings.updateProfileLocation(
-          latitude: location.latitude,
-          longitude: location.longitude,
-        ),
-      );
-    } else {
-      return Err(());
-    }
+          latitude: l.latitude,
+          longitude: l.longitude,
+        )
+      ));
   }
 
-  Future<Result<(), ()>> reloadAttributeFilters() async {
-    final value = await _api.profile((api) => api.getProfileAttributeFilters()).ok();
-    if (value != null) {
-      return await db.accountAction(
-        (db) => db.daoProfileSettings.updateProfileAttributeFilters(value),
-      );
-    } else {
-      return Err(());
-    }
+  Future<Result<void, void>> reloadAttributeFilters() async {
+    return await _api.profile((api) => api.getProfileAttributeFilters())
+      .emptyErr()
+      .andThen((f) => db.accountAction(
+        (db) => db.daoProfileSettings.updateProfileAttributeFilters(f),
+      ));
   }
 
-  Future<Result<(), ()>> updateAttributeFilters(List<ProfileAttributeFilterValueUpdate> newValues) async {
+  Future<Result<void, void>> updateAttributeFilters(List<ProfileAttributeFilterValueUpdate> newValues) async {
     if (newValues.isEmpty) {
-      return Ok(());
+      return const Ok(null);
     }
 
     final update = ProfileAttributeFilterListUpdate(filters: newValues);
-    switch (await _api.profileAction((api) => api.postProfileAttributeFilters(update))) {
-      case Ok():
-        await reloadAttributeFilters();
-        return Ok(());
-      case Err():
-        return Err(());
-    }
+    return await _api.profileAction((api) => api.postProfileAttributeFilters(update))
+      .onOk(() => reloadAttributeFilters())
+      .empty();
   }
 
   Future<void> resetMainProfileIterator({bool waitConnection = false}) async {
@@ -369,47 +353,33 @@ class ProfileRepository extends DataRepository {
 
   // Search settings
 
-  Future<Result<(), ()>> reloadSearchAgeRange() async {
-    final value = await _api.profile((api) => api.getSearchAgeRange()).ok();
-    if (value != null) {
-      return await db.accountAction(
-        (db) => db.daoProfileSettings.updateProfileSearchAgeRange(value),
-      );
-    } else {
-      return Err(());
-    }
+  Future<Result<void, void>> reloadSearchAgeRange() async {
+    return await _api.profile((api) => api.getSearchAgeRange())
+      .emptyErr()
+      .andThen((r) => db.accountAction(
+        (db) => db.daoProfileSettings.updateProfileSearchAgeRange(r),
+      ));
   }
 
-  Future<Result<(), ()>> reloadSearchGroups() async {
-    final value = await _api.profile((api) => api.getSearchGroups()).ok();
-    if (value != null) {
-      return await db.accountAction(
-        (db) => db.daoProfileSettings.updateSearchGroups(value),
-      );
-    } else {
-      return Err(());
-    }
+  Future<Result<void, void>> reloadSearchGroups() async {
+    return await _api.profile((api) => api.getSearchGroups())
+      .emptyErr()
+      .andThen((v) => db.accountAction(
+        (db) => db.daoProfileSettings.updateSearchGroups(v),
+      ));
   }
 
-  Future<Result<(), ()>> updateSearchAgeRange(int minAge, int maxAge) async {
+  Future<Result<void, void>> updateSearchAgeRange(int minAge, int maxAge) async {
     final update = ProfileSearchAgeRange(min: minAge, max: maxAge);
-    switch (await _api.profileAction((api) => api.postSearchAgeRange(update))) {
-      case Ok():
-        await reloadSearchAgeRange();
-        return Ok(());
-      case Err():
-        return Err(());
-    }
+    return await _api.profileAction((api) => api.postSearchAgeRange(update))
+      .onOk(() => reloadSearchAgeRange())
+      .empty();
   }
 
-  Future<Result<(), ()>> updateSearchGroups(SearchGroups groups) async {
-    switch (await _api.profileAction((api) => api.postSearchGroups(groups))) {
-      case Ok():
-        await reloadSearchGroups();
-        return Ok(());
-      case Err():
-        return Err(());
-    }
+  Future<Result<void, void>> updateSearchGroups(SearchGroups groups) async {
+    return await _api.profileAction((api) => api.postSearchGroups(groups))
+      .onOk(() => reloadSearchGroups())
+      .empty();
   }
 }
 

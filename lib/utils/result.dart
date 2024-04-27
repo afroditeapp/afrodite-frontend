@@ -1,5 +1,7 @@
 
 
+import 'dart:async';
+
 sealed class Result<Success, Error> {
   const Result();
 
@@ -45,7 +47,6 @@ final class Err<Ok, E> extends Result<Ok, E> {
   E get e => error;
 }
 
-
 extension FutureResultExt<Success, Error> on Future<Result<Success, Error>> {
   Future<bool> isErr() async {
     final result = await this;
@@ -63,13 +64,85 @@ extension FutureResultExt<Success, Error> on Future<Result<Success, Error>> {
     return result.ok();
   }
 
-  Future<Result<Success, NextErr>> mapErr<NextErr>(NextErr Function(Error) errMap) async {
-    final result = await this;
-    return result.mapErr(errMap);
+  Future<Result<Success, NextErr>> mapErr<NextErr>(FutureOr<NextErr> Function(Error) errMap) async {
+    return switch (await this) {
+      Ok(:final v) => Ok(v),
+      Err(:final e) => Err(await errMap(e)),
+    };
   }
 
-  Future<Result<NextSuccess, Error>> mapOk<NextSuccess>(NextSuccess Function(Success) okMap) async {
+  Future<Result<NextSuccess, Error>> mapOk<NextSuccess>(FutureOr<NextSuccess> Function(Success) okMap) async {
+    return switch (await this) {
+      Ok(:final v) => Ok(await okMap(v)),
+      Err(:final e) => Err(e),
+    };
+  }
+
+  Future<Result<Success, Error>> onErr(FutureOr<void> Function() onErrAction) async {
     final result = await this;
-    return result.mapOk(okMap);
+    if (result.isErr()) {
+      await onErrAction();
+    }
+    return result;
+  }
+
+  Future<Result<Success, Error>> onOk(FutureOr<void> Function() onOkAction) async {
+    final result = await this;
+    if (result.isOk()) {
+      await onOkAction();
+    }
+    return result;
+  }
+
+  Future<Result<Success, Error>> inspectErr(FutureOr<void> Function(Error) inspectErrAction) async {
+    final result = await this;
+    switch (result) {
+      case Ok():
+        return result;
+      case Err(:final e):
+        await inspectErrAction(e);
+        return result;
+    }
+  }
+
+  Future<Result<Success, Error>> inspectOk(FutureOr<void> Function(Success) inspectOkAction) async {
+    final result = await this;
+    switch (result) {
+      case Ok(:final v):
+        await inspectOkAction(v);
+        return result;
+      case Err():
+        return result;
+    }
+  }
+
+  Future<Result<void, void>> empty() async {
+    final result = await this;
+    switch (result) {
+      case Ok():
+        return const Ok(null);
+      case Err():
+        return const Err(null);
+    }
+  }
+
+  Future<Result<Success, void>> emptyErr() async {
+    final result = await this;
+    switch (result) {
+      case Ok(:final v):
+        return Ok(v);
+      case Err():
+        return const Err(null);
+    }
+  }
+
+  Future<Result<NextSuccess, Error>> andThen<NextSuccess>(FutureOr<Result<NextSuccess, Error>> Function(Success) andThenAction) async {
+    final result = await this;
+    switch (result) {
+      case Ok(:final v):
+        return await andThenAction(v);
+      case Err(:final e):
+        return Err(e);
+    }
   }
 }

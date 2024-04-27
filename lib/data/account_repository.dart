@@ -157,7 +157,7 @@ class AccountRepository extends DataRepository {
     return resultString;
   }
 
-  Future<Result<(), ()>> doInitialSetup(
+  Future<Result<void, void>> doInitialSetup(
     InitialSetupData data,
   ) async {
     final result = await InitialSetupUtils().doInitialSetup(data);
@@ -195,7 +195,7 @@ class AccountRepository extends DataRepository {
       .mapErr((_) => ());
   }
 
-  Future<Result<(), ()>> moveAccountToPendingDeletionState() async {
+  Future<Result<void, void>> moveAccountToPendingDeletionState() async {
     return await api.accountAction((api) => api.postDelete())
       .mapErr((_) => ())
       .mapOk((_) => ());

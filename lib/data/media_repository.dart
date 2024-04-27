@@ -148,52 +148,52 @@ class MediaRepository extends DataRepository {
   }
 
   /// Reload current and pending profile content.
-  Future<Result<(), ()>> reloadMyProfileContent() async {
+  Future<Result<void, void>> reloadMyProfileContent() async {
     final accountId = await LoginRepository.getInstance().accountId.first;
     if (accountId == null) {
       log.error("reloadMyProfileContent: accountId is null");
-      return Err(());
+      return const Err(null);
     }
 
     final info = await api.media((api) => api.getProfileContentInfo(accountId.accountId, false)).ok();
     if (info == null) {
-      return Err(());
+      return const Err(null);
     }
 
     final r1 = await db.accountAction((db) => db.daoCurrentContent.setApiProfileContent(content: info));
     if (r1.isErr()) {
-      return Err(());
+      return const Err(null);
     }
 
     final pendingInfo = await api.media((api) => api.getPendingProfileContentInfo(accountId.accountId)).ok();
     if (pendingInfo == null) {
-      return Err(());
+      return const Err(null);
     }
 
     return await db.accountAction((db) => db.daoPendingContent.setApiPendingProfileContent(pendingContent: pendingInfo));
   }
 
   /// Reload current and pending security content.
-  Future<Result<(), ()>> reloadMySecurityContent() async {
+  Future<Result<void, void>> reloadMySecurityContent() async {
     final accountId = await LoginRepository.getInstance().accountId.first;
     if (accountId == null) {
       log.error("reloadMySecurityContent: accountId is null");
-      return Err(());
+      return const Err(null);
     }
 
     final info = await api.media((api) => api.getSecurityContentInfo(accountId.accountId)).ok();
     if (info == null) {
-      return Err(());
+      return const Err(null);
     }
 
     final r = await db.accountAction((db) => db.daoCurrentContent.setSecurityContent(securityContent: Value(info.contentId?.id)));
     if (r.isErr()) {
-      return Err(());
+      return const Err(null);
     }
 
     final pendingInfo = await api.media((api) => api.getPendingSecurityContentInfo(accountId.accountId)).ok();
     if (pendingInfo == null) {
-      return Err(());
+      return const Err(null);
     }
 
     return await db.accountAction((db) => db.daoPendingContent.setPendingSecurityContent(pendingSecurityContent: Value(pendingInfo.contentId?.id)));
@@ -205,76 +205,51 @@ class MediaRepository extends DataRepository {
     yield* task.sendImageToSlot(file, slot, secureCapture: secureCapture);
   }
 
-  Future<Result<ModerationRequest?, ()>> currentModerationRequestState() async {
-    final result = await api.media((api) => api.getModerationRequest());
-    switch (result) {
-      case Ok(:final v):
-        return Ok(v.request);
-      case Err(:final e):
-        e.logError();
-        return Err(());
-    }
+  Future<Result<ModerationRequest?, void>> currentModerationRequestState() async {
+    return await api.media((api) => api.getModerationRequest())
+      .mapErr((e) => e.logError())
+      .mapOk((v) => v.request);
   }
 
-  Future<Result<(), ()>> setProfileContent(SetProfileContent imgInfo) async {
-    switch (await api.mediaAction((api) => api.putProfileContent(imgInfo))) {
-      case Ok():
-        await reloadMyProfileContent();
-        return Ok(());
-      case Err():
-        return Err(());
-    }
+  Future<Result<void, void>> setProfileContent(SetProfileContent imgInfo) async {
+    return await api.mediaAction((api) => api.putProfileContent(imgInfo))
+      .onOk(() => reloadMyProfileContent())
+      .empty();
   }
 
-  Future<Result<(), ()>> setPendingProfileContent(SetProfileContent imgInfo) async {
-    switch (await api.mediaAction((api) => api.putPendingProfileContent(imgInfo))) {
-      case Ok():
-        await reloadMyProfileContent();
-        return Ok(());
-      case Err():
-        return Err(());
-    }
+  Future<Result<void, void>> setPendingProfileContent(SetProfileContent imgInfo) async {
+    return await api.mediaAction((api) => api.putPendingProfileContent(imgInfo))
+      .onOk(() => reloadMyProfileContent())
+      .empty();
   }
 
-  Future<Result<AccountContent, ()>> loadAllContent() async {
+  Future<Result<AccountContent, void>> loadAllContent() async {
     final accountId = await LoginRepository.getInstance().accountId.first;
     if (accountId == null) {
       log.error("loadAllContent: accountId is null");
-      return Err(());
+      return const Err(null);
     }
-    switch (await api.media((api) => api.getAllAccountMediaContent(accountId.accountId))) {
-      case Ok(:final v):
-        return Ok(v);
-      case Err():
-        return Err(());
-    }
+    return await api.media((api) => api.getAllAccountMediaContent(accountId.accountId))
+      .mapErr((_) => ());
   }
 
-  Future<Result<(), ()>> createNewModerationRequest(List<ContentId> content) async {
+  Future<Result<void, void>> createNewModerationRequest(List<ContentId> content) async {
     final request = ModerationRequestContentExtensions.fromList(content);
     if (request == null) {
       log.error("createNewModerationRequest: request is null");
-      return Err(());
+      return const Err(null);
     }
 
-    switch (await api.mediaAction((api) => api.putModerationRequest(request))) {
-      case Ok():
-        return Ok(());
-      case Err():
-        return Err(());
-    }
+    return await api.mediaAction((api) => api.putModerationRequest(request))
+      .mapErr((_) => ());
   }
 
-  Future<Result<(), ()>> deleteCurrentModerationRequest() async {
-    switch (await api.mediaAction((api) => api.deleteModerationRequest())) {
-      case Ok():
-        return Ok(());
-      case Err():
-        return Err(());
-    }
+  Future<Result<void, void>> deleteCurrentModerationRequest() async {
+    return await api.mediaAction((api) => api.deleteModerationRequest())
+      .mapErr((_) => ());
   }
 
-  Future<Result<(), ()>> retryInitialSetupImages(RetryInitialSetupImages content) async {
+  Future<Result<void, void>> retryInitialSetupImages(RetryInitialSetupImages content) async {
     final result = await InitialSetupUtils().handleInitialSetupImages(content.securitySelfie, content.profileImgs);
     await reloadMyProfileContent();
     await reloadMySecurityContent();
