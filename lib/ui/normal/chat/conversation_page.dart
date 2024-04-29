@@ -20,6 +20,8 @@ import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
 var log = Logger("ConversationPage");
 
+// TODO: What should happen when message is not sent successfully and there
+// is not yet a match? Should there be an error message?
 
 void openConversationScreen(BuildContext context, ProfileEntry profile) {
   context.read<ConversationBloc>().add(SetConversationView(profile.uuid, profile.imageUuid, profile.name));

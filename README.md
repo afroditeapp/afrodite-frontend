@@ -79,3 +79,26 @@ assets_not_in_git/server_root.crt
 Google Sign In with buttons are from
 <https://developers.google.com/static/identity/images/signin-assets.zip>
 zip file found from <https://developers.google.com/identity/branding-guidelines>
+
+# Building native code
+
+1. Install Rust
+
+2. Instal targets
+
+```
+rustup target add aarch64-linux-android
+rustup target add armv7-linux-androideabi
+rustup target add i686-linux-android
+rustup target add x86_64-linux-android
+```
+
+3. Build app normally
+
+4. If Rust dependencies are changed download cargo about and update
+LICENSE file of native_utils Dart package:
+
+```
+cargo install cargo-about --locked
+make update-licenses-for-native-utils
+```

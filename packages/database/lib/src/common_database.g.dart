@@ -70,9 +70,9 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
   static const VerificationMeta _imageEncryptionKeyMeta =
       const VerificationMeta('imageEncryptionKey');
   @override
-  late final GeneratedColumn<String> imageEncryptionKey =
-      GeneratedColumn<String>('image_encryption_key', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false);
+  late final GeneratedColumn<Uint8List> imageEncryptionKey =
+      GeneratedColumn<Uint8List>('image_encryption_key', aliasedName, true,
+          type: DriftSqlType.blob, requiredDuringInsert: false);
   static const VerificationMeta _notificationPermissionAskedMeta =
       const VerificationMeta('notificationPermissionAsked');
   @override
@@ -195,7 +195,7 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])),
       imageEncryptionKey: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}image_encryption_key']),
+          DriftSqlType.blob, data['${effectivePrefix}image_encryption_key']),
       notificationPermissionAsked: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
           data['${effectivePrefix}notification_permission_asked'])!,
@@ -221,7 +221,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
   final String? serverUrlProfile;
   final String? serverUrlChat;
   final AccountId? uuidAccountId;
-  final String? imageEncryptionKey;
+  final Uint8List? imageEncryptionKey;
 
   /// If true don't show notification permission asking dialog when
   /// app main view (bottom navigation is visible) is opened.
@@ -268,7 +268,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
           $CommonTable.$converteruuidAccountId.toSql(uuidAccountId));
     }
     if (!nullToAbsent || imageEncryptionKey != null) {
-      map['image_encryption_key'] = Variable<String>(imageEncryptionKey);
+      map['image_encryption_key'] = Variable<Uint8List>(imageEncryptionKey);
     }
     map['notification_permission_asked'] =
         Variable<bool>(notificationPermissionAsked);
@@ -325,7 +325,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
       serverUrlChat: serializer.fromJson<String?>(json['serverUrlChat']),
       uuidAccountId: serializer.fromJson<AccountId?>(json['uuidAccountId']),
       imageEncryptionKey:
-          serializer.fromJson<String?>(json['imageEncryptionKey']),
+          serializer.fromJson<Uint8List?>(json['imageEncryptionKey']),
       notificationPermissionAsked:
           serializer.fromJson<bool>(json['notificationPermissionAsked']),
     );
@@ -343,7 +343,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
       'serverUrlProfile': serializer.toJson<String?>(serverUrlProfile),
       'serverUrlChat': serializer.toJson<String?>(serverUrlChat),
       'uuidAccountId': serializer.toJson<AccountId?>(uuidAccountId),
-      'imageEncryptionKey': serializer.toJson<String?>(imageEncryptionKey),
+      'imageEncryptionKey': serializer.toJson<Uint8List?>(imageEncryptionKey),
       'notificationPermissionAsked':
           serializer.toJson<bool>(notificationPermissionAsked),
     };
@@ -359,7 +359,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
           Value<String?> serverUrlProfile = const Value.absent(),
           Value<String?> serverUrlChat = const Value.absent(),
           Value<AccountId?> uuidAccountId = const Value.absent(),
-          Value<String?> imageEncryptionKey = const Value.absent(),
+          Value<Uint8List?> imageEncryptionKey = const Value.absent(),
           bool? notificationPermissionAsked}) =>
       CommonData(
         id: id ?? this.id,
@@ -419,7 +419,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
       serverUrlProfile,
       serverUrlChat,
       uuidAccountId,
-      imageEncryptionKey,
+      $driftBlobEquality.hash(imageEncryptionKey),
       notificationPermissionAsked);
   @override
   bool operator ==(Object other) =>
@@ -434,7 +434,8 @@ class CommonData extends DataClass implements Insertable<CommonData> {
           other.serverUrlProfile == this.serverUrlProfile &&
           other.serverUrlChat == this.serverUrlChat &&
           other.uuidAccountId == this.uuidAccountId &&
-          other.imageEncryptionKey == this.imageEncryptionKey &&
+          $driftBlobEquality.equals(
+              other.imageEncryptionKey, this.imageEncryptionKey) &&
           other.notificationPermissionAsked ==
               this.notificationPermissionAsked);
 }
@@ -449,7 +450,7 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
   final Value<String?> serverUrlProfile;
   final Value<String?> serverUrlChat;
   final Value<AccountId?> uuidAccountId;
-  final Value<String?> imageEncryptionKey;
+  final Value<Uint8List?> imageEncryptionKey;
   final Value<bool> notificationPermissionAsked;
   const CommonCompanion({
     this.id = const Value.absent(),
@@ -487,7 +488,7 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
     Expression<String>? serverUrlProfile,
     Expression<String>? serverUrlChat,
     Expression<String>? uuidAccountId,
-    Expression<String>? imageEncryptionKey,
+    Expression<Uint8List>? imageEncryptionKey,
     Expression<bool>? notificationPermissionAsked,
   }) {
     return RawValuesInsertable({
@@ -518,7 +519,7 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
       Value<String?>? serverUrlProfile,
       Value<String?>? serverUrlChat,
       Value<AccountId?>? uuidAccountId,
-      Value<String?>? imageEncryptionKey,
+      Value<Uint8List?>? imageEncryptionKey,
       Value<bool>? notificationPermissionAsked}) {
     return CommonCompanion(
       id: id ?? this.id,
@@ -569,7 +570,8 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
           $CommonTable.$converteruuidAccountId.toSql(uuidAccountId.value));
     }
     if (imageEncryptionKey.present) {
-      map['image_encryption_key'] = Variable<String>(imageEncryptionKey.value);
+      map['image_encryption_key'] =
+          Variable<Uint8List>(imageEncryptionKey.value);
     }
     if (notificationPermissionAsked.present) {
       map['notification_permission_asked'] =

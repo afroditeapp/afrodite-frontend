@@ -1,16 +1,17 @@
 
 
-
-
-
-
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:logging/logging.dart';
+import 'package:native_utils/native_utils.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/db_dir.dart';
+
+final log = Logger("Encryption");
 
 // The key is from this cmd: openssl rand -base64 12
 const RAW_STORAGE_KEY_FOR_DB_ENCRYPTION_KEY = "SxxccCgbFSMkdaho";
@@ -53,6 +54,8 @@ class SecureStorageManager extends AppSingleton {
       aOptions: androidOptions,
       iOptions: iosOptions,
     );
+
+    testEncryptionSupport();
   }
 
   Future<String> getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir() async {
@@ -75,11 +78,14 @@ class SecureStorageManager extends AppSingleton {
   }
 
   Future<String> _generateDbEncryptionKey() async {
-    // TODO(prod): replace with real key generation
-    return "test";
+    final (key, result) = generate256BitSecretKey();
+    if (key == null) {
+      throw Exception("Failed to generate a key. Error: $result");
+    } else {
+      return base64.encode(key);
+    }
   }
 }
-
 
 class ImageEncryptionManager extends AppSingleton {
   static final _instance = ImageEncryptionManager._private();
@@ -89,7 +95,7 @@ class ImageEncryptionManager extends AppSingleton {
   }
 
   // The key is frequently used so keep it in RAM.
-  String? _imageEncryptionKey;
+  Uint8List? _imageEncryptionKey;
 
   @override
   Future<void> init() async {
@@ -97,40 +103,45 @@ class ImageEncryptionManager extends AppSingleton {
   }
 
   Future<Uint8List> encryptImageData(Uint8List data) async {
-    final key = await _getOrLoadOrGenerateImageEncryptionKey();
-    // TODO(prod): replace with real encryption
-
-    Uint8List encryptedData = data;
-    for (var i = 0; i < key.length; i++) {
-      final s = base64.encode(encryptedData);
-      encryptedData = utf8.encode(s);
+    if (data.isEmpty) {
+      log.warning("Empty data");
+      return data;
     }
 
-    return encryptedData;
+    final key = await _getOrLoadOrGenerateImageEncryptionKey();
+    final (encrypted, result) = encryptContentData(data, key);
+
+    if (encrypted == null) {
+      throw Exception("Data encryption failed with error: $result");
+    } else {
+      return encrypted;
+    }
   }
 
   Future<Uint8List> decryptImageData(Uint8List data) async {
-    final key = await _getOrLoadOrGenerateImageEncryptionKey();
-    // TODO(prod): replace with real decoding
-
-    Uint8List decodedData = data;
-    for (var i = 0; i < key.length; i++) {
-      final s = utf8.decode(decodedData.toList());
-      decodedData = base64.decode(s);
+    if (data.isEmpty) {
+      log.warning("Empty data");
+      return data;
     }
 
-    return decodedData;
+    final key = await _getOrLoadOrGenerateImageEncryptionKey();
+    final (decrypted, result) = decryptContentData(data, key);
+    if (decrypted == null) {
+      throw Exception("Data encryption failed with error: $result");
+    } else {
+      return decrypted;
+    }
   }
 
-  Future<String> _getOrLoadOrGenerateImageEncryptionKey() async {
+  Future<Uint8List> _getOrLoadOrGenerateImageEncryptionKey() async {
     final currentKey = _imageEncryptionKey;
     if (currentKey == null) {
       final existingKey = await DatabaseManager.getInstance().commonStreamSingle((db) => db.watchImageEncryptionKey());
       if (existingKey == null) {
         final newKey = await _generateImageEncryptionKey();
         await DatabaseManager.getInstance().commonAction((db) => db.updateImageEncryptionKey(newKey));
-        final testNewKey = await DatabaseManager.getInstance().commonStreamSingle((db) => db.watchImageEncryptionKey());
-        if (testNewKey != newKey) {
+        final dbKey = await DatabaseManager.getInstance().commonStreamSingle((db) => db.watchImageEncryptionKey());
+        if (!listEquals(newKey, dbKey)) {
           throw Exception("Failed to read the key that was just written");
         }
         _imageEncryptionKey = newKey;
@@ -144,8 +155,39 @@ class ImageEncryptionManager extends AppSingleton {
     }
   }
 
-  Future<String> _generateImageEncryptionKey() async {
-    // TODO(prod): replace with real key generation
-    return "test";
+  Future<Uint8List> _generateImageEncryptionKey() async {
+    final (key, result) = generate256BitSecretKey();
+    if (key == null) {
+      throw Exception("Failed to generate a key. Error: $result");
+    } else {
+      return key;
+    }
+  }
+}
+
+
+void testEncryptionSupport() {
+  final key = Uint8List(32); // 256 bits
+  final data = Uint8List(1);
+  const plaintext = 123;
+  data[0] = plaintext;
+  final (encrypted, result) = encryptContentData(data, key);
+  if (encrypted == null) {
+    final msg = "Encryption test failed with error: $result";
+    log.error(msg);
+    throw Exception(msg);
+  }
+
+  final (decrypted, result2) = decryptContentData(encrypted, key);
+  if (decrypted == null) {
+    final msg = "Decryption test failed with error: $result2";
+    log.error(msg);
+    throw Exception(msg);
+  }
+
+  if (decrypted[0] != plaintext) {
+    const msg = "Encryption support test failed: original data is not equal to decrypted data";
+    log.error(msg);
+    throw Exception(msg);
   }
 }

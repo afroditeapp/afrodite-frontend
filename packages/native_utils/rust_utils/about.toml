@@ -1,0 +1,26 @@
+accepted = [
+    "MIT",
+    "Apache-2.0",
+    "BSD-3-Clause",
+]
+
+private = { ignore = true }
+
+# Fix missing license as LICENSE file contains "MIT OR Apache-2.0"
+[typenum.clarify]
+license = "MIT"
+
+[[typenum.clarify.files]]
+path = "LICENSE-MIT"
+# The file hash is from typenum 1.17.0
+checksum = "a825bd853ab71619a4923d7b4311221427848070ff44d990da39b0b274c1683f"
+
+# Fix warning:
+# clearlydefined detected license in 'LICENSE-APACHE' for crate 'rand_core 0.6.4', but we failed to determine what its license was
+[rand_core.clarify]
+license = "MIT"
+
+[[rand_core.clarify.files]]
+path = "LICENSE-MIT"
+# The file hash is from rand_core 0.6.4
+checksum = "209fbbe0ad52d9235e37badf9cadfe4dbdc87203179c0899e738b39ade42177b"
