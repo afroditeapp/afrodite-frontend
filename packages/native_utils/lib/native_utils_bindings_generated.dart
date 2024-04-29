@@ -50,7 +50,7 @@ class NativeUtilsBindings {
               ffi.IntPtr)>>('generate_content_encryption_key');
   late final _generate_content_encryption_key =
       _generate_content_encryption_keyPtr
-          .asFunction<int Function(ffi.Pointer<ffi.Uint8>, int)>();
+          .asFunction<int Function(ffi.Pointer<ffi.Uint8>, int)>(isLeaf: true);
 
   /// Replace plaintext with chiphertext and nonce.
   ///
@@ -78,7 +78,8 @@ class NativeUtilsBindings {
           ffi.IntPtr Function(ffi.Pointer<ffi.Uint8>, ffi.IntPtr,
               ffi.Pointer<ffi.Uint8>, ffi.IntPtr)>>('encrypt_content');
   late final _encrypt_content = _encrypt_contentPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int)>();
+      int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>,
+          int)>(isLeaf: true);
 
   /// Replace chiphertext and nonce with plaintext data.
   ///
@@ -104,5 +105,6 @@ class NativeUtilsBindings {
           ffi.IntPtr Function(ffi.Pointer<ffi.Uint8>, ffi.IntPtr,
               ffi.Pointer<ffi.Uint8>, ffi.IntPtr)>>('decrypt_content');
   late final _decrypt_content = _decrypt_contentPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int)>();
+      int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>,
+          int)>(isLeaf: true);
 }
