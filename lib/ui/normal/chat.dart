@@ -14,6 +14,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
+import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 
 var log = Logger("ChatView");
 
@@ -29,8 +30,9 @@ class ChatView extends BottomNavigationScreen {
   }
 }
 
-typedef MatchEntry = (AccountId account, ProfileEntry profile);
+typedef MatchEntry = ProfileEntry;
 
+const _IMG_SIZE = 100.0;
 
 class _ChatViewState extends State<ChatView> {
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
@@ -69,7 +71,7 @@ class _ChatViewState extends State<ChatView> {
     final controller = _pagingController;
     if (controller != null) {
       setState(() {
-        controller.itemList?.removeWhere((item) => item.$1.accountId == accountId.accountId);
+        controller.itemList?.removeWhere((item) => item.uuid == accountId);
       });
     }
   }
@@ -81,20 +83,10 @@ class _ChatViewState extends State<ChatView> {
 
     final profileList = await ChatRepository.getInstance().matchesIteratorNext();
 
-    final newList = List<MatchEntry>.empty(growable: true);
-    for (final profile in profileList) {
-      final file = await ImageCacheData.getInstance().getImage(profile.uuid, profile.imageUuid);
-      if (file == null) {
-        log.warning("Skipping one profile because image loading failed");
-        continue;
-      }
-      newList.add((profile.uuid, profile));
-    }
-
     if (profileList.isEmpty) {
       _pagingController?.appendLastPage([]);
     } else {
-      _pagingController?.appendPage(newList, pageKey + 1);
+      _pagingController?.appendPage(profileList, pageKey + 1);
     }
   }
 
@@ -110,19 +102,17 @@ class _ChatViewState extends State<ChatView> {
       pagingController: _pagingController!,
       builderDelegate: PagedChildBuilderDelegate<MatchEntry>(
         animateTransitions: true,
-        itemBuilder: (context, item, index) {
-          final profileEntry = item.$2;
-          final String name = profileEntry.name;
-          final Widget imageWidget = accountImgWidget(
-            profileEntry.uuid,
-            profileEntry.imageUuid,
-            width: 100,
+        itemBuilder: (context, profileEntry, index) {
+          final Widget imageWidget = ProfileThumbnailImage.fromProfileEntry(
+            entry: profileEntry,
+            width: _IMG_SIZE,
+            height: _IMG_SIZE,
+            cacheSize: ImageCacheSize.sizeForAppBarThumbnail(),
           );
-
           final textWidget = Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              name,
+              profileEntry.profileTitle(),
               style: Theme.of(context).textTheme.titleMedium,
             ),
           );
@@ -138,7 +128,7 @@ class _ChatViewState extends State<ChatView> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
-                height: 125,
+                height: _IMG_SIZE,
                 child: rowWidget,
               ),
             ),

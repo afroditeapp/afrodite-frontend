@@ -423,7 +423,7 @@ class AddPicture extends StatelessWidget {
           width: iconSize,
           height: iconSize,
           child: FittedBox(
-            child: AccountImage(accountId: securitySelfie.accountId, contentId: securitySelfie.contentId),
+            child: accountImgWidget(securitySelfie.accountId, securitySelfie.contentId),
           )
         ),
         title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_security_selfie_title),

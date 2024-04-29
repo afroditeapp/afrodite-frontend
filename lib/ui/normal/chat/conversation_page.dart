@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
+import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/localizations.dart';
@@ -16,6 +18,7 @@ import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/common_actions.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/menu_actions.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
+import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
 var log = Logger("ConversationPage");
@@ -63,11 +66,12 @@ class ConversationPageState extends State<ConversationPage> {
                   height: AppBar().preferredSize.height,
                   child: Row(
                     children: [
-                      accountImgWidget(
-                        widget.profileEntry.uuid,
-                        widget.profileEntry.imageUuid,
+                      ProfileThumbnailImage(
+                        accountId: widget.profileEntry.uuid,
+                        contentId: widget.profileEntry.imageUuid,
                         width: 40,
                         height: 40,
+                        cacheSize: ImageCacheSize.sizeForAppBarThumbnail(),
                       ),
                       const Padding(padding: EdgeInsets.all(8.0)),
                       Text(widget.profileEntry.profileTitle()),

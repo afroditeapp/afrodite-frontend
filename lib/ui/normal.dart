@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
+import "package:pihka_frontend/data/image_cache.dart";
 import "package:pihka_frontend/data/notification_manager.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/account.dart";
@@ -100,10 +101,11 @@ class _NormalStateContentState extends State<NormalStateContent> {
                 accountId: id,
                 contentId: img,
                 cropResults: cropInfo,
+                cacheSize: ImageCacheSize.sizeForAppBarThumbnail(),
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () => MyNavigator.push(context, MaterialPage<void>(child: const MyProfileScreen()))
+                    onTap: () => MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()))
                   ),
                 )
               );

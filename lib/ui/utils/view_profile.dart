@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/profile/attributes.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/attributes.dart';
@@ -216,12 +217,14 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
           contentId: contentId,
           borderRadius: null,
           squareFactor: 0.0,
+          cacheSize: ImageCacheSize.sizeForViewProfile(),
         )
       );
     } else {
       imgWidget = accountImgWidget(
         accountId,
         contentId,
+        cacheSize: ImageCacheSize.sizeForViewProfile(),
       );
     }
 

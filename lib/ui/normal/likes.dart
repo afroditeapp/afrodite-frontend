@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
+import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
@@ -13,6 +14,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
+import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 
 var log = Logger("LikeView");
 
@@ -118,10 +120,25 @@ class _LikeViewState extends State<LikeView> {
         animateTransitions: true,
         itemBuilder: (context, item, index) {
           return GestureDetector(
-            onTap: () => openProfileView(context, item.profile, heroTag: item.heroTag),
+            // This callback should be used when Hero animation is enabled.
+            // onTap: () => openProfileView(context, item.profile, heroTag: item.heroTag),
             child: Hero(
               tag: item.heroTag.value,
-              child: accountImgWidget(item.profile.uuid, item.profile.imageUuid)
+              child: ProfileThumbnailImage.fromProfileEntry(
+                entry: item.profile,
+                cacheSize: ImageCacheSize.sizeForGrid(),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      // Hero animation is disabled currently as UI looks better
+                      // without it.
+                      // openProfileView(context, item.profile, heroTag: item.heroTag);
+                      openProfileView(context, item.profile, heroTag: null);
+                    },
+                  ),
+                ),
+              ),
             )
           );
         },

@@ -15,6 +15,7 @@ import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
+import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 
 var log = Logger("BlockedProfilesScreen");
 
@@ -26,6 +27,8 @@ class BlockedProfilesScreen extends StatefulWidget {
 }
 
 typedef BlockedProfileEntry = (AccountId account, ProfileEntry? profile);
+
+const _IMG_SIZE = 100.0;
 
 class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
@@ -74,26 +77,10 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
 
     final profileList = await ChatRepository.getInstance().sentBlocksIteratorNext();
 
-    final newList = List<BlockedProfileEntry>.empty(growable: true);
-    for (final dataRow in profileList) {
-      final profile = dataRow.$2;
-      if (profile == null) {
-        newList.add((dataRow.$1, null));
-        continue;
-      }
-      final file = await ImageCacheData.getInstance().getImage(profile.uuid, profile.imageUuid);
-      if (file == null) {
-        log.warning("Skipping one profile because image loading failed");
-        newList.add((dataRow.$1, null));
-        continue;
-      }
-      newList.add((dataRow.$1, profile));
-    }
-
     if (profileList.isEmpty) {
       _pagingController?.appendLastPage([]);
     } else {
-      _pagingController?.appendPage(newList, pageKey + 1);
+      _pagingController?.appendPage(profileList, pageKey + 1);
     }
   }
 
@@ -127,15 +114,17 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
           final Widget imageWidget;
           if (profileEntry != null) {
             name = profileEntry.profileTitle();
-            imageWidget = accountImgWidget(
-              profileEntry.uuid,
-              profileEntry.imageUuid,
-              width: 100,
+            imageWidget = ProfileThumbnailImage.fromProfileEntry(
+              entry: profileEntry,
+              width: _IMG_SIZE,
+              height: _IMG_SIZE,
+              cacheSize: ImageCacheSize.sizeForListWithTextContent(),
             );
           } else {
             name = context.strings.blocked_profiles_screen_placeholder_for_private_profile;
             imageWidget = SizedBox(
-              width: 100,
+              width: _IMG_SIZE,
+              height: _IMG_SIZE,
               child: Container(
                 color: Colors.grey,
               ),
@@ -182,7 +171,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
-                height: 125,
+                height: _IMG_SIZE,
                 child: rowWidget,
               ),
             ),

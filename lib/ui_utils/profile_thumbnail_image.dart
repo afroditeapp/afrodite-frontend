@@ -8,8 +8,6 @@ import 'package:database/database.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/ui_utils/consts/corners.dart';
 import 'package:pihka_frontend/ui_utils/crop_image_screen.dart';
-import 'package:pihka_frontend/model/freezed/utils/account_img_key.dart';
-
 
 class ProfileThumbnailImage extends StatefulWidget {
   final AccountId accountId;
@@ -21,6 +19,7 @@ class ProfileThumbnailImage extends StatefulWidget {
   final double? height;
   final Widget? child;
   final BorderRadius? borderRadius;
+  final ImageCacheSize cacheSize;
   const ProfileThumbnailImage({
     required this.accountId,
     required this.contentId,
@@ -30,6 +29,7 @@ class ProfileThumbnailImage extends StatefulWidget {
     this.child,
     this.squareFactor = 1.0,
     this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
+    this.cacheSize = ImageCacheSize.maxQuality,
     super.key,
   });
 
@@ -41,6 +41,7 @@ class ProfileThumbnailImage extends StatefulWidget {
     this.child,
     this.squareFactor = 1.0,
     this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
+    this.cacheSize = ImageCacheSize.maxQuality,
     super.key,
   }) :
     accountId = img.accountId,
@@ -53,6 +54,7 @@ class ProfileThumbnailImage extends StatefulWidget {
     this.child,
     this.squareFactor = 1.0,
     this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
+    this.cacheSize = ImageCacheSize.maxQuality,
     super.key,
   }) :
     accountId = entry.uuid,
@@ -88,8 +90,12 @@ class _ProfileThumbnailImageState extends State<ProfileThumbnailImage> {
   }
 
   void loadImage() {
-    final k = AccountImgKey(accountId: widget.accountId, contentId: widget.contentId);
-    final newStream = AccountImageProvider(k).resolve(createLocalImageConfiguration(context));
+    final newStream = AccountImageProvider.create(
+      widget.accountId,
+      widget.contentId,
+      sizeSetting: widget.cacheSize,
+    )
+      .resolve(createLocalImageConfiguration(context));
     if (newStream.key != imgStream?.key) {
       // Remove listener from old stream
       final currentListener = imgListener;

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
+import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/localizations.dart';
@@ -143,6 +144,7 @@ class _ProfileGridState extends State<ProfileGrid> {
         animateTransitions: true,
         itemBuilder: (context, item, index) {
           return GestureDetector(
+            // This callback should be used when Hero animation is enabled.
             // onTap: () {
             //   openProfileView(context, item.profile, heroTag: item.heroTag);
             // },
@@ -158,16 +160,20 @@ class _ProfileGridState extends State<ProfileGrid> {
                       entry: item.profile,
                       squareFactor: squareFactor,
                       borderRadius: BorderRadius.all(Radius.circular(radius)),
+                      cacheSize: ImageCacheSize.sizeForGrid(),
                     );
                   }
                 );
               },
               child: ProfileThumbnailImage.fromProfileEntry(
                 entry: item.profile,
+                cacheSize: ImageCacheSize.sizeForGrid(),
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () {
+                      // Hero animation is disabled currently as UI looks better
+                      // without it.
                       // openProfileView(context, item.profile, heroTag: item.heroTag);
                       openProfileView(context, item.profile, heroTag: null);
                     },

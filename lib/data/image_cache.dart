@@ -23,8 +23,9 @@ class ImageCacheData extends AppSingleton {
   ImageCacheData._private(): cacheManager = CacheManager(
     Config(
       "imageCache",
-      stalePeriod: const Duration(days: 30),
-      maxNrOfCacheObjects: 2000,
+      stalePeriod: const Duration(days: 90),
+      // Images are about 100 KiB each, so 10 000 images is about 1 GiB
+      maxNrOfCacheObjects: 10000,
     )
   );
   static final _instance = ImageCacheData._private();
@@ -130,7 +131,7 @@ class AccountImageProvider extends ImageProvider<ContentId> {
   final AccountImgKey imgInfo;
   final bool isMatch;
 
-  AccountImageProvider(this.imgInfo, {this.isMatch = false});
+  AccountImageProvider._(this.imgInfo, {this.isMatch = false});
 
   @override
   ImageStreamCompleter loadImage(ContentId key, ImageDecoderCallback decode) {
@@ -155,4 +156,83 @@ class AccountImageProvider extends ImageProvider<ContentId> {
   @override
   Future<ContentId> obtainKey(ImageConfiguration configuration) =>
     SynchronousFuture(imgInfo.contentId);
+
+  static ImageProvider<Object> create(
+    AccountId accountId,
+    ContentId contentId,
+    {
+      bool isMatch = false,
+      ImageCacheSize sizeSetting = ImageCacheSize.maxQuality,
+    }
+  ) {
+    final key = AccountImgKey(accountId: accountId, contentId: contentId);
+    final imgProvider = AccountImageProvider._(key, isMatch: isMatch);
+    if (sizeSetting == ImageCacheSize.maxQuality) {
+      return imgProvider;
+    } else {
+      final size = sizeSetting.maxSize;
+      return ResizeImage(
+        imgProvider,
+        width: size,
+        height: size,
+        allowUpscaling: false,
+        policy: ResizeImagePolicy.fit,
+      );
+    }
+  }
+}
+
+const _MAX_WIDTH_AND_HEIGHT = 1920;
+
+enum ImageCacheSizeSetting {
+  /// Downscale to 1/4 of the max image size (Full HD)
+  tiny,
+  /// Downscale to 1/3 of the max image size (Full HD)
+  small,
+  /// Downscale to 1/2 of the max image size (Full HD)
+  medium,
+  /// Downscale to 1/1.5 of the max image size (Full HD)
+  high,
+  /// No downscaling
+  maxQuality;
+
+  ImageCacheSize getImgSize() {
+    final size = switch (this) {
+      ImageCacheSizeSetting.tiny =>
+        _MAX_WIDTH_AND_HEIGHT ~/ 4,
+      ImageCacheSizeSetting.small =>
+        _MAX_WIDTH_AND_HEIGHT ~/ 3,
+      ImageCacheSizeSetting.medium =>
+        _MAX_WIDTH_AND_HEIGHT ~/ 2,
+      ImageCacheSizeSetting.high =>
+        _MAX_WIDTH_AND_HEIGHT ~/ 1.5,
+      ImageCacheSizeSetting.maxQuality =>
+        _MAX_WIDTH_AND_HEIGHT,
+    };
+
+    return ImageCacheSize(size);
+  }
+}
+
+class ImageCacheSize {
+  final int maxSize;
+  const ImageCacheSize(this.maxSize);
+
+  static const ImageCacheSize maxQuality = ImageCacheSize(_MAX_WIDTH_AND_HEIGHT);
+
+  static ImageCacheSize sizeForAppBarThumbnail() {
+    return ImageCacheSizeSetting.maxQuality.getImgSize();
+  }
+
+  static ImageCacheSize sizeForGrid() {
+    return ImageCacheSizeSetting.maxQuality.getImgSize();
+  }
+
+  static ImageCacheSize sizeForListWithTextContent() {
+    return ImageCacheSizeSetting.maxQuality.getImgSize();
+  }
+
+  static ImageCacheSize sizeForViewProfile() {
+    return ImageCacheSizeSetting.maxQuality.getImgSize();
+  }
 }

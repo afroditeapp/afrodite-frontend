@@ -9,46 +9,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
-import 'package:pihka_frontend/model/freezed/utils/account_img_key.dart';
-
-/// Widget for showing account image. It will show progress indicator while
-/// image is being loaded.
-class AccountImage extends StatelessWidget {
-  const AccountImage({
-    required this.accountId,
-    required this.contentId,
-    this.width,
-    this.height,
-    // this.imageBuilder = defaultImgBuilder,
-    Key? key,
-  }) : super(key: key);
-  final AccountId accountId;
-  final ContentId contentId;
-  final double? width;
-  final double? height;
-
-  @override
-  Widget build(BuildContext context) {
-     return accountImgWidget(accountId, contentId);
-  }
-
-  Widget buildProgressIndicator() {
-    return SizedBox(
-      width: width,
-      height: height,
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(),
-        ],
-      ),
-    );
-  }
-}
-
-Widget defaultImgBuilder(XFile f) {
-  return xfileImgWidget(f);
-}
 
 Widget xfileImgWidget(XFile imageFile, {double? width, double? height, AlignmentGeometry alignment = Alignment.center}) {
   if (kIsWeb) {
@@ -112,11 +72,23 @@ Widget xfileImgWidgetInk(
 }
 
 
-Widget accountImgWidget(AccountId accountId, ContentId contentId, {bool isMatch = false, double? width, double? height, AlignmentGeometry alignment = Alignment.center}) {
+Widget accountImgWidget(
+  AccountId accountId,
+  ContentId contentId,
+  {
+    bool isMatch = false,
+    double? width,
+    double? height,
+    AlignmentGeometry alignment = Alignment.center,
+    ImageCacheSize cacheSize = ImageCacheSize.maxQuality,
+  }
+) {
   return Image(
-    image: AccountImageProvider(
-      AccountImgKey(accountId: accountId, contentId: contentId),
+    image: AccountImageProvider.create(
+      accountId,
+      contentId,
       isMatch: isMatch,
+      sizeSetting: cacheSize,
     ),
     width: width,
     height: height,
@@ -137,8 +109,9 @@ Widget accountImgWidgetInk(
   }
 ) {
   return Ink.image(
-    image: AccountImageProvider(
-      AccountImgKey(accountId: accountId, contentId: contentId),
+    image: AccountImageProvider.create(
+      accountId,
+      contentId,
       isMatch: isMatch,
     ),
     width: width,
