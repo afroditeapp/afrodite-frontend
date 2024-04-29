@@ -37,6 +37,13 @@ watch-translations-linux:
 watch-freezed-code:
 	fswatch -o -e Updated lib/model/freezed | xargs -n1 -I{} make update-freezed-code
 
+clean:
+	flutter clean
+	cd packages/database && flutter clean
+	cd packages/api_client && flutter clean
+	cd packages/native_utils && flutter clean
+	cd packages/native_utils/rust_utils && cargo clean
+
 code-stats:
 	@/bin/echo -n "Lines:"
 	@find \
