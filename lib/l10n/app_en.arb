@@ -368,6 +368,10 @@
   "@image_quality_settings_screen_image_cache_max_size": {
     "description": "Title for image cache max size setting"
   },
+  "image_quality_settings_screen_image_quality_custom": "Custom",
+  "@image_quality_settings_screen_image_quality_custom": {
+    "description": "Title for image quality setting custom value"
+  },
   "image_quality_settings_screen_image_quality_high": "High",
   "@image_quality_settings_screen_image_quality_high": {
     "description": "Title for image quality setting medium value"
@@ -383,6 +387,15 @@
   "image_quality_settings_screen_image_quality_medium": "Medium",
   "@image_quality_settings_screen_image_quality_medium": {
     "description": "Title for image quality setting medium value"
+  },
+  "image_quality_settings_screen_image_quality_pixel_value": "{p0} pixels",
+  "@image_quality_settings_screen_image_quality_pixel_value": {
+    "description": "Value text for current quality setting",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
   },
   "image_quality_settings_screen_image_quality_setting": "Image quality",
   "@image_quality_settings_screen_image_quality_setting": {

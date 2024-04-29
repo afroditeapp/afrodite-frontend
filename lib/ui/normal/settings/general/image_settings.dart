@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pihka_frontend/data/general/image_cache_settings.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/ui_utils/padding.dart';
@@ -62,33 +62,119 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        maxImageQualityCheckbox(context),
+        hPad(downscalingSizeDropdown(context)),
+        ...imageQualitySlider(context),
         const Padding(padding: EdgeInsets.all(8)),
         hPad(Text(context.strings.image_quality_settings_screen_image_cache_max_size)),
         const Padding(padding: EdgeInsets.all(4)),
-        imageCacheMaxSizeSlider(context),
-        hPad(imageCacheMaxSizeCurrentValueDisplayer(context)),
+        ...imageCacheMaxSizeSlider(context),
       ],
     );
   }
 
-  Widget imageCacheMaxSizeSlider(BuildContext context) {
-    return Slider(
-      min: CACHE_MIN_BYTES.toDouble(),
-      max: CACHE_MAX_BYTES.toDouble(),
-      value: cacheMaxBytes.toDouble(),
+  Widget maxImageQualityCheckbox(BuildContext context) {
+    return CheckboxListTile(
+      title: Text(context.strings.image_quality_settings_screen_max_image_quality),
+      value: fullImgSize,
       onChanged: (value) {
         setState(() {
-          cacheMaxBytes = value.toInt();
+          fullImgSize = value!;
         });
       },
     );
   }
 
-  Widget imageCacheMaxSizeCurrentValueDisplayer(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Text('${cacheMibibytesValue()} MiB'),
+  Widget downscalingSizeDropdown(BuildContext context) {
+    final void Function(int?)? onChanged = fullImgSize ? null : (value) {
+      if (value != null) {
+          setState(() {
+            downscalingSize = value;
+          });
+        }
+    };
+
+    final items = [
+      DropdownMenuItem(
+        value: ImageCacheSizeSetting.maxQuality.getImgSize().maxSize,
+        child: Text(context.strings.image_quality_settings_screen_image_quality_max),
+      ),
+      DropdownMenuItem(
+        value: ImageCacheSizeSetting.high.getImgSize().maxSize,
+        child: Text(context.strings.image_quality_settings_screen_image_quality_high),
+      ),
+      DropdownMenuItem(
+        value: ImageCacheSizeSetting.medium.getImgSize().maxSize,
+        child: Text(context.strings.image_quality_settings_screen_image_quality_medium),
+      ),
+      DropdownMenuItem(
+        value: ImageCacheSizeSetting.low.getImgSize().maxSize,
+        child: Text(context.strings.image_quality_settings_screen_image_quality_low),
+      ),
+      DropdownMenuItem(
+        value: ImageCacheSizeSetting.tiny.getImgSize().maxSize,
+        child: Text(context.strings.image_quality_settings_screen_image_quality_tiny),
+      ),
+    ];
+
+    bool currentValueFound = false;
+    for (final item in items) {
+      if (item.value == downscalingSize) {
+        currentValueFound = true;
+        break;
+      }
+    }
+    if (!currentValueFound) {
+      items.add(DropdownMenuItem(
+        value: downscalingSize,
+        child: Text(context.strings.image_quality_settings_screen_image_quality_custom),
+      ));
+    }
+
+    return DropdownButton<int>(
+      value: downscalingSize,
+      items: items,
+      onChanged: onChanged,
     );
+  }
+
+  List<Widget> imageQualitySlider(BuildContext context) {
+    final void Function(double)? onChanged = fullImgSize ? null : (value) {
+      setState(() {
+        downscalingSize = value.toInt();
+      });
+    };
+    return [
+      Slider(
+        min: ImageCacheSizeSetting.tiny.getImgSize().maxSize.toDouble(),
+        max: ImageCacheSizeSetting.maxQuality.getImgSize().maxSize.toDouble(),
+        value: downscalingSize.toDouble(),
+        onChanged: onChanged,
+      ),
+      Align(
+        alignment: Alignment.centerRight,
+        child: hPad(Text(context.strings.image_quality_settings_screen_image_quality_pixel_value(downscalingSize.toString()))),
+      )
+    ];
+  }
+
+  List<Widget> imageCacheMaxSizeSlider(BuildContext context) {
+    return [
+      Slider(
+        min: CACHE_MIN_BYTES.toDouble(),
+        max: CACHE_MAX_BYTES.toDouble(),
+        value: cacheMaxBytes.toDouble(),
+        onChanged: (value) {
+          setState(() {
+            cacheMaxBytes = value.toInt();
+          });
+        },
+      ),
+      Align(
+        alignment: Alignment.centerRight,
+        child: hPad(Text('${cacheMibibytesValue()} MiB')),
+      )
+    ];
   }
 
   int cacheMibibytesValue() {

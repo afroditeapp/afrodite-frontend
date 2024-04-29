@@ -78,6 +78,11 @@ class ImageCacheSettings extends AppSingleton {
     bool cacheFullSizedImages,
     int downscalingSize,
   ) async {
+    // Clear image cache
+    final currentMaxBytes = imageCache.maximumSizeBytes;
+    imageCache.maximumSizeBytes = 0;
+    imageCache.maximumSizeBytes = currentMaxBytes;
+
     await DatabaseManager.getInstance().accountAction((db) async {
       await db.daoLocalImageSettings.updateImageCacheMaxBytes(maxBytes);
       await db.daoLocalImageSettings.updateCacheFullSizedImages(cacheFullSizedImages);

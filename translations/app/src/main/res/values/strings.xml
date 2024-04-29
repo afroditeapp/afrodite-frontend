@@ -268,6 +268,8 @@
     <string name="image_quality_settings_screen_image_quality_medium" description="Title for image quality setting medium value">Medium</string>
     <string name="image_quality_settings_screen_image_quality_high" description="Title for image quality setting medium value">High</string>
     <string name="image_quality_settings_screen_image_quality_max" description="Title for image quality setting max value">Max</string>
+    <string name="image_quality_settings_screen_image_quality_custom" description="Title for image quality setting custom value">Custom</string>
+    <string name="image_quality_settings_screen_image_quality_pixel_value" description="Value text for current quality setting">%s pixels</string>
 
     <!-- View image screen
         TODO: Does this page need a title?
