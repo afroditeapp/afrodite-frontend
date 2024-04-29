@@ -5,6 +5,7 @@ import 'package:pihka_frontend/data/general/image_cache_settings.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
+import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/padding.dart';
 
 class ImageSettingsScreen extends StatefulWidget {
@@ -63,12 +64,16 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         maxImageQualityCheckbox(context),
-        hPad(downscalingSizeDropdown(context)),
+        const Padding(padding: EdgeInsets.all(4)),
+        downscalingSizeDropdown(context),
+        const Padding(padding: EdgeInsets.all(4)),
         ...imageQualitySlider(context),
         const Padding(padding: EdgeInsets.all(8)),
         hPad(Text(context.strings.image_quality_settings_screen_image_cache_max_size)),
         const Padding(padding: EdgeInsets.all(4)),
         ...imageCacheMaxSizeSlider(context),
+        const Padding(padding: EdgeInsets.all(4)),
+        resetToDefaults(),
       ],
     );
   }
@@ -132,9 +137,11 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
     }
 
     return DropdownButton<int>(
-      value: downscalingSize,
+      value: fullImgSize ? ImageCacheSizeSetting.maxQuality.getImgSize().maxSize : downscalingSize,
       items: items,
+      isExpanded: true,
       onChanged: onChanged,
+      padding: const EdgeInsets.symmetric(horizontal: 24),
     );
   }
 
@@ -144,16 +151,21 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
         downscalingSize = value.toInt();
       });
     };
+
+    final selectedValueInt = fullImgSize ?
+      ImageCacheSizeSetting.maxQuality.getImgSize().maxSize :
+        downscalingSize;
+
     return [
       Slider(
         min: ImageCacheSizeSetting.tiny.getImgSize().maxSize.toDouble(),
         max: ImageCacheSizeSetting.maxQuality.getImgSize().maxSize.toDouble(),
-        value: downscalingSize.toDouble(),
+        value: selectedValueInt.toDouble(),
         onChanged: onChanged,
       ),
       Align(
         alignment: Alignment.centerRight,
-        child: hPad(Text(context.strings.image_quality_settings_screen_image_quality_pixel_value(downscalingSize.toString()))),
+        child: hPad(Text(context.strings.image_quality_settings_screen_image_quality_pixel_value(selectedValueInt.toString()))),
       )
     ];
   }
@@ -179,5 +191,24 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
 
   int cacheMibibytesValue() {
     return cacheMaxBytes ~/ 1024 ~/ 1024;
+  }
+
+  Widget resetToDefaults() {
+    return ListTile(
+      title: Text(context.strings.image_quality_settings_screen_reset_to_defaults),
+      onTap: () async {
+        final accepted = await showConfirmDialog(
+          context,
+          context.strings.image_quality_settings_screen_reset_to_defaults_dialog_title,
+        );
+        if (accepted == true) {
+          setState(() {
+            cacheMaxBytes = CACHE_DEFAULT_BYTES;
+            fullImgSize = CACHE_FULL_SIZED_IMAGES_DEFAULT;
+            downscalingSize = CACHE_DOWNSCALING_SIZE_DEFAULT;
+          });
+        }
+      },
+    );
   }
 }

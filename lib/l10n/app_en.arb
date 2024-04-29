@@ -409,6 +409,14 @@
   "@image_quality_settings_screen_max_image_quality": {
     "description": "Title for max image quality setting "
   },
+  "image_quality_settings_screen_reset_to_defaults": "Reset to default values",
+  "@image_quality_settings_screen_reset_to_defaults": {
+    "description": "Title for reset image quality settings to default values action"
+  },
+  "image_quality_settings_screen_reset_to_defaults_dialog_title": "Reset to default values?",
+  "@image_quality_settings_screen_reset_to_defaults_dialog_title": {
+    "description": "Dialog title for confirming reset image quality settings to default values action"
+  },
   "image_quality_settings_screen_title": "Image quality",
   "@image_quality_settings_screen_title": {
     "description": "Image quality settings screen title"

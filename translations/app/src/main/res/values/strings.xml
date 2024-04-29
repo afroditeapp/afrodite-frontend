@@ -270,6 +270,8 @@
     <string name="image_quality_settings_screen_image_quality_max" description="Title for image quality setting max value">Max</string>
     <string name="image_quality_settings_screen_image_quality_custom" description="Title for image quality setting custom value">Custom</string>
     <string name="image_quality_settings_screen_image_quality_pixel_value" description="Value text for current quality setting">%s pixels</string>
+    <string name="image_quality_settings_screen_reset_to_defaults" description="Title for reset image quality settings to default values action">Reset to default values</string>
+    <string name="image_quality_settings_screen_reset_to_defaults_dialog_title" description="Dialog title for confirming reset image quality settings to default values action">Reset to default values?</string>
 
     <!-- View image screen
         TODO: Does this page need a title?
