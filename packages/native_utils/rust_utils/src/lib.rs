@@ -6,3 +6,4 @@
 
 mod ffi;
 mod content_encryption;
+mod buffer;

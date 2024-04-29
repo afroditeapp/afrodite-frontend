@@ -2,7 +2,9 @@
 
 //! Encrypt and decrypt content files.
 
-use aes_gcm::{aead::{generic_array::GenericArray, Aead, OsRng}, AeadCore, Aes256Gcm, Key, KeyInit, Nonce};
+use aes_gcm::{aead::{generic_array::GenericArray, AeadMutInPlace, OsRng}, AeadCore, Aes256Gcm, Key, KeyInit, Nonce};
+
+use crate::buffer::SliceBuffer;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 #[repr(u8)]
@@ -10,10 +12,9 @@ pub enum ContentEncryptionError {
     EmptyPlaintextData = 1,
     EncryptionError = 2,
     DecryptionError = 3,
-    UnexpectedChiphertextSize = 4,
-    UnexpectedPlaintextSize = 5,
-    UnexpectedNonceSize = 6,
-    InvalidKeyBufferSize = 7,
+    UnexpectedNonceSize = 4,
+    InvalidKeyBufferSize = 5,
+    BufferInitFailed = 6,
 }
 
 /// Nonce size in bytes for 96-bit nonce.
@@ -69,23 +70,21 @@ fn encrypt_content_with_nonce_provider(
         return Err(ContentEncryptionError::EmptyPlaintextData);
     }
 
-    let (plaintext, _) = data.split_at(data.len() - empty_space_size);
+    let (working_area, nonce_area) = data.split_at_mut(data.len() - NONCE_SIZE_IN_BYTES);
 
-    let chipher = Aes256Gcm::new_from_slice(key)
+    let mut buf = SliceBuffer::buffer_with_empty_space(working_area, AUTHENTICATION_TAG_SIZE_IN_BYTES)
+        .map_err(|_| ContentEncryptionError::BufferInitFailed)?;
+
+    let mut chipher = Aes256Gcm::new_from_slice(key)
         .map_err(|_| ContentEncryptionError::InvalidKeyBufferSize)?;
-    let nonce = nonce_provider();
-    let chiphertext = chipher.encrypt(&nonce, plaintext)
-        .map_err(|_| ContentEncryptionError::EncryptionError)?;
 
-    let (chiphertext_area, nonce_area) = data.split_at_mut(data.len() - NONCE_SIZE_IN_BYTES);
-    if chiphertext_area.len() != chiphertext.len() {
-        return Err(ContentEncryptionError::UnexpectedChiphertextSize);
-    }
+    let nonce = nonce_provider();
     if nonce_area.len() != nonce.len() {
         return Err(ContentEncryptionError::UnexpectedNonceSize);
     }
 
-    chiphertext_area.copy_from_slice(chiphertext.as_ref());
+    chipher.encrypt_in_place(&nonce, &[], &mut buf)
+        .map_err(|_| ContentEncryptionError::EncryptionError)?;
     nonce_area.copy_from_slice(nonce.as_ref());
 
     Ok(())
@@ -100,23 +99,19 @@ pub fn decrypt_content(data: &mut [u8], key: &[u8]) -> Result<(), ContentEncrypt
         return Err(ContentEncryptionError::EmptyPlaintextData);
     }
 
-    let (chiphertext, nonce) = data.split_at(data.len() - NONCE_SIZE_IN_BYTES);
+    let (chiphertext, nonce) = data.split_at_mut(data.len() - NONCE_SIZE_IN_BYTES);
 
     let nonce: [u8; NONCE_SIZE_IN_BYTES] = nonce.try_into()
         .map_err(|_| ContentEncryptionError::UnexpectedNonceSize)?;
     let nonce = GenericArray::from(nonce);
 
-    let chipher = Aes256Gcm::new_from_slice(key)
+    let mut buf = SliceBuffer::buffer_with_empty_space(chiphertext, 0)
+        .map_err(|_| ContentEncryptionError::BufferInitFailed)?;
+
+    let mut chipher = Aes256Gcm::new_from_slice(key)
         .map_err(|_| ContentEncryptionError::InvalidKeyBufferSize)?;
-    let plaintext = chipher.decrypt(&nonce, chiphertext)
+    chipher.decrypt_in_place(&nonce, &[], &mut buf)
         .map_err(|_| ContentEncryptionError::DecryptionError)?;
-
-    if plaintext.len() != data.len() - encryption_related_extra_data_size {
-        return Err(ContentEncryptionError::UnexpectedPlaintextSize);
-    }
-
-    let (plaintext_area, _) = data.split_at_mut(plaintext.len());
-    plaintext_area.copy_from_slice(plaintext.as_ref());
 
     Ok(())
 }
