@@ -24,6 +24,7 @@ set_target_properties(native_utils PROPERTIES
   OUTPUT_NAME "native_utils"
 )
 
-target_link_libraries(native_utils PUBLIC rust_utils)
+target_link_libraries(native_utils PRIVATE rust_utils)
 
-target_compile_definitions(native_utils PUBLIC DART_SHARED_LIB)
+# Current code does not use Dart API
+# target_compile_definitions(native_utils PUBLIC DART_SHARED_LIB)
