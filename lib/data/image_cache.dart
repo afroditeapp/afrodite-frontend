@@ -7,6 +7,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
+import 'package:pihka_frontend/data/general/image_cache_settings.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/storage/encryption.dart';
 import 'package:pihka_frontend/ui/normal/settings/location.dart';
@@ -182,13 +183,13 @@ class AccountImageProvider extends ImageProvider<ContentId> {
   }
 }
 
-const _MAX_WIDTH_AND_HEIGHT = 1920;
+const MAX_IMG_WIDTH_AND_HEIGHT = 1920;
 
 enum ImageCacheSizeSetting {
   /// Downscale to 1/4 of the max image size (Full HD)
   tiny,
   /// Downscale to 1/3 of the max image size (Full HD)
-  small,
+  low,
   /// Downscale to 1/2 of the max image size (Full HD)
   medium,
   /// Downscale to 1/1.5 of the max image size (Full HD)
@@ -199,15 +200,15 @@ enum ImageCacheSizeSetting {
   ImageCacheSize getImgSize() {
     final size = switch (this) {
       ImageCacheSizeSetting.tiny =>
-        _MAX_WIDTH_AND_HEIGHT ~/ 4,
-      ImageCacheSizeSetting.small =>
-        _MAX_WIDTH_AND_HEIGHT ~/ 3,
+        MAX_IMG_WIDTH_AND_HEIGHT ~/ 4,
+      ImageCacheSizeSetting.low =>
+        MAX_IMG_WIDTH_AND_HEIGHT ~/ 3,
       ImageCacheSizeSetting.medium =>
-        _MAX_WIDTH_AND_HEIGHT ~/ 2,
+        MAX_IMG_WIDTH_AND_HEIGHT ~/ 2,
       ImageCacheSizeSetting.high =>
-        _MAX_WIDTH_AND_HEIGHT ~/ 1.5,
+        MAX_IMG_WIDTH_AND_HEIGHT ~/ 1.5,
       ImageCacheSizeSetting.maxQuality =>
-        _MAX_WIDTH_AND_HEIGHT,
+        MAX_IMG_WIDTH_AND_HEIGHT,
     };
 
     return ImageCacheSize(size);
@@ -218,21 +219,21 @@ class ImageCacheSize {
   final int maxSize;
   const ImageCacheSize(this.maxSize);
 
-  static const ImageCacheSize maxQuality = ImageCacheSize(_MAX_WIDTH_AND_HEIGHT);
+  static const ImageCacheSize maxQuality = ImageCacheSize(MAX_IMG_WIDTH_AND_HEIGHT);
 
   static ImageCacheSize sizeForAppBarThumbnail() {
-    return ImageCacheSizeSetting.maxQuality.getImgSize();
+    return ImageCacheSettings.getInstance().getCurrentImageCacheSize();
   }
 
   static ImageCacheSize sizeForGrid() {
-    return ImageCacheSizeSetting.maxQuality.getImgSize();
+    return ImageCacheSettings.getInstance().getCurrentImageCacheSize();
   }
 
   static ImageCacheSize sizeForListWithTextContent() {
-    return ImageCacheSizeSetting.maxQuality.getImgSize();
+    return ImageCacheSettings.getInstance().getCurrentImageCacheSize();
   }
 
   static ImageCacheSize sizeForViewProfile() {
-    return ImageCacheSizeSetting.maxQuality.getImgSize();
+    return ImageCacheSettings.getInstance().getCurrentImageCacheSize();
   }
 }

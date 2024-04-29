@@ -443,6 +443,32 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<String> accessTokenChat = GeneratedColumn<String>(
       'access_token_chat', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _localImageSettingImageCacheMaxBytesMeta =
+      const VerificationMeta('localImageSettingImageCacheMaxBytes');
+  @override
+  late final GeneratedColumn<int> localImageSettingImageCacheMaxBytes =
+      GeneratedColumn<int>(
+          'local_image_setting_image_cache_max_bytes', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _localImageSettingCacheFullSizedImagesMeta =
+      const VerificationMeta('localImageSettingCacheFullSizedImages');
+  @override
+  late final GeneratedColumn<
+      bool> localImageSettingCacheFullSizedImages = GeneratedColumn<
+          bool>(
+      'local_image_setting_cache_full_sized_images', aliasedName, true,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("local_image_setting_cache_full_sized_images" IN (0, 1))'));
+  static const VerificationMeta
+      _localImageSettingImageCacheDownscalingSizeMeta =
+      const VerificationMeta('localImageSettingImageCacheDownscalingSize');
+  @override
+  late final GeneratedColumn<int> localImageSettingImageCacheDownscalingSize =
+      GeneratedColumn<int>(
+          'local_image_setting_image_cache_downscaling_size', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -501,7 +527,10 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         accessTokenAccount,
         accessTokenMedia,
         accessTokenProfile,
-        accessTokenChat
+        accessTokenChat,
+        localImageSettingImageCacheMaxBytes,
+        localImageSettingCacheFullSizedImages,
+        localImageSettingImageCacheDownscalingSize
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -772,6 +801,27 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           accessTokenChat.isAcceptableOrUnknown(
               data['access_token_chat']!, _accessTokenChatMeta));
     }
+    if (data.containsKey('local_image_setting_image_cache_max_bytes')) {
+      context.handle(
+          _localImageSettingImageCacheMaxBytesMeta,
+          localImageSettingImageCacheMaxBytes.isAcceptableOrUnknown(
+              data['local_image_setting_image_cache_max_bytes']!,
+              _localImageSettingImageCacheMaxBytesMeta));
+    }
+    if (data.containsKey('local_image_setting_cache_full_sized_images')) {
+      context.handle(
+          _localImageSettingCacheFullSizedImagesMeta,
+          localImageSettingCacheFullSizedImages.isAcceptableOrUnknown(
+              data['local_image_setting_cache_full_sized_images']!,
+              _localImageSettingCacheFullSizedImagesMeta));
+    }
+    if (data.containsKey('local_image_setting_image_cache_downscaling_size')) {
+      context.handle(
+          _localImageSettingImageCacheDownscalingSizeMeta,
+          localImageSettingImageCacheDownscalingSize.isAcceptableOrUnknown(
+              data['local_image_setting_image_cache_downscaling_size']!,
+              _localImageSettingImageCacheDownscalingSizeMeta));
+    }
     return context;
   }
 
@@ -939,6 +989,17 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           DriftSqlType.string, data['${effectivePrefix}access_token_profile']),
       accessTokenChat: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}access_token_chat']),
+      localImageSettingImageCacheMaxBytes: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}local_image_setting_image_cache_max_bytes']),
+      localImageSettingCacheFullSizedImages: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data[
+              '${effectivePrefix}local_image_setting_cache_full_sized_images']),
+      localImageSettingImageCacheDownscalingSize: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data[
+              '${effectivePrefix}local_image_setting_image_cache_downscaling_size']),
     );
   }
 
@@ -1056,6 +1117,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final String? accessTokenMedia;
   final String? accessTokenProfile;
   final String? accessTokenChat;
+  final int? localImageSettingImageCacheMaxBytes;
+  final bool? localImageSettingCacheFullSizedImages;
+  final int? localImageSettingImageCacheDownscalingSize;
   const AccountData(
       {required this.id,
       this.uuidAccountId,
@@ -1113,7 +1177,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.accessTokenAccount,
       this.accessTokenMedia,
       this.accessTokenProfile,
-      this.accessTokenChat});
+      this.accessTokenChat,
+      this.localImageSettingImageCacheMaxBytes,
+      this.localImageSettingCacheFullSizedImages,
+      this.localImageSettingImageCacheDownscalingSize});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1326,6 +1393,18 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     if (!nullToAbsent || accessTokenChat != null) {
       map['access_token_chat'] = Variable<String>(accessTokenChat);
     }
+    if (!nullToAbsent || localImageSettingImageCacheMaxBytes != null) {
+      map['local_image_setting_image_cache_max_bytes'] =
+          Variable<int>(localImageSettingImageCacheMaxBytes);
+    }
+    if (!nullToAbsent || localImageSettingCacheFullSizedImages != null) {
+      map['local_image_setting_cache_full_sized_images'] =
+          Variable<bool>(localImageSettingCacheFullSizedImages);
+    }
+    if (!nullToAbsent || localImageSettingImageCacheDownscalingSize != null) {
+      map['local_image_setting_image_cache_downscaling_size'] =
+          Variable<int>(localImageSettingImageCacheDownscalingSize);
+    }
     return map;
   }
 
@@ -1497,6 +1576,18 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       accessTokenChat: accessTokenChat == null && nullToAbsent
           ? const Value.absent()
           : Value(accessTokenChat),
+      localImageSettingImageCacheMaxBytes:
+          localImageSettingImageCacheMaxBytes == null && nullToAbsent
+              ? const Value.absent()
+              : Value(localImageSettingImageCacheMaxBytes),
+      localImageSettingCacheFullSizedImages:
+          localImageSettingCacheFullSizedImages == null && nullToAbsent
+              ? const Value.absent()
+              : Value(localImageSettingCacheFullSizedImages),
+      localImageSettingImageCacheDownscalingSize:
+          localImageSettingImageCacheDownscalingSize == null && nullToAbsent
+              ? const Value.absent()
+              : Value(localImageSettingImageCacheDownscalingSize),
     );
   }
 
@@ -1602,6 +1693,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       accessTokenProfile:
           serializer.fromJson<String?>(json['accessTokenProfile']),
       accessTokenChat: serializer.fromJson<String?>(json['accessTokenChat']),
+      localImageSettingImageCacheMaxBytes: serializer
+          .fromJson<int?>(json['localImageSettingImageCacheMaxBytes']),
+      localImageSettingCacheFullSizedImages: serializer
+          .fromJson<bool?>(json['localImageSettingCacheFullSizedImages']),
+      localImageSettingImageCacheDownscalingSize: serializer
+          .fromJson<int?>(json['localImageSettingImageCacheDownscalingSize']),
     );
   }
   @override
@@ -1695,6 +1792,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'accessTokenMedia': serializer.toJson<String?>(accessTokenMedia),
       'accessTokenProfile': serializer.toJson<String?>(accessTokenProfile),
       'accessTokenChat': serializer.toJson<String?>(accessTokenChat),
+      'localImageSettingImageCacheMaxBytes':
+          serializer.toJson<int?>(localImageSettingImageCacheMaxBytes),
+      'localImageSettingCacheFullSizedImages':
+          serializer.toJson<bool?>(localImageSettingCacheFullSizedImages),
+      'localImageSettingImageCacheDownscalingSize':
+          serializer.toJson<int?>(localImageSettingImageCacheDownscalingSize),
     };
   }
 
@@ -1758,7 +1861,13 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<String?> accessTokenAccount = const Value.absent(),
           Value<String?> accessTokenMedia = const Value.absent(),
           Value<String?> accessTokenProfile = const Value.absent(),
-          Value<String?> accessTokenChat = const Value.absent()}) =>
+          Value<String?> accessTokenChat = const Value.absent(),
+          Value<int?> localImageSettingImageCacheMaxBytes =
+              const Value.absent(),
+          Value<bool?> localImageSettingCacheFullSizedImages =
+              const Value.absent(),
+          Value<int?> localImageSettingImageCacheDownscalingSize =
+              const Value.absent()}) =>
       AccountData(
         id: id ?? this.id,
         uuidAccountId:
@@ -1912,6 +2021,18 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         accessTokenChat: accessTokenChat.present
             ? accessTokenChat.value
             : this.accessTokenChat,
+        localImageSettingImageCacheMaxBytes:
+            localImageSettingImageCacheMaxBytes.present
+                ? localImageSettingImageCacheMaxBytes.value
+                : this.localImageSettingImageCacheMaxBytes,
+        localImageSettingCacheFullSizedImages:
+            localImageSettingCacheFullSizedImages.present
+                ? localImageSettingCacheFullSizedImages.value
+                : this.localImageSettingCacheFullSizedImages,
+        localImageSettingImageCacheDownscalingSize:
+            localImageSettingImageCacheDownscalingSize.present
+                ? localImageSettingImageCacheDownscalingSize.value
+                : this.localImageSettingImageCacheDownscalingSize,
       );
   @override
   String toString() {
@@ -1983,7 +2104,13 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('accessTokenAccount: $accessTokenAccount, ')
           ..write('accessTokenMedia: $accessTokenMedia, ')
           ..write('accessTokenProfile: $accessTokenProfile, ')
-          ..write('accessTokenChat: $accessTokenChat')
+          ..write('accessTokenChat: $accessTokenChat, ')
+          ..write(
+              'localImageSettingImageCacheMaxBytes: $localImageSettingImageCacheMaxBytes, ')
+          ..write(
+              'localImageSettingCacheFullSizedImages: $localImageSettingCacheFullSizedImages, ')
+          ..write(
+              'localImageSettingImageCacheDownscalingSize: $localImageSettingImageCacheDownscalingSize')
           ..write(')'))
         .toString();
   }
@@ -2046,7 +2173,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         accessTokenAccount,
         accessTokenMedia,
         accessTokenProfile,
-        accessTokenChat
+        accessTokenChat,
+        localImageSettingImageCacheMaxBytes,
+        localImageSettingCacheFullSizedImages,
+        localImageSettingImageCacheDownscalingSize
       ]);
   @override
   bool operator ==(Object other) =>
@@ -2120,7 +2250,13 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.accessTokenAccount == this.accessTokenAccount &&
           other.accessTokenMedia == this.accessTokenMedia &&
           other.accessTokenProfile == this.accessTokenProfile &&
-          other.accessTokenChat == this.accessTokenChat);
+          other.accessTokenChat == this.accessTokenChat &&
+          other.localImageSettingImageCacheMaxBytes ==
+              this.localImageSettingImageCacheMaxBytes &&
+          other.localImageSettingCacheFullSizedImages ==
+              this.localImageSettingCacheFullSizedImages &&
+          other.localImageSettingImageCacheDownscalingSize ==
+              this.localImageSettingImageCacheDownscalingSize);
 }
 
 class AccountCompanion extends UpdateCompanion<AccountData> {
@@ -2181,6 +2317,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<String?> accessTokenMedia;
   final Value<String?> accessTokenProfile;
   final Value<String?> accessTokenChat;
+  final Value<int?> localImageSettingImageCacheMaxBytes;
+  final Value<bool?> localImageSettingCacheFullSizedImages;
+  final Value<int?> localImageSettingImageCacheDownscalingSize;
   const AccountCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -2239,6 +2378,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.accessTokenMedia = const Value.absent(),
     this.accessTokenProfile = const Value.absent(),
     this.accessTokenChat = const Value.absent(),
+    this.localImageSettingImageCacheMaxBytes = const Value.absent(),
+    this.localImageSettingCacheFullSizedImages = const Value.absent(),
+    this.localImageSettingImageCacheDownscalingSize = const Value.absent(),
   });
   AccountCompanion.insert({
     this.id = const Value.absent(),
@@ -2298,6 +2440,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.accessTokenMedia = const Value.absent(),
     this.accessTokenProfile = const Value.absent(),
     this.accessTokenChat = const Value.absent(),
+    this.localImageSettingImageCacheMaxBytes = const Value.absent(),
+    this.localImageSettingCacheFullSizedImages = const Value.absent(),
+    this.localImageSettingImageCacheDownscalingSize = const Value.absent(),
   });
   static Insertable<AccountData> custom({
     Expression<int>? id,
@@ -2357,6 +2502,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<String>? accessTokenMedia,
     Expression<String>? accessTokenProfile,
     Expression<String>? accessTokenChat,
+    Expression<int>? localImageSettingImageCacheMaxBytes,
+    Expression<bool>? localImageSettingCacheFullSizedImages,
+    Expression<int>? localImageSettingImageCacheDownscalingSize,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2459,6 +2607,15 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (accessTokenProfile != null)
         'access_token_profile': accessTokenProfile,
       if (accessTokenChat != null) 'access_token_chat': accessTokenChat,
+      if (localImageSettingImageCacheMaxBytes != null)
+        'local_image_setting_image_cache_max_bytes':
+            localImageSettingImageCacheMaxBytes,
+      if (localImageSettingCacheFullSizedImages != null)
+        'local_image_setting_cache_full_sized_images':
+            localImageSettingCacheFullSizedImages,
+      if (localImageSettingImageCacheDownscalingSize != null)
+        'local_image_setting_image_cache_downscaling_size':
+            localImageSettingImageCacheDownscalingSize,
     });
   }
 
@@ -2519,7 +2676,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<String?>? accessTokenAccount,
       Value<String?>? accessTokenMedia,
       Value<String?>? accessTokenProfile,
-      Value<String?>? accessTokenChat}) {
+      Value<String?>? accessTokenChat,
+      Value<int?>? localImageSettingImageCacheMaxBytes,
+      Value<bool?>? localImageSettingCacheFullSizedImages,
+      Value<int?>? localImageSettingImageCacheDownscalingSize}) {
     return AccountCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -2611,6 +2771,15 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       accessTokenMedia: accessTokenMedia ?? this.accessTokenMedia,
       accessTokenProfile: accessTokenProfile ?? this.accessTokenProfile,
       accessTokenChat: accessTokenChat ?? this.accessTokenChat,
+      localImageSettingImageCacheMaxBytes:
+          localImageSettingImageCacheMaxBytes ??
+              this.localImageSettingImageCacheMaxBytes,
+      localImageSettingCacheFullSizedImages:
+          localImageSettingCacheFullSizedImages ??
+              this.localImageSettingCacheFullSizedImages,
+      localImageSettingImageCacheDownscalingSize:
+          localImageSettingImageCacheDownscalingSize ??
+              this.localImageSettingImageCacheDownscalingSize,
     );
   }
 
@@ -2848,6 +3017,18 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (accessTokenChat.present) {
       map['access_token_chat'] = Variable<String>(accessTokenChat.value);
     }
+    if (localImageSettingImageCacheMaxBytes.present) {
+      map['local_image_setting_image_cache_max_bytes'] =
+          Variable<int>(localImageSettingImageCacheMaxBytes.value);
+    }
+    if (localImageSettingCacheFullSizedImages.present) {
+      map['local_image_setting_cache_full_sized_images'] =
+          Variable<bool>(localImageSettingCacheFullSizedImages.value);
+    }
+    if (localImageSettingImageCacheDownscalingSize.present) {
+      map['local_image_setting_image_cache_downscaling_size'] =
+          Variable<int>(localImageSettingImageCacheDownscalingSize.value);
+    }
     return map;
   }
 
@@ -2921,7 +3102,13 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('accessTokenAccount: $accessTokenAccount, ')
           ..write('accessTokenMedia: $accessTokenMedia, ')
           ..write('accessTokenProfile: $accessTokenProfile, ')
-          ..write('accessTokenChat: $accessTokenChat')
+          ..write('accessTokenChat: $accessTokenChat, ')
+          ..write(
+              'localImageSettingImageCacheMaxBytes: $localImageSettingImageCacheMaxBytes, ')
+          ..write(
+              'localImageSettingCacheFullSizedImages: $localImageSettingCacheFullSizedImages, ')
+          ..write(
+              'localImageSettingImageCacheDownscalingSize: $localImageSettingImageCacheDownscalingSize')
           ..write(')'))
         .toString();
   }
@@ -4550,6 +4737,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       DaoSyncVersions(this as AccountDatabase);
   late final DaoProfiles daoProfiles = DaoProfiles(this as AccountDatabase);
   late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
+  late final DaoLocalImageSettings daoLocalImageSettings =
+      DaoLocalImageSettings(this as AccountDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

@@ -34,7 +34,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.strings.account_settings_screen),
+        title: Text(context.strings.account_settings_screen_title),
       ),
       body: content(),
     );

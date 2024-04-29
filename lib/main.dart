@@ -9,6 +9,7 @@ import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/common_repository.dart';
+import 'package:pihka_frontend/data/general/image_cache_settings.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
@@ -233,6 +234,7 @@ class GlobalInitManager {
     await ErrorManager.getInstance().init();
     await ApiManager.getInstance().init();
     await ImageCacheData.getInstance().init();
+    await ImageCacheSettings.getInstance().init();
     await CameraManager.getInstance().init();
     await NotificationManager.getInstance().init();
 

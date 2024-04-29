@@ -13,6 +13,7 @@ import 'package:pihka_frontend/ui/normal/settings/account_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin.dart';
 import 'package:pihka_frontend/ui/normal/settings/data_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/debug.dart';
+import 'package:pihka_frontend/ui/normal/settings/general_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
 import 'package:pihka_frontend/ui/normal/settings/privacy_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/search_settings.dart';
@@ -50,7 +51,7 @@ class _SettingsViewState extends State<SettingsView> {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
         List<Setting> settings = [
-          Setting.createSetting(Icons.person, context.strings.account_settings_screen, () {
+          Setting.createSetting(Icons.person, context.strings.account_settings_screen_title, () {
               final accountDetailsBloc = context.read<AccountDetailsBloc>();
               MyNavigator.push(context, MaterialPage<void>(child:
                 AccountSettingsScreen(
@@ -94,9 +95,15 @@ class _SettingsViewState extends State<SettingsView> {
               ));
             }
           ),
-          Setting.createSetting(Icons.storage, context.strings.data_settings_screen, () {
+          Setting.createSetting(Icons.storage, context.strings.data_settings_screen_title, () {
               MyNavigator.push(context, const MaterialPage<void>(child:
                 DataSettingsScreen()
+              ));
+            }
+          ),
+          Setting.createSetting(Icons.miscellaneous_services, context.strings.general_settings_screen_title, () {
+              MyNavigator.push(context, const MaterialPage<void>(child:
+                GeneralSettingsScreen()
               ));
             }
           ),

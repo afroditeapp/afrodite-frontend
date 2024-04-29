@@ -232,12 +232,13 @@ Widget logoAndAppNameAndSlogan(BuildContext context) {
 Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext context) {
   final idField = SimpleTextField(
     hintText: context.strings.login_screen_demo_account_identifier,
-    getInitialValue: () => context.read<DemoAccountBloc>().state.userId ?? "",
+    // TODO(prod): remove default username and password
+    getInitialValue: () => context.read<DemoAccountBloc>().state.userId ?? "test",
   );
   final passwordField = SimpleTextField(
     hintText: context.strings.login_screen_demo_account_password,
     obscureText: true,
-    getInitialValue: () => context.read<DemoAccountBloc>().state.password ?? "",
+    getInitialValue: () => context.read<DemoAccountBloc>().state.password ?? "password",
   );
   final pageKey = PageKey();
   return MyNavigator.showDialog<DemoAccountCredentials?>(

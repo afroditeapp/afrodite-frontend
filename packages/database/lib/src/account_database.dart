@@ -1,6 +1,7 @@
 
 
 import 'package:async/async.dart';
+import 'package:database/src/account/dao_local_image_settings.dart';
 import 'package:database/src/account/dao_sync_versions.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
@@ -109,6 +110,12 @@ class Account extends Table {
   TextColumn get accessTokenMedia => text().nullable()();
   TextColumn get accessTokenProfile => text().nullable()();
   TextColumn get accessTokenChat => text().nullable()();
+
+  // DaoLocalImageSettings
+
+  IntColumn get localImageSettingImageCacheMaxBytes => integer().nullable()();
+  BoolColumn get localImageSettingCacheFullSizedImages => boolean().nullable()();
+  IntColumn get localImageSettingImageCacheDownscalingSize => integer().nullable()();
 }
 
 @DriftDatabase(
@@ -129,6 +136,7 @@ class Account extends Table {
     // Other tables
     DaoProfiles,
     DaoMessages,
+    DaoLocalImageSettings,
   ],
 )
 class AccountDatabase extends _$AccountDatabase {

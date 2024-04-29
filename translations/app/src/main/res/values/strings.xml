@@ -245,15 +245,29 @@
     <string name="profile_location_screen_title" description="Title for profile location screen">My profile\'s location</string>
 
     <!-- Data settings selfie -->
-    <string name="data_settings_screen" description="Title for data settings">Data management</string>
+    <string name="data_settings_screen_title" description="Title for data settings">Data management</string>
 
     <!-- Account settings selfie -->
-    <string name="account_settings_screen" description="Title for account settings">Account</string>
+    <string name="account_settings_screen_title" description="Title for account settings">Account</string>
     <string name="account_settings_screen_email_title" description="Title for email text">Email address</string>
     <string name="account_settings_screen_birthdate_title" description="Title for birthdate text">Birthdate</string>
     <string name="account_settings_screen_delete_account_action" description="Title for delete account action">Request account deletion</string>
     <string name="account_settings_screen_delete_account_action_error" description="Snackbar text about delete account action failure">Requesting account deletion failed</string>
     <string name="account_settings_screen_delete_account_confirm_dialog_title" description="Title for delete account confirm dialog title">Request account deletion?</string>
+
+    <!-- General settings screen -->
+    <string name="general_settings_screen_title" description="General settings screen title">General</string>
+
+    <!-- Image quality settings screen -->
+    <string name="image_quality_settings_screen_title" description="Image quality settings screen title">Image quality</string>
+    <string name="image_quality_settings_screen_image_cache_max_size" description="Title for image cache max size setting">Image cache max size</string>
+    <string name="image_quality_settings_screen_max_image_quality" description="Title for max image quality setting ">Max image quality</string>
+    <string name="image_quality_settings_screen_image_quality_setting" description="Title for image quality setting ">Image quality</string>
+    <string name="image_quality_settings_screen_image_quality_tiny" description="Title for image quality setting tiny value">Tiny</string>
+    <string name="image_quality_settings_screen_image_quality_low" description="Title for image quality setting low value">Low</string>
+    <string name="image_quality_settings_screen_image_quality_medium" description="Title for image quality setting medium value">Medium</string>
+    <string name="image_quality_settings_screen_image_quality_high" description="Title for image quality setting medium value">High</string>
+    <string name="image_quality_settings_screen_image_quality_max" description="Title for image quality setting max value">Max</string>
 
     <!-- View image screen
         TODO: Does this page need a title?

@@ -18,7 +18,7 @@ class _DataSettingsScreenState extends State<DataSettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.strings.data_settings_screen),
+        title: Text(context.strings.data_settings_screen_title),
       ),
       body: const SizedBox.shrink(),
     );

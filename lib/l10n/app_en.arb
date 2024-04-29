@@ -1,8 +1,4 @@
 {
-  "account_settings_screen": "Account",
-  "@account_settings_screen": {
-    "description": "Title for account settings"
-  },
   "account_settings_screen_birthdate_title": "Birthdate",
   "@account_settings_screen_birthdate_title": {
     "description": "Title for birthdate text"
@@ -22,6 +18,10 @@
   "account_settings_screen_email_title": "Email address",
   "@account_settings_screen_email_title": {
     "description": "Title for email text"
+  },
+  "account_settings_screen_title": "Account",
+  "@account_settings_screen_title": {
+    "description": "Title for account settings"
   },
   "admin_settings_title": "Admin",
   "@admin_settings_title": {
@@ -182,8 +182,8 @@
   "@current_security_selfie_screen_title": {
     "description": "Current security selfie screen title"
   },
-  "data_settings_screen": "Data management",
-  "@data_settings_screen": {
+  "data_settings_screen_title": "Data management",
+  "@data_settings_screen_title": {
     "description": "Title for data settings"
   },
   "demo_account_screen_confirm_logout_dialog_title": "Logout?",
@@ -245,6 +245,10 @@
   "edit_profile_screen_title": "Edit profile",
   "@edit_profile_screen_title": {
     "description": "Title for edit profile screen"
+  },
+  "general_settings_screen_title": "General",
+  "@general_settings_screen_title": {
+    "description": "General settings screen title"
   },
   "generic_cancel": "Cancel",
   "@generic_cancel": {
@@ -359,6 +363,42 @@
   "image_processing_ui_upload_processing_ongoing_description": "Processing ongoing",
   "@image_processing_ui_upload_processing_ongoing_description": {
     "description": "Progress dialog info text that security selfie processing is ongoing"
+  },
+  "image_quality_settings_screen_image_cache_max_size": "Image cache max size",
+  "@image_quality_settings_screen_image_cache_max_size": {
+    "description": "Title for image cache max size setting"
+  },
+  "image_quality_settings_screen_image_quality_high": "High",
+  "@image_quality_settings_screen_image_quality_high": {
+    "description": "Title for image quality setting medium value"
+  },
+  "image_quality_settings_screen_image_quality_low": "Low",
+  "@image_quality_settings_screen_image_quality_low": {
+    "description": "Title for image quality setting low value"
+  },
+  "image_quality_settings_screen_image_quality_max": "Max",
+  "@image_quality_settings_screen_image_quality_max": {
+    "description": "Title for image quality setting max value"
+  },
+  "image_quality_settings_screen_image_quality_medium": "Medium",
+  "@image_quality_settings_screen_image_quality_medium": {
+    "description": "Title for image quality setting medium value"
+  },
+  "image_quality_settings_screen_image_quality_setting": "Image quality",
+  "@image_quality_settings_screen_image_quality_setting": {
+    "description": "Title for image quality setting "
+  },
+  "image_quality_settings_screen_image_quality_tiny": "Tiny",
+  "@image_quality_settings_screen_image_quality_tiny": {
+    "description": "Title for image quality setting tiny value"
+  },
+  "image_quality_settings_screen_max_image_quality": "Max image quality",
+  "@image_quality_settings_screen_max_image_quality": {
+    "description": "Title for max image quality setting "
+  },
+  "image_quality_settings_screen_title": "Image quality",
+  "@image_quality_settings_screen_title": {
+    "description": "Image quality settings screen title"
   },
   "initial_setup_screen_birthdate_button": "Select birthdate",
   "@initial_setup_screen_birthdate_button": {
