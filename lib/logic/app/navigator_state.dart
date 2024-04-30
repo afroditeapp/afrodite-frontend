@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/model/freezed/logic/main/navigator_state.dart";
+import "package:pihka_frontend/utils.dart";
 import "package:pihka_frontend/utils/immutable_list.dart";
 import "package:rxdart/rxdart.dart";
 
@@ -28,8 +29,9 @@ class ReplaceAllWith extends NavigatorStateEvent {
   ReplaceAllWith(this.page);
 }
 
+// NOTE: This bloc must be dependency free because of NavigationStateBlocInstance.
 class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
-  NavigatorStateBloc() : super(
+  NavigatorStateBloc._() : super(
     NavigatorStateData(
       pages: UnmodifiableList(PageAndChannel.splashScreen()),
     )
@@ -155,6 +157,16 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       pageKey,
     );
   }
+}
+
+class NavigationStateBlocInstance extends AppSingletonNoInit {
+  static final _instance = NavigationStateBlocInstance._();
+  NavigationStateBlocInstance._();
+  factory NavigationStateBlocInstance.getInstance() {
+    return _instance;
+  }
+
+  final bloc = NavigatorStateBloc._();
 }
 
 class MyNavigator {

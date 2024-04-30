@@ -10,6 +10,8 @@ abstract class AppSingleton {
   Future<void> init();
 }
 
+abstract class AppSingletonNoInit {}
+
 mixin ActionRunner {
   bool isRunning = false;
   /// Helper method for preventing spamming of actions for example with

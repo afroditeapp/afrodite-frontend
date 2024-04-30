@@ -82,6 +82,9 @@ Future<void> main() async {
   runApp(
     MultiBlocProvider(
       providers: [
+        // Navigation
+        BlocProvider.value(value: NavigationStateBlocInstance.getInstance().bloc),
+
         // General
         BlocProvider(create: (_) => MainStateBloc()),
         BlocProvider(create: (_) => DemoAccountBloc()),
@@ -90,7 +93,6 @@ Future<void> main() async {
         BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
         BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
         BlocProvider(create: (_) => NotificationPermissionBloc()),
-        BlocProvider(create: (_) => NavigatorStateBloc()),
 
         // Main UI
         BlocProvider(create: (_) => ViewProfileBloc()),
