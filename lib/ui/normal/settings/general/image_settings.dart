@@ -65,6 +65,11 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
       children: [
         maxImageQualityCheckbox(context),
         const Padding(padding: EdgeInsets.all(4)),
+        hPad(Text(
+          context.strings.image_quality_settings_screen_image_quality_setting,
+          style: fullImgSize ? TextStyle(color: Theme.of(context).disabledColor) : null,
+        )),
+        const Padding(padding: EdgeInsets.all(8)),
         downscalingSizeDropdown(context),
         const Padding(padding: EdgeInsets.all(4)),
         ...imageQualitySlider(context),
@@ -165,7 +170,10 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
       ),
       Align(
         alignment: Alignment.centerRight,
-        child: hPad(Text(context.strings.image_quality_settings_screen_image_quality_pixel_value(selectedValueInt.toString()))),
+        child: hPad(Text(
+          context.strings.image_quality_settings_screen_image_quality_pixel_value(selectedValueInt.toString()),
+          style: fullImgSize ? TextStyle(color: Theme.of(context).disabledColor) : null,
+        )),
       )
     ];
   }

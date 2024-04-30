@@ -397,9 +397,9 @@
       }
     }
   },
-  "image_quality_settings_screen_image_quality_setting": "Image quality",
+  "image_quality_settings_screen_image_quality_setting": "Image width and height max quality",
   "@image_quality_settings_screen_image_quality_setting": {
-    "description": "Title for image quality setting "
+    "description": "Title for image quality setting"
   },
   "image_quality_settings_screen_image_quality_tiny": "Tiny",
   "@image_quality_settings_screen_image_quality_tiny": {
@@ -407,7 +407,7 @@
   },
   "image_quality_settings_screen_max_image_quality": "Max image quality",
   "@image_quality_settings_screen_max_image_quality": {
-    "description": "Title for max image quality setting "
+    "description": "Title for max image quality setting"
   },
   "image_quality_settings_screen_reset_to_defaults": "Reset to default values",
   "@image_quality_settings_screen_reset_to_defaults": {

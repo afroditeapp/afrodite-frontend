@@ -261,8 +261,8 @@
     <!-- Image quality settings screen -->
     <string name="image_quality_settings_screen_title" description="Image quality settings screen title">Image quality</string>
     <string name="image_quality_settings_screen_image_cache_max_size" description="Title for image cache max size setting">Image cache max size</string>
-    <string name="image_quality_settings_screen_max_image_quality" description="Title for max image quality setting ">Max image quality</string>
-    <string name="image_quality_settings_screen_image_quality_setting" description="Title for image quality setting ">Image quality</string>
+    <string name="image_quality_settings_screen_max_image_quality" description="Title for max image quality setting">Max image quality</string>
+    <string name="image_quality_settings_screen_image_quality_setting" description="Title for image quality setting">Image width and height max quality</string>
     <string name="image_quality_settings_screen_image_quality_tiny" description="Title for image quality setting tiny value">Tiny</string>
     <string name="image_quality_settings_screen_image_quality_low" description="Title for image quality setting low value">Low</string>
     <string name="image_quality_settings_screen_image_quality_medium" description="Title for image quality setting medium value">Medium</string>
