@@ -92,7 +92,8 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
           PageAndChannel(
             PageKey(),
             data.page,
-            BehaviorSubject.seeded(const WaitingPagePop())
+            BehaviorSubject.seeded(const WaitingPagePop()),
+            null,
           ),
         ]),
       ));
@@ -100,15 +101,15 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
   }
 
   /// Push new page to the navigator stack and wait for it to be popped.
-  Future<T?> push<T>(Page<T> page) async {
+  Future<T?> push<T>(Page<T> page, {PageInfo? pageInfo}) async {
     final key = PageKey();
-    return await pushWithKey(page, key);
+    return await pushWithKey(page, key, pageInfo: pageInfo);
   }
 
   /// Push new page to the navigator stack with specific key and wait for it to be popped.
-  Future<T?> pushWithKey<T>(Page<T> page, PageKey pageKey) async {
+  Future<T?> pushWithKey<T>(Page<T> page, PageKey pageKey, {PageInfo? pageInfo}) async {
     final returnChannel = BehaviorSubject<ReturnChannelValue>.seeded(const WaitingPagePop());
-    final newPage = PageAndChannel(pageKey, page, returnChannel);
+    final newPage = PageAndChannel(pageKey, page, returnChannel, pageInfo);
     add(PushPage(newPage));
     final popDone = await returnChannel.whereType<PagePopDone>().first;
     final returnValue = popDone.returnValue;
@@ -171,13 +172,13 @@ class NavigationStateBlocInstance extends AppSingletonNoInit {
 
 class MyNavigator {
   /// Push new page to the navigator stack and wait for it to be popped.
-  static Future<T?> push<T>(BuildContext context, Page<T> page) async {
-    return await context.read<NavigatorStateBloc>().push(page);
+  static Future<T?> push<T>(BuildContext context, Page<T> page, {PageInfo? pageInfo}) async {
+    return await context.read<NavigatorStateBloc>().push(page, pageInfo: pageInfo);
   }
 
   /// Push new page to the navigator stack with specific key and wait for it to be popped.
-  static Future<T?> pushWithKey<T>(BuildContext context, Page<T> page, PageKey pageKey) async {
-    return await context.read<NavigatorStateBloc>().pushWithKey(page, pageKey);
+  static Future<T?> pushWithKey<T>(BuildContext context, Page<T> page, PageKey pageKey, {PageInfo? pageInfo}) async {
+    return await context.read<NavigatorStateBloc>().pushWithKey(page, pageKey, pageInfo: pageInfo);
   }
 
   /// Pop all current pages and make new stack with the new page.

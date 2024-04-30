@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/ui/splash_screen.dart';
 import 'package:pihka_frontend/utils/immutable_list.dart';
 import 'package:rxdart/rxdart.dart';
@@ -24,8 +25,9 @@ class PageAndChannel {
   final PageKey key;
   final Page<Object?> page;
   final BehaviorSubject<ReturnChannelValue> channel;
+  final PageInfo? pageInfo;
 
-  const PageAndChannel(this.key, this.page, this.channel);
+  const PageAndChannel(this.key, this.page, this.channel, this.pageInfo);
 
   static List<PageAndChannel> splashScreen() {
     return [
@@ -33,6 +35,7 @@ class PageAndChannel {
         PageKey(),
         const MaterialPage(child: SplashScreen()),
         BehaviorSubject.seeded(const WaitingPagePop()),
+        null,
       ),
     ];
   }
@@ -51,3 +54,12 @@ class PagePopDone extends ReturnChannelValue {
 }
 
 class PageKey extends UniqueKey {}
+
+
+sealed class PageInfo {
+  const PageInfo();
+}
+class ConversationPageInfo extends PageInfo {
+  final AccountId accountId;
+  const ConversationPageInfo(this.accountId);
+}

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,13 +10,13 @@ import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui/normal/chat/cache.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_renderer.dart';
 import 'package:pihka_frontend/ui/normal/chat/one_ended_list.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/common_actions.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/menu_actions.dart';
-import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
@@ -28,7 +27,11 @@ var log = Logger("ConversationPage");
 
 void openConversationScreen(BuildContext context, ProfileEntry profile) {
   context.read<ConversationBloc>().add(SetConversationView(profile.uuid, profile.imageUuid, profile.name));
-  MyNavigator.push(context, MaterialPage<void>(child: ConversationPage(profile)));
+  MyNavigator.push(
+    context,
+    MaterialPage<void>(child: ConversationPage(profile)),
+    pageInfo: ConversationPageInfo(profile.uuid),
+  );
 }
 
 class ConversationPage extends StatefulWidget {
