@@ -151,7 +151,7 @@ class MyApp extends StatelessWidget {
           },
         ),
       ),
-      home: const AppNavigator(),
+      home: AppNavigator(),
       scaffoldMessengerKey: globalScaffoldMessengerKey,
       debugShowCheckedModeBanner: false,
     );
@@ -159,28 +159,26 @@ class MyApp extends StatelessWidget {
 }
 
 class AppNavigator extends StatelessWidget {
-  const AppNavigator({super.key});
+  AppNavigator({super.key});
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NavigatorStateBloc, NavigatorStateData>(
-        builder: (context, state) {
-          return PopScope(
-            canPop: state.pages.length <= 1,
-            onPopInvoked: (didPop) {
-              if (didPop) {
-                return;
-              }
-              context.read<NavigatorStateBloc>().add(PopPage(null));
-            },
-            child: createNavigator(context, state),
-          );
-        }
-      );
+      builder: (context, state) {
+        return NavigatorPopHandler(
+          onPop: () {
+            navigatorKey.currentState?.maybePop();
+          },
+          child: createNavigator(context, state),
+        );
+      }
+    );
   }
 
   Widget createNavigator(BuildContext context, NavigatorStateData state) {
     return Navigator(
+      key: navigatorKey,
       pages: state.getPages(),
       onPopPage: (route, result) {
         if (!route.didPop(result)) {
