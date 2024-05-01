@@ -93,3 +93,29 @@ Future<void> handlePayload(
       );
   }
 }
+
+// TODO: Main screen bottom navigation needs to be programmable, so that
+// navigation to likes is possible.
+
+// TODO: Add new screen for showing the same grid as which is on main screen.
+// The new screen is needed to prevent popping user progress unwantedly.
+// Test could GlobalKey be used to display the same grid on the new screen.
+//
+// The conversation screen might also have some issues if it is opened multiple
+// times. Consider moving all iterator state to be screen specific rather
+// than global. If that is done then GlobalKey is not needed.
+
+// TODO: Configure notification channels so that heads up notifications are
+// shown on Android.
+
+// TODO: Notification settings. On Android 8 or later system notification
+// settings should be opened.
+
+// TODO: Fix notification payload handling when app process starts from
+// the notifcation. Consider storing the all payloads in NotificationManager
+// untill the app is ready to handle them.
+
+// TODO: Add notication updates to app logic
+
+// TODO: Fix moderation request status notifications to have correct
+// notification channel in Android settings

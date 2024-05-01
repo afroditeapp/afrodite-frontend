@@ -66,6 +66,8 @@ class NotificationManager extends AppSingleton {
       log.error("Failed to initialize local notifications");
     }
 
+    // TODO: If Android 8 is detected then create notification channels
+
     _osSupportsNotificationPermission = await notificationPermissionShouldBeAsked();
   }
 
