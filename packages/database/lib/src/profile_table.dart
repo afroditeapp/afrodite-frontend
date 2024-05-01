@@ -424,6 +424,10 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     )
       .getSingleOrNull();
 
+    return _rowToProfileEntry(r);
+  }
+
+  ProfileEntry? _rowToProfileEntry(Profile? r) {
     if (r == null) {
       return null;
     }
@@ -459,6 +463,28 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     } else {
       return null;
     }
+  }
+
+  Future<ProfileLocalDbId?> getProfileLocalDbId(AccountId accountId) async {
+    final r = await (select(profiles)
+      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+    )
+      .getSingleOrNull();
+
+    if (r == null) {
+      return null;
+    }
+
+    return ProfileLocalDbId(r.id);
+  }
+
+  Future<ProfileEntry?> getProfileEntryUsingLocalId(ProfileLocalDbId localId) async {
+    final r = await (select(profiles)
+      ..where((t) => t.id.equals(localId.id))
+    )
+      .getSingleOrNull();
+
+    return _rowToProfileEntry(r);
   }
 
   Future<List<ProfileEntry>> convertToProfileEntries(List<AccountId> accounts) async {

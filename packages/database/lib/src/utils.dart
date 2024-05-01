@@ -1,6 +1,7 @@
 
 
 
+import 'package:database/database.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
@@ -63,5 +64,19 @@ class UtcDateTimeConverter extends TypeConverter<UtcDateTime, int> {
   @override
   int toSql(value) {
     return value.toUnixEpochMilliseconds();
+  }
+}
+
+class NotificationSessionIdConverter extends TypeConverter<NotificationSessionId, int> {
+  const NotificationSessionIdConverter();
+
+  @override
+  NotificationSessionId fromSql(fromDb) {
+    return NotificationSessionId(id: fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.id;
   }
 }

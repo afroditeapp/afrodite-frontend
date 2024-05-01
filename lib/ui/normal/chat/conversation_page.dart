@@ -26,17 +26,28 @@ var log = Logger("ConversationPage");
 // is not yet a match? Should there be an error message?
 
 void openConversationScreen(BuildContext context, ProfileEntry profile) {
-  context.read<ConversationBloc>().add(SetConversationView(profile.uuid, profile.imageUuid, profile.name));
-  MyNavigator.push(
-    context,
-    MaterialPage<void>(child: ConversationPage(profile)),
+  openConversationScreenNoBuildContext(
+    context.read<ConversationBloc>(),
+    context.read<NavigatorStateBloc>(),
+    profile,
+  );
+}
+
+Future<void> openConversationScreenNoBuildContext(
+  ConversationBloc conversationBloc,
+  NavigatorStateBloc navigatorStateBloc,
+  ProfileEntry profile,
+) async {
+  await navigatorStateBloc.push(
+    MaterialPage<void>(child: ConversationPage(conversationBloc, profile)),
     pageInfo: ConversationPageInfo(profile.uuid),
   );
 }
 
 class ConversationPage extends StatefulWidget {
+  final ConversationBloc conversationBloc;
   final ProfileEntry profileEntry;
-  const ConversationPage(this.profileEntry, {Key? key}) : super(key: key);
+  const ConversationPage(this.conversationBloc, this.profileEntry, {Key? key}) : super(key: key);
 
   @override
   ConversationPageState createState() => ConversationPageState();
@@ -50,6 +61,11 @@ class ConversationPageState extends State<ConversationPage> {
   @override
   void initState() {
     super.initState();
+    widget.conversationBloc.add(SetConversationView(
+      widget.profileEntry.uuid,
+      widget.profileEntry.imageUuid,
+      widget.profileEntry.name
+    ));
     cache = MessageCache(widget.profileEntry.uuid);
   }
 

@@ -34,6 +34,23 @@
     <string name="generic_text_field_age_hint_text" description="Input field hint text for age">Insert an age between 18–99</string>
     <string name="generic_search_settings_looking_for_all_genders_text" desctiption="Search settings radio button option for men and women who are looking all genders">All</string>
 
+    <!-- Notification categories -->
+    <string name="notification_category_messages" description="Title for notification category messages">Messages</string>
+    <string name="notification_category_likes" description="Title for notification category likes">Likes</string>
+    <string name="notification_category_moderation_request_status" description="Title for notification category image moderation status">Image moderation status</string>
+
+    <!-- Notification like received -->
+    <string name="notification_like_received_single" description="Title for like received notification when single like is received">Like received</string>
+    <string name="notification_like_received_multiple" description="Title for like received notification when multiple likes is received">Likes received</string>
+
+    <!-- Notification moderation request status -->
+    <string name="notification_moderation_request_status_accepted" description="Title for moderation request status notification when status is accepted">Image moderation accepted</string>
+    <string name="notification_moderation_request_status_rejected" description="Title for moderation request status notification when status is rejected">Image moderation rejected</string>
+
+    <!-- Notification message received -->
+    <string name="notification_message_received_single" description="Title for message received when single message is received">%s sent a message</string>
+    <string name="notification_message_received_multiple" description="Title for message received when multiple messages are received">%s sent messages</string>
+
     <!-- App bar actions -->
     <string name="app_bar_action_about" description="Title for app bar action which opens about dialog">About</string>
 

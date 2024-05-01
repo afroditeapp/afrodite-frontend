@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/data/notification_manager.dart';
+import 'package:pihka_frontend/data/general/notification/state/moderation_request_status.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/ui/normal/chat/debug_page.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
@@ -31,7 +31,7 @@ class DebugSettingsPage extends StatelessWidget {
     ));
 
     settings.add(Setting.createSetting(Icons.notification_add, "Test notification", () =>
-      NotificationManager.getInstance().sendNotification()
+      NotificationModerationRequestStatus.getInstance().show(ModerationRequestStateSimple.accepted)
     ));
 
     return SingleChildScrollView(

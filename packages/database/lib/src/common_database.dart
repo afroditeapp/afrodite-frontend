@@ -1,5 +1,7 @@
 
 
+import 'package:async/async.dart';
+import 'package:database/database.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 import 'utils.dart';
@@ -20,6 +22,10 @@ class Common extends Table {
   TextColumn get serverUrlChat => text().nullable()();
   TextColumn get uuidAccountId => text().map(const NullAwareTypeConverter.wrap(AccountIdConverter())).nullable()();
   BlobColumn get imageEncryptionKey => blob().nullable()();
+
+  /// Notification session ID prevents running notification payloads related to
+  /// other accounts.
+  IntColumn get notificationSessionId => integer().map(const NullAwareTypeConverter.wrap(NotificationSessionIdConverter())).nullable()();
 
   /// If true don't show notification permission asking dialog when
   /// app main view (bottom navigation is visible) is opened.
@@ -72,12 +78,23 @@ class CommonDatabase extends _$CommonDatabase {
   }
 
   Future<void> updateAccountIdUseOnlyFromDatabaseManager(AccountId? id) async {
-    await into(common).insertOnConflictUpdate(
-      CommonCompanion.insert(
-        id: COMMON_DB_DATA_ID,
-        uuidAccountId: Value(id),
-      ),
-    );
+    await transaction(() async {
+      Value<NotificationSessionId?> updateNotificationSessionValueIfNeeded = const Value.absent();
+      final currentAccountId = await watchAccountId().firstOrNull;
+      if (currentAccountId != id) {
+        final currentNotificationSessionId = await watchNotificationSessionId().firstOrNull;
+        final nextId = (currentNotificationSessionId?.id ?? 0) + 1;
+        updateNotificationSessionValueIfNeeded = Value(NotificationSessionId(id: nextId));
+      }
+
+      await into(common).insertOnConflictUpdate(
+        CommonCompanion.insert(
+          id: COMMON_DB_DATA_ID,
+          uuidAccountId: Value(id),
+          notificationSessionId: updateNotificationSessionValueIfNeeded,
+        ),
+      );
+    });
   }
 
   Future<void> updateImageEncryptionKey(Uint8List key) async {
@@ -127,6 +144,9 @@ class CommonDatabase extends _$CommonDatabase {
 
   Stream<bool?> watchNotificationPermissionAsked() =>
     watchColumn((r) => r.notificationPermissionAsked);
+
+  Stream<NotificationSessionId?> watchNotificationSessionId() =>
+    watchColumn((r) => r.notificationSessionId);
 
   SimpleSelectStatement<$CommonTable, CommonData> _selectFromDataId() {
     return select(common)

@@ -13,7 +13,6 @@ class SetNotificationPermissionAskedValue extends NotificationPermissionEvent {
 class DenyPermissions extends NotificationPermissionEvent {}
 class AcceptPermissions extends NotificationPermissionEvent {}
 
-/// Get current main state of the account/app
 class NotificationPermissionBloc extends Bloc<NotificationPermissionEvent, NotificationPermissionAsked> {
   NotificationPermissionBloc() : super(NotificationPermissionAsked(null)) {
     on<SetNotificationPermissionAskedValue>((data, emit) =>

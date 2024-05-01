@@ -17,6 +17,7 @@ import "package:pihka_frontend/ui/normal/likes.dart";
 import "package:pihka_frontend/ui/normal/profiles.dart";
 import "package:pihka_frontend/ui/normal/settings.dart";
 import "package:pihka_frontend/ui/normal/settings/my_profile.dart";
+import "package:pihka_frontend/ui/utils/notification_payload_handler.dart";
 import "package:pihka_frontend/ui_utils/profile_thumbnail_image.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
 
@@ -67,6 +68,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
             )
           ),
           const NotificationPermissionDialogOpener(),
+          const NotificationPayloadHandler(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

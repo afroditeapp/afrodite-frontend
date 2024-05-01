@@ -625,6 +625,52 @@
   "@new_moderation_request_screen_title": {
     "description": "Title for new moderation request screen"
   },
+  "notification_category_likes": "Likes",
+  "@notification_category_likes": {
+    "description": "Title for notification category likes"
+  },
+  "notification_category_messages": "Messages",
+  "@notification_category_messages": {
+    "description": "Title for notification category messages"
+  },
+  "notification_category_moderation_request_status": "Image moderation status",
+  "@notification_category_moderation_request_status": {
+    "description": "Title for notification category image moderation status"
+  },
+  "notification_like_received_multiple": "Likes received",
+  "@notification_like_received_multiple": {
+    "description": "Title for like received notification when multiple likes is received"
+  },
+  "notification_like_received_single": "Like received",
+  "@notification_like_received_single": {
+    "description": "Title for like received notification when single like is received"
+  },
+  "notification_message_received_multiple": "{p0} sent messages",
+  "@notification_message_received_multiple": {
+    "description": "Title for message received when multiple messages are received",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "notification_message_received_single": "{p0} sent a message",
+  "@notification_message_received_single": {
+    "description": "Title for message received when single message is received",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "notification_moderation_request_status_accepted": "Image moderation accepted",
+  "@notification_moderation_request_status_accepted": {
+    "description": "Title for moderation request status notification when status is accepted"
+  },
+  "notification_moderation_request_status_rejected": "Image moderation rejected",
+  "@notification_moderation_request_status_rejected": {
+    "description": "Title for moderation request status notification when status is rejected"
+  },
   "notification_permission_dialog_description": "Allow notifications to receive notifications for example from new likes and messages.",
   "@notification_permission_dialog_description": {
     "description": "Description text for notification permission dialog"

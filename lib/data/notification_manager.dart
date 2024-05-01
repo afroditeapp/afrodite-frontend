@@ -3,10 +3,15 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logging/logging.dart';
+import 'package:pihka_frontend/data/general/notification/utils/notification_category.dart';
+import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
+import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:rxdart/rxdart.dart';
 
 var log = Logger("NotificationManager");
 
+const _ANDROID_ICON_RESOURCE_NAME = "ic_notification";
 // TODO(prod): Check local notifications README
 
 class NotificationManager extends AppSingleton {
@@ -16,20 +21,23 @@ class NotificationManager extends AppSingleton {
     return _instance;
   }
 
-  bool initDone = false;
+  bool _initDone = false;
 
-  final pluginHandle = FlutterLocalNotificationsPlugin();
-  late final bool osSupportsNotificationPermission;
+  final _pluginHandle = FlutterLocalNotificationsPlugin();
+  late final bool _osSupportsNotificationPermission;
+
+  bool get osSupportsNotificationPermission => _osSupportsNotificationPermission;
+  PublishSubject<NotificationPayload> onReceivedPayload = PublishSubject();
 
   @override
   Future<void> init() async {
-    if (initDone) {
+    if (_initDone) {
       return;
     }
-    initDone = true;
+    _initDone = true;
 
     const android = AndroidInitializationSettings(
-      "ic_notification",
+      _ANDROID_ICON_RESOURCE_NAME
     );
     // TODO: The iOS permission settings might need to be set to false
     const darwin = DarwinInitializationSettings();
@@ -37,10 +45,18 @@ class NotificationManager extends AppSingleton {
       android: android,
       iOS: darwin,
     );
-    final result = await pluginHandle.initialize(
+    final result = await _pluginHandle.initialize(
       settings,
-      onDidReceiveNotificationResponse: (payload) {
-        log.info("Selected notification: $payload");
+      onDidReceiveNotificationResponse: (response) {
+        final payload = response.payload;
+        if (payload == null) {
+          return;
+        }
+        final parsedPayload = NotificationPayload.parse(payload);
+        if (parsedPayload == null) {
+          return;
+        }
+        onReceivedPayload.add(parsedPayload);
       }
     );
 
@@ -50,14 +66,14 @@ class NotificationManager extends AppSingleton {
       log.error("Failed to initialize local notifications");
     }
 
-    osSupportsNotificationPermission = await notificationPermissionShouldBeAsked();
+    _osSupportsNotificationPermission = await notificationPermissionShouldBeAsked();
   }
 
   Future<void> askPermissions() async {
     if (Platform.isAndroid) {
-      await pluginHandle.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
+      await _pluginHandle.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
     } else if (Platform.isIOS) {
-      await pluginHandle.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
+      await _pluginHandle.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
         alert: true,
         badge: true,
         sound: true,
@@ -83,16 +99,28 @@ class NotificationManager extends AppSingleton {
     }
   }
 
-  Future<void> sendNotification() async {
-    const details = AndroidNotificationDetails("channel-id", "channel-name");
-    await pluginHandle.show(
-      0,
-      "Title",
-      "Body",
+  Future<void> sendNotification(
+    {
+      required NotificationId id,
+      required String title,
+      String? body,
+      required NotificationCategory category,
+      NotificationPayload? notificationPayload,
+    }
+  ) async {
+    final androidDetails = AndroidNotificationDetails(category.id, category.title);
+    await _pluginHandle.show(
+      id.value,
+      title,
+      body,
       NotificationDetails(
-        android: details,
+        android: androidDetails,
       ),
-      payload: "my-test-payload",
+      payload: notificationPayload?.toJson(),
     );
+  }
+
+  Future<void> hideNotification(NotificationId id) async {
+    await _pluginHandle.cancel(id.value);
   }
 }

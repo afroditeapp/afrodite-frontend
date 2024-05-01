@@ -22,6 +22,7 @@ import 'package:pihka_frontend/logic/account/account_details.dart';
 import 'package:pihka_frontend/logic/account/demo_account.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
+import 'package:pihka_frontend/logic/app/notification_payload_handler.dart';
 import 'package:pihka_frontend/logic/app/notification_permission.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/logic/media/content.dart';
@@ -93,6 +94,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
         BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
         BlocProvider(create: (_) => NotificationPermissionBloc()),
+        BlocProvider(create: (_) => NotificationPayloadHandlerBloc()),
 
         // Main UI
         BlocProvider(create: (_) => ViewProfileBloc()),
@@ -153,10 +155,22 @@ class MyApp extends StatelessWidget {
           },
         ),
       ),
-      home: AppNavigator(),
+      home: GlobalLocalizationsInitializer(child: AppNavigator()),
       scaffoldMessengerKey: globalScaffoldMessengerKey,
       debugShowCheckedModeBanner: false,
     );
+  }
+}
+
+class GlobalLocalizationsInitializer extends StatelessWidget {
+  final Widget child;
+  const GlobalLocalizationsInitializer({required this.child, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Init correct localizations to R class.
+    final _ = context.strings.app_name;
+    return child;
   }
 }
 
