@@ -8,6 +8,8 @@ import 'package:pihka_frontend/data/general/notification/utils/notification_payl
 import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/utils.dart';
 
 class NotificationLikeReceived extends AppSingletonNoInit {
@@ -24,7 +26,10 @@ class NotificationLikeReceived extends AppSingletonNoInit {
 
   Future<void> incrementReceivedLikesCount() async {
     _receivedCount++;
-    await _updateNotification();
+
+    if (!isLikesUiOpen()) {
+      await _updateNotification();
+    }
   }
 
   Future<void> resetReceivedLikesCount() async {
@@ -58,5 +63,10 @@ class NotificationLikeReceived extends AppSingletonNoInit {
         sessionId: sessionId,
       ),
     );
+  }
+
+  bool isLikesUiOpen() {
+    return NavigationStateBlocInstance.getInstance().bloc.state.pages.length == 1 &&
+      BottomNavigationStateBlocInstance.getInstance().bloc.state.screen == BottomNavigationScreenId.likes;
   }
 }

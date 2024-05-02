@@ -89,6 +89,7 @@ Future<void> main() async {
       providers: [
         // Navigation
         BlocProvider.value(value: NavigationStateBlocInstance.getInstance().bloc),
+        BlocProvider.value(value: BottomNavigationStateBlocInstance.getInstance().bloc),
 
         // General
         BlocProvider(create: (_) => MainStateBloc()),
@@ -99,7 +100,6 @@ Future<void> main() async {
         BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
         BlocProvider(create: (_) => NotificationPermissionBloc()),
         BlocProvider(create: (_) => NotificationPayloadHandlerBloc()),
-        BlocProvider(create: (_) => BottomNavigationStateBloc()),
 
         // Main UI
         BlocProvider(create: (_) => ViewProfileBloc()),

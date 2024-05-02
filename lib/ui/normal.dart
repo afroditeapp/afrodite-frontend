@@ -39,6 +39,14 @@ class NormalStateContent extends StatefulWidget {
 }
 
 class _NormalStateContentState extends State<NormalStateContent> {
+
+  @override
+  void initState() {
+    super.initState();
+    BottomNavigationStateBlocInstance.getInstance().bloc
+      .add(ChangeScreen(BottomNavigationScreenId.profiles));
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavigationStateBloc, BottomNavigationStateData>(
