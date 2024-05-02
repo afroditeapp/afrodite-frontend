@@ -60,6 +60,13 @@ class DebugSettingsPage extends StatelessWidget {
       await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1);
     }));
 
+    settings.add(Setting.createSetting(Icons.notification_add, "Notification: New message (chats 1-5)", () async {
+      final List<AccountId> matchList = await DatabaseManager.getInstance().profileData((db) => db.getMatchesList(0, 5)).ok() ?? [];
+      for (final match in matchList) {
+        await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1);
+      }
+    }));
+
     return SingleChildScrollView(
       child: Column(
         children: [

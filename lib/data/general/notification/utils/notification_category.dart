@@ -3,7 +3,8 @@ import 'package:pihka_frontend/localizations.dart';
 
 sealed class NotificationCategory {
   final String id;
-  const NotificationCategory({required this.id});
+  final bool headsUpNotification;
+  const NotificationCategory({required this.id, this.headsUpNotification = false});
 
   String get title;
 
@@ -17,6 +18,7 @@ sealed class NotificationCategory {
 class NotificationCategoryMessages extends NotificationCategory {
   const NotificationCategoryMessages() : super(
     id: "notification_category_messages",
+    headsUpNotification: true,
   );
 
   @override
@@ -26,6 +28,7 @@ class NotificationCategoryMessages extends NotificationCategory {
 class NotificationCategoryLikes extends NotificationCategory {
   const NotificationCategoryLikes() : super(
     id: "notification_category_likes",
+    headsUpNotification: true,
   );
 
   @override
@@ -35,6 +38,7 @@ class NotificationCategoryLikes extends NotificationCategory {
 class NotificationCategoryModerationRequestStatus extends NotificationCategory {
   const NotificationCategoryModerationRequestStatus() : super(
     id: "notification_category_moderation_request_status",
+    headsUpNotification: true,
   );
 
   @override

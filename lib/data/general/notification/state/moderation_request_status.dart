@@ -48,7 +48,7 @@ class NotificationModerationRequestStatus extends AppSingletonNoInit {
     await notifications.sendNotification(
       id: notificationId,
       title: title,
-      category: const NotificationCategoryLikes(),
+      category: const NotificationCategoryModerationRequestStatus(),
       notificationPayload: NavigateToModerationRequestStatus(sessionId: sessionId),
     );
   }

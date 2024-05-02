@@ -11,6 +11,8 @@ import 'package:rxdart/rxdart.dart';
 
 var log = Logger("NotificationManager");
 
+const _ANDROID_13_API_LEVEL = 33;
+const _ANDROID_8_API_LEVEL = 26;
 const _ANDROID_ICON_RESOURCE_NAME = "ic_notification";
 // TODO(prod): Check local notifications README
 
@@ -66,9 +68,9 @@ class NotificationManager extends AppSingleton {
       log.error("Failed to initialize local notifications");
     }
 
-    // TODO: If Android 8 is detected then create notification channels
+    _osSupportsNotificationPermission = await _notificationPermissionShouldBeAsked();
 
-    _osSupportsNotificationPermission = await notificationPermissionShouldBeAsked();
+    await _createAndroidNotificationChannelsIfNeeded();
   }
 
   Future<void> askPermissions() async {
@@ -85,11 +87,11 @@ class NotificationManager extends AppSingleton {
     }
   }
 
-  Future<bool> notificationPermissionShouldBeAsked() async {
+  Future<bool> _notificationPermissionShouldBeAsked() async {
     if (Platform.isAndroid) {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      if (androidInfo.version.sdkInt >= 33) {
+      if (androidInfo.version.sdkInt >= _ANDROID_13_API_LEVEL) {
         return true;
       } else {
         return false;
@@ -110,7 +112,23 @@ class NotificationManager extends AppSingleton {
       NotificationPayload? notificationPayload,
     }
   ) async {
-    final androidDetails = AndroidNotificationDetails(category.id, category.title);
+    final Priority priority;
+    final Importance importance;
+    if (category.headsUpNotification) {
+      priority = Priority.high;
+      importance = Importance.high;
+    } else {
+      priority = Priority.defaultPriority;
+      importance = Importance.defaultImportance;
+    }
+
+    final androidDetails = AndroidNotificationDetails(
+      category.id,
+      category.title,
+      priority: priority,
+      importance: importance,
+      enableLights: true,
+    );
     await _pluginHandle.show(
       id.value,
       title,
@@ -124,5 +142,38 @@ class NotificationManager extends AppSingleton {
 
   Future<void> hideNotification(NotificationId id) async {
     await _pluginHandle.cancel(id.value);
+  }
+
+  Future<void> _createAndroidNotificationChannelsIfNeeded() async {
+    if (!Platform.isAndroid) {
+      return;
+    }
+
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    if (androidInfo.version.sdkInt < _ANDROID_8_API_LEVEL) {
+      // Notification channels are not supported
+      return;
+    }
+
+    final handle = _pluginHandle.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+
+    for (final category in NotificationCategory.all) {
+      final Importance importance;
+      if (category.headsUpNotification) {
+        importance = Importance.high;
+      } else {
+        importance = Importance.defaultImportance;
+      }
+
+      final notificationChannel = AndroidNotificationChannel(
+        category.id,
+        category.title,
+        importance: importance,
+        enableLights: true,
+      );
+
+      await handle?.createNotificationChannel(notificationChannel);
+    }
   }
 }

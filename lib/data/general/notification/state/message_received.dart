@@ -60,7 +60,7 @@ class NotificationMessageReceived extends AppSingletonNoInit {
     await notifications.sendNotification(
       id: state.id,
       title: title,
-      category: const NotificationCategoryLikes(),
+      category: const NotificationCategoryMessages(),
       notificationPayload: NavigateToConversation(
         profileLocalDbId: profileLocalId,
         sessionId: sessionId,
