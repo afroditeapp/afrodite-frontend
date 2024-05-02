@@ -69,7 +69,7 @@ class DynamicNotificationIdMap<K, S> {
   }
 
   int nextAvailableNotificationId() {
-    final currentNotificationIds = currentStates.values.map((e) => e.id).toSet();
+    final Set<int> currentNotificationIds = currentStates.values.map((e) => e.id.value).toSet();
     int nextId = range.max; // fallback to last ID
     for (int i = range.min; i <= range.max; i++) {
       if (!currentNotificationIds.contains(i)) {

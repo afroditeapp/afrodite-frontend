@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/app/notification_payload_handler.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
@@ -41,6 +42,7 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
 
   void sendPayloadHandlingCallback(BuildContext context) {
     final navigatorStateBloc = context.read<NavigatorStateBloc>();
+    final bottomNavigatorStateBloc = context.read<BottomNavigationStateBloc>();
     final currentModerationRequestBloc = context.read<CurrentModerationRequestBloc>();
     final conversationBloc = context.read<ConversationBloc>();
 
@@ -49,6 +51,7 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
         await handlePayload(
           payload,
           navigatorStateBloc,
+          bottomNavigatorStateBloc,
           currentModerationRequestBloc,
           conversationBloc,
         );
@@ -60,6 +63,7 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
 Future<void> handlePayload(
   NotificationPayload payload,
   NavigatorStateBloc navigatorStateBloc,
+  BottomNavigationStateBloc bottomNavigationStateBloc,
   CurrentModerationRequestBloc currentModerationRequestBloc,
   ConversationBloc conversationBloc,
 ) async {
@@ -82,7 +86,11 @@ Future<void> handlePayload(
         );
       }
     case NavigateToLikes():
-      ();
+      if (navigatorStateBloc.state.pages.length == 1) {
+        bottomNavigationStateBloc.add(ChangeScreen(BottomNavigationScreenId.likes));
+      } else {
+        // TODO: Open new screen for likes
+      }
     case NavigateToModerationRequestStatus():
       await navigatorStateBloc.push(
         MaterialPage<void>(
@@ -94,9 +102,6 @@ Future<void> handlePayload(
   }
 }
 
-// TODO: Main screen bottom navigation needs to be programmable, so that
-// navigation to likes is possible.
-
 // TODO: Add new screen for showing the same grid as which is on main screen.
 // The new screen is needed to prevent popping user progress unwantedly.
 // Test could GlobalKey be used to display the same grid on the new screen.
@@ -104,6 +109,15 @@ Future<void> handlePayload(
 // The conversation screen might also have some issues if it is opened multiple
 // times. Consider moving all iterator state to be screen specific rather
 // than global. If that is done then GlobalKey is not needed.
+//
+// The likes implementation will be changed to server side based iterator
+// so perhaps GlobalKey is the current option unless server API can be made
+// to not have reset command. So the the next page API should have the iterator
+// origin point as a parameter. Perhaps AccountId could be used for that?
+// Actually that is not possible as for example that specific AccountId can be
+// removed from likes. Perhaps use timestamp instead? Then the likeing time
+// is exposed from API. Autoincrementing like ID perhaps could be used if
+// those are unique.
 
 // TODO: Configure notification channels so that heads up notifications are
 // shown on Android.

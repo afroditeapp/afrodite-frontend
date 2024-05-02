@@ -21,6 +21,7 @@ import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/account_details.dart';
 import 'package:pihka_frontend/logic/account/demo_account.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
+import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/app/notification_payload_handler.dart';
 import 'package:pihka_frontend/logic/app/notification_permission.dart';
@@ -60,6 +61,9 @@ final log = Logger("main");
 
 // TODO: what blocs store state that needs to be cleared on logout?
 // Initial setup?
+// Change BlocProviders containing account specific data to root of normal
+// state screen. This way those will be cleared on logout and other
+// state changes.
 
 Future<void> main() async {
   // TODO(prod): change log level before release?
@@ -95,6 +99,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
         BlocProvider(create: (_) => NotificationPermissionBloc()),
         BlocProvider(create: (_) => NotificationPayloadHandlerBloc()),
+        BlocProvider(create: (_) => BottomNavigationStateBloc()),
 
         // Main UI
         BlocProvider(create: (_) => ViewProfileBloc()),

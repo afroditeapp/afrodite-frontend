@@ -5,6 +5,7 @@ import "package:pihka_frontend/data/image_cache.dart";
 import "package:pihka_frontend/data/notification_manager.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/account.dart";
+import "package:pihka_frontend/logic/app/bottom_navigation_state.dart";
 import "package:pihka_frontend/logic/app/navigator_state.dart";
 
 import "package:pihka_frontend/logic/app/notification_permission.dart";
@@ -38,10 +39,16 @@ class NormalStateContent extends StatefulWidget {
 }
 
 class _NormalStateContentState extends State<NormalStateContent> {
-  int selectedView = 0;
-
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<BottomNavigationStateBloc, BottomNavigationStateData>(
+      builder: (context, state) {
+        return buildScreen(context, state.screen.screenIndex);
+      }
+    );
+  }
+
+  Widget buildScreen(BuildContext context, int selectedView) {
     const views = [
       ProfileView(),
       LikeView(),
@@ -82,12 +89,25 @@ class _NormalStateContentState extends State<NormalStateContent> {
         unselectedItemColor: Colors.black54,
         currentIndex: selectedView,
         onTap: (value) {
-          setState(() {
-            selectedView = value;
-          });
+          context.read<BottomNavigationStateBloc>().add(ChangeScreen(numberToScreen(value)));
         },
       ),
     );
+  }
+
+  BottomNavigationScreenId numberToScreen(int value) {
+    switch (value) {
+      case 0:
+        return BottomNavigationScreenId.profiles;
+      case 1:
+        return BottomNavigationScreenId.likes;
+      case 2:
+        return BottomNavigationScreenId.chats;
+      case 3:
+        return BottomNavigationScreenId.settings;
+      default:
+        throw ArgumentError("Unknown screen number");
+    }
   }
 
   Widget primaryImageButton() {
