@@ -679,6 +679,10 @@
   "@notification_permission_dialog_title": {
     "description": "Title for notification permission dialog"
   },
+  "notification_session_expired_error": "Notification action ignored because of expired notification session ID",
+  "@notification_session_expired_error": {
+    "description": "Snackbar text for notifying that notification action was ignored because of expired notification session ID"
+  },
   "privacy_settings_screen_profile_visiblity_pending_public_description": "Your profile will be visible in profile grid once your images are moderated as accepted",
   "@privacy_settings_screen_profile_visiblity_pending_public_description": {
     "description": "Description for pending public profile visibility"

@@ -5,6 +5,8 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/chat/message_database_iterator.dart';
+import 'package:pihka_frontend/data/general/notification/state/like_received.dart';
+import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile/account_id_database_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
@@ -231,10 +233,19 @@ class ChatRepository extends DataRepository {
     receivedLikesIterator.reset();
 
   Future<void> receivedLikesRefresh() async {
+    // TODO(prod): Add event to API which has info that there is new like
+    // available.
+    final currentReceivedLikes = await db.profileData((db) => db.getReceivedLikesList(0, 1000000000)).ok() ?? [];
+
     final receivedLikes = await _api.chat((api) => api.getReceivedLikes()).ok();
     if (receivedLikes != null) {
       await db.profileAction((db) => db.setReceivedLikeStatusList(receivedLikes));
       ProfileRepository.getInstance().sendProfileChange(LikesChanged());
+
+      final newList = receivedLikes.profiles;
+      if (newList.length > currentReceivedLikes.length) {
+        await NotificationLikeReceived.getInstance().incrementReceivedLikesCount();
+      }
     }
   }
 
@@ -278,6 +289,9 @@ class ChatRepository extends DataRepository {
         if (r.isOk()) {
           toBeDeleted.add(message.id);
           ProfileRepository.getInstance().sendProfileChange(ConversationChanged(message.id.accountIdSender, ConversationChangeType.messageReceived));
+          // TODO(prod): Update with correct message count once there is
+          // count of not read messages in the database.
+          await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.id.accountIdSender, 1);
         }
       }
 

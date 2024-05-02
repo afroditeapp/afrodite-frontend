@@ -1,12 +1,14 @@
 
 import 'dart:async';
 
+import 'package:async/async.dart' show StreamExtensions;
 import 'package:camera/camera.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/account/initial_setup.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
+import 'package:pihka_frontend/data/general/notification/state/moderation_request_status.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
@@ -74,8 +76,17 @@ class AccountRepository extends DataRepository {
     await db.accountAction((db) => db.updateCapabilities(capabilities));
   }
 
-  Future<void> _saveProfileVisibility(ProfileVisibility profileVisibility) async {
-    await db.accountAction((db) => db.daoProfileSettings.updateProfileVisibility(profileVisibility));
+  Future<void> _saveProfileVisibility(ProfileVisibility newProfileVisibility) async {
+    // TODO(prod): Remove notification logic once there is proper events for content
+    // moderation request status updates.
+    final currentProfileVisibility = await profileVisibility.firstOrNull;
+    if ((currentProfileVisibility == ProfileVisibility.pendingPrivate &&
+      newProfileVisibility == ProfileVisibility.private) ||
+        (currentProfileVisibility == ProfileVisibility.pendingPublic &&
+      newProfileVisibility == ProfileVisibility.public)) {
+        await NotificationModerationRequestStatus.getInstance().show(ModerationRequestStateSimple.accepted);
+    }
+    await db.accountAction((db) => db.daoProfileSettings.updateProfileVisibility(newProfileVisibility));
   }
 
   Future<void> _saveAccountSyncVersion(AccountSyncVersion version) async {

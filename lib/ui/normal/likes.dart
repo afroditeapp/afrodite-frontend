@@ -12,7 +12,7 @@ import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/ui_utils/image.dart';
+import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 
@@ -116,6 +116,7 @@ class _LikeViewState extends State<LikeView> {
   Widget grid(BuildContext context) {
     return PagedGridView(
       pagingController: _pagingController!,
+      padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
       builderDelegate: PagedChildBuilderDelegate<LikeViewEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
@@ -158,8 +159,8 @@ class _LikeViewState extends State<LikeView> {
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 4,
-        mainAxisSpacing: 4,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
       ),
     );
   }

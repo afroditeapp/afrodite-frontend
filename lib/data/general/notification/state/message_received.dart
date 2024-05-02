@@ -8,6 +8,8 @@ import 'package:pihka_frontend/data/general/notification/utils/notification_payl
 import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
@@ -26,7 +28,7 @@ class NotificationMessageReceived extends AppSingletonNoInit {
   );
 
   Future<void> updateMessageReceivedCount(AccountId accountId, int count) async {
-    if (count <= 0) {
+    if (count <= 0 || isConversationUiOpen(accountId)) {
       final currentState = _state.removeState(accountId);
       if (currentState != null) {
         await notifications.hideNotification(currentState.id);
@@ -66,6 +68,12 @@ class NotificationMessageReceived extends AppSingletonNoInit {
         sessionId: sessionId,
       ),
     );
+  }
+
+  bool isConversationUiOpen(AccountId accountId) {
+    final lastPage = NavigationStateBlocInstance.getInstance().bloc.state.pages.lastOrNull;
+    final info = lastPage?.pageInfo;
+    return info is ConversationPageInfo && info.accountId == accountId;
   }
 }
 

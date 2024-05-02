@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/app/notification_payload_handler.dart';
@@ -13,6 +14,7 @@ import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/notification_payload_handler.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
+import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 final log = Logger("NotificationPayloadHandler");
@@ -72,6 +74,7 @@ Future<void> handlePayload(
   final notificationSessionId = await db.commonStreamSingle((db) => db.watchNotificationSessionId());
   if (notificationSessionId?.id != payload.sessionId.id) {
     log.warning("Notification payload session ID does not match current session ID");
+    showSnackBar(R.strings.notification_session_expired_error);
     return;
   }
 
@@ -119,17 +122,9 @@ Future<void> handlePayload(
 // is exposed from API. Autoincrementing like ID perhaps could be used if
 // those are unique.
 
-// TODO: Configure notification channels so that heads up notifications are
-// shown on Android.
-
 // TODO: Notification settings. On Android 8 or later system notification
 // settings should be opened.
 
 // TODO: Fix notification payload handling when app process starts from
 // the notifcation. Consider storing the all payloads in NotificationManager
 // untill the app is ready to handle them.
-
-// TODO: Add notication updates to app logic
-
-// TODO: Fix moderation request status notifications to have correct
-// notification channel in Android settings
