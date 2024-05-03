@@ -128,5 +128,3 @@ Future<void> handlePayload(
 // TODO: Fix notification payload handling when app process starts from
 // the notifcation. Consider storing the all payloads in NotificationManager
 // untill the app is ready to handle them.
-
-// TODO: App foreground/background state detection for notifications

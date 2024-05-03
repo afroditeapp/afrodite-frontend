@@ -7,8 +7,8 @@ import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
 
-abstract class LazyDatabaseProvider {
-  LazyDatabase getLazyDatabase();
+abstract class QueryExcecutorProvider {
+  QueryExecutor getQueryExcecutor();
 }
 
 class AccountIdConverter extends TypeConverter<AccountId, String> {

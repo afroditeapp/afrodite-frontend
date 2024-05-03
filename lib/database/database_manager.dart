@@ -32,8 +32,9 @@ class DatabaseManager extends AppSingleton {
   }
 
   bool initDone = false;
+  late final LazyDatabase commonLazyDatabase;
   late final CommonDatabase commonDatabase;
-  final accountDatabases = <AccountId, AccountDatabase>{};
+  final accountDatabases = <AccountId, (LazyDatabase, AccountDatabase)>{};
 
   @override
   Future<void> init() async {
@@ -47,7 +48,8 @@ class DatabaseManager extends AppSingleton {
     // in: https://github.com/simolus3/drift/discussions/2596
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
 
-    commonDatabase = CommonDatabase(CommonDbFile(doInit: true));
+    commonLazyDatabase = openDbConnection(CommonDbFile(), doSqlchipherInit: true);
+    commonDatabase = CommonDatabase(DbProvider(commonLazyDatabase));
     // Make sure that the database libraries are initialized
     await commonStream((db) => db.watchDemoAccountUserId()).first;
   }
@@ -211,10 +213,11 @@ class DatabaseManager extends AppSingleton {
   AccountDatabase _getAccountDatabaseUsingAccount(AccountId accountId) {
     final db = accountDatabases[accountId];
     if (db != null) {
-      return db;
+      return db.$2;
     } else {
-      final newDb = AccountDatabase(AccountDbFile(accountId.accountId));
-      accountDatabases[accountId] = newDb;
+      final lazyDb = openDbConnection(AccountDbFile(accountId.accountId));
+      final newDb = AccountDatabase(DbProvider(lazyDb));
+      accountDatabases[accountId] = (lazyDb, newDb);
       return newDb;
     }
   }
@@ -222,6 +225,16 @@ class DatabaseManager extends AppSingleton {
   Future<Result<void, AppError>> setAccountId(AccountId accountId) =>
     commonAction((db) => db.updateAccountIdUseOnlyFromDatabaseManager(accountId))
       .andThen((_) => accountAction((db) => db.setAccountIdIfNull(accountId)));
+
+  // TODO: Currently there is no location where this could be handled
+  Future<void> dispose() async {
+    await commonDatabase.close();
+    await commonLazyDatabase.close();
+    for (final db in accountDatabases.values) {
+      await db.$2.close();
+      await db.$1.close();
+    }
+  }
 }
 
 Stream<T?> oneValueAndWaitForever<T>(T? value) async* {

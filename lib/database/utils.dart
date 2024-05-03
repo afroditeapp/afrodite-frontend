@@ -20,22 +20,15 @@ final log = Logger("DatabaseUtils");
 sealed class DbFile {
   Future<File> getFile();
 }
-class CommonDbFile extends DbFile implements LazyDatabaseProvider {
-  final bool doInit;
-  CommonDbFile({this.doInit = false});
-
+class CommonDbFile extends DbFile {
   @override
   Future<File> getFile() async {
     final dbLocation = await DbDirUtils.commonDbPath();
     return File(dbLocation);
   }
-
-  @override
-  LazyDatabase getLazyDatabase() {
-    return openDbConnection(this, doInit: doInit);
-  }
 }
-class AccountDbFile extends DbFile implements LazyDatabaseProvider {
+
+class AccountDbFile extends DbFile {
   final String account;
   AccountDbFile(this.account);
 
@@ -44,14 +37,19 @@ class AccountDbFile extends DbFile implements LazyDatabaseProvider {
     final dbLocation = await DbDirUtils.accountDbPath(account);
     return File(dbLocation);
   }
+}
+
+class DbProvider implements QueryExcecutorProvider {
+  final LazyDatabase db;
+  DbProvider(this.db);
 
   @override
-  LazyDatabase getLazyDatabase() {
-    return openDbConnection(this);
+  LazyDatabase getQueryExcecutor() {
+    return db;
   }
 }
 
-LazyDatabase openDbConnection(DbFile db, {bool doInit = false}) {
+LazyDatabase openDbConnection(DbFile db, {bool doSqlchipherInit = false}) {
   return LazyDatabase(() async {
     final encryptionKey = await SecureStorageManager.getInstance().getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir();
     final dbFile = await db.getFile();
@@ -60,14 +58,19 @@ LazyDatabase openDbConnection(DbFile db, {bool doInit = false}) {
       dbFile,
       isolateSetup: () async {
         BackgroundIsolateBinaryMessenger.ensureInitialized(isolateToken);
-        if (doInit) {
+        if (doSqlchipherInit) {
+          // Sqlchipher related init needs to be done only once per app process.
+          // It seems to be possible that this runs multiple times as the same
+          // process can have main isolate started several times. That happens
+          // with Android back button. That behavior is however currently prevented
+          // by calling exit in AppLifecycleHandler class.
           log.info("Initializing database library");
           await applyWorkaroundToOpenSqlCipherOnOldAndroidVersions();
           open.overrideFor(OperatingSystem.android, openCipherOnAndroid);
 
           sqlite3.tempDirectory = await TmpDirUtils.sqliteTmpDir();
         } else {
-          // Second database might be in different isolate?
+          // Every isolate needs this to be set
           open.overrideFor(OperatingSystem.android, openCipherOnAndroid);
         }
       },

@@ -140,8 +140,8 @@ class Account extends Table {
   ],
 )
 class AccountDatabase extends _$AccountDatabase {
-  AccountDatabase(LazyDatabaseProvider dbProvider) :
-    super(dbProvider.getLazyDatabase());
+  AccountDatabase(QueryExcecutorProvider dbProvider) :
+    super(dbProvider.getQueryExcecutor());
 
   @override
   int get schemaVersion => 1;

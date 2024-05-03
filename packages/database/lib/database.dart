@@ -10,4 +10,4 @@ export 'src/profile_entry.dart' show ProfileEntry, ProfileLocalDbId;
 export 'src/common_database.dart' show CommonDatabase, NOTIFICATION_PERMISSION_ASKED_DEFAULT;
 export 'src/account_database.dart' show AccountDatabase, PROFILE_FILTER_FAVORITES_DEFAULT;
 export 'src/notification_session_id.dart' show NotificationSessionId;
-export 'src/utils.dart' show LazyDatabaseProvider;
+export 'src/utils.dart' show QueryExcecutorProvider;

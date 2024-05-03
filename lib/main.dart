@@ -53,6 +53,7 @@ import 'package:pihka_frontend/storage/encryption.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:pihka_frontend/ui/utils/app_lifecycle_handler.dart';
 import 'package:pihka_frontend/utils/camera.dart';
 
 import 'package:rxdart/rxdart.dart';
@@ -160,7 +161,11 @@ class MyApp extends StatelessWidget {
           },
         ),
       ),
-      home: GlobalLocalizationsInitializer(child: AppNavigator()),
+      home: GlobalLocalizationsInitializer(
+        child: AppLifecycleHandler(
+          child: AppNavigator(),
+        ),
+      ),
       scaffoldMessengerKey: globalScaffoldMessengerKey,
       debugShowCheckedModeBanner: false,
     );

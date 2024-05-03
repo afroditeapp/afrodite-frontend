@@ -35,8 +35,8 @@ class Common extends Table {
 
 @DriftDatabase(tables: [Common])
 class CommonDatabase extends _$CommonDatabase {
-  CommonDatabase(LazyDatabaseProvider dbProvider) :
-    super(dbProvider.getLazyDatabase());
+  CommonDatabase(QueryExcecutorProvider dbProvider) :
+    super(dbProvider.getQueryExcecutor());
 
   @override
   int get schemaVersion => 1;
