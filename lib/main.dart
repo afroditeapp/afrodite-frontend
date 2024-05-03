@@ -103,7 +103,6 @@ Future<void> main() async {
         BlocProvider(create: (_) => NotificationPayloadHandlerBloc()),
 
         // Main UI
-        BlocProvider(create: (_) => ViewProfileBloc()),
         BlocProvider(create: (_) => ConversationBloc()),
 
         // Account data

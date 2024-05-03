@@ -36,10 +36,15 @@ void openProfileView(
     bool noAction = false,
   }
 ) {
-  context.read<ViewProfileBloc>().add(SetProfileView(profile));
   MyNavigator.push(
     context,
-    MaterialPage<void>(child: ViewProfilePage(initialProfile: profile, noAction: noAction)),
+    MaterialPage<void>(child:
+      BlocProvider(
+        create: (_) => ViewProfileBloc(profile),
+        lazy: false,
+        child: ViewProfilePage(initialProfile: profile, noAction: noAction),
+      ),
+    ),
   );
 }
 
