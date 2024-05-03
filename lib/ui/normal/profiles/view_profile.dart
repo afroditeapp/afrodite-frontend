@@ -8,6 +8,7 @@ import 'package:database/database.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/profile/view_profiles.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/view_profiles.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
@@ -36,24 +37,37 @@ void openProfileView(
     bool noAction = false,
   }
 ) {
-  MyNavigator.push(
+  final pageKey = PageKey();
+  MyNavigator.pushWithKey(
     context,
     MaterialPage<void>(child:
       BlocProvider(
         create: (_) => ViewProfileBloc(profile),
         lazy: false,
-        child: ViewProfilePage(initialProfile: profile, noAction: noAction),
+        child: ViewProfilePage(
+          pageKey: pageKey,
+          initialProfile: profile,
+          noAction: noAction,
+        ),
       ),
     ),
+    pageKey,
   );
 }
 
 class ViewProfilePage extends StatelessWidget {
+  final PageKey pageKey;
   final bool noAction;
   final ProfileEntry initialProfile;
   final ProfileHeroTag? heroTag;
 
-  const ViewProfilePage({required this.initialProfile, this.heroTag, this.noAction = false, super.key});
+  const ViewProfilePage({
+    required this.pageKey,
+    required this.initialProfile,
+    this.heroTag,
+    this.noAction = false,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -190,21 +204,18 @@ class ViewProfilePage extends StatelessWidget {
         context.read<ViewProfileBloc>().add(ResetShowMessages());
       }
 
-      // Added canPop tests here because testing emitting isBlocked with delay
-      // resulted a black screen once.
-
       if (state.isNotAvailable) {
         await showInfoDialog(
           context,
           context.strings.view_profile_screen_profile_not_available_dialog_description
         );
-        if (context.mounted && MyNavigator.canPop(context)) {
-          MyNavigator.pop(context);
+        if (context.mounted) {
+          MyNavigator.removePage(context, pageKey);
         }
       } else if (state.isBlocked) {
         showSnackBar(context.strings.view_profile_screen_block_action_successful);
-        if (context.mounted && MyNavigator.canPop(context)) {
-          MyNavigator.pop(context);
+        if (context.mounted) {
+          MyNavigator.removePage(context, pageKey);
         }
       }
     });

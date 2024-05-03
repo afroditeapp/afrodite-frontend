@@ -46,7 +46,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
     });
     on<PopPage>((data, emit) {
       final newPages = state.pages.toList();
-      if (newPages.isNotEmpty) {
+      if (state.pages.length > 1) {
         final removed = newPages.removeLast();
         removed.channel.add(PagePopDone(data.pageReturnValue));
       }
@@ -143,7 +143,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
 
   /// Returns true if there is more than one page in the navigator stack.
   bool canPop() {
-    return state.pages.isNotEmpty;
+    return state.pages.length > 1;
   }
 
   Future<T?> showDialog<T>(

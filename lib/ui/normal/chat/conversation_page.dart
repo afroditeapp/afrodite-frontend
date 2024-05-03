@@ -37,21 +37,28 @@ Future<void> openConversationScreenNoBuildContext(
   NavigatorStateBloc navigatorStateBloc,
   ProfileEntry profile,
 ) async {
-  await navigatorStateBloc.push(
+  final pageKey = PageKey();
+  await navigatorStateBloc.pushWithKey(
     MaterialPage<void>(
       child: BlocProvider(
         create: (_) => ConversationBloc(profile),
         lazy: false,
-        child: ConversationPage(profile)
+        child: ConversationPage(pageKey, profile)
       ),
     ),
+    pageKey,
     pageInfo: ConversationPageInfo(profile.uuid),
   );
 }
 
 class ConversationPage extends StatefulWidget {
+  final PageKey pageKey;
   final ProfileEntry profileEntry;
-  const ConversationPage(this.profileEntry, {Key? key}) : super(key: key);
+  const ConversationPage(
+    this.pageKey,
+    this.profileEntry,
+    {Key? key}
+  ) : super(key: key);
 
   @override
   ConversationPageState createState() => ConversationPageState();
@@ -138,7 +145,7 @@ class ConversationPageState extends State<ConversationPage> {
                     Future.delayed(Duration.zero, () {
                       showSnackBar(R.strings.conversation_screen_profile_blocked);
                       if (context.mounted) {
-                        MyNavigator.pop(context);
+                        MyNavigator.removePage(context, widget.pageKey);
                       }
                     });
                     return Container();

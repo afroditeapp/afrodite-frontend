@@ -182,6 +182,8 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
     add(InitEvent());
   }
 
+  // TODO: AccountId does not change after init anymore so this
+  // can be removed.
   bool accountIdNotChanged(AccountId? accountId) {
     return accountId == state.profile.uuid;
   }
