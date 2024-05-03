@@ -52,8 +52,6 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
 
   ViewProfileBloc(ProfileEntry currentProfile) : super(ViewProfilesData(profile: currentProfile)) {
     on<InitEvent>((data, emit) async {
-      await _getProfileDataSubscription?.cancel();
-
       final isInFavorites = await profile.isInFavorites(state.profile.uuid);
       final isBlocked = await chat.isInSentBlocks(state.profile.uuid) ||
         await chat.isInReceivedBlocks(state.profile.uuid);
@@ -64,12 +62,6 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
         isBlocked: isBlocked,
         profileActionState: action
       ));
-
-      _getProfileDataSubscription = ProfileRepository.getInstance()
-        .getProfileStream(state.profile.uuid)
-        .listen((event) {
-          add(HandleProfileResult(event));
-        });
     });
     on<ToggleFavoriteStatus>((data, emit) async {
       await runOnce(() async {
@@ -179,6 +171,12 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
       .profileChanges
       .listen((event) {
         add(HandleProfileChange(event));
+      });
+
+    _getProfileDataSubscription = ProfileRepository.getInstance()
+      .getProfileStream(state.profile.uuid)
+      .listen((event) {
+        add(HandleProfileResult(event));
       });
 
     add(InitEvent());

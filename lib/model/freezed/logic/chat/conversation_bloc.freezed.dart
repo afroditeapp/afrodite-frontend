@@ -22,8 +22,6 @@ final _privateConstructorErrorConversationData = UnsupportedError(
 /// @nodoc
 mixin _$ConversationData {
   AccountId get accountId => throw _privateConstructorErrorConversationData;
-  String get profileName => throw _privateConstructorErrorConversationData;
-  ContentId get primaryProfileImage => throw _privateConstructorErrorConversationData;
   bool get isMatch => throw _privateConstructorErrorConversationData;
   bool get isBlocked => throw _privateConstructorErrorConversationData;
   bool get isSendSuccessful => throw _privateConstructorErrorConversationData;
@@ -33,8 +31,6 @@ mixin _$ConversationData {
 
   ConversationData copyWith({
     AccountId? accountId,
-    String? profileName,
-    ContentId? primaryProfileImage,
     bool? isMatch,
     bool? isBlocked,
     bool? isSendSuccessful,
@@ -48,8 +44,6 @@ mixin _$ConversationData {
 abstract class _ConversationData implements ConversationData {
   factory _ConversationData({
     required AccountId accountId,
-    required String profileName,
-    required ContentId primaryProfileImage,
     bool isMatch,
     bool isBlocked,
     bool isSendSuccessful,
@@ -69,8 +63,6 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
   
   _$ConversationDataImpl({
     required this.accountId,
-    required this.profileName,
-    required this.primaryProfileImage,
     this.isMatch = _isMatchDefaultValue,
     this.isBlocked = _isBlockedDefaultValue,
     this.isSendSuccessful = _isSendSuccessfulDefaultValue,
@@ -81,10 +73,6 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
 
   @override
   final AccountId accountId;
-  @override
-  final String profileName;
-  @override
-  final ContentId primaryProfileImage;
   @override
   final bool isMatch;
   @override
@@ -100,7 +88,7 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ConversationData(accountId: $accountId, profileName: $profileName, primaryProfileImage: $primaryProfileImage, isMatch: $isMatch, isBlocked: $isBlocked, isSendSuccessful: $isSendSuccessful, messageCount: $messageCount, messageCountChangeInfo: $messageCountChangeInfo, initialMessages: $initialMessages)';
+    return 'ConversationData(accountId: $accountId, isMatch: $isMatch, isBlocked: $isBlocked, isSendSuccessful: $isSendSuccessful, messageCount: $messageCount, messageCountChangeInfo: $messageCountChangeInfo, initialMessages: $initialMessages)';
   }
 
   @override
@@ -109,8 +97,6 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
     properties
       ..add(DiagnosticsProperty('type', 'ConversationData'))
       ..add(DiagnosticsProperty('accountId', accountId))
-      ..add(DiagnosticsProperty('profileName', profileName))
-      ..add(DiagnosticsProperty('primaryProfileImage', primaryProfileImage))
       ..add(DiagnosticsProperty('isMatch', isMatch))
       ..add(DiagnosticsProperty('isBlocked', isBlocked))
       ..add(DiagnosticsProperty('isSendSuccessful', isSendSuccessful))
@@ -126,10 +112,6 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
         other is _$ConversationDataImpl &&
         (identical(other.accountId, accountId) ||
           other.accountId == accountId) &&
-        (identical(other.profileName, profileName) ||
-          other.profileName == profileName) &&
-        (identical(other.primaryProfileImage, primaryProfileImage) ||
-          other.primaryProfileImage == primaryProfileImage) &&
         (identical(other.isMatch, isMatch) ||
           other.isMatch == isMatch) &&
         (identical(other.isBlocked, isBlocked) ||
@@ -149,8 +131,6 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
   int get hashCode => Object.hash(
     runtimeType,
     accountId,
-    profileName,
-    primaryProfileImage,
     isMatch,
     isBlocked,
     isSendSuccessful,
@@ -162,8 +142,6 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
   @override
   ConversationData copyWith({
     Object? accountId,
-    Object? profileName,
-    Object? primaryProfileImage,
     Object? isMatch,
     Object? isBlocked,
     Object? isSendSuccessful,
@@ -172,8 +150,6 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
     Object? initialMessages,
   }) => _$ConversationDataImpl(
     accountId: (accountId ?? this.accountId) as AccountId,
-    profileName: (profileName ?? this.profileName) as String,
-    primaryProfileImage: (primaryProfileImage ?? this.primaryProfileImage) as ContentId,
     isMatch: (isMatch ?? this.isMatch) as bool,
     isBlocked: (isBlocked ?? this.isBlocked) as bool,
     isSendSuccessful: (isSendSuccessful ?? this.isSendSuccessful) as bool,

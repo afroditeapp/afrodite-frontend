@@ -65,14 +65,10 @@ class ViewProfilePage extends StatelessWidget {
         //   color: Colors.black45,
         // ),
         actions: [
-          BlocBuilder<ViewProfileBloc, ViewProfilesData?>(builder: (context, state) {
-            final s = state;
-            if (s == null) {
-              return const SizedBox.shrink();
-            }
+          BlocBuilder<ViewProfileBloc, ViewProfilesData>(builder: (context, state) {
             final Icon icon;
             final String tooltip;
-            if (s.isFavorite.isFavorite) {
+            if (state.isFavorite.isFavorite) {
               icon = const Icon(Icons.star_rounded);
               tooltip = context.strings.view_profile_screen_remove_from_favorites_action;
             } else {
@@ -81,9 +77,9 @@ class ViewProfilePage extends StatelessWidget {
             }
             return IconButton(
               onPressed: () {
-                switch (s.isFavorite) {
+                switch (state.isFavorite) {
                   case FavoriteStateIdle():
-                    context.read<ViewProfileBloc>().add(ToggleFavoriteStatus(s.profile.uuid));
+                    context.read<ViewProfileBloc>().add(ToggleFavoriteStatus(state.profile.uuid));
                   case FavoriteStateChangeInProgress():
                     showSnackBar(context.strings.generic_previous_action_in_progress);
                 }
@@ -109,11 +105,8 @@ class ViewProfilePage extends StatelessWidget {
       return null;
     }
 
-    return BlocBuilder<ViewProfileBloc, ViewProfilesData?>(
+    return BlocBuilder<ViewProfileBloc, ViewProfilesData>(
       builder: (context, state) {
-        if (state == null || state.profile.uuid != initialProfile.uuid) {
-          return const SizedBox.shrink();
-        }
         return actionButtonFromAction(context, state);
       }
     );
@@ -168,12 +161,8 @@ class ViewProfilePage extends StatelessWidget {
   }
 
   Widget myProfilePage(BuildContext context) {
-    return BlocBuilder<ViewProfileBloc, ViewProfilesData?>(
+    return BlocBuilder<ViewProfileBloc, ViewProfilesData>(
       builder: (context, state) {
-        if (state == null || state.profile.uuid != initialProfile.uuid) {
-          return const SizedBox.shrink();
-        }
-
         handleStateAction(context, state);
 
         return AnimatedOpacity(

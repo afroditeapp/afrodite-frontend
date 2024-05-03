@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/data/chat_repository.dart';
+import 'package:pihka_frontend/data/chat/message_database_iterator.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 
 var log = Logger("MessageCache");
 
@@ -23,7 +25,9 @@ class MessageCache {
   List<MessageContainer> _bottomMessages = [];
 
   /// Queue for new messages which will have the size calculated.
-  Queue<MessageContainer> _newMessages = Queue();
+  final Queue<MessageContainer> _newMessages = Queue();
+
+  final MessageDatabaseIterator messageIterator = MessageDatabaseIterator();
 
   MessageCache(this._accountId);
 
@@ -59,12 +63,18 @@ class MessageCache {
   }
 
   Future<void> _updateCache(bool jumpToLatestMessage, bool initialLoad) async {
-    await ChatRepository.getInstance().messageIteratorReset(_accountId);
+    // Reset iterator
+    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
+    if (currentUser == null) {
+      return;
+    }
+    await messageIterator.switchConversation(currentUser, _accountId);
+
     bool useBottom = true;
     List<MessageContainer> newBottomMessages = [];
     List<MessageContainer> newTopMessages = [];
     while (true) {
-      final messages = await ChatRepository.getInstance().messageIteratorNext();
+      final messages = await messageIterator.nextList();
       if (messages.isEmpty) {
         break;
       }

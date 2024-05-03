@@ -28,27 +28,30 @@ var log = Logger("ConversationPage");
 
 void openConversationScreen(BuildContext context, ProfileEntry profile) {
   openConversationScreenNoBuildContext(
-    context.read<ConversationBloc>(),
     context.read<NavigatorStateBloc>(),
     profile,
   );
 }
 
 Future<void> openConversationScreenNoBuildContext(
-  ConversationBloc conversationBloc,
   NavigatorStateBloc navigatorStateBloc,
   ProfileEntry profile,
 ) async {
   await navigatorStateBloc.push(
-    MaterialPage<void>(child: ConversationPage(conversationBloc, profile)),
+    MaterialPage<void>(
+      child: BlocProvider(
+        create: (_) => ConversationBloc(profile),
+        lazy: false,
+        child: ConversationPage(profile)
+      ),
+    ),
     pageInfo: ConversationPageInfo(profile.uuid),
   );
 }
 
 class ConversationPage extends StatefulWidget {
-  final ConversationBloc conversationBloc;
   final ProfileEntry profileEntry;
-  const ConversationPage(this.conversationBloc, this.profileEntry, {Key? key}) : super(key: key);
+  const ConversationPage(this.profileEntry, {Key? key}) : super(key: key);
 
   @override
   ConversationPageState createState() => ConversationPageState();
@@ -62,11 +65,6 @@ class ConversationPageState extends State<ConversationPage> {
   @override
   void initState() {
     super.initState();
-    widget.conversationBloc.add(SetConversationView(
-      widget.profileEntry.uuid,
-      widget.profileEntry.imageUuid,
-      widget.profileEntry.name
-    ));
     cache = MessageCache(widget.profileEntry.uuid);
     // Hide notification
     // TODO(prod): Perhaps this can be done in repository code once
@@ -129,16 +127,14 @@ class ConversationPageState extends State<ConversationPage> {
             },
             child: Align(
               alignment: Alignment.topCenter,
-              child: BlocBuilder<ConversationBloc, ConversationData?>(
+              child: BlocBuilder<ConversationBloc, ConversationData>(
                 buildWhen: (previous, current) =>
-                  previous?.accountId != current?.accountId ||
-                  previous?.isMatch != current?.isMatch ||
-                  previous?.messageCount != current?.messageCount ||
-                  previous?.isBlocked != current?.isBlocked,
+                  previous.accountId != current.accountId ||
+                  previous.isMatch != current.isMatch ||
+                  previous.messageCount != current.messageCount ||
+                  previous.isBlocked != current.isBlocked,
                 builder: (context, state) {
-                  if (state == null || state.accountId != widget.profileEntry.uuid) {
-                    return Container();
-                  } else if (state.isBlocked) {
+                  if (state.isBlocked) {
                     Future.delayed(Duration.zero, () {
                       showSnackBar(R.strings.conversation_screen_profile_blocked);
                       if (context.mounted) {
@@ -195,11 +191,8 @@ class ConversationPageState extends State<ConversationPage> {
               final message = _textEditingController.text.trim();
               if (message.isNotEmpty) {
                 final bloc = context.read<ConversationBloc>();
-                final state = bloc.state;
-                if (state != null) {
-                  bloc.add(SendMessageTo(state.accountId, message));
-                  _textEditingController.clear();
-                }
+                bloc.add(SendMessageTo(bloc.state.accountId, message));
+                _textEditingController.clear();
               } else {
                 _textEditingController.clear();
               }

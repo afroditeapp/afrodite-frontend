@@ -46,6 +46,7 @@ class MessageDatabaseIterator {
     remoteAccountId = AccountId(accountId: "");
   }
 
+  // Get max 10 next messages.
   Future<List<MessageEntry>> nextList() async {
     if (nextLocalKey < 0) {
       return [];

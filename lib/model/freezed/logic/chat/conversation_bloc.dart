@@ -14,8 +14,6 @@ part 'conversation_bloc.freezed.dart';
 class ConversationData with _$ConversationData {
   factory ConversationData({
     required AccountId accountId,
-    required String profileName,
-    required ContentId primaryProfileImage,
     @Default(true) bool isMatch,
     @Default(false) bool isBlocked,
     /// Resets chat box to empty state

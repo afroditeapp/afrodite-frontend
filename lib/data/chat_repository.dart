@@ -37,8 +37,6 @@ class ChatRepository extends DataRepository {
     AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getReceivedLikesList(startIndex, limit)).ok());
   final AccountIdDatabaseIterator matchesIterator =
     AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getMatchesList(startIndex, limit)).ok());
-  final MessageDatabaseIterator messageIterator = MessageDatabaseIterator();
-
 
   @override
   Future<void> init() async {
@@ -50,7 +48,6 @@ class ChatRepository extends DataRepository {
     sentBlocksIterator.reset();
     receivedLikesIterator.reset();
     matchesIterator.reset();
-    messageIterator.resetToInitialState();
 
     syncHandler.onLoginSync(() async {
       await _syncData();
@@ -424,25 +421,17 @@ class ChatRepository extends DataRepository {
     }
   }
 
-  Future<void> messageIteratorReset(AccountId match) async {
+  Future<List<MessageEntry>> getAllMessages(AccountId accountId) async {
+    final messageIterator = MessageDatabaseIterator();
     final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {
-      return;
+      return [];
     }
-    await messageIterator.switchConversation(currentUser, match);
-  }
-
-  // Get max 10 next messages.
-  Future<List<MessageEntry>> messageIteratorNext() async {
-    return await messageIterator.nextList();
-  }
-
-  Future<List<MessageEntry>> getAllMessages(AccountId accountId) async {
-    await ChatRepository.getInstance().messageIteratorReset(accountId);
+    await messageIterator.switchConversation(currentUser, accountId);
 
     List<MessageEntry> allMessages = [];
     while (true) {
-      final messages = await ChatRepository.getInstance().messageIteratorNext();
+      final messages = await messageIterator.nextList();
       if (messages.isEmpty) {
         break;
       }

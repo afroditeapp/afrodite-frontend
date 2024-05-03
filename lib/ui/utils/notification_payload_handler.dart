@@ -10,7 +10,6 @@ import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/app/notification_payload_handler.dart';
-import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/notification_payload_handler.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
@@ -64,7 +63,6 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
     final navigatorStateBloc = context.read<NavigatorStateBloc>();
     final bottomNavigatorStateBloc = context.read<BottomNavigationStateBloc>();
     final currentModerationRequestBloc = context.read<CurrentModerationRequestBloc>();
-    final conversationBloc = context.read<ConversationBloc>();
 
     return (payload) async {
       await handlePayload(
@@ -72,7 +70,6 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
         navigatorStateBloc,
         bottomNavigatorStateBloc,
         currentModerationRequestBloc,
-        conversationBloc,
         showError: showError,
       );
     };
@@ -84,7 +81,6 @@ Future<void> handlePayload(
   NavigatorStateBloc navigatorStateBloc,
   BottomNavigationStateBloc bottomNavigationStateBloc,
   CurrentModerationRequestBloc currentModerationRequestBloc,
-  ConversationBloc conversationBloc,
   {required bool showError}
 ) async {
   final db = DatabaseManager.getInstance();
@@ -103,7 +99,6 @@ Future<void> handlePayload(
       final profile = await db.profileData((db) => db.getProfileEntryUsingLocalId(payload.profileLocalDbId)).ok();
       if (profile != null) {
         await openConversationScreenNoBuildContext(
-          conversationBloc,
           navigatorStateBloc,
           profile,
         );
