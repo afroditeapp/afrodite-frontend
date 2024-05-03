@@ -18,6 +18,7 @@ class _AppLifecycleHandlerState extends State<AppLifecycleHandler> {
   @override
   void initState() {
     super.initState();
+    AppVisibilityProvider.getInstance().setForeground(true);
 
     _listener = AppLifecycleListener(
       onShow: () {
