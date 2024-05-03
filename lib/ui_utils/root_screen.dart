@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:pihka_frontend/data/notification_manager.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
 import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/ui/account_banned.dart";
@@ -21,12 +22,10 @@ abstract class RootScreen extends StatelessWidget {
     return BlocListener<MainStateBloc, MainState>(
       listener: (context, state) {
         final screen = switch (state) {
-          // MainState.loginRequired => const InitialSetupScreen(),
           MainState.loginRequired => const LoginScreen(),
           MainState.demoAccount => const DemoAccountScreen(),
           MainState.initialSetup => const InitialSetupScreen(),
           MainState.initialSetupComplete => const NormalStateScreen(),
-          // MainState.initialSetupComplete => const InitialSetupScreen(),
           MainState.accountBanned => const AccountBannedScreen(),
           MainState.pendingRemoval => const PendingDeletionPage(),
           MainState.unsupportedClientVersion => const UnsupportedClientScreen(),
@@ -34,6 +33,13 @@ abstract class RootScreen extends StatelessWidget {
         };
 
         if (screen != null) {
+          if (state != MainState.initialSetupComplete) {
+            // Clear the app launch notification payload if it exists as
+            // it should be handled directly after app launches and only
+            // NormalStateScreen handles it.
+            NotificationManager.getInstance().getAndRemoveAppLaunchNotificationPayload();
+          }
+
           screen.runOnceBeforeNavigatedTo(context);
 
           MyNavigator.replaceAllWith(

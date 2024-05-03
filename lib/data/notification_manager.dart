@@ -27,6 +27,7 @@ class NotificationManager extends AppSingleton {
 
   final _pluginHandle = FlutterLocalNotificationsPlugin();
   late final bool _osSupportsNotificationPermission;
+  NotificationPayload? _appLaunchNotificationPayload;
 
   bool get osSupportsNotificationPermission => _osSupportsNotificationPermission;
   PublishSubject<NotificationPayload> onReceivedPayload = PublishSubject();
@@ -71,6 +72,17 @@ class NotificationManager extends AppSingleton {
     _osSupportsNotificationPermission = await _notificationPermissionShouldBeAsked();
 
     await _createAndroidNotificationChannelsIfNeeded();
+
+    final launchDetails = await _pluginHandle.getNotificationAppLaunchDetails();
+    if (launchDetails != null && launchDetails.didNotificationLaunchApp) {
+      final payload = launchDetails.notificationResponse?.payload;
+      if (payload != null) {
+        final parsedPayload = NotificationPayload.parse(payload);
+        if (parsedPayload != null) {
+          _appLaunchNotificationPayload = parsedPayload;
+        }
+      }
+    }
   }
 
   Future<void> askPermissions() async {
@@ -175,5 +187,11 @@ class NotificationManager extends AppSingleton {
 
       await handle?.createNotificationChannel(notificationChannel);
     }
+  }
+
+  NotificationPayload? getAndRemoveAppLaunchNotificationPayload() {
+    final payload = _appLaunchNotificationPayload;
+    _appLaunchNotificationPayload = null;
+    return payload;
   }
 }

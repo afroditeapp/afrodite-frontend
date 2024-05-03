@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
+import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
@@ -27,14 +28,31 @@ class NotificationPayloadHandler extends StatefulWidget {
 }
 
 class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler> {
+  NotificationPayload? appLaunchPayload;
+
+  @override
+  void initState() {
+    super.initState();
+    appLaunchPayload = NotificationManager.getInstance().getAndRemoveAppLaunchNotificationPayload();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final launchPayload = appLaunchPayload;
+    if (launchPayload != null) {
+      appLaunchPayload = null;
+      log.info("Handling app launch notification payload");
+      createHandlePayloadCallback(context, showError: true)(launchPayload);
+    }
+
     return BlocBuilder<NotificationPayloadHandlerBloc, NotificationPayloadHandlerData>(
       buildWhen: (previous, current) => previous.toBeHandled != current.toBeHandled,
       builder: (context, state) {
         final payload = state.toBeHandled.firstOrNull;
         if (payload != null) {
-          sendPayloadHandlingCallback(context);
+          context.read<NotificationPayloadHandlerBloc>().add(
+            HandleFirstPayload(createHandlePayloadCallback(context, showError: true)),
+          );
         }
 
         return const SizedBox.shrink();
@@ -42,23 +60,22 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
     );
   }
 
-  void sendPayloadHandlingCallback(BuildContext context) {
+  Future<void> Function(NotificationPayload) createHandlePayloadCallback(BuildContext context, {required bool showError}) {
     final navigatorStateBloc = context.read<NavigatorStateBloc>();
     final bottomNavigatorStateBloc = context.read<BottomNavigationStateBloc>();
     final currentModerationRequestBloc = context.read<CurrentModerationRequestBloc>();
     final conversationBloc = context.read<ConversationBloc>();
 
-    context.read<NotificationPayloadHandlerBloc>().add(
-      HandleFirstPayload((payload) async {
-        await handlePayload(
-          payload,
-          navigatorStateBloc,
-          bottomNavigatorStateBloc,
-          currentModerationRequestBloc,
-          conversationBloc,
-        );
-      }),
-    );
+    return (payload) async {
+      await handlePayload(
+        payload,
+        navigatorStateBloc,
+        bottomNavigatorStateBloc,
+        currentModerationRequestBloc,
+        conversationBloc,
+        showError: showError,
+      );
+    };
   }
 }
 
@@ -68,13 +85,16 @@ Future<void> handlePayload(
   BottomNavigationStateBloc bottomNavigationStateBloc,
   CurrentModerationRequestBloc currentModerationRequestBloc,
   ConversationBloc conversationBloc,
+  {required bool showError}
 ) async {
   final db = DatabaseManager.getInstance();
 
   final notificationSessionId = await db.commonStreamSingle((db) => db.watchNotificationSessionId());
   if (notificationSessionId?.id != payload.sessionId.id) {
     log.warning("Notification payload session ID does not match current session ID");
-    showSnackBar(R.strings.notification_session_expired_error);
+    if (showError) {
+      showSnackBar(R.strings.notification_session_expired_error);
+    }
     return;
   }
 
@@ -124,7 +144,3 @@ Future<void> handlePayload(
 
 // TODO: Notification settings. On Android 8 or later system notification
 // settings should be opened.
-
-// TODO: Fix notification payload handling when app process starts from
-// the notifcation. Consider storing the all payloads in NotificationManager
-// untill the app is ready to handle them.
