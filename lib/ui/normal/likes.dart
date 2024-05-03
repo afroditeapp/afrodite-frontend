@@ -1,12 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -19,7 +23,7 @@ import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 var log = Logger("LikeView");
 
 class LikeView extends BottomNavigationScreen {
-  const LikeView({Key? key}) : super(key: key);
+  const LikeView({super.key});
 
   @override
   State<LikeView> createState() => _LikeViewState();
@@ -30,9 +34,96 @@ class LikeView extends BottomNavigationScreen {
   }
 }
 
-typedef LikeViewEntry = ({ProfileEntry profile, ProfileHeroTag heroTag});
+/// Use global instance for likes grid as notification navigation makes
+/// possible to open a new screen which displays likes. Moving iterator state
+/// to here from repository is not possible currently as there will be
+/// server API change which changes likes to have paging.
+final GlobalKey<LikeViewContentState> likeViewContentState = GlobalKey();
 
 class _LikeViewState extends State<LikeView> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LikeGridInstanceManagerBloc, LikeGridInstanceManagerData>(
+      builder: (context, state) {
+        if (state.currentlyVisibleId == 0) {
+          return LikeViewContent(key: likeViewContentState);
+        } else {
+          return Center(child: Text(context.strings.generic_error));
+        }
+      }
+    );
+  }
+}
+
+Future<void> openLikesScreenNoBuildContext(
+  NavigatorStateBloc navigatorStateBloc,
+  LikeGridInstanceManagerBloc likeGridInstanceManagerBloc,
+) async {
+  final newGridId = likeGridInstanceManagerBloc.newId();
+  await navigatorStateBloc.push(
+    MaterialPage<void>(
+      child: LikesScreen(
+        gridInstanceId: newGridId,
+        bloc: likeGridInstanceManagerBloc,
+      ),
+    ),
+    pageInfo: const LikesPageInfo(),
+  );
+}
+
+class LikesScreen extends StatefulWidget {
+  final int gridInstanceId;
+  final LikeGridInstanceManagerBloc bloc;
+  const LikesScreen({
+    required this.gridInstanceId,
+    required this.bloc,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<LikesScreen> createState() => _LikesScreenState();
+}
+
+class _LikesScreenState extends State<LikesScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(context.strings.likes_screen_title),
+      ),
+      body: content(),
+    );
+  }
+
+  Widget content() {
+    return BlocBuilder<LikeGridInstanceManagerBloc, LikeGridInstanceManagerData>(
+      builder: (context, state) {
+        if (state.currentlyVisibleId == widget.gridInstanceId) {
+          return LikeViewContent(key: likeViewContentState);
+        } else {
+          return const SizedBox.shrink();
+        }
+      }
+    );
+  }
+
+  @override
+  void dispose() {
+    widget.bloc.popId();
+    super.dispose();
+  }
+}
+
+class LikeViewContent extends StatefulWidget {
+  const LikeViewContent({Key? key}) : super(key: key);
+
+  @override
+  State<LikeViewContent> createState() => LikeViewContentState();
+}
+
+typedef LikeViewEntry = ({ProfileEntry profile, ProfileHeroTag heroTag});
+
+class LikeViewContentState extends State<LikeViewContent> {
   PagingController<int, LikeViewEntry>? _pagingController =
     PagingController(firstPageKey: 0);
   int _heroUniqueIdCounter = 0;

@@ -63,3 +63,6 @@ class ConversationPageInfo extends PageInfo {
   final AccountId accountId;
   const ConversationPageInfo(this.accountId);
 }
+class LikesPageInfo extends PageInfo {
+  const LikesPageInfo();
+}

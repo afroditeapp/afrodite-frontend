@@ -11,6 +11,7 @@ import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/app_visibility_provider.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/utils.dart';
 
 class NotificationLikeReceived extends AppSingletonNoInit {
@@ -67,8 +68,9 @@ class NotificationLikeReceived extends AppSingletonNoInit {
   }
 
   bool isLikesUiOpen() {
-    return NavigationStateBlocInstance.getInstance().bloc.state.pages.length == 1 &&
-      BottomNavigationStateBlocInstance.getInstance().bloc.state.screen == BottomNavigationScreenId.likes &&
-      AppVisibilityProvider.getInstance().isForeground;
+    final likesScreenOpen = (NavigationStateBlocInstance.getInstance().bloc.state.pages.length == 1 &&
+      BottomNavigationStateBlocInstance.getInstance().bloc.state.screen == BottomNavigationScreenId.likes) ||
+      (NavigationStateBlocInstance.getInstance().bloc.state.pages.lastOrNull?.pageInfo is LikesPageInfo);
+    return likesScreenOpen && AppVisibilityProvider.getInstance().isForeground;
   }
 }

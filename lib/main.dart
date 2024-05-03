@@ -22,6 +22,7 @@ import 'package:pihka_frontend/logic/account/account_details.dart';
 import 'package:pihka_frontend/logic/account/demo_account.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
+import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/app/notification_payload_handler.dart';
 import 'package:pihka_frontend/logic/app/notification_permission.dart';
@@ -101,6 +102,9 @@ Future<void> main() async {
         BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
         BlocProvider(create: (_) => NotificationPermissionBloc()),
         BlocProvider(create: (_) => NotificationPayloadHandlerBloc()),
+
+        // Main UI
+        BlocProvider(create: (_) => LikeGridInstanceManagerBloc()),
 
         // Account data
         BlocProvider(create: (_) => AccountBloc()),
