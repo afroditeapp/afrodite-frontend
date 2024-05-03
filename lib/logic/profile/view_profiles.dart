@@ -73,11 +73,9 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
         ));
 
         final newValue = await profile.toggleFavoriteStatus(accountId);
-        if (accountIdNotChanged(accountId)) {
-          emit(state.copyWith(
-            isFavorite: FavoriteStateIdle(newValue),
-          ));
-        }
+        emit(state.copyWith(
+          isFavorite: FavoriteStateIdle(newValue),
+        ));
       });
     });
     on<HandleProfileResult>((data, emit) async {
@@ -106,11 +104,9 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
         }
         case LikesChanged() || MatchesChanged(): {
           final ProfileActionState action = await resolveProfileAction(state.profile.uuid);
-          if (accountIdNotChanged(state.profile.uuid)) {
-            emit(state.copyWith(
-              profileActionState: action,
-            ));
-          }
+          emit(state.copyWith(
+            profileActionState: action,
+          ));
         }
         case ProfileNowPrivate() ||
           ProfileUnblocked() ||
@@ -127,8 +123,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
     });
     on<BlockProfile>((data, emit) async {
       await runOnce(() async {
-        final currentAccountId = state.profile.uuid;
-        if (await chat.sendBlockTo(data.accountId) && accountIdNotChanged(currentAccountId)) {
+        if (await chat.sendBlockTo(data.accountId)) {
           emit(state.copyWith(
             isBlocked: true,
           ));
@@ -137,28 +132,23 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
     });
     on<DoProfileAction>((data, emit) async {
       await runOnce(() async {
-        final currentAccountId = state.profile.uuid;
         switch (data.action) {
           case ProfileActionState.like: {
             if (await chat.sendLikeTo(data.accountId)) {
               final newAction = await resolveProfileAction(data.accountId);
-              if (accountIdNotChanged(currentAccountId)) {
-                emit(state.copyWith(
-                  profileActionState: newAction,
-                  showLikeCompleted: true,
-                ));
-              }
+              emit(state.copyWith(
+                profileActionState: newAction,
+                showLikeCompleted: true,
+              ));
             }
           }
           case ProfileActionState.removeLike: {
             if (await chat.removeLikeFrom(data.accountId)) {
               final newAction = await resolveProfileAction(data.accountId);
-              if (accountIdNotChanged(currentAccountId)) {
-                  emit(state.copyWith(
-                  profileActionState: newAction,
-                  showRemoveLikeCompleted: true,
-                ));
-              }
+              emit(state.copyWith(
+                profileActionState: newAction,
+                showRemoveLikeCompleted: true,
+              ));
             }
           }
           case ProfileActionState.makeMatch: {}
@@ -180,12 +170,6 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
       });
 
     add(InitEvent());
-  }
-
-  // TODO: AccountId does not change after init anymore so this
-  // can be removed.
-  bool accountIdNotChanged(AccountId? accountId) {
-    return accountId == state.profile.uuid;
   }
 
   Future<ProfileActionState> resolveProfileAction(AccountId accountId) async {
