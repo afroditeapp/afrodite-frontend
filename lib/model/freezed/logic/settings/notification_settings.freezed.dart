@@ -13,11 +13,13 @@ final _privateConstructorErrorNotificationSettingsData = UnsupportedError(
 
 /// @nodoc
 mixin _$NotificationSettingsData {
+  bool get areNotificationsEnabled => throw _privateConstructorErrorNotificationSettingsData;
   bool get categoryEnabledMessages => throw _privateConstructorErrorNotificationSettingsData;
   bool get categoryEnabledLikes => throw _privateConstructorErrorNotificationSettingsData;
   bool get categoryEnabledModerationRequestStatus => throw _privateConstructorErrorNotificationSettingsData;
 
   NotificationSettingsData copyWith({
+    bool? areNotificationsEnabled,
     bool? categoryEnabledMessages,
     bool? categoryEnabledLikes,
     bool? categoryEnabledModerationRequestStatus,
@@ -27,6 +29,7 @@ mixin _$NotificationSettingsData {
 /// @nodoc
 abstract class _NotificationSettingsData implements NotificationSettingsData {
   factory _NotificationSettingsData({
+    bool areNotificationsEnabled,
     bool categoryEnabledMessages,
     bool categoryEnabledLikes,
     bool categoryEnabledModerationRequestStatus,
@@ -35,16 +38,20 @@ abstract class _NotificationSettingsData implements NotificationSettingsData {
 
 /// @nodoc
 class _$NotificationSettingsDataImpl with DiagnosticableTreeMixin implements _NotificationSettingsData {
+  static const bool _areNotificationsEnabledDefaultValue = false;
   static const bool _categoryEnabledMessagesDefaultValue = true;
   static const bool _categoryEnabledLikesDefaultValue = true;
   static const bool _categoryEnabledModerationRequestStatusDefaultValue = true;
   
   _$NotificationSettingsDataImpl({
+    this.areNotificationsEnabled = _areNotificationsEnabledDefaultValue,
     this.categoryEnabledMessages = _categoryEnabledMessagesDefaultValue,
     this.categoryEnabledLikes = _categoryEnabledLikesDefaultValue,
     this.categoryEnabledModerationRequestStatus = _categoryEnabledModerationRequestStatusDefaultValue,
   });
 
+  @override
+  final bool areNotificationsEnabled;
   @override
   final bool categoryEnabledMessages;
   @override
@@ -54,7 +61,7 @@ class _$NotificationSettingsDataImpl with DiagnosticableTreeMixin implements _No
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'NotificationSettingsData(categoryEnabledMessages: $categoryEnabledMessages, categoryEnabledLikes: $categoryEnabledLikes, categoryEnabledModerationRequestStatus: $categoryEnabledModerationRequestStatus)';
+    return 'NotificationSettingsData(areNotificationsEnabled: $areNotificationsEnabled, categoryEnabledMessages: $categoryEnabledMessages, categoryEnabledLikes: $categoryEnabledLikes, categoryEnabledModerationRequestStatus: $categoryEnabledModerationRequestStatus)';
   }
 
   @override
@@ -62,6 +69,7 @@ class _$NotificationSettingsDataImpl with DiagnosticableTreeMixin implements _No
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'NotificationSettingsData'))
+      ..add(DiagnosticsProperty('areNotificationsEnabled', areNotificationsEnabled))
       ..add(DiagnosticsProperty('categoryEnabledMessages', categoryEnabledMessages))
       ..add(DiagnosticsProperty('categoryEnabledLikes', categoryEnabledLikes))
       ..add(DiagnosticsProperty('categoryEnabledModerationRequestStatus', categoryEnabledModerationRequestStatus));
@@ -72,6 +80,8 @@ class _$NotificationSettingsDataImpl with DiagnosticableTreeMixin implements _No
     return identical(this, other) ||
       (other.runtimeType == runtimeType &&
         other is _$NotificationSettingsDataImpl &&
+        (identical(other.areNotificationsEnabled, areNotificationsEnabled) ||
+          other.areNotificationsEnabled == areNotificationsEnabled) &&
         (identical(other.categoryEnabledMessages, categoryEnabledMessages) ||
           other.categoryEnabledMessages == categoryEnabledMessages) &&
         (identical(other.categoryEnabledLikes, categoryEnabledLikes) ||
@@ -84,6 +94,7 @@ class _$NotificationSettingsDataImpl with DiagnosticableTreeMixin implements _No
   @override
   int get hashCode => Object.hash(
     runtimeType,
+    areNotificationsEnabled,
     categoryEnabledMessages,
     categoryEnabledLikes,
     categoryEnabledModerationRequestStatus,
@@ -91,10 +102,12 @@ class _$NotificationSettingsDataImpl with DiagnosticableTreeMixin implements _No
 
   @override
   NotificationSettingsData copyWith({
+    Object? areNotificationsEnabled,
     Object? categoryEnabledMessages,
     Object? categoryEnabledLikes,
     Object? categoryEnabledModerationRequestStatus,
   }) => _$NotificationSettingsDataImpl(
+    areNotificationsEnabled: (areNotificationsEnabled ?? this.areNotificationsEnabled) as bool,
     categoryEnabledMessages: (categoryEnabledMessages ?? this.categoryEnabledMessages) as bool,
     categoryEnabledLikes: (categoryEnabledLikes ?? this.categoryEnabledLikes) as bool,
     categoryEnabledModerationRequestStatus: (categoryEnabledModerationRequestStatus ?? this.categoryEnabledModerationRequestStatus) as bool,

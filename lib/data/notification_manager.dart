@@ -212,4 +212,15 @@ class NotificationManager extends AppSingleton {
     _appLaunchNotificationPayload = null;
     return payload;
   }
+
+  Future<bool> areNotificationsEnabled() async {
+    if (Platform.isAndroid) {
+      return await _pluginHandle.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.areNotificationsEnabled() ?? false;
+    } else if (Platform.isIOS) {
+      final permissions = await _pluginHandle.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.checkPermissions();
+      return permissions?.isEnabled ?? false;
+    } else {
+      throw UnsupportedError("Unsupported platform");
+    }
+  }
 }

@@ -56,6 +56,8 @@
 
     <!-- Notification settings screen -->
     <string name="notification_settings_screen_title" description="Title for notification settings screen">Notifications</string>
+    <string name="notification_settings_screen_notifications_disabled_from_system_settings_text" description="Info text that notifications are disabled from system settings">Notifications are disabled from system notification settings</string>
+    <string name="notification_settings_screen_open_system_notification_settings" description="Action title for opening system notification settings">System notification settings</string>
 
     <!-- App bar actions -->
     <string name="app_bar_action_about" description="Title for app bar action which opens about dialog">About</string>

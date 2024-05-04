@@ -5,6 +5,7 @@ import "package:pihka_frontend/model/freezed/logic/settings/notification_setting
 
 abstract class NotificationSettingsEvent {}
 
+class ReloadNotificationsEnabledStatus extends NotificationSettingsEvent {}
 class ToggleMessages extends NotificationSettingsEvent {}
 class ToggleLikes extends NotificationSettingsEvent {}
 class ToggleModerationRequestStatus extends NotificationSettingsEvent {}
@@ -25,6 +26,10 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
   final db = DatabaseManager.getInstance();
 
   NotificationSettingsBloc() : super(NotificationSettingsData()) {
+    on<ReloadNotificationsEnabledStatus>((data, emit) async {
+      final notificationsEnabled = await NotificationManager.getInstance().areNotificationsEnabled();
+      emit(state.copyWith(areNotificationsEnabled: notificationsEnabled));
+    });
     on<ToggleMessages>((data, emit) async {
       await db.accountAction((db) => db.daoLocalNotificationSettings.updateMessages(!state.categoryEnabledMessages));
     });
