@@ -152,15 +152,13 @@ class MyApp extends StatelessWidget {
       title: context.strings.app_name,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        pageTransitionsTheme: const PageTransitionsTheme(
-          builders: {
-            TargetPlatform.android: ZoomPageTransitionsBuilder(allowSnapshotting: false),
-            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-          },
-        ),
+      theme: ThemeData.light().copyWith(
+        pageTransitionsTheme: createPageTransitionsTheme(),
       ),
+      darkTheme: ThemeData.dark().copyWith(
+        pageTransitionsTheme: createPageTransitionsTheme(),
+      ),
+      themeMode: ThemeMode.system,
       home: GlobalLocalizationsInitializer(
         child: AppLifecycleHandler(
           child: AppNavigator(),
@@ -170,6 +168,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
     );
   }
+}
+
+PageTransitionsTheme createPageTransitionsTheme() {
+  return const PageTransitionsTheme(
+    builders: {
+      TargetPlatform.android: ZoomPageTransitionsBuilder(allowSnapshotting: false),
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+    },
+  );
 }
 
 class GlobalLocalizationsInitializer extends StatelessWidget {

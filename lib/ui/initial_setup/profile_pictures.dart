@@ -136,7 +136,6 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
       children: [
         topRow(context),
         const Divider(
-          color: Colors.grey,
           height: 50,
         ),
         bottomRow(context),
@@ -399,12 +398,12 @@ class AddPicture extends StatelessWidget {
           child: Ink(
             width: 100,
             height: ROW_HEIGHT,
-            color: Colors.grey,
-            child: const Center(
+            color: Theme.of(context).colorScheme.surfaceVariant,
+            child: Center(
               child: Icon(
                 Icons.add_a_photo,
                 size: 40,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ),
@@ -517,9 +516,8 @@ class HiddenPicture extends StatelessWidget {
       height: ROW_HEIGHT,
       decoration: BoxDecoration(
         border: Border.all(
-          color: Colors.grey.shade400,
+          color: Theme.of(context).colorScheme.outlineVariant,
           style: BorderStyle.solid,
-          width: 1.0,
         ),
       ),
     );
@@ -653,7 +651,7 @@ class ImgWithCloseButton extends StatelessWidget {
             width: 30,
             height: 30,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surfaceVariant,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(

@@ -93,8 +93,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
           BottomNavigationBarItem(icon: const Icon(Icons.message), label: views[2].title(context)),
           BottomNavigationBarItem(icon: const Icon(Icons.settings), label: views[3].title(context)),
         ],
-        selectedItemColor: Colors.lightBlue[900],
-        unselectedItemColor: Colors.black54,
+        useLegacyColorScheme: false,
         currentIndex: selectedView,
         onTap: (value) {
           context.read<BottomNavigationStateBloc>().add(ChangeScreen(numberToScreen(value)));

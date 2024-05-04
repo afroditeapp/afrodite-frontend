@@ -179,7 +179,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
         markerLayer(),
         attributionWidget(context),
         floatingActionButtons(),
-        viewHelp(),
+        viewHelp(context),
       ],
     );
 
@@ -243,7 +243,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
     }
   }
 
-  Widget viewHelp() {
+  Widget viewHelp(BuildContext context) {
     final helpTextString = widget.editingHelpText;
     if (helpTextString == null) {
       return Container();
@@ -258,13 +258,15 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
-              decoration: const BoxDecoration(
-                boxShadow: [BoxShadow(
-                  blurRadius: 15.0,
-                  color: Colors.black45,
-                )],
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
+              decoration: BoxDecoration(
+                boxShadow: const [
+                  BoxShadow(
+                    blurRadius: 15.0,
+                    color: Colors.black45,
+                  )
+                ],
+                color: Theme.of(context).colorScheme.surfaceVariant,
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
               ),
               padding: const EdgeInsets.all(10),
               child: helpText,

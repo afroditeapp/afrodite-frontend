@@ -155,12 +155,12 @@ Widget buildAddNewButton(
           child: Ink(
             width: SELECT_CONTENT_IMAGE_WIDTH,
             height: SELECT_CONTENT_IMAGE_HEIGHT,
-            color: Colors.grey,
-            child: const Center(
+            color: Theme.of(context).colorScheme.surfaceVariant,
+            child: Center(
               child: Icon(
                 Icons.add_a_photo,
                 size: 40,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ),
