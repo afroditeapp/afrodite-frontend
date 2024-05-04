@@ -31,6 +31,21 @@ class NormalStateScreen extends RootScreen {
   }
 }
 
+BottomNavigationScreenId numberToScreen(int value) {
+  switch (value) {
+    case 0:
+      return BottomNavigationScreenId.profiles;
+    case 1:
+      return BottomNavigationScreenId.likes;
+    case 2:
+      return BottomNavigationScreenId.chats;
+    case 3:
+      return BottomNavigationScreenId.settings;
+    default:
+      throw ArgumentError("Unknown screen number");
+  }
+}
+
 class NormalStateContent extends StatefulWidget {
   const NormalStateContent({Key? key}) : super(key: key);
 
@@ -39,6 +54,11 @@ class NormalStateContent extends StatefulWidget {
 }
 
 class _NormalStateContentState extends State<NormalStateContent> {
+
+  final profileViewKey = UniqueKey();
+  final likeViewKey = UniqueKey();
+  final chatViewKey = UniqueKey();
+  final settingsViewKey = UniqueKey();
 
   @override
   void initState() {
@@ -57,22 +77,48 @@ class _NormalStateContentState extends State<NormalStateContent> {
   }
 
   Widget buildScreen(BuildContext context, int selectedView) {
-    const views = [
-      ProfileView(),
-      LikeView(),
-      ChatView(),
-      SettingsView(),
+    final views = [
+      ProfileView(key: profileViewKey),
+      LikeView(key: likeViewKey),
+      ChatView(key: chatViewKey),
+      SettingsView(key: settingsViewKey),
     ];
 
     return Scaffold(
       appBar: AppBar(
-        scrolledUnderElevation: 0.0,
         leading: Padding(
           padding: const EdgeInsets.only(top: 8, bottom: 8, left: 8),
           child: primaryImageButton(),
         ),
         title: Text(views[selectedView].title(context)),
         actions: views[selectedView].actions(context),
+        notificationPredicate: (scrollNotification) {
+          if (ScrollEventResender.acceptNext) {
+            ScrollEventResender.acceptNext = false;
+            return true;
+          }
+
+          if (scrollNotification.context?.findAncestorWidgetOfExactType<ProfileView>()?.key == profileViewKey) {
+            ScrollEventResender.profileViewLastNotification = scrollNotification;
+          } else if (scrollNotification.context?.findAncestorWidgetOfExactType<LikeView>()?.key == likeViewKey) {
+            ScrollEventResender.likeViewLastNotification = scrollNotification;
+          } else if (scrollNotification.context?.findAncestorWidgetOfExactType<ChatView>()?.key == chatViewKey) {
+            ScrollEventResender.chatViewLastNotification = scrollNotification;
+          } else if (scrollNotification.context?.findAncestorWidgetOfExactType<SettingsView>()?.key == settingsViewKey) {
+            ScrollEventResender.settingsViewLastNotification = scrollNotification;
+          }
+
+          switch (numberToScreen(selectedView)) {
+            case BottomNavigationScreenId.profiles:
+              return scrollNotification.context?.findAncestorWidgetOfExactType<ProfileView>()?.key == profileViewKey;
+            case BottomNavigationScreenId.likes:
+              return scrollNotification.context?.findAncestorWidgetOfExactType<LikeView>()?.key == likeViewKey;
+            case BottomNavigationScreenId.chats:
+              return scrollNotification.context?.findAncestorWidgetOfExactType<ChatView>()?.key == chatViewKey;
+            case BottomNavigationScreenId.settings:
+              return scrollNotification.context?.findAncestorWidgetOfExactType<SettingsView>()?.key == settingsViewKey;
+          }
+        },
       ),
       body: Column(
         children: [
@@ -84,6 +130,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
           ),
           const NotificationPermissionDialogOpener(),
           const NotificationPayloadHandler(),
+          const ScrollEventResender(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -100,21 +147,6 @@ class _NormalStateContentState extends State<NormalStateContent> {
         },
       ),
     );
-  }
-
-  BottomNavigationScreenId numberToScreen(int value) {
-    switch (value) {
-      case 0:
-        return BottomNavigationScreenId.profiles;
-      case 1:
-        return BottomNavigationScreenId.likes;
-      case 2:
-        return BottomNavigationScreenId.chats;
-      case 3:
-        return BottomNavigationScreenId.settings;
-      default:
-        throw ArgumentError("Unknown screen number");
-    }
   }
 
   Widget primaryImageButton() {
@@ -246,4 +278,86 @@ class NotificationPermissionDialog extends StatelessWidget {
       ],
     );
   }
+}
+
+/// Make sure that AppBar has correct elevation
+/// after switching between bottom navigation screens.
+/// This is a workaround for bug:
+/// https://github.com/flutter/flutter/issues/139393
+class ScrollEventResender extends StatelessWidget {
+  const ScrollEventResender({super.key});
+
+  static ScrollNotification? profileViewLastNotification;
+  static ScrollNotification? likeViewLastNotification;
+  static ScrollNotification? chatViewLastNotification;
+  static ScrollNotification? settingsViewLastNotification;
+  static bool acceptNext = false;
+
+  @override
+  Widget build(BuildContext context) {
+    profileViewLastNotification ??= resetScrollEvent(context);
+    likeViewLastNotification ??= resetScrollEvent(context);
+    chatViewLastNotification ??= resetScrollEvent(context);
+    settingsViewLastNotification ??= resetScrollEvent(context);
+
+    return BlocBuilder<BottomNavigationStateBloc, BottomNavigationStateData>(
+      builder: (_, state) {
+        Future.delayed(Duration.zero, () {
+          if (!context.mounted) {
+            return;
+          }
+
+          acceptNext = true;
+          switch (numberToScreen(state.screen.screenIndex)) {
+            case BottomNavigationScreenId.profiles:
+              profileViewLastNotification?.dispatch(context);
+            case BottomNavigationScreenId.likes:
+              likeViewLastNotification?.dispatch(context);
+            case BottomNavigationScreenId.chats:
+              chatViewLastNotification?.dispatch(context);
+            case BottomNavigationScreenId.settings:
+              settingsViewLastNotification?.dispatch(context);
+          }
+        });
+
+        return const SizedBox.shrink();
+      }
+    );
+  }
+
+  ScrollNotification resetScrollEvent(BuildContext context) {
+    return ScrollUpdateNotification(
+      metrics: NoScrollMetrics(),
+      context: context
+    );
+  }
+}
+
+class NoScrollMetrics with ScrollMetrics {
+  @override
+  AxisDirection get axisDirection => AxisDirection.down;
+
+  @override
+  double get devicePixelRatio => 1.0;
+
+  @override
+  bool get hasContentDimensions => true;
+
+  @override
+  bool get hasPixels => true;
+
+  @override
+  bool get hasViewportDimension => true;
+
+  @override
+  double get maxScrollExtent => 100.0;
+
+  @override
+  double get minScrollExtent => 100.0;
+
+  @override
+  double get pixels => 100.0;
+
+  @override
+  double get viewportDimension => 100.0;
 }
