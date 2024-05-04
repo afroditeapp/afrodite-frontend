@@ -91,6 +91,12 @@ dependencies:
 
   meta: ^1.11.0
 
+  # Code reviewed 2024-05-04
+  app_settings:
+    git:
+      url: https://github.com/jutuon/app_settings.git
+      ref: e1d39e4ea052e9dd9a47fbab49737846d9b43264
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

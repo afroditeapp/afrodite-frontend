@@ -30,9 +30,11 @@ class NotificationManager extends AppSingleton {
 
   final _pluginHandle = FlutterLocalNotificationsPlugin();
   late final bool _osSupportsNotificationPermission;
+  late final bool _osProvidesNotificationSettingsUi;
   NotificationPayload? _appLaunchNotificationPayload;
 
   bool get osSupportsNotificationPermission => _osSupportsNotificationPermission;
+  bool get osProvidesNotificationSettingsUi => _osProvidesNotificationSettingsUi;
   PublishSubject<NotificationPayload> onReceivedPayload = PublishSubject();
 
   @override
@@ -73,6 +75,7 @@ class NotificationManager extends AppSingleton {
     }
 
     _osSupportsNotificationPermission = await _notificationPermissionShouldBeAsked();
+    _osProvidesNotificationSettingsUi = await _isAndroid8OrLater();
 
     await _createAndroidNotificationChannelsIfNeeded();
 
@@ -115,6 +118,20 @@ class NotificationManager extends AppSingleton {
       return true;
     } else {
       throw UnsupportedError("Unsupported platform");
+    }
+  }
+
+  Future<bool> _isAndroid8OrLater() async {
+    if (Platform.isAndroid) {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      if (androidInfo.version.sdkInt >= _ANDROID_8_API_LEVEL) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 
@@ -164,14 +181,8 @@ class NotificationManager extends AppSingleton {
   }
 
   Future<void> _createAndroidNotificationChannelsIfNeeded() async {
-    if (!Platform.isAndroid) {
-      return;
-    }
-
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    if (androidInfo.version.sdkInt < _ANDROID_8_API_LEVEL) {
-      // Notification channels are not supported
+    if (!await _isAndroid8OrLater()) {
+      // Android notification channels are not supported
       return;
     }
 

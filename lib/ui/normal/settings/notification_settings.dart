@@ -1,16 +1,22 @@
 
 
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/app/notification_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/settings/notification_settings.dart';
 
 void openNotificationSettings(BuildContext context) {
-  MyNavigator.push(context, const MaterialPage<void>(child:
-    NotificationSettingsScreen()
-  ));
+  if (NotificationManager.getInstance().osProvidesNotificationSettingsUi) {
+    AppSettings.openAppSettings(type: AppSettingsType.notification);
+  } else {
+    MyNavigator.push(context, const MaterialPage<void>(child:
+      NotificationSettingsScreen()
+    ));
+  }
 }
 
 
