@@ -6,6 +6,7 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
+import "package:pihka_frontend/model/freezed/logic/main/navigator_state.dart";
 import "package:pihka_frontend/model/freezed/logic/media/image_processing.dart";
 import "package:pihka_frontend/ui_utils/image.dart";
 import "package:pihka_frontend/ui_utils/loading_dialog.dart";
@@ -76,9 +77,11 @@ Future<bool?> _confirmDialogForImage(BuildContext context, XFile image) async {
     ],
   );
 
-  return await showDialog<bool?>(
+  final pageKey = PageKey();
+  return await MyNavigator.showDialog<bool?>(
     context: context,
     builder: (context) => dialog,
+    pageKey: pageKey,
   );
 }
 

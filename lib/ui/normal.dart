@@ -171,6 +171,15 @@ class _NormalStateContentState extends State<NormalStateContent> {
                 )
               );
             } else {
+              // TODO: It seems that some times info about current account's
+              // profile image does not load after directly after login, so
+              // implement placeholder image here. Also add reloading logic
+              // to view profile screen.
+
+              // TODO: Drag and drop colors in edit profile screen
+              // TODO: "Image moderation status" screen progress icon color
+
+              // TODO: My profile screen image is not centered
               return const SizedBox.shrink();
             }
           }
