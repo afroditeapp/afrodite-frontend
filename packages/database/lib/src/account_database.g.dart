@@ -469,6 +469,38 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       GeneratedColumn<int>(
           'local_image_setting_image_cache_downscaling_size', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _localNotificationSettingMessagesMeta =
+      const VerificationMeta('localNotificationSettingMessages');
+  @override
+  late final GeneratedColumn<bool> localNotificationSettingMessages =
+      GeneratedColumn<bool>(
+          'local_notification_setting_messages', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("local_notification_setting_messages" IN (0, 1))'));
+  static const VerificationMeta _localNotificationSettingLikesMeta =
+      const VerificationMeta('localNotificationSettingLikes');
+  @override
+  late final GeneratedColumn<bool> localNotificationSettingLikes =
+      GeneratedColumn<bool>(
+          'local_notification_setting_likes', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("local_notification_setting_likes" IN (0, 1))'));
+  static const VerificationMeta
+      _localNotificationSettingModerationRequestStatusMeta =
+      const VerificationMeta('localNotificationSettingModerationRequestStatus');
+  @override
+  late final GeneratedColumn<
+      bool> localNotificationSettingModerationRequestStatus = GeneratedColumn<
+          bool>(
+      'local_notification_setting_moderation_request_status', aliasedName, true,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("local_notification_setting_moderation_request_status" IN (0, 1))'));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -530,7 +562,10 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         accessTokenChat,
         localImageSettingImageCacheMaxBytes,
         localImageSettingCacheFullSizedImages,
-        localImageSettingImageCacheDownscalingSize
+        localImageSettingImageCacheDownscalingSize,
+        localNotificationSettingMessages,
+        localNotificationSettingLikes,
+        localNotificationSettingModerationRequestStatus
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -822,6 +857,28 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['local_image_setting_image_cache_downscaling_size']!,
               _localImageSettingImageCacheDownscalingSizeMeta));
     }
+    if (data.containsKey('local_notification_setting_messages')) {
+      context.handle(
+          _localNotificationSettingMessagesMeta,
+          localNotificationSettingMessages.isAcceptableOrUnknown(
+              data['local_notification_setting_messages']!,
+              _localNotificationSettingMessagesMeta));
+    }
+    if (data.containsKey('local_notification_setting_likes')) {
+      context.handle(
+          _localNotificationSettingLikesMeta,
+          localNotificationSettingLikes.isAcceptableOrUnknown(
+              data['local_notification_setting_likes']!,
+              _localNotificationSettingLikesMeta));
+    }
+    if (data
+        .containsKey('local_notification_setting_moderation_request_status')) {
+      context.handle(
+          _localNotificationSettingModerationRequestStatusMeta,
+          localNotificationSettingModerationRequestStatus.isAcceptableOrUnknown(
+              data['local_notification_setting_moderation_request_status']!,
+              _localNotificationSettingModerationRequestStatusMeta));
+    }
     return context;
   }
 
@@ -1000,6 +1057,17 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           DriftSqlType.int,
           data[
               '${effectivePrefix}local_image_setting_image_cache_downscaling_size']),
+      localNotificationSettingMessages: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}local_notification_setting_messages']),
+      localNotificationSettingLikes: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}local_notification_setting_likes']),
+      localNotificationSettingModerationRequestStatus:
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.bool,
+              data[
+                  '${effectivePrefix}local_notification_setting_moderation_request_status']),
     );
   }
 
@@ -1120,6 +1188,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final int? localImageSettingImageCacheMaxBytes;
   final bool? localImageSettingCacheFullSizedImages;
   final int? localImageSettingImageCacheDownscalingSize;
+  final bool? localNotificationSettingMessages;
+  final bool? localNotificationSettingLikes;
+  final bool? localNotificationSettingModerationRequestStatus;
   const AccountData(
       {required this.id,
       this.uuidAccountId,
@@ -1180,7 +1251,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.accessTokenChat,
       this.localImageSettingImageCacheMaxBytes,
       this.localImageSettingCacheFullSizedImages,
-      this.localImageSettingImageCacheDownscalingSize});
+      this.localImageSettingImageCacheDownscalingSize,
+      this.localNotificationSettingMessages,
+      this.localNotificationSettingLikes,
+      this.localNotificationSettingModerationRequestStatus});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1405,6 +1479,19 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['local_image_setting_image_cache_downscaling_size'] =
           Variable<int>(localImageSettingImageCacheDownscalingSize);
     }
+    if (!nullToAbsent || localNotificationSettingMessages != null) {
+      map['local_notification_setting_messages'] =
+          Variable<bool>(localNotificationSettingMessages);
+    }
+    if (!nullToAbsent || localNotificationSettingLikes != null) {
+      map['local_notification_setting_likes'] =
+          Variable<bool>(localNotificationSettingLikes);
+    }
+    if (!nullToAbsent ||
+        localNotificationSettingModerationRequestStatus != null) {
+      map['local_notification_setting_moderation_request_status'] =
+          Variable<bool>(localNotificationSettingModerationRequestStatus);
+    }
     return map;
   }
 
@@ -1588,6 +1675,19 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           localImageSettingImageCacheDownscalingSize == null && nullToAbsent
               ? const Value.absent()
               : Value(localImageSettingImageCacheDownscalingSize),
+      localNotificationSettingMessages:
+          localNotificationSettingMessages == null && nullToAbsent
+              ? const Value.absent()
+              : Value(localNotificationSettingMessages),
+      localNotificationSettingLikes:
+          localNotificationSettingLikes == null && nullToAbsent
+              ? const Value.absent()
+              : Value(localNotificationSettingLikes),
+      localNotificationSettingModerationRequestStatus:
+          localNotificationSettingModerationRequestStatus == null &&
+                  nullToAbsent
+              ? const Value.absent()
+              : Value(localNotificationSettingModerationRequestStatus),
     );
   }
 
@@ -1699,6 +1799,13 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .fromJson<bool?>(json['localImageSettingCacheFullSizedImages']),
       localImageSettingImageCacheDownscalingSize: serializer
           .fromJson<int?>(json['localImageSettingImageCacheDownscalingSize']),
+      localNotificationSettingMessages:
+          serializer.fromJson<bool?>(json['localNotificationSettingMessages']),
+      localNotificationSettingLikes:
+          serializer.fromJson<bool?>(json['localNotificationSettingLikes']),
+      localNotificationSettingModerationRequestStatus:
+          serializer.fromJson<bool?>(
+              json['localNotificationSettingModerationRequestStatus']),
     );
   }
   @override
@@ -1798,6 +1905,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.toJson<bool?>(localImageSettingCacheFullSizedImages),
       'localImageSettingImageCacheDownscalingSize':
           serializer.toJson<int?>(localImageSettingImageCacheDownscalingSize),
+      'localNotificationSettingMessages':
+          serializer.toJson<bool?>(localNotificationSettingMessages),
+      'localNotificationSettingLikes':
+          serializer.toJson<bool?>(localNotificationSettingLikes),
+      'localNotificationSettingModerationRequestStatus': serializer
+          .toJson<bool?>(localNotificationSettingModerationRequestStatus),
     };
   }
 
@@ -1867,6 +1980,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<bool?> localImageSettingCacheFullSizedImages =
               const Value.absent(),
           Value<int?> localImageSettingImageCacheDownscalingSize =
+              const Value.absent(),
+          Value<bool?> localNotificationSettingMessages = const Value.absent(),
+          Value<bool?> localNotificationSettingLikes = const Value.absent(),
+          Value<bool?> localNotificationSettingModerationRequestStatus =
               const Value.absent()}) =>
       AccountData(
         id: id ?? this.id,
@@ -2033,6 +2150,17 @@ class AccountData extends DataClass implements Insertable<AccountData> {
             localImageSettingImageCacheDownscalingSize.present
                 ? localImageSettingImageCacheDownscalingSize.value
                 : this.localImageSettingImageCacheDownscalingSize,
+        localNotificationSettingMessages:
+            localNotificationSettingMessages.present
+                ? localNotificationSettingMessages.value
+                : this.localNotificationSettingMessages,
+        localNotificationSettingLikes: localNotificationSettingLikes.present
+            ? localNotificationSettingLikes.value
+            : this.localNotificationSettingLikes,
+        localNotificationSettingModerationRequestStatus:
+            localNotificationSettingModerationRequestStatus.present
+                ? localNotificationSettingModerationRequestStatus.value
+                : this.localNotificationSettingModerationRequestStatus,
       );
   @override
   String toString() {
@@ -2110,7 +2238,13 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write(
               'localImageSettingCacheFullSizedImages: $localImageSettingCacheFullSizedImages, ')
           ..write(
-              'localImageSettingImageCacheDownscalingSize: $localImageSettingImageCacheDownscalingSize')
+              'localImageSettingImageCacheDownscalingSize: $localImageSettingImageCacheDownscalingSize, ')
+          ..write(
+              'localNotificationSettingMessages: $localNotificationSettingMessages, ')
+          ..write(
+              'localNotificationSettingLikes: $localNotificationSettingLikes, ')
+          ..write(
+              'localNotificationSettingModerationRequestStatus: $localNotificationSettingModerationRequestStatus')
           ..write(')'))
         .toString();
   }
@@ -2176,7 +2310,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         accessTokenChat,
         localImageSettingImageCacheMaxBytes,
         localImageSettingCacheFullSizedImages,
-        localImageSettingImageCacheDownscalingSize
+        localImageSettingImageCacheDownscalingSize,
+        localNotificationSettingMessages,
+        localNotificationSettingLikes,
+        localNotificationSettingModerationRequestStatus
       ]);
   @override
   bool operator ==(Object other) =>
@@ -2256,7 +2393,13 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.localImageSettingCacheFullSizedImages ==
               this.localImageSettingCacheFullSizedImages &&
           other.localImageSettingImageCacheDownscalingSize ==
-              this.localImageSettingImageCacheDownscalingSize);
+              this.localImageSettingImageCacheDownscalingSize &&
+          other.localNotificationSettingMessages ==
+              this.localNotificationSettingMessages &&
+          other.localNotificationSettingLikes ==
+              this.localNotificationSettingLikes &&
+          other.localNotificationSettingModerationRequestStatus ==
+              this.localNotificationSettingModerationRequestStatus);
 }
 
 class AccountCompanion extends UpdateCompanion<AccountData> {
@@ -2320,6 +2463,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<int?> localImageSettingImageCacheMaxBytes;
   final Value<bool?> localImageSettingCacheFullSizedImages;
   final Value<int?> localImageSettingImageCacheDownscalingSize;
+  final Value<bool?> localNotificationSettingMessages;
+  final Value<bool?> localNotificationSettingLikes;
+  final Value<bool?> localNotificationSettingModerationRequestStatus;
   const AccountCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -2381,6 +2527,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.localImageSettingImageCacheMaxBytes = const Value.absent(),
     this.localImageSettingCacheFullSizedImages = const Value.absent(),
     this.localImageSettingImageCacheDownscalingSize = const Value.absent(),
+    this.localNotificationSettingMessages = const Value.absent(),
+    this.localNotificationSettingLikes = const Value.absent(),
+    this.localNotificationSettingModerationRequestStatus = const Value.absent(),
   });
   AccountCompanion.insert({
     this.id = const Value.absent(),
@@ -2443,6 +2592,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.localImageSettingImageCacheMaxBytes = const Value.absent(),
     this.localImageSettingCacheFullSizedImages = const Value.absent(),
     this.localImageSettingImageCacheDownscalingSize = const Value.absent(),
+    this.localNotificationSettingMessages = const Value.absent(),
+    this.localNotificationSettingLikes = const Value.absent(),
+    this.localNotificationSettingModerationRequestStatus = const Value.absent(),
   });
   static Insertable<AccountData> custom({
     Expression<int>? id,
@@ -2505,6 +2657,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<int>? localImageSettingImageCacheMaxBytes,
     Expression<bool>? localImageSettingCacheFullSizedImages,
     Expression<int>? localImageSettingImageCacheDownscalingSize,
+    Expression<bool>? localNotificationSettingMessages,
+    Expression<bool>? localNotificationSettingLikes,
+    Expression<bool>? localNotificationSettingModerationRequestStatus,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2616,6 +2771,13 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (localImageSettingImageCacheDownscalingSize != null)
         'local_image_setting_image_cache_downscaling_size':
             localImageSettingImageCacheDownscalingSize,
+      if (localNotificationSettingMessages != null)
+        'local_notification_setting_messages': localNotificationSettingMessages,
+      if (localNotificationSettingLikes != null)
+        'local_notification_setting_likes': localNotificationSettingLikes,
+      if (localNotificationSettingModerationRequestStatus != null)
+        'local_notification_setting_moderation_request_status':
+            localNotificationSettingModerationRequestStatus,
     });
   }
 
@@ -2679,7 +2841,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<String?>? accessTokenChat,
       Value<int?>? localImageSettingImageCacheMaxBytes,
       Value<bool?>? localImageSettingCacheFullSizedImages,
-      Value<int?>? localImageSettingImageCacheDownscalingSize}) {
+      Value<int?>? localImageSettingImageCacheDownscalingSize,
+      Value<bool?>? localNotificationSettingMessages,
+      Value<bool?>? localNotificationSettingLikes,
+      Value<bool?>? localNotificationSettingModerationRequestStatus}) {
     return AccountCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -2780,6 +2945,13 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       localImageSettingImageCacheDownscalingSize:
           localImageSettingImageCacheDownscalingSize ??
               this.localImageSettingImageCacheDownscalingSize,
+      localNotificationSettingMessages: localNotificationSettingMessages ??
+          this.localNotificationSettingMessages,
+      localNotificationSettingLikes:
+          localNotificationSettingLikes ?? this.localNotificationSettingLikes,
+      localNotificationSettingModerationRequestStatus:
+          localNotificationSettingModerationRequestStatus ??
+              this.localNotificationSettingModerationRequestStatus,
     );
   }
 
@@ -3029,6 +3201,18 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['local_image_setting_image_cache_downscaling_size'] =
           Variable<int>(localImageSettingImageCacheDownscalingSize.value);
     }
+    if (localNotificationSettingMessages.present) {
+      map['local_notification_setting_messages'] =
+          Variable<bool>(localNotificationSettingMessages.value);
+    }
+    if (localNotificationSettingLikes.present) {
+      map['local_notification_setting_likes'] =
+          Variable<bool>(localNotificationSettingLikes.value);
+    }
+    if (localNotificationSettingModerationRequestStatus.present) {
+      map['local_notification_setting_moderation_request_status'] =
+          Variable<bool>(localNotificationSettingModerationRequestStatus.value);
+    }
     return map;
   }
 
@@ -3108,7 +3292,13 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write(
               'localImageSettingCacheFullSizedImages: $localImageSettingCacheFullSizedImages, ')
           ..write(
-              'localImageSettingImageCacheDownscalingSize: $localImageSettingImageCacheDownscalingSize')
+              'localImageSettingImageCacheDownscalingSize: $localImageSettingImageCacheDownscalingSize, ')
+          ..write(
+              'localNotificationSettingMessages: $localNotificationSettingMessages, ')
+          ..write(
+              'localNotificationSettingLikes: $localNotificationSettingLikes, ')
+          ..write(
+              'localNotificationSettingModerationRequestStatus: $localNotificationSettingModerationRequestStatus')
           ..write(')'))
         .toString();
   }
@@ -4739,6 +4929,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
   late final DaoLocalImageSettings daoLocalImageSettings =
       DaoLocalImageSettings(this as AccountDatabase);
+  late final DaoLocalNotificationSettings daoLocalNotificationSettings =
+      DaoLocalNotificationSettings(this as AccountDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

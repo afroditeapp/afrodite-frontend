@@ -11,9 +11,12 @@ import 'package:rxdart/rxdart.dart';
 
 var log = Logger("NotificationManager");
 
-const _ANDROID_13_API_LEVEL = 33;
-const _ANDROID_8_API_LEVEL = 26;
-const _ANDROID_ICON_RESOURCE_NAME = "ic_notification";
+const int _ANDROID_13_API_LEVEL = 33;
+const int _ANDROID_8_API_LEVEL = 26;
+const String _ANDROID_ICON_RESOURCE_NAME = "ic_notification";
+
+const bool NOTIFICATION_CATEGORY_ENABLED_DEFAULT = true;
+
 // TODO(prod): Check local notifications README
 
 class NotificationManager extends AppSingleton {
@@ -124,6 +127,10 @@ class NotificationManager extends AppSingleton {
       NotificationPayload? notificationPayload,
     }
   ) async {
+    if (!await category.isEnabled()) {
+      return;
+    }
+
     final Priority priority;
     final Importance importance;
     if (category.headsUpNotification) {

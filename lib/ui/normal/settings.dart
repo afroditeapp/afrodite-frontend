@@ -15,6 +15,7 @@ import 'package:pihka_frontend/ui/normal/settings/data_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/debug.dart';
 import 'package:pihka_frontend/ui/normal/settings/general_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
+import 'package:pihka_frontend/ui/normal/settings/notification_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/privacy_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/search_settings.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
@@ -93,6 +94,10 @@ class _SettingsViewState extends State<SettingsView> {
               MyNavigator.push(context, MaterialPage<void>(child:
                 CurrentModerationRequestScreen(currentModerationRequestBloc: currentModerationRequestBloc)
               ));
+            }
+          ),
+          Setting.createSetting(Icons.notifications, context.strings.notification_settings_screen_title, () {
+              openNotificationSettings(context);
             }
           ),
           Setting.createSetting(Icons.storage, context.strings.data_settings_screen_title, () {

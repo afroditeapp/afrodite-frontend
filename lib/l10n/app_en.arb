@@ -683,6 +683,10 @@
   "@notification_session_expired_error": {
     "description": "Snackbar text for notifying that notification action was ignored because of expired notification session ID"
   },
+  "notification_settings_screen_title": "Notifications",
+  "@notification_settings_screen_title": {
+    "description": "Title for notification settings screen"
+  },
   "privacy_settings_screen_profile_visiblity_pending_public_description": "Your profile will be visible in profile grid once your images are moderated as accepted",
   "@privacy_settings_screen_profile_visiblity_pending_public_description": {
     "description": "Description for pending public profile visibility"

@@ -54,6 +54,9 @@
     <!-- Notification -->
     <string name="notification_session_expired_error" description="Snackbar text for notifying that notification action was ignored because of expired notification session ID">Notification action ignored because of expired notification session ID</string>
 
+    <!-- Notification settings screen -->
+    <string name="notification_settings_screen_title" description="Title for notification settings screen">Notifications</string>
+
     <!-- App bar actions -->
     <string name="app_bar_action_about" description="Title for app bar action which opens about dialog">About</string>
 

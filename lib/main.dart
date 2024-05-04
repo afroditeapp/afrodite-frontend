@@ -26,7 +26,7 @@ import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/app/notification_payload_handler.dart';
 import 'package:pihka_frontend/logic/app/notification_permission.dart';
-import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
+import 'package:pihka_frontend/logic/app/notification_settings.dart';
 import 'package:pihka_frontend/logic/media/content.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
@@ -39,7 +39,6 @@ import 'package:pihka_frontend/logic/profile/edit_profile_filtering_settings.dar
 import 'package:pihka_frontend/logic/profile/location.dart';
 import 'package:pihka_frontend/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
-import 'package:pihka_frontend/logic/profile/view_profiles.dart';
 import 'package:pihka_frontend/logic/server/address.dart';
 import 'package:pihka_frontend/logic/settings/blocked_profiles.dart';
 import 'package:pihka_frontend/logic/settings/edit_search_settings.dart';
@@ -125,6 +124,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => BlockedProfilesBloc()),
         BlocProvider(create: (_) => SearchSettingsBloc()),
         BlocProvider(create: (_) => EditSearchSettingsBloc()),
+        BlocProvider(create: (_) => NotificationSettingsBloc()),
 
         // Login
         BlocProvider(create: (_) => SignInWithBloc()),
