@@ -176,7 +176,7 @@ class _CurrentModerationRequestScreenState extends State<CurrentModerationReques
   Widget statusInfo(BuildContext context, ModerationRequest moderationRequest) {
     final IconData iconData;
     final Widget statusText;
-    final Color statusColor;
+    final Color? statusColor;
     Widget queuePositionText = const SizedBox.shrink();
     if (moderationRequest.state == ModerationRequestState.accepted) {
       iconData = Icons.check_rounded;
@@ -189,7 +189,7 @@ class _CurrentModerationRequestScreenState extends State<CurrentModerationReques
     } else {
       iconData = Icons.hourglass_top_rounded;
       statusText = Text(context.strings.current_moderation_request_screen_request_waiting);
-      statusColor = Colors.black54;
+      statusColor = null;
       final position = moderationRequest.waitingPosition ?? 0;
       queuePositionText = Text(
         context.strings.current_moderation_request_screen_moderation_queue_position(position.toString())

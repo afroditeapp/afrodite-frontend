@@ -2,12 +2,10 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:image_picker/image_picker.dart";
 import "package:openapi/api.dart";
-import "package:path/path.dart";
 import "package:pihka_frontend/data/image_cache.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/navigator_state.dart";
-import "package:pihka_frontend/logic/media/current_moderation_request.dart";
 import "package:pihka_frontend/logic/media/image_processing.dart";
 import "package:pihka_frontend/logic/media/profile_pictures.dart";
 import "package:pihka_frontend/logic/media/select_content.dart";
@@ -575,7 +573,7 @@ class FilePicture extends StatelessWidget {
       onWillAcceptWithDetails: (details) => details.data != imgIndex,
       builder: (context, candidateData, rejectedData) {
         final acceptedCandidate = candidateData.where((element) => element != imgIndex).firstOrNull;
-        final backgroundColor = acceptedCandidate == null ? Colors.transparent : Colors.grey.shade400;
+        final backgroundColor = acceptedCandidate == null ? Colors.transparent : Theme.of(context).colorScheme.surfaceVariant;
         return ImgWithCloseButton(
             onCloseButtonPressed: () =>
               context.read<ProfilePicturesBloc>().add(RemoveImage(imgIndex)),
@@ -595,7 +593,7 @@ class FilePicture extends StatelessWidget {
       childWhenDragging: Container(
         width: imgWidth,
         height: imgHeight,
-        color: Colors.grey.shade400,
+        color: Theme.of(context).colorScheme.surfaceVariant,
       ),
       child: ImgWithCloseButton.defaultImgWidgetBuilder(context, imgWidth, imgHeight, img.accountId, img.contentId),
     );
@@ -677,6 +675,7 @@ class ImgWithCloseButton extends StatelessWidget {
       width: imgWidth,
       height: imgHeight,
       child: Material(
+        color: Colors.transparent,
         child: InkWell(
           onTap: () => openViewImageScreenForAccountImage(context, accountId, contentId),
           child: accountImgWidgetInk(accountId, contentId, width: imgWidth, height: imgHeight, alignment: Alignment.topRight),
