@@ -208,27 +208,25 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
   }
 
   Widget viewProifleImage(BuildContext context, AccountId accountId, ContentId contentId, ProfileHeroTag? heroTag) {
-    final Widget imgWidget;
+    final Widget img = ProfileThumbnailImage(
+      accountId: accountId,
+      contentId: contentId,
+      borderRadius: null,
+      squareFactor: 0.0,
+      cacheSize: ImageCacheSize.sizeForViewProfile(),
+    );
+
+    final Widget heroAndImg;
     if (heroTag != null) {
-      imgWidget = Hero(
+      heroAndImg = Hero(
         tag: heroTag.value,
-        child: ProfileThumbnailImage(
-          accountId: accountId,
-          contentId: contentId,
-          borderRadius: null,
-          squareFactor: 0.0,
-          cacheSize: ImageCacheSize.sizeForViewProfile(),
-        )
+        child: img,
       );
     } else {
-      imgWidget = accountImgWidget(
-        accountId,
-        contentId,
-        cacheSize: ImageCacheSize.sizeForViewProfile(),
-      );
+      heroAndImg = img;
     }
 
-    return imgWidget;
+    return heroAndImg;
   }
 }
 

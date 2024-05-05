@@ -176,10 +176,6 @@ class _NormalStateContentState extends State<NormalStateContent> {
               // implement placeholder image here. Also add reloading logic
               // to view profile screen.
 
-              // TODO: Drag and drop colors in edit profile screen
-              // TODO: "Image moderation status" screen progress icon color
-
-              // TODO: My profile screen image is not centered
               return const SizedBox.shrink();
             }
           }
