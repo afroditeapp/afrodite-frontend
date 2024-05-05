@@ -264,3 +264,6 @@ class _ProfileGridState extends State<ProfileGrid> {
     super.dispose();
   }
 }
+
+// TODO(prod): Show some error message if getting profiles fails because of
+// some error.
