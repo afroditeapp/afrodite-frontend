@@ -8,6 +8,7 @@ import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
@@ -124,6 +125,7 @@ class LikeViewContent extends StatefulWidget {
 typedef LikeViewEntry = ({ProfileEntry profile, ProfileHeroTag heroTag});
 
 class LikeViewContentState extends State<LikeViewContent> {
+  final ScrollController _scrollController = ScrollController();
   PagingController<int, LikeViewEntry>? _pagingController =
     PagingController(firstPageKey: 0);
   int _heroUniqueIdCounter = 0;
@@ -140,6 +142,27 @@ class LikeViewContentState extends State<LikeViewContent> {
     _profileChangesSubscription = ProfileRepository.getInstance().profileChanges.listen((event) {
         _handleProfileChange(event);
     });
+    _scrollController.addListener(scrollEventListener);
+  }
+
+  void scrollEventListener() {
+    bool isScrolled;
+    if (!_scrollController.hasClients) {
+      isScrolled = false;
+    } else {
+      isScrolled = _scrollController.position.pixels > 0;
+    }
+    updateIsScrolled(isScrolled);
+  }
+
+  void updateIsScrolled(bool isScrolled) {
+    BottomNavigationStateBlocInstance.getInstance()
+      .bloc
+      .updateIsScrolled(
+        isScrolled,
+        BottomNavigationScreenId.likes,
+        (state) => state.isScrolledLikes,
+      );
   }
 
   void _handleProfileChange(ProfileChange event) {
@@ -200,7 +223,14 @@ class LikeViewContentState extends State<LikeViewContent> {
         // This might be disposed after resetProfileIterator completes.
         _pagingController?.refresh();
       },
-      child: grid(context),
+      child: NotificationListener<ScrollMetricsNotification>(
+        onNotification: (notification) {
+          final isScrolled = notification.metrics.pixels > 0;
+          updateIsScrolled(isScrolled);
+          return true;
+        },
+        child: grid(context),
+      ),
     );
   }
 
@@ -258,6 +288,8 @@ class LikeViewContentState extends State<LikeViewContent> {
 
   @override
   void dispose() {
+    _scrollController.removeListener(scrollEventListener);
+    _scrollController.dispose();
     _pagingController?.dispose();
     _pagingController = null;
     _profileChangesSubscription?.cancel();

@@ -7,6 +7,7 @@ import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -35,6 +36,7 @@ typedef MatchEntry = ProfileEntry;
 const _IMG_SIZE = 100.0;
 
 class _ChatViewState extends State<ChatView> {
+  final ScrollController _scrollController = ScrollController();
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
   PagingController<int, MatchEntry>? _pagingController =
     PagingController(firstPageKey: 0);
@@ -49,6 +51,27 @@ class _ChatViewState extends State<ChatView> {
     _profileChangesSubscription = ProfileRepository.getInstance().profileChanges.listen((event) {
         handleProfileChange(event);
     });
+    _scrollController.addListener(scrollEventListener);
+  }
+
+  void scrollEventListener() {
+    bool isScrolled;
+    if (!_scrollController.hasClients) {
+      isScrolled = false;
+    } else {
+      isScrolled = _scrollController.position.pixels > 0;
+    }
+    updateIsScrolled(isScrolled);
+  }
+
+  void updateIsScrolled(bool isScrolled) {
+    BottomNavigationStateBlocInstance.getInstance()
+      .bloc
+      .updateIsScrolled(
+        isScrolled,
+        BottomNavigationScreenId.chats,
+        (state) => state.isScrolledChats,
+      );
   }
 
   void handleProfileChange(ProfileChange event) {
@@ -92,13 +115,19 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return NotificationListener<ScrollMetricsNotification>(
+      onNotification: (notification) {
+        final isScrolled = notification.metrics.pixels > 0;
+        updateIsScrolled(isScrolled);
+        return true;
+      },
       child: grid(context),
     );
   }
 
   Widget grid(BuildContext context) {
     return PagedListView(
+      scrollController: _scrollController,
       pagingController: _pagingController!,
       builderDelegate: PagedChildBuilderDelegate<MatchEntry>(
         animateTransitions: true,
@@ -159,6 +188,8 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   void dispose() {
+    _scrollController.removeListener(scrollEventListener);
+    _scrollController.dispose();
     _pagingController?.dispose();
     _pagingController = null;
     _profileChangesSubscription?.cancel();

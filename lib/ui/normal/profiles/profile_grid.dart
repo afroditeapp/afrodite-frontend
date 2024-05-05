@@ -9,6 +9,7 @@ import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
@@ -32,6 +33,7 @@ class ProfileGrid extends StatefulWidget {
 typedef ProfileViewEntry = ({ProfileEntry profile, ProfileHeroTag heroTag});
 
 class _ProfileGridState extends State<ProfileGrid> {
+  final ScrollController _scrollController = ScrollController();
   PagingController<int, ProfileViewEntry>? _pagingController =
     PagingController(firstPageKey: 0);
   int _heroUniqueIdCounter = 0;
@@ -52,6 +54,27 @@ class _ProfileGridState extends State<ProfileGrid> {
     _profileChangesSubscription = ProfileRepository.getInstance().profileChanges.listen((event) {
         handleProfileChange(event);
     });
+    _scrollController.addListener(scrollEventListener);
+  }
+
+  void scrollEventListener() {
+    bool isScrolled;
+    if (!_scrollController.hasClients) {
+      isScrolled = false;
+    } else {
+      isScrolled = _scrollController.position.pixels > 0;
+    }
+    updateIsScrolled(isScrolled);
+  }
+
+  void updateIsScrolled(bool isScrolled) {
+    BottomNavigationStateBlocInstance.getInstance()
+      .bloc
+      .updateIsScrolled(
+        isScrolled,
+        BottomNavigationScreenId.profiles,
+        (state) => state.isScrolledProfile,
+      );
   }
 
   void handleProfileChange(ProfileChange event) {
@@ -127,7 +150,14 @@ class _ProfileGridState extends State<ProfileGrid> {
       child: BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
         builder: (context, state) {
           if (state.updateState is UpdateIdle) {
-            return grid(context);
+            return NotificationListener<ScrollMetricsNotification>(
+              onNotification: (notification) {
+                final isScrolled = notification.metrics.pixels > 0;
+                updateIsScrolled(isScrolled);
+                return true;
+              },
+              child: grid(context),
+            );
           } else {
             return Center(child: CircularProgressIndicator(key: _progressKey));
           }
@@ -138,6 +168,8 @@ class _ProfileGridState extends State<ProfileGrid> {
 
   Widget grid(BuildContext context) {
     return PagedGridView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      scrollController: _scrollController,
       pagingController: _pagingController!,
       padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
       builderDelegate: PagedChildBuilderDelegate<ProfileViewEntry>(
@@ -223,6 +255,8 @@ class _ProfileGridState extends State<ProfileGrid> {
 
   @override
   void dispose() {
+    _scrollController.removeListener(scrollEventListener);
+    _scrollController.dispose();
     _pagingController?.dispose();
     _pagingController = null;
     _profileChangesSubscription?.cancel();

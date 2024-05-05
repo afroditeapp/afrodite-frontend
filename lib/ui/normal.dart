@@ -11,6 +11,7 @@ import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/logic/app/notification_permission.dart";
 import "package:pihka_frontend/logic/media/content.dart";
 import "package:pihka_frontend/model/freezed/logic/account/account.dart";
+import "package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.dart";
 import "package:pihka_frontend/model/freezed/logic/main/navigator_state.dart";
 import "package:pihka_frontend/model/freezed/logic/media/content.dart";
 import "package:pihka_frontend/ui/normal/chat.dart";
@@ -54,71 +55,60 @@ class NormalStateContent extends StatefulWidget {
 }
 
 class _NormalStateContentState extends State<NormalStateContent> {
-
-  final profileViewKey = UniqueKey();
-  final likeViewKey = UniqueKey();
-  final chatViewKey = UniqueKey();
-  final settingsViewKey = UniqueKey();
-
   @override
   void initState() {
     super.initState();
-    BottomNavigationStateBlocInstance.getInstance().bloc
-      .add(ChangeScreen(BottomNavigationScreenId.profiles));
+    BottomNavigationStateBlocInstance.getInstance()
+      .bloc
+      .add(ChangeScreen(BottomNavigationScreenId.profiles, resetIsScrolledValues: true));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavigationStateBloc, BottomNavigationStateData>(
       builder: (context, state) {
-        return buildScreen(context, state.screen.screenIndex);
+
+        final isScrolled = switch (numberToScreen(state.screen.screenIndex)) {
+          BottomNavigationScreenId.profiles => state.isScrolledProfile,
+          BottomNavigationScreenId.likes => state.isScrolledLikes,
+          BottomNavigationScreenId.chats => state.isScrolledChats,
+          BottomNavigationScreenId.settings => state.isScrolledSettings,
+        };
+
+        return buildScreen(
+          context,
+          state.screen.screenIndex,
+          isScrolled,
+        );
       }
     );
   }
 
-  Widget buildScreen(BuildContext context, int selectedView) {
-    final views = [
-      ProfileView(key: profileViewKey),
-      LikeView(key: likeViewKey),
-      ChatView(key: chatViewKey),
-      SettingsView(key: settingsViewKey),
+  Widget buildScreen(BuildContext context, int selectedView, bool isScrolled) {
+    const views = [
+      ProfileView(),
+      LikeView(),
+      ChatView(),
+      SettingsView(),
     ];
 
     return Scaffold(
       appBar: AppBar(
+        // Make sure that AppBar has correct elevation
+        // after switching between bottom navigation screens.
+        // This is a workaround for bug:
+        // https://github.com/flutter/flutter/issues/139393
+        // 3.0 is the default scrolledUnderElevation for AppBar when Material 3
+        // is enabled.
+        elevation: isScrolled ? 3.0 : 0.0,
+        scrolledUnderElevation: 0.0,
         leading: Padding(
           padding: const EdgeInsets.only(top: 8, bottom: 8, left: 8),
           child: primaryImageButton(),
         ),
         title: Text(views[selectedView].title(context)),
         actions: views[selectedView].actions(context),
-        notificationPredicate: (scrollNotification) {
-          if (ScrollEventResender.acceptNext) {
-            ScrollEventResender.acceptNext = false;
-            return true;
-          }
-
-          if (scrollNotification.context?.findAncestorWidgetOfExactType<ProfileView>()?.key == profileViewKey) {
-            ScrollEventResender.profileViewLastNotification = scrollNotification;
-          } else if (scrollNotification.context?.findAncestorWidgetOfExactType<LikeView>()?.key == likeViewKey) {
-            ScrollEventResender.likeViewLastNotification = scrollNotification;
-          } else if (scrollNotification.context?.findAncestorWidgetOfExactType<ChatView>()?.key == chatViewKey) {
-            ScrollEventResender.chatViewLastNotification = scrollNotification;
-          } else if (scrollNotification.context?.findAncestorWidgetOfExactType<SettingsView>()?.key == settingsViewKey) {
-            ScrollEventResender.settingsViewLastNotification = scrollNotification;
-          }
-
-          switch (numberToScreen(selectedView)) {
-            case BottomNavigationScreenId.profiles:
-              return scrollNotification.context?.findAncestorWidgetOfExactType<ProfileView>()?.key == profileViewKey;
-            case BottomNavigationScreenId.likes:
-              return scrollNotification.context?.findAncestorWidgetOfExactType<LikeView>()?.key == likeViewKey;
-            case BottomNavigationScreenId.chats:
-              return scrollNotification.context?.findAncestorWidgetOfExactType<ChatView>()?.key == chatViewKey;
-            case BottomNavigationScreenId.settings:
-              return scrollNotification.context?.findAncestorWidgetOfExactType<SettingsView>()?.key == settingsViewKey;
-          }
-        },
+        notificationPredicate: (scrollNotification) => false,
       ),
       body: Column(
         children: [
@@ -130,7 +120,6 @@ class _NormalStateContentState extends State<NormalStateContent> {
           ),
           const NotificationPermissionDialogOpener(),
           const NotificationPayloadHandler(),
-          const ScrollEventResender(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -285,86 +274,4 @@ class NotificationPermissionDialog extends StatelessWidget {
       ],
     );
   }
-}
-
-/// Make sure that AppBar has correct elevation
-/// after switching between bottom navigation screens.
-/// This is a workaround for bug:
-/// https://github.com/flutter/flutter/issues/139393
-class ScrollEventResender extends StatelessWidget {
-  const ScrollEventResender({super.key});
-
-  static ScrollNotification? profileViewLastNotification;
-  static ScrollNotification? likeViewLastNotification;
-  static ScrollNotification? chatViewLastNotification;
-  static ScrollNotification? settingsViewLastNotification;
-  static bool acceptNext = false;
-
-  @override
-  Widget build(BuildContext context) {
-    profileViewLastNotification ??= resetScrollEvent(context);
-    likeViewLastNotification ??= resetScrollEvent(context);
-    chatViewLastNotification ??= resetScrollEvent(context);
-    settingsViewLastNotification ??= resetScrollEvent(context);
-
-    return BlocBuilder<BottomNavigationStateBloc, BottomNavigationStateData>(
-      builder: (_, state) {
-        Future.delayed(Duration.zero, () {
-          if (!context.mounted) {
-            return;
-          }
-
-          acceptNext = true;
-          switch (numberToScreen(state.screen.screenIndex)) {
-            case BottomNavigationScreenId.profiles:
-              profileViewLastNotification?.dispatch(context);
-            case BottomNavigationScreenId.likes:
-              likeViewLastNotification?.dispatch(context);
-            case BottomNavigationScreenId.chats:
-              chatViewLastNotification?.dispatch(context);
-            case BottomNavigationScreenId.settings:
-              settingsViewLastNotification?.dispatch(context);
-          }
-        });
-
-        return const SizedBox.shrink();
-      }
-    );
-  }
-
-  ScrollNotification resetScrollEvent(BuildContext context) {
-    return ScrollUpdateNotification(
-      metrics: NoScrollMetrics(),
-      context: context
-    );
-  }
-}
-
-class NoScrollMetrics with ScrollMetrics {
-  @override
-  AxisDirection get axisDirection => AxisDirection.down;
-
-  @override
-  double get devicePixelRatio => 1.0;
-
-  @override
-  bool get hasContentDimensions => true;
-
-  @override
-  bool get hasPixels => true;
-
-  @override
-  bool get hasViewportDimension => true;
-
-  @override
-  double get maxScrollExtent => 100.0;
-
-  @override
-  double get minScrollExtent => 100.0;
-
-  @override
-  double get pixels => 100.0;
-
-  @override
-  double get viewportDimension => 100.0;
 }

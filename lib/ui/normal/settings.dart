@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/account_details.dart';
+import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/settings/edit_search_settings.dart';
@@ -47,6 +48,34 @@ class SettingsView extends BottomNavigationScreen {
 }
 
 class _SettingsViewState extends State<SettingsView> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(scrollEventListener);
+  }
+
+  void scrollEventListener() {
+    bool isScrolled;
+    if (!_scrollController.hasClients) {
+      isScrolled = false;
+    } else {
+      isScrolled = _scrollController.position.pixels > 0;
+    }
+    updateIsScrolled(isScrolled);
+  }
+
+  void updateIsScrolled(bool isScrolled) {
+    BottomNavigationStateBlocInstance.getInstance()
+      .bloc
+      .updateIsScrolled(
+        isScrolled,
+        BottomNavigationScreenId.settings,
+        (state) => state.isScrolledSettings,
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
@@ -126,16 +155,31 @@ class _SettingsViewState extends State<SettingsView> {
           MyNavigator.push(context, const MaterialPage<void>(child: DebugSettingsPage()))
         ));
 
-        return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ...settings.map((setting) => setting.toListTile()),
-            ],
+        return NotificationListener<ScrollMetricsNotification>(
+          onNotification: (notification) {
+            final isScrolled = notification.metrics.pixels > 0;
+            updateIsScrolled(isScrolled);
+            return true;
+          },
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ...settings.map((setting) => setting.toListTile()),
+              ],
+            ),
           ),
         );
       }
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(scrollEventListener);
+    _scrollController.dispose();
+    super.dispose();
   }
 }
 
