@@ -335,6 +335,10 @@
   "@generic_text_field_age_hint_text": {
     "description": "Input field hint text for age"
   },
+  "generic_try_again": "Try again",
+  "@generic_try_again": {
+    "description": "Generic try again text"
+  },
   "generic_yes": "Yes",
   "@generic_yes": {
     "description": "Generic yes text"
@@ -881,6 +885,10 @@
   "view_profile_screen_my_profile_edit_action": "Edit profile",
   "@view_profile_screen_my_profile_edit_action": {
     "description": "Text for view profile screen edit my profile action"
+  },
+  "view_profile_screen_my_profile_loading_failed": "Profile loading failed",
+  "@view_profile_screen_my_profile_loading_failed": {
+    "description": "Text displayed when current account's profile loading fails"
   },
   "view_profile_screen_my_profile_title": "My profile",
   "@view_profile_screen_my_profile_title": {

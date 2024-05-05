@@ -24,6 +24,7 @@ class NewMyProfile extends MyProfileEvent {
   final ProfileEntry? profile;
   NewMyProfile(this.profile);
 }
+class ReloadMyProfile extends MyProfileEvent {}
 
 class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunner {
   final ProfileRepository profile = ProfileRepository.getInstance();
@@ -84,6 +85,30 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
     });
     on<NewMyProfile>((data, emit) async {
       emit(state.copyWith(profile: data.profile));
+    });
+    on<ReloadMyProfile>((data, emit) async {
+      await runOnce(() async {
+        emit(state.copyWith(loadingMyProfile: true));
+
+        final waitTime = WantedWaitingTimeManager();
+
+        bool failureDetected = false;
+        if (await profile.reloadMyProfile().isErr()) {
+          failureDetected = true;
+        }
+
+        if (await media.reloadMyProfileContent().isErr()) {
+          failureDetected = true;
+        }
+
+        await waitTime.waitIfNeeded();
+
+        if (failureDetected) {
+          showSnackBar(R.strings.generic_error_occurred);
+        }
+
+        emit(state.copyWith(loadingMyProfile: false));
+      });
     });
 
     db.accountStream((db) => db.getProfileEntryForMyProfile()).listen((event) {

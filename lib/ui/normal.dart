@@ -166,22 +166,24 @@ class _NormalStateContentState extends State<NormalStateContent> {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () => MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()))
+                    onTap: openMyProfileScreen,
                   ),
                 )
               );
             } else {
-              // TODO: It seems that some times info about current account's
-              // profile image does not load after directly after login, so
-              // implement placeholder image here. Also add reloading logic
-              // to view profile screen.
-
-              return const SizedBox.shrink();
+              return IconButton(
+                icon: const Icon(Icons.warning_rounded),
+                onPressed: openMyProfileScreen,
+              );
             }
           }
         );
       }
     );
+  }
+
+  void openMyProfileScreen() {
+    MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()));
   }
 }
 

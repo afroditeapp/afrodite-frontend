@@ -13,6 +13,7 @@ import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
 
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/ui_utils/loading_dialog.dart';
 
 
 class MyProfileScreen extends StatelessWidget {
@@ -32,7 +33,14 @@ class MyProfileScreen extends StatelessWidget {
           )
         ],
       ),
-      body: myProfilePage(context),
+      body: Column(
+        children: [
+          Expanded(child: myProfilePage(context)),
+          ProgressDialogOpener<MyProfileBloc, MyProfileData>(
+            dialogVisibilityGetter: (state) => state.loadingMyProfile,
+          )
+        ]
+      ),
       floatingActionButton: BlocBuilder<MyProfileBloc, MyProfileData>(
         builder: ((context, state) {
           final profile = state.profile;
@@ -67,11 +75,31 @@ class MyProfileScreen extends StatelessWidget {
     return BlocBuilder<MyProfileBloc, MyProfileData>(
       builder: (context, profileState) {
         final profile = profileState.profile;
+
+        final Widget wantedWidget;
         if (profile != null) {
-          return ViewProfileEntry(profile: profile);
+          wantedWidget = ViewProfileEntry(profile: profile);
         } else {
-          return Text(context.strings.generic_empty);
+          wantedWidget = Center(
+            child: Column(
+              children: [
+                const Spacer(),
+                Text(context.strings.view_profile_screen_my_profile_loading_failed),
+                const Padding(padding: EdgeInsets.all(8)),
+                ElevatedButton(
+                  onPressed: () => context.read<MyProfileBloc>().add(ReloadMyProfile()),
+                  child: Text(context.strings.generic_try_again),
+                ),
+                const Spacer(flex: 3),
+              ],
+            ),
+          );
         }
+
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          child: wantedWidget,
+        );
       }
     );
   }
