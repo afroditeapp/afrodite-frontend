@@ -3,7 +3,7 @@
 import 'dart:io';
 
 const String _defaultAccountServerAddressAndroid = "***REMOVED***"; // Should point to 10.0.2.2 (Android emulator host)
-const String _defaultAccountServerAddressIos = "http://192.168.0.1:3000";
+const String _defaultAccountServerAddressIos = "http://localhost:3000"; // This address is for iOS simulator
 
 String defaultServerUrlAccount() {
   if (Platform.isAndroid) {

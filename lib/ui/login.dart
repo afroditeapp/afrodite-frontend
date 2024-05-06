@@ -48,6 +48,18 @@ class LoginScreenOld extends RootScreen {
       ),
       ElevatedButton(
         child: const Text(
+            "http://localhost:3000"
+        ),
+        onPressed: () {
+          _serverAddressController.text = "http://localhost:3000";
+          final valid = _serverAddressFormKey.currentState?.validate();
+          if (valid != null && valid) {
+            _serverAddressFormKey.currentState?.save();
+          }
+        },
+      ),
+      ElevatedButton(
+        child: const Text(
             "http://192.168.0.13:3000"
         ),
         onPressed: () {
