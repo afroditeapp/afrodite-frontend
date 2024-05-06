@@ -102,3 +102,19 @@ LICENSE file of native_utils Dart package:
 cargo install cargo-about --locked
 make update-licenses-for-native-utils
 ```
+
+# Building for iOS and iOS simulator
+
+1. Install cocoapods
+
+<https://guides.cocoapods.org/using/getting-started.html#sudo-less-installation>
+
+2. Xcode and related tools are also needed
+
+3. Install Rust targets
+
+```
+rustup target add aarch64-apple-ios
+rustup target add aarch64-apple-ios-sim
+rustup target add x86_64-apple-ios
+```

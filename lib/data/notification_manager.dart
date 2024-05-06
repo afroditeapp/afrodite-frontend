@@ -224,3 +224,14 @@ class NotificationManager extends AppSingleton {
     }
   }
 }
+
+// TODO(prod): iOS notifications are not working
+// TODO(prod): iOS notification permission is asked when app starts.
+//             It should be asked at same location as on Android.
+// TODO(prod): iOS back navigation gesture is not working on screens which have
+//             some special PopScope logic. If back gesture is not working
+//             perhaps floating action button should be displayed with
+//             save data action.
+// TODO(prod): Check that Sqlchipher is loading properly on iOS.
+//             At least current error checking code does not notice anything
+//             odd.

@@ -22,7 +22,20 @@ A new Flutter FFI plugin project.
   s.dependency 'Flutter'
   s.platform = :ios, '11.0'
 
-  # Flutter.framework does not contain a i386 slice.
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
+  s.script_phase = {
+    :name => 'Build rust_utils library',
+    :script => 'sh "$PODS_TARGET_SRCROOT/build_rust_utils.sh"',
+    :execution_position => :before_compile,
+  }
+
+  s.pod_target_xcconfig = {
+    'DEFINES_MODULE' => 'YES',
+    # Flutter.framework does not contain a i386 slice.
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386',
+    'LIBRARY_SEARCH_PATHS[sdk=iphoneos*]' => '"$PODS_TARGET_SRCROOT/../rust_utils/target/aarch64-apple-ios/release"',
+    'LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*][arch=arm64]' => '"$PODS_TARGET_SRCROOT/../rust_utils/target/aarch64-apple-ios-sim/release"',
+    'LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*][arch=x86_64]' => '"$PODS_TARGET_SRCROOT/../rust_utils/target/x86_64-apple-ios/release"',
+    'OTHER_LDFLAGS' => '-lrust_utils',
+  }
   s.swift_version = '5.0'
 end
