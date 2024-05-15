@@ -25,6 +25,7 @@ import 'package:pihka_frontend/localizations.dart';
 import "package:url_launcher/url_launcher_string.dart";
 
 // TODO(prod): Use SVG for sign in with google button
+// TODO(prod): Sign in with buttons dark theme support
 
 class LoginScreen extends RootScreen {
   const LoginScreen({Key? key}) : super(key: key);
