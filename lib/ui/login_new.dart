@@ -239,7 +239,7 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
   final passwordField = SimpleTextField(
     hintText: context.strings.login_screen_demo_account_password,
     obscureText: true,
-    getInitialValue: () => context.read<DemoAccountBloc>().state.password ?? "password",
+    getInitialValue: () => context.read<DemoAccountBloc>().state.password ?? "tThlYqVHIiY=",
   );
   final pageKey = PageKey();
   return MyNavigator.showDialog<DemoAccountCredentials?>(
