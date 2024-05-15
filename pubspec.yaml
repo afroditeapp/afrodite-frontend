@@ -153,7 +153,6 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 
   assets:
-    - assets_not_in_git/server_root.crt
     - assets/app-icon.png
     - assets/sign_in_with_google_android_dark_rd_SI@4x.png
     - assets/sign_in_with_google_ios_dark_rd_SI@4x.png

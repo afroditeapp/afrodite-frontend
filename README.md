@@ -68,11 +68,10 @@ String signInWithGoogleIosClientId() {
 }
 ```
 
-2. Add server certificate to
+2. Install native code building dependencies. Instructions for that are in
+this file.
 
-assets_not_in_git/server_root.crt
-
-3. flutter gen-l10n
+3. Start Android emulator and run `flutter run`.
 
 # About Assets
 
