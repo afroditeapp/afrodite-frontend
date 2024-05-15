@@ -34,42 +34,10 @@ class LoginScreenOld extends RootScreen {
           }
         },
       ),
-      ElevatedButton(
-        child: const Text(
-            "***REMOVED***"
-        ),
-        onPressed: () {
-          _serverAddressController.text = "***REMOVED***";
-          final valid = _serverAddressFormKey.currentState?.validate();
-          if (valid != null && valid) {
-            _serverAddressFormKey.currentState?.save();
-          }
-        },
-      ),
-      ElevatedButton(
-        child: const Text(
-            "http://localhost:3000"
-        ),
-        onPressed: () {
-          _serverAddressController.text = "http://localhost:3000";
-          final valid = _serverAddressFormKey.currentState?.validate();
-          if (valid != null && valid) {
-            _serverAddressFormKey.currentState?.save();
-          }
-        },
-      ),
-      ElevatedButton(
-        child: const Text(
-            "http://192.168.0.13:3000"
-        ),
-        onPressed: () {
-          _serverAddressController.text = "http://192.168.0.13:3000";
-          final valid = _serverAddressFormKey.currentState?.validate();
-          if (valid != null && valid) {
-            _serverAddressFormKey.currentState?.save();
-          }
-        },
-      ),
+      changeAddressButton("***REMOVED***"),
+      changeAddressButton("http://localhost:3000"),
+      changeAddressButton("http://192.168.0.13:3000"),
+      changeAddressButton("***REMOVED***"),
       ElevatedButton(
         child: Text(context.strings.login_screen_register_button),
         onPressed: () {
@@ -130,6 +98,19 @@ class LoginScreenOld extends RootScreen {
           ),
         ),
       ),
+    );
+  }
+
+  Widget changeAddressButton(String addressUrl) {
+    return ElevatedButton(
+      child: Text(addressUrl),
+      onPressed: () {
+        _serverAddressController.text = addressUrl;
+        final valid = _serverAddressFormKey.currentState?.validate();
+        if (valid != null && valid) {
+          _serverAddressFormKey.currentState?.save();
+        }
+      },
     );
   }
 }
