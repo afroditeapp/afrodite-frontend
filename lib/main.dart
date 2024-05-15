@@ -66,6 +66,17 @@ final log = Logger("main");
 // state screen. This way those will be cleared on logout and other
 // state changes.
 
+// TODO(prod): Admin moderate images does not make 1 pixel images
+//             to fill the UI area.
+// TODO(prod): The chat has some issue that latest message can be visible
+//             multiple times.
+// TODO(prod): Client does not detect when remote server websocket connection
+//             breaks. Perhaps reset websocket connection if API returns
+//             HTTP unauthorized error? The server side must send some message
+//             to client reqularly, so that broken connections are detected.
+// TODO(prod): When there are two conversation notifications, opening those
+//             one by one, results in the second opened to below the first.
+
 Future<void> main() async {
   // TODO(prod): change log level before release?
   Logger.root.level = Level.ALL;
