@@ -95,9 +95,8 @@ class ConversationPageState extends State<ConversationPage> {
                   height: AppBar().preferredSize.height,
                   child: Row(
                     children: [
-                      ProfileThumbnailImage(
-                        accountId: widget.profileEntry.uuid,
-                        contentId: widget.profileEntry.imageUuid,
+                      ProfileThumbnailImage.fromProfileEntry(
+                        entry: widget.profileEntry,
                         width: 40,
                         height: 40,
                         cacheSize: ImageCacheSize.sizeForAppBarThumbnail(),
