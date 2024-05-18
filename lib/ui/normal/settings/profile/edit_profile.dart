@@ -34,6 +34,12 @@ import 'package:pihka_frontend/utils/profile_entry.dart';
 // Update: there is now RemoveImage event which should reset the data but
 // other blocs should also be checked.
 
+// TODO(prod): Attribute icon buttons should go to edit attribute screen. Better to
+// just change the buttons to icons with same color as icon button?
+
+// TODO(prod): Fix attribute text translations. At least locale "se" is not
+// working.
+
 class EditProfilePage extends StatefulWidget {
   final PageKey pageKey;
   final ProfileEntry initialProfile;
