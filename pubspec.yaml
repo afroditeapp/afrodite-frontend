@@ -97,6 +97,8 @@ dependencies:
       url: https://github.com/jutuon/app_settings.git
       ref: e1d39e4ea052e9dd9a47fbab49737846d9b43264
   firebase_core: ^2.31.0
+  firebase_messaging: ^14.9.2
+  google_api_availability: ^5.0.0
 
 dev_dependencies:
   flutter_test:

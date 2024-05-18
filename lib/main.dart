@@ -16,8 +16,8 @@ import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
+import 'package:pihka_frontend/data/push_notification_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
-import 'package:pihka_frontend/firebase_options.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/account_details.dart';
@@ -281,6 +281,7 @@ class GlobalInitManager {
     await ImageCacheSettings.getInstance().init();
     await CameraManager.getInstance().init();
     await NotificationManager.getInstance().init();
+    await PushNotificationManager.getInstance().init();
 
     await CommonRepository.getInstance().init();
     await LoginRepository.getInstance().init();
@@ -291,12 +292,6 @@ class GlobalInitManager {
 
     // Initializes formatting for other locales as well
     await initializeDateFormatting("en_US", null);
-
-    // TODO: Perhaps this should be moved where push notification code will be
-    //       located.
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
 
     // Connect to server last to make sure that all events from
     // server are handled.

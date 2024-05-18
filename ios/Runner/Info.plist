@@ -68,5 +68,9 @@
 		</dict>
 	</array>
 	<!-- End of the Google Sign-in Section -->
+
+	<!-- Firebase cloud messaging -->
+	<key>FirebaseMessagingAutoInitEnabled</key>
+	<false/>
 </dict>
 </plist>

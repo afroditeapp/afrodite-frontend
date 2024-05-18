@@ -6,6 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_category.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
+import 'package:pihka_frontend/data/push_notification_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -103,6 +104,8 @@ class NotificationManager extends AppSingleton {
     } else {
       throw UnsupportedError("Unsupported platform");
     }
+
+    await PushNotificationManager.getInstance().initPushNotifications();
   }
 
   Future<bool> _notificationPermissionShouldBeAsked() async {
