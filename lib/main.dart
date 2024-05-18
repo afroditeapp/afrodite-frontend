@@ -1,5 +1,6 @@
 import 'dart:developer' as developer;
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +17,7 @@ import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/firebase_options.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/account_details.dart';
@@ -289,6 +291,12 @@ class GlobalInitManager {
 
     // Initializes formatting for other locales as well
     await initializeDateFormatting("en_US", null);
+
+    // TODO: Perhaps this should be moved where push notification code will be
+    //       located.
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
     // Connect to server last to make sure that all events from
     // server are handled.

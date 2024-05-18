@@ -1,5 +1,8 @@
 plugins {
     id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
@@ -52,7 +55,9 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix ".debug"
+            // Disabled for now, as another Firebase project would be needed
+            // if there can be multiple application IDs.
+            // applicationIdSuffix ".debug"
         }
         release {
             // TODO: Add your own signing config for the release build.

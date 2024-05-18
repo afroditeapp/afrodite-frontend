@@ -117,3 +117,14 @@ rustup target add aarch64-apple-ios
 rustup target add aarch64-apple-ios-sim
 rustup target add x86_64-apple-ios
 ```
+
+# Firebase
+
+If you modify the Firebase projects from Firebase web UI, you
+can update Firebase related config using command
+```
+flutterfire configure
+```
+
+Install instructions for that tool is at
+<https://firebase.google.com/docs/flutter/setup?platform=android>
