@@ -1,12 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:pihka_frontend/logic/account/account.dart";
-import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/server/address.dart";
-import "package:pihka_frontend/model/freezed/logic/account/account.dart";
 import "package:pihka_frontend/ui_utils/root_screen.dart";
-
-
 
 import 'package:pihka_frontend/localizations.dart';
 
@@ -38,29 +33,6 @@ class LoginScreenOld extends RootScreen {
       changeAddressButton("http://localhost:3000"),
       changeAddressButton("http://192.168.0.13:3000"),
       changeAddressButton("***REMOVED***"),
-      ElevatedButton(
-        child: Text(context.strings.login_screen_register_button),
-        onPressed: () {
-          context.read<AccountBloc>().add(DoRegister());
-        },
-      ),
-      const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
-      BlocBuilder<AccountBloc, AccountBlocData>(
-        buildWhen: (previous, current) => previous.accountId != current.accountId,
-        builder: (_, state) {
-          return Text(
-            "Account ID: ${state.accountId ?? "not set"}"
-          );
-        }
-      ),
-      const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
-      ElevatedButton(
-        child: Text(context.strings.login_screen_login_button),
-        onPressed: () {
-          context.read<InitialSetupBloc>().add(ResetState());
-          context.read<AccountBloc>().add(DoLogin());
-        }
-      ),
       const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
       // const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
       // ElevatedButton(

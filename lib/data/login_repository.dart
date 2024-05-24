@@ -126,28 +126,6 @@ class LoginRepository extends DataRepository {
     });
   }
 
-  Future<AccountId?> register() async {
-    var id = await _api.accountInternal((api) => api.postRegister()).ok();
-    if (id != null) {
-      final result = await DatabaseManager.getInstance().setAccountId(id);
-      if (result.isErr()) {
-        return null;
-      }
-    }
-    return id;
-  }
-
-  Future<void> login() async {
-    final accountIdValue = await accountId.first;
-    if (accountIdValue == null) {
-      return;
-    }
-    final loginResult = await _api.accountInternal((api) => api.postLogin(accountIdValue)).ok();
-    if (loginResult != null) {
-      await _handleLoginResult(loginResult);
-    }
-  }
-
   Future<void> signInWithGoogle(GoogleSignIn google) async {
     final signedIn = await google.signIn();
     if (signedIn != null) {

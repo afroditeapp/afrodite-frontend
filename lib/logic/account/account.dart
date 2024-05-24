@@ -8,8 +8,6 @@ import "package:pihka_frontend/model/freezed/logic/account/account.dart";
 import "package:pihka_frontend/utils.dart";
 
 sealed class AccountEvent {}
-class DoRegister extends AccountEvent {}
-class DoLogin extends AccountEvent {}
 class DoLogout extends AccountEvent {}
 class NewAccountIdValue extends AccountEvent {
   final AccountId? value;
@@ -38,18 +36,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
       capabilities: Capabilities(),
       visibility: ProfileVisibility.pendingPrivate
     )) {
-    on<DoRegister>((data, emit) async {
-      await runOnce(() async {
-        emit(state.copyWith(
-          accountId: await login.register(),
-        ));
-      });
-    });
-    on<DoLogin>((_, emit) async {
-      await runOnce(() async {
-        await login.login();
-      });
-    });
     on<DoLogout>((_, emit) async {
       await runOnce(() async {
         await login.logout();
