@@ -86,6 +86,7 @@
     <string name="login_screen_demo_account_login_progress_dialog" description="Dialog info text that demo account login is in progress">Login…</string>
     <string name="login_screen_demo_account_login_failed" description="Snackbar text for demo account login failed">Login failed</string>
     <string name="login_screen_demo_account_login_session_expired" description="Snackbar text for demo account login session expiration">Demo account session expired</string>
+    <string name="login_screen_sign_in_with_error" description="Snackbar text for sign in with error">Sign in with failed</string>
 
     <!-- Demo account screen -->
     <string name="demo_account_screen_no_accounts_available" description="Text displayed when available accounts list is empty">No accounts available</string>

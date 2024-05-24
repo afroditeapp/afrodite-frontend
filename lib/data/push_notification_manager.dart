@@ -91,7 +91,9 @@ class PushNotificationManager extends AppSingleton {
   Future<void> logoutPushNotifications() async {
     await _tokenSubscription?.cancel();
     await _messageSubscription?.cancel();
-    await FirebaseMessaging.instance.deleteToken();
+    if (_firebaseApp != null) {
+      await FirebaseMessaging.instance.deleteToken();
+    }
     // TODO(prod): Make sure that server unassociates this FCM token with the user
   }
 }

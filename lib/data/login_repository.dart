@@ -1,4 +1,7 @@
 
+import 'dart:io';
+
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -11,6 +14,7 @@ import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/secrets.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -44,6 +48,8 @@ class LoginRepository extends DataRepository {
   }
 
   final _api = ApiManager.getInstance();
+
+  GoogleSignIn google = createSignInWithGoogle();
 
   final BehaviorSubject<LoginState> _loginState =
     BehaviorSubject.seeded(LoginState.splashScreen);
@@ -126,24 +132,39 @@ class LoginRepository extends DataRepository {
     });
   }
 
-  Future<void> signInWithGoogle(GoogleSignIn google) async {
-    final signedIn = await google.signIn();
-    if (signedIn != null) {
-      log.fine("$signedIn, ${signedIn.email}");
-
-      var token = await signedIn.authentication;
-      log.fine("${token.accessToken}, ${token.idToken}");
-
-      final login = await _api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken))).ok();
-      if (login != null) {
-        await _handleLoginResult(login);
-      }
+  Future<Result<void, SignInWithGoogleError>> signInWithGoogle() async {
+    final GoogleSignInAccount? signedIn;
+    try {
+      signedIn = await google.signIn();
+    } on PlatformException catch (e) {
+      // TODO(prod): Remove
+      log.error(e);
+      return const Err(SignInWithGoogleError.signInWithGoogleFailed);
     }
+
+    if (signedIn == null) {
+      return const Err(SignInWithGoogleError.signInWithGoogleFailed);
+    }
+
+    log.fine("$signedIn, ${signedIn.email}");
+
+    var token = await signedIn.authentication;
+    log.fine("${token.accessToken}, ${token.idToken}");
+
+    final login = await _api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken))).ok();
+    if (login == null) {
+      return const Err(SignInWithGoogleError.serverRequestFailed);
+    }
+
+    return await _handleLoginResult(login)
+      .mapErr((_) => SignInWithGoogleError.otherError);
   }
 
-  Future<void> _handleLoginResult(LoginResult loginResult) async {
-    // TODO(prod): Sign in with login does not set the account id to
-    // shared preferences.
+  Future<Result<void, void>> _handleLoginResult(LoginResult loginResult) async {
+    final r = await DatabaseManager.getInstance().setAccountId(loginResult.accountId);
+    if (r.isErr()) {
+      return const Err(null);
+    }
 
     // Login repository
     await DatabaseManager.getInstance().accountAction((db) => db.daoTokens.updateRefreshTokenAccount(loginResult.account.refresh.token));
@@ -158,6 +179,8 @@ class LoginRepository extends DataRepository {
     await ChatRepository.getInstance().onLogin();
 
     await _api.restart();
+
+    return const Ok(null);
   }
 
   /// Logout back to login or demo account screen
@@ -179,10 +202,12 @@ class LoginRepository extends DataRepository {
     await MediaRepository.getInstance().onLogout();
     await ChatRepository.getInstance().onLogout();
 
+    await google.signOut();
+
     log.info("logout completed");
   }
 
-  Future<void> signOutFromGoogle(GoogleSignIn google) async {
+  Future<void> signOutFromGoogle() async {
     final signedIn = await google.disconnect();
     log.fine("$signedIn, ${signedIn?.email}");
   }
@@ -288,12 +313,12 @@ class LoginRepository extends DataRepository {
     final demoToken = DemoModeToken(token: token);
     final loginResult = await _api.account((api) => api.postDemoModeLoginToAccount(DemoModeLoginToAccount(accountId: id, token: demoToken))).ok();
     if (loginResult != null) {
-      final r = await DatabaseManager.getInstance().setAccountId(id);
-      if (r.isErr()) {
-        return Err(OtherError());
+      switch (await _handleLoginResult(loginResult)) {
+        case Err():
+          return Err(OtherError());
+        case Ok():
+          return const Ok(null);
       }
-      await _handleLoginResult(loginResult);
-      return const Ok(null);
     } else {
       // TODO: Better error handling
       // Assume session expiration every time for now.
@@ -312,3 +337,30 @@ class DemoAccountCredentials {
 sealed class SessionOrOtherError {}
 class SessionExpired extends SessionOrOtherError {}
 class OtherError extends SessionOrOtherError {}
+
+enum SignInWithGoogleError {
+  signInWithGoogleFailed,
+  serverRequestFailed,
+  otherError,
+}
+
+// TODO: make sure that iOS client id does not end in Android apk.
+
+const String emailScope = "https://www.googleapis.com/auth/userinfo.email";
+
+GoogleSignIn createSignInWithGoogle() {
+  if (Platform.isAndroid) {
+    return GoogleSignIn(
+      serverClientId: signInWithGoogleBackendClientId(),
+      scopes: [emailScope],
+    );
+  } else if (Platform.isIOS) {
+    return GoogleSignIn(
+      clientId: signInWithGoogleIosClientId(),
+      serverClientId: signInWithGoogleBackendClientId(),
+      scopes: [emailScope],
+    );
+  } else {
+    throw UnsupportedError("Unsupported platform");
+  }
+}

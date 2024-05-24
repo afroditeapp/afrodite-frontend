@@ -39,7 +39,7 @@ dependencies:
   camera: ^0.10.5+9
   image_picker: ^0.8.7+4
 
-  google_sign_in: ^6.1.0
+  google_sign_in: ^6.2.1
   sign_in_with_apple: ^6.0.0
 
   # API client for server API

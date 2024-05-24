@@ -593,6 +593,10 @@
   "@login_screen_register_button": {
     "description": "Register button text"
   },
+  "login_screen_sign_in_with_error": "Sign in with failed",
+  "@login_screen_sign_in_with_error": {
+    "description": "Snackbar text for sign in with error"
+  },
   "map_location_update_failed": "Location update failed",
   "@map_location_update_failed": {
     "description": "Snackbar text about failed location update"
