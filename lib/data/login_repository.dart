@@ -127,7 +127,7 @@ class LoginRepository extends DataRepository {
   }
 
   Future<AccountId?> register() async {
-    var id = await _api.account((api) => api.postRegister()).ok();
+    var id = await _api.accountInternal((api) => api.postRegister()).ok();
     if (id != null) {
       final result = await DatabaseManager.getInstance().setAccountId(id);
       if (result.isErr()) {
@@ -142,7 +142,7 @@ class LoginRepository extends DataRepository {
     if (accountIdValue == null) {
       return;
     }
-    final loginResult = await _api.account((api) => api.postLogin(accountIdValue)).ok();
+    final loginResult = await _api.accountInternal((api) => api.postLogin(accountIdValue)).ok();
     if (loginResult != null) {
       await _handleLoginResult(loginResult);
     }

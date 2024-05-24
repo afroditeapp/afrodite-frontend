@@ -289,6 +289,11 @@ class ApiManager extends AppSingleton {
     return ApiWrapper(_account.account);
   }
 
+  /// This is only useful if server has debugging enabled.
+  ApiWrapper<AccountInternalApi> _accountInternalWrapper() {
+    return ApiWrapper(_account.accountInternal);
+  }
+
   ApiWrapper<ProfileApi> profileWrapper() {
     return ApiWrapper(_profileApiProvider().profile);
   }
@@ -333,6 +338,10 @@ class ApiManager extends AppSingleton {
 
   Future<Result<R, ValueApiError>> account<R extends Object>(Future<R?> Function(AccountApi) action) async {
     return await _accountWrapper().requestValue(action);
+  }
+
+  Future<Result<R, ValueApiError>> accountInternal<R extends Object>(Future<R?> Function(AccountInternalApi) action) async {
+    return await _accountInternalWrapper().requestValue(action);
   }
 
   Future<Result<R, ValueApiError>> accountCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {
@@ -402,6 +411,10 @@ class ApiManager extends AppSingleton {
 
   Future<Result<void, ActionApiError>> accountAction(Future<void> Function(AccountApi) action) async {
     return await _accountWrapper().requestAction(action);
+  }
+
+  Future<Result<void, ActionApiError>> accountInternalAction(Future<void> Function(AccountInternalApi) action) async {
+    return await _accountInternalWrapper().requestAction(action);
   }
 
   Future<Result<void, ActionApiError>> accountCommonAction(Future<void> Function(CommonApi) action) async {

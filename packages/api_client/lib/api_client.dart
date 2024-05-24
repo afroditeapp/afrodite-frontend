@@ -275,6 +275,8 @@ class ApiClient {
           return EventTypeTypeTransformer().decode(value);
         case 'FavoriteProfilesPage':
           return FavoriteProfilesPage.fromJson(value);
+        case 'FcmDeviceToken':
+          return FcmDeviceToken.fromJson(value);
         case 'GroupValues':
           return GroupValues.fromJson(value);
         case 'HandleModerationRequest':
@@ -331,6 +333,8 @@ class ApiClient {
           return PendingMessageId.fromJson(value);
         case 'PendingMessagesPage':
           return PendingMessagesPage.fromJson(value);
+        case 'PendingNotification':
+          return PendingNotification.fromJson(value);
         case 'PendingProfileContent':
           return PendingProfileContent.fromJson(value);
         case 'PendingSecurityContent':

@@ -10,37 +10,36 @@
 
 part of openapi.api;
 
-class RefreshToken {
-  /// Returns a new [RefreshToken] instance.
-  RefreshToken({
-    required this.token,
+class FcmDeviceToken {
+  /// Returns a new [FcmDeviceToken] instance.
+  FcmDeviceToken({
+    required this.value,
   });
 
-  /// Base64 encoded random number.
-  String token;
+  String value;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is RefreshToken &&
-     other.token == token;
+  bool operator ==(Object other) => identical(this, other) || other is FcmDeviceToken &&
+     other.value == value;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (token.hashCode);
+    (value.hashCode);
 
   @override
-  String toString() => 'RefreshToken[token=$token]';
+  String toString() => 'FcmDeviceToken[value=$value]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'token'] = this.token;
+      json[r'value'] = this.value;
     return json;
   }
 
-  /// Returns a new [RefreshToken] instance and imports its values from
+  /// Returns a new [FcmDeviceToken] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static RefreshToken? fromJson(dynamic value) {
+  static FcmDeviceToken? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -49,24 +48,24 @@ class RefreshToken {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "RefreshToken[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "RefreshToken[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "FcmDeviceToken[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "FcmDeviceToken[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return RefreshToken(
-        token: mapValueOfType<String>(json, r'token')!,
+      return FcmDeviceToken(
+        value: mapValueOfType<String>(json, r'value')!,
       );
     }
     return null;
   }
 
-  static List<RefreshToken>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <RefreshToken>[];
+  static List<FcmDeviceToken>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <FcmDeviceToken>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = RefreshToken.fromJson(row);
+        final value = FcmDeviceToken.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -75,12 +74,12 @@ class RefreshToken {
     return result.toList(growable: growable);
   }
 
-  static Map<String, RefreshToken> mapFromJson(dynamic json) {
-    final map = <String, RefreshToken>{};
+  static Map<String, FcmDeviceToken> mapFromJson(dynamic json) {
+    final map = <String, FcmDeviceToken>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = RefreshToken.fromJson(entry.value);
+        final value = FcmDeviceToken.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -89,13 +88,13 @@ class RefreshToken {
     return map;
   }
 
-  // maps a json object with a list of RefreshToken-objects as value to a dart map
-  static Map<String, List<RefreshToken>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<RefreshToken>>{};
+  // maps a json object with a list of FcmDeviceToken-objects as value to a dart map
+  static Map<String, List<FcmDeviceToken>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<FcmDeviceToken>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = RefreshToken.listFromJson(entry.value, growable: growable,);
+        final value = FcmDeviceToken.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -106,7 +105,7 @@ class RefreshToken {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'token',
+    'value',
   };
 }
 

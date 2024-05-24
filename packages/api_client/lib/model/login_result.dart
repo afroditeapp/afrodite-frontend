@@ -14,11 +14,17 @@ class LoginResult {
   /// Returns a new [LoginResult] instance.
   LoginResult({
     required this.account,
+    required this.accountId,
+    this.email,
     this.media,
     this.profile,
   });
 
   AuthPair account;
+
+  AccountId accountId;
+
+  String? email;
 
   AuthPair? media;
 
@@ -27,6 +33,8 @@ class LoginResult {
   @override
   bool operator ==(Object other) => identical(this, other) || other is LoginResult &&
      other.account == account &&
+     other.accountId == accountId &&
+     other.email == email &&
      other.media == media &&
      other.profile == profile;
 
@@ -34,15 +42,23 @@ class LoginResult {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (account.hashCode) +
+    (accountId.hashCode) +
+    (email == null ? 0 : email!.hashCode) +
     (media == null ? 0 : media!.hashCode) +
     (profile == null ? 0 : profile!.hashCode);
 
   @override
-  String toString() => 'LoginResult[account=$account, media=$media, profile=$profile]';
+  String toString() => 'LoginResult[account=$account, accountId=$accountId, email=$email, media=$media, profile=$profile]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'account'] = this.account;
+      json[r'account_id'] = this.accountId;
+    if (this.email != null) {
+      json[r'email'] = this.email;
+    } else {
+      json[r'email'] = null;
+    }
     if (this.media != null) {
       json[r'media'] = this.media;
     } else {
@@ -76,6 +92,8 @@ class LoginResult {
 
       return LoginResult(
         account: AuthPair.fromJson(json[r'account'])!,
+        accountId: AccountId.fromJson(json[r'account_id'])!,
+        email: mapValueOfType<String>(json, r'email'),
         media: AuthPair.fromJson(json[r'media']),
         profile: AuthPair.fromJson(json[r'profile']),
       );
@@ -128,6 +146,7 @@ class LoginResult {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'account',
+    'account_id',
   };
 }
 

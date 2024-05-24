@@ -13,10 +13,10 @@ part of openapi.api;
 class AccountData {
   /// Returns a new [AccountData] instance.
   AccountData({
-    required this.email,
+    this.email,
   });
 
-  String email;
+  String? email;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AccountData &&
@@ -25,14 +25,18 @@ class AccountData {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (email.hashCode);
+    (email == null ? 0 : email!.hashCode);
 
   @override
   String toString() => 'AccountData[email=$email]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.email != null) {
       json[r'email'] = this.email;
+    } else {
+      json[r'email'] = null;
+    }
     return json;
   }
 
@@ -55,7 +59,7 @@ class AccountData {
       }());
 
       return AccountData(
-        email: mapValueOfType<String>(json, r'email')!,
+        email: mapValueOfType<String>(json, r'email'),
       );
     }
     return null;
@@ -105,7 +109,6 @@ class AccountData {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'email',
   };
 }
 

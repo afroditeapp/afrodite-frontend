@@ -8,6 +8,7 @@ doc/AccountApi.md
 doc/AccountContent.md
 doc/AccountData.md
 doc/AccountId.md
+doc/AccountInternalApi.md
 doc/AccountSetup.md
 doc/AccountState.md
 doc/AccountSyncVersion.md
@@ -52,6 +53,7 @@ doc/DownloadTypeQueryParam.md
 doc/EventToClient.md
 doc/EventType.md
 doc/FavoriteProfilesPage.md
+doc/FcmDeviceToken.md
 doc/GroupValues.md
 doc/HandleModerationRequest.md
 doc/IconLocation.md
@@ -83,6 +85,7 @@ doc/PendingMessage.md
 doc/PendingMessageDeleteList.md
 doc/PendingMessageId.md
 doc/PendingMessagesPage.md
+doc/PendingNotification.md
 doc/PendingProfileContent.md
 doc/PendingSecurityContent.md
 doc/PerfHistoryQuery.md
@@ -137,6 +140,7 @@ doc/UpdateMessageViewStatus.md
 git_push.sh
 lib/api.dart
 lib/api/account_api.dart
+lib/api/account_internal_api.dart
 lib/api/chat_api.dart
 lib/api/common_admin_api.dart
 lib/api/common_api.dart
@@ -199,6 +203,7 @@ lib/model/download_type_query_param.dart
 lib/model/event_to_client.dart
 lib/model/event_type.dart
 lib/model/favorite_profiles_page.dart
+lib/model/fcm_device_token.dart
 lib/model/group_values.dart
 lib/model/handle_moderation_request.dart
 lib/model/icon_location.dart
@@ -227,6 +232,7 @@ lib/model/pending_message.dart
 lib/model/pending_message_delete_list.dart
 lib/model/pending_message_id.dart
 lib/model/pending_messages_page.dart
+lib/model/pending_notification.dart
 lib/model/pending_profile_content.dart
 lib/model/pending_security_content.dart
 lib/model/perf_history_query.dart
@@ -277,3 +283,5 @@ lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
+test/fcm_device_token_test.dart
+test/pending_notification_test.dart

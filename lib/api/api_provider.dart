@@ -11,6 +11,7 @@ const accessTokenHeaderName = "x-access-token";
 class ApiProvider {
   ApiKeyAuth? _apiKey;
   AccountApi _account;
+  AccountInternalApi _accountInternal;
   ProfileApi _profile;
   MediaApi _media;
   MediaAdminApi _mediaAdmin;
@@ -23,6 +24,7 @@ class ApiProvider {
   late final Client httpClient;
 
   AccountApi get account => _account;
+  AccountInternalApi get accountInternal => _accountInternal;
   ProfileApi get profile => _profile;
   MediaApi get media => _media;
   MediaAdminApi get mediaAdmin => _mediaAdmin;
@@ -37,6 +39,7 @@ class ApiProvider {
   ApiProvider._withClient(ApiClient client, String serverAddress) :
     _serverAddress = serverAddress,
     _account = AccountApi(client),
+    _accountInternal = AccountInternalApi(client),
     _profile = ProfileApi(client),
     _media = MediaApi(client),
     _mediaAdmin = MediaAdminApi(client),
@@ -61,6 +64,7 @@ class ApiProvider {
     client.client = httpClient;
 
     _account = AccountApi(client);
+    _accountInternal = AccountInternalApi(client);
     _profile = ProfileApi(client);
     _media = MediaApi(client);
     _mediaAdmin = MediaAdminApi(client);

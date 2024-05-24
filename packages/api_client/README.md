@@ -74,10 +74,10 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postDemoModeLogin**](doc//AccountApi.md#postdemomodelogin) | **POST** /account_api/demo_mode_login | Access demo mode, which allows accessing all or specific accounts
 *AccountApi* | [**postDemoModeLoginToAccount**](doc//AccountApi.md#postdemomodelogintoaccount) | **POST** /account_api/demo_mode_login_to_account | 
 *AccountApi* | [**postDemoModeRegisterAccount**](doc//AccountApi.md#postdemomoderegisteraccount) | **POST** /account_api/demo_mode_register_account | 
-*AccountApi* | [**postLogin**](doc//AccountApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken.
-*AccountApi* | [**postRegister**](doc//AccountApi.md#postregister) | **POST** /account_api/register | Register new account. Returns new account ID which is UUID.
 *AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google. Creates new account if
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update current or pending profile visiblity value.
+*AccountInternalApi* | [**postLogin**](doc//AccountInternalApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken for a bot account. If the account is not registered
+*AccountInternalApi* | [**postRegister**](doc//AccountInternalApi.md#postregister) | **POST** /account_api/register | Register new a new bot account. Returns new account ID which is UUID.
 *ChatApi* | [**deleteLike**](doc//ChatApi.md#deletelike) | **DELETE** /chat_api/delete_like | Delete sent like.
 *ChatApi* | [**deletePendingMessages**](doc//ChatApi.md#deletependingmessages) | **DELETE** /chat_api/pending_messages | Delete list of pending messages
 *ChatApi* | [**getMatches**](doc//ChatApi.md#getmatches) | **GET** /chat_api/matches | Get matches
@@ -88,9 +88,11 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**getSentBlocks**](doc//ChatApi.md#getsentblocks) | **GET** /chat_api/sent_blocks | Get list of sent blocks
 *ChatApi* | [**getSentLikes**](doc//ChatApi.md#getsentlikes) | **GET** /chat_api/sent_likes | Get sent likes.
 *ChatApi* | [**postBlockProfile**](doc//ChatApi.md#postblockprofile) | **POST** /chat_api/block_profile | Block profile
+*ChatApi* | [**postGetPendingNotification**](doc//ChatApi.md#postgetpendingnotification) | **POST** /chat_api/get_pending_notification | Get pending notification and reset pending notification.
 *ChatApi* | [**postMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#postmessagenumberoflatestviewedmessage) | **POST** /chat_api/message_number_of_latest_viewed_message | Update message number of the most recent message that the recipient has viewed.
 *ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /chat_api/send_like | Send a like to some account. If both will like each other, then
 *ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /chat_api/send_message | Send message to a match
+*ChatApi* | [**postSetDeviceToken**](doc//ChatApi.md#postsetdevicetoken) | **POST** /chat_api/set_device_token | 
 *ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /chat_api/unblock_profile | Unblock profile
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens.
 *CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
@@ -193,6 +195,7 @@ Class | Method | HTTP request | Description
  - [EventToClient](doc//EventToClient.md)
  - [EventType](doc//EventType.md)
  - [FavoriteProfilesPage](doc//FavoriteProfilesPage.md)
+ - [FcmDeviceToken](doc//FcmDeviceToken.md)
  - [GroupValues](doc//GroupValues.md)
  - [HandleModerationRequest](doc//HandleModerationRequest.md)
  - [IconLocation](doc//IconLocation.md)
@@ -221,6 +224,7 @@ Class | Method | HTTP request | Description
  - [PendingMessageDeleteList](doc//PendingMessageDeleteList.md)
  - [PendingMessageId](doc//PendingMessageId.md)
  - [PendingMessagesPage](doc//PendingMessagesPage.md)
+ - [PendingNotification](doc//PendingNotification.md)
  - [PendingProfileContent](doc//PendingProfileContent.md)
  - [PendingSecurityContent](doc//PendingSecurityContent.md)
  - [PerfHistoryQuery](doc//PerfHistoryQuery.md)

@@ -504,6 +504,62 @@ class ChatApi {
     }
   }
 
+  /// Get pending notification and reset pending notification.
+  ///
+  /// Get pending notification and reset pending notification.  Requesting this route is always valid to avoid figuring out device token values more easily.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [FcmDeviceToken] fcmDeviceToken (required):
+  Future<Response> postGetPendingNotificationWithHttpInfo(FcmDeviceToken fcmDeviceToken,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/get_pending_notification';
+
+    // ignore: prefer_final_locals
+    Object? postBody = fcmDeviceToken;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get pending notification and reset pending notification.
+  ///
+  /// Get pending notification and reset pending notification.  Requesting this route is always valid to avoid figuring out device token values more easily.
+  ///
+  /// Parameters:
+  ///
+  /// * [FcmDeviceToken] fcmDeviceToken (required):
+  Future<PendingNotification?> postGetPendingNotification(FcmDeviceToken fcmDeviceToken,) async {
+    final response = await postGetPendingNotificationWithHttpInfo(fcmDeviceToken,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingNotification',) as PendingNotification;
+    
+    }
+    return null;
+  }
+
   /// Update message number of the most recent message that the recipient has viewed.
   ///
   /// Update message number of the most recent message that the recipient has viewed.
@@ -643,6 +699,45 @@ class ChatApi {
   /// * [SendMessageToAccount] sendMessageToAccount (required):
   Future<void> postSendMessage(SendMessageToAccount sendMessageToAccount,) async {
     final response = await postSendMessageWithHttpInfo(sendMessageToAccount,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'POST /chat_api/set_device_token' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [FcmDeviceToken] fcmDeviceToken (required):
+  Future<Response> postSetDeviceTokenWithHttpInfo(FcmDeviceToken fcmDeviceToken,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/set_device_token';
+
+    // ignore: prefer_final_locals
+    Object? postBody = fcmDeviceToken;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [FcmDeviceToken] fcmDeviceToken (required):
+  Future<void> postSetDeviceToken(FcmDeviceToken fcmDeviceToken,) async {
+    final response = await postSetDeviceTokenWithHttpInfo(fcmDeviceToken,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
