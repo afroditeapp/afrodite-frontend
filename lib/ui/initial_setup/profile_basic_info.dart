@@ -12,6 +12,8 @@ import "package:pihka_frontend/utils/age.dart";
 
 final initialLetterRegexp = RegExp("[a-zA-ZåäöÅÄÖ]");
 
+// TODO(prod): Set initial age value based on birthdate
+
 class AskProfileBasicInfoScreen extends StatelessWidget {
   const AskProfileBasicInfoScreen({Key? key}) : super(key: key);
 

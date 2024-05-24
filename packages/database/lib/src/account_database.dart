@@ -1,6 +1,7 @@
 
 
 import 'package:async/async.dart';
+import 'package:database/src/account/dao_account_settings.dart';
 import 'package:database/src/account/dao_local_image_settings.dart';
 import 'package:database/src/account/dao_local_notification_settings.dart';
 import 'package:database/src/account/dao_sync_versions.dart';
@@ -101,6 +102,10 @@ class Account extends Table {
   IntColumn get profileSearchAgeRangeMin => integer().nullable()();
   IntColumn get profileSearchAgeRangeMax => integer().nullable()();
 
+  // DaoAccountSettings
+
+  TextColumn get accountEmailAddress => text().nullable()();
+
   // DaoTokens
 
   TextColumn get refreshTokenAccount => text().nullable()();
@@ -137,6 +142,7 @@ class Account extends Table {
     DaoPendingContent,
     DaoMyProfile,
     DaoProfileSettings,
+    DaoAccountSettings,
     DaoTokens,
     DaoInitialSync,
     DaoSyncVersions,

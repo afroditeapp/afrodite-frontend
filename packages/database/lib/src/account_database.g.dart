@@ -395,6 +395,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<int> profileSearchAgeRangeMax =
       GeneratedColumn<int>('profile_search_age_range_max', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _accountEmailAddressMeta =
+      const VerificationMeta('accountEmailAddress');
+  @override
+  late final GeneratedColumn<String> accountEmailAddress =
+      GeneratedColumn<String>('account_email_address', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _refreshTokenAccountMeta =
       const VerificationMeta('refreshTokenAccount');
   @override
@@ -552,6 +558,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         jsonProfileAttributeFilters,
         profileSearchAgeRangeMin,
         profileSearchAgeRangeMax,
+        accountEmailAddress,
         refreshTokenAccount,
         refreshTokenMedia,
         refreshTokenProfile,
@@ -787,6 +794,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           profileSearchAgeRangeMax.isAcceptableOrUnknown(
               data['profile_search_age_range_max']!,
               _profileSearchAgeRangeMaxMeta));
+    }
+    if (data.containsKey('account_email_address')) {
+      context.handle(
+          _accountEmailAddressMeta,
+          accountEmailAddress.isAcceptableOrUnknown(
+              data['account_email_address']!, _accountEmailAddressMeta));
     }
     if (data.containsKey('refresh_token_account')) {
       context.handle(
@@ -1030,6 +1043,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       profileSearchAgeRangeMax: attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}profile_search_age_range_max']),
+      accountEmailAddress: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}account_email_address']),
       refreshTokenAccount: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}refresh_token_account']),
       refreshTokenMedia: attachedDatabase.typeMapping.read(
@@ -1177,6 +1192,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final JsonString? jsonProfileAttributeFilters;
   final int? profileSearchAgeRangeMin;
   final int? profileSearchAgeRangeMax;
+  final String? accountEmailAddress;
   final String? refreshTokenAccount;
   final String? refreshTokenMedia;
   final String? refreshTokenProfile;
@@ -1241,6 +1257,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.jsonProfileAttributeFilters,
       this.profileSearchAgeRangeMin,
       this.profileSearchAgeRangeMax,
+      this.accountEmailAddress,
       this.refreshTokenAccount,
       this.refreshTokenMedia,
       this.refreshTokenProfile,
@@ -1443,6 +1460,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['profile_search_age_range_max'] =
           Variable<int>(profileSearchAgeRangeMax);
     }
+    if (!nullToAbsent || accountEmailAddress != null) {
+      map['account_email_address'] = Variable<String>(accountEmailAddress);
+    }
     if (!nullToAbsent || refreshTokenAccount != null) {
       map['refresh_token_account'] = Variable<String>(refreshTokenAccount);
     }
@@ -1639,6 +1659,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileSearchAgeRangeMax: profileSearchAgeRangeMax == null && nullToAbsent
           ? const Value.absent()
           : Value(profileSearchAgeRangeMax),
+      accountEmailAddress: accountEmailAddress == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountEmailAddress),
       refreshTokenAccount: refreshTokenAccount == null && nullToAbsent
           ? const Value.absent()
           : Value(refreshTokenAccount),
@@ -1780,6 +1803,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<int?>(json['profileSearchAgeRangeMin']),
       profileSearchAgeRangeMax:
           serializer.fromJson<int?>(json['profileSearchAgeRangeMax']),
+      accountEmailAddress:
+          serializer.fromJson<String?>(json['accountEmailAddress']),
       refreshTokenAccount:
           serializer.fromJson<String?>(json['refreshTokenAccount']),
       refreshTokenMedia:
@@ -1891,6 +1916,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.toJson<int?>(profileSearchAgeRangeMin),
       'profileSearchAgeRangeMax':
           serializer.toJson<int?>(profileSearchAgeRangeMax),
+      'accountEmailAddress': serializer.toJson<String?>(accountEmailAddress),
       'refreshTokenAccount': serializer.toJson<String?>(refreshTokenAccount),
       'refreshTokenMedia': serializer.toJson<String?>(refreshTokenMedia),
       'refreshTokenProfile': serializer.toJson<String?>(refreshTokenProfile),
@@ -1967,6 +1993,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<JsonString?> jsonProfileAttributeFilters = const Value.absent(),
           Value<int?> profileSearchAgeRangeMin = const Value.absent(),
           Value<int?> profileSearchAgeRangeMax = const Value.absent(),
+          Value<String?> accountEmailAddress = const Value.absent(),
           Value<String?> refreshTokenAccount = const Value.absent(),
           Value<String?> refreshTokenMedia = const Value.absent(),
           Value<String?> refreshTokenProfile = const Value.absent(),
@@ -2114,6 +2141,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileSearchAgeRangeMax: profileSearchAgeRangeMax.present
             ? profileSearchAgeRangeMax.value
             : this.profileSearchAgeRangeMax,
+        accountEmailAddress: accountEmailAddress.present
+            ? accountEmailAddress.value
+            : this.accountEmailAddress,
         refreshTokenAccount: refreshTokenAccount.present
             ? refreshTokenAccount.value
             : this.refreshTokenAccount,
@@ -2225,6 +2255,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('jsonProfileAttributeFilters: $jsonProfileAttributeFilters, ')
           ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
           ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
+          ..write('accountEmailAddress: $accountEmailAddress, ')
           ..write('refreshTokenAccount: $refreshTokenAccount, ')
           ..write('refreshTokenMedia: $refreshTokenMedia, ')
           ..write('refreshTokenProfile: $refreshTokenProfile, ')
@@ -2300,6 +2331,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         jsonProfileAttributeFilters,
         profileSearchAgeRangeMin,
         profileSearchAgeRangeMax,
+        accountEmailAddress,
         refreshTokenAccount,
         refreshTokenMedia,
         refreshTokenProfile,
@@ -2380,6 +2412,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
               this.jsonProfileAttributeFilters &&
           other.profileSearchAgeRangeMin == this.profileSearchAgeRangeMin &&
           other.profileSearchAgeRangeMax == this.profileSearchAgeRangeMax &&
+          other.accountEmailAddress == this.accountEmailAddress &&
           other.refreshTokenAccount == this.refreshTokenAccount &&
           other.refreshTokenMedia == this.refreshTokenMedia &&
           other.refreshTokenProfile == this.refreshTokenProfile &&
@@ -2452,6 +2485,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<JsonString?> jsonProfileAttributeFilters;
   final Value<int?> profileSearchAgeRangeMin;
   final Value<int?> profileSearchAgeRangeMax;
+  final Value<String?> accountEmailAddress;
   final Value<String?> refreshTokenAccount;
   final Value<String?> refreshTokenMedia;
   final Value<String?> refreshTokenProfile;
@@ -2516,6 +2550,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.jsonProfileAttributeFilters = const Value.absent(),
     this.profileSearchAgeRangeMin = const Value.absent(),
     this.profileSearchAgeRangeMax = const Value.absent(),
+    this.accountEmailAddress = const Value.absent(),
     this.refreshTokenAccount = const Value.absent(),
     this.refreshTokenMedia = const Value.absent(),
     this.refreshTokenProfile = const Value.absent(),
@@ -2581,6 +2616,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.jsonProfileAttributeFilters = const Value.absent(),
     this.profileSearchAgeRangeMin = const Value.absent(),
     this.profileSearchAgeRangeMax = const Value.absent(),
+    this.accountEmailAddress = const Value.absent(),
     this.refreshTokenAccount = const Value.absent(),
     this.refreshTokenMedia = const Value.absent(),
     this.refreshTokenProfile = const Value.absent(),
@@ -2646,6 +2682,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<String>? jsonProfileAttributeFilters,
     Expression<int>? profileSearchAgeRangeMin,
     Expression<int>? profileSearchAgeRangeMax,
+    Expression<String>? accountEmailAddress,
     Expression<String>? refreshTokenAccount,
     Expression<String>? refreshTokenMedia,
     Expression<String>? refreshTokenProfile,
@@ -2750,6 +2787,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'profile_search_age_range_min': profileSearchAgeRangeMin,
       if (profileSearchAgeRangeMax != null)
         'profile_search_age_range_max': profileSearchAgeRangeMax,
+      if (accountEmailAddress != null)
+        'account_email_address': accountEmailAddress,
       if (refreshTokenAccount != null)
         'refresh_token_account': refreshTokenAccount,
       if (refreshTokenMedia != null) 'refresh_token_media': refreshTokenMedia,
@@ -2831,6 +2870,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<JsonString?>? jsonProfileAttributeFilters,
       Value<int?>? profileSearchAgeRangeMin,
       Value<int?>? profileSearchAgeRangeMax,
+      Value<String?>? accountEmailAddress,
       Value<String?>? refreshTokenAccount,
       Value<String?>? refreshTokenMedia,
       Value<String?>? refreshTokenProfile,
@@ -2928,6 +2968,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           profileSearchAgeRangeMin ?? this.profileSearchAgeRangeMin,
       profileSearchAgeRangeMax:
           profileSearchAgeRangeMax ?? this.profileSearchAgeRangeMax,
+      accountEmailAddress: accountEmailAddress ?? this.accountEmailAddress,
       refreshTokenAccount: refreshTokenAccount ?? this.refreshTokenAccount,
       refreshTokenMedia: refreshTokenMedia ?? this.refreshTokenMedia,
       refreshTokenProfile: refreshTokenProfile ?? this.refreshTokenProfile,
@@ -3163,6 +3204,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['profile_search_age_range_max'] =
           Variable<int>(profileSearchAgeRangeMax.value);
     }
+    if (accountEmailAddress.present) {
+      map['account_email_address'] =
+          Variable<String>(accountEmailAddress.value);
+    }
     if (refreshTokenAccount.present) {
       map['refresh_token_account'] =
           Variable<String>(refreshTokenAccount.value);
@@ -3279,6 +3324,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('jsonProfileAttributeFilters: $jsonProfileAttributeFilters, ')
           ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
           ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
+          ..write('accountEmailAddress: $accountEmailAddress, ')
           ..write('refreshTokenAccount: $refreshTokenAccount, ')
           ..write('refreshTokenMedia: $refreshTokenMedia, ')
           ..write('refreshTokenProfile: $refreshTokenProfile, ')
@@ -4920,6 +4966,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final DaoMyProfile daoMyProfile = DaoMyProfile(this as AccountDatabase);
   late final DaoProfileSettings daoProfileSettings =
       DaoProfileSettings(this as AccountDatabase);
+  late final DaoAccountSettings daoAccountSettings =
+      DaoAccountSettings(this as AccountDatabase);
   late final DaoTokens daoTokens = DaoTokens(this as AccountDatabase);
   late final DaoInitialSync daoInitialSync =
       DaoInitialSync(this as AccountDatabase);

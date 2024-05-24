@@ -161,7 +161,12 @@ class LoginRepository extends DataRepository {
   }
 
   Future<Result<void, void>> _handleLoginResult(LoginResult loginResult) async {
-    final r = await DatabaseManager.getInstance().setAccountId(loginResult.accountId);
+    final r = await DatabaseManager.getInstance().setAccountId(loginResult.accountId)
+      .andThen(
+        (_) => DatabaseManager.getInstance().accountAction(
+          (db) => db.daoAccountSettings.updateEmailAddress(loginResult.email)
+        )
+      );
     if (r.isErr()) {
       return const Err(null);
     }

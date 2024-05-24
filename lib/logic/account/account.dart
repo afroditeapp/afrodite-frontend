@@ -4,6 +4,7 @@ import "package:pihka_frontend/data/account_repository.dart";
 
 
 import "package:pihka_frontend/data/login_repository.dart";
+import "package:pihka_frontend/database/database_manager.dart";
 import "package:pihka_frontend/model/freezed/logic/account/account.dart";
 import "package:pihka_frontend/utils.dart";
 
@@ -25,11 +26,16 @@ class NewAccountStateValue extends AccountEvent {
   final AccountState? accountState;
   NewAccountStateValue(this.accountState);
 }
+class NewEmailAddressValue extends AccountEvent {
+  final String? value;
+  NewEmailAddressValue(this.value);
+}
 
 /// Do register/login operations
 class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner {
   final AccountRepository account = AccountRepository.getInstance();
   final LoginRepository login = LoginRepository.getInstance();
+  final DatabaseManager db = DatabaseManager.getInstance();
 
   AccountBloc() :
     super(AccountBlocData(
@@ -53,7 +59,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
     on<NewAccountStateValue>((key, emit) {
       emit(state.copyWith(accountState: key.accountState));
     });
-
+    on<NewEmailAddressValue>((key, emit) {
+      emit(state.copyWith(email: key.value));
+    });
 
     login.accountId.listen((event) {
       add(NewAccountIdValue(event));
@@ -66,6 +74,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
     });
     account.accountState.listen((event) {
       add(NewAccountStateValue(event));
+    });
+    db.accountStream((db) => db.daoAccountSettings.watchEmailAddress()).listen((event) {
+      add(NewEmailAddressValue(event));
     });
   }
 }
