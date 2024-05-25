@@ -4,6 +4,7 @@ import 'package:database/database.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logging/logging.dart';
+import 'package:pihka_frontend/data/general/notification/state/message_received_static.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_category.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
@@ -92,6 +93,9 @@ class NotificationManager extends AppSingleton {
         }
       }
     }
+
+    // Close push notification only related notifications if those exist
+    await NotificationMessageReceivedStatic.getInstance().updateState(false);
   }
 
   Future<void> askPermissions() async {
@@ -244,3 +248,7 @@ class NotificationManager extends AppSingleton {
 // TODO(prod): Check that Sqlchipher is loading properly on iOS.
 //             At least current error checking code does not notice anything
 //             odd.
+
+// TODO(prod): Add some public ID to profiles and use that ID in notifications.
+//             Also add list of those IDs to pending notification JSON, sot that
+//             normal conversation notifications are possible to be shown.

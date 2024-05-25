@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/general/notification/state/like_received.dart';
 import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
+import 'package:pihka_frontend/data/general/notification/state/message_received_static.dart';
 import 'package:pihka_frontend/data/general/notification/state/moderation_request_status.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
@@ -65,6 +66,10 @@ class DebugSettingsPage extends StatelessWidget {
       for (final match in matchList) {
         await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1);
       }
+    }));
+
+    settings.add(Setting.createSetting(Icons.notification_add, "Notification: New message (push notification)", () async {
+      await NotificationMessageReceivedStatic.getInstance().updateState(true);
     }));
 
     return SingleChildScrollView(
