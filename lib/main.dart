@@ -1,6 +1,6 @@
 import 'dart:developer' as developer;
 
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,10 +79,23 @@ final log = Logger("main");
 // TODO(prod): When there are two conversation notifications, opening those
 //             one by one, results in the second opened to below the first.
 
-Future<void> main() async {
+bool loggerInitDone = false;
+
+void initLogging() {
+  if (loggerInitDone) {
+    return;
+  }
+  loggerInitDone = true;
+
   // TODO(prod): change log level before release?
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) {
+      // TODO(prod): Remove print if logcat printing works somehow
+      // without print.
+      if (!kReleaseMode) {
+        print('${record.level.name}: ${record.time}: ${record.message}');
+      }
+
       developer.log(
         record.message,
         name: record.loggerName,
@@ -91,6 +104,10 @@ Future<void> main() async {
         level: record.level.value,
       );
   });
+}
+
+Future<void> main() async {
+  initLogging();
 
   WidgetsFlutterBinding.ensureInitialized();
 

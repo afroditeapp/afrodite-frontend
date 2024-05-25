@@ -671,6 +671,10 @@
       }
     }
   },
+  "notification_message_received_single_generic": "New message received",
+  "@notification_message_received_single_generic": {
+    "description": "Title for message received when single message is received but there is no info who sent it"
+  },
   "notification_moderation_request_status_accepted": "Image moderation accepted",
   "@notification_moderation_request_status_accepted": {
     "description": "Title for moderation request status notification when status is accepted"

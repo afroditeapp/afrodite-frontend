@@ -12,6 +12,9 @@ import 'package:pihka_frontend/model/freezed/logic/media/content.dart';
 import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/view_image_screen.dart';
 
+// TODO(prod): Security selfie screen says "Error" when initial modreation
+// is not done yet.
+
 class CurrentSecuritySelfie extends StatefulWidget {
   const CurrentSecuritySelfie({
     Key? key,

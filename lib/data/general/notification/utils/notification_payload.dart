@@ -67,6 +67,8 @@ sealed class NotificationPayload extends Immutable {
     switch (payloadTypeValue) {
       case NotificationPayloadTypeString.stringNavigateToLikes:
         return NavigateToLikes(sessionId: sessionId);
+      case NotificationPayloadTypeString.stringNavigateToConversationList:
+        return NavigateToConversationList(sessionId: sessionId);
       case NotificationPayloadTypeString.stringNavigateToConversation:
         return NavigateToConversation.parseFromJsonObject(jsonObject, sessionId);
       case NotificationPayloadTypeString.stringNavigateToModerationRequestStatus:
@@ -83,6 +85,15 @@ class NavigateToLikes extends NotificationPayload {
     required NotificationSessionId sessionId
   }) : super(
     payloadType: NotificationPayloadTypeString.navigateToLikes,
+    sessionId: sessionId,
+  );
+}
+
+class NavigateToConversationList extends NotificationPayload {
+  const NavigateToConversationList({
+    required NotificationSessionId sessionId
+  }) : super(
+    payloadType: NotificationPayloadTypeString.navigateToConversationList,
     sessionId: sessionId,
   );
 }
@@ -133,6 +144,7 @@ class NavigateToModerationRequestStatus extends NotificationPayload {
 enum NotificationPayloadTypeString {
   navigateToLikes(value: stringNavigateToLikes),
   navigateToConversation(value: stringNavigateToConversation),
+  navigateToConversationList(value: stringNavigateToConversationList),
   navigateToModerationRequestStatus(value: stringNavigateToModerationRequestStatus);
 
   final String value;
@@ -142,5 +154,6 @@ enum NotificationPayloadTypeString {
 
   static const String stringNavigateToLikes = "navigate_to_likes";
   static const String stringNavigateToConversation = "navigate_to_conversation";
+  static const String stringNavigateToConversationList = "navigate_to_conversation_list";
   static const String stringNavigateToModerationRequestStatus = "navigate_to_moderation_request_status";
 }

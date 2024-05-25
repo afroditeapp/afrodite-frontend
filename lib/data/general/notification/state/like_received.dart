@@ -45,11 +45,6 @@ class NotificationLikeReceived extends AppSingletonNoInit {
       return;
     }
 
-    final sessionId = await db.commonStreamSingle((db) => db.watchNotificationSessionId());
-    if (sessionId == null) {
-      return;
-    }
-
     final String title;
     if (_receivedCount == 1) {
       title = R.strings.notification_like_received_single;
@@ -62,7 +57,7 @@ class NotificationLikeReceived extends AppSingletonNoInit {
       title: title,
       category: const NotificationCategoryLikes(),
       notificationPayload: NavigateToLikes(
-        sessionId: sessionId,
+        sessionId: await notifications.getSessionId(),
       ),
     );
   }

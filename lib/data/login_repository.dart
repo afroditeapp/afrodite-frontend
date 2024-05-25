@@ -136,7 +136,7 @@ class LoginRepository extends DataRepository {
     final GoogleSignInAccount? signedIn;
     try {
       signedIn = await google.signIn();
-    } on PlatformException catch (e) {
+    } catch (e) { // No documentation, just catch everything
       // TODO(prod): Remove
       log.error(e);
       return const Err(SignInWithGoogleError.signInWithGoogleFailed);

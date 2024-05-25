@@ -33,9 +33,8 @@ class NotificationModerationRequestStatus extends AppSingletonNoInit {
   }
 
   Future<void> _updateNotification() async {
-    final sessionId = await db.commonStreamSingle((db) => db.watchNotificationSessionId());
     final state = _state;
-    if (sessionId == null || state == null) {
+    if (state == null) {
       await notifications.hideNotification(notificationId);
       return;
     }
@@ -49,7 +48,7 @@ class NotificationModerationRequestStatus extends AppSingletonNoInit {
       id: notificationId,
       title: title,
       category: const NotificationCategoryModerationRequestStatus(),
-      notificationPayload: NavigateToModerationRequestStatus(sessionId: sessionId),
+      notificationPayload: NavigateToModerationRequestStatus(sessionId: await notifications.getSessionId()),
     );
   }
 }

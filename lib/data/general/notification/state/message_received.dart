@@ -42,10 +42,9 @@ class NotificationMessageReceived extends AppSingletonNoInit {
   }
 
   Future<void> _showNotification(AccountId account, NotificationIdAndState<NotificationState> state) async {
-    final sessionId = await db.commonStreamSingle((db) => db.watchNotificationSessionId());
     final profileLocalId = await db.profileData((db) => db.getProfileLocalDbId(account)).ok();
     final profileEntry = await db.profileData((db) => db.getProfileEntry(account)).ok();
-    if (sessionId == null || profileLocalId == null || profileEntry == null) {
+    if (profileLocalId == null || profileEntry == null) {
       return;
     }
 
@@ -66,7 +65,7 @@ class NotificationMessageReceived extends AppSingletonNoInit {
       category: const NotificationCategoryMessages(),
       notificationPayload: NavigateToConversation(
         profileLocalDbId: profileLocalId,
-        sessionId: sessionId,
+        sessionId: await notifications.getSessionId(),
       ),
     );
   }

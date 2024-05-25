@@ -12,7 +12,9 @@ import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/app/notification_payload_handler.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/notification_payload_handler.dart';
+import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
 import 'package:pihka_frontend/ui/normal/likes.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
@@ -90,8 +92,8 @@ Future<void> handlePayload(
 ) async {
   final db = DatabaseManager.getInstance();
 
-  final notificationSessionId = await db.commonStreamSingle((db) => db.watchNotificationSessionId());
-  if (notificationSessionId?.id != payload.sessionId.id) {
+  final notificationSessionId = await KvIntManager.getInstance().getValue(KvInt.notificationSessionId);
+  if (notificationSessionId != payload.sessionId.id) {
     log.warning("Notification payload session ID does not match current session ID");
     if (showError) {
       showSnackBar(R.strings.notification_session_expired_error);
@@ -103,10 +105,23 @@ Future<void> handlePayload(
     case NavigateToConversation():
       final profile = await db.profileData((db) => db.getProfileEntryUsingLocalId(payload.profileLocalDbId)).ok();
       if (profile != null) {
-        await openConversationScreenNoBuildContext(
-          navigatorStateBloc,
-          profile,
-        );
+        final lastPage = NavigationStateBlocInstance.getInstance().bloc.state.pages.lastOrNull;
+        final info = lastPage?.pageInfo;
+        final correctConversatinoAlreadyOpen = info is ConversationPageInfo &&
+          info.accountId == profile.uuid;
+        if (!correctConversatinoAlreadyOpen) {
+          await openConversationScreenNoBuildContext(
+            navigatorStateBloc,
+            profile,
+          );
+        }
+      }
+    case NavigateToConversationList():
+      if (navigatorStateBloc.state.pages.length == 1) {
+        bottomNavigationStateBloc.add(ChangeScreen(BottomNavigationScreenId.chats));
+      } else {
+        // This action only happens using push notifications so extra screen is
+        // not needed.
       }
     case NavigateToLikes():
       if (navigatorStateBloc.state.pages.length == 1) {

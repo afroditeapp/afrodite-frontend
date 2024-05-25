@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:database/database.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logging/logging.dart';
@@ -7,6 +8,7 @@ import 'package:pihka_frontend/data/general/notification/utils/notification_cate
 import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
 import 'package:pihka_frontend/data/push_notification_manager.dart';
+import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -225,6 +227,10 @@ class NotificationManager extends AppSingleton {
     } else {
       throw UnsupportedError("Unsupported platform");
     }
+  }
+
+  Future<NotificationSessionId> getSessionId() async {
+    return NotificationSessionId(id: await KvIntManager.getInstance().getValue(KvInt.notificationSessionId) ?? 0);
   }
 }
 

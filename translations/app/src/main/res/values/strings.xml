@@ -51,6 +51,7 @@
     <!-- Notification message received -->
     <string name="notification_message_received_single" description="Title for message received when single message is received">%s sent a message</string>
     <string name="notification_message_received_multiple" description="Title for message received when multiple messages are received">%s sent messages</string>
+    <string name="notification_message_received_single_generic" description="Title for message received when single message is received but there is no info who sent it">New message received</string>
 
     <!-- Notification -->
     <string name="notification_session_expired_error" description="Snackbar text for notifying that notification action was ignored because of expired notification session ID">Notification action ignored because of expired notification session ID</string>

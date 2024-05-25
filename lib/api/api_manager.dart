@@ -8,6 +8,7 @@ import 'package:pihka_frontend/api/api_wrapper.dart';
 import 'package:pihka_frontend/api/server_connection.dart';
 import 'package:pihka_frontend/config.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/app_error.dart';
@@ -180,6 +181,8 @@ class ApiManager extends AppSingleton {
     );
     _account.updateServerAddress(accountAddress);
     accountConnection.setAddress(toWebSocketUri(accountAddress));
+    // TODO(microservice): use chat server
+    await KvStringManager.getInstance().setValue(KvString.urlPendingNotification, accountAddress);
 
     final profileAddress = await storage.commonStreamSingleOrDefault(
       (db) => db.watchServerUrlProfile(),

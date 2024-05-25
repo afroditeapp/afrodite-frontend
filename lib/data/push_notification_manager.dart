@@ -5,9 +5,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_api_availability/google_api_availability.dart';
 import 'package:logging/logging.dart';
+import 'package:openapi/api.dart';
+import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/api/api_provider.dart';
+import 'package:pihka_frontend/api/api_wrapper.dart';
+import 'package:pihka_frontend/data/general/notification/state/message_received_static.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/firebase_options.dart';
+import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/main.dart';
+import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("PushNotificationManager");
 
@@ -71,6 +80,7 @@ class PushNotificationManager extends AppSingleton {
       _tokenSubscription = FirebaseMessaging.instance.onTokenRefresh.listen((token) {
         // TODO(prod): remove this log
         log.finest("FCM token refreshed: $token");
+        refreshTokenToServer(token);
       });
       _tokenSubscription?.onError((_) {
         log.error("FCM onTokenRefresh error");
@@ -86,6 +96,24 @@ class PushNotificationManager extends AppSingleton {
     log.info("Get FCM token called");
     // TODO(prod): remove this log
     log.finest("FCM token: $fcmToken");
+
+    if (fcmToken == null) {
+      log.error("FCM token is null");
+      return;
+    }
+  }
+
+  Future<void> refreshTokenToServer(String fcmToken) async {
+    final savedToken = await KvStringManager.getInstance().getValue(KvString.fcmDeviceToken);
+    if (savedToken != fcmToken) {
+      log.info("FCM token changed, sending token to server");
+      final result = await ApiManager.getInstance().chatAction((api) => api.postSetDeviceToken(FcmDeviceToken(value: fcmToken)));
+      if (result.isOk()) {
+        await KvStringManager.getInstance().setValue(KvString.fcmDeviceToken, fcmToken);
+      } else {
+        log.error("Failed to send FCM token to server");
+      }
+    }
   }
 
   Future<void> logoutPushNotifications() async {
@@ -100,7 +128,44 @@ class PushNotificationManager extends AppSingleton {
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // This might run on a separate isolate than main isolate, so nothing is
+  // initialized in that case.
+
+  initLogging();
+  await loadLocalizationsFromSharedPrefsIfNeeded();
+
+  log.info("Handling FCM background message");
+
   // TODO(prod): remove this log
   log.finest("FCM background message: ${message.messageId}");
+  log.finest("FCM background message: ${message.data}");
   // TODO: query notification from backend with FCM token
+
+  final chatUrl = await KvStringManager.getInstance().getValue(KvString.urlPendingNotification);
+  if (chatUrl == null) {
+    log.error("Downloading pending notification failed: chat server URL is null");
+    return;
+  }
+  final fcmToken = await KvStringManager.getInstance().getValue(KvString.fcmDeviceToken);
+  if (fcmToken == null) {
+    log.error("Downloading pending notification failed: FCM token is null");
+    return;
+  }
+
+  final ApiWrapper<ChatApi> chatApi = ApiWrapper(ApiProvider(chatUrl).chat);
+  final result = await chatApi.requestValue((api) => api.postGetPendingNotification(FcmDeviceToken(value: fcmToken)), logError: false);
+  switch (result) {
+    case Ok(:final v):
+      final manager = NotificationManager.getInstance();
+      await manager.init();
+      if (!await manager.areNotificationsEnabled()) {
+        return;
+      }
+
+      if (v.value == 0x1) {
+        await NotificationMessageReceivedStatic.getInstance().updateState(true);
+      }
+    case Err():
+      log.error("Downloading pending notification failed");
+  }
 }
