@@ -1,10 +1,10 @@
 
 
 import 'package:async/async.dart';
-import 'package:database/src/account/dao_account_settings.dart';
-import 'package:database/src/account/dao_local_image_settings.dart';
-import 'package:database/src/account/dao_local_notification_settings.dart';
-import 'package:database/src/account/dao_sync_versions.dart';
+import 'package:database/src/foreground/account/dao_account_settings.dart';
+import 'package:database/src/foreground/account/dao_local_image_settings.dart';
+import 'package:database/src/foreground/account/dao_local_notification_settings.dart';
+import 'package:database/src/foreground/account/dao_sync_versions.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
@@ -15,9 +15,9 @@ import 'account/dao_pending_content.dart';
 import 'account/dao_profile_settings.dart';
 import 'account/dao_tokens.dart';
 import 'message_table.dart';
-import 'profile_entry.dart';
+import '../profile_entry.dart';
 import 'profile_table.dart';
-import 'utils.dart';
+import '../utils.dart';
 
 part 'account_database.g.dart';
 

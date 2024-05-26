@@ -3,7 +3,7 @@
 import 'package:database/database.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
-import 'utils.dart';
+import '../utils.dart';
 
 part 'common_database.g.dart';
 

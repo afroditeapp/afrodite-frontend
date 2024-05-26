@@ -6,8 +6,8 @@ import 'package:utils/utils.dart';
 import 'account_database.dart';
 
 import 'package:drift/drift.dart';
-import 'message_entry.dart';
-import 'utils.dart';
+import '../message_entry.dart';
+import '../utils.dart';
 
 part 'message_table.g.dart';
 

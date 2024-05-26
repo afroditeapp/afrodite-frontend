@@ -7,8 +7,8 @@ import 'package:utils/utils.dart';
 import 'account_database.dart';
 
 import 'package:drift/drift.dart';
-import 'profile_entry.dart';
-import 'utils.dart';
+import '../profile_entry.dart';
+import '../utils.dart';
 
 part 'profile_table.g.dart';
 
