@@ -28,6 +28,14 @@ class CommonDbFile extends DbFile {
   }
 }
 
+class CommonBackgroundDbFile extends DbFile {
+  @override
+  Future<File> getFile() async {
+    final dbLocation = await DbDirUtils.commonBackgroundDbPath();
+    return File(dbLocation);
+  }
+}
+
 class AccountDbFile extends DbFile {
   final String account;
   AccountDbFile(this.account);
@@ -35,6 +43,17 @@ class AccountDbFile extends DbFile {
   @override
   Future<File> getFile() async {
     final dbLocation = await DbDirUtils.accountDbPath(account);
+    return File(dbLocation);
+  }
+}
+
+class AccountBackgroundDbFile extends DbFile {
+  final String account;
+  AccountBackgroundDbFile(this.account);
+
+  @override
+  Future<File> getFile() async {
+    final dbLocation = await DbDirUtils.accountBackgroundDbPath(account);
     return File(dbLocation);
   }
 }
@@ -49,9 +68,17 @@ class DbProvider implements QueryExcecutorProvider {
   }
 }
 
-LazyDatabase openDbConnection(DbFile db, {bool doSqlchipherInit = false}) {
+LazyDatabase openDbConnection(
+  DbFile db,
+  {
+    bool doSqlchipherInit = false,
+    bool backgroundDb = false,
+  }
+) {
   return LazyDatabase(() async {
-    final encryptionKey = await SecureStorageManager.getInstance().getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir();
+    final encryptionKey = await SecureStorageManager.getInstance().getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir(
+      backgroundDb: backgroundDb,
+    );
     final dbFile = await db.getFile();
     final isolateToken = RootIsolateToken.instance!;
     return NativeDatabase.createInBackground(

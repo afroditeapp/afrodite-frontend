@@ -7,6 +7,7 @@ import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/api/api_wrapper.dart';
 import 'package:pihka_frontend/api/server_connection.dart';
 import 'package:pihka_frontend/config.dart';
+import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
@@ -172,7 +173,7 @@ class ApiManager extends AppSingleton {
   }
 
   Future<void> _loadAddressesFromConfig() async {
-    final storage = DatabaseManager.getInstance();
+    final storage = BackgroundDatabaseManager.getInstance();
 
     // TODO(prod): hardcode address for production release?
     final accountAddress = await storage.commonStreamSingleOrDefault(

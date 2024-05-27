@@ -9,9 +9,16 @@ import 'package:path/path.dart' as p;
 final log = Logger("DbDirUtils");
 
 class DbDirUtils {
-  static Future<String> _dbDirPath() async {
+  static Future<String> _dbDirPath({bool backgroundDb = false}) async {
+    final String dbDirName;
+    if (backgroundDb) {
+      dbDirName = "background_databases";
+    } else {
+      dbDirName = "databases";
+    }
+
     final supportDir = await getApplicationSupportDirectory();
-    final dbDirPath = p.join(supportDir.path, "databases");
+    final dbDirPath = p.join(supportDir.path, dbDirName);
     final dir = Directory(dbDirPath);
     if (!await dir.exists()) {
       await dir.create(); // TODO: Error handling
@@ -19,8 +26,8 @@ class DbDirUtils {
     return dbDirPath;
   }
 
-  static Future<String> _dbPath(String fileName) async {
-    final dbDirPath = await _dbDirPath();
+  static Future<String> _dbPath(String fileName, {bool backgroundDb = false}) async {
+    final dbDirPath = await _dbDirPath(backgroundDb: backgroundDb);
     final filePath = p.join(dbDirPath, fileName);
     return filePath;
   }
@@ -29,13 +36,26 @@ class DbDirUtils {
     return _dbPath("common.db");
   }
 
+  static Future<String> commonBackgroundDbPath() async {
+    return _dbPath("background_common.db", backgroundDb: true);
+  }
+
   static Future<String> accountDbPath(String account) async {
     final dbName = "$account.account.db";
     return await _dbPath(dbName);
   }
 
-  static Future<void> recreateDatabasesDir() async {
-    final dbDirPath = await _dbDirPath();
+  static Future<String> accountBackgroundDbPath(String account) async {
+    final dbName = "$account.background_account.db";
+    return await _dbPath(dbName, backgroundDb: true);
+  }
+
+  static Future<void> recreateDatabasesDir(
+    {
+      required bool backgroundDb,
+    }
+  ) async {
+    final dbDirPath = await _dbDirPath(backgroundDb: backgroundDb);
     final dir = Directory(dbDirPath);
     if (await dir.exists()) {
       await dir.delete(recursive: true);

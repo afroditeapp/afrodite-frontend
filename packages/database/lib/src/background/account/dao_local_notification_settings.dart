@@ -5,13 +5,13 @@ import 'package:drift/drift.dart';
 
 part 'dao_local_notification_settings.g.dart';
 
-@DriftAccessor(tables: [Account])
-class DaoLocalNotificationSettings extends DatabaseAccessor<AccountDatabase> with _$DaoLocalNotificationSettingsMixin, AccountTools {
+@DriftAccessor(tables: [AccountBackground])
+class DaoLocalNotificationSettings extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoLocalNotificationSettingsMixin, AccountBackgroundTools {
   DaoLocalNotificationSettings(super.db);
 
   Future<void> updateMessages(bool value) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
+    await into(accountBackground).insertOnConflictUpdate(
+      AccountBackgroundCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
         localNotificationSettingMessages: Value(value),
       ),
@@ -19,8 +19,8 @@ class DaoLocalNotificationSettings extends DatabaseAccessor<AccountDatabase> wit
   }
 
   Future<void> updateLikes(bool value) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
+    await into(accountBackground).insertOnConflictUpdate(
+      AccountBackgroundCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
         localNotificationSettingLikes: Value(value),
       ),
@@ -28,8 +28,8 @@ class DaoLocalNotificationSettings extends DatabaseAccessor<AccountDatabase> wit
   }
 
   Future<void> updateModerationRequestStatus(bool value) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
+    await into(accountBackground).insertOnConflictUpdate(
+      AccountBackgroundCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
         localNotificationSettingModerationRequestStatus: Value(value),
       ),

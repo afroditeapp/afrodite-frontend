@@ -6,14 +6,13 @@ import 'package:drift/isolate.dart';
 import 'package:database/database.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/utils.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/app_error.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
-final log = Logger("DatabaseManager");
+final log = Logger("BackgroundDatabaseManager");
 
 // TODO: It is fine that wal file is not closed properly, so consider enabling
 // WAL mode.
@@ -24,19 +23,17 @@ final log = Logger("DatabaseManager");
 // close the main isolate. Did this behavor start after Navigator 2.0
 // support was added?
 
-class DatabaseManager extends AppSingleton {
-  DatabaseManager._private();
-  static final _instance = DatabaseManager._private();
-  factory DatabaseManager.getInstance() {
+class BackgroundDatabaseManager extends AppSingleton {
+  BackgroundDatabaseManager._private();
+  static final _instance = BackgroundDatabaseManager._private();
+  factory BackgroundDatabaseManager.getInstance() {
     return _instance;
   }
 
-  final backgroundDbManager = BackgroundDatabaseManager.getInstance();
-
   bool initDone = false;
   late final LazyDatabase commonLazyDatabase;
-  late final CommonDatabase commonDatabase;
-  final accountDatabases = <AccountId, (LazyDatabase, AccountDatabase)>{};
+  late final CommonBackgroundDatabase commonDatabase;
+  final accountDatabases = <AccountId, (LazyDatabase, AccountBackgroundDatabase)>{};
 
   @override
   Future<void> init() async {
@@ -45,17 +42,24 @@ class DatabaseManager extends AppSingleton {
     }
     initDone = true;
 
-    // Background DB init has doSqlchipherInit: true and other init
-    // related things.
-    await backgroundDbManager.init();
+    // DatabaseManager handles one instance per database file, so disable
+    // warning. This should be safe to do as told by
+    // in: https://github.com/simolus3/drift/discussions/2596
+    driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
 
-    commonLazyDatabase = openDbConnection(CommonDbFile());
-    commonDatabase = CommonDatabase(DbProvider(commonLazyDatabase));
+    commonLazyDatabase = openDbConnection(
+      CommonBackgroundDbFile(),
+      doSqlchipherInit: true,
+      backgroundDb: true,
+    );
+    commonDatabase = CommonBackgroundDatabase(DbProvider(commonLazyDatabase));
+    // Make sure that the database libraries are initialized
+    await commonStream((db) => db.watchAccountId()).first;
   }
 
   // Common database
 
-  Stream<T> commonStream<T>(Stream<T> Function(CommonDatabase) mapper) async* {
+  Stream<T> commonStream<T>(Stream<T> Function(CommonBackgroundDatabase) mapper) async* {
     final stream = mapper(commonDatabase);
     yield* stream
     // try-catch does not work with *yield, so await for would be required, but
@@ -67,7 +71,7 @@ class DatabaseManager extends AppSingleton {
     });
   }
 
-  Stream<T> commonStreamOrDefault<T extends Object>(Stream<T?> Function(CommonDatabase) mapper, T defaultValue) async* {
+  Stream<T> commonStreamOrDefault<T extends Object>(Stream<T?> Function(CommonBackgroundDatabase) mapper, T defaultValue) async* {
     final stream = commonStream(mapper);
     yield* stream.map((event) {
       if (event == null) {
@@ -78,17 +82,17 @@ class DatabaseManager extends AppSingleton {
     });
   }
 
-  Future<T> commonStreamSingle<T>(Stream<T> Function(CommonDatabase) mapper) async {
+  Future<T> commonStreamSingle<T>(Stream<T> Function(CommonBackgroundDatabase) mapper) async {
     final stream = commonStream(mapper);
     return await stream.first;
   }
 
-  Future<T> commonStreamSingleOrDefault<T extends Object>(Stream<T?> Function(CommonDatabase) mapper, T defaultValue) async {
+  Future<T> commonStreamSingleOrDefault<T extends Object>(Stream<T?> Function(CommonBackgroundDatabase) mapper, T defaultValue) async {
     final first = await commonStreamSingle(mapper);
     return first ?? defaultValue;
   }
 
-  Future<Result<void, DatabaseError>> commonAction(Future<void> Function(CommonDatabase) action) async {
+  Future<Result<void, DatabaseError>> commonAction(Future<void> Function(CommonBackgroundDatabase) action) async {
     try {
       await action(commonDatabase);
       return const Ok(null);
@@ -105,7 +109,7 @@ class DatabaseManager extends AppSingleton {
 
   // Access current account database
 
-  Stream<T?> accountStream<T extends Object>(Stream<T?> Function(AccountDatabase) mapper) async* {
+  Stream<T?> accountStream<T extends Object>(Stream<T?> Function(AccountBackgroundDatabase) mapper) async* {
     yield* _accountSwitchMapStream((value) {
       if (value == null) {
         return oneValueAndWaitForever(null);
@@ -123,7 +127,7 @@ class DatabaseManager extends AppSingleton {
     });
   }
 
-  Stream<T> accountStreamOrDefault<T extends Object>(Stream<T?> Function(AccountDatabase) mapper, T defaultValue) async* {
+  Stream<T> accountStreamOrDefault<T extends Object>(Stream<T?> Function(AccountBackgroundDatabase) mapper, T defaultValue) async* {
     yield* accountStream(mapper)
       .map((event) {
         if (event == null) {
@@ -134,7 +138,7 @@ class DatabaseManager extends AppSingleton {
       });
   }
 
-  Future<Result<T, DatabaseError>> accountStreamSingle<T extends Object>(Stream<T?> Function(AccountDatabase) mapper) async {
+  Future<Result<T, DatabaseError>> accountStreamSingle<T extends Object>(Stream<T?> Function(AccountBackgroundDatabase) mapper) async {
     final stream = accountStream(mapper);
     final value = await stream.first;
     if (value == null) {
@@ -144,13 +148,13 @@ class DatabaseManager extends AppSingleton {
     }
   }
 
-  Future<T> accountStreamSingleOrDefault<T extends Object>(Stream<T?> Function(AccountDatabase) mapper, T defaultValue) async {
+  Future<T> accountStreamSingleOrDefault<T extends Object>(Stream<T?> Function(AccountBackgroundDatabase) mapper, T defaultValue) async {
     final value = await accountStreamSingle(mapper);
     return value.ok() ?? defaultValue;
   }
 
-  Future<Result<T, DatabaseError>> accountData<T extends Object?>(Future<T> Function(AccountDatabase) action) async {
-    final accountId = await BackgroundDatabaseManager.getInstance().commonStream((db) => db.watchAccountId()).first;
+  Future<Result<T, DatabaseError>> accountData<T extends Object?>(Future<T> Function(AccountBackgroundDatabase) action) async {
+    final accountId = await commonStream((db) => db.watchAccountId()).first;
     if (accountId == null) {
       log.warning("No AccountId found, data query skipped");
       return const Err(MissingAccountId());
@@ -170,8 +174,8 @@ class DatabaseManager extends AppSingleton {
     }
   }
 
-  Future<Result<void, DatabaseError>> accountAction(Future<void> Function(AccountDatabase) action) async {
-    final accountId = await backgroundDbManager.commonStream((db) => db.watchAccountId()).first;
+  Future<Result<void, DatabaseError>> accountAction(Future<void> Function(AccountBackgroundDatabase) action) async {
+    final accountId = await commonStream((db) => db.watchAccountId()).first;
     if (accountId == null) {
       log.warning("No AccountId found, action skipped");
       return const Err(MissingAccountId());
@@ -192,37 +196,34 @@ class DatabaseManager extends AppSingleton {
     }
   }
 
-  Future<Result<T, DatabaseError>> profileData<T extends Object?>(Future<T> Function(DaoProfiles) action) =>
-    accountData((db) => action(db.daoProfiles));
+  Future<Result<T, DatabaseError>> profileData<T extends Object?>(Future<T> Function(DaoProfilesBackground) action) =>
+    accountData((db) => action(db.daoProfilesBackground));
 
-  Future<Result<void, DatabaseError>> profileAction(Future<void> Function(DaoProfiles) action) =>
-    accountAction((db) => action(db.daoProfiles));
-
-  Future<Result<T, DatabaseError>> messageData<T extends Object?>(Future<T> Function(DaoMessages) action) =>
-    accountData((db) => action(db.daoMessages));
-
-  Future<Result<void, DatabaseError>> messageAction(Future<void> Function(DaoMessages) action) =>
-    accountAction((db) => action(db.daoMessages));
+  Future<Result<void, DatabaseError>> profileAction(Future<void> Function(DaoProfilesBackground) action) =>
+    accountAction((db) => action(db.daoProfilesBackground));
 
   Stream<T?> _accountSwitchMapStream<T extends Object>(Stream<T?> Function(AccountId? accountId) mapper) async* {
-    yield* backgroundDbManager.commonStream((db) => db.watchAccountId())
+    yield* commonStream((db) => db.watchAccountId())
       .switchMap(mapper);
   }
 
-  AccountDatabase _getAccountDatabaseUsingAccount(AccountId accountId) {
+  AccountBackgroundDatabase _getAccountDatabaseUsingAccount(AccountId accountId) {
     final db = accountDatabases[accountId];
     if (db != null) {
       return db.$2;
     } else {
-      final lazyDb = openDbConnection(AccountDbFile(accountId.accountId));
-      final newDb = AccountDatabase(DbProvider(lazyDb));
+      final lazyDb = openDbConnection(
+        AccountBackgroundDbFile(accountId.accountId),
+        backgroundDb: true,
+      );
+      final newDb = AccountBackgroundDatabase(DbProvider(lazyDb));
       accountDatabases[accountId] = (lazyDb, newDb);
       return newDb;
     }
   }
 
   Future<Result<void, AppError>> setAccountId(AccountId accountId) =>
-    backgroundDbManager.setAccountId(accountId)
+    commonAction((db) => db.updateAccountIdUseOnlyFromDatabaseManager(accountId))
       .andThen((_) => accountAction((db) => db.setAccountIdIfNull(accountId)));
 
   // TODO: Currently there is no location where this could be handled

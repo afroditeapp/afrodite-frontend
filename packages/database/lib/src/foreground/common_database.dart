@@ -2,7 +2,6 @@
 
 import 'package:database/database.dart';
 import 'package:drift/drift.dart';
-import 'package:openapi/api.dart';
 import '../utils.dart';
 
 part 'common_database.g.dart';
@@ -15,11 +14,6 @@ class Common extends Table {
   TextColumn get demoAccountUserId => text().nullable()();
   TextColumn get demoAccountPassword => text().nullable()();
   TextColumn get demoAccountToken => text().nullable()();
-  TextColumn get serverUrlAccount => text().nullable()();
-  TextColumn get serverUrlMedia => text().nullable()();
-  TextColumn get serverUrlProfile => text().nullable()();
-  TextColumn get serverUrlChat => text().nullable()();
-  TextColumn get uuidAccountId => text().map(const NullAwareTypeConverter.wrap(AccountIdConverter())).nullable()();
   BlobColumn get imageEncryptionKey => blob().nullable()();
 
   /// If true don't show notification permission asking dialog when
@@ -63,26 +57,6 @@ class CommonDatabase extends _$CommonDatabase {
     );
   }
 
-  Future<void> updateServerUrlAccount(String? url) async {
-    await into(common).insertOnConflictUpdate(
-      CommonCompanion.insert(
-        id: COMMON_DB_DATA_ID,
-        serverUrlAccount: Value(url),
-      ),
-    );
-  }
-
-  Future<void> updateAccountIdUseOnlyFromDatabaseManager(AccountId? id) async {
-    await transaction(() async {
-      await into(common).insertOnConflictUpdate(
-        CommonCompanion.insert(
-          id: COMMON_DB_DATA_ID,
-          uuidAccountId: Value(id),
-        ),
-      );
-    });
-  }
-
   Future<void> updateImageEncryptionKey(Uint8List key) async {
     await into(common).insertOnConflictUpdate(
       CommonCompanion.insert(
@@ -109,21 +83,6 @@ class CommonDatabase extends _$CommonDatabase {
 
   Stream<String?> watchDemoAccountToken() =>
     watchColumn((r) => r.demoAccountToken);
-
-  Stream<String?> watchServerUrlAccount() =>
-    watchColumn((r) => r.serverUrlAccount);
-
-  Stream<String?> watchServerUrlMedia() =>
-    watchColumn((r) => r.serverUrlMedia);
-
-  Stream<String?> watchServerUrlProfile() =>
-    watchColumn((r) => r.serverUrlProfile);
-
-  Stream<String?> watchServerUrlChat() =>
-    watchColumn((r) => r.serverUrlChat);
-
-  Stream<AccountId?> watchAccountId() =>
-    watchColumn((r) => r.uuidAccountId);
 
   Stream<Uint8List?> watchImageEncryptionKey() =>
     watchColumn((r) => r.imageEncryptionKey);

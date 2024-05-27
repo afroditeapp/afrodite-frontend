@@ -3,8 +3,8 @@
 import 'package:async/async.dart';
 import 'package:database/src/foreground/account/dao_account_settings.dart';
 import 'package:database/src/foreground/account/dao_local_image_settings.dart';
-import 'package:database/src/foreground/account/dao_local_notification_settings.dart';
 import 'package:database/src/foreground/account/dao_sync_versions.dart';
+import 'package:database/src/foreground/profile_table.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
@@ -16,7 +16,6 @@ import 'account/dao_profile_settings.dart';
 import 'account/dao_tokens.dart';
 import 'message_table.dart';
 import '../profile_entry.dart';
-import 'profile_table.dart';
 import '../utils.dart';
 
 part 'account_database.g.dart';
@@ -122,19 +121,13 @@ class Account extends Table {
   IntColumn get localImageSettingImageCacheMaxBytes => integer().nullable()();
   BoolColumn get localImageSettingCacheFullSizedImages => boolean().nullable()();
   IntColumn get localImageSettingImageCacheDownscalingSize => integer().nullable()();
-
-  // DaoNotificationSettings
-
-  BoolColumn get localNotificationSettingMessages => boolean().nullable()();
-  BoolColumn get localNotificationSettingLikes => boolean().nullable()();
-  BoolColumn get localNotificationSettingModerationRequestStatus => boolean().nullable()();
 }
 
 @DriftDatabase(
   tables: [
     Account,
     Profiles,
-    Messages
+    Messages,
   ],
   daos: [
     // Account table
@@ -146,11 +139,10 @@ class Account extends Table {
     DaoTokens,
     DaoInitialSync,
     DaoSyncVersions,
-    // Other tables
-    DaoProfiles,
-    DaoMessages,
     DaoLocalImageSettings,
-    DaoLocalNotificationSettings,
+    // Other tables
+    DaoMessages,
+    DaoProfiles,
   ],
 )
 class AccountDatabase extends _$AccountDatabase {
@@ -294,116 +286,6 @@ class AccountDatabase extends _$AccountDatabase {
     });
 }
 
-class JsonString {
-  final Map<String, Object?> jsonMap;
-  JsonString(this.jsonMap);
-
-  Capabilities? toCapabilities() {
-    return Capabilities.fromJson(jsonMap);
-  }
-
-  AvailableProfileAttributes? toAvailableProfileAttributes() {
-    return AvailableProfileAttributes.fromJson(jsonMap);
-  }
-
-  ProfileAttributeFilterList? toProfileAttributeFilterList() {
-    return ProfileAttributeFilterList.fromJson(jsonMap);
-  }
-
-  SearchGroups? toSearchGroups() {
-    return SearchGroups.fromJson(jsonMap);
-  }
-
-  static TypeConverter<JsonString, String> driftConverter = TypeConverter.json(
-    fromJson: (json) => JsonString(json as Map<String, Object?>),
-    toJson: (object) => object.jsonMap,
-  );
-}
-
-extension CapabilitiesJson on Capabilities {
-  JsonString toJsonString() {
-    return JsonString(toJson());
-  }
-}
-
-extension AvailableProfileAttributesJson on AvailableProfileAttributes {
-  JsonString toJsonString() {
-    return JsonString(toJson());
-  }
-}
-
-extension ProfileAttributeFilterListJson on ProfileAttributeFilterList {
-  JsonString toJsonString() {
-    return JsonString(toJson());
-  }
-}
-
-extension SearchGroupsJson on SearchGroups {
-  JsonString toJsonString() {
-    return JsonString(toJson());
-  }
-}
-
-class EnumString {
-  final String enumString;
-  EnumString(this.enumString);
-
-  AccountState? toAccountState() {
-    return AccountState.fromJson(enumString);
-  }
-
-  ProfileVisibility? toProfileVisibility() {
-    return ProfileVisibility.fromJson(enumString);
-  }
-
-  static TypeConverter<EnumString, String> driftConverter = const EnumStringConverter();
-}
-
-extension AccountStateConverter on AccountState {
-  EnumString toEnumString() {
-    return EnumString(toJson());
-  }
-}
-
-extension ProfileVisibilityConverter on ProfileVisibility {
-  EnumString toEnumString() {
-    return EnumString(toJson());
-  }
-}
-
-class EnumStringConverter extends TypeConverter<EnumString, String> {
-  const EnumStringConverter();
-
-  @override
-  EnumString fromSql(fromDb) {
-    return EnumString(fromDb);
-  }
-
-  @override
-  String toSql(value) {
-    return value.enumString;
-  }
-}
-
-class JsonList {
-  final List<Object?> jsonList;
-  JsonList(this.jsonList);
-
-  List<ProfileAttributeValue>? toProfileAttributes() {
-    return ProfileAttributeValue.listFromJson(jsonList);
-  }
-
-  static TypeConverter<JsonList, String> driftConverter = TypeConverter.json(
-    fromJson: (json) => JsonList(json as List<Object?>),
-    toJson: (object) => object.jsonList,
-  );
-}
-
-extension ProfileAttributeValueListJson on List<ProfileAttributeValue> {
-  JsonList toJsonList() {
-    return JsonList(map((e) => e.toJson()).toList());
-  }
-}
 
 
 mixin AccountTools on DatabaseAccessor<AccountDatabase> {

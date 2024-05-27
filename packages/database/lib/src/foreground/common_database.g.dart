@@ -35,38 +35,6 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
   late final GeneratedColumn<String> demoAccountToken = GeneratedColumn<String>(
       'demo_account_token', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _serverUrlAccountMeta =
-      const VerificationMeta('serverUrlAccount');
-  @override
-  late final GeneratedColumn<String> serverUrlAccount = GeneratedColumn<String>(
-      'server_url_account', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _serverUrlMediaMeta =
-      const VerificationMeta('serverUrlMedia');
-  @override
-  late final GeneratedColumn<String> serverUrlMedia = GeneratedColumn<String>(
-      'server_url_media', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _serverUrlProfileMeta =
-      const VerificationMeta('serverUrlProfile');
-  @override
-  late final GeneratedColumn<String> serverUrlProfile = GeneratedColumn<String>(
-      'server_url_profile', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _serverUrlChatMeta =
-      const VerificationMeta('serverUrlChat');
-  @override
-  late final GeneratedColumn<String> serverUrlChat = GeneratedColumn<String>(
-      'server_url_chat', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _uuidAccountIdMeta =
-      const VerificationMeta('uuidAccountId');
-  @override
-  late final GeneratedColumnWithTypeConverter<AccountId?, String>
-      uuidAccountId = GeneratedColumn<String>(
-              'uuid_account_id', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<AccountId?>($CommonTable.$converteruuidAccountId);
   static const VerificationMeta _imageEncryptionKeyMeta =
       const VerificationMeta('imageEncryptionKey');
   @override
@@ -89,11 +57,6 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
         demoAccountUserId,
         demoAccountPassword,
         demoAccountToken,
-        serverUrlAccount,
-        serverUrlMedia,
-        serverUrlProfile,
-        serverUrlChat,
-        uuidAccountId,
         imageEncryptionKey,
         notificationPermissionAsked
       ];
@@ -128,31 +91,6 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
           demoAccountToken.isAcceptableOrUnknown(
               data['demo_account_token']!, _demoAccountTokenMeta));
     }
-    if (data.containsKey('server_url_account')) {
-      context.handle(
-          _serverUrlAccountMeta,
-          serverUrlAccount.isAcceptableOrUnknown(
-              data['server_url_account']!, _serverUrlAccountMeta));
-    }
-    if (data.containsKey('server_url_media')) {
-      context.handle(
-          _serverUrlMediaMeta,
-          serverUrlMedia.isAcceptableOrUnknown(
-              data['server_url_media']!, _serverUrlMediaMeta));
-    }
-    if (data.containsKey('server_url_profile')) {
-      context.handle(
-          _serverUrlProfileMeta,
-          serverUrlProfile.isAcceptableOrUnknown(
-              data['server_url_profile']!, _serverUrlProfileMeta));
-    }
-    if (data.containsKey('server_url_chat')) {
-      context.handle(
-          _serverUrlChatMeta,
-          serverUrlChat.isAcceptableOrUnknown(
-              data['server_url_chat']!, _serverUrlChatMeta));
-    }
-    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
     if (data.containsKey('image_encryption_key')) {
       context.handle(
           _imageEncryptionKeyMeta,
@@ -183,17 +121,6 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
           DriftSqlType.string, data['${effectivePrefix}demo_account_password']),
       demoAccountToken: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}demo_account_token']),
-      serverUrlAccount: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}server_url_account']),
-      serverUrlMedia: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}server_url_media']),
-      serverUrlProfile: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}server_url_profile']),
-      serverUrlChat: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}server_url_chat']),
-      uuidAccountId: $CommonTable.$converteruuidAccountId.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])),
       imageEncryptionKey: attachedDatabase.typeMapping.read(
           DriftSqlType.blob, data['${effectivePrefix}image_encryption_key']),
       notificationPermissionAsked: attachedDatabase.typeMapping.read(
@@ -206,9 +133,6 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
   $CommonTable createAlias(String alias) {
     return $CommonTable(attachedDatabase, alias);
   }
-
-  static TypeConverter<AccountId?, String?> $converteruuidAccountId =
-      const NullAwareTypeConverter.wrap(AccountIdConverter());
 }
 
 class CommonData extends DataClass implements Insertable<CommonData> {
@@ -216,11 +140,6 @@ class CommonData extends DataClass implements Insertable<CommonData> {
   final String? demoAccountUserId;
   final String? demoAccountPassword;
   final String? demoAccountToken;
-  final String? serverUrlAccount;
-  final String? serverUrlMedia;
-  final String? serverUrlProfile;
-  final String? serverUrlChat;
-  final AccountId? uuidAccountId;
   final Uint8List? imageEncryptionKey;
 
   /// If true don't show notification permission asking dialog when
@@ -231,11 +150,6 @@ class CommonData extends DataClass implements Insertable<CommonData> {
       this.demoAccountUserId,
       this.demoAccountPassword,
       this.demoAccountToken,
-      this.serverUrlAccount,
-      this.serverUrlMedia,
-      this.serverUrlProfile,
-      this.serverUrlChat,
-      this.uuidAccountId,
       this.imageEncryptionKey,
       required this.notificationPermissionAsked});
   @override
@@ -250,22 +164,6 @@ class CommonData extends DataClass implements Insertable<CommonData> {
     }
     if (!nullToAbsent || demoAccountToken != null) {
       map['demo_account_token'] = Variable<String>(demoAccountToken);
-    }
-    if (!nullToAbsent || serverUrlAccount != null) {
-      map['server_url_account'] = Variable<String>(serverUrlAccount);
-    }
-    if (!nullToAbsent || serverUrlMedia != null) {
-      map['server_url_media'] = Variable<String>(serverUrlMedia);
-    }
-    if (!nullToAbsent || serverUrlProfile != null) {
-      map['server_url_profile'] = Variable<String>(serverUrlProfile);
-    }
-    if (!nullToAbsent || serverUrlChat != null) {
-      map['server_url_chat'] = Variable<String>(serverUrlChat);
-    }
-    if (!nullToAbsent || uuidAccountId != null) {
-      map['uuid_account_id'] = Variable<String>(
-          $CommonTable.$converteruuidAccountId.toSql(uuidAccountId));
     }
     if (!nullToAbsent || imageEncryptionKey != null) {
       map['image_encryption_key'] = Variable<Uint8List>(imageEncryptionKey);
@@ -287,21 +185,6 @@ class CommonData extends DataClass implements Insertable<CommonData> {
       demoAccountToken: demoAccountToken == null && nullToAbsent
           ? const Value.absent()
           : Value(demoAccountToken),
-      serverUrlAccount: serverUrlAccount == null && nullToAbsent
-          ? const Value.absent()
-          : Value(serverUrlAccount),
-      serverUrlMedia: serverUrlMedia == null && nullToAbsent
-          ? const Value.absent()
-          : Value(serverUrlMedia),
-      serverUrlProfile: serverUrlProfile == null && nullToAbsent
-          ? const Value.absent()
-          : Value(serverUrlProfile),
-      serverUrlChat: serverUrlChat == null && nullToAbsent
-          ? const Value.absent()
-          : Value(serverUrlChat),
-      uuidAccountId: uuidAccountId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidAccountId),
       imageEncryptionKey: imageEncryptionKey == null && nullToAbsent
           ? const Value.absent()
           : Value(imageEncryptionKey),
@@ -319,11 +202,6 @@ class CommonData extends DataClass implements Insertable<CommonData> {
       demoAccountPassword:
           serializer.fromJson<String?>(json['demoAccountPassword']),
       demoAccountToken: serializer.fromJson<String?>(json['demoAccountToken']),
-      serverUrlAccount: serializer.fromJson<String?>(json['serverUrlAccount']),
-      serverUrlMedia: serializer.fromJson<String?>(json['serverUrlMedia']),
-      serverUrlProfile: serializer.fromJson<String?>(json['serverUrlProfile']),
-      serverUrlChat: serializer.fromJson<String?>(json['serverUrlChat']),
-      uuidAccountId: serializer.fromJson<AccountId?>(json['uuidAccountId']),
       imageEncryptionKey:
           serializer.fromJson<Uint8List?>(json['imageEncryptionKey']),
       notificationPermissionAsked:
@@ -338,11 +216,6 @@ class CommonData extends DataClass implements Insertable<CommonData> {
       'demoAccountUserId': serializer.toJson<String?>(demoAccountUserId),
       'demoAccountPassword': serializer.toJson<String?>(demoAccountPassword),
       'demoAccountToken': serializer.toJson<String?>(demoAccountToken),
-      'serverUrlAccount': serializer.toJson<String?>(serverUrlAccount),
-      'serverUrlMedia': serializer.toJson<String?>(serverUrlMedia),
-      'serverUrlProfile': serializer.toJson<String?>(serverUrlProfile),
-      'serverUrlChat': serializer.toJson<String?>(serverUrlChat),
-      'uuidAccountId': serializer.toJson<AccountId?>(uuidAccountId),
       'imageEncryptionKey': serializer.toJson<Uint8List?>(imageEncryptionKey),
       'notificationPermissionAsked':
           serializer.toJson<bool>(notificationPermissionAsked),
@@ -354,11 +227,6 @@ class CommonData extends DataClass implements Insertable<CommonData> {
           Value<String?> demoAccountUserId = const Value.absent(),
           Value<String?> demoAccountPassword = const Value.absent(),
           Value<String?> demoAccountToken = const Value.absent(),
-          Value<String?> serverUrlAccount = const Value.absent(),
-          Value<String?> serverUrlMedia = const Value.absent(),
-          Value<String?> serverUrlProfile = const Value.absent(),
-          Value<String?> serverUrlChat = const Value.absent(),
-          Value<AccountId?> uuidAccountId = const Value.absent(),
           Value<Uint8List?> imageEncryptionKey = const Value.absent(),
           bool? notificationPermissionAsked}) =>
       CommonData(
@@ -372,18 +240,6 @@ class CommonData extends DataClass implements Insertable<CommonData> {
         demoAccountToken: demoAccountToken.present
             ? demoAccountToken.value
             : this.demoAccountToken,
-        serverUrlAccount: serverUrlAccount.present
-            ? serverUrlAccount.value
-            : this.serverUrlAccount,
-        serverUrlMedia:
-            serverUrlMedia.present ? serverUrlMedia.value : this.serverUrlMedia,
-        serverUrlProfile: serverUrlProfile.present
-            ? serverUrlProfile.value
-            : this.serverUrlProfile,
-        serverUrlChat:
-            serverUrlChat.present ? serverUrlChat.value : this.serverUrlChat,
-        uuidAccountId:
-            uuidAccountId.present ? uuidAccountId.value : this.uuidAccountId,
         imageEncryptionKey: imageEncryptionKey.present
             ? imageEncryptionKey.value
             : this.imageEncryptionKey,
@@ -397,11 +253,6 @@ class CommonData extends DataClass implements Insertable<CommonData> {
           ..write('demoAccountUserId: $demoAccountUserId, ')
           ..write('demoAccountPassword: $demoAccountPassword, ')
           ..write('demoAccountToken: $demoAccountToken, ')
-          ..write('serverUrlAccount: $serverUrlAccount, ')
-          ..write('serverUrlMedia: $serverUrlMedia, ')
-          ..write('serverUrlProfile: $serverUrlProfile, ')
-          ..write('serverUrlChat: $serverUrlChat, ')
-          ..write('uuidAccountId: $uuidAccountId, ')
           ..write('imageEncryptionKey: $imageEncryptionKey, ')
           ..write('notificationPermissionAsked: $notificationPermissionAsked')
           ..write(')'))
@@ -414,11 +265,6 @@ class CommonData extends DataClass implements Insertable<CommonData> {
       demoAccountUserId,
       demoAccountPassword,
       demoAccountToken,
-      serverUrlAccount,
-      serverUrlMedia,
-      serverUrlProfile,
-      serverUrlChat,
-      uuidAccountId,
       $driftBlobEquality.hash(imageEncryptionKey),
       notificationPermissionAsked);
   @override
@@ -429,11 +275,6 @@ class CommonData extends DataClass implements Insertable<CommonData> {
           other.demoAccountUserId == this.demoAccountUserId &&
           other.demoAccountPassword == this.demoAccountPassword &&
           other.demoAccountToken == this.demoAccountToken &&
-          other.serverUrlAccount == this.serverUrlAccount &&
-          other.serverUrlMedia == this.serverUrlMedia &&
-          other.serverUrlProfile == this.serverUrlProfile &&
-          other.serverUrlChat == this.serverUrlChat &&
-          other.uuidAccountId == this.uuidAccountId &&
           $driftBlobEquality.equals(
               other.imageEncryptionKey, this.imageEncryptionKey) &&
           other.notificationPermissionAsked ==
@@ -445,11 +286,6 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
   final Value<String?> demoAccountUserId;
   final Value<String?> demoAccountPassword;
   final Value<String?> demoAccountToken;
-  final Value<String?> serverUrlAccount;
-  final Value<String?> serverUrlMedia;
-  final Value<String?> serverUrlProfile;
-  final Value<String?> serverUrlChat;
-  final Value<AccountId?> uuidAccountId;
   final Value<Uint8List?> imageEncryptionKey;
   final Value<bool> notificationPermissionAsked;
   const CommonCompanion({
@@ -457,11 +293,6 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
     this.demoAccountUserId = const Value.absent(),
     this.demoAccountPassword = const Value.absent(),
     this.demoAccountToken = const Value.absent(),
-    this.serverUrlAccount = const Value.absent(),
-    this.serverUrlMedia = const Value.absent(),
-    this.serverUrlProfile = const Value.absent(),
-    this.serverUrlChat = const Value.absent(),
-    this.uuidAccountId = const Value.absent(),
     this.imageEncryptionKey = const Value.absent(),
     this.notificationPermissionAsked = const Value.absent(),
   });
@@ -470,11 +301,6 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
     this.demoAccountUserId = const Value.absent(),
     this.demoAccountPassword = const Value.absent(),
     this.demoAccountToken = const Value.absent(),
-    this.serverUrlAccount = const Value.absent(),
-    this.serverUrlMedia = const Value.absent(),
-    this.serverUrlProfile = const Value.absent(),
-    this.serverUrlChat = const Value.absent(),
-    this.uuidAccountId = const Value.absent(),
     this.imageEncryptionKey = const Value.absent(),
     this.notificationPermissionAsked = const Value.absent(),
   });
@@ -483,11 +309,6 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
     Expression<String>? demoAccountUserId,
     Expression<String>? demoAccountPassword,
     Expression<String>? demoAccountToken,
-    Expression<String>? serverUrlAccount,
-    Expression<String>? serverUrlMedia,
-    Expression<String>? serverUrlProfile,
-    Expression<String>? serverUrlChat,
-    Expression<String>? uuidAccountId,
     Expression<Uint8List>? imageEncryptionKey,
     Expression<bool>? notificationPermissionAsked,
   }) {
@@ -497,11 +318,6 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
       if (demoAccountPassword != null)
         'demo_account_password': demoAccountPassword,
       if (demoAccountToken != null) 'demo_account_token': demoAccountToken,
-      if (serverUrlAccount != null) 'server_url_account': serverUrlAccount,
-      if (serverUrlMedia != null) 'server_url_media': serverUrlMedia,
-      if (serverUrlProfile != null) 'server_url_profile': serverUrlProfile,
-      if (serverUrlChat != null) 'server_url_chat': serverUrlChat,
-      if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
       if (imageEncryptionKey != null)
         'image_encryption_key': imageEncryptionKey,
       if (notificationPermissionAsked != null)
@@ -514,11 +330,6 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
       Value<String?>? demoAccountUserId,
       Value<String?>? demoAccountPassword,
       Value<String?>? demoAccountToken,
-      Value<String?>? serverUrlAccount,
-      Value<String?>? serverUrlMedia,
-      Value<String?>? serverUrlProfile,
-      Value<String?>? serverUrlChat,
-      Value<AccountId?>? uuidAccountId,
       Value<Uint8List?>? imageEncryptionKey,
       Value<bool>? notificationPermissionAsked}) {
     return CommonCompanion(
@@ -526,11 +337,6 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
       demoAccountUserId: demoAccountUserId ?? this.demoAccountUserId,
       demoAccountPassword: demoAccountPassword ?? this.demoAccountPassword,
       demoAccountToken: demoAccountToken ?? this.demoAccountToken,
-      serverUrlAccount: serverUrlAccount ?? this.serverUrlAccount,
-      serverUrlMedia: serverUrlMedia ?? this.serverUrlMedia,
-      serverUrlProfile: serverUrlProfile ?? this.serverUrlProfile,
-      serverUrlChat: serverUrlChat ?? this.serverUrlChat,
-      uuidAccountId: uuidAccountId ?? this.uuidAccountId,
       imageEncryptionKey: imageEncryptionKey ?? this.imageEncryptionKey,
       notificationPermissionAsked:
           notificationPermissionAsked ?? this.notificationPermissionAsked,
@@ -553,22 +359,6 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
     if (demoAccountToken.present) {
       map['demo_account_token'] = Variable<String>(demoAccountToken.value);
     }
-    if (serverUrlAccount.present) {
-      map['server_url_account'] = Variable<String>(serverUrlAccount.value);
-    }
-    if (serverUrlMedia.present) {
-      map['server_url_media'] = Variable<String>(serverUrlMedia.value);
-    }
-    if (serverUrlProfile.present) {
-      map['server_url_profile'] = Variable<String>(serverUrlProfile.value);
-    }
-    if (serverUrlChat.present) {
-      map['server_url_chat'] = Variable<String>(serverUrlChat.value);
-    }
-    if (uuidAccountId.present) {
-      map['uuid_account_id'] = Variable<String>(
-          $CommonTable.$converteruuidAccountId.toSql(uuidAccountId.value));
-    }
     if (imageEncryptionKey.present) {
       map['image_encryption_key'] =
           Variable<Uint8List>(imageEncryptionKey.value);
@@ -587,11 +377,6 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
           ..write('demoAccountUserId: $demoAccountUserId, ')
           ..write('demoAccountPassword: $demoAccountPassword, ')
           ..write('demoAccountToken: $demoAccountToken, ')
-          ..write('serverUrlAccount: $serverUrlAccount, ')
-          ..write('serverUrlMedia: $serverUrlMedia, ')
-          ..write('serverUrlProfile: $serverUrlProfile, ')
-          ..write('serverUrlChat: $serverUrlChat, ')
-          ..write('uuidAccountId: $uuidAccountId, ')
           ..write('imageEncryptionKey: $imageEncryptionKey, ')
           ..write('notificationPermissionAsked: $notificationPermissionAsked')
           ..write(')'))

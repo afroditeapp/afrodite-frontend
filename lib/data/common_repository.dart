@@ -6,6 +6,7 @@ import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/data/push_notification_manager.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/storage/kv.dart';
 import 'package:rxdart/rxdart.dart';
@@ -20,6 +21,7 @@ class CommonRepository extends DataRepository {
   }
 
   final db = DatabaseManager.getInstance();
+  final backgroundDb = BackgroundDatabaseManager.getInstance();
 
   final syncHandler = ConnectedActionScheduler();
   bool initDone = false;
@@ -46,7 +48,7 @@ class CommonRepository extends DataRepository {
     })
       .listen((event) {});
 
-    db
+    backgroundDb
       .accountStream((db) => db.daoLocalNotificationSettings.watchMessages())
       .listen((state) {
         _kvBooleanUpdates.add(KvBooleanUpdate(
@@ -54,7 +56,7 @@ class CommonRepository extends DataRepository {
           state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT,
         ));
       });
-    db
+    backgroundDb
       .accountStream((db) => db.daoLocalNotificationSettings.watchLikes())
       .listen((state) {
         _kvBooleanUpdates.add(KvBooleanUpdate(
@@ -62,7 +64,7 @@ class CommonRepository extends DataRepository {
           state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT,
         ));
       });
-    db
+    backgroundDb
       .accountStream((db) => db.daoLocalNotificationSettings.watchModerationRequestStatus())
       .listen((state) {
         _kvBooleanUpdates.add(KvBooleanUpdate(

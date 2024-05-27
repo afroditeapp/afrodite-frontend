@@ -1,7 +1,6 @@
 
 
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -15,10 +14,21 @@ final log = Logger("Encryption");
 
 // The key is from this cmd: openssl rand -base64 12
 const RAW_STORAGE_KEY_FOR_DB_ENCRYPTION_KEY = "SxxccCgbFSMkdaho";
+const RAW_STORAGE_KEY_FOR_BACKGROUND_DB_ENCRYPTION_KEY = "Aeq5gGUHgn6IVqaK";
 
-Future<String> _getStorageKeyForDbEncryptionKey() async {
+Future<String> _getStorageKeyForDbEncryptionKey(
+  {
+    required bool backgroundDb,
+  }
+) async {
+  final String keyRaw;
+  if (backgroundDb) {
+    keyRaw = RAW_STORAGE_KEY_FOR_BACKGROUND_DB_ENCRYPTION_KEY;
+  } else {
+    keyRaw = RAW_STORAGE_KEY_FOR_DB_ENCRYPTION_KEY;
+  }
   // Basic obfuscation about what the key is for
-  final keyBytes = utf8.encode(RAW_STORAGE_KEY_FOR_DB_ENCRYPTION_KEY);
+  final keyBytes = utf8.encode(keyRaw);
   final base64String = base64.encode(keyBytes);
   final key = base64String.substring(0, 10);
   return key;
@@ -58,18 +68,33 @@ class SecureStorageManager extends AppSingleton {
     testEncryptionSupport();
   }
 
-  Future<String> getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir() async {
-    final key = await _getStorageKeyForDbEncryptionKey();
-    final value = await storage.read(key: key);
+  Future<String> getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir(
+    {
+      required bool backgroundDb,
+    }
+  ) async {
+    final IOSOptions iosOptions;
+    if (backgroundDb) {
+      iosOptions = const IOSOptions(
+        accessibility: KeychainAccessibility.first_unlock_this_device,
+      );
+    } else {
+      iosOptions = const IOSOptions(
+        accessibility: KeychainAccessibility.unlocked_this_device,
+      );
+    }
+
+    final key = await _getStorageKeyForDbEncryptionKey(backgroundDb: backgroundDb);
+    final value = await storage.read(key: key, iOptions: iosOptions);
     if (value == null) {
       final newValue = await _generateDbEncryptionKey();
-      await storage.write(key: key, value: newValue);
-      final newValueReadingTest = await storage.read(key: key);
+      await storage.write(key: key, value: newValue, iOptions: iosOptions);
+      final newValueReadingTest = await storage.read(key: key, iOptions: iosOptions);
       if (newValueReadingTest != newValue) {
         throw Exception("Failed to read the value that was just written");
       }
 
-      await DbDirUtils.recreateDatabasesDir();
+      await DbDirUtils.recreateDatabasesDir(backgroundDb: backgroundDb);
 
       return newValue;
     } else {
@@ -164,7 +189,6 @@ class ImageEncryptionManager extends AppSingleton {
     }
   }
 }
-
 
 void testEncryptionSupport() {
   final key = Uint8List(32); // 256 bits

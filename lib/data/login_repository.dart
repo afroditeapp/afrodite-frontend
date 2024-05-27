@@ -13,6 +13,7 @@ import 'package:pihka_frontend/data/common_repository.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
+import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/secrets.dart';
 import 'package:pihka_frontend/utils.dart';
@@ -60,7 +61,7 @@ class LoginRepository extends DataRepository {
 
   // Main app state streams
   Stream<LoginState> get loginState => _loginState.distinct();
-  Stream<String> get accountServerAddress => DatabaseManager.getInstance()
+  Stream<String> get accountServerAddress => BackgroundDatabaseManager.getInstance()
     .commonStreamOrDefault(
       (db) => db.watchServerUrlAccount(),
       defaultServerUrlAccount(),
@@ -79,7 +80,7 @@ class LoginRepository extends DataRepository {
   Stream<bool> get demoAccountLoginInProgress => _demoAccountLoginInProgress;
 
   // Account
-  Stream<AccountId?> get accountId => DatabaseManager.getInstance()
+  Stream<AccountId?> get accountId => BackgroundDatabaseManager.getInstance()
     .commonStream((db) => db.watchAccountId());
 
   @override
@@ -232,7 +233,7 @@ class LoginRepository extends DataRepository {
 
   // TODO(prod): Remove runtime server address changing?
   Future<void> setCurrentServerAddress(String serverAddress) async {
-    await DatabaseManager.getInstance().commonAction(
+    await BackgroundDatabaseManager.getInstance().commonAction(
       (db) => db.updateServerUrlAccount(serverAddress),
     );
     await _api.closeAndRefreshServerAddress();
