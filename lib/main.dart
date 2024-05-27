@@ -136,6 +136,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
         BlocProvider(create: (_) => NotificationPermissionBloc()),
         BlocProvider(create: (_) => NotificationPayloadHandlerBloc()),
+        BlocProvider(create: (_) => ProfileAttributesBloc()),
 
         // Main UI
         BlocProvider(create: (_) => LikeGridInstanceManagerBloc()),
@@ -166,10 +167,6 @@ Future<void> main() async {
 
         // Admin features related blocs
         // empty
-
-        // Non-lazy
-        // TOOD(prod): Change lazy to true as db is accessed to early?
-        BlocProvider(create: (_) => ProfileAttributesBloc(), lazy: false),
       ],
       child: const MyApp(),
     )

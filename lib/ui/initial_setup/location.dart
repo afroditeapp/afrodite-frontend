@@ -4,6 +4,7 @@ import "package:latlong2/latlong.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/navigator_state.dart";
+import "package:pihka_frontend/logic/profile/attributes.dart";
 import "package:pihka_frontend/ui/initial_setup/profile_attributes.dart";
 import "package:pihka_frontend/ui/normal/settings/location.dart";
 import "package:pihka_frontend/ui_utils/dialog.dart";
@@ -14,6 +15,9 @@ class AskLocationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Init profile attributes as it is next screen
+    context.read<ProfileAttributesBloc>();
+
     return commonInitialSetupScreenContent(
       context: context,
       child: QuestionAsker(
