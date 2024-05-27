@@ -57,6 +57,7 @@ class PushNotificationManager extends AppSingleton {
         await GoogleApiAvailability.instance.makeGooglePlayServicesAvailable();
       } catch (_) {
         log.warning("Google Play Services are not available");
+        return;
       }
     }
 
@@ -81,7 +82,7 @@ class PushNotificationManager extends AppSingleton {
       _tokenSubscription = FirebaseMessaging.instance.onTokenRefresh.listen((token) {
         // TODO(prod): remove this log
         log.finest("FCM token refreshed: $token");
-        refreshTokenToServer(token);
+        _refreshTokenToServer(token);
       });
       _tokenSubscription?.onError((_) {
         log.error("FCM onTokenRefresh error");
@@ -104,7 +105,7 @@ class PushNotificationManager extends AppSingleton {
     }
   }
 
-  Future<void> refreshTokenToServer(String fcmToken) async {
+  Future<void> _refreshTokenToServer(String fcmToken) async {
     final savedToken = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.watchFcmDeviceToken());
     if (savedToken?.value != fcmToken) {
       log.info("FCM token changed, sending token to server");

@@ -112,7 +112,7 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  Bloc.observer = DebugObserver();
+  // Bloc.observer = DebugObserver();
 
   await GlobalInitManager.getInstance().init();
 
@@ -262,13 +262,13 @@ class AppNavigator extends StatelessWidget {
 }
 
 // TODO(prod); Remove bloc state change printing
-class DebugObserver extends BlocObserver {
-  @override
-  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
-    super.onChange(bloc, change);
-    log.finest("${bloc.runtimeType} $change");
-  }
-}
+// class DebugObserver extends BlocObserver {
+//   @override
+//   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
+//     super.onChange(bloc, change);
+//     log.finest("${bloc.runtimeType} $change");
+//   }
+// }
 
 class GlobalInitManager {
   GlobalInitManager._private();
