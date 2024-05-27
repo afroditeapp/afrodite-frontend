@@ -6,7 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations_fi.dart';
-import 'package:pihka_frontend/storage/kv.dart';
+import 'package:pihka_frontend/database/background_database_manager.dart';
 
 final log = Logger("localizations");
 
@@ -20,7 +20,7 @@ AppLocalizations getStringsImplementation(BuildContext context) {
   }
   if (localizations != currentLocalizations) {
     log.info("Localizations changed, saving current locale value");
-    KvStringManager.getInstance().setValue(KvString.currentLocale, localizations.localeName);
+    BackgroundDatabaseManager.getInstance().commonAction((db) => db.updateCurrentLocale(localizations?.localeName));
   }
   currentLocalizations = localizations;
   return localizations;
@@ -38,13 +38,16 @@ class R {
   static AppLocalizations get strings => currentLocalizations;
 }
 
-Future<void> loadLocalizationsFromSharedPrefsIfNeeded() async {
+Future<void> loadLocalizationsFromBackgroundDatabaseIfNeeded() async {
   if (currentLocalizations is! AppLocalizationsEn) {
     // Some other localizations are already loaded, so no need to load from shared prefs
     return;
   }
 
-  final locale = await KvStringManager.getInstance().getValue(KvString.currentLocale);
+  final locale = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.watchCurrentLocale());
+  if (locale == null) {
+    log.warning("Locale not in database");
+  }
   if (locale == "en") {
     currentLocalizations = AppLocalizationsEn();
   } else if (locale == "fi") {

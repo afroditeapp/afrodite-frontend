@@ -11,10 +11,11 @@ import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/api/api_wrapper.dart';
 import 'package:pihka_frontend/data/general/notification/state/message_received_static.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
+import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/firebase_options.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/main.dart';
-import 'package:pihka_frontend/storage/kv.dart';
+import 'package:pihka_frontend/storage/encryption.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
@@ -104,12 +105,13 @@ class PushNotificationManager extends AppSingleton {
   }
 
   Future<void> refreshTokenToServer(String fcmToken) async {
-    final savedToken = await KvStringManager.getInstance().getValue(KvString.fcmDeviceToken);
-    if (savedToken != fcmToken) {
+    final savedToken = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.watchFcmDeviceToken());
+    if (savedToken?.value != fcmToken) {
       log.info("FCM token changed, sending token to server");
-      final result = await ApiManager.getInstance().chatAction((api) => api.postSetDeviceToken(FcmDeviceToken(value: fcmToken)));
+      final newToken = FcmDeviceToken(value: fcmToken);
+      final result = await ApiManager.getInstance().chatAction((api) => api.postSetDeviceToken(newToken));
       if (result.isOk()) {
-        await KvStringManager.getInstance().setValue(KvString.fcmDeviceToken, fcmToken);
+        await BackgroundDatabaseManager.getInstance().commonAction((db) => db.updateFcmDeviceToken(newToken));
       } else {
         log.error("Failed to send FCM token to server");
       }
@@ -132,7 +134,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // initialized in that case.
 
   initLogging();
-  await loadLocalizationsFromSharedPrefsIfNeeded();
+  await SecureStorageManager.getInstance().init();
+  final db = BackgroundDatabaseManager.getInstance();
+  await db.init();
+  await loadLocalizationsFromBackgroundDatabaseIfNeeded();
 
   log.info("Handling FCM background message");
 
@@ -141,19 +146,20 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   log.finest("FCM background message: ${message.data}");
   // TODO: query notification from backend with FCM token
 
-  final chatUrl = await KvStringManager.getInstance().getValue(KvString.urlPendingNotification);
+  // TODO(microservice): Use chat server URL instead.
+  final chatUrl = await db.commonStreamSingle((db) => db.watchServerUrlAccount());
   if (chatUrl == null) {
     log.error("Downloading pending notification failed: chat server URL is null");
     return;
   }
-  final fcmToken = await KvStringManager.getInstance().getValue(KvString.fcmDeviceToken);
+  final fcmToken = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.watchFcmDeviceToken());
   if (fcmToken == null) {
     log.error("Downloading pending notification failed: FCM token is null");
     return;
   }
 
   final ApiWrapper<ChatApi> chatApi = ApiWrapper(ApiProvider(chatUrl).chat);
-  final result = await chatApi.requestValue((api) => api.postGetPendingNotification(FcmDeviceToken(value: fcmToken)), logError: false);
+  final result = await chatApi.requestValue((api) => api.postGetPendingNotification(fcmToken), logError: false);
   switch (result) {
     case Ok(:final v):
       final manager = NotificationManager.getInstance();

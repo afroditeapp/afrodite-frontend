@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
+import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
@@ -14,7 +15,6 @@ import 'package:pihka_frontend/logic/app/notification_payload_handler.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/notification_payload_handler.dart';
-import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
 import 'package:pihka_frontend/ui/normal/likes.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
@@ -92,8 +92,10 @@ Future<void> handlePayload(
 ) async {
   final db = DatabaseManager.getInstance();
 
-  final notificationSessionId = await KvIntManager.getInstance().getValue(KvInt.notificationSessionId);
-  if (notificationSessionId != payload.sessionId.id) {
+  final notificationSessionId = await BackgroundDatabaseManager.getInstance().commonStreamSingle(
+    (db) => db.watchNotificationSessionId(),
+  );
+  if (notificationSessionId?.id != payload.sessionId.id) {
     log.warning("Notification payload session ID does not match current session ID");
     if (showError) {
       showSnackBar(R.strings.notification_session_expired_error);

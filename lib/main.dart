@@ -17,6 +17,7 @@ import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/push_notification_manager.dart';
+import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
@@ -114,6 +115,10 @@ Future<void> main() async {
   Bloc.observer = DebugObserver();
 
   await GlobalInitManager.getInstance().init();
+
+  // Locale saving needs database so init here
+  await SecureStorageManager.getInstance().init();
+  await BackgroundDatabaseManager.getInstance().init();
 
   runApp(
     MultiBlocProvider(
@@ -288,7 +293,6 @@ class GlobalInitManager {
     }
     _globalInitDone = true;
 
-    await SecureStorageManager.getInstance().init();
     await DatabaseManager.getInstance().init();
     await ImageEncryptionManager.getInstance().init();
 

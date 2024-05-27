@@ -182,8 +182,6 @@ class ApiManager extends AppSingleton {
     );
     _account.updateServerAddress(accountAddress);
     accountConnection.setAddress(toWebSocketUri(accountAddress));
-    // TODO(microservice): use chat server
-    await KvStringManager.getInstance().setValue(KvString.urlPendingNotification, accountAddress);
 
     final profileAddress = await storage.commonStreamSingleOrDefault(
       (db) => db.watchServerUrlProfile(),

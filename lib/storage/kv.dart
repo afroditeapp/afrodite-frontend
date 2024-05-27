@@ -6,9 +6,6 @@ import 'package:pihka_frontend/storage/base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum KvString implements PreferenceKeyProvider<KvString, String> {
-  fcmDeviceToken,
-  urlPendingNotification,
-  currentLocale,
   empty;
 
   @override
@@ -45,7 +42,6 @@ class KvStringManager extends KvStorageManager<KvString, String> {
 }
 
 enum KvInt implements PreferenceKeyProvider<KvInt, int> {
-  notificationSessionId,
   empty;
 
   @override
@@ -79,17 +75,9 @@ class KvIntManager extends KvStorageManager<KvInt, int> {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getInt(key.sharedPreferencesKey());
   }
-
-  Future<void> incrementNotificationSessionId() async {
-    final id = await getValue(KvInt.notificationSessionId) ?? 0;
-    await setValue(KvInt.notificationSessionId, id + 1);
-  }
 }
 
 enum KvBoolean implements PreferenceKeyProvider<KvBoolean, bool> {
-  localNotificationSettingMessages,
-  localNotificationSettingLikes,
-  localNotificationSettingModerationRequestStatus,
   empty;
 
   /// Get shared preference key for this type

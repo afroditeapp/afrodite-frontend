@@ -1,7 +1,11 @@
 
+import 'package:database/database.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
+import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/storage/kv.dart';
+import 'package:pihka_frontend/utils/result.dart';
+
+typedef IsEnabledGetter = Stream<bool?> Function(AccountBackgroundDatabase);
 
 sealed class NotificationCategory {
   final String id;
@@ -10,10 +14,11 @@ sealed class NotificationCategory {
 
   String get title;
 
-  KvBoolean get _isEnabledValueLocation;
+  IsEnabledGetter get _isEnabledValueLocation;
 
   Future<bool> isEnabled() async {
-    return await KvBooleanManager.getInstance().getValue(_isEnabledValueLocation) ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT;
+    final value = await BackgroundDatabaseManager.getInstance().accountStreamSingle(_isEnabledValueLocation).ok();
+    return value ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT;
   }
 
   static const List<NotificationCategory> all = [
@@ -33,7 +38,7 @@ class NotificationCategoryMessages extends NotificationCategory {
   String get title => R.strings.notification_category_messages;
 
   @override
-  KvBoolean get _isEnabledValueLocation => KvBoolean.localNotificationSettingMessages;
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoLocalNotificationSettings.watchMessages();
 }
 
 class NotificationCategoryLikes extends NotificationCategory {
@@ -46,7 +51,7 @@ class NotificationCategoryLikes extends NotificationCategory {
   String get title => R.strings.notification_category_likes;
 
   @override
-  KvBoolean get _isEnabledValueLocation => KvBoolean.localNotificationSettingLikes;
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoLocalNotificationSettings.watchLikes();
 }
 
 class NotificationCategoryModerationRequestStatus extends NotificationCategory {
@@ -59,6 +64,5 @@ class NotificationCategoryModerationRequestStatus extends NotificationCategory {
   String get title => R.strings.notification_category_moderation_request_status;
 
   @override
-  KvBoolean get _isEnabledValueLocation =>
-    KvBoolean.localNotificationSettingModerationRequestStatus;
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoLocalNotificationSettings.watchModerationRequestStatus();
 }

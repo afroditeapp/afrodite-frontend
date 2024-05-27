@@ -9,7 +9,7 @@ import 'package:pihka_frontend/data/general/notification/utils/notification_cate
 import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
 import 'package:pihka_frontend/data/push_notification_manager.dart';
-import 'package:pihka_frontend/storage/kv.dart';
+import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -234,7 +234,8 @@ class NotificationManager extends AppSingleton {
   }
 
   Future<NotificationSessionId> getSessionId() async {
-    return NotificationSessionId(id: await KvIntManager.getInstance().getValue(KvInt.notificationSessionId) ?? 0);
+    final id = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.watchNotificationSessionId());
+    return NotificationSessionId(id: id?.id ?? 0);
   }
 }
 

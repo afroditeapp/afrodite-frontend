@@ -178,3 +178,31 @@ extension ProfileAttributeValueListJson on List<ProfileAttributeValue> {
     return JsonList(map((e) => e.toJson()).toList());
   }
 }
+
+class NotificationSessionIdConverter extends TypeConverter<NotificationSessionId, int> {
+  const NotificationSessionIdConverter();
+
+  @override
+  NotificationSessionId fromSql(fromDb) {
+    return NotificationSessionId(id: fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.id;
+  }
+}
+
+class FcmDeviceTokenConverter extends TypeConverter<FcmDeviceToken, String> {
+  const FcmDeviceTokenConverter();
+
+  @override
+  FcmDeviceToken fromSql(fromDb) {
+    return FcmDeviceToken(value: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.value;
+  }
+}
