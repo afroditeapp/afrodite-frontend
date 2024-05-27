@@ -9,6 +9,7 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/api/api_wrapper.dart';
+import 'package:pihka_frontend/config.dart';
 import 'package:pihka_frontend/data/general/notification/state/message_received_static.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
@@ -148,12 +149,11 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // TODO: query notification from backend with FCM token
 
   // TODO(microservice): Use chat server URL instead.
-  final chatUrl = await db.commonStreamSingle((db) => db.watchServerUrlAccount());
-  if (chatUrl == null) {
-    log.error("Downloading pending notification failed: chat server URL is null");
-    return;
-  }
-  final fcmToken = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.watchFcmDeviceToken());
+  final chatUrl = await db.commonStreamSingleOrDefault(
+    (db) => db.watchServerUrlAccount(),
+    defaultServerUrlAccount(),
+  );
+  final fcmToken = await db.commonStreamSingle((db) => db.watchFcmDeviceToken());
   if (fcmToken == null) {
     log.error("Downloading pending notification failed: FCM token is null");
     return;
