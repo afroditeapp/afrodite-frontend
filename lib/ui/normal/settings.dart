@@ -16,6 +16,7 @@ import 'package:pihka_frontend/ui/normal/settings/data_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/debug.dart';
 import 'package:pihka_frontend/ui/normal/settings/general_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
+import 'package:pihka_frontend/ui/normal/settings/my_profile.dart';
 import 'package:pihka_frontend/ui/normal/settings/notification_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/privacy_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/search_settings.dart';
@@ -81,14 +82,9 @@ class _SettingsViewState extends State<SettingsView> {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
         List<Setting> settings = [
-          Setting.createSetting(Icons.person, context.strings.account_settings_screen_title, () {
-              final accountDetailsBloc = context.read<AccountDetailsBloc>();
-              MyNavigator.push(context, MaterialPage<void>(child:
-                AccountSettingsScreen(
-                  accountDetailsBloc: accountDetailsBloc,
-                )
-              ));
-            }
+
+          Setting.createSetting(Icons.account_box, context.strings.view_profile_screen_my_profile_title, () =>
+            MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()))
           ),
           Setting.createSetting(Icons.search, context.strings.search_settings_screen_title, () {
             final pageKey = PageKey();
@@ -104,6 +100,10 @@ class _SettingsViewState extends State<SettingsView> {
               pageKey,
             );
           }),
+          Setting.createSetting(Icons.notifications, context.strings.notification_settings_screen_title, () {
+              openNotificationSettings(context);
+            }
+          ),
           Setting.createSetting(Icons.lock_rounded, context.strings.privacy_settings_screen_title, () {
             final pageKey = PageKey();
             final privacySettingsBloc = context.read<PrivacySettingsBloc>();
@@ -125,8 +125,13 @@ class _SettingsViewState extends State<SettingsView> {
               ));
             }
           ),
-          Setting.createSetting(Icons.notifications, context.strings.notification_settings_screen_title, () {
-              openNotificationSettings(context);
+          Setting.createSetting(Icons.person, context.strings.account_settings_screen_title, () {
+              final accountDetailsBloc = context.read<AccountDetailsBloc>();
+              MyNavigator.push(context, MaterialPage<void>(child:
+                AccountSettingsScreen(
+                  accountDetailsBloc: accountDetailsBloc,
+                )
+              ));
             }
           ),
           Setting.createSetting(Icons.storage, context.strings.data_settings_screen_title, () {

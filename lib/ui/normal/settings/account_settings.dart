@@ -78,16 +78,9 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
         )),
         hPad(Text(birthdate)),
         const Padding(padding: EdgeInsets.all(4)),
-        myProfile(),
         deleteAccount(),
       ],
     );
-  }
-
-  Widget myProfile() {
-    return Setting.createSetting(Icons.account_box, context.strings.view_profile_screen_my_profile_title, () =>
-      MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()))
-    ).toListTile();
   }
 
   Widget deleteAccount() {
