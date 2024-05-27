@@ -78,22 +78,6 @@ class _SelectContentPageState extends State<SelectContentPage> {
   ) {
     final List<Widget> gridWidgets = [];
 
-    if (showAddNewModerationRequest) {
-      gridWidgets.add(
-        Center(
-          child: buildAddNewButton(
-            context,
-            onTap: () async {
-              final list = await openNewModerationRequest(context);
-              if (list != null && list.isNotEmpty) {
-                widget.selectContentBloc.add(NewModerationRequest(list));
-              }
-            }
-          )
-        )
-      );
-    }
-
     gridWidgets.addAll(
       pendingContent.map((e) => buildPendingImg(
         context,
@@ -111,6 +95,22 @@ class _SelectContentPageState extends State<SelectContentPage> {
         onTap: () => MyNavigator.pop(context, AccountImageId(accountId, e))
       ))
     );
+
+    if (showAddNewModerationRequest) {
+      gridWidgets.add(
+        Center(
+          child: buildAddNewButton(
+            context,
+            onTap: () async {
+              final list = await openNewModerationRequest(context);
+              if (list != null && list.isNotEmpty) {
+                widget.selectContentBloc.add(NewModerationRequest(list));
+              }
+            }
+          )
+        )
+      );
+    }
 
     final grid = GridView.count(
       physics: const NeverScrollableScrollPhysics(),
