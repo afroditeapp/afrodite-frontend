@@ -108,12 +108,12 @@ class PushNotificationManager extends AppSingleton {
 
   Future<void> _refreshTokenToServer(String fcmToken) async {
     final savedToken = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.watchFcmDeviceToken());
-    if (savedToken?.value != fcmToken) {
+    if (savedToken?.token != fcmToken) {
       log.info("FCM token changed, sending token to server");
-      final newToken = FcmDeviceToken(value: fcmToken);
-      final result = await ApiManager.getInstance().chatAction((api) => api.postSetDeviceToken(newToken));
-      if (result.isOk()) {
-        await BackgroundDatabaseManager.getInstance().commonAction((db) => db.updateFcmDeviceToken(newToken));
+      final newToken = FcmDeviceToken(token: fcmToken);
+      final result = await ApiManager.getInstance().chat((api) => api.postSetDeviceToken(newToken)).ok();
+      if (result != null) {
+        await BackgroundDatabaseManager.getInstance().commonAction((db) => db.updateFcmDeviceTokenAndPendingNotificationToken(newToken, result));
       } else {
         log.error("Failed to send FCM token to server");
       }
@@ -153,14 +153,14 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     (db) => db.watchServerUrlAccount(),
     defaultServerUrlAccount(),
   );
-  final fcmToken = await db.commonStreamSingle((db) => db.watchFcmDeviceToken());
-  if (fcmToken == null) {
-    log.error("Downloading pending notification failed: FCM token is null");
+  final pendingNotificationToken = await db.commonStreamSingle((db) => db.watchPendingNotificationToken());
+  if (pendingNotificationToken == null) {
+    log.error("Downloading pending notification failed: pending notification token is null");
     return;
   }
 
   final ApiWrapper<ChatApi> chatApi = ApiWrapper(ApiProvider(chatUrl).chat);
-  final result = await chatApi.requestValue((api) => api.postGetPendingNotification(fcmToken), logError: false);
+  final result = await chatApi.requestValue((api) => api.postGetPendingNotification(pendingNotificationToken), logError: false);
   switch (result) {
     case Ok(:final v):
       final manager = NotificationManager.getInstance();

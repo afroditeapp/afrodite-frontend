@@ -333,8 +333,10 @@ class ApiClient {
           return PendingMessageId.fromJson(value);
         case 'PendingMessagesPage':
           return PendingMessagesPage.fromJson(value);
-        case 'PendingNotification':
-          return PendingNotification.fromJson(value);
+        case 'PendingNotificationToken':
+          return PendingNotificationToken.fromJson(value);
+        case 'PendingNotificationWithData':
+          return PendingNotificationWithData.fromJson(value);
         case 'PendingProfileContent':
           return PendingProfileContent.fromJson(value);
         case 'PendingSecurityContent':

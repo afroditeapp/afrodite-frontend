@@ -85,7 +85,8 @@ doc/PendingMessage.md
 doc/PendingMessageDeleteList.md
 doc/PendingMessageId.md
 doc/PendingMessagesPage.md
-doc/PendingNotification.md
+doc/PendingNotificationToken.md
+doc/PendingNotificationWithData.md
 doc/PendingProfileContent.md
 doc/PendingSecurityContent.md
 doc/PerfHistoryQuery.md
@@ -232,7 +233,8 @@ lib/model/pending_message.dart
 lib/model/pending_message_delete_list.dart
 lib/model/pending_message_id.dart
 lib/model/pending_messages_page.dart
-lib/model/pending_notification.dart
+lib/model/pending_notification_token.dart
+lib/model/pending_notification_with_data.dart
 lib/model/pending_profile_content.dart
 lib/model/pending_security_content.dart
 lib/model/perf_history_query.dart
@@ -283,5 +285,3 @@ lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
-test/fcm_device_token_test.dart
-test/pending_notification_test.dart

@@ -69,6 +69,15 @@ class $CommonBackgroundTable extends CommonBackground
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<FcmDeviceToken?>(
               $CommonBackgroundTable.$converterfcmDeviceToken);
+  static const VerificationMeta _pendingNotificationTokenMeta =
+      const VerificationMeta('pendingNotificationToken');
+  @override
+  late final GeneratedColumnWithTypeConverter<PendingNotificationToken?, String>
+      pendingNotificationToken = GeneratedColumn<String>(
+              'pending_notification_token', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<PendingNotificationToken?>(
+              $CommonBackgroundTable.$converterpendingNotificationToken);
   static const VerificationMeta _currentLocaleMeta =
       const VerificationMeta('currentLocale');
   @override
@@ -85,6 +94,7 @@ class $CommonBackgroundTable extends CommonBackground
         uuidAccountId,
         notificationSessionId,
         fcmDeviceToken,
+        pendingNotificationToken,
         currentLocale
       ];
   @override
@@ -129,6 +139,8 @@ class $CommonBackgroundTable extends CommonBackground
     context.handle(
         _notificationSessionIdMeta, const VerificationResult.success());
     context.handle(_fcmDeviceTokenMeta, const VerificationResult.success());
+    context.handle(
+        _pendingNotificationTokenMeta, const VerificationResult.success());
     if (data.containsKey('current_locale')) {
       context.handle(
           _currentLocaleMeta,
@@ -164,6 +176,10 @@ class $CommonBackgroundTable extends CommonBackground
       fcmDeviceToken: $CommonBackgroundTable.$converterfcmDeviceToken.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}fcm_device_token'])),
+      pendingNotificationToken: $CommonBackgroundTable
+          .$converterpendingNotificationToken
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}pending_notification_token'])),
       currentLocale: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}current_locale']),
     );
@@ -181,6 +197,9 @@ class $CommonBackgroundTable extends CommonBackground
       const NullAwareTypeConverter.wrap(NotificationSessionIdConverter());
   static TypeConverter<FcmDeviceToken?, String?> $converterfcmDeviceToken =
       const NullAwareTypeConverter.wrap(FcmDeviceTokenConverter());
+  static TypeConverter<PendingNotificationToken?, String?>
+      $converterpendingNotificationToken =
+      const NullAwareTypeConverter.wrap(PendingNotificationTokenConverter());
 }
 
 class CommonBackgroundData extends DataClass
@@ -196,6 +215,7 @@ class CommonBackgroundData extends DataClass
   /// other accounts.
   final NotificationSessionId? notificationSessionId;
   final FcmDeviceToken? fcmDeviceToken;
+  final PendingNotificationToken? pendingNotificationToken;
   final String? currentLocale;
   const CommonBackgroundData(
       {required this.id,
@@ -206,6 +226,7 @@ class CommonBackgroundData extends DataClass
       this.uuidAccountId,
       this.notificationSessionId,
       this.fcmDeviceToken,
+      this.pendingNotificationToken,
       this.currentLocale});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -237,6 +258,11 @@ class CommonBackgroundData extends DataClass
           .$converterfcmDeviceToken
           .toSql(fcmDeviceToken));
     }
+    if (!nullToAbsent || pendingNotificationToken != null) {
+      map['pending_notification_token'] = Variable<String>(
+          $CommonBackgroundTable.$converterpendingNotificationToken
+              .toSql(pendingNotificationToken));
+    }
     if (!nullToAbsent || currentLocale != null) {
       map['current_locale'] = Variable<String>(currentLocale);
     }
@@ -267,6 +293,9 @@ class CommonBackgroundData extends DataClass
       fcmDeviceToken: fcmDeviceToken == null && nullToAbsent
           ? const Value.absent()
           : Value(fcmDeviceToken),
+      pendingNotificationToken: pendingNotificationToken == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pendingNotificationToken),
       currentLocale: currentLocale == null && nullToAbsent
           ? const Value.absent()
           : Value(currentLocale),
@@ -287,6 +316,8 @@ class CommonBackgroundData extends DataClass
           .fromJson<NotificationSessionId?>(json['notificationSessionId']),
       fcmDeviceToken:
           serializer.fromJson<FcmDeviceToken?>(json['fcmDeviceToken']),
+      pendingNotificationToken: serializer.fromJson<PendingNotificationToken?>(
+          json['pendingNotificationToken']),
       currentLocale: serializer.fromJson<String?>(json['currentLocale']),
     );
   }
@@ -303,6 +334,8 @@ class CommonBackgroundData extends DataClass
       'notificationSessionId':
           serializer.toJson<NotificationSessionId?>(notificationSessionId),
       'fcmDeviceToken': serializer.toJson<FcmDeviceToken?>(fcmDeviceToken),
+      'pendingNotificationToken': serializer
+          .toJson<PendingNotificationToken?>(pendingNotificationToken),
       'currentLocale': serializer.toJson<String?>(currentLocale),
     };
   }
@@ -317,6 +350,8 @@ class CommonBackgroundData extends DataClass
           Value<NotificationSessionId?> notificationSessionId =
               const Value.absent(),
           Value<FcmDeviceToken?> fcmDeviceToken = const Value.absent(),
+          Value<PendingNotificationToken?> pendingNotificationToken =
+              const Value.absent(),
           Value<String?> currentLocale = const Value.absent()}) =>
       CommonBackgroundData(
         id: id ?? this.id,
@@ -337,6 +372,9 @@ class CommonBackgroundData extends DataClass
             : this.notificationSessionId,
         fcmDeviceToken:
             fcmDeviceToken.present ? fcmDeviceToken.value : this.fcmDeviceToken,
+        pendingNotificationToken: pendingNotificationToken.present
+            ? pendingNotificationToken.value
+            : this.pendingNotificationToken,
         currentLocale:
             currentLocale.present ? currentLocale.value : this.currentLocale,
       );
@@ -351,6 +389,7 @@ class CommonBackgroundData extends DataClass
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('notificationSessionId: $notificationSessionId, ')
           ..write('fcmDeviceToken: $fcmDeviceToken, ')
+          ..write('pendingNotificationToken: $pendingNotificationToken, ')
           ..write('currentLocale: $currentLocale')
           ..write(')'))
         .toString();
@@ -366,6 +405,7 @@ class CommonBackgroundData extends DataClass
       uuidAccountId,
       notificationSessionId,
       fcmDeviceToken,
+      pendingNotificationToken,
       currentLocale);
   @override
   bool operator ==(Object other) =>
@@ -379,6 +419,7 @@ class CommonBackgroundData extends DataClass
           other.uuidAccountId == this.uuidAccountId &&
           other.notificationSessionId == this.notificationSessionId &&
           other.fcmDeviceToken == this.fcmDeviceToken &&
+          other.pendingNotificationToken == this.pendingNotificationToken &&
           other.currentLocale == this.currentLocale);
 }
 
@@ -391,6 +432,7 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
   final Value<AccountId?> uuidAccountId;
   final Value<NotificationSessionId?> notificationSessionId;
   final Value<FcmDeviceToken?> fcmDeviceToken;
+  final Value<PendingNotificationToken?> pendingNotificationToken;
   final Value<String?> currentLocale;
   const CommonBackgroundCompanion({
     this.id = const Value.absent(),
@@ -401,6 +443,7 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
     this.uuidAccountId = const Value.absent(),
     this.notificationSessionId = const Value.absent(),
     this.fcmDeviceToken = const Value.absent(),
+    this.pendingNotificationToken = const Value.absent(),
     this.currentLocale = const Value.absent(),
   });
   CommonBackgroundCompanion.insert({
@@ -412,6 +455,7 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
     this.uuidAccountId = const Value.absent(),
     this.notificationSessionId = const Value.absent(),
     this.fcmDeviceToken = const Value.absent(),
+    this.pendingNotificationToken = const Value.absent(),
     this.currentLocale = const Value.absent(),
   });
   static Insertable<CommonBackgroundData> custom({
@@ -423,6 +467,7 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
     Expression<String>? uuidAccountId,
     Expression<int>? notificationSessionId,
     Expression<String>? fcmDeviceToken,
+    Expression<String>? pendingNotificationToken,
     Expression<String>? currentLocale,
   }) {
     return RawValuesInsertable({
@@ -435,6 +480,8 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
       if (notificationSessionId != null)
         'notification_session_id': notificationSessionId,
       if (fcmDeviceToken != null) 'fcm_device_token': fcmDeviceToken,
+      if (pendingNotificationToken != null)
+        'pending_notification_token': pendingNotificationToken,
       if (currentLocale != null) 'current_locale': currentLocale,
     });
   }
@@ -448,6 +495,7 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
       Value<AccountId?>? uuidAccountId,
       Value<NotificationSessionId?>? notificationSessionId,
       Value<FcmDeviceToken?>? fcmDeviceToken,
+      Value<PendingNotificationToken?>? pendingNotificationToken,
       Value<String?>? currentLocale}) {
     return CommonBackgroundCompanion(
       id: id ?? this.id,
@@ -459,6 +507,8 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
       notificationSessionId:
           notificationSessionId ?? this.notificationSessionId,
       fcmDeviceToken: fcmDeviceToken ?? this.fcmDeviceToken,
+      pendingNotificationToken:
+          pendingNotificationToken ?? this.pendingNotificationToken,
       currentLocale: currentLocale ?? this.currentLocale,
     );
   }
@@ -496,6 +546,11 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
           .$converterfcmDeviceToken
           .toSql(fcmDeviceToken.value));
     }
+    if (pendingNotificationToken.present) {
+      map['pending_notification_token'] = Variable<String>(
+          $CommonBackgroundTable.$converterpendingNotificationToken
+              .toSql(pendingNotificationToken.value));
+    }
     if (currentLocale.present) {
       map['current_locale'] = Variable<String>(currentLocale.value);
     }
@@ -513,6 +568,7 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('notificationSessionId: $notificationSessionId, ')
           ..write('fcmDeviceToken: $fcmDeviceToken, ')
+          ..write('pendingNotificationToken: $pendingNotificationToken, ')
           ..write('currentLocale: $currentLocale')
           ..write(')'))
         .toString();

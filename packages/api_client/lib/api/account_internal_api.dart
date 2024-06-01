@@ -72,9 +72,9 @@ class AccountInternalApi {
     return null;
   }
 
-  /// Register new a new bot account. Returns new account ID which is UUID.
+  /// Register a new bot account. Returns new account ID which is UUID.
   ///
-  /// Register new a new bot account. Returns new account ID which is UUID.  Available only if server internal API is enabled with bot_login from config file.
+  /// Register a new bot account. Returns new account ID which is UUID.  Available only if server internal API is enabled with bot_login from config file.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> postRegisterWithHttpInfo() async {
@@ -102,9 +102,9 @@ class AccountInternalApi {
     );
   }
 
-  /// Register new a new bot account. Returns new account ID which is UUID.
+  /// Register a new bot account. Returns new account ID which is UUID.
   ///
-  /// Register new a new bot account. Returns new account ID which is UUID.  Available only if server internal API is enabled with bot_login from config file.
+  /// Register a new bot account. Returns new account ID which is UUID.  Available only if server internal API is enabled with bot_login from config file.
   Future<AccountId?> postRegister() async {
     final response = await postRegisterWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {

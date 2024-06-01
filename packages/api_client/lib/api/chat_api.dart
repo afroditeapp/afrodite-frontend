@@ -512,13 +512,13 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [FcmDeviceToken] fcmDeviceToken (required):
-  Future<Response> postGetPendingNotificationWithHttpInfo(FcmDeviceToken fcmDeviceToken,) async {
+  /// * [PendingNotificationToken] pendingNotificationToken (required):
+  Future<Response> postGetPendingNotificationWithHttpInfo(PendingNotificationToken pendingNotificationToken,) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/get_pending_notification';
 
     // ignore: prefer_final_locals
-    Object? postBody = fcmDeviceToken;
+    Object? postBody = pendingNotificationToken;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -544,9 +544,9 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [FcmDeviceToken] fcmDeviceToken (required):
-  Future<PendingNotification?> postGetPendingNotification(FcmDeviceToken fcmDeviceToken,) async {
-    final response = await postGetPendingNotificationWithHttpInfo(fcmDeviceToken,);
+  /// * [PendingNotificationToken] pendingNotificationToken (required):
+  Future<PendingNotificationWithData?> postGetPendingNotification(PendingNotificationToken pendingNotificationToken,) async {
+    final response = await postGetPendingNotificationWithHttpInfo(pendingNotificationToken,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -554,7 +554,7 @@ class ChatApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingNotification',) as PendingNotification;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingNotificationWithData',) as PendingNotificationWithData;
     
     }
     return null;
@@ -736,11 +736,19 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [FcmDeviceToken] fcmDeviceToken (required):
-  Future<void> postSetDeviceToken(FcmDeviceToken fcmDeviceToken,) async {
+  Future<PendingNotificationToken?> postSetDeviceToken(FcmDeviceToken fcmDeviceToken,) async {
     final response = await postSetDeviceTokenWithHttpInfo(fcmDeviceToken,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingNotificationToken',) as PendingNotificationToken;
+    
+    }
+    return null;
   }
 
   /// Unblock profile

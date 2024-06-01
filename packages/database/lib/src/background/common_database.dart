@@ -23,6 +23,7 @@ class CommonBackground extends Table {
   IntColumn get notificationSessionId => integer().map(const NullAwareTypeConverter.wrap(NotificationSessionIdConverter())).nullable()();
 
   TextColumn get fcmDeviceToken => text().map(const NullAwareTypeConverter.wrap(FcmDeviceTokenConverter())).nullable()();
+  TextColumn get pendingNotificationToken => text().map(const NullAwareTypeConverter.wrap(PendingNotificationTokenConverter())).nullable()();
   TextColumn get currentLocale => text().nullable()();
 }
 
@@ -62,11 +63,15 @@ class CommonBackgroundDatabase extends _$CommonBackgroundDatabase {
     });
   }
 
-  Future<void> updateFcmDeviceToken(FcmDeviceToken? token) async {
+  Future<void> updateFcmDeviceTokenAndPendingNotificationToken(
+    FcmDeviceToken? token,
+    PendingNotificationToken? notificationToken,
+  ) async {
     await into(commonBackground).insertOnConflictUpdate(
       CommonBackgroundCompanion.insert(
         id: COMMON_BACKGROUND_DB_DATA_ID,
         fcmDeviceToken: Value(token),
+        pendingNotificationToken: Value(notificationToken),
       ),
     );
   }
@@ -100,6 +105,9 @@ class CommonBackgroundDatabase extends _$CommonBackgroundDatabase {
 
   Stream<FcmDeviceToken?> watchFcmDeviceToken() =>
     watchColumn((r) => r.fcmDeviceToken);
+
+  Stream<PendingNotificationToken?> watchPendingNotificationToken() =>
+    watchColumn((r) => r.pendingNotificationToken);
 
   Stream<String?> watchCurrentLocale() =>
     watchColumn((r) => r.currentLocale);

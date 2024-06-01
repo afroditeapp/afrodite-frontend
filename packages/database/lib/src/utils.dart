@@ -198,11 +198,25 @@ class FcmDeviceTokenConverter extends TypeConverter<FcmDeviceToken, String> {
 
   @override
   FcmDeviceToken fromSql(fromDb) {
-    return FcmDeviceToken(value: fromDb);
+    return FcmDeviceToken(token: fromDb);
   }
 
   @override
   String toSql(value) {
-    return value.value;
+    return value.token;
+  }
+}
+
+class PendingNotificationTokenConverter extends TypeConverter<PendingNotificationToken, String> {
+  const PendingNotificationTokenConverter();
+
+  @override
+  PendingNotificationToken fromSql(fromDb) {
+    return PendingNotificationToken(token: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.token;
   }
 }

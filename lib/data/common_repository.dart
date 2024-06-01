@@ -49,7 +49,7 @@ class CommonRepository extends DataRepository {
     syncHandler.onLoginSync(() async {
       // Force sending the FCM token to server. This is needed if this login
       // is for different account than previously.
-      await BackgroundDatabaseManager.getInstance().commonAction((db) => db.updateFcmDeviceToken(null));
+      await BackgroundDatabaseManager.getInstance().commonAction((db) => db.updateFcmDeviceTokenAndPendingNotificationToken(null, null));
       await PushNotificationManager.getInstance().initPushNotifications();
     });
   }

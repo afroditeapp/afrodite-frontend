@@ -77,7 +77,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google. Creates new account if
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update current or pending profile visiblity value.
 *AccountInternalApi* | [**postLogin**](doc//AccountInternalApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken for a bot account. If the account is not registered
-*AccountInternalApi* | [**postRegister**](doc//AccountInternalApi.md#postregister) | **POST** /account_api/register | Register new a new bot account. Returns new account ID which is UUID.
+*AccountInternalApi* | [**postRegister**](doc//AccountInternalApi.md#postregister) | **POST** /account_api/register | Register a new bot account. Returns new account ID which is UUID.
 *ChatApi* | [**deleteLike**](doc//ChatApi.md#deletelike) | **DELETE** /chat_api/delete_like | Delete sent like.
 *ChatApi* | [**deletePendingMessages**](doc//ChatApi.md#deletependingmessages) | **DELETE** /chat_api/pending_messages | Delete list of pending messages
 *ChatApi* | [**getMatches**](doc//ChatApi.md#getmatches) | **GET** /chat_api/matches | Get matches
@@ -224,7 +224,8 @@ Class | Method | HTTP request | Description
  - [PendingMessageDeleteList](doc//PendingMessageDeleteList.md)
  - [PendingMessageId](doc//PendingMessageId.md)
  - [PendingMessagesPage](doc//PendingMessagesPage.md)
- - [PendingNotification](doc//PendingNotification.md)
+ - [PendingNotificationToken](doc//PendingNotificationToken.md)
+ - [PendingNotificationWithData](doc//PendingNotificationWithData.md)
  - [PendingProfileContent](doc//PendingProfileContent.md)
  - [PendingSecurityContent](doc//PendingSecurityContent.md)
  - [PerfHistoryQuery](doc//PerfHistoryQuery.md)

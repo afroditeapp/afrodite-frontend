@@ -13,26 +13,26 @@ part of openapi.api;
 class FcmDeviceToken {
   /// Returns a new [FcmDeviceToken] instance.
   FcmDeviceToken({
-    required this.value,
+    required this.token,
   });
 
-  String value;
+  String token;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is FcmDeviceToken &&
-     other.value == value;
+     other.token == token;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (value.hashCode);
+    (token.hashCode);
 
   @override
-  String toString() => 'FcmDeviceToken[value=$value]';
+  String toString() => 'FcmDeviceToken[token=$token]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'value'] = this.value;
+      json[r'token'] = this.token;
     return json;
   }
 
@@ -55,7 +55,7 @@ class FcmDeviceToken {
       }());
 
       return FcmDeviceToken(
-        value: mapValueOfType<String>(json, r'value')!,
+        token: mapValueOfType<String>(json, r'token')!,
       );
     }
     return null;
@@ -105,7 +105,7 @@ class FcmDeviceToken {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'value',
+    'token',
   };
 }
 

@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class PendingNotification {
-  /// Returns a new [PendingNotification] instance.
-  PendingNotification({
-    required this.value,
+class PendingNotificationToken {
+  /// Returns a new [PendingNotificationToken] instance.
+  PendingNotificationToken({
+    required this.token,
   });
 
-  int value;
+  String token;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is PendingNotification &&
-     other.value == value;
+  bool operator ==(Object other) => identical(this, other) || other is PendingNotificationToken &&
+     other.token == token;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (value.hashCode);
+    (token.hashCode);
 
   @override
-  String toString() => 'PendingNotification[value=$value]';
+  String toString() => 'PendingNotificationToken[token=$token]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'value'] = this.value;
+      json[r'token'] = this.token;
     return json;
   }
 
-  /// Returns a new [PendingNotification] instance and imports its values from
+  /// Returns a new [PendingNotificationToken] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static PendingNotification? fromJson(dynamic value) {
+  static PendingNotificationToken? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class PendingNotification {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PendingNotification[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PendingNotification[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "PendingNotificationToken[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "PendingNotificationToken[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return PendingNotification(
-        value: mapValueOfType<int>(json, r'value')!,
+      return PendingNotificationToken(
+        token: mapValueOfType<String>(json, r'token')!,
       );
     }
     return null;
   }
 
-  static List<PendingNotification>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <PendingNotification>[];
+  static List<PendingNotificationToken>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <PendingNotificationToken>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = PendingNotification.fromJson(row);
+        final value = PendingNotificationToken.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class PendingNotification {
     return result.toList(growable: growable);
   }
 
-  static Map<String, PendingNotification> mapFromJson(dynamic json) {
-    final map = <String, PendingNotification>{};
+  static Map<String, PendingNotificationToken> mapFromJson(dynamic json) {
+    final map = <String, PendingNotificationToken>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = PendingNotification.fromJson(entry.value);
+        final value = PendingNotificationToken.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,13 +88,13 @@ class PendingNotification {
     return map;
   }
 
-  // maps a json object with a list of PendingNotification-objects as value to a dart map
-  static Map<String, List<PendingNotification>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<PendingNotification>>{};
+  // maps a json object with a list of PendingNotificationToken-objects as value to a dart map
+  static Map<String, List<PendingNotificationToken>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<PendingNotificationToken>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = PendingNotification.listFromJson(entry.value, growable: growable,);
+        final value = PendingNotificationToken.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -105,7 +105,7 @@ class PendingNotification {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'value',
+    'token',
   };
 }
 
