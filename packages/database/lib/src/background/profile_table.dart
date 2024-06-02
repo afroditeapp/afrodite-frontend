@@ -98,4 +98,26 @@ class DaoProfilesBackground extends DatabaseAccessor<AccountBackgroundDatabase> 
 
     return ProfileLocalDbId(r.id);
   }
+
+  Future<ProfileTitle?> getProfileTitle(AccountId accountId) async {
+    final r = await (select(profilesBackground)
+      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+    )
+      .getSingleOrNull();
+
+    if (r == null) {
+      return null;
+    }
+
+    final name = r.profileName;
+    if (name == null) {
+      return null;
+    }
+    final age = r.profileAge;
+    if (age == null) {
+      return null;
+    }
+
+    return ProfileTitle(name, age);
+  }
 }

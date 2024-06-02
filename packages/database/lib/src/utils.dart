@@ -220,3 +220,17 @@ class PendingNotificationTokenConverter extends TypeConverter<PendingNotificatio
     return value.token;
   }
 }
+
+class NewMessageNotificationIdConverter extends TypeConverter<NewMessageNotificationId, int> {
+  const NewMessageNotificationIdConverter();
+
+  @override
+  NewMessageNotificationId fromSql(fromDb) {
+    return NewMessageNotificationId(fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.id;
+  }
+}

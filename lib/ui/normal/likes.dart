@@ -41,6 +41,21 @@ class LikeView extends BottomNavigationScreen {
 /// server API change which changes likes to have paging.
 final GlobalKey<LikeViewContentState> likeViewContentState = GlobalKey();
 
+/*
+
+TODO: Remove likeViewContentState once server API paging is better (multiple
+iterators are supported).
+
+════════ Exception caught by widgets library ═══════════════════════════════════
+The following assertion was thrown while finalizing the widget tree:
+Multiple widgets used the same GlobalKey.
+The key [LabeledGlobalKey<LikeViewContentState>#099b4] was used by multiple widgets. The parents of those widgets were:
+- BlocListener<LikeGridInstanceManagerBloc, int>(state: _BlocListenerBaseState<LikeGridInstanceManagerBloc, int>#c21cd)
+- BlocListener<LikeGridInstanceManagerBloc, int>(state: _BlocListenerBaseState<LikeGridInstanceManagerBloc, int>#85737)
+A GlobalKey can only be specified on one widget at a time in the widget tree.
+
+*/
+
 class _LikeViewState extends State<LikeView> {
   @override
   Widget build(BuildContext context) {

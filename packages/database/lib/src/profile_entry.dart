@@ -65,7 +65,7 @@ class ProfileEntry {
   }
 
   String profileTitle() {
-    return '$name$age';
+    return ProfileTitle(name, age).profileTitle();
   }
 }
 
@@ -76,4 +76,19 @@ class ProfileEntry {
 class ProfileLocalDbId {
   final int id;
   const ProfileLocalDbId(this.id);
+}
+
+class ProfileTitle {
+  final String name;
+  final int age;
+  const ProfileTitle(this.name, this.age);
+
+  String profileTitle() {
+    return '$name$age';
+  }
+}
+
+class NewMessageNotificationId {
+  final int id;
+  const NewMessageNotificationId(this.id);
 }

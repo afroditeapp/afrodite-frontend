@@ -662,20 +662,213 @@ class ProfilesBackgroundCompanion
   }
 }
 
+class $NewMessageNotificationTable extends NewMessageNotification
+    with TableInfo<$NewMessageNotificationTable, NewMessageNotificationData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $NewMessageNotificationTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _uuidAccountIdMeta =
+      const VerificationMeta('uuidAccountId');
+  @override
+  late final GeneratedColumnWithTypeConverter<AccountId, String> uuidAccountId =
+      GeneratedColumn<String>('uuid_account_id', aliasedName, false,
+              type: DriftSqlType.string,
+              requiredDuringInsert: true,
+              defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
+          .withConverter<AccountId>(
+              $NewMessageNotificationTable.$converteruuidAccountId);
+  @override
+  List<GeneratedColumn> get $columns => [id, uuidAccountId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'new_message_notification';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<NewMessageNotificationData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  NewMessageNotificationData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return NewMessageNotificationData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      uuidAccountId: $NewMessageNotificationTable.$converteruuidAccountId
+          .fromSql(attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
+    );
+  }
+
+  @override
+  $NewMessageNotificationTable createAlias(String alias) {
+    return $NewMessageNotificationTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<AccountId, String> $converteruuidAccountId =
+      const AccountIdConverter();
+}
+
+class NewMessageNotificationData extends DataClass
+    implements Insertable<NewMessageNotificationData> {
+  final int id;
+  final AccountId uuidAccountId;
+  const NewMessageNotificationData(
+      {required this.id, required this.uuidAccountId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    {
+      map['uuid_account_id'] = Variable<String>($NewMessageNotificationTable
+          .$converteruuidAccountId
+          .toSql(uuidAccountId));
+    }
+    return map;
+  }
+
+  NewMessageNotificationCompanion toCompanion(bool nullToAbsent) {
+    return NewMessageNotificationCompanion(
+      id: Value(id),
+      uuidAccountId: Value(uuidAccountId),
+    );
+  }
+
+  factory NewMessageNotificationData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return NewMessageNotificationData(
+      id: serializer.fromJson<int>(json['id']),
+      uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
+    };
+  }
+
+  NewMessageNotificationData copyWith({int? id, AccountId? uuidAccountId}) =>
+      NewMessageNotificationData(
+        id: id ?? this.id,
+        uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NewMessageNotificationData(')
+          ..write('id: $id, ')
+          ..write('uuidAccountId: $uuidAccountId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, uuidAccountId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NewMessageNotificationData &&
+          other.id == this.id &&
+          other.uuidAccountId == this.uuidAccountId);
+}
+
+class NewMessageNotificationCompanion
+    extends UpdateCompanion<NewMessageNotificationData> {
+  final Value<int> id;
+  final Value<AccountId> uuidAccountId;
+  const NewMessageNotificationCompanion({
+    this.id = const Value.absent(),
+    this.uuidAccountId = const Value.absent(),
+  });
+  NewMessageNotificationCompanion.insert({
+    this.id = const Value.absent(),
+    required AccountId uuidAccountId,
+  }) : uuidAccountId = Value(uuidAccountId);
+  static Insertable<NewMessageNotificationData> custom({
+    Expression<int>? id,
+    Expression<String>? uuidAccountId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
+    });
+  }
+
+  NewMessageNotificationCompanion copyWith(
+      {Value<int>? id, Value<AccountId>? uuidAccountId}) {
+    return NewMessageNotificationCompanion(
+      id: id ?? this.id,
+      uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (uuidAccountId.present) {
+      map['uuid_account_id'] = Variable<String>($NewMessageNotificationTable
+          .$converteruuidAccountId
+          .toSql(uuidAccountId.value));
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NewMessageNotificationCompanion(')
+          ..write('id: $id, ')
+          ..write('uuidAccountId: $uuidAccountId')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
   _$AccountBackgroundDatabase(QueryExecutor e) : super(e);
   late final $AccountBackgroundTable accountBackground =
       $AccountBackgroundTable(this);
   late final $ProfilesBackgroundTable profilesBackground =
       $ProfilesBackgroundTable(this);
+  late final $NewMessageNotificationTable newMessageNotification =
+      $NewMessageNotificationTable(this);
   late final DaoLocalNotificationSettings daoLocalNotificationSettings =
       DaoLocalNotificationSettings(this as AccountBackgroundDatabase);
   late final DaoProfilesBackground daoProfilesBackground =
       DaoProfilesBackground(this as AccountBackgroundDatabase);
+  late final DaoNewMessageNotification daoNewMessageNotification =
+      DaoNewMessageNotification(this as AccountBackgroundDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [accountBackground, profilesBackground];
+      [accountBackground, profilesBackground, newMessageNotification];
 }

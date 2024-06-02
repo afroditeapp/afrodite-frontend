@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:database/database.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
+import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
 import 'package:pihka_frontend/utils.dart';
 
 final log = Logger("NotificationPayload");
@@ -99,36 +100,36 @@ class NavigateToConversationList extends NotificationPayload {
 }
 
 class NavigateToConversation extends NotificationPayload {
-  final ProfileLocalDbId profileLocalDbId;
+  final NotificationId notificationId;
 
   const NavigateToConversation({
-    required this.profileLocalDbId,
+    required this.notificationId,
     required NotificationSessionId sessionId,
   }) : super(
     payloadType: NotificationPayloadTypeString.navigateToConversation,
     sessionId: sessionId,
   );
 
-  static const String _profileLocalDbIdKey = "profileLocalDbId";
+  static const String _notificationIdKey = "notificationId";
   static NotificationPayload? parseFromJsonObject(Map<String, Object?> jsonObject, NotificationSessionId sessionId) {
-    if (!jsonObject.containsKey(_profileLocalDbIdKey)) {
-      log.error("NavigateToConversation payload parsing error: profile ID is missing");
+    if (!jsonObject.containsKey(_notificationIdKey)) {
+      log.error("NavigateToConversation payload parsing error: notification ID is missing");
       return null;
     }
-    final id = jsonObject[_profileLocalDbIdKey];
+    final id = jsonObject[_notificationIdKey];
     if (id is! int) {
-      log.error("NavigateToConversation payload parsing error: profile ID is not an integer");
+      log.error("NavigateToConversation payload parsing error: notification ID is not an integer");
       return null;
     }
     return NavigateToConversation(
-      profileLocalDbId: ProfileLocalDbId(id),
+      notificationId: NotificationId(id),
       sessionId: sessionId,
     );
   }
 
   @override
   Map<String, Object?> additionalData() => {
-    _profileLocalDbIdKey: profileLocalDbId.id,
+    _notificationIdKey: notificationId.value,
   };
 }
 

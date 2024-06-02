@@ -366,6 +366,8 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
       ));
   }
 
+  /// If you call this make sure that profile data in background DB
+  /// is also updated.
   Future<void> updateProfileData(AccountId accountId, api.Profile profile) async {
     await into(profiles).insert(
       ProfilesCompanion.insert(

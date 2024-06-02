@@ -10,6 +10,7 @@ import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/api/api_wrapper.dart';
 import 'package:pihka_frontend/config.dart';
+import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
 import 'package:pihka_frontend/data/general/notification/state/message_received_static.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
@@ -170,9 +171,20 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       }
 
       if (v.value == 0x1) {
-        await NotificationMessageReceivedStatic.getInstance().updateState(true);
+        await _handlePushNotificationNewMessageReceived(v.newMessageReceivedFrom ?? []);
       }
     case Err():
       log.error("Downloading pending notification failed");
+  }
+}
+
+Future<void> _handlePushNotificationNewMessageReceived(List<AccountId> messageSenders) async {
+  if (messageSenders.isEmpty) {
+    await NotificationMessageReceivedStatic.getInstance().updateState(true);
+    return;
+  }
+
+  for (final sender in messageSenders) {
+    await NotificationMessageReceived.getInstance().updateMessageReceivedCount(sender, 1);
   }
 }

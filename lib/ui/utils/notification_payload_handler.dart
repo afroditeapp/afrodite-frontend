@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
+import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
@@ -90,8 +91,6 @@ Future<void> handlePayload(
   CurrentModerationRequestBloc currentModerationRequestBloc,
   {required bool showError}
 ) async {
-  final db = DatabaseManager.getInstance();
-
   final notificationSessionId = await BackgroundDatabaseManager.getInstance().commonStreamSingle(
     (db) => db.watchNotificationSessionId(),
   );
@@ -105,18 +104,26 @@ Future<void> handlePayload(
 
   switch (payload) {
     case NavigateToConversation():
-      final profile = await db.profileData((db) => db.getProfileEntryUsingLocalId(payload.profileLocalDbId)).ok();
-      if (profile != null) {
-        final lastPage = NavigationStateBlocInstance.getInstance().bloc.state.pages.lastOrNull;
-        final info = lastPage?.pageInfo;
-        final correctConversatinoAlreadyOpen = info is ConversationPageInfo &&
-          info.accountId == profile.uuid;
-        if (!correctConversatinoAlreadyOpen) {
-          await openConversationScreenNoBuildContext(
-            navigatorStateBloc,
-            profile,
-          );
-        }
+      final dbId = NotificationIdStatic.revertNewMessageNotificationIdCalcualtion(payload.notificationId);
+      final accountId = await BackgroundDatabaseManager.getInstance().accountData((db) => db.daoNewMessageNotification.getAccountId(dbId)).ok();
+      if (accountId == null) {
+        return;
+      }
+
+      final profile = await DatabaseManager.getInstance().profileData((db) => db.getProfileEntry(accountId)).ok();
+      if (profile == null) {
+        return;
+      }
+
+      final lastPage = NavigationStateBlocInstance.getInstance().bloc.state.pages.lastOrNull;
+      final info = lastPage?.pageInfo;
+      final correctConversatinoAlreadyOpen = info is ConversationPageInfo &&
+        info.accountId == profile.uuid;
+      if (!correctConversatinoAlreadyOpen) {
+        await openConversationScreenNoBuildContext(
+          navigatorStateBloc,
+          profile,
+        );
       }
     case NavigateToConversationList():
       if (navigatorStateBloc.state.pages.length == 1) {

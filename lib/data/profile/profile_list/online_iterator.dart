@@ -7,6 +7,7 @@ import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
@@ -142,6 +143,7 @@ class ProfileEntryDownloader {
     //       new profile request be made every time profile is opened and
     //       use the cache check there?
 
+    await BackgroundDatabaseManager.getInstance().profileAction((db) => db.updateProfileData(accountId, profileDetails));
     await db.profileAction((db) => db.updateProfileData(accountId, profileDetails));
     await db.profileAction((db) => db.updateProfileContent(accountId, contentInfo));
     final dataEntry = await db.profileData((db) => db.getProfileEntry(accountId)).ok();
