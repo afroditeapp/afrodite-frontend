@@ -10,6 +10,8 @@ import "package:pihka_frontend/logic/app/navigator_state.dart";
 
 import "package:pihka_frontend/logic/app/notification_permission.dart";
 import "package:pihka_frontend/logic/media/content.dart";
+import "package:pihka_frontend/logic/profile/attributes.dart";
+import "package:pihka_frontend/logic/profile/my_profile.dart";
 import "package:pihka_frontend/model/freezed/logic/account/account.dart";
 import "package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.dart";
 import "package:pihka_frontend/model/freezed/logic/main/navigator_state.dart";
@@ -25,6 +27,15 @@ import "package:pihka_frontend/ui_utils/root_screen.dart";
 
 class NormalStateScreen extends RootScreen {
   const NormalStateScreen({Key? key}) : super(key: key);
+
+  @override
+  void runOnceBeforeNavigatedTo(BuildContext context) {
+    // Init ProfileAttributesBloc here to avoid quick progress screen
+    // displaying when opening view profile or view my profile screen.
+    context.read<ProfileAttributesBloc>();
+    // Init MyProfileBloc here to avoid profile image fade in effect.
+    context.read<MyProfileBloc>();
+  }
 
   @override
   Widget buildRootWidget(BuildContext context) {
