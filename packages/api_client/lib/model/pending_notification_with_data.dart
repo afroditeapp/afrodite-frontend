@@ -17,8 +17,8 @@ class PendingNotificationWithData {
     required this.value,
   });
 
-  /// Data for NEW_MESSAGE notification.  List of public account IDs which have sent a new message.
-  List<String>? newMessageReceivedFrom;
+  /// Data for NEW_MESSAGE notification.  List of account IDs which have sent a new message.
+  List<AccountId>? newMessageReceivedFrom;
 
   /// Pending notification (or multiple notifications which each have different type) not yet received notifications which push notification requests client to download.  The integer is a bitflag.  - const NEW_MESSAGE = 0x1; 
   int value;
@@ -67,9 +67,7 @@ class PendingNotificationWithData {
       }());
 
       return PendingNotificationWithData(
-        newMessageReceivedFrom: json[r'new_message_received_from'] is List
-            ? (json[r'new_message_received_from'] as List).cast<String>()
-            : const [],
+        newMessageReceivedFrom: AccountId.listFromJson(json[r'new_message_received_from']) ?? const [],
         value: mapValueOfType<int>(json, r'value')!,
       );
     }

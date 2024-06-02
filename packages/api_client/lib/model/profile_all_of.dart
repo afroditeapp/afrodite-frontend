@@ -17,7 +17,6 @@ class ProfileAllOf {
     this.attributes = const [],
     required this.name,
     required this.profileText,
-    required this.publicId,
   });
 
   int age;
@@ -28,15 +27,12 @@ class ProfileAllOf {
 
   String profileText;
 
-  String publicId;
-
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileAllOf &&
      other.age == age &&
      other.attributes == attributes &&
      other.name == name &&
-     other.profileText == profileText &&
-     other.publicId == publicId;
+     other.profileText == profileText;
 
   @override
   int get hashCode =>
@@ -44,11 +40,10 @@ class ProfileAllOf {
     (age.hashCode) +
     (attributes.hashCode) +
     (name.hashCode) +
-    (profileText.hashCode) +
-    (publicId.hashCode);
+    (profileText.hashCode);
 
   @override
-  String toString() => 'ProfileAllOf[age=$age, attributes=$attributes, name=$name, profileText=$profileText, publicId=$publicId]';
+  String toString() => 'ProfileAllOf[age=$age, attributes=$attributes, name=$name, profileText=$profileText]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -56,7 +51,6 @@ class ProfileAllOf {
       json[r'attributes'] = this.attributes;
       json[r'name'] = this.name;
       json[r'profile_text'] = this.profileText;
-      json[r'public_id'] = this.publicId;
     return json;
   }
 
@@ -83,7 +77,6 @@ class ProfileAllOf {
         attributes: ProfileAttributeValue.listFromJson(json[r'attributes'])!,
         name: mapValueOfType<String>(json, r'name')!,
         profileText: mapValueOfType<String>(json, r'profile_text')!,
-        publicId: mapValueOfType<String>(json, r'public_id')!,
       );
     }
     return null;
@@ -137,7 +130,6 @@ class ProfileAllOf {
     'attributes',
     'name',
     'profile_text',
-    'public_id',
   };
 }
 
