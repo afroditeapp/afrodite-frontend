@@ -243,7 +243,7 @@ class AppNavigator extends StatelessWidget {
 
   Widget createNavigator(BuildContext context, NavigatorStateData state) {
     final TransitionDelegate<void> transitionDelegate = state.disableAnimation ?
-      const NoAnimationTransitionDelegate() : const DefaultTransitionDelegate();
+      const ReplaceSplashScreenTransitionDelegate() : const DefaultTransitionDelegate();
     return Navigator(
       key: navigatorKey,
       transitionDelegate: transitionDelegate,
@@ -329,11 +329,10 @@ class GlobalInitManager {
   }
 }
 
-// This is from
+// This is based on
 // https://api.flutter.dev/flutter/widgets/TransitionDelegate-class.html
-// with const constructor.
-class NoAnimationTransitionDelegate extends TransitionDelegate<void> {
-  const NoAnimationTransitionDelegate();
+class ReplaceSplashScreenTransitionDelegate extends TransitionDelegate<void> {
+  const ReplaceSplashScreenTransitionDelegate();
 
   @override
   Iterable<RouteTransitionRecord> resolve({
@@ -343,22 +342,32 @@ class NoAnimationTransitionDelegate extends TransitionDelegate<void> {
   }) {
     final List<RouteTransitionRecord> results = <RouteTransitionRecord>[];
 
+    var first = true;
     for (final RouteTransitionRecord pageRoute in newPageRouteHistory) {
       if (pageRoute.isWaitingForEnteringDecision) {
-        pageRoute.markForAdd();
+          if (first) {
+            first = false;
+            pageRoute.markForAdd();
+          } else {
+            // Push other than main screen, so that exit transitions will
+            // work.
+            pageRoute.markForPush();
+          }
       }
       results.add(pageRoute);
-
     }
+
     for (final RouteTransitionRecord exitingPageRoute in locationToExitingPageRoute.values) {
       if (exitingPageRoute.isWaitingForExitingDecision) {
-       exitingPageRoute.markForRemove();
-       final List<RouteTransitionRecord>? pagelessRoutes = pageRouteToPagelessRoutes[exitingPageRoute];
-       if (pagelessRoutes != null) {
-         for (final RouteTransitionRecord pagelessRoute in pagelessRoutes) {
-            pagelessRoute.markForRemove();
-          }
-       }
+        // Pop the splash screen, so that main screen will not be visible
+        // for short time to the user.
+        exitingPageRoute.markForPop();
+        final List<RouteTransitionRecord>? pagelessRoutes = pageRouteToPagelessRoutes[exitingPageRoute];
+        if (pagelessRoutes != null) {
+          for (final RouteTransitionRecord pagelessRoute in pagelessRoutes) {
+              pagelessRoute.markForRemove();
+            }
+        }
       }
       results.add(exitingPageRoute);
 

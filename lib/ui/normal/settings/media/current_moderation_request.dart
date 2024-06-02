@@ -18,6 +18,9 @@ import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/view_image_screen.dart';
 import 'package:pihka_frontend/utils/api.dart';
 
+// TODO(prod): Image moderation status screen does not work if
+// app is started from notification which navigates there.
+
 class CurrentModerationRequestScreen extends StatefulWidget {
   final CurrentModerationRequestBloc currentModerationRequestBloc;
   const CurrentModerationRequestScreen({
