@@ -93,7 +93,7 @@ void initLogging() {
   Logger.root.onRecord.listen((record) {
       // TODO(prod): Remove print if logcat printing works somehow
       // without print.
-      if (!kReleaseMode) {
+      if (kDebugMode) {
         print('${record.level.name}: ${record.time}: ${record.message}');
       }
 
@@ -112,7 +112,7 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Bloc.observer = DebugObserver();
+  Bloc.observer = DebugObserver();
 
   await GlobalInitManager.getInstance().init();
 
@@ -242,8 +242,11 @@ class AppNavigator extends StatelessWidget {
   }
 
   Widget createNavigator(BuildContext context, NavigatorStateData state) {
+    final TransitionDelegate<void> transitionDelegate = state.disableAnimation ?
+      const NoAnimationTransitionDelegate() : const DefaultTransitionDelegate();
     return Navigator(
       key: navigatorKey,
+      transitionDelegate: transitionDelegate,
       pages: state.getPages(),
       onPopPage: (route, result) {
         if (!route.didPop(result)) {
@@ -259,13 +262,16 @@ class AppNavigator extends StatelessWidget {
 }
 
 // TODO(prod); Remove bloc state change printing
-// class DebugObserver extends BlocObserver {
-//   @override
-//   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
-//     super.onChange(bloc, change);
-//     log.finest("${bloc.runtimeType} $change");
-//   }
-// }
+class DebugObserver extends BlocObserver {
+  @override
+  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
+    super.onChange(bloc, change);
+    if (bloc is! NavigatorStateBloc) {
+      return;
+    }
+    log.finest("${bloc.runtimeType} $change");
+  }
+}
 
 class GlobalInitManager {
   GlobalInitManager._private();
@@ -320,5 +326,43 @@ class GlobalInitManager {
   /// is visible.
   Future<void> triggerGlobalInit() async {
     _startInit.add(null);
+  }
+}
+
+// This is from
+// https://api.flutter.dev/flutter/widgets/TransitionDelegate-class.html
+// with const constructor.
+class NoAnimationTransitionDelegate extends TransitionDelegate<void> {
+  const NoAnimationTransitionDelegate();
+
+  @override
+  Iterable<RouteTransitionRecord> resolve({
+    required List<RouteTransitionRecord> newPageRouteHistory,
+    required Map<RouteTransitionRecord?, RouteTransitionRecord> locationToExitingPageRoute,
+    required Map<RouteTransitionRecord?, List<RouteTransitionRecord>> pageRouteToPagelessRoutes,
+  }) {
+    final List<RouteTransitionRecord> results = <RouteTransitionRecord>[];
+
+    for (final RouteTransitionRecord pageRoute in newPageRouteHistory) {
+      if (pageRoute.isWaitingForEnteringDecision) {
+        pageRoute.markForAdd();
+      }
+      results.add(pageRoute);
+
+    }
+    for (final RouteTransitionRecord exitingPageRoute in locationToExitingPageRoute.values) {
+      if (exitingPageRoute.isWaitingForExitingDecision) {
+       exitingPageRoute.markForRemove();
+       final List<RouteTransitionRecord>? pagelessRoutes = pageRouteToPagelessRoutes[exitingPageRoute];
+       if (pagelessRoutes != null) {
+         for (final RouteTransitionRecord pagelessRoute in pagelessRoutes) {
+            pagelessRoute.markForRemove();
+          }
+       }
+      }
+      results.add(exitingPageRoute);
+
+    }
+    return results;
   }
 }

@@ -1,11 +1,12 @@
 
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
-import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
@@ -32,23 +33,9 @@ class NotificationPayloadHandler extends StatefulWidget {
 }
 
 class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler> {
-  NotificationPayload? appLaunchPayload;
-
-  @override
-  void initState() {
-    super.initState();
-    appLaunchPayload = NotificationManager.getInstance().getAndRemoveAppLaunchNotificationPayload();
-  }
 
   @override
   Widget build(BuildContext context) {
-    final launchPayload = appLaunchPayload;
-    if (launchPayload != null) {
-      appLaunchPayload = null;
-      log.info("Handling app launch notification payload");
-      createHandlePayloadCallback(context, showError: true)(launchPayload);
-    }
-
     return BlocBuilder<NotificationPayloadHandlerBloc, NotificationPayloadHandlerData>(
       buildWhen: (previous, current) => previous.toBeHandled != current.toBeHandled,
       builder: (context, state) {
@@ -63,33 +50,48 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
       }
     );
   }
-
-  Future<void> Function(NotificationPayload) createHandlePayloadCallback(BuildContext context, {required bool showError}) {
-    final navigatorStateBloc = context.read<NavigatorStateBloc>();
-    final bottomNavigatorStateBloc = context.read<BottomNavigationStateBloc>();
-    final likeGridInstanceBloc = context.read<LikeGridInstanceManagerBloc>();
-    final currentModerationRequestBloc = context.read<CurrentModerationRequestBloc>();
-
-    return (payload) async {
-      await handlePayload(
-        payload,
-        navigatorStateBloc,
-        bottomNavigatorStateBloc,
-        likeGridInstanceBloc,
-        currentModerationRequestBloc,
-        showError: showError,
-      );
-    };
-  }
 }
 
-Future<void> handlePayload(
+Future<void> Function(NotificationPayload) createHandlePayloadCallback(
+  BuildContext context,
+  {
+    required bool showError,
+    void Function(NavigatorStateBloc, NewPageDetails?) navigateToAction = defaultNavigateToAction,
+  }) {
+  final navigatorStateBloc = context.read<NavigatorStateBloc>();
+  final bottomNavigatorStateBloc = context.read<BottomNavigationStateBloc>();
+  final likeGridInstanceBloc = context.read<LikeGridInstanceManagerBloc>();
+  final currentModerationRequestBloc = context.read<CurrentModerationRequestBloc>();
+
+  return (payload) async {
+    final newPage = await handlePayload(
+      payload,
+      navigatorStateBloc,
+      bottomNavigatorStateBloc,
+      likeGridInstanceBloc,
+      currentModerationRequestBloc,
+      showError: showError,
+    );
+    navigateToAction(navigatorStateBloc, newPage);
+  };
+}
+
+void defaultNavigateToAction(NavigatorStateBloc bloc, NewPageDetails? newPage) {
+  if (newPage == null) {
+    return;
+  }
+  bloc.pushWithKey(newPage.page, newPage.pageKey ?? PageKey(), pageInfo: newPage.pageInfo);
+}
+
+Future<NewPageDetails?> handlePayload(
   NotificationPayload payload,
   NavigatorStateBloc navigatorStateBloc,
   BottomNavigationStateBloc bottomNavigationStateBloc,
   LikeGridInstanceManagerBloc likeGridInstanceManagerBloc,
   CurrentModerationRequestBloc currentModerationRequestBloc,
-  {required bool showError}
+  {
+    required bool showError,
+  }
 ) async {
   final notificationSessionId = await BackgroundDatabaseManager.getInstance().commonStreamSingle(
     (db) => db.watchNotificationSessionId(),
@@ -99,7 +101,7 @@ Future<void> handlePayload(
     if (showError) {
       showSnackBar(R.strings.notification_session_expired_error);
     }
-    return;
+    return null;
   }
 
   switch (payload) {
@@ -107,12 +109,12 @@ Future<void> handlePayload(
       final dbId = NotificationIdStatic.revertNewMessageNotificationIdCalcualtion(payload.notificationId);
       final accountId = await BackgroundDatabaseManager.getInstance().accountData((db) => db.daoNewMessageNotification.getAccountId(dbId)).ok();
       if (accountId == null) {
-        return;
+        return null;
       }
 
       final profile = await DatabaseManager.getInstance().profileData((db) => db.getProfileEntry(accountId)).ok();
       if (profile == null) {
-        return;
+        return null;
       }
 
       final lastPage = NavigationStateBlocInstance.getInstance().bloc.state.pages.lastOrNull;
@@ -120,8 +122,7 @@ Future<void> handlePayload(
       final correctConversatinoAlreadyOpen = info is ConversationPageInfo &&
         info.accountId == profile.uuid;
       if (!correctConversatinoAlreadyOpen) {
-        await openConversationScreenNoBuildContext(
-          navigatorStateBloc,
+        return newConversationPage(
           profile,
         );
       }
@@ -136,17 +137,18 @@ Future<void> handlePayload(
       if (navigatorStateBloc.state.pages.length == 1) {
         bottomNavigationStateBloc.add(ChangeScreen(BottomNavigationScreenId.likes));
       } else {
-        await openLikesScreenNoBuildContext(navigatorStateBloc, likeGridInstanceManagerBloc);
+        return newLikesScreen(likeGridInstanceManagerBloc);
       }
     case NavigateToModerationRequestStatus():
-      await navigatorStateBloc.push(
-        MaterialPage<void>(
-          child: CurrentModerationRequestScreen(
-            currentModerationRequestBloc: currentModerationRequestBloc,
+      return NewPageDetails(
+          MaterialPage<void>(
+            child: CurrentModerationRequestScreen(
+              currentModerationRequestBloc: currentModerationRequestBloc,
+            ),
           ),
-        ),
       );
   }
+  return null;
 }
 
 // TODO: Thinking about the server side iterator for likes:

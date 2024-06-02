@@ -27,18 +27,18 @@ var log = Logger("ConversationPage");
 // is not yet a match? Should there be an error message?
 
 void openConversationScreen(BuildContext context, ProfileEntry profile) {
-  openConversationScreenNoBuildContext(
-    context.read<NavigatorStateBloc>(),
+  final details = newConversationPage(
     profile,
   );
+  context.read<NavigatorStateBloc>()
+    .pushWithKey(details.page, details.pageKey!, pageInfo: details.pageInfo);
 }
 
-Future<void> openConversationScreenNoBuildContext(
-  NavigatorStateBloc navigatorStateBloc,
+NewPageDetails newConversationPage(
   ProfileEntry profile,
-) async {
+) {
   final pageKey = PageKey();
-  await navigatorStateBloc.pushWithKey(
+  return NewPageDetails(
     MaterialPage<void>(
       child: BlocProvider(
         create: (_) => ConversationBloc(profile),
@@ -46,7 +46,7 @@ Future<void> openConversationScreenNoBuildContext(
         child: ConversationPage(pageKey, profile)
       ),
     ),
-    pageKey,
+    pageKey: pageKey,
     pageInfo: ConversationPageInfo(profile.uuid),
   );
 }

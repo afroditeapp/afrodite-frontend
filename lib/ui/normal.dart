@@ -56,14 +56,6 @@ class NormalStateContent extends StatefulWidget {
 
 class _NormalStateContentState extends State<NormalStateContent> {
   @override
-  void initState() {
-    super.initState();
-    BottomNavigationStateBlocInstance.getInstance()
-      .bloc
-      .add(ChangeScreen(BottomNavigationScreenId.profiles, resetIsScrolledValues: true));
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavigationStateBloc, BottomNavigationStateData>(
       builder: (context, state) {

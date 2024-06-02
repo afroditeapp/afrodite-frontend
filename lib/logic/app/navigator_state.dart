@@ -25,8 +25,9 @@ class PushPage extends NavigatorStateEvent {
   PushPage(this.newPage);
 }
 class ReplaceAllWith extends NavigatorStateEvent {
-  final Page<Object?> page;
-  ReplaceAllWith(this.page);
+  final List<NewPageDetails> pageList;
+  final bool disableAnimation;
+  ReplaceAllWith(this.pageList, this.disableAnimation);
 }
 
 // NOTE: This bloc must be dependency free because of NavigationStateBlocInstance.
@@ -42,6 +43,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
           ...state.pages,
           data.newPage,
         ]),
+        disableAnimation: false,
       ));
     });
     on<PopPage>((data, emit) {
@@ -52,6 +54,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       }
       emit(state.copyWith(
         pages: UnmodifiableList(newPages),
+        disableAnimation: false,
       ));
     });
     on<RemovePage>((data, emit) {
@@ -65,6 +68,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       }
       emit(state.copyWith(
         pages: UnmodifiableList(newPages),
+        disableAnimation: false,
       ));
     });
     on<RemoveMultiplePages>((data, emit) {
@@ -78,6 +82,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       }
       emit(state.copyWith(
         pages: UnmodifiableList(newPages),
+        disableAnimation: false,
       ));
     });
     on<ReplaceAllWith>((data, emit) {
@@ -88,14 +93,17 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       }
 
       emit(state.copyWith(
-        pages: UnmodifiableList([
-          PageAndChannel(
-            PageKey(),
-            data.page,
-            BehaviorSubject.seeded(const WaitingPagePop()),
-            null,
-          ),
-        ]),
+        pages: UnmodifiableList(
+          data.pageList.map((newPageDetails) {
+            return PageAndChannel(
+              newPageDetails.pageKey ?? PageKey(),
+              newPageDetails.page,
+              BehaviorSubject.seeded(const WaitingPagePop()),
+              newPageDetails.pageInfo,
+            );
+          })
+        ),
+        disableAnimation: data.disableAnimation,
       ));
     });
   }
@@ -120,9 +128,9 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
     }
   }
 
-  /// Pop all current pages and make new stack with the new page.
-  void replaceAllWith<T>(Page<T> page) {
-    add(ReplaceAllWith(page));
+  /// Pop all current pages and make new stack with the new page list.
+  void replaceAllWith(List<NewPageDetails> page, {bool disableAnimation = false}) {
+    add(ReplaceAllWith(page, disableAnimation));
   }
 
   /// Pops the top page from the navigator stack if possible.
@@ -181,8 +189,8 @@ class MyNavigator {
     return await context.read<NavigatorStateBloc>().pushWithKey(page, pageKey, pageInfo: pageInfo);
   }
 
-  /// Pop all current pages and make new stack with the new page.
-  static void replaceAllWith<T>(BuildContext context, Page<T> page) {
+  /// Pop all current pages and make new stack with the new page list.
+  static void replaceAllWith(BuildContext context, List<NewPageDetails> page) {
     context.read<NavigatorStateBloc>().replaceAllWith(page);
   }
 
@@ -237,4 +245,11 @@ class MaterialDialogPage<T> extends Page<T> {
       builder: (context) => builder(context),
     );
   }
+}
+
+class NewPageDetails {
+  final Page<Object?> page;
+  final PageKey? pageKey;
+  final PageInfo? pageInfo;
+  NewPageDetails(this.page, {this.pageKey, this.pageInfo});
 }

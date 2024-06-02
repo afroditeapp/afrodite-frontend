@@ -14,6 +14,7 @@ class NavigatorStateData with _$NavigatorStateData {
   NavigatorStateData._();
   factory NavigatorStateData({
     required UnmodifiableList<PageAndChannel> pages,
+    @Default(false) bool disableAnimation,
   }) = _NavigatorStateData;
 
   List<Page<Object?>> getPages() {

@@ -43,8 +43,11 @@ final GlobalKey<LikeViewContentState> likeViewContentState = GlobalKey();
 
 /*
 
-TODO: Remove likeViewContentState once server API paging is better (multiple
+TODO(prod): Remove likeViewContentState once server API paging is better (multiple
 iterators are supported).
+
+If that is not done perhaps open the likes screen only when the original widget
+is disappeared.
 
 ════════ Exception caught by widgets library ═══════════════════════════════════
 The following assertion was thrown while finalizing the widget tree:
@@ -71,12 +74,11 @@ class _LikeViewState extends State<LikeView> {
   }
 }
 
-Future<void> openLikesScreenNoBuildContext(
-  NavigatorStateBloc navigatorStateBloc,
+NewPageDetails newLikesScreen(
   LikeGridInstanceManagerBloc likeGridInstanceManagerBloc,
-) async {
+) {
   final newGridId = likeGridInstanceManagerBloc.newId();
-  await navigatorStateBloc.push(
+  return NewPageDetails(
     MaterialPage<void>(
       child: LikesScreen(
         gridInstanceId: newGridId,
