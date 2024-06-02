@@ -20,6 +20,7 @@ import 'package:pihka_frontend/main.dart';
 import 'package:pihka_frontend/storage/encryption.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
+import 'package:rxdart/rxdart.dart';
 
 var log = Logger("PushNotificationManager");
 
@@ -35,7 +36,8 @@ class PushNotificationManager extends AppSingleton {
   bool _initDone = false;
   FirebaseApp? _firebaseApp;
   StreamSubscription<String>? _tokenSubscription;
-  StreamSubscription<RemoteMessage>? _messageSubscription;
+
+  final PublishSubject<String> _newFcmTokenReceived = PublishSubject();
 
   @override
   Future<void> init() async {
@@ -45,6 +47,10 @@ class PushNotificationManager extends AppSingleton {
     _initDone = true;
 
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    _newFcmTokenReceived.asyncMap((fcmToken) async {
+      await _refreshTokenToServer(fcmToken);
+    }).listen((value) {});
   }
 
   /// Initializes push notifications. Can be called multiple times.
@@ -82,29 +88,21 @@ class PushNotificationManager extends AppSingleton {
 
     if (_tokenSubscription == null) {
       _tokenSubscription = FirebaseMessaging.instance.onTokenRefresh.listen((token) {
-        // TODO(prod): remove this log
-        log.finest("FCM token refreshed: $token");
-        _refreshTokenToServer(token);
+        _newFcmTokenReceived.add(token);
       });
       _tokenSubscription?.onError((_) {
         log.error("FCM onTokenRefresh error");
       });
     }
 
-    _messageSubscription ??= FirebaseMessaging.onMessage.listen((message) {
-      // TODO(prod): remove this log
-      log.finest("FCM message received: $message");
-    });
-
     final fcmToken = await FirebaseMessaging.instance.getToken();
-    log.info("Get FCM token called");
-    // TODO(prod): remove this log
-    log.finest("FCM token: $fcmToken");
 
     if (fcmToken == null) {
       log.error("FCM token is null");
       return;
     }
+
+    _newFcmTokenReceived.add(fcmToken);
   }
 
   Future<void> _refreshTokenToServer(String fcmToken) async {
@@ -114,16 +112,23 @@ class PushNotificationManager extends AppSingleton {
       final newToken = FcmDeviceToken(token: fcmToken);
       final result = await ApiManager.getInstance().chat((api) => api.postSetDeviceToken(newToken)).ok();
       if (result != null) {
-        await BackgroundDatabaseManager.getInstance().commonAction((db) => db.updateFcmDeviceTokenAndPendingNotificationToken(newToken, result));
+        log.info("FCM token sending successful");
+        final dbResult = await BackgroundDatabaseManager.getInstance().commonAction((db) => db.updateFcmDeviceTokenAndPendingNotificationToken(newToken, result));
+        if (dbResult.isOk()) {
+          log.error("FCM token saving to local database successful");
+        } else {
+          log.error("FCM token saving to local database failed");
+        }
       } else {
         log.error("Failed to send FCM token to server");
       }
+    } else {
+      log.info("Current FCM token is already on server");
     }
   }
 
   Future<void> logoutPushNotifications() async {
     await _tokenSubscription?.cancel();
-    await _messageSubscription?.cancel();
     if (_firebaseApp != null) {
       await FirebaseMessaging.instance.deleteToken();
     }
