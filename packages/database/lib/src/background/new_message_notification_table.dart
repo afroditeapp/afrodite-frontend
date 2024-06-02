@@ -30,7 +30,6 @@ class DaoNewMessageNotification extends DatabaseAccessor<AccountBackgroundDataba
       if (r == null) {
         final r = await into(newMessageNotification).insertReturning(
           NewMessageNotificationCompanion.insert(
-            id: ACCOUNT_DB_DATA_ID,
             uuidAccountId: id,
           ),
         );
