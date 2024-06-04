@@ -196,7 +196,6 @@ Widget signInWithAppleButton(BuildContext context) {
     onPressed: () =>
       context.read<SignInWithBloc>().add(SignInWithAppleEvent()),
     borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-    iconAlignment: IconAlignment.center,
     height: BUTTON_HEIGHT,
   );
 }
