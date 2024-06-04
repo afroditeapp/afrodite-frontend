@@ -265,7 +265,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
                     color: Colors.black45,
                   )
                 ],
-                color: Theme.of(context).colorScheme.surfaceVariant,
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
               ),
               padding: const EdgeInsets.all(10),

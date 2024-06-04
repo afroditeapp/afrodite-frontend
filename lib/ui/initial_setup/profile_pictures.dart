@@ -396,7 +396,7 @@ class AddPicture extends StatelessWidget {
           child: Ink(
             width: 100,
             height: ROW_HEIGHT,
-            color: Theme.of(context).colorScheme.surfaceVariant,
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
             child: Center(
               child: Icon(
                 Icons.add_a_photo,
@@ -573,7 +573,7 @@ class FilePicture extends StatelessWidget {
       onWillAcceptWithDetails: (details) => details.data != imgIndex,
       builder: (context, candidateData, rejectedData) {
         final acceptedCandidate = candidateData.where((element) => element != imgIndex).firstOrNull;
-        final backgroundColor = acceptedCandidate == null ? Colors.transparent : Theme.of(context).colorScheme.surfaceVariant;
+        final backgroundColor = acceptedCandidate == null ? Colors.transparent : Theme.of(context).colorScheme.surfaceContainerHighest;
         return ImgWithCloseButton(
             onCloseButtonPressed: () =>
               context.read<ProfilePicturesBloc>().add(RemoveImage(imgIndex)),
@@ -593,7 +593,7 @@ class FilePicture extends StatelessWidget {
       childWhenDragging: Container(
         width: imgWidth,
         height: imgHeight,
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
       ),
       child: ImgWithCloseButton.defaultImgWidgetBuilder(context, imgWidth, imgHeight, img.accountId, img.contentId),
     );
@@ -649,7 +649,7 @@ class ImgWithCloseButton extends StatelessWidget {
             width: 30,
             height: 30,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceVariant,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(

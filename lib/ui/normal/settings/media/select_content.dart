@@ -155,7 +155,7 @@ Widget buildAddNewButton(
           child: Ink(
             width: SELECT_CONTENT_IMAGE_WIDTH,
             height: SELECT_CONTENT_IMAGE_HEIGHT,
-            color: Theme.of(context).colorScheme.surfaceVariant,
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
             child: Center(
               child: Icon(
                 Icons.add_a_photo,
