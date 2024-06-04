@@ -165,7 +165,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     return;
   }
 
-  final ApiWrapper<ChatApi> chatApi = ApiWrapper(ApiProvider(chatUrl).chat);
+  final apiProvider = ApiProvider(chatUrl);
+  await apiProvider.init();
+  final ApiWrapper<ChatApi> chatApi = ApiWrapper(apiProvider.chat);
   final result = await chatApi.requestValue((api) => api.postGetPendingNotification(pendingNotificationToken), logError: false);
   switch (result) {
     case Ok(:final v):

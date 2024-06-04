@@ -1,10 +1,30 @@
-
-
-
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/services.dart';
+import 'package:pihka_frontend/data/notification_manager.dart';
+
+Future<Uint8List> loadLetsEncryptRootCertificates() async {
+  final data = await rootBundle.load("assets/isrg-root-x1-and-x2.pem");
+  return data.buffer.asUint8List();
+}
+
 Future<SecurityContext> createSecurityContextForBackendConnection() async {
-  return SecurityContext.defaultContext;
+  if (Platform.isAndroid) {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    if (androidInfo.version.sdkInt >= ANDROID_8_API_LEVEL) {
+      return SecurityContext.defaultContext;
+    } else {
+      // Workaround Android 7 and older Let's Encrypt root certificate issue
+      // https://letsencrypt.org/docs/certificate-compatibility/
+      final context = SecurityContext(withTrustedRoots: true);
+      context.setTrustedCertificatesBytes(await loadLetsEncryptRootCertificates());
+      return context;
+    }
+  } else {
+    return SecurityContext.defaultContext;
+  }
 }
 
 enum ImageAsset {

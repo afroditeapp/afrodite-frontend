@@ -16,7 +16,7 @@ import 'package:rxdart/rxdart.dart';
 var log = Logger("NotificationManager");
 
 const int _ANDROID_13_API_LEVEL = 33;
-const int _ANDROID_8_API_LEVEL = 26;
+const int ANDROID_8_API_LEVEL = 26;
 const String _ANDROID_ICON_RESOURCE_NAME = "ic_notification";
 
 const bool NOTIFICATION_CATEGORY_ENABLED_DEFAULT = true;
@@ -134,7 +134,7 @@ class NotificationManager extends AppSingleton {
     if (Platform.isAndroid) {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      if (androidInfo.version.sdkInt >= _ANDROID_8_API_LEVEL) {
+      if (androidInfo.version.sdkInt >= ANDROID_8_API_LEVEL) {
         return true;
       } else {
         return false;
