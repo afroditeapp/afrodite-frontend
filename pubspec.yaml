@@ -83,8 +83,8 @@ dependencies:
   device_info_plus: ^10.0.1
 
   path: ^1.9.0
-  drift: ^2.16.0
-  sqlcipher_flutter_libs: ^0.6.1
+  drift: ^2.18.0
+  sqlcipher_flutter_libs: ^0.6.3
   sqlite3: ^2.4.0
 
   flutter_secure_storage: ^9.0.0
