@@ -13,6 +13,7 @@ import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
@@ -290,6 +291,10 @@ class ChatRepository extends DataRepository {
           // count of not read messages in the database.
           await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.id.accountIdSender, 1);
         }
+      }
+
+      for (final sender in newMessages.messages.map((e) => e.id.accountIdSender).toSet()) {
+        await BackgroundDatabaseManager.getInstance().accountAction((db) => db.daoNewMessageNotification.setNotificationShown(sender, false));
       }
 
       final toBeDeletedList = PendingMessageDeleteList(messagesIds: toBeDeleted);

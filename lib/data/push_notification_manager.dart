@@ -193,5 +193,6 @@ Future<void> _handlePushNotificationNewMessageReceived(List<AccountId> messageSe
 
   for (final sender in messageSenders) {
     await NotificationMessageReceived.getInstance().updateMessageReceivedCount(sender, 1);
+    await BackgroundDatabaseManager.getInstance().accountAction((db) => db.daoNewMessageNotification.setNotificationShown(sender, true));
   }
 }

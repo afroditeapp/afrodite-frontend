@@ -687,8 +687,18 @@ class $NewMessageNotificationTable extends NewMessageNotification
               defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
           .withConverter<AccountId>(
               $NewMessageNotificationTable.$converteruuidAccountId);
+  static const VerificationMeta _notificationShownMeta =
+      const VerificationMeta('notificationShown');
   @override
-  List<GeneratedColumn> get $columns => [id, uuidAccountId];
+  late final GeneratedColumn<bool> notificationShown = GeneratedColumn<bool>(
+      'notification_shown', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("notification_shown" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns => [id, uuidAccountId, notificationShown];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -704,6 +714,12 @@ class $NewMessageNotificationTable extends NewMessageNotification
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     context.handle(_uuidAccountIdMeta, const VerificationResult.success());
+    if (data.containsKey('notification_shown')) {
+      context.handle(
+          _notificationShownMeta,
+          notificationShown.isAcceptableOrUnknown(
+              data['notification_shown']!, _notificationShownMeta));
+    }
     return context;
   }
 
@@ -719,6 +735,8 @@ class $NewMessageNotificationTable extends NewMessageNotification
       uuidAccountId: $NewMessageNotificationTable.$converteruuidAccountId
           .fromSql(attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
+      notificationShown: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool, data['${effectivePrefix}notification_shown'])!,
     );
   }
 
@@ -735,8 +753,11 @@ class NewMessageNotificationData extends DataClass
     implements Insertable<NewMessageNotificationData> {
   final int id;
   final AccountId uuidAccountId;
+  final bool notificationShown;
   const NewMessageNotificationData(
-      {required this.id, required this.uuidAccountId});
+      {required this.id,
+      required this.uuidAccountId,
+      required this.notificationShown});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -746,6 +767,7 @@ class NewMessageNotificationData extends DataClass
           .$converteruuidAccountId
           .toSql(uuidAccountId));
     }
+    map['notification_shown'] = Variable<bool>(notificationShown);
     return map;
   }
 
@@ -753,6 +775,7 @@ class NewMessageNotificationData extends DataClass
     return NewMessageNotificationCompanion(
       id: Value(id),
       uuidAccountId: Value(uuidAccountId),
+      notificationShown: Value(notificationShown),
     );
   }
 
@@ -762,6 +785,7 @@ class NewMessageNotificationData extends DataClass
     return NewMessageNotificationData(
       id: serializer.fromJson<int>(json['id']),
       uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
+      notificationShown: serializer.fromJson<bool>(json['notificationShown']),
     );
   }
   @override
@@ -770,60 +794,73 @@ class NewMessageNotificationData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
+      'notificationShown': serializer.toJson<bool>(notificationShown),
     };
   }
 
-  NewMessageNotificationData copyWith({int? id, AccountId? uuidAccountId}) =>
+  NewMessageNotificationData copyWith(
+          {int? id, AccountId? uuidAccountId, bool? notificationShown}) =>
       NewMessageNotificationData(
         id: id ?? this.id,
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+        notificationShown: notificationShown ?? this.notificationShown,
       );
   @override
   String toString() {
     return (StringBuffer('NewMessageNotificationData(')
           ..write('id: $id, ')
-          ..write('uuidAccountId: $uuidAccountId')
+          ..write('uuidAccountId: $uuidAccountId, ')
+          ..write('notificationShown: $notificationShown')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, uuidAccountId);
+  int get hashCode => Object.hash(id, uuidAccountId, notificationShown);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NewMessageNotificationData &&
           other.id == this.id &&
-          other.uuidAccountId == this.uuidAccountId);
+          other.uuidAccountId == this.uuidAccountId &&
+          other.notificationShown == this.notificationShown);
 }
 
 class NewMessageNotificationCompanion
     extends UpdateCompanion<NewMessageNotificationData> {
   final Value<int> id;
   final Value<AccountId> uuidAccountId;
+  final Value<bool> notificationShown;
   const NewMessageNotificationCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
+    this.notificationShown = const Value.absent(),
   });
   NewMessageNotificationCompanion.insert({
     this.id = const Value.absent(),
     required AccountId uuidAccountId,
+    this.notificationShown = const Value.absent(),
   }) : uuidAccountId = Value(uuidAccountId);
   static Insertable<NewMessageNotificationData> custom({
     Expression<int>? id,
     Expression<String>? uuidAccountId,
+    Expression<bool>? notificationShown,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
+      if (notificationShown != null) 'notification_shown': notificationShown,
     });
   }
 
   NewMessageNotificationCompanion copyWith(
-      {Value<int>? id, Value<AccountId>? uuidAccountId}) {
+      {Value<int>? id,
+      Value<AccountId>? uuidAccountId,
+      Value<bool>? notificationShown}) {
     return NewMessageNotificationCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+      notificationShown: notificationShown ?? this.notificationShown,
     );
   }
 
@@ -838,6 +875,9 @@ class NewMessageNotificationCompanion
           .$converteruuidAccountId
           .toSql(uuidAccountId.value));
     }
+    if (notificationShown.present) {
+      map['notification_shown'] = Variable<bool>(notificationShown.value);
+    }
     return map;
   }
 
@@ -845,7 +885,8 @@ class NewMessageNotificationCompanion
   String toString() {
     return (StringBuffer('NewMessageNotificationCompanion(')
           ..write('id: $id, ')
-          ..write('uuidAccountId: $uuidAccountId')
+          ..write('uuidAccountId: $uuidAccountId, ')
+          ..write('notificationShown: $notificationShown')
           ..write(')'))
         .toString();
   }

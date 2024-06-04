@@ -32,8 +32,9 @@ class NotificationMessageReceived extends AppSingletonNoInit {
     }
 
     final notificationId = NotificationIdStatic.calculateNotificationIdForNewMessageNotifications(notificationIdInt);
+    final notificationShown = await db.accountData((db) => db.daoNewMessageNotification.getNotificationShown(accountId)).ok() ?? false;
 
-    if (count <= 0 || _isConversationUiOpen(accountId) || _isConversationListUiOpen()) {
+    if (count <= 0 || _isConversationUiOpen(accountId) || _isConversationListUiOpen() || notificationShown) {
       await notifications.hideNotification(notificationId);
     } else {
       await _showNotification(accountId, notificationId);
