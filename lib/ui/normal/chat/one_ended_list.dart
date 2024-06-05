@@ -11,7 +11,9 @@ var log = Logger("OneEndedMessageListWidget");
 
 /// Infinite list where adding to one end is possible.
 class OneEndedMessageListWidget extends StatefulWidget {
+  final ConversationBloc conversationBloc;
   const OneEndedMessageListWidget(
+    this.conversationBloc,
     {Key? key}
   ) : super(key: key);
 
@@ -23,20 +25,20 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
   final _chatScrollPhysics = SimpleChatScrollPhysics(SimpleChatScrollPhysicsSettings());
   final ScrollController _scrollController = ScrollController();
 
+  List<MessageEntry> visibleMessages = [];
+  List<MessageEntry> pendingUpdate = [];
+
   @override
-  Widget build(BuildContext context) {
-    return msgListUpdater();
+  void initState() {
+    visibleMessages = widget.conversationBloc.state.visibleMessages.messages.messages;
+    super.initState();
   }
 
-  Widget msgListUpdater() {
-    return BlocBuilder<ConversationBloc, ConversationData>(
-      buildWhen: (previous, current) => previous.visibleMessages != current.visibleMessages,
-      builder: (context, state) {
-        log.info("Message list update detected");
-
-        final update = state.visibleMessages;
+  void updateVisibleMessages(ReadyVisibleMessageListUpdate update) {
+    Future.delayed(Duration.zero, () {
+      setState(() {
+        visibleMessages = update.messages.messages;
         _chatScrollPhysics.settings.newMessageHeight = update.addedHeight;
-
         // Reset chat position to bottom
         if (
           // I sent message or
@@ -53,8 +55,26 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
             _chatScrollPhysics.settings.jumpToLatest = true;
           }
         }
+      });
+    });
+  }
 
-        return msgListBuilder(update.messages.messages);
+  @override
+  Widget build(BuildContext context) {
+    return msgListUpdater();
+  }
+
+  Widget msgListUpdater() {
+    return BlocBuilder<ConversationBloc, ConversationData>(
+      buildWhen: (previous, current) => previous.visibleMessages != current.visibleMessages,
+      builder: (context, state) {
+        final update = state.visibleMessages;
+        if (update.messages.messages != pendingUpdate) {
+          pendingUpdate = update.messages.messages;
+          updateVisibleMessages(update);
+        }
+
+        return msgListBuilder(visibleMessages);
       },
     );
   }

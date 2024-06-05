@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
-import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
@@ -14,7 +13,6 @@ import 'package:pihka_frontend/logic/chat/message_renderer_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/chat/message_renderer_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
-import 'package:pihka_frontend/ui/normal/chat/cache.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_renderer.dart';
 import 'package:pihka_frontend/ui/normal/chat/one_ended_list.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
@@ -46,7 +44,7 @@ NewPageDetails newConversationPage(
         create: (_) => MessageRendererBloc(),
         lazy: false,
         child: BlocProvider(
-          create: (_) => ConversationBloc(profile),
+          create: (_) => ConversationBloc(profile.uuid, DefaultConversationDataProvider()),
           lazy: false,
           child: ConversationPage(pageKey, profile)
         ),
@@ -154,7 +152,7 @@ class ConversationPageState extends State<ConversationPage> {
                       child: Text(context.strings.conversation_screen_make_match_instruction),
                     );
                   } else {
-                    return OneEndedMessageListWidget();
+                    return OneEndedMessageListWidget(context.read<ConversationBloc>());
                   }
                 },
               ),

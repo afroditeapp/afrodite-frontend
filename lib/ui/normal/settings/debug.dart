@@ -28,11 +28,11 @@ class DebugSettingsPage extends StatelessWidget {
     List<Setting> settings = [];
 
     settings.add(Setting.createSetting(Icons.chat_bubble_outline_rounded, "Chat without messages", () =>
-      MyNavigator.push(context, MaterialPage<void>(child: ChatViewDebuggerPage(AccountId(accountId: ""))))
+      openConversationDebugScreen(context, 0),
     ));
 
     settings.add(Setting.createSetting(Icons.chat_bubble_rounded, "Chat with messages", () =>
-      MyNavigator.push(context, MaterialPage<void>(child: ChatViewDebuggerPage(AccountId(accountId: ""), initialMsgCount: 5)))
+      openConversationDebugScreen(context, 5),
     ));
 
     settings.add(Setting.createSetting(Icons.notification_add, "Notification: Image moderation status", () =>

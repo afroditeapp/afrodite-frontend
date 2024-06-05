@@ -7,11 +7,9 @@ import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
-import "package:pihka_frontend/data/account_repository.dart";
 import "package:pihka_frontend/data/chat/message_database_iterator.dart";
 import "package:pihka_frontend/data/chat_repository.dart";
 import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart";
 import "package:pihka_frontend/utils.dart";
@@ -45,24 +43,94 @@ class CompleteMessageListUpdateRendering extends ConversationEvent {
   CompleteMessageListUpdateRendering(this.totalHeight);
 }
 
-class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with ActionRunner {
-  final AccountRepository account = AccountRepository.getInstance();
-  final ProfileRepository profile = ProfileRepository.getInstance();
-  final MediaRepository media = MediaRepository.getInstance();
+abstract class ConversationDataProvider {
+  Future<bool> isInMatches(AccountId accountId);
+  Future<bool> isInSentBlocks(AccountId accountId);
+  Future<bool> isInReceivedBlocks(AccountId accountId);
+  Future<bool> sendBlockTo(AccountId accountId);
+  Future<void> sendMessageTo(AccountId accountId, String message);
+  Future<List<MessageEntry>> getAllMessages(AccountId accountId);
+  Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match);
+
+  /// First message is the latest new message
+  Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, int? latestCurrentMessageLocalId) async {
+    MessageDatabaseIterator messageIterator = MessageDatabaseIterator();
+    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
+    if (currentUser == null) {
+      return [];
+    }
+    await messageIterator.switchConversation(currentUser, senderAccountId);
+
+    // Read latest messages until all new messages are read
+    List<MessageEntry> newMessages = [];
+    bool readMessages = true;
+    while (readMessages) {
+      final messages = await messageIterator.nextList();
+      if (messages.isEmpty) {
+        break;
+      }
+
+      for (final message in messages) {
+        if (message.localId == latestCurrentMessageLocalId) {
+          readMessages = false;
+          break;
+        } else {
+          newMessages.add(message);
+        }
+      }
+    }
+
+    return newMessages;
+  }
+
+}
+
+class DefaultConversationDataProvider extends ConversationDataProvider {
   final ChatRepository chat = ChatRepository.getInstance();
+
+  @override
+  Future<bool> isInMatches(AccountId accountId) => chat.isInMatches(accountId);
+
+  @override
+  Future<bool> isInSentBlocks(AccountId accountId) => chat.isInSentBlocks(accountId);
+
+  @override
+  Future<bool> isInReceivedBlocks(AccountId accountId) => chat.isInReceivedBlocks(accountId);
+
+  @override
+  Future<bool> sendBlockTo(AccountId accountId) => chat.sendBlockTo(accountId);
+
+  @override
+  Future<void> sendMessageTo(AccountId accountId, String message) async {
+    await chat.sendMessageTo(accountId, message);
+  }
+
+  @override
+  Future<List<MessageEntry>> getAllMessages(AccountId accountId) async {
+    return await chat.getAllMessages(accountId);
+  }
+
+  @override
+  Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match) {
+    return chat.getMessageCountAndChanges(match);
+  }
+}
+
+class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with ActionRunner {
+  final ConversationDataProvider dataProvider;
 
   StreamSubscription<(int, ConversationChanged?)>? _messageCountSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
 
-  ConversationBloc(ProfileEntry entry) :
-    super(ConversationData(accountId: entry.uuid)) {
+  ConversationBloc(AccountId messageSenderAccountId, this.dataProvider) :
+    super(ConversationData(accountId: messageSenderAccountId)) {
 
     on<InitEvent>((data, emit) async {
       log.info("Set conversation bloc initial state");
 
-      final isMatch = await chat.isInMatches(state.accountId);
-      final isBlocked = await chat.isInSentBlocks(state.accountId) ||
-        await chat.isInReceivedBlocks(state.accountId);
+      final isMatch = await dataProvider.isInMatches(state.accountId);
+      final isBlocked = await dataProvider.isInSentBlocks(state.accountId) ||
+        await dataProvider.isInReceivedBlocks(state.accountId);
 
       emit(state.copyWith(
         isMatch: isMatch,
@@ -78,7 +146,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
           }
         }
         case MatchesChanged(): {
-          final isMatch = await chat.isInMatches(state.accountId);
+          final isMatch = await dataProvider.isInMatches(state.accountId);
           emit(state.copyWith(isMatch: isMatch));
         }
         case ProfileNowPrivate() ||
@@ -92,7 +160,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     });
     on<BlockProfile>((data, emit) async {
       await runOnce(() async {
-        if (await chat.sendBlockTo(state.accountId)) {
+        if (await dataProvider.sendBlockTo(state.accountId)) {
           emit(state.copyWith(
             isBlocked: true,
           ));
@@ -101,7 +169,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     });
     on<SendMessageTo>((data, emit) async {
       await runOnce(() async {
-        await chat.sendMessageTo(data.accountId, data.message);
+        await dataProvider.sendMessageTo(data.accountId, data.message);
       });
     });
     on<NotifyChatBoxCleared>((data, emit) async {
@@ -112,7 +180,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     on<MessageCountChanged>((data, emit) async {
       final pendingMessages = state.pendingMessages;
       if (pendingMessages == null) {
-        final initialMessages = await chat.getAllMessages(state.accountId);
+        final initialMessages = await dataProvider.getAllMessages(state.accountId);
         emit(state.copyWith(
           visibleMessages: ReadyVisibleMessageListUpdate(MessageList(initialMessages), null, false),
           pendingMessages: MessageList(initialMessages),
@@ -128,7 +196,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
 
       final currentMessages = pendingMessages.messages;
       final lastMsg = currentMessages.firstOrNull;
-      final newMessages = await getNewMessages(state.accountId, lastMsg?.localId);
+      final newMessages = await dataProvider.getNewMessages(state.accountId, lastMsg?.localId);
       final newMessageList = [
         ...newMessages.reversed,
         ...currentMessages,
@@ -183,7 +251,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
         add(HandleProfileChange(event));
       });
 
-    _messageCountSubscription = chat.getMessageCountAndChanges(state.accountId).listen((countAndEvent) {
+    _messageCountSubscription = dataProvider.getMessageCountAndChanges(state.accountId).listen((countAndEvent) {
       final (newMessageCount, event) = countAndEvent;
       add(MessageCountChanged(newMessageCount, event?.change));
     });
@@ -197,37 +265,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     await _profileChangeSubscription?.cancel();
     return super.close();
   }
-}
-
-/// First message is the latest new message
-Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, int? latestCurrentMessageLocalId) async {
-  MessageDatabaseIterator messageIterator = MessageDatabaseIterator();
-  final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
-  if (currentUser == null) {
-    return [];
-  }
-  await messageIterator.switchConversation(currentUser, senderAccountId);
-
-  // Read latest messages until all new messages are read
-  List<MessageEntry> newMessages = [];
-  bool readMessages = true;
-  while (readMessages) {
-    final messages = await messageIterator.nextList();
-    if (messages.isEmpty) {
-      break;
-    }
-
-    for (final message in messages) {
-      if (message.localId == latestCurrentMessageLocalId) {
-        readMessages = false;
-        break;
-      } else {
-        newMessages.add(message);
-      }
-    }
-  }
-
-  return newMessages;
 }
 
 class MessageListUpdate {
