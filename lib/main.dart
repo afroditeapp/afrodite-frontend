@@ -30,6 +30,8 @@ import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/app/notification_payload_handler.dart';
 import 'package:pihka_frontend/logic/app/notification_permission.dart';
 import 'package:pihka_frontend/logic/app/notification_settings.dart';
+import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
+import 'package:pihka_frontend/logic/chat/message_renderer_bloc.dart';
 import 'package:pihka_frontend/logic/media/content.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
@@ -266,10 +268,9 @@ class DebugObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    if (bloc is! NavigatorStateBloc) {
-      return;
+    if (bloc is NavigatorStateBloc || bloc is ConversationBloc || bloc is MessageRendererBloc) {
+      log.finest("${bloc.runtimeType} $change");
     }
-    log.finest("${bloc.runtimeType} $change");
   }
 }
 

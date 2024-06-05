@@ -61,15 +61,15 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
               onTap: () {
                 FocusScope.of(context).unfocus();
               },
-              child: Align(
+              child: const Align(
                 alignment: Alignment.topCenter,
-                child: OneEndedMessageListWidget(widget.accountId, cache),
+                child: OneEndedMessageListWidget(),
               ),
             )
           ),
           textEditArea(context),
           newMessageArea(context),
-          MessageRenderer(cache),
+          const MessageRenderer(),
         ],
       ),
     );

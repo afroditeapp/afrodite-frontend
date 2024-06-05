@@ -46,6 +46,15 @@ class UnmodifiableList<T> extends Iterable<T> {
     return UnmodifiableList(l);
   }
 
+  /// Create copy of this list and push new values to the new list.
+  UnmodifiableList<T> addAll(Iterable<T> values) {
+    final l = [
+      ..._list,
+      ...values,
+    ];
+    return UnmodifiableList(l);
+  }
+
   @override
   Iterator<T> get iterator => _list.iterator;
 }

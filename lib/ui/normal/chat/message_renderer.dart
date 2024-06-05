@@ -1,78 +1,81 @@
 
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:pihka_frontend/ui/normal/chat/cache.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logging/logging.dart';
+import 'package:pihka_frontend/logic/chat/message_renderer_bloc.dart';
+import 'package:pihka_frontend/model/freezed/logic/chat/message_renderer_bloc.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_row.dart';
 
-
+var log = Logger("MessageRenderer");
 
 class MessageRenderer extends StatefulWidget {
-  final MessageCache cache;
-  const MessageRenderer(this.cache, {Key? key}) : super(key: key);
+  const MessageRenderer({Key? key}) : super(key: key);
 
   @override
   MessageRendererState createState() => MessageRendererState();
 }
 
-
 class MessageRendererState extends State<MessageRenderer> {
-  double totalHeight = 0;
-  MessageContainer? message;
-
-  @override
-  void initState() {
-    super.initState();
-    widget.cache.registerMessageRenderCallback((message, totalHeight) {
-      setState(() {
-        this.message = message;
-        this.totalHeight = totalHeight;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final messageData = message;
-    if (messageData == null) {
-      return Container();
-    }
-
-    final style = DefaultTextStyle.of(context);
-
-    Future.delayed(Duration.zero, () {
-      final key = GlobalKey();
-      final ovEntry = OverlayEntry(
-        builder: (context) {
-          return Offstage(
-            child: SingleChildScrollView(
-              child: messageRowWidget(
-                context,
-                messageEntryToViewData(messageData.entry),
-                key: key,
-                parentTextStyle: style.style,
-              ),
-            ),
-          );
+    return BlocBuilder<MessageRendererBloc, MessageRendererData>(
+      buildWhen: (previous, current) {
+        return previous.currentlyRendering != current.currentlyRendering;
+      },
+      builder: (_, data) {
+        if (!context.mounted) {
+          return const SizedBox.shrink();
         }
-      );
 
-      Overlay.of(context).insert(
-        ovEntry
-      );
+        final messageRendererBloc = context.read<MessageRendererBloc>();
+        final style = DefaultTextStyle.of(context);
+        final message = data.currentlyRendering;
 
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        final box = key.currentContext?.findRenderObject() as RenderBox;
-        totalHeight += box.size.height;
-        log.info("Rendered height: $totalHeight");
-        ovEntry.remove();
-        ovEntry.dispose();
-        widget.cache.completeOneRendering(messageData, totalHeight);
-      });
-    });
+        if (message == null) {
+          return const SizedBox.shrink();
+        }
 
-    return Container();
+        Future.delayed(Duration.zero, () {
+          if (!context.mounted) {
+            return;
+          }
+
+          final key = GlobalKey();
+          final ovEntry = OverlayEntry(
+            builder: (context) {
+              return Offstage(
+                child: SingleChildScrollView(
+                  child: messageRowWidget(
+                    context,
+                    messageEntryToViewData(message),
+                    key: key,
+                    parentTextStyle: style.style,
+                  ),
+                ),
+              );
+            }
+          );
+
+          Overlay.of(context).insert(
+            ovEntry
+          );
+
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            final box = key.currentContext?.findRenderObject() as RenderBox;
+            final height = box.size.height;
+            log.info("Rendered height: $height");
+            ovEntry.remove();
+            ovEntry.dispose();
+            if (!context.mounted) {
+              return;
+            }
+            messageRendererBloc.add(RenderingCompleted(height));
+          });
+        });
+
+        return const SizedBox.shrink();
+      }
+    );
   }
 }

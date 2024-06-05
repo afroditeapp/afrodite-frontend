@@ -1,19 +1,17 @@
 
+import 'package:database/database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-import 'package:openapi/api.dart';
-import 'package:pihka_frontend/ui/normal/chat/cache.dart';
+import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
+import 'package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_row.dart';
 
 var log = Logger("OneEndedMessageListWidget");
 
 /// Infinite list where adding to one end is possible.
 class OneEndedMessageListWidget extends StatefulWidget {
-  final AccountId accountId;
-  final MessageCache cache;
   const OneEndedMessageListWidget(
-    this.accountId,
-    this.cache,
     {Key? key}
   ) : super(key: key);
 
@@ -22,85 +20,75 @@ class OneEndedMessageListWidget extends StatefulWidget {
 }
 
 class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
-  bool _isDisposed = false;
   final _chatScrollPhysics = SimpleChatScrollPhysics(SimpleChatScrollPhysicsSettings());
   final ScrollController _scrollController = ScrollController();
 
-  MessageCache get cache => widget.cache;
-
-  @override
-  void initState() {
-    super.initState();
-    _chatScrollPhysics.settings.messageCache = cache;
-
-    cache.registerCacheUpdateCallback((jumpToLatestMessage, addedMessageSize) {
-      if (!_isDisposed) {
-        setState(() {
-          _chatScrollPhysics.settings.newMessageHeight = addedMessageSize;
-
-          // Reset chat position to bottom
-          if (
-            // I sent message or
-            jumpToLatestMessage ||
-            // I received message and chat is at bottom.
-            (
-              _scrollController.hasClients &&
-              _scrollController.position.atEdge &&
-              _scrollController.position.pixels == _scrollController.position.minScrollExtent
-            )
-          ) {
-            if (_scrollController.hasClients) {
-              _scrollController.position.jumpTo(0);
-              _chatScrollPhysics.settings.jumpToLatest = true;
-            }
-          }
-        });
-      }
-    });
-  }
   @override
   Widget build(BuildContext context) {
+    return msgListUpdater();
+  }
+
+  Widget msgListUpdater() {
+    return BlocBuilder<ConversationBloc, ConversationData>(
+      buildWhen: (previous, current) => previous.visibleMessages != current.visibleMessages,
+      builder: (context, state) {
+        log.info("Message list update detected");
+
+        final update = state.visibleMessages;
+        _chatScrollPhysics.settings.newMessageHeight = update.addedHeight;
+
+        // Reset chat position to bottom
+        if (
+          // I sent message or
+          update.jumpToLatestMessage ||
+          // I received message and chat is at bottom.
+          (
+            _scrollController.hasClients &&
+            _scrollController.position.atEdge &&
+            _scrollController.position.pixels == _scrollController.position.minScrollExtent
+          )
+        ) {
+          if (_scrollController.hasClients) {
+            _scrollController.position.jumpTo(0);
+            _chatScrollPhysics.settings.jumpToLatest = true;
+          }
+        }
+
+        return msgListBuilder(update.messages.messages);
+      },
+    );
+  }
+
+  Widget msgListBuilder(List<MessageEntry> visibleMessages) {
     return LayoutBuilder(
       builder: (context, constraints) {
         _chatScrollPhysics.settings.availableArea = constraints.maxHeight;
-        return messageList(widget.accountId);
+        return messageList(visibleMessages);
       }
     );
   }
 
-  Widget messageList(AccountId match) {
+  Widget messageList(List<MessageEntry> visibleMessages) {
     return ListView.builder(
       physics: _chatScrollPhysics,
       reverse: true,
       shrinkWrap: true,
       controller: _scrollController,
-      itemCount: cache.getTopMessagesSize() + cache.getBottomMessagesSize(),
+      itemCount: visibleMessages.length,
       itemBuilder: (BuildContext context, int index) {
-        final entry = cache.getMessageUsingLatestMessageIndexing(index);
-        if (entry != null) {
-          final style = DefaultTextStyle.of(context);
-          return  messageRowWidget(
-            context,
-            messageEntryToViewData(entry),
-            parentTextStyle: style.style
-          );
-        } else {
-          return null;
-        }
+        final entry = visibleMessages[index];
+        final style = DefaultTextStyle.of(context);
+        return messageRowWidget(
+          context,
+          messageEntryToViewData(entry),
+          parentTextStyle: style.style
+        );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    _isDisposed = true;
-    super.dispose();
   }
 }
 
 class SimpleChatScrollPhysicsSettings {
-  MessageCache? messageCache;
-
   bool jumpToLatest = false;
   double? newMessageHeight;
   double? availableArea;

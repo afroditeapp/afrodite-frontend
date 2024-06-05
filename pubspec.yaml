@@ -32,6 +32,7 @@ dependencies:
 
   # State management
   flutter_bloc: ^8.0.0
+  bloc_concurrency: ^0.2.5
 
   shared_preferences: ^2.1.0
   rxdart: ^0.27.7

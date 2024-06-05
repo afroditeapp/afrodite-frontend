@@ -25,18 +25,20 @@ mixin _$ConversationData {
   bool get isMatch => throw _privateConstructorErrorConversationData;
   bool get isBlocked => throw _privateConstructorErrorConversationData;
   bool get isSendSuccessful => throw _privateConstructorErrorConversationData;
-  int get messageCount => throw _privateConstructorErrorConversationData;
-  ConversationChangeType? get messageCountChangeInfo => throw _privateConstructorErrorConversationData;
-  MessageList get initialMessages => throw _privateConstructorErrorConversationData;
+  ReadyVisibleMessageListUpdate get visibleMessages => throw _privateConstructorErrorConversationData;
+  MessageList? get pendingMessages => throw _privateConstructorErrorConversationData;
+  MessageListUpdate? get currentMessageListUpdate => throw _privateConstructorErrorConversationData;
+  UnmodifiableList<MessageListUpdate> get pendingMessageListUpdates => throw _privateConstructorErrorConversationData;
 
   ConversationData copyWith({
     AccountId? accountId,
     bool? isMatch,
     bool? isBlocked,
     bool? isSendSuccessful,
-    int? messageCount,
-    ConversationChangeType? messageCountChangeInfo,
-    MessageList? initialMessages,
+    ReadyVisibleMessageListUpdate? visibleMessages,
+    MessageList? pendingMessages,
+    MessageListUpdate? currentMessageListUpdate,
+    UnmodifiableList<MessageListUpdate>? pendingMessageListUpdates,
   }) => throw _privateConstructorErrorConversationData;
 }
 
@@ -47,9 +49,10 @@ abstract class _ConversationData implements ConversationData {
     bool isMatch,
     bool isBlocked,
     bool isSendSuccessful,
-    int messageCount,
-    ConversationChangeType? messageCountChangeInfo,
-    MessageList initialMessages,
+    ReadyVisibleMessageListUpdate visibleMessages,
+    MessageList? pendingMessages,
+    MessageListUpdate? currentMessageListUpdate,
+    UnmodifiableList<MessageListUpdate> pendingMessageListUpdates,
   }) = _$ConversationDataImpl;
 }
 
@@ -58,17 +61,18 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
   static const bool _isMatchDefaultValue = true;
   static const bool _isBlockedDefaultValue = false;
   static const bool _isSendSuccessfulDefaultValue = false;
-  static const int _messageCountDefaultValue = 0;
-  static const MessageList _initialMessagesDefaultValue = MessageList([]);
+  static const ReadyVisibleMessageListUpdate _visibleMessagesDefaultValue = ReadyVisibleMessageListUpdate(MessageList([]), null, false);
+  static const UnmodifiableList<MessageListUpdate> _pendingMessageListUpdatesDefaultValue = UnmodifiableList<MessageListUpdate>.empty();
   
   _$ConversationDataImpl({
     required this.accountId,
     this.isMatch = _isMatchDefaultValue,
     this.isBlocked = _isBlockedDefaultValue,
     this.isSendSuccessful = _isSendSuccessfulDefaultValue,
-    this.messageCount = _messageCountDefaultValue,
-    this.messageCountChangeInfo,
-    this.initialMessages = _initialMessagesDefaultValue,
+    this.visibleMessages = _visibleMessagesDefaultValue,
+    this.pendingMessages,
+    this.currentMessageListUpdate,
+    this.pendingMessageListUpdates = _pendingMessageListUpdatesDefaultValue,
   });
 
   @override
@@ -80,15 +84,17 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
   @override
   final bool isSendSuccessful;
   @override
-  final int messageCount;
+  final ReadyVisibleMessageListUpdate visibleMessages;
   @override
-  final ConversationChangeType? messageCountChangeInfo;
+  final MessageList? pendingMessages;
   @override
-  final MessageList initialMessages;
+  final MessageListUpdate? currentMessageListUpdate;
+  @override
+  final UnmodifiableList<MessageListUpdate> pendingMessageListUpdates;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ConversationData(accountId: $accountId, isMatch: $isMatch, isBlocked: $isBlocked, isSendSuccessful: $isSendSuccessful, messageCount: $messageCount, messageCountChangeInfo: $messageCountChangeInfo, initialMessages: $initialMessages)';
+    return 'ConversationData(accountId: $accountId, isMatch: $isMatch, isBlocked: $isBlocked, isSendSuccessful: $isSendSuccessful, visibleMessages: $visibleMessages, pendingMessages: $pendingMessages, currentMessageListUpdate: $currentMessageListUpdate, pendingMessageListUpdates: $pendingMessageListUpdates)';
   }
 
   @override
@@ -100,9 +106,10 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
       ..add(DiagnosticsProperty('isMatch', isMatch))
       ..add(DiagnosticsProperty('isBlocked', isBlocked))
       ..add(DiagnosticsProperty('isSendSuccessful', isSendSuccessful))
-      ..add(DiagnosticsProperty('messageCount', messageCount))
-      ..add(DiagnosticsProperty('messageCountChangeInfo', messageCountChangeInfo))
-      ..add(DiagnosticsProperty('initialMessages', initialMessages));
+      ..add(DiagnosticsProperty('visibleMessages', visibleMessages))
+      ..add(DiagnosticsProperty('pendingMessages', pendingMessages))
+      ..add(DiagnosticsProperty('currentMessageListUpdate', currentMessageListUpdate))
+      ..add(DiagnosticsProperty('pendingMessageListUpdates', pendingMessageListUpdates));
   }
 
   @override
@@ -118,12 +125,14 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
           other.isBlocked == isBlocked) &&
         (identical(other.isSendSuccessful, isSendSuccessful) ||
           other.isSendSuccessful == isSendSuccessful) &&
-        (identical(other.messageCount, messageCount) ||
-          other.messageCount == messageCount) &&
-        (identical(other.messageCountChangeInfo, messageCountChangeInfo) ||
-          other.messageCountChangeInfo == messageCountChangeInfo) &&
-        (identical(other.initialMessages, initialMessages) ||
-          other.initialMessages == initialMessages)
+        (identical(other.visibleMessages, visibleMessages) ||
+          other.visibleMessages == visibleMessages) &&
+        (identical(other.pendingMessages, pendingMessages) ||
+          other.pendingMessages == pendingMessages) &&
+        (identical(other.currentMessageListUpdate, currentMessageListUpdate) ||
+          other.currentMessageListUpdate == currentMessageListUpdate) &&
+        (identical(other.pendingMessageListUpdates, pendingMessageListUpdates) ||
+          other.pendingMessageListUpdates == pendingMessageListUpdates)
     );
   }
 
@@ -134,9 +143,10 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
     isMatch,
     isBlocked,
     isSendSuccessful,
-    messageCount,
-    messageCountChangeInfo,
-    initialMessages,
+    visibleMessages,
+    pendingMessages,
+    currentMessageListUpdate,
+    pendingMessageListUpdates,
   );
 
   @override
@@ -145,16 +155,18 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
     Object? isMatch,
     Object? isBlocked,
     Object? isSendSuccessful,
-    Object? messageCount,
-    Object? messageCountChangeInfo = _detectDefaultValueInCopyWith,
-    Object? initialMessages,
+    Object? visibleMessages,
+    Object? pendingMessages = _detectDefaultValueInCopyWith,
+    Object? currentMessageListUpdate = _detectDefaultValueInCopyWith,
+    Object? pendingMessageListUpdates,
   }) => _$ConversationDataImpl(
     accountId: (accountId ?? this.accountId) as AccountId,
     isMatch: (isMatch ?? this.isMatch) as bool,
     isBlocked: (isBlocked ?? this.isBlocked) as bool,
     isSendSuccessful: (isSendSuccessful ?? this.isSendSuccessful) as bool,
-    messageCount: (messageCount ?? this.messageCount) as int,
-    messageCountChangeInfo: (messageCountChangeInfo == _detectDefaultValueInCopyWith ? this.messageCountChangeInfo : messageCountChangeInfo) as ConversationChangeType?,
-    initialMessages: (initialMessages ?? this.initialMessages) as MessageList,
+    visibleMessages: (visibleMessages ?? this.visibleMessages) as ReadyVisibleMessageListUpdate,
+    pendingMessages: (pendingMessages == _detectDefaultValueInCopyWith ? this.pendingMessages : pendingMessages) as MessageList?,
+    currentMessageListUpdate: (currentMessageListUpdate == _detectDefaultValueInCopyWith ? this.currentMessageListUpdate : currentMessageListUpdate) as MessageListUpdate?,
+    pendingMessageListUpdates: (pendingMessageListUpdates ?? this.pendingMessageListUpdates) as UnmodifiableList<MessageListUpdate>,
   );
 }

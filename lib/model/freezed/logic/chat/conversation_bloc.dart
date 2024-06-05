@@ -1,14 +1,13 @@
 
 import "package:openapi/api.dart";
-import "package:pihka_frontend/data/profile_repository.dart";
 import 'package:database/database.dart';
-
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
+import "package:pihka_frontend/logic/chat/conversation_bloc.dart";
+import "package:pihka_frontend/utils/immutable_list.dart";
 
 part 'conversation_bloc.freezed.dart';
-
 
 @freezed
 class ConversationData with _$ConversationData {
@@ -18,9 +17,10 @@ class ConversationData with _$ConversationData {
     @Default(false) bool isBlocked,
     /// Resets chat box to empty state
     @Default(false) bool isSendSuccessful,
-    @Default(0) int messageCount,
-    ConversationChangeType? messageCountChangeInfo,
-    @Default(MessageList([])) MessageList initialMessages,
+    @Default(ReadyVisibleMessageListUpdate(MessageList([]), null, false)) ReadyVisibleMessageListUpdate visibleMessages,
+    MessageList? pendingMessages,
+    MessageListUpdate? currentMessageListUpdate,
+    @Default(UnmodifiableList<MessageListUpdate>.empty()) UnmodifiableList<MessageListUpdate> pendingMessageListUpdates,
   }) = _ConversationData;
 }
 
@@ -28,4 +28,17 @@ class ConversationData with _$ConversationData {
 class MessageList {
   final List<MessageEntry> messages;
   const MessageList(this.messages);
+}
+
+class OnMessageListUpdate {
+  final bool jumpToLatestMessage;
+  final double? newMessageHeight;
+  OnMessageListUpdate(this.jumpToLatestMessage, this.newMessageHeight);
+}
+
+class ReadyVisibleMessageListUpdate {
+  final MessageList messages;
+  final double? addedHeight;
+  final bool jumpToLatestMessage;
+  const ReadyVisibleMessageListUpdate(this.messages, this.addedHeight, this.jumpToLatestMessage);
 }

@@ -10,7 +10,9 @@ import 'package:database/database.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
+import 'package:pihka_frontend/logic/chat/message_renderer_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart';
+import 'package:pihka_frontend/model/freezed/logic/chat/message_renderer_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui/normal/chat/cache.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_renderer.dart';
@@ -41,9 +43,13 @@ NewPageDetails newConversationPage(
   return NewPageDetails(
     MaterialPage<void>(
       child: BlocProvider(
-        create: (_) => ConversationBloc(profile),
+        create: (_) => MessageRendererBloc(),
         lazy: false,
-        child: ConversationPage(pageKey, profile)
+        child: BlocProvider(
+          create: (_) => ConversationBloc(profile),
+          lazy: false,
+          child: ConversationPage(pageKey, profile)
+        ),
       ),
     ),
     pageKey: pageKey,
@@ -65,14 +71,11 @@ class ConversationPage extends StatefulWidget {
 }
 
 class ConversationPageState extends State<ConversationPage> {
-  late MessageCache cache;
-
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    cache = MessageCache(widget.profileEntry.uuid);
     // Hide notification
     // TODO(prod): Perhaps this can be done in repository code once
     // count of not read messages is implemented.
@@ -135,9 +138,7 @@ class ConversationPageState extends State<ConversationPage> {
               alignment: Alignment.topCenter,
               child: BlocBuilder<ConversationBloc, ConversationData>(
                 buildWhen: (previous, current) =>
-                  previous.accountId != current.accountId ||
                   previous.isMatch != current.isMatch ||
-                  previous.messageCount != current.messageCount ||
                   previous.isBlocked != current.isBlocked,
                 builder: (context, state) {
                   if (state.isBlocked) {
@@ -153,16 +154,7 @@ class ConversationPageState extends State<ConversationPage> {
                       child: Text(context.strings.conversation_screen_make_match_instruction),
                     );
                   } else {
-                    cache.setInitialMessagesIfNotSet(state.initialMessages.messages);
-                    // It does not matter if this is called right after.
-                    // Messages will not be fetched because size of message
-                    // count is the same.
-                    cache.setNewSize(
-                      state.messageCount,
-                      state.messageCountChangeInfo == ConversationChangeType.messageSent
-                    );
-
-                    return OneEndedMessageListWidget(state.accountId, cache);
+                    return OneEndedMessageListWidget();
                   }
                 },
               ),
@@ -170,7 +162,9 @@ class ConversationPageState extends State<ConversationPage> {
           )
         ),
         newMessageArea(context),
-        MessageRenderer(cache),
+        const MessageRenderer(),
+        msgUpdateToRendererForwarder(),
+        renderedMessagesResultForwarder(),
       ],
     );
   }
@@ -208,4 +202,33 @@ class ConversationPageState extends State<ConversationPage> {
       ),
     );
   }
+}
+
+Widget msgUpdateToRendererForwarder() {
+  return BlocBuilder<ConversationBloc, ConversationData>(
+    buildWhen: (previous, current) => previous.currentMessageListUpdate != current.currentMessageListUpdate,
+    builder: (context, state) {
+      final update = state.currentMessageListUpdate;
+      if (update == null) {
+        return const SizedBox.shrink();
+      }
+      log.info("Forwarding message update to renderer, new messages count: ${update.onlyNewMessages.messages.length}");
+      context.read<MessageRendererBloc>().add(RenderMessages(update));
+      return const SizedBox.shrink();
+    },
+  );
+}
+
+Widget renderedMessagesResultForwarder() {
+  return BlocBuilder<MessageRendererBloc, MessageRendererData>(
+    buildWhen: (previous, current) => previous.completed != current.completed,
+    builder: (context, state) {
+      if (!state.completed) {
+        return const SizedBox.shrink();
+      }
+      log.info("Rendering completed, height: ${state.totalHeight}");
+      context.read<ConversationBloc>().add(CompleteMessageListUpdateRendering(state.totalHeight));
+      return const SizedBox.shrink();
+    },
+  );
 }
