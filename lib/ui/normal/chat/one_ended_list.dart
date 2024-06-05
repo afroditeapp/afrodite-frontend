@@ -141,6 +141,7 @@ class SimpleChatScrollPhysics extends ScrollPhysics {
     if (settings.jumpToLatest) {
       log.info("Jump to latest message");
       settings.jumpToLatest = false;
+      settings.newMessageHeight = null;
       return getNewPosition;
     }
 
