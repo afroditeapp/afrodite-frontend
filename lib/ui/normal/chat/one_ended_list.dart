@@ -51,8 +51,8 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
           )
         ) {
           if (_scrollController.hasClients) {
-            _scrollController.position.jumpTo(0);
             _chatScrollPhysics.settings.jumpToLatest = true;
+            _scrollController.position.jumpTo(0);
           }
         }
       });
