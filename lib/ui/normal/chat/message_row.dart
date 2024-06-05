@@ -40,7 +40,8 @@ Align messageRowWidget(BuildContext context, MessageViewEntry entry, {Key? key, 
 
 Widget messageWidget(BuildContext context, String message, bool isSent, {Key? key, required TextStyle parentTextStyle}) {
   final styleChanges = TextStyle(
-    color: isSent ? Colors.white : Colors.black,
+    // color: Theme.of(context).colorScheme.onPrimary,
+    color: Theme.of(context).colorScheme.onPrimaryContainer,
     fontSize: 16.0,
   );
 
@@ -52,7 +53,8 @@ Widget messageWidget(BuildContext context, String message, bool isSent, {Key? ke
     margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
     decoration: BoxDecoration(
-      color: isSent ? Colors.blue : Colors.grey[300],
+      // color: Theme.of(context).colorScheme.primary,
+      color: Theme.of(context).colorScheme.primaryContainer,
       borderRadius: BorderRadius.circular(20.0),
     ),
     child: Text(
