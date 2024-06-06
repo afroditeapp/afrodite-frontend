@@ -191,7 +191,7 @@ class LoginRepository extends DataRepository {
 
   /// Logout back to login or demo account screen
   Future<void> logout() async {
-    log.info("logout started");
+    log.info("Logout started");
     // Disconnect, so that server does not send events to client
     await _api.close();
 
@@ -208,14 +208,14 @@ class LoginRepository extends DataRepository {
     await MediaRepository.getInstance().onLogout();
     await ChatRepository.getInstance().onLogout();
 
-    await google.signOut();
+    try {
+      // TODO(prod): There is also google.disconnect(). Should that used instead?
+      await google.signOut();
+    } catch (e) { // No documentation, just catch everything
+      log.error("Sign in with Google error: sign out failed");
+    }
 
-    log.info("logout completed");
-  }
-
-  Future<void> signOutFromGoogle() async {
-    final signedIn = await google.disconnect();
-    log.fine("$signedIn, ${signedIn?.email}");
+    log.info("Logout completed");
   }
 
   Future<void> signInWithApple() async {

@@ -16,15 +16,8 @@ sealed class SignInWithEvent {}
 class SignInWithGoogle extends SignInWithEvent {
   SignInWithGoogle();
 }
-class LogOutFromGoogle extends SignInWithEvent {
-  LogOutFromGoogle();
-}
-
 class SignInWithAppleEvent extends SignInWithEvent {
   SignInWithAppleEvent();
-}
-class SignOutFromAppleEvent extends SignInWithEvent {
-  SignOutFromAppleEvent();
 }
 
 class SignInWithBloc extends Bloc<SignInWithEvent, String> with ActionRunner {
@@ -47,18 +40,9 @@ class SignInWithBloc extends Bloc<SignInWithEvent, String> with ActionRunner {
         }
       });
     });
-    on<LogOutFromGoogle>((data, emit) async {
-      await runOnce(() async => await login.signOutFromGoogle());
-    });
-
     // Sign in with Apple requires iOS 13.
     on<SignInWithAppleEvent>((data, emit) async {
       await runOnce(() async => await login.signInWithApple());
-    });
-
-    // TODO: or is not possible to support?
-    on<SignOutFromAppleEvent>((data, emit) async {
-      // TODO
     });
   }
 }
