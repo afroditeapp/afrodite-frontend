@@ -149,10 +149,6 @@ class ServerConnection {
   Stream<ServerConnectionState> get state => _state;
   Stream<ServerWsEvent> get serverEvents => _events;
 
-  final PublishSubject<void> _triggerTestConnection =
-    PublishSubject();
-  StreamSubscription<void>? _triggerTestConnectionSubscription;
-
   ServerConnection(this._server, this._address);
 
   /// Starts new connection if it does not already exists.
@@ -164,21 +160,6 @@ class ServerConnection {
     _state.add(Connecting());
     _protocolState = ConnectionProtocolState.receiveNewRefreshToken;
     unawaited(_connect().then((value) => null)); // Connect in background.
-
-    _triggerTestConnectionSubscription ??= _triggerTestConnection.asyncMap((e) async {
-        final c = _connection;
-        if (c == null) {
-          return;
-        }
-        c.sink.add(Uint8List(0));
-      })
-      .listen(
-        null,
-        onError: (Object error) {
-          log.error("Test connection exception: $error");
-          _endConnectionToGeneralError();
-        },
-      );
   }
 
   Future<void> _connect() async {
@@ -337,10 +318,6 @@ class ServerConnection {
 
   bool inUse() {
     return !(_state.value is ReadyToConnect || _state.value is Error);
-  }
-
-  void pingConnection() {
-    _triggerTestConnection.add(null);
   }
 }
 

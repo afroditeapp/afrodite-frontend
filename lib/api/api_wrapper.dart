@@ -34,7 +34,7 @@ class ApiWrapper<T> {
         return Ok(value);
       }
     } on ApiException catch (e) {
-      await pingCurrentConnectionIfNeeded(e);
+      await restartConnectionIfNeeded(e);
       final err = ValueApiException(e);
       if (logError) {
         err.logError(log);
@@ -48,7 +48,7 @@ class ApiWrapper<T> {
     try {
       return Ok(await action(api));
     } on ApiException catch (e) {
-      await pingCurrentConnectionIfNeeded(e);
+      await restartConnectionIfNeeded(e);
       final err = ActionApiError(e);
       if (logError) {
         err.logError(log);
@@ -57,7 +57,7 @@ class ApiWrapper<T> {
     }
   }
 
-  Future<void> pingCurrentConnectionIfNeeded(ApiException e) async {
+  Future<void> restartConnectionIfNeeded(ApiException e) async {
     if (
       // HTTP 401 Unauthorized
       e.code == 401 ||
@@ -65,10 +65,14 @@ class ApiWrapper<T> {
       (e.code == 400 && e.innerException != null)
     ) {
       final currentState = await ApiManager.getInstance().state.firstOrNull;
-      if (currentState == ApiManagerState.connected) {
+      if (!_connectionRestartInProgress && currentState == ApiManagerState.connected) {
+        _connectionRestartInProgress = true;
         log.warning("Current connection might be broken");
-        ApiManager.getInstance().pingCurrentConnection();
+        await ApiManager.getInstance().restart();
+        _connectionRestartInProgress = false;
       }
     }
   }
 }
+
+bool _connectionRestartInProgress = false;
