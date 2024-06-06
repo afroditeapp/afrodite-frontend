@@ -16,8 +16,7 @@ sealed class ProfileIteratorMode {}
 class ModeFavorites extends ProfileIteratorMode {}
 class ModePublicProfiles extends ProfileIteratorMode {
   final bool clearDatabase;
-  final bool waitConnection;
-  ModePublicProfiles({required this.clearDatabase, this.waitConnection = false});
+  ModePublicProfiles({required this.clearDatabase});
 }
 
 class ProfileIteratorManager {
@@ -40,13 +39,10 @@ class ProfileIteratorManager {
 
           _currentIterator = OnlineIterator(
             resetServerIterator: true,
-            waitConnectionOnce: mode.waitConnection,
           );
         } else {
           if (_currentMode is ModeFavorites) {
-            _currentIterator = OnlineIterator(
-              waitConnectionOnce: mode.waitConnection,
-            );
+            _currentIterator = OnlineIterator();
           } else {
             _currentIterator.reset();
           }

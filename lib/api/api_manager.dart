@@ -7,9 +7,9 @@ import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/api/api_wrapper.dart';
 import 'package:pihka_frontend/api/server_connection.dart';
 import 'package:pihka_frontend/config.dart';
+import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
-import 'package:pihka_frontend/storage/kv.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/app_error.dart';
@@ -467,6 +467,39 @@ class ApiManager extends AppSingleton {
         .firstWhere((element) => element == ApiManagerState.connected)
         .then((value) => true),
     ]);
+  }
+
+  /// Wait untill current login session connects to server.
+  ///
+  /// If notification session ID changes then error is returned.
+  Future<Result<void, void>> waitUntilCurrentSessionConnects() async {
+    final initialNotificationSessionId = await NotificationManager.getInstance().getSessionId();
+
+    await state
+        .firstWhere((element) => element == ApiManagerState.connected);
+
+    final notificationSessionIdChanged = await Future.any([
+      NotificationManager.getInstance().getSessionIdStream()
+        .firstWhere((element) => element.id != initialNotificationSessionId.id)
+        .then((value) => true),
+      state
+        .firstWhere((element) => element == ApiManagerState.connected)
+        .then((value) => false),
+    ]);
+
+    if (notificationSessionIdChanged) {
+      log.error("Notification session ID changed when waiting connected state");
+      return const Err(null);
+    }
+
+    final currentNotificationSessionId = await NotificationManager.getInstance().getSessionId();
+
+    if (initialNotificationSessionId.id == currentNotificationSessionId.id) {
+      return const Ok(null);
+    } else {
+      log.error("Notification session ID changed");
+      return const Err(null);
+    }
   }
 }
 

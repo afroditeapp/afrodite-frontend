@@ -46,15 +46,11 @@ class ProfileRepository extends DataRepository {
 
   @override
   Future<void> init() async {
-    // Reset profile iterator
-    await resetMainProfileIterator(waitConnection: true);
+    // empty
   }
 
   @override
   Future<void> onLogin() async {
-    // Reset profile iterator
-    await resetMainProfileIterator();
-
     // TODO(prod): reset sync versions to "force sync"
 
     syncHandler.onLoginSync(() async {
@@ -297,11 +293,10 @@ class ProfileRepository extends DataRepository {
       .empty();
   }
 
-  Future<void> resetMainProfileIterator({bool waitConnection = false}) async {
+  Future<void> resetMainProfileIterator() async {
     final showOnlyFavorites = await getFilterFavoriteProfilesValue();
     sendProfileChange(ReloadMainProfileView(
       showOnlyFavorites: showOnlyFavorites,
-      waitConnection: waitConnection,
     ));
   }
 
@@ -375,8 +370,7 @@ class ProfileFavoriteStatusChange extends ProfileChange {
 }
 class ReloadMainProfileView extends ProfileChange {
   final bool showOnlyFavorites;
-  final bool waitConnection;
-  ReloadMainProfileView({required this.showOnlyFavorites, required this.waitConnection});
+  ReloadMainProfileView({required this.showOnlyFavorites});
 }
 
 enum ConversationChangeType {

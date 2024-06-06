@@ -18,7 +18,6 @@ class OnlineIterator extends IteratorType {
   int currentIndex = 0;
   DatabaseIterator? databaseIterator;
   bool resetServerIterator;
-  bool waitConnectionOnce;
   final ApiManager api = ApiManager.getInstance();
   final DatabaseManager db = DatabaseManager.getInstance();
   final downloader = ProfileEntryDownloader();
@@ -27,7 +26,6 @@ class OnlineIterator extends IteratorType {
   /// server iterator to the beginning.
   OnlineIterator({
     this.resetServerIterator = false,
-    this.waitConnectionOnce = false,
   });
 
   @override
@@ -42,16 +40,13 @@ class OnlineIterator extends IteratorType {
   @override
   Future<Result<List<ProfileEntry>, void>> nextList() async {
     if (resetServerIterator) {
-      if (waitConnectionOnce) {
-        log.info("Waiting connection");
-        if (!await api.tryWaitUntilConnected(waitTimeoutSeconds: 5)) {
-          log.error("Connection waiting timeout");
-          return const Err(null);
-        }
+      if (await api.waitUntilCurrentSessionConnects().isErr()) {
+        log.error("Connection waiting failed");
+        return const Err(null);
       }
-      switch (await ApiManager.getInstance().profileAction((api) => api.postResetProfilePaging())) {
+
+      switch (await api.profileAction((api) => api.postResetProfilePaging())) {
         case Ok():
-          waitConnectionOnce = false;
           resetServerIterator = false;
           await db.profileAction((db) => db.setProfileGridStatusList(null, false, clear: true));
         case Err():
@@ -83,6 +78,10 @@ class OnlineIterator extends IteratorType {
 
     final List<ProfileEntry> list = List.empty(growable: true);
     while (true) {
+      if (await api.waitUntilCurrentSessionConnects().isErr()) {
+        log.error("Connection waiting failed");
+        return const Err(null);
+      }
       switch (await api.profile((api) => api.postGetNextProfilePage())) {
         case Ok(value: final profiles):
           if (profiles.profiles.isEmpty) {

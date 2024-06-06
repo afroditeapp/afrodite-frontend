@@ -112,7 +112,6 @@ class _ProfileGridState extends State<ProfileGrid> {
           } else {
             _mainProfilesViewIterator.reset(ModePublicProfiles(
               clearDatabase: true,
-              waitConnection: event.waitConnection,
             ));
           }
           _pagingController?.refresh();

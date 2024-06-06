@@ -237,6 +237,11 @@ class NotificationManager extends AppSingleton {
     final id = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.watchNotificationSessionId());
     return NotificationSessionId(id: id?.id ?? 0);
   }
+
+  Stream<NotificationSessionId> getSessionIdStream() {
+    return BackgroundDatabaseManager.getInstance().commonStream((db) => db.watchNotificationSessionId())
+      .map((id) => NotificationSessionId(id: id?.id ?? 0));
+  }
 }
 
 // TODO(prod): iOS notifications are not working
