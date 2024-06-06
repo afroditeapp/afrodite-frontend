@@ -124,7 +124,7 @@ class ProfileRepository extends DataRepository {
 
   @override
   Future<void> onLogout() async {
-    await mainProfilesViewIterator.reset(ModePublicProfiles(
+    mainProfilesViewIterator.reset(ModePublicProfiles(
       clearDatabase: true
     ));
     await db.accountAction(
@@ -204,8 +204,8 @@ class ProfileRepository extends DataRepository {
     return false;
   }
 
-  Future<void> refreshProfileIterator() async {
-    await mainProfilesViewIterator.refresh();
+  void refreshProfileIterator() {
+    mainProfilesViewIterator.refresh();
   }
 
   void resetIteratorToBeginning() {
@@ -350,9 +350,9 @@ class ProfileRepository extends DataRepository {
   Future<void> resetMainProfileIterator({bool waitConnection = false}) async {
     final showOnlyFavorites = await getFilterFavoriteProfilesValue();
     if (showOnlyFavorites) {
-      await mainProfilesViewIterator.reset(ModeFavorites());
+      mainProfilesViewIterator.reset(ModeFavorites());
     } else {
-      await mainProfilesViewIterator.reset(ModePublicProfiles(
+      mainProfilesViewIterator.reset(ModePublicProfiles(
         clearDatabase: true,
         waitConnection: waitConnection,
       ));

@@ -149,7 +149,7 @@ class _ProfileGridState extends State<ProfileGrid> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        await refreshProfileGrid();
+        refreshProfileGrid();
       },
       child: BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
         builder: (context, state) {
@@ -287,9 +287,8 @@ class _ProfileGridState extends State<ProfileGrid> {
     );
   }
 
-  // TODO: Make this synchronous.
-  Future<void> refreshProfileGrid() async {
-    await ProfileRepository.getInstance().refreshProfileIterator();
+  void refreshProfileGrid() {
+    ProfileRepository.getInstance().refreshProfileIterator();
     // This might be disposed after resetProfileIterator completes.
     _pagingController?.refresh();
   }

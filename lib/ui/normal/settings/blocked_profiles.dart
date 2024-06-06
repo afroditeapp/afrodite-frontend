@@ -13,7 +13,6 @@ import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/settings/blocked_profiles.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
-import 'package:pihka_frontend/ui_utils/image.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 
@@ -95,7 +94,6 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
   Widget page(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        await ProfileRepository.getInstance().refreshProfileIterator();
         // This might be disposed after resetProfileIterator completes.
         _pagingController?.refresh();
       },

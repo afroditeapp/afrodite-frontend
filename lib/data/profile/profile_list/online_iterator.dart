@@ -25,7 +25,10 @@ class OnlineIterator extends IteratorType {
 
   /// If [resetServerIterator] is true, the iterator will reset the
   /// server iterator to the beginning.
-  OnlineIterator({this.resetServerIterator = false, this.waitConnectionOnce = false});
+  OnlineIterator({
+    this.resetServerIterator = false,
+    this.waitConnectionOnce = false,
+  });
 
   @override
   void reset() {
@@ -50,6 +53,7 @@ class OnlineIterator extends IteratorType {
         case Ok():
           waitConnectionOnce = false;
           resetServerIterator = false;
+          await db.profileAction((db) => db.setProfileGridStatusList(null, false, clear: true));
         case Err():
           log.error("Profile paging reset failed");
           return const Err(null);
