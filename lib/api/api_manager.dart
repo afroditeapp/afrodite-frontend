@@ -250,6 +250,10 @@ class ApiManager extends AppSingleton {
     }
   }
 
+  void pingCurrentConnection() {
+    accountConnection.pingConnection();
+  }
+
   bool inMicroserviceMode() {
     return mediaConnection.inUse();
   }

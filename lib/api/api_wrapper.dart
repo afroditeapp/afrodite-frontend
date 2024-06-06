@@ -2,8 +2,10 @@
 
 
 
+import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
+import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/utils/app_error.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
@@ -32,6 +34,7 @@ class ApiWrapper<T> {
         return Ok(value);
       }
     } on ApiException catch (e) {
+      await handleApiUnauthorizedError(e);
       final err = ValueApiException(e);
       if (logError) {
         err.logError(log);
@@ -45,11 +48,25 @@ class ApiWrapper<T> {
     try {
       return Ok(await action(api));
     } on ApiException catch (e) {
+      await handleApiUnauthorizedError(e);
       final err = ActionApiError(e);
       if (logError) {
         err.logError(log);
       }
       return Err(err);
+    }
+  }
+
+  Future<void> handleApiUnauthorizedError(ApiException e) async {
+    // HTTP 401 Unauthorized
+    if (e.code != 401) {
+      return;
+    }
+
+    final currentState = await ApiManager.getInstance().state.firstOrNull;
+    if (currentState == ApiManagerState.connected) {
+      log.warning("Current connection might be broken");
+      ApiManager.getInstance().pingCurrentConnection();
     }
   }
 }
