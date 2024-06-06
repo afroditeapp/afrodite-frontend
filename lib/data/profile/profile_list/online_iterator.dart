@@ -9,6 +9,7 @@ import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart'
 import 'package:database/database.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 final log = Logger("OnlineIterator");
@@ -36,27 +37,39 @@ class OnlineIterator extends IteratorType {
   }
 
   @override
-  Future<List<ProfileEntry>> nextList() async {
+  Future<Result<List<ProfileEntry>, void>> nextList() async {
     if (resetServerIterator) {
       if (waitConnectionOnce) {
+        log.info("Waiting connection");
         if (!await api.tryWaitUntilConnected(waitTimeoutSeconds: 5)) {
-          log.warning("Connection waiting timeout");
+          log.error("Connection waiting timeout");
+          return const Err(null);
         }
       }
-      await ApiManager.getInstance().profileAction((api) => api.postResetProfilePaging());
-      waitConnectionOnce = false;
-      resetServerIterator = false;
+      switch (await ApiManager.getInstance().profileAction((api) => api.postResetProfilePaging())) {
+        case Ok():
+          waitConnectionOnce = false;
+          resetServerIterator = false;
+        case Err():
+          log.error("Profile paging reset failed");
+          return const Err(null);
+      }
     }
 
     // Handle case where iterator has been reseted in the middle
     // of online iteration. Get the beginning from the database.
     final iterator = databaseIterator;
     if (iterator != null) {
-      final list = await iterator.nextList();
-      if (list.isNotEmpty) {
-        return list;
-      } else {
-        databaseIterator = null;
+      switch (await iterator.nextList()) {
+        case Ok(value: final list):
+          if (list.isNotEmpty) {
+            return Ok(list);
+          } else {
+            databaseIterator = null;
+          }
+        case Err():
+          log.error("Database iterator failed");
+          return const Err(null);
       }
     }
 
@@ -66,29 +79,35 @@ class OnlineIterator extends IteratorType {
 
     final List<ProfileEntry> list = List.empty(growable: true);
     while (true) {
-      final profiles = await api.profile((api) => api.postGetNextProfilePage()).ok();
-      if (profiles != null) {
-        if (profiles.profiles.isEmpty) {
-          return [];
-        }
+      switch (await api.profile((api) => api.postGetNextProfilePage())) {
+        case Ok(value: final profiles):
+          if (profiles.profiles.isEmpty) {
+            return const Ok([]);
+          }
 
-        for (final p in profiles.profiles) {
-          final entry = await downloader.download(p.id).ok();
-          if (entry == null) {
+          // TODO(prod): Add version string for media to ProfileLink
+          //             (server API change)
+
+          for (final p in profiles.profiles) {
+            final entry = await downloader.download(p.id).ok();
+            if (entry == null) {
+              continue;
+            }
+            await db.profileAction((db) => db.setProfileGridStatus(p.id, true));
+            list.add(entry);
+          }
+
+          if (list.isEmpty) {
+            // Handle case where server returned some profiles
+            // but additional info fetching failed, so get next list of profiles.
             continue;
           }
-          await db.profileAction((db) => db.setProfileGridStatus(p.id, true));
-          list.add(entry);
-        }
-
-        if (list.isEmpty) {
-          // Handle case where server returned some profiles
-          // but additional info fetching failed, so get next list of profiles.
-          continue;
-        }
+        case Err():
+          log.error("Profile page fetching failed");
+          return const Err(null);
       }
 
-      return list;
+      return Ok(list);
     }
   }
 }

@@ -212,15 +212,23 @@ class ProfileRepository extends DataRepository {
     mainProfilesViewIterator.resetToBeginning();
   }
 
-  Future<List<ProfileEntry>> nextList() async {
+  Future<Result<List<ProfileEntry>, void>> nextList() async {
     // TODO: cache this somewhere?
     final ownAccountId = await LoginRepository.getInstance().accountId.firstOrNull;
 
     // TODO: Perhaps move to iterator when filters are implemented?
     while (true) {
-      final list = await mainProfilesViewIterator.nextList();
+      final List<ProfileEntry> list;
+      switch (await mainProfilesViewIterator.nextList()) {
+        case Ok(value: final profiles):
+          list = profiles;
+          break;
+        case Err():
+          return const Err(null);
+      }
+
       if (list.isEmpty) {
-        return [];
+        return const Ok([]);
       }
       final toBeRemoved = <ProfileEntry>[];
       for (final p in list) {
@@ -235,7 +243,7 @@ class ProfileRepository extends DataRepository {
       if (list.isEmpty) {
         continue;
       }
-      return list;
+      return Ok(list);
     }
   }
 

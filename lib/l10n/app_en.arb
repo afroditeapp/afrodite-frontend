@@ -788,6 +788,10 @@
   "@profile_grid_screen_title": {
     "description": "Title for profile grid screen"
   },
+  "profile_gridg_screen_profile_loading_failed": "Profile loading failed",
+  "@profile_gridg_screen_profile_loading_failed": {
+    "description": "Text displayed profile loading fails"
+  },
   "profile_location_screen_title": "My profile's location",
   "@profile_location_screen_title": {
     "description": "Title for profile location screen"

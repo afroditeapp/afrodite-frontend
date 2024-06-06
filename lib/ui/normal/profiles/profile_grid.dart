@@ -19,6 +19,7 @@ import 'package:pihka_frontend/ui_utils/consts/corners.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
+import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("ProfileGrid");
 
@@ -119,7 +120,12 @@ class _ProfileGridState extends State<ProfileGrid> {
       ProfileRepository.getInstance().resetIteratorToBeginning();
     }
 
-    final profileList = await ProfileRepository.getInstance().nextList();
+    final profileList = await ProfileRepository.getInstance().nextList().ok();
+    if (profileList == null) {
+      // Show error UI
+      _pagingController?.error = true;
+      return;
+    }
 
     // Get images here instead of FutureBuilder because there was some weird
     // Hero tag error even if the builder index is in the tag.
@@ -143,9 +149,7 @@ class _ProfileGridState extends State<ProfileGrid> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        await ProfileRepository.getInstance().refreshProfileIterator();
-        // This might be disposed after resetProfileIterator completes.
-        _pagingController?.refresh();
+        await refreshProfileGrid();
       },
       child: BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
         builder: (context, state) {
@@ -244,6 +248,17 @@ class _ProfileGridState extends State<ProfileGrid> {
         firstPageProgressIndicatorBuilder: (context) {
           return Center(child: CircularProgressIndicator(key: _progressKey));
         },
+        firstPageErrorIndicatorBuilder: (context) {
+          return errorDetectedWidgetWithRetryButton();
+        },
+        newPageErrorIndicatorBuilder: (context) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(context.strings.profile_gridg_screen_profile_loading_failed),
+            ),
+          );
+        },
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -251,6 +266,32 @@ class _ProfileGridState extends State<ProfileGrid> {
         mainAxisSpacing: 8,
       ),
     );
+  }
+
+  Widget errorDetectedWidgetWithRetryButton() {
+    return Center(
+      child: Column(
+        children: [
+          const Spacer(),
+          Text(context.strings.profile_gridg_screen_profile_loading_failed),
+          const Padding(padding: EdgeInsets.all(8)),
+          ElevatedButton(
+            onPressed: () {
+              refreshProfileGrid();
+            },
+            child: Text(context.strings.generic_try_again),
+          ),
+          const Spacer(flex: 3),
+        ],
+      ),
+    );
+  }
+
+  // TODO: Make this synchronous.
+  Future<void> refreshProfileGrid() async {
+    await ProfileRepository.getInstance().refreshProfileIterator();
+    // This might be disposed after resetProfileIterator completes.
+    _pagingController?.refresh();
   }
 
   @override

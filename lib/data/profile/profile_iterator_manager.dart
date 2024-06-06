@@ -6,6 +6,7 @@ import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart'
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/utils/result.dart';
 
 sealed class ProfileIteratorMode {}
 class ModeFavorites extends ProfileIteratorMode {}
@@ -64,18 +65,27 @@ class ProfileIteratorManager {
     }
   }
 
-  Future<List<ProfileEntry>> nextList() async {
+  Future<Result<List<ProfileEntry>, void>> nextList() async {
     switch (_currentMode) {
       case ModeFavorites(): {
         return await _currentIterator.nextList();
       }
       case ModePublicProfiles(): {
-        final nextList = await _currentIterator.nextList();
+        final List<ProfileEntry> nextList;
+        switch (await _currentIterator.nextList()) {
+          case Ok(:final value): {
+            nextList = value;
+            break;
+          }
+          case Err(): {
+            return const Err(null);
+          }
+        }
 
         if (nextList.isEmpty && _currentIterator is OnlineIterator) {
           _currentIterator = DatabaseIterator();
         }
-        return nextList;
+        return Ok(nextList);
       }
     }
   }

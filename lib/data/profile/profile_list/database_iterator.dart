@@ -16,7 +16,7 @@ class DatabaseIterator extends IteratorType {
   }
 
   @override
-  Future<List<ProfileEntry>> nextList() async {
+  Future<Result<List<ProfileEntry>, void>> nextList() async {
     if (iterateFavorites) {
       return await nextListFromFavorites();
     } else {
@@ -24,25 +24,25 @@ class DatabaseIterator extends IteratorType {
     }
   }
 
-  Future<List<ProfileEntry>> nextListFromPublicProfiles() async {
+  Future<Result<List<ProfileEntry>, void>> nextListFromPublicProfiles() async {
     const queryCount = 10;
     final profiles = await DatabaseManager.getInstance().profileData((db) => db.getProfileGridList(currentIndex, queryCount)).ok();
     if (profiles != null) {
       currentIndex += queryCount;
-      return await DatabaseManager.getInstance().profileData((db) => db.convertToProfileEntries(profiles)).ok() ?? [];
+      return Ok(await DatabaseManager.getInstance().profileData((db) => db.convertToProfileEntries(profiles)).ok() ?? []);
     } else {
-      return [];
+      return const Ok([]);
     }
   }
 
-  Future<List<ProfileEntry>> nextListFromFavorites() async {
+  Future<Result<List<ProfileEntry>, void>> nextListFromFavorites() async {
     const queryCount = 10;
     final profiles = await DatabaseManager.getInstance().profileData((db) => db.getFavoritesList(currentIndex, queryCount)).ok();
     if (profiles != null) {
       currentIndex += queryCount;
-      return await DatabaseManager.getInstance().profileData((db) => db.convertToProfileEntries(profiles)).ok() ?? [];
+      return Ok(await DatabaseManager.getInstance().profileData((db) => db.convertToProfileEntries(profiles)).ok() ?? []);
     } else {
-      return [];
+      return const Ok([]);
     }
   }
 }
