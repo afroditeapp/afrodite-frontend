@@ -55,6 +55,10 @@ class _ProfileGridState extends State<ProfileGrid> {
 
     if (widget.filteringSettingsBloc.state.showOnlyFavorites) {
       _mainProfilesViewIterator.reset(ModeFavorites());
+    } else {
+      _mainProfilesViewIterator.reset(ModePublicProfiles(
+        clearDatabase: true,
+      ));
     }
 
     _heroUniqueIdCounter = 0;
