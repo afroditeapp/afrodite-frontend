@@ -46,14 +46,15 @@ class _ProfileGridState extends State<ProfileGrid> {
   // filter settings progress and grid progress is smooth.
   final GlobalKey _progressKey = GlobalKey();
 
-  final ProfileIteratorManager mainProfilesViewIterator = ProfileIteratorManager();
+  final ProfileIteratorManager _mainProfilesViewIterator = ProfileIteratorManager();
+  bool _reloadInProgress = false;
 
   @override
   void initState() {
     super.initState();
 
     if (widget.filteringSettingsBloc.state.showOnlyFavorites) {
-      mainProfilesViewIterator.reset(ModeFavorites());
+      _mainProfilesViewIterator.reset(ModeFavorites());
     }
 
     _heroUniqueIdCounter = 0;
@@ -107,9 +108,9 @@ class _ProfileGridState extends State<ProfileGrid> {
       case ReloadMainProfileView():
         setState(() {
           if (event.showOnlyFavorites) {
-            mainProfilesViewIterator.reset(ModeFavorites());
+            _mainProfilesViewIterator.reset(ModeFavorites());
           } else {
-            mainProfilesViewIterator.reset(ModePublicProfiles(
+            _mainProfilesViewIterator.reset(ModePublicProfiles(
               clearDatabase: true,
               waitConnection: event.waitConnection,
             ));
@@ -134,10 +135,10 @@ class _ProfileGridState extends State<ProfileGrid> {
 
   Future<void> _fetchPage(int pageKey) async {
     if (pageKey == 0) {
-      mainProfilesViewIterator.resetToBeginning();
+      _mainProfilesViewIterator.resetToBeginning();
     }
 
-    final profileList = await mainProfilesViewIterator.nextList().ok();
+    final profileList = await _mainProfilesViewIterator.nextList().ok();
     if (profileList == null) {
       // Show error UI
       _pagingController?.error = true;
@@ -166,7 +167,9 @@ class _ProfileGridState extends State<ProfileGrid> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        refreshProfileGrid();
+        if (!_reloadInProgress) {
+          await refreshProfileGrid();
+        }
       },
       child: BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
         builder: (context, state) {
@@ -294,7 +297,9 @@ class _ProfileGridState extends State<ProfileGrid> {
           const Padding(padding: EdgeInsets.all(8)),
           ElevatedButton(
             onPressed: () {
-              refreshProfileGrid();
+              if (!_reloadInProgress) {
+                refreshProfileGrid();
+              }
             },
             child: Text(context.strings.generic_try_again),
           ),
@@ -304,10 +309,13 @@ class _ProfileGridState extends State<ProfileGrid> {
     );
   }
 
-  void refreshProfileGrid() {
-    mainProfilesViewIterator.refresh();
+  Future<void> refreshProfileGrid() async {
+    _reloadInProgress = true;
+    await _mainProfilesViewIterator.loadingInProgress.firstWhere((e) => e == false);
+    _mainProfilesViewIterator.refresh();
     // This might be disposed after resetProfileIterator completes.
     _pagingController?.refresh();
+    _reloadInProgress = false;
   }
 
   @override
@@ -321,6 +329,3 @@ class _ProfileGridState extends State<ProfileGrid> {
     super.dispose();
   }
 }
-
-// TODO(prod): Show some error message if getting profiles fails because of
-// some error.

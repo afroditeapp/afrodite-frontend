@@ -10,6 +10,7 @@ import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils/result.dart';
+import 'package:rxdart/rxdart.dart';
 
 sealed class ProfileIteratorMode {}
 class ModeFavorites extends ProfileIteratorMode {}
@@ -26,6 +27,8 @@ class ProfileIteratorManager {
   ProfileIteratorMode _currentMode =
     ModePublicProfiles(clearDatabase: false);
   IteratorType _currentIterator = DatabaseIterator();
+
+  BehaviorSubject<bool> loadingInProgress = BehaviorSubject.seeded(false);
 
   void reset(ProfileIteratorMode mode) async {
     switch (mode) {
@@ -93,7 +96,7 @@ class ProfileIteratorManager {
     }
   }
 
-  Future<Result<List<ProfileEntry>, void>> nextList() async {
+  Future<Result<List<ProfileEntry>, void>> _nextListImpl() async {
     // TODO: cache this somewhere?
     final ownAccountId = await LoginRepository.getInstance().accountId.firstOrNull;
 
@@ -126,5 +129,14 @@ class ProfileIteratorManager {
       }
       return Ok(list);
     }
+  }
+
+  Future<Result<List<ProfileEntry>, void>> nextList() async {
+    await loadingInProgress.firstWhere((e) => e == false);
+
+    loadingInProgress.add(true);
+    final result = await _nextListImpl();
+    loadingInProgress.add(false);
+    return result;
   }
 }
