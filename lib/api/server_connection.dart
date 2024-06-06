@@ -79,15 +79,53 @@ enum ServerConnectionError {
 
 sealed class ServerConnectionState {}
 /// No connection. Initial and after closing state.
-class ReadyToConnect implements ServerConnectionState {}
+class ReadyToConnect implements ServerConnectionState {
+  @override
+  bool operator ==(Object other) {
+    return other is ReadyToConnect;
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
 /// Connection exists. Connecting to server or getting new tokens.
-class Connecting implements ServerConnectionState {}
+class Connecting implements ServerConnectionState {
+  @override
+  bool operator ==(Object other) {
+    return other is Connecting;
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
 /// Connection exists. New tokens received and event listening started.
-class Ready implements ServerConnectionState {}
+class Ready implements ServerConnectionState {
+  @override
+  bool operator ==(Object other) {
+    return other is Ready;
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
 /// No connection. Connection ended in error.
 class Error implements ServerConnectionState {
   final ServerConnectionError error;
   Error(this.error);
+
+  @override
+  String toString() {
+    return "Error: $error";
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return (other is Error && error == other.error);
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, error);
 }
 
 enum ConnectionProtocolState {
@@ -120,9 +158,12 @@ class ServerConnection {
   /// Starts new connection if it does not already exists.
   Future<void> start() async {
     await close();
+    await _state.firstWhere((v) => _state.value is ReadyToConnect || _state.value is Error);
+    // Connection is now closed
+
     _state.add(Connecting());
     _protocolState = ConnectionProtocolState.receiveNewRefreshToken;
-    unawaited(_connect().then((value) => null)); // Connect in backgorund.
+    unawaited(_connect().then((value) => null)); // Connect in background.
 
     _triggerTestConnectionSubscription ??= _triggerTestConnection.asyncMap((e) async {
         final c = _connection;
@@ -141,6 +182,8 @@ class ServerConnection {
   }
 
   Future<void> _connect() async {
+    log.info("Starting to connect");
+
     final storage = DatabaseManager.getInstance();
 
     final accessToken = await storage.accountStreamSingle(_server.getterForAccessTokenKey()).ok();
@@ -219,6 +262,7 @@ class ServerConnection {
               await storage.accountAction(_server.setterForAccessTokenKey(message));
               ws.sink.add(await syncDataBytes());
               _protocolState = ConnectionProtocolState.receiveEvents;
+              log.info("Connection ready");
               _state.add(Ready());
             } else {
               await _endConnectionToGeneralError();
@@ -248,8 +292,10 @@ class ServerConnection {
 
           if (ws.closeCode != null &&
             ws.closeCode == status.internalServerError) {
+            log.error("Invalid token");
             _state.add(Error(ServerConnectionError.invalidToken));
           } else {
+            log.error("Connection closed");
             _state.add(Error(ServerConnectionError.connectionFailure));
           }
           _connection = null;
@@ -264,8 +310,10 @@ class ServerConnection {
     // feels safer.
     final c = _connection;
     _connection = null;
-    await c?.sink.close(status.goingAway);
-    _state.add(Error(error));
+    if (c != null)  {
+      await c.sink.close(status.goingAway);
+      _state.add(Error(error));
+    }
   }
 
   Future<void> close({bool logoutClose = false}) async {
@@ -275,6 +323,7 @@ class ServerConnection {
     final c = _connection;
     _connection = null;
     await c?.sink.close(status.goingAway);
+    // Run this even if null to make sure that state is overriden
     if (logoutClose) {
       _state.add(Error(ServerConnectionError.invalidToken));
     } else {

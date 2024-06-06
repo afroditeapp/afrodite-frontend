@@ -128,7 +128,7 @@ class ApiManager extends AppSingleton {
   }
 
   Future<void> _listenAccountConnectionEvents() async {
-    await for (final event in accountConnection.state) {
+    await for (final event in accountConnection.state.distinct()) {
       log.info(event);
       switch (event) {
         // No connection states.
