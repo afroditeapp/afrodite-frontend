@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
+import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/localizations.dart';
@@ -33,6 +34,7 @@ class ProfileGrid extends StatefulWidget {
 
 typedef ProfileViewEntry = ({ProfileEntry profile, ProfileHeroTag heroTag});
 
+
 class _ProfileGridState extends State<ProfileGrid> {
   final ScrollController _scrollController = ScrollController();
   PagingController<int, ProfileViewEntry>? _pagingController =
@@ -44,9 +46,16 @@ class _ProfileGridState extends State<ProfileGrid> {
   // filter settings progress and grid progress is smooth.
   final GlobalKey _progressKey = GlobalKey();
 
+  final ProfileIteratorManager mainProfilesViewIterator = ProfileIteratorManager();
+
   @override
   void initState() {
     super.initState();
+
+    if (widget.filteringSettingsBloc.state.showOnlyFavorites) {
+      mainProfilesViewIterator.reset(ModeFavorites());
+    }
+
     _heroUniqueIdCounter = 0;
     _pagingController?.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
@@ -97,6 +106,14 @@ class _ProfileGridState extends State<ProfileGrid> {
       }
       case ReloadMainProfileView():
         setState(() {
+          if (event.showOnlyFavorites) {
+            mainProfilesViewIterator.reset(ModeFavorites());
+          } else {
+            mainProfilesViewIterator.reset(ModePublicProfiles(
+              clearDatabase: true,
+              waitConnection: event.waitConnection,
+            ));
+          }
           _pagingController?.refresh();
         });
       case ProfileUnblocked() ||
@@ -117,10 +134,10 @@ class _ProfileGridState extends State<ProfileGrid> {
 
   Future<void> _fetchPage(int pageKey) async {
     if (pageKey == 0) {
-      ProfileRepository.getInstance().resetIteratorToBeginning();
+      mainProfilesViewIterator.resetToBeginning();
     }
 
-    final profileList = await ProfileRepository.getInstance().nextList().ok();
+    final profileList = await mainProfilesViewIterator.nextList().ok();
     if (profileList == null) {
       // Show error UI
       _pagingController?.error = true;
@@ -288,7 +305,7 @@ class _ProfileGridState extends State<ProfileGrid> {
   }
 
   void refreshProfileGrid() {
-    ProfileRepository.getInstance().refreshProfileIterator();
+    mainProfilesViewIterator.refresh();
     // This might be disposed after resetProfileIterator completes.
     _pagingController?.refresh();
   }

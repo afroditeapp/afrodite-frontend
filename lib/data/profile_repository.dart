@@ -4,10 +4,7 @@ import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/api/api_wrapper.dart';
-import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
-import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:database/database.dart';
@@ -29,7 +26,6 @@ class ProfileRepository extends DataRepository {
 
   final DatabaseManager db = DatabaseManager.getInstance();
   final ApiManager _api = ApiManager.getInstance();
-  final ProfileIteratorManager mainProfilesViewIterator = ProfileIteratorManager();
 
   final PublishSubject<ProfileChange> _profileChangesRelay = PublishSubject();
   void sendProfileChange(ProfileChange change) {
@@ -124,9 +120,6 @@ class ProfileRepository extends DataRepository {
 
   @override
   Future<void> onLogout() async {
-    mainProfilesViewIterator.reset(ModePublicProfiles(
-      clearDatabase: true
-    ));
     await db.accountAction(
       (db) => db.updateProfileFilterFavorites(false),
     );
@@ -202,49 +195,6 @@ class ProfileRepository extends DataRepository {
     }
 
     return false;
-  }
-
-  void refreshProfileIterator() {
-    mainProfilesViewIterator.refresh();
-  }
-
-  void resetIteratorToBeginning() {
-    mainProfilesViewIterator.resetToBeginning();
-  }
-
-  Future<Result<List<ProfileEntry>, void>> nextList() async {
-    // TODO: cache this somewhere?
-    final ownAccountId = await LoginRepository.getInstance().accountId.firstOrNull;
-
-    // TODO: Perhaps move to iterator when filters are implemented?
-    while (true) {
-      final List<ProfileEntry> list;
-      switch (await mainProfilesViewIterator.nextList()) {
-        case Ok(value: final profiles):
-          list = profiles;
-          break;
-        case Err():
-          return const Err(null);
-      }
-
-      if (list.isEmpty) {
-        return const Ok([]);
-      }
-      final toBeRemoved = <ProfileEntry>[];
-      for (final p in list) {
-        final isBlocked = await ChatRepository.getInstance().isInReceivedBlocks(p.uuid) ||
-          await ChatRepository.getInstance().isInSentBlocks(p.uuid);
-
-        if (isBlocked || p.uuid == ownAccountId) {
-          toBeRemoved.add(p);
-        }
-      }
-      list.removeWhere((element) => toBeRemoved.contains(element));
-      if (list.isEmpty) {
-        continue;
-      }
-      return Ok(list);
-    }
   }
 
   Future<bool> isInFavorites(AccountId accountId) async {
@@ -349,15 +299,10 @@ class ProfileRepository extends DataRepository {
 
   Future<void> resetMainProfileIterator({bool waitConnection = false}) async {
     final showOnlyFavorites = await getFilterFavoriteProfilesValue();
-    if (showOnlyFavorites) {
-      mainProfilesViewIterator.reset(ModeFavorites());
-    } else {
-      mainProfilesViewIterator.reset(ModePublicProfiles(
-        clearDatabase: true,
-        waitConnection: waitConnection,
-      ));
-    }
-    sendProfileChange(ReloadMainProfileView());
+    sendProfileChange(ReloadMainProfileView(
+      showOnlyFavorites: showOnlyFavorites,
+      waitConnection: waitConnection,
+    ));
   }
 
   // Search settings
@@ -428,7 +373,11 @@ class ProfileFavoriteStatusChange extends ProfileChange {
   final bool isFavorite;
   ProfileFavoriteStatusChange(this.profile, this.isFavorite);
 }
-class ReloadMainProfileView extends ProfileChange {}
+class ReloadMainProfileView extends ProfileChange {
+  final bool showOnlyFavorites;
+  final bool waitConnection;
+  ReloadMainProfileView({required this.showOnlyFavorites, required this.waitConnection});
+}
 
 enum ConversationChangeType {
   messageSent,

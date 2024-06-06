@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:async/async.dart' show StreamExtensions;
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/chat_repository.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
@@ -65,7 +68,7 @@ class ProfileIteratorManager {
     }
   }
 
-  Future<Result<List<ProfileEntry>, void>> nextList() async {
+  Future<Result<List<ProfileEntry>, void>> _nextListRaw() async {
     switch (_currentMode) {
       case ModeFavorites(): {
         return await _currentIterator.nextList();
@@ -87,6 +90,41 @@ class ProfileIteratorManager {
         }
         return Ok(nextList);
       }
+    }
+  }
+
+  Future<Result<List<ProfileEntry>, void>> nextList() async {
+    // TODO: cache this somewhere?
+    final ownAccountId = await LoginRepository.getInstance().accountId.firstOrNull;
+
+    // TODO: Perhaps move to iterator when filters are implemented?
+    while (true) {
+      final List<ProfileEntry> list;
+      switch (await _nextListRaw()) {
+        case Ok(value: final profiles):
+          list = profiles;
+          break;
+        case Err():
+          return const Err(null);
+      }
+
+      if (list.isEmpty) {
+        return const Ok([]);
+      }
+      final toBeRemoved = <ProfileEntry>[];
+      for (final p in list) {
+        final isBlocked = await ChatRepository.getInstance().isInReceivedBlocks(p.uuid) ||
+          await ChatRepository.getInstance().isInSentBlocks(p.uuid);
+
+        if (isBlocked || p.uuid == ownAccountId) {
+          toBeRemoved.add(p);
+        }
+      }
+      list.removeWhere((element) => toBeRemoved.contains(element));
+      if (list.isEmpty) {
+        continue;
+      }
+      return Ok(list);
     }
   }
 }
