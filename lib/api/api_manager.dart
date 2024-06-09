@@ -29,6 +29,8 @@ enum ApiManagerState {
   waitingRefreshToken,
   /// Reconnecting will happen in few seconds.
   reconnectWaitTime,
+  /// No connection to server.
+  noConnection,
   /// Making connections to servers.
   connecting,
   /// Connection to servers established.
@@ -133,7 +135,7 @@ class ApiManager extends AppSingleton {
       switch (event) {
         // No connection states.
         case ReadyToConnect():
-          _state.add(ApiManagerState.connecting); // TODO: try again at some point
+          _state.add(ApiManagerState.noConnection);
         case Error e: {
           switch (e.error) {
             case ServerConnectionError.connectionFailure: {
@@ -231,11 +233,18 @@ class ApiManager extends AppSingleton {
 
   Future<void> close() async {
     _reconnectInProgress = false;
+    await accountConnection.close();
+    _state.add(ApiManagerState.noConnection);
+  }
+
+  Future<void> closeAndLogout() async {
+    _reconnectInProgress = false;
     await accountConnection.close(logoutClose: true);
     _state.add(ApiManagerState.waitingRefreshToken);
   }
 
-  Future<void> closeAndRefreshServerAddress() async {
+  Future<void> closeAndRefreshServerAddressAndLogout() async {
+    _reconnectInProgress = false;
     await accountConnection.close(logoutClose: true);
     await _loadAddressesFromConfig();
     _state.add(ApiManagerState.waitingRefreshToken);

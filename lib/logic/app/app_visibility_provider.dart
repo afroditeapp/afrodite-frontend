@@ -2,6 +2,7 @@
 
 
 import 'package:pihka_frontend/utils.dart';
+import 'package:rxdart/rxdart.dart';
 
 class AppVisibilityProvider extends AppSingletonNoInit {
   static final _instance = AppVisibilityProvider._();
@@ -10,11 +11,13 @@ class AppVisibilityProvider extends AppSingletonNoInit {
     return _instance;
   }
 
-  bool _isForeground = false;
+  final BehaviorSubject<bool> _isForeground = BehaviorSubject.seeded(false);
 
-  bool get isForeground => _isForeground;
+  bool get isForeground => _isForeground.value;
+
+  Stream<bool> get isForegroundStream => _isForeground;
 
   void setForeground(bool value) {
-    _isForeground = value;
+    _isForeground.add(value);
   }
 }

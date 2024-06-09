@@ -1,7 +1,7 @@
 
 import 'dart:io';
 
-import 'package:flutter/services.dart';
+import 'package:async/async.dart' show StreamExtensions;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -15,6 +15,7 @@ import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/logic/app/app_visibility_provider.dart';
 import 'package:pihka_frontend/secrets.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
@@ -116,7 +117,9 @@ class LoginRepository extends DataRepository {
           } else {
             _loginState.add(LoginState.loginRequired);
           }
-        case ApiManagerState.connecting || ApiManagerState.reconnectWaitTime: {}
+        case ApiManagerState.connecting ||
+          ApiManagerState.reconnectWaitTime ||
+          ApiManagerState.noConnection: {}
         case ApiManagerState.connected:
           _loginState.add(LoginState.viewAccountStateOnceItExists);
         case ApiManagerState.unsupportedClientVersion:
@@ -131,6 +134,38 @@ class LoginRepository extends DataRepository {
         }
       }
     });
+
+    // Automatic connect based on app visibility
+    AppVisibilityProvider.getInstance()
+      .isForegroundStream
+      .asyncMap((isForeground) async {
+        if (!isForeground) {
+          return;
+        }
+        if (await accountId.firstOrNull == null) {
+          // Not logged in
+        }
+        final state = await ApiManager.getInstance().state.firstOrNull;
+        if (state == ApiManagerState.noConnection) {
+          await ApiManager.getInstance().restart();
+        }
+      })
+      .listen(null);
+
+    // Automatic disconnect based on app visibility
+    AppVisibilityProvider.getInstance()
+      .isForegroundStream
+      .debounceTime(const Duration(seconds: 10))
+      .asyncMap((isForeground) async {
+        if (isForeground) {
+          return;
+        }
+        if (await accountId.firstOrNull == null) {
+          // Not logged in
+        }
+        await ApiManager.getInstance().close();
+      })
+      .listen(null);
   }
 
   Future<Result<void, SignInWithGoogleError>> signInWithGoogle() async {
@@ -193,7 +228,7 @@ class LoginRepository extends DataRepository {
   Future<void> logout() async {
     log.info("Logout started");
     // Disconnect, so that server does not send events to client
-    await _api.close();
+    await _api.closeAndLogout();
 
     // Login repository
     await DatabaseManager.getInstance().accountAction((db) => db.daoTokens.updateRefreshTokenAccount(null));
@@ -236,7 +271,7 @@ class LoginRepository extends DataRepository {
     await BackgroundDatabaseManager.getInstance().commonAction(
       (db) => db.updateServerUrlAccount(serverAddress),
     );
-    await _api.closeAndRefreshServerAddress();
+    await _api.closeAndRefreshServerAddressAndLogout();
   }
 
   Future<Result<void, void>> demoAccountLogin(DemoAccountCredentials credentials) async {
