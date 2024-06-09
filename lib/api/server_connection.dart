@@ -17,6 +17,8 @@ import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/assets.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/logic/app/navigator_state.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -138,7 +140,7 @@ class ServerConnection {
   final ServerSlot _server;
   String _address;
 
-  IOWebSocketChannel? _connection;
+  WebSocket? _connection;
   ConnectionProtocolState _protocolState = ConnectionProtocolState.receiveNewRefreshToken;
 
   final BehaviorSubject<ServerConnectionState> _state =
@@ -148,6 +150,8 @@ class ServerConnection {
 
   Stream<ServerConnectionState> get state => _state;
   Stream<ServerWsEvent> get serverEvents => _events;
+
+  StreamSubscription<NavigatorStateData>? _navigationSubscription;
 
   ServerConnection(this._server, this._address);
 
@@ -160,6 +164,13 @@ class ServerConnection {
     _state.add(Connecting());
     _protocolState = ConnectionProtocolState.receiveNewRefreshToken;
     unawaited(_connect().then((value) => null)); // Connect in background.
+
+    _navigationSubscription ??= NavigationStateBlocInstance.getInstance().bloc.stream.listen((navigationState) {
+      final ws = _connection;
+      if (ws != null) {
+        updatePingInterval(ws, navigationState);
+      }
+    });
   }
 
   Future<void> _connect() async {
@@ -215,8 +226,9 @@ class ServerConnection {
     }
 
     final webSocket = WebSocket.fromUpgradedSocket(await response.detachSocket(), serverSide: false);
+    _connection = webSocket;
+    updatePingInterval(webSocket, NavigationStateBlocInstance.getInstance().bloc.state);
     final IOWebSocketChannel ws = IOWebSocketChannel(webSocket);
-    _connection = ws;
 
     // Client starts the messaging
     ws.sink.add(clientVersionInfoBytes());
@@ -292,7 +304,7 @@ class ServerConnection {
     final c = _connection;
     _connection = null;
     if (c != null)  {
-      await c.sink.close(status.goingAway);
+      await c.close(status.goingAway);
       _state.add(Error(error));
     }
   }
@@ -303,7 +315,7 @@ class ServerConnection {
     // feels safer.
     final c = _connection;
     _connection = null;
-    await c?.sink.close(status.goingAway);
+    await c?.close(status.goingAway);
     // Run this even if null to make sure that state is overriden
     if (logoutClose) {
       _state.add(Error(ServerConnectionError.invalidToken));
@@ -318,6 +330,17 @@ class ServerConnection {
 
   bool inUse() {
     return !(_state.value is ReadyToConnect || _state.value is Error);
+  }
+
+  void updatePingInterval(WebSocket ws, NavigatorStateData navigatorState) {
+    final visiblePage = navigatorState.pages.lastOrNull;
+    const CONVERSATION_PING_INTERVAL = Duration(seconds: 10);
+    const DEFAULT_PING_INTERVAL = Duration(minutes: 5);
+    if (visiblePage != null && visiblePage.pageInfo is ConversationPageInfo && ws.pingInterval != CONVERSATION_PING_INTERVAL) {
+      ws.pingInterval = CONVERSATION_PING_INTERVAL;
+    } else if (ws.pingInterval != DEFAULT_PING_INTERVAL) {
+      ws.pingInterval = DEFAULT_PING_INTERVAL;
+    }
   }
 }
 
