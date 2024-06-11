@@ -88,19 +88,24 @@ class OnlineIterator extends IteratorType {
             return const Ok([]);
           }
 
-          // TODO(prod): Add version string for media to ProfileLink
-          //             (server API change)
-
           for (final p in profiles.profiles) {
-            // TODO(prod): Check profile and content versions and download
-            // only if current versions are different.
+            var entry = await db.profileData((db) => db.getProfileEntry(p.id)).ok();
+            final currentVersion = entry?.version;
+            final currentContentVersion = entry?.contentVersion;
 
-            final entry = await downloader.download(p.id).ok();
-            if (entry == null) {
+            if (currentVersion == p.version && p.contentVersion != null && currentContentVersion == p.contentVersion) {
+              // No data changes, download can be skipped
+            } else {
+              entry = await downloader.download(p.id).ok();
+            }
+
+            final gridEntry = entry;
+            if (gridEntry == null) {
               continue;
             }
+
             await db.profileAction((db) => db.setProfileGridStatus(p.id, true));
-            list.add(entry);
+            list.add(gridEntry);
           }
 
           if (list.isEmpty) {
@@ -122,74 +127,63 @@ class ProfileEntryDownloader {
   final ApiManager api = ApiManager.getInstance();
   final DatabaseManager db = DatabaseManager.getInstance();
 
-  // TODO(prod): Update to use version checks to avoid unnecessary
-  // data transfers
-
   /// Download profile entry, save to databases and return it.
   Future<Result<ProfileEntry, ProfileDownloadError>> download(AccountId accountId, {bool isMatch = false}) async {
-    final contentInfoResult = await api.media((api) => api.getProfileContentInfo(accountId.accountId, isMatch: isMatch));
-    final ProfileContent contentInfo;
-    final ProfileContentVersion contentVersion;
+    final currentData = await db.profileData((db) => db.getProfileEntry(accountId)).ok();
+    final currentVersion = currentData?.version;
+    final currentContentVersion = currentData?.contentVersion;
+
+    final contentInfoResult = await api.media((api) => api.getProfileContentInfo(accountId.accountId, isMatch: isMatch, version: currentContentVersion?.version));
     switch (contentInfoResult) {
       case Ok(:final v):
-        final info = v.content;
-        final version = v.version;
-        if (info == null || version == null) {
-          log.warning("Profile content data or version is null");
-          return Err(OtherProfileDownloadError());
+        final contentVersion = v.version;
+        if (contentVersion == null) {
+          // Profile private (or account state might not be Normal)
+          return Err(PrivateProfile());
         }
-        contentInfo = info;
-        contentVersion = version;
-      // case Err(:final e):
-        // TODO: Test private profile error once the server supports it.
+        final contentInfo = v.content;
+        if (contentInfo != null) {
+          await db.profileAction((db) => db.updateProfileContent(accountId, contentInfo, contentVersion));
+
+          final primaryContentId = contentInfo.contentId0?.id;
+          if (primaryContentId == null) {
+            log.warning("Profile content info is missing");
+            return Err(OtherProfileDownloadError());
+          }
+
+          final bytes = await ImageCacheData.getInstance().getImage(accountId, primaryContentId, isMatch: isMatch);
+          if (bytes == null) {
+            log.warning("Skipping one profile because image loading failed");
+            return Err(OtherProfileDownloadError());
+          }
+        }
       case Err():
         return Err(OtherProfileDownloadError());
-    }
-
-    final primaryContentId = contentInfo.contentId0?.id;
-    if (primaryContentId == null) {
-      log.warning("Profile content info is missing");
-      return Err(OtherProfileDownloadError());
-    }
-
-    final bytes = await ImageCacheData.getInstance().getImage(accountId, primaryContentId, isMatch: isMatch);
-    if (bytes == null) {
-      log.warning("Skipping one profile because image loading failed");
-      return Err(OtherProfileDownloadError());
     }
 
     // Prevent displaying error when profile is made private while iterating
     final profileDetailsResult = await api
       .profileWrapper()
-      .requestValue(logError: false, (api) => api.getProfile(accountId.accountId, isMatch: isMatch));
+      .requestValue(logError: false, (api) => api.getProfile(accountId.accountId, isMatch: isMatch, version: currentVersion?.version));
 
-    final Profile profileDetails;
-    final ProfileVersion profileVersion;
     switch (profileDetailsResult) {
       case Ok(:final v):
-        final p = v.profile;
-        final versionNullable = v.version;
-        if (p == null || versionNullable == null) {
-          log.warning("Profile data or version is null");
-          return Err(OtherProfileDownloadError());
+        final version = v.version;
+        if (version == null) {
+          // Profile not accessible (or account state might not be Normal)
+          return Err(PrivateProfile());
         }
-        profileDetails = p;
-        profileVersion = versionNullable;
-      case Err(:final e) when e.isInternalServerError():
-        return Err(PrivateProfile());
+
+        final profile = v.profile;
+        if (profile != null) {
+          await BackgroundDatabaseManager.getInstance().profileAction((db) => db.updateProfileData(accountId, profile));
+          await db.profileAction((db) => db.updateProfileData(accountId, profile, version));
+        }
       case Err(:final e):
         e.logError(log);
         return Err(OtherProfileDownloadError());
     }
-    // TODO: Compare cached profile data with the one from the server.
-    //       Update: perhaps another database for profiles? With current
-    //       implementation there is no cached data. Or should
-    //       new profile request be made every time profile is opened and
-    //       use the cache check there?
 
-    await BackgroundDatabaseManager.getInstance().profileAction((db) => db.updateProfileData(accountId, profileDetails));
-    await db.profileAction((db) => db.updateProfileData(accountId, profileDetails, profileVersion));
-    await db.profileAction((db) => db.updateProfileContent(accountId, contentInfo, contentVersion));
     final dataEntry = await db.profileData((db) => db.getProfileEntry(accountId)).ok();
 
     if (dataEntry == null) {
