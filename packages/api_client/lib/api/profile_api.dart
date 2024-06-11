@@ -210,14 +210,20 @@ class ProfileApi {
 
   /// Get account's current profile.
   ///
-  /// Get account's current profile.  Profile can include version UUID which can be used for caching.  # Access Public profile access requires `view_public_profiles` capability. Public and private profile access requires `admin_view_all_profiles` capablility.  # Microservice notes If account feature is set as external service then cached capability information from account service is used for access checks.
+  /// Get account's current profile.  Response includes version UUID which can be used for caching.  # Access  ## Own profile Unrestricted access.  ## Public other profiles Normal account state required.  ## Private other profiles If the profile is a match, then the profile can be accessed if query parameter `is_match` is set to `true`.  If the profile is not a match, then capability `admin_view_all_profiles` is required.  # Microservice notes If account feature is set as external service then cached capability information from account service is used for access checks.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
   /// * [String] accountId (required):
-  Future<Response> getProfileWithHttpInfo(String accountId,) async {
+  ///
+  /// * [String] version:
+  ///   Profile version UUID
+  ///
+  /// * [bool] isMatch:
+  ///   If requested profile is not public, allow getting the profile data if the requested profile is a match.
+  Future<Response> getProfileWithHttpInfo(String accountId, { String? version, bool? isMatch, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile/{account_id}'
       .replaceAll('{account_id}', accountId);
@@ -228,6 +234,13 @@ class ProfileApi {
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
+
+    if (version != null) {
+      queryParams.addAll(_queryParams('', 'version', version));
+    }
+    if (isMatch != null) {
+      queryParams.addAll(_queryParams('', 'is_match', isMatch));
+    }
 
     const contentTypes = <String>[];
 
@@ -245,13 +258,19 @@ class ProfileApi {
 
   /// Get account's current profile.
   ///
-  /// Get account's current profile.  Profile can include version UUID which can be used for caching.  # Access Public profile access requires `view_public_profiles` capability. Public and private profile access requires `admin_view_all_profiles` capablility.  # Microservice notes If account feature is set as external service then cached capability information from account service is used for access checks.
+  /// Get account's current profile.  Response includes version UUID which can be used for caching.  # Access  ## Own profile Unrestricted access.  ## Public other profiles Normal account state required.  ## Private other profiles If the profile is a match, then the profile can be accessed if query parameter `is_match` is set to `true`.  If the profile is not a match, then capability `admin_view_all_profiles` is required.  # Microservice notes If account feature is set as external service then cached capability information from account service is used for access checks.
   ///
   /// Parameters:
   ///
   /// * [String] accountId (required):
-  Future<Profile?> getProfile(String accountId,) async {
-    final response = await getProfileWithHttpInfo(accountId,);
+  ///
+  /// * [String] version:
+  ///   Profile version UUID
+  ///
+  /// * [bool] isMatch:
+  ///   If requested profile is not public, allow getting the profile data if the requested profile is a match.
+  Future<GetProfileResult?> getProfile(String accountId, { String? version, bool? isMatch, }) async {
+    final response = await getProfileWithHttpInfo(accountId,  version: version, isMatch: isMatch, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -259,7 +278,7 @@ class ProfileApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Profile',) as Profile;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileResult',) as GetProfileResult;
     
     }
     return null;

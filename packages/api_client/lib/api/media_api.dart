@@ -209,7 +209,7 @@ class MediaApi {
 
   /// Get content data
   ///
-  /// Get content data
+  /// Get content data  # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  If the previous is not true, then capability `admin_view_all_profiles` or `admin_moderate_images` is required. 
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -219,9 +219,9 @@ class MediaApi {
   ///
   /// * [String] contentId (required):
   ///
-  /// * [bool] isMatch (required):
+  /// * [bool] isMatch:
   ///   If false media content access is allowed when profile is set as public. If true media content access is allowed when users are a match.
-  Future<Response> getContentWithHttpInfo(String accountId, String contentId, bool isMatch,) async {
+  Future<Response> getContentWithHttpInfo(String accountId, String contentId, { bool? isMatch, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/content/{account_id}/{content_id}'
       .replaceAll('{account_id}', accountId)
@@ -234,7 +234,9 @@ class MediaApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
+    if (isMatch != null) {
       queryParams.addAll(_queryParams('', 'is_match', isMatch));
+    }
 
     const contentTypes = <String>[];
 
@@ -252,7 +254,7 @@ class MediaApi {
 
   /// Get content data
   ///
-  /// Get content data
+  /// Get content data  # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  If the previous is not true, then capability `admin_view_all_profiles` or `admin_moderate_images` is required. 
   ///
   /// Parameters:
   ///
@@ -260,10 +262,10 @@ class MediaApi {
   ///
   /// * [String] contentId (required):
   ///
-  /// * [bool] isMatch (required):
+  /// * [bool] isMatch:
   ///   If false media content access is allowed when profile is set as public. If true media content access is allowed when users are a match.
-  Future<MultipartFile?> getContent(String accountId, String contentId, bool isMatch,) async {
-    final response = await getContentWithHttpInfo(accountId, contentId, isMatch,);
+  Future<MultipartFile?> getContent(String accountId, String contentId, { bool? isMatch, }) async {
+    final response = await getContentWithHttpInfo(accountId, contentId,  isMatch: isMatch, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -563,9 +565,9 @@ class MediaApi {
     return null;
   }
 
-  /// Get current profile content for selected profile
+  /// Get current profile content for selected profile.
   ///
-  /// Get current profile content for selected profile
+  /// Get current profile content for selected profile.  # Access  ## Own profile Unrestricted access.  ## Other profiles Normal account state required.  ## Private other profiles If the profile is a match, then the profile can be accessed if query parameter `is_match` is set to `true`.  If the profile is not a match, then capability `admin_view_all_profiles` is required.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -573,9 +575,11 @@ class MediaApi {
   ///
   /// * [String] accountId (required):
   ///
-  /// * [bool] isMatch (required):
-  ///   If false media content access is allowed when profile is set as public. If true media content access is allowed when users are a match.
-  Future<Response> getProfileContentInfoWithHttpInfo(String accountId, bool isMatch,) async {
+  /// * [String] version:
+  ///
+  /// * [bool] isMatch:
+  ///   If false profile content access is allowed when profile is set as public. If true profile content access is allowed when users are a match.
+  Future<Response> getProfileContentInfoWithHttpInfo(String accountId, { String? version, bool? isMatch, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/profile_content_info/{account_id}'
       .replaceAll('{account_id}', accountId);
@@ -587,7 +591,12 @@ class MediaApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
+    if (version != null) {
+      queryParams.addAll(_queryParams('', 'version', version));
+    }
+    if (isMatch != null) {
       queryParams.addAll(_queryParams('', 'is_match', isMatch));
+    }
 
     const contentTypes = <String>[];
 
@@ -603,18 +612,20 @@ class MediaApi {
     );
   }
 
-  /// Get current profile content for selected profile
+  /// Get current profile content for selected profile.
   ///
-  /// Get current profile content for selected profile
+  /// Get current profile content for selected profile.  # Access  ## Own profile Unrestricted access.  ## Other profiles Normal account state required.  ## Private other profiles If the profile is a match, then the profile can be accessed if query parameter `is_match` is set to `true`.  If the profile is not a match, then capability `admin_view_all_profiles` is required.
   ///
   /// Parameters:
   ///
   /// * [String] accountId (required):
   ///
-  /// * [bool] isMatch (required):
-  ///   If false media content access is allowed when profile is set as public. If true media content access is allowed when users are a match.
-  Future<ProfileContent?> getProfileContentInfo(String accountId, bool isMatch,) async {
-    final response = await getProfileContentInfoWithHttpInfo(accountId, isMatch,);
+  /// * [String] version:
+  ///
+  /// * [bool] isMatch:
+  ///   If false profile content access is allowed when profile is set as public. If true profile content access is allowed when users are a match.
+  Future<GetProfileContentResult?> getProfileContentInfo(String accountId, { String? version, bool? isMatch, }) async {
+    final response = await getProfileContentInfoWithHttpInfo(accountId,  version: version, isMatch: isMatch, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -622,7 +633,7 @@ class MediaApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileContent',) as ProfileContent;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileContentResult',) as GetProfileContentResult;
     
     }
     return null;

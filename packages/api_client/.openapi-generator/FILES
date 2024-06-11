@@ -29,7 +29,6 @@ doc/ChatApi.md
 doc/CommandOutput.md
 doc/CommonAdminApi.md
 doc/CommonApi.md
-doc/ContentAccessCheck.md
 doc/ContentId.md
 doc/ContentInfo.md
 doc/ContentInfoDetailed.md
@@ -54,6 +53,11 @@ doc/EventToClient.md
 doc/EventType.md
 doc/FavoriteProfilesPage.md
 doc/FcmDeviceToken.md
+doc/GetContentQueryParams.md
+doc/GetProfileContentQueryParams.md
+doc/GetProfileContentResult.md
+doc/GetProfileQueryParam.md
+doc/GetProfileResult.md
 doc/GroupValues.md
 doc/HandleModerationRequest.md
 doc/IconLocation.md
@@ -95,7 +99,6 @@ doc/PerfHistoryValue.md
 doc/PerfValueArea.md
 doc/Profile.md
 doc/ProfileAge.md
-doc/ProfileAllOf.md
 doc/ProfileApi.md
 doc/ProfileAttributeFilterList.md
 doc/ProfileAttributeFilterListUpdate.md
@@ -106,6 +109,7 @@ doc/ProfileAttributeValueUpdate.md
 doc/ProfileAttributes.md
 doc/ProfileAttributesSyncVersion.md
 doc/ProfileContent.md
+doc/ProfileContentVersion.md
 doc/ProfileLink.md
 doc/ProfilePage.md
 doc/ProfileSearchAgeRange.md
@@ -180,7 +184,6 @@ lib/model/bot_config.dart
 lib/model/build_info.dart
 lib/model/capabilities.dart
 lib/model/command_output.dart
-lib/model/content_access_check.dart
 lib/model/content_id.dart
 lib/model/content_info.dart
 lib/model/content_info_detailed.dart
@@ -205,6 +208,11 @@ lib/model/event_to_client.dart
 lib/model/event_type.dart
 lib/model/favorite_profiles_page.dart
 lib/model/fcm_device_token.dart
+lib/model/get_content_query_params.dart
+lib/model/get_profile_content_query_params.dart
+lib/model/get_profile_content_result.dart
+lib/model/get_profile_query_param.dart
+lib/model/get_profile_result.dart
 lib/model/group_values.dart
 lib/model/handle_moderation_request.dart
 lib/model/icon_location.dart
@@ -243,7 +251,6 @@ lib/model/perf_history_value.dart
 lib/model/perf_value_area.dart
 lib/model/profile.dart
 lib/model/profile_age.dart
-lib/model/profile_all_of.dart
 lib/model/profile_attribute_filter_list.dart
 lib/model/profile_attribute_filter_list_update.dart
 lib/model/profile_attribute_filter_value.dart
@@ -253,6 +260,7 @@ lib/model/profile_attribute_value_update.dart
 lib/model/profile_attributes.dart
 lib/model/profile_attributes_sync_version.dart
 lib/model/profile_content.dart
+lib/model/profile_content_version.dart
 lib/model/profile_link.dart
 lib/model/profile_page.dart
 lib/model/profile_search_age_range.dart
@@ -285,3 +293,9 @@ lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
+test/get_content_query_params_test.dart
+test/get_profile_content_query_params_test.dart
+test/get_profile_content_result_test.dart
+test/get_profile_query_param_test.dart
+test/get_profile_result_test.dart
+test/profile_content_version_test.dart

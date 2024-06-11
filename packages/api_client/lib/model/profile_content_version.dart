@@ -10,52 +10,36 @@
 
 part of openapi.api;
 
-class ProfileLink {
-  /// Returns a new [ProfileLink] instance.
-  ProfileLink({
-    this.contentVersion,
-    required this.id,
+class ProfileContentVersion {
+  /// Returns a new [ProfileContentVersion] instance.
+  ProfileContentVersion({
     required this.version,
   });
 
-  ProfileContentVersion? contentVersion;
-
-  AccountId id;
-
-  ProfileVersion version;
+  String version;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileLink &&
-     other.contentVersion == contentVersion &&
-     other.id == id &&
+  bool operator ==(Object other) => identical(this, other) || other is ProfileContentVersion &&
      other.version == version;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (contentVersion == null ? 0 : contentVersion!.hashCode) +
-    (id.hashCode) +
     (version.hashCode);
 
   @override
-  String toString() => 'ProfileLink[contentVersion=$contentVersion, id=$id, version=$version]';
+  String toString() => 'ProfileContentVersion[version=$version]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.contentVersion != null) {
-      json[r'content_version'] = this.contentVersion;
-    } else {
-      json[r'content_version'] = null;
-    }
-      json[r'id'] = this.id;
       json[r'version'] = this.version;
     return json;
   }
 
-  /// Returns a new [ProfileLink] instance and imports its values from
+  /// Returns a new [ProfileContentVersion] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileLink? fromJson(dynamic value) {
+  static ProfileContentVersion? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -64,26 +48,24 @@ class ProfileLink {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileLink[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileLink[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ProfileContentVersion[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ProfileContentVersion[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileLink(
-        contentVersion: ProfileContentVersion.fromJson(json[r'content_version']),
-        id: AccountId.fromJson(json[r'id'])!,
-        version: ProfileVersion.fromJson(json[r'version'])!,
+      return ProfileContentVersion(
+        version: mapValueOfType<String>(json, r'version')!,
       );
     }
     return null;
   }
 
-  static List<ProfileLink>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileLink>[];
+  static List<ProfileContentVersion>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ProfileContentVersion>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileLink.fromJson(row);
+        final value = ProfileContentVersion.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -92,12 +74,12 @@ class ProfileLink {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileLink> mapFromJson(dynamic json) {
-    final map = <String, ProfileLink>{};
+  static Map<String, ProfileContentVersion> mapFromJson(dynamic json) {
+    final map = <String, ProfileContentVersion>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileLink.fromJson(entry.value);
+        final value = ProfileContentVersion.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -106,13 +88,13 @@ class ProfileLink {
     return map;
   }
 
-  // maps a json object with a list of ProfileLink-objects as value to a dart map
-  static Map<String, List<ProfileLink>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileLink>>{};
+  // maps a json object with a list of ProfileContentVersion-objects as value to a dart map
+  static Map<String, List<ProfileContentVersion>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ProfileContentVersion>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileLink.listFromJson(entry.value, growable: growable,);
+        final value = ProfileContentVersion.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -123,7 +105,6 @@ class ProfileLink {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'id',
     'version',
   };
 }

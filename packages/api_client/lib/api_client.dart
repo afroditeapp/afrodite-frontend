@@ -227,8 +227,6 @@ class ApiClient {
           return Capabilities.fromJson(value);
         case 'CommandOutput':
           return CommandOutput.fromJson(value);
-        case 'ContentAccessCheck':
-          return ContentAccessCheck.fromJson(value);
         case 'ContentId':
           return ContentId.fromJson(value);
         case 'ContentInfo':
@@ -277,6 +275,16 @@ class ApiClient {
           return FavoriteProfilesPage.fromJson(value);
         case 'FcmDeviceToken':
           return FcmDeviceToken.fromJson(value);
+        case 'GetContentQueryParams':
+          return GetContentQueryParams.fromJson(value);
+        case 'GetProfileContentQueryParams':
+          return GetProfileContentQueryParams.fromJson(value);
+        case 'GetProfileContentResult':
+          return GetProfileContentResult.fromJson(value);
+        case 'GetProfileQueryParam':
+          return GetProfileQueryParam.fromJson(value);
+        case 'GetProfileResult':
+          return GetProfileResult.fromJson(value);
         case 'GroupValues':
           return GroupValues.fromJson(value);
         case 'HandleModerationRequest':
@@ -353,8 +361,6 @@ class ApiClient {
           return Profile.fromJson(value);
         case 'ProfileAge':
           return ProfileAge.fromJson(value);
-        case 'ProfileAllOf':
-          return ProfileAllOf.fromJson(value);
         case 'ProfileAttributeFilterList':
           return ProfileAttributeFilterList.fromJson(value);
         case 'ProfileAttributeFilterListUpdate':
@@ -373,6 +379,8 @@ class ApiClient {
           return ProfileAttributesSyncVersion.fromJson(value);
         case 'ProfileContent':
           return ProfileContent.fromJson(value);
+        case 'ProfileContentVersion':
+          return ProfileContentVersion.fromJson(value);
         case 'ProfileLink':
           return ProfileLink.fromJson(value);
         case 'ProfilePage':

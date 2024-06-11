@@ -115,7 +115,7 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**getModerationRequest**](doc//MediaApi.md#getmoderationrequest) | **GET** /media_api/moderation/request | Get current moderation request.
 *MediaApi* | [**getPendingProfileContentInfo**](doc//MediaApi.md#getpendingprofilecontentinfo) | **GET** /media_api/pending_profile_content_info/{account_id} | Get pending profile content for selected profile
 *MediaApi* | [**getPendingSecurityContentInfo**](doc//MediaApi.md#getpendingsecuritycontentinfo) | **GET** /media_api/pending_security_content_info/{account_id} | Get pending security content for selected profile.
-*MediaApi* | [**getProfileContentInfo**](doc//MediaApi.md#getprofilecontentinfo) | **GET** /media_api/profile_content_info/{account_id} | Get current profile content for selected profile
+*MediaApi* | [**getProfileContentInfo**](doc//MediaApi.md#getprofilecontentinfo) | **GET** /media_api/profile_content_info/{account_id} | Get current profile content for selected profile.
 *MediaApi* | [**getSecurityContentInfo**](doc//MediaApi.md#getsecuritycontentinfo) | **GET** /media_api/security_content_info/{account_id} | Get current security content for selected profile.
 *MediaApi* | [**putContentToContentSlot**](doc//MediaApi.md#putcontenttocontentslot) | **PUT** /media_api/content_slot/{slot_id} | Set content to content processing slot.
 *MediaApi* | [**putModerationRequest**](doc//MediaApi.md#putmoderationrequest) | **PUT** /media_api/moderation/request | Create new or override old moderation request.
@@ -171,7 +171,6 @@ Class | Method | HTTP request | Description
  - [BuildInfo](doc//BuildInfo.md)
  - [Capabilities](doc//Capabilities.md)
  - [CommandOutput](doc//CommandOutput.md)
- - [ContentAccessCheck](doc//ContentAccessCheck.md)
  - [ContentId](doc//ContentId.md)
  - [ContentInfo](doc//ContentInfo.md)
  - [ContentInfoDetailed](doc//ContentInfoDetailed.md)
@@ -196,6 +195,11 @@ Class | Method | HTTP request | Description
  - [EventType](doc//EventType.md)
  - [FavoriteProfilesPage](doc//FavoriteProfilesPage.md)
  - [FcmDeviceToken](doc//FcmDeviceToken.md)
+ - [GetContentQueryParams](doc//GetContentQueryParams.md)
+ - [GetProfileContentQueryParams](doc//GetProfileContentQueryParams.md)
+ - [GetProfileContentResult](doc//GetProfileContentResult.md)
+ - [GetProfileQueryParam](doc//GetProfileQueryParam.md)
+ - [GetProfileResult](doc//GetProfileResult.md)
  - [GroupValues](doc//GroupValues.md)
  - [HandleModerationRequest](doc//HandleModerationRequest.md)
  - [IconLocation](doc//IconLocation.md)
@@ -234,7 +238,6 @@ Class | Method | HTTP request | Description
  - [PerfValueArea](doc//PerfValueArea.md)
  - [Profile](doc//Profile.md)
  - [ProfileAge](doc//ProfileAge.md)
- - [ProfileAllOf](doc//ProfileAllOf.md)
  - [ProfileAttributeFilterList](doc//ProfileAttributeFilterList.md)
  - [ProfileAttributeFilterListUpdate](doc//ProfileAttributeFilterListUpdate.md)
  - [ProfileAttributeFilterValue](doc//ProfileAttributeFilterValue.md)
@@ -244,6 +247,7 @@ Class | Method | HTTP request | Description
  - [ProfileAttributes](doc//ProfileAttributes.md)
  - [ProfileAttributesSyncVersion](doc//ProfileAttributesSyncVersion.md)
  - [ProfileContent](doc//ProfileContent.md)
+ - [ProfileContentVersion](doc//ProfileContentVersion.md)
  - [ProfileLink](doc//ProfileLink.md)
  - [ProfilePage](doc//ProfilePage.md)
  - [ProfileSearchAgeRange](doc//ProfileSearchAgeRange.md)

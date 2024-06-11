@@ -25,6 +25,7 @@ class ProfileUpdate {
 
   String name;
 
+  /// This must be empty because profile text support is disabled.
   String profileText;
 
   @override

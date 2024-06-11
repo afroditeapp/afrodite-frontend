@@ -13,14 +13,11 @@ part of openapi.api;
 class Profile {
   /// Returns a new [Profile] instance.
   Profile({
-    required this.version,
     required this.age,
     this.attributes = const [],
     required this.name,
     required this.profileText,
   });
-
-  String version;
 
   int age;
 
@@ -28,11 +25,11 @@ class Profile {
 
   String name;
 
+  /// Profile text support is disabled for now.
   String profileText;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Profile &&
-     other.version == version &&
      other.age == age &&
      other.attributes == attributes &&
      other.name == name &&
@@ -41,18 +38,16 @@ class Profile {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (version.hashCode) +
     (age.hashCode) +
     (attributes.hashCode) +
     (name.hashCode) +
     (profileText.hashCode);
 
   @override
-  String toString() => 'Profile[version=$version, age=$age, attributes=$attributes, name=$name, profileText=$profileText]';
+  String toString() => 'Profile[age=$age, attributes=$attributes, name=$name, profileText=$profileText]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'version'] = this.version;
       json[r'age'] = this.age;
       json[r'attributes'] = this.attributes;
       json[r'name'] = this.name;
@@ -79,7 +74,6 @@ class Profile {
       }());
 
       return Profile(
-        version: mapValueOfType<String>(json, r'version')!,
         age: mapValueOfType<int>(json, r'age')!,
         attributes: ProfileAttributeValue.listFromJson(json[r'attributes'])!,
         name: mapValueOfType<String>(json, r'name')!,
@@ -133,7 +127,6 @@ class Profile {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'version',
     'age',
     'attributes',
     'name',
