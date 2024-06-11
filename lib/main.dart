@@ -207,6 +207,54 @@ class MyApp extends StatelessWidget {
 PageTransitionsTheme createPageTransitionsTheme() {
   return const PageTransitionsTheme(
     builders: {
+      // TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+      /*
+      When testing the predictive back gestures page transitions there were
+      exception for some reason when navigating back to settings page.
+      I do not remember from what page the back navigation started.
+
+      ════════ Exception caught by animation library ═════════════════════════════════
+      The following assertion was thrown while notifying status listeners for AnimationController:
+      'package:flutter/src/widgets/navigator.dart': Failed assertion: line 5473 pos 12: '_userGesturesInProgress > 0': is not true.
+
+      Either the assertion indicates an error in the framework itself, or we should provide substantially more information in this error message to help you determine and fix the underlying cause.
+      In either case, please report this assertion by filing a bug on GitHub:
+        https://github.com/flutter/flutter/issues/new?template=2_bug.yml
+
+      When the exception was thrown, this was the stack:
+      #2      NavigatorState.didStopUserGesture (package:flutter/src/widgets/navigator.dart:5473:12)
+      navigator.dart:5473
+      #3      TransitionRoute._handleDragEnd.<anonymous closure> (package:flutter/src/widgets/routes.dart:547:20)
+      routes.dart:547
+      #4      AnimationLocalStatusListenersMixin.notifyStatusListeners (package:flutter/src/animation/listener_helpers.dart:240:19)
+      listener_helpers.dart:240
+      #5      AnimationController._checkStatusChanged (package:flutter/src/animation/animation_controller.dart:841:7)
+      animation_controller.dart:841
+      #6      AnimationController._tick (package:flutter/src/animation/animation_controller.dart:857:5)
+      animation_controller.dart:857
+      #7      Ticker._tick (package:flutter/src/scheduler/ticker.dart:258:12)
+      ticker.dart:258
+      #8      SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1392:15)
+      binding.dart:1392
+      #9      SchedulerBinding.handleBeginFrame.<anonymous closure> (package:flutter/src/scheduler/binding.dart:1235:11)
+      binding.dart:1235
+      #10     _LinkedHashMapMixin.forEach (dart:collection-patch/compact_hash.dart:633:13)
+      compact_hash.dart:633
+      #11     SchedulerBinding.handleBeginFrame (package:flutter/src/scheduler/binding.dart:1233:17)
+      binding.dart:1233
+      #12     SchedulerBinding._handleBeginFrame (package:flutter/src/scheduler/binding.dart:1150:5)
+      binding.dart:1150
+      #13     _invoke1 (dart:ui/hooks.dart:328:13)
+      hooks.dart:328
+      #14     PlatformDispatcher._beginFrame (dart:ui/platform_dispatcher.dart:397:5)
+      platform_dispatcher.dart:397
+      #15     _beginFrame (dart:ui/hooks.dart:272:31)
+      hooks.dart:272
+      (elided 2 frames from class _AssertionError)
+
+      The AnimationController notifying status listeners was: AnimationController#1266f(⏮ 0.000; paused; for _PageBasedMaterialPageRoute<void>(null))
+      ════════════════════════════════════════════════════════════════════════════════
+      */
       TargetPlatform.android: ZoomPageTransitionsBuilder(allowSnapshotting: false),
       TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
     },
