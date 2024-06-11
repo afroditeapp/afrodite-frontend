@@ -11,7 +11,8 @@ class ProfileEntry {
   final String profileText;
   final int age;
   final List<ProfileAttributeValue> attributes;
-  final String? version;
+  final ProfileVersion version;
+  final ProfileContentVersion contentVersion;
   final ContentId? content1;
   final ContentId? content2;
   final ContentId? content3;
@@ -29,7 +30,8 @@ class ProfileEntry {
       required this.profileText,
       required this.age,
       required this.attributes,
-      this.version,
+      required this.version,
+      required this.contentVersion,
       this.content1,
       this.content2,
       this.content3,

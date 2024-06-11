@@ -318,6 +318,15 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<double> primaryContentGridCropY =
       GeneratedColumn<double>('primary_content_grid_crop_y', aliasedName, true,
           type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _profileContentVersionMeta =
+      const VerificationMeta('profileContentVersion');
+  @override
+  late final GeneratedColumnWithTypeConverter<ProfileContentVersion?, String>
+      profileContentVersion = GeneratedColumn<String>(
+              'profile_content_version', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ProfileContentVersion?>(
+              $AccountTable.$converterprofileContentVersion);
   static const VerificationMeta _profileNameMeta =
       const VerificationMeta('profileName');
   @override
@@ -336,6 +345,15 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<int> profileAge = GeneratedColumn<int>(
       'profile_age', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _profileVersionMeta =
+      const VerificationMeta('profileVersion');
+  @override
+  late final GeneratedColumnWithTypeConverter<ProfileVersion?, String>
+      profileVersion = GeneratedColumn<String>(
+              'profile_version', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ProfileVersion?>(
+              $AccountTable.$converterprofileVersion);
   static const VerificationMeta _jsonProfileAttributesMeta =
       const VerificationMeta('jsonProfileAttributes');
   @override
@@ -515,9 +533,11 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         primaryContentGridCropSize,
         primaryContentGridCropX,
         primaryContentGridCropY,
+        profileContentVersion,
         profileName,
         profileText,
         profileAge,
+        profileVersion,
         jsonProfileAttributes,
         profileLocationLatitude,
         profileLocationLongitude,
@@ -707,6 +727,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['primary_content_grid_crop_y']!,
               _primaryContentGridCropYMeta));
     }
+    context.handle(
+        _profileContentVersionMeta, const VerificationResult.success());
     if (data.containsKey('profile_name')) {
       context.handle(
           _profileNameMeta,
@@ -725,6 +747,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           profileAge.isAcceptableOrUnknown(
               data['profile_age']!, _profileAgeMeta));
     }
+    context.handle(_profileVersionMeta, const VerificationResult.success());
     context.handle(
         _jsonProfileAttributesMeta, const VerificationResult.success());
     if (data.containsKey('profile_location_latitude')) {
@@ -955,12 +978,18 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       primaryContentGridCropY: attachedDatabase.typeMapping.read(
           DriftSqlType.double,
           data['${effectivePrefix}primary_content_grid_crop_y']),
+      profileContentVersion: $AccountTable.$converterprofileContentVersion
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}profile_content_version'])),
       profileName: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}profile_name']),
       profileText: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}profile_text']),
       profileAge: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}profile_age']),
+      profileVersion: $AccountTable.$converterprofileVersion.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}profile_version'])),
       jsonProfileAttributes: $AccountTable.$converterjsonProfileAttributes
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}json_profile_attributes'])),
@@ -1061,6 +1090,11 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       const NullAwareTypeConverter.wrap(ContentIdConverter());
   static TypeConverter<ContentId?, String?> $converteruuidSecurityContentId =
       const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ProfileContentVersion?, String?>
+      $converterprofileContentVersion =
+      const NullAwareTypeConverter.wrap(ProfileContentVersionConverter());
+  static TypeConverter<ProfileVersion?, String?> $converterprofileVersion =
+      const NullAwareTypeConverter.wrap(ProfileVersionConverter());
   static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
       NullAwareTypeConverter.wrap(JsonList.driftConverter);
   static TypeConverter<EnumString?, String?> $converterjsonProfileVisibility =
@@ -1113,9 +1147,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final double? primaryContentGridCropSize;
   final double? primaryContentGridCropX;
   final double? primaryContentGridCropY;
+  final ProfileContentVersion? profileContentVersion;
   final String? profileName;
   final String? profileText;
   final int? profileAge;
+  final ProfileVersion? profileVersion;
   final JsonList? jsonProfileAttributes;
   final double? profileLocationLatitude;
   final double? profileLocationLongitude;
@@ -1175,9 +1211,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.primaryContentGridCropSize,
       this.primaryContentGridCropX,
       this.primaryContentGridCropY,
+      this.profileContentVersion,
       this.profileName,
       this.profileText,
       this.profileAge,
+      this.profileVersion,
       this.jsonProfileAttributes,
       this.profileLocationLatitude,
       this.profileLocationLongitude,
@@ -1342,6 +1380,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['primary_content_grid_crop_y'] =
           Variable<double>(primaryContentGridCropY);
     }
+    if (!nullToAbsent || profileContentVersion != null) {
+      map['profile_content_version'] = Variable<String>($AccountTable
+          .$converterprofileContentVersion
+          .toSql(profileContentVersion));
+    }
     if (!nullToAbsent || profileName != null) {
       map['profile_name'] = Variable<String>(profileName);
     }
@@ -1350,6 +1393,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     }
     if (!nullToAbsent || profileAge != null) {
       map['profile_age'] = Variable<int>(profileAge);
+    }
+    if (!nullToAbsent || profileVersion != null) {
+      map['profile_version'] = Variable<String>(
+          $AccountTable.$converterprofileVersion.toSql(profileVersion));
     }
     if (!nullToAbsent || jsonProfileAttributes != null) {
       map['json_profile_attributes'] = Variable<String>($AccountTable
@@ -1538,6 +1585,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       primaryContentGridCropY: primaryContentGridCropY == null && nullToAbsent
           ? const Value.absent()
           : Value(primaryContentGridCropY),
+      profileContentVersion: profileContentVersion == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileContentVersion),
       profileName: profileName == null && nullToAbsent
           ? const Value.absent()
           : Value(profileName),
@@ -1547,6 +1597,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileAge: profileAge == null && nullToAbsent
           ? const Value.absent()
           : Value(profileAge),
+      profileVersion: profileVersion == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileVersion),
       jsonProfileAttributes: jsonProfileAttributes == null && nullToAbsent
           ? const Value.absent()
           : Value(jsonProfileAttributes),
@@ -1684,9 +1737,13 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<double?>(json['primaryContentGridCropX']),
       primaryContentGridCropY:
           serializer.fromJson<double?>(json['primaryContentGridCropY']),
+      profileContentVersion: serializer
+          .fromJson<ProfileContentVersion?>(json['profileContentVersion']),
       profileName: serializer.fromJson<String?>(json['profileName']),
       profileText: serializer.fromJson<String?>(json['profileText']),
       profileAge: serializer.fromJson<int?>(json['profileAge']),
+      profileVersion:
+          serializer.fromJson<ProfileVersion?>(json['profileVersion']),
       jsonProfileAttributes:
           serializer.fromJson<JsonList?>(json['jsonProfileAttributes']),
       profileLocationLatitude:
@@ -1791,9 +1848,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.toJson<double?>(primaryContentGridCropX),
       'primaryContentGridCropY':
           serializer.toJson<double?>(primaryContentGridCropY),
+      'profileContentVersion':
+          serializer.toJson<ProfileContentVersion?>(profileContentVersion),
       'profileName': serializer.toJson<String?>(profileName),
       'profileText': serializer.toJson<String?>(profileText),
       'profileAge': serializer.toJson<int?>(profileAge),
+      'profileVersion': serializer.toJson<ProfileVersion?>(profileVersion),
       'jsonProfileAttributes':
           serializer.toJson<JsonList?>(jsonProfileAttributes),
       'profileLocationLatitude':
@@ -1869,9 +1929,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<double?> primaryContentGridCropSize = const Value.absent(),
           Value<double?> primaryContentGridCropX = const Value.absent(),
           Value<double?> primaryContentGridCropY = const Value.absent(),
+          Value<ProfileContentVersion?> profileContentVersion =
+              const Value.absent(),
           Value<String?> profileName = const Value.absent(),
           Value<String?> profileText = const Value.absent(),
           Value<int?> profileAge = const Value.absent(),
+          Value<ProfileVersion?> profileVersion = const Value.absent(),
           Value<JsonList?> jsonProfileAttributes = const Value.absent(),
           Value<double?> profileLocationLatitude = const Value.absent(),
           Value<double?> profileLocationLongitude = const Value.absent(),
@@ -1997,9 +2060,14 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         primaryContentGridCropY: primaryContentGridCropY.present
             ? primaryContentGridCropY.value
             : this.primaryContentGridCropY,
+        profileContentVersion: profileContentVersion.present
+            ? profileContentVersion.value
+            : this.profileContentVersion,
         profileName: profileName.present ? profileName.value : this.profileName,
         profileText: profileText.present ? profileText.value : this.profileText,
         profileAge: profileAge.present ? profileAge.value : this.profileAge,
+        profileVersion:
+            profileVersion.present ? profileVersion.value : this.profileVersion,
         jsonProfileAttributes: jsonProfileAttributes.present
             ? jsonProfileAttributes.value
             : this.jsonProfileAttributes,
@@ -2116,9 +2184,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
           ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
+          ..write('profileContentVersion: $profileContentVersion, ')
           ..write('profileName: $profileName, ')
           ..write('profileText: $profileText, ')
           ..write('profileAge: $profileAge, ')
+          ..write('profileVersion: $profileVersion, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('profileLocationLatitude: $profileLocationLatitude, ')
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
@@ -2186,9 +2256,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         primaryContentGridCropSize,
         primaryContentGridCropX,
         primaryContentGridCropY,
+        profileContentVersion,
         profileName,
         profileText,
         profileAge,
+        profileVersion,
         jsonProfileAttributes,
         profileLocationLatitude,
         profileLocationLongitude,
@@ -2263,9 +2335,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
           other.primaryContentGridCropX == this.primaryContentGridCropX &&
           other.primaryContentGridCropY == this.primaryContentGridCropY &&
+          other.profileContentVersion == this.profileContentVersion &&
           other.profileName == this.profileName &&
           other.profileText == this.profileText &&
           other.profileAge == this.profileAge &&
+          other.profileVersion == this.profileVersion &&
           other.jsonProfileAttributes == this.jsonProfileAttributes &&
           other.profileLocationLatitude == this.profileLocationLatitude &&
           other.profileLocationLongitude == this.profileLocationLongitude &&
@@ -2331,9 +2405,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<double?> primaryContentGridCropSize;
   final Value<double?> primaryContentGridCropX;
   final Value<double?> primaryContentGridCropY;
+  final Value<ProfileContentVersion?> profileContentVersion;
   final Value<String?> profileName;
   final Value<String?> profileText;
   final Value<int?> profileAge;
+  final Value<ProfileVersion?> profileVersion;
   final Value<JsonList?> jsonProfileAttributes;
   final Value<double?> profileLocationLatitude;
   final Value<double?> profileLocationLongitude;
@@ -2393,9 +2469,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
     this.primaryContentGridCropY = const Value.absent(),
+    this.profileContentVersion = const Value.absent(),
     this.profileName = const Value.absent(),
     this.profileText = const Value.absent(),
     this.profileAge = const Value.absent(),
+    this.profileVersion = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
     this.profileLocationLatitude = const Value.absent(),
     this.profileLocationLongitude = const Value.absent(),
@@ -2456,9 +2534,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
     this.primaryContentGridCropY = const Value.absent(),
+    this.profileContentVersion = const Value.absent(),
     this.profileName = const Value.absent(),
     this.profileText = const Value.absent(),
     this.profileAge = const Value.absent(),
+    this.profileVersion = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
     this.profileLocationLatitude = const Value.absent(),
     this.profileLocationLongitude = const Value.absent(),
@@ -2519,9 +2599,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<double>? primaryContentGridCropSize,
     Expression<double>? primaryContentGridCropX,
     Expression<double>? primaryContentGridCropY,
+    Expression<String>? profileContentVersion,
     Expression<String>? profileName,
     Expression<String>? profileText,
     Expression<int>? profileAge,
+    Expression<String>? profileVersion,
     Expression<String>? jsonProfileAttributes,
     Expression<double>? profileLocationLatitude,
     Expression<double>? profileLocationLongitude,
@@ -2614,9 +2696,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'primary_content_grid_crop_x': primaryContentGridCropX,
       if (primaryContentGridCropY != null)
         'primary_content_grid_crop_y': primaryContentGridCropY,
+      if (profileContentVersion != null)
+        'profile_content_version': profileContentVersion,
       if (profileName != null) 'profile_name': profileName,
       if (profileText != null) 'profile_text': profileText,
       if (profileAge != null) 'profile_age': profileAge,
+      if (profileVersion != null) 'profile_version': profileVersion,
       if (jsonProfileAttributes != null)
         'json_profile_attributes': jsonProfileAttributes,
       if (profileLocationLatitude != null)
@@ -2697,9 +2782,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<double?>? primaryContentGridCropSize,
       Value<double?>? primaryContentGridCropX,
       Value<double?>? primaryContentGridCropY,
+      Value<ProfileContentVersion?>? profileContentVersion,
       Value<String?>? profileName,
       Value<String?>? profileText,
       Value<int?>? profileAge,
+      Value<ProfileVersion?>? profileVersion,
       Value<JsonList?>? jsonProfileAttributes,
       Value<double?>? profileLocationLatitude,
       Value<double?>? profileLocationLongitude,
@@ -2785,9 +2872,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           primaryContentGridCropX ?? this.primaryContentGridCropX,
       primaryContentGridCropY:
           primaryContentGridCropY ?? this.primaryContentGridCropY,
+      profileContentVersion:
+          profileContentVersion ?? this.profileContentVersion,
       profileName: profileName ?? this.profileName,
       profileText: profileText ?? this.profileText,
       profileAge: profileAge ?? this.profileAge,
+      profileVersion: profileVersion ?? this.profileVersion,
       jsonProfileAttributes:
           jsonProfileAttributes ?? this.jsonProfileAttributes,
       profileLocationLatitude:
@@ -2987,6 +3077,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['primary_content_grid_crop_y'] =
           Variable<double>(primaryContentGridCropY.value);
     }
+    if (profileContentVersion.present) {
+      map['profile_content_version'] = Variable<String>($AccountTable
+          .$converterprofileContentVersion
+          .toSql(profileContentVersion.value));
+    }
     if (profileName.present) {
       map['profile_name'] = Variable<String>(profileName.value);
     }
@@ -2995,6 +3090,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     }
     if (profileAge.present) {
       map['profile_age'] = Variable<int>(profileAge.value);
+    }
+    if (profileVersion.present) {
+      map['profile_version'] = Variable<String>(
+          $AccountTable.$converterprofileVersion.toSql(profileVersion.value));
     }
     if (jsonProfileAttributes.present) {
       map['json_profile_attributes'] = Variable<String>($AccountTable
@@ -3129,9 +3228,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
           ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
+          ..write('profileContentVersion: $profileContentVersion, ')
           ..write('profileName: $profileName, ')
           ..write('profileText: $profileText, ')
           ..write('profileAge: $profileAge, ')
+          ..write('profileVersion: $profileVersion, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('profileLocationLatitude: $profileLocationLatitude, ')
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
@@ -3231,6 +3332,15 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
               'uuid_content_id5', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<ContentId?>($ProfilesTable.$converteruuidContentId5);
+  static const VerificationMeta _profileContentVersionMeta =
+      const VerificationMeta('profileContentVersion');
+  @override
+  late final GeneratedColumnWithTypeConverter<ProfileContentVersion?, String>
+      profileContentVersion = GeneratedColumn<String>(
+              'profile_content_version', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ProfileContentVersion?>(
+              $ProfilesTable.$converterprofileContentVersion);
   static const VerificationMeta _profileNameMeta =
       const VerificationMeta('profileName');
   @override
@@ -3246,9 +3356,12 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   static const VerificationMeta _profileVersionMeta =
       const VerificationMeta('profileVersion');
   @override
-  late final GeneratedColumn<String> profileVersion = GeneratedColumn<String>(
-      'profile_version', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+  late final GeneratedColumnWithTypeConverter<ProfileVersion?, String>
+      profileVersion = GeneratedColumn<String>(
+              'profile_version', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<ProfileVersion?>(
+              $ProfilesTable.$converterprofileVersion);
   static const VerificationMeta _profileAgeMeta =
       const VerificationMeta('profileAge');
   @override
@@ -3349,6 +3462,7 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
         uuidContentId3,
         uuidContentId4,
         uuidContentId5,
+        profileContentVersion,
         profileName,
         profileText,
         profileVersion,
@@ -3385,6 +3499,8 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     context.handle(_uuidContentId3Meta, const VerificationResult.success());
     context.handle(_uuidContentId4Meta, const VerificationResult.success());
     context.handle(_uuidContentId5Meta, const VerificationResult.success());
+    context.handle(
+        _profileContentVersionMeta, const VerificationResult.success());
     if (data.containsKey('profile_name')) {
       context.handle(
           _profileNameMeta,
@@ -3397,12 +3513,7 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
           profileText.isAcceptableOrUnknown(
               data['profile_text']!, _profileTextMeta));
     }
-    if (data.containsKey('profile_version')) {
-      context.handle(
-          _profileVersionMeta,
-          profileVersion.isAcceptableOrUnknown(
-              data['profile_version']!, _profileVersionMeta));
-    }
+    context.handle(_profileVersionMeta, const VerificationResult.success());
     if (data.containsKey('profile_age')) {
       context.handle(
           _profileAgeMeta,
@@ -3471,12 +3582,16 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       uuidContentId5: $ProfilesTable.$converteruuidContentId5.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}uuid_content_id5'])),
+      profileContentVersion: $ProfilesTable.$converterprofileContentVersion
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}profile_content_version'])),
       profileName: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}profile_name']),
       profileText: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}profile_text']),
-      profileVersion: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}profile_version']),
+      profileVersion: $ProfilesTable.$converterprofileVersion.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}profile_version'])),
       profileAge: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}profile_age']),
       jsonProfileAttributes: $ProfilesTable.$converterjsonProfileAttributes
@@ -3534,6 +3649,11 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       const NullAwareTypeConverter.wrap(ContentIdConverter());
   static TypeConverter<ContentId?, String?> $converteruuidContentId5 =
       const NullAwareTypeConverter.wrap(ContentIdConverter());
+  static TypeConverter<ProfileContentVersion?, String?>
+      $converterprofileContentVersion =
+      const NullAwareTypeConverter.wrap(ProfileContentVersionConverter());
+  static TypeConverter<ProfileVersion?, String?> $converterprofileVersion =
+      const NullAwareTypeConverter.wrap(ProfileVersionConverter());
   static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
       NullAwareTypeConverter.wrap(JsonList.driftConverter);
   static TypeConverter<UtcDateTime?, int?> $converterisInFavorites =
@@ -3563,9 +3683,10 @@ class Profile extends DataClass implements Insertable<Profile> {
   final ContentId? uuidContentId3;
   final ContentId? uuidContentId4;
   final ContentId? uuidContentId5;
+  final ProfileContentVersion? profileContentVersion;
   final String? profileName;
   final String? profileText;
-  final String? profileVersion;
+  final ProfileVersion? profileVersion;
   final int? profileAge;
   final JsonList? jsonProfileAttributes;
   final double? primaryContentGridCropSize;
@@ -3587,6 +3708,7 @@ class Profile extends DataClass implements Insertable<Profile> {
       this.uuidContentId3,
       this.uuidContentId4,
       this.uuidContentId5,
+      this.profileContentVersion,
       this.profileName,
       this.profileText,
       this.profileVersion,
@@ -3634,6 +3756,11 @@ class Profile extends DataClass implements Insertable<Profile> {
       map['uuid_content_id5'] = Variable<String>(
           $ProfilesTable.$converteruuidContentId5.toSql(uuidContentId5));
     }
+    if (!nullToAbsent || profileContentVersion != null) {
+      map['profile_content_version'] = Variable<String>($ProfilesTable
+          .$converterprofileContentVersion
+          .toSql(profileContentVersion));
+    }
     if (!nullToAbsent || profileName != null) {
       map['profile_name'] = Variable<String>(profileName);
     }
@@ -3641,7 +3768,8 @@ class Profile extends DataClass implements Insertable<Profile> {
       map['profile_text'] = Variable<String>(profileText);
     }
     if (!nullToAbsent || profileVersion != null) {
-      map['profile_version'] = Variable<String>(profileVersion);
+      map['profile_version'] = Variable<String>(
+          $ProfilesTable.$converterprofileVersion.toSql(profileVersion));
     }
     if (!nullToAbsent || profileAge != null) {
       map['profile_age'] = Variable<int>(profileAge);
@@ -3717,6 +3845,9 @@ class Profile extends DataClass implements Insertable<Profile> {
       uuidContentId5: uuidContentId5 == null && nullToAbsent
           ? const Value.absent()
           : Value(uuidContentId5),
+      profileContentVersion: profileContentVersion == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileContentVersion),
       profileName: profileName == null && nullToAbsent
           ? const Value.absent()
           : Value(profileName),
@@ -3778,9 +3909,12 @@ class Profile extends DataClass implements Insertable<Profile> {
       uuidContentId3: serializer.fromJson<ContentId?>(json['uuidContentId3']),
       uuidContentId4: serializer.fromJson<ContentId?>(json['uuidContentId4']),
       uuidContentId5: serializer.fromJson<ContentId?>(json['uuidContentId5']),
+      profileContentVersion: serializer
+          .fromJson<ProfileContentVersion?>(json['profileContentVersion']),
       profileName: serializer.fromJson<String?>(json['profileName']),
       profileText: serializer.fromJson<String?>(json['profileText']),
-      profileVersion: serializer.fromJson<String?>(json['profileVersion']),
+      profileVersion:
+          serializer.fromJson<ProfileVersion?>(json['profileVersion']),
       profileAge: serializer.fromJson<int?>(json['profileAge']),
       jsonProfileAttributes:
           serializer.fromJson<JsonList?>(json['jsonProfileAttributes']),
@@ -3814,9 +3948,11 @@ class Profile extends DataClass implements Insertable<Profile> {
       'uuidContentId3': serializer.toJson<ContentId?>(uuidContentId3),
       'uuidContentId4': serializer.toJson<ContentId?>(uuidContentId4),
       'uuidContentId5': serializer.toJson<ContentId?>(uuidContentId5),
+      'profileContentVersion':
+          serializer.toJson<ProfileContentVersion?>(profileContentVersion),
       'profileName': serializer.toJson<String?>(profileName),
       'profileText': serializer.toJson<String?>(profileText),
-      'profileVersion': serializer.toJson<String?>(profileVersion),
+      'profileVersion': serializer.toJson<ProfileVersion?>(profileVersion),
       'profileAge': serializer.toJson<int?>(profileAge),
       'jsonProfileAttributes':
           serializer.toJson<JsonList?>(jsonProfileAttributes),
@@ -3845,9 +3981,11 @@ class Profile extends DataClass implements Insertable<Profile> {
           Value<ContentId?> uuidContentId3 = const Value.absent(),
           Value<ContentId?> uuidContentId4 = const Value.absent(),
           Value<ContentId?> uuidContentId5 = const Value.absent(),
+          Value<ProfileContentVersion?> profileContentVersion =
+              const Value.absent(),
           Value<String?> profileName = const Value.absent(),
           Value<String?> profileText = const Value.absent(),
-          Value<String?> profileVersion = const Value.absent(),
+          Value<ProfileVersion?> profileVersion = const Value.absent(),
           Value<int?> profileAge = const Value.absent(),
           Value<JsonList?> jsonProfileAttributes = const Value.absent(),
           Value<double?> primaryContentGridCropSize = const Value.absent(),
@@ -3875,6 +4013,9 @@ class Profile extends DataClass implements Insertable<Profile> {
             uuidContentId4.present ? uuidContentId4.value : this.uuidContentId4,
         uuidContentId5:
             uuidContentId5.present ? uuidContentId5.value : this.uuidContentId5,
+        profileContentVersion: profileContentVersion.present
+            ? profileContentVersion.value
+            : this.profileContentVersion,
         profileName: profileName.present ? profileName.value : this.profileName,
         profileText: profileText.present ? profileText.value : this.profileText,
         profileVersion:
@@ -3920,6 +4061,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           ..write('uuidContentId3: $uuidContentId3, ')
           ..write('uuidContentId4: $uuidContentId4, ')
           ..write('uuidContentId5: $uuidContentId5, ')
+          ..write('profileContentVersion: $profileContentVersion, ')
           ..write('profileName: $profileName, ')
           ..write('profileText: $profileText, ')
           ..write('profileVersion: $profileVersion, ')
@@ -3949,6 +4091,7 @@ class Profile extends DataClass implements Insertable<Profile> {
         uuidContentId3,
         uuidContentId4,
         uuidContentId5,
+        profileContentVersion,
         profileName,
         profileText,
         profileVersion,
@@ -3977,6 +4120,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           other.uuidContentId3 == this.uuidContentId3 &&
           other.uuidContentId4 == this.uuidContentId4 &&
           other.uuidContentId5 == this.uuidContentId5 &&
+          other.profileContentVersion == this.profileContentVersion &&
           other.profileName == this.profileName &&
           other.profileText == this.profileText &&
           other.profileVersion == this.profileVersion &&
@@ -4003,9 +4147,10 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<ContentId?> uuidContentId3;
   final Value<ContentId?> uuidContentId4;
   final Value<ContentId?> uuidContentId5;
+  final Value<ProfileContentVersion?> profileContentVersion;
   final Value<String?> profileName;
   final Value<String?> profileText;
-  final Value<String?> profileVersion;
+  final Value<ProfileVersion?> profileVersion;
   final Value<int?> profileAge;
   final Value<JsonList?> jsonProfileAttributes;
   final Value<double?> primaryContentGridCropSize;
@@ -4027,6 +4172,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.uuidContentId3 = const Value.absent(),
     this.uuidContentId4 = const Value.absent(),
     this.uuidContentId5 = const Value.absent(),
+    this.profileContentVersion = const Value.absent(),
     this.profileName = const Value.absent(),
     this.profileText = const Value.absent(),
     this.profileVersion = const Value.absent(),
@@ -4052,6 +4198,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.uuidContentId3 = const Value.absent(),
     this.uuidContentId4 = const Value.absent(),
     this.uuidContentId5 = const Value.absent(),
+    this.profileContentVersion = const Value.absent(),
     this.profileName = const Value.absent(),
     this.profileText = const Value.absent(),
     this.profileVersion = const Value.absent(),
@@ -4077,6 +4224,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     Expression<String>? uuidContentId3,
     Expression<String>? uuidContentId4,
     Expression<String>? uuidContentId5,
+    Expression<String>? profileContentVersion,
     Expression<String>? profileName,
     Expression<String>? profileText,
     Expression<String>? profileVersion,
@@ -4102,6 +4250,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       if (uuidContentId3 != null) 'uuid_content_id3': uuidContentId3,
       if (uuidContentId4 != null) 'uuid_content_id4': uuidContentId4,
       if (uuidContentId5 != null) 'uuid_content_id5': uuidContentId5,
+      if (profileContentVersion != null)
+        'profile_content_version': profileContentVersion,
       if (profileName != null) 'profile_name': profileName,
       if (profileText != null) 'profile_text': profileText,
       if (profileVersion != null) 'profile_version': profileVersion,
@@ -4134,9 +4284,10 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       Value<ContentId?>? uuidContentId3,
       Value<ContentId?>? uuidContentId4,
       Value<ContentId?>? uuidContentId5,
+      Value<ProfileContentVersion?>? profileContentVersion,
       Value<String?>? profileName,
       Value<String?>? profileText,
-      Value<String?>? profileVersion,
+      Value<ProfileVersion?>? profileVersion,
       Value<int?>? profileAge,
       Value<JsonList?>? jsonProfileAttributes,
       Value<double?>? primaryContentGridCropSize,
@@ -4158,6 +4309,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       uuidContentId3: uuidContentId3 ?? this.uuidContentId3,
       uuidContentId4: uuidContentId4 ?? this.uuidContentId4,
       uuidContentId5: uuidContentId5 ?? this.uuidContentId5,
+      profileContentVersion:
+          profileContentVersion ?? this.profileContentVersion,
       profileName: profileName ?? this.profileName,
       profileText: profileText ?? this.profileText,
       profileVersion: profileVersion ?? this.profileVersion,
@@ -4214,6 +4367,11 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       map['uuid_content_id5'] = Variable<String>(
           $ProfilesTable.$converteruuidContentId5.toSql(uuidContentId5.value));
     }
+    if (profileContentVersion.present) {
+      map['profile_content_version'] = Variable<String>($ProfilesTable
+          .$converterprofileContentVersion
+          .toSql(profileContentVersion.value));
+    }
     if (profileName.present) {
       map['profile_name'] = Variable<String>(profileName.value);
     }
@@ -4221,7 +4379,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       map['profile_text'] = Variable<String>(profileText.value);
     }
     if (profileVersion.present) {
-      map['profile_version'] = Variable<String>(profileVersion.value);
+      map['profile_version'] = Variable<String>(
+          $ProfilesTable.$converterprofileVersion.toSql(profileVersion.value));
     }
     if (profileAge.present) {
       map['profile_age'] = Variable<int>(profileAge.value);
@@ -4288,6 +4447,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           ..write('uuidContentId3: $uuidContentId3, ')
           ..write('uuidContentId4: $uuidContentId4, ')
           ..write('uuidContentId5: $uuidContentId5, ')
+          ..write('profileContentVersion: $profileContentVersion, ')
           ..write('profileName: $profileName, ')
           ..write('profileText: $profileText, ')
           ..write('profileVersion: $profileVersion, ')

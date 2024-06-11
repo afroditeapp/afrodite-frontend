@@ -17,7 +17,7 @@ extension MediaManualAdditions on MediaApi {
   ///
   /// * [String] contentId (required):
   Future<Uint8List?> getContentFixed(String accountId, String contentId, bool isMatch) async {
-    final response = await getContentWithHttpInfo(accountId, contentId, isMatch);
+    final response = await getContentWithHttpInfo(accountId, contentId, isMatch: isMatch);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, "Image loading failed");
     }

@@ -23,10 +23,11 @@ class Profiles extends Table {
   TextColumn get uuidContentId3 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   TextColumn get uuidContentId4 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   TextColumn get uuidContentId5 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  TextColumn get profileContentVersion => text().map(const NullAwareTypeConverter.wrap(ProfileContentVersionConverter())).nullable()();
 
   TextColumn get profileName => text().nullable()();
   TextColumn get profileText => text().nullable()();
-  TextColumn get profileVersion => text().nullable()();
+  TextColumn get profileVersion => text().map(const NullAwareTypeConverter.wrap(ProfileVersionConverter())).nullable()();
   IntColumn get profileAge => integer().nullable()();
   TextColumn get jsonProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonList.driftConverter)).nullable()();
 
@@ -359,6 +360,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         profileText: Value(null),
         profileAge: Value(null),
         profileVersion: Value(null),
+        profileContentVersion: Value(null),
         jsonProfileAttributes: Value(null),
         primaryContentGridCropSize: Value(null),
         primaryContentGridCropX: Value(null),
@@ -368,21 +370,21 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
 
   /// If you call this make sure that profile data in background DB
   /// is also updated.
-  Future<void> updateProfileData(AccountId accountId, api.Profile profile) async {
+  Future<void> updateProfileData(AccountId accountId, api.Profile profile, api.ProfileVersion profileVersion) async {
     await into(profiles).insert(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
         profileName: Value(profile.name),
         profileText: Value(profile.profileText),
         profileAge: Value(profile.age),
-        profileVersion: Value(profile.version),
+        profileVersion: Value(profileVersion),
         jsonProfileAttributes: Value(profile.attributes.toJsonList()),
       ),
       onConflict: DoUpdate((old) => ProfilesCompanion(
         profileName: Value(profile.name),
         profileText: Value(profile.profileText),
         profileAge: Value(profile.age),
-        profileVersion: Value(profile.version),
+        profileVersion: Value(profileVersion),
         jsonProfileAttributes: Value(profile.attributes.toJsonList()),
       ),
         target: [profiles.uuidAccountId]
@@ -390,7 +392,11 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     );
   }
 
-  Future<void> updateProfileContent(AccountId accountId, ProfileContent content) async {
+  Future<void> updateProfileContent(
+    AccountId accountId,
+    ProfileContent content,
+    api.ProfileContentVersion contentVersion
+  ) async {
     await into(profiles).insert(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
@@ -403,6 +409,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         primaryContentGridCropSize: Value(content.gridCropSize),
         primaryContentGridCropX: Value(content.gridCropX),
         primaryContentGridCropY: Value(content.gridCropY),
+        profileContentVersion: Value(contentVersion),
       ),
       onConflict: DoUpdate((old) => ProfilesCompanion(
         uuidContentId0: Value(content.contentId0?.id),
@@ -414,6 +421,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         primaryContentGridCropSize: Value(content.gridCropSize),
         primaryContentGridCropX: Value(content.gridCropX),
         primaryContentGridCropY: Value(content.gridCropY),
+        profileContentVersion: Value(contentVersion),
       ),
         target: [profiles.uuidAccountId]
       ),
@@ -443,8 +451,17 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     final profileAge = r.profileAge;
     final profileVersion = r.profileVersion;
     final profileAttributes = r.jsonProfileAttributes?.toProfileAttributes();
+    final contentVersion = r.profileContentVersion;
 
-    if (content0 != null && profileName != null && profileText != null && profileAge != null && profileVersion != null && profileAttributes != null) {
+    if (
+      content0 != null &&
+      profileName != null &&
+      profileText != null &&
+      profileAge != null &&
+      profileVersion != null &&
+      profileAttributes != null &&
+      contentVersion != null
+    ) {
       return ProfileEntry(
         uuid: r.uuidAccountId,
         imageUuid: content0,
@@ -456,6 +473,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         version: profileVersion,
         age: profileAge,
         attributes: profileAttributes,
+        contentVersion: contentVersion,
         content1: r.uuidContentId1,
         content2: r.uuidContentId2,
         content3: r.uuidContentId3,

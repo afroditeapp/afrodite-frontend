@@ -151,7 +151,7 @@ class ProfileRepository extends DataRepository {
   }
 
   /// Get cached (if available) and then latest profile (if available).
-  Stream<GetProfileResult> getProfileStream(AccountId id) async* {
+  Stream<GetProfileResultClient> getProfileStream(AccountId id) async* {
     // TODO: perhaps more detailed error message, so that changes from public to
     // private profile can be handled.
 
@@ -254,7 +254,16 @@ class ProfileRepository extends DataRepository {
 
     return await _api.profile((api) => api.getProfile(ownAccountId.accountId))
       .emptyErr()
-      .andThen((p) => db.accountAction((db) => db.daoMyProfile.setApiProfile(profile: p)));
+      .andThen((info) async {
+        final p = info.profile;
+        final v = info.version;
+        if (p != null && v != null) {
+          return await db.accountAction((db) => db.daoMyProfile.setApiProfile(profile: p, version: v));
+        } else {
+          log.warning("reloadMyProfile: profile or version is null");
+          return const Err(null);
+        }
+      });
   }
 
   Future<Result<void, void>> reloadFavoriteProfiles() async {
@@ -329,17 +338,17 @@ class ProfileRepository extends DataRepository {
   }
 }
 
-sealed class GetProfileResult {}
-class GetProfileSuccess extends GetProfileResult {
+sealed class GetProfileResultClient {}
+class GetProfileSuccess extends GetProfileResultClient {
   final ProfileEntry profile;
   GetProfileSuccess(this.profile);
 }
 /// Navigate out from view profile and reload profile list
-class GetProfileDoesNotExist extends GetProfileResult {
+class GetProfileDoesNotExist extends GetProfileResultClient {
   GetProfileDoesNotExist();
 }
 /// Show error message
-class GetProfileFailed extends GetProfileResult {
+class GetProfileFailed extends GetProfileResultClient {
   GetProfileFailed();
 }
 

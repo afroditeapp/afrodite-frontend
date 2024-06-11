@@ -16,6 +16,7 @@ class DaoMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoMyProfile
 
   Future<void> setApiProfile({
     required api.Profile profile,
+    required api.ProfileVersion version,
   }) async {
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
@@ -23,6 +24,7 @@ class DaoMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoMyProfile
         profileName: Value(profile.name),
         profileText: Value(profile.profileText),
         profileAge: Value(profile.age),
+        profileVersion: Value(version),
         jsonProfileAttributes: Value(profile.attributes.toJsonList()),
       ),
     );

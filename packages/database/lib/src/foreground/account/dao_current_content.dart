@@ -1,5 +1,5 @@
 
-import 'package:openapi/api.dart' show ContentId, ProfileContent;
+import 'package:openapi/api.dart' show ContentId, ProfileContent, ProfileContentVersion;
 import '../account_database.dart';
 
 import 'package:drift/drift.dart';
@@ -12,6 +12,7 @@ class DaoCurrentContent extends DatabaseAccessor<AccountDatabase> with _$DaoCurr
 
   Future<void> setApiProfileContent({
     required ProfileContent content,
+    required ProfileContentVersion version,
   }) async {
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
@@ -25,6 +26,7 @@ class DaoCurrentContent extends DatabaseAccessor<AccountDatabase> with _$DaoCurr
         primaryContentGridCropSize: Value(content.gridCropSize),
         primaryContentGridCropX: Value(content.gridCropX),
         primaryContentGridCropY: Value(content.gridCropY),
+        profileContentVersion: Value(version),
       ),
     );
   }
@@ -39,6 +41,7 @@ class DaoCurrentContent extends DatabaseAccessor<AccountDatabase> with _$DaoCurr
     Value<double?> primaryContentGridCropSize = const Value.absent(),
     Value<double?> primaryContentGridCropX = const Value.absent(),
     Value<double?> primaryContentGridCropY = const Value.absent(),
+    Value<ProfileContentVersion?> profileContentVersion = const Value.absent(),
   }) async {
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
@@ -52,6 +55,7 @@ class DaoCurrentContent extends DatabaseAccessor<AccountDatabase> with _$DaoCurr
         primaryContentGridCropSize: primaryContentGridCropSize,
         primaryContentGridCropX: primaryContentGridCropX,
         primaryContentGridCropY: primaryContentGridCropY,
+        profileContentVersion: profileContentVersion,
       ),
     );
   }

@@ -82,23 +82,6 @@ class MediaRepository extends DataRepository {
     .onErr(() => log.error("Image loading error"))
     .ok();
 
-  Future<ContentId?> getProfileImage(AccountId imageOwner, bool isMatch) =>
-    api.media((api) => api.getProfileContentInfo(
-      imageOwner.accountId,
-      isMatch
-    ))
-    .onErr(() => log.error("Image loading error"))
-    .ok()
-    .map((data) {
-      final contentId = data.contentId0;
-      if (contentId == null) {
-        log.error("Image loading error: no contentId0");
-        return null;
-      } else {
-        return contentId.id;
-      }
-    });
-
   Future<MapTileResult> getMapTile(int z, int x, int y) async {
     final data = await api.mediaWrapper().requestValue((api) => api.getMapTileFixed(
       z,
@@ -139,11 +122,6 @@ class MediaRepository extends DataRepository {
       .ok()
       .map((img) => img.contentId?.id);
 
-  Future<ContentId?> getPrimaryImage(AccountId account, bool isMatch) =>
-    api.media((api) => api.getProfileContentInfo(account.accountId, isMatch))
-      .ok()
-      .map((info) => info.contentId0?.id);
-
   /// Reload current and pending profile content.
   Future<Result<void, void>> reloadMyProfileContent() async {
     final accountId = await LoginRepository.getInstance().accountId.first;
@@ -152,12 +130,14 @@ class MediaRepository extends DataRepository {
       return const Err(null);
     }
 
-    final info = await api.media((api) => api.getProfileContentInfo(accountId.accountId, false)).ok();
-    if (info == null) {
+    final infoResult = await api.media((api) => api.getProfileContentInfo(accountId.accountId, isMatch: false)).ok();
+    final info = infoResult?.content;
+    final version = infoResult?.version;
+    if (info == null || version == null) {
       return const Err(null);
     }
 
-    final r1 = await db.accountAction((db) => db.daoCurrentContent.setApiProfileContent(content: info));
+    final r1 = await db.accountAction((db) => db.daoCurrentContent.setApiProfileContent(content: info, version: version));
     if (r1.isErr()) {
       return const Err(null);
     }

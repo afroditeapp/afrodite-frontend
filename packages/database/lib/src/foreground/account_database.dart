@@ -83,12 +83,14 @@ class Account extends Table {
   RealColumn get primaryContentGridCropSize => real().nullable()();
   RealColumn get primaryContentGridCropX => real().nullable()();
   RealColumn get primaryContentGridCropY => real().nullable()();
+  TextColumn get profileContentVersion => text().map(const NullAwareTypeConverter.wrap(ProfileContentVersionConverter())).nullable()();
 
   // DaoMyProfile
 
   TextColumn get profileName => text().nullable()();
   TextColumn get profileText => text().nullable()();
   IntColumn get profileAge => integer().nullable()();
+  TextColumn get profileVersion => text().map(const NullAwareTypeConverter.wrap(ProfileVersionConverter())).nullable()();
   TextColumn get jsonProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonList.driftConverter)).nullable()();
 
   // DaoProfileSettings
@@ -231,7 +233,7 @@ class AccountDatabase extends _$AccountDatabase {
       .watchSingleOrNull();
   }
 
-  /// Get ProileEntry for my profile (version not included)
+  /// Get ProileEntry for my profile
   Stream<ProfileEntry?> getProfileEntryForMyProfile() =>
     watchColumn((r) {
       final id = r.uuidAccountId;
@@ -239,6 +241,8 @@ class AccountDatabase extends _$AccountDatabase {
       final profileText = r.profileText;
       final profileAge = r.profileAge;
       final profileAttributes = r.jsonProfileAttributes?.toProfileAttributes();
+      final profileVersion = r.profileVersion;
+      final profileContentVersion = r.profileContentVersion;
 
       var content0 = r.uuidContentId0;
       var content1 = r.uuidContentId1;
@@ -263,7 +267,16 @@ class AccountDatabase extends _$AccountDatabase {
       }
 
 
-      if (id != null && content0 != null && profileName != null && profileText != null && profileAge != null && profileAttributes != null) {
+      if (
+        id != null &&
+        content0 != null &&
+        profileName != null &&
+        profileText != null &&
+        profileAge != null &&
+        profileAttributes != null &&
+        profileVersion != null &&
+        profileContentVersion != null
+      ) {
         return ProfileEntry(
           uuid: id,
           imageUuid: content0,
@@ -274,6 +287,8 @@ class AccountDatabase extends _$AccountDatabase {
           profileText: profileText,
           age: profileAge,
           attributes: profileAttributes,
+          version: profileVersion,
+          contentVersion: profileContentVersion,
           content1: content1,
           content2: content2,
           content3: content3,

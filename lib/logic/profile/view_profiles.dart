@@ -18,7 +18,7 @@ final log = Logger("ViewProfilesBloc");
 sealed class ViewProfileEvent {}
 class InitEvent extends ViewProfileEvent {}
 class HandleProfileResult extends ViewProfileEvent {
-  final GetProfileResult result;
+  final GetProfileResultClient result;
   HandleProfileResult(this.result);
 }
 class HandleProfileChange extends ViewProfileEvent {
@@ -47,7 +47,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
   final MediaRepository media = MediaRepository.getInstance();
   final ChatRepository chat = ChatRepository.getInstance();
 
-  StreamSubscription<GetProfileResult>? _getProfileDataSubscription;
+  StreamSubscription<GetProfileResultClient>? _getProfileDataSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
 
   ViewProfileBloc(ProfileEntry currentProfile) : super(ViewProfilesData(profile: currentProfile)) {

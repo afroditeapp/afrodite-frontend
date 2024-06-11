@@ -92,6 +92,9 @@ class OnlineIterator extends IteratorType {
           //             (server API change)
 
           for (final p in profiles.profiles) {
+            // TODO(prod): Check profile and content versions and download
+            // only if current versions are different.
+
             final entry = await downloader.download(p.id).ok();
             if (entry == null) {
               continue;
@@ -119,13 +122,24 @@ class ProfileEntryDownloader {
   final ApiManager api = ApiManager.getInstance();
   final DatabaseManager db = DatabaseManager.getInstance();
 
+  // TODO(prod): Update to use version checks to avoid unnecessary
+  // data transfers
+
   /// Download profile entry, save to databases and return it.
   Future<Result<ProfileEntry, ProfileDownloadError>> download(AccountId accountId, {bool isMatch = false}) async {
-    final contentInfoResult = await api.media((api) => api.getProfileContentInfo(accountId.accountId, isMatch));
+    final contentInfoResult = await api.media((api) => api.getProfileContentInfo(accountId.accountId, isMatch: isMatch));
     final ProfileContent contentInfo;
+    final ProfileContentVersion contentVersion;
     switch (contentInfoResult) {
       case Ok(:final v):
-        contentInfo = v;
+        final info = v.content;
+        final version = v.version;
+        if (info == null || version == null) {
+          log.warning("Profile content data or version is null");
+          return Err(OtherProfileDownloadError());
+        }
+        contentInfo = info;
+        contentVersion = version;
       // case Err(:final e):
         // TODO: Test private profile error once the server supports it.
       case Err():
@@ -138,7 +152,7 @@ class ProfileEntryDownloader {
       return Err(OtherProfileDownloadError());
     }
 
-    final bytes = await ImageCacheData.getInstance().getImage(accountId, primaryContentId);
+    final bytes = await ImageCacheData.getInstance().getImage(accountId, primaryContentId, isMatch: isMatch);
     if (bytes == null) {
       log.warning("Skipping one profile because image loading failed");
       return Err(OtherProfileDownloadError());
@@ -147,12 +161,20 @@ class ProfileEntryDownloader {
     // Prevent displaying error when profile is made private while iterating
     final profileDetailsResult = await api
       .profileWrapper()
-      .requestValue(logError: false, (api) => api.getProfile(accountId.accountId));
+      .requestValue(logError: false, (api) => api.getProfile(accountId.accountId, isMatch: isMatch));
 
     final Profile profileDetails;
+    final ProfileVersion profileVersion;
     switch (profileDetailsResult) {
       case Ok(:final v):
-        profileDetails = v;
+        final p = v.profile;
+        final versionNullable = v.version;
+        if (p == null || versionNullable == null) {
+          log.warning("Profile data or version is null");
+          return Err(OtherProfileDownloadError());
+        }
+        profileDetails = p;
+        profileVersion = versionNullable;
       case Err(:final e) when e.isInternalServerError():
         return Err(PrivateProfile());
       case Err(:final e):
@@ -166,8 +188,8 @@ class ProfileEntryDownloader {
     //       use the cache check there?
 
     await BackgroundDatabaseManager.getInstance().profileAction((db) => db.updateProfileData(accountId, profileDetails));
-    await db.profileAction((db) => db.updateProfileData(accountId, profileDetails));
-    await db.profileAction((db) => db.updateProfileContent(accountId, contentInfo));
+    await db.profileAction((db) => db.updateProfileData(accountId, profileDetails, profileVersion));
+    await db.profileAction((db) => db.updateProfileContent(accountId, contentInfo, contentVersion));
     final dataEntry = await db.profileData((db) => db.getProfileEntry(accountId)).ok();
 
     if (dataEntry == null) {

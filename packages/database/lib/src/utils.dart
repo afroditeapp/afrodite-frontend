@@ -39,6 +39,34 @@ class ContentIdConverter extends TypeConverter<ContentId, String> {
   }
 }
 
+class ProfileVersionConverter extends TypeConverter<ProfileVersion, String> {
+  const ProfileVersionConverter();
+
+  @override
+  ProfileVersion fromSql(fromDb) {
+    return ProfileVersion(version: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.version;
+  }
+}
+
+class ProfileContentVersionConverter extends TypeConverter<ProfileContentVersion, String> {
+  const ProfileContentVersionConverter();
+
+  @override
+  ProfileContentVersion fromSql(fromDb) {
+    return ProfileContentVersion(version: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.version;
+  }
+}
+
 class MessageNumberConverter extends TypeConverter<MessageNumber, int> {
   const MessageNumberConverter();
 
