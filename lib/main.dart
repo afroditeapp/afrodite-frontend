@@ -1,5 +1,6 @@
 import 'dart:developer' as developer;
 
+import 'package:async/async.dart' show StreamExtensions;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -369,8 +370,13 @@ class GlobalInitManager {
     // Initializes formatting for other locales as well
     await initializeDateFormatting("en_US", null);
 
-    // Foreground connection on/off logic starts the connection, so
-    // no connection starting is needed here.
+    if (await LoginRepository.getInstance().accountId.firstOrNull == null) {
+      // Connection restart opens login screen in this case
+      await ApiManager.getInstance().restart();
+    } else {
+      // Foreground connection on/off logic starts the connection when some
+      // account is logged in so no connection starting is needed here.
+    }
 
     _globalInitCompleted.add(true);
   }

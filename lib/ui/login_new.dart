@@ -11,6 +11,7 @@ import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/logic/sign_in_with.dart";
 import "package:pihka_frontend/model/freezed/logic/account/demo_account.dart";
 import "package:pihka_frontend/model/freezed/logic/main/navigator_state.dart";
+import "package:pihka_frontend/model/freezed/logic/sign_in_with.dart";
 import "package:pihka_frontend/ui/login.dart";
 import "package:pihka_frontend/ui_utils/consts/colors.dart";
 import "package:pihka_frontend/ui_utils/loading_dialog.dart";
@@ -46,6 +47,12 @@ class LoginScreen extends RootScreen {
               (state) => state.loginProgressVisible,
             loadingText:
               context.strings.login_screen_demo_account_login_progress_dialog,
+          ),
+          ProgressDialogOpener<SignInWithBloc, SignInWithData>(
+            dialogVisibilityGetter:
+              (state) => state.showProgress,
+            loadingText:
+              context.strings.login_screen_sign_in_with_progress_dialog,
           ),
         ],
       ),

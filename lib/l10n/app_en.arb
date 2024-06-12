@@ -597,6 +597,10 @@
   "@login_screen_sign_in_with_error": {
     "description": "Snackbar text for sign in with error"
   },
+  "login_screen_sign_in_with_progress_dialog": "Login…",
+  "@login_screen_sign_in_with_progress_dialog": {
+    "description": "Dialog info text that sign in with login is in progress"
+  },
   "map_location_update_failed": "Location update failed",
   "@map_location_update_failed": {
     "description": "Snackbar text about failed location update"

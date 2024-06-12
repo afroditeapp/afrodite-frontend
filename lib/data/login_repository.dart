@@ -177,19 +177,23 @@ class LoginRepository extends DataRepository {
       .listen(null);
   }
 
-  Future<Result<void, SignInWithGoogleError>> signInWithGoogle() async {
+  Stream<SignInWithGoogleEvent> signInWithGoogle() async* {
     final GoogleSignInAccount? signedIn;
     try {
       signedIn = await google.signIn();
     } catch (e) { // No documentation, just catch everything
       // TODO(prod): Remove
       log.error(e);
-      return const Err(SignInWithGoogleError.signInWithGoogleFailed);
+      yield SignInWithGoogleEvent.signInWithGoogleFailed;
+      return;
     }
 
     if (signedIn == null) {
-      return const Err(SignInWithGoogleError.signInWithGoogleFailed);
+      yield SignInWithGoogleEvent.signInWithGoogleFailed;
+      return;
     }
+
+    yield SignInWithGoogleEvent.getGoogleAccountTokenCompleted;
 
     log.fine("$signedIn, ${signedIn.email}");
 
@@ -198,11 +202,19 @@ class LoginRepository extends DataRepository {
 
     final login = await _api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken))).ok();
     if (login == null) {
-      return const Err(SignInWithGoogleError.serverRequestFailed);
+      yield SignInWithGoogleEvent.serverRequestFailed;
+      return;
     }
 
-    return await _handleLoginResult(login)
-      .mapErr((_) => SignInWithGoogleError.otherError);
+    final result = await _handleLoginResult(login)
+      .mapErr((_) => SignInWithGoogleEvent.otherError);
+
+    switch (result) {
+      case Ok():
+        ();
+      case Err(:final e):
+        yield e;
+    }
   }
 
   Future<Result<void, void>> _handleLoginResult(LoginResult loginResult) async {
@@ -388,7 +400,8 @@ sealed class SessionOrOtherError {}
 class SessionExpired extends SessionOrOtherError {}
 class OtherError extends SessionOrOtherError {}
 
-enum SignInWithGoogleError {
+enum SignInWithGoogleEvent {
+  getGoogleAccountTokenCompleted,
   signInWithGoogleFailed,
   serverRequestFailed,
   otherError,
