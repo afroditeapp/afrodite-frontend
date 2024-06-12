@@ -87,5 +87,41 @@ class _AskEmailState extends State<AskEmail> {
 
 bool isValidEmail(String email) {
   final emailTrimmed = email.trim();
-  return emailTrimmed.runes.length >= 3 && emailTrimmed.contains("@");
+  if (!emailTrimmed.contains("@")) {
+    return false;
+  }
+
+  final emailParts = emailTrimmed.split("@");
+  var domainOk = false;
+  var localOk = false;
+  // Check domain part first
+  for (final (i, part) in emailParts.reversed.indexed) {
+    if (i == 0) {
+      if (part.contains(".")) {
+        final domainParts = part.split(".");
+        var topLevelDomainOk = false;
+        var latestSubLevelDomainOk = false;
+        var allSubLevelDomainsOk = true;
+        // Check top level domain first
+        for (final (i, part) in domainParts.reversed.indexed) {
+          if (i == 0) {
+            topLevelDomainOk = part.runes.length >= 2;
+          } else {
+            latestSubLevelDomainOk = part.runes.isNotEmpty;
+            if (allSubLevelDomainsOk) {
+              allSubLevelDomainsOk = part.runes.isNotEmpty;
+            }
+          }
+        }
+        domainOk = topLevelDomainOk && latestSubLevelDomainOk && allSubLevelDomainsOk;
+      } else {
+        domainOk = false;
+      }
+    } else if (i == 1) {
+      localOk = part.runes.isNotEmpty;
+    } else {
+      break;
+    }
+  }
+  return domainOk && localOk;
 }
