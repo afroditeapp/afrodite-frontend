@@ -265,7 +265,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
                     color: Colors.black45,
                   )
                 ],
-                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                color: Theme.of(context).colorScheme.surfaceContainer,
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
               ),
               padding: const EdgeInsets.all(10),
@@ -309,11 +309,11 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
         height: locationSize,
         point: profileLocation,
         alignment: Alignment.topCenter,
-        child: const Icon(
+        child: Icon(
           Icons.location_on,
-          color: Colors.lightBlue,
+          color: Theme.of(context).colorScheme.onPrimaryFixedVariant,
           size: locationSize,
-          shadows: [
+          shadows: const [
             Shadow(
               blurRadius: 1.0,
               color: Colors.black,
