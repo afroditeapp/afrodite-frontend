@@ -29,18 +29,30 @@ Future<SecurityContext> createSecurityContextForBackendConnection() async {
 
 enum ImageAsset {
   appLogo(path: "assets/app-icon.png"),
-  signInWithGoogleButtonAndroid(path: "assets/sign_in_with_google_android_dark_rd_SI@4x.png"),
-  signInWithGoogleButtonIos(path: "assets/sign_in_with_google_ios_dark_rd_SI@4x.png");
+  signInWithGoogleButtonAndroidDark(path: "assets/sign_in_with_google_android_dark_rd_SI@4x.png"),
+  signInWithGoogleButtonAndroidLight(path: "assets/sign_in_with_google_android_light_rd_SI@4x.png"),
+  signInWithGoogleButtonIosDark(path: "assets/sign_in_with_google_ios_dark_rd_SI@4x.png"),
+  signInWithGoogleButtonIosLight(path: "assets/sign_in_with_google_ios_light_rd_SI@4x.png");
 
   const ImageAsset({required this.path});
 
   final String path;
 
-  static ImageAsset signInWithGoogleButtonImage() {
+  static ImageAsset signInWithGoogleButtonImageDark() {
     if (Platform.isAndroid) {
-      return signInWithGoogleButtonAndroid;
+      return signInWithGoogleButtonAndroidDark;
     } else if (Platform.isIOS) {
-      return signInWithGoogleButtonIos;
+      return signInWithGoogleButtonIosDark;
+    } else {
+      throw UnsupportedError("Unsupported platform");
+    }
+  }
+
+  static ImageAsset signInWithGoogleButtonImageLight() {
+    if (Platform.isAndroid) {
+      return signInWithGoogleButtonAndroidLight;
+    } else if (Platform.isIOS) {
+      return signInWithGoogleButtonIosLight;
     } else {
       throw UnsupportedError("Unsupported platform");
     }

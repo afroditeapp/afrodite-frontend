@@ -25,9 +25,6 @@ import "package:sign_in_with_apple/sign_in_with_apple.dart";
 import 'package:pihka_frontend/localizations.dart';
 import "package:url_launcher/url_launcher_string.dart";
 
-// TODO(prod): Use SVG for sign in with google button
-// TODO(prod): Sign in with buttons dark theme support
-
 // TODO(prod): Show progress when sign in with google/apple returns and
 // connecting to server starts
 
@@ -192,18 +189,33 @@ Widget secondSignInButton(BuildContext context) {
 }
 
 Widget signInWithAppleButton(BuildContext context) {
+  final SignInWithAppleButtonStyle style;
+  if (Theme.of(context).brightness == Brightness.light) {
+    style = SignInWithAppleButtonStyle.black;
+  } else {
+    style = SignInWithAppleButtonStyle.white;
+  }
+
   return SignInWithAppleButton(
     onPressed: () =>
       context.read<SignInWithBloc>().add(SignInWithAppleEvent()),
     borderRadius: const BorderRadius.all(Radius.circular(24.0)),
     height: BUTTON_HEIGHT,
+    style: style,
   );
 }
 
 Widget signInWithGoogleButton(BuildContext context) {
+  final String iconPath;
+  if (Theme.of(context).brightness == Brightness.light) {
+    iconPath = ImageAsset.signInWithGoogleButtonImageDark().path;
+  } else {
+    iconPath = ImageAsset.signInWithGoogleButtonImageLight().path;
+  }
+
   return IconButton(
     icon: Image.asset(
-      ImageAsset.signInWithGoogleButtonImage().path,
+      iconPath,
       width: null,
       height: BUTTON_HEIGHT,
     ),

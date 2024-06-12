@@ -159,7 +159,9 @@ flutter:
   assets:
     - assets/app-icon.png
     - assets/sign_in_with_google_android_dark_rd_SI@4x.png
+    - assets/sign_in_with_google_android_light_rd_SI@4x.png
     - assets/sign_in_with_google_ios_dark_rd_SI@4x.png
+    - assets/sign_in_with_google_ios_light_rd_SI@4x.png
     - assets/isrg-root-x1-and-x2.pem
 
   # For intl translations
