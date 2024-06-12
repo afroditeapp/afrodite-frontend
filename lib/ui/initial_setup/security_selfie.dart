@@ -103,10 +103,10 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Expanded(
+          Expanded(
             child: Align(
               alignment: Alignment.bottomRight,
-              child: Icon(Icons.person, size: 150.0, color: Colors.black45)
+              child: Icon(Icons.person, size: 150.0, color: Theme.of(context).colorScheme.primary)
             ),
           ),
           Expanded(
