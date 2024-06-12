@@ -332,6 +332,9 @@ class GlobalInitManager {
   final PublishSubject<void> _startInit = PublishSubject();
   bool _globalInitDone = false;
 
+  final BehaviorSubject<bool> _globalInitCompleted = BehaviorSubject.seeded(false);
+  Stream<bool> get globalInitCompletedStream => _globalInitCompleted.stream;
+
   /// Run this in app main function.
   Future<void> init() async {
     _startInit.stream
@@ -366,9 +369,10 @@ class GlobalInitManager {
     // Initializes formatting for other locales as well
     await initializeDateFormatting("en_US", null);
 
-    // Connect to server last to make sure that all events from
-    // server are handled.
-    await ApiManager.getInstance().restart();
+    // Foreground connection on/off logic starts the connection, so
+    // no connection starting is needed here.
+
+    _globalInitCompleted.add(true);
   }
 
   /// Global init should be triggerred after when splash screen

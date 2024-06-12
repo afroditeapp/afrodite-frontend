@@ -141,7 +141,6 @@ class ServerConnection {
   String _address;
 
   WebSocket? _connection;
-  ConnectionProtocolState _protocolState = ConnectionProtocolState.receiveNewRefreshToken;
 
   final BehaviorSubject<ServerConnectionState> _state =
     BehaviorSubject.seeded(ReadyToConnect());
@@ -153,16 +152,23 @@ class ServerConnection {
 
   StreamSubscription<NavigatorStateData>? _navigationSubscription;
 
+  bool _startInProgress = false;
+
   ServerConnection(this._server, this._address);
 
   /// Starts new connection if it does not already exists.
   Future<void> start() async {
+    if (_startInProgress) {
+      log.warning("Connection start already in progress");
+      return;
+    }
+    _startInProgress = true;
+
     await close();
     await _state.firstWhere((v) => _state.value is ReadyToConnect || _state.value is Error);
     // Connection is now closed
 
     _state.add(Connecting());
-    _protocolState = ConnectionProtocolState.receiveNewRefreshToken;
     unawaited(_connect().then((value) => null)); // Connect in background.
 
     _navigationSubscription ??= NavigationStateBlocInstance.getInstance().bloc.stream.listen((navigationState) {
@@ -171,10 +177,14 @@ class ServerConnection {
         updatePingInterval(ws, navigationState);
       }
     });
+
+    _startInProgress = false;
   }
 
   Future<void> _connect() async {
     log.info("Starting to connect");
+
+    var protocolState = ConnectionProtocolState.receiveNewRefreshToken;
 
     final storage = DatabaseManager.getInstance();
 
@@ -238,12 +248,12 @@ class ServerConnection {
     ws
       .stream
       .asyncMap((message) async {
-        switch (_protocolState) {
+        switch (protocolState) {
           case ConnectionProtocolState.receiveNewRefreshToken: {
             if (message is List<int>) {
               final newRefreshToken = base64Encode(message);
               await storage.accountAction(_server.setterForRefreshTokenKey(newRefreshToken));
-              _protocolState = ConnectionProtocolState.receiveNewAccessToken;
+              protocolState = ConnectionProtocolState.receiveNewAccessToken;
             } else if (message is String) {
               await _endConnectionToGeneralError(error: ServerConnectionError.unsupportedClientVersion);
             } else {
@@ -254,7 +264,7 @@ class ServerConnection {
             if (message is String) {
               await storage.accountAction(_server.setterForAccessTokenKey(message));
               ws.sink.add(await syncDataBytes());
-              _protocolState = ConnectionProtocolState.receiveEvents;
+              protocolState = ConnectionProtocolState.receiveEvents;
               log.info("Connection ready");
               _state.add(Ready());
             } else {

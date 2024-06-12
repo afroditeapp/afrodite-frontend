@@ -16,6 +16,7 @@ import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/logic/app/app_visibility_provider.dart';
+import 'package:pihka_frontend/main.dart';
 import 'package:pihka_frontend/secrets.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
@@ -39,8 +40,6 @@ enum LoginRepositoryState {
 
 // TODO: Check didRequestAppExit, onDetach and end of main function. Could
 // any be used to quit connection to server and close databases.
-
-// TODO: Test Rust for image encryption and decryption.
 
 class LoginRepository extends DataRepository {
   LoginRepository._private();
@@ -139,11 +138,16 @@ class LoginRepository extends DataRepository {
     AppVisibilityProvider.getInstance()
       .isForegroundStream
       .asyncMap((isForeground) async {
+        await GlobalInitManager.getInstance()
+          .globalInitCompletedStream
+          .firstWhere((initCompleted) => initCompleted);
+
         if (!isForeground) {
           return;
         }
         if (await accountId.firstOrNull == null) {
           // Not logged in
+          return;
         }
         final state = await ApiManager.getInstance().state.firstOrNull;
         if (state == ApiManagerState.noConnection) {
@@ -157,11 +161,16 @@ class LoginRepository extends DataRepository {
       .isForegroundStream
       .debounceTime(const Duration(seconds: 10))
       .asyncMap((isForeground) async {
+        await GlobalInitManager.getInstance()
+          .globalInitCompletedStream
+          .firstWhere((initCompleted) => initCompleted);
+
         if (isForeground) {
           return;
         }
         if (await accountId.firstOrNull == null) {
           // Not logged in
+          return;
         }
         await ApiManager.getInstance().close();
       })
