@@ -1,11 +1,12 @@
 import "package:flutter/material.dart";
-import "package:pihka_frontend/ui_utils/root_screen.dart";
 
-class AccountBannedScreen extends RootScreen {
+// TODO(prod): Translate text
+
+class AccountBannedScreen extends StatelessWidget {
   const AccountBannedScreen({Key? key}) : super(key: key);
 
   @override
-  Widget buildRootWidget(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
           child: Column(

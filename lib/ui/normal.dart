@@ -23,23 +23,13 @@ import "package:pihka_frontend/ui/normal/settings.dart";
 import "package:pihka_frontend/ui/normal/settings/my_profile.dart";
 import "package:pihka_frontend/ui/utils/notification_payload_handler.dart";
 import "package:pihka_frontend/ui_utils/profile_thumbnail_image.dart";
-import "package:pihka_frontend/ui_utils/root_screen.dart";
 
-class NormalStateScreen extends RootScreen {
+class NormalStateScreen extends StatelessWidget {
   const NormalStateScreen({Key? key}) : super(key: key);
 
   @override
-  void runOnceBeforeNavigatedTo(BuildContext context) {
-    // Init ProfileAttributesBloc here to avoid quick progress screen
-    // displaying when opening view profile or view my profile screen.
-    context.read<ProfileAttributesBloc>();
-    // Init MyProfileBloc here to avoid profile image fade in effect.
-    context.read<MyProfileBloc>();
-  }
-
-  @override
-  Widget buildRootWidget(BuildContext context) {
-    return const NormalStateContent();
+  Widget build(BuildContext context) {
+    return const NormalStateInitializer();
   }
 }
 
@@ -58,14 +48,41 @@ BottomNavigationScreenId numberToScreen(int value) {
   }
 }
 
+class NormalStateInitializer extends StatefulWidget {
+  const NormalStateInitializer({super.key});
+
+  @override
+  State<NormalStateInitializer> createState() => _NormalStateInitializerState();
+}
+
+class _NormalStateInitializerState extends State<NormalStateInitializer> {
+  @override
+  Widget build(BuildContext context) {
+    return NormalStateContent(
+      // Init ProfileAttributesBloc here to avoid quick progress screen
+      // displaying when opening view profile or view my profile screen.
+      profileAttributesBloc: context.read<ProfileAttributesBloc>(),
+      // Init MyProfileBloc here to avoid profile image fade in effect.
+      myProfileBloc: context.read<MyProfileBloc>(),
+    );
+  }
+}
+
 class NormalStateContent extends StatefulWidget {
-  const NormalStateContent({Key? key}) : super(key: key);
+  final ProfileAttributesBloc profileAttributesBloc;
+  final MyProfileBloc myProfileBloc;
+  const NormalStateContent({
+    required this.profileAttributesBloc,
+    required this.myProfileBloc,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<NormalStateContent> createState() => _NormalStateContentState();
 }
 
 class _NormalStateContentState extends State<NormalStateContent> {
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavigationStateBloc, BottomNavigationStateData>(

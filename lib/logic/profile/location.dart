@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
@@ -17,6 +19,8 @@ class NewLocation extends LocationEvent {
 class LocationBloc extends Bloc<LocationEvent, Location?> with ActionRunner {
   final ProfileRepository profile = ProfileRepository.getInstance();
 
+  StreamSubscription<Location?>? _locationSubscription;
+
   LocationBloc() : super(null) {
     on<SetLocation>((data, emit) async {
       await ProfileRepository.getInstance().updateLocation(data.location);
@@ -25,6 +29,14 @@ class LocationBloc extends Bloc<LocationEvent, Location?> with ActionRunner {
       emit(data.location);
     });
 
-    ProfileRepository.getInstance().location.listen((value) => add(NewLocation(value)));
+    _locationSubscription = ProfileRepository.getInstance()
+      .location
+      .listen((value) => add(NewLocation(value)));
+  }
+
+  @override
+  Future<void> close() async {
+    await _locationSubscription?.cancel();
+    await super.close();
   }
 }

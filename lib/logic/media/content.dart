@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
@@ -34,6 +36,11 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> {
   final DatabaseManager db = DatabaseManager.getInstance();
   final MediaRepository media = MediaRepository.getInstance();
 
+  StreamSubscription<CurrentProfileContent?>? _publicContentSubscription;
+  StreamSubscription<ContentId?>? _securityContentSubscription;
+  StreamSubscription<PendingProfileContentInternal?>? _pendingContentSubscription;
+  StreamSubscription<ContentId?>? _pendingSecurityContentSubscription;
+
   ContentBloc() : super(ContentData()) {
     on<NewPublicContent>((data, emit) {
       emit(state.copyWith(
@@ -56,17 +63,26 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> {
       ));
     });
 
-    db.accountStream((db) => db.daoCurrentContent.watchCurrentProfileContent()).listen((event) {
+    _publicContentSubscription = db.accountStream((db) => db.daoCurrentContent.watchCurrentProfileContent()).listen((event) {
       add(NewPublicContent(event));
     });
-    db.accountStream((db) => db.daoCurrentContent.watchCurrentSecurityContent()).listen((event) {
+    _securityContentSubscription = db.accountStream((db) => db.daoCurrentContent.watchCurrentSecurityContent()).listen((event) {
       add(NewSecurityContent(event));
     });
-    db.accountStream((db) => db.daoPendingContent.watchPendingProfileContent()).listen((event) {
+    _pendingContentSubscription = db.accountStream((db) => db.daoPendingContent.watchPendingProfileContent()).listen((event) {
       add(NewPendingContent(event));
     });
-    db.accountStream((db) => db.daoPendingContent.watchPendingSecurityContent()).listen((event) {
+    _pendingSecurityContentSubscription = db.accountStream((db) => db.daoPendingContent.watchPendingSecurityContent()).listen((event) {
       add(NewPendingSecurityContent(event));
     });
+  }
+
+  @override
+  Future<void> close() async {
+    await _publicContentSubscription?.cancel();
+    await _securityContentSubscription?.cancel();
+    await _pendingContentSubscription?.cancel();
+    await _pendingSecurityContentSubscription?.cancel();
+    await super.close();
   }
 }

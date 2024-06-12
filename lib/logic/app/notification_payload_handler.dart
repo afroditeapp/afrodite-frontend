@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/data/general/notification/utils/notification_payload.dart";
 import "package:pihka_frontend/data/notification_manager.dart";
@@ -25,6 +27,9 @@ class AddNewPayload extends NotificationPayloadHandlerEvent {
 }
 
 class NotificationPayloadHandlerBloc extends Bloc<NotificationPayloadHandlerEvent, NotificationPayloadHandlerData> {
+
+  StreamSubscription<NotificationPayload>? _payloadSubscription;
+
   NotificationPayloadHandlerBloc() : super(NotificationPayloadHandlerData()) {
     on<HandleFirstPayload>((data, emit) async {
       NotificationPayload? firstPayload;
@@ -51,8 +56,14 @@ class NotificationPayloadHandlerBloc extends Bloc<NotificationPayloadHandlerEven
       ));
     });
 
-    NotificationManager.getInstance().onReceivedPayload.listen((state) {
+    _payloadSubscription = NotificationManager.getInstance().onReceivedPayload.listen((state) {
       add(AddNewPayload(state));
     });
+  }
+
+  @override
+  Future<void> close() async {
+    await _payloadSubscription?.cancel();
+    await super.close();
   }
 }

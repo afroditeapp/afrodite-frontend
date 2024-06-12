@@ -1,20 +1,24 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/logic/server/address.dart";
-import "package:pihka_frontend/ui_utils/root_screen.dart";
 
 import 'package:pihka_frontend/localizations.dart';
 
 const commonPadding = 5.0;
 
-class LoginScreenOld extends RootScreen {
-  LoginScreenOld({Key? key}) : super(key: key);
+class LoginScreenOld extends StatefulWidget {
+  const LoginScreenOld({Key? key}) : super(key: key);
 
+  @override
+  State<LoginScreenOld> createState() => _LoginScreenOldState();
+}
+
+class _LoginScreenOldState extends State<LoginScreenOld> {
   final _serverAddressController = TextEditingController();
   final _serverAddressFormKey = GlobalKey<FormState>();
 
   @override
-  Widget buildRootWidget(BuildContext context) {
+  Widget build(BuildContext context) {
     final loginPageWidgets = <Widget>[
       Text(context.strings.app_name),
       ServerAddressField(_serverAddressFormKey, _serverAddressController),

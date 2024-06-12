@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
@@ -17,6 +19,8 @@ class RefreshAttributesIfNeeded extends AttributesEvent {}
 
 class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with ActionRunner {
   final ProfileRepository profile = ProfileRepository.getInstance();
+
+  StreamSubscription<AvailableProfileAttributes?>? _attributesSubscription;
 
   ProfileAttributesBloc() : super(AttributesData()) {
     on<NewAttributes>((data, emit) async {
@@ -39,6 +43,12 @@ class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with A
       }
     });
 
-    ProfileRepository.getInstance().profileAttributes.listen((value) => add(NewAttributes(value)));
+    _attributesSubscription = ProfileRepository.getInstance().profileAttributes.listen((value) => add(NewAttributes(value)));
+  }
+
+  @override
+  Future<void> close() async {
+    await _attributesSubscription?.cancel();
+    await super.close();
   }
 }

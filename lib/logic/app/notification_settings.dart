@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/data/notification_manager.dart";
 import "package:pihka_frontend/database/background_database_manager.dart";
@@ -25,6 +27,10 @@ class NewValueModerationRequestState extends NotificationSettingsEvent {
 class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, NotificationSettingsData> {
   final db = BackgroundDatabaseManager.getInstance();
 
+  StreamSubscription<bool?>? _messagesSubscription;
+  StreamSubscription<bool?>? _likesSubscription;
+  StreamSubscription<bool?>? _moderationRequestStatusSubscription;
+
   NotificationSettingsBloc() : super(NotificationSettingsData()) {
     on<ReloadNotificationsEnabledStatus>((data, emit) async {
       final notificationsEnabled = await NotificationManager.getInstance().areNotificationsEnabled();
@@ -49,20 +55,28 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
       emit(state.copyWith(categoryEnabledModerationRequestStatus: data.value))
     );
 
-    db
+    _messagesSubscription = db
       .accountStream((db) => db.daoLocalNotificationSettings.watchMessages())
       .listen((state) {
         add(NewValueMessages(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });
-    db
+    _likesSubscription = db
       .accountStream((db) => db.daoLocalNotificationSettings.watchLikes())
       .listen((state) {
         add(NewValueLikes(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });
-    db
+    _moderationRequestStatusSubscription = db
       .accountStream((db) => db.daoLocalNotificationSettings.watchModerationRequestStatus())
       .listen((state) {
         add(NewValueModerationRequestState(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });
+  }
+
+  @override
+  Future<void> close() async {
+    await _messagesSubscription?.cancel();
+    await _likesSubscription?.cancel();
+    await _moderationRequestStatusSubscription?.cancel();
+    await super.close();
   }
 }

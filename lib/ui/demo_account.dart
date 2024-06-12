@@ -5,24 +5,38 @@ import "package:logging/logging.dart";
 import "package:pihka_frontend/logic/account/demo_account.dart";
 import "package:pihka_frontend/model/freezed/logic/account/demo_account.dart";
 import "package:pihka_frontend/ui_utils/dialog.dart";
-import "package:pihka_frontend/ui_utils/root_screen.dart";
 import "package:pihka_frontend/ui_utils/app_bar/common_actions.dart";
 import "package:pihka_frontend/ui_utils/app_bar/menu_actions.dart";
 import 'package:pihka_frontend/localizations.dart';
 
 var log = Logger("DemoAccountScreen");
 
-class DemoAccountScreen extends RootScreen {
-  const DemoAccountScreen({Key? key}) : super(key: key);
+class DemoAccountScreen extends StatelessWidget {
+  const DemoAccountScreen({super.key});
 
   @override
-  void runOnceBeforeNavigatedTo(BuildContext context) {
-    log.info("runOnceBeforeNavigatedTo: DemoAccountScreen");
-    context.read<DemoAccountBloc>().add(DoDemoAccountRefreshAccountList());
+  Widget build(BuildContext context) {
+    return DemoAccountScreenContent(bloc: context.read<DemoAccountBloc>());
+  }
+}
+
+class DemoAccountScreenContent extends StatefulWidget {
+  final DemoAccountBloc bloc;
+  const DemoAccountScreenContent({required this.bloc, super.key});
+
+  @override
+  State<DemoAccountScreenContent> createState() => _DemoAccountScreenContentState();
+}
+
+class _DemoAccountScreenContentState extends State<DemoAccountScreenContent> {
+  @override
+  void initState() {
+    super.initState();
+    widget.bloc.add(DoDemoAccountRefreshAccountList());
   }
 
   @override
-  Widget buildRootWidget(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: content(context),
       resizeToAvoidBottomInset: false,

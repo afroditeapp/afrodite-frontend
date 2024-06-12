@@ -1,13 +1,14 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/logic/app/main_state.dart";
-import "package:pihka_frontend/ui_utils/root_screen.dart";
 
-class PendingDeletionPage extends RootScreen {
+// TODO(prod): Translate text
+
+class PendingDeletionPage extends StatelessWidget {
   const PendingDeletionPage({Key? key}) : super(key: key);
 
   @override
-  Widget buildRootWidget(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
           child: Column(

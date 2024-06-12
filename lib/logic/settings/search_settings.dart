@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
@@ -38,6 +40,10 @@ class SaveSearchSettings extends SearchSettingsEvent {
 class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> with ActionRunner {
   final ProfileRepository profile = ProfileRepository.getInstance();
   final db = DatabaseManager.getInstance();
+
+  StreamSubscription<int?>? _minAgeSubscription;
+  StreamSubscription<int?>? _maxAgeSubscription;
+  StreamSubscription<SearchGroups?>? _searchGroupsSubscription;
 
   SearchSettingsBloc() : super(SearchSettingsData()) {
     on<SaveSearchSettings>((data, emit) async {
@@ -85,14 +91,22 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
       emit(state.copyWith(searchGroups: data.value));
     });
 
-    db.accountStream((db) => db.daoProfileSettings.watchProfileSearchAgeRangeMin()).listen((event) {
+    _minAgeSubscription = db.accountStream((db) => db.daoProfileSettings.watchProfileSearchAgeRangeMin()).listen((event) {
       add(NewMinAge(event));
     });
-    db.accountStream((db) => db.daoProfileSettings.watchProfileSearchAgeRangeMax()).listen((event) {
+    _maxAgeSubscription = db.accountStream((db) => db.daoProfileSettings.watchProfileSearchAgeRangeMax()).listen((event) {
       add(NewMaxAge(event));
     });
-    db.accountStream((db) => db.daoProfileSettings.watchSearchGroups()).listen((event) {
+    _searchGroupsSubscription = db.accountStream((db) => db.daoProfileSettings.watchSearchGroups()).listen((event) {
       add(NewSearchGroups(event));
     });
+  }
+
+  @override
+  Future<void> close() async {
+    await _minAgeSubscription?.cancel();
+    await _maxAgeSubscription?.cancel();
+    await _searchGroupsSubscription?.cancel();
+    await super.close();
   }
 }

@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
@@ -37,6 +39,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
   final LoginRepository login = LoginRepository.getInstance();
   final DatabaseManager db = DatabaseManager.getInstance();
 
+  StreamSubscription<AccountId?>? _accountIdSubscription;
+  StreamSubscription<Capabilities>? _capabilitiesSubscription;
+  StreamSubscription<ProfileVisibility>? _profileVisibilitySubscription;
+  StreamSubscription<AccountState?>? _accountStateSubscription;
+  StreamSubscription<String?>? _emailAddressSubscription;
+
   AccountBloc() :
     super(AccountBlocData(
       capabilities: Capabilities(),
@@ -63,20 +71,30 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
       emit(state.copyWith(email: key.value));
     });
 
-    login.accountId.listen((event) {
+    _accountIdSubscription = login.accountId.listen((event) {
       add(NewAccountIdValue(event));
     });
-    account.capabilities.listen((event) {
+    _capabilitiesSubscription = account.capabilities.listen((event) {
       add(NewCapabilitiesValue(event));
     });
-    account.profileVisibility.listen((event) {
+    _profileVisibilitySubscription = account.profileVisibility.listen((event) {
       add(NewProfileVisibilityValue(event));
     });
-    account.accountState.listen((event) {
+    _accountStateSubscription = account.accountState.listen((event) {
       add(NewAccountStateValue(event));
     });
-    db.accountStream((db) => db.daoAccountSettings.watchEmailAddress()).listen((event) {
+    _emailAddressSubscription = db.accountStream((db) => db.daoAccountSettings.watchEmailAddress()).listen((event) {
       add(NewEmailAddressValue(event));
     });
+  }
+
+  @override
+  Future<void> close() async {
+    await _accountIdSubscription?.cancel();
+    await _capabilitiesSubscription?.cancel();
+    await _profileVisibilitySubscription?.cancel();
+    await _accountStateSubscription?.cancel();
+    await _emailAddressSubscription?.cancel();
+    await super.close();
   }
 }

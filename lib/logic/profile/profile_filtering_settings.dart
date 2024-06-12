@@ -1,4 +1,6 @@
 
+import "dart:async";
+
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
@@ -31,6 +33,9 @@ class NewProfileAttributeFilters extends ProfileFilteringSettingsEvent {
 class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, ProfileFilteringSettingsData> with ActionRunner {
   final ProfileRepository profile = ProfileRepository.getInstance();
   final db = DatabaseManager.getInstance();
+
+  StreamSubscription<bool?>? _filterFavoritesSubscription;
+  StreamSubscription<ProfileAttributeFilterList?>? _attributeFiltersSubscription;
 
   ProfileFilteringSettingsBloc() : super(ProfileFilteringSettingsData()) {
     on<SaveNewFilterSettings>((data, emit) async {
@@ -73,11 +78,18 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
       emit(state.copyWith(attributeFilters: data.value));
     });
 
-    db.accountStream((db) => db.watchProfileFilterFavorites()).listen((event) {
+    _filterFavoritesSubscription = db.accountStream((db) => db.watchProfileFilterFavorites()).listen((event) {
       add(NewFilterFavoriteProfilesValue(event ?? false));
     });
-    db.accountStream((db) => db.daoProfileSettings.watchProfileAttributeFilters()).listen((event) {
+    _attributeFiltersSubscription = db.accountStream((db) => db.daoProfileSettings.watchProfileAttributeFilters()).listen((event) {
       add(NewProfileAttributeFilters(event));
     });
+  }
+
+  @override
+  Future<void> close() async {
+    await _filterFavoritesSubscription?.cancel();
+    await _attributeFiltersSubscription?.cancel();
+    await super.close();
   }
 }

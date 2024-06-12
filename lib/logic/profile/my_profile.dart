@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/media_repository.dart";
@@ -30,6 +32,8 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
   final ProfileRepository profile = ProfileRepository.getInstance();
   final MediaRepository media = MediaRepository.getInstance();
   final db = DatabaseManager.getInstance();
+
+  StreamSubscription<ProfileEntry?>? _profileSubscription;
 
   MyProfileBloc() : super(MyProfileData()) {
     on<SetProfile>((data, emit) async {
@@ -111,8 +115,14 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
       });
     });
 
-    db.accountStream((db) => db.getProfileEntryForMyProfile()).listen((event) {
+    _profileSubscription = db.accountStream((db) => db.getProfileEntryForMyProfile()).listen((event) {
       add(NewMyProfile(event));
     });
+  }
+
+  @override
+  Future<void> close() async {
+    await _profileSubscription?.cancel();
+    await super.close();
   }
 }

@@ -1,13 +1,12 @@
 import "package:flutter/material.dart";
 import "package:pihka_frontend/assets.dart";
 import "package:pihka_frontend/main.dart";
-import "package:pihka_frontend/ui_utils/root_screen.dart";
 
-class SplashScreen extends RootScreen {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  Widget buildRootWidget(BuildContext context) {
+  Widget build(BuildContext context) {
     const appIconSize = 100.0;
     return Scaffold(
         body: Center(

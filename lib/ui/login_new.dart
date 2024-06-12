@@ -15,7 +15,6 @@ import "package:pihka_frontend/model/freezed/logic/sign_in_with.dart";
 import "package:pihka_frontend/ui/login.dart";
 import "package:pihka_frontend/ui_utils/consts/colors.dart";
 import "package:pihka_frontend/ui_utils/loading_dialog.dart";
-import "package:pihka_frontend/ui_utils/root_screen.dart";
 import "package:pihka_frontend/ui_utils/app_bar/common_actions.dart";
 import "package:pihka_frontend/ui_utils/app_bar/menu_actions.dart";
 import "package:pihka_frontend/ui_utils/text_field.dart";
@@ -29,11 +28,11 @@ import "package:url_launcher/url_launcher_string.dart";
 // TODO(prod): Show progress when sign in with google/apple returns and
 // connecting to server starts
 
-class LoginScreen extends RootScreen {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  Widget buildRootWidget(BuildContext context) {
+  Widget build(BuildContext context) {
     // Init AccountBloc so that the initial setup UI does not change from
     // text field to only text when sign in with login is used.
     context.read<AccountBloc>();

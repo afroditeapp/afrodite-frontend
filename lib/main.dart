@@ -22,34 +22,12 @@ import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
-import 'package:pihka_frontend/logic/account/account_details.dart';
 import 'package:pihka_frontend/logic/account/demo_account.dart';
-import 'package:pihka_frontend/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
-import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/logic/app/notification_payload_handler.dart';
-import 'package:pihka_frontend/logic/app/notification_permission.dart';
-import 'package:pihka_frontend/logic/app/notification_settings.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/logic/chat/message_renderer_bloc.dart';
-import 'package:pihka_frontend/logic/media/content.dart';
-import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
-import 'package:pihka_frontend/logic/media/image_processing.dart';
-import 'package:pihka_frontend/logic/media/new_moderation_request.dart';
-import 'package:pihka_frontend/logic/media/profile_pictures.dart';
-import 'package:pihka_frontend/logic/media/select_content.dart';
-import 'package:pihka_frontend/logic/profile/attributes.dart';
-import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
-import 'package:pihka_frontend/logic/profile/edit_profile_filtering_settings.dart';
-import 'package:pihka_frontend/logic/profile/location.dart';
-import 'package:pihka_frontend/logic/profile/my_profile.dart';
-import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/logic/server/address.dart';
-import 'package:pihka_frontend/logic/settings/blocked_profiles.dart';
-import 'package:pihka_frontend/logic/settings/edit_search_settings.dart';
-import 'package:pihka_frontend/logic/settings/search_settings.dart';
-import 'package:pihka_frontend/logic/settings/privacy_settings.dart';
 import 'package:pihka_frontend/logic/sign_in_with.dart';
 
 import 'package:pihka_frontend/logic/app/main_state.dart';
@@ -60,22 +38,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:pihka_frontend/ui/utils/app_lifecycle_handler.dart';
+import 'package:pihka_frontend/ui/utils/main_state_ui_logic.dart';
 import 'package:pihka_frontend/utils/camera.dart';
 
 import 'package:rxdart/rxdart.dart';
 
 final log = Logger("main");
 
-// TODO: what blocs store state that needs to be cleared on logout?
-// Initial setup?
-// Change BlocProviders containing account specific data to root of normal
-// state screen. This way those will be cleared on logout and other
-// state changes.
-
 // TODO(prod): Admin moderate images does not make 1 pixel images
 //             to fill the UI area.
-// TODO(prod): The chat has some issue that latest message can be visible
-//             multiple times.
 // TODO(prod): Client does not detect when remote server websocket connection
 //             breaks. Perhaps reset websocket connection if API returns
 //             HTTP unauthorized error? The server side must send some message
@@ -129,47 +100,15 @@ Future<void> main() async {
         // Navigation
         BlocProvider.value(value: NavigationStateBlocInstance.getInstance().bloc),
         BlocProvider.value(value: BottomNavigationStateBlocInstance.getInstance().bloc),
-
-        // General
         BlocProvider(create: (_) => MainStateBloc()),
-        BlocProvider(create: (_) => DemoAccountBloc()),
-        BlocProvider(create: (_) => InitialSetupBloc()),
-        BlocProvider(create: (_) => ServerAddressBloc()),
-        BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
-        BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
-        BlocProvider(create: (_) => NotificationPermissionBloc()),
-        BlocProvider(create: (_) => NotificationPayloadHandlerBloc()),
-        BlocProvider(create: (_) => ProfileAttributesBloc()),
-
-        // Main UI
-        BlocProvider(create: (_) => LikeGridInstanceManagerBloc()),
-
-        // Account data
-        BlocProvider(create: (_) => AccountBloc()),
-        BlocProvider(create: (_) => ContentBloc()),
-        BlocProvider(create: (_) => LocationBloc()),
-        BlocProvider(create: (_) => MyProfileBloc()),
-        BlocProvider(create: (_) => AccountDetailsBloc()),
-        BlocProvider(create: (_) => ProfileFilteringSettingsBloc()),
-
-        // Settings
-        BlocProvider(create: (_) => EditMyProfileBloc()),
-        BlocProvider(create: (_) => EditProfileFilteringSettingsBloc()),
-        BlocProvider(create: (_) => CurrentModerationRequestBloc()),
-        BlocProvider(create: (_) => SelectContentBloc()),
-        BlocProvider(create: (_) => NewModerationRequestBloc()),
-        BlocProvider(create: (_) => ProfilePicturesBloc()),
-        BlocProvider(create: (_) => PrivacySettingsBloc()),
-        BlocProvider(create: (_) => BlockedProfilesBloc()),
-        BlocProvider(create: (_) => SearchSettingsBloc()),
-        BlocProvider(create: (_) => EditSearchSettingsBloc()),
-        BlocProvider(create: (_) => NotificationSettingsBloc()),
 
         // Login
+        BlocProvider(create: (_) => DemoAccountBloc()),
+        BlocProvider(create: (_) => ServerAddressBloc()),
         BlocProvider(create: (_) => SignInWithBloc()),
 
-        // Admin features related blocs
-        // empty
+        // Login, initial setup and account
+        BlocProvider(create: (_) => AccountBloc()),
       ],
       child: const MyApp(),
     )
@@ -196,7 +135,9 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       home: GlobalLocalizationsInitializer(
         child: AppLifecycleHandler(
-          child: AppNavigator(),
+          child: MainStateUiLogic(
+            child: AppNavigator()
+          ),
         ),
       ),
       scaffoldMessengerKey: globalScaffoldMessengerKey,
