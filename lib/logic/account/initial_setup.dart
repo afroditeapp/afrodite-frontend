@@ -16,6 +16,7 @@ import "package:pihka_frontend/model/freezed/logic/media/image_processing.dart";
 import "package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
+import "package:pihka_frontend/utils/age.dart";
 import "package:pihka_frontend/utils/immutable_list.dart";
 import "package:pihka_frontend/utils/tmp_dir.dart";
 
@@ -41,6 +42,7 @@ class SetInitialLetter extends InitialSetupEvent {
   final String initial;
   SetInitialLetter(this.initial);
 }
+class CalculateSuggestedProfileAge extends InitialSetupEvent {}
 class SetProfileAge extends InitialSetupEvent {
   final int? age;
   SetProfileAge(this.age);
@@ -120,6 +122,14 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
       emit(state.copyWith(
         profileInitial: data.initial,
       ));
+    });
+    on<CalculateSuggestedProfileAge>((data, emit) {
+      final birthdate = state.birthdate;
+      if (state.profileAge == null && birthdate != null) {
+        emit(state.copyWith(
+          profileAge: ageInYearsFromBirthdate(birthdate),
+        ));
+      }
     });
     on<SetProfileAge>((data, emit) {
       emit(state.copyWith(
