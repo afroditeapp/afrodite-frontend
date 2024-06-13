@@ -130,7 +130,14 @@ class PushNotificationManager extends AppSingleton {
   Future<void> logoutPushNotifications() async {
     await _tokenSubscription?.cancel();
     if (_firebaseApp != null) {
-      await FirebaseMessaging.instance.deleteToken();
+      try {
+        // On iOS this seems to throw exception about APNS token
+        // at least when APNS is not configured.
+        await FirebaseMessaging.instance.deleteToken();
+      } catch (e) {
+        log.error("Failed to delete FCM token");
+        log.finest("Exception: $e");
+      }
     }
     // TODO(prod): Make sure that server unassociates this FCM token with the user
   }
