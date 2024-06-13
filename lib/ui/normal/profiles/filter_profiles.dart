@@ -15,6 +15,8 @@ import 'package:pihka_frontend/ui/normal/profiles/edit_profile_attribute_filter.
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
+import 'package:pihka_frontend/ui_utils/consts/padding.dart';
+import 'package:pihka_frontend/ui_utils/dialog.dart';
 
 class ProfileFilteringSettingsPage extends StatefulWidget {
   final PageKey pageKey;
@@ -33,11 +35,13 @@ class ProfileFilteringSettingsPage extends StatefulWidget {
 
 class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsPage> {
 
+  late final List<ProfileAttributeFilterValueUpdate> initialFilters;
+
   @override
   void initState() {
     super.initState();
 
-    final attributesFilters = widget.profileFilteringSettingsBloc.state.attributeFilters?.filters.map((e) => ProfileAttributeFilterValueUpdate(
+    initialFilters = widget.profileFilteringSettingsBloc.state.attributeFilters?.filters.map((e) => ProfileAttributeFilterValueUpdate(
       acceptMissingAttribute: e.acceptMissingAttribute,
       filterPart1: e.filterPart1,
       filterPart2: e.filterPart2,
@@ -46,49 +50,102 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
 
     widget.editProfileFilteringSettingsBloc.add(ResetStateWith(
       widget.profileFilteringSettingsBloc.state.showOnlyFavorites,
-      attributesFilters,
+      initialFilters,
     ));
   }
 
-  void validateAndSaveData(BuildContext context) {
+  void saveData(BuildContext context) {
     widget.profileFilteringSettingsBloc.add(SaveNewFilterSettings(
       widget.editProfileFilteringSettingsBloc.state.showOnlyFavorites,
       widget.editProfileFilteringSettingsBloc.state.attributeFilters.toList(),
     ));
   }
 
+  bool areSettingsChanged(EditProfileFilteringSettingsData editedSettings) {
+    if (widget.profileFilteringSettingsBloc.state.showOnlyFavorites != editedSettings.showOnlyFavorites) {
+      return true;
+    }
+
+    for (final editedFilter in editedSettings.attributeFilters) {
+      final currentFilterOrNull = initialFilters.where((e) => e.id == editedFilter.id).firstOrNull;
+      final ProfileAttributeFilterValueUpdate currentFilter;
+      if (currentFilterOrNull == null) {
+        currentFilter = ProfileAttributeFilterValueUpdate(
+          acceptMissingAttribute: null,
+          filterPart1: null,
+          filterPart2: null,
+          id: editedFilter.id,
+        );
+      } else {
+        currentFilter = currentFilterOrNull;
+      }
+      if (
+        (currentFilter.acceptMissingAttribute ?? false) != (editedFilter.acceptMissingAttribute ?? false) ||
+        (currentFilter.filterPart1 ?? 0) != (editedFilter.filterPart1 ?? 0) ||
+        (currentFilter.filterPart2 ?? 0) != (editedFilter.filterPart2 ?? 0)
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) {
-        if (didPop) {
-          return;
-        }
-        validateAndSaveData(context);
-      },
-      child: Scaffold(
-        appBar: AppBar(title: Text(context.strings.profile_filtering_settings_screen_title)),
-        body: BlocListener<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-          listenWhen: (previous, current) => previous.updateState != current.updateState,
-          listener: (context, state) {
-            if (state.updateState is UpdateStarted) {
-              MyNavigator.pop(context);
+    return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
+      builder: (context, data) {
+        final settingsChanged = areSettingsChanged(data);
+
+        return PopScope(
+          canPop: !settingsChanged,
+          onPopInvoked: (didPop) {
+            if (didPop) {
+              return;
             }
+            showConfirmDialog(context, context.strings.generic_save_confirmation_title)
+              .then((value) {
+                if (value == true) {
+                  saveData(context);
+                } else {
+                  MyNavigator.pop(context);
+                }
+              });
           },
-          child: filteringSettingsWidget(context),
-        ),
-      ),
+          child: Scaffold(
+            appBar: AppBar(title: Text(context.strings.profile_filtering_settings_screen_title)),
+            body: BlocListener<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+              listenWhen: (previous, current) => previous.updateState != current.updateState,
+              listener: (context, state) {
+                if (state.updateState is UpdateStarted) {
+                  MyNavigator.pop(context);
+                }
+              },
+              child: filteringSettingsWidget(context, settingsChanged),
+            ),
+            floatingActionButton: settingsChanged ? FloatingActionButton(
+              onPressed: () => saveData(context),
+              child: const Icon(Icons.check),
+            ) : null
+          ),
+        );
+      }
     );
   }
 
-  Widget filteringSettingsWidget(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        getShowFavoritesSelection(context),
-        const Divider(),
-        const EditAttributeFilters(),
-      ],
+  Widget filteringSettingsWidget(BuildContext context, bool settingsChanged) {
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          getShowFavoritesSelection(context),
+          const Divider(),
+          const EditAttributeFilters(),
+          if (settingsChanged) const Padding(
+            padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA),
+            child: null,
+          ),
+        ],
+      ),
     );
   }
 
