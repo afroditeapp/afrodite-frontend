@@ -51,8 +51,11 @@ class NotificationManager extends AppSingleton {
     const android = AndroidInitializationSettings(
       _ANDROID_ICON_RESOURCE_NAME
     );
-    // TODO: The iOS permission settings might need to be set to false
-    const darwin = DarwinInitializationSettings();
+    const darwin = DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
     const settings = InitializationSettings(
       android: android,
       iOS: darwin,
