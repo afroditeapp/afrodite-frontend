@@ -325,25 +325,26 @@ Future<void> openEditThumbnail(
   if (!context.mounted) {
     return;
   }
-  final cropResults = await MyNavigator.push<CropResults>(
+  await MyNavigator.push<CropResults>(
     context,
     MaterialPage<CropResults>(
       child:
         CropImageScreen(
-          CropImageFileContent(
-              img.accountId,
-              img.contentId,
-              flutterImg.width,
-              flutterImg.height,
-              currentCrop,
-            )
-          )
+          info: CropImageFileContent(
+            img.accountId,
+            img.contentId,
+            flutterImg.width,
+            flutterImg.height,
+            currentCrop,
+          ),
+          onCropAreaChanged: (cropResults) {
+            if (cropResults != null && context.mounted) {
+              context.read<ProfilePicturesBloc>().add(UpdateCropResults(cropResults, imgStateIndex));
+            }
+          },
+        )
     )
   );
-
-  if (cropResults != null && context.mounted) {
-    context.read<ProfilePicturesBloc>().add(UpdateCropResults(cropResults, imgStateIndex));
-  }
 }
 
 class AddPicture extends StatelessWidget {

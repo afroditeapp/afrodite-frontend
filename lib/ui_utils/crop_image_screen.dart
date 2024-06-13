@@ -3,13 +3,14 @@ import "dart:math";
 
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 
 import 'package:pihka_frontend/localizations.dart';
-import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/ui_utils/consts/corners.dart";
 import "package:pihka_frontend/ui_utils/image.dart";
 
+final log = Logger("CropImageScreen");
 
 class CropImageFileContent {
   CropImageFileContent(this.imageOwner, this.imageId, this.imgWidth, this.imgHeight, this.cropResults);
@@ -22,11 +23,14 @@ class CropImageFileContent {
 
 const MIN_CROP_ALLOWED_FACTOR = 0.75;
 
-
-/// When navigating away from this screen, the result will be a [CropResults] object.
 class CropImageScreen extends StatefulWidget {
-  const CropImageScreen(this.info, {super.key});
   final CropImageFileContent info;
+  final void Function(CropResults?) onCropAreaChanged;
+  const CropImageScreen({
+    required this.info,
+    required this.onCropAreaChanged,
+    super.key,
+  });
 
   @override
   State<CropImageScreen> createState() => _CropImageScreenState();
@@ -37,25 +41,13 @@ class _CropImageScreenState extends State<CropImageScreen> {
   double areaWidth = 1;
   double areaHeight = 1;
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  CropResults? cropResultsCache;
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) {
-        if (didPop) {
-          return;
-        }
-        MyNavigator.pop(context, calculateCropResults());
-      },
-      child: Scaffold(
-        appBar: AppBar(title: Text(context.strings.crop_image_screen_title)),
-        body: buildCropArea(),
-      ),
+    return Scaffold(
+      appBar: AppBar(title: Text(context.strings.crop_image_screen_title)),
+      body: buildCropArea(),
     );
   }
 
@@ -134,26 +126,32 @@ class _CropImageScreenState extends State<CropImageScreen> {
               alignment: Alignment.topLeft,
               child: imgWidget,
             ),
+            onBuildCalled: (cropState) {
+              final cropResults = calculateCropResults(cropState, areaWidth, areaHeight);
+              if (cropResults != cropResultsCache) {
+                cropResultsCache = cropResults;
+                widget.onCropAreaChanged(cropResults);
+              }
+            },
           ),
         );
       }
     );
   }
+}
 
-  CropResults? calculateCropResults() {
-    final s = cropState;
-    if (s == null) {
-      return null;
-    }
+CropResults calculateCropResults(
+  CropState s,
+  double areaWidth,
+  double areaHeight,
+) {
+  final gridCropSize = s.size / min(areaWidth, areaHeight);
+  final gridCropX = s.left / areaWidth;
+  final gridCropY = s.top / areaHeight;
 
-    final gridCropSize = s.size / min(areaWidth, areaHeight);
-    final gridCropX = s.left / areaWidth;
-    final gridCropY = s.top / areaHeight;
+  // log.info("Crop results: size: $gridCropSize, x: $gridCropX, y: $gridCropY");
 
-    log.info("Crop results: size: $gridCropSize, x: $gridCropX, y: $gridCropY");
-
-    return CropResults.fromValues(gridCropSize, gridCropX, gridCropY);
-  }
+  return CropResults.fromValues(gridCropSize, gridCropX, gridCropY);
 }
 
 class CropState {
@@ -190,6 +188,19 @@ class CropResults {
       0.0,
       0.0,
     );
+
+  @override
+  bool operator ==(Object other) {
+    if (other is CropResults) {
+      return gridCropSize == other.gridCropSize &&
+        gridCropX == other.gridCropX &&
+        gridCropY == other.gridCropY;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, gridCropSize, gridCropX, gridCropY);
 }
 
 class CropImageOverlay extends StatefulWidget {
@@ -199,6 +210,7 @@ class CropImageOverlay extends StatefulWidget {
     required this.areaWidth,
     required this.areaHeight,
     required this.cropState,
+    required this.onBuildCalled,
     Key? key,
   }) : super(key: key);
   final Widget imageWidget;
@@ -206,6 +218,7 @@ class CropImageOverlay extends StatefulWidget {
   final double areaWidth;
   final double areaHeight;
   final CropState cropState;
+  final void Function(CropState) onBuildCalled;
 
   @override
   _CropImageOverlayState createState() => _CropImageOverlayState();
@@ -233,6 +246,8 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
     // Refresh selection when screen rotates
     checkSizeBounds();
     checkLocationBounds();
+
+    widget.onBuildCalled(widget.cropState);
 
     return Stack(
       children: [
