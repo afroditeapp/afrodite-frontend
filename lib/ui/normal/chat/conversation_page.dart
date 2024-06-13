@@ -159,7 +159,7 @@ class ConversationPageState extends State<ConversationPage> {
             ),
           )
         ),
-        newMessageArea(context),
+        SafeArea(child: newMessageArea(context)),
         const MessageRenderer(),
         msgUpdateToRendererForwarder(),
         renderedMessagesResultForwarder(),
