@@ -78,7 +78,10 @@ class MyProfileScreen extends StatelessWidget {
 
         final Widget wantedWidget;
         if (profile != null) {
-          wantedWidget = ViewProfileEntry(profile: profile);
+          wantedWidget = Align(
+            alignment: Alignment.topCenter,
+            child: ViewProfileEntry(profile: profile),
+          );
         } else {
           wantedWidget = Center(
             child: Column(
