@@ -1,12 +1,14 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/general/image_cache_settings.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/padding.dart';
+
+final log = Logger("ImageSettingsScreen");
 
 class ImageSettingsScreen extends StatefulWidget {
   const ImageSettingsScreen({
@@ -33,22 +35,19 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
     downscalingSize = ImageCacheSettings.getInstance().cacheDownscalingSizeValue;
   }
 
-  Future<void> saveSettings(BuildContext context) async {
+  Future<void> saveSettings() async {
+    log.info("Saving image settings");
     await ImageCacheSettings.getInstance().saveSettings(cacheMaxBytes, fullImgSize, downscalingSize);
-    if (context.mounted) {
-      MyNavigator.pop(context);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false,
+      canPop: true,
       onPopInvoked: (didPop) {
         if (didPop) {
-          return;
+          saveSettings();
         }
-        saveSettings(context);
       },
       child: Scaffold(
         appBar: AppBar(
