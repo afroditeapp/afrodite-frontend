@@ -24,6 +24,7 @@ import 'package:pihka_frontend/ui/utils/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
 import 'package:pihka_frontend/ui_utils/consts/colors.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
+import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/icon_button.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils/age.dart';
@@ -34,9 +35,6 @@ import 'package:pihka_frontend/utils/profile_entry.dart';
 // profile images are visible in the new account's edit profile screen.
 // Update: there is now RemoveImage event which should reset the data but
 // other blocs should also be checked.
-
-// TODO(prod): Attribute icon buttons should go to edit attribute screen. Better to
-// just change the buttons to icons with same color as icon button?
 
 // TODO(prod): Fix attribute text translations. At least locale "se" is not
 // working.
@@ -121,28 +119,92 @@ class _EditProfilePageState extends State<EditProfilePage> {
     ));
   }
 
+  bool dataChanged(EditMyProfileData editedData, ProfilePicturesData editedImgData) {
+    final currentState = widget.initialProfile;
+    if (
+      currentState.age != editedData.age ||
+      currentState.name != editedData.initial
+    ) {
+      return true;
+    }
+
+    final editedImgs = editedImgData.toSetProfileContent();
+    if (
+      editedImgs == null ||
+      currentState.imageUuid != editedImgs.contentId0 ||
+      currentState.content1 != editedImgs.contentId1 ||
+      currentState.content2 != editedImgs.contentId2 ||
+      currentState.content3 != editedImgs.contentId3 ||
+      currentState.content4 != editedImgs.contentId4 ||
+      currentState.content5 != editedImgs.contentId5 ||
+      currentState.primaryContentGridCropSize != editedImgs.gridCropSize ||
+      currentState.primaryContentGridCropX != editedImgs.gridCropX ||
+      currentState.primaryContentGridCropY != editedImgs.gridCropY
+    ) {
+      return true;
+    }
+
+    for (final a in editedData.attributes) {
+      final currentOrNull = currentState.attributes.where((e) => e.id == a.id).firstOrNull;
+      final current = ProfileAttributeValueUpdate(
+        id: a.id,
+        valuePart1: currentOrNull?.valuePart1,
+        valuePart2: currentOrNull?.valuePart2,
+      );
+      if (
+        (current.valuePart1 ?? 0) != (a.valuePart1 ?? 0) ||
+        current.valuePart2 != a.valuePart2
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) {
-        if (didPop) {
-          return;
+    return updateStateHandler<MyProfileBloc, MyProfileData>(
+      context: context,
+      pageKey: widget.pageKey,
+      child: BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
+        builder: (context, data) {
+          return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
+            builder: (context, profilePicturesData) {
+              final dataEditingDetected = dataChanged(data, profilePicturesData);
+
+              return PopScope(
+                canPop: !dataEditingDetected,
+                onPopInvoked: (didPop) {
+                  if (didPop) {
+                    return;
+                  }
+                  showConfirmDialog(context, context.strings.generic_save_confirmation_title, yesNoActions: true)
+                    .then((value) {
+                      if (value == true) {
+                        validateAndSaveData(context);
+                      } else if (value == false) {
+                        MyNavigator.pop(context);
+                      }
+                    });
+                },
+                child: Scaffold(
+                  appBar: AppBar(title: Text(context.strings.edit_profile_screen_title)),
+                  body: edit(context, dataEditingDetected),
+                  floatingActionButton: dataEditingDetected ? FloatingActionButton(
+                    onPressed: () => validateAndSaveData(context),
+                    child: const Icon(Icons.check),
+                  ) : null
+                ),
+              );
+            }
+          );
         }
-        validateAndSaveData(context);
-      },
-      child: Scaffold(
-        appBar: AppBar(title: Text(context.strings.edit_profile_screen_title)),
-        body: updateStateHandler<MyProfileBloc, MyProfileData>(
-          context: context,
-          pageKey: widget.pageKey,
-          child: edit(context),
-        ),
       ),
     );
   }
 
-  Widget edit(BuildContext context) {
+  Widget edit(BuildContext context, bool dataChanged) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -166,6 +228,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
           const Divider(),
           const EditAttributes(),
           const Padding(padding: EdgeInsets.all(8)),
+          if (dataChanged) const Padding(
+            padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA),
+            child: null,
+          ),
         ],
       ),
     );
