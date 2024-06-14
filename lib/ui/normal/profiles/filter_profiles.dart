@@ -114,7 +114,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                 .then((value) {
                   if (value == true) {
                     saveData(context);
-                  } else {
+                  } else if (value == false) {
                     MyNavigator.pop(context);
                   }
                 });

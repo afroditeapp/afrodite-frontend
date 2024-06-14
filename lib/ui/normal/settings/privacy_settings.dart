@@ -70,7 +70,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
                 .then((value) {
                   if (value == true) {
                     saveData(context);
-                  } else {
+                  } else if (value == false) {
                     MyNavigator.pop(context);
                   }
                 });

@@ -39,13 +39,13 @@ class _NewModerationRequestScreenState extends State<NewModerationRequestScreen>
   void closeScreen(BuildContext context, {bool popOnCancel = true}) async {
     final imgs = context.read<NewModerationRequestBloc>().state.selectedImgs.contentList().toList();
     if (imgs.isNotEmpty) {
-      final accepted = await showConfirmDialog(context, context.strings.new_moderation_request_screen_send_content_confirm_dialog_title);
+      final accepted = await showConfirmDialog(context, context.strings.new_moderation_request_screen_send_content_confirm_dialog_title, yesNoActions: true);
       if (!context.mounted) {
         return;
       }
       if (accepted == true) {
         MyNavigator.pop(context, imgs);
-      } else {
+      } else if (accepted == false) {
         if (popOnCancel) {
           MyNavigator.pop(context);
         }
@@ -55,50 +55,57 @@ class _NewModerationRequestScreenState extends State<NewModerationRequestScreen>
     }
   }
 
+  bool unsavedData(NewModerationRequestData data) {
+    return data.selectedImgs.contentList().toList().isNotEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) async {
-        if (didPop) {
-          return;
-        }
-        closeScreen(context);
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(context.strings.new_moderation_request_screen_title),
-        ),
-        body: Column(
-          children: [
-            BlocBuilder<AccountBloc, AccountBlocData>(
-              builder: (context, aState) {
-                return BlocBuilder<NewModerationRequestBloc, NewModerationRequestData>(
-                  builder: (context, state) {
-                    final accountId = aState.accountId;
-                    if (accountId == null) {
-                      return Center(child: Text(context.strings.generic_error));
-                    } else {
-                      return addContentPage(
-                        context,
-                        accountId,
-                        state.selectedImgs,
-                      );
-                    }
+    return Column(
+      children: [
+        Expanded(
+          child: BlocBuilder<NewModerationRequestBloc, NewModerationRequestData>(
+            builder: (context, state) {
+              final unsavedDataDetected = unsavedData(state);
+              return PopScope(
+                canPop: !unsavedDataDetected,
+                onPopInvoked: (didPop) async {
+                  if (didPop) {
+                    return;
                   }
-                );
-              }
-            ),
-
-            // Zero sized widgets
-          ...imageProcessingUiWidgets<ProfilePicturesImageProcessingBloc>(
-            onComplete: (context, processedImg) {
-              context.read<NewModerationRequestBloc>().add(AddImg(processedImg.slot, processedImg.contentId));
-            },
+                  closeScreen(context);
+                },
+                child: Scaffold(
+                  appBar: AppBar(
+                    title: Text(context.strings.new_moderation_request_screen_title),
+                  ),
+                  body: BlocBuilder<AccountBloc, AccountBlocData>(
+                    builder: (context, aState) {
+                      final accountId = aState.accountId;
+                      if (accountId == null) {
+                        return Center(child: Text(context.strings.generic_error));
+                      } else {
+                        return addContentPage(
+                          context,
+                          accountId,
+                          state.selectedImgs,
+                        );
+                      }
+                    }
+                  ),
+                ),
+              );
+            }
           ),
-          ],
-        )
-      ),
+        ),
+
+        // Zero sized widgets
+        ...imageProcessingUiWidgets<ProfilePicturesImageProcessingBloc>(
+          onComplete: (context, processedImg) {
+            context.read<NewModerationRequestBloc>().add(AddImg(processedImg.slot, processedImg.contentId));
+          },
+        ),
+      ],
     );
   }
 

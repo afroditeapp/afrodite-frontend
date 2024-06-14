@@ -135,7 +135,7 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
                 .then((value) {
                   if (value == true) {
                     validateAndSaveData(context);
-                  } else {
+                  } else if (value == false) {
                     MyNavigator.pop(context);
                   }
                 });
