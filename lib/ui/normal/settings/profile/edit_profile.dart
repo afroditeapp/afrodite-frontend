@@ -22,10 +22,10 @@ import 'package:pihka_frontend/ui/initial_setup/profile_pictures.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile_attribute.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
+import 'package:pihka_frontend/ui_utils/consts/colors.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils/age.dart';
-import 'package:pihka_frontend/utils/immutable_list.dart';
 import 'package:pihka_frontend/utils/profile_entry.dart';
 
 
@@ -275,17 +275,16 @@ class EditAttributeRow extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final void Function()? infoButtonCallback;
     final void Function()? startEditorCallback;
     final Widget valueWidget;
     final TextStyle? titleStyle;
+    final Color iconColor;
     if (isEnabled) {
-      infoButtonCallback = () => ();
       startEditorCallback = onStartEditor;
       valueWidget = AttributeValuesArea(a: a);
       titleStyle = Theme.of(context).textTheme.bodyLarge;
+      iconColor = getIconButtonEnabledColor(context);
     } else {
-      infoButtonCallback = null;
       startEditorCallback = null;
       final disabledTextColor = Theme.of(context).disabledColor;
       valueWidget = Text(
@@ -293,6 +292,7 @@ class EditAttributeRow extends StatelessWidget {
         style: TextStyle(color: disabledTextColor),
       );
       titleStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(color: disabledTextColor);
+      iconColor = getIconButtonDisabledColor(context);
     }
 
     final attributeWidget = Row(
@@ -313,10 +313,12 @@ class EditAttributeRow extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 4.0),
-                    child: IconButton(
-                      icon: Icon(icon),
-                      onPressed: infoButtonCallback,
-                      tooltip: attributeText,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Icon(
+                        icon,
+                        color: iconColor,
+                      ),
                     ),
                   ),
                   const Padding(padding: EdgeInsets.only(right: 8)),
@@ -328,9 +330,12 @@ class EditAttributeRow extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(right: 4.0),
-          child: IconButton(
-            icon: const Icon(Icons.edit_rounded),
-            onPressed: startEditorCallback,
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Icon(
+              Icons.edit_rounded,
+              color: iconColor,
+            ),
           ),
         ),
       ],
