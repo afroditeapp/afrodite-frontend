@@ -163,6 +163,7 @@ class ImageEncryptionManager extends AppSingleton {
     if (currentKey == null) {
       final existingKey = await DatabaseManager.getInstance().commonStreamSingle((db) => db.watchImageEncryptionKey());
       if (existingKey == null) {
+        log.info("Generating a new image encryption key");
         final newKey = await _generateImageEncryptionKey();
         await DatabaseManager.getInstance().commonAction((db) => db.updateImageEncryptionKey(newKey));
         final dbKey = await DatabaseManager.getInstance().commonStreamSingle((db) => db.watchImageEncryptionKey());
@@ -172,6 +173,7 @@ class ImageEncryptionManager extends AppSingleton {
         _imageEncryptionKey = newKey;
         return newKey;
       } else {
+        log.info("Image encryption key already exists");
         _imageEncryptionKey = existingKey;
         return existingKey;
       }
