@@ -29,7 +29,17 @@ void showAppAboutDialog(BuildContext context) {
   );
 }
 
-Future<bool?> showConfirmDialog(BuildContext context, String titleText, {String? details}) {
+Future<bool?> showConfirmDialog(BuildContext context, String titleText, {String? details, bool yesNoActions = false}) {
+  final String negativeActionText;
+  final String positiveActionText;
+  if (yesNoActions) {
+    negativeActionText = context.strings.generic_no;
+    positiveActionText = context.strings.generic_yes;
+  } else {
+    negativeActionText = context.strings.generic_cancel;
+    positiveActionText = context.strings.generic_ok;
+  }
+
   final pageKey = PageKey();
   return MyNavigator.showDialog<bool>(
     context: context,
@@ -42,13 +52,13 @@ Future<bool?> showConfirmDialog(BuildContext context, String titleText, {String?
           onPressed: () {
             MyNavigator.removePage(context, pageKey, false);
           },
-          child: Text(context.strings.generic_cancel)
+          child: Text(negativeActionText)
         ),
         TextButton(
           onPressed: () {
             MyNavigator.removePage(context, pageKey, true);
           },
-          child: Text(context.strings.generic_ok)
+          child: Text(positiveActionText)
         )
       ],
     )

@@ -60,7 +60,7 @@ class _SimpleTextFieldState extends State<SimpleTextField> {
 }
 
 class AgeTextField extends StatefulWidget {
-  final controller = TextEditingController();
+  final TextEditingController? controller;
 
   /// Called only once when the widget is initialized.
   final String Function() getInitialValue;
@@ -69,6 +69,7 @@ class AgeTextField extends StatefulWidget {
   AgeTextField({
     this.getInitialValue = _defaultInitialValue,
     this.onChanged = _defaultOnChanged,
+    this.controller,
     Key? key,
   }) : super(key: key);
 
@@ -77,18 +78,27 @@ class AgeTextField extends StatefulWidget {
 }
 
 class _AgeTextFieldState extends State<AgeTextField> {
+  late final TextEditingController controller;
 
   @override
   void initState() {
     super.initState();
-    widget.controller.text = widget.getInitialValue();
+
+    final providedController = widget.controller;
+    if (providedController == null) {
+      controller = TextEditingController();
+    } else {
+      controller = providedController;
+    }
+
+    controller.text = widget.getInitialValue();
   }
 
   @override
   Widget build(BuildContext context) {
     return Form(
       child: TextFormField(
-        controller: widget.controller,
+        controller: controller,
         decoration: InputDecoration(
           hintText: context.strings.generic_text_field_age_hint_text,
         ),

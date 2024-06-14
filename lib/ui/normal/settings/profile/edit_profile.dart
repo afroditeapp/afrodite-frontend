@@ -24,6 +24,7 @@ import 'package:pihka_frontend/ui/utils/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
 import 'package:pihka_frontend/ui_utils/consts/colors.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
+import 'package:pihka_frontend/ui_utils/icon_button.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils/age.dart';
 import 'package:pihka_frontend/utils/profile_entry.dart';
@@ -313,13 +314,7 @@ class EditAttributeRow extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 4.0),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Icon(
-                        icon,
-                        color: iconColor,
-                      ),
-                    ),
+                    child: IconWithIconButtonPadding(icon, iconColor: iconColor),
                   ),
                   const Padding(padding: EdgeInsets.only(right: 8)),
                   Expanded(child: valueWidget),
@@ -330,13 +325,7 @@ class EditAttributeRow extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(right: 4.0),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Icon(
-              Icons.edit_rounded,
-              color: iconColor,
-            ),
-          ),
+          child: IconWithIconButtonPadding(Icons.edit_rounded, iconColor: iconColor),
         ),
       ],
     );

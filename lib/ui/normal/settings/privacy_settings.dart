@@ -13,6 +13,8 @@ import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/blocked_profiles.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/current_security_selfie.dart';
 import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
+import 'package:pihka_frontend/ui_utils/consts/padding.dart';
+import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/utils/api.dart';
 
 class PrivacySettingsScreen extends StatefulWidget {
@@ -40,7 +42,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
     );
   }
 
-  void validateAndSaveData(BuildContext context) {
+  void saveData(BuildContext context) {
     final state = widget.privacySettingsBloc.state;
     if (state.currentVisibility == state.initialVisibility) {
       MyNavigator.pop(context);
@@ -51,36 +53,59 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) {
-        if (didPop) {
-          return;
-        }
-        validateAndSaveData(context);
-      },
-      child: Scaffold(
-        appBar: AppBar(title: Text(context.strings.privacy_settings_screen_title)),
-        body: updateStateHandler<PrivacySettingsBloc, PrivacySettingsData>(
-          context: context,
-          pageKey: widget.pageKey,
-          child: content(context),
-        ),
+    return updateStateHandler<PrivacySettingsBloc, PrivacySettingsData>(
+      context: context,
+      pageKey: widget.pageKey,
+      child: BlocBuilder<PrivacySettingsBloc, PrivacySettingsData>(
+        builder: (context, state) {
+          final settingsChanged = state.currentVisibility != state.initialVisibility;
+
+          return PopScope(
+            canPop: !settingsChanged,
+            onPopInvoked: (didPop) {
+              if (didPop) {
+                return;
+              }
+              showConfirmDialog(context, context.strings.generic_save_confirmation_title, yesNoActions: true)
+                .then((value) {
+                  if (value == true) {
+                    saveData(context);
+                  } else {
+                    MyNavigator.pop(context);
+                  }
+                });
+            },
+            child: Scaffold(
+              appBar: AppBar(title: Text(context.strings.privacy_settings_screen_title)),
+              body: content(context, settingsChanged),
+              floatingActionButton: settingsChanged ? FloatingActionButton(
+                onPressed: () => saveData(context),
+                child: const Icon(Icons.check),
+              ) : null
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget content(BuildContext context) {
-    return Column(
-      children: [
-        BlocBuilder<PrivacySettingsBloc, PrivacySettingsData>(
-          builder: (context, state) {
-            return profileVisibilitySetting(context, state.currentVisibility);
-          }
-        ),
-        blockedProfiles(),
-        securitySelfie(),
-      ],
+  Widget content(BuildContext context, bool settingsChanged) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          BlocBuilder<PrivacySettingsBloc, PrivacySettingsData>(
+            builder: (context, state) {
+              return profileVisibilitySetting(context, state.currentVisibility);
+            }
+          ),
+          blockedProfiles(),
+          securitySelfie(),
+          if (settingsChanged) const Padding(
+            padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA),
+            child: null,
+          ),
+        ],
+      ),
     );
   }
 

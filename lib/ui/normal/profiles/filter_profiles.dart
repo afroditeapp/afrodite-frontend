@@ -93,43 +93,43 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
-      builder: (context, data) {
-        final settingsChanged = areSettingsChanged(data);
+    return BlocListener<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+      listenWhen: (previous, current) => previous.updateState != current.updateState,
+      listener: (context, state) {
+        if (state.updateState is UpdateStarted) {
+          MyNavigator.pop(context);
+        }
+      },
+      child: BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
+        builder: (context, data) {
+          final settingsChanged = areSettingsChanged(data);
 
-        return PopScope(
-          canPop: !settingsChanged,
-          onPopInvoked: (didPop) {
-            if (didPop) {
-              return;
-            }
-            showConfirmDialog(context, context.strings.generic_save_confirmation_title)
-              .then((value) {
-                if (value == true) {
-                  saveData(context);
-                } else {
-                  MyNavigator.pop(context);
-                }
-              });
-          },
-          child: Scaffold(
-            appBar: AppBar(title: Text(context.strings.profile_filtering_settings_screen_title)),
-            body: BlocListener<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-              listenWhen: (previous, current) => previous.updateState != current.updateState,
-              listener: (context, state) {
-                if (state.updateState is UpdateStarted) {
-                  MyNavigator.pop(context);
-                }
-              },
-              child: filteringSettingsWidget(context, settingsChanged),
+          return PopScope(
+            canPop: !settingsChanged,
+            onPopInvoked: (didPop) {
+              if (didPop) {
+                return;
+              }
+              showConfirmDialog(context, context.strings.generic_save_confirmation_title, yesNoActions: true)
+                .then((value) {
+                  if (value == true) {
+                    saveData(context);
+                  } else {
+                    MyNavigator.pop(context);
+                  }
+                });
+            },
+            child: Scaffold(
+              appBar: AppBar(title: Text(context.strings.profile_filtering_settings_screen_title)),
+              body: filteringSettingsWidget(context, settingsChanged),
+              floatingActionButton: settingsChanged ? FloatingActionButton(
+                onPressed: () => saveData(context),
+                child: const Icon(Icons.check),
+              ) : null
             ),
-            floatingActionButton: settingsChanged ? FloatingActionButton(
-              onPressed: () => saveData(context),
-              child: const Icon(Icons.check),
-            ) : null
-          ),
-        );
-      }
+          );
+        }
+      ),
     );
   }
 
