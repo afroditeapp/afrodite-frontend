@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
+import 'package:pihka_frontend/model/freezed/logic/profile/edit_my_profile.dart';
 import 'package:pihka_frontend/ui/initial_setup/profile_attributes.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
 import 'package:pihka_frontend/ui/utils/view_profile.dart';
@@ -35,42 +35,45 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
     searchController = AppBarSearchController(onChanged: () => setState(() {}));
   }
 
-  void validateAndSaveData(BuildContext context) {
-    final currentAttributes = context.read<EditMyProfileBloc>().state.attributes;
-
-    for (final a in currentAttributes) {
+  bool invalidSelection(EditMyProfileData data) {
+    for (final a in data.attributes) {
       if (a.id == widget.a.attribute.id && widget.a.attribute.required_ && (a.valuePart1 == 0 || a.valuePart1 == null)) {
-        showSnackBar(context.strings.edit_attribute_value_screen_one_value_must_be_selected);
-        return;
+        return true;
       }
     }
 
-    MyNavigator.pop(context);
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) {
-        if (didPop) {
-          return;
-        }
-        validateAndSaveData(context);
+    return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
+      builder: (context, state) {
+        final currentSelectionIsInvalid = invalidSelection(state);
+
+        return PopScope(
+          canPop: !currentSelectionIsInvalid,
+          onPopInvoked: (didPop) {
+            if (didPop) {
+              return;
+            }
+            showSnackBar(context.strings.edit_attribute_value_screen_one_value_must_be_selected);
+          },
+          child: Scaffold(
+            appBar: AppBarWithSearch(
+              controller: searchController,
+              searchPossible: searchPossible,
+              title: Text(context.strings.edit_profile_screen_title),
+              searchHintText: context.strings.edit_attribute_value_screen_search_placeholder_text,
+            ),
+            body: edit(context, currentSelectionIsInvalid),
+          ),
+        );
       },
-      child: Scaffold(
-        appBar: AppBarWithSearch(
-          controller: searchController,
-          searchPossible: searchPossible,
-          title: Text(context.strings.edit_profile_screen_title),
-          searchHintText: context.strings.edit_attribute_value_screen_search_placeholder_text,
-        ),
-        body: edit(context),
-      ),
     );
   }
 
-  Widget edit(BuildContext context) {
+  Widget edit(BuildContext context, bool invalidSelection) {
     final String? filterValue;
     if (searchController.searchActive) {
       final processedFilter = searchController.searchController.text.trim().toLowerCase();
@@ -94,6 +97,10 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
             onNewAttributeValue: (value) {
               context.read<EditMyProfileBloc>().add(NewAttributeValue(value));
             },
+          ),
+          if (invalidSelection) Padding(
+            padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
+            child: Text(context.strings.edit_attribute_value_screen_one_value_must_be_selected),
           ),
         ],
       ),
