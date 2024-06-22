@@ -53,6 +53,10 @@ final log = Logger("main");
 //             to client reqularly, so that broken connections are detected.
 // TODO(prod): When there are two conversation notifications, opening those
 //             one by one, results in the second opened to below the first.
+// TODO(prod): Conversation messages disappeared for some reason.
+//             Conversation reload fixed that.
+// TODO(prod): New message notification does not work
+//             if app starts from (push) notification.
 
 bool loggerInitDone = false;
 
