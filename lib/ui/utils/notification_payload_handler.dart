@@ -14,7 +14,6 @@ import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/app/notification_payload_handler.dart';
-import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/notification_payload_handler.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
@@ -61,7 +60,6 @@ Future<void> Function(NotificationPayload) createHandlePayloadCallback(
   final navigatorStateBloc = context.read<NavigatorStateBloc>();
   final bottomNavigatorStateBloc = context.read<BottomNavigationStateBloc>();
   final likeGridInstanceBloc = context.read<LikeGridInstanceManagerBloc>();
-  final currentModerationRequestBloc = context.read<CurrentModerationRequestBloc>();
 
   return (payload) async {
     final newPage = await handlePayload(
@@ -69,7 +67,6 @@ Future<void> Function(NotificationPayload) createHandlePayloadCallback(
       navigatorStateBloc,
       bottomNavigatorStateBloc,
       likeGridInstanceBloc,
-      currentModerationRequestBloc,
       showError: showError,
     );
     navigateToAction(navigatorStateBloc, newPage);
@@ -88,7 +85,6 @@ Future<NewPageDetails?> handlePayload(
   NavigatorStateBloc navigatorStateBloc,
   BottomNavigationStateBloc bottomNavigationStateBloc,
   LikeGridInstanceManagerBloc likeGridInstanceManagerBloc,
-  CurrentModerationRequestBloc currentModerationRequestBloc,
   {
     required bool showError,
   }
@@ -141,11 +137,9 @@ Future<NewPageDetails?> handlePayload(
       }
     case NavigateToModerationRequestStatus():
       return NewPageDetails(
-          MaterialPage<void>(
-            child: CurrentModerationRequestScreen(
-              currentModerationRequestBloc: currentModerationRequestBloc,
-            ),
-          ),
+        const MaterialPage<void>(
+          child: CurrentModerationRequestScreenOpener(),
+        ),
       );
   }
   return null;

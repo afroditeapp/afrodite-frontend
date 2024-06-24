@@ -18,6 +18,17 @@ import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/view_image_screen.dart';
 import 'package:pihka_frontend/utils/api.dart';
 
+class CurrentModerationRequestScreenOpener extends StatelessWidget {
+  const CurrentModerationRequestScreenOpener({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CurrentModerationRequestScreen(
+      currentModerationRequestBloc: context.read<CurrentModerationRequestBloc>()
+    );
+  }
+}
+
 class CurrentModerationRequestScreen extends StatefulWidget {
   final CurrentModerationRequestBloc currentModerationRequestBloc;
   const CurrentModerationRequestScreen({

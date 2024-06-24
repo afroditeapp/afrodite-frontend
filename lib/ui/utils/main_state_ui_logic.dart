@@ -8,7 +8,6 @@ import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/logic/account/account_details.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
-import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/app/notification_payload_handler.dart';
@@ -134,9 +133,6 @@ class MainStateUiLogic extends StatelessWidget {
               BlocProvider(create: (_) => NotificationPermissionBloc()),
               BlocProvider(create: (_) => NotificationPayloadHandlerBloc()),
               BlocProvider(create: (_) => ProfileAttributesBloc()),
-
-              // Main UI
-              BlocProvider(create: (_) => LikeGridInstanceManagerBloc()),
 
               // Account data
               BlocProvider(create: (_) => ContentBloc()),

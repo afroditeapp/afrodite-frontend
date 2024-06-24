@@ -24,6 +24,7 @@ import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/demo_account.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
+import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/logic/chat/message_renderer_bloc.dart';
@@ -55,8 +56,6 @@ final log = Logger("main");
 //             one by one, results in the second opened to below the first.
 // TODO(prod): Conversation messages disappeared for some reason.
 //             Conversation reload fixed that.
-// TODO(prod): New message notification does not work
-//             if app starts from (push) notification.
 
 bool loggerInitDone = false;
 
@@ -117,6 +116,9 @@ Future<void> main() async {
 
         // Login, initial setup and account
         BlocProvider(create: (_) => AccountBloc()),
+
+        // Main UI (app process starting from notification requires this here)
+        BlocProvider(create: (_) => LikeGridInstanceManagerBloc()),
       ],
       child: const MyApp(),
     )
