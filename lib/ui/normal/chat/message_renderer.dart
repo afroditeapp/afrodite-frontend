@@ -64,7 +64,6 @@ class MessageRendererState extends State<MessageRenderer> {
           SchedulerBinding.instance.addPostFrameCallback((_) {
             final box = key.currentContext?.findRenderObject() as RenderBox;
             final height = box.size.height;
-            log.info("Rendered height: $height");
             ovEntry.remove();
             ovEntry.dispose();
             if (!context.mounted) {

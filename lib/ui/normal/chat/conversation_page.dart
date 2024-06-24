@@ -210,7 +210,8 @@ Widget msgUpdateToRendererForwarder() {
       if (update == null) {
         return const SizedBox.shrink();
       }
-      log.info("Forwarding message update to renderer, new messages count: ${update.onlyNewMessages.messages.length}");
+      log.info("Forwarding message update to renderer");
+      log.fine("New messages count: ${update.onlyNewMessages.messages.length}");
       context.read<MessageRendererBloc>().add(RenderMessages(update));
       return const SizedBox.shrink();
     },
@@ -224,7 +225,8 @@ Widget renderedMessagesResultForwarder() {
       if (!state.completed) {
         return const SizedBox.shrink();
       }
-      log.info("Rendering completed, height: ${state.totalHeight}");
+      log.info("Rendering completed");
+      log.fine("Height: ${state.totalHeight}");
       context.read<ConversationBloc>().add(CompleteMessageListUpdateRendering(state.totalHeight));
       return const SizedBox.shrink();
     },

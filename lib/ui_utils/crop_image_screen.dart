@@ -92,11 +92,11 @@ class _CropImageScreenState extends State<CropImageScreen> {
           alignment: Alignment.topLeft
         );
 
-        log.info("Constraints: $constraints");
-        log.info("Image width: $imgWidth");
-        log.info("Image height: $imgHeight");
-        log.info("Image widget width: $imgWidgetWidth");
-        log.info("Image widget height: $imgWidgetHeight");
+        log.fine("Constraints: $constraints");
+        log.fine("Image width: $imgWidth");
+        log.fine("Image height: $imgHeight");
+        log.fine("Image widget width: $imgWidgetWidth");
+        log.fine("Image widget height: $imgWidgetHeight");
 
         final selectionMaxSize = min(imgWidgetWidth, imgWidgetHeight);
 
@@ -149,7 +149,7 @@ CropResults calculateCropResults(
   final gridCropX = s.left / areaWidth;
   final gridCropY = s.top / areaHeight;
 
-  // log.info("Crop results: size: $gridCropSize, x: $gridCropX, y: $gridCropY");
+  // log.fine("Crop results: size: $gridCropSize, x: $gridCropX, y: $gridCropY");
 
   return CropResults.fromValues(gridCropSize, gridCropX, gridCropY);
 }

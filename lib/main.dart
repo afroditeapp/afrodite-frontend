@@ -66,8 +66,12 @@ void initLogging() {
   }
   loggerInitDone = true;
 
-  // TODO(prod): change log level before release?
-  Logger.root.level = Level.ALL;
+  if (kDebugMode) {
+    Logger.root.level = Level.ALL;
+  } else {
+    Logger.root.level = Level.INFO;
+  }
+
   Logger.root.onRecord.listen((record) {
       // TODO(prod): Remove print if logcat printing works somehow
       // without print.
@@ -263,7 +267,9 @@ class DebugObserver extends BlocObserver {
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
     if (bloc is NavigatorStateBloc || bloc is ConversationBloc || bloc is MessageRendererBloc) {
-      log.finest("${bloc.runtimeType} $change");
+      if (kDebugMode) {
+        log.finest("${bloc.runtimeType} $change");
+      }
     }
   }
 }

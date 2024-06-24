@@ -119,7 +119,8 @@ Future<Uint8List?> emptyMapTile() async {
     await imgFile.writeAsBytes(encryptedImgBytes.toList());
     return pngBytes;
   } on IOException catch (e) {
-    log.error(e);
+    log.error("Image writing failed");
+    log.finer("Error: $e");
     ErrorManager.getInstance().show(const FileError());
     return null;
   }

@@ -30,9 +30,8 @@ class ActionApiError extends ApiError {
 
   @override
   void logError(Logger log) {
-    log.error(e);
-    // TODO(prod): remove stack trace for production?
-    log.error(StackTrace.current);
+    log.error("Action API error, code: ${e.code}");
+    log.fine(StackTrace.current);
     ErrorManager.getInstance().show(this);
   }
 }
@@ -56,8 +55,7 @@ class NullError extends ValueApiError {
   @override
   void logError(Logger log) {
     log.error("API function returned null");
-    // TODO(prod): remove stack trace for production?
-    log.error(StackTrace.current);
+    log.fine(StackTrace.current);
     ErrorManager.getInstance().show(this);
   }
 }
@@ -83,9 +81,8 @@ class ValueApiException extends ValueApiError {
 
   @override
   void logError(Logger log) {
-    log.error(e);
-    // TODO(prod): remove stack trace for production?
-    log.error(StackTrace.current);
+    log.error("Value API error, code: ${e.code}");
+    log.fine(StackTrace.current);
     ErrorManager.getInstance().show(this);
   }
 }
@@ -114,10 +111,9 @@ class DatabaseException extends DatabaseError {
 
   @override
   void logError(Logger log) {
-    // TODO(prod): remove exception printing for production?
-    log.error(e);
-    // TODO(prod): remove stack trace for production?
-    log.error(StackTrace.current);
+    log.error("Database exception");
+    log.fine(e);
+    log.fine(StackTrace.current);
     ErrorManager.getInstance().show(this);
   }
 }
@@ -127,9 +123,9 @@ class MissingAccountId extends DatabaseError {
 
   @override
   void logError(Logger log) {
-    log.error(this);
-    // TODO(prod): remove stack trace for production?
-    log.error(StackTrace.current);
+    log.error("Database error: missing account ID");
+    log.fine(StackTrace.current);
+
     ErrorManager.getInstance().show(this);
   }
 }
@@ -139,9 +135,9 @@ class MissingRequiredValue extends DatabaseError {
 
   @override
   void logError(Logger log) {
-    log.error(this);
-    // TODO(prod): remove stack trace for production?
-    log.error(StackTrace.current);
+    log.error("Database error: missing required value");
+    log.fine(StackTrace.current);
+
     ErrorManager.getInstance().show(this);
   }
 }
@@ -160,9 +156,9 @@ class MissingValue extends LogicError {
 
   @override
   void logError(Logger log) {
-    log.error(this);
-    // TODO(prod): remove stack trace for production?
-    log.error(StackTrace.current);
+    log.error("Logic error: missing value");
+    log.fine(StackTrace.current);
+
     ErrorManager.getInstance().show(this);
   }
 }

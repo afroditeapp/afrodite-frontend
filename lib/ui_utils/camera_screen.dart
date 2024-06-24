@@ -158,7 +158,7 @@ class _CameraScreenState extends State<CameraScreen>
   Widget cameraPreview(BuildContext context, CameraController currentCamera) {
     final size = currentCamera.value.previewSize;
     if (size == null) {
-      log.info("Simulating camera preview");
+      log.info("Preview size null, simulating camera preview");
       return simulateCameraPreview(context);
     }
 
@@ -281,9 +281,9 @@ class _CameraScreenState extends State<CameraScreen>
     XFile file;
     try {
       file = await currentCamera.takePicture();
-      log.info(file);
     } on CameraException catch (e) {
-      log.error(e);
+      log.error("Take picture error");
+      log.fine(e);
       if (mounted) {
         showSnackBar(R.strings.camera_screen_take_photo_error);
       }
@@ -331,20 +331,21 @@ class _CameraScreenState extends State<CameraScreen>
         final f =  File(finalImgPath);
         final l = await f.length();
         final kb = l / 1024;
-        log.info("Image size: $kb KB");
+        log.fine("Image size: $kb KB");
         return XFile(finalImgPath);
       } else {
         return null;
       }
     } on img.ImageException catch (e) {
-      log.error(e);
+      log.error("Image processing error");
+      log.fine(e);
       return null;
     }
   }
 }
 
 void logImageSize(img.Image imgData, String info) {
-  log.info("$info size: ${imgData.width}x${imgData.height}");
+  log.fine("$info size: ${imgData.width}x${imgData.height}");
 }
 
 Future<img.Image> cropToAspectRatio43(img.Image imgData) async {
@@ -353,11 +354,11 @@ Future<img.Image> cropToAspectRatio43(img.Image imgData) async {
   final img.Image croppedImage;
   if (imgData.width > imgData.height) {
     final newWidth = imgData.width * factor;
-    log.info("newWidth: $newWidth");
+    log.fine("newWidth: $newWidth");
     croppedImage = img.copyCrop(imgData, x: 0, y: 0, width: newWidth.toInt(), height: imgData.height);
   } else {
     final newHeight = imgData.height * factor;
-    log.info("newHeight: $newHeight");
+    log.fine("newHeight: $newHeight");
     croppedImage = img.copyCrop(imgData, x: 0, y: 0, width: imgData.width, height: newHeight.toInt());
   }
 

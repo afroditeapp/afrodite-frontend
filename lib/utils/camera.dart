@@ -101,12 +101,12 @@ class CameraManager extends AppSingleton {
 
     _state.stream
       .listen((event) {
-        log.info("CameraManagerState: $event");
+        log.fine("CameraManagerState: $event");
       });
   }
 
   Future<void> _runCmd(CameraManagerCmd cmd) async {
-    log.info("start CameraManagerCmd: $cmd");
+    log.fine("start CameraManagerCmd: $cmd");
     switch (cmd) {
       case OpenCmd():
         await _openCameraCmd();
@@ -117,7 +117,7 @@ class CameraManager extends AppSingleton {
       case EventDisposeComplete():
         await _disposeCompleted();
     }
-    log.info("end CameraManagerCmd: $cmd");
+    log.fine("end CameraManagerCmd: $cmd");
   }
 
   Future<void> _initAvailableCameras() async {
@@ -169,7 +169,8 @@ class CameraManager extends AppSingleton {
         error = InitFailedWithErrorCode(deadlockDebugValue);
       }
     } on CameraException catch (e) {
-      log.error(e);
+      log.error("Camera init failed");
+      log.fine(e);
       error = switch (e.code) {
         "CameraAccessDenied" => NoCameraPermissionTryAgainOrCheckSettings(),
         "CameraAccessDeniedWithoutPrompt" => NoCameraPermissionCheckSettings(),

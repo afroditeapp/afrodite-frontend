@@ -237,7 +237,7 @@ Rect calculateSquareSrcRect(ui.Image img, CropResults cropResults) {
     while (true) {
       await Future<void>.delayed(const Duration(seconds: 1));
       final c = imageCache;
-      log.info("max: ${c.maximumSize}, current: ${c.currentSize}, live: ${c.liveImageCount}, pending: ${c.pendingImageCount}");
+      log.fine("max: ${c.maximumSize}, current: ${c.currentSize}, live: ${c.liveImageCount}, pending: ${c.pendingImageCount}");
     }
   }
 

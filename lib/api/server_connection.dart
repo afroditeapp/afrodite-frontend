@@ -9,6 +9,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:database/database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
@@ -218,11 +219,13 @@ class ServerConnection {
     try {
        response = await client.send(request);
     } on ClientException catch (e) {
-      log.error(e);
+      log.error("Server connection: client exception");
+      log.fine(e);
       _state.add(Error(ServerConnectionError.connectionFailure));
       return;
     } on HandshakeException catch (e) {
-      log.error(e);
+      log.error("Server connection: handshake exception");
+      log.fine(e);
       _state.add(Error(ServerConnectionError.connectionFailure));
       return;
     }
@@ -284,7 +287,8 @@ class ServerConnection {
       .listen(
         null,
         onError: (Object error) {
-          log.error("Connection exception: $error");
+          log.error("Connection exception");
+          log.fine("$error");
           _endConnectionToGeneralError();
         },
         onDone: () {

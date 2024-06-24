@@ -182,8 +182,6 @@ class LoginRepository extends DataRepository {
     try {
       signedIn = await google.signIn();
     } catch (e) { // No documentation, just catch everything
-      // TODO(prod): Remove
-      log.error(e);
       yield SignInWithGoogleEvent.signInWithGoogleFailed;
       return;
     }
@@ -195,11 +193,7 @@ class LoginRepository extends DataRepository {
 
     yield SignInWithGoogleEvent.getGoogleAccountTokenCompleted;
 
-    log.fine("$signedIn, ${signedIn.email}");
-
     var token = await signedIn.authentication;
-    log.fine("${token.accessToken}, ${token.idToken}");
-
     final login = await _api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken))).ok();
     if (login == null) {
       yield SignInWithGoogleEvent.serverRequestFailed;
@@ -280,10 +274,9 @@ class LoginRepository extends DataRepository {
       signedIn = await SignInWithApple.getAppleIDCredential(scopes: [
         AppleIDAuthorizationScopes.email,
       ]);
-      log.fine(signedIn);
       await _api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(appleToken: signedIn.identityToken)));
-    } on SignInWithAppleException catch (e) {
-      log.error(e);
+    } on SignInWithAppleException catch (_) {
+      log.error("Sign in with Apple failed");
     }
   }
 

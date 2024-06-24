@@ -156,11 +156,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   log.info("Handling FCM background message");
 
-  // TODO(prod): remove this log
-  log.finest("FCM background message: ${message.messageId}");
-  log.finest("FCM background message: ${message.data}");
-  // TODO: query notification from backend with FCM token
-
   // TODO(microservice): Use chat server URL instead.
   final chatUrl = await db.commonStreamSingleOrDefault(
     (db) => db.watchServerUrlAccount(),
