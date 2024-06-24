@@ -82,7 +82,10 @@ class NotificationManager extends AppSingleton {
     }
 
     _osSupportsNotificationPermission = await _notificationPermissionShouldBeAsked();
-    _osProvidesNotificationSettingsUi = await _isAndroid8OrLater();
+    // Samsung hide notification category settings in One UI 6.1 by default
+    // so just show the in app notification settings on all devices.
+    // https://9to5google.com/2024/01/31/samsung-android-notifications-categories-channels/
+    _osProvidesNotificationSettingsUi = false;
 
     await _createAndroidNotificationChannelsIfNeeded();
 
