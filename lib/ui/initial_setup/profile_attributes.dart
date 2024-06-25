@@ -287,7 +287,7 @@ String attributeName(BuildContext context, Attribute attribute) {
   }
 
   for (final translation in translations.values) {
-    if (translation.key != attribute.key) {
+    if (translation.key == attribute.key) {
       return translation.value;
     }
   }
@@ -307,7 +307,7 @@ String attributeValueName(BuildContext context, AttributeValue attributeValue, L
   }
 
   for (final translation in translations.values) {
-    if (translation.key != attributeValue.key) {
+    if (translation.key == attributeValue.key) {
       return translation.value;
     }
   }
