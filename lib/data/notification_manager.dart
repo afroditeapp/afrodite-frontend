@@ -248,6 +248,29 @@ class NotificationManager extends AppSingleton {
     return BackgroundDatabaseManager.getInstance().commonStream((db) => db.watchNotificationSessionId())
       .map((id) => NotificationSessionId(id: id?.id ?? 0));
   }
+
+  Future<List<String>> disabledNotificationChannelsIdsOnAndroid() async {
+    if (Platform.isAndroid) {
+      final channels = await _pluginHandle.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.getNotificationChannels();
+      if (channels == null) {
+        log.error("Failed to get notification channels list");
+        return [];
+      }
+
+      final disabledChannelIds = channels
+        .where((channel) {
+          return channel.importance == Importance.none;
+        })
+        .map((disabledChannel) {
+          return disabledChannel.id;
+        })
+        .toList();
+
+      return disabledChannelIds;
+    } else {
+      return [];
+    }
+  }
 }
 
 // TODO(prod): iOS notifications are not working

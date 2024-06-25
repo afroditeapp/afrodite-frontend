@@ -1,6 +1,7 @@
 import "dart:async";
 
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:pihka_frontend/data/general/notification/utils/notification_category.dart";
 import "package:pihka_frontend/data/notification_manager.dart";
 import "package:pihka_frontend/database/background_database_manager.dart";
 import "package:pihka_frontend/model/freezed/logic/settings/notification_settings.dart";
@@ -26,6 +27,7 @@ class NewValueModerationRequestState extends NotificationSettingsEvent {
 
 class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, NotificationSettingsData> {
   final db = BackgroundDatabaseManager.getInstance();
+  final notifications = NotificationManager.getInstance();
 
   StreamSubscription<bool?>? _messagesSubscription;
   StreamSubscription<bool?>? _likesSubscription;
@@ -33,8 +35,13 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
 
   NotificationSettingsBloc() : super(NotificationSettingsData()) {
     on<ReloadNotificationsEnabledStatus>((data, emit) async {
-      final notificationsEnabled = await NotificationManager.getInstance().areNotificationsEnabled();
-      emit(state.copyWith(areNotificationsEnabled: notificationsEnabled));
+      final disabledChannelIds = await notifications.disabledNotificationChannelsIdsOnAndroid();
+      emit(state.copyWith(
+        areNotificationsEnabled: await notifications.areNotificationsEnabled(),
+        categorySystemEnabledLikes: !disabledChannelIds.contains(const NotificationCategoryLikes().id),
+        categorySystemEnabledMessages: !disabledChannelIds.contains(const NotificationCategoryMessages().id),
+        categorySystemEnabledModerationRequestStatus: !disabledChannelIds.contains(const NotificationCategoryModerationRequestStatus().id),
+      ));
     });
     on<ToggleMessages>((data, emit) async {
       await db.accountAction((db) => db.daoLocalNotificationSettings.updateMessages(!state.categoryEnabledMessages));

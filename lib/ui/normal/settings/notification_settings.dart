@@ -86,9 +86,10 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
   }
 
   Widget messagesSlider(BuildContext context, NotificationSettingsData state) {
-    return SwitchListTile(
-      title: Text(context.strings.notification_category_messages),
-      value: state.categoryEnabledMessages,
+    return categorySwitch(
+      title: context.strings.notification_category_messages,
+      isEnabled: state.categoryEnabledMessages,
+      isEnabledFromSystemSettings: state.categorySystemEnabledMessages,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleMessages());
       },
@@ -96,9 +97,10 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
   }
 
   Widget likesSlider(BuildContext context, NotificationSettingsData state) {
-    return SwitchListTile(
-      title: Text(context.strings.notification_category_likes),
-      value: state.categoryEnabledLikes,
+    return categorySwitch(
+      title: context.strings.notification_category_likes,
+      isEnabled: state.categoryEnabledLikes,
+      isEnabledFromSystemSettings: state.categorySystemEnabledLikes,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleLikes());
       },
@@ -106,9 +108,10 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
   }
 
   Widget moderationRequestStateSlider(BuildContext context, NotificationSettingsData state) {
-    return SwitchListTile(
-      title: Text(context.strings.notification_category_moderation_request_status),
-      value: state.categoryEnabledModerationRequestStatus,
+    return categorySwitch(
+      title: context.strings.notification_category_moderation_request_status,
+      isEnabled: state.categoryEnabledModerationRequestStatus,
+      isEnabledFromSystemSettings: state.categorySystemEnabledModerationRequestStatus,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleModerationRequestStatus());
       },
@@ -122,6 +125,35 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
         AppSettings.openAppSettings(type: AppSettingsType.notification);
       },
       leading: const Icon(Icons.settings),
+    );
+  }
+
+  Widget categorySwitch(
+    {
+      required String title,
+      required bool isEnabled,
+      required bool isEnabledFromSystemSettings,
+      required void Function(bool) onChanged,
+    }
+  ) {
+    final bool isEnabledValue;
+    final void Function(bool)? onChangedValue;
+    final Widget? subtitle;
+    if (isEnabledFromSystemSettings) {
+      isEnabledValue = isEnabled;
+      onChangedValue = onChanged;
+      subtitle = null;
+    } else {
+      isEnabledValue = false;
+      onChangedValue = null;
+      subtitle = Text(context.strings.notification_settings_screen_notification_category_disabled_from_system_settings_text);
+    }
+
+    return SwitchListTile(
+      title: Text(title),
+      subtitle: subtitle,
+      value: isEnabledValue,
+      onChanged: onChangedValue,
     );
   }
 

@@ -17,12 +17,18 @@ mixin _$NotificationSettingsData {
   bool get categoryEnabledMessages => throw _privateConstructorErrorNotificationSettingsData;
   bool get categoryEnabledLikes => throw _privateConstructorErrorNotificationSettingsData;
   bool get categoryEnabledModerationRequestStatus => throw _privateConstructorErrorNotificationSettingsData;
+  bool get categorySystemEnabledMessages => throw _privateConstructorErrorNotificationSettingsData;
+  bool get categorySystemEnabledLikes => throw _privateConstructorErrorNotificationSettingsData;
+  bool get categorySystemEnabledModerationRequestStatus => throw _privateConstructorErrorNotificationSettingsData;
 
   NotificationSettingsData copyWith({
     bool? areNotificationsEnabled,
     bool? categoryEnabledMessages,
     bool? categoryEnabledLikes,
     bool? categoryEnabledModerationRequestStatus,
+    bool? categorySystemEnabledMessages,
+    bool? categorySystemEnabledLikes,
+    bool? categorySystemEnabledModerationRequestStatus,
   }) => throw _privateConstructorErrorNotificationSettingsData;
 }
 
@@ -33,6 +39,9 @@ abstract class _NotificationSettingsData implements NotificationSettingsData {
     bool categoryEnabledMessages,
     bool categoryEnabledLikes,
     bool categoryEnabledModerationRequestStatus,
+    bool categorySystemEnabledMessages,
+    bool categorySystemEnabledLikes,
+    bool categorySystemEnabledModerationRequestStatus,
   }) = _$NotificationSettingsDataImpl;
 }
 
@@ -42,12 +51,18 @@ class _$NotificationSettingsDataImpl with DiagnosticableTreeMixin implements _No
   static const bool _categoryEnabledMessagesDefaultValue = true;
   static const bool _categoryEnabledLikesDefaultValue = true;
   static const bool _categoryEnabledModerationRequestStatusDefaultValue = true;
+  static const bool _categorySystemEnabledMessagesDefaultValue = true;
+  static const bool _categorySystemEnabledLikesDefaultValue = true;
+  static const bool _categorySystemEnabledModerationRequestStatusDefaultValue = true;
   
   _$NotificationSettingsDataImpl({
     this.areNotificationsEnabled = _areNotificationsEnabledDefaultValue,
     this.categoryEnabledMessages = _categoryEnabledMessagesDefaultValue,
     this.categoryEnabledLikes = _categoryEnabledLikesDefaultValue,
     this.categoryEnabledModerationRequestStatus = _categoryEnabledModerationRequestStatusDefaultValue,
+    this.categorySystemEnabledMessages = _categorySystemEnabledMessagesDefaultValue,
+    this.categorySystemEnabledLikes = _categorySystemEnabledLikesDefaultValue,
+    this.categorySystemEnabledModerationRequestStatus = _categorySystemEnabledModerationRequestStatusDefaultValue,
   });
 
   @override
@@ -58,10 +73,16 @@ class _$NotificationSettingsDataImpl with DiagnosticableTreeMixin implements _No
   final bool categoryEnabledLikes;
   @override
   final bool categoryEnabledModerationRequestStatus;
+  @override
+  final bool categorySystemEnabledMessages;
+  @override
+  final bool categorySystemEnabledLikes;
+  @override
+  final bool categorySystemEnabledModerationRequestStatus;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'NotificationSettingsData(areNotificationsEnabled: $areNotificationsEnabled, categoryEnabledMessages: $categoryEnabledMessages, categoryEnabledLikes: $categoryEnabledLikes, categoryEnabledModerationRequestStatus: $categoryEnabledModerationRequestStatus)';
+    return 'NotificationSettingsData(areNotificationsEnabled: $areNotificationsEnabled, categoryEnabledMessages: $categoryEnabledMessages, categoryEnabledLikes: $categoryEnabledLikes, categoryEnabledModerationRequestStatus: $categoryEnabledModerationRequestStatus, categorySystemEnabledMessages: $categorySystemEnabledMessages, categorySystemEnabledLikes: $categorySystemEnabledLikes, categorySystemEnabledModerationRequestStatus: $categorySystemEnabledModerationRequestStatus)';
   }
 
   @override
@@ -72,7 +93,10 @@ class _$NotificationSettingsDataImpl with DiagnosticableTreeMixin implements _No
       ..add(DiagnosticsProperty('areNotificationsEnabled', areNotificationsEnabled))
       ..add(DiagnosticsProperty('categoryEnabledMessages', categoryEnabledMessages))
       ..add(DiagnosticsProperty('categoryEnabledLikes', categoryEnabledLikes))
-      ..add(DiagnosticsProperty('categoryEnabledModerationRequestStatus', categoryEnabledModerationRequestStatus));
+      ..add(DiagnosticsProperty('categoryEnabledModerationRequestStatus', categoryEnabledModerationRequestStatus))
+      ..add(DiagnosticsProperty('categorySystemEnabledMessages', categorySystemEnabledMessages))
+      ..add(DiagnosticsProperty('categorySystemEnabledLikes', categorySystemEnabledLikes))
+      ..add(DiagnosticsProperty('categorySystemEnabledModerationRequestStatus', categorySystemEnabledModerationRequestStatus));
   }
 
   @override
@@ -87,7 +111,13 @@ class _$NotificationSettingsDataImpl with DiagnosticableTreeMixin implements _No
         (identical(other.categoryEnabledLikes, categoryEnabledLikes) ||
           other.categoryEnabledLikes == categoryEnabledLikes) &&
         (identical(other.categoryEnabledModerationRequestStatus, categoryEnabledModerationRequestStatus) ||
-          other.categoryEnabledModerationRequestStatus == categoryEnabledModerationRequestStatus)
+          other.categoryEnabledModerationRequestStatus == categoryEnabledModerationRequestStatus) &&
+        (identical(other.categorySystemEnabledMessages, categorySystemEnabledMessages) ||
+          other.categorySystemEnabledMessages == categorySystemEnabledMessages) &&
+        (identical(other.categorySystemEnabledLikes, categorySystemEnabledLikes) ||
+          other.categorySystemEnabledLikes == categorySystemEnabledLikes) &&
+        (identical(other.categorySystemEnabledModerationRequestStatus, categorySystemEnabledModerationRequestStatus) ||
+          other.categorySystemEnabledModerationRequestStatus == categorySystemEnabledModerationRequestStatus)
     );
   }
 
@@ -98,6 +128,9 @@ class _$NotificationSettingsDataImpl with DiagnosticableTreeMixin implements _No
     categoryEnabledMessages,
     categoryEnabledLikes,
     categoryEnabledModerationRequestStatus,
+    categorySystemEnabledMessages,
+    categorySystemEnabledLikes,
+    categorySystemEnabledModerationRequestStatus,
   );
 
   @override
@@ -106,10 +139,16 @@ class _$NotificationSettingsDataImpl with DiagnosticableTreeMixin implements _No
     Object? categoryEnabledMessages,
     Object? categoryEnabledLikes,
     Object? categoryEnabledModerationRequestStatus,
+    Object? categorySystemEnabledMessages,
+    Object? categorySystemEnabledLikes,
+    Object? categorySystemEnabledModerationRequestStatus,
   }) => _$NotificationSettingsDataImpl(
     areNotificationsEnabled: (areNotificationsEnabled ?? this.areNotificationsEnabled) as bool,
     categoryEnabledMessages: (categoryEnabledMessages ?? this.categoryEnabledMessages) as bool,
     categoryEnabledLikes: (categoryEnabledLikes ?? this.categoryEnabledLikes) as bool,
     categoryEnabledModerationRequestStatus: (categoryEnabledModerationRequestStatus ?? this.categoryEnabledModerationRequestStatus) as bool,
+    categorySystemEnabledMessages: (categorySystemEnabledMessages ?? this.categorySystemEnabledMessages) as bool,
+    categorySystemEnabledLikes: (categorySystemEnabledLikes ?? this.categorySystemEnabledLikes) as bool,
+    categorySystemEnabledModerationRequestStatus: (categorySystemEnabledModerationRequestStatus ?? this.categorySystemEnabledModerationRequestStatus) as bool,
   );
 }

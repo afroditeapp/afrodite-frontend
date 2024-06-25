@@ -703,6 +703,10 @@
   "@notification_session_expired_error": {
     "description": "Snackbar text for notifying that notification action was ignored because of expired notification session ID"
   },
+  "notification_settings_screen_notification_category_disabled_from_system_settings_text": "Disabled from system notification settings",
+  "@notification_settings_screen_notification_category_disabled_from_system_settings_text": {
+    "description": "Info text that notification category is disabled from system settings"
+  },
   "notification_settings_screen_notifications_disabled_from_system_settings_text": "Notifications are disabled from system notification settings",
   "@notification_settings_screen_notifications_disabled_from_system_settings_text": {
     "description": "Info text that notifications are disabled from system settings"
