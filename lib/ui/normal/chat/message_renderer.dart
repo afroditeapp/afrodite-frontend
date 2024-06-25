@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-import 'package:pihka_frontend/logic/chat/message_renderer_bloc.dart';
-import 'package:pihka_frontend/model/freezed/logic/chat/message_renderer_bloc.dart';
+import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
+import 'package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_row.dart';
 
 var log = Logger("MessageRenderer");
@@ -19,18 +19,18 @@ class MessageRenderer extends StatefulWidget {
 class MessageRendererState extends State<MessageRenderer> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MessageRendererBloc, MessageRendererData>(
+    return BlocBuilder<ConversationBloc, ConversationData>(
       buildWhen: (previous, current) {
-        return previous.currentlyRendering != current.currentlyRendering;
+        return previous.rendererCurrentlyRendering != current.rendererCurrentlyRendering;
       },
       builder: (_, data) {
         if (!context.mounted) {
           return const SizedBox.shrink();
         }
 
-        final messageRendererBloc = context.read<MessageRendererBloc>();
+        final conversationBloc = context.read<ConversationBloc>();
         final style = DefaultTextStyle.of(context);
-        final message = data.currentlyRendering;
+        final message = data.rendererCurrentlyRendering;
 
         if (message == null) {
           return const SizedBox.shrink();
@@ -48,7 +48,7 @@ class MessageRendererState extends State<MessageRenderer> {
                 child: SingleChildScrollView(
                   child: messageRowWidget(
                     context,
-                    messageEntryToViewData(message),
+                    messageEntryToViewData(message.entry),
                     key: key,
                     parentTextStyle: style.style,
                   ),
@@ -69,7 +69,7 @@ class MessageRendererState extends State<MessageRenderer> {
             if (!context.mounted) {
               return;
             }
-            messageRendererBloc.add(RenderingCompleted(height));
+            conversationBloc.add(RenderingCompleted(height));
           });
         });
 

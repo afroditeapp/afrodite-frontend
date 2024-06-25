@@ -426,6 +426,7 @@ class ChatRepository extends DataRepository {
     }
   }
 
+  /// First message is the latest message.
   Future<List<MessageEntry>> getAllMessages(AccountId accountId) async {
     final messageIterator = MessageDatabaseIterator();
     final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;

@@ -13,7 +13,6 @@ import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart";
 import "package:pihka_frontend/utils.dart";
-import "package:pihka_frontend/utils/immutable_list.dart";
 
 var log = Logger("ConversationBloc");
 
@@ -38,9 +37,10 @@ class BlockProfile extends ConversationEvent {
   BlockProfile(this.accountId);
 }
 class NotifyChatBoxCleared extends ConversationEvent {}
-class CompleteMessageListUpdateRendering extends ConversationEvent {
-  final double totalHeight;
-  CompleteMessageListUpdateRendering(this.totalHeight);
+
+class RenderingCompleted extends ConversationEvent {
+  final double height;
+  RenderingCompleted(this.height);
 }
 
 abstract class ConversationDataProvider {
@@ -118,6 +118,7 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
 
 class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with ActionRunner {
   final ConversationDataProvider dataProvider;
+  final RenderingManager renderingManager = RenderingManager();
 
   StreamSubscription<(int, ConversationChanged?)>? _messageCountSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
@@ -178,69 +179,67 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       ));
     });
     on<MessageCountChanged>((data, emit) async {
-      final pendingMessages = state.pendingMessages;
-      if (pendingMessages == null) {
+      final visibleMessages = state.visibleMessages;
+      if (visibleMessages == null) {
         final initialMessages = await dataProvider.getAllMessages(state.accountId);
+        final fromOldestToNewest = initialMessages.reversed.toList();
+        renderingManager.initWithMessages(fromOldestToNewest);
         emit(state.copyWith(
-          visibleMessages: ReadyVisibleMessageListUpdate(MessageList(initialMessages), null, false),
-          pendingMessages: MessageList(initialMessages),
+          visibleMessages: ReadyVisibleMessageListUpdate(MessageList(fromOldestToNewest), null, false),
         ));
         log.info("Initial message list update done");
         return;
       }
 
-      if (data.newMessageCount <= pendingMessages.messages.length) {
+      if (data.newMessageCount <= renderingManager.currentMsgCount()) {
         log.info("Skip message count change event");
         return;
       }
 
-      final currentMessages = pendingMessages.messages;
-      final lastMsg = currentMessages.firstOrNull;
+      final lastMsg = renderingManager.getLastMessage();
       final newMessages = await dataProvider.getNewMessages(state.accountId, lastMsg?.localId);
-      final newMessageList = [
-        ...newMessages.reversed,
-        ...currentMessages,
-      ];
-
-      final messageListUpdate = MessageListUpdate(
-        allMessagesList: MessageList(newMessageList),
-        onlyNewMessages: MessageList(newMessages),
-        jumpToLatestMessage: data.changeInfo == ConversationChangeType.messageSent,
+      renderingManager.addToBeRendered(
+        newMessages.reversed,
+        data.changeInfo == ConversationChangeType.messageSent,
       );
 
-      final UnmodifiableList<MessageListUpdate> newMessageListUpdates = state.pendingMessageListUpdates.add(messageListUpdate);
-      if (state.currentMessageListUpdate == null) {
-        emit(state.copyWith(
-          pendingMessages: messageListUpdate.allMessagesList,
-          currentMessageListUpdate: newMessageListUpdates.firstOrNull,
-          pendingMessageListUpdates: newMessageListUpdates.removeAt(0),
-        ));
-      } else {
-        emit(state.copyWith(
-          pendingMessages: messageListUpdate.allMessagesList,
-          pendingMessageListUpdates: newMessageListUpdates,
-        ));
+      if (state.rendererCurrentlyRendering == null) {
+        log.info("No in-progress rendering");
+        final msgForRendering = renderingManager.getAndRemoveNextToBeRendered();
+        if (msgForRendering != null) {
+          emit(state.copyWith(
+            rendererCurrentlyRendering: msgForRendering,
+          ));
+        }
       }
     },
       transformer: sequential(),
     );
-    on<CompleteMessageListUpdateRendering>((data, emit) {
-      final next = state.pendingMessageListUpdates.firstOrNull;
-      final UnmodifiableList<MessageListUpdate> nextList;
-      if (next == null) {
-        nextList = const UnmodifiableList<MessageListUpdate>.empty();
-      } else {
-        nextList = state.pendingMessageListUpdates.removeAt(0);
+    on<RenderingCompleted>((data, emit) {
+      final renderedMsg = state.rendererCurrentlyRendering;
+      if (renderedMsg == null) {
+        log.warning("Rendering completed event received but rendered message is missing");
+        return;
       }
-      emit(state.copyWith(
-        visibleMessages: ReadyVisibleMessageListUpdate(
-          state.currentMessageListUpdate?.allMessagesList ?? const MessageList([]),
-          data.totalHeight,
-          state.currentMessageListUpdate?.jumpToLatestMessage ?? false
-        ),
-        currentMessageListUpdate: next,
-        pendingMessageListUpdates: nextList,
-      ));
+
+      renderingManager.appendToCurrentMessageUpdate(data.height, renderedMsg);
+      final nextMsg = renderingManager.getAndRemoveNextToBeRendered();
+
+      if (nextMsg == null) {
+        log.info("Rendering completed");
+        final currentUpdate = renderingManager.resetCurrentMessageUpdateAndMoveToVisibleMessages();
+        if (currentUpdate != null) {
+          emit(state.copyWith(
+            visibleMessages: currentUpdate,
+            rendererCurrentlyRendering: null,
+          ));
+        }
+      } else {
+        log.info("Continue rendering");
+        emit(state.copyWith(
+          rendererCurrentlyRendering: nextMsg,
+        ));
+      }
     },
       transformer: sequential(),
     );
@@ -267,13 +266,108 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
   }
 }
 
-class MessageListUpdate {
-  final MessageList allMessagesList;
-  final MessageList onlyNewMessages;
-  final bool jumpToLatestMessage;
-  MessageListUpdate({
-    required this.allMessagesList,
-    required this.onlyNewMessages,
-    required this.jumpToLatestMessage,
-  });
+class RenderingManager {
+  final List<MessageEntry> visibleMessages = [];
+
+  /// Rendered messages are gathered here before they are moved to
+  /// visible messages.
+  ReadyVisibleMessageListUpdate? currentMessagesUpdate;
+
+  final List<EntryAndJumpInfo> toBeRendered = [];
+
+  void initWithMessages(Iterable<MessageEntry> messages) {
+    visibleMessages.clear();
+    visibleMessages.addAll(messages);
+  }
+
+  /// Sets last message's jumpToLatestMessage value to `jumpToLatestMessage`.
+  void addToBeRendered(Iterable<MessageEntry> toBeRendered, bool jumpToLatestMessage) {
+    final messages = [
+      ...toBeRendered,
+    ]
+      .map((msg) {
+        return EntryAndJumpInfo(msg, false);
+      })
+      .toList();
+
+    if (messages.isNotEmpty) {
+      final lastI = messages.length - 1;
+      messages[lastI] = EntryAndJumpInfo(messages[lastI].entry, jumpToLatestMessage);
+    }
+
+    this.toBeRendered.addAll(messages);
+  }
+
+  EntryAndJumpInfo? getAndRemoveNextToBeRendered() {
+    if (toBeRendered.isEmpty) {
+      return null;
+    }
+    return toBeRendered.removeAt(0);
+  }
+
+  MessageEntry? getLastMessage() {
+    if (toBeRendered.isEmpty) {
+      final currentUpdate = currentMessagesUpdate;
+      if (currentUpdate != null && currentUpdate.messages.messages.isNotEmpty) {
+        return currentUpdate.messages.messages.lastOrNull;
+      } else {
+        return visibleMessages.lastOrNull;
+      }
+    } else {
+      return toBeRendered.lastOrNull?.entry;
+    }
+  }
+
+  void appendToCurrentMessageUpdate(double height, EntryAndJumpInfo renderedMsg) {
+    final currentUpdate = currentMessagesUpdate;
+    if (currentUpdate == null) {
+      currentMessagesUpdate = ReadyVisibleMessageListUpdate(
+        MessageList([renderedMsg.entry]),
+        height,
+        renderedMsg.jumpToLatestMessage,
+      );
+    } else {
+      final bool jmp;
+      if (currentUpdate.jumpToLatestMessage) {
+        jmp = true;
+      } else {
+        jmp = renderedMsg.jumpToLatestMessage;
+      }
+      currentMessagesUpdate = ReadyVisibleMessageListUpdate(
+        MessageList([
+          ...currentUpdate.messages.messages,
+          renderedMsg.entry,
+        ]),
+        (currentUpdate.addedHeight ?? 0) + height,
+        jmp,
+      );
+    }
+  }
+
+  ReadyVisibleMessageListUpdate? resetCurrentMessageUpdateAndMoveToVisibleMessages() {
+    final currentUpdate = currentMessagesUpdate;
+    if (currentUpdate == null) {
+      log.error("Rendered messages not found");
+      return null;
+    }
+    currentMessagesUpdate = null;
+
+    visibleMessages.addAll(currentUpdate.messages.messages);
+
+    return ReadyVisibleMessageListUpdate(
+      MessageList(
+        [...visibleMessages]
+      ),
+      currentUpdate.addedHeight,
+      currentUpdate.jumpToLatestMessage,
+    );
+  }
+
+  ReadyVisibleMessageListUpdate? getCurrentMessageUpdate() {
+    return currentMessagesUpdate;
+  }
+
+  int currentMsgCount() {
+    return visibleMessages.length + (currentMessagesUpdate?.messages.messages.length ?? 0) + toBeRendered.length;
+  }
 }

@@ -26,11 +26,11 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
   final ScrollController _scrollController = ScrollController();
 
   List<MessageEntry> visibleMessages = [];
-  List<MessageEntry> pendingUpdate = [];
+  ReadyVisibleMessageListUpdate? pendingUpdate;
 
   @override
   void initState() {
-    visibleMessages = widget.conversationBloc.state.visibleMessages.messages.messages;
+    visibleMessages = widget.conversationBloc.state.visibleMessages?.messages.messages ?? [];
     super.initState();
   }
 
@@ -69,8 +69,8 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
       buildWhen: (previous, current) => previous.visibleMessages != current.visibleMessages,
       builder: (context, state) {
         final update = state.visibleMessages;
-        if (update.messages.messages != pendingUpdate) {
-          pendingUpdate = update.messages.messages;
+        if (update != null && update != pendingUpdate) {
+          pendingUpdate = update;
           updateVisibleMessages(update);
         }
 
@@ -96,7 +96,8 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
       controller: _scrollController,
       itemCount: visibleMessages.length,
       itemBuilder: (BuildContext context, int index) {
-        final entry = visibleMessages[index];
+        final invertedIndex = visibleMessages.length - 1 - index;
+        final entry = visibleMessages[invertedIndex];
         final style = DefaultTextStyle.of(context);
         return messageRowWidget(
           context,

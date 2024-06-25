@@ -27,7 +27,6 @@ import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
-import 'package:pihka_frontend/logic/chat/message_renderer_bloc.dart';
 import 'package:pihka_frontend/logic/server/address.dart';
 import 'package:pihka_frontend/logic/sign_in_with.dart';
 
@@ -54,8 +53,6 @@ final log = Logger("main");
 //             to client reqularly, so that broken connections are detected.
 // TODO(prod): When there are two conversation notifications, opening those
 //             one by one, results in the second opened to below the first.
-// TODO(prod): Conversation messages disappeared for some reason.
-//             Conversation reload fixed that.
 
 bool loggerInitDone = false;
 
@@ -268,7 +265,7 @@ class DebugObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    if (bloc is NavigatorStateBloc || bloc is ConversationBloc || bloc is MessageRendererBloc) {
+    if (bloc is NavigatorStateBloc || bloc is ConversationBloc) {
       if (kDebugMode) {
         log.finest("${bloc.runtimeType} $change");
       }

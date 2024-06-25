@@ -9,9 +9,7 @@ import 'package:database/database.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
-import 'package:pihka_frontend/logic/chat/message_renderer_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart';
-import 'package:pihka_frontend/model/freezed/logic/chat/message_renderer_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_renderer.dart';
 import 'package:pihka_frontend/ui/normal/chat/one_ended_list.dart';
@@ -41,13 +39,9 @@ NewPageDetails newConversationPage(
   return NewPageDetails(
     MaterialPage<void>(
       child: BlocProvider(
-        create: (_) => MessageRendererBloc(),
+        create: (_) => ConversationBloc(profile.uuid, DefaultConversationDataProvider()),
         lazy: false,
-        child: BlocProvider(
-          create: (_) => ConversationBloc(profile.uuid, DefaultConversationDataProvider()),
-          lazy: false,
-          child: ConversationPage(pageKey, profile)
-        ),
+        child: ConversationPage(pageKey, profile)
       ),
     ),
     pageKey: pageKey,
@@ -161,8 +155,6 @@ class ConversationPageState extends State<ConversationPage> {
         ),
         SafeArea(child: newMessageArea(context)),
         const MessageRenderer(),
-        msgUpdateToRendererForwarder(),
-        renderedMessagesResultForwarder(),
       ],
     );
   }
@@ -200,35 +192,4 @@ class ConversationPageState extends State<ConversationPage> {
       ),
     );
   }
-}
-
-Widget msgUpdateToRendererForwarder() {
-  return BlocBuilder<ConversationBloc, ConversationData>(
-    buildWhen: (previous, current) => previous.currentMessageListUpdate != current.currentMessageListUpdate,
-    builder: (context, state) {
-      final update = state.currentMessageListUpdate;
-      if (update == null) {
-        return const SizedBox.shrink();
-      }
-      log.info("Forwarding message update to renderer");
-      log.fine("New messages count: ${update.onlyNewMessages.messages.length}");
-      context.read<MessageRendererBloc>().add(RenderMessages(update));
-      return const SizedBox.shrink();
-    },
-  );
-}
-
-Widget renderedMessagesResultForwarder() {
-  return BlocBuilder<MessageRendererBloc, MessageRendererData>(
-    buildWhen: (previous, current) => previous.completed != current.completed,
-    builder: (context, state) {
-      if (!state.completed) {
-        return const SizedBox.shrink();
-      }
-      log.info("Rendering completed");
-      log.fine("Height: ${state.totalHeight}");
-      context.read<ConversationBloc>().add(CompleteMessageListUpdateRendering(state.totalHeight));
-      return const SizedBox.shrink();
-    },
-  );
 }

@@ -7,9 +7,7 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
-import 'package:pihka_frontend/logic/chat/message_renderer_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
-import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_renderer.dart';
 import 'package:pihka_frontend/ui/normal/chat/one_ended_list.dart';
 import 'package:rxdart/rxdart.dart';
@@ -33,13 +31,9 @@ NewPageDetails _newDebugConversationPage(
   return NewPageDetails(
     MaterialPage<void>(
       child: BlocProvider(
-        create: (_) => MessageRendererBloc(),
+        create: (_) => ConversationBloc(accountId, dataProvider),
         lazy: false,
-        child: BlocProvider(
-          create: (_) => ConversationBloc(accountId, dataProvider),
-          lazy: false,
-          child: ChatViewDebuggerPage(initialMsgCount: initialMsgCount, dataProvider: dataProvider)
-        ),
+        child: ChatViewDebuggerPage(initialMsgCount: initialMsgCount, dataProvider: dataProvider)
       ),
     ),
     pageKey: pageKey,
@@ -195,8 +189,6 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
           textEditArea(context),
           newMessageArea(context),
           const MessageRenderer(),
-          msgUpdateToRendererForwarder(),
-          renderedMessagesResultForwarder(),
         ],
       ),
     );
