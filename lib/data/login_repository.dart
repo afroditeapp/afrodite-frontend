@@ -59,6 +59,8 @@ class LoginRepository extends DataRepository {
   final BehaviorSubject<bool> _demoAccountLoginInProgress =
     BehaviorSubject.seeded(false);
 
+  DateTime? _backgroundedAt;
+
   // Main app state streams
   Stream<LoginState> get loginState => _loginState.distinct();
   Stream<String> get accountServerAddress => BackgroundDatabaseManager.getInstance()
@@ -147,8 +149,20 @@ class LoginRepository extends DataRepository {
         }
         if (await accountId.firstOrNull == null) {
           // Not logged in
+          _backgroundedAt = null;
           return;
         }
+
+        final backgroundedAt = _backgroundedAt;
+        if (backgroundedAt != null) {
+          final now = DateTime.now();
+          if (now.difference(backgroundedAt) > const Duration(days: 1)) {
+            log.info("Refreshing profile grid automatically");
+            await ProfileRepository.getInstance().resetMainProfileIterator();
+          }
+        }
+        _backgroundedAt = null;
+
         final state = await ApiManager.getInstance().state.firstOrNull;
         if (state == ApiManagerState.noConnection) {
           await ApiManager.getInstance().restart();
@@ -170,9 +184,11 @@ class LoginRepository extends DataRepository {
         }
         if (await accountId.firstOrNull == null) {
           // Not logged in
+          _backgroundedAt = null;
           return;
         }
         await ApiManager.getInstance().close();
+        _backgroundedAt = DateTime.now();
       })
       .listen(null);
   }
