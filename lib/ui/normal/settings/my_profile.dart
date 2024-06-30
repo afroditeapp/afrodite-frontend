@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/media/profile_pictures.dart';
+import 'package:pihka_frontend/logic/profile/attributes.dart';
 import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
 import 'package:pihka_frontend/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
@@ -55,6 +56,7 @@ class MyProfileScreen extends StatelessWidget {
                   initialProfile: profile,
                   profilePicturesBloc: context.read<ProfilePicturesBloc>(),
                   editMyProfileBloc: context.read<EditMyProfileBloc>(),
+                  profileAttributesBloc: context.read<ProfileAttributesBloc>(),
                 )),
                 pageKey,
               );

@@ -78,6 +78,49 @@ extension AttributeExtensions on Attribute {
     return mode == AttributeMode.selectMultipleFilterMultiple ||
       mode == AttributeMode.selectSingleFilterMultiple;
   }
+
+  bool isStoredAsBitflagValue() {
+    return mode == AttributeMode.selectMultipleFilterMultiple ||
+      mode == AttributeMode.selectSingleFilterMultiple;
+  }
+}
+
+extension ProfileAttributeValueUpdateExtensions on ProfileAttributeValueUpdate {
+  void setBitflagValue(int value) {
+    values = [value];
+  }
+
+  int? bitflagValue() {
+    return values.firstOrNull;
+  }
+
+  int? firstValue() {
+    return values.firstOrNull;
+  }
+
+  int? secondValue() {
+    return values.getAtOrNull(1);
+  }
+}
+
+extension ProfileAttributeValueExtensions on ProfileAttributeValue {
+  int? firstValue() {
+    return values.firstOrNull;
+  }
+
+  int? secondValue() {
+    return values.getAtOrNull(1);
+  }
+}
+
+extension ProfileAttributeFilterValueUpdateExtensions on ProfileAttributeFilterValueUpdate {
+  int? firstValue() {
+    return filterValues.firstOrNull;
+  }
+
+  int? secondValue() {
+    return filterValues.getAtOrNull(1);
+  }
 }
 
 extension CapabilitiesExtensions on Capabilities {

@@ -27,6 +27,7 @@ import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/icon_button.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
+import 'package:pihka_frontend/utils/api.dart';
 import 'package:pihka_frontend/utils/age.dart';
 import 'package:pihka_frontend/utils/profile_entry.dart';
 
@@ -41,11 +42,13 @@ class EditProfilePage extends StatefulWidget {
   final ProfileEntry initialProfile;
   final ProfilePicturesBloc profilePicturesBloc;
   final EditMyProfileBloc editMyProfileBloc;
+  final ProfileAttributesBloc profileAttributesBloc;
   const EditProfilePage({
     required this.pageKey,
     required this.initialProfile,
     required this.profilePicturesBloc,
     required this.editMyProfileBloc,
+    required this.profileAttributesBloc,
     Key? key,
   }) : super(key: key);
 
@@ -141,16 +144,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
       return true;
     }
 
+    final availableAttributes = widget.profileAttributesBloc.state.attributes?.info?.attributes ?? [];
     for (final a in editedData.attributes) {
       final currentOrNull = currentState.attributes.where((e) => e.id == a.id).firstOrNull;
       final current = ProfileAttributeValueUpdate(
         id: a.id,
-        valuePart1: currentOrNull?.valuePart1,
-        valuePart2: currentOrNull?.valuePart2,
+        values: currentOrNull?.values ?? [],
       );
+      final attributeInfo = availableAttributes.where((e) => e.id == a.id).firstOrNull;
       if (
-        (current.valuePart1 ?? 0) != (a.valuePart1 ?? 0) ||
-        current.valuePart2 != a.valuePart2
+        (current.firstValue() ?? 0) != (a.firstValue() ?? 0) ||
+        // Non bitflag attributes can have null values when not selected
+        ((attributeInfo?.isStoredAsBitflagValue() ?? false) == false && current.firstValue() != a.firstValue()) ||
+        current.secondValue() != a.secondValue()
       ) {
         return true;
       }
@@ -280,14 +286,13 @@ class EditAttributes extends StatelessWidget {
   ) {
     final List<Widget> attributeWidgets = <Widget>[];
     final convertedAttributes = myAttributes.map((e) {
-      final value = e.valuePart1;
+      final value = e.firstValue();
       if (value == null) {
         return null;
       } else {
         return ProfileAttributeValue(
           id: e.id,
-          valuePart1: value,
-          valuePart2: e.valuePart2,
+          values: e.values,
         );
       }
     }).nonNulls;

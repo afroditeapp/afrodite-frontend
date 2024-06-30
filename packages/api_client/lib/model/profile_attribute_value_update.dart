@@ -14,8 +14,7 @@ class ProfileAttributeValueUpdate {
   /// Returns a new [ProfileAttributeValueUpdate] instance.
   ProfileAttributeValueUpdate({
     required this.id,
-    this.valuePart1,
-    this.valuePart2,
+    this.values = const [],
   });
 
   /// Attribute ID
@@ -23,45 +22,27 @@ class ProfileAttributeValueUpdate {
   /// Minimum value: 0
   int id;
 
-  /// Bitflags value or top level attribute value ID.
-  ///
-  /// Minimum value: 0
-  int? valuePart1;
-
-  /// Sub level attribute value ID.
-  ///
-  /// Minimum value: 0
-  int? valuePart2;
+  /// Empty list removes the attribute.  - First value is bitflags value or top level attribute value ID or first number list value. - Second value is sub level attribute value ID or second number list value. - Third and rest are number list values.
+  List<int> values;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileAttributeValueUpdate &&
      other.id == id &&
-     other.valuePart1 == valuePart1 &&
-     other.valuePart2 == valuePart2;
+     other.values == values;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (id.hashCode) +
-    (valuePart1 == null ? 0 : valuePart1!.hashCode) +
-    (valuePart2 == null ? 0 : valuePart2!.hashCode);
+    (values.hashCode);
 
   @override
-  String toString() => 'ProfileAttributeValueUpdate[id=$id, valuePart1=$valuePart1, valuePart2=$valuePart2]';
+  String toString() => 'ProfileAttributeValueUpdate[id=$id, values=$values]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'id'] = this.id;
-    if (this.valuePart1 != null) {
-      json[r'value_part1'] = this.valuePart1;
-    } else {
-      json[r'value_part1'] = null;
-    }
-    if (this.valuePart2 != null) {
-      json[r'value_part2'] = this.valuePart2;
-    } else {
-      json[r'value_part2'] = null;
-    }
+      json[r'values'] = this.values;
     return json;
   }
 
@@ -85,8 +66,9 @@ class ProfileAttributeValueUpdate {
 
       return ProfileAttributeValueUpdate(
         id: mapValueOfType<int>(json, r'id')!,
-        valuePart1: mapValueOfType<int>(json, r'value_part1'),
-        valuePart2: mapValueOfType<int>(json, r'value_part2'),
+        values: json[r'values'] is List
+            ? (json[r'values'] as List).cast<int>()
+            : const [],
       );
     }
     return null;
@@ -137,6 +119,7 @@ class ProfileAttributeValueUpdate {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'id',
+    'values',
   };
 }
 

@@ -77,8 +77,8 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
           newAttributes.add(createFilterValueUpdate(
             a: attribute,
             acceptMissingAttribute: acceptMissingAttribute ?? (a.acceptMissingAttribute ?? false),
-            filterPart1: useOldFilterValue ? a.filterPart1 : newFilterValue.valuePart1,
-            filterPart2: useOldFilterValue ? a.filterPart2 : newFilterValue.valuePart2,
+            filterPart1: useOldFilterValue ? a.firstValue() : newFilterValue.firstValue(),
+            filterPart2: useOldFilterValue ? a.secondValue() : newFilterValue.secondValue(),
           ));
           found = true;
         } else {
@@ -89,8 +89,8 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
         newAttributes.add(createFilterValueUpdate(
             a: attribute,
             acceptMissingAttribute: acceptMissingAttribute ?? false,
-            filterPart1: useOldFilterValue ? null : newFilterValue.valuePart1,
-            filterPart2: useOldFilterValue ? null : newFilterValue.valuePart2,
+            filterPart1: useOldFilterValue ? null : newFilterValue.firstValue(),
+            filterPart2: useOldFilterValue ? null : newFilterValue.secondValue(),
         ));
       }
 
@@ -98,28 +98,39 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
   }
 }
 
-
 ProfileAttributeFilterValueUpdate createFilterValueUpdate({
   required Attribute a,
   required bool acceptMissingAttribute,
   int? filterPart1,
   int? filterPart2,
 }) {
-  final value = ProfileAttributeFilterValueUpdate(
-    id: a.id,
-    filterPart1: filterPart1,
-    filterPart2: filterPart2,
-    acceptMissingAttribute: acceptMissingAttribute,
-  );
+  bool? updatedAcceptMissingAttribute = acceptMissingAttribute;
+  int? updatedFilterPart1 = filterPart1;
+  int? updatedFilterPart2 = filterPart2;
 
   // Disable filter if it is empty
   final bitflagFilterDisabled = a.isBitflagAttributeWhenFiltering() && (filterPart1 == 0 || filterPart1 == null) && !acceptMissingAttribute;
   final valueFilterDisabled = !a.isBitflagAttributeWhenFiltering() && filterPart1 == null && !acceptMissingAttribute;
   if (bitflagFilterDisabled || valueFilterDisabled) {
-    value.acceptMissingAttribute = null;
-    value.filterPart1 = null;
-    value.filterPart2 = null;
+    updatedAcceptMissingAttribute = null;
+    updatedFilterPart1 = null;
+    updatedFilterPart2 = null;
   }
+
+  final List<int> updatedValues;
+  if (updatedFilterPart1 != null && updatedFilterPart2 != null) {
+    updatedValues = [updatedFilterPart1, updatedFilterPart2];
+  } else if (updatedFilterPart1 != null) {
+    updatedValues = [updatedFilterPart1];
+  } else {
+    updatedValues = [];
+  }
+
+  final value = ProfileAttributeFilterValueUpdate(
+    id: a.id,
+    filterValues: updatedValues,
+    acceptMissingAttribute: updatedAcceptMissingAttribute,
+  );
 
   return value;
 }

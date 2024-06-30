@@ -1,4 +1,5 @@
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -43,8 +44,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
 
     initialFilters = widget.profileFilteringSettingsBloc.state.attributeFilters?.filters.map((e) => ProfileAttributeFilterValueUpdate(
       acceptMissingAttribute: e.acceptMissingAttribute,
-      filterPart1: e.filterPart1,
-      filterPart2: e.filterPart2,
+      filterValues: [...e.filterValues],
       id: e.id,
     )).toList() ?? [];
 
@@ -72,8 +72,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       if (currentFilterOrNull == null) {
         currentFilter = ProfileAttributeFilterValueUpdate(
           acceptMissingAttribute: null,
-          filterPart1: null,
-          filterPart2: null,
+          filterValues: [],
           id: editedFilter.id,
         );
       } else {
@@ -81,8 +80,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       }
       if (
         (currentFilter.acceptMissingAttribute ?? false) != (editedFilter.acceptMissingAttribute ?? false) ||
-        (currentFilter.filterPart1 ?? 0) != (editedFilter.filterPart1 ?? 0) ||
-        (currentFilter.filterPart2 ?? 0) != (editedFilter.filterPart2 ?? 0)
+        !listEquals(currentFilter.filterValues, editedFilter.filterValues)
       ) {
         return true;
       }
@@ -198,14 +196,13 @@ class EditAttributeFilters extends StatelessWidget {
   ) {
     final List<Widget> attributeWidgets = <Widget>[];
     final convertedAttributes = myFilters.map((e) {
-      final value = e.filterPart1;
+      final value = e.filterValues.firstOrNull;
       if (value == null) {
         return null;
       } else {
         return ProfileAttributeValue(
           id: e.id,
-          valuePart1: value,
-          valuePart2: e.filterPart2,
+          values: e.filterValues,
         );
       }
     }).nonNulls;

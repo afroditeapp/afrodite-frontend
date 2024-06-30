@@ -26,12 +26,14 @@ class AttributeMode {
   static const selectSingleFilterSingle = AttributeMode._(r'SelectSingleFilterSingle');
   static const selectSingleFilterMultiple = AttributeMode._(r'SelectSingleFilterMultiple');
   static const selectMultipleFilterMultiple = AttributeMode._(r'SelectMultipleFilterMultiple');
+  static const selectMultipleFilterMultipleNumberList = AttributeMode._(r'SelectMultipleFilterMultipleNumberList');
 
   /// List of all possible values in this [enum][AttributeMode].
   static const values = <AttributeMode>[
     selectSingleFilterSingle,
     selectSingleFilterMultiple,
     selectMultipleFilterMultiple,
+    selectMultipleFilterMultipleNumberList,
   ];
 
   static AttributeMode? fromJson(dynamic value) => AttributeModeTypeTransformer().decode(value);
@@ -73,6 +75,7 @@ class AttributeModeTypeTransformer {
         case r'SelectSingleFilterSingle': return AttributeMode.selectSingleFilterSingle;
         case r'SelectSingleFilterMultiple': return AttributeMode.selectSingleFilterMultiple;
         case r'SelectMultipleFilterMultiple': return AttributeMode.selectMultipleFilterMultiple;
+        case r'SelectMultipleFilterMultipleNumberList': return AttributeMode.selectMultipleFilterMultipleNumberList;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

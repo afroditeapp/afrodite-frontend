@@ -17,6 +17,7 @@ import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/loading_dialog.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
+import 'package:pihka_frontend/utils/api.dart';
 
 const double PROFILE_IMG_HEIGHT = 400;
 
@@ -417,11 +418,11 @@ class AttributeAndValue implements AttributeInfoProvider {
 
     if (showSingleSelect) {
       for (final v in attribute.values) {
-        if (v.id != value.valuePart1) {
+        if (v.id != value.firstValue()) {
           continue;
         }
 
-        if (value.valuePart2 == null) {
+        if (value.secondValue() == null) {
           result.add(v);
         }
 
@@ -429,7 +430,7 @@ class AttributeAndValue implements AttributeInfoProvider {
         final secondLevelValues = v.groupValues;
         if (secondLevelValues != null) {
           for (final v2 in secondLevelValues.values) {
-            if (v2.id == value.valuePart2) {
+            if (v2.id == value.secondValue()) {
               result.add(v2);
               break;
             }
@@ -438,7 +439,7 @@ class AttributeAndValue implements AttributeInfoProvider {
       }
     } else if (showMultipleSelect) {
       for (final bitflag in attribute.values) {
-        if (bitflag.id & value.valuePart1 != 0) {
+        if (bitflag.id & (value.firstValue() ?? 0) != 0) {
           result.add(bitflag);
         }
       }

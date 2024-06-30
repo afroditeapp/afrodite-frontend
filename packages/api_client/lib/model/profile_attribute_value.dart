@@ -14,8 +14,7 @@ class ProfileAttributeValue {
   /// Returns a new [ProfileAttributeValue] instance.
   ProfileAttributeValue({
     required this.id,
-    required this.valuePart1,
-    this.valuePart2,
+    this.values = const [],
   });
 
   /// Attribute ID
@@ -23,41 +22,27 @@ class ProfileAttributeValue {
   /// Minimum value: 0
   int id;
 
-  /// Bitflags value or top level attribute value ID.
-  ///
-  /// Minimum value: 0
-  int valuePart1;
-
-  /// Sub level attribute value ID.
-  ///
-  /// Minimum value: 0
-  int? valuePart2;
+  /// - First value is bitflags value or top level attribute value ID or first number list value. - Second value is sub level attribute value ID or second number list value. - Third and rest are number list values.  The number list values are in ascending order.
+  List<int> values;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileAttributeValue &&
      other.id == id &&
-     other.valuePart1 == valuePart1 &&
-     other.valuePart2 == valuePart2;
+     other.values == values;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (id.hashCode) +
-    (valuePart1.hashCode) +
-    (valuePart2 == null ? 0 : valuePart2!.hashCode);
+    (values.hashCode);
 
   @override
-  String toString() => 'ProfileAttributeValue[id=$id, valuePart1=$valuePart1, valuePart2=$valuePart2]';
+  String toString() => 'ProfileAttributeValue[id=$id, values=$values]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'id'] = this.id;
-      json[r'value_part1'] = this.valuePart1;
-    if (this.valuePart2 != null) {
-      json[r'value_part2'] = this.valuePart2;
-    } else {
-      json[r'value_part2'] = null;
-    }
+      json[r'values'] = this.values;
     return json;
   }
 
@@ -81,8 +66,9 @@ class ProfileAttributeValue {
 
       return ProfileAttributeValue(
         id: mapValueOfType<int>(json, r'id')!,
-        valuePart1: mapValueOfType<int>(json, r'value_part1')!,
-        valuePart2: mapValueOfType<int>(json, r'value_part2'),
+        values: json[r'values'] is List
+            ? (json[r'values'] as List).cast<int>()
+            : const [],
       );
     }
     return null;
@@ -133,7 +119,7 @@ class ProfileAttributeValue {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'id',
-    'value_part1',
+    'values',
   };
 }
 

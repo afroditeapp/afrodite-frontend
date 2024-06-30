@@ -12,6 +12,7 @@ import 'package:pihka_frontend/ui/utils/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/search.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
+import 'package:pihka_frontend/utils/api.dart';
 
 class EditProfileAttributeScreen extends StatefulWidget {
   final AttributeAndValue a;
@@ -37,7 +38,14 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
 
   bool invalidSelection(EditMyProfileData data) {
     for (final a in data.attributes) {
-      if (a.id == widget.a.attribute.id && widget.a.attribute.required_ && (a.valuePart1 == 0 || a.valuePart1 == null)) {
+      if (
+        a.id == widget.a.attribute.id &&
+        widget.a.attribute.required_ &&
+        (
+          (widget.a.attribute.isStoredAsBitflagValue() && (a.bitflagValue() == null || a.bitflagValue() == 0)) ||
+          (!widget.a.attribute.isStoredAsBitflagValue() && a.values.isEmpty)
+        )
+      ) {
         return true;
       }
     }
@@ -132,8 +140,27 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
   void initState() {
     super.initState();
 
-    valuePart1 = widget.a.value?.valuePart1;
-    valuePart2 = widget.a.value?.valuePart2;
+    valuePart1 = widget.a.value?.firstValue();
+    valuePart2 = widget.a.value?.secondValue();
+  }
+
+  void runAttributeChangedCallback() {
+    final updatedValuePart1 = valuePart1;
+    final updatedValuePart2 = valuePart2;
+    final List<int> updatedValues;
+    if (updatedValuePart1 != null && updatedValuePart2 != null) {
+      updatedValues = [updatedValuePart1, updatedValuePart2];
+    } else if (updatedValuePart1 != null) {
+      updatedValues = [updatedValuePart1];
+    } else {
+      updatedValues = [];
+    }
+    widget.onNewAttributeValue(
+      ProfileAttributeValueUpdate(
+        id: widget.a.attribute.id,
+        values: updatedValues,
+      )
+    );
   }
 
   bool attributeValueStateForBitflagAttributes(
@@ -161,13 +188,7 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
 
     if (currentNumberValue != newNumberValue) {
       valuePart1 = newNumberValue;
-      widget.onNewAttributeValue(
-        ProfileAttributeValueUpdate(
-          id: widget.a.attribute.id,
-          valuePart1: valuePart1,
-          valuePart2: valuePart2,
-        )
-      );
+      runAttributeChangedCallback();
     }
   }
 
@@ -198,13 +219,7 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
     if (valuePart1 != newPart1Value) {
       valuePart1 = newPart1Value;
       valuePart2 = null;
-      widget.onNewAttributeValue(
-        ProfileAttributeValueUpdate(
-          id: widget.a.attribute.id,
-          valuePart1: valuePart1,
-          valuePart2: valuePart2,
-        )
-      );
+      runAttributeChangedCallback();
     }
   }
 
@@ -215,13 +230,7 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
     if (valuePart2 != newPart2Value || valuePart1 != newPart1Value) {
       valuePart1 = newPart1Value;
       valuePart2 = newPart2Value;
-      widget.onNewAttributeValue(
-        ProfileAttributeValueUpdate(
-          id: widget.a.attribute.id,
-          valuePart1: valuePart1,
-          valuePart2: valuePart2,
-        )
-      );
+      runAttributeChangedCallback();
     }
   }
 

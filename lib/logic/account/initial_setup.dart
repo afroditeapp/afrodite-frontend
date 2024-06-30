@@ -16,6 +16,7 @@ import "package:pihka_frontend/model/freezed/logic/media/image_processing.dart";
 import "package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
+import "package:pihka_frontend/utils/api.dart";
 import "package:pihka_frontend/utils/age.dart";
 import "package:pihka_frontend/utils/immutable_list.dart";
 import "package:pihka_frontend/utils/tmp_dir.dart";
@@ -271,13 +272,13 @@ ProfileAttributesState modifyAttributes(
     if (value.id == modifyCmd.attribute.id) {
       updated = true;
       if (modifyCmd.value) {
-        var v = value.valuePart1 ?? 0;
+        var v = value.bitflagValue() ?? 0;
         v |= modifyCmd.attributeValue.id;
-        value.valuePart1 = v;
+        value.setBitflagValue(v);
       } else {
-        var v = value.valuePart1 ?? 0;
+        var v = value.bitflagValue() ?? 0;
         v &= ~modifyCmd.attributeValue.id;
-        value.valuePart1 = v;
+        value.setBitflagValue(v);
       }
     }
   }
@@ -285,11 +286,11 @@ ProfileAttributesState modifyAttributes(
   if (!updated) {
     newAnswers.add(ProfileAttributeValueUpdate(
       id: modifyCmd.attribute.id,
-      valuePart1: modifyCmd.value ? modifyCmd.attributeValue.id : 0,
+      values: [modifyCmd.value ? modifyCmd.attributeValue.id : 0],
     ));
   }
 
-  if (newAnswers.length == modifyCmd.requiredAttributeCount && newAnswers.every((v) => v.valuePart1 != 0)) {
+  if (newAnswers.length == modifyCmd.requiredAttributeCount && newAnswers.every((v) => v.bitflagValue() != 0)) {
     return FullyAnswered(newAnswers);
   } else {
     return PartiallyAnswered(newAnswers);

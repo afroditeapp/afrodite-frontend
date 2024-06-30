@@ -14,22 +14,14 @@ class ProfileAttributeFilterValue {
   /// Returns a new [ProfileAttributeFilterValue] instance.
   ProfileAttributeFilterValue({
     required this.acceptMissingAttribute,
-    this.filterPart1,
-    this.filterPart2,
+    this.filterValues = const [],
     required this.id,
   });
 
   bool acceptMissingAttribute;
 
-  /// Bitflags value or top level attribute value ID filter.
-  ///
-  /// Minimum value: 0
-  int? filterPart1;
-
-  /// Sub level attribute value ID filter.
-  ///
-  /// Minimum value: 0
-  int? filterPart2;
+  /// - First value is bitflags value or top level attribute value ID or first number list value. - Second value is sub level attribute value ID or second number list value. - Third and rest are number list values.  The number list values are in ascending order.
+  List<int> filterValues;
 
   /// Attribute ID
   ///
@@ -39,34 +31,23 @@ class ProfileAttributeFilterValue {
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileAttributeFilterValue &&
      other.acceptMissingAttribute == acceptMissingAttribute &&
-     other.filterPart1 == filterPart1 &&
-     other.filterPart2 == filterPart2 &&
+     other.filterValues == filterValues &&
      other.id == id;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (acceptMissingAttribute.hashCode) +
-    (filterPart1 == null ? 0 : filterPart1!.hashCode) +
-    (filterPart2 == null ? 0 : filterPart2!.hashCode) +
+    (filterValues.hashCode) +
     (id.hashCode);
 
   @override
-  String toString() => 'ProfileAttributeFilterValue[acceptMissingAttribute=$acceptMissingAttribute, filterPart1=$filterPart1, filterPart2=$filterPart2, id=$id]';
+  String toString() => 'ProfileAttributeFilterValue[acceptMissingAttribute=$acceptMissingAttribute, filterValues=$filterValues, id=$id]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'accept_missing_attribute'] = this.acceptMissingAttribute;
-    if (this.filterPart1 != null) {
-      json[r'filter_part1'] = this.filterPart1;
-    } else {
-      json[r'filter_part1'] = null;
-    }
-    if (this.filterPart2 != null) {
-      json[r'filter_part2'] = this.filterPart2;
-    } else {
-      json[r'filter_part2'] = null;
-    }
+      json[r'filter_values'] = this.filterValues;
       json[r'id'] = this.id;
     return json;
   }
@@ -91,8 +72,9 @@ class ProfileAttributeFilterValue {
 
       return ProfileAttributeFilterValue(
         acceptMissingAttribute: mapValueOfType<bool>(json, r'accept_missing_attribute')!,
-        filterPart1: mapValueOfType<int>(json, r'filter_part1'),
-        filterPart2: mapValueOfType<int>(json, r'filter_part2'),
+        filterValues: json[r'filter_values'] is List
+            ? (json[r'filter_values'] as List).cast<int>()
+            : const [],
         id: mapValueOfType<int>(json, r'id')!,
       );
     }
@@ -144,6 +126,7 @@ class ProfileAttributeFilterValue {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'accept_missing_attribute',
+    'filter_values',
     'id',
   };
 }

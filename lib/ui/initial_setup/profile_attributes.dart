@@ -12,6 +12,7 @@ import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
 import "package:pihka_frontend/ui_utils/loading_dialog.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
+import "package:pihka_frontend/utils/api.dart";
 
 final log = Logger("AskProfileAttributesScreen");
 
@@ -336,6 +337,7 @@ IconData? iconResourceToMaterialIcon(String? iconResouce) {
     "question_mark_rounded" => Icons.question_mark_rounded,
     "search_rounded" => Icons.search_rounded,
     "waving_hand_rounded" => Icons.waving_hand_rounded,
+    "star_rounded" => Icons.star_rounded,
     _ => null,
   };
 
@@ -353,7 +355,7 @@ bool attributeValueStateForBitflagAttributes(
 ) {
   for (final value in currentValues) {
     if (value.id == attribute.id) {
-      final currentValue = value.valuePart1 ?? 0;
+      final currentValue = value.bitflagValue() ?? 0;
       return currentValue & attributeValue.id != 0;
     }
   }
