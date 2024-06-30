@@ -18,7 +18,7 @@ void showAppAboutDialog(BuildContext context) {
     context: context,
     builder: (context) => AboutDialog(
       applicationName: context.strings.app_name,
-      applicationVersion: "0.1.2",
+      applicationVersion: "0.2.0",
       applicationIcon: Image.asset(
         ImageAsset.appLogo.path,
         width: ICON_SIZE,
