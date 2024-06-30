@@ -443,6 +443,12 @@ class AttributeAndValue implements AttributeInfoProvider {
           result.add(bitflag);
         }
       }
+    } else if (attribute.mode == AttributeMode.selectMultipleFilterMultipleNumberList) {
+      for (final v in attribute.values) {
+        if (value.values.contains(v.id)) {
+          result.add(v);
+        }
+      }
     }
 
     reorderValues(result, attribute.valueOrder);

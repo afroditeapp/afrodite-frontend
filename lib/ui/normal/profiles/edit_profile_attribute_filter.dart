@@ -8,6 +8,7 @@ import 'package:pihka_frontend/logic/profile/edit_profile_filtering_settings.dar
 import 'package:pihka_frontend/ui/normal/profiles/filter_profiles.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile_attribute.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/search.dart';
+import 'package:pihka_frontend/utils/api.dart';
 
 class EditProfileAttributeFilterScreen extends StatefulWidget {
   final AttributeFilterInfo a;
@@ -27,7 +28,8 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
   @override
   void initState() {
     super.initState();
-    searchPossible = widget.a.attribute.mode == AttributeMode.selectSingleFilterSingle;
+    searchPossible = widget.a.attribute.mode == AttributeMode.selectSingleFilterSingle ||
+      widget.a.attribute.isNumberListAttribute();
     searchController = AppBarSearchController(onChanged: () => setState(() {}));
   }
 
@@ -67,7 +69,7 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
             onEmpty: (a, value) =>
               context.read<EditProfileFilteringSettingsBloc>().add(SetMatchWithEmpty(a, value))
           ),
-          EditSingleAttribute(
+          EditSingleAttributeAllTypes(
             a: widget.a,
             valueFilter: filterValue,
             onNewAttributeValue: (value) =>

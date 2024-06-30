@@ -40,12 +40,13 @@ class _AppBarWithSearchState extends State<AppBarWithSearch> {
         IconButton(
           icon: Icon(widget.controller.searchActive ? Icons.close : Icons.search),
           onPressed: () {
+            if (widget.controller.searchActive) {
+              widget.controller.searchController.clear();
+            }
             setState(() {
-              if (widget.controller.searchActive) {
-                widget.controller.searchController.clear();
-              }
               widget.controller.searchActive = !widget.controller.searchActive;
             });
+            widget.controller.onChanged?.call();
           },
         ),
       ];

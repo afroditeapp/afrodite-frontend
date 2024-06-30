@@ -32,6 +32,7 @@
     <string name="generic_gender_man_plural" description="Generic man gender text in plural form">Men</string>
     <string name="generic_gender_woman_plural" description="Generic woman gender text in plural form">Women</string>
     <string name="generic_gender_nonbinary_plural" description="Generic non-binary gender text in plural form">Non-binaries</string>
+    <string name="generic_show_only_selected" description="Generic show only selected text">Show only selected</string>
 
     <string name="generic_text_field_age_hint_text" description="Input field hint text for age">Insert an age between 18–99</string>
     <string name="generic_search_settings_looking_for_all_genders_text" desctiption="Search settings radio button option for men and women who are looking all genders">All</string>

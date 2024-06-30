@@ -30,6 +30,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  collection: ^1.19.0
+
   # State management
   flutter_bloc: ^8.0.0
   bloc_concurrency: ^0.2.5

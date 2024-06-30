@@ -331,6 +331,10 @@
     "description": "Generic save confirmation title text"
   },
   "generic_search_settings_looking_for_all_genders_text": "All",
+  "generic_show_only_selected": "Show only selected",
+  "@generic_show_only_selected": {
+    "description": "Generic show only selected text"
+  },
   "generic_take_photo": "Take photo",
   "@generic_take_photo": {
     "description": "Generic take photo text"

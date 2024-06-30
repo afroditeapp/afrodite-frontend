@@ -32,7 +32,8 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
   @override
   void initState() {
     super.initState();
-    searchPossible = widget.a.attribute.mode == AttributeMode.selectSingleFilterSingle;
+    searchPossible = widget.a.attribute.mode == AttributeMode.selectSingleFilterSingle ||
+      widget.a.attribute.isNumberListAttribute();
     searchController = AppBarSearchController(onChanged: () => setState(() {}));
   }
 
@@ -99,7 +100,7 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           EditAttributeTitle(a: widget.a.attribute),
-          EditSingleAttribute(
+          EditSingleAttributeAllTypes(
             a: widget.a,
             valueFilter: filterValue,
             onNewAttributeValue: (value) {
@@ -113,6 +114,36 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
         ],
       ),
     );
+  }
+}
+
+class EditSingleAttributeAllTypes extends StatelessWidget {
+  final AttributeInfoProvider a;
+  final String? valueFilter;
+  final void Function(ProfileAttributeValueUpdate) onNewAttributeValue;
+
+  const EditSingleAttributeAllTypes({
+    required this.a,
+    required this.valueFilter,
+    required this.onNewAttributeValue,
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (a.attribute.isNumberListAttribute()) {
+      return EditSingleAttributeNumberList(
+        a: a,
+        valueFilter: valueFilter,
+        onNewAttributeValue: onNewAttributeValue,
+      );
+    } else {
+      return EditSingleAttribute(
+        a: a,
+        valueFilter: valueFilter,
+        onNewAttributeValue: onNewAttributeValue,
+      );
+    }
   }
 }
 
@@ -448,7 +479,7 @@ class EditAttributeTitle extends StatelessWidget {
     if (icon != null) {
       title = Row(
         children: [
-          Icon(icon),
+          const Icon(icon),
           const Padding(padding: EdgeInsets.all(8.0)),
           text,
         ],
@@ -460,6 +491,172 @@ class EditAttributeTitle extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
       child: title
+    );
+  }
+}
+
+class EditSingleAttributeNumberList extends StatefulWidget {
+  final AttributeInfoProvider a;
+  final String? valueFilter;
+  final void Function(ProfileAttributeValueUpdate) onNewAttributeValue;
+
+  const EditSingleAttributeNumberList({
+    required this.a,
+    required this.valueFilter,
+    required this.onNewAttributeValue,
+    super.key,
+  });
+
+  @override
+  State<EditSingleAttributeNumberList> createState() => _EditSingleAttributeNumberListState();
+}
+
+class _EditSingleAttributeNumberListState extends State<EditSingleAttributeNumberList> {
+  Set<int> values = {};
+  List<AttributeValue> valueList = [];
+  bool showOnlySelected = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final currentValues = widget.a.value?.values ?? [];
+    values = currentValues.toSet();
+
+    final attribute = widget.a.attribute;
+    valueList = attribute.values.toList();
+    reorderValues(valueList, attribute.valueOrder);
+  }
+
+  bool? firstLevelButtonValue(
+    AttributeValue attributeValue
+  ) {
+    final isSelected = values.contains(attributeValue.id);
+    if (isSelected) {
+      return true;
+    } else {
+      if (values.length >= 8) {
+        // Max 8 values can be selected
+        return null;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  void updateFirstLevelButtonValue(
+    AttributeValue attributeValue,
+    bool enabled,
+  ) {
+    if (enabled) {
+      values.add(attributeValue.id);
+    } else {
+      values.remove(attributeValue.id);
+      if (values.isEmpty) {
+        showOnlySelected = false;
+      }
+    }
+
+    widget.onNewAttributeValue(
+      ProfileAttributeValueUpdate(
+        id: widget.a.attribute.id,
+        values: values.toList(),
+      )
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: attributeToWidget(context),
+    );
+  }
+
+  List<Widget> attributeToWidget(BuildContext context) {
+    return widgetsForSelectMultipleAttribute(
+      context,
+      widget.a.attribute,
+      valueList,
+    );
+  }
+
+  List<Widget> widgetsForSelectMultipleAttribute(
+    BuildContext context,
+    Attribute attribute,
+    List<AttributeValue> attributeValues,
+  ) {
+    final widgets = <Widget>[
+      showOnlySelectedSetting(context),
+    ];
+
+    for (final value in attributeValues) {
+      final isSelectedOrDisabled = firstLevelButtonValue(value);
+      final text = attributeValueName(context, value, attribute.translations);
+
+      final bool isSelected;
+      final void Function(bool?)? onChanged;
+      if (isSelectedOrDisabled == null) {
+        isSelected = false;
+        onChanged = null;
+      } else {
+        isSelected = isSelectedOrDisabled;
+        onChanged = (newValue) {
+          setState(() {
+            if (values.contains(value.id)) {
+              updateFirstLevelButtonValue(value, false);
+            } else {
+              updateFirstLevelButtonValue(value, true);
+            }
+          });
+        };
+      }
+
+      final checkbox = CheckboxListTile(
+        title: singleSelectTitle(value, text),
+        controlAffinity: ListTileControlAffinity.leading,
+        value: isSelected,
+        onChanged: onChanged,
+      );
+
+      final bool canBeShown = values.isEmpty || !showOnlySelected || (showOnlySelected && isSelected);
+      final filter = widget.valueFilter;
+      if (canBeShown && filter != null && (text.toLowerCase().contains(filter.trim().toLowerCase()))) {
+        widgets.add(checkbox);
+      } else if (canBeShown && filter == null) {
+        widgets.add(checkbox);
+      }
+    }
+    return widgets;
+  }
+
+  Widget singleSelectTitle(
+    AttributeValue value,
+    String text,
+  ) {
+      final icon = iconResourceToMaterialIcon(value.icon);
+      if (icon != null) {
+        return Row(
+          children: [
+            Icon(icon),
+            const Padding(padding: EdgeInsets.all(8.0)),
+            Text(text),
+          ],
+        );
+      } else {
+        return Text(text);
+      }
+  }
+
+  Widget showOnlySelectedSetting(BuildContext context) {
+    return SwitchListTile(
+      title: Text(context.strings.generic_show_only_selected),
+      value: showOnlySelected && values.isNotEmpty,
+      onChanged: values.isNotEmpty ? (value) {
+        setState(() {
+          showOnlySelected = value;
+        });
+      } : null,
     );
   }
 }

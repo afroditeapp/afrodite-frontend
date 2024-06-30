@@ -83,6 +83,10 @@ extension AttributeExtensions on Attribute {
     return mode == AttributeMode.selectMultipleFilterMultiple ||
       mode == AttributeMode.selectSingleFilterMultiple;
   }
+
+  bool isNumberListAttribute() {
+    return mode == AttributeMode.selectMultipleFilterMultipleNumberList;
+  }
 }
 
 extension ProfileAttributeValueUpdateExtensions on ProfileAttributeValueUpdate {

@@ -1,5 +1,6 @@
 
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -152,11 +153,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
         values: currentOrNull?.values ?? [],
       );
       final attributeInfo = availableAttributes.where((e) => e.id == a.id).firstOrNull;
-      if (
+
+      final nonNumberListAttributeChanges =
         (current.firstValue() ?? 0) != (a.firstValue() ?? 0) ||
         // Non bitflag attributes can have null values when not selected
         ((attributeInfo?.isStoredAsBitflagValue() ?? false) == false && current.firstValue() != a.firstValue()) ||
-        current.secondValue() != a.secondValue()
+        current.secondValue() != a.secondValue();
+      final isNumberListAttribute =
+        attributeInfo?.isNumberListAttribute() ?? false;
+      if (
+        (!isNumberListAttribute && nonNumberListAttributeChanges) ||
+        (isNumberListAttribute && !const SetEquality<int>().equals(current.values.toSet(), a.values.toSet()))
       ) {
         return true;
       }
