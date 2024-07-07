@@ -35,6 +35,9 @@ class Account extends Table {
   BoolColumn get profileFilterFavorites => boolean()
     .withDefault(const Constant(PROFILE_FILTER_FAVORITES_DEFAULT))();
 
+  TextColumn get profileIteratorSessionId => text()
+    .map(const NullAwareTypeConverter.wrap(IteratorSessionIdConverter())).nullable()();
+
   // DaoInitialSync
 
   BoolColumn get initialSyncDoneLoginRepository => boolean()
@@ -168,6 +171,15 @@ class AccountDatabase extends _$AccountDatabase {
     });
   }
 
+  Future<void> updateProfileIteratorSessionId(IteratorSessionId value) async {
+    await into(account).insertOnConflictUpdate(
+      AccountCompanion.insert(
+        id: ACCOUNT_DB_DATA_ID,
+        profileIteratorSessionId: Value(value),
+      ),
+    );
+  }
+
   Future<void> updateProfileFilterFavorites(bool value) async {
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
@@ -212,6 +224,9 @@ class AccountDatabase extends _$AccountDatabase {
 
   Stream<bool?> watchProfileFilterFavorites() =>
     watchColumn((r) => r.profileFilterFavorites);
+
+  Stream<IteratorSessionId?> watchProfileSessionId() =>
+    watchColumn((r) => r.profileIteratorSessionId);
 
   Stream<AccountState?> watchAccountState() =>
     watchColumn((r) => r.jsonAccountState?.toAccountState());

@@ -45,9 +45,10 @@ class OnlineIterator extends IteratorType {
         return const Err(null);
       }
 
-      switch (await api.profileAction((api) => api.postResetProfilePaging())) {
-        case Ok():
+      switch (await api.profile((api) => api.postResetProfilePaging())) {
+        case Ok(:final v):
           resetServerIterator = false;
+          await db.accountAction((db) => db.updateProfileIteratorSessionId(v));
           await db.profileAction((db) => db.setProfileGridStatusList(null, false, clear: true));
         case Err():
           log.error("Profile paging reset failed");
@@ -72,9 +73,11 @@ class OnlineIterator extends IteratorType {
       }
     }
 
-    // TODO: What if server restarts? The client thinks that it is
-    // in the middle of the list, but the server has reseted the iterator.
-    // Add some uuid to the iterator to check if the server has restarted?
+    final iteratorSessionId = await db.accountStreamSingle((db) => db.watchProfileSessionId()).ok();
+    if (iteratorSessionId == null) {
+      log.error("No iterator session ID in database");
+      return const Err(null);
+    }
 
     final List<ProfileEntry> list = List.empty(growable: true);
     while (true) {
@@ -82,8 +85,13 @@ class OnlineIterator extends IteratorType {
         log.error("Connection waiting failed");
         return const Err(null);
       }
-      switch (await api.profile((api) => api.postGetNextProfilePage(IteratorSessionId(id: "TODO")))) {
+      switch (await api.profile((api) => api.postGetNextProfilePage(iteratorSessionId))) {
         case Ok(value: final profiles):
+          if (profiles.errorInvalidIteratorSessionId) {
+            log.error("Current iterator session ID is invalid");
+            return const Err(null);
+          }
+
           if (profiles.profiles.isEmpty) {
             return const Ok([]);
           }

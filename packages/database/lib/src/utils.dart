@@ -262,3 +262,17 @@ class NewMessageNotificationIdConverter extends TypeConverter<NewMessageNotifica
     return value.id;
   }
 }
+
+class IteratorSessionIdConverter extends TypeConverter<IteratorSessionId, String> {
+  const IteratorSessionIdConverter();
+
+  @override
+  IteratorSessionId fromSql(fromDb) {
+    return IteratorSessionId(id: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.id;
+  }
+}
