@@ -76,6 +76,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postDemoModeRegisterAccount**](doc//AccountApi.md#postdemomoderegisteraccount) | **POST** /account_api/demo_mode_register_account | 
 *AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google. Creates new account if
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update current or pending profile visiblity value.
+*AccountApi* | [**putSettingUnlimitedLikes**](doc//AccountApi.md#putsettingunlimitedlikes) | **PUT** /account_api/settings/unlimited_likes | 
 *AccountInternalApi* | [**postLogin**](doc//AccountInternalApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken for a bot account. If the account is not registered
 *AccountInternalApi* | [**postRegister**](doc//AccountInternalApi.md#postregister) | **POST** /account_api/register | Register a new bot account. Returns new account ID which is UUID.
 *ChatApi* | [**deleteLike**](doc//ChatApi.md#deletelike) | **DELETE** /chat_api/delete_like | Delete sent like.
@@ -204,8 +205,12 @@ Class | Method | HTTP request | Description
  - [HandleModerationRequest](doc//HandleModerationRequest.md)
  - [IconLocation](doc//IconLocation.md)
  - [IconResource](doc//IconResource.md)
+ - [IteratorSessionId](doc//IteratorSessionId.md)
  - [Language](doc//Language.md)
+ - [LastSeenTimeFilter](doc//LastSeenTimeFilter.md)
  - [LatestViewedMessageChanged](doc//LatestViewedMessageChanged.md)
+ - [LimitedActionResult](doc//LimitedActionResult.md)
+ - [LimitedActionStatus](doc//LimitedActionStatus.md)
  - [Location](doc//Location.md)
  - [LoginResult](doc//LoginResult.md)
  - [MapTileX](doc//MapTileX.md)

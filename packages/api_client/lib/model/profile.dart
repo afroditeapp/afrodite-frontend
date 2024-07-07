@@ -17,6 +17,7 @@ class Profile {
     this.attributes = const [],
     required this.name,
     required this.profileText,
+    this.unlimitedLikes = false,
   });
 
   int age;
@@ -28,12 +29,15 @@ class Profile {
   /// Profile text support is disabled for now.
   String profileText;
 
+  bool unlimitedLikes;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is Profile &&
      other.age == age &&
      other.attributes == attributes &&
      other.name == name &&
-     other.profileText == profileText;
+     other.profileText == profileText &&
+     other.unlimitedLikes == unlimitedLikes;
 
   @override
   int get hashCode =>
@@ -41,10 +45,11 @@ class Profile {
     (age.hashCode) +
     (attributes.hashCode) +
     (name.hashCode) +
-    (profileText.hashCode);
+    (profileText.hashCode) +
+    (unlimitedLikes.hashCode);
 
   @override
-  String toString() => 'Profile[age=$age, attributes=$attributes, name=$name, profileText=$profileText]';
+  String toString() => 'Profile[age=$age, attributes=$attributes, name=$name, profileText=$profileText, unlimitedLikes=$unlimitedLikes]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -52,6 +57,7 @@ class Profile {
       json[r'attributes'] = this.attributes;
       json[r'name'] = this.name;
       json[r'profile_text'] = this.profileText;
+      json[r'unlimited_likes'] = this.unlimitedLikes;
     return json;
   }
 
@@ -78,6 +84,7 @@ class Profile {
         attributes: ProfileAttributeValue.listFromJson(json[r'attributes'])!,
         name: mapValueOfType<String>(json, r'name')!,
         profileText: mapValueOfType<String>(json, r'profile_text')!,
+        unlimitedLikes: mapValueOfType<bool>(json, r'unlimited_likes') ?? false,
       );
     }
     return null;

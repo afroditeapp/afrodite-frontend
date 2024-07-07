@@ -13,25 +13,31 @@ part of openapi.api;
 class ProfilePage {
   /// Returns a new [ProfilePage] instance.
   ProfilePage({
+    this.errorInvalidIteratorSessionId = false,
     this.profiles = const [],
   });
+
+  bool errorInvalidIteratorSessionId;
 
   List<ProfileLink> profiles;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfilePage &&
+     other.errorInvalidIteratorSessionId == errorInvalidIteratorSessionId &&
      other.profiles == profiles;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (errorInvalidIteratorSessionId.hashCode) +
     (profiles.hashCode);
 
   @override
-  String toString() => 'ProfilePage[profiles=$profiles]';
+  String toString() => 'ProfilePage[errorInvalidIteratorSessionId=$errorInvalidIteratorSessionId, profiles=$profiles]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'error_invalid_iterator_session_id'] = this.errorInvalidIteratorSessionId;
       json[r'profiles'] = this.profiles;
     return json;
   }
@@ -55,6 +61,7 @@ class ProfilePage {
       }());
 
       return ProfilePage(
+        errorInvalidIteratorSessionId: mapValueOfType<bool>(json, r'error_invalid_iterator_session_id') ?? false,
         profiles: ProfileLink.listFromJson(json[r'profiles'])!,
       );
     }

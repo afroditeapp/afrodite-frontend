@@ -538,18 +538,22 @@ class ProfileApi {
   /// Post (updates iterator) to get next page of profile list.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> postGetNextProfilePageWithHttpInfo() async {
+  ///
+  /// Parameters:
+  ///
+  /// * [IteratorSessionId] iteratorSessionId (required):
+  Future<Response> postGetNextProfilePageWithHttpInfo(IteratorSessionId iteratorSessionId,) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/page/next';
 
     // ignore: prefer_final_locals
-    Object? postBody;
+    Object? postBody = iteratorSessionId;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
-    const contentTypes = <String>[];
+    const contentTypes = <String>['application/json'];
 
 
     return apiClient.invokeAPI(
@@ -566,8 +570,12 @@ class ProfileApi {
   /// Post (updates iterator) to get next page of profile list.
   ///
   /// Post (updates iterator) to get next page of profile list.
-  Future<ProfilePage?> postGetNextProfilePage() async {
-    final response = await postGetNextProfilePageWithHttpInfo();
+  ///
+  /// Parameters:
+  ///
+  /// * [IteratorSessionId] iteratorSessionId (required):
+  Future<ProfilePage?> postGetNextProfilePage(IteratorSessionId iteratorSessionId,) async {
+    final response = await postGetNextProfilePageWithHttpInfo(iteratorSessionId,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -758,11 +766,19 @@ class ProfileApi {
   /// Reset profile paging.
   ///
   /// Reset profile paging.  After this request getting next profiles will continue from the nearest profiles.
-  Future<void> postResetProfilePaging() async {
+  Future<IteratorSessionId?> postResetProfilePaging() async {
     final response = await postResetProfilePagingWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'IteratorSessionId',) as IteratorSessionId;
+    
+    }
+    return null;
   }
 
   /// Set account's current search age range

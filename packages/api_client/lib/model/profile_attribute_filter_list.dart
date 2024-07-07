@@ -14,25 +14,45 @@ class ProfileAttributeFilterList {
   /// Returns a new [ProfileAttributeFilterList] instance.
   ProfileAttributeFilterList({
     this.filters = const [],
+    this.lastSeenTimeFilter,
+    this.unlimitedLikesFilter,
   });
 
   List<ProfileAttributeFilterValue> filters;
 
+  LastSeenTimeFilter? lastSeenTimeFilter;
+
+  bool? unlimitedLikesFilter;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileAttributeFilterList &&
-     other.filters == filters;
+     other.filters == filters &&
+     other.lastSeenTimeFilter == lastSeenTimeFilter &&
+     other.unlimitedLikesFilter == unlimitedLikesFilter;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (filters.hashCode);
+    (filters.hashCode) +
+    (lastSeenTimeFilter == null ? 0 : lastSeenTimeFilter!.hashCode) +
+    (unlimitedLikesFilter == null ? 0 : unlimitedLikesFilter!.hashCode);
 
   @override
-  String toString() => 'ProfileAttributeFilterList[filters=$filters]';
+  String toString() => 'ProfileAttributeFilterList[filters=$filters, lastSeenTimeFilter=$lastSeenTimeFilter, unlimitedLikesFilter=$unlimitedLikesFilter]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'filters'] = this.filters;
+    if (this.lastSeenTimeFilter != null) {
+      json[r'last_seen_time_filter'] = this.lastSeenTimeFilter;
+    } else {
+      json[r'last_seen_time_filter'] = null;
+    }
+    if (this.unlimitedLikesFilter != null) {
+      json[r'unlimited_likes_filter'] = this.unlimitedLikesFilter;
+    } else {
+      json[r'unlimited_likes_filter'] = null;
+    }
     return json;
   }
 
@@ -56,6 +76,8 @@ class ProfileAttributeFilterList {
 
       return ProfileAttributeFilterList(
         filters: ProfileAttributeFilterValue.listFromJson(json[r'filters'])!,
+        lastSeenTimeFilter: LastSeenTimeFilter.fromJson(json[r'last_seen_time_filter']),
+        unlimitedLikesFilter: mapValueOfType<bool>(json, r'unlimited_likes_filter'),
       );
     }
     return null;

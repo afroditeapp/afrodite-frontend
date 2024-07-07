@@ -293,10 +293,18 @@ class ApiClient {
           return IconLocationTypeTransformer().decode(value);
         case 'IconResource':
           return IconResource.fromJson(value);
+        case 'IteratorSessionId':
+          return IteratorSessionId.fromJson(value);
         case 'Language':
           return Language.fromJson(value);
+        case 'LastSeenTimeFilter':
+          return LastSeenTimeFilter.fromJson(value);
         case 'LatestViewedMessageChanged':
           return LatestViewedMessageChanged.fromJson(value);
+        case 'LimitedActionResult':
+          return LimitedActionResult.fromJson(value);
+        case 'LimitedActionStatus':
+          return LimitedActionStatusTypeTransformer().decode(value);
         case 'Location':
           return Location.fromJson(value);
         case 'LoginResult':

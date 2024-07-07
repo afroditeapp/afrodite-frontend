@@ -783,4 +783,43 @@ class AccountApi {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
+
+  /// Performs an HTTP 'PUT /account_api/settings/unlimited_likes' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [BooleanSetting] booleanSetting (required):
+  Future<Response> putSettingUnlimitedLikesWithHttpInfo(BooleanSetting booleanSetting,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/settings/unlimited_likes';
+
+    // ignore: prefer_final_locals
+    Object? postBody = booleanSetting;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'PUT',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [BooleanSetting] booleanSetting (required):
+  Future<void> putSettingUnlimitedLikes(BooleanSetting booleanSetting,) async {
+    final response = await putSettingUnlimitedLikesWithHttpInfo(booleanSetting,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
 }

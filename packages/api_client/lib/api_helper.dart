@@ -85,6 +85,9 @@ String parameterToString(dynamic value) {
   if (value is IconLocation) {
     return IconLocationTypeTransformer().encode(value).toString();
   }
+  if (value is LimitedActionStatus) {
+    return LimitedActionStatusTypeTransformer().encode(value).toString();
+  }
   if (value is MediaContentType) {
     return MediaContentTypeTypeTransformer().encode(value).toString();
   }

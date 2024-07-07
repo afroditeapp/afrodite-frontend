@@ -15,6 +15,7 @@ class ProfileLink {
   ProfileLink({
     this.contentVersion,
     required this.id,
+    this.lastSeenTime,
     required this.version,
   });
 
@@ -22,12 +23,15 @@ class ProfileLink {
 
   AccountId id;
 
+  int? lastSeenTime;
+
   ProfileVersion version;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileLink &&
      other.contentVersion == contentVersion &&
      other.id == id &&
+     other.lastSeenTime == lastSeenTime &&
      other.version == version;
 
   @override
@@ -35,10 +39,11 @@ class ProfileLink {
     // ignore: unnecessary_parenthesis
     (contentVersion == null ? 0 : contentVersion!.hashCode) +
     (id.hashCode) +
+    (lastSeenTime == null ? 0 : lastSeenTime!.hashCode) +
     (version.hashCode);
 
   @override
-  String toString() => 'ProfileLink[contentVersion=$contentVersion, id=$id, version=$version]';
+  String toString() => 'ProfileLink[contentVersion=$contentVersion, id=$id, lastSeenTime=$lastSeenTime, version=$version]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -48,6 +53,11 @@ class ProfileLink {
       json[r'content_version'] = null;
     }
       json[r'id'] = this.id;
+    if (this.lastSeenTime != null) {
+      json[r'last_seen_time'] = this.lastSeenTime;
+    } else {
+      json[r'last_seen_time'] = null;
+    }
       json[r'version'] = this.version;
     return json;
   }
@@ -73,6 +83,7 @@ class ProfileLink {
       return ProfileLink(
         contentVersion: ProfileContentVersion.fromJson(json[r'content_version']),
         id: AccountId.fromJson(json[r'id'])!,
+        lastSeenTime: mapValueOfType<int>(json, r'last_seen_time'),
         version: ProfileVersion.fromJson(json[r'version'])!,
       );
     }

@@ -62,8 +62,12 @@ doc/GroupValues.md
 doc/HandleModerationRequest.md
 doc/IconLocation.md
 doc/IconResource.md
+doc/IteratorSessionId.md
 doc/Language.md
+doc/LastSeenTimeFilter.md
 doc/LatestViewedMessageChanged.md
+doc/LimitedActionResult.md
+doc/LimitedActionStatus.md
 doc/Location.md
 doc/LoginResult.md
 doc/MapTileX.md
@@ -217,8 +221,12 @@ lib/model/group_values.dart
 lib/model/handle_moderation_request.dart
 lib/model/icon_location.dart
 lib/model/icon_resource.dart
+lib/model/iterator_session_id.dart
 lib/model/language.dart
+lib/model/last_seen_time_filter.dart
 lib/model/latest_viewed_message_changed.dart
+lib/model/limited_action_result.dart
+lib/model/limited_action_status.dart
 lib/model/location.dart
 lib/model/login_result.dart
 lib/model/map_tile_x.dart
@@ -293,3 +301,7 @@ lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
+test/iterator_session_id_test.dart
+test/last_seen_time_filter_test.dart
+test/limited_action_result_test.dart
+test/limited_action_status_test.dart

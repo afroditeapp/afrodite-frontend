@@ -13,9 +13,12 @@ part of openapi.api;
 class GetProfileResult {
   /// Returns a new [GetProfileResult] instance.
   GetProfileResult({
+    this.lastSeenTime,
     this.profile,
     this.version,
   });
+
+  int? lastSeenTime;
 
   Profile? profile;
 
@@ -23,20 +26,27 @@ class GetProfileResult {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetProfileResult &&
+     other.lastSeenTime == lastSeenTime &&
      other.profile == profile &&
      other.version == version;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (lastSeenTime == null ? 0 : lastSeenTime!.hashCode) +
     (profile == null ? 0 : profile!.hashCode) +
     (version == null ? 0 : version!.hashCode);
 
   @override
-  String toString() => 'GetProfileResult[profile=$profile, version=$version]';
+  String toString() => 'GetProfileResult[lastSeenTime=$lastSeenTime, profile=$profile, version=$version]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.lastSeenTime != null) {
+      json[r'last_seen_time'] = this.lastSeenTime;
+    } else {
+      json[r'last_seen_time'] = null;
+    }
     if (this.profile != null) {
       json[r'profile'] = this.profile;
     } else {
@@ -69,6 +79,7 @@ class GetProfileResult {
       }());
 
       return GetProfileResult(
+        lastSeenTime: mapValueOfType<int>(json, r'last_seen_time'),
         profile: Profile.fromJson(json[r'profile']),
         version: ProfileVersion.fromJson(json[r'version']),
       );

@@ -82,7 +82,7 @@ class OnlineIterator extends IteratorType {
         log.error("Connection waiting failed");
         return const Err(null);
       }
-      switch (await api.profile((api) => api.postGetNextProfilePage())) {
+      switch (await api.profile((api) => api.postGetNextProfilePage(IteratorSessionId(id: "TODO")))) {
         case Ok(value: final profiles):
           if (profiles.profiles.isEmpty) {
             return const Ok([]);
