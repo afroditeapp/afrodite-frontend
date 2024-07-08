@@ -36,6 +36,7 @@ class DaoProfileSettings extends DatabaseAccessor<AccountDatabase> with _$DaoPro
       AccountCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
         jsonProfileAttributeFilters: Value(value?.toJsonString()),
+        profileLastSeenTimeFilter: Value(value?.lastSeenTimeFilter),
       ),
     );
   }
@@ -55,15 +56,6 @@ class DaoProfileSettings extends DatabaseAccessor<AccountDatabase> with _$DaoPro
       AccountCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
         jsonSearchGroups: Value(value?.toJsonString()),
-      ),
-    );
-  }
-
-  Future<void> updateProfileLastSeenTimeFilter(LastSeenTimeFilter value) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        profileLastSeenTimeFilter: Value(value),
       ),
     );
   }

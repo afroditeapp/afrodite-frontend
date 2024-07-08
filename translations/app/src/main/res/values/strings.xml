@@ -226,6 +226,11 @@
     <!-- Profile filtering settings screen -->
     <string name="profile_filtering_settings_screen_title" description="Title for profile filtering settings screen">Filtering settings</string>
     <string name="profile_filtering_settings_screen_favorite_profile_filter" description="Title for favorite profile filter">Favorite profile</string>
+    <string name="profile_filtering_settings_screen_profile_last_seen_time_filter" description="Title for profile last seen time filter">Last seen</string>
+    <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_online" description="Value text for profile last seen time filter when only online profiles should be shown">Online</string>
+    <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_day" description="Value text for profile last seen time filter when day is selected">%s day</string>
+    <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_days" description="Value text for profile last seen time filter when multiple days is selected">%s days</string>
+    <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_all" description="Value text for profile last seen time filter when all is selected">Anytime</string>
     <string name="profile_filtering_settings_screen_updating_filters_failed" description="Snackbar text for notifying about failed profile filters update">Updating profile filters failed</string>
 
     <!-- Edit profile attribute filter value screen -->

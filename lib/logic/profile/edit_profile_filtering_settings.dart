@@ -11,12 +11,21 @@ sealed class EditProfileFilteringSettingsEvent {}
 class ResetStateWith extends EditProfileFilteringSettingsEvent {
   final bool showOnlyFavorites;
   final List<ProfileAttributeFilterValueUpdate> attributeFilters;
-  ResetStateWith(this.showOnlyFavorites, this.attributeFilters);
+  final LastSeenTimeFilter? lastSeenTimeFilter;
+  ResetStateWith(
+    this.showOnlyFavorites,
+    this.attributeFilters,
+    this.lastSeenTimeFilter
+  );
 }
 
 class SetFavoriteProfilesFilter extends EditProfileFilteringSettingsEvent {
   final bool value;
   SetFavoriteProfilesFilter(this.value);
+}
+class SetLastSeenTimeFilter extends EditProfileFilteringSettingsEvent {
+  final int? value;
+  SetLastSeenTimeFilter(this.value);
 }
 class SetAttributeFilterValue extends EditProfileFilteringSettingsEvent {
   final Attribute a;
@@ -37,10 +46,16 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
       emit(state.copyWith(
         showOnlyFavorites: data.showOnlyFavorites,
         attributeFilters: UnmodifiableList(data.attributeFilters),
+        lastSeenTimeFilter: data.lastSeenTimeFilter,
       ));
     });
     on<SetFavoriteProfilesFilter>((data, emit) async {
       emit(state.copyWith(showOnlyFavorites: data.value));
+    });
+    on<SetLastSeenTimeFilter>((data, emit) async {
+      final newValue = data.value;
+      final newLastSeenTimeFilter = newValue == null ? null : LastSeenTimeFilter(value: newValue);
+      emit(state.copyWith(lastSeenTimeFilter: newLastSeenTimeFilter));
     });
     on<SetAttributeFilterValue>((data, emit) async {
       final newAttributes = updateAttributesFiltersList(

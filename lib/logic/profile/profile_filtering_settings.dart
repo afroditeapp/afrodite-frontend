@@ -17,7 +17,12 @@ sealed class ProfileFilteringSettingsEvent {}
 class SaveNewFilterSettings extends ProfileFilteringSettingsEvent {
   final bool showOnlyFavorites;
   final List<ProfileAttributeFilterValueUpdate> attributeFilters;
-  SaveNewFilterSettings(this.showOnlyFavorites, this.attributeFilters);
+  final LastSeenTimeFilter? lastSeenTimeFilter;
+  SaveNewFilterSettings(
+    this.showOnlyFavorites,
+    this.attributeFilters,
+    this.lastSeenTimeFilter,
+  );
 }
 
 class NewFilterFavoriteProfilesValue extends ProfileFilteringSettingsEvent {
@@ -54,7 +59,12 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
 
         await profile.changeProfileFilteringSettings(data.showOnlyFavorites);
 
-        if (await profile.updateAttributeFilters(data.attributeFilters).isErr()) {
+        if (
+          await profile.updateAttributeFilters(
+            data.attributeFilters,
+            data.lastSeenTimeFilter,
+          ).isErr()
+        ) {
           failureDetected = true;
         }
 

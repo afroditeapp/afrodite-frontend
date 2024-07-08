@@ -353,12 +353,10 @@ class EditAttributeRow extends StatelessWidget {
 
     final void Function()? startEditorCallback;
     final Widget valueWidget;
-    final TextStyle? titleStyle;
     final Color iconColor;
     if (isEnabled) {
       startEditorCallback = onStartEditor;
       valueWidget = AttributeValuesArea(a: a);
-      titleStyle = Theme.of(context).textTheme.bodyLarge;
       iconColor = getIconButtonEnabledColor(context);
     } else {
       startEditorCallback = null;
@@ -367,7 +365,6 @@ class EditAttributeRow extends StatelessWidget {
         context.strings.generic_disabled,
         style: TextStyle(color: disabledTextColor),
       );
-      titleStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(color: disabledTextColor);
       iconColor = getIconButtonDisabledColor(context);
     }
 
@@ -377,13 +374,7 @@ class EditAttributeRow extends StatelessWidget {
           child: Column(
             children: [
               const Padding(padding: EdgeInsets.all(4)),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: COMMON_SCREEN_EDGE_PADDING),
-                  child: Text(attributeText, style: titleStyle),
-                ),
-              ),
+              ViewAttributeTitle(attributeText, isEnabled: isEnabled),
               const Padding(padding: EdgeInsets.all(4)),
               Row(
                 children: [
@@ -408,6 +399,30 @@ class EditAttributeRow extends StatelessWidget {
     return InkWell(
       onTap: startEditorCallback,
       child: attributeWidget,
+    );
+  }
+}
+
+class ViewAttributeTitle extends StatelessWidget {
+  final String text;
+  final bool isEnabled;
+  const ViewAttributeTitle(this.text, {this.isEnabled = true, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final TextStyle? titleStyle;
+    if (isEnabled) {
+      titleStyle = Theme.of(context).textTheme.bodyLarge;
+    } else {
+      final disabledTextColor = Theme.of(context).disabledColor;
+      titleStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(color: disabledTextColor);
+    }
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(left: COMMON_SCREEN_EDGE_PADDING),
+        child: Text(text, style: titleStyle),
+      ),
     );
   }
 }

@@ -13,5 +13,6 @@ class EditProfileFilteringSettingsData with _$EditProfileFilteringSettingsData {
     @Default(false) bool showOnlyFavorites,
     @Default(UnmodifiableList<ProfileAttributeFilterValueUpdate>.empty())
       UnmodifiableList<ProfileAttributeFilterValueUpdate> attributeFilters,
+    LastSeenTimeFilter? lastSeenTimeFilter,
   }) = _EditProfileFilteringSettingsData;
 }

@@ -51,6 +51,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
     widget.editProfileFilteringSettingsBloc.add(ResetStateWith(
       widget.profileFilteringSettingsBloc.state.showOnlyFavorites,
       initialFilters,
+      widget.profileFilteringSettingsBloc.state.attributeFilters?.lastSeenTimeFilter,
     ));
   }
 
@@ -58,11 +59,16 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
     widget.profileFilteringSettingsBloc.add(SaveNewFilterSettings(
       widget.editProfileFilteringSettingsBloc.state.showOnlyFavorites,
       widget.editProfileFilteringSettingsBloc.state.attributeFilters.toList(),
+      widget.editProfileFilteringSettingsBloc.state.lastSeenTimeFilter,
     ));
   }
 
   bool areSettingsChanged(EditProfileFilteringSettingsData editedSettings) {
     if (widget.profileFilteringSettingsBloc.state.showOnlyFavorites != editedSettings.showOnlyFavorites) {
+      return true;
+    }
+
+    if (widget.profileFilteringSettingsBloc.state.attributeFilters?.lastSeenTimeFilter != editedSettings.lastSeenTimeFilter) {
       return true;
     }
 
@@ -138,7 +144,9 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           getShowFavoritesSelection(context),
           const Divider(),
           const EditAttributeFilters(),
-          if (settingsChanged) const Padding(
+          const Divider(),
+          lastSeenTimeFilter(context),
+          const Padding(
             padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA),
             child: null,
           ),
@@ -156,6 +164,112 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           value: state.showOnlyFavorites,
           onChanged: (bool value) =>
               context.read<EditProfileFilteringSettingsBloc>().add(SetFavoriteProfilesFilter(value)),
+        );
+      }
+    );
+  }
+
+  Widget lastSeenTimeFilter(BuildContext context) {
+    return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
+      builder: (context, state) {
+        /// Selection for min, max and day counts for one week, 2 weeks
+        /// and some months.
+        const DIVISIONS = 2 + 7 + 1 + 5;
+
+        /// Only online
+        const VALUE_MIN = 0.0;
+        /// All
+        const VALUE_MAX = 15.0;
+
+        double intDaysToDouble(int days) {
+          if (days <= 7) {
+            return days.toDouble();
+          } else if (days == 14) {
+            return 8.0;
+          } else {
+            final selectedMonth = days ~/ 30;
+            return 8 + selectedMonth.toDouble();
+          }
+        }
+
+        int? doubleToIntDays(double value) {
+          if (value <= VALUE_MIN) {
+            return -1;
+          } else if (value >= VALUE_MAX) {
+            return null;
+          } else if (value <= 7) {
+            return value.toInt();
+          } else if (value == 8) {
+            return 14;
+          } else {
+            return (value.toInt() - 8) * 30;
+          }
+        }
+
+        final valueInt = state.lastSeenTimeFilter?.value;
+        final String stateText;
+        final double days;
+        if (valueInt == null) {
+          stateText = context.strings.profile_filtering_settings_screen_profile_last_seen_time_filter_all;
+          days = VALUE_MAX;
+        } else if (valueInt == -1) {
+          stateText = context.strings.profile_filtering_settings_screen_profile_last_seen_time_filter_online;
+          days = VALUE_MIN;
+        } else if (valueInt >= 0) {
+          final daysInt = valueInt ~/ 60 ~/ 60 ~/ 24;
+          if (daysInt <= 1) {
+            stateText = context.strings.profile_filtering_settings_screen_profile_last_seen_time_filter_day(1.toString());
+          } else {
+            stateText = context.strings.profile_filtering_settings_screen_profile_last_seen_time_filter_days(daysInt.toString());
+          }
+          days = intDaysToDouble(daysInt);
+        } else {
+          stateText = context.strings.generic_error;
+          days = VALUE_MAX;
+        }
+
+        final TextStyle? valueTextStyle;
+        if (state.showOnlyFavorites) {
+          final disabledTextColor = Theme.of(context).disabledColor;
+          valueTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(color: disabledTextColor);
+        } else {
+          valueTextStyle = null;
+        }
+
+        return Column(
+          children: [
+            const Padding(padding: EdgeInsets.all(4)),
+            ViewAttributeTitle(context.strings.profile_filtering_settings_screen_profile_last_seen_time_filter, isEnabled: !state.showOnlyFavorites),
+            const Padding(padding: EdgeInsets.all(4)),
+            Slider(
+              value: days,
+              min: VALUE_MIN,
+              max: VALUE_MAX,
+              divisions: DIVISIONS,
+              onChanged: !state.showOnlyFavorites ? (double value) {
+                final intDays = doubleToIntDays(value);
+                final int? seconds;
+                if (intDays == -1) {
+                  seconds = -1;
+                } else if (intDays != null) {
+                  seconds = intDays * 60 * 60 * 24;
+                } else {
+                  seconds = null;
+                }
+                context.read<EditProfileFilteringSettingsBloc>().add(SetLastSeenTimeFilter(seconds));
+              } : null,
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: COMMON_SCREEN_EDGE_PADDING),
+                child: Text(
+                  stateText,
+                  style: valueTextStyle,
+                ),
+              ),
+            )
+          ],
         );
       }
     );

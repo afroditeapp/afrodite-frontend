@@ -751,6 +751,36 @@
   "@profile_filtering_settings_screen_favorite_profile_filter": {
     "description": "Title for favorite profile filter"
   },
+  "profile_filtering_settings_screen_profile_last_seen_time_filter": "Last seen",
+  "@profile_filtering_settings_screen_profile_last_seen_time_filter": {
+    "description": "Title for profile last seen time filter"
+  },
+  "profile_filtering_settings_screen_profile_last_seen_time_filter_all": "Anytime",
+  "@profile_filtering_settings_screen_profile_last_seen_time_filter_all": {
+    "description": "Value text for profile last seen time filter when all is selected"
+  },
+  "profile_filtering_settings_screen_profile_last_seen_time_filter_day": "{p0} day",
+  "@profile_filtering_settings_screen_profile_last_seen_time_filter_day": {
+    "description": "Value text for profile last seen time filter when day is selected",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_filtering_settings_screen_profile_last_seen_time_filter_days": "{p0} days",
+  "@profile_filtering_settings_screen_profile_last_seen_time_filter_days": {
+    "description": "Value text for profile last seen time filter when multiple days is selected",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_filtering_settings_screen_profile_last_seen_time_filter_online": "Online",
+  "@profile_filtering_settings_screen_profile_last_seen_time_filter_online": {
+    "description": "Value text for profile last seen time filter when only online profiles should be shown"
+  },
   "profile_filtering_settings_screen_title": "Filtering settings",
   "@profile_filtering_settings_screen_title": {
     "description": "Title for profile filtering settings screen"

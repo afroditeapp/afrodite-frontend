@@ -291,12 +291,14 @@ class ProfileRepository extends DataRepository {
       ));
   }
 
-  Future<Result<void, void>> updateAttributeFilters(List<ProfileAttributeFilterValueUpdate> newValues) async {
-    if (newValues.isEmpty) {
-      return const Ok(null);
-    }
-
-    final update = ProfileAttributeFilterListUpdate(filters: newValues);
+  Future<Result<void, void>> updateAttributeFilters(
+    List<ProfileAttributeFilterValueUpdate> newValues,
+    LastSeenTimeFilter? lastSeenTimeFilter,
+  ) async {
+    final update = ProfileAttributeFilterListUpdate(
+      filters: newValues,
+      lastSeenTimeFilter: lastSeenTimeFilter,
+    );
     return await _api.profileAction((api) => api.postProfileAttributeFilters(update))
       .onOk(() => reloadAttributeFilters())
       .empty();
