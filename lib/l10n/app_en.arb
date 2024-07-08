@@ -922,9 +922,85 @@
   "@view_profile_screen_my_profile_title": {
     "description": "Title for view profile screen when my profile is viewed"
   },
+  "view_profile_screen_profile_currently_online": "Online",
+  "@view_profile_screen_profile_currently_online": {
+    "description": "View profile screen text that profile is currently online"
+  },
   "view_profile_screen_profile_edit_failed": "Profile editing failed",
   "@view_profile_screen_profile_edit_failed": {
     "description": "Snackbar text for notifying about failed profile edit"
+  },
+  "view_profile_screen_profile_last_seen_day": "Last seen {p0} day ago",
+  "@view_profile_screen_profile_last_seen_day": {
+    "description": "View profile screen text that profile is last seen day ago",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "view_profile_screen_profile_last_seen_days": "Last seen {p0} days ago",
+  "@view_profile_screen_profile_last_seen_days": {
+    "description": "View profile screen text that profile is last seen multiple days ago",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "view_profile_screen_profile_last_seen_hour": "Last seen {p0} hour ago",
+  "@view_profile_screen_profile_last_seen_hour": {
+    "description": "View profile screen text that profile is last seen hour ago",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "view_profile_screen_profile_last_seen_hours": "Last seen {p0} hours ago",
+  "@view_profile_screen_profile_last_seen_hours": {
+    "description": "View profile screen text that profile is last seen multiple hours ago",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "view_profile_screen_profile_last_seen_minute": "Last seen {p0} minute ago",
+  "@view_profile_screen_profile_last_seen_minute": {
+    "description": "View profile screen text that profile is last seen minute ago",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "view_profile_screen_profile_last_seen_minutes": "Last seen {p0} minutes ago",
+  "@view_profile_screen_profile_last_seen_minutes": {
+    "description": "View profile screen text that profile is last seen multiple minutes ago",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "view_profile_screen_profile_last_seen_second": "Last seen {p0} second ago",
+  "@view_profile_screen_profile_last_seen_second": {
+    "description": "View profile screen text that profile is last seen second ago",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "view_profile_screen_profile_last_seen_seconds": "Last seen {p0} seconds ago",
+  "@view_profile_screen_profile_last_seen_seconds": {
+    "description": "View profile screen text that profile is last seen multiple seconds ago",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
   },
   "view_profile_screen_profile_not_available_dialog_description": "Profile not available",
   "@view_profile_screen_profile_not_available_dialog_description": {

@@ -18,11 +18,15 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
 import 'package:pihka_frontend/ui_utils/consts/corners.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
+import 'package:pihka_frontend/ui_utils/consts/size.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("ProfileGrid");
+
+// TODO: Check that specific profile in profile grid updates if needed
+// when returning from view profile screen.
 
 class ProfileGrid extends StatefulWidget {
   final ProfileFilteringSettingsBloc filteringSettingsBloc;
@@ -227,16 +231,39 @@ class _ProfileGridState extends State<ProfileGrid> {
               child: ProfileThumbnailImage.fromProfileEntry(
                 entry: item.profile,
                 cacheSize: ImageCacheSize.sizeForGrid(),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      // Hero animation is disabled currently as UI looks better
-                      // without it.
-                      // openProfileView(context, item.profile, heroTag: item.heroTag);
-                      openProfileView(context, item.profile, heroTag: null);
-                    },
-                  ),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Row(
+                        children: [
+                          if (item.profile.lastSeenTimeValue == -1) Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              width: PROFILE_CURRENTLY_ONLINE_SIZE,
+                              height: PROFILE_CURRENTLY_ONLINE_SIZE,
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
+                              ),
+                            ),
+                          ),
+                          const Spacer(),
+                        ],
+                      ),
+                    ),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          // Hero animation is disabled currently as UI looks better
+                          // without it.
+                          // openProfileView(context, item.profile, heroTag: item.heroTag);
+                          openProfileView(context, item.profile, heroTag: null);
+                        },
+                      ),
+                    ),
+                  ]
                 ),
               ),
             )

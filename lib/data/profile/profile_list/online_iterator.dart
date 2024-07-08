@@ -102,7 +102,9 @@ class OnlineIterator extends IteratorType {
             final currentContentVersion = entry?.contentVersion;
 
             if (currentVersion == p.version && p.contentVersion != null && currentContentVersion == p.contentVersion) {
-              // No data changes, download can be skipped
+              // No data changes, download can be skipped, but
+              // update last seen time.
+              await db.profileAction((db) => db.updateProfileLastSeenTime(p.id, p.lastSeenTime));
             } else {
               entry = await downloader.download(p.id).ok();
             }
@@ -184,8 +186,14 @@ class ProfileEntryDownloader {
 
         final profile = v.profile;
         if (profile != null) {
+          // Sent profile version didn't match the latest profile version, so
+          // server sent the latest profile.
           await BackgroundDatabaseManager.getInstance().profileAction((db) => db.updateProfileData(accountId, profile));
-          await db.profileAction((db) => db.updateProfileData(accountId, profile, version));
+          await db.profileAction((db) => db.updateProfileData(accountId, profile, version, v.lastSeenTime));
+        } else {
+          // Current profile version is the latest.
+          // Only updating last seen time to database is latest.
+          await db.profileAction((db) => db.updateProfileLastSeenTime(accountId, v.lastSeenTime));
         }
       case Err(:final e):
         e.logError(log);

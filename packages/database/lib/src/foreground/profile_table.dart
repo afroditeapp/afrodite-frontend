@@ -29,6 +29,7 @@ class Profiles extends Table {
   TextColumn get profileText => text().nullable()();
   TextColumn get profileVersion => text().map(const NullAwareTypeConverter.wrap(ProfileVersionConverter())).nullable()();
   IntColumn get profileAge => integer().nullable()();
+  IntColumn get profileLastSeenTimeValue => integer().nullable()();
   TextColumn get jsonProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonList.driftConverter)).nullable()();
 
   RealColumn get primaryContentGridCropSize => real().nullable()();
@@ -361,6 +362,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         profileAge: Value(null),
         profileVersion: Value(null),
         profileContentVersion: Value(null),
+        profileLastSeenTimeValue: Value(null),
         jsonProfileAttributes: Value(null),
         primaryContentGridCropSize: Value(null),
         primaryContentGridCropX: Value(null),
@@ -370,7 +372,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
 
   /// If you call this make sure that profile data in background DB
   /// is also updated.
-  Future<void> updateProfileData(AccountId accountId, api.Profile profile, api.ProfileVersion profileVersion) async {
+  Future<void> updateProfileData(AccountId accountId, api.Profile profile, api.ProfileVersion profileVersion, int? profileLastSeenTime) async {
     await into(profiles).insert(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
@@ -378,6 +380,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         profileText: Value(profile.profileText),
         profileAge: Value(profile.age),
         profileVersion: Value(profileVersion),
+        profileLastSeenTimeValue: Value(profileLastSeenTime),
         jsonProfileAttributes: Value(profile.attributes.toJsonList()),
       ),
       onConflict: DoUpdate((old) => ProfilesCompanion(
@@ -385,7 +388,22 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         profileText: Value(profile.profileText),
         profileAge: Value(profile.age),
         profileVersion: Value(profileVersion),
+        profileLastSeenTimeValue: Value(profileLastSeenTime),
         jsonProfileAttributes: Value(profile.attributes.toJsonList()),
+      ),
+        target: [profiles.uuidAccountId]
+      ),
+    );
+  }
+
+  Future<void> updateProfileLastSeenTime(AccountId accountId, int? profileLastSeenTime) async {
+    await into(profiles).insert(
+      ProfilesCompanion.insert(
+        uuidAccountId: accountId,
+        profileLastSeenTimeValue: Value(profileLastSeenTime),
+      ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        profileLastSeenTimeValue: Value(profileLastSeenTime),
       ),
         target: [profiles.uuidAccountId]
       ),
@@ -474,6 +492,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         age: profileAge,
         attributes: profileAttributes,
         contentVersion: contentVersion,
+        lastSeenTimeValue: r.profileLastSeenTimeValue,
         content1: r.uuidContentId1,
         content2: r.uuidContentId2,
         content3: r.uuidContentId3,

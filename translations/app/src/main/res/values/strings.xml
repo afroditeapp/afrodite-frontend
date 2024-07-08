@@ -181,6 +181,15 @@
     <string name="view_profile_screen_remove_like_action_successful" description="Snackbar text for view profile screen remove like action successful">Like removed</string>
     <string name="view_profile_screen_block_action_successful" description="Snackbar text for view profile screen block action successful">Profile blocked</string>
     <string name="view_profile_screen_profile_edit_failed" description="Snackbar text for notifying about failed profile edit">Profile editing failed</string>
+    <string name="view_profile_screen_profile_currently_online" description="View profile screen text that profile is currently online">Online</string>
+    <string name="view_profile_screen_profile_last_seen_second" description="View profile screen text that profile is last seen second ago">Last seen %s second ago</string>
+    <string name="view_profile_screen_profile_last_seen_seconds" description="View profile screen text that profile is last seen multiple seconds ago">Last seen %s seconds ago</string>
+    <string name="view_profile_screen_profile_last_seen_minute" description="View profile screen text that profile is last seen minute ago">Last seen %s minute ago</string>
+    <string name="view_profile_screen_profile_last_seen_minutes" description="View profile screen text that profile is last seen multiple minutes ago">Last seen %s minutes ago</string>
+    <string name="view_profile_screen_profile_last_seen_hour" description="View profile screen text that profile is last seen hour ago">Last seen %s hour ago</string>
+    <string name="view_profile_screen_profile_last_seen_hours" description="View profile screen text that profile is last seen multiple hours ago">Last seen %s hours ago</string>
+    <string name="view_profile_screen_profile_last_seen_day" description="View profile screen text that profile is last seen day ago">Last seen %s day ago</string>
+    <string name="view_profile_screen_profile_last_seen_days" description="View profile screen text that profile is last seen multiple days ago">Last seen %s days ago</string>
 
     <!-- Edit profile screen -->
     <string name="edit_profile_screen_title" description="Title for edit profile screen">Edit profile</string>

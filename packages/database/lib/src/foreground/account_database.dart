@@ -105,6 +105,7 @@ class Account extends Table {
   TextColumn get jsonProfileAttributeFilters => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
   IntColumn get profileSearchAgeRangeMin => integer().nullable()();
   IntColumn get profileSearchAgeRangeMax => integer().nullable()();
+  IntColumn get profileLastSeenTimeFilter => integer().map(const NullAwareTypeConverter.wrap(LastSeenTimeFilterConverter())).nullable()();
 
   // DaoAccountSettings
 

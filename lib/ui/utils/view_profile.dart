@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/ui_utils/consts/size.dart';
+import 'package:utils/utils.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/profile/attributes.dart';
@@ -13,6 +15,7 @@ import 'package:pihka_frontend/ui/initial_setup/profile_attributes.dart';
 
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
+import 'package:pihka_frontend/ui_utils/consts/corners.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/loading_dialog.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
@@ -70,6 +73,8 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               ),
               const Padding(padding: EdgeInsets.all(8)),
               title(context),
+              const Padding(padding: EdgeInsets.only(top: 8)),
+              lastSeenTime(context),
               ...profileTextWidgets,
               const Padding(padding: EdgeInsets.all(8)),
               attributes(),
@@ -96,6 +101,72 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
             Text(widget.profile.profileTitle(), style: Theme.of(context).textTheme.titleLarge),
             // TODO: Spacer and infinity icon if limitless likes are enabled
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget lastSeenTime(BuildContext context) {
+    final lastSeenTime = widget.profile.lastSeenTimeValue;
+    final List<Widget> widgets;
+    if (lastSeenTime == null || lastSeenTime < -1)  {
+      return const SizedBox.shrink();
+    } else if (widget.profile.lastSeenTimeValue == -1) {
+      widgets = [
+        Container(
+          padding: const EdgeInsets.all(8),
+          width: PROFILE_CURRENTLY_ONLINE_SIZE,
+          height: PROFILE_CURRENTLY_ONLINE_SIZE,
+          decoration: BoxDecoration(
+            color: Colors.green,
+            borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
+          ),
+        ),
+        const Padding(padding: EdgeInsets.only(right: 8)),
+        Text(
+          context.strings.view_profile_screen_profile_currently_online,
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+      ];
+    } else {
+      final currentDateTime = UtcDateTime.now();
+      final lastSeenDateTime = UtcDateTime.fromUnixEpochMilliseconds(lastSeenTime * 1000);
+      final lastSeenDuration = currentDateTime.difference(lastSeenDateTime);
+      final String text;
+      if (lastSeenDuration.inDays == 1) {
+        text = context.strings.view_profile_screen_profile_last_seen_day(1.toString());
+      } else if (lastSeenDuration.inDays > 1) {
+        text = context.strings.view_profile_screen_profile_last_seen_days(lastSeenDuration.inDays.toString());
+      } else if (lastSeenDuration.inHours == 1) {
+        text = context.strings.view_profile_screen_profile_last_seen_hour(1.toString());
+      } else if (lastSeenDuration.inHours > 1) {
+        text = context.strings.view_profile_screen_profile_last_seen_hours(lastSeenDuration.inHours.toString());
+      } else if (lastSeenDuration.inMinutes == 1) {
+        text = context.strings.view_profile_screen_profile_last_seen_minute(1.toString());
+      } else if (lastSeenDuration.inMinutes > 1) {
+        text = context.strings.view_profile_screen_profile_last_seen_minutes(lastSeenDuration.inMinutes.toString());
+      } else if (lastSeenDuration.inSeconds == 0) {
+        text = context.strings.view_profile_screen_profile_last_seen_seconds(lastSeenDuration.inSeconds.toString());
+      } else if (lastSeenDuration.inSeconds == 1) {
+        text = context.strings.view_profile_screen_profile_last_seen_second(1.toString());
+      } else {
+        text = context.strings.view_profile_screen_profile_last_seen_seconds(lastSeenDuration.inSeconds.toString());
+      }
+
+      widgets = [
+        Text(
+          text,
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+      ];
+    }
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
+        child: Row(
+          children: widgets,
         ),
       ),
     );

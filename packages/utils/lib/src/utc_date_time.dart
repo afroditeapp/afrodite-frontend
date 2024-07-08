@@ -16,4 +16,8 @@ class UtcDateTime {
   int toUnixEpochMilliseconds() {
     return dateTime.millisecondsSinceEpoch;
   }
+
+  Duration difference(UtcDateTime other) {
+    return dateTime.difference(other.dateTime);
+  }
 }

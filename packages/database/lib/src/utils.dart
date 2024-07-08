@@ -276,3 +276,17 @@ class IteratorSessionIdConverter extends TypeConverter<IteratorSessionId, String
     return value.id;
   }
 }
+
+class LastSeenTimeFilterConverter extends TypeConverter<LastSeenTimeFilter, int> {
+  const LastSeenTimeFilterConverter();
+
+  @override
+  LastSeenTimeFilter fromSql(fromDb) {
+    return LastSeenTimeFilter(value: fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.value;
+  }
+}

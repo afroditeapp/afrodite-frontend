@@ -422,6 +422,15 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<int> profileSearchAgeRangeMax =
       GeneratedColumn<int>('profile_search_age_range_max', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _profileLastSeenTimeFilterMeta =
+      const VerificationMeta('profileLastSeenTimeFilter');
+  @override
+  late final GeneratedColumnWithTypeConverter<LastSeenTimeFilter?, int>
+      profileLastSeenTimeFilter = GeneratedColumn<int>(
+              'profile_last_seen_time_filter', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<LastSeenTimeFilter?>(
+              $AccountTable.$converterprofileLastSeenTimeFilter);
   static const VerificationMeta _accountEmailAddressMeta =
       const VerificationMeta('accountEmailAddress');
   @override
@@ -556,6 +565,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         jsonProfileAttributeFilters,
         profileSearchAgeRangeMin,
         profileSearchAgeRangeMax,
+        profileLastSeenTimeFilter,
         accountEmailAddress,
         refreshTokenAccount,
         refreshTokenMedia,
@@ -795,6 +805,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['profile_search_age_range_max']!,
               _profileSearchAgeRangeMaxMeta));
     }
+    context.handle(
+        _profileLastSeenTimeFilterMeta, const VerificationResult.success());
     if (data.containsKey('account_email_address')) {
       context.handle(
           _accountEmailAddressMeta,
@@ -1030,6 +1042,10 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       profileSearchAgeRangeMax: attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}profile_search_age_range_max']),
+      profileLastSeenTimeFilter: $AccountTable
+          .$converterprofileLastSeenTimeFilter
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}profile_last_seen_time_filter'])),
       accountEmailAddress: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}account_email_address']),
       refreshTokenAccount: attachedDatabase.typeMapping.read(
@@ -1122,6 +1138,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<JsonString?, String?>
       $converterjsonProfileAttributeFilters =
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
+  static TypeConverter<LastSeenTimeFilter?, int?>
+      $converterprofileLastSeenTimeFilter =
+      const NullAwareTypeConverter.wrap(LastSeenTimeFilterConverter());
 }
 
 class AccountData extends DataClass implements Insertable<AccountData> {
@@ -1179,6 +1198,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final JsonString? jsonProfileAttributeFilters;
   final int? profileSearchAgeRangeMin;
   final int? profileSearchAgeRangeMax;
+  final LastSeenTimeFilter? profileLastSeenTimeFilter;
   final String? accountEmailAddress;
   final String? refreshTokenAccount;
   final String? refreshTokenMedia;
@@ -1244,6 +1264,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.jsonProfileAttributeFilters,
       this.profileSearchAgeRangeMin,
       this.profileSearchAgeRangeMax,
+      this.profileLastSeenTimeFilter,
       this.accountEmailAddress,
       this.refreshTokenAccount,
       this.refreshTokenMedia,
@@ -1458,6 +1479,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['profile_search_age_range_max'] =
           Variable<int>(profileSearchAgeRangeMax);
     }
+    if (!nullToAbsent || profileLastSeenTimeFilter != null) {
+      map['profile_last_seen_time_filter'] = Variable<int>($AccountTable
+          .$converterprofileLastSeenTimeFilter
+          .toSql(profileLastSeenTimeFilter));
+    }
     if (!nullToAbsent || accountEmailAddress != null) {
       map['account_email_address'] = Variable<String>(accountEmailAddress);
     }
@@ -1653,6 +1679,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileSearchAgeRangeMax: profileSearchAgeRangeMax == null && nullToAbsent
           ? const Value.absent()
           : Value(profileSearchAgeRangeMax),
+      profileLastSeenTimeFilter:
+          profileLastSeenTimeFilter == null && nullToAbsent
+              ? const Value.absent()
+              : Value(profileLastSeenTimeFilter),
       accountEmailAddress: accountEmailAddress == null && nullToAbsent
           ? const Value.absent()
           : Value(accountEmailAddress),
@@ -1790,6 +1820,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<int?>(json['profileSearchAgeRangeMin']),
       profileSearchAgeRangeMax:
           serializer.fromJson<int?>(json['profileSearchAgeRangeMax']),
+      profileLastSeenTimeFilter: serializer
+          .fromJson<LastSeenTimeFilter?>(json['profileLastSeenTimeFilter']),
       accountEmailAddress:
           serializer.fromJson<String?>(json['accountEmailAddress']),
       refreshTokenAccount:
@@ -1901,6 +1933,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.toJson<int?>(profileSearchAgeRangeMin),
       'profileSearchAgeRangeMax':
           serializer.toJson<int?>(profileSearchAgeRangeMax),
+      'profileLastSeenTimeFilter':
+          serializer.toJson<LastSeenTimeFilter?>(profileLastSeenTimeFilter),
       'accountEmailAddress': serializer.toJson<String?>(accountEmailAddress),
       'refreshTokenAccount': serializer.toJson<String?>(refreshTokenAccount),
       'refreshTokenMedia': serializer.toJson<String?>(refreshTokenMedia),
@@ -1977,6 +2011,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<JsonString?> jsonProfileAttributeFilters = const Value.absent(),
           Value<int?> profileSearchAgeRangeMin = const Value.absent(),
           Value<int?> profileSearchAgeRangeMax = const Value.absent(),
+          Value<LastSeenTimeFilter?> profileLastSeenTimeFilter =
+              const Value.absent(),
           Value<String?> accountEmailAddress = const Value.absent(),
           Value<String?> refreshTokenAccount = const Value.absent(),
           Value<String?> refreshTokenMedia = const Value.absent(),
@@ -2129,6 +2165,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileSearchAgeRangeMax: profileSearchAgeRangeMax.present
             ? profileSearchAgeRangeMax.value
             : this.profileSearchAgeRangeMax,
+        profileLastSeenTimeFilter: profileLastSeenTimeFilter.present
+            ? profileLastSeenTimeFilter.value
+            : this.profileLastSeenTimeFilter,
         accountEmailAddress: accountEmailAddress.present
             ? accountEmailAddress.value
             : this.accountEmailAddress,
@@ -2235,6 +2274,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('jsonProfileAttributeFilters: $jsonProfileAttributeFilters, ')
           ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
           ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
+          ..write('profileLastSeenTimeFilter: $profileLastSeenTimeFilter, ')
           ..write('accountEmailAddress: $accountEmailAddress, ')
           ..write('refreshTokenAccount: $refreshTokenAccount, ')
           ..write('refreshTokenMedia: $refreshTokenMedia, ')
@@ -2308,6 +2348,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         jsonProfileAttributeFilters,
         profileSearchAgeRangeMin,
         profileSearchAgeRangeMax,
+        profileLastSeenTimeFilter,
         accountEmailAddress,
         refreshTokenAccount,
         refreshTokenMedia,
@@ -2389,6 +2430,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
               this.jsonProfileAttributeFilters &&
           other.profileSearchAgeRangeMin == this.profileSearchAgeRangeMin &&
           other.profileSearchAgeRangeMax == this.profileSearchAgeRangeMax &&
+          other.profileLastSeenTimeFilter == this.profileLastSeenTimeFilter &&
           other.accountEmailAddress == this.accountEmailAddress &&
           other.refreshTokenAccount == this.refreshTokenAccount &&
           other.refreshTokenMedia == this.refreshTokenMedia &&
@@ -2459,6 +2501,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<JsonString?> jsonProfileAttributeFilters;
   final Value<int?> profileSearchAgeRangeMin;
   final Value<int?> profileSearchAgeRangeMax;
+  final Value<LastSeenTimeFilter?> profileLastSeenTimeFilter;
   final Value<String?> accountEmailAddress;
   final Value<String?> refreshTokenAccount;
   final Value<String?> refreshTokenMedia;
@@ -2524,6 +2567,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.jsonProfileAttributeFilters = const Value.absent(),
     this.profileSearchAgeRangeMin = const Value.absent(),
     this.profileSearchAgeRangeMax = const Value.absent(),
+    this.profileLastSeenTimeFilter = const Value.absent(),
     this.accountEmailAddress = const Value.absent(),
     this.refreshTokenAccount = const Value.absent(),
     this.refreshTokenMedia = const Value.absent(),
@@ -2590,6 +2634,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.jsonProfileAttributeFilters = const Value.absent(),
     this.profileSearchAgeRangeMin = const Value.absent(),
     this.profileSearchAgeRangeMax = const Value.absent(),
+    this.profileLastSeenTimeFilter = const Value.absent(),
     this.accountEmailAddress = const Value.absent(),
     this.refreshTokenAccount = const Value.absent(),
     this.refreshTokenMedia = const Value.absent(),
@@ -2656,6 +2701,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<String>? jsonProfileAttributeFilters,
     Expression<int>? profileSearchAgeRangeMin,
     Expression<int>? profileSearchAgeRangeMax,
+    Expression<int>? profileLastSeenTimeFilter,
     Expression<String>? accountEmailAddress,
     Expression<String>? refreshTokenAccount,
     Expression<String>? refreshTokenMedia,
@@ -2763,6 +2809,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'profile_search_age_range_min': profileSearchAgeRangeMin,
       if (profileSearchAgeRangeMax != null)
         'profile_search_age_range_max': profileSearchAgeRangeMax,
+      if (profileLastSeenTimeFilter != null)
+        'profile_last_seen_time_filter': profileLastSeenTimeFilter,
       if (accountEmailAddress != null)
         'account_email_address': accountEmailAddress,
       if (refreshTokenAccount != null)
@@ -2842,6 +2890,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<JsonString?>? jsonProfileAttributeFilters,
       Value<int?>? profileSearchAgeRangeMin,
       Value<int?>? profileSearchAgeRangeMax,
+      Value<LastSeenTimeFilter?>? profileLastSeenTimeFilter,
       Value<String?>? accountEmailAddress,
       Value<String?>? refreshTokenAccount,
       Value<String?>? refreshTokenMedia,
@@ -2942,6 +2991,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           profileSearchAgeRangeMin ?? this.profileSearchAgeRangeMin,
       profileSearchAgeRangeMax:
           profileSearchAgeRangeMax ?? this.profileSearchAgeRangeMax,
+      profileLastSeenTimeFilter:
+          profileLastSeenTimeFilter ?? this.profileLastSeenTimeFilter,
       accountEmailAddress: accountEmailAddress ?? this.accountEmailAddress,
       refreshTokenAccount: refreshTokenAccount ?? this.refreshTokenAccount,
       refreshTokenMedia: refreshTokenMedia ?? this.refreshTokenMedia,
@@ -3185,6 +3236,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['profile_search_age_range_max'] =
           Variable<int>(profileSearchAgeRangeMax.value);
     }
+    if (profileLastSeenTimeFilter.present) {
+      map['profile_last_seen_time_filter'] = Variable<int>($AccountTable
+          .$converterprofileLastSeenTimeFilter
+          .toSql(profileLastSeenTimeFilter.value));
+    }
     if (accountEmailAddress.present) {
       map['account_email_address'] =
           Variable<String>(accountEmailAddress.value);
@@ -3296,6 +3352,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('jsonProfileAttributeFilters: $jsonProfileAttributeFilters, ')
           ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
           ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
+          ..write('profileLastSeenTimeFilter: $profileLastSeenTimeFilter, ')
           ..write('accountEmailAddress: $accountEmailAddress, ')
           ..write('refreshTokenAccount: $refreshTokenAccount, ')
           ..write('refreshTokenMedia: $refreshTokenMedia, ')
@@ -3423,6 +3480,12 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   late final GeneratedColumn<int> profileAge = GeneratedColumn<int>(
       'profile_age', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _profileLastSeenTimeValueMeta =
+      const VerificationMeta('profileLastSeenTimeValue');
+  @override
+  late final GeneratedColumn<int> profileLastSeenTimeValue =
+      GeneratedColumn<int>('profile_last_seen_time_value', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _jsonProfileAttributesMeta =
       const VerificationMeta('jsonProfileAttributes');
   @override
@@ -3522,6 +3585,7 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
         profileText,
         profileVersion,
         profileAge,
+        profileLastSeenTimeValue,
         jsonProfileAttributes,
         primaryContentGridCropSize,
         primaryContentGridCropX,
@@ -3574,6 +3638,13 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
           _profileAgeMeta,
           profileAge.isAcceptableOrUnknown(
               data['profile_age']!, _profileAgeMeta));
+    }
+    if (data.containsKey('profile_last_seen_time_value')) {
+      context.handle(
+          _profileLastSeenTimeValueMeta,
+          profileLastSeenTimeValue.isAcceptableOrUnknown(
+              data['profile_last_seen_time_value']!,
+              _profileLastSeenTimeValueMeta));
     }
     context.handle(
         _jsonProfileAttributesMeta, const VerificationResult.success());
@@ -3649,6 +3720,9 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
               DriftSqlType.string, data['${effectivePrefix}profile_version'])),
       profileAge: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}profile_age']),
+      profileLastSeenTimeValue: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}profile_last_seen_time_value']),
       jsonProfileAttributes: $ProfilesTable.$converterjsonProfileAttributes
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}json_profile_attributes'])),
@@ -3743,6 +3817,7 @@ class Profile extends DataClass implements Insertable<Profile> {
   final String? profileText;
   final ProfileVersion? profileVersion;
   final int? profileAge;
+  final int? profileLastSeenTimeValue;
   final JsonList? jsonProfileAttributes;
   final double? primaryContentGridCropSize;
   final double? primaryContentGridCropX;
@@ -3768,6 +3843,7 @@ class Profile extends DataClass implements Insertable<Profile> {
       this.profileText,
       this.profileVersion,
       this.profileAge,
+      this.profileLastSeenTimeValue,
       this.jsonProfileAttributes,
       this.primaryContentGridCropSize,
       this.primaryContentGridCropX,
@@ -3828,6 +3904,10 @@ class Profile extends DataClass implements Insertable<Profile> {
     }
     if (!nullToAbsent || profileAge != null) {
       map['profile_age'] = Variable<int>(profileAge);
+    }
+    if (!nullToAbsent || profileLastSeenTimeValue != null) {
+      map['profile_last_seen_time_value'] =
+          Variable<int>(profileLastSeenTimeValue);
     }
     if (!nullToAbsent || jsonProfileAttributes != null) {
       map['json_profile_attributes'] = Variable<String>($ProfilesTable
@@ -3915,6 +3995,9 @@ class Profile extends DataClass implements Insertable<Profile> {
       profileAge: profileAge == null && nullToAbsent
           ? const Value.absent()
           : Value(profileAge),
+      profileLastSeenTimeValue: profileLastSeenTimeValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileLastSeenTimeValue),
       jsonProfileAttributes: jsonProfileAttributes == null && nullToAbsent
           ? const Value.absent()
           : Value(jsonProfileAttributes),
@@ -3971,6 +4054,8 @@ class Profile extends DataClass implements Insertable<Profile> {
       profileVersion:
           serializer.fromJson<ProfileVersion?>(json['profileVersion']),
       profileAge: serializer.fromJson<int?>(json['profileAge']),
+      profileLastSeenTimeValue:
+          serializer.fromJson<int?>(json['profileLastSeenTimeValue']),
       jsonProfileAttributes:
           serializer.fromJson<JsonList?>(json['jsonProfileAttributes']),
       primaryContentGridCropSize:
@@ -4009,6 +4094,8 @@ class Profile extends DataClass implements Insertable<Profile> {
       'profileText': serializer.toJson<String?>(profileText),
       'profileVersion': serializer.toJson<ProfileVersion?>(profileVersion),
       'profileAge': serializer.toJson<int?>(profileAge),
+      'profileLastSeenTimeValue':
+          serializer.toJson<int?>(profileLastSeenTimeValue),
       'jsonProfileAttributes':
           serializer.toJson<JsonList?>(jsonProfileAttributes),
       'primaryContentGridCropSize':
@@ -4042,6 +4129,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           Value<String?> profileText = const Value.absent(),
           Value<ProfileVersion?> profileVersion = const Value.absent(),
           Value<int?> profileAge = const Value.absent(),
+          Value<int?> profileLastSeenTimeValue = const Value.absent(),
           Value<JsonList?> jsonProfileAttributes = const Value.absent(),
           Value<double?> primaryContentGridCropSize = const Value.absent(),
           Value<double?> primaryContentGridCropX = const Value.absent(),
@@ -4076,6 +4164,9 @@ class Profile extends DataClass implements Insertable<Profile> {
         profileVersion:
             profileVersion.present ? profileVersion.value : this.profileVersion,
         profileAge: profileAge.present ? profileAge.value : this.profileAge,
+        profileLastSeenTimeValue: profileLastSeenTimeValue.present
+            ? profileLastSeenTimeValue.value
+            : this.profileLastSeenTimeValue,
         jsonProfileAttributes: jsonProfileAttributes.present
             ? jsonProfileAttributes.value
             : this.jsonProfileAttributes,
@@ -4121,6 +4212,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           ..write('profileText: $profileText, ')
           ..write('profileVersion: $profileVersion, ')
           ..write('profileAge: $profileAge, ')
+          ..write('profileLastSeenTimeValue: $profileLastSeenTimeValue, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
@@ -4151,6 +4243,7 @@ class Profile extends DataClass implements Insertable<Profile> {
         profileText,
         profileVersion,
         profileAge,
+        profileLastSeenTimeValue,
         jsonProfileAttributes,
         primaryContentGridCropSize,
         primaryContentGridCropX,
@@ -4180,6 +4273,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           other.profileText == this.profileText &&
           other.profileVersion == this.profileVersion &&
           other.profileAge == this.profileAge &&
+          other.profileLastSeenTimeValue == this.profileLastSeenTimeValue &&
           other.jsonProfileAttributes == this.jsonProfileAttributes &&
           other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
           other.primaryContentGridCropX == this.primaryContentGridCropX &&
@@ -4207,6 +4301,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<String?> profileText;
   final Value<ProfileVersion?> profileVersion;
   final Value<int?> profileAge;
+  final Value<int?> profileLastSeenTimeValue;
   final Value<JsonList?> jsonProfileAttributes;
   final Value<double?> primaryContentGridCropSize;
   final Value<double?> primaryContentGridCropX;
@@ -4232,6 +4327,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.profileText = const Value.absent(),
     this.profileVersion = const Value.absent(),
     this.profileAge = const Value.absent(),
+    this.profileLastSeenTimeValue = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
@@ -4258,6 +4354,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.profileText = const Value.absent(),
     this.profileVersion = const Value.absent(),
     this.profileAge = const Value.absent(),
+    this.profileLastSeenTimeValue = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
@@ -4284,6 +4381,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     Expression<String>? profileText,
     Expression<String>? profileVersion,
     Expression<int>? profileAge,
+    Expression<int>? profileLastSeenTimeValue,
     Expression<String>? jsonProfileAttributes,
     Expression<double>? primaryContentGridCropSize,
     Expression<double>? primaryContentGridCropX,
@@ -4311,6 +4409,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       if (profileText != null) 'profile_text': profileText,
       if (profileVersion != null) 'profile_version': profileVersion,
       if (profileAge != null) 'profile_age': profileAge,
+      if (profileLastSeenTimeValue != null)
+        'profile_last_seen_time_value': profileLastSeenTimeValue,
       if (jsonProfileAttributes != null)
         'json_profile_attributes': jsonProfileAttributes,
       if (primaryContentGridCropSize != null)
@@ -4344,6 +4444,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       Value<String?>? profileText,
       Value<ProfileVersion?>? profileVersion,
       Value<int?>? profileAge,
+      Value<int?>? profileLastSeenTimeValue,
       Value<JsonList?>? jsonProfileAttributes,
       Value<double?>? primaryContentGridCropSize,
       Value<double?>? primaryContentGridCropX,
@@ -4370,6 +4471,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       profileText: profileText ?? this.profileText,
       profileVersion: profileVersion ?? this.profileVersion,
       profileAge: profileAge ?? this.profileAge,
+      profileLastSeenTimeValue:
+          profileLastSeenTimeValue ?? this.profileLastSeenTimeValue,
       jsonProfileAttributes:
           jsonProfileAttributes ?? this.jsonProfileAttributes,
       primaryContentGridCropSize:
@@ -4440,6 +4543,10 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     if (profileAge.present) {
       map['profile_age'] = Variable<int>(profileAge.value);
     }
+    if (profileLastSeenTimeValue.present) {
+      map['profile_last_seen_time_value'] =
+          Variable<int>(profileLastSeenTimeValue.value);
+    }
     if (jsonProfileAttributes.present) {
       map['json_profile_attributes'] = Variable<String>($ProfilesTable
           .$converterjsonProfileAttributes
@@ -4507,6 +4614,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           ..write('profileText: $profileText, ')
           ..write('profileVersion: $profileVersion, ')
           ..write('profileAge: $profileAge, ')
+          ..write('profileLastSeenTimeValue: $profileLastSeenTimeValue, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')

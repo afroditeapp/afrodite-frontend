@@ -10,6 +10,11 @@ class ProfileEntry {
   final String name;
   final String profileText;
   final int age;
+  /// Possible values:
+  /// When -1, the user is currently online.
+  /// When 0 or greater, the value is unix timestamp when profile has been
+  /// seen online previously.
+  final int? lastSeenTimeValue;
   final List<ProfileAttributeValue> attributes;
   final ProfileVersion version;
   final ProfileContentVersion contentVersion;
@@ -32,6 +37,7 @@ class ProfileEntry {
       required this.attributes,
       required this.version,
       required this.contentVersion,
+      this.lastSeenTimeValue,
       this.content1,
       this.content2,
       this.content3,
