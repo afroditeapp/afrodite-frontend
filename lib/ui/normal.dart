@@ -144,10 +144,22 @@ class _NormalStateContentState extends State<NormalStateContent> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: const Icon(Icons.people), label: views[0].title(context)),
-          BottomNavigationBarItem(icon: const Icon(Icons.favorite), label: views[1].title(context)),
-          BottomNavigationBarItem(icon: const Icon(Icons.message), label: views[2].title(context)),
-          BottomNavigationBarItem(icon: const Icon(Icons.settings), label: views[3].title(context)),
+          BottomNavigationBarItem(
+            icon: Icon(selectedView == 0 ? Icons.people : Icons.people_outline),
+            label: views[0].title(context)
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(selectedView == 1 ? Icons.favorite : Icons.favorite_outline),
+            label: views[1].title(context)
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(selectedView == 2 ? Icons.message : Icons.message_outlined),
+            label: views[2].title(context),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(selectedView == 3 ? Icons.settings : Icons.settings_outlined),
+            label: views[3].title(context),
+          ),
         ],
         useLegacyColorScheme: false,
         currentIndex: selectedView,
