@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
+import "package:pihka_frontend/data/account_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import 'package:database/database.dart';
@@ -19,8 +20,16 @@ sealed class MyProfileEvent {}
 class SetProfile extends MyProfileEvent {
   final ProfileUpdate profile;
   final SetProfileContent pictures;
+  final bool unlimitedLikes;
   final bool initialModerationOngoing;
-  SetProfile(this.profile, this.pictures, this.initialModerationOngoing);
+  SetProfile(
+    this.profile,
+    this.pictures,
+    {
+      required this.unlimitedLikes,
+      required this.initialModerationOngoing,
+    }
+  );
 }
 class NewMyProfile extends MyProfileEvent {
   final ProfileEntry? profile;
@@ -29,6 +38,7 @@ class NewMyProfile extends MyProfileEvent {
 class ReloadMyProfile extends MyProfileEvent {}
 
 class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunner {
+  final AccountRepository account = AccountRepository.getInstance();
   final ProfileRepository profile = ProfileRepository.getInstance();
   final MediaRepository media = MediaRepository.getInstance();
   final db = DatabaseManager.getInstance();
@@ -61,6 +71,10 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
           updateState: const UpdateInProgress(),
         ));
 
+        // Do this first as updateProfile reloads the profile
+        if (!await account.updateUnlimitedLikesWithoutReloadingProfile(data.unlimitedLikes)) {
+          failureDetected = true;
+        }
 
         if (!await profile.updateProfile(data.profile)) {
           failureDetected = true;

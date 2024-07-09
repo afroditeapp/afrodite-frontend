@@ -37,6 +37,7 @@ class DaoProfileSettings extends DatabaseAccessor<AccountDatabase> with _$DaoPro
         id: ACCOUNT_DB_DATA_ID,
         jsonProfileAttributeFilters: Value(value?.toJsonString()),
         profileLastSeenTimeFilter: Value(value?.lastSeenTimeFilter),
+        profileUnlimitedLikesFilter: Value(value?.unlimitedLikesFilter),
       ),
     );
   }
@@ -90,4 +91,7 @@ class DaoProfileSettings extends DatabaseAccessor<AccountDatabase> with _$DaoPro
 
   Stream<LastSeenTimeFilter?> watchProfileLastTimeSeenFilter() =>
     watchColumn((r) => r.profileLastSeenTimeFilter);
+
+  Stream<bool?> watchProfileUnlimitedLikesFilter() =>
+    watchColumn((r) => r.profileUnlimitedLikesFilter);
 }

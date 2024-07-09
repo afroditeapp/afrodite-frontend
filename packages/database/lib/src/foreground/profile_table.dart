@@ -30,6 +30,7 @@ class Profiles extends Table {
   TextColumn get profileVersion => text().map(const NullAwareTypeConverter.wrap(ProfileVersionConverter())).nullable()();
   IntColumn get profileAge => integer().nullable()();
   IntColumn get profileLastSeenTimeValue => integer().nullable()();
+  BoolColumn get profileUnlimitedLikes => boolean().nullable()();
   TextColumn get jsonProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonList.driftConverter)).nullable()();
 
   RealColumn get primaryContentGridCropSize => real().nullable()();
@@ -363,6 +364,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         profileVersion: Value(null),
         profileContentVersion: Value(null),
         profileLastSeenTimeValue: Value(null),
+        profileUnlimitedLikes: Value(null),
         jsonProfileAttributes: Value(null),
         primaryContentGridCropSize: Value(null),
         primaryContentGridCropX: Value(null),
@@ -381,6 +383,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         profileAge: Value(profile.age),
         profileVersion: Value(profileVersion),
         profileLastSeenTimeValue: Value(profileLastSeenTime),
+        profileUnlimitedLikes: Value(profile.unlimitedLikes),
         jsonProfileAttributes: Value(profile.attributes.toJsonList()),
       ),
       onConflict: DoUpdate((old) => ProfilesCompanion(
@@ -389,6 +392,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         profileAge: Value(profile.age),
         profileVersion: Value(profileVersion),
         profileLastSeenTimeValue: Value(profileLastSeenTime),
+        profileUnlimitedLikes: Value(profile.unlimitedLikes),
         jsonProfileAttributes: Value(profile.attributes.toJsonList()),
       ),
         target: [profiles.uuidAccountId]
@@ -469,6 +473,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     final profileAge = r.profileAge;
     final profileVersion = r.profileVersion;
     final profileAttributes = r.jsonProfileAttributes?.toProfileAttributes();
+    final profileUnlimitedLikes = r.profileUnlimitedLikes;
     final contentVersion = r.profileContentVersion;
 
     if (
@@ -478,6 +483,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
       profileAge != null &&
       profileVersion != null &&
       profileAttributes != null &&
+      profileUnlimitedLikes != null &&
       contentVersion != null
     ) {
       return ProfileEntry(
@@ -491,6 +497,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         version: profileVersion,
         age: profileAge,
         attributes: profileAttributes,
+        unlimitedLikes: profileUnlimitedLikes,
         contentVersion: contentVersion,
         lastSeenTimeValue: r.profileLastSeenTimeValue,
         content1: r.uuidContentId1,

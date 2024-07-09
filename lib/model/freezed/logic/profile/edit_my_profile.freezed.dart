@@ -24,11 +24,13 @@ mixin _$EditMyProfileData {
   int? get age => throw _privateConstructorErrorEditMyProfileData;
   String? get initial => throw _privateConstructorErrorEditMyProfileData;
   UnmodifiableList<ProfileAttributeValueUpdate> get attributes => throw _privateConstructorErrorEditMyProfileData;
+  bool get unlimitedLikes => throw _privateConstructorErrorEditMyProfileData;
 
   EditMyProfileData copyWith({
     int? age,
     String? initial,
     UnmodifiableList<ProfileAttributeValueUpdate>? attributes,
+    bool? unlimitedLikes,
   }) => throw _privateConstructorErrorEditMyProfileData;
 }
 
@@ -38,17 +40,20 @@ abstract class _EditMyProfileData implements EditMyProfileData {
     int? age,
     String? initial,
     UnmodifiableList<ProfileAttributeValueUpdate> attributes,
+    bool unlimitedLikes,
   }) = _$EditMyProfileDataImpl;
 }
 
 /// @nodoc
 class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyProfileData {
   static const UnmodifiableList<ProfileAttributeValueUpdate> _attributesDefaultValue = UnmodifiableList<ProfileAttributeValueUpdate>.empty();
+  static const bool _unlimitedLikesDefaultValue = false;
   
   _$EditMyProfileDataImpl({
     this.age,
     this.initial,
     this.attributes = _attributesDefaultValue,
+    this.unlimitedLikes = _unlimitedLikesDefaultValue,
   });
 
   @override
@@ -57,10 +62,12 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
   final String? initial;
   @override
   final UnmodifiableList<ProfileAttributeValueUpdate> attributes;
+  @override
+  final bool unlimitedLikes;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditMyProfileData(age: $age, initial: $initial, attributes: $attributes)';
+    return 'EditMyProfileData(age: $age, initial: $initial, attributes: $attributes, unlimitedLikes: $unlimitedLikes)';
   }
 
   @override
@@ -70,7 +77,8 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
       ..add(DiagnosticsProperty('type', 'EditMyProfileData'))
       ..add(DiagnosticsProperty('age', age))
       ..add(DiagnosticsProperty('initial', initial))
-      ..add(DiagnosticsProperty('attributes', attributes));
+      ..add(DiagnosticsProperty('attributes', attributes))
+      ..add(DiagnosticsProperty('unlimitedLikes', unlimitedLikes));
   }
 
   @override
@@ -83,7 +91,9 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
         (identical(other.initial, initial) ||
           other.initial == initial) &&
         (identical(other.attributes, attributes) ||
-          other.attributes == attributes)
+          other.attributes == attributes) &&
+        (identical(other.unlimitedLikes, unlimitedLikes) ||
+          other.unlimitedLikes == unlimitedLikes)
     );
   }
 
@@ -93,6 +103,7 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
     age,
     initial,
     attributes,
+    unlimitedLikes,
   );
 
   @override
@@ -100,9 +111,11 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
     Object? age = _detectDefaultValueInCopyWith,
     Object? initial = _detectDefaultValueInCopyWith,
     Object? attributes,
+    Object? unlimitedLikes,
   }) => _$EditMyProfileDataImpl(
     age: (age == _detectDefaultValueInCopyWith ? this.age : age) as int?,
     initial: (initial == _detectDefaultValueInCopyWith ? this.initial : initial) as String?,
     attributes: (attributes ?? this.attributes) as UnmodifiableList<ProfileAttributeValueUpdate>,
+    unlimitedLikes: (unlimitedLikes ?? this.unlimitedLikes) as bool,
   );
 }

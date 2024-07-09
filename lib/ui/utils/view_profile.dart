@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/ui_utils/consts/size.dart';
 import 'package:utils/utils.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
@@ -99,7 +100,10 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
         child: Row(
           children: [
             Text(widget.profile.profileTitle(), style: Theme.of(context).textTheme.titleLarge),
-            // TODO: Spacer and infinity icon if limitless likes are enabled
+            const Spacer(),
+            (context.read<MyProfileBloc>().state.profile?.unlimitedLikes ?? false) && widget.profile.unlimitedLikes ?
+              const Icon(Icons.all_inclusive) :
+              const SizedBox.shrink(),
           ],
         ),
       ),

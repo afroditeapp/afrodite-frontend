@@ -116,7 +116,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
         attributes: s.attributes.toList(),
       ),
       imgUpdate,
-      context.read<AccountBloc>().state.isInitialModerationOngoing(),
+      unlimitedLikes: s.unlimitedLikes,
+      initialModerationOngoing: context.read<AccountBloc>().state.isInitialModerationOngoing(),
     ));
   }
 
@@ -124,7 +125,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final currentState = widget.initialProfile;
     if (
       currentState.age != editedData.age ||
-      currentState.name != editedData.initial
+      currentState.name != editedData.initial ||
+      currentState.unlimitedLikes != editedData.unlimitedLikes
     ) {
       return true;
     }
@@ -237,8 +239,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
           const Padding(padding: EdgeInsets.all(8)),
           const Divider(),
           const EditAttributes(),
-          const Padding(padding: EdgeInsets.all(8)),
-          if (dataChanged) const Padding(
+          const Divider(),
+          unlimitedLikesSetting(context),
+          const Padding(
             padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA),
             child: null,
           ),
@@ -263,6 +266,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
   //     ),
   //   );
   // }
+
+  Widget unlimitedLikesSetting(BuildContext context) {
+    return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(builder: (context, myProfileData) {
+      return SwitchListTile(
+        title: Text(context.strings.edit_profile_screen_unlimited_likes),
+        subtitle: myProfileData.unlimitedLikes ?
+          Text(context.strings.edit_profile_screen_unlimited_likes_description_enabled) :
+          Text(context.strings.edit_profile_screen_unlimited_likes_description_disabled),
+        isThreeLine: true,
+        secondary: const Icon(Icons.all_inclusive),
+        value: myProfileData.unlimitedLikes,
+        onChanged: (bool value) =>
+            context.read<EditMyProfileBloc>().add(NewUnlimitedLikesValue(value)),
+      );
+    });
+  }
 }
 
 class EditAttributes extends StatelessWidget {

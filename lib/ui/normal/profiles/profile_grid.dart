@@ -11,7 +11,9 @@ import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
+import 'package:pihka_frontend/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
+import 'package:pihka_frontend/model/freezed/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -178,26 +180,30 @@ class _ProfileGridState extends State<ProfileGrid> {
           await refreshProfileGrid();
         }
       },
-      child: BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-        builder: (context, state) {
-          if (state.updateState is UpdateIdle) {
-            return NotificationListener<ScrollMetricsNotification>(
-              onNotification: (notification) {
-                final isScrolled = notification.metrics.pixels > 0;
-                updateIsScrolled(isScrolled);
-                return true;
-              },
-              child: grid(context),
-            );
-          } else {
-            return Center(child: CircularProgressIndicator(key: _progressKey));
-          }
+      child: BlocBuilder<MyProfileBloc, MyProfileData>(
+        builder: (context, myProfileState) {
+          return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+            builder: (context, state) {
+              if (state.updateState is UpdateIdle) {
+                return NotificationListener<ScrollMetricsNotification>(
+                  onNotification: (notification) {
+                    final isScrolled = notification.metrics.pixels > 0;
+                    updateIsScrolled(isScrolled);
+                    return true;
+                  },
+                  child: grid(context, myProfileState.profile?.unlimitedLikes ?? false),
+                );
+              } else {
+                return Center(child: CircularProgressIndicator(key: _progressKey));
+              }
+            }
+          );
         }
       ),
     );
   }
 
-  Widget grid(BuildContext context) {
+  Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled) {
     return PagedGridView(
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
@@ -233,25 +239,7 @@ class _ProfileGridState extends State<ProfileGrid> {
                 cacheSize: ImageCacheSize.sizeForGrid(),
                 child: Stack(
                   children: [
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Row(
-                        children: [
-                          if (item.profile.lastSeenTimeValue == -1) Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              width: PROFILE_CURRENTLY_ONLINE_SIZE,
-                              height: PROFILE_CURRENTLY_ONLINE_SIZE,
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
-                              ),
-                            ),
-                          ),
-                          const Spacer(),
-                        ],
-                      ),
-                    ),
+                    thumbnailStatusIndicators(item.profile, iHaveUnlimitedLikesEnabled),
                     Material(
                       color: Colors.transparent,
                       child: InkWell(
@@ -314,6 +302,37 @@ class _ProfileGridState extends State<ProfileGrid> {
         crossAxisCount: 2,
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
+      ),
+    );
+  }
+
+  Widget thumbnailStatusIndicators(ProfileEntry profile, bool iHaveUnlimitedLikesEnabled) {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Row(
+        children: [
+          if (profile.lastSeenTimeValue == -1) Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: PROFILE_CURRENTLY_ONLINE_SIZE,
+              height: PROFILE_CURRENTLY_ONLINE_SIZE,
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
+              ),
+            ),
+          ),
+          const Spacer(),
+          iHaveUnlimitedLikesEnabled && profile.unlimitedLikes ?
+            const Padding(
+              padding: EdgeInsets.only(right: 8.0),
+              child: Icon(
+                Icons.all_inclusive,
+                color: Colors.black,
+              ),
+            ) :
+            const SizedBox.shrink(),
+        ],
       ),
     );
   }

@@ -13,5 +13,6 @@ class EditMyProfileData with _$EditMyProfileData {
     String? initial,
     @Default(UnmodifiableList<ProfileAttributeValueUpdate>.empty())
       UnmodifiableList<ProfileAttributeValueUpdate> attributes,
+    @Default(false) bool unlimitedLikes,
   }) = _EditMyProfileData;
 }

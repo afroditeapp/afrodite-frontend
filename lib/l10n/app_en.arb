@@ -246,6 +246,18 @@
   "@edit_profile_screen_title": {
     "description": "Title for edit profile screen"
   },
+  "edit_profile_screen_unlimited_likes": "Unlimited likes",
+  "@edit_profile_screen_unlimited_likes": {
+    "description": "Title for unlimited likes setting"
+  },
+  "edit_profile_screen_unlimited_likes_description_disabled": "Send one like per day",
+  "@edit_profile_screen_unlimited_likes_description_disabled": {
+    "description": "Description for unlimited likes setting when it is disabled"
+  },
+  "edit_profile_screen_unlimited_likes_description_enabled": "Send unlimited likes to profiles which have enabled unlimited likes",
+  "@edit_profile_screen_unlimited_likes_description_enabled": {
+    "description": "Description for unlimited likes setting when it is enabled"
+  },
   "general_settings_screen_title": "General",
   "@general_settings_screen_title": {
     "description": "General settings screen title"

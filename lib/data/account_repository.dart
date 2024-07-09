@@ -191,6 +191,12 @@ class AccountRepository extends DataRepository {
     return result.isOk();
   }
 
+  /// Returns true if successful.
+  Future<bool> updateUnlimitedLikesWithoutReloadingProfile(bool unlimitedLikes) async {
+    final result = await api.accountAction((api) => api.putSettingUnlimitedLikes(BooleanSetting(value: unlimitedLikes)));
+    return result.isOk();
+  }
+
   Future<bool> isInitialModerationOngoing() async {
     final visibility = await profileVisibility.first;
     return visibility.isInitialModerationOngoing();

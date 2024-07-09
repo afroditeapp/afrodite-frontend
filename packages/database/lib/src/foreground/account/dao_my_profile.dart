@@ -25,6 +25,7 @@ class DaoMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoMyProfile
         profileText: Value(profile.profileText),
         profileAge: Value(profile.age),
         profileVersion: Value(version),
+        profileUnlimitedLikes: Value(profile.unlimitedLikes),
         jsonProfileAttributes: Value(profile.attributes.toJsonList()),
       ),
     );

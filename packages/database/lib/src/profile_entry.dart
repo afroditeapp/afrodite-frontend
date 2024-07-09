@@ -10,6 +10,7 @@ class ProfileEntry {
   final String name;
   final String profileText;
   final int age;
+  final bool unlimitedLikes;
   /// Possible values:
   /// When -1, the user is currently online.
   /// When 0 or greater, the value is unix timestamp when profile has been
@@ -34,6 +35,7 @@ class ProfileEntry {
       required this.name,
       required this.profileText,
       required this.age,
+      required this.unlimitedLikes,
       required this.attributes,
       required this.version,
       required this.contentVersion,

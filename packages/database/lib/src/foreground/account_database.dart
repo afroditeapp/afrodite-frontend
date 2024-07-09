@@ -93,6 +93,7 @@ class Account extends Table {
   TextColumn get profileName => text().nullable()();
   TextColumn get profileText => text().nullable()();
   IntColumn get profileAge => integer().nullable()();
+  BoolColumn get profileUnlimitedLikes => boolean().nullable()();
   TextColumn get profileVersion => text().map(const NullAwareTypeConverter.wrap(ProfileVersionConverter())).nullable()();
   TextColumn get jsonProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonList.driftConverter)).nullable()();
 
@@ -106,6 +107,7 @@ class Account extends Table {
   IntColumn get profileSearchAgeRangeMin => integer().nullable()();
   IntColumn get profileSearchAgeRangeMax => integer().nullable()();
   IntColumn get profileLastSeenTimeFilter => integer().map(const NullAwareTypeConverter.wrap(LastSeenTimeFilterConverter())).nullable()();
+  BoolColumn get profileUnlimitedLikesFilter => boolean().nullable()();
 
   // DaoAccountSettings
 
@@ -259,6 +261,7 @@ class AccountDatabase extends _$AccountDatabase {
       final profileAttributes = r.jsonProfileAttributes?.toProfileAttributes();
       final profileVersion = r.profileVersion;
       final profileContentVersion = r.profileContentVersion;
+      final profileUnlimitedLikes = r.profileUnlimitedLikes;
 
       var content0 = r.uuidContentId0;
       var content1 = r.uuidContentId1;
@@ -291,7 +294,8 @@ class AccountDatabase extends _$AccountDatabase {
         profileAge != null &&
         profileAttributes != null &&
         profileVersion != null &&
-        profileContentVersion != null
+        profileContentVersion != null &&
+        profileUnlimitedLikes != null
       ) {
         return ProfileEntry(
           uuid: id,
@@ -302,6 +306,7 @@ class AccountDatabase extends _$AccountDatabase {
           name: profileName,
           profileText: profileText,
           age: profileAge,
+          unlimitedLikes: profileUnlimitedLikes,
           attributes: profileAttributes,
           version: profileVersion,
           contentVersion: profileContentVersion,

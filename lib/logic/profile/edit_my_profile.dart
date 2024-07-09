@@ -22,6 +22,10 @@ class NewInitial extends EditMyProfileEvent {
   final String? value;
   NewInitial(this.value);
 }
+class NewUnlimitedLikesValue extends EditMyProfileEvent {
+  final bool value;
+  NewUnlimitedLikesValue(this.value);
+}
 class NewAttributeValue extends EditMyProfileEvent {
   final ProfileAttributeValueUpdate value;
   NewAttributeValue(this.value);
@@ -42,6 +46,7 @@ class EditMyProfileBloc extends Bloc<EditMyProfileEvent, EditMyProfileData> with
         age: data.profile.age,
         initial: data.profile.name,
         attributes: UnmodifiableList(attributes),
+        unlimitedLikes: data.profile.unlimitedLikes,
       ));
     });
     on<NewAge>((data, emit) async {
@@ -49,6 +54,9 @@ class EditMyProfileBloc extends Bloc<EditMyProfileEvent, EditMyProfileData> with
     });
     on<NewInitial>((data, emit) async {
       emit(state.copyWith(initial: data.value));
+    });
+    on<NewUnlimitedLikesValue>((data, emit) async {
+      emit(state.copyWith(unlimitedLikes: data.value));
     });
     on<NewAttributeValue>((data, emit) async {
       final newAttributes = <ProfileAttributeValueUpdate>[];
