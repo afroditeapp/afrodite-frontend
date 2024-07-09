@@ -211,6 +211,10 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
 
   List<ContentId> contentList = [];
 
+  final PageController pageController = PageController(
+    keepPage: false,
+  );
+
   @override
   void initState() {
     super.initState();
@@ -229,6 +233,12 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
   }
 
   @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final List<Widget> imgs = [];
     for (int i = 0; i < contentList.length; i++) {
@@ -240,8 +250,13 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
     return Stack(
       alignment: AlignmentDirectional.center,
       children: [
-        IndexedStack(
-          index: selectedImg,
+        PageView(
+          controller: pageController,
+          onPageChanged: (int index) {
+            setState(() {
+              selectedImg = index;
+            });
+          },
           children: imgs,
         ),
         Align(
@@ -262,6 +277,9 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
               setState(() {
                 if (selectedImg > 0) {
                   selectedImg--;
+                  if (pageController.hasClients) {
+                    pageController.jumpToPage(selectedImg);
+                  }
                 }
               });
             },
@@ -273,6 +291,9 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
               setState(() {
                 if (selectedImg < contentList.length - 1) {
                   selectedImg++;
+                  if (pageController.hasClients) {
+                    pageController.jumpToPage(selectedImg);
+                  }
                 }
               });
             },
