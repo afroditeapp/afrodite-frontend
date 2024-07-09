@@ -797,6 +797,14 @@
   "@profile_filtering_settings_screen_title": {
     "description": "Title for profile filtering settings screen"
   },
+  "profile_filtering_settings_screen_unlimited_likes_filter": "Unlimited likes",
+  "@profile_filtering_settings_screen_unlimited_likes_filter": {
+    "description": "Title for unlimited likes filter"
+  },
+  "profile_filtering_settings_screen_unlimited_likes_filter_not_available": "Enable unlimited likes to use this filter",
+  "@profile_filtering_settings_screen_unlimited_likes_filter_not_available": {
+    "description": "Description for unlimited likes filter when unlimited likes are disabled"
+  },
   "profile_filtering_settings_screen_updating_filters_failed": "Updating profile filters failed",
   "@profile_filtering_settings_screen_updating_filters_failed": {
     "description": "Snackbar text for notifying about failed profile filters update"

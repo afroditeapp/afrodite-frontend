@@ -22,12 +22,22 @@ class SetProfile extends MyProfileEvent {
   final SetProfileContent pictures;
   final bool unlimitedLikes;
   final bool initialModerationOngoing;
+
+  // Filters (when unlimited likes is disabled, the unlimited likes
+  // filter must be also disabled)
+  final List<ProfileAttributeFilterValueUpdate> currentAttributeFilters;
+  final LastSeenTimeFilter? currentLastSeenTimeFilter;
+  final bool? currentUnlimitedLikesFilter;
+
   SetProfile(
     this.profile,
     this.pictures,
     {
       required this.unlimitedLikes,
       required this.initialModerationOngoing,
+      required this.currentAttributeFilters,
+      required this.currentLastSeenTimeFilter,
+      required this.currentUnlimitedLikesFilter,
     }
   );
 }
@@ -70,6 +80,24 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
         emit(state.copyWith(
           updateState: const UpdateInProgress(),
         ));
+
+        // Disable the unlimited likes filter if needed
+        if (
+          state.profile?.unlimitedLikes == true &&
+          data.unlimitedLikes == false &&
+          data.currentUnlimitedLikesFilter != null
+        ) {
+          if (
+            await profile.updateAttributeFilters(
+              data.currentAttributeFilters,
+              data.currentLastSeenTimeFilter,
+              null,
+            ).isErr()
+          ) {
+            failureDetected = true;
+          }
+          await profile.resetMainProfileIterator();
+        }
 
         // Do this first as updateProfile reloads the profile
         if (!await account.updateUnlimitedLikesWithoutReloadingProfile(data.unlimitedLikes)) {

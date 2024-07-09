@@ -12,6 +12,7 @@ import 'package:pihka_frontend/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/logic/profile/attributes.dart';
 import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
 import 'package:pihka_frontend/logic/profile/my_profile.dart';
+import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/attributes.dart';
@@ -108,6 +109,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
       return;
     }
 
+    final filteringState = context.read<ProfileFilteringSettingsBloc>().state;
+
     context.read<MyProfileBloc>().add(SetProfile(
       ProfileUpdate(
         age: age,
@@ -118,6 +121,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
       imgUpdate,
       unlimitedLikes: s.unlimitedLikes,
       initialModerationOngoing: context.read<AccountBloc>().state.isInitialModerationOngoing(),
+      currentAttributeFilters: filteringState.currentFiltersCopy(),
+      currentLastSeenTimeFilter: filteringState.attributeFilters?.lastSeenTimeFilter,
+      currentUnlimitedLikesFilter: filteringState.attributeFilters?.unlimitedLikesFilter,
     ));
   }
 

@@ -7,10 +7,12 @@ import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/profile/attributes.dart';
 import 'package:pihka_frontend/logic/profile/edit_profile_filtering_settings.dart';
+import 'package:pihka_frontend/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/attributes.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/edit_profile_filtering_settings.dart';
+import 'package:pihka_frontend/model/freezed/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/ui/normal/profiles/edit_profile_attribute_filter.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
@@ -42,16 +44,13 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
   void initState() {
     super.initState();
 
-    initialFilters = widget.profileFilteringSettingsBloc.state.attributeFilters?.filters.map((e) => ProfileAttributeFilterValueUpdate(
-      acceptMissingAttribute: e.acceptMissingAttribute,
-      filterValues: [...e.filterValues],
-      id: e.id,
-    )).toList() ?? [];
+    initialFilters = widget.profileFilteringSettingsBloc.state.currentFiltersCopy();
 
     widget.editProfileFilteringSettingsBloc.add(ResetStateWith(
       widget.profileFilteringSettingsBloc.state.showOnlyFavorites,
       initialFilters,
       widget.profileFilteringSettingsBloc.state.attributeFilters?.lastSeenTimeFilter,
+      widget.profileFilteringSettingsBloc.state.attributeFilters?.unlimitedLikesFilter,
     ));
   }
 
@@ -60,15 +59,17 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       widget.editProfileFilteringSettingsBloc.state.showOnlyFavorites,
       widget.editProfileFilteringSettingsBloc.state.attributeFilters.toList(),
       widget.editProfileFilteringSettingsBloc.state.lastSeenTimeFilter,
+      widget.editProfileFilteringSettingsBloc.state.unlimitedLikesFilter,
     ));
   }
 
   bool areSettingsChanged(EditProfileFilteringSettingsData editedSettings) {
-    if (widget.profileFilteringSettingsBloc.state.showOnlyFavorites != editedSettings.showOnlyFavorites) {
-      return true;
-    }
-
-    if (widget.profileFilteringSettingsBloc.state.attributeFilters?.lastSeenTimeFilter != editedSettings.lastSeenTimeFilter) {
+    final currentSettings = widget.profileFilteringSettingsBloc.state;
+    if (
+      currentSettings.showOnlyFavorites != editedSettings.showOnlyFavorites ||
+      currentSettings.attributeFilters?.lastSeenTimeFilter != editedSettings.lastSeenTimeFilter ||
+      currentSettings.attributeFilters?.unlimitedLikesFilter != editedSettings.unlimitedLikesFilter
+    ) {
       return true;
     }
 
@@ -104,40 +105,44 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           MyNavigator.pop(context);
         }
       },
-      child: BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
-        builder: (context, data) {
-          final settingsChanged = areSettingsChanged(data);
+      child: BlocBuilder<MyProfileBloc, MyProfileData>(
+        builder: (context, myProfileState) {
+          return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
+            builder: (context, data) {
+              final settingsChanged = areSettingsChanged(data);
 
-          return PopScope(
-            canPop: !settingsChanged,
-            onPopInvoked: (didPop) {
-              if (didPop) {
-                return;
-              }
-              showConfirmDialog(context, context.strings.generic_save_confirmation_title, yesNoActions: true)
-                .then((value) {
-                  if (value == true) {
-                    saveData(context);
-                  } else if (value == false) {
-                    MyNavigator.pop(context);
+              return PopScope(
+                canPop: !settingsChanged,
+                onPopInvoked: (didPop) {
+                  if (didPop) {
+                    return;
                   }
-                });
-            },
-            child: Scaffold(
-              appBar: AppBar(title: Text(context.strings.profile_filtering_settings_screen_title)),
-              body: filteringSettingsWidget(context, settingsChanged),
-              floatingActionButton: settingsChanged ? FloatingActionButton(
-                onPressed: () => saveData(context),
-                child: const Icon(Icons.check),
-              ) : null
-            ),
+                  showConfirmDialog(context, context.strings.generic_save_confirmation_title, yesNoActions: true)
+                    .then((value) {
+                      if (value == true) {
+                        saveData(context);
+                      } else if (value == false) {
+                        MyNavigator.pop(context);
+                      }
+                    });
+                },
+                child: Scaffold(
+                  appBar: AppBar(title: Text(context.strings.profile_filtering_settings_screen_title)),
+                  body: filteringSettingsWidget(context, myProfileState.profile?.unlimitedLikes ?? false),
+                  floatingActionButton: settingsChanged ? FloatingActionButton(
+                    onPressed: () => saveData(context),
+                    child: const Icon(Icons.check),
+                  ) : null
+                ),
+              );
+            }
           );
         }
       ),
     );
   }
 
-  Widget filteringSettingsWidget(BuildContext context, bool settingsChanged) {
+  Widget filteringSettingsWidget(BuildContext context, bool myProfileUnlimitedLikesValue) {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
@@ -146,6 +151,8 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           const EditAttributeFilters(),
           const Divider(),
           lastSeenTimeFilter(context),
+          const Divider(),
+          unlimitedLikesSetting(context, myProfileUnlimitedLikesValue),
           const Padding(
             padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA),
             child: null,
@@ -270,6 +277,31 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
               ),
             )
           ],
+        );
+      }
+    );
+  }
+
+  Widget unlimitedLikesSetting(BuildContext context, bool myProfileUnlimitedLikesValue) {
+    return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
+      builder: (context, state) {
+        final bool value;
+        if (state.showOnlyFavorites) {
+          value = false;
+        } else {
+          value = state.unlimitedLikesFilter ?? false;
+        }
+        return SwitchListTile(
+          title: Text(context.strings.profile_filtering_settings_screen_unlimited_likes_filter),
+          subtitle: !myProfileUnlimitedLikesValue ?
+            Text(context.strings.profile_filtering_settings_screen_unlimited_likes_filter_not_available) :
+            null,
+          secondary: const Icon(Icons.all_inclusive),
+          value: value,
+          onChanged: !state.showOnlyFavorites && myProfileUnlimitedLikesValue == true ? (bool value) {
+            final filterValue = value ? true : null;
+            context.read<EditProfileFilteringSettingsBloc>().add(SetUnlimitedLikesFilter(filterValue));
+          } : null,
         );
       }
     );

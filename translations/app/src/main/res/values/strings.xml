@@ -233,6 +233,8 @@
     <!-- Profile filtering settings screen -->
     <string name="profile_filtering_settings_screen_title" description="Title for profile filtering settings screen">Filtering settings</string>
     <string name="profile_filtering_settings_screen_favorite_profile_filter" description="Title for favorite profile filter">Favorite profile</string>
+    <string name="profile_filtering_settings_screen_unlimited_likes_filter" description="Title for unlimited likes filter">Unlimited likes</string>
+    <string name="profile_filtering_settings_screen_unlimited_likes_filter_not_available" description="Description for unlimited likes filter when unlimited likes are disabled">Enable unlimited likes to use this filter</string>
     <string name="profile_filtering_settings_screen_profile_last_seen_time_filter" description="Title for profile last seen time filter">Last seen</string>
     <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_online" description="Value text for profile last seen time filter when only online profiles should be shown">Online</string>
     <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_day" description="Value text for profile last seen time filter when day is selected">%s day</string>

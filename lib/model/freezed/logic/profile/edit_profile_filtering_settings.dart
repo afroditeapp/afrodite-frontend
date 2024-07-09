@@ -14,5 +14,6 @@ class EditProfileFilteringSettingsData with _$EditProfileFilteringSettingsData {
     @Default(UnmodifiableList<ProfileAttributeFilterValueUpdate>.empty())
       UnmodifiableList<ProfileAttributeFilterValueUpdate> attributeFilters,
     LastSeenTimeFilter? lastSeenTimeFilter,
+    bool? unlimitedLikesFilter,
   }) = _EditProfileFilteringSettingsData;
 }

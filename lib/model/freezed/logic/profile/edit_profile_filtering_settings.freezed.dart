@@ -24,11 +24,13 @@ mixin _$EditProfileFilteringSettingsData {
   bool get showOnlyFavorites => throw _privateConstructorErrorEditProfileFilteringSettingsData;
   UnmodifiableList<ProfileAttributeFilterValueUpdate> get attributeFilters => throw _privateConstructorErrorEditProfileFilteringSettingsData;
   LastSeenTimeFilter? get lastSeenTimeFilter => throw _privateConstructorErrorEditProfileFilteringSettingsData;
+  bool? get unlimitedLikesFilter => throw _privateConstructorErrorEditProfileFilteringSettingsData;
 
   EditProfileFilteringSettingsData copyWith({
     bool? showOnlyFavorites,
     UnmodifiableList<ProfileAttributeFilterValueUpdate>? attributeFilters,
     LastSeenTimeFilter? lastSeenTimeFilter,
+    bool? unlimitedLikesFilter,
   }) => throw _privateConstructorErrorEditProfileFilteringSettingsData;
 }
 
@@ -38,6 +40,7 @@ abstract class _EditProfileFilteringSettingsData implements EditProfileFiltering
     bool showOnlyFavorites,
     UnmodifiableList<ProfileAttributeFilterValueUpdate> attributeFilters,
     LastSeenTimeFilter? lastSeenTimeFilter,
+    bool? unlimitedLikesFilter,
   }) = _$EditProfileFilteringSettingsDataImpl;
 }
 
@@ -50,6 +53,7 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
     this.showOnlyFavorites = _showOnlyFavoritesDefaultValue,
     this.attributeFilters = _attributeFiltersDefaultValue,
     this.lastSeenTimeFilter,
+    this.unlimitedLikesFilter,
   });
 
   @override
@@ -58,10 +62,12 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
   final UnmodifiableList<ProfileAttributeFilterValueUpdate> attributeFilters;
   @override
   final LastSeenTimeFilter? lastSeenTimeFilter;
+  @override
+  final bool? unlimitedLikesFilter;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditProfileFilteringSettingsData(showOnlyFavorites: $showOnlyFavorites, attributeFilters: $attributeFilters, lastSeenTimeFilter: $lastSeenTimeFilter)';
+    return 'EditProfileFilteringSettingsData(showOnlyFavorites: $showOnlyFavorites, attributeFilters: $attributeFilters, lastSeenTimeFilter: $lastSeenTimeFilter, unlimitedLikesFilter: $unlimitedLikesFilter)';
   }
 
   @override
@@ -71,7 +77,8 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
       ..add(DiagnosticsProperty('type', 'EditProfileFilteringSettingsData'))
       ..add(DiagnosticsProperty('showOnlyFavorites', showOnlyFavorites))
       ..add(DiagnosticsProperty('attributeFilters', attributeFilters))
-      ..add(DiagnosticsProperty('lastSeenTimeFilter', lastSeenTimeFilter));
+      ..add(DiagnosticsProperty('lastSeenTimeFilter', lastSeenTimeFilter))
+      ..add(DiagnosticsProperty('unlimitedLikesFilter', unlimitedLikesFilter));
   }
 
   @override
@@ -84,7 +91,9 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
         (identical(other.attributeFilters, attributeFilters) ||
           other.attributeFilters == attributeFilters) &&
         (identical(other.lastSeenTimeFilter, lastSeenTimeFilter) ||
-          other.lastSeenTimeFilter == lastSeenTimeFilter)
+          other.lastSeenTimeFilter == lastSeenTimeFilter) &&
+        (identical(other.unlimitedLikesFilter, unlimitedLikesFilter) ||
+          other.unlimitedLikesFilter == unlimitedLikesFilter)
     );
   }
 
@@ -94,6 +103,7 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
     showOnlyFavorites,
     attributeFilters,
     lastSeenTimeFilter,
+    unlimitedLikesFilter,
   );
 
   @override
@@ -101,9 +111,11 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
     Object? showOnlyFavorites,
     Object? attributeFilters,
     Object? lastSeenTimeFilter = _detectDefaultValueInCopyWith,
+    Object? unlimitedLikesFilter = _detectDefaultValueInCopyWith,
   }) => _$EditProfileFilteringSettingsDataImpl(
     showOnlyFavorites: (showOnlyFavorites ?? this.showOnlyFavorites) as bool,
     attributeFilters: (attributeFilters ?? this.attributeFilters) as UnmodifiableList<ProfileAttributeFilterValueUpdate>,
     lastSeenTimeFilter: (lastSeenTimeFilter == _detectDefaultValueInCopyWith ? this.lastSeenTimeFilter : lastSeenTimeFilter) as LastSeenTimeFilter?,
+    unlimitedLikesFilter: (unlimitedLikesFilter == _detectDefaultValueInCopyWith ? this.unlimitedLikesFilter : unlimitedLikesFilter) as bool?,
   );
 }

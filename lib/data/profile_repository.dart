@@ -294,10 +294,12 @@ class ProfileRepository extends DataRepository {
   Future<Result<void, void>> updateAttributeFilters(
     List<ProfileAttributeFilterValueUpdate> newValues,
     LastSeenTimeFilter? lastSeenTimeFilter,
+    bool? unlimitedLikesFilter,
   ) async {
     final update = ProfileAttributeFilterListUpdate(
       filters: newValues,
       lastSeenTimeFilter: lastSeenTimeFilter,
+      unlimitedLikesFilter: unlimitedLikesFilter,
     );
     return await _api.profileAction((api) => api.postProfileAttributeFilters(update))
       .onOk(() => reloadAttributeFilters())

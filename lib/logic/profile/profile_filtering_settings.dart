@@ -18,10 +18,12 @@ class SaveNewFilterSettings extends ProfileFilteringSettingsEvent {
   final bool showOnlyFavorites;
   final List<ProfileAttributeFilterValueUpdate> attributeFilters;
   final LastSeenTimeFilter? lastSeenTimeFilter;
+  final bool? unlimitedLikesFilter;
   SaveNewFilterSettings(
     this.showOnlyFavorites,
     this.attributeFilters,
     this.lastSeenTimeFilter,
+    this.unlimitedLikesFilter,
   );
 }
 
@@ -63,6 +65,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
           await profile.updateAttributeFilters(
             data.attributeFilters,
             data.lastSeenTimeFilter,
+            data.unlimitedLikesFilter,
           ).isErr()
         ) {
           failureDetected = true;
