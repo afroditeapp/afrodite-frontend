@@ -194,12 +194,22 @@ class ViewProfilePage extends StatelessWidget {
         return;
       }
 
-      if (state.showLikeCompleted || state.showRemoveLikeCompleted) {
+      if (
+        state.showLikeCompleted ||
+        state.showLikeFailedBecauseOfLimit ||
+        state.showRemoveLikeCompleted ||
+        state.showRemoveLikeFailedBecauseOfLimit) {
         if (state.showLikeCompleted) {
           showSnackBar(context.strings.view_profile_screen_like_action_successful);
         }
+        if (state.showLikeFailedBecauseOfLimit) {
+          showSnackBar(context.strings.view_profile_screen_like_action_try_again_tomorrow);
+        }
         if (state.showRemoveLikeCompleted) {
           showSnackBar(context.strings.view_profile_screen_remove_like_action_successful);
+        }
+        if (state.showRemoveLikeFailedBecauseOfLimit) {
+          showSnackBar(context.strings.view_profile_screen_remove_like_action_try_again_tomorrow);
         }
         context.read<ViewProfileBloc>().add(ResetShowMessages());
       }

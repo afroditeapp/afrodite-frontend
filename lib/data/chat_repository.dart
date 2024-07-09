@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:async/async.dart';
+import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
@@ -91,25 +91,35 @@ class ChatRepository extends DataRepository {
     return await db.profileData((db) => db.isInReceivedBlocks(accountId)).ok() ?? false;
   }
 
-  Future<bool> sendLikeTo(AccountId accountId) async {
-    final result = await _api.chatAction((api) => api.postSendLike(accountId));
-    if (result.isOk()) {
-      final isReceivedLike = await isInReceivedLikes(accountId);
-      if (isReceivedLike) {
-        await db.profileAction((db) => db.setMatchStatus(accountId, true));
-      } else {
-        await db.profileAction((db) => db.setSentLikeStatus(accountId, true));
-      }
+  Future<Result<LimitedActionStatus, void>> sendLikeTo(AccountId accountId) async {
+    final result = await _api.chat((api) => api.postSendLike(accountId));
+    switch (result) {
+      case Ok(:final v):
+        if (v.status != LimitedActionStatus.failureLimitAlreadyReached) {
+          final isReceivedLike = await isInReceivedLikes(accountId);
+          if (isReceivedLike) {
+            await db.profileAction((db) => db.setMatchStatus(accountId, true));
+          } else {
+            await db.profileAction((db) => db.setSentLikeStatus(accountId, true));
+          }
+        }
+        return Ok(v.status);
+      case Err():
+        return const Err(null);
     }
-    return result.isOk();
   }
 
-  Future<bool> removeLikeFrom(AccountId accountId) async {
-    final result = await _api.chatAction((api) => api.deleteLike(accountId));
-    if (result.isOk()) {
-      await db.profileAction((db) => db.setSentLikeStatus(accountId, false));
+  Future<Result<LimitedActionStatus, void>> removeLikeFrom(AccountId accountId) async {
+    final result = await _api.chat((api) => api.deleteLike(accountId));
+    switch (result) {
+      case Ok(:final v):
+        if (v.status != LimitedActionStatus.failureLimitAlreadyReached) {
+           await db.profileAction((db) => db.setSentLikeStatus(accountId, false));
+        }
+        return Ok(v.status);
+      case Err():
+        return const Err(null);
     }
-    return result.isOk();
   }
 
   Future<bool> sendBlockTo(AccountId accountId) async {

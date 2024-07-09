@@ -178,7 +178,9 @@
     <string name="view_profile_screen_remove_from_favorites_action" description="Text for view profile screen remove from favorites action">Remove from favorites</string>
     <string name="view_profile_screen_profile_not_available_dialog_description" description="Text for view profile screen profile not available dialog">Profile not available</string>
     <string name="view_profile_screen_like_action_successful" description="Snackbar text for view profile screen like action successful">Like sent</string>
+    <string name="view_profile_screen_like_action_try_again_tomorrow" description="Snackbar text for view profile screen like action failed because of like limit">No daily likes left. Try again tomorrow.</string>
     <string name="view_profile_screen_remove_like_action_successful" description="Snackbar text for view profile screen remove like action successful">Like removed</string>
+    <string name="view_profile_screen_remove_like_action_try_again_tomorrow" description="Snackbar text for view profile screen remove like action failed because of remove limit">No daily like removals left. Try again tomorrow.</string>
     <string name="view_profile_screen_block_action_successful" description="Snackbar text for view profile screen block action successful">Profile blocked</string>
     <string name="view_profile_screen_profile_edit_failed" description="Snackbar text for notifying about failed profile edit">Profile editing failed</string>
     <string name="view_profile_screen_profile_currently_online" description="View profile screen text that profile is currently online">Online</string>

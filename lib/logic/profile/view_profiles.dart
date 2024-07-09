@@ -10,8 +10,7 @@ import "package:pihka_frontend/data/profile_repository.dart";
 import 'package:database/database.dart';
 import "package:pihka_frontend/model/freezed/logic/profile/view_profiles.dart";
 import "package:pihka_frontend/utils.dart";
-
-
+import "package:pihka_frontend/utils/result.dart";
 
 final log = Logger("ViewProfilesBloc");
 
@@ -118,7 +117,9 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
     on<ResetShowMessages>((data, emit) async {
       emit(state.copyWith(
         showLikeCompleted: false,
+        showLikeFailedBecauseOfLimit: false,
         showRemoveLikeCompleted: false,
+        showRemoveLikeFailedBecauseOfLimit: false,
       ));
     });
     on<BlockProfile>((data, emit) async {
@@ -134,7 +135,12 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
       await runOnce(() async {
         switch (data.action) {
           case ProfileActionState.like: {
-            if (await chat.sendLikeTo(data.accountId)) {
+            final result = await chat.sendLikeTo(data.accountId).ok();
+            if (result == LimitedActionStatus.failureLimitAlreadyReached) {
+              emit(state.copyWith(
+                showLikeFailedBecauseOfLimit: true,
+              ));
+            } else if (result == LimitedActionStatus.success || result == LimitedActionStatus.successAndLimitReached) {
               final newAction = await resolveProfileAction(data.accountId);
               emit(state.copyWith(
                 profileActionState: newAction,
@@ -143,7 +149,12 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
             }
           }
           case ProfileActionState.removeLike: {
-            if (await chat.removeLikeFrom(data.accountId)) {
+            final result = await chat.removeLikeFrom(data.accountId).ok();
+            if (result == LimitedActionStatus.failureLimitAlreadyReached) {
+              emit(state.copyWith(
+                showRemoveLikeFailedBecauseOfLimit: true,
+              ));
+            } else if (result == LimitedActionStatus.success || result == LimitedActionStatus.successAndLimitReached) {
               final newAction = await resolveProfileAction(data.accountId);
               emit(state.copyWith(
                 profileActionState: newAction,

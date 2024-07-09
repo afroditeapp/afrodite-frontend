@@ -19,7 +19,9 @@ mixin _$ViewProfilesData {
   bool get isNotAvailable => throw _privateConstructorErrorViewProfilesData;
   bool get isBlocked => throw _privateConstructorErrorViewProfilesData;
   bool get showLikeCompleted => throw _privateConstructorErrorViewProfilesData;
+  bool get showLikeFailedBecauseOfLimit => throw _privateConstructorErrorViewProfilesData;
   bool get showRemoveLikeCompleted => throw _privateConstructorErrorViewProfilesData;
+  bool get showRemoveLikeFailedBecauseOfLimit => throw _privateConstructorErrorViewProfilesData;
 
   ViewProfilesData copyWith({
     ProfileEntry? profile,
@@ -28,7 +30,9 @@ mixin _$ViewProfilesData {
     bool? isNotAvailable,
     bool? isBlocked,
     bool? showLikeCompleted,
+    bool? showLikeFailedBecauseOfLimit,
     bool? showRemoveLikeCompleted,
+    bool? showRemoveLikeFailedBecauseOfLimit,
   }) => throw _privateConstructorErrorViewProfilesData;
 }
 
@@ -41,7 +45,9 @@ abstract class _ViewProfilesData implements ViewProfilesData {
     bool isNotAvailable,
     bool isBlocked,
     bool showLikeCompleted,
+    bool showLikeFailedBecauseOfLimit,
     bool showRemoveLikeCompleted,
+    bool showRemoveLikeFailedBecauseOfLimit,
   }) = _$ViewProfilesDataImpl;
 }
 
@@ -52,7 +58,9 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
   static const bool _isNotAvailableDefaultValue = false;
   static const bool _isBlockedDefaultValue = false;
   static const bool _showLikeCompletedDefaultValue = false;
+  static const bool _showLikeFailedBecauseOfLimitDefaultValue = false;
   static const bool _showRemoveLikeCompletedDefaultValue = false;
+  static const bool _showRemoveLikeFailedBecauseOfLimitDefaultValue = false;
   
   _$ViewProfilesDataImpl({
     required this.profile,
@@ -61,7 +69,9 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     this.isNotAvailable = _isNotAvailableDefaultValue,
     this.isBlocked = _isBlockedDefaultValue,
     this.showLikeCompleted = _showLikeCompletedDefaultValue,
+    this.showLikeFailedBecauseOfLimit = _showLikeFailedBecauseOfLimitDefaultValue,
     this.showRemoveLikeCompleted = _showRemoveLikeCompletedDefaultValue,
+    this.showRemoveLikeFailedBecauseOfLimit = _showRemoveLikeFailedBecauseOfLimitDefaultValue,
   });
 
   @override
@@ -77,11 +87,15 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
   @override
   final bool showLikeCompleted;
   @override
+  final bool showLikeFailedBecauseOfLimit;
+  @override
   final bool showRemoveLikeCompleted;
+  @override
+  final bool showRemoveLikeFailedBecauseOfLimit;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ViewProfilesData(profile: $profile, isFavorite: $isFavorite, profileActionState: $profileActionState, isNotAvailable: $isNotAvailable, isBlocked: $isBlocked, showLikeCompleted: $showLikeCompleted, showRemoveLikeCompleted: $showRemoveLikeCompleted)';
+    return 'ViewProfilesData(profile: $profile, isFavorite: $isFavorite, profileActionState: $profileActionState, isNotAvailable: $isNotAvailable, isBlocked: $isBlocked, showLikeCompleted: $showLikeCompleted, showLikeFailedBecauseOfLimit: $showLikeFailedBecauseOfLimit, showRemoveLikeCompleted: $showRemoveLikeCompleted, showRemoveLikeFailedBecauseOfLimit: $showRemoveLikeFailedBecauseOfLimit)';
   }
 
   @override
@@ -95,7 +109,9 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
       ..add(DiagnosticsProperty('isNotAvailable', isNotAvailable))
       ..add(DiagnosticsProperty('isBlocked', isBlocked))
       ..add(DiagnosticsProperty('showLikeCompleted', showLikeCompleted))
-      ..add(DiagnosticsProperty('showRemoveLikeCompleted', showRemoveLikeCompleted));
+      ..add(DiagnosticsProperty('showLikeFailedBecauseOfLimit', showLikeFailedBecauseOfLimit))
+      ..add(DiagnosticsProperty('showRemoveLikeCompleted', showRemoveLikeCompleted))
+      ..add(DiagnosticsProperty('showRemoveLikeFailedBecauseOfLimit', showRemoveLikeFailedBecauseOfLimit));
   }
 
   @override
@@ -115,8 +131,12 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
           other.isBlocked == isBlocked) &&
         (identical(other.showLikeCompleted, showLikeCompleted) ||
           other.showLikeCompleted == showLikeCompleted) &&
+        (identical(other.showLikeFailedBecauseOfLimit, showLikeFailedBecauseOfLimit) ||
+          other.showLikeFailedBecauseOfLimit == showLikeFailedBecauseOfLimit) &&
         (identical(other.showRemoveLikeCompleted, showRemoveLikeCompleted) ||
-          other.showRemoveLikeCompleted == showRemoveLikeCompleted)
+          other.showRemoveLikeCompleted == showRemoveLikeCompleted) &&
+        (identical(other.showRemoveLikeFailedBecauseOfLimit, showRemoveLikeFailedBecauseOfLimit) ||
+          other.showRemoveLikeFailedBecauseOfLimit == showRemoveLikeFailedBecauseOfLimit)
     );
   }
 
@@ -129,7 +149,9 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     isNotAvailable,
     isBlocked,
     showLikeCompleted,
+    showLikeFailedBecauseOfLimit,
     showRemoveLikeCompleted,
+    showRemoveLikeFailedBecauseOfLimit,
   );
 
   @override
@@ -140,7 +162,9 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     Object? isNotAvailable,
     Object? isBlocked,
     Object? showLikeCompleted,
+    Object? showLikeFailedBecauseOfLimit,
     Object? showRemoveLikeCompleted,
+    Object? showRemoveLikeFailedBecauseOfLimit,
   }) => _$ViewProfilesDataImpl(
     profile: (profile ?? this.profile) as ProfileEntry,
     isFavorite: (isFavorite ?? this.isFavorite) as FavoriteState,
@@ -148,6 +172,8 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     isNotAvailable: (isNotAvailable ?? this.isNotAvailable) as bool,
     isBlocked: (isBlocked ?? this.isBlocked) as bool,
     showLikeCompleted: (showLikeCompleted ?? this.showLikeCompleted) as bool,
+    showLikeFailedBecauseOfLimit: (showLikeFailedBecauseOfLimit ?? this.showLikeFailedBecauseOfLimit) as bool,
     showRemoveLikeCompleted: (showRemoveLikeCompleted ?? this.showRemoveLikeCompleted) as bool,
+    showRemoveLikeFailedBecauseOfLimit: (showRemoveLikeFailedBecauseOfLimit ?? this.showRemoveLikeFailedBecauseOfLimit) as bool,
   );
 }

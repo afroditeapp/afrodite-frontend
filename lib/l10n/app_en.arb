@@ -948,6 +948,10 @@
   "@view_profile_screen_like_action_successful": {
     "description": "Snackbar text for view profile screen like action successful"
   },
+  "view_profile_screen_like_action_try_again_tomorrow": "No daily likes left. Try again tomorrow.",
+  "@view_profile_screen_like_action_try_again_tomorrow": {
+    "description": "Snackbar text for view profile screen like action failed because of like limit"
+  },
   "view_profile_screen_match_with_message_action": "Match with message",
   "@view_profile_screen_match_with_message_action": {
     "description": "Text for view profile screen match with message action"
@@ -1063,5 +1067,9 @@
   "view_profile_screen_remove_like_action_successful": "Like removed",
   "@view_profile_screen_remove_like_action_successful": {
     "description": "Snackbar text for view profile screen remove like action successful"
+  },
+  "view_profile_screen_remove_like_action_try_again_tomorrow": "No daily like removals left. Try again tomorrow.",
+  "@view_profile_screen_remove_like_action_try_again_tomorrow": {
+    "description": "Snackbar text for view profile screen remove like action failed because of remove limit"
   }
 }

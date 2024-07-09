@@ -23,7 +23,9 @@ class ViewProfilesData with _$ViewProfilesData {
     @Default(false) bool isNotAvailable,
     @Default(false) bool isBlocked,
     @Default(false) bool showLikeCompleted,
+    @Default(false) bool showLikeFailedBecauseOfLimit,
     @Default(false) bool showRemoveLikeCompleted,
+    @Default(false) bool showRemoveLikeFailedBecauseOfLimit,
   }) = _ViewProfilesData;
 }
 
