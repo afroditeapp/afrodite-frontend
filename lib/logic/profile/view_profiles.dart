@@ -72,9 +72,24 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
         ));
 
         final newValue = await profile.toggleFavoriteStatus(accountId);
-        emit(state.copyWith(
-          isFavorite: FavoriteStateIdle(newValue),
-        ));
+        if (newValue != currentIsFavorite) {
+          // Successful favorite status change
+          if (newValue) {
+            emit(state.copyWith(
+              isFavorite: FavoriteStateIdle(newValue),
+              showAddToFavoritesCompleted: true,
+            ));
+          } else {
+            emit(state.copyWith(
+              isFavorite: FavoriteStateIdle(newValue),
+              showRemoveFromFavoritesCompleted: true,
+            ));
+          }
+        } else {
+          emit(state.copyWith(
+            isFavorite: FavoriteStateIdle(newValue),
+          ));
+        }
       });
     });
     on<HandleProfileResult>((data, emit) async {
@@ -116,6 +131,8 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
     });
     on<ResetShowMessages>((data, emit) async {
       emit(state.copyWith(
+        showAddToFavoritesCompleted: false,
+        showRemoveFromFavoritesCompleted: false,
         showLikeCompleted: false,
         showLikeFailedBecauseOfLimit: false,
         showRemoveLikeCompleted: false,

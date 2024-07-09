@@ -22,6 +22,8 @@ class ViewProfilesData with _$ViewProfilesData {
     @Default(ProfileActionState.like) ProfileActionState profileActionState,
     @Default(false) bool isNotAvailable,
     @Default(false) bool isBlocked,
+    @Default(false) bool showAddToFavoritesCompleted,
+    @Default(false) bool showRemoveFromFavoritesCompleted,
     @Default(false) bool showLikeCompleted,
     @Default(false) bool showLikeFailedBecauseOfLimit,
     @Default(false) bool showRemoveLikeCompleted,

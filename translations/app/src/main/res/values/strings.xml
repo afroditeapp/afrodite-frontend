@@ -175,7 +175,9 @@
     <string name="view_profile_screen_match_with_message_action" description="Text for view profile screen match with message action">Match with message</string>
     <string name="view_profile_screen_chat_action" description="Text for view profile screen chat action">Chat</string>
     <string name="view_profile_screen_add_to_favorites_action" description="Text for view profile screen add to favorites action">Add to favorites</string>
+    <string name="view_profile_screen_add_to_favorites_action_successful" description="Snackbar text for view profile screen add to favorites action result successful">Added to favorites</string>
     <string name="view_profile_screen_remove_from_favorites_action" description="Text for view profile screen remove from favorites action">Remove from favorites</string>
+    <string name="view_profile_screen_remove_from_favorites_action_successful" description="Snackbar text for view profile screen remove from favorites action result successful">Removed from favorites</string>
     <string name="view_profile_screen_profile_not_available_dialog_description" description="Text for view profile screen profile not available dialog">Profile not available</string>
     <string name="view_profile_screen_like_action_successful" description="Snackbar text for view profile screen like action successful">Like sent</string>
     <string name="view_profile_screen_like_action_try_again_tomorrow" description="Snackbar text for view profile screen like action failed because of like limit">No daily likes left. Try again tomorrow.</string>

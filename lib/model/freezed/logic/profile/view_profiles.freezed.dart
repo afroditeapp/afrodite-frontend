@@ -18,6 +18,8 @@ mixin _$ViewProfilesData {
   ProfileActionState get profileActionState => throw _privateConstructorErrorViewProfilesData;
   bool get isNotAvailable => throw _privateConstructorErrorViewProfilesData;
   bool get isBlocked => throw _privateConstructorErrorViewProfilesData;
+  bool get showAddToFavoritesCompleted => throw _privateConstructorErrorViewProfilesData;
+  bool get showRemoveFromFavoritesCompleted => throw _privateConstructorErrorViewProfilesData;
   bool get showLikeCompleted => throw _privateConstructorErrorViewProfilesData;
   bool get showLikeFailedBecauseOfLimit => throw _privateConstructorErrorViewProfilesData;
   bool get showRemoveLikeCompleted => throw _privateConstructorErrorViewProfilesData;
@@ -29,6 +31,8 @@ mixin _$ViewProfilesData {
     ProfileActionState? profileActionState,
     bool? isNotAvailable,
     bool? isBlocked,
+    bool? showAddToFavoritesCompleted,
+    bool? showRemoveFromFavoritesCompleted,
     bool? showLikeCompleted,
     bool? showLikeFailedBecauseOfLimit,
     bool? showRemoveLikeCompleted,
@@ -44,6 +48,8 @@ abstract class _ViewProfilesData implements ViewProfilesData {
     ProfileActionState profileActionState,
     bool isNotAvailable,
     bool isBlocked,
+    bool showAddToFavoritesCompleted,
+    bool showRemoveFromFavoritesCompleted,
     bool showLikeCompleted,
     bool showLikeFailedBecauseOfLimit,
     bool showRemoveLikeCompleted,
@@ -57,6 +63,8 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
   static const ProfileActionState _profileActionStateDefaultValue = ProfileActionState.like;
   static const bool _isNotAvailableDefaultValue = false;
   static const bool _isBlockedDefaultValue = false;
+  static const bool _showAddToFavoritesCompletedDefaultValue = false;
+  static const bool _showRemoveFromFavoritesCompletedDefaultValue = false;
   static const bool _showLikeCompletedDefaultValue = false;
   static const bool _showLikeFailedBecauseOfLimitDefaultValue = false;
   static const bool _showRemoveLikeCompletedDefaultValue = false;
@@ -68,6 +76,8 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     this.profileActionState = _profileActionStateDefaultValue,
     this.isNotAvailable = _isNotAvailableDefaultValue,
     this.isBlocked = _isBlockedDefaultValue,
+    this.showAddToFavoritesCompleted = _showAddToFavoritesCompletedDefaultValue,
+    this.showRemoveFromFavoritesCompleted = _showRemoveFromFavoritesCompletedDefaultValue,
     this.showLikeCompleted = _showLikeCompletedDefaultValue,
     this.showLikeFailedBecauseOfLimit = _showLikeFailedBecauseOfLimitDefaultValue,
     this.showRemoveLikeCompleted = _showRemoveLikeCompletedDefaultValue,
@@ -85,6 +95,10 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
   @override
   final bool isBlocked;
   @override
+  final bool showAddToFavoritesCompleted;
+  @override
+  final bool showRemoveFromFavoritesCompleted;
+  @override
   final bool showLikeCompleted;
   @override
   final bool showLikeFailedBecauseOfLimit;
@@ -95,7 +109,7 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ViewProfilesData(profile: $profile, isFavorite: $isFavorite, profileActionState: $profileActionState, isNotAvailable: $isNotAvailable, isBlocked: $isBlocked, showLikeCompleted: $showLikeCompleted, showLikeFailedBecauseOfLimit: $showLikeFailedBecauseOfLimit, showRemoveLikeCompleted: $showRemoveLikeCompleted, showRemoveLikeFailedBecauseOfLimit: $showRemoveLikeFailedBecauseOfLimit)';
+    return 'ViewProfilesData(profile: $profile, isFavorite: $isFavorite, profileActionState: $profileActionState, isNotAvailable: $isNotAvailable, isBlocked: $isBlocked, showAddToFavoritesCompleted: $showAddToFavoritesCompleted, showRemoveFromFavoritesCompleted: $showRemoveFromFavoritesCompleted, showLikeCompleted: $showLikeCompleted, showLikeFailedBecauseOfLimit: $showLikeFailedBecauseOfLimit, showRemoveLikeCompleted: $showRemoveLikeCompleted, showRemoveLikeFailedBecauseOfLimit: $showRemoveLikeFailedBecauseOfLimit)';
   }
 
   @override
@@ -108,6 +122,8 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
       ..add(DiagnosticsProperty('profileActionState', profileActionState))
       ..add(DiagnosticsProperty('isNotAvailable', isNotAvailable))
       ..add(DiagnosticsProperty('isBlocked', isBlocked))
+      ..add(DiagnosticsProperty('showAddToFavoritesCompleted', showAddToFavoritesCompleted))
+      ..add(DiagnosticsProperty('showRemoveFromFavoritesCompleted', showRemoveFromFavoritesCompleted))
       ..add(DiagnosticsProperty('showLikeCompleted', showLikeCompleted))
       ..add(DiagnosticsProperty('showLikeFailedBecauseOfLimit', showLikeFailedBecauseOfLimit))
       ..add(DiagnosticsProperty('showRemoveLikeCompleted', showRemoveLikeCompleted))
@@ -129,6 +145,10 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
           other.isNotAvailable == isNotAvailable) &&
         (identical(other.isBlocked, isBlocked) ||
           other.isBlocked == isBlocked) &&
+        (identical(other.showAddToFavoritesCompleted, showAddToFavoritesCompleted) ||
+          other.showAddToFavoritesCompleted == showAddToFavoritesCompleted) &&
+        (identical(other.showRemoveFromFavoritesCompleted, showRemoveFromFavoritesCompleted) ||
+          other.showRemoveFromFavoritesCompleted == showRemoveFromFavoritesCompleted) &&
         (identical(other.showLikeCompleted, showLikeCompleted) ||
           other.showLikeCompleted == showLikeCompleted) &&
         (identical(other.showLikeFailedBecauseOfLimit, showLikeFailedBecauseOfLimit) ||
@@ -148,6 +168,8 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     profileActionState,
     isNotAvailable,
     isBlocked,
+    showAddToFavoritesCompleted,
+    showRemoveFromFavoritesCompleted,
     showLikeCompleted,
     showLikeFailedBecauseOfLimit,
     showRemoveLikeCompleted,
@@ -161,6 +183,8 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     Object? profileActionState,
     Object? isNotAvailable,
     Object? isBlocked,
+    Object? showAddToFavoritesCompleted,
+    Object? showRemoveFromFavoritesCompleted,
     Object? showLikeCompleted,
     Object? showLikeFailedBecauseOfLimit,
     Object? showRemoveLikeCompleted,
@@ -171,6 +195,8 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     profileActionState: (profileActionState ?? this.profileActionState) as ProfileActionState,
     isNotAvailable: (isNotAvailable ?? this.isNotAvailable) as bool,
     isBlocked: (isBlocked ?? this.isBlocked) as bool,
+    showAddToFavoritesCompleted: (showAddToFavoritesCompleted ?? this.showAddToFavoritesCompleted) as bool,
+    showRemoveFromFavoritesCompleted: (showRemoveFromFavoritesCompleted ?? this.showRemoveFromFavoritesCompleted) as bool,
     showLikeCompleted: (showLikeCompleted ?? this.showLikeCompleted) as bool,
     showLikeFailedBecauseOfLimit: (showLikeFailedBecauseOfLimit ?? this.showLikeFailedBecauseOfLimit) as bool,
     showRemoveLikeCompleted: (showRemoveLikeCompleted ?? this.showRemoveLikeCompleted) as bool,

@@ -920,6 +920,10 @@
   "@view_profile_screen_add_to_favorites_action": {
     "description": "Text for view profile screen add to favorites action"
   },
+  "view_profile_screen_add_to_favorites_action_successful": "Added to favorites",
+  "@view_profile_screen_add_to_favorites_action_successful": {
+    "description": "Snackbar text for view profile screen add to favorites action result successful"
+  },
   "view_profile_screen_block_action": "Block",
   "@view_profile_screen_block_action": {
     "description": "Text for view profile screen block action"
@@ -1055,6 +1059,10 @@
   "view_profile_screen_remove_from_favorites_action": "Remove from favorites",
   "@view_profile_screen_remove_from_favorites_action": {
     "description": "Text for view profile screen remove from favorites action"
+  },
+  "view_profile_screen_remove_from_favorites_action_successful": "Removed from favorites",
+  "@view_profile_screen_remove_from_favorites_action_successful": {
+    "description": "Snackbar text for view profile screen remove from favorites action result successful"
   },
   "view_profile_screen_remove_like_action": "Remove like",
   "@view_profile_screen_remove_like_action": {

@@ -195,10 +195,19 @@ class ViewProfilePage extends StatelessWidget {
       }
 
       if (
+        state.showAddToFavoritesCompleted ||
+        state.showRemoveFromFavoritesCompleted ||
         state.showLikeCompleted ||
         state.showLikeFailedBecauseOfLimit ||
         state.showRemoveLikeCompleted ||
-        state.showRemoveLikeFailedBecauseOfLimit) {
+        state.showRemoveLikeFailedBecauseOfLimit
+      ) {
+        if (state.showAddToFavoritesCompleted) {
+          showSnackBar(context.strings.view_profile_screen_add_to_favorites_action_successful);
+        }
+        if (state.showRemoveFromFavoritesCompleted) {
+          showSnackBar(context.strings.view_profile_screen_remove_from_favorites_action_successful);
+        }
         if (state.showLikeCompleted) {
           showSnackBar(context.strings.view_profile_screen_like_action_successful);
         }
