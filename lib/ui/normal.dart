@@ -143,6 +143,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
             icon: Icon(selectedView == 0 ? Icons.people : Icons.people_outline),
