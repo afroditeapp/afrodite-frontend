@@ -13,6 +13,7 @@ import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/logic/profile/profile_filtering_settings.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
@@ -23,6 +24,7 @@ import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/consts/size.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
+import 'package:pihka_frontend/ui_utils/scroll_controller.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("ProfileGrid");
@@ -191,7 +193,16 @@ class _ProfileGridState extends State<ProfileGrid> {
                     updateIsScrolled(isScrolled);
                     return true;
                   },
-                  child: grid(context, myProfileState.profile?.unlimitedLikes ?? false),
+                  child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
+                    listenWhen: (previous, current) => previous.isTappedAgainProfile != current.isTappedAgainProfile,
+                    listener: (context, state) {
+                      if (state.isTappedAgainProfile) {
+                        context.read<BottomNavigationStateBloc>().add(SetIsTappedAgainValue(BottomNavigationScreenId.profiles, false));
+                        _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
+                      }
+                    },
+                    child: grid(context, myProfileState.profile?.unlimitedLikes ?? false)
+                  ),
                 );
               } else {
                 return Center(child: CircularProgressIndicator(key: _progressKey));

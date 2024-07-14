@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
@@ -8,6 +9,7 @@ import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -15,6 +17,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
+import 'package:pihka_frontend/ui_utils/scroll_controller.dart';
 
 var log = Logger("ChatView");
 
@@ -120,7 +123,16 @@ class _ChatViewState extends State<ChatView> {
         updateIsScrolled(isScrolled);
         return true;
       },
-      child: grid(context),
+      child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
+        listenWhen: (previous, current) => previous.isTappedAgainChats != current.isTappedAgainChats,
+        listener: (context, state) {
+          if (state.isTappedAgainChats) {
+            context.read<BottomNavigationStateBloc>().add(SetIsTappedAgainValue(BottomNavigationScreenId.chats, false));
+            _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
+          }
+        },
+        child: grid(context),
+      ),
     );
   }
 

@@ -16,12 +16,19 @@ class SetIsScrolledValue extends BottomNavigationStateEvent {
   final bool value;
   SetIsScrolledValue(this.screen, this.value);
 }
+class SetIsTappedAgainValue extends BottomNavigationStateEvent {
+  final BottomNavigationScreenId screen;
+  final bool value;
+  SetIsTappedAgainValue(this.screen, this.value);
+}
 class BottomNavigationStateBloc extends Bloc<BottomNavigationStateEvent, BottomNavigationStateData> {
   BottomNavigationStateBloc._() : super(BottomNavigationStateData()) {
     on<ChangeScreen>((data, emit) {
       if (data.value == BottomNavigationScreenId.likes) {
         NotificationLikeReceived.getInstance().resetReceivedLikesCount();
       }
+      final bool? resetIsTappedAgainValue = data.value != state.screen ? false : null;
+
       if (data.resetIsScrolledValues) {
         emit(state.copyWith(
           screen: data.value,
@@ -29,9 +36,19 @@ class BottomNavigationStateBloc extends Bloc<BottomNavigationStateEvent, BottomN
           isScrolledLikes: false,
           isScrolledChats: false,
           isScrolledSettings: false,
+          isTappedAgainProfile: resetIsTappedAgainValue ?? state.isTappedAgainProfile,
+          isTappedAgainLikes: resetIsTappedAgainValue ?? state.isTappedAgainLikes,
+          isTappedAgainChats: resetIsTappedAgainValue ?? state.isTappedAgainChats,
+          isTappedAgainSettings: resetIsTappedAgainValue ?? state.isTappedAgainSettings,
         ));
       } else {
-        emit(state.copyWith(screen: data.value));
+        emit(state.copyWith(
+          screen: data.value,
+          isTappedAgainProfile: resetIsTappedAgainValue ?? state.isTappedAgainProfile,
+          isTappedAgainLikes: resetIsTappedAgainValue ?? state.isTappedAgainLikes,
+          isTappedAgainChats: resetIsTappedAgainValue ?? state.isTappedAgainChats,
+          isTappedAgainSettings: resetIsTappedAgainValue ?? state.isTappedAgainSettings,
+        ));
       }
     });
     on<SetIsScrolledValue>((data, emit) {
@@ -47,6 +64,22 @@ class BottomNavigationStateBloc extends Bloc<BottomNavigationStateEvent, BottomN
           break;
         case BottomNavigationScreenId.settings:
           emit(state.copyWith(isScrolledSettings: data.value));
+          break;
+      }
+    });
+    on<SetIsTappedAgainValue>((data, emit) {
+      switch (data.screen) {
+        case BottomNavigationScreenId.profiles:
+          emit(state.copyWith(isTappedAgainProfile: data.value));
+          break;
+        case BottomNavigationScreenId.likes:
+          emit(state.copyWith(isTappedAgainLikes: data.value));
+          break;
+        case BottomNavigationScreenId.chats:
+          emit(state.copyWith(isTappedAgainChats: data.value));
+          break;
+        case BottomNavigationScreenId.settings:
+          emit(state.copyWith(isTappedAgainSettings: data.value));
           break;
       }
     });

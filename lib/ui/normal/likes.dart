@@ -11,6 +11,7 @@ import 'package:database/database.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
@@ -20,6 +21,7 @@ import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
+import 'package:pihka_frontend/ui_utils/scroll_controller.dart';
 
 var log = Logger("LikeView");
 
@@ -246,7 +248,16 @@ class LikeViewContentState extends State<LikeViewContent> {
           updateIsScrolled(isScrolled);
           return true;
         },
-        child: grid(context),
+        child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
+          listenWhen: (previous, current) => previous.isTappedAgainLikes != current.isTappedAgainLikes,
+          listener: (context, state) {
+            if (state.isTappedAgainLikes) {
+              context.read<BottomNavigationStateBloc>().add(SetIsTappedAgainValue(BottomNavigationScreenId.likes, false));
+              _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
+            }
+          },
+          child: grid(context),
+        ),
       ),
     );
   }

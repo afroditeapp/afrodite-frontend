@@ -13,5 +13,9 @@ class BottomNavigationStateData with _$BottomNavigationStateData {
     @Default(false) bool isScrolledLikes,
     @Default(false) bool isScrolledChats,
     @Default(false) bool isScrolledSettings,
+    @Default(false) bool isTappedAgainProfile,
+    @Default(false) bool isTappedAgainLikes,
+    @Default(false) bool isTappedAgainChats,
+    @Default(false) bool isTappedAgainSettings,
   }) = _BottomNavigationStateData;
 }

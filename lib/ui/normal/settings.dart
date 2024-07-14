@@ -9,6 +9,7 @@ import 'package:pihka_frontend/logic/settings/edit_search_settings.dart';
 import 'package:pihka_frontend/logic/settings/privacy_settings.dart';
 import 'package:pihka_frontend/logic/settings/search_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
+import 'package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui/normal/settings/account_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin.dart';
@@ -24,6 +25,7 @@ import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/common_actions.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/menu_actions.dart';
+import 'package:pihka_frontend/ui_utils/scroll_controller.dart';
 import 'package:pihka_frontend/utils/api.dart';
 
 class SettingsView extends BottomNavigationScreen {
@@ -166,17 +168,30 @@ class _SettingsViewState extends State<SettingsView> {
             updateIsScrolled(isScrolled);
             return true;
           },
-          child: SingleChildScrollView(
-            controller: _scrollController,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...settings.map((setting) => setting.toListTile()),
-              ],
-            ),
+          child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
+            listenWhen: (previous, current) => previous.isTappedAgainSettings != current.isTappedAgainSettings,
+            listener: (context, state) {
+              if (state.isTappedAgainSettings) {
+                context.read<BottomNavigationStateBloc>().add(SetIsTappedAgainValue(BottomNavigationScreenId.settings, false));
+                _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
+              }
+            },
+            child: list(settings),
           ),
         );
       }
+    );
+  }
+
+  Widget list(List<Setting> settings) {
+    return SingleChildScrollView(
+      controller: _scrollController,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ...settings.map((setting) => setting.toListTile()),
+        ],
+      ),
     );
   }
 

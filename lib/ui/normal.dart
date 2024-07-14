@@ -165,7 +165,13 @@ class _NormalStateContentState extends State<NormalStateContent> {
         useLegacyColorScheme: false,
         currentIndex: selectedView,
         onTap: (value) {
-          context.read<BottomNavigationStateBloc>().add(ChangeScreen(numberToScreen(value)));
+          final bloc = context.read<BottomNavigationStateBloc>();
+          bloc.add(ChangeScreen(numberToScreen(value)));
+          if (value == selectedView) {
+            // Jump to beginning of currently visible list
+            // only if it is already visible.
+            bloc.add(SetIsTappedAgainValue(numberToScreen(value), true));
+          }
         },
       ),
     );
