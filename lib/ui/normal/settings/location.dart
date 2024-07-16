@@ -102,6 +102,7 @@ class LocationWidget extends StatefulWidget {
 
 enum MapModeInternal {
   selectLocationNoModeButton,
+  waitUpdateCompletionNoModeButton,
   selectLocation,
   viewLocation,
   viewLocationEditButtonDisabled,
@@ -115,7 +116,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
   late final SelectedLocationHandler _locationSelectedHandler;
   MapAnimationManager? _animationManager = MapAnimationManager();
   LatLng? _profileLocationMarker;
-  MapModeInternal _internalMode = MapModeInternal.selectLocation;
+  MapModeInternal _internalMode = MapModeInternal.selectLocationNoModeButton;
 
   @override
   void initState() {
@@ -128,7 +129,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
         _internalMode = MapModeInternal.selectLocationNoModeButton;
       }
       case MapMode.selectLocation: {
-        _internalMode = MapModeInternal.viewLocation;
+        _internalMode = MapModeInternal.selectLocationNoModeButton;
       }
     }
   }
@@ -163,9 +164,6 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
         interactionOptions: const InteractionOptions(
           flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
         ),
-        onTap: (tapPosition, point) {
-          handleOnTap(context, point);
-        },
         onLongPress: (tapPosition, point) {
           handleOnTap(context, point);
         },
@@ -196,25 +194,28 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
             if (mounted) {
               setState(() {
                 _profileLocationMarker = point;
-                _internalMode = MapModeInternal.viewLocationEditButtonDisabled;
+                _internalMode = MapModeInternal.waitUpdateCompletionNoModeButton;
               });
             }
           },
           onComplete: (result) {
             if (mounted) {
               setState(() {
-                _internalMode = MapModeInternal.viewLocation;
+                _internalMode = MapModeInternal.selectLocationNoModeButton;
               });
             }
           },
         );
       case MapModeInternal.viewLocation || MapModeInternal.viewLocationEditButtonDisabled: {}
+      case MapModeInternal.waitUpdateCompletionNoModeButton: {
+        showSnackBar(context.strings.generic_previous_action_in_progress);
+      }
     }
   }
 
   Widget? modeButton() {
     switch (_internalMode) {
-      case MapModeInternal.selectLocationNoModeButton:
+      case MapModeInternal.selectLocationNoModeButton || MapModeInternal.waitUpdateCompletionNoModeButton:
         return null;
       case MapModeInternal.selectLocation:
         return FloatingActionButton(
@@ -252,7 +253,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
     final helpText = Text(helpTextString);
 
     switch (_internalMode) {
-      case MapModeInternal.selectLocationNoModeButton || MapModeInternal.selectLocation:
+      case MapModeInternal.selectLocationNoModeButton || MapModeInternal.selectLocation || MapModeInternal.waitUpdateCompletionNoModeButton:
         return Align(
           alignment: Alignment.topCenter,
           child: Padding(

@@ -465,7 +465,7 @@
   "@initial_setup_screen_gender_title": {
     "description": "Title for ask gender screen"
   },
-  "initial_setup_screen_location_help_dialog_text": "Select a location for your profile by tapping or long pressing the map.",
+  "initial_setup_screen_location_help_dialog_text": "Select a location for your profile by long pressing the map.",
   "@initial_setup_screen_location_help_dialog_text": {
     "description": "Text for initial setup location help dialog"
   },
@@ -633,7 +633,7 @@
   "@map_openstreetmap_data_attribution_link_text": {
     "description": "OpenStreetMap data attribution link text"
   },
-  "map_select_location_help_text": "Tap or long press the map to select a location.",
+  "map_select_location_help_text": "Long press the map to select a location.",
   "@map_select_location_help_text": {
     "description": "Help text for selecting map location"
   },
