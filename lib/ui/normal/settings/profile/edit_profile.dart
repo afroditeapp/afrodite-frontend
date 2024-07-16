@@ -33,6 +33,8 @@ import 'package:pihka_frontend/utils/api.dart';
 import 'package:pihka_frontend/utils/age.dart';
 import 'package:pihka_frontend/utils/profile_entry.dart';
 
+// TODO(prod): If profile age is not needed in background database
+//             consider removing it.
 
 // TODO: Logout leaves some profile images to Bloc, so previous account's
 // profile images are visible in the new account's edit profile screen.
@@ -97,9 +99,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
       return;
     }
 
-    final initial = s.initial;
-    if (initial == null || !initialIsValid(initial)) {
-      showSnackBar(context.strings.edit_profile_screen_invalid_initial);
+    final name = s.name;
+    if (name == null || !nameIsValid(name)) {
+      showSnackBar(context.strings.edit_profile_screen_invalid_first_name);
       return;
     }
 
@@ -114,7 +116,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     context.read<MyProfileBloc>().add(SetProfile(
       ProfileUpdate(
         age: age,
-        name: initial,
+        name: name,
         profileText: widget.initialProfile.profileText,
         attributes: s.attributes.toList(),
       ),
@@ -131,7 +133,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final currentState = widget.initialProfile;
     if (
       currentState.age != editedData.age ||
-      currentState.name != editedData.initial ||
+      currentState.name != editedData.name ||
       currentState.unlimitedLikes != editedData.unlimitedLikes
     ) {
       return true;
@@ -233,9 +235,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
           const Divider(),
           const Padding(padding: EdgeInsets.all(8)),
           AskProfileBasicInfo(
-            profileInitialInitialValue: widget.initialProfile.name,
-            setterProfileInitial: (value) {
-              widget.editMyProfileBloc.add(NewInitial(value));
+            profileNameInitialValue: widget.initialProfile.name,
+            setterProfileName: (value) {
+              widget.editMyProfileBloc.add(NewName(value));
             },
             ageInitialValue: widget.initialProfile.age.toString(),
             setterProfileAge: (value) {

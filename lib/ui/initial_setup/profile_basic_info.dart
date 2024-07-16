@@ -10,16 +10,14 @@ import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
 import "package:pihka_frontend/ui_utils/text_field.dart";
 import "package:pihka_frontend/utils/age.dart";
 
-final initialLetterRegexp = RegExp("[a-zA-ZåäöÅÄÖ]");
-
-// TODO(prod): Set initial age value based on birthdate
+final profileNameRegexp = RegExp("[a-zA-ZåäöÅÄÖ-]");
 
 class AskProfileBasicInfoScreen extends StatelessWidget {
   const AskProfileBasicInfoScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final profileInitial = context.read<InitialSetupBloc>().state.profileInitial ?? "";
+    final profileName = context.read<InitialSetupBloc>().state.profileName ?? "";
     final age = context.read<InitialSetupBloc>().state.profileAge;
     final String ageString;
     if (age != null) {
@@ -33,8 +31,8 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
       child: QuestionAsker(
         getContinueButtonCallback: (context, state) {
           final age = state.profileAge;
-          final initial = state.profileInitial;
-          if (ageIsValid(age) && initialIsValid(initial)) {
+          final name = state.profileName;
+          if (ageIsValid(age) && nameIsValid(name)) {
             return () {
               MyNavigator.push(context, MaterialPage<void>(child: const AskGenderScreen()));
             };
@@ -46,9 +44,9 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
           children: [
             questionTitleText(context, context.strings.initial_setup_screen_profile_basic_info_title),
             AskProfileBasicInfo(
-              profileInitialInitialValue: profileInitial,
-              setterProfileInitial: (value) {
-                context.read<InitialSetupBloc>().add(SetInitialLetter(value));
+              profileNameInitialValue: profileName,
+              setterProfileName: (value) {
+                context.read<InitialSetupBloc>().add(SetProfileName(value));
               },
               ageInitialValue: ageString,
               setterProfileAge: (value) {
@@ -62,19 +60,19 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
   }
 }
 
-bool initialIsValid(String? initial) {
-  return initial != null && initialLetterRegexp.hasMatch(initial);
+bool nameIsValid(String? name) {
+  return name != null && profileNameRegexp.hasMatch(name);
 }
 
 class AskProfileBasicInfo extends StatefulWidget {
-  final String profileInitialInitialValue;
+  final String profileNameInitialValue;
   final String ageInitialValue;
-  final void Function(String) setterProfileInitial;
+  final void Function(String) setterProfileName;
   final void Function(int?) setterProfileAge;
   const AskProfileBasicInfo({
-    required this.profileInitialInitialValue,
+    required this.profileNameInitialValue,
     required this.ageInitialValue,
-    required this.setterProfileInitial,
+    required this.setterProfileName,
     required this.setterProfileAge,
     super.key,
   });
@@ -84,13 +82,13 @@ class AskProfileBasicInfo extends StatefulWidget {
 }
 
 class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
-  final initialTextController = TextEditingController();
+  final nameTextController = TextEditingController();
   final ageTextController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    initialTextController.text = widget.profileInitialInitialValue;
+    nameTextController.text = widget.profileNameInitialValue;
     ageTextController.text = widget.ageInitialValue;
   }
 
@@ -109,22 +107,18 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
   Widget askInfo(BuildContext context) {
     final initialField = TextField(
       decoration: InputDecoration(
-        hintText: context.strings.initial_setup_screen_profile_basic_info_initial_hint_text,
+        hintText: context.strings.initial_setup_screen_profile_basic_info_first_name_hint_text,
       ),
-      controller: initialTextController,
-      textCapitalization: TextCapitalization.characters,
+      controller: nameTextController,
+      textCapitalization: TextCapitalization.sentences,
       enableSuggestions: false,
       autocorrect: false,
-      maxLength: 1,
+      maxLength: 100,
       onChanged: (value) {
-        final inUppercase = value.toUpperCase();
-        if (value != inUppercase) {
-          initialTextController.text = inUppercase;
-        }
-        widget.setterProfileInitial(inUppercase);
+        widget.setterProfileName(value);
       },
       inputFormatters: [
-        FilteringTextInputFormatter.allow(initialLetterRegexp),
+        FilteringTextInputFormatter.allow(profileNameRegexp),
       ],
     );
 
@@ -140,7 +134,7 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          context.strings.initial_setup_screen_profile_basic_info_initial_title,
+          context.strings.initial_setup_screen_profile_basic_info_first_name_title,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         initialField,

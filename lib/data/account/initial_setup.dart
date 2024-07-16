@@ -150,11 +150,11 @@ class InitialSetupUtils {
     {
       final age = data.profileAge;
       if (age == null) return errAndLog("Age is null");
-      final initial = data.profileInitial;
-      if (initial == null) return errAndLog("Initial is null");
+      final name = data.profileName;
+      if (name == null) return errAndLog("Name is null");
       final update = ProfileUpdate(
         age: age,
-        name: initial,
+        name: name,
         profileText: "",
         attributes: data.profileAttributes.answers,
       );

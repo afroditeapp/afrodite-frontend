@@ -116,8 +116,8 @@
     <string name="initial_setup_screen_profile_pictures_select_picture_security_selfie_title" description="Action title for using security selfie as a profile picture">Security selfie</string>
     <string name="initial_setup_screen_profile_pictures_primary_image_info_dialog_description" description="Dialog description text about profile primary image">Adding at least of one profile image is required. The square shaped crop of the first profile image is displayed in profile grid and some other places in the app.</string>
     <string name="initial_setup_screen_profile_basic_info_title" description="Title text for asking profile information">My profile has this info…</string>
-    <string name="initial_setup_screen_profile_basic_info_initial_title" description="Title text for asking initial">Initial</string>
-    <string name="initial_setup_screen_profile_basic_info_initial_hint_text" description="Input field hint text for profile initial">Insert a Finnish letter</string>
+    <string name="initial_setup_screen_profile_basic_info_first_name_title" description="Title text for asking first name">First name</string>
+    <string name="initial_setup_screen_profile_basic_info_first_name_hint_text" description="Input field hint text for profile first name">Insert your first name</string>
     <string name="initial_setup_screen_profile_basic_info_age_title" description="Title text for asking age">Age</string>
     <string name="initial_setup_screen_gender_title" description="Title for ask gender screen">I am…</string>
     <string name="initial_setup_screen_search_settings_title" description="Title for ask search settings screen">I am searching for…</string>
@@ -200,7 +200,7 @@
     <string name="edit_profile_screen_unlimited_likes" description="Title for unlimited likes setting">Unlimited likes</string>
     <string name="edit_profile_screen_unlimited_likes_description_enabled" description="Description for unlimited likes setting when it is enabled">Send unlimited likes to profiles which have enabled unlimited likes</string>
     <string name="edit_profile_screen_unlimited_likes_description_disabled" description="Description for unlimited likes setting when it is disabled">Send one like per day</string>
-    <string name="edit_profile_screen_invalid_initial" description="Snackbar text for notifying about invalid initial">Invalid initial</string>
+    <string name="edit_profile_screen_invalid_first_name" description="Snackbar text for notifying about invalid first name">Invalid first name</string>
     <string name="edit_profile_screen_invalid_age" description="Snackbar text for notifying about invalid age">Invalid age</string>
     <string name="edit_profile_screen_one_profile_image_required" description="Snackbar text for notifying about that one profile image is required">One profile image is required</string>
 

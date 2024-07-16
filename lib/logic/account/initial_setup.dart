@@ -39,9 +39,9 @@ class SetEmail extends InitialSetupEvent {
   final String email;
   SetEmail(this.email);
 }
-class SetInitialLetter extends InitialSetupEvent {
-  final String initial;
-  SetInitialLetter(this.initial);
+class SetProfileName extends InitialSetupEvent {
+  final String value;
+  SetProfileName(this.value);
 }
 class CalculateSuggestedProfileAge extends InitialSetupEvent {}
 class SetProfileAge extends InitialSetupEvent {
@@ -119,9 +119,9 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
         email: data.email,
       ));
     });
-    on<SetInitialLetter>((data, emit) {
+    on<SetProfileName>((data, emit) {
       emit(state.copyWith(
-        profileInitial: data.initial,
+        profileName: data.value,
       ));
     });
     on<CalculateSuggestedProfileAge>((data, emit) {

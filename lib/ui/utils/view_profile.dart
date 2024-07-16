@@ -99,7 +99,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
         padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
         child: Row(
           children: [
-            Text(widget.profile.profileTitle(), style: Theme.of(context).textTheme.titleLarge),
+            Text(widget.profile.profileTitleWithAge(), style: Theme.of(context).textTheme.titleLarge),
             const Spacer(),
             (context.read<MyProfileBloc>().state.profile?.unlimitedLikes ?? false) && widget.profile.unlimitedLikes ?
               const Icon(Icons.all_inclusive) :

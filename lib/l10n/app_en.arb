@@ -234,9 +234,9 @@
   "@edit_profile_screen_invalid_age": {
     "description": "Snackbar text for notifying about invalid age"
   },
-  "edit_profile_screen_invalid_initial": "Invalid initial",
-  "@edit_profile_screen_invalid_initial": {
-    "description": "Snackbar text for notifying about invalid initial"
+  "edit_profile_screen_invalid_first_name": "Invalid first name",
+  "@edit_profile_screen_invalid_first_name": {
+    "description": "Snackbar text for notifying about invalid first name"
   },
   "edit_profile_screen_one_profile_image_required": "One profile image is required",
   "@edit_profile_screen_one_profile_image_required": {
@@ -489,13 +489,13 @@
   "@initial_setup_screen_profile_basic_info_age_title": {
     "description": "Title text for asking age"
   },
-  "initial_setup_screen_profile_basic_info_initial_hint_text": "Insert a Finnish letter",
-  "@initial_setup_screen_profile_basic_info_initial_hint_text": {
-    "description": "Input field hint text for profile initial"
+  "initial_setup_screen_profile_basic_info_first_name_hint_text": "Insert your first name",
+  "@initial_setup_screen_profile_basic_info_first_name_hint_text": {
+    "description": "Input field hint text for profile first name"
   },
-  "initial_setup_screen_profile_basic_info_initial_title": "Initial",
-  "@initial_setup_screen_profile_basic_info_initial_title": {
-    "description": "Title text for asking initial"
+  "initial_setup_screen_profile_basic_info_first_name_title": "First name",
+  "@initial_setup_screen_profile_basic_info_first_name_title": {
+    "description": "Title text for asking first name"
   },
   "initial_setup_screen_profile_basic_info_title": "My profile has this info…",
   "@initial_setup_screen_profile_basic_info_title": {

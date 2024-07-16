@@ -16,7 +16,7 @@ class InitialSetupData with _$InitialSetupData {
   factory InitialSetupData({
     String? email,
     DateTime? birthdate,
-    String? profileInitial,
+    String? profileName,
     int? profileAge,
     ProcessedAccountImage? securitySelfie,
     ImmutableList<ImgState>? profileImages,

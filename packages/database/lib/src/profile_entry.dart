@@ -77,6 +77,10 @@ class ProfileEntry {
   String profileTitle() {
     return ProfileTitle(name, age).profileTitle();
   }
+
+  String profileTitleWithAge() {
+    return "$name, $age";
+  }
 }
 
 /// Local unique identifier for a profile entry.
@@ -90,11 +94,11 @@ class ProfileLocalDbId {
 
 class ProfileTitle {
   final String name;
-  final int age;
+  final int age; // TODO(prod): Remove age from background DB and here.
   const ProfileTitle(this.name, this.age);
 
   String profileTitle() {
-    return '$name$age';
+    return name;
   }
 }
 

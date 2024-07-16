@@ -10,7 +10,7 @@ part 'edit_my_profile.freezed.dart';
 class EditMyProfileData with _$EditMyProfileData {
   factory EditMyProfileData({
     int? age,
-    String? initial,
+    String? name,
     @Default(UnmodifiableList<ProfileAttributeValueUpdate>.empty())
       UnmodifiableList<ProfileAttributeValueUpdate> attributes,
     @Default(false) bool unlimitedLikes,

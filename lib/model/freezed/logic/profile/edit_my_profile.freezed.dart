@@ -22,13 +22,13 @@ final _privateConstructorErrorEditMyProfileData = UnsupportedError(
 /// @nodoc
 mixin _$EditMyProfileData {
   int? get age => throw _privateConstructorErrorEditMyProfileData;
-  String? get initial => throw _privateConstructorErrorEditMyProfileData;
+  String? get name => throw _privateConstructorErrorEditMyProfileData;
   UnmodifiableList<ProfileAttributeValueUpdate> get attributes => throw _privateConstructorErrorEditMyProfileData;
   bool get unlimitedLikes => throw _privateConstructorErrorEditMyProfileData;
 
   EditMyProfileData copyWith({
     int? age,
-    String? initial,
+    String? name,
     UnmodifiableList<ProfileAttributeValueUpdate>? attributes,
     bool? unlimitedLikes,
   }) => throw _privateConstructorErrorEditMyProfileData;
@@ -38,7 +38,7 @@ mixin _$EditMyProfileData {
 abstract class _EditMyProfileData implements EditMyProfileData {
   factory _EditMyProfileData({
     int? age,
-    String? initial,
+    String? name,
     UnmodifiableList<ProfileAttributeValueUpdate> attributes,
     bool unlimitedLikes,
   }) = _$EditMyProfileDataImpl;
@@ -51,7 +51,7 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
   
   _$EditMyProfileDataImpl({
     this.age,
-    this.initial,
+    this.name,
     this.attributes = _attributesDefaultValue,
     this.unlimitedLikes = _unlimitedLikesDefaultValue,
   });
@@ -59,7 +59,7 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
   @override
   final int? age;
   @override
-  final String? initial;
+  final String? name;
   @override
   final UnmodifiableList<ProfileAttributeValueUpdate> attributes;
   @override
@@ -67,7 +67,7 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditMyProfileData(age: $age, initial: $initial, attributes: $attributes, unlimitedLikes: $unlimitedLikes)';
+    return 'EditMyProfileData(age: $age, name: $name, attributes: $attributes, unlimitedLikes: $unlimitedLikes)';
   }
 
   @override
@@ -76,7 +76,7 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
     properties
       ..add(DiagnosticsProperty('type', 'EditMyProfileData'))
       ..add(DiagnosticsProperty('age', age))
-      ..add(DiagnosticsProperty('initial', initial))
+      ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('attributes', attributes))
       ..add(DiagnosticsProperty('unlimitedLikes', unlimitedLikes));
   }
@@ -88,8 +88,8 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
         other is _$EditMyProfileDataImpl &&
         (identical(other.age, age) ||
           other.age == age) &&
-        (identical(other.initial, initial) ||
-          other.initial == initial) &&
+        (identical(other.name, name) ||
+          other.name == name) &&
         (identical(other.attributes, attributes) ||
           other.attributes == attributes) &&
         (identical(other.unlimitedLikes, unlimitedLikes) ||
@@ -101,7 +101,7 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
   int get hashCode => Object.hash(
     runtimeType,
     age,
-    initial,
+    name,
     attributes,
     unlimitedLikes,
   );
@@ -109,12 +109,12 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
   @override
   EditMyProfileData copyWith({
     Object? age = _detectDefaultValueInCopyWith,
-    Object? initial = _detectDefaultValueInCopyWith,
+    Object? name = _detectDefaultValueInCopyWith,
     Object? attributes,
     Object? unlimitedLikes,
   }) => _$EditMyProfileDataImpl(
     age: (age == _detectDefaultValueInCopyWith ? this.age : age) as int?,
-    initial: (initial == _detectDefaultValueInCopyWith ? this.initial : initial) as String?,
+    name: (name == _detectDefaultValueInCopyWith ? this.name : name) as String?,
     attributes: (attributes ?? this.attributes) as UnmodifiableList<ProfileAttributeValueUpdate>,
     unlimitedLikes: (unlimitedLikes ?? this.unlimitedLikes) as bool,
   );

@@ -23,7 +23,7 @@ final _privateConstructorErrorInitialSetupData = UnsupportedError(
 mixin _$InitialSetupData {
   String? get email => throw _privateConstructorErrorInitialSetupData;
   DateTime? get birthdate => throw _privateConstructorErrorInitialSetupData;
-  String? get profileInitial => throw _privateConstructorErrorInitialSetupData;
+  String? get profileName => throw _privateConstructorErrorInitialSetupData;
   int? get profileAge => throw _privateConstructorErrorInitialSetupData;
   ProcessedAccountImage? get securitySelfie => throw _privateConstructorErrorInitialSetupData;
   ImmutableList<ImgState>? get profileImages => throw _privateConstructorErrorInitialSetupData;
@@ -39,7 +39,7 @@ mixin _$InitialSetupData {
   InitialSetupData copyWith({
     String? email,
     DateTime? birthdate,
-    String? profileInitial,
+    String? profileName,
     int? profileAge,
     ProcessedAccountImage? securitySelfie,
     ImmutableList<ImgState>? profileImages,
@@ -59,7 +59,7 @@ abstract class _InitialSetupData implements InitialSetupData {
   factory _InitialSetupData({
     String? email,
     DateTime? birthdate,
-    String? profileInitial,
+    String? profileName,
     int? profileAge,
     ProcessedAccountImage? securitySelfie,
     ImmutableList<ImgState>? profileImages,
@@ -84,7 +84,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   _$InitialSetupDataImpl({
     this.email,
     this.birthdate,
-    this.profileInitial,
+    this.profileName,
     this.profileAge,
     this.securitySelfie,
     this.profileImages,
@@ -103,7 +103,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   @override
   final DateTime? birthdate;
   @override
-  final String? profileInitial;
+  final String? profileName;
   @override
   final int? profileAge;
   @override
@@ -129,7 +129,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
 
   @override
   String toString() {
-    return 'InitialSetupData(email: $email, birthdate: $birthdate, profileInitial: $profileInitial, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, genderSearchSetting: $genderSearchSetting, searchAgeRangeInitDone: $searchAgeRangeInitDone, searchAgeRangeMin: $searchAgeRangeMin, searchAgeRangeMax: $searchAgeRangeMax, profileLocation: $profileLocation, profileAttributes: $profileAttributes, sendingInProgress: $sendingInProgress)';
+    return 'InitialSetupData(email: $email, birthdate: $birthdate, profileName: $profileName, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, genderSearchSetting: $genderSearchSetting, searchAgeRangeInitDone: $searchAgeRangeInitDone, searchAgeRangeMin: $searchAgeRangeMin, searchAgeRangeMax: $searchAgeRangeMax, profileLocation: $profileLocation, profileAttributes: $profileAttributes, sendingInProgress: $sendingInProgress)';
   }
 
   @override
@@ -141,8 +141,8 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
           other.email == email) &&
         (identical(other.birthdate, birthdate) ||
           other.birthdate == birthdate) &&
-        (identical(other.profileInitial, profileInitial) ||
-          other.profileInitial == profileInitial) &&
+        (identical(other.profileName, profileName) ||
+          other.profileName == profileName) &&
         (identical(other.profileAge, profileAge) ||
           other.profileAge == profileAge) &&
         (identical(other.securitySelfie, securitySelfie) ||
@@ -173,7 +173,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
     runtimeType,
     email,
     birthdate,
-    profileInitial,
+    profileName,
     profileAge,
     securitySelfie,
     profileImages,
@@ -191,7 +191,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   InitialSetupData copyWith({
     Object? email = _detectDefaultValueInCopyWith,
     Object? birthdate = _detectDefaultValueInCopyWith,
-    Object? profileInitial = _detectDefaultValueInCopyWith,
+    Object? profileName = _detectDefaultValueInCopyWith,
     Object? profileAge = _detectDefaultValueInCopyWith,
     Object? securitySelfie = _detectDefaultValueInCopyWith,
     Object? profileImages = _detectDefaultValueInCopyWith,
@@ -206,7 +206,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   }) => _$InitialSetupDataImpl(
     email: (email == _detectDefaultValueInCopyWith ? this.email : email) as String?,
     birthdate: (birthdate == _detectDefaultValueInCopyWith ? this.birthdate : birthdate) as DateTime?,
-    profileInitial: (profileInitial == _detectDefaultValueInCopyWith ? this.profileInitial : profileInitial) as String?,
+    profileName: (profileName == _detectDefaultValueInCopyWith ? this.profileName : profileName) as String?,
     profileAge: (profileAge == _detectDefaultValueInCopyWith ? this.profileAge : profileAge) as int?,
     securitySelfie: (securitySelfie == _detectDefaultValueInCopyWith ? this.securitySelfie : securitySelfie) as ProcessedAccountImage?,
     profileImages: (profileImages == _detectDefaultValueInCopyWith ? this.profileImages : profileImages) as ImmutableList<ImgState>?,
