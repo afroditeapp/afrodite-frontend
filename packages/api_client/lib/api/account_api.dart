@@ -248,6 +248,47 @@ class AccountApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /account_api/latest_birthdate' operation and returns the [Response].
+  Future<Response> getLatestBirthdateWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/latest_birthdate';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<LatestBirthdate?> getLatestBirthdate() async {
+    final response = await getLatestBirthdateWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LatestBirthdate',) as LatestBirthdate;
+    
+    }
+    return null;
+  }
+
   /// Set changeable user information to account.
   ///
   /// Set changeable user information to account.
@@ -304,13 +345,13 @@ class AccountApi {
   ///
   /// Parameters:
   ///
-  /// * [AccountSetup] accountSetup (required):
-  Future<Response> postAccountSetupWithHttpInfo(AccountSetup accountSetup,) async {
+  /// * [SetAccountSetup] setAccountSetup (required):
+  Future<Response> postAccountSetupWithHttpInfo(SetAccountSetup setAccountSetup,) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/account_setup';
 
     // ignore: prefer_final_locals
-    Object? postBody = accountSetup;
+    Object? postBody = setAccountSetup;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -336,9 +377,9 @@ class AccountApi {
   ///
   /// Parameters:
   ///
-  /// * [AccountSetup] accountSetup (required):
-  Future<void> postAccountSetup(AccountSetup accountSetup,) async {
-    final response = await postAccountSetupWithHttpInfo(accountSetup,);
+  /// * [SetAccountSetup] setAccountSetup (required):
+  Future<void> postAccountSetup(SetAccountSetup setAccountSetup,) async {
+    final response = await postAccountSetupWithHttpInfo(setAccountSetup,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

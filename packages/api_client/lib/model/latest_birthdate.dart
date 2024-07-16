@@ -10,16 +10,16 @@
 
 part of openapi.api;
 
-class AccountSetup {
-  /// Returns a new [AccountSetup] instance.
-  AccountSetup({
+class LatestBirthdate {
+  /// Returns a new [LatestBirthdate] instance.
+  LatestBirthdate({
     this.birthdate,
   });
 
   DateTime? birthdate;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AccountSetup &&
+  bool operator ==(Object other) => identical(this, other) || other is LatestBirthdate &&
      other.birthdate == birthdate;
 
   @override
@@ -28,7 +28,7 @@ class AccountSetup {
     (birthdate == null ? 0 : birthdate!.hashCode);
 
   @override
-  String toString() => 'AccountSetup[birthdate=$birthdate]';
+  String toString() => 'LatestBirthdate[birthdate=$birthdate]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -40,10 +40,10 @@ class AccountSetup {
     return json;
   }
 
-  /// Returns a new [AccountSetup] instance and imports its values from
+  /// Returns a new [LatestBirthdate] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AccountSetup? fromJson(dynamic value) {
+  static LatestBirthdate? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -52,24 +52,24 @@ class AccountSetup {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AccountSetup[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AccountSetup[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "LatestBirthdate[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "LatestBirthdate[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AccountSetup(
+      return LatestBirthdate(
         birthdate: mapDateTime(json, r'birthdate', ''),
       );
     }
     return null;
   }
 
-  static List<AccountSetup>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AccountSetup>[];
+  static List<LatestBirthdate>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <LatestBirthdate>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AccountSetup.fromJson(row);
+        final value = LatestBirthdate.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -78,12 +78,12 @@ class AccountSetup {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AccountSetup> mapFromJson(dynamic json) {
-    final map = <String, AccountSetup>{};
+  static Map<String, LatestBirthdate> mapFromJson(dynamic json) {
+    final map = <String, LatestBirthdate>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AccountSetup.fromJson(entry.value);
+        final value = LatestBirthdate.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -92,13 +92,13 @@ class AccountSetup {
     return map;
   }
 
-  // maps a json object with a list of AccountSetup-objects as value to a dart map
-  static Map<String, List<AccountSetup>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AccountSetup>>{};
+  // maps a json object with a list of LatestBirthdate-objects as value to a dart map
+  static Map<String, List<LatestBirthdate>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<LatestBirthdate>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AccountSetup.listFromJson(entry.value, growable: growable,);
+        final value = LatestBirthdate.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }

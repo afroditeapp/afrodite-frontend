@@ -3,6 +3,7 @@
 
 import 'package:camera/camera.dart';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
@@ -88,11 +89,17 @@ class InitialSetupUtils {
     // Other setup
 
     await _api.accountAction((api) => api.postAccountData(AccountData(email: email)));
-    await _api.accountAction((api) => api.postAccountSetup(AccountSetup(birthdate: "1.1.2000")));
+
+    final wantedAge = 30;
+    final date = DateTime.now();
+    final wantedBirthdateYear = date.year - wantedAge;
+    final x = DateTime(wantedBirthdateYear, 1, 1);
+    // final birthdateString = DateFormat("yyyy-MM-dd").format();
+    await _api.accountAction((api) => api.postAccountSetup(SetAccountSetup(birthdate: x)));
 
 
     final update = ProfileUpdate(
-      age: 30,
+      age: wantedAge,
       name: "X",
       profileText: "",
       attributes: [],
@@ -135,13 +142,10 @@ class InitialSetupUtils {
     }
 
     {
-      // TODO(prod): Check does birthdate need time zone handling.
-      //             Client and Server should use same time zone for checking
-      //             if the user is old enough.
       final birthdate = data.birthdate;
       if (birthdate == null) return errAndLog("Birthdate is null");
       final datePart = birthdate.toIso8601String().substring(0, 10);
-      final r = await _api.accountAction((api) => api.postAccountSetup(AccountSetup(birthdate: datePart)));
+      final r = await _api.accountAction((api) => api.postAccountSetup(SetAccountSetup(birthdate: birthdate)));
       if (r.isErr()) return errAndLog("Setting birthdate failed");
     }
 

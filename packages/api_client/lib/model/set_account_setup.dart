@@ -10,40 +10,36 @@
 
 part of openapi.api;
 
-class AccountSetup {
-  /// Returns a new [AccountSetup] instance.
-  AccountSetup({
-    this.birthdate,
+class SetAccountSetup {
+  /// Returns a new [SetAccountSetup] instance.
+  SetAccountSetup({
+    required this.birthdate,
   });
 
-  DateTime? birthdate;
+  DateTime birthdate;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AccountSetup &&
+  bool operator ==(Object other) => identical(this, other) || other is SetAccountSetup &&
      other.birthdate == birthdate;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (birthdate == null ? 0 : birthdate!.hashCode);
+    (birthdate.hashCode);
 
   @override
-  String toString() => 'AccountSetup[birthdate=$birthdate]';
+  String toString() => 'SetAccountSetup[birthdate=$birthdate]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.birthdate != null) {
-      json[r'birthdate'] = _dateFormatter.format(this.birthdate!.toUtc());
-    } else {
-      json[r'birthdate'] = null;
-    }
+      json[r'birthdate'] = _dateFormatter.format(this.birthdate.toUtc());
     return json;
   }
 
-  /// Returns a new [AccountSetup] instance and imports its values from
+  /// Returns a new [SetAccountSetup] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AccountSetup? fromJson(dynamic value) {
+  static SetAccountSetup? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -52,24 +48,24 @@ class AccountSetup {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AccountSetup[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AccountSetup[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "SetAccountSetup[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "SetAccountSetup[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AccountSetup(
-        birthdate: mapDateTime(json, r'birthdate', ''),
+      return SetAccountSetup(
+        birthdate: mapDateTime(json, r'birthdate', '')!,
       );
     }
     return null;
   }
 
-  static List<AccountSetup>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AccountSetup>[];
+  static List<SetAccountSetup>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <SetAccountSetup>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AccountSetup.fromJson(row);
+        final value = SetAccountSetup.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -78,12 +74,12 @@ class AccountSetup {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AccountSetup> mapFromJson(dynamic json) {
-    final map = <String, AccountSetup>{};
+  static Map<String, SetAccountSetup> mapFromJson(dynamic json) {
+    final map = <String, SetAccountSetup>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AccountSetup.fromJson(entry.value);
+        final value = SetAccountSetup.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -92,13 +88,13 @@ class AccountSetup {
     return map;
   }
 
-  // maps a json object with a list of AccountSetup-objects as value to a dart map
-  static Map<String, List<AccountSetup>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AccountSetup>>{};
+  // maps a json object with a list of SetAccountSetup-objects as value to a dart map
+  static Map<String, List<SetAccountSetup>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<SetAccountSetup>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AccountSetup.listFromJson(entry.value, growable: growable,);
+        final value = SetAccountSetup.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -109,6 +105,7 @@ class AccountSetup {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'birthdate',
   };
 }
 

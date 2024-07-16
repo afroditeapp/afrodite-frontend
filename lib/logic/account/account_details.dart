@@ -24,8 +24,8 @@ class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocDat
           return;
         }
 
-        final accountSetup = await account.downloadAccountSetup().ok();
-        if (accountSetup == null) {
+        final birthdate = await account.downloadLatestBirthdate().ok();
+        if (birthdate == null) {
           emit(state.copyWith(isLoading: false, isError: true));
           return;
         }
@@ -34,7 +34,7 @@ class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocDat
           isLoading: false,
           isError: false,
           email: accountData.email,
-          birthdate: accountSetup.birthdate,
+          birthdate: birthdate.birthdate?.toIso8601String(),
         ));
       });
     });

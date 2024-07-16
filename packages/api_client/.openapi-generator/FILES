@@ -65,6 +65,7 @@ doc/IconResource.md
 doc/IteratorSessionId.md
 doc/Language.md
 doc/LastSeenTimeFilter.md
+doc/LatestBirthdate.md
 doc/LatestViewedMessageChanged.md
 doc/LimitedActionResult.md
 doc/LimitedActionStatus.md
@@ -134,6 +135,7 @@ doc/SentBlocksPage.md
 doc/SentBlocksSyncVersion.md
 doc/SentLikesPage.md
 doc/SentLikesSyncVersion.md
+doc/SetAccountSetup.md
 doc/SetProfileContent.md
 doc/SignInWithLoginInfo.md
 doc/SlotId.md
@@ -224,6 +226,7 @@ lib/model/icon_resource.dart
 lib/model/iterator_session_id.dart
 lib/model/language.dart
 lib/model/last_seen_time_filter.dart
+lib/model/latest_birthdate.dart
 lib/model/latest_viewed_message_changed.dart
 lib/model/limited_action_result.dart
 lib/model/limited_action_status.dart
@@ -289,6 +292,7 @@ lib/model/sent_blocks_page.dart
 lib/model/sent_blocks_sync_version.dart
 lib/model/sent_likes_page.dart
 lib/model/sent_likes_sync_version.dart
+lib/model/set_account_setup.dart
 lib/model/set_profile_content.dart
 lib/model/sign_in_with_login_info.dart
 lib/model/slot_id.dart
@@ -301,7 +305,5 @@ lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
-test/iterator_session_id_test.dart
-test/last_seen_time_filter_test.dart
-test/limited_action_result_test.dart
-test/limited_action_status_test.dart
+test/latest_birthdate_test.dart
+test/set_account_setup_test.dart

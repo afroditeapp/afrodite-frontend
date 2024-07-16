@@ -299,6 +299,8 @@ class ApiClient {
           return Language.fromJson(value);
         case 'LastSeenTimeFilter':
           return LastSeenTimeFilter.fromJson(value);
+        case 'LatestBirthdate':
+          return LatestBirthdate.fromJson(value);
         case 'LatestViewedMessageChanged':
           return LatestViewedMessageChanged.fromJson(value);
         case 'LimitedActionResult':
@@ -429,6 +431,8 @@ class ApiClient {
           return SentLikesPage.fromJson(value);
         case 'SentLikesSyncVersion':
           return SentLikesSyncVersion.fromJson(value);
+        case 'SetAccountSetup':
+          return SetAccountSetup.fromJson(value);
         case 'SetProfileContent':
           return SetProfileContent.fromJson(value);
         case 'SignInWithLoginInfo':

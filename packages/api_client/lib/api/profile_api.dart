@@ -591,7 +591,7 @@ class ProfileApi {
 
   /// Update profile information.
   ///
-  /// Update profile information.  Writes the profile to the database only if it is changed.  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
+  /// Update profile information.  Writes the profile to the database only if it is changed.  # Requirements - Profile attributes must be valid - Profile text must be empty - Profile age must be same as currently or same as the current age calculated from birthdate  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -625,7 +625,7 @@ class ProfileApi {
 
   /// Update profile information.
   ///
-  /// Update profile information.  Writes the profile to the database only if it is changed.  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
+  /// Update profile information.  Writes the profile to the database only if it is changed.  # Requirements - Profile attributes must be valid - Profile text must be empty - Profile age must be same as currently or same as the current age calculated from birthdate  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
   ///
   /// Parameters:
   ///
