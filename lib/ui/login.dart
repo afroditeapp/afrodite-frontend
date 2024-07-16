@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:pihka_frontend/config.dart";
 import "package:pihka_frontend/logic/server/address.dart";
 
 import 'package:pihka_frontend/localizations.dart';
@@ -36,7 +37,7 @@ class _LoginScreenOldState extends State<LoginScreenOld> {
       changeAddressButton("***REMOVED***"),
       changeAddressButton("http://localhost:3000"),
       changeAddressButton("http://192.168.0.13:3000"),
-      changeAddressButton("***REMOVED***"),
+      changeAddressButton(developmentServerUrl),
       const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
       // const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
       // ElevatedButton(
