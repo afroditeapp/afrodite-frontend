@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
+import 'package:pihka_frontend/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/logic/settings/edit_search_settings.dart';
 import 'package:pihka_frontend/logic/settings/search_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
@@ -17,10 +18,10 @@ import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
 import 'package:pihka_frontend/ui_utils/consts/colors.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
+import 'package:pihka_frontend/ui_utils/dropdown_menu.dart';
 import 'package:pihka_frontend/ui_utils/icon_button.dart';
 import 'package:pihka_frontend/ui_utils/padding.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
-import 'package:pihka_frontend/ui_utils/text_field.dart';
 import 'package:pihka_frontend/utils/age.dart';
 import 'package:pihka_frontend/utils/api.dart';
 
@@ -40,8 +41,8 @@ class SearchSettingsScreen extends StatefulWidget {
 }
 
 class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
-  String initialMinAge = "";
-  String initialMaxAge = "";
+  int initialMinAge = MIN_AGE;
+  int initialMaxAge = MAX_AGE;
 
   TextEditingController minAgeController = TextEditingController();
   TextEditingController maxAgeController = TextEditingController();
@@ -59,8 +60,12 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
       searchGroups: widget.searchSettingsBloc.state.searchGroups,
     ));
 
-    initialMinAge = minAge?.toString() ?? "";
-    initialMaxAge = maxAge?.toString() ?? "";
+    if (minAge != null) {
+      initialMinAge = minAge;
+    }
+    if (maxAge != null) {
+      initialMaxAge = maxAge;
+    }
   }
 
   void validateAndSaveData(BuildContext context) {
@@ -170,10 +175,26 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(padding: EdgeInsets.all(8)),
-          hPad(Text(context.strings.search_settings_screen_age_range_min_value_title)),
-          hPad(minAgeField(context)),
-          hPad(Text(context.strings.search_settings_screen_age_range_max_value_title)),
-          hPad(maxAgeField(context)),
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  hPad(Text(context.strings.search_settings_screen_age_range_min_value_title)),
+                  hPad(minAgeField(context)),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(context.strings.search_settings_screen_age_range_max_value_title),
+                  maxAgeField(context),
+                ],
+              ),
+            ],
+          ),
           hPad(Text(context.strings.search_settings_screen_change_gender_filter_action_tile)),
           const Padding(padding: EdgeInsets.all(4)),
           editGenderFilter(),
@@ -201,24 +222,44 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
   }
 
   Widget minAgeField(BuildContext context) {
-    return AgeTextField(
-      controller: minAgeController,
-      getInitialValue: () => initialMinAge,
-      onChanged: (value) {
-        final min = int.tryParse(value);
-        context.read<EditSearchSettingsBloc>().add(UpdateMinAge(min));
-      },
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: AgeDropdown(
+        getMinValue: () => MIN_AGE,
+        getMaxValue: () {
+          final currentAge = context.read<MyProfileBloc>().state.profile?.age;
+          if (currentAge != null) {
+            return currentAge;
+          } else {
+            return MAX_AGE;
+          }
+        },
+        getInitialValue: () => initialMinAge,
+        onChanged: (value) {
+          context.read<EditSearchSettingsBloc>().add(UpdateMinAge(value));
+        },
+      ),
     );
   }
 
   Widget maxAgeField(BuildContext context) {
-    return AgeTextField(
-      controller: maxAgeController,
-      getInitialValue: () => initialMaxAge,
-      onChanged: (value) {
-        final max = int.tryParse(value);
-        context.read<EditSearchSettingsBloc>().add(UpdateMaxAge(max));
-      },
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: AgeDropdown(
+        getMinValue: () {
+          final currentAge = context.read<MyProfileBloc>().state.profile?.age;
+          if (currentAge != null) {
+            return currentAge;
+          } else {
+            return MIN_AGE;
+          }
+        },
+        getMaxValue: () => MAX_AGE,
+        getInitialValue: () => initialMaxAge,
+        onChanged: (value) {
+          context.read<EditSearchSettingsBloc>().add(UpdateMaxAge(value));
+        },
+      ),
     );
   }
 }
