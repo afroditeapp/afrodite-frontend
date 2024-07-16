@@ -8,8 +8,8 @@ import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/model/freezed/logic/account/initial_setup.dart";
 import "package:pihka_frontend/ui/initial_setup/location.dart";
 import "package:pihka_frontend/ui_utils/consts/padding.dart";
+import "package:pihka_frontend/ui_utils/dropdown_menu.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
-import "package:pihka_frontend/ui_utils/text_field.dart";
 import "package:pihka_frontend/utils/age.dart";
 
 class AskSearchSettingsScreen extends StatelessWidget {
@@ -49,8 +49,8 @@ class AskSearchSettingsScreen extends StatelessWidget {
           }
         },
         question: AskSearchSettings(
-          minAgeInitialValue: currentMin?.toString() ?? "",
-          maxAgeInitialValue: currentMax?.toString() ?? "",
+          minAgeInitialValue: currentMin ?? MIN_AGE,
+          maxAgeInitialValue: currentMax ?? MAX_AGE,
         ),
       ),
     );
@@ -58,9 +58,13 @@ class AskSearchSettingsScreen extends StatelessWidget {
 }
 
 class AskSearchSettings extends StatefulWidget {
-  final String minAgeInitialValue;
-  final String maxAgeInitialValue;
-  const AskSearchSettings({required this.minAgeInitialValue, required this.maxAgeInitialValue, super.key});
+  final int minAgeInitialValue;
+  final int maxAgeInitialValue;
+  const AskSearchSettings({
+    required this.minAgeInitialValue,
+    required this.maxAgeInitialValue,
+    super.key,
+  });
 
   @override
   State<AskSearchSettings> createState() => _AskSearchSettingsState();
@@ -76,12 +80,18 @@ class _AskSearchSettingsState extends State<AskSearchSettings> {
         askGenderSearchQuestion(context),
         subtitle(context.strings.initial_setup_screen_search_settings_min_age_subtitle),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: INITIAL_SETUP_PADDING),
+          padding: const EdgeInsets.symmetric(
+            horizontal: INITIAL_SETUP_PADDING,
+            vertical: 8.0,
+          ),
           child: minAgeField(),
         ),
         subtitle(context.strings.initial_setup_screen_search_settings_max_age_subtitle),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: INITIAL_SETUP_PADDING),
+          padding: const EdgeInsets.symmetric(
+            horizontal: INITIAL_SETUP_PADDING,
+            vertical: 8.0,
+          ),
           child: maxAgeField(),
         ),
       ],
@@ -130,22 +140,44 @@ class _AskSearchSettingsState extends State<AskSearchSettings> {
   }
 
   Widget minAgeField() {
-    return AgeTextField(
-      getInitialValue: () => widget.minAgeInitialValue,
-      onChanged: (value) {
-        final min = int.tryParse(value);
-        context.read<InitialSetupBloc>().add(SetAgeRangeMin(min));
-      },
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: AgeDropdown(
+        getMinValue: () => MIN_AGE,
+        getMaxValue: () {
+          final currentAge = context.read<InitialSetupBloc>().state.profileAge;
+          if (currentAge != null) {
+            return currentAge;
+          } else {
+            return MAX_AGE;
+          }
+        },
+        getInitialValue: () => widget.minAgeInitialValue,
+        onChanged: (value) {
+          context.read<InitialSetupBloc>().add(SetAgeRangeMin(value));
+        },
+      ),
     );
   }
 
   Widget maxAgeField() {
-    return AgeTextField(
-      getInitialValue: () => widget.maxAgeInitialValue,
-      onChanged: (value) {
-        final max = int.tryParse(value);
-        context.read<InitialSetupBloc>().add(SetAgeRangeMax(max));
-      },
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: AgeDropdown(
+        getMinValue: () {
+          final currentAge = context.read<InitialSetupBloc>().state.profileAge;
+          if (currentAge != null) {
+            return currentAge;
+          } else {
+            return MIN_AGE;
+          }
+        },
+        getMaxValue: () => MAX_AGE,
+        getInitialValue: () => widget.maxAgeInitialValue,
+        onChanged: (value) {
+          context.read<InitialSetupBloc>().add(SetAgeRangeMax(value));
+        },
+      ),
     );
   }
 }
