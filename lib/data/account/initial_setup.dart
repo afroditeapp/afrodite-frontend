@@ -90,13 +90,11 @@ class InitialSetupUtils {
 
     await _api.accountAction((api) => api.postAccountData(AccountData(email: email)));
 
-    final wantedAge = 30;
+    const wantedAge = 30;
     final date = DateTime.now();
     final wantedBirthdateYear = date.year - wantedAge;
-    final x = DateTime(wantedBirthdateYear, 1, 1);
-    // final birthdateString = DateFormat("yyyy-MM-dd").format();
-    await _api.accountAction((api) => api.postAccountSetup(SetAccountSetup(birthdate: x)));
-
+    final birthdateString = DateFormat("yyyy-MM-dd").format(DateTime(wantedBirthdateYear, 1, 1));
+    await _api.accountAction((api) => api.postAccountSetup(SetAccountSetup(birthdate: birthdateString)));
 
     final update = ProfileUpdate(
       age: wantedAge,
@@ -145,7 +143,7 @@ class InitialSetupUtils {
       final birthdate = data.birthdate;
       if (birthdate == null) return errAndLog("Birthdate is null");
       final datePart = birthdate.toIso8601String().substring(0, 10);
-      final r = await _api.accountAction((api) => api.postAccountSetup(SetAccountSetup(birthdate: birthdate)));
+      final r = await _api.accountAction((api) => api.postAccountSetup(SetAccountSetup(birthdate: datePart)));
       if (r.isErr()) return errAndLog("Setting birthdate failed");
     }
 

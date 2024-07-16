@@ -16,7 +16,7 @@ class LatestBirthdate {
     this.birthdate,
   });
 
-  DateTime? birthdate;
+  String? birthdate;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is LatestBirthdate &&
@@ -33,7 +33,7 @@ class LatestBirthdate {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
     if (this.birthdate != null) {
-      json[r'birthdate'] = _dateFormatter.format(this.birthdate!.toUtc());
+      json[r'birthdate'] = this.birthdate;
     } else {
       json[r'birthdate'] = null;
     }
@@ -59,7 +59,7 @@ class LatestBirthdate {
       }());
 
       return LatestBirthdate(
-        birthdate: mapDateTime(json, r'birthdate', ''),
+        birthdate: mapValueOfType<String>(json, r'birthdate'),
       );
     }
     return null;

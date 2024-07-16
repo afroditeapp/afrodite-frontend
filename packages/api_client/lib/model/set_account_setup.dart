@@ -16,7 +16,7 @@ class SetAccountSetup {
     required this.birthdate,
   });
 
-  DateTime birthdate;
+  String birthdate;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SetAccountSetup &&
@@ -32,7 +32,7 @@ class SetAccountSetup {
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'birthdate'] = _dateFormatter.format(this.birthdate.toUtc());
+      json[r'birthdate'] = this.birthdate;
     return json;
   }
 
@@ -55,7 +55,7 @@ class SetAccountSetup {
       }());
 
       return SetAccountSetup(
-        birthdate: mapDateTime(json, r'birthdate', '')!,
+        birthdate: mapValueOfType<String>(json, r'birthdate')!,
       );
     }
     return null;

@@ -305,5 +305,3 @@ lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
-test/latest_birthdate_test.dart
-test/set_account_setup_test.dart

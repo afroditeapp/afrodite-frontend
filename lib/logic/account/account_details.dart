@@ -34,7 +34,7 @@ class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocDat
           isLoading: false,
           isError: false,
           email: accountData.email,
-          birthdate: birthdate.birthdate?.toIso8601String(),
+          birthdate: birthdate.birthdate,
         ));
       });
     });
