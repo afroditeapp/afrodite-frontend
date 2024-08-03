@@ -107,4 +107,153 @@ class NativeUtilsBindings {
   late final _decrypt_content = _decrypt_contentPtr.asFunction<
       int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>,
           int)>(isLeaf: true);
+
+  /// Generate a new message encryption keys.
+  ///
+  /// Run equivalent free function for the result.
+  GenerateMessageKeysResult generate_message_keys(
+    ffi.Pointer<ffi.Char> account_id,
+  ) {
+    return _generate_message_keys(
+      account_id,
+    );
+  }
+
+  late final _generate_message_keysPtr = _lookup<
+      ffi.NativeFunction<
+          GenerateMessageKeysResult Function(
+              ffi.Pointer<ffi.Char>)>>('generate_message_keys');
+  late final _generate_message_keys = _generate_message_keysPtr
+      .asFunction<GenerateMessageKeysResult Function(ffi.Pointer<ffi.Char>)>(
+          isLeaf: true);
+
+  void generate_message_keys_free_result(
+    GenerateMessageKeysResult result,
+  ) {
+    return _generate_message_keys_free_result(
+      result,
+    );
+  }
+
+  late final _generate_message_keys_free_resultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(GenerateMessageKeysResult)>>(
+          'generate_message_keys_free_result');
+  late final _generate_message_keys_free_result =
+      _generate_message_keys_free_resultPtr
+          .asFunction<void Function(GenerateMessageKeysResult)>(isLeaf: true);
+
+  /// Encrypt message data.
+  ///
+  /// Run equivalent free function for the result.
+  EncryptMessageResult encrypt_message(
+    ffi.Pointer<ffi.Char> data_sender_armored_private_key,
+    ffi.Pointer<ffi.Char> data_receiver_armored_public_key,
+    ffi.Pointer<ffi.Uint8> data,
+    int data_len,
+  ) {
+    return _encrypt_message(
+      data_sender_armored_private_key,
+      data_receiver_armored_public_key,
+      data,
+      data_len,
+    );
+  }
+
+  late final _encrypt_messagePtr = _lookup<
+      ffi.NativeFunction<
+          EncryptMessageResult Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Uint8>,
+              ffi.IntPtr)>>('encrypt_message');
+  late final _encrypt_message = _encrypt_messagePtr.asFunction<
+      EncryptMessageResult Function(ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Uint8>, int)>(isLeaf: true);
+
+  void encrypt_message_free_result(
+    EncryptMessageResult result,
+  ) {
+    return _encrypt_message_free_result(
+      result,
+    );
+  }
+
+  late final _encrypt_message_free_resultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(EncryptMessageResult)>>(
+          'encrypt_message_free_result');
+  late final _encrypt_message_free_result = _encrypt_message_free_resultPtr
+      .asFunction<void Function(EncryptMessageResult)>(isLeaf: true);
+
+  /// Decrypt message data.
+  ///
+  /// Run equivalent free function for the result.
+  DecryptMessageResult decrypt_message(
+    ffi.Pointer<ffi.Char> data_sender_armored_public_key,
+    ffi.Pointer<ffi.Char> data_receiver_armored_private_key,
+    ffi.Pointer<ffi.Char> armored_pgp_message,
+  ) {
+    return _decrypt_message(
+      data_sender_armored_public_key,
+      data_receiver_armored_private_key,
+      armored_pgp_message,
+    );
+  }
+
+  late final _decrypt_messagePtr = _lookup<
+      ffi.NativeFunction<
+          DecryptMessageResult Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>>('decrypt_message');
+  late final _decrypt_message = _decrypt_messagePtr.asFunction<
+      DecryptMessageResult Function(ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>(isLeaf: true);
+
+  void decrypt_message_free_result(
+    DecryptMessageResult result,
+  ) {
+    return _decrypt_message_free_result(
+      result,
+    );
+  }
+
+  late final _decrypt_message_free_resultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(DecryptMessageResult)>>(
+          'decrypt_message_free_result');
+  late final _decrypt_message_free_result = _decrypt_message_free_resultPtr
+      .asFunction<void Function(DecryptMessageResult)>(isLeaf: true);
+}
+
+/// Message encryption API
+final class GenerateMessageKeysResult extends ffi.Struct {
+  @ffi.IntPtr()
+  external int result;
+
+  /// Null if failure
+  external ffi.Pointer<ffi.Char> public_key;
+
+  /// Null if failure
+  external ffi.Pointer<ffi.Char> private_key;
+}
+
+final class EncryptMessageResult extends ffi.Struct {
+  @ffi.IntPtr()
+  external int result;
+
+  /// Null if failure
+  external ffi.Pointer<ffi.Char> encrypted_message;
+}
+
+final class DecryptMessageResult extends ffi.Struct {
+  @ffi.IntPtr()
+  external int result;
+
+  /// Null if failure
+  external ffi.Pointer<ffi.Uint8> decrypted_message;
+
+  @ffi.IntPtr()
+  external int decrypted_message_len;
+
+  @ffi.IntPtr()
+  external int decrypted_message_capacity;
 }
