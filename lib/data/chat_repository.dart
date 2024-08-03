@@ -357,7 +357,20 @@ class ChatRepository extends DataRepository {
 
     ProfileRepository.getInstance().sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
 
-    final sendMessage = SendMessageToAccount(message: message, receiver: accountId);
+    // TODO: Get public key from DB
+    final publicKeyResponse = await _api.chat((api) => api.getPublicKey(accountId.accountId, 1)).ok();
+    final publicKey = publicKeyResponse?.key;
+    if (publicKey == null) {
+      // TODO: error handling
+      return;
+    }
+
+    final sendMessage = SendMessageToAccount(
+      message: message,
+      receiver: accountId,
+      receiverPublicKeyId: publicKey.id,
+      receiverPublicKeyVersion: publicKey.version,
+    );
     final result = await _api.chatAction((api) => api.postSendMessage(sendMessage));
     if (result.isErr()) {
       // TODO error handling

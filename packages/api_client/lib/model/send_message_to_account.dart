@@ -15,30 +15,42 @@ class SendMessageToAccount {
   SendMessageToAccount({
     required this.message,
     required this.receiver,
+    required this.receiverPublicKeyId,
+    required this.receiverPublicKeyVersion,
   });
 
   String message;
 
   AccountId receiver;
 
+  PublicKeyId receiverPublicKeyId;
+
+  PublicKeyVersion receiverPublicKeyVersion;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is SendMessageToAccount &&
      other.message == message &&
-     other.receiver == receiver;
+     other.receiver == receiver &&
+     other.receiverPublicKeyId == receiverPublicKeyId &&
+     other.receiverPublicKeyVersion == receiverPublicKeyVersion;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (message.hashCode) +
-    (receiver.hashCode);
+    (receiver.hashCode) +
+    (receiverPublicKeyId.hashCode) +
+    (receiverPublicKeyVersion.hashCode);
 
   @override
-  String toString() => 'SendMessageToAccount[message=$message, receiver=$receiver]';
+  String toString() => 'SendMessageToAccount[message=$message, receiver=$receiver, receiverPublicKeyId=$receiverPublicKeyId, receiverPublicKeyVersion=$receiverPublicKeyVersion]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'message'] = this.message;
       json[r'receiver'] = this.receiver;
+      json[r'receiver_public_key_id'] = this.receiverPublicKeyId;
+      json[r'receiver_public_key_version'] = this.receiverPublicKeyVersion;
     return json;
   }
 
@@ -63,6 +75,8 @@ class SendMessageToAccount {
       return SendMessageToAccount(
         message: mapValueOfType<String>(json, r'message')!,
         receiver: AccountId.fromJson(json[r'receiver'])!,
+        receiverPublicKeyId: PublicKeyId.fromJson(json[r'receiver_public_key_id'])!,
+        receiverPublicKeyVersion: PublicKeyVersion.fromJson(json[r'receiver_public_key_version'])!,
       );
     }
     return null;
@@ -114,6 +128,8 @@ class SendMessageToAccount {
   static const requiredKeys = <String>{
     'message',
     'receiver',
+    'receiver_public_key_id',
+    'receiver_public_key_version',
   };
 }
 

@@ -272,6 +272,69 @@ class ChatApi {
     return null;
   }
 
+  /// Get current public key of some account
+  ///
+  /// Get current public key of some account
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  ///
+  /// * [int] version (required):
+  Future<Response> getPublicKeyWithHttpInfo(String accountId, int version,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/public_key/{account_id}'
+      .replaceAll('{account_id}', accountId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'version', version));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get current public key of some account
+  ///
+  /// Get current public key of some account
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  ///
+  /// * [int] version (required):
+  Future<GetPublicKey?> getPublicKey(String accountId, int version,) async {
+    final response = await getPublicKeyWithHttpInfo(accountId, version,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetPublicKey',) as GetPublicKey;
+    
+    }
+    return null;
+  }
+
   /// Get list of received blocks
   ///
   /// Get list of received blocks
@@ -672,9 +735,9 @@ class ChatApi {
     return null;
   }
 
-  /// Send message to a match
+  /// Send message to a match.
   ///
-  /// Send message to a match
+  /// Send message to a match.  Max pending message count is 50.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -706,18 +769,26 @@ class ChatApi {
     );
   }
 
-  /// Send message to a match
+  /// Send message to a match.
   ///
-  /// Send message to a match
+  /// Send message to a match.  Max pending message count is 50.
   ///
   /// Parameters:
   ///
   /// * [SendMessageToAccount] sendMessageToAccount (required):
-  Future<void> postSendMessage(SendMessageToAccount sendMessageToAccount,) async {
+  Future<SendMessageResult?> postSendMessage(SendMessageToAccount sendMessageToAccount,) async {
     final response = await postSendMessageWithHttpInfo(sendMessageToAccount,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SendMessageResult',) as SendMessageResult;
+    
+    }
+    return null;
   }
 
   /// Performs an HTTP 'POST /chat_api/set_device_token' operation and returns the [Response].

@@ -85,6 +85,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**getMatches**](doc//ChatApi.md#getmatches) | **GET** /chat_api/matches | Get matches
 *ChatApi* | [**getMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#getmessagenumberoflatestviewedmessage) | **GET** /chat_api/message_number_of_latest_viewed_message | Get message number of the most recent message that the recipient has viewed.
 *ChatApi* | [**getPendingMessages**](doc//ChatApi.md#getpendingmessages) | **GET** /chat_api/pending_messages | Get list of pending messages
+*ChatApi* | [**getPublicKey**](doc//ChatApi.md#getpublickey) | **GET** /chat_api/public_key/{account_id} | Get current public key of some account
 *ChatApi* | [**getReceivedBlocks**](doc//ChatApi.md#getreceivedblocks) | **GET** /chat_api/received_blocks | Get list of received blocks
 *ChatApi* | [**getReceivedLikes**](doc//ChatApi.md#getreceivedlikes) | **GET** /chat_api/received_likes | Get received likes.
 *ChatApi* | [**getSentBlocks**](doc//ChatApi.md#getsentblocks) | **GET** /chat_api/sent_blocks | Get list of sent blocks
@@ -93,7 +94,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postGetPendingNotification**](doc//ChatApi.md#postgetpendingnotification) | **POST** /chat_api/get_pending_notification | Get pending notification and reset pending notification.
 *ChatApi* | [**postMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#postmessagenumberoflatestviewedmessage) | **POST** /chat_api/message_number_of_latest_viewed_message | Update message number of the most recent message that the recipient has viewed.
 *ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /chat_api/send_like | Send a like to some account. If both will like each other, then
-*ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /chat_api/send_message | Send message to a match
+*ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /chat_api/send_message | Send message to a match.
 *ChatApi* | [**postSetDeviceToken**](doc//ChatApi.md#postsetdevicetoken) | **POST** /chat_api/set_device_token | 
 *ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /chat_api/unblock_profile | Unblock profile
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens.
@@ -193,6 +194,7 @@ Class | Method | HTTP request | Description
  - [DemoModeToken](doc//DemoModeToken.md)
  - [DownloadType](doc//DownloadType.md)
  - [DownloadTypeQueryParam](doc//DownloadTypeQueryParam.md)
+ - [EncryptedMessage](doc//EncryptedMessage.md)
  - [EventToClient](doc//EventToClient.md)
  - [EventType](doc//EventType.md)
  - [FavoriteProfilesPage](doc//FavoriteProfilesPage.md)
@@ -202,6 +204,7 @@ Class | Method | HTTP request | Description
  - [GetProfileContentResult](doc//GetProfileContentResult.md)
  - [GetProfileQueryParam](doc//GetProfileQueryParam.md)
  - [GetProfileResult](doc//GetProfileResult.md)
+ - [GetPublicKey](doc//GetPublicKey.md)
  - [GroupValues](doc//GroupValues.md)
  - [HandleModerationRequest](doc//HandleModerationRequest.md)
  - [IconLocation](doc//IconLocation.md)
@@ -261,6 +264,10 @@ Class | Method | HTTP request | Description
  - [ProfileUpdate](doc//ProfileUpdate.md)
  - [ProfileVersion](doc//ProfileVersion.md)
  - [ProfileVisibility](doc//ProfileVisibility.md)
+ - [PublicKey](doc//PublicKey.md)
+ - [PublicKeyData](doc//PublicKeyData.md)
+ - [PublicKeyId](doc//PublicKeyId.md)
+ - [PublicKeyVersion](doc//PublicKeyVersion.md)
  - [RebootQueryParam](doc//RebootQueryParam.md)
  - [ReceivedBlocksPage](doc//ReceivedBlocksPage.md)
  - [ReceivedBlocksSyncVersion](doc//ReceivedBlocksSyncVersion.md)
@@ -270,6 +277,7 @@ Class | Method | HTTP request | Description
  - [ResetDataQueryParam](doc//ResetDataQueryParam.md)
  - [SearchGroups](doc//SearchGroups.md)
  - [SecurityContent](doc//SecurityContent.md)
+ - [SendMessageResult](doc//SendMessageResult.md)
  - [SendMessageToAccount](doc//SendMessageToAccount.md)
  - [SentBlocksPage](doc//SentBlocksPage.md)
  - [SentBlocksSyncVersion](doc//SentBlocksSyncVersion.md)
@@ -277,6 +285,7 @@ Class | Method | HTTP request | Description
  - [SentLikesSyncVersion](doc//SentLikesSyncVersion.md)
  - [SetAccountSetup](doc//SetAccountSetup.md)
  - [SetProfileContent](doc//SetProfileContent.md)
+ - [SetPublicKey](doc//SetPublicKey.md)
  - [SignInWithLoginInfo](doc//SignInWithLoginInfo.md)
  - [SlotId](doc//SlotId.md)
  - [SoftwareInfo](doc//SoftwareInfo.md)

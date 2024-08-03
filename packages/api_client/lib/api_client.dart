@@ -267,6 +267,8 @@ class ApiClient {
           return DownloadTypeTypeTransformer().decode(value);
         case 'DownloadTypeQueryParam':
           return DownloadTypeQueryParam.fromJson(value);
+        case 'EncryptedMessage':
+          return EncryptedMessage.fromJson(value);
         case 'EventToClient':
           return EventToClient.fromJson(value);
         case 'EventType':
@@ -285,6 +287,8 @@ class ApiClient {
           return GetProfileQueryParam.fromJson(value);
         case 'GetProfileResult':
           return GetProfileResult.fromJson(value);
+        case 'GetPublicKey':
+          return GetPublicKey.fromJson(value);
         case 'GroupValues':
           return GroupValues.fromJson(value);
         case 'HandleModerationRequest':
@@ -403,6 +407,14 @@ class ApiClient {
           return ProfileVersion.fromJson(value);
         case 'ProfileVisibility':
           return ProfileVisibilityTypeTransformer().decode(value);
+        case 'PublicKey':
+          return PublicKey.fromJson(value);
+        case 'PublicKeyData':
+          return PublicKeyData.fromJson(value);
+        case 'PublicKeyId':
+          return PublicKeyId.fromJson(value);
+        case 'PublicKeyVersion':
+          return PublicKeyVersion.fromJson(value);
         case 'RebootQueryParam':
           return RebootQueryParam.fromJson(value);
         case 'ReceivedBlocksPage':
@@ -421,6 +433,8 @@ class ApiClient {
           return SearchGroups.fromJson(value);
         case 'SecurityContent':
           return SecurityContent.fromJson(value);
+        case 'SendMessageResult':
+          return SendMessageResult.fromJson(value);
         case 'SendMessageToAccount':
           return SendMessageToAccount.fromJson(value);
         case 'SentBlocksPage':
@@ -435,6 +449,8 @@ class ApiClient {
           return SetAccountSetup.fromJson(value);
         case 'SetProfileContent':
           return SetProfileContent.fromJson(value);
+        case 'SetPublicKey':
+          return SetPublicKey.fromJson(value);
         case 'SignInWithLoginInfo':
           return SignInWithLoginInfo.fromJson(value);
         case 'SlotId':
