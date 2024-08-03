@@ -17,3 +17,7 @@ panic = "abort"
 
 [dependencies]
 aes-gcm = "0.10.3"
+pgp = "0.13.1"
+smallvec = "1.13.2"
+bstr = "1.10.0"
+rand = "0.8.5"

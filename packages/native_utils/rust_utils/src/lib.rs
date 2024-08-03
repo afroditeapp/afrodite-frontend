@@ -5,5 +5,6 @@
 #![allow(clippy::missing_safety_doc)]
 
 mod ffi;
-mod content_encryption;
+mod content;
 mod buffer;
+mod message;
