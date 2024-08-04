@@ -44,6 +44,8 @@ class MediaRepository extends DataRepository {
 
   @override
   Future<void> onLogin() async {
+    await db.accountAction((db) => db.daoInitialSync.updateMediaSyncDone(false));
+
     syncHandler.onLoginSync(() async {
       final r1 = await reloadMyProfileContent();
       final r2 = await reloadMySecurityContent();
@@ -61,7 +63,7 @@ class MediaRepository extends DataRepository {
         final r1 = await reloadMyProfileContent();
         final r2 = await reloadMySecurityContent();
         if (r1.isOk() && r2.isOk()) {
-          await db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(true));
+          await db.accountAction((db) => db.daoInitialSync.updateMediaSyncDone(true));
         }
       }
     });

@@ -53,6 +53,8 @@ class ProfileRepository extends DataRepository {
   Future<void> onLogin() async {
     // TODO(prod): reset sync versions to "force sync"
 
+    await db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(false));
+
     syncHandler.onLoginSync(() async {
       // No Result checking needed for these calls as db null value is checked
       // onResumeAppUsage.

@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
+import 'package:native_utils/message.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/chat/message_converter.dart';
 import 'package:pihka_frontend/data/chat/message_database_iterator.dart';
 import 'package:pihka_frontend/data/chat/message_key_generator.dart';
 import 'package:pihka_frontend/data/general/notification/state/like_received.dart';
@@ -16,6 +18,7 @@ import 'package:pihka_frontend/data/utils.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("ChatRepository");
@@ -51,26 +54,52 @@ class ChatRepository extends DataRepository {
     sentBlocksIterator.reset();
     receivedLikesIterator.reset();
     matchesIterator.reset();
+    await db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(false));
 
     syncHandler.onLoginSync(() async {
-      await _syncData();
+      await _generateMessageKeyIfNeeded();
     });
   }
 
   @override
   Future<void> onResumeAppUsage() async {
     syncHandler.onResumeAppUsageSync(() async {
-      await _syncData();
+      await _generateMessageKeyIfNeeded();
     });
   }
 
-  @override
-  Future<void> onInitialSetupComplete() async {
-    await _syncData();
-  }
+  Future<void> _generateMessageKeyIfNeeded() async {
+    final currentChatSyncValue = await db.accountStreamSingle((db) => db.daoInitialSync.watchChatSyncDone()).ok() ?? false;
+    if (currentChatSyncValue) {
+      // Already done
+      return;
+    }
 
-  Future<void> _syncData() async {
-    // Empty as server events handle all chat related syncing.
+    final currentAccount = await LoginRepository.getInstance().accountId.firstOrNull;
+    if (currentAccount == null) {
+      return;
+    }
+    final keys = await messageKeyManager.generateOrLoadMessageKeys(currentAccount).ok();
+    if (keys == null) {
+      return;
+    }
+    final currentPublicKeyOnServer =
+      await _api.chat((api) => api.getPublicKey(currentAccount.accountId, 1)).ok();
+    if (currentPublicKeyOnServer == null) {
+      return;
+    }
+
+    if (currentPublicKeyOnServer.key?.id != keys.public.id) {
+      final uploadAndSaveResult = await messageKeyManager.uploadPublicKeyAndSaveAllKeys(GeneratedMessageKeys(
+        armoredPublicKey: keys.public.data.data,
+        armoredPrivateKey: keys.private.data,
+      ));
+      if (uploadAndSaveResult.isErr()) {
+        return;
+      }
+    }
+
+    await db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(true));
   }
 
   Future<bool> isInMatches(AccountId accountId) async {
@@ -284,6 +313,10 @@ class ChatRepository extends DataRepository {
     if (currentUser == null) {
       return;
     }
+    final allKeys = await messageKeyManager.generateOrLoadMessageKeys(currentUser).ok();
+    if (allKeys == null) {
+      return;
+    }
     final newMessages = await _api.chat((api) => api.getPendingMessages()).ok();
     if (newMessages != null) {
       final toBeDeleted = <PendingMessageId>[];
@@ -295,7 +328,11 @@ class ChatRepository extends DataRepository {
           ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
         }
 
-        final r = await db.messageAction((db) => db.insertPendingMessage(currentUser, message));
+        // TODO: Store some error state to database
+        //       instead of the error text.
+        final decryptedMessage = await decryptReceivedMessage(allKeys, message).ok() ?? "Message decrypting failed";
+
+        final r = await db.messageAction((db) => db.insertPendingMessage(currentUser, message, decryptedMessage));
         if (r.isOk()) {
           toBeDeleted.add(message.id);
           ProfileRepository.getInstance().sendProfileChange(ConversationChanged(message.id.accountIdSender, ConversationChangeType.messageReceived));
@@ -323,6 +360,27 @@ class ChatRepository extends DataRepository {
       }
       // TODO: If request fails try again at some point.
     }
+  }
+
+  Future<Result<String, void>> decryptReceivedMessage(AllKeyData allKeys, PendingMessage message) async {
+    final publicKey = await getPublicKeyForForeignAccount(message.id.accountIdSender, forceDownload: false).ok();
+    if (publicKey == null) {
+      return const Err(null);
+    }
+
+    final (messageBytes, decryptingResult) = decryptMessage(
+      publicKey.data.data,
+      allKeys.private.data,
+      message.message,
+    );
+
+    if (messageBytes == null) {
+      // TODO: try again with downloaded public key
+      log.error("TODO: try again public key downloading, error: $decryptingResult");
+      return const Err(null);
+    }
+
+    return MessageConverter().bytesToText(messageBytes);
   }
 
   // TODO error handling
@@ -359,37 +417,40 @@ class ChatRepository extends DataRepository {
 
     ProfileRepository.getInstance().sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
 
-    final currentUserKeys = await messageKeyManager.generateOrLoadMessageKeys(currentUser);
+    final currentUserKeys = await messageKeyManager.generateOrLoadMessageKeys(currentUser).ok();
     if (currentUserKeys == null) {
       // TODO: error handling
+      return;
     }
-    final String encryptedMessage;
     final PublicKey receiverPublicKey;
-    switch (await db.profileData((db) => db.getPublicKey(accountId))) {
+    switch (await getPublicKeyForForeignAccount(accountId, forceDownload: false)) {
       case Ok(:final v):
-
         if (v == null) {
-          final publicKeyResponse = await _api.chat((api) => api.getPublicKey(accountId.accountId, 1)).ok();
-          final publicKey = publicKeyResponse?.key;
-          if (publicKey == null) {
-            // TODO: error handling
-            return;
-          }
-          final savePublicKeyResult = await db.profileAction((db) => db.updatePublicKey(accountId, publicKey));
-          if (savePublicKeyResult.isErr()) {
-            // TODO: error handling
-            return;
-          }
-          receiverPublicKey = publicKey;
+          // TODO: error handling
+          return;
         } else {
           receiverPublicKey = v;
         }
-
-        // TODO: Encrypt message
-        encryptedMessage = message;
       case Err(:final e):
        // TODO: error handling
        return;
+    }
+
+    final messageBytes = MessageConverter().textToBytes(message).ok();
+    if (messageBytes == null) {
+      // TODO: Error handling
+      return;
+    }
+
+    final (encryptedMessage, encryptingResult) = encryptMessage(
+      currentUserKeys.private.data,
+      receiverPublicKey.data.data,
+      messageBytes,
+    );
+
+    if (encryptedMessage == null) {
+      log.error("Message encryption error: $encryptingResult");
+      return;
     }
 
     final sendMessage = SendMessageToAccount(
@@ -398,12 +459,54 @@ class ChatRepository extends DataRepository {
       receiverPublicKeyId: receiverPublicKey.id,
       receiverPublicKeyVersion: receiverPublicKey.version,
     );
-    final result = await _api.chatAction((api) => api.postSendMessage(sendMessage));
-    if (result.isErr()) {
+    final result = await _api.chat((api) => api.postSendMessage(sendMessage)).ok();
+    if (result == null) {
       // TODO error handling
+      return;
+    }
+
+    if (result.errorTooManyPendingMessages) {
+      // TODO error handling
+      return;
+    }
+
+    if (result.errorReceiverPublicKeyOutdated) {
+      // TODO: download new key and try again
     }
 
     // TODO save sent status to local database
+  }
+
+  /// If PublicKey is null then PublicKey for that account does not exist.
+  Future<Result<PublicKey?, void>> getPublicKeyForForeignAccount(
+    AccountId accountId,
+    {required bool forceDownload}
+  ) async {
+    if (forceDownload) {
+      if (await refreshForeignPublicKey(accountId).isErr()) {
+        return const Err(null);
+      }
+    }
+
+    switch (await db.profileData((db) => db.getPublicKey(accountId))) {
+      case Ok(:final v):
+        if (v == null) {
+          if (await refreshForeignPublicKey(accountId).isErr()) {
+            return const Err(null);
+          }
+          return await db.profileData((db) => db.getPublicKey(accountId));
+        } else {
+          return Ok(v);
+        }
+      case Err():
+        return const Err(null);
+    }
+  }
+
+  Future<Result<void, void>> refreshForeignPublicKey(AccountId accountId) async {
+    return await _api.chat((api) => api.getPublicKey(accountId.accountId, 1))
+      .andThen((key) => db.profileAction((db) => db.updatePublicKey(accountId, key.key)))
+      .mapErr((_) => null);
   }
 
   /// Get message and updates to it.

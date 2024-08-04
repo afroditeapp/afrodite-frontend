@@ -9,7 +9,7 @@ import 'package:native_utils/bindings.dart';
 class GeneratedMessageKeys {
   final String armoredPublicKey;
   final String armoredPrivateKey;
-  GeneratedMessageKeys(this.armoredPublicKey, this.armoredPrivateKey);
+  GeneratedMessageKeys({required this.armoredPublicKey, required this.armoredPrivateKey});
 }
 
 /// If generation fails, null is returned.
@@ -22,8 +22,8 @@ class GeneratedMessageKeys {
   final (GeneratedMessageKeys?, int) returnValue;
   if (result == 0) {
     final keys = GeneratedMessageKeys(
-      keyGenerationResult.public_key.cast<Utf8>().toDartString(),
-      keyGenerationResult.private_key.cast<Utf8>().toDartString(),
+      armoredPublicKey: keyGenerationResult.public_key.cast<Utf8>().toDartString(),
+      armoredPrivateKey: keyGenerationResult.private_key.cast<Utf8>().toDartString(),
     );
     returnValue = (keys, 0);
   } else {

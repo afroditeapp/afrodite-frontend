@@ -3,12 +3,13 @@
 import 'dart:isolate';
 
 import 'package:database/database.dart';
+import 'package:logging/logging.dart';
 import 'package:native_utils/message.dart';
-import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
@@ -21,6 +22,8 @@ import 'package:rxdart/subjects.dart';
 //                      Or prehaps account specific database and API access
 //                      needs accessor objects which guarantee access to
 //                      only specific database and API when login is valid.
+
+final log = Logger("MessageKeyManager");
 
 enum KeyGeneratorState {
   idle,
@@ -35,38 +38,77 @@ class MessageKeyManager {
   LoginRepository login = LoginRepository.getInstance();
   ApiManager api = ApiManager.getInstance();
 
-  /// Returns null if there is some error
-  Future<AllKeyData?> generateOrLoadMessageKeys(AccountId accountId) async {
+  Future<Result<AllKeyData, void>> generateOrLoadMessageKeys(AccountId accountId) async {
     if (generation.value == KeyGeneratorState.inProgress) {
       await generation.where((v) => v == KeyGeneratorState.idle).first;
       if (accountId != await login.accountId.first) {
-        return null;
+        return const Err(null);
       }
       return await _loadMessageKeys(accountId);
     } else {
       generation.add(KeyGeneratorState.inProgress);
       if (accountId != await login.accountId.first) {
-        return null;
+        return const Err(null);
       }
       var result = await _loadMessageKeys(accountId);
-      result ??= await _generateMessageKeys(accountId);
+      if (result.isErr()) {
+        result = await _generateMessageKeys(accountId);
+      }
       generation.add(KeyGeneratorState.idle);
       return result;
     }
   }
 
-  Future<AllKeyData?> _loadMessageKeys(AccountId accountId) async {
-    final keys = await db.accountData((db) => db.daoMessageKeys.getMessageKeys()).ok();
-    return keys;
+  Future<Result<AllKeyData, void>> _loadMessageKeys(AccountId accountId) async {
+    final value = await db.accountData((db) => db.daoMessageKeys.getMessageKeys()).ok();
+    if (value == null) {
+      return const Err(null);
+    } else {
+      return Ok(value);
+    }
   }
 
-  Future<AllKeyData?> _generateMessageKeys(AccountId accountId) async {
-    final newKeys = await Isolate.run(() => generateMessageKeys(accountId.accountId));
+  Future<Result<AllKeyData, void>> _generateMessageKeys(AccountId accountId) async {
+    final (newKeys, result) = await Isolate.run(() => generateMessageKeys(accountId.accountId));
     if (accountId != await login.accountId.first) {
-      return null;
+      return const Err(null);
     }
-    // TODO: Set the key to server and save all keys to DB
+    if (newKeys == null) {
+      log.error("Generating message keys failed, error: $result");
+      return const Err(null);
+    }
 
-    return null;
+    return await uploadPublicKeyAndSaveAllKeys(newKeys);
+  }
+
+  Future<Result<AllKeyData, void>> uploadPublicKeyAndSaveAllKeys(
+    GeneratedMessageKeys newKeys,
+  ) async {
+    final version = PublicKeyVersion(version: 1);
+    final keyId = await api.chat((api) => api.postPublicKey(SetPublicKey(
+      data: PublicKeyData(data: newKeys.armoredPublicKey),
+      version: version,
+    ))).ok();
+
+    if (keyId == null) {
+      return const Err(null);
+    }
+
+    final private = PrivateKeyData(data: newKeys.armoredPrivateKey);
+    final public = PublicKey(
+      data: PublicKeyData(data: newKeys.armoredPublicKey),
+      id: keyId,
+      version: version,
+    );
+    final dbResult = await db.accountAction((db) => db.daoMessageKeys.setMessageKeys(
+      private: private,
+      public: public,
+    ));
+
+    if (dbResult.isErr()) {
+      return const Err(null);
+    } else {
+      return Ok(AllKeyData(private: private, public: public));
+    }
   }
 }

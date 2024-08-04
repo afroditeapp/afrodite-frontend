@@ -456,19 +456,19 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
 
   Future<void> updatePublicKey(
     AccountId accountId,
-    api.PublicKey value,
+    api.PublicKey? value,
   ) async {
     await into(profiles).insert(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
-        publicKeyData: Value(value.data),
-        publicKeyId: Value(value.id),
-        publicKeyVersion: Value(value.version),
+        publicKeyData: Value(value?.data),
+        publicKeyId: Value(value?.id),
+        publicKeyVersion: Value(value?.version),
       ),
       onConflict: DoUpdate((old) => ProfilesCompanion(
-        publicKeyData: Value(value.data),
-        publicKeyId: Value(value.id),
-        publicKeyVersion: Value(value.version),
+        publicKeyData: Value(value?.data),
+        publicKeyId: Value(value?.id),
+        publicKeyVersion: Value(value?.version),
       ),
         target: [profiles.uuidAccountId]
       ),
