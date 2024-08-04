@@ -15,4 +15,5 @@ export 'src/foreground/account_database.dart' show AccountDatabase, PROFILE_FILT
 export 'src/message_entry.dart' show MessageEntry, SentMessageState, ReceivedMessageState;
 export 'src/profile_entry.dart' show ProfileEntry, ProfileLocalDbId, NewMessageNotificationId, ProfileTitle;
 export 'src/notification_session_id.dart' show NotificationSessionId;
+export 'src/private_key_data.dart' show PrivateKeyData, AllKeyData;
 export 'src/utils.dart' show QueryExcecutorProvider;

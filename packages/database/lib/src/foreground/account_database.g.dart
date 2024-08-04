@@ -529,6 +529,39 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       GeneratedColumn<int>(
           'local_image_setting_image_cache_downscaling_size', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _privateKeyDataMeta =
+      const VerificationMeta('privateKeyData');
+  @override
+  late final GeneratedColumnWithTypeConverter<PrivateKeyData?, String>
+      privateKeyData = GeneratedColumn<String>(
+              'private_key_data', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<PrivateKeyData?>(
+              $AccountTable.$converterprivateKeyData);
+  static const VerificationMeta _publicKeyDataMeta =
+      const VerificationMeta('publicKeyData');
+  @override
+  late final GeneratedColumnWithTypeConverter<PublicKeyData?, String>
+      publicKeyData = GeneratedColumn<String>(
+              'public_key_data', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<PublicKeyData?>($AccountTable.$converterpublicKeyData);
+  static const VerificationMeta _publicKeyIdMeta =
+      const VerificationMeta('publicKeyId');
+  @override
+  late final GeneratedColumnWithTypeConverter<PublicKeyId?, int> publicKeyId =
+      GeneratedColumn<int>('public_key_id', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<PublicKeyId?>($AccountTable.$converterpublicKeyId);
+  static const VerificationMeta _publicKeyVersionMeta =
+      const VerificationMeta('publicKeyVersion');
+  @override
+  late final GeneratedColumnWithTypeConverter<PublicKeyVersion?, int>
+      publicKeyVersion = GeneratedColumn<int>(
+              'public_key_version', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<PublicKeyVersion?>(
+              $AccountTable.$converterpublicKeyVersion);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -597,7 +630,11 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         accessTokenChat,
         localImageSettingImageCacheMaxBytes,
         localImageSettingCacheFullSizedImages,
-        localImageSettingImageCacheDownscalingSize
+        localImageSettingImageCacheDownscalingSize,
+        privateKeyData,
+        publicKeyData,
+        publicKeyId,
+        publicKeyVersion
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -915,6 +952,10 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['local_image_setting_image_cache_downscaling_size']!,
               _localImageSettingImageCacheDownscalingSizeMeta));
     }
+    context.handle(_privateKeyDataMeta, const VerificationResult.success());
+    context.handle(_publicKeyDataMeta, const VerificationResult.success());
+    context.handle(_publicKeyIdMeta, const VerificationResult.success());
+    context.handle(_publicKeyVersionMeta, const VerificationResult.success());
     return context;
   }
 
@@ -1113,6 +1154,18 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           DriftSqlType.int,
           data[
               '${effectivePrefix}local_image_setting_image_cache_downscaling_size']),
+      privateKeyData: $AccountTable.$converterprivateKeyData.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}private_key_data'])),
+      publicKeyData: $AccountTable.$converterpublicKeyData.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}public_key_data'])),
+      publicKeyId: $AccountTable.$converterpublicKeyId.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}public_key_id'])),
+      publicKeyVersion: $AccountTable.$converterpublicKeyVersion.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.int, data['${effectivePrefix}public_key_version'])),
     );
   }
 
@@ -1179,6 +1232,14 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<LastSeenTimeFilter?, int?>
       $converterprofileLastSeenTimeFilter =
       const NullAwareTypeConverter.wrap(LastSeenTimeFilterConverter());
+  static TypeConverter<PrivateKeyData?, String?> $converterprivateKeyData =
+      const NullAwareTypeConverter.wrap(PrivateKeyDataConverter());
+  static TypeConverter<PublicKeyData?, String?> $converterpublicKeyData =
+      const NullAwareTypeConverter.wrap(PublicKeyDataConverter());
+  static TypeConverter<PublicKeyId?, int?> $converterpublicKeyId =
+      const NullAwareTypeConverter.wrap(PublicKeyIdConverter());
+  static TypeConverter<PublicKeyVersion?, int?> $converterpublicKeyVersion =
+      const NullAwareTypeConverter.wrap(PublicKeyVersionConverter());
 }
 
 class AccountData extends DataClass implements Insertable<AccountData> {
@@ -1251,6 +1312,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final int? localImageSettingImageCacheMaxBytes;
   final bool? localImageSettingCacheFullSizedImages;
   final int? localImageSettingImageCacheDownscalingSize;
+  final PrivateKeyData? privateKeyData;
+  final PublicKeyData? publicKeyData;
+  final PublicKeyId? publicKeyId;
+  final PublicKeyVersion? publicKeyVersion;
   const AccountData(
       {required this.id,
       this.uuidAccountId,
@@ -1318,7 +1383,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.accessTokenChat,
       this.localImageSettingImageCacheMaxBytes,
       this.localImageSettingCacheFullSizedImages,
-      this.localImageSettingImageCacheDownscalingSize});
+      this.localImageSettingImageCacheDownscalingSize,
+      this.privateKeyData,
+      this.publicKeyData,
+      this.publicKeyId,
+      this.publicKeyVersion});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1572,6 +1641,22 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['local_image_setting_image_cache_downscaling_size'] =
           Variable<int>(localImageSettingImageCacheDownscalingSize);
     }
+    if (!nullToAbsent || privateKeyData != null) {
+      map['private_key_data'] = Variable<String>(
+          $AccountTable.$converterprivateKeyData.toSql(privateKeyData));
+    }
+    if (!nullToAbsent || publicKeyData != null) {
+      map['public_key_data'] = Variable<String>(
+          $AccountTable.$converterpublicKeyData.toSql(publicKeyData));
+    }
+    if (!nullToAbsent || publicKeyId != null) {
+      map['public_key_id'] =
+          Variable<int>($AccountTable.$converterpublicKeyId.toSql(publicKeyId));
+    }
+    if (!nullToAbsent || publicKeyVersion != null) {
+      map['public_key_version'] = Variable<int>(
+          $AccountTable.$converterpublicKeyVersion.toSql(publicKeyVersion));
+    }
     return map;
   }
 
@@ -1778,6 +1863,18 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           localImageSettingImageCacheDownscalingSize == null && nullToAbsent
               ? const Value.absent()
               : Value(localImageSettingImageCacheDownscalingSize),
+      privateKeyData: privateKeyData == null && nullToAbsent
+          ? const Value.absent()
+          : Value(privateKeyData),
+      publicKeyData: publicKeyData == null && nullToAbsent
+          ? const Value.absent()
+          : Value(publicKeyData),
+      publicKeyId: publicKeyId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(publicKeyId),
+      publicKeyVersion: publicKeyVersion == null && nullToAbsent
+          ? const Value.absent()
+          : Value(publicKeyVersion),
     );
   }
 
@@ -1903,6 +2000,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .fromJson<bool?>(json['localImageSettingCacheFullSizedImages']),
       localImageSettingImageCacheDownscalingSize: serializer
           .fromJson<int?>(json['localImageSettingImageCacheDownscalingSize']),
+      privateKeyData:
+          serializer.fromJson<PrivateKeyData?>(json['privateKeyData']),
+      publicKeyData: serializer.fromJson<PublicKeyData?>(json['publicKeyData']),
+      publicKeyId: serializer.fromJson<PublicKeyId?>(json['publicKeyId']),
+      publicKeyVersion:
+          serializer.fromJson<PublicKeyVersion?>(json['publicKeyVersion']),
     );
   }
   @override
@@ -2013,6 +2116,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.toJson<bool?>(localImageSettingCacheFullSizedImages),
       'localImageSettingImageCacheDownscalingSize':
           serializer.toJson<int?>(localImageSettingImageCacheDownscalingSize),
+      'privateKeyData': serializer.toJson<PrivateKeyData?>(privateKeyData),
+      'publicKeyData': serializer.toJson<PublicKeyData?>(publicKeyData),
+      'publicKeyId': serializer.toJson<PublicKeyId?>(publicKeyId),
+      'publicKeyVersion':
+          serializer.toJson<PublicKeyVersion?>(publicKeyVersion),
     };
   }
 
@@ -2092,7 +2200,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<bool?> localImageSettingCacheFullSizedImages =
               const Value.absent(),
           Value<int?> localImageSettingImageCacheDownscalingSize =
-              const Value.absent()}) =>
+              const Value.absent(),
+          Value<PrivateKeyData?> privateKeyData = const Value.absent(),
+          Value<PublicKeyData?> publicKeyData = const Value.absent(),
+          Value<PublicKeyId?> publicKeyId = const Value.absent(),
+          Value<PublicKeyVersion?> publicKeyVersion = const Value.absent()}) =>
       AccountData(
         id: id ?? this.id,
         uuidAccountId:
@@ -2278,6 +2390,14 @@ class AccountData extends DataClass implements Insertable<AccountData> {
             localImageSettingImageCacheDownscalingSize.present
                 ? localImageSettingImageCacheDownscalingSize.value
                 : this.localImageSettingImageCacheDownscalingSize,
+        privateKeyData:
+            privateKeyData.present ? privateKeyData.value : this.privateKeyData,
+        publicKeyData:
+            publicKeyData.present ? publicKeyData.value : this.publicKeyData,
+        publicKeyId: publicKeyId.present ? publicKeyId.value : this.publicKeyId,
+        publicKeyVersion: publicKeyVersion.present
+            ? publicKeyVersion.value
+            : this.publicKeyVersion,
       );
   @override
   String toString() {
@@ -2362,7 +2482,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write(
               'localImageSettingCacheFullSizedImages: $localImageSettingCacheFullSizedImages, ')
           ..write(
-              'localImageSettingImageCacheDownscalingSize: $localImageSettingImageCacheDownscalingSize')
+              'localImageSettingImageCacheDownscalingSize: $localImageSettingImageCacheDownscalingSize, ')
+          ..write('privateKeyData: $privateKeyData, ')
+          ..write('publicKeyData: $publicKeyData, ')
+          ..write('publicKeyId: $publicKeyId, ')
+          ..write('publicKeyVersion: $publicKeyVersion')
           ..write(')'))
         .toString();
   }
@@ -2435,7 +2559,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         accessTokenChat,
         localImageSettingImageCacheMaxBytes,
         localImageSettingCacheFullSizedImages,
-        localImageSettingImageCacheDownscalingSize
+        localImageSettingImageCacheDownscalingSize,
+        privateKeyData,
+        publicKeyData,
+        publicKeyId,
+        publicKeyVersion
       ]);
   @override
   bool operator ==(Object other) =>
@@ -2523,7 +2651,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.localImageSettingCacheFullSizedImages ==
               this.localImageSettingCacheFullSizedImages &&
           other.localImageSettingImageCacheDownscalingSize ==
-              this.localImageSettingImageCacheDownscalingSize);
+              this.localImageSettingImageCacheDownscalingSize &&
+          other.privateKeyData == this.privateKeyData &&
+          other.publicKeyData == this.publicKeyData &&
+          other.publicKeyId == this.publicKeyId &&
+          other.publicKeyVersion == this.publicKeyVersion);
 }
 
 class AccountCompanion extends UpdateCompanion<AccountData> {
@@ -2594,6 +2726,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<int?> localImageSettingImageCacheMaxBytes;
   final Value<bool?> localImageSettingCacheFullSizedImages;
   final Value<int?> localImageSettingImageCacheDownscalingSize;
+  final Value<PrivateKeyData?> privateKeyData;
+  final Value<PublicKeyData?> publicKeyData;
+  final Value<PublicKeyId?> publicKeyId;
+  final Value<PublicKeyVersion?> publicKeyVersion;
   const AccountCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -2662,6 +2798,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.localImageSettingImageCacheMaxBytes = const Value.absent(),
     this.localImageSettingCacheFullSizedImages = const Value.absent(),
     this.localImageSettingImageCacheDownscalingSize = const Value.absent(),
+    this.privateKeyData = const Value.absent(),
+    this.publicKeyData = const Value.absent(),
+    this.publicKeyId = const Value.absent(),
+    this.publicKeyVersion = const Value.absent(),
   });
   AccountCompanion.insert({
     this.id = const Value.absent(),
@@ -2731,6 +2871,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.localImageSettingImageCacheMaxBytes = const Value.absent(),
     this.localImageSettingCacheFullSizedImages = const Value.absent(),
     this.localImageSettingImageCacheDownscalingSize = const Value.absent(),
+    this.privateKeyData = const Value.absent(),
+    this.publicKeyData = const Value.absent(),
+    this.publicKeyId = const Value.absent(),
+    this.publicKeyVersion = const Value.absent(),
   });
   static Insertable<AccountData> custom({
     Expression<int>? id,
@@ -2800,6 +2944,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<int>? localImageSettingImageCacheMaxBytes,
     Expression<bool>? localImageSettingCacheFullSizedImages,
     Expression<int>? localImageSettingImageCacheDownscalingSize,
+    Expression<String>? privateKeyData,
+    Expression<String>? publicKeyData,
+    Expression<int>? publicKeyId,
+    Expression<int>? publicKeyVersion,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2924,6 +3072,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (localImageSettingImageCacheDownscalingSize != null)
         'local_image_setting_image_cache_downscaling_size':
             localImageSettingImageCacheDownscalingSize,
+      if (privateKeyData != null) 'private_key_data': privateKeyData,
+      if (publicKeyData != null) 'public_key_data': publicKeyData,
+      if (publicKeyId != null) 'public_key_id': publicKeyId,
+      if (publicKeyVersion != null) 'public_key_version': publicKeyVersion,
     });
   }
 
@@ -2994,7 +3146,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<String?>? accessTokenChat,
       Value<int?>? localImageSettingImageCacheMaxBytes,
       Value<bool?>? localImageSettingCacheFullSizedImages,
-      Value<int?>? localImageSettingImageCacheDownscalingSize}) {
+      Value<int?>? localImageSettingImageCacheDownscalingSize,
+      Value<PrivateKeyData?>? privateKeyData,
+      Value<PublicKeyData?>? publicKeyData,
+      Value<PublicKeyId?>? publicKeyId,
+      Value<PublicKeyVersion?>? publicKeyVersion}) {
     return AccountCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -3107,6 +3263,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       localImageSettingImageCacheDownscalingSize:
           localImageSettingImageCacheDownscalingSize ??
               this.localImageSettingImageCacheDownscalingSize,
+      privateKeyData: privateKeyData ?? this.privateKeyData,
+      publicKeyData: publicKeyData ?? this.publicKeyData,
+      publicKeyId: publicKeyId ?? this.publicKeyId,
+      publicKeyVersion: publicKeyVersion ?? this.publicKeyVersion,
     );
   }
 
@@ -3387,6 +3547,23 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['local_image_setting_image_cache_downscaling_size'] =
           Variable<int>(localImageSettingImageCacheDownscalingSize.value);
     }
+    if (privateKeyData.present) {
+      map['private_key_data'] = Variable<String>(
+          $AccountTable.$converterprivateKeyData.toSql(privateKeyData.value));
+    }
+    if (publicKeyData.present) {
+      map['public_key_data'] = Variable<String>(
+          $AccountTable.$converterpublicKeyData.toSql(publicKeyData.value));
+    }
+    if (publicKeyId.present) {
+      map['public_key_id'] = Variable<int>(
+          $AccountTable.$converterpublicKeyId.toSql(publicKeyId.value));
+    }
+    if (publicKeyVersion.present) {
+      map['public_key_version'] = Variable<int>($AccountTable
+          .$converterpublicKeyVersion
+          .toSql(publicKeyVersion.value));
+    }
     return map;
   }
 
@@ -3473,7 +3650,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write(
               'localImageSettingCacheFullSizedImages: $localImageSettingCacheFullSizedImages, ')
           ..write(
-              'localImageSettingImageCacheDownscalingSize: $localImageSettingImageCacheDownscalingSize')
+              'localImageSettingImageCacheDownscalingSize: $localImageSettingImageCacheDownscalingSize, ')
+          ..write('privateKeyData: $privateKeyData, ')
+          ..write('publicKeyData: $publicKeyData, ')
+          ..write('publicKeyId: $publicKeyId, ')
+          ..write('publicKeyVersion: $publicKeyVersion')
           ..write(')'))
         .toString();
   }
@@ -3629,6 +3810,31 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   late final GeneratedColumn<double> primaryContentGridCropY =
       GeneratedColumn<double>('primary_content_grid_crop_y', aliasedName, true,
           type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _publicKeyDataMeta =
+      const VerificationMeta('publicKeyData');
+  @override
+  late final GeneratedColumnWithTypeConverter<PublicKeyData?, String>
+      publicKeyData = GeneratedColumn<String>(
+              'public_key_data', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<PublicKeyData?>(
+              $ProfilesTable.$converterpublicKeyData);
+  static const VerificationMeta _publicKeyIdMeta =
+      const VerificationMeta('publicKeyId');
+  @override
+  late final GeneratedColumnWithTypeConverter<PublicKeyId?, int> publicKeyId =
+      GeneratedColumn<int>('public_key_id', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<PublicKeyId?>($ProfilesTable.$converterpublicKeyId);
+  static const VerificationMeta _publicKeyVersionMeta =
+      const VerificationMeta('publicKeyVersion');
+  @override
+  late final GeneratedColumnWithTypeConverter<PublicKeyVersion?, int>
+      publicKeyVersion = GeneratedColumn<int>(
+              'public_key_version', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<PublicKeyVersion?>(
+              $ProfilesTable.$converterpublicKeyVersion);
   static const VerificationMeta _isInFavoritesMeta =
       const VerificationMeta('isInFavorites');
   @override
@@ -3706,6 +3912,9 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
         primaryContentGridCropSize,
         primaryContentGridCropX,
         primaryContentGridCropY,
+        publicKeyData,
+        publicKeyId,
+        publicKeyVersion,
         isInFavorites,
         isInMatches,
         isInReceivedBlocks,
@@ -3791,6 +4000,9 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
               data['primary_content_grid_crop_y']!,
               _primaryContentGridCropYMeta));
     }
+    context.handle(_publicKeyDataMeta, const VerificationResult.success());
+    context.handle(_publicKeyIdMeta, const VerificationResult.success());
+    context.handle(_publicKeyVersionMeta, const VerificationResult.success());
     context.handle(_isInFavoritesMeta, const VerificationResult.success());
     context.handle(_isInMatchesMeta, const VerificationResult.success());
     context.handle(_isInReceivedBlocksMeta, const VerificationResult.success());
@@ -3859,6 +4071,15 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       primaryContentGridCropY: attachedDatabase.typeMapping.read(
           DriftSqlType.double,
           data['${effectivePrefix}primary_content_grid_crop_y']),
+      publicKeyData: $ProfilesTable.$converterpublicKeyData.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}public_key_data'])),
+      publicKeyId: $ProfilesTable.$converterpublicKeyId.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}public_key_id'])),
+      publicKeyVersion: $ProfilesTable.$converterpublicKeyVersion.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.int, data['${effectivePrefix}public_key_version'])),
       isInFavorites: $ProfilesTable.$converterisInFavorites.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}is_in_favorites'])),
@@ -3909,6 +4130,12 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       const NullAwareTypeConverter.wrap(ProfileVersionConverter());
   static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
       NullAwareTypeConverter.wrap(JsonList.driftConverter);
+  static TypeConverter<PublicKeyData?, String?> $converterpublicKeyData =
+      const NullAwareTypeConverter.wrap(PublicKeyDataConverter());
+  static TypeConverter<PublicKeyId?, int?> $converterpublicKeyId =
+      const NullAwareTypeConverter.wrap(PublicKeyIdConverter());
+  static TypeConverter<PublicKeyVersion?, int?> $converterpublicKeyVersion =
+      const NullAwareTypeConverter.wrap(PublicKeyVersionConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInFavorites =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInMatches =
@@ -3947,6 +4174,9 @@ class Profile extends DataClass implements Insertable<Profile> {
   final double? primaryContentGridCropSize;
   final double? primaryContentGridCropX;
   final double? primaryContentGridCropY;
+  final PublicKeyData? publicKeyData;
+  final PublicKeyId? publicKeyId;
+  final PublicKeyVersion? publicKeyVersion;
   final UtcDateTime? isInFavorites;
   final UtcDateTime? isInMatches;
   final UtcDateTime? isInReceivedBlocks;
@@ -3974,6 +4204,9 @@ class Profile extends DataClass implements Insertable<Profile> {
       this.primaryContentGridCropSize,
       this.primaryContentGridCropX,
       this.primaryContentGridCropY,
+      this.publicKeyData,
+      this.publicKeyId,
+      this.publicKeyVersion,
       this.isInFavorites,
       this.isInMatches,
       this.isInReceivedBlocks,
@@ -4054,6 +4287,18 @@ class Profile extends DataClass implements Insertable<Profile> {
     if (!nullToAbsent || primaryContentGridCropY != null) {
       map['primary_content_grid_crop_y'] =
           Variable<double>(primaryContentGridCropY);
+    }
+    if (!nullToAbsent || publicKeyData != null) {
+      map['public_key_data'] = Variable<String>(
+          $ProfilesTable.$converterpublicKeyData.toSql(publicKeyData));
+    }
+    if (!nullToAbsent || publicKeyId != null) {
+      map['public_key_id'] = Variable<int>(
+          $ProfilesTable.$converterpublicKeyId.toSql(publicKeyId));
+    }
+    if (!nullToAbsent || publicKeyVersion != null) {
+      map['public_key_version'] = Variable<int>(
+          $ProfilesTable.$converterpublicKeyVersion.toSql(publicKeyVersion));
     }
     if (!nullToAbsent || isInFavorites != null) {
       map['is_in_favorites'] = Variable<int>(
@@ -4143,6 +4388,15 @@ class Profile extends DataClass implements Insertable<Profile> {
       primaryContentGridCropY: primaryContentGridCropY == null && nullToAbsent
           ? const Value.absent()
           : Value(primaryContentGridCropY),
+      publicKeyData: publicKeyData == null && nullToAbsent
+          ? const Value.absent()
+          : Value(publicKeyData),
+      publicKeyId: publicKeyId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(publicKeyId),
+      publicKeyVersion: publicKeyVersion == null && nullToAbsent
+          ? const Value.absent()
+          : Value(publicKeyVersion),
       isInFavorites: isInFavorites == null && nullToAbsent
           ? const Value.absent()
           : Value(isInFavorites),
@@ -4198,6 +4452,10 @@ class Profile extends DataClass implements Insertable<Profile> {
           serializer.fromJson<double?>(json['primaryContentGridCropX']),
       primaryContentGridCropY:
           serializer.fromJson<double?>(json['primaryContentGridCropY']),
+      publicKeyData: serializer.fromJson<PublicKeyData?>(json['publicKeyData']),
+      publicKeyId: serializer.fromJson<PublicKeyId?>(json['publicKeyId']),
+      publicKeyVersion:
+          serializer.fromJson<PublicKeyVersion?>(json['publicKeyVersion']),
       isInFavorites: serializer.fromJson<UtcDateTime?>(json['isInFavorites']),
       isInMatches: serializer.fromJson<UtcDateTime?>(json['isInMatches']),
       isInReceivedBlocks:
@@ -4239,6 +4497,10 @@ class Profile extends DataClass implements Insertable<Profile> {
           serializer.toJson<double?>(primaryContentGridCropX),
       'primaryContentGridCropY':
           serializer.toJson<double?>(primaryContentGridCropY),
+      'publicKeyData': serializer.toJson<PublicKeyData?>(publicKeyData),
+      'publicKeyId': serializer.toJson<PublicKeyId?>(publicKeyId),
+      'publicKeyVersion':
+          serializer.toJson<PublicKeyVersion?>(publicKeyVersion),
       'isInFavorites': serializer.toJson<UtcDateTime?>(isInFavorites),
       'isInMatches': serializer.toJson<UtcDateTime?>(isInMatches),
       'isInReceivedBlocks': serializer.toJson<UtcDateTime?>(isInReceivedBlocks),
@@ -4270,6 +4532,9 @@ class Profile extends DataClass implements Insertable<Profile> {
           Value<double?> primaryContentGridCropSize = const Value.absent(),
           Value<double?> primaryContentGridCropX = const Value.absent(),
           Value<double?> primaryContentGridCropY = const Value.absent(),
+          Value<PublicKeyData?> publicKeyData = const Value.absent(),
+          Value<PublicKeyId?> publicKeyId = const Value.absent(),
+          Value<PublicKeyVersion?> publicKeyVersion = const Value.absent(),
           Value<UtcDateTime?> isInFavorites = const Value.absent(),
           Value<UtcDateTime?> isInMatches = const Value.absent(),
           Value<UtcDateTime?> isInReceivedBlocks = const Value.absent(),
@@ -4318,6 +4583,12 @@ class Profile extends DataClass implements Insertable<Profile> {
         primaryContentGridCropY: primaryContentGridCropY.present
             ? primaryContentGridCropY.value
             : this.primaryContentGridCropY,
+        publicKeyData:
+            publicKeyData.present ? publicKeyData.value : this.publicKeyData,
+        publicKeyId: publicKeyId.present ? publicKeyId.value : this.publicKeyId,
+        publicKeyVersion: publicKeyVersion.present
+            ? publicKeyVersion.value
+            : this.publicKeyVersion,
         isInFavorites:
             isInFavorites.present ? isInFavorites.value : this.isInFavorites,
         isInMatches: isInMatches.present ? isInMatches.value : this.isInMatches,
@@ -4357,6 +4628,9 @@ class Profile extends DataClass implements Insertable<Profile> {
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
           ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
+          ..write('publicKeyData: $publicKeyData, ')
+          ..write('publicKeyId: $publicKeyId, ')
+          ..write('publicKeyVersion: $publicKeyVersion, ')
           ..write('isInFavorites: $isInFavorites, ')
           ..write('isInMatches: $isInMatches, ')
           ..write('isInReceivedBlocks: $isInReceivedBlocks, ')
@@ -4389,6 +4663,9 @@ class Profile extends DataClass implements Insertable<Profile> {
         primaryContentGridCropSize,
         primaryContentGridCropX,
         primaryContentGridCropY,
+        publicKeyData,
+        publicKeyId,
+        publicKeyVersion,
         isInFavorites,
         isInMatches,
         isInReceivedBlocks,
@@ -4420,6 +4697,9 @@ class Profile extends DataClass implements Insertable<Profile> {
           other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
           other.primaryContentGridCropX == this.primaryContentGridCropX &&
           other.primaryContentGridCropY == this.primaryContentGridCropY &&
+          other.publicKeyData == this.publicKeyData &&
+          other.publicKeyId == this.publicKeyId &&
+          other.publicKeyVersion == this.publicKeyVersion &&
           other.isInFavorites == this.isInFavorites &&
           other.isInMatches == this.isInMatches &&
           other.isInReceivedBlocks == this.isInReceivedBlocks &&
@@ -4449,6 +4729,9 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<double?> primaryContentGridCropSize;
   final Value<double?> primaryContentGridCropX;
   final Value<double?> primaryContentGridCropY;
+  final Value<PublicKeyData?> publicKeyData;
+  final Value<PublicKeyId?> publicKeyId;
+  final Value<PublicKeyVersion?> publicKeyVersion;
   final Value<UtcDateTime?> isInFavorites;
   final Value<UtcDateTime?> isInMatches;
   final Value<UtcDateTime?> isInReceivedBlocks;
@@ -4476,6 +4759,9 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
     this.primaryContentGridCropY = const Value.absent(),
+    this.publicKeyData = const Value.absent(),
+    this.publicKeyId = const Value.absent(),
+    this.publicKeyVersion = const Value.absent(),
     this.isInFavorites = const Value.absent(),
     this.isInMatches = const Value.absent(),
     this.isInReceivedBlocks = const Value.absent(),
@@ -4504,6 +4790,9 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
     this.primaryContentGridCropY = const Value.absent(),
+    this.publicKeyData = const Value.absent(),
+    this.publicKeyId = const Value.absent(),
+    this.publicKeyVersion = const Value.absent(),
     this.isInFavorites = const Value.absent(),
     this.isInMatches = const Value.absent(),
     this.isInReceivedBlocks = const Value.absent(),
@@ -4532,6 +4821,9 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     Expression<double>? primaryContentGridCropSize,
     Expression<double>? primaryContentGridCropX,
     Expression<double>? primaryContentGridCropY,
+    Expression<String>? publicKeyData,
+    Expression<int>? publicKeyId,
+    Expression<int>? publicKeyVersion,
     Expression<int>? isInFavorites,
     Expression<int>? isInMatches,
     Expression<int>? isInReceivedBlocks,
@@ -4567,6 +4859,9 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
         'primary_content_grid_crop_x': primaryContentGridCropX,
       if (primaryContentGridCropY != null)
         'primary_content_grid_crop_y': primaryContentGridCropY,
+      if (publicKeyData != null) 'public_key_data': publicKeyData,
+      if (publicKeyId != null) 'public_key_id': publicKeyId,
+      if (publicKeyVersion != null) 'public_key_version': publicKeyVersion,
       if (isInFavorites != null) 'is_in_favorites': isInFavorites,
       if (isInMatches != null) 'is_in_matches': isInMatches,
       if (isInReceivedBlocks != null)
@@ -4598,6 +4893,9 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       Value<double?>? primaryContentGridCropSize,
       Value<double?>? primaryContentGridCropX,
       Value<double?>? primaryContentGridCropY,
+      Value<PublicKeyData?>? publicKeyData,
+      Value<PublicKeyId?>? publicKeyId,
+      Value<PublicKeyVersion?>? publicKeyVersion,
       Value<UtcDateTime?>? isInFavorites,
       Value<UtcDateTime?>? isInMatches,
       Value<UtcDateTime?>? isInReceivedBlocks,
@@ -4632,6 +4930,9 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           primaryContentGridCropX ?? this.primaryContentGridCropX,
       primaryContentGridCropY:
           primaryContentGridCropY ?? this.primaryContentGridCropY,
+      publicKeyData: publicKeyData ?? this.publicKeyData,
+      publicKeyId: publicKeyId ?? this.publicKeyId,
+      publicKeyVersion: publicKeyVersion ?? this.publicKeyVersion,
       isInFavorites: isInFavorites ?? this.isInFavorites,
       isInMatches: isInMatches ?? this.isInMatches,
       isInReceivedBlocks: isInReceivedBlocks ?? this.isInReceivedBlocks,
@@ -4719,6 +5020,19 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       map['primary_content_grid_crop_y'] =
           Variable<double>(primaryContentGridCropY.value);
     }
+    if (publicKeyData.present) {
+      map['public_key_data'] = Variable<String>(
+          $ProfilesTable.$converterpublicKeyData.toSql(publicKeyData.value));
+    }
+    if (publicKeyId.present) {
+      map['public_key_id'] = Variable<int>(
+          $ProfilesTable.$converterpublicKeyId.toSql(publicKeyId.value));
+    }
+    if (publicKeyVersion.present) {
+      map['public_key_version'] = Variable<int>($ProfilesTable
+          .$converterpublicKeyVersion
+          .toSql(publicKeyVersion.value));
+    }
     if (isInFavorites.present) {
       map['is_in_favorites'] = Variable<int>(
           $ProfilesTable.$converterisInFavorites.toSql(isInFavorites.value));
@@ -4775,6 +5089,9 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
           ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
+          ..write('publicKeyData: $publicKeyData, ')
+          ..write('publicKeyId: $publicKeyId, ')
+          ..write('publicKeyVersion: $publicKeyVersion, ')
           ..write('isInFavorites: $isInFavorites, ')
           ..write('isInMatches: $isInMatches, ')
           ..write('isInReceivedBlocks: $isInReceivedBlocks, ')
@@ -5264,6 +5581,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       DaoSyncVersions(this as AccountDatabase);
   late final DaoLocalImageSettings daoLocalImageSettings =
       DaoLocalImageSettings(this as AccountDatabase);
+  late final DaoMessageKeys daoMessageKeys =
+      DaoMessageKeys(this as AccountDatabase);
   late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
   late final DaoProfiles daoProfiles = DaoProfiles(this as AccountDatabase);
   @override

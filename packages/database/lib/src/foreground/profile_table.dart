@@ -37,6 +37,10 @@ class Profiles extends Table {
   RealColumn get primaryContentGridCropX => real().nullable()();
   RealColumn get primaryContentGridCropY => real().nullable()();
 
+  TextColumn get publicKeyData => text().map(const NullAwareTypeConverter.wrap(PublicKeyDataConverter())).nullable()();
+  IntColumn get publicKeyId => integer().map(const NullAwareTypeConverter.wrap(PublicKeyIdConverter())).nullable()();
+  IntColumn get publicKeyVersion => integer().map(const NullAwareTypeConverter.wrap(PublicKeyVersionConverter())).nullable()();
+
   // If column is not null, then it is in the specific group.
   // The time is the time when the profile was added to the group.
   IntColumn get isInFavorites => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
@@ -448,6 +452,44 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         target: [profiles.uuidAccountId]
       ),
     );
+  }
+
+  Future<void> updatePublicKey(
+    AccountId accountId,
+    api.PublicKey value,
+  ) async {
+    await into(profiles).insert(
+      ProfilesCompanion.insert(
+        uuidAccountId: accountId,
+        publicKeyData: Value(value.data),
+        publicKeyId: Value(value.id),
+        publicKeyVersion: Value(value.version),
+      ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        publicKeyData: Value(value.data),
+        publicKeyId: Value(value.id),
+        publicKeyVersion: Value(value.version),
+      ),
+        target: [profiles.uuidAccountId]
+      ),
+    );
+  }
+
+  Future<api.PublicKey?> getPublicKey(AccountId accountId) async {
+    final r = await (select(profiles)
+      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+    )
+      .getSingleOrNull();
+
+    final data = r?.publicKeyData;
+    final id = r?.publicKeyId;
+    final version = r?.publicKeyVersion;
+
+    if (data != null && id != null && version != null) {
+      return api.PublicKey(data: data, id: id, version: version);
+    } else {
+      return null;
+    }
   }
 
   Future<ProfileEntry?> getProfileEntry(AccountId accountId) async {

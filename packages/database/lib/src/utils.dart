@@ -290,3 +290,59 @@ class LastSeenTimeFilterConverter extends TypeConverter<LastSeenTimeFilter, int>
     return value.value;
   }
 }
+
+class PublicKeyDataConverter extends TypeConverter<PublicKeyData, String> {
+  const PublicKeyDataConverter();
+
+  @override
+  PublicKeyData fromSql(fromDb) {
+    return PublicKeyData(data: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.data;
+  }
+}
+
+class PublicKeyIdConverter extends TypeConverter<PublicKeyId, int> {
+  const PublicKeyIdConverter();
+
+  @override
+  PublicKeyId fromSql(fromDb) {
+    return PublicKeyId(id: fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.id;
+  }
+}
+
+class PublicKeyVersionConverter extends TypeConverter<PublicKeyVersion, int> {
+  const PublicKeyVersionConverter();
+
+  @override
+  PublicKeyVersion fromSql(fromDb) {
+    return PublicKeyVersion(version: fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.version;
+  }
+}
+
+class PrivateKeyDataConverter extends TypeConverter<PrivateKeyData, String> {
+  const PrivateKeyDataConverter();
+
+  @override
+  PrivateKeyData fromSql(fromDb) {
+    return PrivateKeyData(data: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.data;
+  }
+}

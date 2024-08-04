@@ -3,6 +3,7 @@
 import 'package:async/async.dart';
 import 'package:database/src/foreground/account/dao_account_settings.dart';
 import 'package:database/src/foreground/account/dao_local_image_settings.dart';
+import 'package:database/src/foreground/account/dao_message_keys.dart';
 import 'package:database/src/foreground/account/dao_sync_versions.dart';
 import 'package:database/src/foreground/profile_table.dart';
 import 'package:drift/drift.dart';
@@ -16,6 +17,7 @@ import 'account/dao_profile_settings.dart';
 import 'account/dao_tokens.dart';
 import 'message_table.dart';
 import '../profile_entry.dart';
+import '../private_key_data.dart';
 import '../utils.dart';
 
 part 'account_database.g.dart';
@@ -129,6 +131,13 @@ class Account extends Table {
   IntColumn get localImageSettingImageCacheMaxBytes => integer().nullable()();
   BoolColumn get localImageSettingCacheFullSizedImages => boolean().nullable()();
   IntColumn get localImageSettingImageCacheDownscalingSize => integer().nullable()();
+
+  // DaoMessageKeys
+
+  TextColumn get privateKeyData => text().map(const NullAwareTypeConverter.wrap(PrivateKeyDataConverter())).nullable()();
+  TextColumn get publicKeyData => text().map(const NullAwareTypeConverter.wrap(PublicKeyDataConverter())).nullable()();
+  IntColumn get publicKeyId => integer().map(const NullAwareTypeConverter.wrap(PublicKeyIdConverter())).nullable()();
+  IntColumn get publicKeyVersion => integer().map(const NullAwareTypeConverter.wrap(PublicKeyVersionConverter())).nullable()();
 }
 
 @DriftDatabase(
@@ -148,6 +157,7 @@ class Account extends Table {
     DaoInitialSync,
     DaoSyncVersions,
     DaoLocalImageSettings,
+    DaoMessageKeys,
     // Other tables
     DaoMessages,
     DaoProfiles,

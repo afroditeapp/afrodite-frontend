@@ -5,6 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/chat/message_database_iterator.dart';
+import 'package:pihka_frontend/data/chat/message_key_generator.dart';
 import 'package:pihka_frontend/data/general/notification/state/like_received.dart';
 import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
@@ -27,6 +28,7 @@ class ChatRepository extends DataRepository {
   }
 
   final syncHandler = ConnectedActionScheduler();
+  final messageKeyManager = MessageKeyManager();
 
   final db = DatabaseManager.getInstance();
 
@@ -357,19 +359,44 @@ class ChatRepository extends DataRepository {
 
     ProfileRepository.getInstance().sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
 
-    // TODO: Get public key from DB
-    final publicKeyResponse = await _api.chat((api) => api.getPublicKey(accountId.accountId, 1)).ok();
-    final publicKey = publicKeyResponse?.key;
-    if (publicKey == null) {
+    final currentUserKeys = await messageKeyManager.generateOrLoadMessageKeys(currentUser);
+    if (currentUserKeys == null) {
       // TODO: error handling
-      return;
+    }
+    final String encryptedMessage;
+    final PublicKey receiverPublicKey;
+    switch (await db.profileData((db) => db.getPublicKey(accountId))) {
+      case Ok(:final v):
+
+        if (v == null) {
+          final publicKeyResponse = await _api.chat((api) => api.getPublicKey(accountId.accountId, 1)).ok();
+          final publicKey = publicKeyResponse?.key;
+          if (publicKey == null) {
+            // TODO: error handling
+            return;
+          }
+          final savePublicKeyResult = await db.profileAction((db) => db.updatePublicKey(accountId, publicKey));
+          if (savePublicKeyResult.isErr()) {
+            // TODO: error handling
+            return;
+          }
+          receiverPublicKey = publicKey;
+        } else {
+          receiverPublicKey = v;
+        }
+
+        // TODO: Encrypt message
+        encryptedMessage = message;
+      case Err(:final e):
+       // TODO: error handling
+       return;
     }
 
     final sendMessage = SendMessageToAccount(
-      message: message,
+      message: encryptedMessage,
       receiver: accountId,
-      receiverPublicKeyId: publicKey.id,
-      receiverPublicKeyVersion: publicKey.version,
+      receiverPublicKeyId: receiverPublicKey.id,
+      receiverPublicKeyVersion: receiverPublicKey.version,
     );
     final result = await _api.chatAction((api) => api.postSendMessage(sendMessage));
     if (result.isErr()) {
