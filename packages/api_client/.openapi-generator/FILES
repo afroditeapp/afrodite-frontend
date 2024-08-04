@@ -321,11 +321,3 @@ lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
-test/encrypted_message_test.dart
-test/get_public_key_test.dart
-test/public_key_data_test.dart
-test/public_key_id_test.dart
-test/public_key_test.dart
-test/public_key_version_test.dart
-test/send_message_result_test.dart
-test/set_public_key_test.dart
