@@ -1,8 +1,9 @@
 
 use pgp::composed::{KeyType, key::SecretKeyParamsBuilder};
-use pgp::types::{SecretKeyTrait, CompressionAlgorithm};
+use pgp::crypto::ecc_curve::ECCCurve;
+use pgp::types::SecretKeyTrait;
 use pgp::crypto::{sym::SymmetricKeyAlgorithm, hash::HashAlgorithm};
-use pgp::ArmorOptions;
+use pgp::{ArmorOptions, SubkeyParamsBuilder};
 use smallvec::smallvec;
 
 use super::MessageEncryptionError;
@@ -39,22 +40,66 @@ pub fn generate_keys(account_id: String) -> Result<(PublicKeyString, PrivateKeyS
     // - Default in GnuPG.
     // - SQLCipher uses it.
     //   https://github.com/sqlcipher/sqlcipher/blob/master/README.md
+    //
+    // 2024-08-07
+    // Message byte size comparison
+    //
+    // Current implementaton has RSA with 3072 key size, SHA2-256, AES-256.
+    // Message content is 4 bytes and it is encrypted, signed and armored.
+    // Byte count for the armored message is 1292.
+    //
+    // Byte count with differences
+    // - AES-128: 1292 bytes
+    // - AES-128, no signing: 679 bytes
+    // - AES-256, no signing: 679 bytes
+    // - AES-256, no signing, RSA with key size 2048: 504 bytes
+    // - AES-128, no signing, RSA with key size 2048: 504 bytes
+    // - AES-128, no signing, ECDSA and ECHD with curve P256: 309 bytes
+    // - AES-256, no signing, ECDSA and ECHD with curve P256: 309 bytes
+    //
+    // 2024-08-08
+    //
+    // As the primary purpose of the end-to-end encryption for messages
+    // currently is to avoid storing plaintext messages on server, the
+    // encrypted message size is prioritized.
+    //
+    // The asymmetric encryption algorithm will be changed to NIST P-256
+    // which offers possibility for small encrypted messages and it is
+    // currently secure. There has not been security review for the Rust
+    // implementation for that algorithm but that is not important for the
+    // current use case.
+    //
+    // https://www.rfc-editor.org/rfc/rfc6637#section-12.2.1
+    // The NIST P-256 offers 128-bit security so let's select AES-128 and
+    // SHA2-256 which are in 128-bit security category.
+    //
+    // Also the message signing is not needed as it is assumed that
+    // server will not be compromised and it is not possible to send
+    // messages which would be from other account than the current one.
 
     let params = SecretKeyParamsBuilder::default()
-        .key_type(KeyType::Rsa(3072))
-        .can_encrypt(true)
-        .can_certify(true)
+        .key_type(KeyType::ECDSA(ECCCurve::P256))
+        .can_encrypt(false)
+        .can_certify(false)
         .can_sign(true)
         .primary_user_id(account_id)
         .preferred_symmetric_algorithms(smallvec![
-            SymmetricKeyAlgorithm::AES256,
+            SymmetricKeyAlgorithm::AES128,
         ])
         .preferred_hash_algorithms(smallvec![
             HashAlgorithm::SHA2_256,
         ])
-        .preferred_compression_algorithms(smallvec![
-            CompressionAlgorithm::ZLIB,
-        ])
+        .preferred_compression_algorithms(smallvec![])
+        .subkey(
+            SubkeyParamsBuilder::default()
+                .key_type(KeyType::ECDH(ECCCurve::P256))
+                .can_authenticate(false)
+                .can_certify(false)
+                .can_encrypt(true)
+                .can_sign(false)
+                .build()
+                .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeySubKeyParams)?
+        )
         .build()
         .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeyParams)?;
     let private_key = params

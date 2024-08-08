@@ -472,6 +472,7 @@ class ChatRepository extends DataRepository {
 
     if (result.errorReceiverPublicKeyOutdated) {
       // TODO: download new key and try again
+      log.error("Send message error: public key outdated");
     }
 
     // TODO save sent status to local database
