@@ -224,9 +224,9 @@ class ChatApi {
     return null;
   }
 
-  /// Get list of pending messages
+  /// Get list of pending messages.
   ///
-  /// Get list of pending messages
+  /// Get list of pending messages.  The returned bytes is list of objects with following data: - UTF-8 text length encoded as 16 bit little endian number. - UTF-8 text which is PendingMessage JSON. - Binary message data length as 16 bit little endian number. - Binary message data
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getPendingMessagesWithHttpInfo() async {
@@ -254,10 +254,10 @@ class ChatApi {
     );
   }
 
-  /// Get list of pending messages
+  /// Get list of pending messages.
   ///
-  /// Get list of pending messages
-  Future<PendingMessagesPage?> getPendingMessages() async {
+  /// Get list of pending messages.  The returned bytes is list of objects with following data: - UTF-8 text length encoded as 16 bit little endian number. - UTF-8 text which is PendingMessage JSON. - Binary message data length as 16 bit little endian number. - Binary message data
+  Future<MultipartFile?> getPendingMessages() async {
     final response = await getPendingMessagesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -266,7 +266,7 @@ class ChatApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingMessagesPage',) as PendingMessagesPage;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MultipartFile',) as MultipartFile;
     
     }
     return null;
@@ -793,25 +793,37 @@ class ChatApi {
 
   /// Send message to a match.
   ///
-  /// Send message to a match.  Max pending message count is 50.
+  /// Send message to a match.  Max pending message count is 50. Max message size is u16::MAX.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [SendMessageToAccount] sendMessageToAccount (required):
-  Future<Response> postSendMessageWithHttpInfo(SendMessageToAccount sendMessageToAccount,) async {
+  /// * [String] receiver (required):
+  ///   Receiver of the message.
+  ///
+  /// * [int] receiverPublicKeyId (required):
+  ///   Message receiver's public key ID for check to prevent sending message encrypted with outdated public key.
+  ///
+  /// * [int] receiverPublicKeyVersion (required):
+  ///
+  /// * [MultipartFile] body (required):
+  Future<Response> postSendMessageWithHttpInfo(String receiver, int receiverPublicKeyId, int receiverPublicKeyVersion, MultipartFile body,) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/send_message';
 
     // ignore: prefer_final_locals
-    Object? postBody = sendMessageToAccount;
+    Object? postBody = body;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
-    const contentTypes = <String>['application/json'];
+      queryParams.addAll(_queryParams('', 'receiver', receiver));
+      queryParams.addAll(_queryParams('', 'receiver_public_key_id', receiverPublicKeyId));
+      queryParams.addAll(_queryParams('', 'receiver_public_key_version', receiverPublicKeyVersion));
+
+    const contentTypes = <String>['application/octet-stream'];
 
 
     return apiClient.invokeAPI(
@@ -827,13 +839,21 @@ class ChatApi {
 
   /// Send message to a match.
   ///
-  /// Send message to a match.  Max pending message count is 50.
+  /// Send message to a match.  Max pending message count is 50. Max message size is u16::MAX.
   ///
   /// Parameters:
   ///
-  /// * [SendMessageToAccount] sendMessageToAccount (required):
-  Future<SendMessageResult?> postSendMessage(SendMessageToAccount sendMessageToAccount,) async {
-    final response = await postSendMessageWithHttpInfo(sendMessageToAccount,);
+  /// * [String] receiver (required):
+  ///   Receiver of the message.
+  ///
+  /// * [int] receiverPublicKeyId (required):
+  ///   Message receiver's public key ID for check to prevent sending message encrypted with outdated public key.
+  ///
+  /// * [int] receiverPublicKeyVersion (required):
+  ///
+  /// * [MultipartFile] body (required):
+  Future<SendMessageResult?> postSendMessage(String receiver, int receiverPublicKeyId, int receiverPublicKeyVersion, MultipartFile body,) async {
+    final response = await postSendMessageWithHttpInfo(receiver, receiverPublicKeyId, receiverPublicKeyVersion, body,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

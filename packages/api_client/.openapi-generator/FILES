@@ -95,7 +95,6 @@ doc/NewContentParams.md
 doc/PendingMessage.md
 doc/PendingMessageDeleteList.md
 doc/PendingMessageId.md
-doc/PendingMessagesPage.md
 doc/PendingNotificationToken.md
 doc/PendingNotificationWithData.md
 doc/PendingProfileContent.md
@@ -137,7 +136,6 @@ doc/ResetDataQueryParam.md
 doc/SearchGroups.md
 doc/SecurityContent.md
 doc/SendMessageResult.md
-doc/SendMessageToAccount.md
 doc/SentBlocksPage.md
 doc/SentBlocksSyncVersion.md
 doc/SentLikesPage.md
@@ -261,7 +259,6 @@ lib/model/new_content_params.dart
 lib/model/pending_message.dart
 lib/model/pending_message_delete_list.dart
 lib/model/pending_message_id.dart
-lib/model/pending_messages_page.dart
 lib/model/pending_notification_token.dart
 lib/model/pending_notification_with_data.dart
 lib/model/pending_profile_content.dart
@@ -302,7 +299,6 @@ lib/model/reset_data_query_param.dart
 lib/model/search_groups.dart
 lib/model/security_content.dart
 lib/model/send_message_result.dart
-lib/model/send_message_to_account.dart
 lib/model/sent_blocks_page.dart
 lib/model/sent_blocks_sync_version.dart
 lib/model/sent_likes_page.dart

@@ -14,36 +14,30 @@ class PendingMessage {
   /// Returns a new [PendingMessage] instance.
   PendingMessage({
     required this.id,
-    required this.message,
     required this.unixTime,
   });
 
   PendingMessageId id;
-
-  String message;
 
   UnixTime unixTime;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PendingMessage &&
      other.id == id &&
-     other.message == message &&
      other.unixTime == unixTime;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (id.hashCode) +
-    (message.hashCode) +
     (unixTime.hashCode);
 
   @override
-  String toString() => 'PendingMessage[id=$id, message=$message, unixTime=$unixTime]';
+  String toString() => 'PendingMessage[id=$id, unixTime=$unixTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'id'] = this.id;
-      json[r'message'] = this.message;
       json[r'unix_time'] = this.unixTime;
     return json;
   }
@@ -68,7 +62,6 @@ class PendingMessage {
 
       return PendingMessage(
         id: PendingMessageId.fromJson(json[r'id'])!,
-        message: mapValueOfType<String>(json, r'message')!,
         unixTime: UnixTime.fromJson(json[r'unix_time'])!,
       );
     }
@@ -120,7 +113,6 @@ class PendingMessage {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'id',
-    'message',
     'unix_time',
   };
 }

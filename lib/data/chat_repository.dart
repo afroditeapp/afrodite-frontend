@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:async/async.dart' show StreamExtensions;
+import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:native_utils/message.dart';
 import 'package:openapi/api.dart';
+import 'package:openapi/manual_additions.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/chat/message_converter.dart';
 import 'package:pihka_frontend/data/chat/message_database_iterator.dart';
@@ -19,6 +23,7 @@ import 'package:database/database.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/utils/iterator.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("ChatRepository");
@@ -317,61 +322,128 @@ class ChatRepository extends DataRepository {
     if (allKeys == null) {
       return;
     }
-    final newMessages = await _api.chat((api) => api.getPendingMessages()).ok();
-    if (newMessages != null) {
-      final toBeDeleted = <PendingMessageId>[];
+    final newMessageBytes = await _api.chat((api) => api.getPendingMessagesFixed()).ok();
+    if (newMessageBytes == null) {
+      return;
+    }
 
-      for (final message in newMessages.messages) {
-        final isMatch = await isInMatches(message.id.accountIdSender);
-        if (!isMatch) {
-          await db.profileAction((db) => db.setMatchStatus(message.id.accountIdSender, true));
-          ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
-        }
+    final newMessages = parsePendingMessagesResponse(newMessageBytes);
+    if (newMessages == null) {
+      return;
+    }
 
-        // TODO: Store some error state to database
-        //       instead of the error text.
-        final decryptedMessage = await decryptReceivedMessage(allKeys, message).ok() ?? "Message decrypting failed";
+    final toBeDeleted = <PendingMessageId>[];
 
-        final r = await db.messageAction((db) => db.insertPendingMessage(currentUser, message, decryptedMessage));
-        if (r.isOk()) {
-          toBeDeleted.add(message.id);
-          ProfileRepository.getInstance().sendProfileChange(ConversationChanged(message.id.accountIdSender, ConversationChangeType.messageReceived));
-          // TODO(prod): Update with correct message count once there is
-          // count of not read messages in the database.
-          await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.id.accountIdSender, 1);
-        }
+    for (final (message, messageBytes) in newMessages) {
+      final isMatch = await isInMatches(message.id.accountIdSender);
+      if (!isMatch) {
+        await db.profileAction((db) => db.setMatchStatus(message.id.accountIdSender, true));
+        ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
       }
 
-      for (final sender in newMessages.messages.map((e) => e.id.accountIdSender).toSet()) {
-        await BackgroundDatabaseManager.getInstance().accountAction((db) => db.daoNewMessageNotification.setNotificationShown(sender, false));
-      }
+      // TODO: Store some error state to database
+      //       instead of the error text.
+      final decryptedMessage = await decryptReceivedMessage(allKeys, message, messageBytes).ok() ?? "Message decrypting failed";
 
-      final toBeDeletedList = PendingMessageDeleteList(messagesIds: toBeDeleted);
-      final result = await _api.chatAction((api) => api.deletePendingMessages(toBeDeletedList));
-      if (result.isOk()) {
-        for (final message in newMessages.messages) {
-          await db.messageAction((db) => db.updateReceivedMessageState(
-            currentUser,
-            message.id.accountIdSender,
-            message.id.messageNumber,
-            ReceivedMessageState.deletedFromServer,
-          ));
-        }
+      final r = await db.messageAction((db) => db.insertPendingMessage(currentUser, message, decryptedMessage));
+      if (r.isOk()) {
+        toBeDeleted.add(message.id);
+        ProfileRepository.getInstance().sendProfileChange(ConversationChanged(message.id.accountIdSender, ConversationChangeType.messageReceived));
+        // TODO(prod): Update with correct message count once there is
+        // count of not read messages in the database.
+        await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.id.accountIdSender, 1);
       }
-      // TODO: If request fails try again at some point.
+    }
+
+    for (final sender in newMessages.map((item) => item.$1.id.accountIdSender).toSet()) {
+      await BackgroundDatabaseManager.getInstance().accountAction((db) => db.daoNewMessageNotification.setNotificationShown(sender, false));
+    }
+
+    final toBeDeletedList = PendingMessageDeleteList(messagesIds: toBeDeleted);
+    final result = await _api.chatAction((api) => api.deletePendingMessages(toBeDeletedList));
+    if (result.isOk()) {
+      for (final (message, _) in newMessages) {
+        await db.messageAction((db) => db.updateReceivedMessageState(
+          currentUser,
+          message.id.accountIdSender,
+          message.id.messageNumber,
+          ReceivedMessageState.deletedFromServer,
+        ));
+      }
+    }
+    // TODO: If request fails try again at some point.
+  }
+
+  List<(PendingMessage, Uint8List)>? parsePendingMessagesResponse(Uint8List bytes) {
+    final bytesIterator = bytes.iterator;
+    final List<(PendingMessage, Uint8List)> parsedData = [];
+    while (true) {
+      final jsonLen1 = bytesIterator.next();
+      final jsonLen2 = bytesIterator.next();
+      if (jsonLen1 == null) {
+        return parsedData;
+      }
+      if (jsonLen2 == null) {
+        return null;
+      }
+      final jsonLength = ByteData.sublistView(Uint8List.fromList([jsonLen1, jsonLen2]))
+        .getUint16(0, Endian.little);
+      final List<int> utf8Text = [];
+      for (var i = 0; i < jsonLength; i++) {
+        final byteValue = bytesIterator.next();
+        if (byteValue == null) {
+          return null;
+        }
+        utf8Text.add(byteValue);
+      }
+      final PendingMessage pendingMessage;
+      try {
+        final text = utf8.decode(utf8Text);
+        final pendingMessageOrNull = PendingMessage.fromJson(jsonDecode(text));
+        if (pendingMessageOrNull == null) {
+          return null;
+        }
+        pendingMessage = pendingMessageOrNull;
+      } catch (_)  {
+        return null;
+      }
+      final dataLen1 = bytesIterator.next();
+      final dataLen2 = bytesIterator.next();
+      if (dataLen1 == null || dataLen2 == null) {
+        return null;
+      }
+      final dataLength = ByteData.sublistView(Uint8List.fromList([dataLen1, dataLen2]))
+        .getUint16(0, Endian.little);
+      final List<int> data = [];
+      for (var i = 0; i < dataLength; i++) {
+        final byteValue = bytesIterator.next();
+        if (byteValue == null) {
+          return null;
+        }
+        data.add(byteValue);
+      }
+      final dataList = Uint8List.fromList(data);
+
+      parsedData.add((pendingMessage, dataList));
     }
   }
 
-  Future<Result<String, void>> decryptReceivedMessage(AllKeyData allKeys, PendingMessage message) async {
+  Future<Result<String, void>> decryptReceivedMessage(AllKeyData allKeys, PendingMessage message, Uint8List messageBytesFromServer) async {
     final publicKey = await getPublicKeyForForeignAccount(message.id.accountIdSender, forceDownload: false).ok();
     if (publicKey == null) {
       return const Err(null);
     }
 
+    // 0 is PGP message
+    if (messageBytesFromServer.isEmpty || messageBytesFromServer.first != 0) {
+      return const Err(null);
+    }
+    final encryptedMessageBytes = Uint8List.fromList(messageBytesFromServer.skip(1).toList());
+
     final (messageBytes, decryptingResult) = decryptMessage(
       publicKey.data.data,
       allKeys.private.data,
-      message.message,
+      encryptedMessageBytes,
     );
 
     if (messageBytes == null) {
@@ -453,13 +525,15 @@ class ChatRepository extends DataRepository {
       return;
     }
 
-    final sendMessage = SendMessageToAccount(
-      message: encryptedMessage,
-      receiver: accountId,
-      receiverPublicKeyId: receiverPublicKey.id,
-      receiverPublicKeyVersion: receiverPublicKey.version,
-    );
-    final result = await _api.chat((api) => api.postSendMessage(sendMessage)).ok();
+    final dataIdentifierAndEncryptedMessage = [0];
+    dataIdentifierAndEncryptedMessage.addAll(encryptedMessage);
+
+    final result = await _api.chat((api) => api.postSendMessage(
+      accountId.accountId,
+      receiverPublicKey.id.id,
+      receiverPublicKey.version.version,
+      MultipartFile.fromBytes("", dataIdentifierAndEncryptedMessage),
+    )).ok();
     if (result == null) {
       // TODO error handling
       return;

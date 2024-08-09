@@ -353,8 +353,6 @@ class ApiClient {
           return PendingMessageDeleteList.fromJson(value);
         case 'PendingMessageId':
           return PendingMessageId.fromJson(value);
-        case 'PendingMessagesPage':
-          return PendingMessagesPage.fromJson(value);
         case 'PendingNotificationToken':
           return PendingNotificationToken.fromJson(value);
         case 'PendingNotificationWithData':
@@ -435,8 +433,6 @@ class ApiClient {
           return SecurityContent.fromJson(value);
         case 'SendMessageResult':
           return SendMessageResult.fromJson(value);
-        case 'SendMessageToAccount':
-          return SendMessageToAccount.fromJson(value);
         case 'SentBlocksPage':
           return SentBlocksPage.fromJson(value);
         case 'SentBlocksSyncVersion':

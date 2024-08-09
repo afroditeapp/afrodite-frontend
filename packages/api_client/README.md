@@ -84,7 +84,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**deletePendingMessages**](doc//ChatApi.md#deletependingmessages) | **DELETE** /chat_api/pending_messages | Delete list of pending messages
 *ChatApi* | [**getMatches**](doc//ChatApi.md#getmatches) | **GET** /chat_api/matches | Get matches
 *ChatApi* | [**getMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#getmessagenumberoflatestviewedmessage) | **GET** /chat_api/message_number_of_latest_viewed_message | Get message number of the most recent message that the recipient has viewed.
-*ChatApi* | [**getPendingMessages**](doc//ChatApi.md#getpendingmessages) | **GET** /chat_api/pending_messages | Get list of pending messages
+*ChatApi* | [**getPendingMessages**](doc//ChatApi.md#getpendingmessages) | **GET** /chat_api/pending_messages | Get list of pending messages.
 *ChatApi* | [**getPublicKey**](doc//ChatApi.md#getpublickey) | **GET** /chat_api/public_key/{account_id} | Get current public key of some account
 *ChatApi* | [**getReceivedBlocks**](doc//ChatApi.md#getreceivedblocks) | **GET** /chat_api/received_blocks | Get list of received blocks
 *ChatApi* | [**getReceivedLikes**](doc//ChatApi.md#getreceivedlikes) | **GET** /chat_api/received_likes | Get received likes.
@@ -238,7 +238,6 @@ Class | Method | HTTP request | Description
  - [PendingMessage](doc//PendingMessage.md)
  - [PendingMessageDeleteList](doc//PendingMessageDeleteList.md)
  - [PendingMessageId](doc//PendingMessageId.md)
- - [PendingMessagesPage](doc//PendingMessagesPage.md)
  - [PendingNotificationToken](doc//PendingNotificationToken.md)
  - [PendingNotificationWithData](doc//PendingNotificationWithData.md)
  - [PendingProfileContent](doc//PendingProfileContent.md)
@@ -279,7 +278,6 @@ Class | Method | HTTP request | Description
  - [SearchGroups](doc//SearchGroups.md)
  - [SecurityContent](doc//SecurityContent.md)
  - [SendMessageResult](doc//SendMessageResult.md)
- - [SendMessageToAccount](doc//SendMessageToAccount.md)
  - [SentBlocksPage](doc//SentBlocksPage.md)
  - [SentBlocksSyncVersion](doc//SentBlocksSyncVersion.md)
  - [SentLikesPage](doc//SentLikesPage.md)
