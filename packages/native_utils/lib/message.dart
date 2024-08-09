@@ -34,7 +34,7 @@ class GeneratedMessageKeys {
 }
 
 /// If encrypting fails, null is returned
-(String?, int) encryptMessage(
+(Uint8List?, int) encryptMessage(
   String dataSenderArmoredPrivateKey,
   String dataReceiverArmoredPublicKey,
   Uint8List data,
@@ -49,9 +49,12 @@ class GeneratedMessageKeys {
   malloc.free(cData);
 
   final result = encryptResult.result;
-  final (String?, int) returnValue;
+  final (Uint8List?, int) returnValue;
   if (result == 0) {
-    returnValue = (encryptResult.encrypted_message.cast<Utf8>().toDartString(), 0);
+    final Uint8List cDataView = encryptResult.encrypted_message.asTypedList(encryptResult.encrypted_message_len);
+    final encryptedData = Uint8List(encryptResult.encrypted_message_len);
+    encryptedData.setAll(0, cDataView);
+    returnValue = (encryptedData, 0);
   } else {
     returnValue = (null, result);
   }
@@ -63,15 +66,16 @@ class GeneratedMessageKeys {
 (Uint8List?, int) decryptMessage(
   String dataSenderArmoredPublicKey,
   String dataReceiverArmoredPrivateKey,
-  String armoredPgpMessage,
+  Uint8List pgpMessage,
 ) {
   final cDataSender = dataSenderArmoredPublicKey.toNativeUtf8();
   final cDataReceiver = dataReceiverArmoredPrivateKey.toNativeUtf8();
-  final cMessage = armoredPgpMessage.toNativeUtf8();
-  final decryptResult = getBindings().decrypt_message(cDataSender.cast(), cDataReceiver.cast(), cMessage.cast());
+  final Pointer<Uint8> cMessageData = malloc.allocate(pgpMessage.length);
+  cMessageData.asTypedList(pgpMessage.length).setAll(0, pgpMessage);
+  final decryptResult = getBindings().decrypt_message(cDataSender.cast(), cDataReceiver.cast(), cMessageData, pgpMessage.length);
   malloc.free(cDataSender);
   malloc.free(cDataReceiver);
-  malloc.free(cMessage);
+  malloc.free(cMessageData);
 
   final result = decryptResult.result;
   final (Uint8List?, int) returnValue;

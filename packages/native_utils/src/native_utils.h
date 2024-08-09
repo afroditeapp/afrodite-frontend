@@ -70,7 +70,9 @@ FFI_PLUGIN_EXPORT void generate_message_keys_free_result(
 struct EncryptMessageResult {
   intptr_t result;
   // Null if failure
-  const char* encrypted_message;
+  const uint8_t* encrypted_message;
+  intptr_t encrypted_message_len;
+  intptr_t encrypted_message_capacity;
 };
 
 // Encrypt message data.
@@ -101,7 +103,8 @@ struct DecryptMessageResult {
 FFI_PLUGIN_EXPORT struct DecryptMessageResult decrypt_message(
   const char* data_sender_armored_public_key,
   const char* data_receiver_armored_private_key,
-  const char* armored_pgp_message
+  const uint8_t* pgp_message,
+  intptr_t pgp_message_len
 );
 
 FFI_PLUGIN_EXPORT void decrypt_message_free_result(

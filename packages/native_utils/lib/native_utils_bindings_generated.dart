@@ -190,12 +190,14 @@ class NativeUtilsBindings {
   DecryptMessageResult decrypt_message(
     ffi.Pointer<ffi.Char> data_sender_armored_public_key,
     ffi.Pointer<ffi.Char> data_receiver_armored_private_key,
-    ffi.Pointer<ffi.Char> armored_pgp_message,
+    ffi.Pointer<ffi.Uint8> pgp_message,
+    int pgp_message_len,
   ) {
     return _decrypt_message(
       data_sender_armored_public_key,
       data_receiver_armored_private_key,
-      armored_pgp_message,
+      pgp_message,
+      pgp_message_len,
     );
   }
 
@@ -204,10 +206,11 @@ class NativeUtilsBindings {
           DecryptMessageResult Function(
               ffi.Pointer<ffi.Char>,
               ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>)>>('decrypt_message');
+              ffi.Pointer<ffi.Uint8>,
+              ffi.IntPtr)>>('decrypt_message');
   late final _decrypt_message = _decrypt_messagePtr.asFunction<
       DecryptMessageResult Function(ffi.Pointer<ffi.Char>,
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>(isLeaf: true);
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Uint8>, int)>(isLeaf: true);
 
   void decrypt_message_free_result(
     DecryptMessageResult result,
@@ -241,7 +244,13 @@ final class EncryptMessageResult extends ffi.Struct {
   external int result;
 
   /// Null if failure
-  external ffi.Pointer<ffi.Char> encrypted_message;
+  external ffi.Pointer<ffi.Uint8> encrypted_message;
+
+  @ffi.IntPtr()
+  external int encrypted_message_len;
+
+  @ffi.IntPtr()
+  external int encrypted_message_capacity;
 }
 
 final class DecryptMessageResult extends ffi.Struct {

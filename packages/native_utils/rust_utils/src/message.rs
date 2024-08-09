@@ -21,9 +21,10 @@ pub enum MessageEncryptionError {
     EncryptDataPublicKeyParse = 11,
     EncryptDataEncrypt = 12,
     // EncryptDataSign = 13, // Not used currently
-    EncryptDataArmor = 14,
-    EncryptDataNullDetected = 15,
-    EncryptDataPublicSubkeyMissing = 16,
+    EncryptDataToBytes = 14,
+    EncryptDataPublicSubkeyMissing = 15,
+    EncryptDataEncryptedMessageLenTooLarge = 16,
+    EncryptDataEncryptedMessageCapacityTooLarge = 17,
     DecryptDataPrivateKeyParse = 20,
     // DecryptDataPublicKeyParse = 21, // Not used currently
     DecryptDataMessageParse = 22,

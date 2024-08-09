@@ -96,17 +96,20 @@ FFI_PLUGIN_EXPORT void encrypt_message_free_result(
 extern struct DecryptMessageResult rust_decrypt_message(
   const char* data_sender_armored_public_key,
   const char* data_receiver_armored_private_key,
-  const char* armored_pgp_message
+  const uint8_t* pgp_message,
+  intptr_t pgp_message_len
 );
 FFI_PLUGIN_EXPORT struct DecryptMessageResult decrypt_message(
   const char* data_sender_armored_public_key,
   const char* data_receiver_armored_private_key,
-  const char* armored_pgp_message
+  const uint8_t* pgp_message,
+  intptr_t pgp_message_len
 ) {
   return rust_decrypt_message(
     data_sender_armored_public_key,
     data_receiver_armored_private_key,
-    armored_pgp_message
+    pgp_message,
+    pgp_message_len
   );
 }
 

@@ -80,7 +80,9 @@ pub unsafe extern "C" fn rust_generate_message_keys_free_result(
 pub struct EncryptMessageResult {
     pub result: isize,
     /// Null if failure
-    pub encrypted_message: *const c_char,
+    pub encrypted_message: *const u8,
+    pub encrypted_message_len: isize,
+    pub encrypted_message_capacity: isize,
 }
 
 impl EncryptMessageResult {
@@ -88,14 +90,32 @@ impl EncryptMessageResult {
         Self {
             result: e.into(),
             encrypted_message: null(),
+            encrypted_message_len: 0,
+            encrypted_message_capacity: 0,
         }
     }
 
-    pub fn success(encrypted_message: CString) -> Self {
-        Self {
+    pub fn success(encrypted_message: Vec<u8>) -> Self {
+        let encrypted_message_len: isize = match encrypted_message.len().try_into() {
+            Ok(len) => len,
+            Err(_) => return Self::error(MessageEncryptionError::EncryptDataEncryptedMessageLenTooLarge),
+        };
+
+        let encrypted_message_capacity: isize = match encrypted_message.capacity().try_into() {
+            Ok(capacity) => capacity,
+            Err(_) => return Self::error(MessageEncryptionError::EncryptDataEncryptedMessageCapacityTooLarge),
+        };
+
+        let result = Self {
             result: API_OK,
-            encrypted_message: encrypted_message.into_raw(),
-        }
+            encrypted_message: encrypted_message.as_ptr(),
+            encrypted_message_len,
+            encrypted_message_capacity,
+        };
+
+        std::mem::forget(encrypted_message);
+
+        result
     }
 }
 
@@ -125,11 +145,6 @@ pub unsafe extern "C" fn rust_encrypt_message(
 
     match encrypt_data(data_sender_armored_private_key, data_receiver_armored_public_key, data) {
         Ok(message) => {
-            let message = match CString::new(message) {
-                Ok(message) => message,
-                Err(_) => return EncryptMessageResult::error(MessageEncryptionError::EncryptDataNullDetected),
-            };
-
             EncryptMessageResult::success(message)
         }
         Err(e) => EncryptMessageResult::error(e)
@@ -142,7 +157,11 @@ pub unsafe extern "C" fn rust_encrypt_message_free_result(
 ) {
     unsafe {
         if !result.encrypted_message.is_null() {
-            let _ = CString::from_raw(result.encrypted_message as *mut c_char);
+            let _ = Vec::from_raw_parts(
+                result.encrypted_message as *mut u8,
+                result.encrypted_message_len as usize,
+                result.encrypted_message_capacity as usize,
+            );
         }
     }
 }
@@ -195,11 +214,12 @@ impl DecryptMessageResult {
 pub unsafe extern "C" fn rust_decrypt_message(
     data_sender_armored_public_key: *const c_char,
     data_receiver_armored_private_key: *const c_char,
-    armored_pgp_message: *const c_char,
+    pgp_message: *const u8,
+    pgp_message_len: isize,
 ) -> DecryptMessageResult {
     assert!(!data_sender_armored_public_key.is_null());
     assert!(!data_receiver_armored_private_key.is_null());
-    assert!(!armored_pgp_message.is_null());
+    assert!(!pgp_message.is_null());
 
     let data_sender_armored_public_key = unsafe {
         CStr::from_ptr(data_sender_armored_public_key)
@@ -213,13 +233,11 @@ pub unsafe extern "C" fn rust_decrypt_message(
             .expect("Decrypt message: data receiver private key contains non UTF-8 data")
     };
 
-    let armored_pgp_message = unsafe {
-        CStr::from_ptr(armored_pgp_message)
-            .to_str()
-            .expect("Decrypt message: PGP message contains non UTF-8 data")
+    let pgp_message = unsafe {
+        std::slice::from_raw_parts(pgp_message, pgp_message_len as usize)
     };
 
-    match decrypt_data(data_sender_armored_public_key, data_receiver_armored_private_key, armored_pgp_message) {
+    match decrypt_data(data_sender_armored_public_key, data_receiver_armored_private_key, pgp_message) {
         Ok(data) => DecryptMessageResult::success(data),
         Err(e) => DecryptMessageResult::error(e),
     }
