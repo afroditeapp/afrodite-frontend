@@ -58,8 +58,12 @@ enum SentMessageState {
 enum ReceivedMessageState {
   /// Waiting to be deleted from server.
   waitingDeletionFromServer(0),
+  /// Waiting to be deleted from server and decrypting failed.
+  waitingDeletionFromServerAndDecryptingFailed(1),
   /// Message is deleted from server.
-  deletedFromServer(1);
+  deletedFromServer(2),
+  /// Message is deleted from server and decrypting failed.
+  deletedFromServerAndDecryptingFailed(3);
 
   const ReceivedMessageState(this.number);
   final int number;

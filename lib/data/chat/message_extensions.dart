@@ -53,6 +53,9 @@ extension MessageExtensions on ChatRepository {
         ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
       }
 
+      // TODO: Check if the message is already in DB (use message number
+      // and account IDs as together those are unique).
+
       // TODO: Store some error state to database
       //       instead of the error text.
       final decryptedMessage = await _decryptReceivedMessage(allKeys, message, messageBytes).ok() ?? "Message decrypting failed";
