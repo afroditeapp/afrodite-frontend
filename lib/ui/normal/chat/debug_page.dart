@@ -132,8 +132,12 @@ class DebugConversationDataProvider extends ConversationDataProvider {
     }
     return newMessages;
   }
-}
 
+  @override
+  Stream<MessageEntry?> getMessageWithLocalId(LocalMessageId localId) async* {
+    return;
+  }
+}
 
 class ChatViewDebuggerPage extends StatefulWidget {
   final int initialMsgCount;

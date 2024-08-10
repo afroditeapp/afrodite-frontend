@@ -99,11 +99,24 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
         final invertedIndex = visibleMessages.length - 1 - index;
         final entry = visibleMessages[invertedIndex];
         final style = DefaultTextStyle.of(context);
-        return messageRowWidget(
-          context,
-          messageEntryToViewData(entry),
-          parentTextStyle: style.style
-        );
+        if (entry.sentMessageState != null && entry.sentMessageState != SentMessageState.sent) {
+          return StreamBuilder<MessageEntry?>(
+            stream: widget.conversationBloc.dataProvider.getMessageWithLocalId(entry.localId),
+            builder: (context, snapshot) {
+              return messageRowWidget(
+                context,
+                messageEntryToViewData(snapshot.data ?? entry),
+                parentTextStyle: style.style
+              );
+            },
+          );
+        } else {
+          return messageRowWidget(
+            context,
+            messageEntryToViewData(entry),
+            parentTextStyle: style.style
+          );
+        }
       },
     );
   }

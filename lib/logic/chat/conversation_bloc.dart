@@ -54,6 +54,7 @@ abstract class ConversationDataProvider {
   Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, String message);
   Future<List<MessageEntry>> getAllMessages(AccountId accountId);
   Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match);
+  Stream<MessageEntry?> getMessageWithLocalId(LocalMessageId localId);
 
   /// First message is the latest new message
   Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, LocalMessageId? latestCurrentMessageLocalId) async {
@@ -116,6 +117,11 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   @override
   Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match) {
     return chat.getMessageCountAndChanges(match);
+  }
+
+  @override
+  Stream<MessageEntry?> getMessageWithLocalId(LocalMessageId localId) {
+    return chat.getMessageWithLocalId(localId);
   }
 }
 

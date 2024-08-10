@@ -149,6 +149,17 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       .get();
   }
 
+  Stream<MessageEntry?> getMessageUpdatesByLocalMessageId(
+    LocalMessageId localId,
+  ) {
+    return (select(messages)
+      ..where((t) => t.id.equals(localId.id))
+    )
+      .map((m) => _fromMessage(m))
+      .watchSingleOrNull();
+  }
+
+
   MessageEntry _fromMessage(Message m) {
     final sentMessageStateNumber = m.sentMessageState;
     final SentMessageState? sentMessageState;

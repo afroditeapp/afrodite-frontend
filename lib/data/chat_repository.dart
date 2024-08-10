@@ -305,28 +305,8 @@ class ChatRepository extends DataRepository {
   // Local messages
 
   /// Get message and updates to it.
-  Stream<MessageEntry?> getMessageWithLocalId(AccountId match, LocalMessageId localId) async* {
-    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
-    if (currentUser == null) {
-      yield null;
-      return;
-    }
-    final messageList = await db.messageData((db) => db.getMessageListByLocalMessageId(currentUser, match, localId, 1)).ok() ?? [];
-    final message = messageList.firstOrNull;
-    if (message == null) {
-      yield null;
-      return;
-    }
-    yield message;
-    await for (final event in ProfileRepository.getInstance().profileChanges) {
-      if (event is ConversationChanged && event.conversationWith == match) {
-        final messageList = await db.messageData((db) => db.getMessageListByLocalMessageId(currentUser, match, localId, 1)).ok() ?? [];
-        final message = messageList.firstOrNull;
-        if (message != null) {
-          yield message;
-        }
-      }
-    }
+  Stream<MessageEntry?> getMessageWithLocalId(LocalMessageId localId) {
+    return db.accountStream((db) => db.daoMessages.getMessageUpdatesByLocalMessageId(localId));
   }
 
   /// Get message and updates to it.
