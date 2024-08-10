@@ -9,8 +9,6 @@ import 'package:logging/logging.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
-import 'package:pihka_frontend/data/chat_repository.dart';
-import 'package:pihka_frontend/data/common_repository.dart';
 import 'package:pihka_frontend/data/general/image_cache_settings.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
@@ -21,7 +19,6 @@ import 'package:pihka_frontend/data/push_notification_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/demo_account.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
@@ -315,7 +312,6 @@ class GlobalInitManager {
     await AccountRepository.getInstance().init();
     await MediaRepository.getInstance().init();
     await ProfileRepository.getInstance().init();
-    await ChatRepository.getInstance().init();
 
     // Initializes formatting for other locales as well
     await initializeDateFormatting("en_US", null);

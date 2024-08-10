@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
@@ -54,7 +55,7 @@ class _ProfileGridState extends State<ProfileGrid> {
   // filter settings progress and grid progress is smooth.
   final GlobalKey _progressKey = GlobalKey();
 
-  final ProfileIteratorManager _mainProfilesViewIterator = ProfileIteratorManager();
+  final ProfileIteratorManager _mainProfilesViewIterator = ProfileIteratorManager(LoginRepository.getInstance().repositories.chat);
   bool _reloadInProgress = false;
 
   @override

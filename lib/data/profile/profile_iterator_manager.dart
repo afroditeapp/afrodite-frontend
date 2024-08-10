@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:async/async.dart' show StreamExtensions;
-import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
@@ -20,8 +19,10 @@ class ModePublicProfiles extends ProfileIteratorMode {
 }
 
 class ProfileIteratorManager {
-  final ApiManager _api = ApiManager.getInstance();
   final DatabaseManager db = DatabaseManager.getInstance();
+  final ChatRepository chat;
+
+  ProfileIteratorManager(this.chat);
 
   ProfileIteratorMode _currentMode =
     ModePublicProfiles(clearDatabase: false);
@@ -112,8 +113,8 @@ class ProfileIteratorManager {
       }
       final toBeRemoved = <ProfileEntry>[];
       for (final p in list) {
-        final isBlocked = await ChatRepository.getInstance().isInReceivedBlocks(p.uuid) ||
-          await ChatRepository.getInstance().isInSentBlocks(p.uuid);
+        final isBlocked = await chat.isInReceivedBlocks(p.uuid) ||
+          await chat.isInSentBlocks(p.uuid);
 
         if (isBlocked || p.uuid == ownAccountId) {
           toBeRemoved.add(p);

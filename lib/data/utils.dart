@@ -1,8 +1,11 @@
 
 
 
+import 'dart:async';
+
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/utils.dart';
+import 'package:rxdart/rxdart.dart';
 
 abstract class DataRepository extends AppSingleton implements DataRepositoryMethods {
   @override
@@ -63,10 +66,18 @@ abstract class DataRepositoryMethods {
 
 
 class ConnectedActionScheduler {
-  final api = ApiManager.getInstance();
+  final ApiManager api;
+
+  ConnectedActionScheduler(this.api);
 
   bool _onLoginScheduled = false;
   int _onLoginScheduledCount = 0;
+
+  final BehaviorSubject<bool> _cancel = BehaviorSubject.seeded(false);
+
+  Future<void> dispose() async {
+    _cancel.add(true);
+  }
 
   /// The onResumeAppUsageSync might be also still scheduled
   /// if there was connection token error.
@@ -74,9 +85,20 @@ class ConnectedActionScheduler {
     _onLoginScheduledCount++;
     final count = _onLoginScheduledCount;
     _onLoginScheduled = true;
-    api.state
-      .firstWhere((element) => element == ApiManagerState.connected)
+
+    Future.any<ApiManagerState?>([
+      api
+        .state
+        .firstWhere((element) => element == ApiManagerState.connected),
+      _cancel
+        .firstWhere((v) => v)
+        .then((v) => null)
+    ])
       .then((value) async {
+        if (value == null) {
+          return;
+        }
+
         if (count != _onLoginScheduledCount) {
           // Only do latest requested sync
           return;
@@ -89,9 +111,19 @@ class ConnectedActionScheduler {
   }
 
   void onResumeAppUsageSync(Future<void> Function() action) {
-    api.state
-      .firstWhere((element) => element == ApiManagerState.connected)
+    Future.any<ApiManagerState?>([
+      api
+        .state
+        .firstWhere((element) => element == ApiManagerState.connected),
+      _cancel
+        .firstWhere((v) => v)
+        .then((v) => null)
+    ])
       .then((value) async {
+        if (value == null) {
+          return;
+        }
+
         if (_onLoginScheduled) {
           return;
         }

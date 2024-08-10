@@ -6,6 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
@@ -150,6 +151,8 @@ class LikeViewContentState extends State<LikeViewContent> {
   int _heroUniqueIdCounter = 0;
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
+  final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
+
   @override
   void initState() {
     super.initState();
@@ -210,17 +213,17 @@ class LikeViewContentState extends State<LikeViewContent> {
   }
 
   void _refreshLikes() {
-    ChatRepository.getInstance().receivedLikesIteratorReset();
+    chat.receivedLikesIteratorReset();
     // This might be disposed after resetProfileIterator completes.
     _pagingController?.refresh();
   }
 
   Future<void> _fetchPage(int pageKey) async {
     if (pageKey == 0) {
-      ChatRepository.getInstance().receivedLikesIteratorReset();
+      chat.receivedLikesIteratorReset();
     }
 
-    final profileList = await ChatRepository.getInstance().receivedLikesIteratorNext();
+    final profileList = await chat.receivedLikesIteratorNext();
     final newList = List<LikeViewEntry>.empty(growable: true);
     for (final profile in profileList) {
       newList.add((profile: profile, heroTag: ProfileHeroTag.from(profile.uuid, _heroUniqueIdCounter)));
@@ -238,7 +241,7 @@ class LikeViewContentState extends State<LikeViewContent> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        ChatRepository.getInstance().receivedLikesIteratorReset();
+        chat.receivedLikesIteratorReset();
         // This might be disposed after resetProfileIterator completes.
         _pagingController?.refresh();
       },

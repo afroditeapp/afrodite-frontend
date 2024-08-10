@@ -22,7 +22,7 @@ class ProfileRepository extends DataRepository {
     return _instance;
   }
 
-  final syncHandler = ConnectedActionScheduler();
+  final syncHandler = ConnectedActionScheduler(ApiManager.getInstance());
 
   final DatabaseManager db = DatabaseManager.getInstance();
   final ApiManager _api = ApiManager.getInstance();
@@ -47,6 +47,11 @@ class ProfileRepository extends DataRepository {
   @override
   Future<void> init() async {
     // empty
+  }
+
+  @override
+  Future<void> dispose() async {
+    await syncHandler.dispose();
   }
 
   @override

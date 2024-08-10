@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart';
+import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/push_notification_manager.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:database/database.dart';
@@ -15,7 +16,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   final db = DatabaseManager.getInstance();
   final backgroundDb = BackgroundDatabaseManager.getInstance();
 
-  final syncHandler = ConnectedActionScheduler();
+  final syncHandler = ConnectedActionScheduler(ApiManager.getInstance());
   bool initDone = false;
 
   Stream<bool> get notificationPermissionAsked => db
@@ -30,6 +31,11 @@ class CommonRepository extends DataRepositoryWithLifecycle {
       return;
     }
     initDone = true;
+  }
+
+  @override
+  Future<void> dispose() async {
+    await syncHandler.dispose();
   }
 
   Future<void> setNotificationPermissionAsked(bool value) async {

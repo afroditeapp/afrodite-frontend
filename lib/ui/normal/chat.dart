@@ -6,6 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
@@ -42,6 +43,8 @@ class _ChatViewState extends State<ChatView> {
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
   PagingController<int, MatchEntry>? _pagingController =
     PagingController(firstPageKey: 0);
+
+  final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
 
   @override
   void initState() {
@@ -103,10 +106,10 @@ class _ChatViewState extends State<ChatView> {
 
   Future<void> _fetchPage(int pageKey) async {
     if (pageKey == 0) {
-      ChatRepository.getInstance().matchesIteratorReset();
+      chat.matchesIteratorReset();
     }
 
-    final profileList = await ChatRepository.getInstance().matchesIteratorNext();
+    final profileList = await chat.matchesIteratorNext();
 
     if (profileList.isEmpty) {
       _pagingController?.appendLastPage([]);

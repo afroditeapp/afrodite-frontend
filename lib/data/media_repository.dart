@@ -32,7 +32,7 @@ class MediaRepository extends DataRepository {
     return _instance;
   }
 
-  final syncHandler = ConnectedActionScheduler();
+  final syncHandler = ConnectedActionScheduler(ApiManager.getInstance());
 
   final ApiManager api = ApiManager.getInstance();
   final DatabaseManager db = DatabaseManager.getInstance();
@@ -40,6 +40,11 @@ class MediaRepository extends DataRepository {
   @override
   Future<void> init() async {
     // nothing to do
+  }
+
+  @override
+  Future<void> dispose() async {
+    await syncHandler.dispose();
   }
 
   @override

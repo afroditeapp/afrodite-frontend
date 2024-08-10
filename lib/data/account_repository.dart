@@ -8,7 +8,6 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/account/initial_setup.dart';
 import 'package:pihka_frontend/data/chat/message_extensions.dart';
-import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/general/notification/state/moderation_request_status.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
@@ -120,7 +119,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   void handleEventToClient(EventToClient event) {
     log.finer("Event from server: $event");
 
-    final chat = ChatRepository.getInstance();
+    // TODO(repository-refactor): Add Chat repository reference to constructor
+    final chat = LoginRepository.getInstance().repositories.chat;
     final profile = ProfileRepository.getInstance();
 
     final accountState = event.accountState;
@@ -180,12 +180,11 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     if (resultString == null) {
       // Success
       await LoginRepository.getInstance().onInitialSetupComplete();
-      // TODO: This AccountId should be checked.
+      // TODO(repository-refactor): This AccountId should be checked.
       await LoginRepository.getInstance().repositories.onInitialSetupComplete();
       await AccountRepository.getInstance().onInitialSetupComplete();
       await MediaRepository.getInstance().onInitialSetupComplete();
       await ProfileRepository.getInstance().onInitialSetupComplete();
-      await ChatRepository.getInstance().onInitialSetupComplete();
     }
     return resultString;
   }
@@ -196,12 +195,11 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     final result = await InitialSetupUtils().doInitialSetup(data);
     if (result.isOk()) {
       await LoginRepository.getInstance().onInitialSetupComplete();
-      // TODO: This AccountId should be checked.
+      // TODO(repository-refactor): This AccountId should be checked.
       await LoginRepository.getInstance().repositories.onInitialSetupComplete();
       await AccountRepository.getInstance().onInitialSetupComplete();
       await MediaRepository.getInstance().onInitialSetupComplete();
       await ProfileRepository.getInstance().onInitialSetupComplete();
-      await ChatRepository.getInstance().onInitialSetupComplete();
     }
     return result;
   }

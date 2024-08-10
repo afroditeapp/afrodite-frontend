@@ -2,6 +2,7 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
 import "package:pihka_frontend/data/chat_repository.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/model/freezed/logic/settings/blocked_profiles.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
@@ -15,7 +16,7 @@ class UnblockProfile extends BlockedProfilesEvent {
 
 class BlockedProfilesBloc extends Bloc<BlockedProfilesEvent, BlockedProfilesData> with ActionRunner {
   final AccountRepository account = AccountRepository.getInstance();
-  final ChatRepository chat = ChatRepository.getInstance();
+  final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
 
   BlockedProfilesBloc() : super(BlockedProfilesData()) {
     on<UnblockProfile>((data, emit) async {

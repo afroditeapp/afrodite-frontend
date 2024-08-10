@@ -90,7 +90,8 @@ abstract class ConversationDataProvider {
 }
 
 class DefaultConversationDataProvider extends ConversationDataProvider {
-  final ChatRepository chat = ChatRepository.getInstance();
+  final ChatRepository chat;
+  DefaultConversationDataProvider(this.chat);
 
   @override
   Future<bool> isInMatches(AccountId accountId) => chat.isInMatches(accountId);
@@ -132,8 +133,10 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
   StreamSubscription<(int, ConversationChanged?)>? _messageCountSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
 
-  ConversationBloc(AccountId messageSenderAccountId, this.dataProvider) :
-    super(ConversationData(accountId: messageSenderAccountId)) {
+  ConversationBloc(
+    AccountId messageSenderAccountId,
+    this.dataProvider,
+  ) : super(ConversationData(accountId: messageSenderAccountId)) {
 
     on<InitEvent>((data, emit) async {
       log.info("Set conversation bloc initial state");

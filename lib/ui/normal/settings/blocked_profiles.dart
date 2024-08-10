@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -33,6 +33,8 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
   PagingController<int, BlockedProfileEntry>? _pagingController =
     PagingController(firstPageKey: 0);
+
+  final chat = LoginRepository.getInstance().repositories.chat;
 
   @override
   void initState() {
@@ -71,10 +73,10 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
 
   Future<void> _fetchPage(int pageKey) async {
     if (pageKey == 0) {
-      ChatRepository.getInstance().sentBlocksIteratorReset();
+      chat.sentBlocksIteratorReset();
     }
 
-    final profileList = await ChatRepository.getInstance().sentBlocksIteratorNext();
+    final profileList = await chat.sentBlocksIteratorNext();
 
     if (profileList.isEmpty) {
       _pagingController?.appendLastPage([]);

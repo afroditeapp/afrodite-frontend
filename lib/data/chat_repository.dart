@@ -19,14 +19,8 @@ import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("ChatRepository");
 
-class ChatRepository extends DataRepository {
-  ChatRepository._private();
-  static final _instance = ChatRepository._private();
-  factory ChatRepository.getInstance() {
-    return _instance;
-  }
-
-  final syncHandler = ConnectedActionScheduler();
+class ChatRepository extends DataRepositoryWithLifecycle {
+  final syncHandler = ConnectedActionScheduler(ApiManager.getInstance());
   final messageKeyManager = MessageKeyManager();
 
   final db = DatabaseManager.getInstance();
@@ -43,6 +37,11 @@ class ChatRepository extends DataRepository {
   @override
   Future<void> init() async {
     // empty
+  }
+
+  @override
+  Future<void> dispose() async {
+    await syncHandler.dispose();
   }
 
   @override

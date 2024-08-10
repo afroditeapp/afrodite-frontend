@@ -5,6 +5,7 @@ import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
 import "package:pihka_frontend/data/chat_repository.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import 'package:database/database.dart';
@@ -44,7 +45,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
   final AccountRepository account = AccountRepository.getInstance();
   final ProfileRepository profile = ProfileRepository.getInstance();
   final MediaRepository media = MediaRepository.getInstance();
-  final ChatRepository chat = ChatRepository.getInstance();
+  final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
 
   StreamSubscription<GetProfileResultClient>? _getProfileDataSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
