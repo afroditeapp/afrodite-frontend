@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
+import 'package:pihka_frontend/logic/login.dart';
 import 'package:pihka_frontend/logic/media/select_content.dart';
-import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
+import 'package:pihka_frontend/model/freezed/logic/login.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/select_content.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
@@ -42,11 +42,11 @@ class _SelectContentPageState extends State<SelectContentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(context.strings.select_content_screen_title)),
-      body: BlocBuilder<AccountBloc, AccountBlocData>(
-        builder: (context, aState) {
+      body: BlocBuilder<LoginBloc, LoginBlocData>(
+        builder: (context, lState) {
           return BlocBuilder<SelectContentBloc, SelectContentData>(
             builder: (context, state) {
-              final accountId = aState.accountId;
+              final accountId = lState.accountId;
               if (state.isLoading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (accountId == null) {

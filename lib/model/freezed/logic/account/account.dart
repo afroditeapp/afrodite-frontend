@@ -11,7 +11,6 @@ part 'account.freezed.dart';
 class AccountBlocData with _$AccountBlocData {
   AccountBlocData._();
   factory AccountBlocData({
-    AccountId? accountId,
     String? email,
     AccountState? accountState,
     required Capabilities capabilities,

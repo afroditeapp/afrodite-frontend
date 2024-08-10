@@ -27,6 +27,7 @@ import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
+import 'package:pihka_frontend/logic/login.dart';
 import 'package:pihka_frontend/logic/server/address.dart';
 import 'package:pihka_frontend/logic/sign_in_with.dart';
 
@@ -103,6 +104,7 @@ Future<void> main() async {
       providers: [
         // Navigation
         BlocProvider.value(value: NavigationStateBlocInstance.getInstance().bloc),
+        // TODO(future): move somehow to app state specific bloc creating
         BlocProvider.value(value: BottomNavigationStateBlocInstance.getInstance().bloc),
         BlocProvider(create: (_) => MainStateBloc()),
 
@@ -110,11 +112,10 @@ Future<void> main() async {
         BlocProvider(create: (_) => DemoAccountBloc()),
         BlocProvider(create: (_) => ServerAddressBloc()),
         BlocProvider(create: (_) => SignInWithBloc()),
-
-        // Login, initial setup and account
-        BlocProvider(create: (_) => AccountBloc()),
+        BlocProvider(create: (_) => LoginBloc()),
 
         // Main UI (app process starting from notification requires this here)
+        // TODO(future): move somehow to app state specific bloc creating
         BlocProvider(create: (_) => LikeGridInstanceManagerBloc()),
       ],
       child: const MyApp(),

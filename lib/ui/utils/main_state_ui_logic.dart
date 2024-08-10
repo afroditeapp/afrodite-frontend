@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
+import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/account_details.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
@@ -112,6 +113,9 @@ class MainStateUiLogic extends StatelessWidget {
         final blocProvider = switch (data) {
           MainState.initialSetup => MultiBlocProvider(
             providers: [
+              // Init AccountBloc so that the initial setup UI does not change from
+              // text field to only text when sign in with login is used.
+              BlocProvider(create: (_) => AccountBloc(), lazy: false),
               BlocProvider(create: (_) => InitialSetupBloc()),
               BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
               BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
@@ -135,6 +139,7 @@ class MainStateUiLogic extends StatelessWidget {
               BlocProvider(create: (_) => ProfileAttributesBloc()),
 
               // Account data
+              BlocProvider(create: (_) => AccountBloc()),
               BlocProvider(create: (_) => ContentBloc()),
               BlocProvider(create: (_) => LocationBloc()),
               BlocProvider(create: (_) => MyProfileBloc()),

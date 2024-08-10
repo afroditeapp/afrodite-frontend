@@ -21,14 +21,12 @@ final _privateConstructorErrorAccountBlocData = UnsupportedError(
 
 /// @nodoc
 mixin _$AccountBlocData {
-  AccountId? get accountId => throw _privateConstructorErrorAccountBlocData;
   String? get email => throw _privateConstructorErrorAccountBlocData;
   AccountState? get accountState => throw _privateConstructorErrorAccountBlocData;
   Capabilities get capabilities => throw _privateConstructorErrorAccountBlocData;
   ProfileVisibility get visibility => throw _privateConstructorErrorAccountBlocData;
 
   AccountBlocData copyWith({
-    AccountId? accountId,
     String? email,
     AccountState? accountState,
     Capabilities? capabilities,
@@ -39,7 +37,6 @@ mixin _$AccountBlocData {
 /// @nodoc
 abstract class _AccountBlocData extends AccountBlocData {
   factory _AccountBlocData({
-    AccountId? accountId,
     String? email,
     AccountState? accountState,
     required Capabilities capabilities,
@@ -51,15 +48,12 @@ abstract class _AccountBlocData extends AccountBlocData {
 /// @nodoc
 class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixin {
   _$AccountBlocDataImpl({
-    this.accountId,
     this.email,
     this.accountState,
     required this.capabilities,
     required this.visibility,
   }) : super._();
 
-  @override
-  final AccountId? accountId;
   @override
   final String? email;
   @override
@@ -71,7 +65,7 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountBlocData(accountId: $accountId, email: $email, accountState: $accountState, capabilities: $capabilities, visibility: $visibility)';
+    return 'AccountBlocData(email: $email, accountState: $accountState, capabilities: $capabilities, visibility: $visibility)';
   }
 
   @override
@@ -79,7 +73,6 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'AccountBlocData'))
-      ..add(DiagnosticsProperty('accountId', accountId))
       ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('accountState', accountState))
       ..add(DiagnosticsProperty('capabilities', capabilities))
@@ -91,8 +84,6 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
     return identical(this, other) ||
       (other.runtimeType == runtimeType &&
         other is _$AccountBlocDataImpl &&
-        (identical(other.accountId, accountId) ||
-          other.accountId == accountId) &&
         (identical(other.email, email) ||
           other.email == email) &&
         (identical(other.accountState, accountState) ||
@@ -107,7 +98,6 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    accountId,
     email,
     accountState,
     capabilities,
@@ -116,13 +106,11 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
 
   @override
   AccountBlocData copyWith({
-    Object? accountId = _detectDefaultValueInCopyWith,
     Object? email = _detectDefaultValueInCopyWith,
     Object? accountState = _detectDefaultValueInCopyWith,
     Object? capabilities,
     Object? visibility,
   }) => _$AccountBlocDataImpl(
-    accountId: (accountId == _detectDefaultValueInCopyWith ? this.accountId : accountId) as AccountId?,
     email: (email == _detectDefaultValueInCopyWith ? this.email : email) as String?,
     accountState: (accountState == _detectDefaultValueInCopyWith ? this.accountState : accountState) as AccountState?,
     capabilities: (capabilities ?? this.capabilities) as Capabilities,

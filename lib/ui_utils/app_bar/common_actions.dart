@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/login.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 
 
@@ -39,7 +39,7 @@ MenuItemButton commonActionLogout(BuildContext context) {
     onPressed: () => showConfirmDialogAdvanced(
       context: context,
       title: context.strings.generic_logout_confirmation_title,
-      onSuccess: () => context.read<AccountBloc>().add(DoLogout()),
+      onSuccess: () => context.read<LoginBloc>().add(DoLogout()),
     ),
   );
 }

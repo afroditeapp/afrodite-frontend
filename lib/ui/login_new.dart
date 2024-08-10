@@ -34,10 +34,6 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Init AccountBloc so that the initial setup UI does not change from
-    // text field to only text when sign in with login is used.
-    context.read<AccountBloc>();
-
     return Scaffold(
       body: Column(
         children: [

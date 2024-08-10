@@ -9,10 +9,12 @@ import "package:pihka_frontend/logic/app/bottom_navigation_state.dart";
 import "package:pihka_frontend/logic/app/navigator_state.dart";
 
 import "package:pihka_frontend/logic/app/notification_permission.dart";
+import "package:pihka_frontend/logic/login.dart";
 import "package:pihka_frontend/logic/media/content.dart";
 import "package:pihka_frontend/logic/profile/attributes.dart";
 import "package:pihka_frontend/logic/profile/my_profile.dart";
 import "package:pihka_frontend/model/freezed/logic/account/account.dart";
+import "package:pihka_frontend/model/freezed/logic/login.dart";
 import "package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.dart";
 import "package:pihka_frontend/model/freezed/logic/main/navigator_state.dart";
 import "package:pihka_frontend/model/freezed/logic/media/content.dart";
@@ -178,9 +180,9 @@ class _NormalStateContentState extends State<NormalStateContent> {
   }
 
   Widget primaryImageButton() {
-    return BlocBuilder<AccountBloc, AccountBlocData>(
-      builder: (context, accountState) {
-        final id = accountState.accountId;
+    return BlocBuilder<LoginBloc, LoginBlocData>(
+      builder: (context, loginState) {
+        final id = loginState.accountId;
         return BlocBuilder<ContentBloc, ContentData>(
           builder: (context, state) {
             final img = state.primaryProfilePicture;

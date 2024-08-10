@@ -6,9 +6,11 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
+import 'package:pihka_frontend/logic/login.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/media/new_moderation_request.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
+import 'package:pihka_frontend/model/freezed/logic/login.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/new_moderation_request.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/retry_initial_setup_images.dart';
@@ -93,11 +95,11 @@ class _CurrentModerationRequestScreenState extends State<CurrentModerationReques
           ),
         ],
       ),
-      body: BlocBuilder<AccountBloc, AccountBlocData>(
-        builder: (context, aState) {
+      body: BlocBuilder<LoginBloc, LoginBlocData>(
+        builder: (context, lState) {
           return BlocBuilder<CurrentModerationRequestBloc, CurrentModerationRequestData>(
             builder: (context, state) {
-              final accountId = aState.accountId;
+              final accountId = lState.accountId;
               final moderationRequest = state.moderationRequest;
               if (state.isLoading) {
                 return const Center(child: CircularProgressIndicator());

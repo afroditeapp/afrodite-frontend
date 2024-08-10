@@ -32,7 +32,7 @@ enum AccountRepositoryState {
 // sentLikesChanged and sentBlocksChanged as only client
 // makes operations to those lists.
 
-class AccountRepository extends DataRepository {
+class AccountRepository extends DataRepositoryWithLifecycle {
   AccountRepository._private();
   static final _instance = AccountRepository._private();
   factory AccountRepository.getInstance() {
@@ -45,8 +45,13 @@ class AccountRepository extends DataRepository {
   final BehaviorSubject<AccountRepositoryState> _internalState =
     BehaviorSubject.seeded(AccountRepositoryState.initRequired);
 
+  final BehaviorSubject<String?> _cachedEmailAddress =
+    BehaviorSubject.seeded(null);
+  StreamSubscription<String?>? _cachedEmailSubscription;
+
   Stream<AccountState?> get accountState => db
     .accountStream((db) => db.watchAccountState());
+  Stream<String?> get emailAddress => _cachedEmailAddress;
   Stream<Capabilities> get capabilities => db
     .accountStreamOrDefault(
       (db) => db.watchCapabilities(),
@@ -54,6 +59,8 @@ class AccountRepository extends DataRepository {
     );
   Stream<ProfileVisibility> get profileVisibility => db
     .accountStreamOrDefault((db) => db.daoProfileSettings.watchProfileVisibility(), ProfileVisibility.pendingPrivate);
+
+  String? get currentEmailAddress => _cachedEmailAddress.value;
 
   // WebSocket related event streams
   final _contentProcessingStateChanges = PublishSubject<ContentProcessingStateChanged>();
@@ -65,6 +72,18 @@ class AccountRepository extends DataRepository {
       return;
     }
     _internalState.add(AccountRepositoryState.initComplete);
+
+    _cachedEmailSubscription = db
+      .accountStream((db) => db.daoAccountSettings.watchEmailAddress())
+      .listen((v) {
+        _cachedEmailAddress.add(v);
+      });
+  }
+
+  // TODO: Call this in the future
+  @override
+  Future<void> dispose() async {
+    await _cachedEmailSubscription?.cancel();
   }
 
   // TODO(prod): Run onLogout when server connection has authentication failure

@@ -3,19 +3,10 @@ import "dart:async";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
-
-
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/database/database_manager.dart";
 import "package:pihka_frontend/model/freezed/logic/account/account.dart";
 import "package:pihka_frontend/utils.dart";
 
 sealed class AccountEvent {}
-class DoLogout extends AccountEvent {}
-class NewAccountIdValue extends AccountEvent {
-  final AccountId? value;
-  NewAccountIdValue(this.value);
-}
 class NewCapabilitiesValue extends AccountEvent {
   final Capabilities value;
   NewCapabilitiesValue(this.value);
@@ -36,10 +27,7 @@ class NewEmailAddressValue extends AccountEvent {
 /// Do register/login operations
 class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner {
   final AccountRepository account = AccountRepository.getInstance();
-  final LoginRepository login = LoginRepository.getInstance();
-  final DatabaseManager db = DatabaseManager.getInstance();
 
-  StreamSubscription<AccountId?>? _accountIdSubscription;
   StreamSubscription<Capabilities>? _capabilitiesSubscription;
   StreamSubscription<ProfileVisibility>? _profileVisibilitySubscription;
   StreamSubscription<AccountState?>? _accountStateSubscription;
@@ -48,16 +36,11 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
   AccountBloc() :
     super(AccountBlocData(
       capabilities: Capabilities(),
-      visibility: ProfileVisibility.pendingPrivate
+      visibility: ProfileVisibility.pendingPrivate,
+      // Use cached email to avoid showing input field UI for email
+      // when initial setup is displayed.
+      email: AccountRepository.getInstance().currentEmailAddress,
     )) {
-    on<DoLogout>((_, emit) async {
-      await runOnce(() async {
-        await login.logout();
-      });
-    });
-    on<NewAccountIdValue>((id, emit) {
-      emit(state.copyWith(accountId: id.value));
-    });
     on<NewCapabilitiesValue>((key, emit) {
       emit(state.copyWith(capabilities: key.value));
     });
@@ -71,9 +54,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
       emit(state.copyWith(email: key.value));
     });
 
-    _accountIdSubscription = login.accountId.listen((event) {
-      add(NewAccountIdValue(event));
-    });
     _capabilitiesSubscription = account.capabilities.listen((event) {
       add(NewCapabilitiesValue(event));
     });
@@ -83,14 +63,13 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
     _accountStateSubscription = account.accountState.listen((event) {
       add(NewAccountStateValue(event));
     });
-    _emailAddressSubscription = db.accountStream((db) => db.daoAccountSettings.watchEmailAddress()).listen((event) {
+    _emailAddressSubscription = account.emailAddress.listen((event) {
       add(NewEmailAddressValue(event));
     });
   }
 
   @override
   Future<void> close() async {
-    await _accountIdSubscription?.cancel();
     await _capabilitiesSubscription?.cancel();
     await _profileVisibilitySubscription?.cancel();
     await _accountStateSubscription?.cancel();

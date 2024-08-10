@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
+import 'package:pihka_frontend/logic/login.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
 import 'package:pihka_frontend/logic/media/new_moderation_request.dart';
-import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
+import 'package:pihka_frontend/model/freezed/logic/login.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/new_moderation_request.dart';
 import 'package:pihka_frontend/ui/initial_setup/profile_pictures.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/select_content.dart';
@@ -79,9 +79,9 @@ class _NewModerationRequestScreenState extends State<NewModerationRequestScreen>
                   appBar: AppBar(
                     title: Text(context.strings.new_moderation_request_screen_title),
                   ),
-                  body: BlocBuilder<AccountBloc, AccountBlocData>(
-                    builder: (context, aState) {
-                      final accountId = aState.accountId;
+                  body: BlocBuilder<LoginBloc, LoginBlocData>(
+                    builder: (context, lState) {
+                      final accountId = lState.accountId;
                       if (accountId == null) {
                         return Center(child: Text(context.strings.generic_error));
                       } else {

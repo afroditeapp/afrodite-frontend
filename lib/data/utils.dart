@@ -4,7 +4,35 @@
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 
-abstract class DataRepository extends AppSingleton {
+abstract class DataRepository extends AppSingleton implements DataRepositoryMethods {
+  @override
+  Future<void> onLogin() async {}
+  @override
+  Future<void> onLogout() async {}
+  @override
+  Future<void> onResumeAppUsage() async {}
+  @override
+  Future<void> onInitialSetupComplete() async {}
+}
+
+abstract class DataRepositoryWithLifecycle implements DataRepositoryMethods {
+  /// Initialize the repository.
+  Future<void> init() async {}
+
+  /// Dispose the repository.
+  Future<void> dispose() async {}
+
+  @override
+  Future<void> onLogin() async {}
+  @override
+  Future<void> onLogout() async {}
+  @override
+  Future<void> onResumeAppUsage() async {}
+  @override
+  Future<void> onInitialSetupComplete() async {}
+}
+
+abstract class DataRepositoryMethods {
   /// Called when the user logs in. Note that this is not called
   /// every time the app is opened, but only when the user logs in.
   ///
