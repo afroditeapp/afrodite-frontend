@@ -133,13 +133,13 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
   Future<List<MessageEntry>> getMessageListByLocalMessageId(
     AccountId localAccountId,
     AccountId remoteAccountId,
-    int startId,
+    LocalMessageId startId,
     int limit,
   ) async {
     return await (select(messages)
       ..where((t) => t.uuidLocalAccountId.equals(localAccountId.accountId))
       ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.accountId))
-      ..where((t) => t.id.isSmallerOrEqualValue(startId))
+      ..where((t) => t.id.isSmallerOrEqualValue(startId.id))
       ..limit(limit)
       ..orderBy([
         (t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc),
@@ -167,7 +167,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     }
 
     return MessageEntry(
-      localId: m.id,
+      localId: LocalMessageId(m.id),
       localAccountId: m.uuidLocalAccountId,
       remoteAccountId: m.uuidRemoteAccountId,
       messageText: m.messageText,

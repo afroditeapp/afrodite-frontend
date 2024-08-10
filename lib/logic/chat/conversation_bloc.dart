@@ -56,7 +56,7 @@ abstract class ConversationDataProvider {
   Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match);
 
   /// First message is the latest new message
-  Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, int? latestCurrentMessageLocalId) async {
+  Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, LocalMessageId? latestCurrentMessageLocalId) async {
     MessageDatabaseIterator messageIterator = MessageDatabaseIterator();
     final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {

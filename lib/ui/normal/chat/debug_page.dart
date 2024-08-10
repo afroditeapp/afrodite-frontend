@@ -83,12 +83,13 @@ class DebugConversationDataProvider extends ConversationDataProvider {
         text = "msg: $message, i: $i, msgPreUpdate: $msgCountPerUpdate";
       }
 
+      final entryId = localIdCounter++;
       final e = MessageEntry(
         localAccountId: AccountId(accountId: ""),
         remoteAccountId: AccountId(accountId: ""),
         messageText: text,
         sentMessageState: state,
-        localId: localIdCounter++,
+        localId: LocalMessageId(entryId),
       );
 
       messages.add(e);
@@ -121,7 +122,7 @@ class DebugConversationDataProvider extends ConversationDataProvider {
   }
 
   @override
-  Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, int? latestCurrentMessageLocalId) async {
+  Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, LocalMessageId? latestCurrentMessageLocalId) async {
     final newMessages = <MessageEntry>[];
     for (final message in messages.reversed) {
       if (message.localId == latestCurrentMessageLocalId) {

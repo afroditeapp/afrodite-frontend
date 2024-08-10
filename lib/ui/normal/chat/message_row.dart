@@ -5,16 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:database/database.dart';
 
 
-typedef MessageViewEntry = (String message, int? localId, bool isSent);
+typedef MessageViewEntry = (String message, LocalMessageId localId, bool isSent);
 
 MessageViewEntry messageEntryToViewData(MessageEntry entry) {
   return (entry.messageText, entry.localId, entry.sentMessageState != null);
 }
-
-MessageViewEntry emptyViewData() {
-  return ("", -1, false);
-}
-
 
 Align messageRowWidget(BuildContext context, MessageViewEntry entry, {Key? key, required TextStyle parentTextStyle}) {
   final (message, _, isSent) = entry;

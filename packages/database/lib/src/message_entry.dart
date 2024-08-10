@@ -6,7 +6,7 @@ import 'package:utils/utils.dart';
 
 class MessageEntry {
   /// Local database ID of the message.
-  final int localId;
+  final LocalMessageId localId;
 
   final AccountId localAccountId;
   final AccountId remoteAccountId;
@@ -99,4 +99,12 @@ class NewMessageEntry {
 class LocalMessageId {
   final int id;
   const LocalMessageId(this.id);
+
+  @override
+  bool operator ==(Object other) {
+    return (other is LocalMessageId && id == other.id);
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id);
 }

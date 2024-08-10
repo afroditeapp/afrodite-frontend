@@ -305,7 +305,7 @@ class ChatRepository extends DataRepository {
   // Local messages
 
   /// Get message and updates to it.
-  Stream<MessageEntry?> getMessageWithLocalId(AccountId match, int localId) async* {
+  Stream<MessageEntry?> getMessageWithLocalId(AccountId match, LocalMessageId localId) async* {
     final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {
       yield null;
