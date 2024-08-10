@@ -180,6 +180,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     if (resultString == null) {
       // Success
       await LoginRepository.getInstance().onInitialSetupComplete();
+      // TODO: This AccountId should be checked.
+      await LoginRepository.getInstance().repositories.onInitialSetupComplete();
       await AccountRepository.getInstance().onInitialSetupComplete();
       await MediaRepository.getInstance().onInitialSetupComplete();
       await ProfileRepository.getInstance().onInitialSetupComplete();
@@ -194,6 +196,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     final result = await InitialSetupUtils().doInitialSetup(data);
     if (result.isOk()) {
       await LoginRepository.getInstance().onInitialSetupComplete();
+      // TODO: This AccountId should be checked.
+      await LoginRepository.getInstance().repositories.onInitialSetupComplete();
       await AccountRepository.getInstance().onInitialSetupComplete();
       await MediaRepository.getInstance().onInitialSetupComplete();
       await ProfileRepository.getInstance().onInitialSetupComplete();

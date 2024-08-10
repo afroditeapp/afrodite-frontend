@@ -2,24 +2,16 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart';
-import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/data/push_notification_manager.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/storage/kv.dart';
-import 'package:rxdart/rxdart.dart';
 
 var log = Logger("CommonRepository");
 
-class CommonRepository extends DataRepository {
-  CommonRepository._private();
-  static final _instance = CommonRepository._private();
-  factory CommonRepository.getInstance() {
-    return _instance;
-  }
-
+class CommonRepository extends DataRepositoryWithLifecycle {
   final db = DatabaseManager.getInstance();
   final backgroundDb = BackgroundDatabaseManager.getInstance();
 

@@ -1,7 +1,7 @@
 import "dart:async";
 
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:pihka_frontend/data/common_repository.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/notification_manager.dart";
 
 extension type NotificationPermissionAsked(bool? notificationPermissionAsked) {}
@@ -16,7 +16,7 @@ class DenyPermissions extends NotificationPermissionEvent {}
 class AcceptPermissions extends NotificationPermissionEvent {}
 
 class NotificationPermissionBloc extends Bloc<NotificationPermissionEvent, NotificationPermissionAsked> {
-
+  final common = LoginRepository.getInstance().repositories.common;
   StreamSubscription<bool?>? _notificationPermissionAskedSubscription;
 
   NotificationPermissionBloc() : super(NotificationPermissionAsked(null)) {
@@ -24,14 +24,14 @@ class NotificationPermissionBloc extends Bloc<NotificationPermissionEvent, Notif
       emit(NotificationPermissionAsked(data.value)
     ));
     on<DenyPermissions>((_, emit) async {
-      await CommonRepository.getInstance().setNotificationPermissionAsked(true);
+      await common.setNotificationPermissionAsked(true);
     });
     on<AcceptPermissions>((_, emit) async {
-      await CommonRepository.getInstance().setNotificationPermissionAsked(true);
+      await common.setNotificationPermissionAsked(true);
       await NotificationManager.getInstance().askPermissions();
     });
 
-    _notificationPermissionAskedSubscription = CommonRepository.getInstance().notificationPermissionAsked.listen((state) {
+    _notificationPermissionAskedSubscription = common.notificationPermissionAsked.listen((state) {
       add(SetNotificationPermissionAskedValue(state));
     });
   }

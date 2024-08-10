@@ -48,6 +48,9 @@ class LoginRepository extends DataRepository {
     return _instance;
   }
 
+  RepositoryInstances? _repositories;
+  RepositoryInstances get repositories => _repositories!;
+
   final _api = ApiManager.getInstance();
 
   GoogleSignIn google = createSignInWithGoogle();
@@ -92,12 +95,17 @@ class LoginRepository extends DataRepository {
     }
     _internalState.add(LoginRepositoryState.initComplete);
 
+    final currentAccountId = await accountId.first;
+    if (currentAccountId != null) {
+      await createRepositories(currentAccountId);
+    }
+
     // Restore previous state
     final previousState = await DatabaseManager.getInstance().accountStreamSingle((db) => db.watchAccountState()).ok();
     if (previousState != null) {
       _loginState.add(LoginState.viewAccountStateOnceItExists);
       await onResumeAppUsage();
-      await CommonRepository.getInstance().onResumeAppUsage();
+      await _repositories?.onResumeAppUsage();
       await AccountRepository.getInstance().onResumeAppUsage();
       await ProfileRepository.getInstance().onResumeAppUsage();
       await MediaRepository.getInstance().onResumeAppUsage();
@@ -193,6 +201,20 @@ class LoginRepository extends DataRepository {
       .listen(null);
   }
 
+  Future<void> createRepositories(AccountId accountId) async {
+    final currentRepositories = _repositories;
+    await currentRepositories?.dispose();
+
+    final common = CommonRepository();
+    final newRepositories = RepositoryInstances(
+      accountId: accountId,
+      common: common,
+    );
+    await newRepositories.init();
+
+    _repositories = newRepositories;
+  }
+
   Stream<SignInWithGoogleEvent> signInWithGoogle() async* {
     final GoogleSignInAccount? signedIn;
     try {
@@ -243,8 +265,11 @@ class LoginRepository extends DataRepository {
     await DatabaseManager.getInstance().accountAction((db) => db.daoTokens.updateAccessTokenAccount(loginResult.account.access.accessToken));
     // TODO(microservice): microservice support
     await onLogin();
+
+    await createRepositories(loginResult.accountId);
+
     // Other repostories
-    await CommonRepository.getInstance().onLogin();
+    await _repositories?.onLogin();
     await AccountRepository.getInstance().onLogin();
     await ProfileRepository.getInstance().onLogin();
     await MediaRepository.getInstance().onLogin();
@@ -268,7 +293,7 @@ class LoginRepository extends DataRepository {
     // TODO(microservice): microservice support
 
     // Other repositories
-    await CommonRepository.getInstance().onLogout();
+    await _repositories?.onLogout();
     await AccountRepository.getInstance().onLogout();
     await ProfileRepository.getInstance().onLogout();
     await MediaRepository.getInstance().onLogout();
@@ -434,5 +459,47 @@ GoogleSignIn createSignInWithGoogle() {
     );
   } else {
     throw UnsupportedError("Unsupported platform");
+  }
+}
+
+/// This should contain account specific logic so it is not possible
+/// the logic will touch another account's data if there is long running
+/// operations for example. When user logs in using an account the blocs will
+/// be created and the required repository instances will be get from this
+/// class.
+class RepositoryInstances implements DataRepositoryMethods {
+  final AccountId accountId;
+  final CommonRepository common;
+  const RepositoryInstances({
+    required this.accountId,
+    required this.common,
+  });
+
+  Future<void> init() async {
+    await common.init();
+  }
+
+  Future<void> dispose() async {
+    await common.dispose();
+  }
+
+  @override
+  Future<void> onInitialSetupComplete() async {
+    await common.onInitialSetupComplete();
+  }
+
+  @override
+  Future<void> onLogin() async {
+    await common.onLogin();
+  }
+
+  @override
+  Future<void> onLogout() async {
+    await common.onLogout();
+  }
+
+  @override
+  Future<void> onResumeAppUsage() async {
+    await common.onResumeAppUsage();
   }
 }

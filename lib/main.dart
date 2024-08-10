@@ -311,7 +311,6 @@ class GlobalInitManager {
     await NotificationManager.getInstance().init();
     await PushNotificationManager.getInstance().init();
 
-    await CommonRepository.getInstance().init();
     await LoginRepository.getInstance().init();
     await AccountRepository.getInstance().init();
     await MediaRepository.getInstance().init();
