@@ -10,7 +10,6 @@ import 'package:pihka_frontend/data/account/initial_setup.dart';
 import 'package:pihka_frontend/data/chat/message_extensions.dart';
 import 'package:pihka_frontend/data/general/notification/state/moderation_request_status.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
-import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
@@ -183,7 +182,6 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       // TODO(repository-refactor): This AccountId should be checked.
       await LoginRepository.getInstance().repositories.onInitialSetupComplete();
       await AccountRepository.getInstance().onInitialSetupComplete();
-      await MediaRepository.getInstance().onInitialSetupComplete();
       await ProfileRepository.getInstance().onInitialSetupComplete();
     }
     return resultString;
@@ -198,7 +196,6 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       // TODO(repository-refactor): This AccountId should be checked.
       await LoginRepository.getInstance().repositories.onInitialSetupComplete();
       await AccountRepository.getInstance().onInitialSetupComplete();
-      await MediaRepository.getInstance().onInitialSetupComplete();
       await ProfileRepository.getInstance().onInitialSetupComplete();
     }
     return result;

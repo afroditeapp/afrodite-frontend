@@ -3,6 +3,7 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/model/freezed/logic/media/select_content.dart";
 import "package:pihka_frontend/utils.dart";
@@ -20,7 +21,7 @@ class NewModerationRequest extends SelectContentEvent {
 }
 
 class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with ActionRunner {
-  final MediaRepository media = MediaRepository.getInstance();
+  final MediaRepository media = LoginRepository.getInstance().repositories.media;
   final AccountRepository account = AccountRepository.getInstance();
 
   SelectContentBloc() : super(SelectContentData()) {

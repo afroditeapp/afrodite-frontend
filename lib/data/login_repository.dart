@@ -108,7 +108,6 @@ class LoginRepository extends DataRepository {
       await _repositories?.onResumeAppUsage();
       await AccountRepository.getInstance().onResumeAppUsage();
       await ProfileRepository.getInstance().onResumeAppUsage();
-      await MediaRepository.getInstance().onResumeAppUsage();
     }
 
     Rx.combineLatest2(
@@ -205,11 +204,13 @@ class LoginRepository extends DataRepository {
     await currentRepositories?.dispose();
 
     final common = CommonRepository();
-    final chat = ChatRepository();
+    final media = MediaRepository();
+    final chat = ChatRepository(media: media);
     final newRepositories = RepositoryInstances(
       accountId: accountId,
       common: common,
       chat: chat,
+      media: media,
     );
     await newRepositories.init();
 
@@ -273,7 +274,6 @@ class LoginRepository extends DataRepository {
     await _repositories?.onLogin();
     await AccountRepository.getInstance().onLogin();
     await ProfileRepository.getInstance().onLogin();
-    await MediaRepository.getInstance().onLogin();
 
     await _api.restart();
 
@@ -296,7 +296,6 @@ class LoginRepository extends DataRepository {
     await _repositories?.onLogout();
     await AccountRepository.getInstance().onLogout();
     await ProfileRepository.getInstance().onLogout();
-    await MediaRepository.getInstance().onLogout();
 
     try {
       // TODO(prod): There is also google.disconnect(). Should that used instead?
@@ -470,43 +469,51 @@ class RepositoryInstances implements DataRepositoryMethods {
   final AccountId accountId;
   final CommonRepository common;
   final ChatRepository chat;
+  final MediaRepository media;
   const RepositoryInstances({
     required this.accountId,
     required this.common,
     required this.chat,
+    required this.media,
   });
 
   Future<void> init() async {
     await common.init();
     await chat.init();
+    await media.init();
   }
 
   Future<void> dispose() async {
     await common.dispose();
     await chat.dispose();
+    await media.dispose();
   }
 
   @override
   Future<void> onInitialSetupComplete() async {
     await common.onInitialSetupComplete();
     await chat.onInitialSetupComplete();
+    await media.onInitialSetupComplete();
   }
 
   @override
   Future<void> onLogin() async {
     await common.onLogin();
     await chat.onLogin();
+    await media.onLogin();
   }
 
   @override
   Future<void> onLogout() async {
     await common.onLogout();
     await chat.onLogout();
+    await media.onLogout();
   }
 
   @override
   Future<void> onResumeAppUsage() async {
     await common.onResumeAppUsage();
     await chat.onResumeAppUsage();
+    await media.onResumeAppUsage();
   }
 }

@@ -2,6 +2,7 @@ import "dart:collection";
 
 import "package:async/async.dart";
 import "package:openapi/api.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/utils/api.dart";
 import "package:rxdart/rxdart.dart";
@@ -38,7 +39,7 @@ class ModerationRequestState {
       sentToServer = true;
 
       final accpeted = !list.any((element) => element is Denied);
-      await MediaRepository.getInstance().handleModerationRequest(m.requestCreatorId, accpeted);
+      await LoginRepository.getInstance().repositories.media.handleModerationRequest(m.requestCreatorId, accpeted);
     }
 }
 
@@ -82,7 +83,7 @@ class ImageModerationLogic {
     return _instance;
   }
 
-  final media = MediaRepository.getInstance();
+  final media = LoginRepository.getInstance().repositories.media;
 
   final BehaviorSubject<ImageModerationStatus> _imageModerationStatus =
     BehaviorSubject.seeded(ImageModerationStatus.loading);
@@ -183,7 +184,7 @@ class LoadMoreManager {
 
 class ModerationCacher {
   final HashSet<Moderation> alreadyStoredModerations = HashSet();
-  final MediaRepository media = MediaRepository.getInstance();
+  final MediaRepository media = LoginRepository.getInstance().repositories.media;
 
   /// Return only new ImageRowStates
   Future<List<ImageRowState>> getMoreModerationRequests(ModerationQueueType queueType) async {

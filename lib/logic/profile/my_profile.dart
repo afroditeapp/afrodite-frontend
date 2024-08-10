@@ -3,6 +3,7 @@ import "dart:async";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import 'package:database/database.dart';
@@ -50,7 +51,7 @@ class ReloadMyProfile extends MyProfileEvent {}
 class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunner {
   final AccountRepository account = AccountRepository.getInstance();
   final ProfileRepository profile = ProfileRepository.getInstance();
-  final MediaRepository media = MediaRepository.getInstance();
+  final MediaRepository media = LoginRepository.getInstance().repositories.media;
   final db = DatabaseManager.getInstance();
 
   StreamSubscription<ProfileEntry?>? _profileSubscription;

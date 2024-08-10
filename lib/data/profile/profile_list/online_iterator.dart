@@ -4,6 +4,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
+import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
 import 'package:database/database.dart';
@@ -20,13 +21,15 @@ class OnlineIterator extends IteratorType {
   bool resetServerIterator;
   final ApiManager api = ApiManager.getInstance();
   final DatabaseManager db = DatabaseManager.getInstance();
-  final downloader = ProfileEntryDownloader();
+  final ProfileEntryDownloader downloader;
+
 
   /// If [resetServerIterator] is true, the iterator will reset the
   /// server iterator to the beginning.
   OnlineIterator({
     this.resetServerIterator = false,
-  });
+    required MediaRepository media,
+  }) : downloader = ProfileEntryDownloader(media);
 
   @override
   void reset() {
@@ -136,6 +139,8 @@ class OnlineIterator extends IteratorType {
 class ProfileEntryDownloader {
   final ApiManager api = ApiManager.getInstance();
   final DatabaseManager db = DatabaseManager.getInstance();
+  final MediaRepository media;
+  ProfileEntryDownloader(this.media);
 
   /// Download profile entry, save to databases and return it.
   Future<Result<ProfileEntry, ProfileDownloadError>> download(AccountId accountId, {bool isMatch = false}) async {
@@ -161,7 +166,7 @@ class ProfileEntryDownloader {
             return Err(OtherProfileDownloadError());
           }
 
-          final bytes = await ImageCacheData.getInstance().getImage(accountId, primaryContentId, isMatch: isMatch);
+          final bytes = await ImageCacheData.getInstance().getImage(accountId, primaryContentId, isMatch: isMatch, media: media);
           if (bytes == null) {
             log.warning("Skipping one profile because image loading failed");
             return Err(OtherProfileDownloadError());

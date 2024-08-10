@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
 import 'package:pihka_frontend/ui_utils/consts/corners.dart';
 import 'package:pihka_frontend/ui_utils/crop_image_screen.dart';
@@ -94,6 +95,7 @@ class _ProfileThumbnailImageState extends State<ProfileThumbnailImage> {
       widget.accountId,
       widget.contentId,
       sizeSetting: widget.cacheSize,
+      media: LoginRepository.getInstance().repositories.media,
     )
       .resolve(createLocalImageConfiguration(context));
     if (newStream.key != imgStream?.key) {

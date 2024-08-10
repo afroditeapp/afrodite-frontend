@@ -3,6 +3,7 @@ import "dart:async";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 
 import "package:pihka_frontend/data/media_repository.dart";
 import 'package:database/database.dart';
@@ -34,7 +35,7 @@ class NewPendingSecurityContent extends ContentEvent {
 
 class ContentBloc extends Bloc<ContentEvent, ContentData> {
   final DatabaseManager db = DatabaseManager.getInstance();
-  final MediaRepository media = MediaRepository.getInstance();
+  final MediaRepository media = LoginRepository.getInstance().repositories.media;
 
   StreamSubscription<CurrentProfileContent?>? _publicContentSubscription;
   StreamSubscription<ContentId?>? _securityContentSubscription;

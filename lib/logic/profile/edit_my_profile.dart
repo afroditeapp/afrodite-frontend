@@ -1,5 +1,6 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import 'package:database/database.dart';
@@ -33,7 +34,7 @@ class NewAttributeValue extends EditMyProfileEvent {
 
 class EditMyProfileBloc extends Bloc<EditMyProfileEvent, EditMyProfileData> with ActionRunner {
   final ProfileRepository profile = ProfileRepository.getInstance();
-  final MediaRepository media = MediaRepository.getInstance();
+  final MediaRepository media = LoginRepository.getInstance().repositories.media;
   final db = DatabaseManager.getInstance();
 
   EditMyProfileBloc() : super(EditMyProfileData()) {

@@ -55,7 +55,10 @@ class _ProfileGridState extends State<ProfileGrid> {
   // filter settings progress and grid progress is smooth.
   final GlobalKey _progressKey = GlobalKey();
 
-  final ProfileIteratorManager _mainProfilesViewIterator = ProfileIteratorManager(LoginRepository.getInstance().repositories.chat);
+  final ProfileIteratorManager _mainProfilesViewIterator = ProfileIteratorManager(
+    LoginRepository.getInstance().repositories.chat,
+    LoginRepository.getInstance().repositories.media,
+  );
   bool _reloadInProgress = false;
 
   @override

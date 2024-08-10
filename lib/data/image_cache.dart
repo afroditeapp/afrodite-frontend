@@ -37,7 +37,7 @@ class ImageCacheData extends AppSingleton {
   final CacheManager cacheManager;
 
   /// Get image bytes for profile picture.
-  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) async {
+  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false, required MediaRepository media}) async {
     if (kIsWeb) {
       throw UnsupportedError("getImage is not supported on web");
     }
@@ -51,7 +51,7 @@ class ImageCacheData extends AppSingleton {
       return decryptedImgBytes;
     }
 
-    final imageData = await MediaRepository.getInstance().getImage(imageOwner, id, isMatch: isMatch);
+    final imageData = await media.getImage(imageOwner, id, isMatch: isMatch);
     if (imageData == null) {
       return null;
     }
@@ -62,7 +62,7 @@ class ImageCacheData extends AppSingleton {
   }
 
   /// Get PNG file bytes for map tile.
-  Future<Uint8List?> getMapTile(int z, int x, int y) async {
+  Future<Uint8List?> getMapTile(int z, int x, int y, {required MediaRepository media}) async {
     final key = createMapTileKey(z, x, y);
     final fileInfo = await cacheManager.getFileFromCache(key);
     if (fileInfo != null) {
@@ -72,7 +72,7 @@ class ImageCacheData extends AppSingleton {
       return decryptedImgBytes;
     }
 
-    final tileResult = await MediaRepository.getInstance().getMapTile(z, x, y);
+    final tileResult = await media.getMapTile(z, x, y);
     switch (tileResult) {
       case MapTileSuccess tileResult:
         final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(tileResult.pngData);
@@ -132,15 +132,16 @@ Future<Uint8List?> emptyMapTile() async {
 class AccountImageProvider extends ImageProvider<ContentId> {
   final AccountImgKey imgInfo;
   final bool isMatch;
+  final MediaRepository media;
 
-  AccountImageProvider._(this.imgInfo, {this.isMatch = false});
+  AccountImageProvider._(this.imgInfo, {this.isMatch = false, required this.media});
 
   @override
   ImageStreamCompleter loadImage(ContentId key, ImageDecoderCallback decode) {
     return OneFrameImageStreamCompleter(
       () async {
         final imgBytes =
-          await ImageCacheData.getInstance().getImage(imgInfo.accountId, imgInfo.contentId, isMatch: isMatch);
+          await ImageCacheData.getInstance().getImage(imgInfo.accountId, imgInfo.contentId, isMatch: isMatch, media: media);
 
         if (imgBytes == null) {
           return Future<ImageInfo>.error("Failed to load the image");
@@ -165,10 +166,11 @@ class AccountImageProvider extends ImageProvider<ContentId> {
     {
       bool isMatch = false,
       ImageCacheSize sizeSetting = ImageCacheSize.maxQuality,
+      required MediaRepository media,
     }
   ) {
     final key = AccountImgKey(accountId: accountId, contentId: contentId);
-    final imgProvider = AccountImageProvider._(key, isMatch: isMatch);
+    final imgProvider = AccountImageProvider._(key, isMatch: isMatch, media: media);
     if (sizeSetting == ImageCacheSize.maxQuality) {
       return imgProvider;
     } else {

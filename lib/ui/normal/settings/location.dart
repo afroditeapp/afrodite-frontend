@@ -9,6 +9,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/logic/profile/location.dart';
 
@@ -555,7 +556,12 @@ class CustomImageProvider extends ImageProvider<(int, int, int)> {
     return OneFrameImageStreamCompleter(
       () async {
         final pngBytes =
-          await ImageCacheData.getInstance().getMapTile(coordinates.z, coordinates.x, coordinates.y);
+          await ImageCacheData.getInstance().getMapTile(
+            coordinates.z,
+            coordinates.x,
+            coordinates.y,
+            media: LoginRepository.getInstance().repositories.media,
+          );
 
         if (pngBytes == null) {
           return Future<ImageInfo>.error("Failed to load map tile");

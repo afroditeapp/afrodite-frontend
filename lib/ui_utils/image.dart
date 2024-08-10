@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 
 Widget xfileImgWidget(XFile imageFile, {double? width, double? height, AlignmentGeometry alignment = Alignment.center}) {
   if (kIsWeb) {
@@ -89,6 +90,7 @@ Widget accountImgWidget(
       contentId,
       isMatch: isMatch,
       sizeSetting: cacheSize,
+      media: LoginRepository.getInstance().repositories.media,
     ),
     width: width,
     height: height,
@@ -113,6 +115,7 @@ Widget accountImgWidgetInk(
       accountId,
       contentId,
       isMatch: isMatch,
+      media: LoginRepository.getInstance().repositories.media,
     ),
     width: width,
     height: height,

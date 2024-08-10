@@ -25,13 +25,7 @@ import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("MediaRepository");
 
-class MediaRepository extends DataRepository {
-  MediaRepository._private();
-  static final _instance = MediaRepository._private();
-  factory MediaRepository.getInstance() {
-    return _instance;
-  }
-
+class MediaRepository extends DataRepositoryWithLifecycle {
   final syncHandler = ConnectedActionScheduler(ApiManager.getInstance());
 
   final ApiManager api = ApiManager.getInstance();

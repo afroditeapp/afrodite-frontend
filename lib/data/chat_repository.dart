@@ -9,6 +9,7 @@ import 'package:pihka_frontend/data/chat/message_database_iterator.dart';
 import 'package:pihka_frontend/data/chat/message_key_generator.dart';
 import 'package:pihka_frontend/data/general/notification/state/like_received.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
+import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile/account_id_database_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
@@ -25,8 +26,11 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
   final db = DatabaseManager.getInstance();
 
+  ChatRepository({required MediaRepository media}) :
+    profileEntryDownloader = ProfileEntryDownloader(media);
+
   final ApiManager api = ApiManager.getInstance();
-  final profileEntryDownloader = ProfileEntryDownloader();
+  final ProfileEntryDownloader profileEntryDownloader;
   final AccountIdDatabaseIterator sentBlocksIterator =
     AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getSentBlocksList(startIndex, limit)).ok());
   final AccountIdDatabaseIterator receivedLikesIterator =

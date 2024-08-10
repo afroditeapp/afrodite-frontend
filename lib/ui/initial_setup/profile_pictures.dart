@@ -3,6 +3,7 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:image_picker/image_picker.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/image_cache.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/navigator_state.dart";
@@ -313,7 +314,11 @@ Future<void> openEditThumbnail(
 ) async {
   // TODO: Error handling (now done?)
 
-  final bytes = await ImageCacheData.getInstance().getImage(img.accountId, img.contentId);
+  final bytes = await ImageCacheData.getInstance().getImage(
+    img.accountId,
+    img.contentId,
+    media: LoginRepository.getInstance().repositories.media
+  );
   if (!context.mounted) {
     return;
   }

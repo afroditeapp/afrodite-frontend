@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
+import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
@@ -21,8 +22,9 @@ class ModePublicProfiles extends ProfileIteratorMode {
 class ProfileIteratorManager {
   final DatabaseManager db = DatabaseManager.getInstance();
   final ChatRepository chat;
+  final MediaRepository media;
 
-  ProfileIteratorManager(this.chat);
+  ProfileIteratorManager(this.chat, this.media);
 
   ProfileIteratorMode _currentMode =
     ModePublicProfiles(clearDatabase: false);
@@ -40,10 +42,13 @@ class ProfileIteratorManager {
 
           _currentIterator = OnlineIterator(
             resetServerIterator: true,
+            media: media,
           );
         } else {
           if (_currentMode is ModeFavorites) {
-            _currentIterator = OnlineIterator();
+            _currentIterator = OnlineIterator(
+              media: media,
+            );
           } else {
             _currentIterator.reset();
           }

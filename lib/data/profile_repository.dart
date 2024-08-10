@@ -5,6 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
+import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:database/database.dart';
@@ -26,6 +27,8 @@ class ProfileRepository extends DataRepository {
 
   final DatabaseManager db = DatabaseManager.getInstance();
   final ApiManager _api = ApiManager.getInstance();
+
+  final MediaRepository media = LoginRepository.getInstance().repositories.media;
 
   final PublishSubject<ProfileChange> _profileChangesRelay = PublishSubject();
   void sendProfileChange(ProfileChange change) {
@@ -153,7 +156,7 @@ class ProfileRepository extends DataRepository {
       }
     }
 
-    final entry = await ProfileEntryDownloader().download(id).ok();
+    final entry = await ProfileEntryDownloader(media).download(id).ok();
     return entry;
   }
 
@@ -168,7 +171,7 @@ class ProfileRepository extends DataRepository {
     }
 
 
-    final result = await ProfileEntryDownloader().download(id);
+    final result = await ProfileEntryDownloader(media).download(id);
     switch (result) {
       case Ok(:final v):
         yield GetProfileSuccess(v);

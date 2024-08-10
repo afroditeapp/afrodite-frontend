@@ -44,7 +44,7 @@ class ResetShowMessages extends ViewProfileEvent {}
 class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with ActionRunner {
   final AccountRepository account = AccountRepository.getInstance();
   final ProfileRepository profile = ProfileRepository.getInstance();
-  final MediaRepository media = MediaRepository.getInstance();
+  final MediaRepository media = LoginRepository.getInstance().repositories.media;
   final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
 
   StreamSubscription<GetProfileResultClient>? _getProfileDataSubscription;

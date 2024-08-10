@@ -32,7 +32,7 @@ class ResetState extends ImageProcessingEvent {}
 class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData> {
   final LoginRepository login = LoginRepository.getInstance();
   final AccountRepository account = AccountRepository.getInstance();
-  final MediaRepository media = MediaRepository.getInstance();
+  final MediaRepository media = LoginRepository.getInstance().repositories.media;
   final ImageCacheData imageCache = ImageCacheData.getInstance();
 
   ImageProcessingBloc() : super(ImageProcessingData()) {
@@ -74,7 +74,7 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
             ));
           }
           case ProcessingCompleted(:final contentId): {
-            final imgFile = await imageCache.getImage(accountId, contentId);
+            final imgFile = await imageCache.getImage(accountId, contentId, media: media);
             if (imgFile == null) {
               emit(state.copyWith(
                 processingState: SendingFailed(),
