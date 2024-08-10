@@ -45,6 +45,7 @@ class _ChatViewState extends State<ChatView> {
     PagingController(firstPageKey: 0);
 
   final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
+  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
 
   @override
   void initState() {
@@ -53,7 +54,7 @@ class _ChatViewState extends State<ChatView> {
       _fetchPage(pageKey);
     });
     _profileChangesSubscription?.cancel();
-    _profileChangesSubscription = ProfileRepository.getInstance().profileChanges.listen((event) {
+    _profileChangesSubscription = profile.profileChanges.listen((event) {
         handleProfileChange(event);
     });
     _scrollController.addListener(scrollEventListener);

@@ -13,7 +13,6 @@ import 'package:pihka_frontend/data/general/image_cache_settings.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
-import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/push_notification_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
@@ -309,7 +308,6 @@ class GlobalInitManager {
 
     await LoginRepository.getInstance().init();
     await AccountRepository.getInstance().init();
-    await ProfileRepository.getInstance().init();
 
     // Initializes formatting for other locales as well
     await initializeDateFormatting("en_US", null);

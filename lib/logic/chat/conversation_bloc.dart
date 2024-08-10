@@ -129,6 +129,7 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
 class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with ActionRunner {
   final ConversationDataProvider dataProvider;
   final RenderingManager renderingManager = RenderingManager();
+  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
 
   StreamSubscription<(int, ConversationChanged?)>? _messageCountSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
@@ -282,7 +283,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       transformer: sequential(),
     );
 
-    _profileChangeSubscription = ProfileRepository.getInstance()
+    _profileChangeSubscription = profile
       .profileChanges
       .listen((event) {
         add(HandleProfileChange(event));

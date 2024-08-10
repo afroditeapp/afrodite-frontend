@@ -25,8 +25,9 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   final messageKeyManager = MessageKeyManager();
 
   final db = DatabaseManager.getInstance();
+  final ProfileRepository profile;
 
-  ChatRepository({required MediaRepository media}) :
+  ChatRepository({required MediaRepository media, required this.profile}) :
     profileEntryDownloader = ProfileEntryDownloader(media);
 
   final ApiManager api = ApiManager.getInstance();
@@ -157,7 +158,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     if (result.isOk()) {
       await db.profileAction((db) => db.setSentBlockStatus(accountId, true));
       await db.profileAction((db) => db.setReceivedLikeStatus(accountId, false));
-      ProfileRepository.getInstance().sendProfileChange(ProfileBlocked(accountId));
+      profile.sendProfileChange(ProfileBlocked(accountId));
     }
     return result.isOk();
   }
@@ -166,7 +167,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     final result = await api.chatAction((api) => api.postUnblockProfile(accountId));
     if (result.isOk()) {
       await db.profileAction((db) => db.setSentBlockStatus(accountId, false));
-      ProfileRepository.getInstance().sendProfileChange(ProfileUnblocked(accountId));
+      profile.sendProfileChange(ProfileUnblocked(accountId));
     }
     return result.isOk();
   }
@@ -217,7 +218,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
           // Perhaps if both users blocks same time, the same account could be
           // in both sent and received blocks. This handles that case.
           await db.profileAction((db) => db.setSentBlockStatus(account, false));
-          ProfileRepository.getInstance().sendProfileChange(ProfileBlocked(account));
+          profile.sendProfileChange(ProfileBlocked(account));
         }
       }
     }
@@ -278,7 +279,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     final receivedLikes = await api.chat((api) => api.getReceivedLikes()).ok();
     if (receivedLikes != null) {
       await db.profileAction((db) => db.setReceivedLikeStatusList(receivedLikes));
-      ProfileRepository.getInstance().sendProfileChange(LikesChanged());
+      profile.sendProfileChange(LikesChanged());
 
       final newList = receivedLikes.profiles;
       if (newList.length > currentReceivedLikes.length) {
@@ -301,7 +302,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     final data = await api.chat((api) => api.getMatches()).ok();
     if (data != null) {
       await db.profileAction((db) => db.setMatchStatusList(data));
-      ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
+      profile.sendProfileChange(MatchesChanged());
     }
   }
 
@@ -327,7 +328,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
       return;
     }
     yield message;
-    await for (final event in ProfileRepository.getInstance().profileChanges) {
+    await for (final event in profile.profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
         final messageList = await db.messageData((db) => db.getMessageListByLocalMessageId(currentUser, match, localId, 1)).ok() ?? [];
         final message = messageList.firstOrNull;
@@ -349,7 +350,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     final messageNumber = await db.messageData((db) => db.countMessagesInConversation(currentUser, match)).ok();
     yield (messageNumber ?? 0, null);
 
-    await for (final event in ProfileRepository.getInstance().profileChanges) {
+    await for (final event in profile.profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
         final messageNumber = await db.messageData((db) => db.countMessagesInConversation(currentUser, match)).ok();
         yield (messageNumber ?? 0, event);

@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/utils.dart";
 
@@ -17,19 +18,19 @@ class NewLocation extends LocationEvent {
 }
 
 class LocationBloc extends Bloc<LocationEvent, Location?> with ActionRunner {
-  final ProfileRepository profile = ProfileRepository.getInstance();
+  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
 
   StreamSubscription<Location?>? _locationSubscription;
 
   LocationBloc() : super(null) {
     on<SetLocation>((data, emit) async {
-      await ProfileRepository.getInstance().updateLocation(data.location);
+      await profile.updateLocation(data.location);
     });
     on<NewLocation>((data, emit) async {
       emit(data.location);
     });
 
-    _locationSubscription = ProfileRepository.getInstance()
+    _locationSubscription = profile
       .location
       .listen((value) => add(NewLocation(value)));
   }

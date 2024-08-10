@@ -152,6 +152,7 @@ class LikeViewContentState extends State<LikeViewContent> {
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
   final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
+  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
 
   @override
   void initState() {
@@ -161,7 +162,7 @@ class LikeViewContentState extends State<LikeViewContent> {
       _fetchPage(pageKey);
     });
     _profileChangesSubscription?.cancel();
-    _profileChangesSubscription = ProfileRepository.getInstance().profileChanges.listen((event) {
+    _profileChangesSubscription = profile.profileChanges.listen((event) {
         _handleProfileChange(event);
     });
     _scrollController.addListener(scrollEventListener);

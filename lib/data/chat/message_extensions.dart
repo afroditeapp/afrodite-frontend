@@ -50,7 +50,7 @@ extension MessageExtensions on ChatRepository {
       final isMatch = await isInMatches(message.id.accountIdSender);
       if (!isMatch) {
         await db.profileAction((db) => db.setMatchStatus(message.id.accountIdSender, true));
-        ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
+        profile.sendProfileChange(MatchesChanged());
       }
 
       // TODO: Check if the message is already in DB (use message number
@@ -63,7 +63,7 @@ extension MessageExtensions on ChatRepository {
       final r = await db.messageAction((db) => db.insertPendingMessage(currentUser, message, decryptedMessage));
       if (r.isOk()) {
         toBeDeleted.add(message.id);
-        ProfileRepository.getInstance().sendProfileChange(ConversationChanged(message.id.accountIdSender, ConversationChangeType.messageReceived));
+        profile.sendProfileChange(ConversationChanged(message.id.accountIdSender, ConversationChangeType.messageReceived));
         // TODO(prod): Update with correct message count once there is
         // count of not read messages in the database.
         await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.id.accountIdSender, 1);
@@ -208,7 +208,7 @@ extension MessageExtensions on ChatRepository {
         yield const ErrorBeforeMessageSaving();
         return;
       }
-      ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
+      profile.sendProfileChange(MatchesChanged());
       // TODO: Remove received likes status change once those are changed
       //       to server side iterator. This will be removed so it does not
       //       matter that this is not a transaction. And it is unlikely
@@ -218,7 +218,7 @@ extension MessageExtensions on ChatRepository {
         yield const ErrorBeforeMessageSaving();
         return;
       }
-      ProfileRepository.getInstance().sendProfileChange(LikesChanged());
+      profile.sendProfileChange(LikesChanged());
     }
 
     final saveMessageResult = await db.messageData((db) => db.insertToBeSentMessage(
@@ -236,7 +236,7 @@ extension MessageExtensions on ChatRepository {
         return;
     }
 
-    ProfileRepository.getInstance().sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
+    profile.sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
 
     final currentUserKeys = await messageKeyManager.generateOrLoadMessageKeys(currentUser).ok();
     if (currentUserKeys == null) {

@@ -35,6 +35,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
     PagingController(firstPageKey: 0);
 
   final chat = LoginRepository.getInstance().repositories.chat;
+  final profile = LoginRepository.getInstance().repositories.profile;
 
   @override
   void initState() {
@@ -43,7 +44,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
       _fetchPage(pageKey);
     });
     _profileChangesSubscription?.cancel();
-    _profileChangesSubscription = ProfileRepository.getInstance().profileChanges.listen((event) {
+    _profileChangesSubscription = profile.profileChanges.listen((event) {
         handleProfileChange(event);
     });
   }

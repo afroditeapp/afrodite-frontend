@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/model/freezed/logic/profile/attributes.dart";
@@ -18,7 +19,7 @@ class RefreshAttributesIfNeeded extends AttributesEvent {}
 
 
 class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with ActionRunner {
-  final ProfileRepository profile = ProfileRepository.getInstance();
+  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
 
   StreamSubscription<AvailableProfileAttributes?>? _attributesSubscription;
 
@@ -33,7 +34,7 @@ class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with A
       }
 
       emit(state.copyWith(refreshState: AttributeRefreshLoading()));
-      final attributes = await ProfileRepository.getInstance().receiveProfileAttributes();
+      final attributes = await profile.receiveProfileAttributes();
       emit(state.copyWith(refreshState: null));
 
       // Only check error as the new attributes will be received from the
@@ -43,7 +44,7 @@ class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with A
       }
     });
 
-    _attributesSubscription = ProfileRepository.getInstance().profileAttributes.listen((value) => add(NewAttributes(value)));
+    _attributesSubscription = profile.profileAttributes.listen((value) => add(NewAttributes(value)));
   }
 
   @override

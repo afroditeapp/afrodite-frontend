@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import 'package:pihka_frontend/database/database_manager.dart';
 import "package:pihka_frontend/localizations.dart";
@@ -38,7 +39,7 @@ class SaveSearchSettings extends SearchSettingsEvent {
 }
 
 class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> with ActionRunner {
-  final ProfileRepository profile = ProfileRepository.getInstance();
+  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
   final db = DatabaseManager.getInstance();
 
   StreamSubscription<int?>? _minAgeSubscription;

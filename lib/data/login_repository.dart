@@ -107,7 +107,6 @@ class LoginRepository extends DataRepository {
       await onResumeAppUsage();
       await _repositories?.onResumeAppUsage();
       await AccountRepository.getInstance().onResumeAppUsage();
-      await ProfileRepository.getInstance().onResumeAppUsage();
     }
 
     Rx.combineLatest2(
@@ -164,7 +163,7 @@ class LoginRepository extends DataRepository {
           final now = DateTime.now();
           if (now.difference(backgroundedAt) > const Duration(days: 1)) {
             log.info("Refreshing profile grid automatically");
-            await ProfileRepository.getInstance().resetMainProfileIterator();
+            await repositories.profile.resetMainProfileIterator();
           }
         }
         _backgroundedAt = null;
@@ -205,12 +204,14 @@ class LoginRepository extends DataRepository {
 
     final common = CommonRepository();
     final media = MediaRepository();
-    final chat = ChatRepository(media: media);
+    final profile = ProfileRepository(media);
+    final chat = ChatRepository(media: media, profile: profile);
     final newRepositories = RepositoryInstances(
       accountId: accountId,
       common: common,
       chat: chat,
       media: media,
+      profile: profile,
     );
     await newRepositories.init();
 
@@ -273,7 +274,6 @@ class LoginRepository extends DataRepository {
     // Other repostories
     await _repositories?.onLogin();
     await AccountRepository.getInstance().onLogin();
-    await ProfileRepository.getInstance().onLogin();
 
     await _api.restart();
 
@@ -295,7 +295,6 @@ class LoginRepository extends DataRepository {
     // Other repositories
     await _repositories?.onLogout();
     await AccountRepository.getInstance().onLogout();
-    await ProfileRepository.getInstance().onLogout();
 
     try {
       // TODO(prod): There is also google.disconnect(). Should that used instead?
@@ -470,23 +469,27 @@ class RepositoryInstances implements DataRepositoryMethods {
   final CommonRepository common;
   final ChatRepository chat;
   final MediaRepository media;
+  final ProfileRepository profile;
   const RepositoryInstances({
     required this.accountId,
     required this.common,
     required this.chat,
     required this.media,
+    required this.profile,
   });
 
   Future<void> init() async {
     await common.init();
     await chat.init();
     await media.init();
+    await profile.init();
   }
 
   Future<void> dispose() async {
     await common.dispose();
     await chat.dispose();
     await media.dispose();
+    await profile.dispose();
   }
 
   @override
@@ -494,6 +497,7 @@ class RepositoryInstances implements DataRepositoryMethods {
     await common.onInitialSetupComplete();
     await chat.onInitialSetupComplete();
     await media.onInitialSetupComplete();
+    await profile.onInitialSetupComplete();
   }
 
   @override
@@ -501,6 +505,7 @@ class RepositoryInstances implements DataRepositoryMethods {
     await common.onLogin();
     await chat.onLogin();
     await media.onLogin();
+    await profile.onLogin();
   }
 
   @override
@@ -508,6 +513,7 @@ class RepositoryInstances implements DataRepositoryMethods {
     await common.onLogout();
     await chat.onLogout();
     await media.onLogout();
+    await profile.onLogout();
   }
 
   @override
@@ -515,5 +521,6 @@ class RepositoryInstances implements DataRepositoryMethods {
     await common.onResumeAppUsage();
     await chat.onResumeAppUsage();
     await media.onResumeAppUsage();
+    await profile.onResumeAppUsage();
   }
 }

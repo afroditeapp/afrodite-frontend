@@ -4,7 +4,6 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 
 import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/database/database_manager.dart";
 import "package:pihka_frontend/model/freezed/logic/login.dart";
 import "package:pihka_frontend/utils.dart";
 
@@ -18,7 +17,6 @@ class NewAccountIdValue extends LoginEvent {
 /// Do register/login operations
 class LoginBloc extends Bloc<LoginEvent, LoginBlocData> with ActionRunner {
   final LoginRepository login = LoginRepository.getInstance();
-  final DatabaseManager db = DatabaseManager.getInstance();
 
   StreamSubscription<AccountId?>? _accountIdSubscription;
 

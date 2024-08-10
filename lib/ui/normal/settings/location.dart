@@ -34,11 +34,12 @@ class LocationScreen extends StatelessWidget {
       buildWhen: (previous, current) => previous == null && current != null,
       builder: (context, state) {
         final profileLocation = state;
+        final bloc = context.read<LocationBloc>();
         if (profileLocation != null) {
           final profileLocationLatLng = LatLng(profileLocation.latitude, profileLocation.longitude);
           return LocationWidget(
             mode: MapMode.selectLocation,
-            handler: LocationUploader(),
+            handler: LocationUploader(bloc.profile),
             markerInitialLocation: profileLocationLatLng,
             editingHelpText: context.strings.map_select_location_help_text,
           );
@@ -57,6 +58,9 @@ enum MapMode {
 
 class LocationUploader extends SelectedLocationHandler {
   bool locationUploadInProgress = false;
+  ProfileRepository profile;
+
+  LocationUploader(this.profile);
 
   @override
   Future<void> handleLocationSelection({
@@ -72,7 +76,7 @@ class LocationUploader extends SelectedLocationHandler {
     locationUploadInProgress = true;
     onStart();
     final apiLocation = Location(latitude: location.latitude, longitude: location.longitude);
-    final result = await ProfileRepository.getInstance().updateLocation(apiLocation);
+    final result = await profile.updateLocation(apiLocation);
     locationUploadInProgress = false;
     onComplete(result);
     // User might have navigated away from the map, so use R class for strings.

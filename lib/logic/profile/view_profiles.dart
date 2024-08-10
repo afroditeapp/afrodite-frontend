@@ -43,7 +43,7 @@ class ResetShowMessages extends ViewProfileEvent {}
 
 class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with ActionRunner {
   final AccountRepository account = AccountRepository.getInstance();
-  final ProfileRepository profile = ProfileRepository.getInstance();
+  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
   final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
 
@@ -186,13 +186,13 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
       });
     });
 
-    _profileChangeSubscription = ProfileRepository.getInstance()
+    _profileChangeSubscription = profile
       .profileChanges
       .listen((event) {
         add(HandleProfileChange(event));
       });
 
-    _getProfileDataSubscription = ProfileRepository.getInstance()
+    _getProfileDataSubscription = profile
       .getProfileStream(state.profile.uuid)
       .listen((event) {
         add(HandleProfileResult(event));

@@ -33,7 +33,7 @@ class NewAttributeValue extends EditMyProfileEvent {
 }
 
 class EditMyProfileBloc extends Bloc<EditMyProfileEvent, EditMyProfileData> with ActionRunner {
-  final ProfileRepository profile = ProfileRepository.getInstance();
+  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
   final db = DatabaseManager.getInstance();
 

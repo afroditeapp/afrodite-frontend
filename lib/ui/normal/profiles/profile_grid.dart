@@ -61,6 +61,8 @@ class _ProfileGridState extends State<ProfileGrid> {
   );
   bool _reloadInProgress = false;
 
+  final profile = LoginRepository.getInstance().repositories.profile;
+
   @override
   void initState() {
     super.initState();
@@ -78,7 +80,7 @@ class _ProfileGridState extends State<ProfileGrid> {
       _fetchPage(pageKey);
     });
     _profileChangesSubscription?.cancel();
-    _profileChangesSubscription = ProfileRepository.getInstance().profileChanges.listen((event) {
+    _profileChangesSubscription = profile.profileChanges.listen((event) {
         handleProfileChange(event);
     });
     _scrollController.addListener(scrollEventListener);

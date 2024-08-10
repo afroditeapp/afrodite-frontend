@@ -118,9 +118,9 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   void handleEventToClient(EventToClient event) {
     log.finer("Event from server: $event");
 
-    // TODO(repository-refactor): Add Chat repository reference to constructor
+    // TODO(repository-refactor): Add Chat and Profile repository reference to constructor
     final chat = LoginRepository.getInstance().repositories.chat;
-    final profile = ProfileRepository.getInstance();
+    final profile = LoginRepository.getInstance().repositories.profile;
 
     final accountState = event.accountState;
     final capabilities = event.capabilities;
@@ -182,7 +182,6 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       // TODO(repository-refactor): This AccountId should be checked.
       await LoginRepository.getInstance().repositories.onInitialSetupComplete();
       await AccountRepository.getInstance().onInitialSetupComplete();
-      await ProfileRepository.getInstance().onInitialSetupComplete();
     }
     return resultString;
   }
@@ -196,7 +195,6 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       // TODO(repository-refactor): This AccountId should be checked.
       await LoginRepository.getInstance().repositories.onInitialSetupComplete();
       await AccountRepository.getInstance().onInitialSetupComplete();
-      await ProfileRepository.getInstance().onInitialSetupComplete();
     }
     return result;
   }

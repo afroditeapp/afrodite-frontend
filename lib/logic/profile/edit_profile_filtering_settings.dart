@@ -1,6 +1,7 @@
 
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import "package:pihka_frontend/model/freezed/logic/profile/edit_profile_filtering_settings.dart";
 import "package:pihka_frontend/utils.dart";
@@ -45,7 +46,7 @@ class SetMatchWithEmpty extends EditProfileFilteringSettingsEvent {
 }
 
 class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettingsEvent, EditProfileFilteringSettingsData> with ActionRunner {
-  final ProfileRepository profile = ProfileRepository.getInstance();
+  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
 
   EditProfileFilteringSettingsBloc() : super(EditProfileFilteringSettingsData()) {
     on<ResetStateWith>((data, emit) async {

@@ -16,19 +16,15 @@ import 'package:rxdart/rxdart.dart';
 
 var log = Logger("ProfileRepository");
 
-class ProfileRepository extends DataRepository {
-  ProfileRepository._private();
-  static final _instance = ProfileRepository._private();
-  factory ProfileRepository.getInstance() {
-    return _instance;
-  }
-
+class ProfileRepository extends DataRepositoryWithLifecycle {
   final syncHandler = ConnectedActionScheduler(ApiManager.getInstance());
 
   final DatabaseManager db = DatabaseManager.getInstance();
   final ApiManager _api = ApiManager.getInstance();
 
-  final MediaRepository media = LoginRepository.getInstance().repositories.media;
+  final MediaRepository media;
+
+  ProfileRepository(this.media);
 
   final PublishSubject<ProfileChange> _profileChangesRelay = PublishSubject();
   void sendProfileChange(ProfileChange change) {
