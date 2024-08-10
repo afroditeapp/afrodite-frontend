@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
-import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/general/image_cache_settings.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
@@ -307,7 +306,6 @@ class GlobalInitManager {
     await PushNotificationManager.getInstance().init();
 
     await LoginRepository.getInstance().init();
-    await AccountRepository.getInstance().init();
 
     // Initializes formatting for other locales as well
     await initializeDateFormatting("en_US", null);

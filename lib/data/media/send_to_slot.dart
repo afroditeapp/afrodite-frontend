@@ -36,6 +36,9 @@ class SendImageToSlotTask {
   final token = CancellationToken();
   final uploadDone = BehaviorSubject<ContentProcessingId?>.seeded(null);
 
+  final AccountRepository account;
+  SendImageToSlotTask(this.account);
+
   Stream<SendToSlotEvent> sendImageToSlot(XFile file, int slot, {bool secureCapture = false}) {
     return Rx.merge([
       _uploadImageToSlot(file, slot, secureCapture: secureCapture),
@@ -134,7 +137,7 @@ class SendImageToSlotTask {
   }
 
   Stream<IdOrEvent> _eventsAndContentProcessingIdWithTimeout() {
-    final e = AccountRepository.getInstance()
+    final e = account
         .contentProcessingStateChanges;
     return Rx.merge([
       e.map((event) => Event(event)),

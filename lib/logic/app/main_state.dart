@@ -29,6 +29,8 @@ class ToDemoAccountScreen extends MainStateEvent {}
 
 /// Get current main state of the account/app
 class MainStateBloc extends Bloc<MainStateEvent, MainState> {
+  final login = LoginRepository.getInstance();
+
   MainStateBloc() : super(MainState.splashScreen) {
     on<ToSplashScreen>((_, emit) => emit(MainState.splashScreen));
     on<ToLoginRequiredScreen>((_, emit) => emit(MainState.loginRequired));
@@ -40,8 +42,8 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
     on<ToDemoAccountScreen>((_, emit) => emit(MainState.demoAccount));
 
     Rx.combineLatest2(
-      LoginRepository.getInstance().loginState,
-      AccountRepository.getInstance().accountState,
+      login.loginState,
+      login.accountState,
       (a, b) => (a, b),
     ).listen((current) {
       final (loginState, accountState) = current;

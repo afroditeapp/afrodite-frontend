@@ -10,7 +10,6 @@ import 'package:pihka_frontend/data/account/initial_setup.dart';
 import 'package:pihka_frontend/data/chat/message_extensions.dart';
 import 'package:pihka_frontend/data/general/notification/state/moderation_request_status.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
-import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
@@ -31,14 +30,11 @@ enum AccountRepositoryState {
 // makes operations to those lists.
 
 class AccountRepository extends DataRepositoryWithLifecycle {
-  AccountRepository._private();
-  static final _instance = AccountRepository._private();
-  factory AccountRepository.getInstance() {
-    return _instance;
-  }
-
   final api = ApiManager.getInstance();
   final db = DatabaseManager.getInstance();
+
+  late final RepositoryInstances repositories;
+  AccountRepository({required bool rememberToInitRepositoriesLateFinal});
 
   final BehaviorSubject<AccountRepositoryState> _internalState =
     BehaviorSubject.seeded(AccountRepositoryState.initRequired);
@@ -118,9 +114,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   void handleEventToClient(EventToClient event) {
     log.finer("Event from server: $event");
 
-    // TODO(repository-refactor): Add Chat and Profile repository reference to constructor
-    final chat = LoginRepository.getInstance().repositories.chat;
-    final profile = LoginRepository.getInstance().repositories.profile;
+    final chat = repositories.chat;
+    final profile = repositories.profile;
 
     final accountState = event.accountState;
     final capabilities = event.capabilities;
@@ -179,9 +174,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     if (resultString == null) {
       // Success
       await LoginRepository.getInstance().onInitialSetupComplete();
-      // TODO(repository-refactor): This AccountId should be checked.
-      await LoginRepository.getInstance().repositories.onInitialSetupComplete();
-      await AccountRepository.getInstance().onInitialSetupComplete();
+      await repositories.onInitialSetupComplete();
     }
     return resultString;
   }
@@ -192,9 +185,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     final result = await InitialSetupUtils().doInitialSetup(data);
     if (result.isOk()) {
       await LoginRepository.getInstance().onInitialSetupComplete();
-      // TODO(repository-refactor): This AccountId should be checked.
-      await LoginRepository.getInstance().repositories.onInitialSetupComplete();
-      await AccountRepository.getInstance().onInitialSetupComplete();
+      await repositories.onInitialSetupComplete();
     }
     return result;
   }

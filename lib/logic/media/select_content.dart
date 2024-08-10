@@ -22,7 +22,7 @@ class NewModerationRequest extends SelectContentEvent {
 
 class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with ActionRunner {
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
-  final AccountRepository account = AccountRepository.getInstance();
+  final AccountRepository account = LoginRepository.getInstance().repositories.account;
 
   SelectContentBloc() : super(SelectContentData()) {
     on<ReloadAvailableContent>((data, emit) async {

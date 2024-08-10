@@ -3,6 +3,7 @@ import "dart:async";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/model/freezed/logic/account/account.dart";
 import "package:pihka_frontend/utils.dart";
 
@@ -26,7 +27,7 @@ class NewEmailAddressValue extends AccountEvent {
 
 /// Do register/login operations
 class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner {
-  final AccountRepository account = AccountRepository.getInstance();
+  final AccountRepository account = LoginRepository.getInstance().repositories.account;
 
   StreamSubscription<Capabilities>? _capabilitiesSubscription;
   StreamSubscription<ProfileVisibility>? _profileVisibilitySubscription;
@@ -39,7 +40,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
       visibility: ProfileVisibility.pendingPrivate,
       // Use cached email to avoid showing input field UI for email
       // when initial setup is displayed.
-      email: AccountRepository.getInstance().currentEmailAddress,
+      email: LoginRepository.getInstance().repositories.account.currentEmailAddress,
     )) {
     on<NewCapabilitiesValue>((key, emit) {
       emit(state.copyWith(capabilities: key.value));

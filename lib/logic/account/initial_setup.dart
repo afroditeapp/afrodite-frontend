@@ -102,7 +102,7 @@ class CreateDebugAdminAccount extends InitialSetupEvent {}
 
 class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with ActionRunner {
   final LoginRepository login = LoginRepository.getInstance();
-  final AccountRepository account = AccountRepository.getInstance();
+  final AccountRepository account = LoginRepository.getInstance().repositories.account;
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
 
   InitialSetupBloc() : super(InitialSetupData()) {

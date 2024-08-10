@@ -42,7 +42,7 @@ class ResetShowMessages extends ViewProfileEvent {}
 
 
 class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with ActionRunner {
-  final AccountRepository account = AccountRepository.getInstance();
+  final AccountRepository account = LoginRepository.getInstance().repositories.account;
   final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
   final ChatRepository chat = LoginRepository.getInstance().repositories.chat;

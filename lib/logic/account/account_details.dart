@@ -1,5 +1,6 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/data/account_repository.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/model/freezed/logic/account/account_details.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
@@ -11,7 +12,7 @@ class Reload extends AccountDetailsEvent {}
 class MoveAccountToPendingDeletionState extends AccountDetailsEvent {}
 
 class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocData> with ActionRunner {
-  final AccountRepository account = AccountRepository.getInstance();
+  final AccountRepository account = LoginRepository.getInstance().repositories.account;
 
   AccountDetailsBloc() : super(AccountDetailsBlocData()) {
     on<Reload>((key, emit) async {

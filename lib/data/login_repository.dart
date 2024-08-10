@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:async/async.dart' show StreamExtensions;
@@ -55,6 +56,11 @@ class LoginRepository extends DataRepository {
 
   GoogleSignIn google = createSignInWithGoogle();
 
+  final BehaviorSubject<AccountState?> _accountState =
+    BehaviorSubject.seeded(null);
+  StreamSubscription<AccountState?>? _accountStateSubscription;
+  Stream<AccountState?> get accountState => _accountState;
+
   final BehaviorSubject<LoginState> _loginState =
     BehaviorSubject.seeded(LoginState.splashScreen);
   final BehaviorSubject<LoginRepositoryState> _internalState =
@@ -106,7 +112,6 @@ class LoginRepository extends DataRepository {
       _loginState.add(LoginState.viewAccountStateOnceItExists);
       await onResumeAppUsage();
       await _repositories?.onResumeAppUsage();
-      await AccountRepository.getInstance().onResumeAppUsage();
     }
 
     Rx.combineLatest2(
@@ -136,7 +141,7 @@ class LoginRepository extends DataRepository {
     _api.serverEvents.listen((event) {
       switch (event) {
         case EventToClientContainer e: {
-          AccountRepository.getInstance().handleEventToClient(e.event);
+          repositories.account.handleEventToClient(e.event);
         }
       }
     });
@@ -202,8 +207,9 @@ class LoginRepository extends DataRepository {
     final currentRepositories = _repositories;
     await currentRepositories?.dispose();
 
+    final account = AccountRepository(rememberToInitRepositoriesLateFinal: true);
     final common = CommonRepository();
-    final media = MediaRepository();
+    final media = MediaRepository(account);
     final profile = ProfileRepository(media);
     final chat = ChatRepository(media: media, profile: profile);
     final newRepositories = RepositoryInstances(
@@ -212,8 +218,15 @@ class LoginRepository extends DataRepository {
       chat: chat,
       media: media,
       profile: profile,
+      account: account,
     );
+    account.repositories = newRepositories;
     await newRepositories.init();
+
+    await _accountStateSubscription?.cancel();
+    _accountStateSubscription = account.accountState.listen((v) {
+      _accountState.add(v);
+    });
 
     _repositories = newRepositories;
   }
@@ -273,7 +286,6 @@ class LoginRepository extends DataRepository {
 
     // Other repostories
     await _repositories?.onLogin();
-    await AccountRepository.getInstance().onLogin();
 
     await _api.restart();
 
@@ -294,7 +306,6 @@ class LoginRepository extends DataRepository {
 
     // Other repositories
     await _repositories?.onLogout();
-    await AccountRepository.getInstance().onLogout();
 
     try {
       // TODO(prod): There is also google.disconnect(). Should that used instead?
@@ -470,12 +481,14 @@ class RepositoryInstances implements DataRepositoryMethods {
   final ChatRepository chat;
   final MediaRepository media;
   final ProfileRepository profile;
+  final AccountRepository account;
   const RepositoryInstances({
     required this.accountId,
     required this.common,
     required this.chat,
     required this.media,
     required this.profile,
+    required this.account,
   });
 
   Future<void> init() async {
@@ -483,6 +496,7 @@ class RepositoryInstances implements DataRepositoryMethods {
     await chat.init();
     await media.init();
     await profile.init();
+    await account.init();
   }
 
   Future<void> dispose() async {
@@ -490,6 +504,7 @@ class RepositoryInstances implements DataRepositoryMethods {
     await chat.dispose();
     await media.dispose();
     await profile.dispose();
+    await account.dispose();
   }
 
   @override
@@ -498,6 +513,7 @@ class RepositoryInstances implements DataRepositoryMethods {
     await chat.onInitialSetupComplete();
     await media.onInitialSetupComplete();
     await profile.onInitialSetupComplete();
+    await account.onInitialSetupComplete();
   }
 
   @override
@@ -506,6 +522,7 @@ class RepositoryInstances implements DataRepositoryMethods {
     await chat.onLogin();
     await media.onLogin();
     await profile.onLogin();
+    await account.onLogin();
   }
 
   @override
@@ -514,6 +531,7 @@ class RepositoryInstances implements DataRepositoryMethods {
     await chat.onLogout();
     await media.onLogout();
     await profile.onLogout();
+    await account.onLogout();
   }
 
   @override
@@ -522,5 +540,6 @@ class RepositoryInstances implements DataRepositoryMethods {
     await chat.onResumeAppUsage();
     await media.onResumeAppUsage();
     await profile.onResumeAppUsage();
+    await account.onResumeAppUsage();
   }
 }

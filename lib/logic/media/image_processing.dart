@@ -31,7 +31,7 @@ class ResetState extends ImageProcessingEvent {}
 
 class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData> {
   final LoginRepository login = LoginRepository.getInstance();
-  final AccountRepository account = AccountRepository.getInstance();
+  final AccountRepository account = LoginRepository.getInstance().repositories.account;
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
   final ImageCacheData imageCache = ImageCacheData.getInstance();
 

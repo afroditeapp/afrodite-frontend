@@ -12,6 +12,7 @@ import 'package:openapi/manual_additions.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/data/account/initial_setup.dart';
+import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/media/send_to_slot.dart';
 import 'package:pihka_frontend/data/utils.dart';
@@ -30,6 +31,9 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   final ApiManager api = ApiManager.getInstance();
   final DatabaseManager db = DatabaseManager.getInstance();
+
+  final AccountRepository account;
+  MediaRepository(this.account);
 
   @override
   Future<void> init() async {
@@ -179,7 +183,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   /// Last event from stream is ProcessingCompleted or SendToSlotError.
   Stream<SendToSlotEvent> sendImageToSlot(XFile file, int slot, {bool secureCapture = false}) async* {
-    final task = SendImageToSlotTask();
+    final task = SendImageToSlotTask(account);
     yield* task.sendImageToSlot(file, slot, secureCapture: secureCapture);
   }
 

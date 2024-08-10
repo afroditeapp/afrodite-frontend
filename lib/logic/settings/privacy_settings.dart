@@ -1,6 +1,7 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:pihka_frontend/data/account_repository.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/model/freezed/logic/settings/privacy_settings.dart";
 import "package:pihka_frontend/ui_utils/common_update_logic.dart";
@@ -21,7 +22,7 @@ class SaveSettings extends PrivacySettingsEvent {
 }
 
 class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData> with ActionRunner {
-  final AccountRepository account = AccountRepository.getInstance();
+  final AccountRepository account = LoginRepository.getInstance().repositories.account;
 
   PrivacySettingsBloc() : super(PrivacySettingsData()) {
     on<ResetEditablePrivacySettings>((data, emit) async {

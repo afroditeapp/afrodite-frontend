@@ -15,7 +15,6 @@ class UnblockProfile extends BlockedProfilesEvent {
 }
 
 class BlockedProfilesBloc extends Bloc<BlockedProfilesEvent, BlockedProfilesData> with ActionRunner {
-  final AccountRepository account = AccountRepository.getInstance();
   final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
 
   BlockedProfilesBloc() : super(BlockedProfilesData()) {
