@@ -42,8 +42,8 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
   }
 
   /// Returns ID of last inserted row.
-  Future<int> _insert(NewMessageEntry entry) async {
-    return await into(messages).insert(MessagesCompanion.insert(
+  Future<LocalMessageId> _insert(NewMessageEntry entry) async {
+    final localId = await into(messages).insert(MessagesCompanion.insert(
       uuidLocalAccountId: entry.localAccountId,
       uuidRemoteAccountId: entry.remoteAccountId,
       messageText: entry.messageText,
@@ -52,9 +52,11 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       messageNumber: Value(entry.messageNumber),
       unixTime: Value(entry.unixTime),
     ));
+
+    return LocalMessageId(localId);
   }
 
-  Future<void> insertToBeSentMessage(
+  Future<LocalMessageId> insertToBeSentMessage(
     AccountId localAccountId,
     AccountId remoteAccountId,
     String messageText,
@@ -65,7 +67,18 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       messageText: messageText,
       sentMessageState: SentMessageState.pending,
     );
-    await _insert(message);
+    return await _insert(message);
+  }
+
+  Future<void> updateSentMessageState(
+    LocalMessageId localId,
+    SentMessageState sentState,
+  ) async {
+    await (update(messages)
+      ..where((t) => t.id.equals(localId.id))
+    ).write(MessagesCompanion(
+      sentMessageState: Value(sentState.number),
+    ));
   }
 
   Future<void> insertPendingMessage(AccountId localAccountId, PendingMessage entry, String decryptedMessage) async {

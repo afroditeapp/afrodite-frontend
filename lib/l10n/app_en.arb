@@ -125,6 +125,14 @@
   "@conversation_screen_make_match_instruction": {
     "description": "Instruction text how to make a match"
   },
+  "conversation_screen_message_too_long": "Message is too long",
+  "@conversation_screen_message_too_long": {
+    "description": "Snackbar text that message is too long"
+  },
+  "conversation_screen_message_too_many_pending_messages": "Server pending message storage is full",
+  "@conversation_screen_message_too_many_pending_messages": {
+    "description": "Snackbar text that server is full of pending messages"
+  },
   "conversation_screen_profile_blocked": "Profile was blocked",
   "@conversation_screen_profile_blocked": {
     "description": "Snackbar text displayed when profile blocking is successful"

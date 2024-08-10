@@ -12,7 +12,7 @@ export 'src/foreground/message_table.dart' show DaoMessages;
 export 'src/foreground/common_database.dart' show CommonDatabase, NOTIFICATION_PERMISSION_ASKED_DEFAULT;
 export 'src/foreground/account_database.dart' show AccountDatabase, PROFILE_FILTER_FAVORITES_DEFAULT;
 
-export 'src/message_entry.dart' show MessageEntry, SentMessageState, ReceivedMessageState;
+export 'src/message_entry.dart' show MessageEntry, SentMessageState, ReceivedMessageState, LocalMessageId;
 export 'src/profile_entry.dart' show ProfileEntry, ProfileLocalDbId, NewMessageNotificationId, ProfileTitle;
 export 'src/notification_session_id.dart' show NotificationSessionId;
 export 'src/private_key_data.dart' show PrivateKeyData, AllKeyData;

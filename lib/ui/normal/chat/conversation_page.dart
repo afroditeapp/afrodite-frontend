@@ -160,36 +160,52 @@ class ConversationPageState extends State<ConversationPage> {
   }
 
   Widget newMessageArea(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _textEditingController,
-              decoration: InputDecoration(
-                hintText: context.strings.conversation_screen_chat_box_placeholder_text,
+    return BlocBuilder<ConversationBloc, ConversationData>(
+      buildWhen: (previous, current) => previous.resetMessageInputField != current.resetMessageInputField,
+      builder: (context, state) {
+        if (state.resetMessageInputField) {
+          _textEditingController.clear();
+          context.read<ConversationBloc>().add(NotifyMessageInputFieldCleared());
+        }
+
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _textEditingController,
+                  decoration: InputDecoration(
+                    hintText: context.strings.conversation_screen_chat_box_placeholder_text,
+                  ),
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 4,
+                  minLines: 1,
+                ),
               ),
-              keyboardType: TextInputType.multiline,
-              maxLines: 4,
-              minLines: 1,
-            ),
+              IconButton(
+                icon: const Icon(Icons.send),
+                onPressed: () {
+                  final message = _textEditingController.text.trim();
+                  if (message.isNotEmpty) {
+                    if (message.characters.length > 4000) {
+                      showSnackBar(context.strings.conversation_screen_message_too_long);
+                      return;
+                    }
+
+                    final bloc = context.read<ConversationBloc>();
+                    if (bloc.state.isMessageSendingInProgress) {
+                      showSnackBar(context.strings.generic_previous_action_in_progress);
+                      return;
+                    }
+                    bloc.add(SendMessageTo(bloc.state.accountId, message));
+                  }
+                },
+              ),
+            ],
           ),
-          IconButton(
-            icon: const Icon(Icons.send),
-            onPressed: () {
-              final message = _textEditingController.text.trim();
-              if (message.isNotEmpty) {
-                final bloc = context.read<ConversationBloc>();
-                bloc.add(SendMessageTo(bloc.state.accountId, message));
-                _textEditingController.clear();
-              } else {
-                _textEditingController.clear();
-              }
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

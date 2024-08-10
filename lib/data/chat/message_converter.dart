@@ -21,10 +21,10 @@ const int U16_MAX_VALUE = 0xFFFF;
 
 class MessageConverter {
 
-  Result<Uint8List, void> textToBytes(String message) {
+  Result<Uint8List, MessageTooLarge> textToBytes(String message) {
     final textBytes = utf8.encode(message);
     if (textBytes.length > U16_MAX_VALUE) {
-      return const Err(null);
+      return const Err(MessageTooLarge());
     }
     final textLenghtBytes = u16VersionToLittleEndianBytes(textBytes.length);
 
@@ -60,4 +60,8 @@ class MessageConverter {
       return const Err(null);
     }
   }
+}
+
+class MessageTooLarge {
+  const MessageTooLarge();
 }

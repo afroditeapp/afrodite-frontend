@@ -2,7 +2,7 @@ import "dart:async";
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' show sequential;
 
-import "package:async/async.dart";
+import "package:async/async.dart" show StreamExtensions;
 import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
@@ -12,7 +12,9 @@ import "package:pihka_frontend/data/chat/message_extensions.dart";
 import "package:pihka_frontend/data/chat_repository.dart";
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
+import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart";
+import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 
 var log = Logger("ConversationBloc");
@@ -37,7 +39,7 @@ class BlockProfile extends ConversationEvent {
   final AccountId accountId;
   BlockProfile(this.accountId);
 }
-class NotifyChatBoxCleared extends ConversationEvent {}
+class NotifyMessageInputFieldCleared extends ConversationEvent {}
 
 class RenderingCompleted extends ConversationEvent {
   final double height;
@@ -49,7 +51,7 @@ abstract class ConversationDataProvider {
   Future<bool> isInSentBlocks(AccountId accountId);
   Future<bool> isInReceivedBlocks(AccountId accountId);
   Future<bool> sendBlockTo(AccountId accountId);
-  Future<void> sendMessageTo(AccountId accountId, String message);
+  Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, String message);
   Future<List<MessageEntry>> getAllMessages(AccountId accountId);
   Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match);
 
@@ -102,8 +104,8 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   Future<bool> sendBlockTo(AccountId accountId) => chat.sendBlockTo(accountId);
 
   @override
-  Future<void> sendMessageTo(AccountId accountId, String message) async {
-    await chat.sendMessageTo(accountId, message);
+  Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, String message) {
+    return chat.sendMessageTo(accountId, message);
   }
 
   @override
@@ -170,13 +172,39 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       });
     });
     on<SendMessageTo>((data, emit) async {
-      await runOnce(() async {
-        await dataProvider.sendMessageTo(data.accountId, data.message);
-      });
-    });
-    on<NotifyChatBoxCleared>((data, emit) async {
       emit(state.copyWith(
-        isSendSuccessful: false,
+        isMessageSendingInProgress: true,
+      ));
+
+      await for (final e in dataProvider.sendMessageTo(data.accountId, data.message)) {
+        switch (e) {
+          case SavedToLocalDb():
+            emit(state.copyWith(
+              resetMessageInputField: true,
+            ));
+          case ErrorBeforeMessageSaving():
+            ();
+          case ErrorAfterMessageSaving(:final details):
+            switch (details) {
+              case null:
+                showSnackBar(R.strings.generic_error_occurred);
+              case MessageSendingErrorDetails.messageTooLarge:
+                showSnackBar(R.strings.conversation_screen_message_too_long);
+              case MessageSendingErrorDetails.tooManyPendingMessages:
+                showSnackBar(R.strings.conversation_screen_message_too_many_pending_messages);
+            }
+        }
+      }
+
+      emit(state.copyWith(
+        isMessageSendingInProgress: false,
+      ));
+    },
+      transformer: sequential(),
+    );
+    on<NotifyMessageInputFieldCleared>((data, emit) async {
+      emit(state.copyWith(
+        resetMessageInputField: false,
       ));
     });
     on<MessageCountChanged>((data, emit) async {

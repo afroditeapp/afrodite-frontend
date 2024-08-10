@@ -13,8 +13,8 @@ class ConversationData with _$ConversationData {
     required AccountId accountId,
     @Default(true) bool isMatch,
     @Default(false) bool isBlocked,
-    /// Resets chat box to empty state
-    @Default(false) bool isSendSuccessful,
+    @Default(false) bool resetMessageInputField,
+    @Default(false) bool isMessageSendingInProgress,
     ReadyVisibleMessageListUpdate? visibleMessages,
 
     // Message renderer

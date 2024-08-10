@@ -95,3 +95,8 @@ class NewMessageEntry {
     return "NewMessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, sentMessageState: $sentMessageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime)";
   }
 }
+
+class LocalMessageId {
+  final int id;
+  const LocalMessageId(this.id);
+}

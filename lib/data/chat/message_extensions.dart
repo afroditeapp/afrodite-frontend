@@ -167,62 +167,90 @@ extension MessageExtensions on ChatRepository {
     return MessageConverter().bytesToText(messageBytes);
   }
 
-  // TODO error handling
-  // Use stream instead?
-  // If saving to local database fails, don't clear the chat box UI.
-  Future<void> sendMessageTo(AccountId accountId, String message) async {
+  Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, String message) async* {
+      await for (final e in _sendMessageToInternal(accountId, message)) {
+        switch (e) {
+          case SavedToLocalDb():
+            yield e;
+          case ErrorBeforeMessageSaving():
+            yield e;
+          case ErrorAfterMessageSaving(:final id):
+            // The existing error is more important, so ignore
+            // the state change result.
+            await db.messageAction((db) => db.updateSentMessageState(
+              id,
+              SentMessageState.sendingError,
+            ));
+            yield e;
+        }
+    }
+  }
+
+  Stream<MessageSendingEvent> _sendMessageToInternal(AccountId accountId, String message) async* {
     final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {
+      yield const ErrorBeforeMessageSaving();
       return;
     }
 
     final isMatch = await isInMatches(accountId);
     if (!isMatch) {
       final resultSendLike = await api.chatAction((api) => api.postSendLike(accountId));
-      if (resultSendLike.isOk()) {
-        await db.profileAction((db) => db.setMatchStatus(accountId, true));
-        ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
-        await db.profileAction((db) => db.setReceivedLikeStatus(accountId, false));
-        ProfileRepository.getInstance().sendProfileChange(LikesChanged());
-      } else {
-        // Notify about error
+      if (resultSendLike.isErr()) {
+        yield const ErrorBeforeMessageSaving();
         return;
       }
+      final matchStatusChange = await db.profileAction((db) => db.setMatchStatus(accountId, true));
+      if (matchStatusChange.isErr()) {
+        yield const ErrorBeforeMessageSaving();
+        return;
+      }
+      ProfileRepository.getInstance().sendProfileChange(MatchesChanged());
+      // TODO: Remove received likes status change once those are changed
+      //       to server side iterator. This will be removed so it does not
+      //       matter that this is not a transaction. And it is unlikely
+      //       that this would return an error.
+      final likeStatusChange = await db.profileAction((db) => db.setReceivedLikeStatus(accountId, false));
+      if (likeStatusChange.isErr()) {
+        yield const ErrorBeforeMessageSaving();
+        return;
+      }
+      ProfileRepository.getInstance().sendProfileChange(LikesChanged());
     }
 
-    final saveMessageResult = await db.messageAction((db) => db.insertToBeSentMessage(
+    final saveMessageResult = await db.messageData((db) => db.insertToBeSentMessage(
       currentUser,
       accountId,
       message,
     ));
-    if (saveMessageResult.isErr()) {
-      return;
+    final LocalMessageId localId;
+    switch (saveMessageResult) {
+      case Ok(:final v):
+        yield const SavedToLocalDb();
+        localId = v;
+      case Err():
+        yield const ErrorBeforeMessageSaving();
+        return;
     }
 
     ProfileRepository.getInstance().sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
 
     final currentUserKeys = await messageKeyManager.generateOrLoadMessageKeys(currentUser).ok();
     if (currentUserKeys == null) {
-      // TODO: error handling
+      yield ErrorAfterMessageSaving(localId);
       return;
     }
-    final PublicKey receiverPublicKey;
-    switch (await _getPublicKeyForForeignAccount(accountId, forceDownload: false)) {
-      case Ok(:final v):
-        if (v == null) {
-          // TODO: error handling
-          return;
-        } else {
-          receiverPublicKey = v;
-        }
-      case Err(:final e):
-       // TODO: error handling
-       return;
+    PublicKey receiverPublicKey;
+    final receiverPublicKeyOrNull = await _getPublicKeyForForeignAccount(accountId, forceDownload: false).ok();
+    if (receiverPublicKeyOrNull == null) {
+      yield ErrorAfterMessageSaving(localId);
+      return;
     }
+    receiverPublicKey = receiverPublicKeyOrNull;
 
     final messageBytes = MessageConverter().textToBytes(message).ok();
     if (messageBytes == null) {
-      // TODO: Error handling
+      yield ErrorAfterMessageSaving(localId, MessageSendingErrorDetails.messageTooLarge);
       return;
     }
 
@@ -234,6 +262,7 @@ extension MessageExtensions on ChatRepository {
 
     if (encryptedMessage == null) {
       log.error("Message encryption error: $encryptingResult");
+      yield ErrorAfterMessageSaving(localId);
       return;
     }
 
@@ -247,21 +276,57 @@ extension MessageExtensions on ChatRepository {
       MultipartFile.fromBytes("", dataIdentifierAndEncryptedMessage),
     )).ok();
     if (result == null) {
-      // TODO error handling
+      yield ErrorAfterMessageSaving(localId);
       return;
     }
 
     if (result.errorTooManyPendingMessages) {
-      // TODO error handling
+      yield ErrorAfterMessageSaving(localId, MessageSendingErrorDetails.tooManyPendingMessages);
       return;
     }
 
     if (result.errorReceiverPublicKeyOutdated) {
-      // TODO: download new key and try again
+      // Retry once after public key refresh
       log.error("Send message error: public key outdated");
+
+      final receiverPublicKeyOrNull = await _getPublicKeyForForeignAccount(accountId, forceDownload: true).ok();
+      if (receiverPublicKeyOrNull == null) {
+        yield ErrorAfterMessageSaving(localId);
+        return;
+      }
+      receiverPublicKey = receiverPublicKeyOrNull;
+
+      final result = await api.chat((api) => api.postSendMessage(
+        accountId.accountId,
+        receiverPublicKey.id.id,
+        receiverPublicKey.version.version,
+        MultipartFile.fromBytes("", dataIdentifierAndEncryptedMessage),
+      )).ok();
+      if (result == null) {
+        yield ErrorAfterMessageSaving(localId);
+        return;
+      }
+
+      if (result.errorTooManyPendingMessages) {
+        yield ErrorAfterMessageSaving(localId, MessageSendingErrorDetails.tooManyPendingMessages);
+        return;
+      }
+
+      if (result.errorReceiverPublicKeyOutdated) {
+        yield ErrorAfterMessageSaving(localId);
+        return;
+      }
     }
 
-    // TODO save sent status to local database
+    // TODO: Server should return the unix time and message number for the message
+    final updateSentState = await db.messageAction((db) => db.updateSentMessageState(
+      localId,
+      SentMessageState.sent,
+    ));
+    if (updateSentState.isErr()) {
+      yield ErrorAfterMessageSaving(localId);
+      return;
+    }
   }
 
   /// If PublicKey is null then PublicKey for that account does not exist.
@@ -295,4 +360,26 @@ extension MessageExtensions on ChatRepository {
       .andThen((key) => db.profileAction((db) => db.updatePublicKey(accountId, key.key)))
       .mapErr((_) => null);
   }
+}
+
+sealed class MessageSendingEvent {
+  const MessageSendingEvent();
+}
+class SavedToLocalDb extends MessageSendingEvent {
+  const SavedToLocalDb();
+}
+
+enum MessageSendingErrorDetails {
+  messageTooLarge,
+  tooManyPendingMessages,
+}
+
+/// Error happened before the message was saved successfully
+class ErrorBeforeMessageSaving extends MessageSendingEvent {
+  const ErrorBeforeMessageSaving();
+}
+class ErrorAfterMessageSaving extends MessageSendingEvent {
+  final LocalMessageId id;
+  final MessageSendingErrorDetails? details;
+  const ErrorAfterMessageSaving(this.id, [this.details]);
 }
