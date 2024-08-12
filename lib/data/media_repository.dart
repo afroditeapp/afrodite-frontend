@@ -16,7 +16,7 @@ import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/media/send_to_slot.dart';
 import 'package:pihka_frontend/data/utils.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/retry_initial_setup_images.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/api.dart';
@@ -30,10 +30,10 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   final syncHandler = ConnectedActionScheduler(ApiManager.getInstance());
 
   final ApiManager api = ApiManager.getInstance();
-  final DatabaseManager db = DatabaseManager.getInstance();
+  final AccountDatabaseManager db;
 
   final AccountRepository account;
-  MediaRepository(this.account);
+  MediaRepository(this.account, this.db);
 
   @override
   Future<void> init() async {

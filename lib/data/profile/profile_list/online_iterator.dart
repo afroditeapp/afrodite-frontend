@@ -9,7 +9,7 @@ import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
@@ -20,7 +20,7 @@ class OnlineIterator extends IteratorType {
   DatabaseIterator? databaseIterator;
   bool resetServerIterator;
   final ApiManager api = ApiManager.getInstance();
-  final DatabaseManager db = DatabaseManager.getInstance();
+  final AccountDatabaseManager db;
   final ProfileEntryDownloader downloader;
 
   /// If [resetServerIterator] is true, the iterator will reset the
@@ -29,14 +29,15 @@ class OnlineIterator extends IteratorType {
     this.resetServerIterator = false,
     required MediaRepository media,
     required AccountBackgroundDatabaseManager accountBackgroundDb,
-  }) : downloader = ProfileEntryDownloader(media, accountBackgroundDb);
+    required this.db,
+  }) : downloader = ProfileEntryDownloader(media, accountBackgroundDb, db);
 
   @override
   void reset() {
     if (!resetServerIterator) {
       /// Reset to use database iterator and then continue online profile
       /// iterating.
-      databaseIterator = DatabaseIterator();
+      databaseIterator = DatabaseIterator(db: db);
     }
   }
 
@@ -138,10 +139,10 @@ class OnlineIterator extends IteratorType {
 
 class ProfileEntryDownloader {
   final ApiManager api = ApiManager.getInstance();
-  final DatabaseManager db = DatabaseManager.getInstance();
+  final AccountDatabaseManager db;
   final MediaRepository media;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
-  ProfileEntryDownloader(this.media, this.accountBackgroundDb);
+  ProfileEntryDownloader(this.media, this.accountBackgroundDb, this.db);
 
   /// Download profile entry, save to databases and return it.
   Future<Result<ProfileEntry, ProfileDownloadError>> download(AccountId accountId, {bool isMatch = false}) async {

@@ -7,7 +7,7 @@ import "package:pihka_frontend/data/login_repository.dart";
 
 import "package:pihka_frontend/data/media_repository.dart";
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
+import "package:pihka_frontend/database/account_database_manager.dart";
 import "package:pihka_frontend/model/freezed/logic/media/content.dart";
 
 
@@ -34,7 +34,7 @@ class NewPendingSecurityContent extends ContentEvent {
 }
 
 class ContentBloc extends Bloc<ContentEvent, ContentData> {
-  final DatabaseManager db = DatabaseManager.getInstance();
+  final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
 
   StreamSubscription<CurrentProfileContent?>? _publicContentSubscription;

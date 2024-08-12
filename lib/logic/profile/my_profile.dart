@@ -7,7 +7,7 @@ import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/media_repository.dart";
 import "package:pihka_frontend/data/profile_repository.dart";
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
+import "package:pihka_frontend/database/account_database_manager.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/model/freezed/logic/profile/my_profile.dart";
 import "package:pihka_frontend/ui_utils/common_update_logic.dart";
@@ -52,7 +52,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
   final AccountRepository account = LoginRepository.getInstance().repositories.account;
   final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
-  final db = DatabaseManager.getInstance();
+  final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
 
   StreamSubscription<ProfileEntry?>? _profileSubscription;
 

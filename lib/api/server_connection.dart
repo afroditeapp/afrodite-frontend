@@ -17,7 +17,8 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/assets.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
+import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/utils.dart';
@@ -187,14 +188,15 @@ class ServerConnection {
 
     var protocolState = ConnectionProtocolState.receiveNewRefreshToken;
 
-    final storage = DatabaseManager.getInstance();
+    // TODO(refactor): Create Account specific server connection.
+    final db = LoginRepository.getInstance().repositories.accountDb;
 
-    final accessToken = await storage.accountStreamSingle(_server.getterForAccessTokenKey()).ok();
+    final accessToken = await db.accountStreamSingle(_server.getterForAccessTokenKey()).ok();
     if (accessToken == null) {
       _state.add(Error(ServerConnectionError.invalidToken));
       return;
     }
-    final refreshToken = await storage.accountStreamSingle(_server.getterForRefreshTokenKey()).ok();
+    final refreshToken = await db.accountStreamSingle(_server.getterForRefreshTokenKey()).ok();
     if (refreshToken == null) {
       _state.add(Error(ServerConnectionError.invalidToken));
       return;
@@ -255,7 +257,7 @@ class ServerConnection {
           case ConnectionProtocolState.receiveNewRefreshToken: {
             if (message is List<int>) {
               final newRefreshToken = base64Encode(message);
-              await storage.accountAction(_server.setterForRefreshTokenKey(newRefreshToken));
+              await db.accountAction(_server.setterForRefreshTokenKey(newRefreshToken));
               protocolState = ConnectionProtocolState.receiveNewAccessToken;
             } else if (message is String) {
               await _endConnectionToGeneralError(error: ServerConnectionError.unsupportedClientVersion);
@@ -265,8 +267,8 @@ class ServerConnection {
           }
           case ConnectionProtocolState.receiveNewAccessToken: {
             if (message is String) {
-              await storage.accountAction(_server.setterForAccessTokenKey(message));
-              ws.sink.add(await syncDataBytes());
+              await db.accountAction(_server.setterForAccessTokenKey(message));
+              ws.sink.add(await syncDataBytes(db));
               protocolState = ConnectionProtocolState.receiveEvents;
               log.info("Connection ready");
               _state.add(Ready());
@@ -400,8 +402,7 @@ const forceSync = 255;
 
 // TODO(prod): Implement sync data version handling
 
-Future<Uint8List> syncDataBytes() async {
-  final db = DatabaseManager.getInstance();
+Future<Uint8List> syncDataBytes(AccountDatabaseManager db) async {
   final syncVersionAccount = await db.accountStreamSingle(
     (db) => db.daoSyncVersions.watchSyncVersionAccount()
   ).ok() ?? forceSync;

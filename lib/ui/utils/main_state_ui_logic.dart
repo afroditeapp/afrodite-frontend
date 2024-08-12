@@ -77,16 +77,18 @@ class MainStateUiLogic extends StatelessWidget {
         }
         final appLaunchPayload = appLaunchPayloadNullable;
         final accountBackgroundDb = LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
+        final accountDb = LoginRepository.getInstance().repositoriesOrNull?.accountDb;
 
         final rootPage = NewPageDetails(
           MaterialPage<void>(child: screen),
         );
 
-        if (appLaunchPayload != null && accountBackgroundDb != null) {
+        if (appLaunchPayload != null && accountBackgroundDb != null && accountDb != null) {
           log.info("Handling app launch notification payload");
           createHandlePayloadCallback(
             context,
             accountBackgroundDb,
+            accountDb,
             showError: false,
             navigateToAction: (bloc, page) {
               final pages = [rootPage];

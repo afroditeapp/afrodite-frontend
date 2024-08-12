@@ -11,7 +11,7 @@ import 'package:pihka_frontend/data/chat/message_extensions.dart';
 import 'package:pihka_frontend/data/general/notification/state/moderation_request_status.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/api.dart';
@@ -31,10 +31,13 @@ enum AccountRepositoryState {
 
 class AccountRepository extends DataRepositoryWithLifecycle {
   final api = ApiManager.getInstance();
-  final db = DatabaseManager.getInstance();
+  final AccountDatabaseManager db;
 
   late final RepositoryInstances repositories;
-  AccountRepository({required bool rememberToInitRepositoriesLateFinal});
+  AccountRepository({
+    required this.db,
+    required bool rememberToInitRepositoriesLateFinal,
+  });
 
   final BehaviorSubject<AccountRepositoryState> _internalState =
     BehaviorSubject.seeded(AccountRepositoryState.initRequired);

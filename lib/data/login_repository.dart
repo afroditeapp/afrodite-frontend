@@ -11,10 +11,12 @@ import 'package:pihka_frontend/config.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/common_repository.dart';
+import 'package:pihka_frontend/data/general/image_cache_settings.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
+import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/logic/app/app_visibility_provider.dart';
@@ -106,14 +108,14 @@ class LoginRepository extends DataRepository {
     final currentAccountId = await accountId.first;
     if (currentAccountId != null) {
       await createRepositories(currentAccountId);
-    }
 
-    // Restore previous state
-    final previousState = await DatabaseManager.getInstance().accountStreamSingle((db) => db.watchAccountState()).ok();
-    if (previousState != null) {
-      _loginState.add(LoginState.viewAccountStateOnceItExists);
-      await onResumeAppUsage();
-      await _repositories?.onResumeAppUsage();
+      // Restore previous state
+      final previousState = await repositories.accountDb.accountStreamSingle((db) => db.watchAccountState()).ok();
+      if (previousState != null) {
+        _loginState.add(LoginState.viewAccountStateOnceItExists);
+        await onResumeAppUsage();
+        await _repositories?.onResumeAppUsage();
+      }
     }
 
     Rx.combineLatest2(
@@ -210,12 +212,18 @@ class LoginRepository extends DataRepository {
     await currentRepositories?.dispose();
 
     final accountBackgroundDb = BackgroundDatabaseManager.getInstance().getAccountBackgroundDatabaseManager(accountId);
+    final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(accountId);
 
-    final account = AccountRepository(rememberToInitRepositoriesLateFinal: true);
+    final imageCacheSettings = ImageCacheSettings(accountDb);
+
+    final account = AccountRepository(
+      db: accountDb,
+      rememberToInitRepositoriesLateFinal: true,
+    );
     final common = CommonRepository();
-    final media = MediaRepository(account);
-    final profile = ProfileRepository(media, accountBackgroundDb);
-    final chat = ChatRepository(media: media, profile: profile, accountBackgroundDb: accountBackgroundDb);
+    final media = MediaRepository(account, accountDb);
+    final profile = ProfileRepository(media, accountDb, accountBackgroundDb);
+    final chat = ChatRepository(media: media, profile: profile, accountBackgroundDb: accountBackgroundDb, db: accountDb);
     final newRepositories = RepositoryInstances(
       accountId: accountId,
       common: common,
@@ -223,7 +231,9 @@ class LoginRepository extends DataRepository {
       media: media,
       profile: profile,
       account: account,
+      imageCacheSettings: imageCacheSettings,
       accountBackgroundDb: accountBackgroundDb,
+      accountDb: accountDb,
     );
     account.repositories = newRepositories;
     await newRepositories.init();
@@ -271,9 +281,10 @@ class LoginRepository extends DataRepository {
   }
 
   Future<Result<void, void>> _handleLoginResult(LoginResult loginResult) async {
+    final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(loginResult.accountId);
     final r = await DatabaseManager.getInstance().setAccountId(loginResult.accountId)
       .andThen(
-        (_) => DatabaseManager.getInstance().accountAction(
+        (_) => accountDb.accountAction(
           (db) => db.daoAccountSettings.updateEmailAddress(loginResult.email)
         )
       );
@@ -282,8 +293,8 @@ class LoginRepository extends DataRepository {
     }
 
     // Login repository
-    await DatabaseManager.getInstance().accountAction((db) => db.daoTokens.updateRefreshTokenAccount(loginResult.account.refresh.token));
-    await DatabaseManager.getInstance().accountAction((db) => db.daoTokens.updateAccessTokenAccount(loginResult.account.access.accessToken));
+    await accountDb.accountAction((db) => db.daoTokens.updateRefreshTokenAccount(loginResult.account.refresh.token));
+    await accountDb.accountAction((db) => db.daoTokens.updateAccessTokenAccount(loginResult.account.access.accessToken));
     // TODO(microservice): microservice support
     await onLogin();
 
@@ -304,8 +315,8 @@ class LoginRepository extends DataRepository {
     await _api.closeAndLogout();
 
     // Login repository
-    await DatabaseManager.getInstance().accountAction((db) => db.daoTokens.updateRefreshTokenAccount(null));
-    await DatabaseManager.getInstance().accountAction((db) => db.daoTokens.updateAccessTokenAccount(null));
+    await repositories.accountDb.accountAction((db) => db.daoTokens.updateRefreshTokenAccount(null));
+    await repositories.accountDb.accountAction((db) => db.daoTokens.updateAccessTokenAccount(null));
     await onLogout();
     // TODO(microservice): microservice support
 
@@ -488,7 +499,12 @@ class RepositoryInstances implements DataRepositoryMethods {
   final ProfileRepository profile;
   final AccountRepository account;
 
+  // Only lifecycle methods
+  final ImageCacheSettings imageCacheSettings;
+
   final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final AccountDatabaseManager accountDb;
+
   const RepositoryInstances({
     required this.accountId,
     required this.common,
@@ -496,7 +512,9 @@ class RepositoryInstances implements DataRepositoryMethods {
     required this.media,
     required this.profile,
     required this.account,
+    required this.imageCacheSettings,
     required this.accountBackgroundDb,
+    required this.accountDb,
   });
 
   Future<void> init() async {
@@ -505,6 +523,7 @@ class RepositoryInstances implements DataRepositoryMethods {
     await media.init();
     await profile.init();
     await account.init();
+    await imageCacheSettings.init();
   }
 
   Future<void> dispose() async {
@@ -513,6 +532,7 @@ class RepositoryInstances implements DataRepositoryMethods {
     await media.dispose();
     await profile.dispose();
     await account.dispose();
+    await imageCacheSettings.dispose();
   }
 
   @override

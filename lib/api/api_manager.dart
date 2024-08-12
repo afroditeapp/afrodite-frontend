@@ -7,9 +7,9 @@ import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/api/api_wrapper.dart';
 import 'package:pihka_frontend/api/server_connection.dart';
 import 'package:pihka_frontend/config.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/app_error.dart';
@@ -177,31 +177,31 @@ class ApiManager extends AppSingleton {
   }
 
   Future<void> _loadAddressesFromConfig() async {
-    final storage = BackgroundDatabaseManager.getInstance();
+    final backgroundDb = BackgroundDatabaseManager.getInstance();
 
     // TODO(prod): hardcode address for production release?
-    final accountAddress = await storage.commonStreamSingleOrDefault(
+    final accountAddress = await backgroundDb.commonStreamSingleOrDefault(
       (db) => db.watchServerUrlAccount(),
       defaultServerUrlAccount(),
     );
     _account.updateServerAddress(accountAddress);
     accountConnection.setAddress(toWebSocketUri(accountAddress));
 
-    final profileAddress = await storage.commonStreamSingleOrDefault(
+    final profileAddress = await backgroundDb.commonStreamSingleOrDefault(
       (db) => db.watchServerUrlProfile(),
       defaultServerUrlProfile(),
     );
     _profile.updateServerAddress(profileAddress);
     profileConnection.setAddress(toWebSocketUri(profileAddress));
 
-    final mediaAddress = await storage.commonStreamSingleOrDefault(
+    final mediaAddress = await backgroundDb.commonStreamSingleOrDefault(
       (db) => db.watchServerUrlMedia(),
       defaultServerUrlMedia(),
     );
     _media.updateServerAddress(mediaAddress);
     mediaConnection.setAddress(toWebSocketUri(mediaAddress));
 
-    final chatAddress = await storage.commonStreamSingleOrDefault(
+    final chatAddress = await backgroundDb.commonStreamSingleOrDefault(
       (db) => db.watchServerUrlChat(),
       defaultServerUrlChat(),
     );
@@ -212,7 +212,8 @@ class ApiManager extends AppSingleton {
   Future<void> _connect() async {
     _state.add(ApiManagerState.connecting);
 
-    final storage = DatabaseManager.getInstance();
+    // TOOD(refactor): Account specific ApiManager
+    final storage = LoginRepository.getInstance().repositories.accountDb;
     final accountRefreshToken =
       await storage.accountStreamSingle((db) => db.daoTokens.watchRefreshTokenAccount()).ok();
     final accountAccessToken =
@@ -253,7 +254,8 @@ class ApiManager extends AppSingleton {
   }
 
   Future<void> setupTokens() async {
-    final storage = DatabaseManager.getInstance();
+    // TOOD(refactor): Account specific ApiManager
+    final storage = LoginRepository.getInstance().repositories.accountDb;
 
     final accessTokenAccount = await storage.accountStreamSingle((db) => db.daoTokens.watchAccessTokenAccount()).ok();
     if (accessTokenAccount != null) {

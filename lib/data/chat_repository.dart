@@ -16,30 +16,31 @@ import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("ChatRepository");
 
 class ChatRepository extends DataRepositoryWithLifecycle {
   final syncHandler = ConnectedActionScheduler(ApiManager.getInstance());
-  final messageKeyManager = MessageKeyManager();
+  final MessageKeyManager messageKeyManager;
 
-  final db = DatabaseManager.getInstance();
+  final AccountDatabaseManager db;
   final ProfileRepository profile;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
 
-  ChatRepository({required MediaRepository media, required this.profile, required this.accountBackgroundDb}) :
-    profileEntryDownloader = ProfileEntryDownloader(media, accountBackgroundDb);
+  ChatRepository({required MediaRepository media, required this.profile, required this.accountBackgroundDb, required this.db}) :
+    messageKeyManager = MessageKeyManager(db),
+    profileEntryDownloader = ProfileEntryDownloader(media, accountBackgroundDb, db),
+    sentBlocksIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getSentBlocksList(startIndex, limit)).ok()),
+    receivedLikesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getReceivedLikesList(startIndex, limit)).ok()),
+    matchesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getMatchesList(startIndex, limit)).ok());
 
   final ApiManager api = ApiManager.getInstance();
   final ProfileEntryDownloader profileEntryDownloader;
-  final AccountIdDatabaseIterator sentBlocksIterator =
-    AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getSentBlocksList(startIndex, limit)).ok());
-  final AccountIdDatabaseIterator receivedLikesIterator =
-    AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getReceivedLikesList(startIndex, limit)).ok());
-  final AccountIdDatabaseIterator matchesIterator =
-    AccountIdDatabaseIterator((startIndex, limit) => DatabaseManager.getInstance().profileData((db) => db.getMatchesList(startIndex, limit)).ok());
+  final AccountIdDatabaseIterator sentBlocksIterator;
+  final AccountIdDatabaseIterator receivedLikesIterator;
+  final AccountIdDatabaseIterator matchesIterator;
 
   @override
   Future<void> init() async {
@@ -362,7 +363,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
   /// First message is the latest message.
   Future<List<MessageEntry>> getAllMessages(AccountId accountId) async {
-    final messageIterator = MessageDatabaseIterator();
+    final messageIterator = MessageDatabaseIterator(db);
     final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {
       return [];

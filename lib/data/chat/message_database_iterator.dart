@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 class MessageDatabaseIterator {
@@ -10,8 +10,8 @@ class MessageDatabaseIterator {
   int nextLocalKey = 0;
   AccountId localAccountId = AccountId(accountId: "");
   AccountId remoteAccountId = AccountId(accountId: "");
-  final DatabaseManager db = DatabaseManager.getInstance();
-  MessageDatabaseIterator();
+  final AccountDatabaseManager db;
+  MessageDatabaseIterator(this.db);
 
   /// Start iterating another conversation
   Future<void> switchConversation(AccountId local, AccountId remote) async {

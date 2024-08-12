@@ -1,8 +1,10 @@
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
-import 'package:pihka_frontend/utils.dart';
+import 'package:pihka_frontend/data/utils.dart';
+import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:rxdart/rxdart.dart';
 
 const MIBIBYTE = 1024 * 1024;
@@ -13,12 +15,10 @@ const CACHE_FULL_SIZED_IMAGES_DEFAULT = true;
 const CACHE_DOWNSCALING_SIZE_DEFAULT = MAX_IMG_WIDTH_AND_HEIGHT;
 
 
-class ImageCacheSettings extends AppSingleton {
-  static final _instance = ImageCacheSettings();
-  ImageCacheSettings();
-  factory ImageCacheSettings.getInstance() {
-    return _instance;
-  }
+class ImageCacheSettings implements LifecycleMethods {
+  final AccountDatabaseManager db;
+
+  ImageCacheSettings(this.db);
 
   final _imageCacheMaxBytes = BehaviorSubject<int>.seeded(CACHE_DEFAULT_BYTES);
   final _cacheFullSizedImages = BehaviorSubject<bool>.seeded(CACHE_FULL_SIZED_IMAGES_DEFAULT);
@@ -32,9 +32,13 @@ class ImageCacheSettings extends AppSingleton {
   bool get cacheFullSizedImagesValue => _cacheFullSizedImages.value;
   int get cacheDownscalingSizeValue => _cacheDownscalingSize.value;
 
+  StreamSubscription<int>? _imageCacheMaxBytesSubscription;
+  StreamSubscription<bool>? _cacheFullSizedImagesSubscription;
+  StreamSubscription<int>? _cacheDownscalingValueSubscription;
+
   @override
   Future<void> init() async {
-    DatabaseManager.getInstance()
+    _imageCacheMaxBytesSubscription = db
       .accountStreamOrDefault(
         (db) => db.daoLocalImageSettings.watchLocalImageSettingImageCacheMaxBytes(),
         CACHE_DEFAULT_BYTES,
@@ -46,7 +50,7 @@ class ImageCacheSettings extends AppSingleton {
         _imageCacheMaxBytes.add(event);
       });
 
-    DatabaseManager.getInstance()
+    _cacheFullSizedImagesSubscription = db
       .accountStreamOrDefault(
         (db) => db.daoLocalImageSettings.watchCacheFullSizedImages(),
         CACHE_FULL_SIZED_IMAGES_DEFAULT,
@@ -55,7 +59,7 @@ class ImageCacheSettings extends AppSingleton {
         _cacheFullSizedImages.add(event);
       });
 
-    DatabaseManager.getInstance()
+    _cacheDownscalingValueSubscription = db
       .accountStreamOrDefault(
         (db) => db.daoLocalImageSettings.watchImageCacheDownscalingSize(),
         CACHE_DOWNSCALING_SIZE_DEFAULT,
@@ -63,6 +67,13 @@ class ImageCacheSettings extends AppSingleton {
       .listen((event) {
         _cacheDownscalingSize.add(event);
       });
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _imageCacheMaxBytesSubscription?.cancel();
+    await _cacheFullSizedImagesSubscription?.cancel();
+    await _cacheDownscalingValueSubscription?.cancel();
   }
 
   ImageCacheSize getCurrentImageCacheSize() {
@@ -83,7 +94,7 @@ class ImageCacheSettings extends AppSingleton {
     imageCache.maximumSizeBytes = 0;
     imageCache.maximumSizeBytes = currentMaxBytes;
 
-    await DatabaseManager.getInstance().accountAction((db) async {
+    await db.accountAction((db) async {
       await db.daoLocalImageSettings.updateImageCacheMaxBytes(maxBytes);
       await db.daoLocalImageSettings.updateCacheFullSizedImages(cacheFullSizedImages);
       await db.daoLocalImageSettings.updateImageCacheDownscalingSize(downscalingSize);

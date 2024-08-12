@@ -7,7 +7,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
-import 'package:pihka_frontend/data/general/image_cache_settings.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/storage/encryption.dart';
 import 'package:pihka_frontend/ui/normal/settings/location.dart';
@@ -225,18 +225,18 @@ class ImageCacheSize {
   static const ImageCacheSize maxQuality = ImageCacheSize(MAX_IMG_WIDTH_AND_HEIGHT);
 
   static ImageCacheSize sizeForAppBarThumbnail() {
-    return ImageCacheSettings.getInstance().getCurrentImageCacheSize();
+    return LoginRepository.getInstance().repositoriesOrNull?.imageCacheSettings.getCurrentImageCacheSize() ?? maxQuality;
   }
 
   static ImageCacheSize sizeForGrid() {
-    return ImageCacheSettings.getInstance().getCurrentImageCacheSize();
+    return LoginRepository.getInstance().repositoriesOrNull?.imageCacheSettings.getCurrentImageCacheSize() ?? maxQuality;
   }
 
   static ImageCacheSize sizeForListWithTextContent() {
-    return ImageCacheSettings.getInstance().getCurrentImageCacheSize();
+    return LoginRepository.getInstance().repositoriesOrNull?.imageCacheSettings.getCurrentImageCacheSize() ?? maxQuality;
   }
 
   static ImageCacheSize sizeForViewProfile() {
-    return ImageCacheSettings.getInstance().getCurrentImageCacheSize();
+    return LoginRepository.getInstance().repositoriesOrNull?.imageCacheSettings.getCurrentImageCacheSize() ?? maxQuality;
   }
 }

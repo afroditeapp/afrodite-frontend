@@ -18,11 +18,10 @@ abstract class DataRepository extends AppSingleton implements DataRepositoryMeth
   Future<void> onInitialSetupComplete() async {}
 }
 
-abstract class DataRepositoryWithLifecycle implements DataRepositoryMethods {
-  /// Initialize the repository.
+abstract class DataRepositoryWithLifecycle implements DataRepositoryMethods, LifecycleMethods {
+  @override
   Future<void> init() async {}
-
-  /// Dispose the repository.
+  @override
   Future<void> dispose() async {}
 
   @override
@@ -64,6 +63,13 @@ abstract class DataRepositoryMethods {
   Future<void> onInitialSetupComplete() async {}
 }
 
+abstract class LifecycleMethods {
+  /// Initialize the object.
+  Future<void> init() async {}
+
+  /// Dispose the object.
+  Future<void> dispose() async {}
+}
 
 class ConnectedActionScheduler {
   final ApiManager api;

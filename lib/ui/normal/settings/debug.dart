@@ -7,7 +7,7 @@ import 'package:pihka_frontend/data/general/notification/state/message_received.
 import 'package:pihka_frontend/data/general/notification/state/moderation_request_status.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/ui/normal/chat/debug_page.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/utils/result.dart';
@@ -16,7 +16,8 @@ import 'package:pihka_frontend/utils/result.dart';
 class DebugSettingsPage extends StatelessWidget {
   DebugSettingsPage({super.key});
 
-  final AccountBackgroundDatabaseManager accountBackgroundDatabaseManager = LoginRepository.getInstance().repositories.accountBackgroundDb;
+  final AccountBackgroundDatabaseManager accountBackgroundDb = LoginRepository.getInstance().repositories.accountBackgroundDb;
+  final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
 
   @override
   Widget build(BuildContext context) {
@@ -38,35 +39,35 @@ class DebugSettingsPage extends StatelessWidget {
     ));
 
     settings.add(Setting.createSetting(Icons.notification_add, "Notification: Image moderation status", () =>
-      NotificationModerationRequestStatus.getInstance().show(ModerationRequestStateSimple.accepted, accountBackgroundDatabaseManager)
+      NotificationModerationRequestStatus.getInstance().show(ModerationRequestStateSimple.accepted, accountBackgroundDb)
     ));
 
     settings.add(Setting.createSetting(Icons.notification_add, "Notification: Likes", () =>
-      NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDatabaseManager)
+      NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb)
     ));
 
     settings.add(Setting.createSetting(Icons.notification_add, "Notification: New message (first chat)", () async {
-      final matchList = await DatabaseManager.getInstance().profileData((db) => db.getMatchesList(0, 1)).ok();
+      final matchList = await accountDb.profileData((db) => db.getMatchesList(0, 1)).ok();
       final match = matchList?.firstOrNull;
       if (match == null) {
         return;
       }
-      await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1, accountBackgroundDatabaseManager);
+      await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1, accountBackgroundDb);
     }));
 
     settings.add(Setting.createSetting(Icons.notification_add, "Notification: New message (second chat)", () async {
-      final matchList = await DatabaseManager.getInstance().profileData((db) => db.getMatchesList(0, 2)).ok();
+      final matchList = await accountDb.profileData((db) => db.getMatchesList(0, 2)).ok();
       final match = matchList?.lastOrNull;
       if (match == null) {
         return;
       }
-      await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1, accountBackgroundDatabaseManager);
+      await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1, accountBackgroundDb);
     }));
 
     settings.add(Setting.createSetting(Icons.notification_add, "Notification: New message (chats 1-5)", () async {
-      final List<AccountId> matchList = await DatabaseManager.getInstance().profileData((db) => db.getMatchesList(0, 5)).ok() ?? [];
+      final List<AccountId> matchList = await accountDb.profileData((db) => db.getMatchesList(0, 5)).ok() ?? [];
       for (final match in matchList) {
-        await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1, accountBackgroundDatabaseManager);
+        await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1, accountBackgroundDb);
       }
     }));
 

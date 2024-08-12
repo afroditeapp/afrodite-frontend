@@ -59,6 +59,7 @@ class _ProfileGridState extends State<ProfileGrid> {
     LoginRepository.getInstance().repositories.chat,
     LoginRepository.getInstance().repositories.media,
     LoginRepository.getInstance().repositories.accountBackgroundDb,
+    LoginRepository.getInstance().repositories.accountDb,
   );
   bool _reloadInProgress = false;
 

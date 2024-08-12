@@ -5,6 +5,7 @@ import "package:pihka_frontend/data/general/notification/utils/notification_payl
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/notification_manager.dart";
 import "package:pihka_frontend/database/account_background_database_manager.dart";
+import "package:pihka_frontend/database/account_database_manager.dart";
 import "package:pihka_frontend/model/freezed/logic/main/notification_payload_handler.dart";
 import "package:pihka_frontend/utils/immutable_list.dart";
 
@@ -30,6 +31,7 @@ class AddNewPayload extends NotificationPayloadHandlerEvent {
 
 class NotificationPayloadHandlerBloc extends Bloc<NotificationPayloadHandlerEvent, NotificationPayloadHandlerData> {
   final AccountBackgroundDatabaseManager accountBackgroundDb = LoginRepository.getInstance().repositories.accountBackgroundDb;
+  final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
   StreamSubscription<NotificationPayload>? _payloadSubscription;
 
   NotificationPayloadHandlerBloc() : super(NotificationPayloadHandlerData()) {

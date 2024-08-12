@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/general/image_cache_settings.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/padding.dart';
@@ -21,6 +22,7 @@ class ImageSettingsScreen extends StatefulWidget {
 
 
 class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
+  final ImageCacheSettings imageCacheSettings = LoginRepository.getInstance().repositories.imageCacheSettings;
 
   int cacheMaxBytes = 0;
   bool fullImgSize = false;
@@ -30,14 +32,14 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
   void initState() {
     super.initState();
 
-    cacheMaxBytes = ImageCacheSettings.getInstance().imageCacheMaxBytesValue;
-    fullImgSize = ImageCacheSettings.getInstance().cacheFullSizedImagesValue;
-    downscalingSize = ImageCacheSettings.getInstance().cacheDownscalingSizeValue;
+    cacheMaxBytes = imageCacheSettings.imageCacheMaxBytesValue;
+    fullImgSize = imageCacheSettings.cacheFullSizedImagesValue;
+    downscalingSize = imageCacheSettings.cacheDownscalingSizeValue;
   }
 
   Future<void> saveSettings() async {
     log.info("Saving image settings");
-    await ImageCacheSettings.getInstance().saveSettings(cacheMaxBytes, fullImgSize, downscalingSize);
+    await imageCacheSettings.saveSettings(cacheMaxBytes, fullImgSize, downscalingSize);
   }
 
   @override

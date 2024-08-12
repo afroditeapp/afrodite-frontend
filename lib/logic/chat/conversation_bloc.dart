@@ -57,36 +57,7 @@ abstract class ConversationDataProvider {
   Stream<MessageEntry?> getMessageWithLocalId(LocalMessageId localId);
 
   /// First message is the latest new message
-  Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, LocalMessageId? latestCurrentMessageLocalId) async {
-    MessageDatabaseIterator messageIterator = MessageDatabaseIterator();
-    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
-    if (currentUser == null) {
-      return [];
-    }
-    await messageIterator.switchConversation(currentUser, senderAccountId);
-
-    // Read latest messages until all new messages are read
-    List<MessageEntry> newMessages = [];
-    bool readMessages = true;
-    while (readMessages) {
-      final messages = await messageIterator.nextList();
-      if (messages.isEmpty) {
-        break;
-      }
-
-      for (final message in messages) {
-        if (message.localId == latestCurrentMessageLocalId) {
-          readMessages = false;
-          break;
-        } else {
-          newMessages.add(message);
-        }
-      }
-    }
-
-    return newMessages;
-  }
-
+  Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, LocalMessageId? latestCurrentMessageLocalId);
 }
 
 class DefaultConversationDataProvider extends ConversationDataProvider {
@@ -123,6 +94,37 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   @override
   Stream<MessageEntry?> getMessageWithLocalId(LocalMessageId localId) {
     return chat.getMessageWithLocalId(localId);
+  }
+
+  @override
+  Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, LocalMessageId? latestCurrentMessageLocalId) async {
+    MessageDatabaseIterator messageIterator = MessageDatabaseIterator(chat.db);
+    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
+    if (currentUser == null) {
+      return [];
+    }
+    await messageIterator.switchConversation(currentUser, senderAccountId);
+
+    // Read latest messages until all new messages are read
+    List<MessageEntry> newMessages = [];
+    bool readMessages = true;
+    while (readMessages) {
+      final messages = await messageIterator.nextList();
+      if (messages.isEmpty) {
+        break;
+      }
+
+      for (final message in messages) {
+        if (message.localId == latestCurrentMessageLocalId) {
+          readMessages = false;
+          break;
+        } else {
+          newMessages.add(message);
+        }
+      }
+    }
+
+    return newMessages;
   }
 }
 

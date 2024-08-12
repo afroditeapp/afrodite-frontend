@@ -8,7 +8,7 @@ import 'package:native_utils/message.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -31,12 +31,14 @@ enum KeyGeneratorState {
 }
 
 class MessageKeyManager {
-  BehaviorSubject<KeyGeneratorState> generation =
+  final BehaviorSubject<KeyGeneratorState> generation =
     BehaviorSubject.seeded(KeyGeneratorState.idle, sync: true);
 
-  DatabaseManager db = DatabaseManager.getInstance();
-  LoginRepository login = LoginRepository.getInstance();
-  ApiManager api = ApiManager.getInstance();
+  final AccountDatabaseManager db;
+  final LoginRepository login = LoginRepository.getInstance();
+  final ApiManager api = ApiManager.getInstance();
+
+  MessageKeyManager(this.db);
 
   Future<Result<AllKeyData, void>> generateOrLoadMessageKeys(AccountId accountId) async {
     if (generation.value == KeyGeneratorState.inProgress) {

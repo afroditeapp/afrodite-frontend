@@ -8,8 +8,8 @@ import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
+import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
@@ -43,7 +43,7 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
         if (payload != null) {
           final bloc = context.read<NotificationPayloadHandlerBloc>();
           bloc.add(
-            HandleFirstPayload(createHandlePayloadCallback(context, bloc.accountBackgroundDb, showError: true)),
+            HandleFirstPayload(createHandlePayloadCallback(context, bloc.accountBackgroundDb, bloc.accountDb, showError: true)),
           );
         }
 
@@ -56,6 +56,7 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
 Future<void> Function(NotificationPayload) createHandlePayloadCallback(
   BuildContext context,
   AccountBackgroundDatabaseManager accountBackgroundDb,
+  AccountDatabaseManager accountDb,
   {
     required bool showError,
     void Function(NavigatorStateBloc, NewPageDetails?) navigateToAction = defaultNavigateToAction,
@@ -71,6 +72,7 @@ Future<void> Function(NotificationPayload) createHandlePayloadCallback(
       bottomNavigatorStateBloc,
       likeGridInstanceBloc,
       accountBackgroundDb,
+      accountDb,
       showError: showError,
     );
     navigateToAction(navigatorStateBloc, newPage);
@@ -90,6 +92,7 @@ Future<NewPageDetails?> handlePayload(
   BottomNavigationStateBloc bottomNavigationStateBloc,
   LikeGridInstanceManagerBloc likeGridInstanceManagerBloc,
   AccountBackgroundDatabaseManager accountBackgroundDb,
+  AccountDatabaseManager accountDb,
   {
     required bool showError,
   }
@@ -113,7 +116,7 @@ Future<NewPageDetails?> handlePayload(
         return null;
       }
 
-      final profile = await DatabaseManager.getInstance().profileData((db) => db.getProfileEntry(accountId)).ok();
+      final profile = await accountDb.profileData((db) => db.getProfileEntry(accountId)).ok();
       if (profile == null) {
         return null;
       }
