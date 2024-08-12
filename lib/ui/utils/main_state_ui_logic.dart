@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/account_details.dart';
@@ -75,15 +76,17 @@ class MainStateUiLogic extends StatelessWidget {
             .add(ChangeScreen(BottomNavigationScreenId.profiles, resetIsScrolledValues: true));
         }
         final appLaunchPayload = appLaunchPayloadNullable;
+        final accountBackgroundDb = LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
 
         final rootPage = NewPageDetails(
           MaterialPage<void>(child: screen),
         );
 
-        if (appLaunchPayload != null) {
+        if (appLaunchPayload != null && accountBackgroundDb != null) {
           log.info("Handling app launch notification payload");
           createHandlePayloadCallback(
             context,
+            accountBackgroundDb,
             showError: false,
             navigateToAction: (bloc, page) {
               final pages = [rootPage];

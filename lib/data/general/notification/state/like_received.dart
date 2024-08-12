@@ -6,6 +6,7 @@ import 'package:pihka_frontend/data/general/notification/utils/notification_cate
 import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
+import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/app_visibility_provider.dart';
@@ -26,20 +27,20 @@ class NotificationLikeReceived extends AppSingletonNoInit {
 
   int _receivedCount = 0;
 
-  Future<void> incrementReceivedLikesCount() async {
+  Future<void> incrementReceivedLikesCount(AccountBackgroundDatabaseManager accountBackgroundDb) async {
     _receivedCount++;
 
     if (!isLikesUiOpen()) {
-      await _updateNotification();
+      await _updateNotification(accountBackgroundDb);
     }
   }
 
-  Future<void> resetReceivedLikesCount() async {
+  Future<void> resetReceivedLikesCount(AccountBackgroundDatabaseManager accountBackgroundDb) async {
     _receivedCount = 0;
-    await _updateNotification();
+    await _updateNotification(accountBackgroundDb);
   }
 
-  Future<void> _updateNotification() async {
+  Future<void> _updateNotification(AccountBackgroundDatabaseManager accountBackgroundDb) async {
     if (_receivedCount <= 0) {
       await notifications.hideNotification(NotificationIdStatic.likeReceived.id);
       return;
@@ -59,6 +60,7 @@ class NotificationLikeReceived extends AppSingletonNoInit {
       notificationPayload: NavigateToLikes(
         sessionId: await notifications.getSessionId(),
       ),
+      accountBackgroundDb: accountBackgroundDb,
     );
   }
 

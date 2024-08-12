@@ -2,8 +2,8 @@ import "dart:async";
 
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/data/general/notification/utils/notification_category.dart";
+import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/data/notification_manager.dart";
-import "package:pihka_frontend/database/background_database_manager.dart";
 import "package:pihka_frontend/model/freezed/logic/settings/notification_settings.dart";
 
 abstract class NotificationSettingsEvent {}
@@ -26,7 +26,7 @@ class NewValueModerationRequestState extends NotificationSettingsEvent {
 }
 
 class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, NotificationSettingsData> {
-  final db = BackgroundDatabaseManager.getInstance();
+  final db = LoginRepository.getInstance().repositories.accountBackgroundDb;
   final notifications = NotificationManager.getInstance();
 
   StreamSubscription<bool?>? _messagesSubscription;

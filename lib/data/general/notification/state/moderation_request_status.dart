@@ -5,6 +5,7 @@ import 'package:pihka_frontend/data/general/notification/utils/notification_cate
 import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
+import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/utils.dart';
@@ -22,17 +23,17 @@ class NotificationModerationRequestStatus extends AppSingletonNoInit {
 
   ModerationRequestStateSimple? _state;
 
-  Future<void> show(ModerationRequestStateSimple state) async {
+  Future<void> show(ModerationRequestStateSimple state, AccountBackgroundDatabaseManager accountBackgroundDb) async {
     _state = state;
-    await _updateNotification();
+    await _updateNotification(accountBackgroundDb);
   }
 
-  Future<void> hide() async {
+  Future<void> hide(AccountBackgroundDatabaseManager accountBackgroundDb) async {
     _state = null;
-    await _updateNotification();
+    await _updateNotification(accountBackgroundDb);
   }
 
-  Future<void> _updateNotification() async {
+  Future<void> _updateNotification(AccountBackgroundDatabaseManager accountBackgroundDb) async {
     final state = _state;
     if (state == null) {
       await notifications.hideNotification(notificationId);
@@ -49,6 +50,7 @@ class NotificationModerationRequestStatus extends AppSingletonNoInit {
       title: title,
       category: const NotificationCategoryModerationRequestStatus(),
       notificationPayload: NavigateToModerationRequestStatus(sessionId: await notifications.getSessionId()),
+      accountBackgroundDb: accountBackgroundDb,
     );
   }
 }

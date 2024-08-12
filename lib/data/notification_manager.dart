@@ -4,11 +4,11 @@ import 'package:database/database.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logging/logging.dart';
-import 'package:pihka_frontend/data/general/notification/state/message_received_static.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_category.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
 import 'package:pihka_frontend/data/push_notification_manager.dart';
+import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:rxdart/rxdart.dart';
@@ -99,9 +99,6 @@ class NotificationManager extends AppSingleton {
         }
       }
     }
-
-    // Close push notification only related notifications if those exist
-    await NotificationMessageReceivedStatic.getInstance().updateState(false);
   }
 
   Future<void> askPermissions() async {
@@ -157,9 +154,10 @@ class NotificationManager extends AppSingleton {
       String? body,
       required NotificationCategory category,
       NotificationPayload? notificationPayload,
+      required AccountBackgroundDatabaseManager accountBackgroundDb,
     }
   ) async {
-    if (!await category.isEnabled()) {
+    if (!await category.isEnabled(accountBackgroundDb)) {
       return;
     }
 

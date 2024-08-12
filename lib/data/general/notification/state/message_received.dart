@@ -6,7 +6,7 @@ import 'package:pihka_frontend/data/general/notification/utils/notification_cate
 import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
-import 'package:pihka_frontend/database/background_database_manager.dart';
+import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/app_visibility_provider.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
@@ -23,31 +23,39 @@ class NotificationMessageReceived extends AppSingletonNoInit {
   }
 
   final notifications = NotificationManager.getInstance();
-  final db = BackgroundDatabaseManager.getInstance();
 
-  Future<void> updateMessageReceivedCount(AccountId accountId, int count) async {
-    final notificationIdInt = await db.accountData((db) => db.daoNewMessageNotification.getOrCreateNewMessageNotificationId(accountId)).ok();
+  Future<void> updateMessageReceivedCount(AccountId accountId, int count, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+    final notificationIdInt = await accountBackgroundDb.accountData((db) => db.daoNewMessageNotification.getOrCreateNewMessageNotificationId(accountId)).ok();
     if (notificationIdInt == null) {
       return;
     }
 
     final notificationId = NotificationIdStatic.calculateNotificationIdForNewMessageNotifications(notificationIdInt);
-    final notificationShown = await db.accountData((db) => db.daoNewMessageNotification.getNotificationShown(accountId)).ok() ?? false;
+    final notificationShown = await accountBackgroundDb.accountData((db) => db.daoNewMessageNotification.getNotificationShown(accountId)).ok() ?? false;
 
     if (count <= 0 || _isConversationUiOpen(accountId) || _isConversationListUiOpen() || notificationShown) {
       await notifications.hideNotification(notificationId);
     } else {
-      await _showNotification(accountId, notificationId);
+      await _showNotification(accountId, notificationId, accountBackgroundDb);
     }
   }
 
-  Future<void> _showNotification(AccountId account, NotificationId id) async {
-    final profileTitle = await db.profileData((db) => db.getProfileTitle(account)).ok();
+  Future<void> _showNotification(AccountId account, NotificationId id, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+    final profileTitle = await accountBackgroundDb.profileData((db) => db.getProfileTitle(account)).ok();
+
+    final String title;
     if (profileTitle == null) {
-      return;
+      // TODO(prod): What about the case when there is no profile title?
+      //             Is it possible? Perhaps if some account is already a match
+      //             when login happens the account's profile data is not in DB.
+      //             There is two options: provide the name from server together
+      //             with ID or download all profiles of matches or sent likes
+      //             when login happens.
+      title = R.strings.notification_message_received_single_generic;
+    } else {
+      title = R.strings.notification_message_received_single(profileTitle.profileTitle());
     }
 
-    final String title = R.strings.notification_message_received_single(profileTitle.profileTitle());
     // Message count is not supported.
     // if (state.state.messageCount == 1) {
     //   title = R.strings.notification_message_received_single(profileTitle);
@@ -65,6 +73,7 @@ class NotificationMessageReceived extends AppSingletonNoInit {
         notificationId: id,
         sessionId: await notifications.getSessionId(),
       ),
+      accountBackgroundDb: accountBackgroundDb,
     );
   }
 

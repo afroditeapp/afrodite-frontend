@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
+import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
@@ -40,8 +41,9 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
       builder: (context, state) {
         final payload = state.toBeHandled.firstOrNull;
         if (payload != null) {
-          context.read<NotificationPayloadHandlerBloc>().add(
-            HandleFirstPayload(createHandlePayloadCallback(context, showError: true)),
+          final bloc = context.read<NotificationPayloadHandlerBloc>();
+          bloc.add(
+            HandleFirstPayload(createHandlePayloadCallback(context, bloc.accountBackgroundDb, showError: true)),
           );
         }
 
@@ -53,6 +55,7 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
 
 Future<void> Function(NotificationPayload) createHandlePayloadCallback(
   BuildContext context,
+  AccountBackgroundDatabaseManager accountBackgroundDb,
   {
     required bool showError,
     void Function(NavigatorStateBloc, NewPageDetails?) navigateToAction = defaultNavigateToAction,
@@ -67,6 +70,7 @@ Future<void> Function(NotificationPayload) createHandlePayloadCallback(
       navigatorStateBloc,
       bottomNavigatorStateBloc,
       likeGridInstanceBloc,
+      accountBackgroundDb,
       showError: showError,
     );
     navigateToAction(navigatorStateBloc, newPage);
@@ -85,6 +89,7 @@ Future<NewPageDetails?> handlePayload(
   NavigatorStateBloc navigatorStateBloc,
   BottomNavigationStateBloc bottomNavigationStateBloc,
   LikeGridInstanceManagerBloc likeGridInstanceManagerBloc,
+  AccountBackgroundDatabaseManager accountBackgroundDb,
   {
     required bool showError,
   }
@@ -103,7 +108,7 @@ Future<NewPageDetails?> handlePayload(
   switch (payload) {
     case NavigateToConversation():
       final dbId = NotificationIdStatic.revertNewMessageNotificationIdCalcualtion(payload.notificationId);
-      final accountId = await BackgroundDatabaseManager.getInstance().accountData((db) => db.daoNewMessageNotification.getAccountId(dbId)).ok();
+      final accountId = await accountBackgroundDb.accountData((db) => db.daoNewMessageNotification.getAccountId(dbId)).ok();
       if (accountId == null) {
         return null;
       }

@@ -15,6 +15,7 @@ import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
@@ -26,9 +27,10 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
   final db = DatabaseManager.getInstance();
   final ProfileRepository profile;
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
 
-  ChatRepository({required MediaRepository media, required this.profile}) :
-    profileEntryDownloader = ProfileEntryDownloader(media);
+  ChatRepository({required MediaRepository media, required this.profile, required this.accountBackgroundDb}) :
+    profileEntryDownloader = ProfileEntryDownloader(media, accountBackgroundDb);
 
   final ApiManager api = ApiManager.getInstance();
   final ProfileEntryDownloader profileEntryDownloader;
@@ -283,7 +285,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
       final newList = receivedLikes.profiles;
       if (newList.length > currentReceivedLikes.length) {
-        await NotificationLikeReceived.getInstance().incrementReceivedLikesCount();
+        await NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb);
       }
     }
   }

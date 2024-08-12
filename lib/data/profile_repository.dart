@@ -9,6 +9,7 @@ import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils/app_error.dart';
 import 'package:pihka_frontend/utils/result.dart';
@@ -23,8 +24,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   final ApiManager _api = ApiManager.getInstance();
 
   final MediaRepository media;
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
 
-  ProfileRepository(this.media);
+  ProfileRepository(this.media, this.accountBackgroundDb);
 
   final PublishSubject<ProfileChange> _profileChangesRelay = PublishSubject();
   void sendProfileChange(ProfileChange change) {
@@ -152,7 +154,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       }
     }
 
-    final entry = await ProfileEntryDownloader(media).download(id).ok();
+    final entry = await ProfileEntryDownloader(media, accountBackgroundDb).download(id).ok();
     return entry;
   }
 
@@ -167,7 +169,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     }
 
 
-    final result = await ProfileEntryDownloader(media).download(id);
+    final result = await ProfileEntryDownloader(media, accountBackgroundDb).download(id);
     switch (result) {
       case Ok(:final v):
         yield GetProfileSuccess(v);

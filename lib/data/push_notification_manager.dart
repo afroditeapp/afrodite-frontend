@@ -11,8 +11,8 @@ import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/api/api_wrapper.dart';
 import 'package:pihka_frontend/config.dart';
 import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
-import 'package:pihka_frontend/data/general/notification/state/message_received_static.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
+import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/firebase_options.dart';
 import 'package:pihka_frontend/localizations.dart';
@@ -167,6 +167,13 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     return;
   }
 
+  final currentAccountId = await db.commonStreamSingle((db) => db.watchAccountId());
+  if (currentAccountId == null) {
+    log.error("Downloading pending notification failed: AccountId is not available");
+    return;
+  }
+  final accountBackgroundDb = db.getAccountBackgroundDatabaseManager(currentAccountId);
+
   final apiProvider = ApiProvider(chatUrl);
   await apiProvider.init();
   final ApiWrapper<ChatApi> chatApi = ApiWrapper(apiProvider.chat);
@@ -180,21 +187,16 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       }
 
       if (v.value == 0x1) {
-        await _handlePushNotificationNewMessageReceived(v.newMessageReceivedFrom ?? []);
+        await _handlePushNotificationNewMessageReceived(v.newMessageReceivedFrom ?? [], accountBackgroundDb);
       }
     case Err():
       log.error("Downloading pending notification failed");
   }
 }
 
-Future<void> _handlePushNotificationNewMessageReceived(List<AccountId> messageSenders) async {
-  if (messageSenders.isEmpty) {
-    await NotificationMessageReceivedStatic.getInstance().updateState(true);
-    return;
-  }
-
+Future<void> _handlePushNotificationNewMessageReceived(List<AccountId> messageSenders, AccountBackgroundDatabaseManager accountBackgroundDb) async {
   for (final sender in messageSenders) {
-    await NotificationMessageReceived.getInstance().updateMessageReceivedCount(sender, 1);
-    await BackgroundDatabaseManager.getInstance().accountAction((db) => db.daoNewMessageNotification.setNotificationShown(sender, true));
+    await NotificationMessageReceived.getInstance().updateMessageReceivedCount(sender, 1, accountBackgroundDb);
+    await accountBackgroundDb.accountAction((db) => db.daoNewMessageNotification.setNotificationShown(sender, true));
   }
 }

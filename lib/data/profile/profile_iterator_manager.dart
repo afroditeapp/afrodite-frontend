@@ -8,6 +8,7 @@ import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -23,8 +24,9 @@ class ProfileIteratorManager {
   final DatabaseManager db = DatabaseManager.getInstance();
   final ChatRepository chat;
   final MediaRepository media;
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
 
-  ProfileIteratorManager(this.chat, this.media);
+  ProfileIteratorManager(this.chat, this.media, this.accountBackgroundDb);
 
   ProfileIteratorMode _currentMode =
     ModePublicProfiles(clearDatabase: false);
@@ -43,11 +45,13 @@ class ProfileIteratorManager {
           _currentIterator = OnlineIterator(
             resetServerIterator: true,
             media: media,
+            accountBackgroundDb: accountBackgroundDb,
           );
         } else {
           if (_currentMode is ModeFavorites) {
             _currentIterator = OnlineIterator(
               media: media,
+              accountBackgroundDb: accountBackgroundDb,
             );
           } else {
             _currentIterator.reset();

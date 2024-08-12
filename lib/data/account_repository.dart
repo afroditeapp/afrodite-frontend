@@ -98,7 +98,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       newProfileVisibility == ProfileVisibility.private) ||
         (currentProfileVisibility == ProfileVisibility.pendingPublic &&
       newProfileVisibility == ProfileVisibility.public)) {
-        await NotificationModerationRequestStatus.getInstance().show(ModerationRequestStateSimple.accepted);
+        await NotificationModerationRequestStatus.getInstance().show(ModerationRequestStateSimple.accepted, repositories.accountBackgroundDb);
     }
     await db.accountAction((db) => db.daoProfileSettings.updateProfileVisibility(newProfileVisibility));
   }

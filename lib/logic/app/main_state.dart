@@ -1,6 +1,5 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
-import "package:pihka_frontend/data/account_repository.dart";
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:rxdart/rxdart.dart";
 

@@ -15,7 +15,6 @@ import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
-import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/iterator.dart';
 import 'package:pihka_frontend/utils/result.dart';
@@ -66,12 +65,12 @@ extension MessageExtensions on ChatRepository {
         profile.sendProfileChange(ConversationChanged(message.id.accountIdSender, ConversationChangeType.messageReceived));
         // TODO(prod): Update with correct message count once there is
         // count of not read messages in the database.
-        await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.id.accountIdSender, 1);
+        await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.id.accountIdSender, 1, accountBackgroundDb);
       }
     }
 
     for (final sender in newMessages.map((item) => item.$1.id.accountIdSender).toSet()) {
-      await BackgroundDatabaseManager.getInstance().accountAction((db) => db.daoNewMessageNotification.setNotificationShown(sender, false));
+      await accountBackgroundDb.accountAction((db) => db.daoNewMessageNotification.setNotificationShown(sender, false));
     }
 
     final toBeDeletedList = PendingMessageDeleteList(messagesIds: toBeDeleted);

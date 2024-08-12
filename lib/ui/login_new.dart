@@ -6,7 +6,6 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/assets.dart";
 import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/logic/account/account.dart";
 import "package:pihka_frontend/logic/account/demo_account.dart";
 import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/logic/sign_in_with.dart";

@@ -10,8 +10,6 @@ class NotificationId {
 enum NotificationIdStatic {
   likeReceived(id: NotificationId(0)),
   moderationRequestStatus(id: NotificationId(1)),
-  /// Message received but no info about who sent it.
-  messageReceived(id: NotificationId(2)),
   lastStaticId(id: NotificationId(1000000));
 
   final NotificationId id;

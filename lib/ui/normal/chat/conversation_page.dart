@@ -68,6 +68,7 @@ class ConversationPage extends StatefulWidget {
 
 class ConversationPageState extends State<ConversationPage> {
   final TextEditingController _textEditingController = TextEditingController();
+  final accountBackgroundDb = LoginRepository.getInstance().repositories.accountBackgroundDb;
 
   @override
   void initState() {
@@ -75,7 +76,7 @@ class ConversationPageState extends State<ConversationPage> {
     // Hide notification
     // TODO(prod): Perhaps this can be done in repository code once
     // count of not read messages is implemented.
-    NotificationMessageReceived.getInstance().updateMessageReceivedCount(widget.profileEntry.uuid, 0);
+    NotificationMessageReceived.getInstance().updateMessageReceivedCount(widget.profileEntry.uuid, 0, accountBackgroundDb);
   }
 
   @override

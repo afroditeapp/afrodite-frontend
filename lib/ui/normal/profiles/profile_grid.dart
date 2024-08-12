@@ -58,6 +58,7 @@ class _ProfileGridState extends State<ProfileGrid> {
   final ProfileIteratorManager _mainProfilesViewIterator = ProfileIteratorManager(
     LoginRepository.getInstance().repositories.chat,
     LoginRepository.getInstance().repositories.media,
+    LoginRepository.getInstance().repositories.accountBackgroundDb,
   );
   bool _reloadInProgress = false;
 

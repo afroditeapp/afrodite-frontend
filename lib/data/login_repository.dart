@@ -14,6 +14,7 @@ import 'package:pihka_frontend/data/common_repository.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
+import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/logic/app/app_visibility_provider.dart';
@@ -51,6 +52,7 @@ class LoginRepository extends DataRepository {
 
   RepositoryInstances? _repositories;
   RepositoryInstances get repositories => _repositories!;
+  RepositoryInstances? get repositoriesOrNull => _repositories;
 
   final _api = ApiManager.getInstance();
 
@@ -207,11 +209,13 @@ class LoginRepository extends DataRepository {
     final currentRepositories = _repositories;
     await currentRepositories?.dispose();
 
+    final accountBackgroundDb = BackgroundDatabaseManager.getInstance().getAccountBackgroundDatabaseManager(accountId);
+
     final account = AccountRepository(rememberToInitRepositoriesLateFinal: true);
     final common = CommonRepository();
     final media = MediaRepository(account);
-    final profile = ProfileRepository(media);
-    final chat = ChatRepository(media: media, profile: profile);
+    final profile = ProfileRepository(media, accountBackgroundDb);
+    final chat = ChatRepository(media: media, profile: profile, accountBackgroundDb: accountBackgroundDb);
     final newRepositories = RepositoryInstances(
       accountId: accountId,
       common: common,
@@ -219,6 +223,7 @@ class LoginRepository extends DataRepository {
       media: media,
       profile: profile,
       account: account,
+      accountBackgroundDb: accountBackgroundDb,
     );
     account.repositories = newRepositories;
     await newRepositories.init();
@@ -482,6 +487,8 @@ class RepositoryInstances implements DataRepositoryMethods {
   final MediaRepository media;
   final ProfileRepository profile;
   final AccountRepository account;
+
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
   const RepositoryInstances({
     required this.accountId,
     required this.common,
@@ -489,6 +496,7 @@ class RepositoryInstances implements DataRepositoryMethods {
     required this.media,
     required this.profile,
     required this.account,
+    required this.accountBackgroundDb,
   });
 
   Future<void> init() async {

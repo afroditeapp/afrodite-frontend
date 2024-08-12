@@ -8,7 +8,7 @@ import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/background_database_manager.dart';
+import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
@@ -23,13 +23,13 @@ class OnlineIterator extends IteratorType {
   final DatabaseManager db = DatabaseManager.getInstance();
   final ProfileEntryDownloader downloader;
 
-
   /// If [resetServerIterator] is true, the iterator will reset the
   /// server iterator to the beginning.
   OnlineIterator({
     this.resetServerIterator = false,
     required MediaRepository media,
-  }) : downloader = ProfileEntryDownloader(media);
+    required AccountBackgroundDatabaseManager accountBackgroundDb,
+  }) : downloader = ProfileEntryDownloader(media, accountBackgroundDb);
 
   @override
   void reset() {
@@ -140,7 +140,8 @@ class ProfileEntryDownloader {
   final ApiManager api = ApiManager.getInstance();
   final DatabaseManager db = DatabaseManager.getInstance();
   final MediaRepository media;
-  ProfileEntryDownloader(this.media);
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
+  ProfileEntryDownloader(this.media, this.accountBackgroundDb);
 
   /// Download profile entry, save to databases and return it.
   Future<Result<ProfileEntry, ProfileDownloadError>> download(AccountId accountId, {bool isMatch = false}) async {
@@ -193,7 +194,7 @@ class ProfileEntryDownloader {
         if (profile != null) {
           // Sent profile version didn't match the latest profile version, so
           // server sent the latest profile.
-          await BackgroundDatabaseManager.getInstance().profileAction((db) => db.updateProfileData(accountId, profile));
+          await accountBackgroundDb.profileAction((db) => db.updateProfileData(accountId, profile));
           await db.profileAction((db) => db.updateProfileData(accountId, profile, version, v.lastSeenTime));
         } else {
           // Current profile version is the latest.
