@@ -262,7 +262,7 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
     }
 
     widget.dataProvider.isSent = count % 4 == 0;
-    widget.dataProvider.sendMessageTo(widget.accountId, msg);
+    widget.dataProvider.sendMessageToSync(widget.accountId, msg);
   }
 
   @override
