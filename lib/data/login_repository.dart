@@ -56,7 +56,7 @@ class LoginRepository extends DataRepository {
   RepositoryInstances get repositories => _repositories!;
   RepositoryInstances? get repositoriesOrNull => _repositories;
 
-  final _api = ApiManager.getInstance();
+  final ApiManager _apiNoConnection = ApiManager.withDefaultAddressAndNoConnection();
 
   GoogleSignIn google = createSignInWithGoogle();
 
@@ -71,6 +71,14 @@ class LoginRepository extends DataRepository {
     BehaviorSubject.seeded(LoginRepositoryState.initRequired);
   final BehaviorSubject<bool> _demoAccountLoginInProgress =
     BehaviorSubject.seeded(false);
+
+  final PublishSubject<ServerWsEvent> _serverEvents =
+    PublishSubject();
+  StreamSubscription<ServerWsEvent>? _serverEventsSubscription;
+
+  final PublishSubject<ApiManagerState> _serverConnectionManagerStateEvents =
+    PublishSubject();
+  StreamSubscription<ApiManagerState>? _serverConnectionManagerStateEventsSubscription;
 
   DateTime? _backgroundedAt;
 
@@ -105,6 +113,8 @@ class LoginRepository extends DataRepository {
     }
     _internalState.add(LoginRepositoryState.initComplete);
 
+    await _apiNoConnection.init();
+
     final currentAccountId = await accountId.first;
     if (currentAccountId != null) {
       await createRepositories(currentAccountId);
@@ -119,7 +129,7 @@ class LoginRepository extends DataRepository {
     }
 
     Rx.combineLatest2(
-      _api.state,
+      _serverConnectionManagerStateEvents,
       demoAccountToken,
       (a, b) => (a, b),
     ).listen((event) {
@@ -142,7 +152,7 @@ class LoginRepository extends DataRepository {
       }
     });
 
-    _api.serverEvents.listen((event) {
+    _serverEvents.listen((event) {
       switch (event) {
         case EventToClientContainer e: {
           repositories.account.handleEventToClient(e.event);
@@ -177,9 +187,10 @@ class LoginRepository extends DataRepository {
         }
         _backgroundedAt = null;
 
-        final state = await ApiManager.getInstance().state.firstOrNull;
+        final connectionManager = repositoriesOrNull?.connectionManager;
+        final state = await connectionManager?.state.firstOrNull;
         if (state == ApiManagerState.noConnection) {
-          await ApiManager.getInstance().restart();
+          await connectionManager?.restart();
         }
       })
       .listen(null);
@@ -201,29 +212,33 @@ class LoginRepository extends DataRepository {
           _backgroundedAt = null;
           return;
         }
-        await ApiManager.getInstance().close();
+        final connectionManager = repositoriesOrNull?.connectionManager;
+        await connectionManager?.close();
         _backgroundedAt = DateTime.now();
       })
       .listen(null);
   }
 
-  Future<void> createRepositories(AccountId accountId) async {
+  Future<RepositoryInstances> createRepositories(AccountId accountId) async {
     final currentRepositories = _repositories;
     await currentRepositories?.dispose();
 
     final accountBackgroundDb = BackgroundDatabaseManager.getInstance().getAccountBackgroundDatabaseManager(accountId);
     final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(accountId);
 
+    final connectionManager = ServerConnectionManager(accountDb);
+
     final imageCacheSettings = ImageCacheSettings(accountDb);
 
     final account = AccountRepository(
       db: accountDb,
+      api: connectionManager.api,
       rememberToInitRepositoriesLateFinal: true,
     );
-    final common = CommonRepository();
-    final media = MediaRepository(account, accountDb);
-    final profile = ProfileRepository(media, accountDb, accountBackgroundDb);
-    final chat = ChatRepository(media: media, profile: profile, accountBackgroundDb: accountBackgroundDb, db: accountDb);
+    final common = CommonRepository(connectionManager);
+    final media = MediaRepository(account, accountDb, connectionManager);
+    final profile = ProfileRepository(media, accountDb, accountBackgroundDb, connectionManager);
+    final chat = ChatRepository(media: media, profile: profile, accountBackgroundDb: accountBackgroundDb, db: accountDb, connectionManager: connectionManager);
     final newRepositories = RepositoryInstances(
       accountId: accountId,
       common: common,
@@ -234,6 +249,7 @@ class LoginRepository extends DataRepository {
       imageCacheSettings: imageCacheSettings,
       accountBackgroundDb: accountBackgroundDb,
       accountDb: accountDb,
+      connectionManager: connectionManager,
     );
     account.repositories = newRepositories;
     await newRepositories.init();
@@ -243,7 +259,19 @@ class LoginRepository extends DataRepository {
       _accountState.add(v);
     });
 
+    await _serverEventsSubscription?.cancel();
+    _serverEventsSubscription = connectionManager.serverEvents.listen((v) {
+      _serverEvents.add(v);
+    });
+
+    await _serverConnectionManagerStateEventsSubscription?.cancel();
+    _serverConnectionManagerStateEventsSubscription = connectionManager.state.listen((v) {
+      _serverConnectionManagerStateEvents.add(v);
+    });
+
     _repositories = newRepositories;
+
+    return newRepositories;
   }
 
   Stream<SignInWithGoogleEvent> signInWithGoogle() async* {
@@ -263,7 +291,7 @@ class LoginRepository extends DataRepository {
     yield SignInWithGoogleEvent.getGoogleAccountTokenCompleted;
 
     var token = await signedIn.authentication;
-    final login = await _api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken))).ok();
+    final login = await _apiNoConnection.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken))).ok();
     if (login == null) {
       yield SignInWithGoogleEvent.serverRequestFailed;
       return;
@@ -298,12 +326,12 @@ class LoginRepository extends DataRepository {
     // TODO(microservice): microservice support
     await onLogin();
 
-    await createRepositories(loginResult.accountId);
+    final theNewRepositories = await createRepositories(loginResult.accountId);
 
     // Other repostories
-    await _repositories?.onLogin();
+    await theNewRepositories.onLogin();
 
-    await _api.restart();
+    await theNewRepositories.connectionManager.restart();
 
     return const Ok(null);
   }
@@ -312,7 +340,7 @@ class LoginRepository extends DataRepository {
   Future<void> logout() async {
     log.info("Logout started");
     // Disconnect, so that server does not send events to client
-    await _api.closeAndLogout();
+    await _repositories?.connectionManager.closeAndLogout();
 
     // Login repository
     await repositories.accountDb.accountAction((db) => db.daoTokens.updateRefreshTokenAccount(null));
@@ -339,7 +367,7 @@ class LoginRepository extends DataRepository {
       signedIn = await SignInWithApple.getAppleIDCredential(scopes: [
         AppleIDAuthorizationScopes.email,
       ]);
-      await _api.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(appleToken: signedIn.identityToken)));
+      await _apiNoConnection.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(appleToken: signedIn.identityToken)));
     } on SignInWithAppleException catch (_) {
       log.error("Sign in with Apple failed");
     }
@@ -350,12 +378,13 @@ class LoginRepository extends DataRepository {
     await BackgroundDatabaseManager.getInstance().commonAction(
       (db) => db.updateServerUrlAccount(serverAddress),
     );
-    await _api.closeAndRefreshServerAddressAndLogout();
+    await _apiNoConnection.updateAddressFromConfigAndReturnIt();
+    await _repositories?.connectionManager.closeAndRefreshServerAddressAndLogout();
   }
 
   Future<Result<void, void>> demoAccountLogin(DemoAccountCredentials credentials) async {
     _demoAccountLoginInProgress.add(true);
-    final loginResult = await _api.account((api) => api.postDemoModeLogin(DemoModePassword(password: credentials.id))).ok();
+    final loginResult = await _apiNoConnection.account((api) => api.postDemoModeLogin(DemoModePassword(password: credentials.id))).ok();
     _demoAccountLoginInProgress.add(false);
 
     final loginToken = loginResult?.token;
@@ -363,7 +392,7 @@ class LoginRepository extends DataRepository {
       return const Err(null);
     }
 
-    final loginResult2 = await _api.account((api) => api.postDemoModeConfirmLogin(
+    final loginResult2 = await _apiNoConnection.account((api) => api.postDemoModeConfirmLogin(
       DemoModeConfirmLogin(
         password: DemoModePassword(password: credentials.password),
         token: loginToken
@@ -397,7 +426,7 @@ class LoginRepository extends DataRepository {
     if (token == null) {
       return Err(OtherError());
     }
-    final accounts = await _api.account((api) => api.postDemoModeAccessibleAccounts(DemoModeToken(token: token))).ok();
+    final accounts = await _apiNoConnection.account((api) => api.postDemoModeAccessibleAccounts(DemoModeToken(token: token))).ok();
     if (accounts != null) {
       return Ok(accounts);
     } else {
@@ -414,7 +443,7 @@ class LoginRepository extends DataRepository {
       return Err(OtherError());
     }
     final demoToken = DemoModeToken(token: token);
-    final id = await _api.account((api) => api.postDemoModeRegisterAccount(demoToken)).ok();
+    final id = await _apiNoConnection.account((api) => api.postDemoModeRegisterAccount(demoToken)).ok();
     if (id != null) {
       return await demoAccountLoginToAccount(id);
     } else {
@@ -431,7 +460,7 @@ class LoginRepository extends DataRepository {
       return Err(OtherError());
     }
     final demoToken = DemoModeToken(token: token);
-    final loginResult = await _api.account((api) => api.postDemoModeLoginToAccount(DemoModeLoginToAccount(accountId: id, token: demoToken))).ok();
+    final loginResult = await _apiNoConnection.account((api) => api.postDemoModeLoginToAccount(DemoModeLoginToAccount(accountId: id, token: demoToken))).ok();
     if (loginResult != null) {
       switch (await _handleLoginResult(loginResult)) {
         case Err():
@@ -502,8 +531,12 @@ class RepositoryInstances implements DataRepositoryMethods {
   // Only lifecycle methods
   final ImageCacheSettings imageCacheSettings;
 
+  // No lifecycle or other methods
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountDatabaseManager accountDb;
+  final ServerConnectionManager connectionManager;
+
+  ApiManager get api => connectionManager.api;
 
   const RepositoryInstances({
     required this.accountId,
@@ -515,9 +548,11 @@ class RepositoryInstances implements DataRepositoryMethods {
     required this.imageCacheSettings,
     required this.accountBackgroundDb,
     required this.accountDb,
+    required this.connectionManager,
   });
 
   Future<void> init() async {
+    await connectionManager.init();
     await common.init();
     await chat.init();
     await media.init();
@@ -527,12 +562,13 @@ class RepositoryInstances implements DataRepositoryMethods {
   }
 
   Future<void> dispose() async {
-    await common.dispose();
-    await chat.dispose();
-    await media.dispose();
-    await profile.dispose();
-    await account.dispose();
     await imageCacheSettings.dispose();
+    await account.dispose();
+    await profile.dispose();
+    await media.dispose();
+    await chat.dispose();
+    await common.dispose();
+    await connectionManager.dispose();
   }
 
   @override

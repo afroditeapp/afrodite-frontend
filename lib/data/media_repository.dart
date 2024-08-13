@@ -27,13 +27,15 @@ import 'package:pihka_frontend/utils/result.dart';
 var log = Logger("MediaRepository");
 
 class MediaRepository extends DataRepositoryWithLifecycle {
-  final syncHandler = ConnectedActionScheduler(ApiManager.getInstance());
-
-  final ApiManager api = ApiManager.getInstance();
+  final ConnectedActionScheduler syncHandler;
+  final ApiManager api;
   final AccountDatabaseManager db;
 
   final AccountRepository account;
-  MediaRepository(this.account, this.db);
+
+  MediaRepository(this.account, this.db, ServerConnectionManager connectionManager) :
+    syncHandler = ConnectedActionScheduler(connectionManager),
+    api = connectionManager.api;
 
   @override
   Future<void> init() async {
@@ -183,7 +185,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   /// Last event from stream is ProcessingCompleted or SendToSlotError.
   Stream<SendToSlotEvent> sendImageToSlot(XFile file, int slot, {bool secureCapture = false}) async* {
-    final task = SendImageToSlotTask(account);
+    final task = SendImageToSlotTask(account, api);
     yield* task.sendImageToSlot(file, slot, secureCapture: secureCapture);
   }
 
@@ -215,7 +217,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     api.mediaAction((api) => api.deleteModerationRequest());
 
   Future<Result<void, void>> retryInitialSetupImages(RetryInitialSetupImages content) async {
-    final result = await InitialSetupUtils().handleInitialSetupImages(content.securitySelfie, content.profileImgs);
+    final result = await InitialSetupUtils(api).handleInitialSetupImages(content.securitySelfie, content.profileImgs);
     await reloadMyProfileContent();
     await reloadMySecurityContent();
     return result;

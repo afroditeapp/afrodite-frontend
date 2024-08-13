@@ -72,9 +72,9 @@ abstract class LifecycleMethods {
 }
 
 class ConnectedActionScheduler {
-  final ApiManager api;
+  final ServerConnectionManager connectionManager;
 
-  ConnectedActionScheduler(this.api);
+  ConnectedActionScheduler(this.connectionManager);
 
   bool _onLoginScheduled = false;
   int _onLoginScheduledCount = 0;
@@ -93,7 +93,7 @@ class ConnectedActionScheduler {
     _onLoginScheduled = true;
 
     Future.any<ApiManagerState?>([
-      api
+      connectionManager
         .state
         .firstWhere((element) => element == ApiManagerState.connected),
       _cancel
@@ -118,7 +118,7 @@ class ConnectedActionScheduler {
 
   void onResumeAppUsageSync(Future<void> Function() action) {
     Future.any<ApiManagerState?>([
-      api
+      connectionManager
         .state
         .firstWhere((element) => element == ApiManagerState.connected),
       _cancel

@@ -6,11 +6,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_api_availability/google_api_availability.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/api/api_wrapper.dart';
 import 'package:pihka_frontend/config.dart';
 import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
@@ -110,7 +110,12 @@ class PushNotificationManager extends AppSingleton {
     if (savedToken?.token != fcmToken) {
       log.info("FCM token changed, sending token to server");
       final newToken = FcmDeviceToken(token: fcmToken);
-      final result = await ApiManager.getInstance().chat((api) => api.postSetDeviceToken(newToken)).ok();
+      final api = LoginRepository.getInstance().repositoriesOrNull?.api;
+      if (api == null) {
+        log.info("FCM token changed, skipping FCM token update because server API is not available");
+        return;
+      }
+      final result = await api.chat((api) => api.postSetDeviceToken(newToken)).ok();
       if (result != null) {
         log.info("FCM token sending successful");
         final dbResult = await BackgroundDatabaseManager.getInstance().commonAction((db) => db.updateFcmDeviceTokenAndPendingNotificationToken(newToken, result));
@@ -176,7 +181,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   final apiProvider = ApiProvider(chatUrl);
   await apiProvider.init();
-  final ApiWrapper<ChatApi> chatApi = ApiWrapper(apiProvider.chat);
+  final ApiWrapper<ChatApi> chatApi = ApiWrapper(apiProvider.chat, NoConnection());
   final result = await chatApi.requestValue((api) => api.postGetPendingNotification(pendingNotificationToken), logError: false);
   switch (result) {
     case Ok(:final v):

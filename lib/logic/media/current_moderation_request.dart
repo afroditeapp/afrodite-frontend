@@ -29,6 +29,7 @@ class DeleteCurrentModerationRequest extends CurrentModerationRequestEvent {}
 
 class CurrentModerationRequestBloc extends Bloc<CurrentModerationRequestEvent, CurrentModerationRequestData> with ActionRunner {
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
+  final ServerConnectionManager connectionManager = LoginRepository.getInstance().repositories.connectionManager;
 
   CurrentModerationRequestBloc() : super(CurrentModerationRequestData()) {
     on<Reload>((data, emit) async {
@@ -40,7 +41,7 @@ class CurrentModerationRequestBloc extends Bloc<CurrentModerationRequestEvent, C
     on<ReloadOnceConnected>((data, emit) async {
       await runOnce(() async {
         emit(CurrentModerationRequestData().copyWith(isLoading: true));
-        await ApiManager.getInstance().state.firstWhere((element) => element == ApiManagerState.connected);
+        await connectionManager.state.firstWhere((element) => element == ApiManagerState.connected);
         await reload(emit);
       });
     });

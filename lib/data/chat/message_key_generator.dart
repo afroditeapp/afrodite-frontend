@@ -36,9 +36,9 @@ class MessageKeyManager {
 
   final AccountDatabaseManager db;
   final LoginRepository login = LoginRepository.getInstance();
-  final ApiManager api = ApiManager.getInstance();
+  final ApiManager api;
 
-  MessageKeyManager(this.db);
+  MessageKeyManager(this.db, this.api);
 
   Future<Result<AllKeyData, void>> generateOrLoadMessageKeys(AccountId accountId) async {
     if (generation.value == KeyGeneratorState.inProgress) {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 
 
 import 'package:pihka_frontend/ui_utils/dialog.dart';
@@ -25,6 +26,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
   bool _reboot = false;
   bool _reset_data = false;
   SoftwareData? _currentData;
+  final api = LoginRepository.getInstance().repositories.api;
 
   @override
   void initState() {
@@ -34,13 +36,13 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> actions;
-    if (ApiManager.getInstance().inMicroserviceMode()) {
+    if (api.inMicroserviceMode()) {
       actions = [];
     } else {
       actions = [];
     }
     actions.add(IconButton(onPressed: () async {
-        final data = await getData(_selectedServer);
+        final data = await _getData(_selectedServer, api);
         setState(() {
           _currentData = data;
         });
@@ -65,7 +67,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
 
   Widget loadInitialData() {
     return FutureBuilder(
-      future: getData(_selectedServer),
+      future: _getData(_selectedServer, api),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.active || ConnectionState.waiting: {
@@ -93,7 +95,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
   Widget displayData() {
     return RefreshIndicator(
       onRefresh: () async {
-        final data = await getData(_selectedServer);
+        final data = await _getData(_selectedServer, api);
 
         setState(() {
           _currentData = data;
@@ -168,7 +170,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
     final requestBuildButton = Row(
       children: [ElevatedButton(
         onPressed: () async {
-          final result = await ApiManager.getInstance()
+          final result = await api
             .commonAdminAction(
               _selectedServer, (api) =>
                 api.postRequestBuildSoftware(softwareOptions),
@@ -243,7 +245,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
         showConfirmDialog(context, "Request update?", details: "Reboot: $_reboot \nReset data: $_reset_data")
           .then((value) async {
             if (value == true) {
-              final result = await ApiManager.getInstance()
+              final result = await api
                 .commonAdminAction(
                   _selectedServer, (api) =>
                     api.postRequestUpdateSoftware(softwareOptions, _reboot, _reset_data)
@@ -330,12 +332,12 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
 }
 
 
-Future<SoftwareData?> getData(Server server) async {
-  final version = await ApiManager.getInstance().common(server, (api) => api.getVersion()).ok();
-  final installedSoftware = await ApiManager.getInstance().commonAdmin(server, (api) => api.getSoftwareInfo()).ok();
-  final latestAvailableBackend = await ApiManager.getInstance().commonAdmin(server, (api) => api.getLatestBuildInfo(SoftwareOptions.backend)).ok();
-  final latestAvailableManager = await ApiManager.getInstance().commonAdmin(server, (api) => api.getLatestBuildInfo(SoftwareOptions.manager)).ok();
-  final systemInfo = await ApiManager.getInstance().commonAdmin(server, (api) => api.getSystemInfo()).ok();
+Future<SoftwareData?> _getData(Server server, ApiManager api) async {
+  final version = await api.common(server, (api) => api.getVersion()).ok();
+  final installedSoftware = await api.commonAdmin(server, (api) => api.getSoftwareInfo()).ok();
+  final latestAvailableBackend = await api.commonAdmin(server, (api) => api.getLatestBuildInfo(SoftwareOptions.backend)).ok();
+  final latestAvailableManager = await api.commonAdmin(server, (api) => api.getLatestBuildInfo(SoftwareOptions.manager)).ok();
+  final systemInfo = await api.commonAdmin(server, (api) => api.getSystemInfo()).ok();
 
 
   if (version == null) {

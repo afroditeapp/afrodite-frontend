@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 
-
-
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 
@@ -21,6 +20,7 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
 
   var _selectedServer = Server.account;
   SystemInfoList? _currentData;
+  final api = LoginRepository.getInstance().repositories.api;
 
   @override
   void initState() {
@@ -30,13 +30,13 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> actions;
-    if (ApiManager.getInstance().inMicroserviceMode()) {
+    if (api.inMicroserviceMode()) {
       actions = [buildPopUpMenuButtons()];
     } else {
       actions = [];
     }
     actions.add(IconButton(onPressed: () async {
-        final data = await ApiManager.getInstance().mediaCommonAdmin((api) => api.getSystemInfo()).ok();
+        final data = await api.mediaCommonAdmin((api) => api.getSystemInfo()).ok();
         setState(() {
           _currentData = data;
         });
@@ -73,14 +73,14 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
           )
         ];
 
-        if (ApiManager.getInstance().mediaInMicroserviceMode()) {
+        if (api.mediaInMicroserviceMode()) {
           list.add(const PopupMenuItem<Server>(
             value: Server.media,
             child: Text('Media server'),
           ));
         }
 
-        if (ApiManager.getInstance().profileInMicroserviceMode()) {
+        if (api.profileInMicroserviceMode()) {
           list.add(const PopupMenuItem<Server>(
             value: Server.profile,
             child: Text('Profile server'),
@@ -94,7 +94,7 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
 
   Widget loadInitialData() {
     return FutureBuilder(
-      future: ApiManager.getInstance().mediaCommonAdmin((api) => api.getSystemInfo()).ok(),
+      future: api.mediaCommonAdmin((api) => api.getSystemInfo()).ok(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.active || ConnectionState.waiting: {
@@ -122,7 +122,7 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
   Widget displayData() {
     return RefreshIndicator(
       onRefresh: () async {
-        final data = await ApiManager.getInstance().mediaCommonAdmin((api) => api.getSystemInfo()).ok();
+        final data = await api.mediaCommonAdmin((api) => api.getSystemInfo()).ok();
 
         setState(() {
           _currentData = data;

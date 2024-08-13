@@ -17,7 +17,6 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/assets.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
@@ -141,6 +140,7 @@ enum ConnectionProtocolState {
 class ServerConnection {
   final ServerSlot _server;
   String _address;
+  final AccountDatabaseManager db;
 
   WebSocket? _connection;
 
@@ -156,7 +156,7 @@ class ServerConnection {
 
   bool _startInProgress = false;
 
-  ServerConnection(this._server, this._address);
+  ServerConnection(this._server, this._address, this.db);
 
   /// Starts new connection if it does not already exists.
   Future<void> start() async {
@@ -187,9 +187,6 @@ class ServerConnection {
     log.info("Starting to connect");
 
     var protocolState = ConnectionProtocolState.receiveNewRefreshToken;
-
-    // TODO(refactor): Create Account specific server connection.
-    final db = LoginRepository.getInstance().repositories.accountDb;
 
     final accessToken = await db.accountStreamSingle(_server.getterForAccessTokenKey()).ok();
     if (accessToken == null) {
@@ -338,6 +335,16 @@ class ServerConnection {
     } else {
       _state.add(ReadyToConnect());
     }
+  }
+
+  /// Just close connection and do not send events.
+  Future<void> dispose() async {
+    // Nullify connection to make sure that onDone is called when
+    // _connection is null. This order seems not required but, this style
+    // feels safer.
+    final c = _connection;
+    _connection = null;
+    await c?.close(status.goingAway);
   }
 
   void setAddress(String address) {

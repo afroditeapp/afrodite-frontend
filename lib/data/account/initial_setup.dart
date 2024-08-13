@@ -17,8 +17,9 @@ import 'package:pihka_frontend/utils/result.dart';
 var log = Logger("InitialSetupUtils");
 
 class InitialSetupUtils {
+  final ApiManager _api;
 
-  final ApiManager _api = ApiManager.getInstance();
+  InitialSetupUtils(this._api);
 
   /// Returns null on success. Returns String if error.
   Future<WaitProcessingResult> _waitContentProcessing(int slot) async {

@@ -22,25 +22,33 @@ import 'package:pihka_frontend/utils/result.dart';
 var log = Logger("ChatRepository");
 
 class ChatRepository extends DataRepositoryWithLifecycle {
-  final syncHandler = ConnectedActionScheduler(ApiManager.getInstance());
-  final MessageKeyManager messageKeyManager;
-
   final AccountDatabaseManager db;
   final ProfileRepository profile;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
 
-  ChatRepository({required MediaRepository media, required this.profile, required this.accountBackgroundDb, required this.db}) :
-    messageKeyManager = MessageKeyManager(db),
-    profileEntryDownloader = ProfileEntryDownloader(media, accountBackgroundDb, db),
+  ChatRepository({
+    required MediaRepository media,
+    required this.profile,
+    required this.accountBackgroundDb,
+    required this.db,
+    required ServerConnectionManager connectionManager,
+  }) :
+    messageKeyManager = MessageKeyManager(db, connectionManager.api),
+    syncHandler = ConnectedActionScheduler(connectionManager),
+    profileEntryDownloader = ProfileEntryDownloader(media, accountBackgroundDb, db, connectionManager.api),
     sentBlocksIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getSentBlocksList(startIndex, limit)).ok()),
     receivedLikesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getReceivedLikesList(startIndex, limit)).ok()),
-    matchesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getMatchesList(startIndex, limit)).ok());
+    matchesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getMatchesList(startIndex, limit)).ok()),
+    api = connectionManager.api;
 
-  final ApiManager api = ApiManager.getInstance();
+  final ConnectedActionScheduler syncHandler;
+  final MessageKeyManager messageKeyManager;
+
   final ProfileEntryDownloader profileEntryDownloader;
   final AccountIdDatabaseIterator sentBlocksIterator;
   final AccountIdDatabaseIterator receivedLikesIterator;
   final AccountIdDatabaseIterator matchesIterator;
+  final ApiManager api;
 
   @override
   Future<void> init() async {

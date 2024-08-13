@@ -32,12 +32,12 @@ class SendToSlotError extends SendToSlotEvent {}
 /// Asynchronous system for sending image to a slot
 class SendImageToSlotTask {
 
-  final ApiManager api = ApiManager.getInstance();
+  final ApiManager api;
   final token = CancellationToken();
   final uploadDone = BehaviorSubject<ContentProcessingId?>.seeded(null);
 
   final AccountRepository account;
-  SendImageToSlotTask(this.account);
+  SendImageToSlotTask(this.account, this.api);
 
   Stream<SendToSlotEvent> sendImageToSlot(XFile file, int slot, {bool secureCapture = false}) {
     return Rx.merge([

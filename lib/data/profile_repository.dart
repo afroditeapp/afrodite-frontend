@@ -18,15 +18,16 @@ import 'package:rxdart/rxdart.dart';
 var log = Logger("ProfileRepository");
 
 class ProfileRepository extends DataRepositoryWithLifecycle {
-  final syncHandler = ConnectedActionScheduler(ApiManager.getInstance());
-
+  final ConnectedActionScheduler syncHandler;
   final AccountDatabaseManager db;
-  final ApiManager _api = ApiManager.getInstance();
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final ApiManager _api;
 
   final MediaRepository media;
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
 
-  ProfileRepository(this.media, this.db, this.accountBackgroundDb);
+  ProfileRepository(this.media, this.db, this.accountBackgroundDb, ServerConnectionManager connectionManager) :
+    syncHandler = ConnectedActionScheduler(connectionManager),
+    _api = connectionManager.api;
 
   final PublishSubject<ProfileChange> _profileChangesRelay = PublishSubject();
   void sendProfileChange(ProfileChange change) {
@@ -154,7 +155,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       }
     }
 
-    final entry = await ProfileEntryDownloader(media, accountBackgroundDb, db).download(id).ok();
+    final entry = await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(id).ok();
     return entry;
   }
 
@@ -169,7 +170,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     }
 
 
-    final result = await ProfileEntryDownloader(media, accountBackgroundDb, db).download(id);
+    final result = await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(id);
     switch (result) {
       case Ok(:final v):
         yield GetProfileSuccess(v);

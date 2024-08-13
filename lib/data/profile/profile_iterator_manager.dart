@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:async/async.dart' show StreamExtensions;
+import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
@@ -25,8 +26,9 @@ class ProfileIteratorManager {
   final ChatRepository chat;
   final MediaRepository media;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final ServerConnectionManager connectionManager;
 
-  ProfileIteratorManager(this.chat, this.media, this.accountBackgroundDb, this.db) :
+  ProfileIteratorManager(this.chat, this.media, this.accountBackgroundDb, this.db, this.connectionManager) :
     _currentIterator = DatabaseIterator(db: db);
 
   ProfileIteratorMode _currentMode =
@@ -48,6 +50,7 @@ class ProfileIteratorManager {
             media: media,
             accountBackgroundDb: accountBackgroundDb,
             db: db,
+            connectionManager: connectionManager,
           );
         } else {
           if (_currentMode is ModeFavorites) {
@@ -55,6 +58,7 @@ class ProfileIteratorManager {
               media: media,
               accountBackgroundDb: accountBackgroundDb,
               db: db,
+              connectionManager: connectionManager,
             );
           } else {
             _currentIterator.reset();

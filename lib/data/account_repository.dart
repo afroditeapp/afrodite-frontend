@@ -30,12 +30,13 @@ enum AccountRepositoryState {
 // makes operations to those lists.
 
 class AccountRepository extends DataRepositoryWithLifecycle {
-  final api = ApiManager.getInstance();
+  final ApiManager api;
   final AccountDatabaseManager db;
 
   late final RepositoryInstances repositories;
   AccountRepository({
     required this.db,
+    required this.api,
     required bool rememberToInitRepositoriesLateFinal,
   });
 
@@ -167,7 +168,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     XFile securitySelfieFile,
     XFile profileImageFile
   ) async {
-    final resultString = await InitialSetupUtils().doDeveloperInitialSetup(
+    final resultString = await InitialSetupUtils(api).doDeveloperInitialSetup(
       email,
       name,
       securitySelfieFile,
@@ -185,7 +186,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> doInitialSetup(
     InitialSetupData data,
   ) async {
-    final result = await InitialSetupUtils().doInitialSetup(data);
+    final result = await InitialSetupUtils(api).doInitialSetup(data);
     if (result.isOk()) {
       await LoginRepository.getInstance().onInitialSetupComplete();
       await repositories.onInitialSetupComplete();

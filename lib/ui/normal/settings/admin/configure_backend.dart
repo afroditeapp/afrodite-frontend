@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
@@ -30,6 +31,7 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
   TextEditingController _adminBotsController = TextEditingController(text: "0");
   var _configFormKey = GlobalKey<FormState>();
   CurrentConfig? _currentConfig;
+  final api = LoginRepository.getInstance().repositories.api;
 
   @override
   void initState() {
@@ -47,13 +49,13 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> actions;
-    if (ApiManager.getInstance().inMicroserviceMode()) {
+    if (api.inMicroserviceMode()) {
       actions = [];
     } else {
       actions = [];
     }
     actions.add(IconButton(onPressed: () async {
-        final data = await getData(_selectedServer);
+        final data = await _getData(_selectedServer, api);
         setState(() {
           updateStateWithData(data);
         });
@@ -74,7 +76,7 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
     final currentConfig = _currentConfig;
     if (currentConfig == null) {
       return FutureBuilder(
-        future: getData(_selectedServer),
+        future: _getData(_selectedServer, api),
         initialData: null,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
@@ -176,7 +178,7 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
         showConfirmDialog(context, "Restart backend?")
           .then((value) async {
             if (value == true) {
-              final result = await ApiManager.getInstance()
+              final result = await api
                 .commonAdminAction(
                   _selectedServer, (api) => api.postRequestRestartOrResetBackend(false)
                 );
@@ -200,7 +202,7 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
       showConfirmDialog(context, "Reset backend?", details: "Data loss warning! This can remove data, if done more than once.")
           .then((value) async {
             if (value == true) {
-              final result = await ApiManager.getInstance()
+              final result = await api
                 .commonAdminAction(
                   _selectedServer, (api) =>
                     api.postRequestRestartOrResetBackend(true)
@@ -290,7 +292,7 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
         showConfirmDialog(context, "Save backend config?", details: "New config: ${config.toString()}")
           .then((value) async {
             if (value == true) {
-              final result = await ApiManager.getInstance()
+              final result = await api
                 .commonAdminAction(
                   _selectedServer, (api) => api.postBackendConfig(config)
                 );
@@ -327,8 +329,8 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
   }
 }
 
-Future<CurrentConfig?> getData(Server server) async {
-  final config = await ApiManager.getInstance().commonAdmin(server, (api) => api.getBackendConfig()).ok();
+Future<CurrentConfig?> _getData(Server server, ApiManager api) async {
+  final config = await api.commonAdmin(server, (api) => api.getBackendConfig()).ok();
   if (config == null) {
     return null;
   }

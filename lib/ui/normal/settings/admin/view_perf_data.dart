@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 
@@ -22,6 +23,7 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
   PerfData? _currentData;
   List<(int, PerfHistoryValue)> filteredList = [];
   int? selectedIndexFromAllData = 0;
+  final api = LoginRepository.getInstance().repositories.api;
 
   @override
   void initState() {
@@ -29,7 +31,7 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
   }
 
   Future<void> updateData() async {
-    final data = await getData(_selectedServer);
+    final data = await _getData(_selectedServer, api);
     final currentName = currentlySelectedName();
     setState(() {
       _currentData = data;
@@ -67,7 +69,7 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> actions;
-    if (ApiManager.getInstance().inMicroserviceMode()) {
+    if (api.inMicroserviceMode()) {
       actions = [];
     } else {
       actions = [];
@@ -95,7 +97,7 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
 
   Widget loadInitialData() {
     return FutureBuilder(
-      future: getData(_selectedServer),
+      future: _getData(_selectedServer, api),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.active || ConnectionState.waiting: {
@@ -287,8 +289,8 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
 }
 
 
-Future<PerfData?> getData(Server server) async {
-  final queryResults = await ApiManager.getInstance().commonAdmin(server, (api) => api.getPerfData()).ok();
+Future<PerfData?> _getData(Server server, ApiManager api) async {
+  final queryResults = await api.commonAdmin(server, (api) => api.getPerfData()).ok();
 
   if (queryResults == null) {
     return null;

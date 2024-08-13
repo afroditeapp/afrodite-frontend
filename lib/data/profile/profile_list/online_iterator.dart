@@ -19,7 +19,8 @@ class OnlineIterator extends IteratorType {
   int currentIndex = 0;
   DatabaseIterator? databaseIterator;
   bool resetServerIterator;
-  final ApiManager api = ApiManager.getInstance();
+  final ServerConnectionManager connectionManager;
+  final ApiManager api;
   final AccountDatabaseManager db;
   final ProfileEntryDownloader downloader;
 
@@ -30,7 +31,10 @@ class OnlineIterator extends IteratorType {
     required MediaRepository media,
     required AccountBackgroundDatabaseManager accountBackgroundDb,
     required this.db,
-  }) : downloader = ProfileEntryDownloader(media, accountBackgroundDb, db);
+    required this.connectionManager,
+  }) :
+    downloader = ProfileEntryDownloader(media, accountBackgroundDb, db, connectionManager.api),
+    api = connectionManager.api;
 
   @override
   void reset() {
@@ -44,7 +48,7 @@ class OnlineIterator extends IteratorType {
   @override
   Future<Result<List<ProfileEntry>, void>> nextList() async {
     if (resetServerIterator) {
-      if (await api.waitUntilCurrentSessionConnects().isErr()) {
+      if (await connectionManager.waitUntilCurrentSessionConnects().isErr()) {
         log.error("Connection waiting failed");
         return const Err(null);
       }
@@ -85,7 +89,7 @@ class OnlineIterator extends IteratorType {
 
     final List<ProfileEntry> list = List.empty(growable: true);
     while (true) {
-      if (await api.waitUntilCurrentSessionConnects().isErr()) {
+      if (await connectionManager.waitUntilCurrentSessionConnects().isErr()) {
         log.error("Connection waiting failed");
         return const Err(null);
       }
@@ -138,11 +142,11 @@ class OnlineIterator extends IteratorType {
 }
 
 class ProfileEntryDownloader {
-  final ApiManager api = ApiManager.getInstance();
+  final ApiManager api;
   final AccountDatabaseManager db;
   final MediaRepository media;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
-  ProfileEntryDownloader(this.media, this.accountBackgroundDb, this.db);
+  ProfileEntryDownloader(this.media, this.accountBackgroundDb, this.db, this.api);
 
   /// Download profile entry, save to databases and return it.
   Future<Result<ProfileEntry, ProfileDownloadError>> download(AccountId accountId, {bool isMatch = false}) async {

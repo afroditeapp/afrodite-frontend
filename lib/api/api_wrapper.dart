@@ -16,8 +16,9 @@ final log = Logger("ApiWrapper");
 
 class ApiWrapper<T> {
   final T api;
+  final ServerConnectionInterface serverConnection;
 
-  ApiWrapper(this.api);
+  ApiWrapper(this.api, this.serverConnection);
 
   /// Handle ApiException.
   Future<Result<R, ValueApiError>> requestValue<R extends Object>(Future<R?> Function(T) action, {bool logError = true}) async {
@@ -64,11 +65,11 @@ class ApiWrapper<T> {
       // Current HTTP connection broke (and perhaps some other errors also)
       (e.code == 400 && e.innerException != null)
     ) {
-      final currentState = await ApiManager.getInstance().state.firstOrNull;
+      final currentState = await serverConnection.state.firstOrNull;
       if (!_connectionRestartInProgress && currentState == ApiManagerState.connected) {
         _connectionRestartInProgress = true;
         log.warning("Current connection might be broken");
-        await ApiManager.getInstance().restart();
+        await serverConnection.restart();
         _connectionRestartInProgress = false;
       }
     }
@@ -76,3 +77,16 @@ class ApiWrapper<T> {
 }
 
 bool _connectionRestartInProgress = false;
+
+abstract class ServerConnectionInterface {
+  Stream<ApiManagerState> get state;
+  Future<void> restart();
+}
+
+class NoConnection implements ServerConnectionInterface {
+  @override
+  Stream<ApiManagerState> get state => const Stream.empty();
+
+  @override
+  Future<void> restart() async {}
+}

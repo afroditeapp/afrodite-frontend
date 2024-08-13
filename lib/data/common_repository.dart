@@ -16,8 +16,11 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   final db = DatabaseManager.getInstance();
   final backgroundDb = BackgroundDatabaseManager.getInstance();
 
-  final syncHandler = ConnectedActionScheduler(ApiManager.getInstance());
+  final ConnectedActionScheduler syncHandler;
   bool initDone = false;
+
+  CommonRepository(ServerConnectionManager connectionManager) :
+    syncHandler = ConnectedActionScheduler(connectionManager);
 
   Stream<bool> get notificationPermissionAsked => db
     .commonStreamOrDefault(
