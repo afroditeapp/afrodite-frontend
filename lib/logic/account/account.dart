@@ -37,10 +37,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
   AccountBloc() :
     super(AccountBlocData(
       capabilities: Capabilities(),
-      visibility: ProfileVisibility.pendingPrivate,
+      // Use cached profile visiblity to avoid profile grid UI changing quickly
+      // from private profile info to profile grid after login.
+      visibility: LoginRepository.getInstance().repositories.account.profileVisibilityValue,
       // Use cached email to avoid showing input field UI for email
       // when initial setup is displayed.
-      email: LoginRepository.getInstance().repositories.account.currentEmailAddress,
+      email: LoginRepository.getInstance().repositories.account.emailAddressValue,
     )) {
     on<NewCapabilitiesValue>((key, emit) {
       emit(state.copyWith(capabilities: key.value));

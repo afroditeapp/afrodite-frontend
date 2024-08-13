@@ -25,6 +25,9 @@ enum AccountRepositoryState {
   initComplete,
 }
 
+const ProfileVisibility PROFILE_VISIBILITY_DEFAULT =
+  ProfileVisibility.pendingPrivate;
+
 // TODO: Add automatic sync version incrementing to
 // sentLikesChanged and sentBlocksChanged as only client
 // makes operations to those lists.
@@ -46,6 +49,9 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   final BehaviorSubject<String?> _cachedEmailAddress =
     BehaviorSubject.seeded(null);
   StreamSubscription<String?>? _cachedEmailSubscription;
+  final BehaviorSubject<ProfileVisibility> _cachedProfileVisibility =
+    BehaviorSubject.seeded(PROFILE_VISIBILITY_DEFAULT);
+  StreamSubscription<ProfileVisibility>? _cachedProfileVisibilitySubscription;
 
   Stream<AccountState?> get accountState => db
     .accountStream((db) => db.watchAccountState());
@@ -55,10 +61,10 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       (db) => db.watchCapabilities(),
       Capabilities(),
     );
-  Stream<ProfileVisibility> get profileVisibility => db
-    .accountStreamOrDefault((db) => db.daoProfileSettings.watchProfileVisibility(), ProfileVisibility.pendingPrivate);
+  Stream<ProfileVisibility> get profileVisibility => _cachedProfileVisibility;
 
-  String? get currentEmailAddress => _cachedEmailAddress.value;
+  ProfileVisibility get profileVisibilityValue => _cachedProfileVisibility.value;
+  String? get emailAddressValue => _cachedEmailAddress.value;
 
   // WebSocket related event streams
   final _contentProcessingStateChanges = PublishSubject<ContentProcessingStateChanged>();
@@ -76,12 +82,18 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       .listen((v) {
         _cachedEmailAddress.add(v);
       });
+
+    _cachedProfileVisibilitySubscription = db
+        .accountStreamOrDefault((db) => db.daoProfileSettings.watchProfileVisibility(), PROFILE_VISIBILITY_DEFAULT)
+        .listen((v) {
+          _cachedProfileVisibility.add(v);
+        });
   }
 
-  // TODO: Call this in the future
   @override
   Future<void> dispose() async {
     await _cachedEmailSubscription?.cancel();
+    await _cachedProfileVisibilitySubscription?.cancel();
   }
 
   // TODO(prod): Run onLogout when server connection has authentication failure
