@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -55,18 +55,18 @@ class Capabilities {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Capabilities &&
-     other.adminModerateImages == adminModerateImages &&
-     other.adminModerateProfiles == adminModerateProfiles &&
-     other.adminModifyCapabilities == adminModifyCapabilities &&
-     other.adminServerMaintenanceRebootBackend == adminServerMaintenanceRebootBackend &&
-     other.adminServerMaintenanceResetData == adminServerMaintenanceResetData &&
-     other.adminServerMaintenanceSaveBackendConfig == adminServerMaintenanceSaveBackendConfig &&
-     other.adminServerMaintenanceUpdateSoftware == adminServerMaintenanceUpdateSoftware &&
-     other.adminServerMaintenanceViewBackendConfig == adminServerMaintenanceViewBackendConfig &&
-     other.adminServerMaintenanceViewInfo == adminServerMaintenanceViewInfo &&
-     other.adminViewAllProfiles == adminViewAllProfiles &&
-     other.adminViewPrivateInfo == adminViewPrivateInfo &&
-     other.adminViewProfileHistory == adminViewProfileHistory;
+    other.adminModerateImages == adminModerateImages &&
+    other.adminModerateProfiles == adminModerateProfiles &&
+    other.adminModifyCapabilities == adminModifyCapabilities &&
+    other.adminServerMaintenanceRebootBackend == adminServerMaintenanceRebootBackend &&
+    other.adminServerMaintenanceResetData == adminServerMaintenanceResetData &&
+    other.adminServerMaintenanceSaveBackendConfig == adminServerMaintenanceSaveBackendConfig &&
+    other.adminServerMaintenanceUpdateSoftware == adminServerMaintenanceUpdateSoftware &&
+    other.adminServerMaintenanceViewBackendConfig == adminServerMaintenanceViewBackendConfig &&
+    other.adminServerMaintenanceViewInfo == adminServerMaintenanceViewInfo &&
+    other.adminViewAllProfiles == adminViewAllProfiles &&
+    other.adminViewPrivateInfo == adminViewPrivateInfo &&
+    other.adminViewProfileHistory == adminViewProfileHistory;
 
   @override
   int get hashCode =>
@@ -140,7 +140,7 @@ class Capabilities {
     return null;
   }
 
-  static List<Capabilities>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<Capabilities> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <Capabilities>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -171,12 +171,10 @@ class Capabilities {
   static Map<String, List<Capabilities>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<Capabilities>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = Capabilities.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = Capabilities.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -23,8 +23,8 @@ class PendingMessageId {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PendingMessageId &&
-     other.accountIdSender == accountIdSender &&
-     other.messageNumber == messageNumber;
+    other.accountIdSender == accountIdSender &&
+    other.messageNumber == messageNumber;
 
   @override
   int get hashCode =>
@@ -68,7 +68,7 @@ class PendingMessageId {
     return null;
   }
 
-  static List<PendingMessageId>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<PendingMessageId> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <PendingMessageId>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -99,12 +99,10 @@ class PendingMessageId {
   static Map<String, List<PendingMessageId>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<PendingMessageId>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = PendingMessageId.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = PendingMessageId.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -23,8 +23,8 @@ class IconResource {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is IconResource &&
-     other.identifier == identifier &&
-     other.location == location;
+    other.identifier == identifier &&
+    other.location == location;
 
   @override
   int get hashCode =>
@@ -68,7 +68,7 @@ class IconResource {
     return null;
   }
 
-  static List<IconResource>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<IconResource> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <IconResource>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -99,12 +99,10 @@ class IconResource {
   static Map<String, List<IconResource>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<IconResource>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = IconResource.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = IconResource.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

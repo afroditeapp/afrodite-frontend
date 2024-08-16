@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -44,15 +44,15 @@ class PendingProfileContent {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PendingProfileContent &&
-     other.contentId0 == contentId0 &&
-     other.contentId1 == contentId1 &&
-     other.contentId2 == contentId2 &&
-     other.contentId3 == contentId3 &&
-     other.contentId4 == contentId4 &&
-     other.contentId5 == contentId5 &&
-     other.gridCropSize == gridCropSize &&
-     other.gridCropX == gridCropX &&
-     other.gridCropY == gridCropY;
+    other.contentId0 == contentId0 &&
+    other.contentId1 == contentId1 &&
+    other.contentId2 == contentId2 &&
+    other.contentId3 == contentId3 &&
+    other.contentId4 == contentId4 &&
+    other.contentId5 == contentId5 &&
+    other.gridCropSize == gridCropSize &&
+    other.gridCropX == gridCropX &&
+    other.gridCropY == gridCropY;
 
   @override
   int get hashCode =>
@@ -153,7 +153,7 @@ class PendingProfileContent {
     return null;
   }
 
-  static List<PendingProfileContent>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<PendingProfileContent> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <PendingProfileContent>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -184,12 +184,10 @@ class PendingProfileContent {
   static Map<String, List<PendingProfileContent>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<PendingProfileContent>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = PendingProfileContent.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = PendingProfileContent.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -20,7 +20,7 @@ class ModerationList {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ModerationList &&
-     other.list == list;
+    _deepEquality.equals(other.list, list);
 
   @override
   int get hashCode =>
@@ -55,13 +55,13 @@ class ModerationList {
       }());
 
       return ModerationList(
-        list: Moderation.listFromJson(json[r'list'])!,
+        list: Moderation.listFromJson(json[r'list']),
       );
     }
     return null;
   }
 
-  static List<ModerationList>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<ModerationList> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ModerationList>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -92,12 +92,10 @@ class ModerationList {
   static Map<String, List<ModerationList>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<ModerationList>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = ModerationList.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = ModerationList.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

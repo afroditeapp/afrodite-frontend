@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -25,8 +25,8 @@ class PendingNotificationWithData {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PendingNotificationWithData &&
-     other.newMessageReceivedFrom == newMessageReceivedFrom &&
-     other.value == value;
+    _deepEquality.equals(other.newMessageReceivedFrom, newMessageReceivedFrom) &&
+    other.value == value;
 
   @override
   int get hashCode =>
@@ -67,14 +67,14 @@ class PendingNotificationWithData {
       }());
 
       return PendingNotificationWithData(
-        newMessageReceivedFrom: AccountId.listFromJson(json[r'new_message_received_from']) ?? const [],
+        newMessageReceivedFrom: AccountId.listFromJson(json[r'new_message_received_from']),
         value: mapValueOfType<int>(json, r'value')!,
       );
     }
     return null;
   }
 
-  static List<PendingNotificationWithData>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<PendingNotificationWithData> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <PendingNotificationWithData>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -105,12 +105,10 @@ class PendingNotificationWithData {
   static Map<String, List<PendingNotificationWithData>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<PendingNotificationWithData>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = PendingNotificationWithData.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = PendingNotificationWithData.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

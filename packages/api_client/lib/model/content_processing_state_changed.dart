@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -23,8 +23,8 @@ class ContentProcessingStateChanged {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentProcessingStateChanged &&
-     other.id == id &&
-     other.newState == newState;
+    other.id == id &&
+    other.newState == newState;
 
   @override
   int get hashCode =>
@@ -68,7 +68,7 @@ class ContentProcessingStateChanged {
     return null;
   }
 
-  static List<ContentProcessingStateChanged>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<ContentProcessingStateChanged> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ContentProcessingStateChanged>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -99,12 +99,10 @@ class ContentProcessingStateChanged {
   static Map<String, List<ContentProcessingStateChanged>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<ContentProcessingStateChanged>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = ContentProcessingStateChanged.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = ContentProcessingStateChanged.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

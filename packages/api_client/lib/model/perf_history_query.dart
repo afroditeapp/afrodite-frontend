@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -23,8 +23,8 @@ class PerfHistoryQuery {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PerfHistoryQuery &&
-     other.endTime == endTime &&
-     other.startTime == startTime;
+    other.endTime == endTime &&
+    other.startTime == startTime;
 
   @override
   int get hashCode =>
@@ -76,7 +76,7 @@ class PerfHistoryQuery {
     return null;
   }
 
-  static List<PerfHistoryQuery>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<PerfHistoryQuery> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <PerfHistoryQuery>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -107,12 +107,10 @@ class PerfHistoryQuery {
   static Map<String, List<PerfHistoryQuery>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<PerfHistoryQuery>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = PerfHistoryQuery.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = PerfHistoryQuery.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

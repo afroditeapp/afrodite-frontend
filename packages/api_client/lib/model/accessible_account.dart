@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -26,9 +26,9 @@ class AccessibleAccount {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AccessibleAccount &&
-     other.age == age &&
-     other.id == id &&
-     other.name == name;
+    other.age == age &&
+    other.id == id &&
+    other.name == name;
 
   @override
   int get hashCode =>
@@ -83,7 +83,7 @@ class AccessibleAccount {
     return null;
   }
 
-  static List<AccessibleAccount>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<AccessibleAccount> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <AccessibleAccount>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -114,12 +114,10 @@ class AccessibleAccount {
   static Map<String, List<AccessibleAccount>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<AccessibleAccount>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = AccessibleAccount.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = AccessibleAccount.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

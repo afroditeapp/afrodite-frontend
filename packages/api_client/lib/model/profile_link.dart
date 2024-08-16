@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -23,16 +23,17 @@ class ProfileLink {
 
   AccountId id;
 
+  /// Account's most recent disconnect time.  If the last seen time is not None, then it is Unix timestamp or -1 if the profile is currently online.
   int? lastSeenTime;
 
   ProfileVersion version;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileLink &&
-     other.contentVersion == contentVersion &&
-     other.id == id &&
-     other.lastSeenTime == lastSeenTime &&
-     other.version == version;
+    other.contentVersion == contentVersion &&
+    other.id == id &&
+    other.lastSeenTime == lastSeenTime &&
+    other.version == version;
 
   @override
   int get hashCode =>
@@ -90,7 +91,7 @@ class ProfileLink {
     return null;
   }
 
-  static List<ProfileLink>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<ProfileLink> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ProfileLink>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -121,12 +122,10 @@ class ProfileLink {
   static Map<String, List<ProfileLink>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<ProfileLink>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = ProfileLink.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = ProfileLink.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

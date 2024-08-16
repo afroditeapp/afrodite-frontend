@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -20,7 +20,7 @@ class SoftwareInfo {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SoftwareInfo &&
-     other.currentSoftware == currentSoftware;
+    _deepEquality.equals(other.currentSoftware, currentSoftware);
 
   @override
   int get hashCode =>
@@ -55,13 +55,13 @@ class SoftwareInfo {
       }());
 
       return SoftwareInfo(
-        currentSoftware: BuildInfo.listFromJson(json[r'current_software'])!,
+        currentSoftware: BuildInfo.listFromJson(json[r'current_software']),
       );
     }
     return null;
   }
 
-  static List<SoftwareInfo>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<SoftwareInfo> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <SoftwareInfo>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -92,12 +92,10 @@ class SoftwareInfo {
   static Map<String, List<SoftwareInfo>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<SoftwareInfo>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = SoftwareInfo.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = SoftwareInfo.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

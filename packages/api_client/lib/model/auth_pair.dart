@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -23,8 +23,8 @@ class AuthPair {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AuthPair &&
-     other.access == access &&
-     other.refresh == refresh;
+    other.access == access &&
+    other.refresh == refresh;
 
   @override
   int get hashCode =>
@@ -68,7 +68,7 @@ class AuthPair {
     return null;
   }
 
-  static List<AuthPair>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<AuthPair> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <AuthPair>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -99,12 +99,10 @@ class AuthPair {
   static Map<String, List<AuthPair>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<AuthPair>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = AuthPair.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = AuthPair.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

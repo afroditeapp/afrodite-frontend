@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -23,8 +23,8 @@ class Location {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Location &&
-     other.latitude == latitude &&
-     other.longitude == longitude;
+    other.latitude == latitude &&
+    other.longitude == longitude;
 
   @override
   int get hashCode =>
@@ -68,7 +68,7 @@ class Location {
     return null;
   }
 
-  static List<Location>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<Location> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <Location>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -99,12 +99,10 @@ class Location {
   static Map<String, List<Location>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<Location>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = Location.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = Location.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

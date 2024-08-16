@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -38,13 +38,13 @@ class ModerationRequestContent {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ModerationRequestContent &&
-     other.content0 == content0 &&
-     other.content1 == content1 &&
-     other.content2 == content2 &&
-     other.content3 == content3 &&
-     other.content4 == content4 &&
-     other.content5 == content5 &&
-     other.content6 == content6;
+    other.content0 == content0 &&
+    other.content1 == content1 &&
+    other.content2 == content2 &&
+    other.content3 == content3 &&
+    other.content4 == content4 &&
+    other.content5 == content5 &&
+    other.content6 == content6;
 
   @override
   int get hashCode =>
@@ -127,7 +127,7 @@ class ModerationRequestContent {
     return null;
   }
 
-  static List<ModerationRequestContent>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<ModerationRequestContent> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ModerationRequestContent>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -158,12 +158,10 @@ class ModerationRequestContent {
   static Map<String, List<ModerationRequestContent>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<ModerationRequestContent>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = ModerationRequestContent.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = ModerationRequestContent.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

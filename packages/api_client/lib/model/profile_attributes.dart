@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -24,8 +24,8 @@ class ProfileAttributes {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileAttributes &&
-     other.attributeOrder == attributeOrder &&
-     other.attributes == attributes;
+    other.attributeOrder == attributeOrder &&
+    _deepEquality.equals(other.attributes, attributes);
 
   @override
   int get hashCode =>
@@ -63,13 +63,13 @@ class ProfileAttributes {
 
       return ProfileAttributes(
         attributeOrder: AttributeOrderMode.fromJson(json[r'attribute_order'])!,
-        attributes: Attribute.listFromJson(json[r'attributes'])!,
+        attributes: Attribute.listFromJson(json[r'attributes']),
       );
     }
     return null;
   }
 
-  static List<ProfileAttributes>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<ProfileAttributes> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ProfileAttributes>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -100,12 +100,10 @@ class ProfileAttributes {
   static Map<String, List<ProfileAttributes>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<ProfileAttributes>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = ProfileAttributes.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = ProfileAttributes.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

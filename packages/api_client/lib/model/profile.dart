@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -33,11 +33,11 @@ class Profile {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Profile &&
-     other.age == age &&
-     other.attributes == attributes &&
-     other.name == name &&
-     other.profileText == profileText &&
-     other.unlimitedLikes == unlimitedLikes;
+    other.age == age &&
+    _deepEquality.equals(other.attributes, attributes) &&
+    other.name == name &&
+    other.profileText == profileText &&
+    other.unlimitedLikes == unlimitedLikes;
 
   @override
   int get hashCode =>
@@ -81,7 +81,7 @@ class Profile {
 
       return Profile(
         age: mapValueOfType<int>(json, r'age')!,
-        attributes: ProfileAttributeValue.listFromJson(json[r'attributes'])!,
+        attributes: ProfileAttributeValue.listFromJson(json[r'attributes']),
         name: mapValueOfType<String>(json, r'name')!,
         profileText: mapValueOfType<String>(json, r'profile_text')!,
         unlimitedLikes: mapValueOfType<bool>(json, r'unlimited_likes') ?? false,
@@ -90,7 +90,7 @@ class Profile {
     return null;
   }
 
-  static List<Profile>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<Profile> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <Profile>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -121,12 +121,10 @@ class Profile {
   static Map<String, List<Profile>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<Profile>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = Profile.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = Profile.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

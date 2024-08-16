@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -26,9 +26,9 @@ class ProfileAttributeFilterListUpdate {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileAttributeFilterListUpdate &&
-     other.filters == filters &&
-     other.lastSeenTimeFilter == lastSeenTimeFilter &&
-     other.unlimitedLikesFilter == unlimitedLikesFilter;
+    _deepEquality.equals(other.filters, filters) &&
+    other.lastSeenTimeFilter == lastSeenTimeFilter &&
+    other.unlimitedLikesFilter == unlimitedLikesFilter;
 
   @override
   int get hashCode =>
@@ -75,7 +75,7 @@ class ProfileAttributeFilterListUpdate {
       }());
 
       return ProfileAttributeFilterListUpdate(
-        filters: ProfileAttributeFilterValueUpdate.listFromJson(json[r'filters'])!,
+        filters: ProfileAttributeFilterValueUpdate.listFromJson(json[r'filters']),
         lastSeenTimeFilter: LastSeenTimeFilter.fromJson(json[r'last_seen_time_filter']),
         unlimitedLikesFilter: mapValueOfType<bool>(json, r'unlimited_likes_filter'),
       );
@@ -83,7 +83,7 @@ class ProfileAttributeFilterListUpdate {
     return null;
   }
 
-  static List<ProfileAttributeFilterListUpdate>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<ProfileAttributeFilterListUpdate> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ProfileAttributeFilterListUpdate>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -114,12 +114,10 @@ class ProfileAttributeFilterListUpdate {
   static Map<String, List<ProfileAttributeFilterListUpdate>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<ProfileAttributeFilterListUpdate>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = ProfileAttributeFilterListUpdate.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = ProfileAttributeFilterListUpdate.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

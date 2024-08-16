@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -38,7 +38,7 @@ class ContentState {
 
   static ContentState? fromJson(dynamic value) => ContentStateTypeTransformer().decode(value);
 
-  static List<ContentState>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<ContentState> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ContentState>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {

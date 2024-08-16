@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -23,8 +23,8 @@ class SignInWithLoginInfo {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SignInWithLoginInfo &&
-     other.appleToken == appleToken &&
-     other.googleToken == googleToken;
+    other.appleToken == appleToken &&
+    other.googleToken == googleToken;
 
   @override
   int get hashCode =>
@@ -76,7 +76,7 @@ class SignInWithLoginInfo {
     return null;
   }
 
-  static List<SignInWithLoginInfo>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<SignInWithLoginInfo> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <SignInWithLoginInfo>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -107,12 +107,10 @@ class SignInWithLoginInfo {
   static Map<String, List<SignInWithLoginInfo>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<SignInWithLoginInfo>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = SignInWithLoginInfo.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = SignInWithLoginInfo.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

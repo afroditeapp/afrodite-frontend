@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -40,7 +40,7 @@ class ContentProcessingStateType {
 
   static ContentProcessingStateType? fromJson(dynamic value) => ContentProcessingStateTypeTypeTransformer().decode(value);
 
-  static List<ContentProcessingStateType>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<ContentProcessingStateType> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ContentProcessingStateType>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {

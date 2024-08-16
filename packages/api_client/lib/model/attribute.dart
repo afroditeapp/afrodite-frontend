@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -67,18 +67,18 @@ class Attribute {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Attribute &&
-     other.editable == editable &&
-     other.icon == icon &&
-     other.id == id &&
-     other.key == key &&
-     other.mode == mode &&
-     other.name == name &&
-     other.orderNumber == orderNumber &&
-     other.required_ == required_ &&
-     other.translations == translations &&
-     other.valueOrder == valueOrder &&
-     other.values == values &&
-     other.visible == visible;
+    other.editable == editable &&
+    other.icon == icon &&
+    other.id == id &&
+    other.key == key &&
+    other.mode == mode &&
+    other.name == name &&
+    other.orderNumber == orderNumber &&
+    other.required_ == required_ &&
+    _deepEquality.equals(other.translations, translations) &&
+    other.valueOrder == valueOrder &&
+    _deepEquality.equals(other.values, values) &&
+    other.visible == visible;
 
   @override
   int get hashCode =>
@@ -143,16 +143,16 @@ class Attribute {
         name: mapValueOfType<String>(json, r'name')!,
         orderNumber: mapValueOfType<int>(json, r'order_number')!,
         required_: mapValueOfType<bool>(json, r'required') ?? false,
-        translations: Language.listFromJson(json[r'translations']) ?? const [],
+        translations: Language.listFromJson(json[r'translations']),
         valueOrder: AttributeValueOrderMode.fromJson(json[r'value_order'])!,
-        values: AttributeValue.listFromJson(json[r'values'])!,
+        values: AttributeValue.listFromJson(json[r'values']),
         visible: mapValueOfType<bool>(json, r'visible') ?? true,
       );
     }
     return null;
   }
 
-  static List<Attribute>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<Attribute> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <Attribute>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -183,12 +183,10 @@ class Attribute {
   static Map<String, List<Attribute>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<Attribute>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = Attribute.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = Attribute.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -24,8 +24,8 @@ class DemoModeLoginResult {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is DemoModeLoginResult &&
-     other.locked == locked &&
-     other.token == token;
+    other.locked == locked &&
+    other.token == token;
 
   @override
   int get hashCode =>
@@ -73,7 +73,7 @@ class DemoModeLoginResult {
     return null;
   }
 
-  static List<DemoModeLoginResult>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<DemoModeLoginResult> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <DemoModeLoginResult>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -104,12 +104,10 @@ class DemoModeLoginResult {
   static Map<String, List<DemoModeLoginResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<DemoModeLoginResult>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = DemoModeLoginResult.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = DemoModeLoginResult.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

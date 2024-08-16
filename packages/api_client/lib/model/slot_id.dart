@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -21,7 +21,7 @@ class SlotId {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SlotId &&
-     other.slotId == slotId;
+    other.slotId == slotId;
 
   @override
   int get hashCode =>
@@ -62,7 +62,7 @@ class SlotId {
     return null;
   }
 
-  static List<SlotId>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<SlotId> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <SlotId>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -93,12 +93,10 @@ class SlotId {
   static Map<String, List<SlotId>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<SlotId>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = SlotId.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = SlotId.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

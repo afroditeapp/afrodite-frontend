@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -20,7 +20,7 @@ class MapTileY {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is MapTileY &&
-     other.y == y;
+    other.y == y;
 
   @override
   int get hashCode =>
@@ -61,7 +61,7 @@ class MapTileY {
     return null;
   }
 
-  static List<MapTileY>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<MapTileY> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <MapTileY>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -92,12 +92,10 @@ class MapTileY {
   static Map<String, List<MapTileY>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<MapTileY>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = MapTileY.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = MapTileY.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

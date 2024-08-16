@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -26,9 +26,9 @@ class PublicKey {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PublicKey &&
-     other.data == data &&
-     other.id == id &&
-     other.version == version;
+    other.data == data &&
+    other.id == id &&
+    other.version == version;
 
   @override
   int get hashCode =>
@@ -75,7 +75,7 @@ class PublicKey {
     return null;
   }
 
-  static List<PublicKey>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<PublicKey> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <PublicKey>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -106,12 +106,10 @@ class PublicKey {
   static Map<String, List<PublicKey>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<PublicKey>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = PublicKey.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = PublicKey.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

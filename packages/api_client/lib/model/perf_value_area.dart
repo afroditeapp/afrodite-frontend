@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -26,9 +26,9 @@ class PerfValueArea {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PerfValueArea &&
-     other.startTime == startTime &&
-     other.timeGranularity == timeGranularity &&
-     other.values == values;
+    other.startTime == startTime &&
+    other.timeGranularity == timeGranularity &&
+    _deepEquality.equals(other.values, values);
 
   @override
   int get hashCode =>
@@ -69,15 +69,15 @@ class PerfValueArea {
       return PerfValueArea(
         startTime: UnixTime.fromJson(json[r'start_time'])!,
         timeGranularity: TimeGranularity.fromJson(json[r'time_granularity'])!,
-        values: json[r'values'] is List
-            ? (json[r'values'] as List).cast<int>()
+        values: json[r'values'] is Iterable
+            ? (json[r'values'] as Iterable).cast<int>().toList(growable: false)
             : const [],
       );
     }
     return null;
   }
 
-  static List<PerfValueArea>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<PerfValueArea> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <PerfValueArea>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -108,12 +108,10 @@ class PerfValueArea {
   static Map<String, List<PerfValueArea>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<PerfValueArea>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = PerfValueArea.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = PerfValueArea.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -23,8 +23,8 @@ class PerfHistoryValue {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PerfHistoryValue &&
-     other.counterName == counterName &&
-     other.values == values;
+    other.counterName == counterName &&
+    _deepEquality.equals(other.values, values);
 
   @override
   int get hashCode =>
@@ -62,13 +62,13 @@ class PerfHistoryValue {
 
       return PerfHistoryValue(
         counterName: mapValueOfType<String>(json, r'counter_name')!,
-        values: PerfValueArea.listFromJson(json[r'values'])!,
+        values: PerfValueArea.listFromJson(json[r'values']),
       );
     }
     return null;
   }
 
-  static List<PerfHistoryValue>? listFromJson(dynamic json, {bool growable = false,}) {
+  static List<PerfHistoryValue> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <PerfHistoryValue>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -99,12 +99,10 @@ class PerfHistoryValue {
   static Map<String, List<PerfHistoryValue>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<PerfHistoryValue>>{};
     if (json is Map && json.isNotEmpty) {
-      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        final value = PerfHistoryValue.listFromJson(entry.value, growable: growable,);
-        if (value != null) {
-          map[entry.key] = value;
-        }
+        map[entry.key] = PerfHistoryValue.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
