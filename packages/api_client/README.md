@@ -88,6 +88,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**getPublicKey**](doc//ChatApi.md#getpublickey) | **GET** /chat_api/public_key/{account_id} | Get current public key of some account
 *ChatApi* | [**getReceivedBlocks**](doc//ChatApi.md#getreceivedblocks) | **GET** /chat_api/received_blocks | Get list of received blocks
 *ChatApi* | [**getReceivedLikes**](doc//ChatApi.md#getreceivedlikes) | **GET** /chat_api/received_likes | Get received likes.
+*ChatApi* | [**getSenderMessageId**](doc//ChatApi.md#getsendermessageid) | **GET** /chat_api/sender_message_id/{account_id} | Get conversation specific expected sender message ID which API caller
 *ChatApi* | [**getSentBlocks**](doc//ChatApi.md#getsentblocks) | **GET** /chat_api/sent_blocks | Get list of sent blocks
 *ChatApi* | [**getSentLikes**](doc//ChatApi.md#getsentlikes) | **GET** /chat_api/sent_likes | Get sent likes.
 *ChatApi* | [**postBlockProfile**](doc//ChatApi.md#postblockprofile) | **POST** /chat_api/block_profile | Block profile
@@ -96,6 +97,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postPublicKey**](doc//ChatApi.md#postpublickey) | **POST** /chat_api/public_key | Replace current public key with a new public key.
 *ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /chat_api/send_like | Send a like to some account. If both will like each other, then
 *ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /chat_api/send_message | Send message to a match.
+*ChatApi* | [**postSenderMessageId**](doc//ChatApi.md#postsendermessageid) | **POST** /chat_api/sender_message_id/{account_id} | Set conversation specific expected sender message ID which API caller
 *ChatApi* | [**postSetDeviceToken**](doc//ChatApi.md#postsetdevicetoken) | **POST** /chat_api/set_device_token | 
 *ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /chat_api/unblock_profile | Unblock profile
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens.
@@ -278,6 +280,8 @@ Class | Method | HTTP request | Description
  - [SearchGroups](doc//SearchGroups.md)
  - [SecurityContent](doc//SecurityContent.md)
  - [SendMessageResult](doc//SendMessageResult.md)
+ - [SendMessageResultAllOf](doc//SendMessageResultAllOf.md)
+ - [SenderMessageId](doc//SenderMessageId.md)
  - [SentBlocksPage](doc//SentBlocksPage.md)
  - [SentBlocksSyncVersion](doc//SentBlocksSyncVersion.md)
  - [SentLikesPage](doc//SentLikesPage.md)

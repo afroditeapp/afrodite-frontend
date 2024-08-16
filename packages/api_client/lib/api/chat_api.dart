@@ -431,6 +431,63 @@ class ChatApi {
     return null;
   }
 
+  /// Get conversation specific expected sender message ID which API caller
+  ///
+  /// Get conversation specific expected sender message ID which API caller account owns.  Default value is returned if the accounts are not in match state. Also state change to match state will reset the ID.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<Response> getSenderMessageIdWithHttpInfo(String accountId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/sender_message_id/{account_id}'
+      .replaceAll('{account_id}', accountId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get conversation specific expected sender message ID which API caller
+  ///
+  /// Get conversation specific expected sender message ID which API caller account owns.  Default value is returned if the accounts are not in match state. Also state change to match state will reset the ID.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  Future<SenderMessageId?> getSenderMessageId(String accountId,) async {
+    final response = await getSenderMessageIdWithHttpInfo(accountId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SenderMessageId',) as SenderMessageId;
+    
+    }
+    return null;
+  }
+
   /// Get list of sent blocks
   ///
   /// Get list of sent blocks
@@ -793,7 +850,7 @@ class ChatApi {
 
   /// Send message to a match.
   ///
-  /// Send message to a match.  Max pending message count is 50. Max message size is u16::MAX.
+  /// Send message to a match.  Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -807,8 +864,10 @@ class ChatApi {
   ///
   /// * [int] receiverPublicKeyVersion (required):
   ///
+  /// * [int] senderMessageId (required):
+  ///
   /// * [MultipartFile] body (required):
-  Future<Response> postSendMessageWithHttpInfo(String receiver, int receiverPublicKeyId, int receiverPublicKeyVersion, MultipartFile body,) async {
+  Future<Response> postSendMessageWithHttpInfo(String receiver, int receiverPublicKeyId, int receiverPublicKeyVersion, int senderMessageId, MultipartFile body,) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/send_message';
 
@@ -822,6 +881,7 @@ class ChatApi {
       queryParams.addAll(_queryParams('', 'receiver', receiver));
       queryParams.addAll(_queryParams('', 'receiver_public_key_id', receiverPublicKeyId));
       queryParams.addAll(_queryParams('', 'receiver_public_key_version', receiverPublicKeyVersion));
+      queryParams.addAll(_queryParams('', 'sender_message_id', senderMessageId));
 
     const contentTypes = <String>['application/octet-stream'];
 
@@ -839,7 +899,7 @@ class ChatApi {
 
   /// Send message to a match.
   ///
-  /// Send message to a match.  Max pending message count is 50. Max message size is u16::MAX.
+  /// Send message to a match.  Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.
   ///
   /// Parameters:
   ///
@@ -851,9 +911,11 @@ class ChatApi {
   ///
   /// * [int] receiverPublicKeyVersion (required):
   ///
+  /// * [int] senderMessageId (required):
+  ///
   /// * [MultipartFile] body (required):
-  Future<SendMessageResult?> postSendMessage(String receiver, int receiverPublicKeyId, int receiverPublicKeyVersion, MultipartFile body,) async {
-    final response = await postSendMessageWithHttpInfo(receiver, receiverPublicKeyId, receiverPublicKeyVersion, body,);
+  Future<SendMessageResult?> postSendMessage(String receiver, int receiverPublicKeyId, int receiverPublicKeyVersion, int senderMessageId, MultipartFile body,) async {
+    final response = await postSendMessageWithHttpInfo(receiver, receiverPublicKeyId, receiverPublicKeyVersion, senderMessageId, body,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -865,6 +927,59 @@ class ChatApi {
     
     }
     return null;
+  }
+
+  /// Set conversation specific expected sender message ID which API caller
+  ///
+  /// Set conversation specific expected sender message ID which API caller account owns.  This errors if the accounts are not in match state.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  ///
+  /// * [SenderMessageId] senderMessageId (required):
+  Future<Response> postSenderMessageIdWithHttpInfo(String accountId, SenderMessageId senderMessageId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/sender_message_id/{account_id}'
+      .replaceAll('{account_id}', accountId);
+
+    // ignore: prefer_final_locals
+    Object? postBody = senderMessageId;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Set conversation specific expected sender message ID which API caller
+  ///
+  /// Set conversation specific expected sender message ID which API caller account owns.  This errors if the accounts are not in match state.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] accountId (required):
+  ///
+  /// * [SenderMessageId] senderMessageId (required):
+  Future<void> postSenderMessageId(String accountId, SenderMessageId senderMessageId,) async {
+    final response = await postSenderMessageIdWithHttpInfo(accountId, senderMessageId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Performs an HTTP 'POST /chat_api/set_device_token' operation and returns the [Response].

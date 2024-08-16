@@ -163,6 +163,8 @@ part 'model/reset_data_query_param.dart';
 part 'model/search_groups.dart';
 part 'model/security_content.dart';
 part 'model/send_message_result.dart';
+part 'model/send_message_result_all_of.dart';
+part 'model/sender_message_id.dart';
 part 'model/sent_blocks_page.dart';
 part 'model/sent_blocks_sync_version.dart';
 part 'model/sent_likes_page.dart';

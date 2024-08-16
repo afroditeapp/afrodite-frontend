@@ -136,6 +136,8 @@ doc/ResetDataQueryParam.md
 doc/SearchGroups.md
 doc/SecurityContent.md
 doc/SendMessageResult.md
+doc/SendMessageResultAllOf.md
+doc/SenderMessageId.md
 doc/SentBlocksPage.md
 doc/SentBlocksSyncVersion.md
 doc/SentLikesPage.md
@@ -299,6 +301,8 @@ lib/model/reset_data_query_param.dart
 lib/model/search_groups.dart
 lib/model/security_content.dart
 lib/model/send_message_result.dart
+lib/model/send_message_result_all_of.dart
+lib/model/sender_message_id.dart
 lib/model/sent_blocks_page.dart
 lib/model/sent_blocks_sync_version.dart
 lib/model/sent_likes_page.dart
@@ -317,3 +321,5 @@ lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
+test/send_message_result_all_of_test.dart
+test/sender_message_id_test.dart

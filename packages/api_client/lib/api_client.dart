@@ -433,6 +433,10 @@ class ApiClient {
           return SecurityContent.fromJson(value);
         case 'SendMessageResult':
           return SendMessageResult.fromJson(value);
+        case 'SendMessageResultAllOf':
+          return SendMessageResultAllOf.fromJson(value);
+        case 'SenderMessageId':
+          return SenderMessageId.fromJson(value);
         case 'SentBlocksPage':
           return SentBlocksPage.fromJson(value);
         case 'SentBlocksSyncVersion':

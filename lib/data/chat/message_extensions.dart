@@ -271,10 +271,21 @@ extension MessageExtensions on ChatRepository {
     final dataIdentifierAndEncryptedMessage = [0];
     dataIdentifierAndEncryptedMessage.addAll(encryptedMessage);
 
+    // TODO: Proper sender message ID support
+    final senderMessageIdResult = await api.chat((api) => api.postSenderMessageId(
+      accountId.accountId,
+      SenderMessageId(id: 0),
+    ));
+    if (senderMessageIdResult.isErr()) {
+      yield ErrorAfterMessageSaving(localId);
+      return;
+    }
+
     final result = await api.chat((api) => api.postSendMessage(
       accountId.accountId,
       receiverPublicKey.id.id,
       receiverPublicKey.version.version,
+      0,
       MultipartFile.fromBytes("", dataIdentifierAndEncryptedMessage),
     )).ok();
     if (result == null) {
@@ -302,6 +313,7 @@ extension MessageExtensions on ChatRepository {
         accountId.accountId,
         receiverPublicKey.id.id,
         receiverPublicKey.version.version,
+        0,
         MultipartFile.fromBytes("", dataIdentifierAndEncryptedMessage),
       )).ok();
       if (result == null) {

@@ -10,13 +10,12 @@
 
 part of openapi.api;
 
-class SendMessageResult {
-  /// Returns a new [SendMessageResult] instance.
-  SendMessageResult({
+class SendMessageResultAllOf {
+  /// Returns a new [SendMessageResultAllOf] instance.
+  SendMessageResultAllOf({
     this.errorReceiverPublicKeyOutdated = false,
     this.errorSenderMessageIdWasNotExpectedId,
     this.errorTooManyPendingMessages = false,
-    required this.unixTime,
   });
 
   bool errorReceiverPublicKeyOutdated;
@@ -25,25 +24,21 @@ class SendMessageResult {
 
   bool errorTooManyPendingMessages;
 
-  int unixTime;
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is SendMessageResult &&
+  bool operator ==(Object other) => identical(this, other) || other is SendMessageResultAllOf &&
      other.errorReceiverPublicKeyOutdated == errorReceiverPublicKeyOutdated &&
      other.errorSenderMessageIdWasNotExpectedId == errorSenderMessageIdWasNotExpectedId &&
-     other.errorTooManyPendingMessages == errorTooManyPendingMessages &&
-     other.unixTime == unixTime;
+     other.errorTooManyPendingMessages == errorTooManyPendingMessages;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (errorReceiverPublicKeyOutdated.hashCode) +
     (errorSenderMessageIdWasNotExpectedId == null ? 0 : errorSenderMessageIdWasNotExpectedId!.hashCode) +
-    (errorTooManyPendingMessages.hashCode) +
-    (unixTime.hashCode);
+    (errorTooManyPendingMessages.hashCode);
 
   @override
-  String toString() => 'SendMessageResult[errorReceiverPublicKeyOutdated=$errorReceiverPublicKeyOutdated, errorSenderMessageIdWasNotExpectedId=$errorSenderMessageIdWasNotExpectedId, errorTooManyPendingMessages=$errorTooManyPendingMessages, unixTime=$unixTime]';
+  String toString() => 'SendMessageResultAllOf[errorReceiverPublicKeyOutdated=$errorReceiverPublicKeyOutdated, errorSenderMessageIdWasNotExpectedId=$errorSenderMessageIdWasNotExpectedId, errorTooManyPendingMessages=$errorTooManyPendingMessages]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -54,14 +49,13 @@ class SendMessageResult {
       json[r'error_sender_message_id_was_not_expected_id'] = null;
     }
       json[r'error_too_many_pending_messages'] = this.errorTooManyPendingMessages;
-      json[r'unix_time'] = this.unixTime;
     return json;
   }
 
-  /// Returns a new [SendMessageResult] instance and imports its values from
+  /// Returns a new [SendMessageResultAllOf] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static SendMessageResult? fromJson(dynamic value) {
+  static SendMessageResultAllOf? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -70,27 +64,26 @@ class SendMessageResult {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "SendMessageResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SendMessageResult[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "SendMessageResultAllOf[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "SendMessageResultAllOf[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return SendMessageResult(
+      return SendMessageResultAllOf(
         errorReceiverPublicKeyOutdated: mapValueOfType<bool>(json, r'error_receiver_public_key_outdated') ?? false,
         errorSenderMessageIdWasNotExpectedId: SenderMessageId.fromJson(json[r'error_sender_message_id_was_not_expected_id']),
         errorTooManyPendingMessages: mapValueOfType<bool>(json, r'error_too_many_pending_messages') ?? false,
-        unixTime: mapValueOfType<int>(json, r'unix_time')!,
       );
     }
     return null;
   }
 
-  static List<SendMessageResult>? listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <SendMessageResult>[];
+  static List<SendMessageResultAllOf>? listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <SendMessageResultAllOf>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = SendMessageResult.fromJson(row);
+        final value = SendMessageResultAllOf.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -99,12 +92,12 @@ class SendMessageResult {
     return result.toList(growable: growable);
   }
 
-  static Map<String, SendMessageResult> mapFromJson(dynamic json) {
-    final map = <String, SendMessageResult>{};
+  static Map<String, SendMessageResultAllOf> mapFromJson(dynamic json) {
+    final map = <String, SendMessageResultAllOf>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = SendMessageResult.fromJson(entry.value);
+        final value = SendMessageResultAllOf.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -113,13 +106,13 @@ class SendMessageResult {
     return map;
   }
 
-  // maps a json object with a list of SendMessageResult-objects as value to a dart map
-  static Map<String, List<SendMessageResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<SendMessageResult>>{};
+  // maps a json object with a list of SendMessageResultAllOf-objects as value to a dart map
+  static Map<String, List<SendMessageResultAllOf>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<SendMessageResultAllOf>>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = SendMessageResult.listFromJson(entry.value, growable: growable,);
+        final value = SendMessageResultAllOf.listFromJson(entry.value, growable: growable,);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -130,7 +123,6 @@ class SendMessageResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'unix_time',
   };
 }
 
