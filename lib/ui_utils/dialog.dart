@@ -101,7 +101,7 @@ Future<void> showConfirmDialogAdvanced(
   );
 }
 
-Future<bool?> showInfoDialog(BuildContext context, String text, {PageKey? existingPageToBeReplaced}) {
+Future<bool?> showInfoDialog(BuildContext context, String text, {PageKey? existingPageToBeRemoved}) {
   final pageKey = PageKey();
 
   dialogBuilder(BuildContext context) => AlertDialog(
@@ -116,16 +116,16 @@ Future<bool?> showInfoDialog(BuildContext context, String text, {PageKey? existi
       ],
     );
 
-  if (existingPageToBeReplaced == null) {
+  if (existingPageToBeRemoved == null) {
     return MyNavigator.showDialog<bool>(
       context: context,
       pageKey: pageKey,
       builder: dialogBuilder,
     );
   } else {
-    return MyNavigator.replaceWithDialog<bool>(
+    return MyNavigator.removeAndShowDialog<bool>(
       context: context,
-      existingPageKey: existingPageToBeReplaced,
+      existingPageKey: existingPageToBeRemoved,
       newPageKey: pageKey,
       builder: dialogBuilder,
     );

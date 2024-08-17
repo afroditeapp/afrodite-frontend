@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/model/freezed/logic/main/navigator_state.dart";
+import "package:pihka_frontend/ui_utils/consts/animation.dart";
 import "package:pihka_frontend/utils.dart";
 import "package:pihka_frontend/utils/immutable_list.dart";
 import "package:rxdart/rxdart.dart";
@@ -200,7 +201,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
     );
   }
 
-  Future<T?> replaceWithDialog<T>(
+  Future<T?> removeAndShowDialog<T>(
     {
       required PageKey existingPageKey,
       required PageKey newPageKey,
@@ -208,8 +209,11 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       bool barrierDismissable = true,
     }
   ) async {
-    return await replaceSinglePage(
-      existingPageKey,
+    removePage(existingPageKey);
+    if (!WidgetsBinding.instance.platformDispatcher.accessibilityFeatures.disableAnimations) {
+      await Future<void>.delayed(const Duration(milliseconds: WAIT_BETWEEN_DIALOGS_MILLISECONDS));
+    }
+    return await pushWithKey(
       MaterialDialogPage<T>(builder, barrierDismissable: barrierDismissable),
       newPageKey,
     );
@@ -282,7 +286,7 @@ class MyNavigator {
     );
   }
 
-  static Future<T?> replaceWithDialog<T>(
+  static Future<T?> removeAndShowDialog<T>(
     {
       required BuildContext context,
       required PageKey existingPageKey,
@@ -291,7 +295,7 @@ class MyNavigator {
       bool barrierDismissable = true,
     }
   ) async {
-    return await context.read<NavigatorStateBloc>().replaceWithDialog(
+    return await context.read<NavigatorStateBloc>().removeAndShowDialog(
       existingPageKey: existingPageKey,
       newPageKey: newPageKey,
       builder: builder,

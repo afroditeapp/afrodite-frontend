@@ -140,7 +140,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
         ListTile(
           title: Text(context.strings.generic_details),
           onTap: () async {
-            openDetailsAndCloseActions(screenContext, entry, pageKey);
+            closeActionsAndOpenDetails(screenContext, entry, pageKey);
           },
         ),
         if (entry.sentMessageState == SentMessageState.sendingError) ListTile(
@@ -162,8 +162,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
   );
 }
 
-
-void openDetailsAndCloseActions(BuildContext screenContext, MessageEntry entry, PageKey existingPageKey) {
+void closeActionsAndOpenDetails(BuildContext screenContext, MessageEntry entry, PageKey existingPageKey) {
   if (!screenContext.mounted) {
     return;
   }
@@ -194,6 +193,6 @@ ${screenContext.strings.generic_state}: $stateText""";
   showInfoDialog(
     screenContext,
     infoText,
-    existingPageToBeReplaced: existingPageKey,
+    existingPageToBeRemoved: existingPageKey,
   );
 }
