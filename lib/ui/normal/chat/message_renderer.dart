@@ -48,7 +48,7 @@ class MessageRendererState extends State<MessageRenderer> {
                 child: SingleChildScrollView(
                   child: messageRowWidget(
                     context,
-                    messageEntryToViewData(message.entry),
+                    message.entry,
                     key: key,
                     parentTextStyle: style.style,
                   ),

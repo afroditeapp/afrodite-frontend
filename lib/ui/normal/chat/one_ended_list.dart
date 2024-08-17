@@ -105,7 +105,7 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
             builder: (context, snapshot) {
               return messageRowWidget(
                 context,
-                messageEntryToViewData(snapshot.data ?? entry),
+                snapshot.data ?? entry,
                 parentTextStyle: style.style
               );
             },
@@ -113,7 +113,7 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
         } else {
           return messageRowWidget(
             context,
-            messageEntryToViewData(entry),
+            entry,
             parentTextStyle: style.style
           );
         }

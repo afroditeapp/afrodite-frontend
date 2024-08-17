@@ -12,6 +12,12 @@
     <string name="generic_error" description="Generic error message">Error</string>
     <string name="generic_empty" description="Generic empty text">Empty</string>
     <string name="generic_disabled" description="Generic disabled text">Disabled</string>
+    <string name="generic_details" description="Generic details text">Details</string>
+    <string name="generic_resend" description="Generic resend text">Resend</string>
+    <string name="generic_delete" description="Generic delete text">Delete</string>
+    <string name="generic_message" description="Generic message text">Message</string>
+    <string name="generic_time" description="Generic time text">Time</string>
+    <string name="generic_state" description="Generic state text">State</string>
     <string name="generic_cancel" description="Generic cancel text">Cancel</string>
     <string name="generic_close" description="Generic close text">Close</string>
     <string name="generic_ok" description="Generic OK text">OK</string>
@@ -276,6 +282,11 @@
     <string name="conversation_screen_message_too_long" description="Snackbar text that message is too long">Message is too long</string>
     <string name="conversation_screen_message_too_many_pending_messages" description="Snackbar text that server is full of pending messages">Server pending message storage is full</string>
     <string name="conversation_screen_message_message_decrypting_failed" description="Message text that decrypting the message failed">Message decrypting failed</string>
+    <string name="conversation_screen_message_state_sending_in_progress" description="Message state text that message sending is in progress">Sending in progress</string>
+    <string name="conversation_screen_message_state_sent_successfully" description="Message state text that message was sent successfully">Sent successfully</string>
+    <string name="conversation_screen_message_state_sending_failed" description="Message state text that message sending failed">Sending failed</string>
+    <string name="conversation_screen_message_state_decrypting_failed" description="Message state text that message decrypting failed">Decrypting failed</string>
+    <string name="conversation_screen_message_state_received_successfully" description="Message state text that message was received successfully">Received successfully</string>
 
     <!-- Settings -->
     <string name="settings_screen_title" description="Title for settings screen">Settings</string>
