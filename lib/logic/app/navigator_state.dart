@@ -29,6 +29,11 @@ class ReplaceAllWith extends NavigatorStateEvent {
   final bool disableAnimation;
   ReplaceAllWith(this.pageList, this.disableAnimation);
 }
+class ReplaceSinglePage extends NavigatorStateEvent {
+  final PageKey existingPage;
+  final PageAndChannel newPage;
+  ReplaceSinglePage(this.existingPage, this.newPage);
+}
 
 // NOTE: This bloc must be dependency free because of NavigationStateBlocInstance.
 class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
@@ -106,6 +111,21 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
         disableAnimation: data.disableAnimation,
       ));
     });
+    on<ReplaceSinglePage>((data, emit) {
+      final newPages = <PageAndChannel>[];
+      for (final p in state.pages) {
+        if (p.key != data.existingPage) {
+          newPages.add(p);
+        } else {
+          p.channel.add(const PagePopDone(null));
+          newPages.add(data.newPage);
+        }
+      }
+      emit(state.copyWith(
+        pages: UnmodifiableList(newPages),
+        disableAnimation: false,
+      ));
+    });
   }
 
   /// Push new page to the navigator stack and wait for it to be popped.
@@ -131,6 +151,19 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
   /// Pop all current pages and make new stack with the new page list.
   void replaceAllWith(List<NewPageDetails> page, {bool disableAnimation = false}) {
     add(ReplaceAllWith(page, disableAnimation));
+  }
+
+  Future<T?> replaceSinglePage<T>(PageKey existingPage, Page<T> page, PageKey pageKey, {PageInfo? pageInfo}) async {
+    final returnChannel = BehaviorSubject<ReturnChannelValue>.seeded(const WaitingPagePop());
+    final newPage = PageAndChannel(pageKey, page, returnChannel, pageInfo);
+    add(ReplaceSinglePage(existingPage, newPage));
+    final popDone = await returnChannel.whereType<PagePopDone>().first;
+    final returnValue = popDone.returnValue;
+    if (returnValue is T?) {
+      return returnValue;
+    } else {
+      return null;
+    }
   }
 
   /// Pops the top page from the navigator stack if possible.
@@ -166,6 +199,21 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       pageKey,
     );
   }
+
+  Future<T?> replaceWithDialog<T>(
+    {
+      required PageKey existingPageKey,
+      required PageKey newPageKey,
+      required Widget Function(BuildContext) builder,
+      bool barrierDismissable = true,
+    }
+  ) async {
+    return await replaceSinglePage(
+      existingPageKey,
+      MaterialDialogPage<T>(builder, barrierDismissable: barrierDismissable),
+      newPageKey,
+    );
+  }
 }
 
 class NavigationStateBlocInstance extends AppSingletonNoInit {
@@ -192,6 +240,10 @@ class MyNavigator {
   /// Pop all current pages and make new stack with the new page list.
   static void replaceAllWith(BuildContext context, List<NewPageDetails> page) {
     context.read<NavigatorStateBloc>().replaceAllWith(page);
+  }
+
+  static Future<T?> replaceSinglePage<T>(BuildContext context, PageKey existingPage, Page<T> page, PageKey pageKey, {PageInfo? pageInfo}) async {
+    return await context.read<NavigatorStateBloc>().replaceSinglePage(existingPage, page, pageKey, pageInfo: pageInfo);
   }
 
   /// Pops the top page from the navigator stack if possible.
@@ -225,6 +277,23 @@ class MyNavigator {
   ) async {
     return await context.read<NavigatorStateBloc>().showDialog(
       pageKey: pageKey,
+      builder: builder,
+      barrierDismissable: barrierDismissable,
+    );
+  }
+
+  static Future<T?> replaceWithDialog<T>(
+    {
+      required BuildContext context,
+      required PageKey existingPageKey,
+      required PageKey newPageKey,
+      required Widget Function(BuildContext) builder,
+      bool barrierDismissable = true,
+    }
+  ) async {
+    return await context.read<NavigatorStateBloc>().replaceWithDialog(
+      existingPageKey: existingPageKey,
+      newPageKey: newPageKey,
       builder: builder,
       barrierDismissable: barrierDismissable,
     );

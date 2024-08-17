@@ -140,8 +140,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
         ListTile(
           title: Text(context.strings.generic_details),
           onTap: () async {
-            openDetails(screenContext, entry);
-            MyNavigator.removePage(context, pageKey, null);
+            openDetailsAndCloseActions(screenContext, entry, pageKey);
           },
         ),
         if (entry.sentMessageState == SentMessageState.sendingError) ListTile(
@@ -164,7 +163,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
 }
 
 
-void openDetails(BuildContext screenContext, MessageEntry entry) {
+void openDetailsAndCloseActions(BuildContext screenContext, MessageEntry entry, PageKey existingPageKey) {
   if (!screenContext.mounted) {
     return;
   }
@@ -195,5 +194,6 @@ ${screenContext.strings.generic_state}: $stateText""";
   showInfoDialog(
     screenContext,
     infoText,
+    existingPageToBeReplaced: existingPageKey,
   );
 }

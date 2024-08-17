@@ -101,12 +101,10 @@ Future<void> showConfirmDialogAdvanced(
   );
 }
 
-Future<bool?> showInfoDialog(BuildContext context, String text) {
+Future<bool?> showInfoDialog(BuildContext context, String text, {PageKey? existingPageToBeReplaced}) {
   final pageKey = PageKey();
-  return MyNavigator.showDialog<bool>(
-    context: context,
-    pageKey: pageKey,
-    builder: (context) => AlertDialog(
+
+  dialogBuilder(BuildContext context) => AlertDialog(
       content: SelectableText(text),
       actions: <Widget>[
         TextButton(
@@ -116,8 +114,22 @@ Future<bool?> showInfoDialog(BuildContext context, String text) {
           child: Text(context.strings.generic_close)
         ),
       ],
-    )
-  );
+    );
+
+  if (existingPageToBeReplaced == null) {
+    return MyNavigator.showDialog<bool>(
+      context: context,
+      pageKey: pageKey,
+      builder: dialogBuilder,
+    );
+  } else {
+    return MyNavigator.replaceWithDialog<bool>(
+      context: context,
+      existingPageKey: existingPageToBeReplaced,
+      newPageKey: pageKey,
+      builder: dialogBuilder,
+    );
+  }
 }
 
 /// When dismiss action runs the dialog is already dismissed.
