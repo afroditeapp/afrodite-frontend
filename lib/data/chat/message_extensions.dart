@@ -311,6 +311,7 @@ extension MessageExtensions on ChatRepository {
             return;
           }
           receiverPublicKey = receiverPublicKeyOrNull;
+          continue;
         }
       }
 
@@ -331,6 +332,7 @@ extension MessageExtensions on ChatRepository {
             yield ErrorAfterMessageSaving(localId);
             return;
           }
+          continue;
         }
       }
 
