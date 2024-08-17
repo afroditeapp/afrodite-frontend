@@ -275,6 +275,7 @@
     <string name="conversation_screen_chat_box_placeholder_text" description="Message input text field placeholder text">Type a message…</string>
     <string name="conversation_screen_message_too_long" description="Snackbar text that message is too long">Message is too long</string>
     <string name="conversation_screen_message_too_many_pending_messages" description="Snackbar text that server is full of pending messages">Server pending message storage is full</string>
+    <string name="conversation_screen_message_message_decrypting_failed" description="Message text that decrypting the message failed">Message decrypting failed</string>
 
     <!-- Settings -->
     <string name="settings_screen_title" description="Title for settings screen">Settings</string>

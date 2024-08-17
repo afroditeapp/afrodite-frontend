@@ -67,6 +67,11 @@ enum ReceivedMessageState {
 
   const ReceivedMessageState(this.number);
   final int number;
+
+  bool decryptingFailed() {
+    return this == ReceivedMessageState.deletedFromServerAndDecryptingFailed ||
+      this == ReceivedMessageState.waitingDeletionFromServerAndDecryptingFailed;
+  }
 }
 
 class NewMessageEntry {
