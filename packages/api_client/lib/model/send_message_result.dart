@@ -13,16 +13,12 @@ part of openapi.api;
 class SendMessageResult {
   /// Returns a new [SendMessageResult] instance.
   SendMessageResult({
-    required this.unixTime,
-    required this.messageNumber,
     this.errorReceiverPublicKeyOutdated = false,
     this.errorSenderMessageIdWasNotExpectedId,
     this.errorTooManyPendingMessages = false,
+    this.messageNumber,
+    this.unixTime,
   });
-
-  int unixTime;
-
-  int messageNumber;
 
   bool errorReceiverPublicKeyOutdated;
 
@@ -30,30 +26,34 @@ class SendMessageResult {
 
   bool errorTooManyPendingMessages;
 
+  /// None if error happened
+  int? messageNumber;
+
+  /// None if error happened
+  int? unixTime;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is SendMessageResult &&
-    other.unixTime == unixTime &&
-    other.messageNumber == messageNumber &&
     other.errorReceiverPublicKeyOutdated == errorReceiverPublicKeyOutdated &&
     other.errorSenderMessageIdWasNotExpectedId == errorSenderMessageIdWasNotExpectedId &&
-    other.errorTooManyPendingMessages == errorTooManyPendingMessages;
+    other.errorTooManyPendingMessages == errorTooManyPendingMessages &&
+    other.messageNumber == messageNumber &&
+    other.unixTime == unixTime;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (unixTime.hashCode) +
-    (messageNumber.hashCode) +
     (errorReceiverPublicKeyOutdated.hashCode) +
     (errorSenderMessageIdWasNotExpectedId == null ? 0 : errorSenderMessageIdWasNotExpectedId!.hashCode) +
-    (errorTooManyPendingMessages.hashCode);
+    (errorTooManyPendingMessages.hashCode) +
+    (messageNumber == null ? 0 : messageNumber!.hashCode) +
+    (unixTime == null ? 0 : unixTime!.hashCode);
 
   @override
-  String toString() => 'SendMessageResult[unixTime=$unixTime, messageNumber=$messageNumber, errorReceiverPublicKeyOutdated=$errorReceiverPublicKeyOutdated, errorSenderMessageIdWasNotExpectedId=$errorSenderMessageIdWasNotExpectedId, errorTooManyPendingMessages=$errorTooManyPendingMessages]';
+  String toString() => 'SendMessageResult[errorReceiverPublicKeyOutdated=$errorReceiverPublicKeyOutdated, errorSenderMessageIdWasNotExpectedId=$errorSenderMessageIdWasNotExpectedId, errorTooManyPendingMessages=$errorTooManyPendingMessages, messageNumber=$messageNumber, unixTime=$unixTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'unix_time'] = this.unixTime;
-      json[r'message_number'] = this.messageNumber;
       json[r'error_receiver_public_key_outdated'] = this.errorReceiverPublicKeyOutdated;
     if (this.errorSenderMessageIdWasNotExpectedId != null) {
       json[r'error_sender_message_id_was_not_expected_id'] = this.errorSenderMessageIdWasNotExpectedId;
@@ -61,6 +61,16 @@ class SendMessageResult {
       json[r'error_sender_message_id_was_not_expected_id'] = null;
     }
       json[r'error_too_many_pending_messages'] = this.errorTooManyPendingMessages;
+    if (this.messageNumber != null) {
+      json[r'message_number'] = this.messageNumber;
+    } else {
+      json[r'message_number'] = null;
+    }
+    if (this.unixTime != null) {
+      json[r'unix_time'] = this.unixTime;
+    } else {
+      json[r'unix_time'] = null;
+    }
     return json;
   }
 
@@ -83,11 +93,11 @@ class SendMessageResult {
       }());
 
       return SendMessageResult(
-        unixTime: mapValueOfType<int>(json, r'unix_time')!,
-        messageNumber: mapValueOfType<int>(json, r'message_number')!,
         errorReceiverPublicKeyOutdated: mapValueOfType<bool>(json, r'error_receiver_public_key_outdated') ?? false,
         errorSenderMessageIdWasNotExpectedId: SenderMessageId.fromJson(json[r'error_sender_message_id_was_not_expected_id']),
         errorTooManyPendingMessages: mapValueOfType<bool>(json, r'error_too_many_pending_messages') ?? false,
+        messageNumber: mapValueOfType<int>(json, r'message_number'),
+        unixTime: mapValueOfType<int>(json, r'unix_time'),
       );
     }
     return null;
@@ -135,8 +145,6 @@ class SendMessageResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'unix_time',
-    'message_number',
   };
 }
 

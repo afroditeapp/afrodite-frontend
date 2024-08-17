@@ -18,7 +18,7 @@ class CommonAdminApi {
 
   /// Get dynamic backend config.
   ///
-  /// Get dynamic backend config.  # Capabilities Requires admin_server_maintenance_view_backend_settings.
+  /// # Capabilities Requires admin_server_maintenance_view_backend_settings.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getBackendConfigWithHttpInfo() async {
@@ -48,7 +48,7 @@ class CommonAdminApi {
 
   /// Get dynamic backend config.
   ///
-  /// Get dynamic backend config.  # Capabilities Requires admin_server_maintenance_view_backend_settings.
+  /// # Capabilities Requires admin_server_maintenance_view_backend_settings.
   Future<BackendConfig?> getBackendConfig() async {
     final response = await getBackendConfigWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -66,7 +66,7 @@ class CommonAdminApi {
 
   /// Get latest software build information available for update from manager
   ///
-  /// Get latest software build information available for update from manager instance.
+  /// instance.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -102,7 +102,7 @@ class CommonAdminApi {
 
   /// Get latest software build information available for update from manager
   ///
-  /// Get latest software build information available for update from manager instance.
+  /// instance.
   ///
   /// Parameters:
   ///
@@ -124,7 +124,7 @@ class CommonAdminApi {
 
   /// Get performance data
   ///
-  /// Get performance data  # Capabilities Requires admin_server_maintenance_view_info.
+  /// # Capabilities Requires admin_server_maintenance_view_info.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -169,7 +169,7 @@ class CommonAdminApi {
 
   /// Get performance data
   ///
-  /// Get performance data  # Capabilities Requires admin_server_maintenance_view_info.
+  /// # Capabilities Requires admin_server_maintenance_view_info.
   ///
   /// Parameters:
   ///
@@ -193,8 +193,6 @@ class CommonAdminApi {
     return null;
   }
 
-  /// Get software version information from manager instance.
-  ///
   /// Get software version information from manager instance.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -224,8 +222,6 @@ class CommonAdminApi {
   }
 
   /// Get software version information from manager instance.
-  ///
-  /// Get software version information from manager instance.
   Future<SoftwareInfo?> getSoftwareInfo() async {
     final response = await getSoftwareInfoWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -241,8 +237,6 @@ class CommonAdminApi {
     return null;
   }
 
-  /// Get system information from manager instance.
-  ///
   /// Get system information from manager instance.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -272,8 +266,6 @@ class CommonAdminApi {
   }
 
   /// Get system information from manager instance.
-  ///
-  /// Get system information from manager instance.
   Future<SystemInfoList?> getSystemInfo() async {
     final response = await getSystemInfoWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -291,7 +283,7 @@ class CommonAdminApi {
 
   /// Save dynamic backend config.
   ///
-  /// Save dynamic backend config.  # Capabilities Requires admin_server_maintenance_save_backend_settings.
+  /// # Capabilities Requires admin_server_maintenance_save_backend_settings.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -325,7 +317,7 @@ class CommonAdminApi {
 
   /// Save dynamic backend config.
   ///
-  /// Save dynamic backend config.  # Capabilities Requires admin_server_maintenance_save_backend_settings.
+  /// # Capabilities Requires admin_server_maintenance_save_backend_settings.
   ///
   /// Parameters:
   ///
@@ -337,8 +329,6 @@ class CommonAdminApi {
     }
   }
 
-  /// Request building new software from manager instance.
-  ///
   /// Request building new software from manager instance.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -375,8 +365,6 @@ class CommonAdminApi {
 
   /// Request building new software from manager instance.
   ///
-  /// Request building new software from manager instance.
-  ///
   /// Parameters:
   ///
   /// * [SoftwareOptions] softwareOptions (required):
@@ -389,7 +377,7 @@ class CommonAdminApi {
 
   /// Request restarting or reseting backend through app-manager instance.
   ///
-  /// Request restarting or reseting backend through app-manager instance.  # Capabilities Requires admin_server_maintenance_restart_backend. Also requires admin_server_maintenance_reset_data if reset_data is true.
+  /// # Capabilities Requires admin_server_maintenance_restart_backend. Also requires admin_server_maintenance_reset_data if reset_data is true.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -425,7 +413,7 @@ class CommonAdminApi {
 
   /// Request restarting or reseting backend through app-manager instance.
   ///
-  /// Request restarting or reseting backend through app-manager instance.  # Capabilities Requires admin_server_maintenance_restart_backend. Also requires admin_server_maintenance_reset_data if reset_data is true.
+  /// # Capabilities Requires admin_server_maintenance_restart_backend. Also requires admin_server_maintenance_reset_data if reset_data is true.
   ///
   /// Parameters:
   ///
@@ -439,7 +427,7 @@ class CommonAdminApi {
 
   /// Request updating new software from manager instance.
   ///
-  /// Request updating new software from manager instance.  Reboot query parameter will force reboot of the server after update. If it is off, the server will be rebooted when the usual reboot check is done.  Reset data query parameter will reset data like defined in current app-manager version. If this is true then specific capability is needed for completing this request.  # Capablities Requires admin_server_maintenance_update_software. Also requires admin_server_maintenance_reset_data if reset_data is true.
+  /// Reboot query parameter will force reboot of the server after update. If it is off, the server will be rebooted when the usual reboot check is done.  Reset data query parameter will reset data like defined in current app-manager version. If this is true then specific capability is needed for completing this request.  # Capablities Requires admin_server_maintenance_update_software. Also requires admin_server_maintenance_reset_data if reset_data is true.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -481,7 +469,7 @@ class CommonAdminApi {
 
   /// Request updating new software from manager instance.
   ///
-  /// Request updating new software from manager instance.  Reboot query parameter will force reboot of the server after update. If it is off, the server will be rebooted when the usual reboot check is done.  Reset data query parameter will reset data like defined in current app-manager version. If this is true then specific capability is needed for completing this request.  # Capablities Requires admin_server_maintenance_update_software. Also requires admin_server_maintenance_reset_data if reset_data is true.
+  /// Reboot query parameter will force reboot of the server after update. If it is off, the server will be rebooted when the usual reboot check is done.  Reset data query parameter will reset data like defined in current app-manager version. If this is true then specific capability is needed for completing this request.  # Capablities Requires admin_server_maintenance_update_software. Also requires admin_server_maintenance_reset_data if reset_data is true.
   ///
   /// Parameters:
   ///

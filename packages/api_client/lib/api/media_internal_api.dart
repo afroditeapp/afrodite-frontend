@@ -18,8 +18,6 @@ class MediaInternalApi {
 
   /// Check that media server has correct state for completing initial setup.
   ///
-  /// Check that media server has correct state for completing initial setup. 
-  ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
@@ -52,8 +50,6 @@ class MediaInternalApi {
   }
 
   /// Check that media server has correct state for completing initial setup.
-  ///
-  /// Check that media server has correct state for completing initial setup. 
   ///
   /// Parameters:
   ///

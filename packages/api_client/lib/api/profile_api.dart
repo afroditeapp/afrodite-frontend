@@ -18,8 +18,6 @@ class ProfileApi {
 
   /// Delete favorite profile
   ///
-  /// Delete favorite profile
-  ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
@@ -52,8 +50,6 @@ class ProfileApi {
 
   /// Delete favorite profile
   ///
-  /// Delete favorite profile
-  ///
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
@@ -64,8 +60,6 @@ class ProfileApi {
     }
   }
 
-  /// Get info what profile attributes server supports.
-  ///
   /// Get info what profile attributes server supports.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -95,8 +89,6 @@ class ProfileApi {
   }
 
   /// Get info what profile attributes server supports.
-  ///
-  /// Get info what profile attributes server supports.
   Future<AvailableProfileAttributes?> getAvailableProfileAttributes() async {
     final response = await getAvailableProfileAttributesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -112,8 +104,6 @@ class ProfileApi {
     return null;
   }
 
-  /// Get list of all favorite profiles.
-  ///
   /// Get list of all favorite profiles.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -143,8 +133,6 @@ class ProfileApi {
   }
 
   /// Get list of all favorite profiles.
-  ///
-  /// Get list of all favorite profiles.
   Future<FavoriteProfilesPage?> getFavoriteProfiles() async {
     final response = await getFavoriteProfilesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -160,8 +148,6 @@ class ProfileApi {
     return null;
   }
 
-  /// Get location for account which makes this request.
-  ///
   /// Get location for account which makes this request.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -191,8 +177,6 @@ class ProfileApi {
   }
 
   /// Get location for account which makes this request.
-  ///
-  /// Get location for account which makes this request.
   Future<Location?> getLocation() async {
     final response = await getLocationWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -210,7 +194,7 @@ class ProfileApi {
 
   /// Get account's current profile.
   ///
-  /// Get account's current profile.  Response includes version UUID which can be used for caching.  # Access  ## Own profile Unrestricted access.  ## Public other profiles Normal account state required.  ## Private other profiles If the profile is a match, then the profile can be accessed if query parameter `is_match` is set to `true`.  If the profile is not a match, then capability `admin_view_all_profiles` is required.  # Microservice notes If account feature is set as external service then cached capability information from account service is used for access checks.
+  /// Response includes version UUID which can be used for caching.  # Access  ## Own profile Unrestricted access.  ## Public other profiles Normal account state required.  ## Private other profiles If the profile is a match, then the profile can be accessed if query parameter `is_match` is set to `true`.  If the profile is not a match, then capability `admin_view_all_profiles` is required.  # Microservice notes If account feature is set as external service then cached capability information from account service is used for access checks.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -258,7 +242,7 @@ class ProfileApi {
 
   /// Get account's current profile.
   ///
-  /// Get account's current profile.  Response includes version UUID which can be used for caching.  # Access  ## Own profile Unrestricted access.  ## Public other profiles Normal account state required.  ## Private other profiles If the profile is a match, then the profile can be accessed if query parameter `is_match` is set to `true`.  If the profile is not a match, then capability `admin_view_all_profiles` is required.  # Microservice notes If account feature is set as external service then cached capability information from account service is used for access checks.
+  /// Response includes version UUID which can be used for caching.  # Access  ## Own profile Unrestricted access.  ## Public other profiles Normal account state required.  ## Private other profiles If the profile is a match, then the profile can be accessed if query parameter `is_match` is set to `true`.  If the profile is not a match, then capability `admin_view_all_profiles` is required.  # Microservice notes If account feature is set as external service then cached capability information from account service is used for access checks.
   ///
   /// Parameters:
   ///
@@ -284,8 +268,6 @@ class ProfileApi {
     return null;
   }
 
-  /// Get current profile attribute filter values.
-  ///
   /// Get current profile attribute filter values.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -315,8 +297,6 @@ class ProfileApi {
   }
 
   /// Get current profile attribute filter values.
-  ///
-  /// Get current profile attribute filter values.
   Future<ProfileAttributeFilterList?> getProfileAttributeFilters() async {
     final response = await getProfileAttributeFiltersWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -334,7 +314,7 @@ class ProfileApi {
 
   /// Get account's current profile from database. Debug mode must be enabled
   ///
-  /// Get account's current profile from database. Debug mode must be enabled that route can be used.
+  /// that route can be used.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -369,7 +349,7 @@ class ProfileApi {
 
   /// Get account's current profile from database. Debug mode must be enabled
   ///
-  /// Get account's current profile from database. Debug mode must be enabled that route can be used.
+  /// that route can be used.
   ///
   /// Parameters:
   ///
@@ -389,8 +369,6 @@ class ProfileApi {
     return null;
   }
 
-  /// Get account's current search age range
-  ///
   /// Get account's current search age range
   ///
   /// Note: This method returns the HTTP [Response].
@@ -420,8 +398,6 @@ class ProfileApi {
   }
 
   /// Get account's current search age range
-  ///
-  /// Get account's current search age range
   Future<ProfileSearchAgeRange?> getSearchAgeRange() async {
     final response = await getSearchAgeRangeWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -439,7 +415,7 @@ class ProfileApi {
 
   /// Get account's current search groups
   ///
-  /// Get account's current search groups (gender and what gender user is looking for)
+  /// (gender and what gender user is looking for)
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getSearchGroupsWithHttpInfo() async {
@@ -469,7 +445,7 @@ class ProfileApi {
 
   /// Get account's current search groups
   ///
-  /// Get account's current search groups (gender and what gender user is looking for)
+  /// (gender and what gender user is looking for)
   Future<SearchGroups?> getSearchGroups() async {
     final response = await getSearchGroupsWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -485,8 +461,6 @@ class ProfileApi {
     return null;
   }
 
-  /// Add new favorite profile
-  ///
   /// Add new favorite profile
   ///
   /// Note: This method returns the HTTP [Response].
@@ -521,8 +495,6 @@ class ProfileApi {
 
   /// Add new favorite profile
   ///
-  /// Add new favorite profile
-  ///
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
@@ -533,8 +505,6 @@ class ProfileApi {
     }
   }
 
-  /// Post (updates iterator) to get next page of profile list.
-  ///
   /// Post (updates iterator) to get next page of profile list.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -569,8 +539,6 @@ class ProfileApi {
 
   /// Post (updates iterator) to get next page of profile list.
   ///
-  /// Post (updates iterator) to get next page of profile list.
-  ///
   /// Parameters:
   ///
   /// * [IteratorSessionId] iteratorSessionId (required):
@@ -591,7 +559,7 @@ class ProfileApi {
 
   /// Update profile information.
   ///
-  /// Update profile information.  Writes the profile to the database only if it is changed.  # Requirements - Profile attributes must be valid - Profile text must be empty - Profile age must be same as currently or same as the current age calculated from birthdate  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
+  /// Writes the profile to the database only if it is changed.  # Requirements - Profile attributes must be valid - Profile text must be empty - Profile age must be same as currently or same as the current age calculated from birthdate  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -625,7 +593,7 @@ class ProfileApi {
 
   /// Update profile information.
   ///
-  /// Update profile information.  Writes the profile to the database only if it is changed.  # Requirements - Profile attributes must be valid - Profile text must be empty - Profile age must be same as currently or same as the current age calculated from birthdate  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
+  /// Writes the profile to the database only if it is changed.  # Requirements - Profile attributes must be valid - Profile text must be empty - Profile age must be same as currently or same as the current age calculated from birthdate  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
   ///
   /// Parameters:
   ///
@@ -637,8 +605,6 @@ class ProfileApi {
     }
   }
 
-  /// Set profile attribute filter values.
-  ///
   /// Set profile attribute filter values.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -673,8 +639,6 @@ class ProfileApi {
 
   /// Set profile attribute filter values.
   ///
-  /// Set profile attribute filter values.
-  ///
   /// Parameters:
   ///
   /// * [ProfileAttributeFilterListUpdate] profileAttributeFilterListUpdate (required):
@@ -687,7 +651,7 @@ class ProfileApi {
 
   /// Post account's current profile directly to database. Debug mode must be enabled
   ///
-  /// Post account's current profile directly to database. Debug mode must be enabled that route can be used.
+  /// that route can be used.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -721,7 +685,7 @@ class ProfileApi {
 
   /// Post account's current profile directly to database. Debug mode must be enabled
   ///
-  /// Post account's current profile directly to database. Debug mode must be enabled that route can be used.
+  /// that route can be used.
   ///
   /// Parameters:
   ///
@@ -735,7 +699,7 @@ class ProfileApi {
 
   /// Reset profile paging.
   ///
-  /// Reset profile paging.  After this request getting next profiles will continue from the nearest profiles.
+  /// After this request getting next profiles will continue from the nearest profiles.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> postResetProfilePagingWithHttpInfo() async {
@@ -765,7 +729,7 @@ class ProfileApi {
 
   /// Reset profile paging.
   ///
-  /// Reset profile paging.  After this request getting next profiles will continue from the nearest profiles.
+  /// After this request getting next profiles will continue from the nearest profiles.
   Future<IteratorSessionId?> postResetProfilePaging() async {
     final response = await postResetProfilePagingWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -781,8 +745,6 @@ class ProfileApi {
     return null;
   }
 
-  /// Set account's current search age range
-  ///
   /// Set account's current search age range
   ///
   /// Note: This method returns the HTTP [Response].
@@ -817,8 +779,6 @@ class ProfileApi {
 
   /// Set account's current search age range
   ///
-  /// Set account's current search age range
-  ///
   /// Parameters:
   ///
   /// * [ProfileSearchAgeRange] profileSearchAgeRange (required):
@@ -831,7 +791,7 @@ class ProfileApi {
 
   /// Set account's current search groups
   ///
-  /// Set account's current search groups (gender and what gender user is looking for)
+  /// (gender and what gender user is looking for)
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -865,7 +825,7 @@ class ProfileApi {
 
   /// Set account's current search groups
   ///
-  /// Set account's current search groups (gender and what gender user is looking for)
+  /// (gender and what gender user is looking for)
   ///
   /// Parameters:
   ///
@@ -877,8 +837,6 @@ class ProfileApi {
     }
   }
 
-  /// Update location for account which makes this request.
-  ///
   /// Update location for account which makes this request.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -911,8 +869,6 @@ class ProfileApi {
     );
   }
 
-  /// Update location for account which makes this request.
-  ///
   /// Update location for account which makes this request.
   ///
   /// Parameters:

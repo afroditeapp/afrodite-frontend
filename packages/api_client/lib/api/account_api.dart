@@ -18,7 +18,7 @@ class AccountApi {
 
   /// Cancel account deletion.
   ///
-  /// Cancel account deletion.  Account state will move to previous state.
+  /// Account state will move to previous state.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> deleteCancelDeletionWithHttpInfo() async {
@@ -48,7 +48,7 @@ class AccountApi {
 
   /// Cancel account deletion.
   ///
-  /// Cancel account deletion.  Account state will move to previous state.
+  /// Account state will move to previous state.
   Future<void> deleteCancelDeletion() async {
     final response = await deleteCancelDeletionWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -56,8 +56,6 @@ class AccountApi {
     }
   }
 
-  /// Get changeable user information to account.
-  ///
   /// Get changeable user information to account.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -87,8 +85,6 @@ class AccountApi {
   }
 
   /// Get changeable user information to account.
-  ///
-  /// Get changeable user information to account.
   Future<AccountData?> getAccountData() async {
     final response = await getAccountDataWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -104,8 +100,6 @@ class AccountApi {
     return null;
   }
 
-  /// Get non-changeable user information to account.
-  ///
   /// Get non-changeable user information to account.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -135,8 +129,6 @@ class AccountApi {
   }
 
   /// Get non-changeable user information to account.
-  ///
-  /// Get non-changeable user information to account.
   Future<AccountSetup?> getAccountSetup() async {
     final response = await getAccountSetupWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -152,8 +144,6 @@ class AccountApi {
     return null;
   }
 
-  /// Get current account state.
-  ///
   /// Get current account state.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -183,8 +173,6 @@ class AccountApi {
   }
 
   /// Get current account state.
-  ///
-  /// Get current account state.
   Future<Account?> getAccountState() async {
     final response = await getAccountStateWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -202,7 +190,7 @@ class AccountApi {
 
   /// Get deletion status.
   ///
-  /// Get deletion status.  Get information when account will be really deleted.
+  /// Get information when account will be really deleted.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getDeletionStatusWithHttpInfo() async {
@@ -232,7 +220,7 @@ class AccountApi {
 
   /// Get deletion status.
   ///
-  /// Get deletion status.  Get information when account will be really deleted.
+  /// Get information when account will be really deleted.
   Future<DeleteStatus?> getDeletionStatus() async {
     final response = await getDeletionStatusWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -291,8 +279,6 @@ class AccountApi {
 
   /// Set changeable user information to account.
   ///
-  /// Set changeable user information to account.
-  ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
@@ -325,8 +311,6 @@ class AccountApi {
 
   /// Set changeable user information to account.
   ///
-  /// Set changeable user information to account.
-  ///
   /// Parameters:
   ///
   /// * [AccountData] accountData (required):
@@ -337,8 +321,6 @@ class AccountApi {
     }
   }
 
-  /// Setup non-changeable user information during `initial setup` state.
-  ///
   /// Setup non-changeable user information during `initial setup` state.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -373,8 +355,6 @@ class AccountApi {
 
   /// Setup non-changeable user information during `initial setup` state.
   ///
-  /// Setup non-changeable user information during `initial setup` state.
-  ///
   /// Parameters:
   ///
   /// * [SetAccountSetup] setAccountSetup (required):
@@ -387,7 +367,7 @@ class AccountApi {
 
   /// Complete initial setup.
   ///
-  /// Complete initial setup.  Requirements: - Account must be in `InitialSetup` state. - Account must have a valid AccountSetup info set. - Account must have a moderation request. - The current or pending security image of the account is in the request. - The current or pending first profile image of the account is in the request. 
+  /// Requirements: - Account must be in `InitialSetup` state. - Account must have a valid AccountSetup info set. - Account must have a moderation request. - The current or pending security image of the account is in the request. - The current or pending first profile image of the account is in the request. 
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> postCompleteSetupWithHttpInfo() async {
@@ -417,7 +397,7 @@ class AccountApi {
 
   /// Complete initial setup.
   ///
-  /// Complete initial setup.  Requirements: - Account must be in `InitialSetup` state. - Account must have a valid AccountSetup info set. - Account must have a moderation request. - The current or pending security image of the account is in the request. - The current or pending first profile image of the account is in the request. 
+  /// Requirements: - Account must be in `InitialSetup` state. - Account must have a valid AccountSetup info set. - Account must have a moderation request. - The current or pending security image of the account is in the request. - The current or pending first profile image of the account is in the request. 
   Future<void> postCompleteSetup() async {
     final response = await postCompleteSetupWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -427,7 +407,7 @@ class AccountApi {
 
   /// Delete account.
   ///
-  /// Delete account.  Changes account state to `pending deletion` from all possible states. Previous state will be saved, so it will be possible to stop automatic deletion process.
+  /// Changes account state to `pending deletion` from all possible states. Previous state will be saved, so it will be possible to stop automatic deletion process.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> postDeleteWithHttpInfo() async {
@@ -457,7 +437,7 @@ class AccountApi {
 
   /// Delete account.
   ///
-  /// Delete account.  Changes account state to `pending deletion` from all possible states. Previous state will be saved, so it will be possible to stop automatic deletion process.
+  /// Changes account state to `pending deletion` from all possible states. Previous state will be saved, so it will be possible to stop automatic deletion process.
   Future<void> postDelete() async {
     final response = await postDeleteWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -467,7 +447,7 @@ class AccountApi {
 
   /// Get demo account's available accounts.
   ///
-  /// Get demo account's available accounts.  This path is using HTTP POST because there is JSON in the request body.
+  /// This path is using HTTP POST because there is JSON in the request body.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -501,7 +481,7 @@ class AccountApi {
 
   /// Get demo account's available accounts.
   ///
-  /// Get demo account's available accounts.  This path is using HTTP POST because there is JSON in the request body.
+  /// This path is using HTTP POST because there is JSON in the request body.
   ///
   /// Parameters:
   ///
@@ -573,7 +553,7 @@ class AccountApi {
 
   /// Access demo mode, which allows accessing all or specific accounts
   ///
-  /// Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
+  /// depending on the server configuration.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -607,7 +587,7 @@ class AccountApi {
 
   /// Access demo mode, which allows accessing all or specific accounts
   ///
-  /// Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
+  /// depending on the server configuration.
   ///
   /// Parameters:
   ///
@@ -723,7 +703,7 @@ class AccountApi {
 
   /// Start new session with sign in with Apple or Google. Creates new account if
   ///
-  /// Start new session with sign in with Apple or Google. Creates new account if it does not exists.
+  /// it does not exists.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -757,7 +737,7 @@ class AccountApi {
 
   /// Start new session with sign in with Apple or Google. Creates new account if
   ///
-  /// Start new session with sign in with Apple or Google. Creates new account if it does not exists.
+  /// it does not exists.
   ///
   /// Parameters:
   ///
@@ -779,7 +759,7 @@ class AccountApi {
 
   /// Update current or pending profile visiblity value.
   ///
-  /// Update current or pending profile visiblity value.  NOTE: Client uses this in initial setup.
+  /// NOTE: Client uses this in initial setup.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -813,7 +793,7 @@ class AccountApi {
 
   /// Update current or pending profile visiblity value.
   ///
-  /// Update current or pending profile visiblity value.  NOTE: Client uses this in initial setup.
+  /// NOTE: Client uses this in initial setup.
   ///
   /// Parameters:
   ///

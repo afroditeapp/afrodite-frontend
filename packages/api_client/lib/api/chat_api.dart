@@ -18,7 +18,7 @@ class ChatApi {
 
   /// Delete sent like.
   ///
-  /// Delete sent like.  Delete will not work if profile is a match.
+  /// Delete will not work if profile is a match.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -52,7 +52,7 @@ class ChatApi {
 
   /// Delete sent like.
   ///
-  /// Delete sent like.  Delete will not work if profile is a match.
+  /// Delete will not work if profile is a match.
   ///
   /// Parameters:
   ///
@@ -72,8 +72,6 @@ class ChatApi {
     return null;
   }
 
-  /// Delete list of pending messages
-  ///
   /// Delete list of pending messages
   ///
   /// Note: This method returns the HTTP [Response].
@@ -108,8 +106,6 @@ class ChatApi {
 
   /// Delete list of pending messages
   ///
-  /// Delete list of pending messages
-  ///
   /// Parameters:
   ///
   /// * [PendingMessageDeleteList] pendingMessageDeleteList (required):
@@ -120,8 +116,6 @@ class ChatApi {
     }
   }
 
-  /// Get matches
-  ///
   /// Get matches
   ///
   /// Note: This method returns the HTTP [Response].
@@ -151,8 +145,6 @@ class ChatApi {
   }
 
   /// Get matches
-  ///
-  /// Get matches
   Future<MatchesPage?> getMatches() async {
     final response = await getMatchesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -168,8 +160,6 @@ class ChatApi {
     return null;
   }
 
-  /// Get message number of the most recent message that the recipient has viewed.
-  ///
   /// Get message number of the most recent message that the recipient has viewed.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -204,8 +194,6 @@ class ChatApi {
 
   /// Get message number of the most recent message that the recipient has viewed.
   ///
-  /// Get message number of the most recent message that the recipient has viewed.
-  ///
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
@@ -226,7 +214,7 @@ class ChatApi {
 
   /// Get list of pending messages.
   ///
-  /// Get list of pending messages.  The returned bytes is list of objects with following data: - UTF-8 text length encoded as 16 bit little endian number. - UTF-8 text which is PendingMessage JSON. - Binary message data length as 16 bit little endian number. - Binary message data
+  /// The returned bytes is list of objects with following data: - UTF-8 text length encoded as 16 bit little endian number. - UTF-8 text which is PendingMessage JSON. - Binary message data length as 16 bit little endian number. - Binary message data
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getPendingMessagesWithHttpInfo() async {
@@ -256,7 +244,7 @@ class ChatApi {
 
   /// Get list of pending messages.
   ///
-  /// Get list of pending messages.  The returned bytes is list of objects with following data: - UTF-8 text length encoded as 16 bit little endian number. - UTF-8 text which is PendingMessage JSON. - Binary message data length as 16 bit little endian number. - Binary message data
+  /// The returned bytes is list of objects with following data: - UTF-8 text length encoded as 16 bit little endian number. - UTF-8 text which is PendingMessage JSON. - Binary message data length as 16 bit little endian number. - Binary message data
   Future<MultipartFile?> getPendingMessages() async {
     final response = await getPendingMessagesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -272,8 +260,6 @@ class ChatApi {
     return null;
   }
 
-  /// Get current public key of some account
-  ///
   /// Get current public key of some account
   ///
   /// Note: This method returns the HTTP [Response].
@@ -313,8 +299,6 @@ class ChatApi {
 
   /// Get current public key of some account
   ///
-  /// Get current public key of some account
-  ///
   /// Parameters:
   ///
   /// * [String] accountId (required):
@@ -335,8 +319,6 @@ class ChatApi {
     return null;
   }
 
-  /// Get list of received blocks
-  ///
   /// Get list of received blocks
   ///
   /// Note: This method returns the HTTP [Response].
@@ -366,8 +348,6 @@ class ChatApi {
   }
 
   /// Get list of received blocks
-  ///
-  /// Get list of received blocks
   Future<ReceivedBlocksPage?> getReceivedBlocks() async {
     final response = await getReceivedBlocksWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -385,7 +365,7 @@ class ChatApi {
 
   /// Get received likes.
   ///
-  /// Get received likes.  Profile will not be returned if: - Profile is blocked - Profile is a match
+  /// Profile will not be returned if: - Profile is blocked - Profile is a match
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getReceivedLikesWithHttpInfo() async {
@@ -415,7 +395,7 @@ class ChatApi {
 
   /// Get received likes.
   ///
-  /// Get received likes.  Profile will not be returned if: - Profile is blocked - Profile is a match
+  /// Profile will not be returned if: - Profile is blocked - Profile is a match
   Future<ReceivedLikesPage?> getReceivedLikes() async {
     final response = await getReceivedLikesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -433,7 +413,7 @@ class ChatApi {
 
   /// Get conversation specific expected sender message ID which API caller
   ///
-  /// Get conversation specific expected sender message ID which API caller account owns.  Default value is returned if the accounts are not in match state. Also state change to match state will reset the ID.
+  /// account owns.  Default value is returned if the accounts are not in match state. Also state change to match state will reset the ID.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -468,7 +448,7 @@ class ChatApi {
 
   /// Get conversation specific expected sender message ID which API caller
   ///
-  /// Get conversation specific expected sender message ID which API caller account owns.  Default value is returned if the accounts are not in match state. Also state change to match state will reset the ID.
+  /// account owns.  Default value is returned if the accounts are not in match state. Also state change to match state will reset the ID.
   ///
   /// Parameters:
   ///
@@ -488,8 +468,6 @@ class ChatApi {
     return null;
   }
 
-  /// Get list of sent blocks
-  ///
   /// Get list of sent blocks
   ///
   /// Note: This method returns the HTTP [Response].
@@ -519,8 +497,6 @@ class ChatApi {
   }
 
   /// Get list of sent blocks
-  ///
-  /// Get list of sent blocks
   Future<SentBlocksPage?> getSentBlocks() async {
     final response = await getSentBlocksWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -538,7 +514,7 @@ class ChatApi {
 
   /// Get sent likes.
   ///
-  /// Get sent likes.  Profile will not be returned if:  - Profile is hidden (not public) - Profile is blocked - Profile is a match
+  /// Profile will not be returned if:  - Profile is hidden (not public) - Profile is blocked - Profile is a match
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getSentLikesWithHttpInfo() async {
@@ -568,7 +544,7 @@ class ChatApi {
 
   /// Get sent likes.
   ///
-  /// Get sent likes.  Profile will not be returned if:  - Profile is hidden (not public) - Profile is blocked - Profile is a match
+  /// Profile will not be returned if:  - Profile is hidden (not public) - Profile is blocked - Profile is a match
   Future<SentLikesPage?> getSentLikes() async {
     final response = await getSentLikesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -584,8 +560,6 @@ class ChatApi {
     return null;
   }
 
-  /// Block profile
-  ///
   /// Block profile
   ///
   /// Note: This method returns the HTTP [Response].
@@ -620,8 +594,6 @@ class ChatApi {
 
   /// Block profile
   ///
-  /// Block profile
-  ///
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
@@ -634,7 +606,7 @@ class ChatApi {
 
   /// Get pending notification and reset pending notification.
   ///
-  /// Get pending notification and reset pending notification.  Requesting this route is always valid to avoid figuring out device token values more easily.
+  /// Requesting this route is always valid to avoid figuring out device token values more easily.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -668,7 +640,7 @@ class ChatApi {
 
   /// Get pending notification and reset pending notification.
   ///
-  /// Get pending notification and reset pending notification.  Requesting this route is always valid to avoid figuring out device token values more easily.
+  /// Requesting this route is always valid to avoid figuring out device token values more easily.
   ///
   /// Parameters:
   ///
@@ -688,8 +660,6 @@ class ChatApi {
     return null;
   }
 
-  /// Update message number of the most recent message that the recipient has viewed.
-  ///
   /// Update message number of the most recent message that the recipient has viewed.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -724,8 +694,6 @@ class ChatApi {
 
   /// Update message number of the most recent message that the recipient has viewed.
   ///
-  /// Update message number of the most recent message that the recipient has viewed.
-  ///
   /// Parameters:
   ///
   /// * [UpdateMessageViewStatus] updateMessageViewStatus (required):
@@ -738,7 +706,7 @@ class ChatApi {
 
   /// Replace current public key with a new public key.
   ///
-  /// Replace current public key with a new public key. Returns public key ID number which server increments. This must be called only when needed as this route will fail every time if current public key ID number is i64::MAX.  Only version 1 public keys are currently supported.
+  /// Returns public key ID number which server increments. This must be called only when needed as this route will fail every time if current public key ID number is i64::MAX.  Only version 1 public keys are currently supported.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -772,7 +740,7 @@ class ChatApi {
 
   /// Replace current public key with a new public key.
   ///
-  /// Replace current public key with a new public key. Returns public key ID number which server increments. This must be called only when needed as this route will fail every time if current public key ID number is i64::MAX.  Only version 1 public keys are currently supported.
+  /// Returns public key ID number which server increments. This must be called only when needed as this route will fail every time if current public key ID number is i64::MAX.  Only version 1 public keys are currently supported.
   ///
   /// Parameters:
   ///
@@ -794,7 +762,7 @@ class ChatApi {
 
   /// Send a like to some account. If both will like each other, then
   ///
-  /// Send a like to some account. If both will like each other, then the accounts will be a match.
+  /// the accounts will be a match.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -828,7 +796,7 @@ class ChatApi {
 
   /// Send a like to some account. If both will like each other, then
   ///
-  /// Send a like to some account. If both will like each other, then the accounts will be a match.
+  /// the accounts will be a match.
   ///
   /// Parameters:
   ///
@@ -850,7 +818,7 @@ class ChatApi {
 
   /// Send message to a match.
   ///
-  /// Send message to a match.  Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.
+  /// Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -899,7 +867,7 @@ class ChatApi {
 
   /// Send message to a match.
   ///
-  /// Send message to a match.  Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.
+  /// Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.
   ///
   /// Parameters:
   ///
@@ -931,7 +899,7 @@ class ChatApi {
 
   /// Set conversation specific expected sender message ID which API caller
   ///
-  /// Set conversation specific expected sender message ID which API caller account owns.  This errors if the accounts are not in match state.
+  /// account owns.  This errors if the accounts are not in match state.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -968,7 +936,7 @@ class ChatApi {
 
   /// Set conversation specific expected sender message ID which API caller
   ///
-  /// Set conversation specific expected sender message ID which API caller account owns.  This errors if the accounts are not in match state.
+  /// account owns.  This errors if the accounts are not in match state.
   ///
   /// Parameters:
   ///
@@ -1031,8 +999,6 @@ class ChatApi {
 
   /// Unblock profile
   ///
-  /// Unblock profile
-  ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
@@ -1063,8 +1029,6 @@ class ChatApi {
     );
   }
 
-  /// Unblock profile
-  ///
   /// Unblock profile
   ///
   /// Parameters:
