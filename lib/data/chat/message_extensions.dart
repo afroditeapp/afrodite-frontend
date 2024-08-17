@@ -182,6 +182,8 @@ extension MessageExtensions on ChatRepository {
             await db.messageAction((db) => db.updateSentMessageState(
               id,
               SentMessageState.sendingError,
+              null,
+              null,
             ));
             yield e;
         }
@@ -271,44 +273,11 @@ extension MessageExtensions on ChatRepository {
     final dataIdentifierAndEncryptedMessage = [0];
     dataIdentifierAndEncryptedMessage.addAll(encryptedMessage);
 
-    // TODO: Proper sender message ID support
-    final senderMessageIdResult = await api.chatAction((api) => api.postSenderMessageId(
-      accountId.accountId,
-      SenderMessageId(id: 0),
-    ));
-    if (senderMessageIdResult.isErr()) {
-      yield ErrorAfterMessageSaving(localId);
-      return;
-    }
-
-    final result = await api.chat((api) => api.postSendMessage(
-      accountId.accountId,
-      receiverPublicKey.id.id,
-      receiverPublicKey.version.version,
-      0,
-      MultipartFile.fromBytes("", dataIdentifierAndEncryptedMessage),
-    )).ok();
-    if (result == null) {
-      yield ErrorAfterMessageSaving(localId);
-      return;
-    }
-
-    if (result.errorTooManyPendingMessages) {
-      yield ErrorAfterMessageSaving(localId, MessageSendingErrorDetails.tooManyPendingMessages);
-      return;
-    }
-
-    if (result.errorReceiverPublicKeyOutdated) {
-      // Retry once after public key refresh
-      log.error("Send message error: public key outdated");
-
-      final receiverPublicKeyOrNull = await _getPublicKeyForForeignAccount(accountId, forceDownload: true).ok();
-      if (receiverPublicKeyOrNull == null) {
-        yield ErrorAfterMessageSaving(localId);
-        return;
-      }
-      receiverPublicKey = receiverPublicKeyOrNull;
-
+    int unixTimeFromServer;
+    int messageNumberFromServer;
+    var publicKeyRefreshTried = false;
+    var messageSenderIdUpdateTried = false;
+    while (true) {
       final result = await api.chat((api) => api.postSendMessage(
         accountId.accountId,
         receiverPublicKey.id.id,
@@ -327,15 +296,60 @@ extension MessageExtensions on ChatRepository {
       }
 
       if (result.errorReceiverPublicKeyOutdated) {
+        if (publicKeyRefreshTried) {
+          yield ErrorAfterMessageSaving(localId);
+          return;
+        } else {
+          publicKeyRefreshTried = true;
+
+          // Retry once after public key refresh
+          log.error("Send message error: public key outdated");
+
+          final receiverPublicKeyOrNull = await _getPublicKeyForForeignAccount(accountId, forceDownload: true).ok();
+          if (receiverPublicKeyOrNull == null) {
+            yield ErrorAfterMessageSaving(localId);
+            return;
+          }
+          receiverPublicKey = receiverPublicKeyOrNull;
+        }
+      }
+
+      final notExpectedSenderMessageId = result.errorSenderMessageIdWasNotExpectedId;
+      if (notExpectedSenderMessageId != null) {
+        if (messageSenderIdUpdateTried) {
+          yield ErrorAfterMessageSaving(localId);
+          return;
+        } else {
+          messageSenderIdUpdateTried = true;
+
+          // TODO: Proper sender message ID support
+          final senderMessageIdResult = await api.chatAction((api) => api.postSenderMessageId(
+            accountId.accountId,
+            SenderMessageId(id: 0),
+          ));
+          if (senderMessageIdResult.isErr()) {
+            yield ErrorAfterMessageSaving(localId);
+            return;
+          }
+        }
+      }
+
+      final unixTimeFromResult = result.unixTime;
+      final messageNumberFromResult = result.messageNumber;
+      if (unixTimeFromResult == null || messageNumberFromResult == null) {
         yield ErrorAfterMessageSaving(localId);
         return;
       }
+      unixTimeFromServer = unixTimeFromResult;
+      messageNumberFromServer = messageNumberFromResult;
+      break;
     }
 
-    // TODO: Server should return the unix time and message number for the message
     final updateSentState = await db.messageAction((db) => db.updateSentMessageState(
       localId,
       SentMessageState.sent,
+      unixTimeFromServer,
+      MessageNumber(messageNumber: messageNumberFromServer),
     ));
     if (updateSentState.isErr()) {
       yield ErrorAfterMessageSaving(localId);

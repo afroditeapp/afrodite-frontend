@@ -73,11 +73,21 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
   Future<void> updateSentMessageState(
     LocalMessageId localId,
     SentMessageState sentState,
+    int? unixTimeFromServer,
+    MessageNumber? messageNumberFromServer,
   ) async {
+    final UtcDateTime? unixTime;
+    if (unixTimeFromServer != null) {
+      unixTime = UtcDateTime.fromUnixEpochMilliseconds(unixTimeFromServer * 1000);
+    } else {
+      unixTime = null;
+    }
     await (update(messages)
       ..where((t) => t.id.equals(localId.id))
     ).write(MessagesCompanion(
       sentMessageState: Value(sentState.number),
+      unixTime: Value(unixTime),
+      messageNumber: Value(messageNumberFromServer),
     ));
   }
 
