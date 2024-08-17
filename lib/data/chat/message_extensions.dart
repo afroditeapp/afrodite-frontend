@@ -272,7 +272,7 @@ extension MessageExtensions on ChatRepository {
     dataIdentifierAndEncryptedMessage.addAll(encryptedMessage);
 
     // TODO: Proper sender message ID support
-    final senderMessageIdResult = await api.chat((api) => api.postSenderMessageId(
+    final senderMessageIdResult = await api.chatAction((api) => api.postSenderMessageId(
       accountId.accountId,
       SenderMessageId(id: 0),
     ));
