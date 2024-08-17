@@ -130,6 +130,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
   if (!screenContext.mounted) {
     return;
   }
+  FocusScope.of(screenContext).unfocus();
 
   final pageKey = PageKey();
   MyNavigator.showDialog<void>(
