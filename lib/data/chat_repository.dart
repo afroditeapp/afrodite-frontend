@@ -6,6 +6,7 @@ import 'package:native_utils/message.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/chat/message_database_iterator.dart';
+import 'package:pihka_frontend/data/chat/message_extensions.dart';
 import 'package:pihka_frontend/data/chat/message_key_generator.dart';
 import 'package:pihka_frontend/data/general/notification/state/like_received.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
@@ -27,24 +28,25 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   final AccountDatabaseManager db;
   final ProfileRepository profile;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final MessageKeyManager messageKeyManager;
 
   ChatRepository({
     required MediaRepository media,
     required this.profile,
     required this.accountBackgroundDb,
     required this.db,
+    required this.messageKeyManager,
     required ServerConnectionManager connectionManager,
   }) :
-    messageKeyManager = MessageKeyManager(db, connectionManager.api),
     syncHandler = ConnectedActionScheduler(connectionManager),
     profileEntryDownloader = ProfileEntryDownloader(media, accountBackgroundDb, db, connectionManager.api),
     sentBlocksIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getSentBlocksList(startIndex, limit)).ok()),
     receivedLikesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getReceivedLikesList(startIndex, limit)).ok()),
     matchesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getMatchesList(startIndex, limit)).ok()),
-    api = connectionManager.api;
+    api = connectionManager.api,
+    messageManager = MessageManager(messageKeyManager, connectionManager.api, db, profile, accountBackgroundDb);
 
   final ConnectedActionScheduler syncHandler;
-  final MessageKeyManager messageKeyManager;
 
   final ProfileEntryDownloader profileEntryDownloader;
   final AccountIdDatabaseIterator sentBlocksIterator;
@@ -52,14 +54,17 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   final AccountIdDatabaseIterator matchesIterator;
   final ApiManager api;
 
+  final MessageManager messageManager;
+
   @override
   Future<void> init() async {
-    // empty
+    await messageManager.init();
   }
 
   @override
   Future<void> dispose() async {
     await syncHandler.dispose();
+    await messageManager.dispose();
   }
 
   @override
@@ -119,8 +124,8 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     await db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(true));
   }
 
-  Future<bool> isInMatches(AccountId accountId) async {
-    return await db.profileData((db) => db.isInMatches(accountId)).ok() ?? false;
+  Future<bool> isInMatches(AccountId accountId) {
+    return messageManager.isInMatches(accountId);
   }
 
   Future<bool> isInLikedProfiles(AccountId accountId) async {
@@ -393,5 +398,19 @@ class ChatRepository extends DataRepositoryWithLifecycle {
       allMessages.addAll(messages);
     }
     return allMessages;
+  }
+
+  // Message manager API
+
+  Future<void> receiveNewMessages() async {
+    final cmd = ReceiveNewMessages();
+    messageManager.queueCmd(cmd);
+    await cmd.waitUntilReady();
+  }
+
+  Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, String message) async* {
+    final cmd = SendMessage(accountId, message);
+    messageManager.queueCmd(cmd);
+    yield* cmd.events();
   }
 }

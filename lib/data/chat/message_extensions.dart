@@ -1,5 +1,6 @@
 
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -10,21 +11,88 @@ import 'package:logging/logging.dart';
 import 'package:native_utils/message.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
+import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/chat/message_converter.dart';
-import 'package:pihka_frontend/data/chat_repository.dart';
+import 'package:pihka_frontend/data/chat/message_key_generator.dart';
 import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
+import 'package:pihka_frontend/data/utils.dart';
+import 'package:pihka_frontend/database/account_background_database_manager.dart';
+import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/iterator.dart';
 import 'package:pihka_frontend/utils/result.dart';
+import 'package:rxdart/rxdart.dart';
 
 var log = Logger("MessageExtensions");
 
-/// Message receiving and sending
-extension MessageExtensions on ChatRepository {
+sealed class MessageManagerCommand {}
+class ReceiveNewMessages extends MessageManagerCommand {
+  final BehaviorSubject<bool> _completed = BehaviorSubject.seeded(false);
 
-  Future<void> receiveNewMessages() async {
+  Future<void> waitUntilReady() async  {
+    await _completed.where((v) { return v; }).first;
+    return;
+  }
+}
+class SendMessage extends MessageManagerCommand {
+  final ReplaySubject<MessageSendingEvent?> _events = ReplaySubject();
+  final AccountId receiverAccount;
+  final String message;
+  SendMessage(this.receiverAccount, this.message);
+
+  Stream<MessageSendingEvent> events() async* {
+    await for (final event in _events) {
+      if (event == null) {
+        return;
+      }
+      yield event;
+    }
+  }
+}
+
+/// Synchronized message actions
+class MessageManager extends LifecycleMethods {
+  final MessageKeyManager messageKeyManager;
+  final ApiManager api;
+  final AccountDatabaseManager db;
+  final ProfileRepository profile;
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
+
+  MessageManager(this.messageKeyManager, this.api, this.db, this.profile, this.accountBackgroundDb);
+
+  final PublishSubject<MessageManagerCommand> _commands = PublishSubject();
+  StreamSubscription<void>? _commandsSubscription;
+
+  @override
+  Future<void> init() async {
+    _commandsSubscription = _commands
+      .asyncMap((cmd) async {
+        switch (cmd) {
+          case ReceiveNewMessages(:final _completed):
+            await _receiveNewMessages();
+            _completed.add(true);
+          case SendMessage(:final _events, :final receiverAccount, :final message):
+            await for (final event in _sendMessageTo(receiverAccount, message)) {
+              _events.add(event);
+            }
+            _events.add(null);
+        }
+      })
+      .listen((_) {});
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _commandsSubscription?.cancel();
+  }
+
+  void queueCmd(MessageManagerCommand cmd) {
+    _commands.add(cmd);
+  }
+
+  Future<void> _receiveNewMessages() async {
     final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
     if (currentUser == null) {
       return;
@@ -38,7 +106,7 @@ extension MessageExtensions on ChatRepository {
       return;
     }
 
-    final newMessages = parsePendingMessagesResponse(newMessageBytes);
+    final newMessages = _parsePendingMessagesResponse(newMessageBytes);
     if (newMessages == null) {
       return;
     }
@@ -88,7 +156,7 @@ extension MessageExtensions on ChatRepository {
     // TODO: If request fails try again at some point.
   }
 
-  List<(PendingMessage, Uint8List)>? parsePendingMessagesResponse(Uint8List bytes) {
+  List<(PendingMessage, Uint8List)>? _parsePendingMessagesResponse(Uint8List bytes) {
     final bytesIterator = bytes.iterator;
     final List<(PendingMessage, Uint8List)> parsedData = [];
     while (true) {
@@ -169,7 +237,7 @@ extension MessageExtensions on ChatRepository {
     return MessageConverter().bytesToText(messageBytes);
   }
 
-  Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, String message) async* {
+  Stream<MessageSendingEvent> _sendMessageTo(AccountId accountId, String message) async* {
       await for (final e in _sendMessageToInternal(accountId, message)) {
         switch (e) {
           case SavedToLocalDb():
@@ -490,6 +558,10 @@ extension MessageExtensions on ChatRepository {
     return await api.chat((api) => api.getPublicKey(accountId.accountId, 1))
       .andThen((key) => db.profileAction((db) => db.updatePublicKey(accountId, key.key)))
       .mapErr((_) => null);
+  }
+
+  Future<bool> isInMatches(AccountId accountId) async {
+    return await db.profileData((db) => db.isInMatches(accountId)).ok() ?? false;
   }
 }
 

@@ -9,6 +9,7 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/config.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
+import 'package:pihka_frontend/data/chat/message_key_generator.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/common_repository.dart';
 import 'package:pihka_frontend/data/general/image_cache_settings.dart';
@@ -238,7 +239,14 @@ class LoginRepository extends DataRepository {
     final common = CommonRepository(connectionManager);
     final media = MediaRepository(account, accountDb, connectionManager);
     final profile = ProfileRepository(media, accountDb, accountBackgroundDb, connectionManager);
-    final chat = ChatRepository(media: media, profile: profile, accountBackgroundDb: accountBackgroundDb, db: accountDb, connectionManager: connectionManager);
+    final chat = ChatRepository(
+      media: media,
+      profile: profile,
+      accountBackgroundDb: accountBackgroundDb,
+      db: accountDb,
+      connectionManager: connectionManager,
+      messageKeyManager: MessageKeyManager(accountDb, connectionManager.api),
+    );
     final newRepositories = RepositoryInstances(
       accountId: accountId,
       common: common,
