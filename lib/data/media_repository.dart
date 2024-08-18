@@ -33,7 +33,9 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   final AccountRepository account;
 
-  MediaRepository(this.account, this.db, ServerConnectionManager connectionManager) :
+  final AccountId currentUser;
+
+  MediaRepository(this.account, this.db, ServerConnectionManager connectionManager, this.currentUser) :
     syncHandler = ConnectedActionScheduler(connectionManager),
     api = connectionManager.api;
 
@@ -131,13 +133,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   /// Reload current and pending profile content.
   Future<Result<void, void>> reloadMyProfileContent() async {
-    final accountId = await LoginRepository.getInstance().accountId.first;
-    if (accountId == null) {
-      log.error("reloadMyProfileContent: accountId is null");
-      return const Err(null);
-    }
-
-    final infoResult = await api.media((api) => api.getProfileContentInfo(accountId.accountId, isMatch: false)).ok();
+    final infoResult = await api.media((api) => api.getProfileContentInfo(currentUser.accountId, isMatch: false)).ok();
     final info = infoResult?.content;
     final version = infoResult?.version;
     if (info == null || version == null) {
@@ -149,7 +145,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
       return const Err(null);
     }
 
-    final pendingInfo = await api.media((api) => api.getPendingProfileContentInfo(accountId.accountId)).ok();
+    final pendingInfo = await api.media((api) => api.getPendingProfileContentInfo(currentUser.accountId)).ok();
     if (pendingInfo == null) {
       return const Err(null);
     }
@@ -159,13 +155,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   /// Reload current and pending security content.
   Future<Result<void, void>> reloadMySecurityContent() async {
-    final accountId = await LoginRepository.getInstance().accountId.first;
-    if (accountId == null) {
-      log.error("reloadMySecurityContent: accountId is null");
-      return const Err(null);
-    }
-
-    final info = await api.media((api) => api.getSecurityContentInfo(accountId.accountId)).ok();
+    final info = await api.media((api) => api.getSecurityContentInfo(currentUser.accountId)).ok();
     if (info == null) {
       return const Err(null);
     }
@@ -175,7 +165,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
       return const Err(null);
     }
 
-    final pendingInfo = await api.media((api) => api.getPendingSecurityContentInfo(accountId.accountId)).ok();
+    final pendingInfo = await api.media((api) => api.getPendingSecurityContentInfo(currentUser.accountId)).ok();
     if (pendingInfo == null) {
       return const Err(null);
     }
@@ -202,10 +192,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
       .onOk(() => reloadMyProfileContent());
 
   Future<Result<AccountContent, void>> loadAllContent() =>
-    LoginRepository.getInstance().accountId.firstOrNull
-      .okOr(const MissingValue())
-      .inspectErr((e) => e.logError(log))
-      .andThen((accountId) => api.media((api) => api.getAllAccountMediaContent(accountId.accountId)));
+    api.media((api) => api.getAllAccountMediaContent(currentUser.accountId));
 
   Future<Result<void, void>> createNewModerationRequest(List<ContentId> content) =>
     Future.value(ModerationRequestContentExtensions.fromList(content))

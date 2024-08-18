@@ -244,15 +244,16 @@ class LoginRepository extends DataRepository {
       rememberToInitRepositoriesLateFinal: true,
     );
     final common = CommonRepository(connectionManager);
-    final media = MediaRepository(account, accountDb, connectionManager);
-    final profile = ProfileRepository(media, accountDb, accountBackgroundDb, connectionManager);
+    final media = MediaRepository(account, accountDb, connectionManager, accountId);
+    final profile = ProfileRepository(media, accountDb, accountBackgroundDb, connectionManager, accountId);
     final chat = ChatRepository(
       media: media,
       profile: profile,
       accountBackgroundDb: accountBackgroundDb,
       db: accountDb,
       connectionManager: connectionManager,
-      messageKeyManager: MessageKeyManager(accountDb, connectionManager.api),
+      messageKeyManager: MessageKeyManager(accountDb, connectionManager.api, accountId),
+      currentUser: accountId,
     );
     final newRepositories = RepositoryInstances(
       accountId: accountId,

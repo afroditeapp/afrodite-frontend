@@ -25,7 +25,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   final MediaRepository media;
 
-  ProfileRepository(this.media, this.db, this.accountBackgroundDb, ServerConnectionManager connectionManager) :
+  final AccountId currentUser;
+
+  ProfileRepository(this.media, this.db, this.accountBackgroundDb, ServerConnectionManager connectionManager, this.currentUser) :
     syncHandler = ConnectedActionScheduler(connectionManager),
     _api = connectionManager.api;
 
@@ -255,13 +257,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<void, void>> reloadMyProfile() async {
-    final ownAccountId = await LoginRepository.getInstance().accountId.firstOrNull;
-    if (ownAccountId == null) {
-      log.warning("reloadMyProfile: accountId is null");
-      return const Err(null);
-    }
-
-    return await _api.profile((api) => api.getProfile(ownAccountId.accountId))
+    return await _api.profile((api) => api.getProfile(currentUser.accountId))
       .emptyErr()
       .andThen((info) async {
         final p = info.profile;

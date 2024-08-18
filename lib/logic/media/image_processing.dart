@@ -30,7 +30,6 @@ class SendImageToSlot extends ImageProcessingEvent {
 class ResetState extends ImageProcessingEvent {}
 
 class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData> {
-  final LoginRepository login = LoginRepository.getInstance();
   final AccountRepository account = LoginRepository.getInstance().repositories.account;
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
   final ImageCacheData imageCache = ImageCacheData.getInstance();
@@ -49,13 +48,7 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
         processingState: SendingInProgress(DataUploadInProgress()),
       ));
 
-      final accountId = await login.accountId.first;
-      if (accountId == null) {
-        emit(state.copyWith(
-          processingState: SendingFailed(),
-        ));
-        return;
-      }
+      final currentUser = media.currentUser;
 
       await for (final e in media.sendImageToSlot(data.img, data.slot, secureCapture: data.secureCapture)) {
         switch (e) {
@@ -74,7 +67,7 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
             ));
           }
           case ProcessingCompleted(:final contentId): {
-            final imgFile = await imageCache.getImage(accountId, contentId, media: media);
+            final imgFile = await imageCache.getImage(currentUser, contentId, media: media);
             if (imgFile == null) {
               emit(state.copyWith(
                 processingState: SendingFailed(),
@@ -82,7 +75,7 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
             } else {
               emit(state.copyWith(
                 processingState: null,
-                processedImage: ProcessedAccountImage(accountId, contentId, data.slot),
+                processedImage: ProcessedAccountImage(currentUser, contentId, data.slot),
               ));
             }
           }

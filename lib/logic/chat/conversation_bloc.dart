@@ -99,11 +99,7 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   @override
   Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, LocalMessageId? latestCurrentMessageLocalId) async {
     MessageDatabaseIterator messageIterator = MessageDatabaseIterator(chat.db);
-    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
-    if (currentUser == null) {
-      return [];
-    }
-    await messageIterator.switchConversation(currentUser, senderAccountId);
+    await messageIterator.switchConversation(chat.currentUser, senderAccountId);
 
     // Read latest messages until all new messages are read
     List<MessageEntry> newMessages = [];

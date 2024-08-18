@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:async/async.dart' show StreamExtensions;
 import 'package:database/database.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
@@ -15,7 +14,6 @@ import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/chat/message_converter.dart';
 import 'package:pihka_frontend/data/chat/message_key_generator.dart';
 import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
@@ -59,8 +57,9 @@ class MessageManager extends LifecycleMethods {
   final AccountDatabaseManager db;
   final ProfileRepository profile;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final AccountId currentUser;
 
-  MessageManager(this.messageKeyManager, this.api, this.db, this.profile, this.accountBackgroundDb);
+  MessageManager(this.messageKeyManager, this.api, this.db, this.profile, this.accountBackgroundDb, this.currentUser);
 
   final PublishSubject<MessageManagerCommand> _commands = PublishSubject();
   StreamSubscription<void>? _commandsSubscription;
@@ -93,11 +92,7 @@ class MessageManager extends LifecycleMethods {
   }
 
   Future<void> _receiveNewMessages() async {
-    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
-    if (currentUser == null) {
-      return;
-    }
-    final allKeys = await messageKeyManager.generateOrLoadMessageKeys(currentUser).ok();
+    final allKeys = await messageKeyManager.generateOrLoadMessageKeys().ok();
     if (allKeys == null) {
       return;
     }
@@ -257,12 +252,6 @@ class MessageManager extends LifecycleMethods {
   }
 
   Stream<MessageSendingEvent> _sendMessageToInternal(AccountId accountId, String message) async* {
-    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
-    if (currentUser == null) {
-      yield const ErrorBeforeMessageSaving();
-      return;
-    }
-
     final isMatch = await isInMatches(accountId);
     if (!isMatch) {
       final resultSendLike = await api.chatAction((api) => api.postSendLike(accountId));
@@ -339,7 +328,7 @@ class MessageManager extends LifecycleMethods {
 
     profile.sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
 
-    final currentUserKeys = await messageKeyManager.generateOrLoadMessageKeys(currentUser).ok();
+    final currentUserKeys = await messageKeyManager.generateOrLoadMessageKeys().ok();
     if (currentUserKeys == null) {
       yield ErrorAfterMessageSaving(localId);
       return;

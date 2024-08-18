@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:async/async.dart' show StreamExtensions;
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
@@ -28,7 +27,9 @@ class ProfileIteratorManager {
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final ServerConnectionManager connectionManager;
 
-  ProfileIteratorManager(this.chat, this.media, this.accountBackgroundDb, this.db, this.connectionManager) :
+  final AccountId currentUser;
+
+  ProfileIteratorManager(this.chat, this.media, this.accountBackgroundDb, this.db, this.connectionManager, this.currentUser) :
     _currentIterator = DatabaseIterator(db: db);
 
   ProfileIteratorMode _currentMode =
@@ -112,9 +113,6 @@ class ProfileIteratorManager {
   }
 
   Future<Result<List<ProfileEntry>, void>> _nextListImpl() async {
-    // TODO: cache this somewhere?
-    final ownAccountId = await LoginRepository.getInstance().accountId.firstOrNull;
-
     // TODO: Perhaps move to iterator when filters are implemented?
     while (true) {
       final List<ProfileEntry> list;
@@ -134,7 +132,7 @@ class ProfileIteratorManager {
         final isBlocked = await chat.isInReceivedBlocks(p.uuid) ||
           await chat.isInSentBlocks(p.uuid);
 
-        if (isBlocked || p.uuid == ownAccountId) {
+        if (isBlocked || p.uuid == currentUser) {
           toBeRemoved.add(p);
         }
       }

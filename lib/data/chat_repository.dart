@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:native_utils/message.dart';
 import 'package:openapi/api.dart';
@@ -9,7 +8,6 @@ import 'package:pihka_frontend/data/chat/message_database_iterator.dart';
 import 'package:pihka_frontend/data/chat/message_manager.dart';
 import 'package:pihka_frontend/data/chat/message_key_generator.dart';
 import 'package:pihka_frontend/data/general/notification/state/like_received.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile/account_id_database_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
@@ -29,6 +27,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   final ProfileRepository profile;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final MessageKeyManager messageKeyManager;
+  final AccountId currentUser;
 
   ChatRepository({
     required MediaRepository media,
@@ -37,6 +36,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     required this.db,
     required this.messageKeyManager,
     required ServerConnectionManager connectionManager,
+    required this.currentUser,
   }) :
     syncHandler = ConnectedActionScheduler(connectionManager),
     profileEntryDownloader = ProfileEntryDownloader(media, accountBackgroundDb, db, connectionManager.api),
@@ -44,7 +44,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     receivedLikesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getReceivedLikesList(startIndex, limit)).ok()),
     matchesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getMatchesList(startIndex, limit)).ok()),
     api = connectionManager.api,
-    messageManager = MessageManager(messageKeyManager, connectionManager.api, db, profile, accountBackgroundDb);
+    messageManager = MessageManager(messageKeyManager, connectionManager.api, db, profile, accountBackgroundDb, currentUser);
 
   final ConnectedActionScheduler syncHandler;
 
@@ -97,16 +97,12 @@ class ChatRepository extends DataRepositoryWithLifecycle {
       return;
     }
 
-    final currentAccount = await LoginRepository.getInstance().accountId.firstOrNull;
-    if (currentAccount == null) {
-      return;
-    }
-    final keys = await messageKeyManager.generateOrLoadMessageKeys(currentAccount).ok();
+    final keys = await messageKeyManager.generateOrLoadMessageKeys().ok();
     if (keys == null) {
       return;
     }
     final currentPublicKeyOnServer =
-      await api.chat((api) => api.getPublicKey(currentAccount.accountId, 1)).ok();
+      await api.chat((api) => api.getPublicKey(currentUser.accountId, 1)).ok();
     if (currentPublicKeyOnServer == null) {
       return;
     }
@@ -338,11 +334,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   /// Get message and updates to it.
   /// Index 0 is the latest message.
   Stream<MessageEntry?> getMessageWithIndex(AccountId match, int index) async* {
-    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
-    if (currentUser == null) {
-      yield null;
-      return;
-    }
     final message = await db.messageData((db) => db.getMessage(currentUser, match, index)).ok();
     final localId = message?.localId;
     if (message == null || localId == null) {
@@ -364,11 +355,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   /// Get message count of conversation and possibly the related change event.
   /// Also receive updates to both.
   Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match) async* {
-    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
-    if (currentUser == null) {
-      yield (0, null);
-      return;
-    }
     final messageNumber = await db.messageData((db) => db.countMessagesInConversation(currentUser, match)).ok();
     yield (messageNumber ?? 0, null);
 
@@ -383,10 +369,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   /// First message is the latest message.
   Future<List<MessageEntry>> getAllMessages(AccountId accountId) async {
     final messageIterator = MessageDatabaseIterator(db);
-    final currentUser = await LoginRepository.getInstance().accountId.firstOrNull;
-    if (currentUser == null) {
-      return [];
-    }
     await messageIterator.switchConversation(currentUser, accountId);
 
     List<MessageEntry> allMessages = [];
