@@ -4,7 +4,7 @@ import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/data/chat/message_extensions.dart';
+import 'package:pihka_frontend/data/chat/message_manager.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';

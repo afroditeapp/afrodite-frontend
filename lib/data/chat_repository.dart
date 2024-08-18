@@ -6,7 +6,7 @@ import 'package:native_utils/message.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/chat/message_database_iterator.dart';
-import 'package:pihka_frontend/data/chat/message_extensions.dart';
+import 'package:pihka_frontend/data/chat/message_manager.dart';
 import 'package:pihka_frontend/data/chat/message_key_generator.dart';
 import 'package:pihka_frontend/data/general/notification/state/like_received.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
