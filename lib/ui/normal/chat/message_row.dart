@@ -186,10 +186,12 @@ void closeActionsAndOpenDetails(BuildContext screenContext, MessageEntry entry, 
     stateText = "";
   }
 
+  final time = entry.unixTime ?? entry.localUnixTime;
+
   final infoText = """
 ${screenContext.strings.generic_message}: ${entry.messageText}
 ${screenContext.strings.conversation_screen_message_details_message_id}: ${entry.messageNumber?.messageNumber}
-${screenContext.strings.generic_time}: ${entry.unixTime?.dateTime.toIso8601String()}
+${screenContext.strings.generic_time}: ${time.dateTime.toIso8601String()}
 ${screenContext.strings.generic_state}: $stateText""";
 
   showInfoDialog(

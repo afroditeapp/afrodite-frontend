@@ -5202,6 +5202,13 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   late final GeneratedColumn<String> messageText = GeneratedColumn<String>(
       'message_text', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _localUnixTimeMeta =
+      const VerificationMeta('localUnixTime');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime, int> localUnixTime =
+      GeneratedColumn<int>('local_unix_time', aliasedName, false,
+              type: DriftSqlType.int, requiredDuringInsert: true)
+          .withConverter<UtcDateTime>($MessagesTable.$converterlocalUnixTime);
   static const VerificationMeta _sentMessageStateMeta =
       const VerificationMeta('sentMessageState');
   @override
@@ -5244,6 +5251,7 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
         uuidLocalAccountId,
         uuidRemoteAccountId,
         messageText,
+        localUnixTime,
         sentMessageState,
         receivedMessageState,
         senderMessageId,
@@ -5274,6 +5282,7 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
     } else if (isInserting) {
       context.missing(_messageTextMeta);
     }
+    context.handle(_localUnixTimeMeta, const VerificationResult.success());
     if (data.containsKey('sent_message_state')) {
       context.handle(
           _sentMessageStateMeta,
@@ -5308,6 +5317,9 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
               data['${effectivePrefix}uuid_remote_account_id'])!),
       messageText: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}message_text'])!,
+      localUnixTime: $MessagesTable.$converterlocalUnixTime.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.int, data['${effectivePrefix}local_unix_time'])!),
       sentMessageState: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}sent_message_state']),
       receivedMessageState: attachedDatabase.typeMapping.read(
@@ -5333,6 +5345,8 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       const AccountIdConverter();
   static TypeConverter<AccountId, String> $converteruuidRemoteAccountId =
       const AccountIdConverter();
+  static TypeConverter<UtcDateTime, int> $converterlocalUnixTime =
+      const UtcDateTimeConverter();
   static TypeConverter<SenderMessageId?, int?> $convertersenderMessageId =
       const NullAwareTypeConverter.wrap(SenderMessageIdConverter());
   static TypeConverter<MessageNumber?, int?> $convertermessageNumber =
@@ -5346,6 +5360,7 @@ class Message extends DataClass implements Insertable<Message> {
   final AccountId uuidLocalAccountId;
   final AccountId uuidRemoteAccountId;
   final String messageText;
+  final UtcDateTime localUnixTime;
   final int? sentMessageState;
   final int? receivedMessageState;
   final SenderMessageId? senderMessageId;
@@ -5356,6 +5371,7 @@ class Message extends DataClass implements Insertable<Message> {
       required this.uuidLocalAccountId,
       required this.uuidRemoteAccountId,
       required this.messageText,
+      required this.localUnixTime,
       this.sentMessageState,
       this.receivedMessageState,
       this.senderMessageId,
@@ -5376,6 +5392,10 @@ class Message extends DataClass implements Insertable<Message> {
           .toSql(uuidRemoteAccountId));
     }
     map['message_text'] = Variable<String>(messageText);
+    {
+      map['local_unix_time'] = Variable<int>(
+          $MessagesTable.$converterlocalUnixTime.toSql(localUnixTime));
+    }
     if (!nullToAbsent || sentMessageState != null) {
       map['sent_message_state'] = Variable<int>(sentMessageState);
     }
@@ -5403,6 +5423,7 @@ class Message extends DataClass implements Insertable<Message> {
       uuidLocalAccountId: Value(uuidLocalAccountId),
       uuidRemoteAccountId: Value(uuidRemoteAccountId),
       messageText: Value(messageText),
+      localUnixTime: Value(localUnixTime),
       sentMessageState: sentMessageState == null && nullToAbsent
           ? const Value.absent()
           : Value(sentMessageState),
@@ -5431,6 +5452,7 @@ class Message extends DataClass implements Insertable<Message> {
       uuidRemoteAccountId:
           serializer.fromJson<AccountId>(json['uuidRemoteAccountId']),
       messageText: serializer.fromJson<String>(json['messageText']),
+      localUnixTime: serializer.fromJson<UtcDateTime>(json['localUnixTime']),
       sentMessageState: serializer.fromJson<int?>(json['sentMessageState']),
       receivedMessageState:
           serializer.fromJson<int?>(json['receivedMessageState']),
@@ -5448,6 +5470,7 @@ class Message extends DataClass implements Insertable<Message> {
       'uuidLocalAccountId': serializer.toJson<AccountId>(uuidLocalAccountId),
       'uuidRemoteAccountId': serializer.toJson<AccountId>(uuidRemoteAccountId),
       'messageText': serializer.toJson<String>(messageText),
+      'localUnixTime': serializer.toJson<UtcDateTime>(localUnixTime),
       'sentMessageState': serializer.toJson<int?>(sentMessageState),
       'receivedMessageState': serializer.toJson<int?>(receivedMessageState),
       'senderMessageId': serializer.toJson<SenderMessageId?>(senderMessageId),
@@ -5461,6 +5484,7 @@ class Message extends DataClass implements Insertable<Message> {
           AccountId? uuidLocalAccountId,
           AccountId? uuidRemoteAccountId,
           String? messageText,
+          UtcDateTime? localUnixTime,
           Value<int?> sentMessageState = const Value.absent(),
           Value<int?> receivedMessageState = const Value.absent(),
           Value<SenderMessageId?> senderMessageId = const Value.absent(),
@@ -5471,6 +5495,7 @@ class Message extends DataClass implements Insertable<Message> {
         uuidLocalAccountId: uuidLocalAccountId ?? this.uuidLocalAccountId,
         uuidRemoteAccountId: uuidRemoteAccountId ?? this.uuidRemoteAccountId,
         messageText: messageText ?? this.messageText,
+        localUnixTime: localUnixTime ?? this.localUnixTime,
         sentMessageState: sentMessageState.present
             ? sentMessageState.value
             : this.sentMessageState,
@@ -5491,6 +5516,7 @@ class Message extends DataClass implements Insertable<Message> {
           ..write('uuidLocalAccountId: $uuidLocalAccountId, ')
           ..write('uuidRemoteAccountId: $uuidRemoteAccountId, ')
           ..write('messageText: $messageText, ')
+          ..write('localUnixTime: $localUnixTime, ')
           ..write('sentMessageState: $sentMessageState, ')
           ..write('receivedMessageState: $receivedMessageState, ')
           ..write('senderMessageId: $senderMessageId, ')
@@ -5506,6 +5532,7 @@ class Message extends DataClass implements Insertable<Message> {
       uuidLocalAccountId,
       uuidRemoteAccountId,
       messageText,
+      localUnixTime,
       sentMessageState,
       receivedMessageState,
       senderMessageId,
@@ -5519,6 +5546,7 @@ class Message extends DataClass implements Insertable<Message> {
           other.uuidLocalAccountId == this.uuidLocalAccountId &&
           other.uuidRemoteAccountId == this.uuidRemoteAccountId &&
           other.messageText == this.messageText &&
+          other.localUnixTime == this.localUnixTime &&
           other.sentMessageState == this.sentMessageState &&
           other.receivedMessageState == this.receivedMessageState &&
           other.senderMessageId == this.senderMessageId &&
@@ -5531,6 +5559,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
   final Value<AccountId> uuidLocalAccountId;
   final Value<AccountId> uuidRemoteAccountId;
   final Value<String> messageText;
+  final Value<UtcDateTime> localUnixTime;
   final Value<int?> sentMessageState;
   final Value<int?> receivedMessageState;
   final Value<SenderMessageId?> senderMessageId;
@@ -5541,6 +5570,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     this.uuidLocalAccountId = const Value.absent(),
     this.uuidRemoteAccountId = const Value.absent(),
     this.messageText = const Value.absent(),
+    this.localUnixTime = const Value.absent(),
     this.sentMessageState = const Value.absent(),
     this.receivedMessageState = const Value.absent(),
     this.senderMessageId = const Value.absent(),
@@ -5552,6 +5582,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     required AccountId uuidLocalAccountId,
     required AccountId uuidRemoteAccountId,
     required String messageText,
+    required UtcDateTime localUnixTime,
     this.sentMessageState = const Value.absent(),
     this.receivedMessageState = const Value.absent(),
     this.senderMessageId = const Value.absent(),
@@ -5559,12 +5590,14 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     this.unixTime = const Value.absent(),
   })  : uuidLocalAccountId = Value(uuidLocalAccountId),
         uuidRemoteAccountId = Value(uuidRemoteAccountId),
-        messageText = Value(messageText);
+        messageText = Value(messageText),
+        localUnixTime = Value(localUnixTime);
   static Insertable<Message> custom({
     Expression<int>? id,
     Expression<String>? uuidLocalAccountId,
     Expression<String>? uuidRemoteAccountId,
     Expression<String>? messageText,
+    Expression<int>? localUnixTime,
     Expression<int>? sentMessageState,
     Expression<int>? receivedMessageState,
     Expression<int>? senderMessageId,
@@ -5578,6 +5611,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       if (uuidRemoteAccountId != null)
         'uuid_remote_account_id': uuidRemoteAccountId,
       if (messageText != null) 'message_text': messageText,
+      if (localUnixTime != null) 'local_unix_time': localUnixTime,
       if (sentMessageState != null) 'sent_message_state': sentMessageState,
       if (receivedMessageState != null)
         'received_message_state': receivedMessageState,
@@ -5592,6 +5626,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       Value<AccountId>? uuidLocalAccountId,
       Value<AccountId>? uuidRemoteAccountId,
       Value<String>? messageText,
+      Value<UtcDateTime>? localUnixTime,
       Value<int?>? sentMessageState,
       Value<int?>? receivedMessageState,
       Value<SenderMessageId?>? senderMessageId,
@@ -5602,6 +5637,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       uuidLocalAccountId: uuidLocalAccountId ?? this.uuidLocalAccountId,
       uuidRemoteAccountId: uuidRemoteAccountId ?? this.uuidRemoteAccountId,
       messageText: messageText ?? this.messageText,
+      localUnixTime: localUnixTime ?? this.localUnixTime,
       sentMessageState: sentMessageState ?? this.sentMessageState,
       receivedMessageState: receivedMessageState ?? this.receivedMessageState,
       senderMessageId: senderMessageId ?? this.senderMessageId,
@@ -5628,6 +5664,10 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     }
     if (messageText.present) {
       map['message_text'] = Variable<String>(messageText.value);
+    }
+    if (localUnixTime.present) {
+      map['local_unix_time'] = Variable<int>(
+          $MessagesTable.$converterlocalUnixTime.toSql(localUnixTime.value));
     }
     if (sentMessageState.present) {
       map['sent_message_state'] = Variable<int>(sentMessageState.value);
@@ -5658,6 +5698,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
           ..write('uuidLocalAccountId: $uuidLocalAccountId, ')
           ..write('uuidRemoteAccountId: $uuidRemoteAccountId, ')
           ..write('messageText: $messageText, ')
+          ..write('localUnixTime: $localUnixTime, ')
           ..write('sentMessageState: $sentMessageState, ')
           ..write('receivedMessageState: $receivedMessageState, ')
           ..write('senderMessageId: $senderMessageId, ')

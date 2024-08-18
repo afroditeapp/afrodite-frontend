@@ -16,6 +16,7 @@ class Messages extends Table {
   TextColumn get uuidLocalAccountId => text().map(const AccountIdConverter())();
   TextColumn get uuidRemoteAccountId => text().map(const AccountIdConverter())();
   TextColumn get messageText => text()();
+  IntColumn get localUnixTime => integer().map(const UtcDateTimeConverter())();
   IntColumn get sentMessageState => integer().nullable()();
   IntColumn get receivedMessageState => integer().nullable()();
   IntColumn get senderMessageId => integer().map(const NullAwareTypeConverter.wrap(SenderMessageIdConverter())).nullable()();
@@ -48,6 +49,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       uuidLocalAccountId: entry.localAccountId,
       uuidRemoteAccountId: entry.remoteAccountId,
       messageText: entry.messageText,
+      localUnixTime: entry.localUnixTime,
       sentMessageState: Value(entry.sentMessageState?.number),
       receivedMessageState: Value(entry.receivedMessageState?.number),
       messageNumber: Value(entry.messageNumber),
@@ -68,6 +70,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       localAccountId: localAccountId,
       remoteAccountId: remoteAccountId,
       messageText: messageText,
+      localUnixTime: UtcDateTime.now(),
       sentMessageState: SentMessageState.pending,
       senderMessageId: senderMessageId,
     );
@@ -104,6 +107,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     final message = NewMessageEntry(
       localAccountId: localAccountId,
       remoteAccountId: entry.id.accountIdSender,
+      localUnixTime: UtcDateTime.now(),
       messageText: decryptedMessage,
       sentMessageState: null,
       receivedMessageState: ReceivedMessageState.waitingDeletionFromServer,
@@ -199,6 +203,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       localAccountId: m.uuidLocalAccountId,
       remoteAccountId: m.uuidRemoteAccountId,
       messageText: m.messageText,
+      localUnixTime: m.localUnixTime,
       sentMessageState: sentMessageState,
       receivedMessageState: receivedMessageState,
       messageNumber: m.messageNumber,

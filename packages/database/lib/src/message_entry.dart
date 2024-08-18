@@ -11,6 +11,8 @@ class MessageEntry {
   final AccountId localAccountId;
   final AccountId remoteAccountId;
   final String messageText;
+  /// Local/client time when message entry is inserted to database.
+  final UtcDateTime localUnixTime;
   /// Null if message was received.
   final SentMessageState? sentMessageState;
   /// Null if message was sent.
@@ -30,6 +32,7 @@ class MessageEntry {
       required this.localAccountId,
       required this.remoteAccountId,
       required this.messageText,
+      required this.localUnixTime,
       this.sentMessageState,
       this.receivedMessageState,
       this.messageNumber,
@@ -83,6 +86,8 @@ class NewMessageEntry {
   final AccountId localAccountId;
   final AccountId remoteAccountId;
   final String messageText;
+  /// Local/client time when message entry is inserted to database.
+  final UtcDateTime localUnixTime;
   /// Null if message was received.
   final SentMessageState? sentMessageState;
   /// Null if message was sent.
@@ -101,6 +106,7 @@ class NewMessageEntry {
       required this.localAccountId,
       required this.remoteAccountId,
       required this.messageText,
+      required this.localUnixTime,
       this.sentMessageState,
       this.receivedMessageState,
       this.messageNumber,

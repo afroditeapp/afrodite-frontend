@@ -12,6 +12,7 @@ import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_renderer.dart';
 import 'package:pihka_frontend/ui/normal/chat/one_ended_list.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:utils/utils.dart';
 
 void openConversationDebugScreen(BuildContext context, int initialMsgCount) {
   final details = _newDebugConversationPage(
@@ -88,6 +89,7 @@ class DebugConversationDataProvider extends ConversationDataProvider {
         localAccountId: AccountId(accountId: ""),
         remoteAccountId: AccountId(accountId: ""),
         messageText: text,
+        localUnixTime: UtcDateTime.now(),
         sentMessageState: state,
         localId: LocalMessageId(entryId),
       );
