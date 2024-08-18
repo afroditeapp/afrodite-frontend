@@ -118,7 +118,7 @@ class LoginRepository extends DataRepository {
 
     final currentAccountId = await accountId.first;
     if (currentAccountId != null) {
-      await createRepositories(currentAccountId);
+      await _createRepositories(currentAccountId);
 
       // Restore previous state
       final previousState = await repositories.accountDb.accountStreamSingle((db) => db.watchAccountState()).ok();
@@ -152,6 +152,13 @@ class LoginRepository extends DataRepository {
           _loginState.add(LoginState.unsupportedClientVersion);
       }
     });
+
+    if (currentAccountId == null) {
+      // ServerConnectionManager is not yet created so init
+      // _serverConnectionManagerStateEvents manually so that previous
+      // combineLatest2 starts working.
+      _serverConnectionManagerStateEvents.add(ApiManagerState.waitingRefreshToken);
+    }
 
     _serverEvents.listen((event) {
       switch (event) {
@@ -220,7 +227,7 @@ class LoginRepository extends DataRepository {
       .listen(null);
   }
 
-  Future<RepositoryInstances> createRepositories(AccountId accountId) async {
+  Future<RepositoryInstances> _createRepositories(AccountId accountId) async {
     final currentRepositories = _repositories;
     await currentRepositories?.dispose();
 
@@ -334,7 +341,7 @@ class LoginRepository extends DataRepository {
     // TODO(microservice): microservice support
     await onLogin();
 
-    final theNewRepositories = await createRepositories(loginResult.accountId);
+    final theNewRepositories = await _createRepositories(loginResult.accountId);
 
     // Other repostories
     await theNewRepositories.onLogin();

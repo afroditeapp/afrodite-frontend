@@ -306,14 +306,6 @@ class GlobalInitManager {
     // Initializes formatting for other locales as well
     await initializeDateFormatting("en_US", null);
 
-    if (await LoginRepository.getInstance().accountId.firstOrNull == null) {
-      // Connection restart opens login screen in this case
-      await LoginRepository.getInstance().repositoriesOrNull?.connectionManager.restart();
-    } else {
-      // Foreground connection on/off logic starts the connection when some
-      // account is logged in so no connection starting is needed here.
-    }
-
     _globalInitCompleted.add(true);
   }
 
