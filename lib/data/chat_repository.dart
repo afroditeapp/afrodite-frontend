@@ -21,6 +21,8 @@ import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("ChatRepository");
 
+// TODO(architecture): Do login related database data reset in transaction?
+
 class ChatRepository extends DataRepositoryWithLifecycle {
   final AccountDatabaseManager db;
   final ProfileRepository profile;
@@ -66,6 +68,10 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     receivedLikesIterator.reset();
     matchesIterator.reset();
     await db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(false));
+
+    // Reset message sending error detection counter value as other client
+    // might have used the current value in server.
+    await db.accountAction((db) => db.daoProfiles.resetAllSenderMessageIds());
 
     syncHandler.onLoginSync(() async {
       await _generateMessageKeyIfNeeded();

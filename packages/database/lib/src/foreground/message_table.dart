@@ -18,6 +18,7 @@ class Messages extends Table {
   TextColumn get messageText => text()();
   IntColumn get sentMessageState => integer().nullable()();
   IntColumn get receivedMessageState => integer().nullable()();
+  IntColumn get senderMessageId => integer().map(const NullAwareTypeConverter.wrap(SenderMessageIdConverter())).nullable()();
 
   // Server sends valid values for the next two colums.
   IntColumn get messageNumber => integer().map(const NullAwareTypeConverter.wrap(MessageNumberConverter())).nullable()();
@@ -51,6 +52,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       receivedMessageState: Value(entry.receivedMessageState?.number),
       messageNumber: Value(entry.messageNumber),
       unixTime: Value(entry.unixTime),
+      senderMessageId: Value(entry.senderMessageId),
     ));
 
     return LocalMessageId(localId);
@@ -60,21 +62,27 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     AccountId localAccountId,
     AccountId remoteAccountId,
     String messageText,
+    SenderMessageId senderMessageId,
   ) async {
     final message = NewMessageEntry(
       localAccountId: localAccountId,
       remoteAccountId: remoteAccountId,
       messageText: messageText,
       sentMessageState: SentMessageState.pending,
+      senderMessageId: senderMessageId,
     );
     return await _insert(message);
   }
 
+  /// Null values are not updated.
   Future<void> updateSentMessageState(
     LocalMessageId localId,
-    SentMessageState sentState,
-    int? unixTimeFromServer,
-    MessageNumber? messageNumberFromServer,
+    {
+      SentMessageState? sentState,
+      int? unixTimeFromServer,
+      MessageNumber? messageNumberFromServer,
+      SenderMessageId? senderMessageId,
+    }
   ) async {
     final UtcDateTime? unixTime;
     if (unixTimeFromServer != null) {
@@ -85,13 +93,13 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     await (update(messages)
       ..where((t) => t.id.equals(localId.id))
     ).write(MessagesCompanion(
-      sentMessageState: Value(sentState.number),
-      unixTime: Value(unixTime),
-      messageNumber: Value(messageNumberFromServer),
+      sentMessageState: Value.absentIfNull(sentState?.number),
+      unixTime: Value.absentIfNull(unixTime),
+      messageNumber: Value.absentIfNull(messageNumberFromServer),
     ));
   }
 
-  Future<void> insertPendingMessage(AccountId localAccountId, PendingMessage entry, String decryptedMessage) async {
+  Future<void> insertReceivedMessage(AccountId localAccountId, PendingMessage entry, String decryptedMessage) async {
     final unixTime = UtcDateTime.fromUnixEpochMilliseconds(entry.unixTime.unixTime * 1000);
     final message = NewMessageEntry(
       localAccountId: localAccountId,
@@ -169,7 +177,6 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       .watchSingleOrNull();
   }
 
-
   MessageEntry _fromMessage(Message m) {
     final sentMessageStateNumber = m.sentMessageState;
     final SentMessageState? sentMessageState;
@@ -196,6 +203,24 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       receivedMessageState: receivedMessageState,
       messageNumber: m.messageNumber,
       unixTime: m.unixTime,
+      senderMessageId: m.senderMessageId,
     );
+  }
+
+  Future<MessageEntry?> getLatestSentMessage(
+    AccountId localAccountId,
+    AccountId remoteAccountId,
+  ) {
+    return (select(messages)
+      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.accountId))
+      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.accountId))
+      ..where((t) => t.sentMessageState.isNotNull())
+      ..limit(1)
+      ..orderBy([
+        (t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc),
+      ])
+    )
+      .map((m) => _fromMessage(m))
+      .getSingleOrNull();
   }
 }

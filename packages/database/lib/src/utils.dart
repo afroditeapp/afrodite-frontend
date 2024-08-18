@@ -346,3 +346,17 @@ class PrivateKeyDataConverter extends TypeConverter<PrivateKeyData, String> {
     return value.data;
   }
 }
+
+class SenderMessageIdConverter extends TypeConverter<SenderMessageId, int> {
+  const SenderMessageIdConverter();
+
+  @override
+  SenderMessageId fromSql(fromDb) {
+    return SenderMessageId(id: fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.id;
+  }
+}

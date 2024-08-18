@@ -3835,6 +3835,15 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<PublicKeyVersion?>(
               $ProfilesTable.$converterpublicKeyVersion);
+  static const VerificationMeta _conversationNextSenderMessageIdMeta =
+      const VerificationMeta('conversationNextSenderMessageId');
+  @override
+  late final GeneratedColumnWithTypeConverter<SenderMessageId?, int>
+      conversationNextSenderMessageId = GeneratedColumn<int>(
+              'conversation_next_sender_message_id', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<SenderMessageId?>(
+              $ProfilesTable.$converterconversationNextSenderMessageId);
   static const VerificationMeta _isInFavoritesMeta =
       const VerificationMeta('isInFavorites');
   @override
@@ -3915,6 +3924,7 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
         publicKeyData,
         publicKeyId,
         publicKeyVersion,
+        conversationNextSenderMessageId,
         isInFavorites,
         isInMatches,
         isInReceivedBlocks,
@@ -4003,6 +4013,8 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     context.handle(_publicKeyDataMeta, const VerificationResult.success());
     context.handle(_publicKeyIdMeta, const VerificationResult.success());
     context.handle(_publicKeyVersionMeta, const VerificationResult.success());
+    context.handle(_conversationNextSenderMessageIdMeta,
+        const VerificationResult.success());
     context.handle(_isInFavoritesMeta, const VerificationResult.success());
     context.handle(_isInMatchesMeta, const VerificationResult.success());
     context.handle(_isInReceivedBlocksMeta, const VerificationResult.success());
@@ -4080,6 +4092,10 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       publicKeyVersion: $ProfilesTable.$converterpublicKeyVersion.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}public_key_version'])),
+      conversationNextSenderMessageId: $ProfilesTable
+          .$converterconversationNextSenderMessageId
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}conversation_next_sender_message_id'])),
       isInFavorites: $ProfilesTable.$converterisInFavorites.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}is_in_favorites'])),
@@ -4136,6 +4152,9 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       const NullAwareTypeConverter.wrap(PublicKeyIdConverter());
   static TypeConverter<PublicKeyVersion?, int?> $converterpublicKeyVersion =
       const NullAwareTypeConverter.wrap(PublicKeyVersionConverter());
+  static TypeConverter<SenderMessageId?, int?>
+      $converterconversationNextSenderMessageId =
+      const NullAwareTypeConverter.wrap(SenderMessageIdConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInFavorites =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInMatches =
@@ -4177,6 +4196,7 @@ class Profile extends DataClass implements Insertable<Profile> {
   final PublicKeyData? publicKeyData;
   final PublicKeyId? publicKeyId;
   final PublicKeyVersion? publicKeyVersion;
+  final SenderMessageId? conversationNextSenderMessageId;
   final UtcDateTime? isInFavorites;
   final UtcDateTime? isInMatches;
   final UtcDateTime? isInReceivedBlocks;
@@ -4207,6 +4227,7 @@ class Profile extends DataClass implements Insertable<Profile> {
       this.publicKeyData,
       this.publicKeyId,
       this.publicKeyVersion,
+      this.conversationNextSenderMessageId,
       this.isInFavorites,
       this.isInMatches,
       this.isInReceivedBlocks,
@@ -4299,6 +4320,11 @@ class Profile extends DataClass implements Insertable<Profile> {
     if (!nullToAbsent || publicKeyVersion != null) {
       map['public_key_version'] = Variable<int>(
           $ProfilesTable.$converterpublicKeyVersion.toSql(publicKeyVersion));
+    }
+    if (!nullToAbsent || conversationNextSenderMessageId != null) {
+      map['conversation_next_sender_message_id'] = Variable<int>($ProfilesTable
+          .$converterconversationNextSenderMessageId
+          .toSql(conversationNextSenderMessageId));
     }
     if (!nullToAbsent || isInFavorites != null) {
       map['is_in_favorites'] = Variable<int>(
@@ -4397,6 +4423,10 @@ class Profile extends DataClass implements Insertable<Profile> {
       publicKeyVersion: publicKeyVersion == null && nullToAbsent
           ? const Value.absent()
           : Value(publicKeyVersion),
+      conversationNextSenderMessageId:
+          conversationNextSenderMessageId == null && nullToAbsent
+              ? const Value.absent()
+              : Value(conversationNextSenderMessageId),
       isInFavorites: isInFavorites == null && nullToAbsent
           ? const Value.absent()
           : Value(isInFavorites),
@@ -4456,6 +4486,8 @@ class Profile extends DataClass implements Insertable<Profile> {
       publicKeyId: serializer.fromJson<PublicKeyId?>(json['publicKeyId']),
       publicKeyVersion:
           serializer.fromJson<PublicKeyVersion?>(json['publicKeyVersion']),
+      conversationNextSenderMessageId: serializer
+          .fromJson<SenderMessageId?>(json['conversationNextSenderMessageId']),
       isInFavorites: serializer.fromJson<UtcDateTime?>(json['isInFavorites']),
       isInMatches: serializer.fromJson<UtcDateTime?>(json['isInMatches']),
       isInReceivedBlocks:
@@ -4501,6 +4533,8 @@ class Profile extends DataClass implements Insertable<Profile> {
       'publicKeyId': serializer.toJson<PublicKeyId?>(publicKeyId),
       'publicKeyVersion':
           serializer.toJson<PublicKeyVersion?>(publicKeyVersion),
+      'conversationNextSenderMessageId':
+          serializer.toJson<SenderMessageId?>(conversationNextSenderMessageId),
       'isInFavorites': serializer.toJson<UtcDateTime?>(isInFavorites),
       'isInMatches': serializer.toJson<UtcDateTime?>(isInMatches),
       'isInReceivedBlocks': serializer.toJson<UtcDateTime?>(isInReceivedBlocks),
@@ -4535,6 +4569,8 @@ class Profile extends DataClass implements Insertable<Profile> {
           Value<PublicKeyData?> publicKeyData = const Value.absent(),
           Value<PublicKeyId?> publicKeyId = const Value.absent(),
           Value<PublicKeyVersion?> publicKeyVersion = const Value.absent(),
+          Value<SenderMessageId?> conversationNextSenderMessageId =
+              const Value.absent(),
           Value<UtcDateTime?> isInFavorites = const Value.absent(),
           Value<UtcDateTime?> isInMatches = const Value.absent(),
           Value<UtcDateTime?> isInReceivedBlocks = const Value.absent(),
@@ -4589,6 +4625,9 @@ class Profile extends DataClass implements Insertable<Profile> {
         publicKeyVersion: publicKeyVersion.present
             ? publicKeyVersion.value
             : this.publicKeyVersion,
+        conversationNextSenderMessageId: conversationNextSenderMessageId.present
+            ? conversationNextSenderMessageId.value
+            : this.conversationNextSenderMessageId,
         isInFavorites:
             isInFavorites.present ? isInFavorites.value : this.isInFavorites,
         isInMatches: isInMatches.present ? isInMatches.value : this.isInMatches,
@@ -4631,6 +4670,8 @@ class Profile extends DataClass implements Insertable<Profile> {
           ..write('publicKeyData: $publicKeyData, ')
           ..write('publicKeyId: $publicKeyId, ')
           ..write('publicKeyVersion: $publicKeyVersion, ')
+          ..write(
+              'conversationNextSenderMessageId: $conversationNextSenderMessageId, ')
           ..write('isInFavorites: $isInFavorites, ')
           ..write('isInMatches: $isInMatches, ')
           ..write('isInReceivedBlocks: $isInReceivedBlocks, ')
@@ -4666,6 +4707,7 @@ class Profile extends DataClass implements Insertable<Profile> {
         publicKeyData,
         publicKeyId,
         publicKeyVersion,
+        conversationNextSenderMessageId,
         isInFavorites,
         isInMatches,
         isInReceivedBlocks,
@@ -4700,6 +4742,8 @@ class Profile extends DataClass implements Insertable<Profile> {
           other.publicKeyData == this.publicKeyData &&
           other.publicKeyId == this.publicKeyId &&
           other.publicKeyVersion == this.publicKeyVersion &&
+          other.conversationNextSenderMessageId ==
+              this.conversationNextSenderMessageId &&
           other.isInFavorites == this.isInFavorites &&
           other.isInMatches == this.isInMatches &&
           other.isInReceivedBlocks == this.isInReceivedBlocks &&
@@ -4732,6 +4776,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<PublicKeyData?> publicKeyData;
   final Value<PublicKeyId?> publicKeyId;
   final Value<PublicKeyVersion?> publicKeyVersion;
+  final Value<SenderMessageId?> conversationNextSenderMessageId;
   final Value<UtcDateTime?> isInFavorites;
   final Value<UtcDateTime?> isInMatches;
   final Value<UtcDateTime?> isInReceivedBlocks;
@@ -4762,6 +4807,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.publicKeyData = const Value.absent(),
     this.publicKeyId = const Value.absent(),
     this.publicKeyVersion = const Value.absent(),
+    this.conversationNextSenderMessageId = const Value.absent(),
     this.isInFavorites = const Value.absent(),
     this.isInMatches = const Value.absent(),
     this.isInReceivedBlocks = const Value.absent(),
@@ -4793,6 +4839,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.publicKeyData = const Value.absent(),
     this.publicKeyId = const Value.absent(),
     this.publicKeyVersion = const Value.absent(),
+    this.conversationNextSenderMessageId = const Value.absent(),
     this.isInFavorites = const Value.absent(),
     this.isInMatches = const Value.absent(),
     this.isInReceivedBlocks = const Value.absent(),
@@ -4824,6 +4871,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     Expression<String>? publicKeyData,
     Expression<int>? publicKeyId,
     Expression<int>? publicKeyVersion,
+    Expression<int>? conversationNextSenderMessageId,
     Expression<int>? isInFavorites,
     Expression<int>? isInMatches,
     Expression<int>? isInReceivedBlocks,
@@ -4862,6 +4910,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       if (publicKeyData != null) 'public_key_data': publicKeyData,
       if (publicKeyId != null) 'public_key_id': publicKeyId,
       if (publicKeyVersion != null) 'public_key_version': publicKeyVersion,
+      if (conversationNextSenderMessageId != null)
+        'conversation_next_sender_message_id': conversationNextSenderMessageId,
       if (isInFavorites != null) 'is_in_favorites': isInFavorites,
       if (isInMatches != null) 'is_in_matches': isInMatches,
       if (isInReceivedBlocks != null)
@@ -4896,6 +4946,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       Value<PublicKeyData?>? publicKeyData,
       Value<PublicKeyId?>? publicKeyId,
       Value<PublicKeyVersion?>? publicKeyVersion,
+      Value<SenderMessageId?>? conversationNextSenderMessageId,
       Value<UtcDateTime?>? isInFavorites,
       Value<UtcDateTime?>? isInMatches,
       Value<UtcDateTime?>? isInReceivedBlocks,
@@ -4933,6 +4984,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       publicKeyData: publicKeyData ?? this.publicKeyData,
       publicKeyId: publicKeyId ?? this.publicKeyId,
       publicKeyVersion: publicKeyVersion ?? this.publicKeyVersion,
+      conversationNextSenderMessageId: conversationNextSenderMessageId ??
+          this.conversationNextSenderMessageId,
       isInFavorites: isInFavorites ?? this.isInFavorites,
       isInMatches: isInMatches ?? this.isInMatches,
       isInReceivedBlocks: isInReceivedBlocks ?? this.isInReceivedBlocks,
@@ -5033,6 +5086,11 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           .$converterpublicKeyVersion
           .toSql(publicKeyVersion.value));
     }
+    if (conversationNextSenderMessageId.present) {
+      map['conversation_next_sender_message_id'] = Variable<int>($ProfilesTable
+          .$converterconversationNextSenderMessageId
+          .toSql(conversationNextSenderMessageId.value));
+    }
     if (isInFavorites.present) {
       map['is_in_favorites'] = Variable<int>(
           $ProfilesTable.$converterisInFavorites.toSql(isInFavorites.value));
@@ -5092,6 +5150,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           ..write('publicKeyData: $publicKeyData, ')
           ..write('publicKeyId: $publicKeyId, ')
           ..write('publicKeyVersion: $publicKeyVersion, ')
+          ..write(
+              'conversationNextSenderMessageId: $conversationNextSenderMessageId, ')
           ..write('isInFavorites: $isInFavorites, ')
           ..write('isInMatches: $isInMatches, ')
           ..write('isInReceivedBlocks: $isInReceivedBlocks, ')
@@ -5154,6 +5214,15 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   late final GeneratedColumn<int> receivedMessageState = GeneratedColumn<int>(
       'received_message_state', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _senderMessageIdMeta =
+      const VerificationMeta('senderMessageId');
+  @override
+  late final GeneratedColumnWithTypeConverter<SenderMessageId?, int>
+      senderMessageId = GeneratedColumn<int>(
+              'sender_message_id', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<SenderMessageId?>(
+              $MessagesTable.$convertersenderMessageId);
   static const VerificationMeta _messageNumberMeta =
       const VerificationMeta('messageNumber');
   @override
@@ -5177,6 +5246,7 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
         messageText,
         sentMessageState,
         receivedMessageState,
+        senderMessageId,
         messageNumber,
         unixTime
       ];
@@ -5216,6 +5286,7 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
           receivedMessageState.isAcceptableOrUnknown(
               data['received_message_state']!, _receivedMessageStateMeta));
     }
+    context.handle(_senderMessageIdMeta, const VerificationResult.success());
     context.handle(_messageNumberMeta, const VerificationResult.success());
     context.handle(_unixTimeMeta, const VerificationResult.success());
     return context;
@@ -5241,6 +5312,9 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
           .read(DriftSqlType.int, data['${effectivePrefix}sent_message_state']),
       receivedMessageState: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}received_message_state']),
+      senderMessageId: $MessagesTable.$convertersenderMessageId.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.int, data['${effectivePrefix}sender_message_id'])),
       messageNumber: $MessagesTable.$convertermessageNumber.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}message_number'])),
@@ -5259,6 +5333,8 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       const AccountIdConverter();
   static TypeConverter<AccountId, String> $converteruuidRemoteAccountId =
       const AccountIdConverter();
+  static TypeConverter<SenderMessageId?, int?> $convertersenderMessageId =
+      const NullAwareTypeConverter.wrap(SenderMessageIdConverter());
   static TypeConverter<MessageNumber?, int?> $convertermessageNumber =
       const NullAwareTypeConverter.wrap(MessageNumberConverter());
   static TypeConverter<UtcDateTime?, int?> $converterunixTime =
@@ -5272,6 +5348,7 @@ class Message extends DataClass implements Insertable<Message> {
   final String messageText;
   final int? sentMessageState;
   final int? receivedMessageState;
+  final SenderMessageId? senderMessageId;
   final MessageNumber? messageNumber;
   final UtcDateTime? unixTime;
   const Message(
@@ -5281,6 +5358,7 @@ class Message extends DataClass implements Insertable<Message> {
       required this.messageText,
       this.sentMessageState,
       this.receivedMessageState,
+      this.senderMessageId,
       this.messageNumber,
       this.unixTime});
   @override
@@ -5303,6 +5381,10 @@ class Message extends DataClass implements Insertable<Message> {
     }
     if (!nullToAbsent || receivedMessageState != null) {
       map['received_message_state'] = Variable<int>(receivedMessageState);
+    }
+    if (!nullToAbsent || senderMessageId != null) {
+      map['sender_message_id'] = Variable<int>(
+          $MessagesTable.$convertersenderMessageId.toSql(senderMessageId));
     }
     if (!nullToAbsent || messageNumber != null) {
       map['message_number'] = Variable<int>(
@@ -5327,6 +5409,9 @@ class Message extends DataClass implements Insertable<Message> {
       receivedMessageState: receivedMessageState == null && nullToAbsent
           ? const Value.absent()
           : Value(receivedMessageState),
+      senderMessageId: senderMessageId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(senderMessageId),
       messageNumber: messageNumber == null && nullToAbsent
           ? const Value.absent()
           : Value(messageNumber),
@@ -5349,6 +5434,8 @@ class Message extends DataClass implements Insertable<Message> {
       sentMessageState: serializer.fromJson<int?>(json['sentMessageState']),
       receivedMessageState:
           serializer.fromJson<int?>(json['receivedMessageState']),
+      senderMessageId:
+          serializer.fromJson<SenderMessageId?>(json['senderMessageId']),
       messageNumber: serializer.fromJson<MessageNumber?>(json['messageNumber']),
       unixTime: serializer.fromJson<UtcDateTime?>(json['unixTime']),
     );
@@ -5363,6 +5450,7 @@ class Message extends DataClass implements Insertable<Message> {
       'messageText': serializer.toJson<String>(messageText),
       'sentMessageState': serializer.toJson<int?>(sentMessageState),
       'receivedMessageState': serializer.toJson<int?>(receivedMessageState),
+      'senderMessageId': serializer.toJson<SenderMessageId?>(senderMessageId),
       'messageNumber': serializer.toJson<MessageNumber?>(messageNumber),
       'unixTime': serializer.toJson<UtcDateTime?>(unixTime),
     };
@@ -5375,6 +5463,7 @@ class Message extends DataClass implements Insertable<Message> {
           String? messageText,
           Value<int?> sentMessageState = const Value.absent(),
           Value<int?> receivedMessageState = const Value.absent(),
+          Value<SenderMessageId?> senderMessageId = const Value.absent(),
           Value<MessageNumber?> messageNumber = const Value.absent(),
           Value<UtcDateTime?> unixTime = const Value.absent()}) =>
       Message(
@@ -5388,6 +5477,9 @@ class Message extends DataClass implements Insertable<Message> {
         receivedMessageState: receivedMessageState.present
             ? receivedMessageState.value
             : this.receivedMessageState,
+        senderMessageId: senderMessageId.present
+            ? senderMessageId.value
+            : this.senderMessageId,
         messageNumber:
             messageNumber.present ? messageNumber.value : this.messageNumber,
         unixTime: unixTime.present ? unixTime.value : this.unixTime,
@@ -5401,6 +5493,7 @@ class Message extends DataClass implements Insertable<Message> {
           ..write('messageText: $messageText, ')
           ..write('sentMessageState: $sentMessageState, ')
           ..write('receivedMessageState: $receivedMessageState, ')
+          ..write('senderMessageId: $senderMessageId, ')
           ..write('messageNumber: $messageNumber, ')
           ..write('unixTime: $unixTime')
           ..write(')'))
@@ -5415,6 +5508,7 @@ class Message extends DataClass implements Insertable<Message> {
       messageText,
       sentMessageState,
       receivedMessageState,
+      senderMessageId,
       messageNumber,
       unixTime);
   @override
@@ -5427,6 +5521,7 @@ class Message extends DataClass implements Insertable<Message> {
           other.messageText == this.messageText &&
           other.sentMessageState == this.sentMessageState &&
           other.receivedMessageState == this.receivedMessageState &&
+          other.senderMessageId == this.senderMessageId &&
           other.messageNumber == this.messageNumber &&
           other.unixTime == this.unixTime);
 }
@@ -5438,6 +5533,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
   final Value<String> messageText;
   final Value<int?> sentMessageState;
   final Value<int?> receivedMessageState;
+  final Value<SenderMessageId?> senderMessageId;
   final Value<MessageNumber?> messageNumber;
   final Value<UtcDateTime?> unixTime;
   const MessagesCompanion({
@@ -5447,6 +5543,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     this.messageText = const Value.absent(),
     this.sentMessageState = const Value.absent(),
     this.receivedMessageState = const Value.absent(),
+    this.senderMessageId = const Value.absent(),
     this.messageNumber = const Value.absent(),
     this.unixTime = const Value.absent(),
   });
@@ -5457,6 +5554,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     required String messageText,
     this.sentMessageState = const Value.absent(),
     this.receivedMessageState = const Value.absent(),
+    this.senderMessageId = const Value.absent(),
     this.messageNumber = const Value.absent(),
     this.unixTime = const Value.absent(),
   })  : uuidLocalAccountId = Value(uuidLocalAccountId),
@@ -5469,6 +5567,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     Expression<String>? messageText,
     Expression<int>? sentMessageState,
     Expression<int>? receivedMessageState,
+    Expression<int>? senderMessageId,
     Expression<int>? messageNumber,
     Expression<int>? unixTime,
   }) {
@@ -5482,6 +5581,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       if (sentMessageState != null) 'sent_message_state': sentMessageState,
       if (receivedMessageState != null)
         'received_message_state': receivedMessageState,
+      if (senderMessageId != null) 'sender_message_id': senderMessageId,
       if (messageNumber != null) 'message_number': messageNumber,
       if (unixTime != null) 'unix_time': unixTime,
     });
@@ -5494,6 +5594,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       Value<String>? messageText,
       Value<int?>? sentMessageState,
       Value<int?>? receivedMessageState,
+      Value<SenderMessageId?>? senderMessageId,
       Value<MessageNumber?>? messageNumber,
       Value<UtcDateTime?>? unixTime}) {
     return MessagesCompanion(
@@ -5503,6 +5604,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       messageText: messageText ?? this.messageText,
       sentMessageState: sentMessageState ?? this.sentMessageState,
       receivedMessageState: receivedMessageState ?? this.receivedMessageState,
+      senderMessageId: senderMessageId ?? this.senderMessageId,
       messageNumber: messageNumber ?? this.messageNumber,
       unixTime: unixTime ?? this.unixTime,
     );
@@ -5533,6 +5635,11 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     if (receivedMessageState.present) {
       map['received_message_state'] = Variable<int>(receivedMessageState.value);
     }
+    if (senderMessageId.present) {
+      map['sender_message_id'] = Variable<int>($MessagesTable
+          .$convertersenderMessageId
+          .toSql(senderMessageId.value));
+    }
     if (messageNumber.present) {
       map['message_number'] = Variable<int>(
           $MessagesTable.$convertermessageNumber.toSql(messageNumber.value));
@@ -5553,6 +5660,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
           ..write('messageText: $messageText, ')
           ..write('sentMessageState: $sentMessageState, ')
           ..write('receivedMessageState: $receivedMessageState, ')
+          ..write('senderMessageId: $senderMessageId, ')
           ..write('messageNumber: $messageNumber, ')
           ..write('unixTime: $unixTime')
           ..write(')'))

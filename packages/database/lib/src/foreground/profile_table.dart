@@ -41,6 +41,8 @@ class Profiles extends Table {
   IntColumn get publicKeyId => integer().map(const NullAwareTypeConverter.wrap(PublicKeyIdConverter())).nullable()();
   IntColumn get publicKeyVersion => integer().map(const NullAwareTypeConverter.wrap(PublicKeyVersionConverter())).nullable()();
 
+  IntColumn get conversationNextSenderMessageId => integer().map(const NullAwareTypeConverter.wrap(SenderMessageIdConverter())).nullable()();
+
   // If column is not null, then it is in the specific group.
   // The time is the time when the profile was added to the group.
   IntColumn get isInFavorites => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
@@ -584,5 +586,32 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
       }
     }
     return data;
+  }
+
+  Future<api.SenderMessageId?> getNextSenderMessageId(AccountId accountId) async {
+    return await (select(profiles)
+      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+    )
+      .map((r) => r.conversationNextSenderMessageId)
+      .getSingleOrNull();
+  }
+
+  Future<void> setNextSenderMessageId(AccountId accountId, api.SenderMessageId newId) async {
+    await into(profiles).insert(
+      ProfilesCompanion.insert(
+        uuidAccountId: accountId,
+        conversationNextSenderMessageId: Value(newId),
+      ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        conversationNextSenderMessageId: Value(newId),
+      ),
+        target: [profiles.uuidAccountId]
+      ),
+    );
+  }
+
+  Future<void> resetAllSenderMessageIds() async {
+    await update(profiles)
+      .write(const ProfilesCompanion(conversationNextSenderMessageId: Value(null)));
   }
 }

@@ -20,6 +20,10 @@ class MessageEntry {
   /// Time since Unix epoch. Server sets this falue.
   final UtcDateTime? unixTime;
 
+  /// Sender message ID for sent messages. Used for detecting message sending
+  /// failures.
+  final SenderMessageId? senderMessageId;
+
   MessageEntry(
     {
       required this.localId,
@@ -30,12 +34,13 @@ class MessageEntry {
       this.receivedMessageState,
       this.messageNumber,
       this.unixTime,
+      this.senderMessageId,
     }
   );
 
   @override
   String toString() {
-    return "MessageEntry(localId: $localId, localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, sentMessageState: $sentMessageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime)";
+    return "MessageEntry(localId: $localId, localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, sentMessageState: $sentMessageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime, senderMessageId: $senderMessageId)";
   }
 }
 
@@ -87,6 +92,10 @@ class NewMessageEntry {
   /// Time since Unix epoch. Server sets this falue.
   final UtcDateTime? unixTime;
 
+  /// Sender message ID for sent messages. Used for detecting message sending
+  /// failures.
+  final SenderMessageId? senderMessageId;
+
   NewMessageEntry(
     {
       required this.localAccountId,
@@ -96,12 +105,13 @@ class NewMessageEntry {
       this.receivedMessageState,
       this.messageNumber,
       this.unixTime,
+      this.senderMessageId,
     }
   );
 
   @override
   String toString() {
-    return "NewMessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, sentMessageState: $sentMessageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime)";
+    return "NewMessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, sentMessageState: $sentMessageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime, senderMessageId: $senderMessageId)";
   }
 }
 

@@ -59,7 +59,7 @@ extension MessageExtensions on ChatRepository {
       //       instead of the error text.
       final decryptedMessage = await _decryptReceivedMessage(allKeys, message, messageBytes).ok() ?? "Message decrypting failed";
 
-      final r = await db.messageAction((db) => db.insertPendingMessage(currentUser, message, decryptedMessage));
+      final r = await db.messageAction((db) => db.insertReceivedMessage(currentUser, message, decryptedMessage));
       if (r.isOk()) {
         toBeDeleted.add(message.id);
         profile.sendProfileChange(ConversationChanged(message.id.accountIdSender, ConversationChangeType.messageReceived));
@@ -181,9 +181,7 @@ extension MessageExtensions on ChatRepository {
             // the state change result.
             await db.messageAction((db) => db.updateSentMessageState(
               id,
-              SentMessageState.sendingError,
-              null,
-              null,
+              sentState: SentMessageState.sendingError,
             ));
             yield e;
         }
@@ -222,10 +220,44 @@ extension MessageExtensions on ChatRepository {
       profile.sendProfileChange(LikesChanged());
     }
 
+    final nextExpectedIdResult = await db.accountData((db) => db.daoProfiles.getNextSenderMessageId(
+      accountId,
+    ));
+    SenderMessageId nextSenderMessageId;
+    switch (nextExpectedIdResult) {
+      case Err():
+        yield const ErrorBeforeMessageSaving();
+        return;
+      case Ok(:final v):
+        if (v == null) {
+          final initialId = SenderMessageId(id: 0);
+          final senderMessageIdResult = await api.chatAction((api) => api.postSenderMessageId(
+            accountId.accountId,
+            initialId,
+          ));
+          if (senderMessageIdResult.isErr()) {
+            yield const ErrorBeforeMessageSaving();
+            return;
+          }
+          final dbResult = await db.accountAction((db) => db.daoProfiles.setNextSenderMessageId(
+            accountId,
+            initialId,
+          ));
+          if (dbResult.isErr()) {
+            yield const ErrorBeforeMessageSaving();
+            return;
+          }
+          nextSenderMessageId = initialId;
+        } else {
+          nextSenderMessageId = v;
+        }
+    }
+
     final saveMessageResult = await db.messageData((db) => db.insertToBeSentMessage(
       currentUser,
       accountId,
       message,
+      nextSenderMessageId,
     ));
     final LocalMessageId localId;
     switch (saveMessageResult) {
@@ -270,8 +302,38 @@ extension MessageExtensions on ChatRepository {
       return;
     }
 
-    final dataIdentifierAndEncryptedMessage = [0];
+    final dataIdentifierAndEncryptedMessage = [0]; // 0 is PGP message
     dataIdentifierAndEncryptedMessage.addAll(encryptedMessage);
+
+    final lastSentMessageResult = await db.accountData((db) => db.daoMessages.getLatestSentMessage(
+      currentUser,
+      accountId,
+    ));
+    final LocalMessageId? lastSentMessageLocalId;
+    final SentMessageState? lastSentMessageSentState;
+    switch (lastSentMessageResult) {
+      case Err():
+        yield ErrorAfterMessageSaving(localId);
+        return;
+      case Ok(v: final lastSentMessage):
+        lastSentMessageLocalId = lastSentMessage?.localId;
+        final lastSentMessageLocalId2 = lastSentMessage?.localId; // Compiler null checks are not working
+        // If previous sent message is still in pending state, then the app is
+        // probably closed or crashed too early.
+        if (lastSentMessage != null && lastSentMessageLocalId2 != null && lastSentMessage.sentMessageState == SentMessageState.pending) {
+          final result = await db.messageAction((db) => db.updateSentMessageState(
+            lastSentMessageLocalId2,
+            sentState: SentMessageState.sendingError,
+          ));
+          if (result.isErr()) {
+            yield ErrorAfterMessageSaving(localId);
+            return;
+          }
+          lastSentMessageSentState = SentMessageState.sendingError;
+        } else {
+          lastSentMessageSentState = lastSentMessage?.sentMessageState;
+        }
+    }
 
     int unixTimeFromServer;
     int messageNumberFromServer;
@@ -282,7 +344,7 @@ extension MessageExtensions on ChatRepository {
         accountId.accountId,
         receiverPublicKey.id.id,
         receiverPublicKey.version.version,
-        0,
+        nextSenderMessageId.id,
         MultipartFile.fromBytes("", dataIdentifierAndEncryptedMessage),
       )).ok();
       if (result == null) {
@@ -323,15 +385,44 @@ extension MessageExtensions on ChatRepository {
         } else {
           messageSenderIdUpdateTried = true;
 
-          // TODO: Proper sender message ID support
-          final senderMessageIdResult = await api.chatAction((api) => api.postSenderMessageId(
-            accountId.accountId,
-            SenderMessageId(id: 0),
+          log.error("Send message error: server assumed different sender message ID");
+
+          final lastSentMessageLocalId2 = lastSentMessageLocalId; // Compiler workaround
+          if (
+            lastSentMessageLocalId2 != null &&
+            lastSentMessageSentState == SentMessageState.sendingError &&
+            nextSenderMessageId.id + 1 == notExpectedSenderMessageId.id
+          ) {
+            log.info("Send message: the previous message was actually sent successfully");
+            final result = await db.messageAction((db) => db.updateSentMessageState(
+              lastSentMessageLocalId2,
+              sentState: SentMessageState.sent,
+            ));
+            if (result.isErr()) {
+              yield ErrorAfterMessageSaving(localId);
+              return;
+            }
+          }
+
+          // Use expected sender message ID on next try
+          nextSenderMessageId = notExpectedSenderMessageId;
+          final dbResult = await db.accountAction((db) => db.daoProfiles.setNextSenderMessageId(
+            accountId,
+            nextSenderMessageId,
           ));
-          if (senderMessageIdResult.isErr()) {
+          if (dbResult.isErr()) {
             yield ErrorAfterMessageSaving(localId);
             return;
           }
+          final updateMessageResult = await db.messageAction((db) => db.updateSentMessageState(
+            localId,
+            senderMessageId: nextSenderMessageId,
+          ));
+          if (updateMessageResult.isErr()) {
+            yield ErrorAfterMessageSaving(localId);
+            return;
+          }
+
           continue;
         }
       }
@@ -347,11 +438,21 @@ extension MessageExtensions on ChatRepository {
       break;
     }
 
+    final setNextSenderMessasgeIdResult = await db.accountAction((db) => db.daoProfiles.setNextSenderMessageId(
+      accountId,
+      SenderMessageId(id: nextSenderMessageId.id + 1)
+    ));
+    if (setNextSenderMessasgeIdResult.isErr()) {
+      yield ErrorAfterMessageSaving(localId);
+      return;
+    }
+
     final updateSentState = await db.messageAction((db) => db.updateSentMessageState(
       localId,
-      SentMessageState.sent,
-      unixTimeFromServer,
-      MessageNumber(messageNumber: messageNumberFromServer),
+      sentState: SentMessageState.sent,
+      unixTimeFromServer: unixTimeFromServer,
+      messageNumberFromServer: MessageNumber(messageNumber: messageNumberFromServer),
+      senderMessageId: nextSenderMessageId,
     ));
     if (updateSentState.isErr()) {
       yield ErrorAfterMessageSaving(localId);
