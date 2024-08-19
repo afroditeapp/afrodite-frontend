@@ -115,26 +115,43 @@ class MessageManager extends LifecycleMethods {
         profile.sendProfileChange(MatchesChanged());
       }
 
-      final alreadyExistsResult = await db.accountData((db) => db.daoMessages.doesMessageNumberAlreadyExist(
+      final alreadyExistingMessageResult = await db.accountData((db) => db.daoMessages.getMessageUsingMessageNumber(
         currentUser,
         message.id.accountIdSender,
         message.id.messageNumber
       ));
-      switch (alreadyExistsResult) {
+      switch (alreadyExistingMessageResult) {
         case Err():
           return;
-        case Ok(v: final alreadyExists):
-          if (alreadyExists) {
+        case Ok(v: final alreadyExistingMessage):
+          if (alreadyExistingMessage != null) {
             toBeDeleted.add(message.id);
             continue;
           }
       }
 
-      // TODO: Store some error state to database
-      //       instead of the error text.
-      final decryptedMessage = await _decryptReceivedMessage(allKeys, message, messageBytes).ok() ?? "Message decrypting failed";
+      final String decryptedMessage;
+      final ReceivedMessageState messageState;
+      switch (await _decryptReceivedMessage(allKeys, message, messageBytes)) {
+        case Err(:final e):
+          decryptedMessage = base64Encode(messageBytes);
+          switch (e) {
+            case ReceivedMessageError.decryptingFailed:
+              messageState = ReceivedMessageState.waitingDeletionFromServerAndDecryptingFailed;
+            case ReceivedMessageError.unknownMessageType:
+              messageState = ReceivedMessageState.waitingDeletionFromServerAndUnknownMessageType;
+          }
+        case Ok(:final v):
+          decryptedMessage = v;
+          messageState = ReceivedMessageState.waitingDeletionFromServer;
+      }
 
-      final r = await db.messageAction((db) => db.insertReceivedMessage(currentUser, message, decryptedMessage));
+      final r = await db.messageAction((db) => db.insertReceivedMessage(
+        currentUser,
+        message,
+        decryptedMessage,
+        messageState,
+      ));
       if (r.isOk()) {
         toBeDeleted.add(message.id);
         profile.sendProfileChange(ConversationChanged(message.id.accountIdSender, ConversationChangeType.messageReceived));
@@ -152,15 +169,33 @@ class MessageManager extends LifecycleMethods {
     final result = await api.chatAction((api) => api.deletePendingMessages(toBeDeletedList));
     if (result.isOk()) {
       for (final (message, _) in newMessages) {
+        final alreadyExistingMessageResult = await db.accountData((db) => db.daoMessages.getMessageUsingMessageNumber(
+          currentUser,
+          message.id.accountIdSender,
+          message.id.messageNumber
+        ));
+        final ReceivedMessageState existingReceivedState;
+        switch (alreadyExistingMessageResult) {
+          case Err():
+            continue;
+          case Ok(v: final alreadyExistingMessage):
+            final existingState = alreadyExistingMessage?.receivedMessageState;
+            if (existingState == null) {
+              continue;
+            }
+            existingReceivedState = existingState;
+        }
+
         await db.messageAction((db) => db.updateReceivedMessageState(
           currentUser,
           message.id.accountIdSender,
           message.id.messageNumber,
-          ReceivedMessageState.deletedFromServer,
+          existingReceivedState.toDeletedState(),
         ));
       }
     }
-    // TODO: If request fails try again at some point.
+    // If the delete pending messages HTTP response is lost then
+    // the DB does not have correct states
   }
 
   List<(PendingMessage, Uint8List)>? _parsePendingMessagesResponse(Uint8List bytes) {
@@ -217,31 +252,39 @@ class MessageManager extends LifecycleMethods {
     }
   }
 
-  Future<Result<String, void>> _decryptReceivedMessage(AllKeyData allKeys, PendingMessage message, Uint8List messageBytesFromServer) async {
-    final publicKey = await _getPublicKeyForForeignAccount(message.id.accountIdSender, forceDownload: false).ok();
-    if (publicKey == null) {
-      return const Err(null);
-    }
-
+  Future<Result<String, ReceivedMessageError>> _decryptReceivedMessage(AllKeyData allKeys, PendingMessage message, Uint8List messageBytesFromServer) async {
     // 0 is PGP message
     if (messageBytesFromServer.isEmpty || messageBytesFromServer.first != 0) {
-      return const Err(null);
+      return const Err(ReceivedMessageError.unknownMessageType);
     }
     final encryptedMessageBytes = Uint8List.fromList(messageBytesFromServer.skip(1).toList());
 
-    final (messageBytes, decryptingResult) = decryptMessage(
-      publicKey.data.data,
-      allKeys.private.data,
-      encryptedMessageBytes,
-    );
+    bool forcePublicKeyDownload = false;
+    while (true) {
+      var publicKey = await _getPublicKeyForForeignAccount(message.id.accountIdSender, forceDownload: forcePublicKeyDownload).ok();
+      if (publicKey == null) {
+        return const Err(ReceivedMessageError.decryptingFailed);
+      }
 
-    if (messageBytes == null) {
-      // TODO: try again with downloaded public key
-      log.error("TODO: try again public key downloading, error: $decryptingResult");
-      return const Err(null);
+      final (messageBytes, decryptingResult) = decryptMessage(
+        publicKey.data.data,
+        allKeys.private.data,
+        encryptedMessageBytes,
+      );
+
+      if (messageBytes == null) {
+        log.error("Received message decrypting failed, error: $decryptingResult, forcePublicKeyDownload: $forcePublicKeyDownload");
+      }
+
+      if (messageBytes == null && forcePublicKeyDownload) {
+        return const Err(ReceivedMessageError.decryptingFailed);
+      } else if (messageBytes == null) {
+        forcePublicKeyDownload = true;
+        continue;
+      }
+
+      return MessageConverter().bytesToText(messageBytes).mapErr((_) => ReceivedMessageError.unknownMessageType);
     }
-
-    return MessageConverter().bytesToText(messageBytes);
   }
 
   Stream<MessageSendingEvent> _sendMessageTo(AccountId accountId, String message) async* {
@@ -586,4 +629,9 @@ class ErrorAfterMessageSaving extends MessageSendingEvent {
   final LocalMessageId id;
   final MessageSendingErrorDetails? details;
   const ErrorAfterMessageSaving(this.id, [this.details]);
+}
+
+enum ReceivedMessageError {
+  unknownMessageType,
+  decryptingFailed,
 }

@@ -10,6 +10,8 @@ class MessageEntry {
 
   final AccountId localAccountId;
   final AccountId remoteAccountId;
+  /// For sent messages this is normal text. For received messages this can
+  /// be normal text or when in error state base64 encoded message bytes.
   final String messageText;
   /// Local/client time when message entry is inserted to database.
   final UtcDateTime localUnixTime;
@@ -47,6 +49,8 @@ class MessageEntry {
   }
 }
 
+// TODO(prod): Remove unused states from SentMessageState
+
 enum SentMessageState {
   /// Waiting to be sent to server.
   pending(0),
@@ -68,10 +72,14 @@ enum ReceivedMessageState {
   waitingDeletionFromServer(0),
   /// Waiting to be deleted from server and decrypting failed.
   waitingDeletionFromServerAndDecryptingFailed(1),
+  /// Waiting to be deleted from server and unknown message type.
+  waitingDeletionFromServerAndUnknownMessageType(2),
   /// Message is deleted from server.
-  deletedFromServer(2),
+  deletedFromServer(3),
   /// Message is deleted from server and decrypting failed.
-  deletedFromServerAndDecryptingFailed(3);
+  deletedFromServerAndDecryptingFailed(4),
+  /// Message is deleted from server and unknown message type.
+  deletedFromServerAndUnknownMessageType(5);
 
   const ReceivedMessageState(this.number);
   final int number;
@@ -79,6 +87,26 @@ enum ReceivedMessageState {
   bool decryptingFailed() {
     return this == ReceivedMessageState.deletedFromServerAndDecryptingFailed ||
       this == ReceivedMessageState.waitingDeletionFromServerAndDecryptingFailed;
+  }
+
+  bool unknonwMessageType() {
+    return this == ReceivedMessageState.deletedFromServerAndUnknownMessageType ||
+      this == ReceivedMessageState.waitingDeletionFromServerAndUnknownMessageType;
+  }
+
+  ReceivedMessageState toDeletedState() {
+    switch (this) {
+      case ReceivedMessageState.deletedFromServer ||
+        ReceivedMessageState.deletedFromServerAndDecryptingFailed ||
+        ReceivedMessageState.deletedFromServerAndUnknownMessageType:
+        return this;
+      case ReceivedMessageState.waitingDeletionFromServer:
+        return ReceivedMessageState.deletedFromServer;
+      case ReceivedMessageState.waitingDeletionFromServerAndDecryptingFailed:
+        return ReceivedMessageState.deletedFromServerAndDecryptingFailed;
+      case ReceivedMessageState.waitingDeletionFromServerAndUnknownMessageType:
+        return ReceivedMessageState.deletedFromServerAndUnknownMessageType;
+    }
   }
 }
 

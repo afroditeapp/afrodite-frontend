@@ -153,6 +153,10 @@
   "@conversation_screen_message_state_sent_successfully": {
     "description": "Message state text that message was sent successfully"
   },
+  "conversation_screen_message_state_unknown_message_type": "Unknown message type",
+  "@conversation_screen_message_state_unknown_message_type": {
+    "description": "Message state text that message type is unknown"
+  },
   "conversation_screen_message_too_long": "Message is too long",
   "@conversation_screen_message_too_long": {
     "description": "Snackbar text that message is too long"

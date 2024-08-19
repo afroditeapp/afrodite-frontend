@@ -96,7 +96,9 @@ Widget _messageWidget(
     required TextStyle parentTextStyle,
   }
 ) {
-  final receivedMessageDecryptingFailed = receivedMessageState?.decryptingFailed() ?? false;
+  final receivedMessageDecryptingFailed =
+    (receivedMessageState?.decryptingFailed() ?? false) ||
+    (receivedMessageState?.unknonwMessageType() ?? false);
   final showErrorColor = receivedMessageDecryptingFailed || sentMessageState == SentMessageState.sendingError;
   final styleChanges = TextStyle(
     // color: Theme.of(context).colorScheme.onPrimary,
@@ -182,6 +184,8 @@ void closeActionsAndOpenDetails(BuildContext screenContext, MessageEntry entry, 
     stateText = screenContext.strings.conversation_screen_message_state_received_successfully;
   } else if (entry.receivedMessageState?.decryptingFailed() == true) {
     stateText = screenContext.strings.conversation_screen_message_state_decrypting_failed;
+  } else if (entry.receivedMessageState?.unknonwMessageType() == true) {
+    stateText = screenContext.strings.conversation_screen_message_state_unknown_message_type;
   } else {
     stateText = "";
   }

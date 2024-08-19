@@ -102,7 +102,13 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     ));
   }
 
-  Future<void> insertReceivedMessage(AccountId localAccountId, PendingMessage entry, String decryptedMessage) async {
+  /// Null message means decrypting failure
+  Future<void> insertReceivedMessage(
+    AccountId localAccountId,
+    PendingMessage entry,
+    String decryptedMessage,
+    ReceivedMessageState state,
+  ) async {
     final unixTime = UtcDateTime.fromUnixEpochMilliseconds(entry.unixTime.unixTime * 1000);
     final message = NewMessageEntry(
       localAccountId: localAccountId,
@@ -110,7 +116,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       localUnixTime: UtcDateTime.now(),
       messageText: decryptedMessage,
       sentMessageState: null,
-      receivedMessageState: ReceivedMessageState.waitingDeletionFromServer,
+      receivedMessageState: state,
       messageNumber: entry.id.messageNumber,
       unixTime: unixTime,
     );
@@ -229,18 +235,18 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       .getSingleOrNull();
   }
 
-  Future<bool> doesMessageNumberAlreadyExist(
+  Future<MessageEntry?> getMessageUsingMessageNumber(
     AccountId localAccountId,
     AccountId remoteAccountId,
     MessageNumber messageNumber,
-  ) async {
-    final result = await (select(messages)
+  ) {
+    return (select(messages)
       ..where((t) => t.uuidLocalAccountId.equals(localAccountId.accountId))
       ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.accountId))
       ..where((t) => t.messageNumber.equals(messageNumber.messageNumber))
       ..limit(1)
     )
+      .map((m) => _fromMessage(m))
       .getSingleOrNull();
-    return result != null;
   }
 }
