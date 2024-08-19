@@ -55,7 +55,10 @@ class MessageKeyManager {
   }
 
   Future<Result<AllKeyData, void>> _generateMessageKeys() async {
-    final (newKeys, result) = await Isolate.run(() => generateMessageKeys(currentUser.accountId));
+    // For some reason passing the currentUser.accountId directly to closure
+    // does not work.
+    final currentUserString = currentUser.accountId;
+    final (newKeys, result) = await Isolate.run(() => generateMessageKeys(currentUserString));
     if (newKeys == null) {
       log.error("Generating message keys failed, error: $result");
       return const Err(null);
