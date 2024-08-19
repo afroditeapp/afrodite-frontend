@@ -33,24 +33,27 @@ class MessageKeyManager {
   Future<Result<AllKeyData, void>> generateOrLoadMessageKeys() async {
     if (generation.value == KeyGeneratorState.inProgress) {
       await generation.where((v) => v == KeyGeneratorState.idle).first;
-      return await _loadMessageKeys();
+      // Key generation is now complete and it should be in database
+      final keys = await db.accountData((db) => db.daoMessageKeys.getMessageKeys()).ok();
+      if (keys == null) {
+        return const Err(null);
+      } else {
+        return Ok(keys);
+      }
     } else {
       generation.add(KeyGeneratorState.inProgress);
-      var result = await _loadMessageKeys();
-      if (result.isErr()) {
-        result = await _generateMessageKeys();
+      switch (await db.accountData((db) => db.daoMessageKeys.getMessageKeys())) {
+        case Err():
+          return const Err(null);
+        case Ok(:final v):
+          if (v != null) {
+            // Key is already created
+            return Ok(v);
+          }
       }
+      final result = await _generateMessageKeys();
       generation.add(KeyGeneratorState.idle);
       return result;
-    }
-  }
-
-  Future<Result<AllKeyData, void>> _loadMessageKeys() async {
-    final value = await db.accountData((db) => db.daoMessageKeys.getMessageKeys()).ok();
-    if (value == null) {
-      return const Err(null);
-    } else {
-      return Ok(value);
     }
   }
 
