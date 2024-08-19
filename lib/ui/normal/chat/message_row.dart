@@ -51,7 +51,7 @@ Widget _messageAndErrorWidget(
         Flexible(
           flex: 1,
           child: Visibility(
-            visible: sentMessageState == SentMessageState.sendingError,
+            visible: sentMessageState.isError(),
             maintainSize: true,
             maintainAnimation: true,
             maintainState: true,
@@ -69,10 +69,7 @@ Widget _messageAndErrorWidget(
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (
-          (receivedMessageState?.decryptingFailed() ?? false) ||
-          (receivedMessageState?.unknonwMessageType() ?? false)
-        ) Flexible(
+        if (receivedMessageState?.isError() ?? false) Flexible(
             flex: 1,
             child: Padding(
               padding: const EdgeInsets.only(left: 8.0),
@@ -97,10 +94,17 @@ Widget _messageWidget(
     required TextStyle parentTextStyle,
   }
 ) {
-  final receivedMessageDecryptingFailed =
-    (receivedMessageState?.decryptingFailed() ?? false) ||
-    (receivedMessageState?.unknonwMessageType() ?? false);
-  final showErrorColor = receivedMessageDecryptingFailed || sentMessageState == SentMessageState.sendingError;
+  final String text;
+  if (receivedMessageState == ReceivedMessageState.decryptingFailed) {
+    text = context.strings.conversation_screen_message_state_decrypting_failed;
+  } else if (receivedMessageState == ReceivedMessageState.unknownMessageType) {
+    text = context.strings.conversation_screen_message_state_unknown_message_type;
+  } else {
+    text = message;
+  }
+  final showErrorColor =
+    (sentMessageState?.isError() ?? false) ||
+    (receivedMessageState?.isError() ?? false);
   final styleChanges = TextStyle(
     // color: Theme.of(context).colorScheme.onPrimary,
     color: showErrorColor ?
@@ -108,9 +112,7 @@ Widget _messageWidget(
       Theme.of(context).colorScheme.onPrimaryContainer,
     fontSize: 16.0,
   );
-  final style = parentTextStyle.merge(
-    styleChanges,
-  );
+  final style = parentTextStyle.merge(styleChanges);
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
@@ -121,11 +123,7 @@ Widget _messageWidget(
         Theme.of(context).colorScheme.primaryContainer,
       borderRadius: BorderRadius.circular(20.0),
     ),
-    child: Text(
-      receivedMessageDecryptingFailed ?
-        context.strings.conversation_screen_message_message_decrypting_failed : message,
-      style: style,
-    ),
+    child: Text(text, style: style),
   );
 }
 
@@ -178,14 +176,11 @@ void closeActionsAndOpenDetails(BuildContext screenContext, MessageEntry entry, 
     stateText = screenContext.strings.conversation_screen_message_state_sending_failed;
   } else if (entry.sentMessageState == SentMessageState.sent) {
     stateText = screenContext.strings.conversation_screen_message_state_sent_successfully;
-  } else if (
-    entry.receivedMessageState == ReceivedMessageState.deletedFromServer ||
-    entry.receivedMessageState == ReceivedMessageState.waitingDeletionFromServer
-  ) {
+  } else if (entry.receivedMessageState == ReceivedMessageState.received) {
     stateText = screenContext.strings.conversation_screen_message_state_received_successfully;
-  } else if (entry.receivedMessageState?.decryptingFailed() == true) {
+  } else if (entry.receivedMessageState == ReceivedMessageState.decryptingFailed) {
     stateText = screenContext.strings.conversation_screen_message_state_decrypting_failed;
-  } else if (entry.receivedMessageState?.unknonwMessageType() == true) {
+  } else if (entry.receivedMessageState == ReceivedMessageState.unknownMessageType) {
     stateText = screenContext.strings.conversation_screen_message_state_unknown_message_type;
   } else {
     stateText = "";

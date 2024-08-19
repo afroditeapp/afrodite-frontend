@@ -281,7 +281,6 @@
     <string name="conversation_screen_chat_box_placeholder_text" description="Message input text field placeholder text">Type a message…</string>
     <string name="conversation_screen_message_too_long" description="Snackbar text that message is too long">Message is too long</string>
     <string name="conversation_screen_message_too_many_pending_messages" description="Snackbar text that server is full of pending messages">Server pending message storage is full</string>
-    <string name="conversation_screen_message_message_decrypting_failed" description="Message text that decrypting the message failed">Message decrypting failed</string>
     <string name="conversation_screen_message_state_sending_in_progress" description="Message state text that message sending is in progress">Sending in progress</string>
     <string name="conversation_screen_message_state_sent_successfully" description="Message state text that message was sent successfully">Sent successfully</string>
     <string name="conversation_screen_message_state_sending_failed" description="Message state text that message sending failed">Sending failed</string>

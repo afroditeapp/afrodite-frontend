@@ -49,65 +49,37 @@ class MessageEntry {
   }
 }
 
-// TODO(prod): Remove unused states from SentMessageState
-
 enum SentMessageState {
   /// Waiting to be sent to server.
   pending(0),
   /// Sent to server, but not yet received by the other user.
   sent(1),
-  /// Received by the other user.
-  received(2),
-  /// Read by the other user.
-  read(3),
   /// Sending failed.
-  sendingError(4);
+  sendingError(2);
+
+  bool isError() {
+    return this == SentMessageState.sendingError;
+  }
 
   const SentMessageState(this.number);
   final int number;
 }
 
 enum ReceivedMessageState {
-  /// Waiting to be deleted from server.
-  waitingDeletionFromServer(0),
-  /// Waiting to be deleted from server and decrypting failed.
-  waitingDeletionFromServerAndDecryptingFailed(1),
-  /// Waiting to be deleted from server and unknown message type.
-  waitingDeletionFromServerAndUnknownMessageType(2),
-  /// Message is deleted from server.
-  deletedFromServer(3),
-  /// Message is deleted from server and decrypting failed.
-  deletedFromServerAndDecryptingFailed(4),
-  /// Message is deleted from server and unknown message type.
-  deletedFromServerAndUnknownMessageType(5);
+  /// Received successfully
+  received(0),
+  /// Received, but decrypting failed
+  decryptingFailed(1),
+  /// Received, but message type is unknown.
+  unknownMessageType(2);
+
+  bool isError() {
+    return this == ReceivedMessageState.decryptingFailed ||
+      this == ReceivedMessageState.unknownMessageType;
+  }
 
   const ReceivedMessageState(this.number);
   final int number;
-
-  bool decryptingFailed() {
-    return this == ReceivedMessageState.deletedFromServerAndDecryptingFailed ||
-      this == ReceivedMessageState.waitingDeletionFromServerAndDecryptingFailed;
-  }
-
-  bool unknonwMessageType() {
-    return this == ReceivedMessageState.deletedFromServerAndUnknownMessageType ||
-      this == ReceivedMessageState.waitingDeletionFromServerAndUnknownMessageType;
-  }
-
-  ReceivedMessageState toDeletedState() {
-    switch (this) {
-      case ReceivedMessageState.deletedFromServer ||
-        ReceivedMessageState.deletedFromServerAndDecryptingFailed ||
-        ReceivedMessageState.deletedFromServerAndUnknownMessageType:
-        return this;
-      case ReceivedMessageState.waitingDeletionFromServer:
-        return ReceivedMessageState.deletedFromServer;
-      case ReceivedMessageState.waitingDeletionFromServerAndDecryptingFailed:
-        return ReceivedMessageState.deletedFromServerAndDecryptingFailed;
-      case ReceivedMessageState.waitingDeletionFromServerAndUnknownMessageType:
-        return ReceivedMessageState.deletedFromServerAndUnknownMessageType;
-    }
-  }
 }
 
 class NewMessageEntry {

@@ -129,10 +129,6 @@
   "@conversation_screen_message_details_message_id": {
     "description": "Title text for message ID value"
   },
-  "conversation_screen_message_message_decrypting_failed": "Message decrypting failed",
-  "@conversation_screen_message_message_decrypting_failed": {
-    "description": "Message text that decrypting the message failed"
-  },
   "conversation_screen_message_state_decrypting_failed": "Decrypting failed",
   "@conversation_screen_message_state_decrypting_failed": {
     "description": "Message state text that message decrypting failed"

@@ -23,7 +23,7 @@ import 'package:pihka_frontend/utils/iterator.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
-var log = Logger("MessageExtensions");
+var log = Logger("MessageManager");
 
 sealed class MessageManagerCommand {}
 class ReceiveNewMessages extends MessageManagerCommand {
@@ -137,13 +137,13 @@ class MessageManager extends LifecycleMethods {
           decryptedMessage = base64Encode(messageBytes);
           switch (e) {
             case ReceivedMessageError.decryptingFailed:
-              messageState = ReceivedMessageState.waitingDeletionFromServerAndDecryptingFailed;
+              messageState = ReceivedMessageState.decryptingFailed;
             case ReceivedMessageError.unknownMessageType:
-              messageState = ReceivedMessageState.waitingDeletionFromServerAndUnknownMessageType;
+              messageState = ReceivedMessageState.unknownMessageType;
           }
         case Ok(:final v):
           decryptedMessage = v;
-          messageState = ReceivedMessageState.waitingDeletionFromServer;
+          messageState = ReceivedMessageState.received;
       }
 
       final r = await db.messageAction((db) => db.insertReceivedMessage(
@@ -167,35 +167,9 @@ class MessageManager extends LifecycleMethods {
 
     final toBeDeletedList = PendingMessageDeleteList(messagesIds: toBeDeleted);
     final result = await api.chatAction((api) => api.deletePendingMessages(toBeDeletedList));
-    if (result.isOk()) {
-      for (final (message, _) in newMessages) {
-        final alreadyExistingMessageResult = await db.accountData((db) => db.daoMessages.getMessageUsingMessageNumber(
-          currentUser,
-          message.id.accountIdSender,
-          message.id.messageNumber
-        ));
-        final ReceivedMessageState existingReceivedState;
-        switch (alreadyExistingMessageResult) {
-          case Err():
-            continue;
-          case Ok(v: final alreadyExistingMessage):
-            final existingState = alreadyExistingMessage?.receivedMessageState;
-            if (existingState == null) {
-              continue;
-            }
-            existingReceivedState = existingState;
-        }
-
-        await db.messageAction((db) => db.updateReceivedMessageState(
-          currentUser,
-          message.id.accountIdSender,
-          message.id.messageNumber,
-          existingReceivedState.toDeletedState(),
-        ));
-      }
+    if (result.isErr()) {
+      log.error("Receive messages: deleting from server failed");
     }
-    // If the delete pending messages HTTP response is lost then
-    // the DB does not have correct states
   }
 
   List<(PendingMessage, Uint8List)>? _parsePendingMessagesResponse(Uint8List bytes) {
