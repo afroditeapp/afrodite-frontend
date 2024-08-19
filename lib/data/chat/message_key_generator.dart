@@ -44,10 +44,12 @@ class MessageKeyManager {
       generation.add(KeyGeneratorState.inProgress);
       switch (await db.accountData((db) => db.daoMessageKeys.getMessageKeys())) {
         case Err():
+          generation.add(KeyGeneratorState.idle);
           return const Err(null);
         case Ok(:final v):
           if (v != null) {
             // Key is already created
+            generation.add(KeyGeneratorState.idle);
             return Ok(v);
           }
       }
