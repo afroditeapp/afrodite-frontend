@@ -115,8 +115,20 @@ class MessageManager extends LifecycleMethods {
         profile.sendProfileChange(MatchesChanged());
       }
 
-      // TODO: Check if the message is already in DB (use message number
-      // and account IDs as together those are unique).
+      final alreadyExistsResult = await db.accountData((db) => db.daoMessages.doesMessageNumberAlreadyExist(
+        currentUser,
+        message.id.accountIdSender,
+        message.id.messageNumber
+      ));
+      switch (alreadyExistsResult) {
+        case Err():
+          return;
+        case Ok(v: final alreadyExists):
+          if (alreadyExists) {
+            toBeDeleted.add(message.id);
+            continue;
+          }
+      }
 
       // TODO: Store some error state to database
       //       instead of the error text.

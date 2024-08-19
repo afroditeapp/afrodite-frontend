@@ -228,4 +228,19 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       .map((m) => _fromMessage(m))
       .getSingleOrNull();
   }
+
+  Future<bool> doesMessageNumberAlreadyExist(
+    AccountId localAccountId,
+    AccountId remoteAccountId,
+    MessageNumber messageNumber,
+  ) async {
+    final result = await (select(messages)
+      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.accountId))
+      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.accountId))
+      ..where((t) => t.messageNumber.equals(messageNumber.messageNumber))
+      ..limit(1)
+    )
+      .getSingleOrNull();
+    return result != null;
+  }
 }
