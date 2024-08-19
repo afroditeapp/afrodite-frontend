@@ -69,15 +69,16 @@ Widget _messageAndErrorWidget(
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (receivedMessageState == ReceivedMessageState.deletedFromServerAndDecryptingFailed ||
-          receivedMessageState == ReceivedMessageState.deletedFromServerAndDecryptingFailed)
-            Flexible(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Icon(Icons.error, color: Theme.of(context).colorScheme.error),
-              ),
+        if (
+          (receivedMessageState?.decryptingFailed() ?? false) ||
+          (receivedMessageState?.unknonwMessageType() ?? false)
+        ) Flexible(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Icon(Icons.error, color: Theme.of(context).colorScheme.error),
             ),
+          ),
         Flexible(
           flex: 10,
           child: _messageWidget(context, message, sentMessageState, receivedMessageState, parentTextStyle: parentTextStyle),
