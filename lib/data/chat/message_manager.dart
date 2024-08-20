@@ -721,7 +721,9 @@ class MessageManager extends LifecycleMethods {
       return const Err(DeleteSendFailedError.unspecifiedError);
     }
 
-    // TODO(prod): Change delete to happen after sending in the future
+    // TODO(prod): Change delete to happen after sending in the future.
+    // TODO(prod): Change error type to include MessageSendingErrorDetails
+    //             cases.
 
     final deleteResult = await _deleteSendFailedMessage(receiverAccount, localId, sendUiEvent: false);
     switch (deleteResult) {
