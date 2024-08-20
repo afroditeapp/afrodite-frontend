@@ -145,6 +145,11 @@ class DebugConversationDataProvider extends ConversationDataProvider {
   Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) async {
     return const Ok(null);
   }
+
+  @override
+  Future<Result<void, DeleteSendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) async {
+    return const Ok(null);
+  }
 }
 
 class ChatViewDebuggerPage extends StatefulWidget {

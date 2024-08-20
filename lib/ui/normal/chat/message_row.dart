@@ -152,7 +152,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
           title: Text(context.strings.generic_delete),
           onTap: () async {
             final bloc = screenContext.read<ConversationBloc>();
-            if (bloc.state.isMessageRemovingInProgress) {
+            if (bloc.state.isMessageRemovingInProgress || bloc.state.isMessageResendingInProgress) {
               showSnackBar(context.strings.generic_previous_action_in_progress);
             } else {
               bloc.add(RemoveSendFailedMessage(entry.remoteAccountId, entry.localId));
@@ -163,8 +163,13 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
         if (entry.sentMessageState == SentMessageState.sendingError) ListTile(
           title: Text(context.strings.generic_resend),
           onTap: () async {
+            final bloc = screenContext.read<ConversationBloc>();
+            if (bloc.state.isMessageRemovingInProgress || bloc.state.isMessageResendingInProgress) {
+              showSnackBar(context.strings.generic_previous_action_in_progress);
+            } else {
+              bloc.add(ResendSendFailedMessage(entry.remoteAccountId, entry.localId));
+            }
             MyNavigator.removePage(context, pageKey, null);
-
           },
         ),
       ],

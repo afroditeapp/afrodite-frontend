@@ -395,4 +395,5 @@ enum ConversationChangeType {
   messageSent,
   messageReceived,
   messageRemoved,
+  messageResent,
 }

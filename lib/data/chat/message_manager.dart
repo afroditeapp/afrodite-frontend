@@ -59,6 +59,16 @@ class DeleteSendFailedMessage extends MessageManagerCommand {
     return await _completed.whereNotNull().first;
   }
 }
+class ResendSendFailedMessage extends MessageManagerCommand {
+  final BehaviorSubject<Result<void, DeleteSendFailedError>?> _completed = BehaviorSubject.seeded(null);
+  final AccountId receiverAccount;
+  final LocalMessageId localId;
+  ResendSendFailedMessage(this.receiverAccount, this.localId);
+
+  Future<Result<void, DeleteSendFailedError>> waitUntilReady() async  {
+    return await _completed.whereNotNull().first;
+  }
+}
 
 /// Synchronized message actions
 class MessageManager extends LifecycleMethods {
@@ -89,6 +99,8 @@ class MessageManager extends LifecycleMethods {
             _events.add(null);
           case DeleteSendFailedMessage(:final _completed, :final receiverAccount, :final localId):
             _completed.add(await _deleteSendFailedMessage(receiverAccount, localId));
+          case ResendSendFailedMessage(:final _completed, :final receiverAccount, :final localId):
+            _completed.add(await _resendSendFailedMessage(receiverAccount, localId));
         }
       })
       .listen((_) {});
@@ -273,8 +285,14 @@ class MessageManager extends LifecycleMethods {
     }
   }
 
-  Stream<MessageSendingEvent> _sendMessageTo(AccountId accountId, String message) async* {
-      await for (final e in _sendMessageToInternal(accountId, message)) {
+  Stream<MessageSendingEvent> _sendMessageTo(
+    AccountId accountId,
+    String message,
+    {
+      bool sendUiEvent = true,
+    }
+  ) async* {
+      await for (final e in _sendMessageToInternal(accountId, message, sendUiEvent: sendUiEvent)) {
         switch (e) {
           case SavedToLocalDb():
             yield e;
@@ -292,7 +310,25 @@ class MessageManager extends LifecycleMethods {
     }
   }
 
-  Stream<MessageSendingEvent> _sendMessageToInternal(AccountId accountId, String message) async* {
+  // TODO(prod): The error correction needs to happend before the message sending
+  // because if sending fails for multiple messages it is not sure what
+  // message will succeed.
+  //
+  // Or not. Change message sending API to have check sent messages queue
+  // (like receive messages queue). With that the message sending
+  // is reliable and the logic is simple.
+  // If everything related to message sending in client is synchronous, then
+  // it could be possible to use one "slot" for the sent message and
+  // remove/check that every time the message is sent. But that makes multiple
+  // clients problematic so implement queue instead.
+  //
+  // The message uniqueness is still problem between clients. Randomnes kinda
+  // works (or in practice works) but all client's could have ID number and
+  // that could be combined with message local ID, so the new ID for the message
+  // will be unique. The API which returns client ID, could be HTTP POST
+  // so server will increment the ID, so next value returned will be unique.
+
+  Stream<MessageSendingEvent> _sendMessageToInternal(AccountId accountId, String message, {bool sendUiEvent = true}) async* {
     final isMatch = await isInMatches(accountId);
     if (!isMatch) {
       final resultSendLike = await api.chatAction((api) => api.postSendLike(accountId));
@@ -367,7 +403,9 @@ class MessageManager extends LifecycleMethods {
         return;
     }
 
-    profile.sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
+    if (sendUiEvent) {
+      profile.sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
+    }
 
     final currentUserKeys = await messageKeyManager.generateOrLoadMessageKeys().ok();
     if (currentUserKeys == null) {
@@ -605,6 +643,9 @@ class MessageManager extends LifecycleMethods {
   Future<Result<void, DeleteSendFailedError>> _deleteSendFailedMessage(
     AccountId receiverAccount,
     LocalMessageId localId,
+    {
+      bool sendUiEvent = true,
+    }
   ) async {
     final lastSentMessageResult = await db.accountData((db) => db.daoMessages.getLatestSentMessage(
       currentUser,
@@ -662,7 +703,51 @@ class MessageManager extends LifecycleMethods {
     if (deleteResult.isErr()) {
       return const Err(DeleteSendFailedError.unspecifiedError);
     } else {
-      profile.sendProfileChange(ConversationChanged(toBeRemoved.remoteAccountId, ConversationChangeType.messageRemoved));
+      if (sendUiEvent) {
+        profile.sendProfileChange(ConversationChanged(toBeRemoved.remoteAccountId, ConversationChangeType.messageRemoved));
+      }
+      return const Ok(null);
+    }
+  }
+
+  Future<Result<void, DeleteSendFailedError>> _resendSendFailedMessage(
+    AccountId receiverAccount,
+    LocalMessageId localId,
+  ) async {
+    final toBeResent = await db.accountData((db) => db.daoMessages.getMessageUsingLocalMessageId(
+      localId,
+    )).ok();
+    if (toBeResent == null) {
+      return const Err(DeleteSendFailedError.unspecifiedError);
+    }
+
+    // TODO(prod): Change delete to happen after sending in the future
+
+    final deleteResult = await _deleteSendFailedMessage(receiverAccount, localId, sendUiEvent: false);
+    switch (deleteResult) {
+      case Err(:final e):
+        return Err(e);
+      case Ok():
+        ();
+    }
+
+    var sendError = false;
+    await for (var e in _sendMessageTo(receiverAccount, toBeResent.messageText, sendUiEvent: false)) {
+      switch (e) {
+        case SavedToLocalDb():
+          ();
+        case ErrorBeforeMessageSaving():
+          sendError = true;
+        case ErrorAfterMessageSaving():
+          sendError = true;
+      }
+    }
+
+    if (sendError) {
+      profile.sendProfileChange(ConversationChanged(toBeResent.remoteAccountId, ConversationChangeType.messageRemoved));
+      return const Err(DeleteSendFailedError.unspecifiedError);
+    } else {
+      profile.sendProfileChange(ConversationChanged(toBeResent.remoteAccountId, ConversationChangeType.messageResent));
       return const Ok(null);
     }
   }

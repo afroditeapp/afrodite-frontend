@@ -51,6 +51,11 @@ class RemoveSendFailedMessage extends ConversationEvent {
   final LocalMessageId id;
   RemoveSendFailedMessage(this.receiverAccountId, this.id);
 }
+class ResendSendFailedMessage extends ConversationEvent {
+  final AccountId receiverAccountId;
+  final LocalMessageId id;
+  ResendSendFailedMessage(this.receiverAccountId, this.id);
+}
 
 abstract class ConversationDataProvider {
   Future<bool> isInMatches(AccountId accountId);
@@ -66,6 +71,7 @@ abstract class ConversationDataProvider {
   Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, LocalMessageId? latestCurrentMessageLocalId);
 
   Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId);
+  Future<Result<void, DeleteSendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId);
 }
 
 class DefaultConversationDataProvider extends ConversationDataProvider {
@@ -134,6 +140,11 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   @override
   Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) {
     return chat.deleteSendFailedMessage(receiverAccountId, localId);
+  }
+
+  @override
+  Future<Result<void, DeleteSendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) {
+    return chat.resendSendFailedMessage(receiverAccountId, localId);
   }
 }
 
@@ -246,6 +257,29 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     },
       transformer: sequential(),
     );
+    on<ResendSendFailedMessage>((data, emit) async {
+      emit(state.copyWith(
+        isMessageResendingInProgress: true,
+      ));
+
+      switch (await dataProvider.resendSendFailedMessage(data.receiverAccountId, data.id)) {
+        case Ok():
+          ();
+        case Err(:final e):
+          switch (e) {
+            case DeleteSendFailedError.unspecifiedError:
+              showSnackBar(R.strings.generic_error_occurred);
+            case DeleteSendFailedError.isActuallySentSuccessfully:
+              showSnackBar(R.strings.conversation_screen_message_error_is_actually_sent_successfully);
+          }
+      }
+
+      emit(state.copyWith(
+        isMessageResendingInProgress: false,
+      ));
+    },
+      transformer: sequential(),
+    );
     on<NotifyMessageInputFieldCleared>((data, emit) async {
       emit(state.copyWith(
         resetMessageInputField: false,
@@ -253,17 +287,27 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     });
     on<MessageCountChanged>((data, emit) async {
       final visibleMessages = state.visibleMessages;
-      if (visibleMessages == null || data.changeInfo == ConversationChangeType.messageRemoved) {
+      if (
+          visibleMessages == null ||
+          data.changeInfo == ConversationChangeType.messageRemoved ||
+          data.changeInfo == ConversationChangeType.messageResent
+        ) {
         final initialMessages = await dataProvider.getAllMessages(state.accountId);
         final fromOldestToNewest = initialMessages.reversed.toList();
         renderingManager.initWithMessages(fromOldestToNewest);
         emit(state.copyWith(
-          visibleMessages: ReadyVisibleMessageListUpdate(MessageList(fromOldestToNewest), null, false),
+          visibleMessages: ReadyVisibleMessageListUpdate(
+            MessageList(fromOldestToNewest),
+            null,
+            data.changeInfo == ConversationChangeType.messageResent,
+          ),
         ));
         if (visibleMessages == null) {
           log.info("Initial message list update done");
         } else if (data.changeInfo == ConversationChangeType.messageRemoved) {
-          log.info("Message list refresh done");
+          log.info("Message removed and message list refreshed");
+        } else if (data.changeInfo == ConversationChangeType.messageResent) {
+          log.info("Message resent and message list refreshed");
         }
         return;
       }
