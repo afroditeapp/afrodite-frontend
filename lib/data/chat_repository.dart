@@ -77,6 +77,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     // Reset message sending error detection counter value as other client
     // might have used the current value in server.
     await db.accountAction((db) => db.daoProfiles.resetAllSenderMessageIds());
+    await db.accountAction((db) => db.daoMessages.resetSenderMessageIdForAllMessages());
 
     syncHandler.onLoginSync(() async {
       await _generateMessageKeyIfNeeded();
@@ -328,7 +329,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
   /// Get message and updates to it.
   Stream<MessageEntry?> getMessageWithLocalId(LocalMessageId localId) {
-    return db.accountStream((db) => db.daoMessages.getMessageUpdatesByLocalMessageId(localId));
+    return db.accountStream((db) => db.daoMessages.getMessageUpdatesUsingLocalMessageId(localId));
   }
 
   /// Get message and updates to it.
@@ -343,7 +344,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     yield message;
     await for (final event in profile.profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
-        final messageList = await db.messageData((db) => db.getMessageListByLocalMessageId(currentUser, match, localId, 1)).ok() ?? [];
+        final messageList = await db.messageData((db) => db.getMessageListUsingLocalMessageId(currentUser, match, localId, 1)).ok() ?? [];
         final message = messageList.firstOrNull;
         if (message != null) {
           yield message;
@@ -394,5 +395,11 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     final cmd = SendMessage(accountId, message);
     messageManager.queueCmd(cmd);
     yield* cmd.events();
+  }
+
+  Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) async {
+    final cmd = DeleteSendFailedMessage(receiverAccountId, localId);
+    messageManager.queueCmd(cmd);
+    return await cmd.waitUntilReady();
   }
 }

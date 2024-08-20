@@ -49,6 +49,16 @@ class SendMessage extends MessageManagerCommand {
     }
   }
 }
+class DeleteSendFailedMessage extends MessageManagerCommand {
+  final BehaviorSubject<Result<void, DeleteSendFailedError>?> _completed = BehaviorSubject.seeded(null);
+  final AccountId receiverAccount;
+  final LocalMessageId localId;
+  DeleteSendFailedMessage(this.receiverAccount, this.localId);
+
+  Future<Result<void, DeleteSendFailedError>> waitUntilReady() async  {
+    return await _completed.whereNotNull().first;
+  }
+}
 
 /// Synchronized message actions
 class MessageManager extends LifecycleMethods {
@@ -77,6 +87,8 @@ class MessageManager extends LifecycleMethods {
               _events.add(event);
             }
             _events.add(null);
+          case DeleteSendFailedMessage(:final _completed, :final receiverAccount, :final localId):
+            _completed.add(await _deleteSendFailedMessage(receiverAccount, localId));
         }
       })
       .listen((_) {});
@@ -402,22 +414,30 @@ class MessageManager extends LifecycleMethods {
         yield ErrorAfterMessageSaving(localId);
         return;
       case Ok(v: final lastSentMessage):
-        lastSentMessageLocalId = lastSentMessage?.localId;
-        final lastSentMessageLocalId2 = lastSentMessage?.localId; // Compiler null checks are not working
         // If previous sent message is still in pending state, then the app is
         // probably closed or crashed too early.
-        if (lastSentMessage != null && lastSentMessageLocalId2 != null && lastSentMessage.sentMessageState == SentMessageState.pending) {
+        final SentMessageState? stateForLastMessage;
+        if (lastSentMessage != null && lastSentMessage.sentMessageState == SentMessageState.pending) {
           final result = await db.messageAction((db) => db.updateSentMessageState(
-            lastSentMessageLocalId2,
+            lastSentMessage.localId,
             sentState: SentMessageState.sendingError,
           ));
           if (result.isErr()) {
             yield ErrorAfterMessageSaving(localId);
             return;
           }
-          lastSentMessageSentState = SentMessageState.sendingError;
+          stateForLastMessage = SentMessageState.sendingError;
         } else {
-          lastSentMessageSentState = lastSentMessage?.sentMessageState;
+          stateForLastMessage = lastSentMessage?.sentMessageState;
+        }
+
+        if (lastSentMessage?.senderMessageId != null) {
+          // Error correction session is still valid
+          lastSentMessageLocalId = lastSentMessage?.localId;
+          lastSentMessageSentState = stateForLastMessage;
+        } else {
+          lastSentMessageLocalId = null;
+          lastSentMessageSentState = null;
         }
     }
 
@@ -581,6 +601,71 @@ class MessageManager extends LifecycleMethods {
   Future<bool> isInMatches(AccountId accountId) async {
     return await db.profileData((db) => db.isInMatches(accountId)).ok() ?? false;
   }
+
+  Future<Result<void, DeleteSendFailedError>> _deleteSendFailedMessage(
+    AccountId receiverAccount,
+    LocalMessageId localId,
+  ) async {
+    final lastSentMessageResult = await db.accountData((db) => db.daoMessages.getLatestSentMessage(
+      currentUser,
+      receiverAccount,
+    ));
+    final MessageEntry? lastSentMessage;
+    switch (lastSentMessageResult) {
+      case Err():
+        return const Err(DeleteSendFailedError.unspecifiedError);
+      case Ok(:final v):
+        lastSentMessage = v;
+    }
+
+    final toBeRemoved = await db.accountData((db) => db.daoMessages.getMessageUsingLocalMessageId(
+      localId,
+    )).ok();
+    if (toBeRemoved == null) {
+      return const Err(DeleteSendFailedError.unspecifiedError);
+    }
+
+    if (toBeRemoved.sentMessageState != SentMessageState.sendingError) {
+      return const Err(DeleteSendFailedError.unspecifiedError);
+    }
+
+    final toBeRemovedSenderMessageId = toBeRemoved.senderMessageId;
+    if (toBeRemovedSenderMessageId != null && lastSentMessage?.localId == localId) {
+      // Error correction check is possible to do
+
+      final senderMessageIdOnServerResult = await api.chat((api) => api.getSenderMessageId(
+        receiverAccount.accountId,
+      ));
+      switch (senderMessageIdOnServerResult) {
+        case Err():
+          return const Err(DeleteSendFailedError.unspecifiedError);
+        case Ok(:final v):
+          if (toBeRemovedSenderMessageId.id + 1 == v.id) {
+            // Server expects next ID, so to be removed message is actually sent
+            // successfully.
+            final result = await db.messageAction((db) => db.updateSentMessageState(
+              localId,
+              sentState: SentMessageState.sent,
+            ));
+            if (result.isErr()) {
+              return const Err(DeleteSendFailedError.unspecifiedError);
+            } else {
+              return const Err(DeleteSendFailedError.isActuallySentSuccessfully);
+            }
+          }
+      }
+    }
+
+    final deleteResult = await db.accountData((db) => db.daoMessages.deleteMessage(
+      localId,
+    ));
+    if (deleteResult.isErr()) {
+      return const Err(DeleteSendFailedError.unspecifiedError);
+    } else {
+      profile.sendProfileChange(ConversationChanged(toBeRemoved.remoteAccountId, ConversationChangeType.messageRemoved));
+      return const Ok(null);
+    }
+  }
 }
 
 sealed class MessageSendingEvent {
@@ -608,4 +693,9 @@ class ErrorAfterMessageSaving extends MessageSendingEvent {
 enum ReceivedMessageError {
   unknownMessageType,
   decryptingFailed,
+}
+
+enum DeleteSendFailedError {
+  unspecifiedError,
+  isActuallySentSuccessfully,
 }

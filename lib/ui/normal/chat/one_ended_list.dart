@@ -6,6 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_row.dart';
+import 'package:rxdart/rxdart.dart';
 
 var log = Logger("OneEndedMessageListWidget");
 
@@ -101,7 +102,7 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
         final style = DefaultTextStyle.of(context);
         if (entry.sentMessageState != null && entry.sentMessageState != SentMessageState.sent) {
           return StreamBuilder<MessageEntry?>(
-            stream: widget.conversationBloc.dataProvider.getMessageWithLocalId(entry.localId),
+            stream: widget.conversationBloc.dataProvider.getMessageWithLocalId(entry.localId).whereNotNull(),
             builder: (context, snapshot) {
               return messageRowWidget(
                 context,

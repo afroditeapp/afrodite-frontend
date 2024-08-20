@@ -288,6 +288,7 @@
     <string name="conversation_screen_message_state_unknown_message_type" description="Message state text that message type is unknown">Unknown message type</string>
     <string name="conversation_screen_message_state_received_successfully" description="Message state text that message was received successfully">Received successfully</string>
     <string name="conversation_screen_message_details_message_id" description="Title text for message ID value">Message ID</string>
+    <string name="conversation_screen_message_error_is_actually_sent_successfully" description="Message remove or resend error that message is actually sent successfully">The message is actually sent successfully</string>
 
     <!-- Settings -->
     <string name="settings_screen_title" description="Title for settings screen">Settings</string>

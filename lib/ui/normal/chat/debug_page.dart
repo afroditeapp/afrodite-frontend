@@ -11,6 +11,7 @@ import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_renderer.dart';
 import 'package:pihka_frontend/ui/normal/chat/one_ended_list.dart';
+import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 
@@ -138,6 +139,11 @@ class DebugConversationDataProvider extends ConversationDataProvider {
   @override
   Stream<MessageEntry?> getMessageWithLocalId(LocalMessageId localId) async* {
     return;
+  }
+
+  @override
+  Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) async {
+    return const Ok(null);
   }
 }
 

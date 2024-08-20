@@ -394,4 +394,5 @@ class ReloadMainProfileView extends ProfileChange {
 enum ConversationChangeType {
   messageSent,
   messageReceived,
+  messageRemoved,
 }

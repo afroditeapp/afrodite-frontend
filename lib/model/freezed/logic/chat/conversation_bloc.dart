@@ -15,6 +15,7 @@ class ConversationData with _$ConversationData {
     @Default(false) bool isBlocked,
     @Default(false) bool resetMessageInputField,
     @Default(false) bool isMessageSendingInProgress,
+    @Default(false) bool isMessageRemovingInProgress,
     ReadyVisibleMessageListUpdate? visibleMessages,
 
     // Message renderer

@@ -26,6 +26,7 @@ mixin _$ConversationData {
   bool get isBlocked => throw _privateConstructorErrorConversationData;
   bool get resetMessageInputField => throw _privateConstructorErrorConversationData;
   bool get isMessageSendingInProgress => throw _privateConstructorErrorConversationData;
+  bool get isMessageRemovingInProgress => throw _privateConstructorErrorConversationData;
   ReadyVisibleMessageListUpdate? get visibleMessages => throw _privateConstructorErrorConversationData;
   EntryAndJumpInfo? get rendererCurrentlyRendering => throw _privateConstructorErrorConversationData;
 
@@ -35,6 +36,7 @@ mixin _$ConversationData {
     bool? isBlocked,
     bool? resetMessageInputField,
     bool? isMessageSendingInProgress,
+    bool? isMessageRemovingInProgress,
     ReadyVisibleMessageListUpdate? visibleMessages,
     EntryAndJumpInfo? rendererCurrentlyRendering,
   }) => throw _privateConstructorErrorConversationData;
@@ -48,6 +50,7 @@ abstract class _ConversationData implements ConversationData {
     bool isBlocked,
     bool resetMessageInputField,
     bool isMessageSendingInProgress,
+    bool isMessageRemovingInProgress,
     ReadyVisibleMessageListUpdate? visibleMessages,
     EntryAndJumpInfo? rendererCurrentlyRendering,
   }) = _$ConversationDataImpl;
@@ -59,6 +62,7 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
   static const bool _isBlockedDefaultValue = false;
   static const bool _resetMessageInputFieldDefaultValue = false;
   static const bool _isMessageSendingInProgressDefaultValue = false;
+  static const bool _isMessageRemovingInProgressDefaultValue = false;
   
   _$ConversationDataImpl({
     required this.accountId,
@@ -66,6 +70,7 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
     this.isBlocked = _isBlockedDefaultValue,
     this.resetMessageInputField = _resetMessageInputFieldDefaultValue,
     this.isMessageSendingInProgress = _isMessageSendingInProgressDefaultValue,
+    this.isMessageRemovingInProgress = _isMessageRemovingInProgressDefaultValue,
     this.visibleMessages,
     this.rendererCurrentlyRendering,
   });
@@ -81,13 +86,15 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
   @override
   final bool isMessageSendingInProgress;
   @override
+  final bool isMessageRemovingInProgress;
+  @override
   final ReadyVisibleMessageListUpdate? visibleMessages;
   @override
   final EntryAndJumpInfo? rendererCurrentlyRendering;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ConversationData(accountId: $accountId, isMatch: $isMatch, isBlocked: $isBlocked, resetMessageInputField: $resetMessageInputField, isMessageSendingInProgress: $isMessageSendingInProgress, visibleMessages: $visibleMessages, rendererCurrentlyRendering: $rendererCurrentlyRendering)';
+    return 'ConversationData(accountId: $accountId, isMatch: $isMatch, isBlocked: $isBlocked, resetMessageInputField: $resetMessageInputField, isMessageSendingInProgress: $isMessageSendingInProgress, isMessageRemovingInProgress: $isMessageRemovingInProgress, visibleMessages: $visibleMessages, rendererCurrentlyRendering: $rendererCurrentlyRendering)';
   }
 
   @override
@@ -100,6 +107,7 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
       ..add(DiagnosticsProperty('isBlocked', isBlocked))
       ..add(DiagnosticsProperty('resetMessageInputField', resetMessageInputField))
       ..add(DiagnosticsProperty('isMessageSendingInProgress', isMessageSendingInProgress))
+      ..add(DiagnosticsProperty('isMessageRemovingInProgress', isMessageRemovingInProgress))
       ..add(DiagnosticsProperty('visibleMessages', visibleMessages))
       ..add(DiagnosticsProperty('rendererCurrentlyRendering', rendererCurrentlyRendering));
   }
@@ -119,6 +127,8 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
           other.resetMessageInputField == resetMessageInputField) &&
         (identical(other.isMessageSendingInProgress, isMessageSendingInProgress) ||
           other.isMessageSendingInProgress == isMessageSendingInProgress) &&
+        (identical(other.isMessageRemovingInProgress, isMessageRemovingInProgress) ||
+          other.isMessageRemovingInProgress == isMessageRemovingInProgress) &&
         (identical(other.visibleMessages, visibleMessages) ||
           other.visibleMessages == visibleMessages) &&
         (identical(other.rendererCurrentlyRendering, rendererCurrentlyRendering) ||
@@ -134,6 +144,7 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
     isBlocked,
     resetMessageInputField,
     isMessageSendingInProgress,
+    isMessageRemovingInProgress,
     visibleMessages,
     rendererCurrentlyRendering,
   );
@@ -145,6 +156,7 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
     Object? isBlocked,
     Object? resetMessageInputField,
     Object? isMessageSendingInProgress,
+    Object? isMessageRemovingInProgress,
     Object? visibleMessages = _detectDefaultValueInCopyWith,
     Object? rendererCurrentlyRendering = _detectDefaultValueInCopyWith,
   }) => _$ConversationDataImpl(
@@ -153,6 +165,7 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
     isBlocked: (isBlocked ?? this.isBlocked) as bool,
     resetMessageInputField: (resetMessageInputField ?? this.resetMessageInputField) as bool,
     isMessageSendingInProgress: (isMessageSendingInProgress ?? this.isMessageSendingInProgress) as bool,
+    isMessageRemovingInProgress: (isMessageRemovingInProgress ?? this.isMessageRemovingInProgress) as bool,
     visibleMessages: (visibleMessages == _detectDefaultValueInCopyWith ? this.visibleMessages : visibleMessages) as ReadyVisibleMessageListUpdate?,
     rendererCurrentlyRendering: (rendererCurrentlyRendering == _detectDefaultValueInCopyWith ? this.rendererCurrentlyRendering : rendererCurrentlyRendering) as EntryAndJumpInfo?,
   );

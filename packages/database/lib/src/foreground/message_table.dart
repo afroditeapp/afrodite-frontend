@@ -158,7 +158,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
   }
 
   /// Get list of messages starting from startId. The next ID is smaller.
-  Future<List<MessageEntry>> getMessageListByLocalMessageId(
+  Future<List<MessageEntry>> getMessageListUsingLocalMessageId(
     AccountId localAccountId,
     AccountId remoteAccountId,
     LocalMessageId startId,
@@ -177,7 +177,18 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       .get();
   }
 
-  Stream<MessageEntry?> getMessageUpdatesByLocalMessageId(
+  Future<MessageEntry?> getMessageUsingLocalMessageId(
+    LocalMessageId localId,
+  ) {
+    return (select(messages)
+      ..where((t) => t.id.equals(localId.id))
+      ..limit(1)
+    )
+      .map((m) => _fromMessage(m))
+      .getSingleOrNull();
+  }
+
+  Stream<MessageEntry?> getMessageUpdatesUsingLocalMessageId(
     LocalMessageId localId,
   ) {
     return (select(messages)
@@ -248,5 +259,20 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     )
       .map((m) => _fromMessage(m))
       .getSingleOrNull();
+  }
+
+  Future<void> resetSenderMessageIdForAllMessages() async {
+    await (update(messages)).write(MessagesCompanion(
+      senderMessageId: Value(null),
+    ));
+  }
+
+  Future<void> deleteMessage(
+    LocalMessageId localId,
+  ) async {
+    await (delete(messages)
+      ..where((t) => t.id.equals(localId.id))
+    )
+      .go();
   }
 }

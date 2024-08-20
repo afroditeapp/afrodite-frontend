@@ -53,7 +53,7 @@ class MessageDatabaseIterator {
     }
 
     const queryCount = 10;
-    final messages = await db.messageData((db) => db.getMessageListByLocalMessageId(
+    final messages = await db.messageData((db) => db.getMessageListUsingLocalMessageId(
       localAccountId,
       remoteAccountId,
       LocalMessageId(nextLocalKey),

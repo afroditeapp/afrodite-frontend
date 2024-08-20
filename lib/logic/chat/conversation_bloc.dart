@@ -16,6 +16,7 @@ import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
+import "package:pihka_frontend/utils/result.dart";
 
 var log = Logger("ConversationBloc");
 
@@ -45,6 +46,11 @@ class RenderingCompleted extends ConversationEvent {
   final double height;
   RenderingCompleted(this.height);
 }
+class RemoveSendFailedMessage extends ConversationEvent {
+  final AccountId receiverAccountId;
+  final LocalMessageId id;
+  RemoveSendFailedMessage(this.receiverAccountId, this.id);
+}
 
 abstract class ConversationDataProvider {
   Future<bool> isInMatches(AccountId accountId);
@@ -58,6 +64,8 @@ abstract class ConversationDataProvider {
 
   /// First message is the latest new message
   Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, LocalMessageId? latestCurrentMessageLocalId);
+
+  Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId);
 }
 
 class DefaultConversationDataProvider extends ConversationDataProvider {
@@ -121,6 +129,11 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
     }
 
     return newMessages;
+  }
+
+  @override
+  Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) {
+    return chat.deleteSendFailedMessage(receiverAccountId, localId);
   }
 }
 
@@ -210,6 +223,29 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     },
       transformer: sequential(),
     );
+    on<RemoveSendFailedMessage>((data, emit) async {
+      emit(state.copyWith(
+        isMessageRemovingInProgress: true,
+      ));
+
+      switch (await dataProvider.deleteSendFailedMessage(data.receiverAccountId, data.id)) {
+        case Ok():
+          ();
+        case Err(:final e):
+          switch (e) {
+            case DeleteSendFailedError.unspecifiedError:
+              showSnackBar(R.strings.generic_error_occurred);
+            case DeleteSendFailedError.isActuallySentSuccessfully:
+              showSnackBar(R.strings.conversation_screen_message_error_is_actually_sent_successfully);
+          }
+      }
+
+      emit(state.copyWith(
+        isMessageRemovingInProgress: false,
+      ));
+    },
+      transformer: sequential(),
+    );
     on<NotifyMessageInputFieldCleared>((data, emit) async {
       emit(state.copyWith(
         resetMessageInputField: false,
@@ -217,14 +253,18 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     });
     on<MessageCountChanged>((data, emit) async {
       final visibleMessages = state.visibleMessages;
-      if (visibleMessages == null) {
+      if (visibleMessages == null || data.changeInfo == ConversationChangeType.messageRemoved) {
         final initialMessages = await dataProvider.getAllMessages(state.accountId);
         final fromOldestToNewest = initialMessages.reversed.toList();
         renderingManager.initWithMessages(fromOldestToNewest);
         emit(state.copyWith(
           visibleMessages: ReadyVisibleMessageListUpdate(MessageList(fromOldestToNewest), null, false),
         ));
-        log.info("Initial message list update done");
+        if (visibleMessages == null) {
+          log.info("Initial message list update done");
+        } else if (data.changeInfo == ConversationChangeType.messageRemoved) {
+          log.info("Message list refresh done");
+        }
         return;
       }
 
