@@ -360,3 +360,17 @@ class SenderMessageIdConverter extends TypeConverter<SenderMessageId, int> {
     return value.id;
   }
 }
+
+class UnreadMessagesCountConverter extends TypeConverter<UnreadMessagesCount, int> {
+  const UnreadMessagesCountConverter();
+
+  @override
+  UnreadMessagesCount fromSql(fromDb) {
+    return UnreadMessagesCount(fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.count;
+  }
+}

@@ -1,6 +1,7 @@
 
 
 
+import 'package:database/src/message_entry.dart';
 import 'package:openapi/api.dart' show AccountId, ProfileContent;
 import 'package:openapi/api.dart' as api;
 import 'package:utils/utils.dart';
@@ -42,6 +43,7 @@ class Profiles extends Table {
   IntColumn get publicKeyVersion => integer().map(const NullAwareTypeConverter.wrap(PublicKeyVersionConverter())).nullable()();
 
   IntColumn get conversationNextSenderMessageId => integer().map(const NullAwareTypeConverter.wrap(SenderMessageIdConverter())).nullable()();
+  IntColumn get unreadMessagesCount => integer().map(UnreadMessagesCountConverter()).withDefault(const Constant(0))();
 
   // If column is not null, then it is in the specific group.
   // The time is the time when the profile was added to the group.
@@ -613,5 +615,28 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
   Future<void> resetAllSenderMessageIds() async {
     await update(profiles)
       .write(const ProfilesCompanion(conversationNextSenderMessageId: Value(null)));
+  }
+
+  Future<UnreadMessagesCount?> getUnreadMessageCount(AccountId accountId) async {
+    final r = await (select(profiles)
+      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+    )
+      .getSingleOrNull();
+
+    return r?.unreadMessagesCount;
+  }
+
+  Future<void> setUnreadMessagesCount(AccountId accountId, UnreadMessagesCount unreadMessagesCount) async {
+    await into(profiles).insert(
+      ProfilesCompanion.insert(
+        uuidAccountId: accountId,
+        unreadMessagesCount: Value(unreadMessagesCount),
+      ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        unreadMessagesCount: Value(unreadMessagesCount),
+      ),
+        target: [profiles.uuidAccountId]
+      ),
+    );
   }
 }

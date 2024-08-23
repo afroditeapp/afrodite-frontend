@@ -120,7 +120,12 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       messageNumber: entry.id.messageNumber,
       unixTime: unixTime,
     );
-    await _insert(message);
+    await transaction(() async {
+      await _insert(message);
+      final currentUnreadMessageCount = await db.daoProfiles.getUnreadMessageCount(entry.id.accountIdSender) ?? UnreadMessagesCount(0);
+      final updatedValue = UnreadMessagesCount(currentUnreadMessageCount.count + 1);
+      await db.daoProfiles.setUnreadMessagesCount(entry.id.accountIdSender, updatedValue);
+    });
   }
 
   Future<void> updateReceivedMessageState(

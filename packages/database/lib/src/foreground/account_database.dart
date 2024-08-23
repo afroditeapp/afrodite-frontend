@@ -17,6 +17,7 @@ import 'account/dao_profile_settings.dart';
 import 'account/dao_tokens.dart';
 import 'message_table.dart';
 import '../profile_entry.dart';
+import '../message_entry.dart';
 import '../private_key_data.dart';
 import '../utils.dart';
 

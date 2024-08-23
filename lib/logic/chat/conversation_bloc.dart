@@ -168,6 +168,8 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       final isBlocked = await dataProvider.isInSentBlocks(state.accountId) ||
         await dataProvider.isInReceivedBlocks(state.accountId);
 
+      await profile.resetUnreadMessagesCount(state.accountId);
+
       emit(state.copyWith(
         isMatch: isMatch,
         isBlocked: isBlocked,
@@ -286,6 +288,8 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       ));
     });
     on<MessageCountChanged>((data, emit) async {
+      await profile.resetUnreadMessagesCount(state.accountId);
+
       final visibleMessages = state.visibleMessages;
       if (
           visibleMessages == null ||

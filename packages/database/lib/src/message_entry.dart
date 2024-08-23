@@ -133,3 +133,16 @@ class LocalMessageId {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 }
+
+class UnreadMessagesCount {
+  final int count;
+  const UnreadMessagesCount(this.count);
+
+  @override
+  bool operator ==(Object other) {
+    return (other is UnreadMessagesCount && count == other.count);
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, count);
+}

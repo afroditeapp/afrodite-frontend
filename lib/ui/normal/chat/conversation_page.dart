@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
@@ -68,16 +67,6 @@ class ConversationPage extends StatefulWidget {
 
 class ConversationPageState extends State<ConversationPage> {
   final TextEditingController _textEditingController = TextEditingController();
-  final accountBackgroundDb = LoginRepository.getInstance().repositories.accountBackgroundDb;
-
-  @override
-  void initState() {
-    super.initState();
-    // Hide notification
-    // TODO(prod): Perhaps this can be done in repository code once
-    // count of not read messages is implemented.
-    NotificationMessageReceived.getInstance().updateMessageReceivedCount(widget.profileEntry.uuid, 0, accountBackgroundDb);
-  }
 
   @override
   Widget build(BuildContext context) {

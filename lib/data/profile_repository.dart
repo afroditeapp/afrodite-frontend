@@ -4,7 +4,7 @@ import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
+import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
 import 'package:pihka_frontend/data/utils.dart';
@@ -344,6 +344,15 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> updateSearchGroups(SearchGroups groups) async {
     return await _api.profileAction((api) => api.postSearchGroups(groups))
       .onOk(() => reloadSearchGroups());
+  }
+
+  Future<Result<void, void>> resetUnreadMessagesCount(AccountId accountId) async {
+    // Hide notification
+    await NotificationMessageReceived.getInstance()
+      .updateMessageReceivedCount(accountId, 0, accountBackgroundDb);
+    return db.profileAction(
+      (db) => db.setUnreadMessagesCount(accountId, const UnreadMessagesCount(0)),
+    );
   }
 }
 
