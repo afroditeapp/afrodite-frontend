@@ -1,5 +1,8 @@
 
 
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/general/notification/state/like_received.dart';
@@ -13,10 +16,16 @@ import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 
-class DebugSettingsPage extends StatelessWidget {
+class DebugSettingsPage extends StatefulWidget {
   DebugSettingsPage({super.key});
 
+  @override
+  State<DebugSettingsPage> createState() => _DebugSettingsPageState();
+}
+
+class _DebugSettingsPageState extends State<DebugSettingsPage> {
   final AccountBackgroundDatabaseManager accountBackgroundDb = LoginRepository.getInstance().repositories.accountBackgroundDb;
+
   final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
 
   @override
@@ -71,12 +80,69 @@ class DebugSettingsPage extends StatelessWidget {
       }
     }));
 
+    final checkboxes = [
+      CheckboxListTile(
+        value: _debugLogic.conversationLastUpdateTimeChanger,
+        onChanged: (value) {
+          setState(() {
+            if (value == true) {
+              _debugLogic.startConversationLastUpdateTimeChanger();
+            } else {
+              _debugLogic.stopConversationLastUpdateTimeChanger();
+            }
+          });
+        },
+        title: const Text("Update conversation last updated time automatically"),
+      )
+    ];
+
     return SingleChildScrollView(
       child: Column(
         children: [
           ...settings.map((setting) => setting.toListTile()),
+          ...checkboxes,
         ],
       ),
     );
+  }
+}
+
+final _debugRandom = Random();
+final _debugLogic = DebugLogic();
+
+class DebugLogic {
+  final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
+
+  bool conversationLastUpdateTimeChanger = false;
+  StreamSubscription<void>? _conversationLastUpdateTimeChangerSubscription;
+
+  void startConversationLastUpdateTimeChanger() {
+    conversationLastUpdateTimeChanger = true;
+    _startConversationLastUpdateTimeChanger();
+  }
+
+  void _startConversationLastUpdateTimeChanger() async {
+    await _conversationLastUpdateTimeChangerSubscription?.cancel();
+    _conversationLastUpdateTimeChangerSubscription = Stream.periodic(
+      const Duration(seconds: 1),
+      (_) async {
+        final matches = await accountDb.profileData((db) => db.getMatchesList(0, 1000)).ok();
+        if (matches == null || matches.isEmpty) {
+          return;
+        }
+        final randomMatch = matches[_debugRandom.nextInt(matches.length)];
+        await accountDb.accountAction((db) => db.daoProfiles.setCurrentTimeToConversationLastChanged(randomMatch));
+      }
+    )
+      .listen((_) {});
+  }
+
+  void stopConversationLastUpdateTimeChanger() {
+    conversationLastUpdateTimeChanger = false;
+    _stopConversationLastUpdateTimeChanger();
+  }
+
+  void _stopConversationLastUpdateTimeChanger() async {
+    await _conversationLastUpdateTimeChangerSubscription?.cancel();
   }
 }
