@@ -202,6 +202,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> _handlePushNotificationNewMessageReceived(List<AccountId> messageSenders, AccountBackgroundDatabaseManager accountBackgroundDb) async {
   for (final sender in messageSenders) {
     await NotificationMessageReceived.getInstance().updateMessageReceivedCount(sender, 1, accountBackgroundDb);
+    // Prevent showing the notification again if it is dismissed, another
+    // message push notfication for the same sender arives and app is not
+    // opened (retrieving pending messages from the server resets this value)
     await accountBackgroundDb.accountAction((db) => db.daoNewMessageNotification.setNotificationShown(sender, true));
   }
 }

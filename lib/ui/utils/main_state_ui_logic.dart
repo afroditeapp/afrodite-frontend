@@ -15,6 +15,7 @@ import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/app/notification_payload_handler.dart';
 import 'package:pihka_frontend/logic/app/notification_permission.dart';
 import 'package:pihka_frontend/logic/app/notification_settings.dart';
+import 'package:pihka_frontend/logic/chat/conversation_list_bloc.dart';
 import 'package:pihka_frontend/logic/media/content.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
 import 'package:pihka_frontend/logic/media/image_processing.dart';
@@ -142,6 +143,7 @@ class MainStateUiLogic extends StatelessWidget {
               BlocProvider(create: (_) => NotificationPermissionBloc()),
               BlocProvider(create: (_) => NotificationPayloadHandlerBloc()),
               BlocProvider(create: (_) => ProfileAttributesBloc()),
+              BlocProvider(create: (_) => ConversationListBloc()),
 
               // Account data
               BlocProvider(create: (_) => AccountBloc()),

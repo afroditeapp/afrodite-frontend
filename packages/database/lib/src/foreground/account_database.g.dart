@@ -3844,17 +3844,26 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<SenderMessageId?>(
               $ProfilesTable.$converterconversationNextSenderMessageId);
-  static const VerificationMeta _unreadMessagesCountMeta =
-      const VerificationMeta('unreadMessagesCount');
+  static const VerificationMeta _conversationUnreadMessagesCountMeta =
+      const VerificationMeta('conversationUnreadMessagesCount');
   @override
   late final GeneratedColumnWithTypeConverter<UnreadMessagesCount, int>
-      unreadMessagesCount = GeneratedColumn<int>(
-              'unread_messages_count', aliasedName, false,
+      conversationUnreadMessagesCount = GeneratedColumn<int>(
+              'conversation_unread_messages_count', aliasedName, false,
               type: DriftSqlType.int,
               requiredDuringInsert: false,
               defaultValue: const Constant(0))
           .withConverter<UnreadMessagesCount>(
-              $ProfilesTable.$converterunreadMessagesCount);
+              $ProfilesTable.$converterconversationUnreadMessagesCount);
+  static const VerificationMeta _conversationLastChangedTimeMeta =
+      const VerificationMeta('conversationLastChangedTime');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+      conversationLastChangedTime = GeneratedColumn<int>(
+              'conversation_last_changed_time', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $ProfilesTable.$converterconversationLastChangedTime);
   static const VerificationMeta _isInFavoritesMeta =
       const VerificationMeta('isInFavorites');
   @override
@@ -3936,7 +3945,8 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
         publicKeyId,
         publicKeyVersion,
         conversationNextSenderMessageId,
-        unreadMessagesCount,
+        conversationUnreadMessagesCount,
+        conversationLastChangedTime,
         isInFavorites,
         isInMatches,
         isInReceivedBlocks,
@@ -4027,8 +4037,10 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     context.handle(_publicKeyVersionMeta, const VerificationResult.success());
     context.handle(_conversationNextSenderMessageIdMeta,
         const VerificationResult.success());
+    context.handle(_conversationUnreadMessagesCountMeta,
+        const VerificationResult.success());
     context.handle(
-        _unreadMessagesCountMeta, const VerificationResult.success());
+        _conversationLastChangedTimeMeta, const VerificationResult.success());
     context.handle(_isInFavoritesMeta, const VerificationResult.success());
     context.handle(_isInMatchesMeta, const VerificationResult.success());
     context.handle(_isInReceivedBlocksMeta, const VerificationResult.success());
@@ -4110,9 +4122,14 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
           .$converterconversationNextSenderMessageId
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
               data['${effectivePrefix}conversation_next_sender_message_id'])),
-      unreadMessagesCount: $ProfilesTable.$converterunreadMessagesCount.fromSql(
-          attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}unread_messages_count'])!),
+      conversationUnreadMessagesCount: $ProfilesTable
+          .$converterconversationUnreadMessagesCount
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}conversation_unread_messages_count'])!),
+      conversationLastChangedTime: $ProfilesTable
+          .$converterconversationLastChangedTime
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}conversation_last_changed_time'])),
       isInFavorites: $ProfilesTable.$converterisInFavorites.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}is_in_favorites'])),
@@ -4172,8 +4189,12 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   static TypeConverter<SenderMessageId?, int?>
       $converterconversationNextSenderMessageId =
       const NullAwareTypeConverter.wrap(SenderMessageIdConverter());
-  static TypeConverter<UnreadMessagesCount, int> $converterunreadMessagesCount =
+  static TypeConverter<UnreadMessagesCount, int>
+      $converterconversationUnreadMessagesCount =
       UnreadMessagesCountConverter();
+  static TypeConverter<UtcDateTime?, int?>
+      $converterconversationLastChangedTime =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInFavorites =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInMatches =
@@ -4216,7 +4237,8 @@ class Profile extends DataClass implements Insertable<Profile> {
   final PublicKeyId? publicKeyId;
   final PublicKeyVersion? publicKeyVersion;
   final SenderMessageId? conversationNextSenderMessageId;
-  final UnreadMessagesCount unreadMessagesCount;
+  final UnreadMessagesCount conversationUnreadMessagesCount;
+  final UtcDateTime? conversationLastChangedTime;
   final UtcDateTime? isInFavorites;
   final UtcDateTime? isInMatches;
   final UtcDateTime? isInReceivedBlocks;
@@ -4248,7 +4270,8 @@ class Profile extends DataClass implements Insertable<Profile> {
       this.publicKeyId,
       this.publicKeyVersion,
       this.conversationNextSenderMessageId,
-      required this.unreadMessagesCount,
+      required this.conversationUnreadMessagesCount,
+      this.conversationLastChangedTime,
       this.isInFavorites,
       this.isInMatches,
       this.isInReceivedBlocks,
@@ -4348,9 +4371,14 @@ class Profile extends DataClass implements Insertable<Profile> {
           .toSql(conversationNextSenderMessageId));
     }
     {
-      map['unread_messages_count'] = Variable<int>($ProfilesTable
-          .$converterunreadMessagesCount
-          .toSql(unreadMessagesCount));
+      map['conversation_unread_messages_count'] = Variable<int>($ProfilesTable
+          .$converterconversationUnreadMessagesCount
+          .toSql(conversationUnreadMessagesCount));
+    }
+    if (!nullToAbsent || conversationLastChangedTime != null) {
+      map['conversation_last_changed_time'] = Variable<int>($ProfilesTable
+          .$converterconversationLastChangedTime
+          .toSql(conversationLastChangedTime));
     }
     if (!nullToAbsent || isInFavorites != null) {
       map['is_in_favorites'] = Variable<int>(
@@ -4453,7 +4481,11 @@ class Profile extends DataClass implements Insertable<Profile> {
           conversationNextSenderMessageId == null && nullToAbsent
               ? const Value.absent()
               : Value(conversationNextSenderMessageId),
-      unreadMessagesCount: Value(unreadMessagesCount),
+      conversationUnreadMessagesCount: Value(conversationUnreadMessagesCount),
+      conversationLastChangedTime:
+          conversationLastChangedTime == null && nullToAbsent
+              ? const Value.absent()
+              : Value(conversationLastChangedTime),
       isInFavorites: isInFavorites == null && nullToAbsent
           ? const Value.absent()
           : Value(isInFavorites),
@@ -4515,8 +4547,10 @@ class Profile extends DataClass implements Insertable<Profile> {
           serializer.fromJson<PublicKeyVersion?>(json['publicKeyVersion']),
       conversationNextSenderMessageId: serializer
           .fromJson<SenderMessageId?>(json['conversationNextSenderMessageId']),
-      unreadMessagesCount:
-          serializer.fromJson<UnreadMessagesCount>(json['unreadMessagesCount']),
+      conversationUnreadMessagesCount: serializer.fromJson<UnreadMessagesCount>(
+          json['conversationUnreadMessagesCount']),
+      conversationLastChangedTime: serializer
+          .fromJson<UtcDateTime?>(json['conversationLastChangedTime']),
       isInFavorites: serializer.fromJson<UtcDateTime?>(json['isInFavorites']),
       isInMatches: serializer.fromJson<UtcDateTime?>(json['isInMatches']),
       isInReceivedBlocks:
@@ -4564,8 +4598,10 @@ class Profile extends DataClass implements Insertable<Profile> {
           serializer.toJson<PublicKeyVersion?>(publicKeyVersion),
       'conversationNextSenderMessageId':
           serializer.toJson<SenderMessageId?>(conversationNextSenderMessageId),
-      'unreadMessagesCount':
-          serializer.toJson<UnreadMessagesCount>(unreadMessagesCount),
+      'conversationUnreadMessagesCount': serializer
+          .toJson<UnreadMessagesCount>(conversationUnreadMessagesCount),
+      'conversationLastChangedTime':
+          serializer.toJson<UtcDateTime?>(conversationLastChangedTime),
       'isInFavorites': serializer.toJson<UtcDateTime?>(isInFavorites),
       'isInMatches': serializer.toJson<UtcDateTime?>(isInMatches),
       'isInReceivedBlocks': serializer.toJson<UtcDateTime?>(isInReceivedBlocks),
@@ -4602,7 +4638,9 @@ class Profile extends DataClass implements Insertable<Profile> {
           Value<PublicKeyVersion?> publicKeyVersion = const Value.absent(),
           Value<SenderMessageId?> conversationNextSenderMessageId =
               const Value.absent(),
-          UnreadMessagesCount? unreadMessagesCount,
+          UnreadMessagesCount? conversationUnreadMessagesCount,
+          Value<UtcDateTime?> conversationLastChangedTime =
+              const Value.absent(),
           Value<UtcDateTime?> isInFavorites = const Value.absent(),
           Value<UtcDateTime?> isInMatches = const Value.absent(),
           Value<UtcDateTime?> isInReceivedBlocks = const Value.absent(),
@@ -4660,7 +4698,11 @@ class Profile extends DataClass implements Insertable<Profile> {
         conversationNextSenderMessageId: conversationNextSenderMessageId.present
             ? conversationNextSenderMessageId.value
             : this.conversationNextSenderMessageId,
-        unreadMessagesCount: unreadMessagesCount ?? this.unreadMessagesCount,
+        conversationUnreadMessagesCount: conversationUnreadMessagesCount ??
+            this.conversationUnreadMessagesCount,
+        conversationLastChangedTime: conversationLastChangedTime.present
+            ? conversationLastChangedTime.value
+            : this.conversationLastChangedTime,
         isInFavorites:
             isInFavorites.present ? isInFavorites.value : this.isInFavorites,
         isInMatches: isInMatches.present ? isInMatches.value : this.isInMatches,
@@ -4705,7 +4747,9 @@ class Profile extends DataClass implements Insertable<Profile> {
           ..write('publicKeyVersion: $publicKeyVersion, ')
           ..write(
               'conversationNextSenderMessageId: $conversationNextSenderMessageId, ')
-          ..write('unreadMessagesCount: $unreadMessagesCount, ')
+          ..write(
+              'conversationUnreadMessagesCount: $conversationUnreadMessagesCount, ')
+          ..write('conversationLastChangedTime: $conversationLastChangedTime, ')
           ..write('isInFavorites: $isInFavorites, ')
           ..write('isInMatches: $isInMatches, ')
           ..write('isInReceivedBlocks: $isInReceivedBlocks, ')
@@ -4742,7 +4786,8 @@ class Profile extends DataClass implements Insertable<Profile> {
         publicKeyId,
         publicKeyVersion,
         conversationNextSenderMessageId,
-        unreadMessagesCount,
+        conversationUnreadMessagesCount,
+        conversationLastChangedTime,
         isInFavorites,
         isInMatches,
         isInReceivedBlocks,
@@ -4779,7 +4824,10 @@ class Profile extends DataClass implements Insertable<Profile> {
           other.publicKeyVersion == this.publicKeyVersion &&
           other.conversationNextSenderMessageId ==
               this.conversationNextSenderMessageId &&
-          other.unreadMessagesCount == this.unreadMessagesCount &&
+          other.conversationUnreadMessagesCount ==
+              this.conversationUnreadMessagesCount &&
+          other.conversationLastChangedTime ==
+              this.conversationLastChangedTime &&
           other.isInFavorites == this.isInFavorites &&
           other.isInMatches == this.isInMatches &&
           other.isInReceivedBlocks == this.isInReceivedBlocks &&
@@ -4813,7 +4861,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<PublicKeyId?> publicKeyId;
   final Value<PublicKeyVersion?> publicKeyVersion;
   final Value<SenderMessageId?> conversationNextSenderMessageId;
-  final Value<UnreadMessagesCount> unreadMessagesCount;
+  final Value<UnreadMessagesCount> conversationUnreadMessagesCount;
+  final Value<UtcDateTime?> conversationLastChangedTime;
   final Value<UtcDateTime?> isInFavorites;
   final Value<UtcDateTime?> isInMatches;
   final Value<UtcDateTime?> isInReceivedBlocks;
@@ -4845,7 +4894,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.publicKeyId = const Value.absent(),
     this.publicKeyVersion = const Value.absent(),
     this.conversationNextSenderMessageId = const Value.absent(),
-    this.unreadMessagesCount = const Value.absent(),
+    this.conversationUnreadMessagesCount = const Value.absent(),
+    this.conversationLastChangedTime = const Value.absent(),
     this.isInFavorites = const Value.absent(),
     this.isInMatches = const Value.absent(),
     this.isInReceivedBlocks = const Value.absent(),
@@ -4878,7 +4928,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.publicKeyId = const Value.absent(),
     this.publicKeyVersion = const Value.absent(),
     this.conversationNextSenderMessageId = const Value.absent(),
-    this.unreadMessagesCount = const Value.absent(),
+    this.conversationUnreadMessagesCount = const Value.absent(),
+    this.conversationLastChangedTime = const Value.absent(),
     this.isInFavorites = const Value.absent(),
     this.isInMatches = const Value.absent(),
     this.isInReceivedBlocks = const Value.absent(),
@@ -4911,7 +4962,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     Expression<int>? publicKeyId,
     Expression<int>? publicKeyVersion,
     Expression<int>? conversationNextSenderMessageId,
-    Expression<int>? unreadMessagesCount,
+    Expression<int>? conversationUnreadMessagesCount,
+    Expression<int>? conversationLastChangedTime,
     Expression<int>? isInFavorites,
     Expression<int>? isInMatches,
     Expression<int>? isInReceivedBlocks,
@@ -4952,8 +5004,10 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       if (publicKeyVersion != null) 'public_key_version': publicKeyVersion,
       if (conversationNextSenderMessageId != null)
         'conversation_next_sender_message_id': conversationNextSenderMessageId,
-      if (unreadMessagesCount != null)
-        'unread_messages_count': unreadMessagesCount,
+      if (conversationUnreadMessagesCount != null)
+        'conversation_unread_messages_count': conversationUnreadMessagesCount,
+      if (conversationLastChangedTime != null)
+        'conversation_last_changed_time': conversationLastChangedTime,
       if (isInFavorites != null) 'is_in_favorites': isInFavorites,
       if (isInMatches != null) 'is_in_matches': isInMatches,
       if (isInReceivedBlocks != null)
@@ -4989,7 +5043,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       Value<PublicKeyId?>? publicKeyId,
       Value<PublicKeyVersion?>? publicKeyVersion,
       Value<SenderMessageId?>? conversationNextSenderMessageId,
-      Value<UnreadMessagesCount>? unreadMessagesCount,
+      Value<UnreadMessagesCount>? conversationUnreadMessagesCount,
+      Value<UtcDateTime?>? conversationLastChangedTime,
       Value<UtcDateTime?>? isInFavorites,
       Value<UtcDateTime?>? isInMatches,
       Value<UtcDateTime?>? isInReceivedBlocks,
@@ -5029,7 +5084,10 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       publicKeyVersion: publicKeyVersion ?? this.publicKeyVersion,
       conversationNextSenderMessageId: conversationNextSenderMessageId ??
           this.conversationNextSenderMessageId,
-      unreadMessagesCount: unreadMessagesCount ?? this.unreadMessagesCount,
+      conversationUnreadMessagesCount: conversationUnreadMessagesCount ??
+          this.conversationUnreadMessagesCount,
+      conversationLastChangedTime:
+          conversationLastChangedTime ?? this.conversationLastChangedTime,
       isInFavorites: isInFavorites ?? this.isInFavorites,
       isInMatches: isInMatches ?? this.isInMatches,
       isInReceivedBlocks: isInReceivedBlocks ?? this.isInReceivedBlocks,
@@ -5135,10 +5193,15 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           .$converterconversationNextSenderMessageId
           .toSql(conversationNextSenderMessageId.value));
     }
-    if (unreadMessagesCount.present) {
-      map['unread_messages_count'] = Variable<int>($ProfilesTable
-          .$converterunreadMessagesCount
-          .toSql(unreadMessagesCount.value));
+    if (conversationUnreadMessagesCount.present) {
+      map['conversation_unread_messages_count'] = Variable<int>($ProfilesTable
+          .$converterconversationUnreadMessagesCount
+          .toSql(conversationUnreadMessagesCount.value));
+    }
+    if (conversationLastChangedTime.present) {
+      map['conversation_last_changed_time'] = Variable<int>($ProfilesTable
+          .$converterconversationLastChangedTime
+          .toSql(conversationLastChangedTime.value));
     }
     if (isInFavorites.present) {
       map['is_in_favorites'] = Variable<int>(
@@ -5201,7 +5264,9 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           ..write('publicKeyVersion: $publicKeyVersion, ')
           ..write(
               'conversationNextSenderMessageId: $conversationNextSenderMessageId, ')
-          ..write('unreadMessagesCount: $unreadMessagesCount, ')
+          ..write(
+              'conversationUnreadMessagesCount: $conversationUnreadMessagesCount, ')
+          ..write('conversationLastChangedTime: $conversationLastChangedTime, ')
           ..write('isInFavorites: $isInFavorites, ')
           ..write('isInMatches: $isInMatches, ')
           ..write('isInReceivedBlocks: $isInReceivedBlocks, ')

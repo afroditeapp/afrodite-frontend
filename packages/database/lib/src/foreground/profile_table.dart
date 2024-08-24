@@ -43,7 +43,8 @@ class Profiles extends Table {
   IntColumn get publicKeyVersion => integer().map(const NullAwareTypeConverter.wrap(PublicKeyVersionConverter())).nullable()();
 
   IntColumn get conversationNextSenderMessageId => integer().map(const NullAwareTypeConverter.wrap(SenderMessageIdConverter())).nullable()();
-  IntColumn get unreadMessagesCount => integer().map(UnreadMessagesCountConverter()).withDefault(const Constant(0))();
+  IntColumn get conversationUnreadMessagesCount => integer().map(UnreadMessagesCountConverter()).withDefault(const Constant(0))();
+  IntColumn get conversationLastChangedTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 
   // If column is not null, then it is in the specific group.
   // The time is the time when the profile was added to the group.
@@ -505,6 +506,14 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     return _rowToProfileEntry(r);
   }
 
+  Stream<ProfileEntry?> watchProfileEntry(AccountId accountId) {
+    return (select(profiles)
+      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+    )
+      .map((t) => _rowToProfileEntry(t))
+      .watchSingleOrNull();
+  }
+
   ProfileEntry? _rowToProfileEntry(Profile? r) {
     if (r == null) {
       return null;
@@ -623,20 +632,64 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     )
       .getSingleOrNull();
 
-    return r?.unreadMessagesCount;
+    return r?.conversationUnreadMessagesCount;
   }
 
   Future<void> setUnreadMessagesCount(AccountId accountId, UnreadMessagesCount unreadMessagesCount) async {
     await into(profiles).insert(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
-        unreadMessagesCount: Value(unreadMessagesCount),
+        conversationUnreadMessagesCount: Value(unreadMessagesCount),
       ),
       onConflict: DoUpdate((old) => ProfilesCompanion(
-        unreadMessagesCount: Value(unreadMessagesCount),
+        conversationUnreadMessagesCount: Value(unreadMessagesCount),
       ),
         target: [profiles.uuidAccountId]
       ),
     );
+  }
+
+  Future<UtcDateTime?> getConversationLastChanged(AccountId accountId) async {
+    final r = await (select(profiles)
+      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+    )
+      .getSingleOrNull();
+
+    return r?.conversationLastChangedTime;
+  }
+
+  Future<void> setCurrentTimeToConversationLastChanged(AccountId accountId) async {
+    final currentTime = UtcDateTime.now();
+    await into(profiles).insert(
+      ProfilesCompanion.insert(
+        uuidAccountId: accountId,
+        conversationLastChangedTime: Value(currentTime),
+      ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        conversationLastChangedTime: Value(currentTime),
+      ),
+        target: [profiles.uuidAccountId]
+      ),
+    );
+  }
+
+  // Latest conversation is the first one in the emitted list
+  Stream<List<AccountId>> watchConversationList() {
+    return (select(profiles)
+      ..where((t) => t.isInMatches.isNotNull())
+      ..orderBy([
+        (t) => OrderingTerm(
+          expression: t.conversationLastChangedTime,
+          mode: OrderingMode.desc,
+        ),
+        // Use ID ordering if there is same time values
+        (t) => OrderingTerm(
+          expression: t.id,
+          mode: OrderingMode.desc,
+        ),
+      ])
+    )
+      .map((t) => t.uuidAccountId)
+      .watch();
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:async/async.dart' show StreamExtensions;
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
@@ -22,12 +23,13 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   final AccountDatabaseManager db;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final ApiManager _api;
+  final ServerConnectionManager connectionManager;
 
   final MediaRepository media;
 
   final AccountId currentUser;
 
-  ProfileRepository(this.media, this.db, this.accountBackgroundDb, ServerConnectionManager connectionManager, this.currentUser) :
+  ProfileRepository(this.media, this.db, this.accountBackgroundDb, this.connectionManager, this.currentUser) :
     syncHandler = ConnectedActionScheduler(connectionManager),
     _api = connectionManager.api;
 
@@ -353,6 +355,35 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return db.profileAction(
       (db) => db.setUnreadMessagesCount(accountId, const UnreadMessagesCount(0)),
     );
+  }
+
+  /// If profile does not exist in DB, try download it when connection exists.
+  /// After that emit only DB updates.
+  Stream<ProfileEntry?> getProfileEntryUpdates(AccountId accountId) async* {
+    final stream = db.accountStream(
+      (db) => db.daoProfiles.watchProfileEntry(accountId),
+    );
+    bool downloaded = false;
+    await for (final p in stream) {
+      if (p == null && !downloaded) {
+        await connectionManager.state.where((e) => e == ApiManagerState.connected).firstOrNull;
+        await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(accountId);
+        downloaded = true;
+        continue;
+      }
+      yield p;
+    }
+  }
+
+  /// Latest conversation is the first conversation in every emitted list
+  Stream<List<AccountId>> getConversationListUpdates() {
+    return db.accountStreamOrDefault(
+      (db) => db.daoProfiles.watchConversationList(),
+      <AccountId>[],
+    )
+      .distinct((list1, list2) {
+        return listEquals(list1, list2);
+      });
   }
 }
 

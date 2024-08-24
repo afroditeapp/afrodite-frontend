@@ -69,6 +69,12 @@ class ConversationPageState extends State<ConversationPage> {
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    log.finest("Opening conversation for account: ${widget.profileEntry.uuid}");
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
