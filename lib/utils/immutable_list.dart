@@ -12,6 +12,13 @@ class ImmutableList<T extends Immutable> extends Iterable<T> {
 
   T operator [](int index) => _list[index];
 
+  T? getAtOrNull(int index) {
+    if (index < length) {
+      return this[index];
+    }
+    return null;
+  }
+
   @override
   Iterator<T> get iterator => _list.iterator;
 }
@@ -53,6 +60,13 @@ class UnmodifiableList<T> extends Iterable<T> {
       ...values,
     ];
     return UnmodifiableList(l);
+  }
+
+  T? getAtOrNull(int index) {
+    if (index < length) {
+      return this[index];
+    }
+    return null;
   }
 
   @override

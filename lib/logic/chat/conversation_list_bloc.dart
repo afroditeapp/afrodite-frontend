@@ -60,10 +60,26 @@ class ConversationListBloc extends Bloc<ConversationListEvent, ConversationListD
     );
     on<HandleNewConversationList>((data, emit) async {
       final calculatorResult = calculator.calculate(data.data);
+      final conversationsAsEntries = <IdAndEntry>[];
+      for (final id in calculatorResult.current) {
+        final e = await profile.getProfile(id, cache: true);
+        conversationsAsEntries.add(IdAndEntry(id, e));
+      }
+      final changes = <ListItemChangeWithEntry>[];
+      for (final c in calculatorResult.changes) {
+        switch (c) {
+          case AddItem():
+            final e = await profile.getProfile(c.id, cache: true);
+            changes.add(AddItemEntry(c.i, c.id, e));
+          case RemoveItem():
+            final e = await profile.getProfile(c.id, cache: true);
+            changes.add(RemoveItemEntry(c.i, c.id, e));
+        }
+      }
+
       emit(state.copyWith(
-        conversations: calculatorResult.current,
-        previousConversations: state.conversations,
-        changesBetweenCurrentAndPrevious: calculatorResult.changes,
+        conversations: UnmodifiableList(conversationsAsEntries),
+        changesBetweenCurrentAndPrevious: UnmodifiableList(changes),
         initialLoadDone: true,
       ));
     },
@@ -129,7 +145,7 @@ class ConversationListChangeCalculator {
 
     log.info("Conversation list change calculations done");
 
-    return ChangeCalculationResult(UnmodifiableList(newData), UnmodifiableList(changes));
+    return ChangeCalculationResult(newData, changes);
   }
 }
 
@@ -188,7 +204,7 @@ class CalculatorLogic {
 
 
 class ChangeCalculationResult {
-  final UnmodifiableList<AccountId> current;
-  final UnmodifiableList<ListItemChange> changes;
+  final List<AccountId> current;
+  final List<ListItemChange> changes;
   ChangeCalculationResult(this.current, this.changes);
 }

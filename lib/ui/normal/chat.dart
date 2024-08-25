@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
@@ -41,11 +40,10 @@ const _ITEM_PADDING_SIZE = 8.0;
 class _ChatViewState extends State<ChatView> {
   final ScrollController _scrollController = ScrollController();
 
-  // final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
   final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
 
   int? initialItemCount;
-  UnmodifiableList<AccountId> conversations = const UnmodifiableList<AccountId>.empty();
+  UnmodifiableList<IdAndEntry> conversations = const UnmodifiableList<IdAndEntry>.empty();
 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
@@ -101,17 +99,20 @@ class _ChatViewState extends State<ChatView> {
                 // Animations
                 for (final change in state.changesBetweenCurrentAndPrevious) {
                   switch (change) {
-                    case AddItem(:final i):
+                    case AddItemEntry(:final i):
                       log.finest("Add, i: $i");
                       listState.insertItem(i);
-                    case RemoveItem(:final i, :final id):
+                    case RemoveItemEntry(:final i, :final entry):
                       log.finest("Remove, i: $i");
                       listState.removeItem(
                         i,
                         (context, animation) {
                           return SizeTransition(
                             sizeFactor: animation,
-                            child: itemWidgetForAnimation(id),
+                            child: FadeTransition(
+                              opacity: animation,
+                              child: itemWidgetForAnimation(context, entry, allowOpenConversation: false),
+                            )
                           );
                         }
                       );
@@ -138,35 +139,53 @@ class _ChatViewState extends State<ChatView> {
       itemBuilder: (context, index, animation) {
         return SizeTransition(
           sizeFactor: animation,
-          child: itemWidgetForAnimation(conversations[index])
+          child: FadeTransition(
+            opacity: animation,
+            child: itemWidgetForAnimation(
+              context,
+              // It is not sure is getAtOrNull needed or not
+              conversations.getAtOrNull(index)?.entry,
+              allowOpenConversation: true,
+            ),
+          )
         );
       },
     );
   }
 
-  Widget itemWidgetForAnimation(AccountId id) {
+  Widget itemWidgetForAnimation(BuildContext context, ProfileEntry? entry, {required bool allowOpenConversation}) {
+    Widget w;
+    if (entry == null) {
+      w = Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Text(context.strings.generic_error),
+        ),
+      );
+    } else {
+      w = conversationItem(entry, allowOpenConversation: allowOpenConversation);
+    }
+
     return SizedBox(
       height: _IMG_SIZE + _ITEM_PADDING_SIZE * 2,
-      child: StreamBuilder(
-        stream: profile.getProfileEntryUpdates(id),
-        builder: (context, state) {
-          final data = state.data;
-          if (data != null) {
-            return conversationItem(data);
-          } else {
-            return Container();
-          }
-        },
-      ),
+      child: w,
     );
   }
 
-  Widget conversationItem(ProfileEntry profileEntry) {
+  Widget conversationItem(
+    ProfileEntry profileEntry,
+    {required bool allowOpenConversation}
+  ) {
     final Widget imageWidget = ProfileThumbnailImage.fromProfileEntry(
       entry: profileEntry,
       width: _IMG_SIZE,
       height: _IMG_SIZE,
       cacheSize: ImageCacheSize.sizeForAppBarThumbnail(),
+      // NOTE: There seems to be duplicate single color images sometimes after
+      // conversation position changes if widget
+      // tree does not have other unique content (like the AccountId visible).
+      // The GlobalKey seems to fix that.
+      key: GlobalKey(),
     );
     final textWidget = Padding(
       padding: const EdgeInsets.all(8.0),
@@ -182,16 +201,22 @@ class _ChatViewState extends State<ChatView> {
       ],
     );
 
-    return InkWell(
-      onTap: () => openConversationScreen(context, profileEntry),
-      child: Padding(
-        padding: const EdgeInsets.all(_ITEM_PADDING_SIZE),
-        child: SizedBox(
-          height: _IMG_SIZE,
-          child: rowWidget,
-        ),
+    final rowAndPadding = Padding(
+      padding: const EdgeInsets.all(_ITEM_PADDING_SIZE),
+      child: SizedBox(
+        height: _IMG_SIZE,
+        child: rowWidget,
       ),
     );
+
+    if (allowOpenConversation) {
+      return InkWell(
+        onTap: () => openConversationScreen(context, profileEntry),
+        child: rowAndPadding,
+      );
+    } else {
+      return rowAndPadding;
+    }
   }
 
   @override

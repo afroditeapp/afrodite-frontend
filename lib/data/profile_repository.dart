@@ -148,6 +148,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return requestSuccessful;
   }
 
+  /// Waits connection before downloading starts.
+  ///
+  /// If `cache` is true, then getting the profile is tried from cache first.
   Future<ProfileEntry?> getProfile(AccountId id, {bool cache = false}) async {
     // TODO: perhaps more detailed error message, so that changes from public to
     // private profile can be handled.
@@ -159,6 +162,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       }
     }
 
+    await connectionManager.state.where((e) => e == ApiManagerState.connected).firstOrNull;
     final entry = await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(id).ok();
     return entry;
   }
