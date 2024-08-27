@@ -9,7 +9,6 @@ import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/app_visibility_provider.dart';
-import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/utils.dart';
@@ -33,7 +32,7 @@ class NotificationMessageReceived extends AppSingletonNoInit {
     final notificationId = NotificationIdStatic.calculateNotificationIdForNewMessageNotifications(notificationIdInt);
     final notificationShown = await accountBackgroundDb.accountData((db) => db.daoNewMessageNotification.getNotificationShown(accountId)).ok() ?? false;
 
-    if (count <= 0 || _isConversationUiOpen(accountId) || _isConversationListUiOpen() || notificationShown) {
+    if (count <= 0 || _isConversationUiOpen(accountId) || notificationShown) {
       await notifications.hideNotification(notificationId);
     } else {
       await _showNotification(accountId, notificationId, accountBackgroundDb);
@@ -83,18 +82,6 @@ class NotificationMessageReceived extends AppSingletonNoInit {
     return info is ConversationPageInfo &&
       info.accountId == accountId &&
       AppVisibilityProvider.getInstance().isForeground;
-  }
-
-  // TODO(prod): Perhaps delete this once the push notifications are identical
-  // with the other conversation notifications.
-  // All matches should have a specific notification ID which can be used
-  // in push notifications as well. Create a separate encrypted database
-  // which can be accesssed when app is started using push notification.
-  bool _isConversationListUiOpen() {
-    final currentMainScreen = BottomNavigationStateBlocInstance.getInstance().bloc.state.screen;
-    final lastPage = NavigationStateBlocInstance.getInstance().bloc.state.pages;
-    return currentMainScreen == BottomNavigationScreenId.chats &&
-      lastPage.length == 1;
   }
 }
 
