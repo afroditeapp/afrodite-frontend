@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
+import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
@@ -12,6 +13,7 @@ import 'package:pihka_frontend/logic/chat/conversation_list_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/chat/conversation_list_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
+import 'package:pihka_frontend/ui/normal/chat/message_row.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 
 import 'package:pihka_frontend/localizations.dart';
@@ -43,13 +45,15 @@ const _ITEM_PADDING_SIZE = 8.0;
 class ConversationData {
   final ProfileEntry entry;
   final UnreadMessagesCount count;
-  ConversationData(this.entry, this.count);
+  final MessageEntry? message;
+  ConversationData(this.entry, this.count, this.message);
 }
 
 class _ChatViewState extends State<ChatView> {
   final ScrollController _scrollController = ScrollController();
 
   final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
+  final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
 
   int? initialItemCount;
   UnmodifiableList<AccountId> conversations = const UnmodifiableList<AccountId>.empty();
@@ -87,12 +91,17 @@ class _ChatViewState extends State<ChatView> {
   }
 
   Stream<ConversationData> conversationData(AccountId id) {
-    return Rx.combineLatest2(
+    return Rx.combineLatest3(
       profile.getProfileEntryUpdates(id),
       profile.getUnreadMessagesCountStream(id),
-      (a, b) {
+      chat.watchLatestMessage(id),
+      (a, b, c) {
         if (a != null) {
-          return ConversationData(a, b ?? const UnreadMessagesCount(0));
+          return ConversationData(
+            a,
+            b ?? const UnreadMessagesCount(0),
+            c,
+          );
         } else {
           return null;
         }
@@ -240,27 +249,20 @@ class _ChatViewState extends State<ChatView> {
        Text(
           data.entry.profileTitle(),
           style: Theme.of(context).textTheme.titleMedium,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
         ),
-        const Padding(padding: EdgeInsets.only(top: 8.0)),
-        if (data.count.count == 0) Text(
-          // TODO(prod): Replace with empty once this has info about latest
-          // message.
-          "No new messages",
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-        if (data.count.count > 0) Text(
-          // TODO(prod): Add to strings XML
-          "New message",
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        ...conversationStatusText(context, data),
       ],
     );
     final Widget rowWidget = Row(
       children: [
         imageWidget,
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: textColumn,
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: textColumn,
+          ),
         ),
       ],
     );
@@ -281,6 +283,32 @@ class _ChatViewState extends State<ChatView> {
     } else {
       return rowAndPadding;
     }
+  }
+
+  List<Widget> conversationStatusText(BuildContext context, ConversationData data) {
+    final String? messageText = data.message?.messageText;
+    final SentMessageState? sentMessageState = data.message?.sentMessageState;
+    final ReceivedMessageState? receivedMessageState = data.message?.receivedMessageState;
+    final TextStyle? textStyle;
+    final String text;
+    if (data.count.count > 0) {
+      textStyle = Theme.of(context).textTheme.titleMedium;
+      text = context.strings.chat_list_screen_unread_message;
+    } else if (messageText != null) {
+      textStyle = Theme.of(context).textTheme.bodyMedium;
+      text = messageWidgetText(context, messageText, sentMessageState, receivedMessageState);
+    } else {
+      return [];
+    }
+    return [
+      const Padding(padding: EdgeInsets.only(top: 8.0)),
+      Text(
+        text,
+        style: textStyle,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    ];
   }
 
   @override

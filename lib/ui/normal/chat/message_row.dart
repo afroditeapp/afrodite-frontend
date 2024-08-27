@@ -88,6 +88,21 @@ Widget _messageAndErrorWidget(
   }
 }
 
+String messageWidgetText(
+  BuildContext context,
+  String message,
+  SentMessageState? sentMessageState,
+  ReceivedMessageState? receivedMessageState,
+) {
+  if (receivedMessageState == ReceivedMessageState.decryptingFailed) {
+    return context.strings.conversation_screen_message_state_decrypting_failed;
+  } else if (receivedMessageState == ReceivedMessageState.unknownMessageType) {
+    return context.strings.conversation_screen_message_state_unknown_message_type;
+  } else {
+    return message;
+  }
+}
+
 Widget _messageWidget(
   BuildContext context,
   String message,
@@ -97,14 +112,7 @@ Widget _messageWidget(
     required TextStyle parentTextStyle,
   }
 ) {
-  final String text;
-  if (receivedMessageState == ReceivedMessageState.decryptingFailed) {
-    text = context.strings.conversation_screen_message_state_decrypting_failed;
-  } else if (receivedMessageState == ReceivedMessageState.unknownMessageType) {
-    text = context.strings.conversation_screen_message_state_unknown_message_type;
-  } else {
-    text = message;
-  }
+  final String text = messageWidgetText(context, message, sentMessageState, receivedMessageState);
   final showErrorColor =
     (sentMessageState?.isError() ?? false) ||
     (receivedMessageState?.isError() ?? false);

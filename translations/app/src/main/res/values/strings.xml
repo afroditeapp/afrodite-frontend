@@ -274,6 +274,7 @@
     <!-- Chat list -->
     <string name="chat_list_screen_title" description="Title for chat list screen">Chats</string>
     <string name="chat_list_screen_no_chats_or_matches_found" description="Info text displayed when there is no chats or matches">No chats or matches found</string>
+    <string name="chat_list_screen_unread_message" description="Conversation status text for unread message">New message</string>
 
     <!-- Conversation screen -->
     <string name="conversation_screen_profile_blocked" description="Snackbar text displayed when profile blocking is successful">Profile was blocked</string>

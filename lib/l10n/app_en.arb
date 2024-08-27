@@ -117,6 +117,10 @@
   "@chat_list_screen_title": {
     "description": "Title for chat list screen"
   },
+  "chat_list_screen_unread_message": "New message",
+  "@chat_list_screen_unread_message": {
+    "description": "Conversation status text for unread message"
+  },
   "conversation_screen_chat_box_placeholder_text": "Type a message…",
   "@conversation_screen_chat_box_placeholder_text": {
     "description": "Message input text field placeholder text"

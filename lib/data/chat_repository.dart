@@ -326,6 +326,9 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }
 
   // Local messages
+  Stream<MessageEntry?> watchLatestMessage(AccountId match) {
+    return db.accountStream((db) => db.daoMessages.watchLatestMessage(currentUser, match));
+  }
 
   /// Get message and updates to it.
   Stream<MessageEntry?> getMessageWithLocalId(LocalMessageId localId) {

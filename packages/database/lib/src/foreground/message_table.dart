@@ -167,6 +167,22 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       .getSingleOrNull();
   }
 
+  Stream<MessageEntry?> watchLatestMessage(
+    AccountId localAccountId,
+    AccountId remoteAccountId,
+  ) {
+    return (select(messages)
+      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.accountId))
+      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.accountId))
+      ..limit(1)
+      ..orderBy([
+        (t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc),
+      ])
+    )
+      .map((m) => _fromMessage(m))
+      .watchSingleOrNull();
+  }
+
   /// Get list of messages starting from startId. The next ID is smaller.
   Future<List<MessageEntry>> getMessageListUsingLocalMessageId(
     AccountId localAccountId,
