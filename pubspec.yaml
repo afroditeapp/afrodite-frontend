@@ -37,13 +37,13 @@ dependencies:
   bloc_concurrency: ^0.2.5
 
   shared_preferences: ^2.1.0
-  rxdart: ^0.27.7
+  rxdart: ^0.28.0
 
-  camera: ^0.10.5+9
-  image_picker: ^0.8.7+4
+  camera: ^0.11.0+2
+  image_picker: ^1.1.2
 
   google_sign_in: ^6.2.1
-  sign_in_with_apple: ^6.0.0
+  sign_in_with_apple: ^6.1.2
 
   # API client for server API
   openapi:
@@ -58,35 +58,35 @@ dependencies:
   utils:
     path: "packages/utils"
 
-  http: '1.0.0'
+  http: ^1.2.2
 
   freezed_annotation: ^2.4.1
 
-  web_socket_channel: ^2.4.0
+  web_socket_channel: ^3.0.1
   async: ^2.11.0
   flutter_localizations:
     sdk: flutter
   intl: any
 
-  flutter_cache_manager: ^3.3.0
+  flutter_cache_manager: ^3.4.1
   logging: ^1.2.0
 
-  google_fonts: ^5.1.0
+  google_fonts: ^6.2.1
 
   image: ^4.0.17
   path_provider: ^2.1.1
 
   infinite_scroll_pagination: ^4.0.0
 
-  flutter_map: ^6.1.0
-  latlong2: ^0.9.0
+  flutter_map: ^7.0.2
+  latlong2: ^0.9.1
 
   url_launcher: ^6.2.5
 
-  fl_chart: ^0.65.0
+  fl_chart: ^0.69.0
 
-  flutter_local_notifications: ^17.0.0
-  device_info_plus: ^10.0.1
+  flutter_local_notifications: ^17.2.2
+  device_info_plus: ^10.1.2
 
   path: ^1.9.0
   drift: ^2.18.0
@@ -102,8 +102,8 @@ dependencies:
     git:
       url: https://github.com/jutuon/app_settings.git
       ref: e1d39e4ea052e9dd9a47fbab49737846d9b43264
-  firebase_core: ^2.31.0
-  firebase_messaging: ^14.9.2
+  firebase_core: ^3.4.0
+  firebase_messaging: ^15.1.0
   google_api_availability: ^5.0.0
 
 dev_dependencies:
@@ -115,7 +115,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
   build_runner: ^2.4.8
   flutter_launcher_icons: ^0.13.1
 
