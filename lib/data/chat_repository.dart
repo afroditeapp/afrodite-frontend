@@ -76,7 +76,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
     // Reset message sending error detection counter value as other client
     // might have used the current value in server.
-    await db.accountAction((db) => db.daoProfiles.resetAllSenderMessageIds());
+    await db.accountAction((db) => db.daoConversations.resetAllSenderMessageIds());
     await db.accountAction((db) => db.daoMessages.resetSenderMessageIdForAllMessages());
 
     syncHandler.onLoginSync(() async {

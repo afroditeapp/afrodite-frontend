@@ -37,13 +37,6 @@ class Profiles extends Table {
   RealColumn get primaryContentGridCropSize => real().nullable()();
   RealColumn get primaryContentGridCropX => real().nullable()();
   RealColumn get primaryContentGridCropY => real().nullable()();
-
-  TextColumn get publicKeyData => text().map(const NullAwareTypeConverter.wrap(PublicKeyDataConverter())).nullable()();
-  IntColumn get publicKeyId => integer().map(const NullAwareTypeConverter.wrap(PublicKeyIdConverter())).nullable()();
-  IntColumn get publicKeyVersion => integer().map(const NullAwareTypeConverter.wrap(PublicKeyVersionConverter())).nullable()();
-
-  IntColumn get conversationNextSenderMessageId => integer().map(const NullAwareTypeConverter.wrap(SenderMessageIdConverter())).nullable()();
-  IntColumn get conversationUnreadMessagesCount => integer().map(UnreadMessagesCountConverter()).withDefault(const Constant(0))();
 }
 
 @DriftAccessor(tables: [Profiles])
@@ -151,44 +144,6 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     );
   }
 
-  Future<void> updatePublicKey(
-    AccountId accountId,
-    api.PublicKey? value,
-  ) async {
-    await into(profiles).insert(
-      ProfilesCompanion.insert(
-        uuidAccountId: accountId,
-        publicKeyData: Value(value?.data),
-        publicKeyId: Value(value?.id),
-        publicKeyVersion: Value(value?.version),
-      ),
-      onConflict: DoUpdate((old) => ProfilesCompanion(
-        publicKeyData: Value(value?.data),
-        publicKeyId: Value(value?.id),
-        publicKeyVersion: Value(value?.version),
-      ),
-        target: [profiles.uuidAccountId]
-      ),
-    );
-  }
-
-  Future<api.PublicKey?> getPublicKey(AccountId accountId) async {
-    final r = await (select(profiles)
-      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
-    )
-      .getSingleOrNull();
-
-    final data = r?.publicKeyData;
-    final id = r?.publicKeyId;
-    final version = r?.publicKeyVersion;
-
-    if (data != null && id != null && version != null) {
-      return api.PublicKey(data: data, id: id, version: version);
-    } else {
-      return null;
-    }
-  }
-
   Future<ProfileEntry?> getProfileEntry(AccountId accountId) async {
     final r = await (select(profiles)
       ..where((t) => t.uuidAccountId.equals(accountId.accountId))
@@ -289,71 +244,5 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
       }
     }
     return data;
-  }
-
-  Future<api.SenderMessageId?> getNextSenderMessageId(AccountId accountId) async {
-    return await (select(profiles)
-      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
-    )
-      .map((r) => r.conversationNextSenderMessageId)
-      .getSingleOrNull();
-  }
-
-  Future<void> setNextSenderMessageId(AccountId accountId, api.SenderMessageId newId) async {
-    await into(profiles).insert(
-      ProfilesCompanion.insert(
-        uuidAccountId: accountId,
-        conversationNextSenderMessageId: Value(newId),
-      ),
-      onConflict: DoUpdate((old) => ProfilesCompanion(
-        conversationNextSenderMessageId: Value(newId),
-      ),
-        target: [profiles.uuidAccountId]
-      ),
-    );
-  }
-
-  Future<void> resetAllSenderMessageIds() async {
-    await update(profiles)
-      .write(const ProfilesCompanion(conversationNextSenderMessageId: Value(null)));
-  }
-
-  Future<UnreadMessagesCount?> getUnreadMessageCount(AccountId accountId) async {
-    final r = await (select(profiles)
-      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
-    )
-      .getSingleOrNull();
-
-    return r?.conversationUnreadMessagesCount;
-  }
-
-  Stream<UnreadMessagesCount?> watchUnreadMessageCount(AccountId accountId) {
-    return (selectOnly(profiles)
-      ..addColumns([profiles.conversationUnreadMessagesCount])
-      ..where(profiles.uuidAccountId.equals(accountId.accountId))
-    )
-      .map((r) {
-        final raw = r.read(profiles.conversationUnreadMessagesCount);
-        if (raw == null) {
-          return null;
-        } else {
-          return UnreadMessagesCount(raw);
-        }
-      })
-      .watchSingleOrNull();
-  }
-
-  Future<void> setUnreadMessagesCount(AccountId accountId, UnreadMessagesCount unreadMessagesCount) async {
-    await into(profiles).insert(
-      ProfilesCompanion.insert(
-        uuidAccountId: accountId,
-        conversationUnreadMessagesCount: Value(unreadMessagesCount),
-      ),
-      onConflict: DoUpdate((old) => ProfilesCompanion(
-        conversationUnreadMessagesCount: Value(unreadMessagesCount),
-      ),
-        target: [profiles.uuidAccountId]
-      ),
-    );
   }
 }

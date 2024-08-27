@@ -3810,51 +3810,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   late final GeneratedColumn<double> primaryContentGridCropY =
       GeneratedColumn<double>('primary_content_grid_crop_y', aliasedName, true,
           type: DriftSqlType.double, requiredDuringInsert: false);
-  static const VerificationMeta _publicKeyDataMeta =
-      const VerificationMeta('publicKeyData');
-  @override
-  late final GeneratedColumnWithTypeConverter<PublicKeyData?, String>
-      publicKeyData = GeneratedColumn<String>(
-              'public_key_data', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<PublicKeyData?>(
-              $ProfilesTable.$converterpublicKeyData);
-  static const VerificationMeta _publicKeyIdMeta =
-      const VerificationMeta('publicKeyId');
-  @override
-  late final GeneratedColumnWithTypeConverter<PublicKeyId?, int> publicKeyId =
-      GeneratedColumn<int>('public_key_id', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<PublicKeyId?>($ProfilesTable.$converterpublicKeyId);
-  static const VerificationMeta _publicKeyVersionMeta =
-      const VerificationMeta('publicKeyVersion');
-  @override
-  late final GeneratedColumnWithTypeConverter<PublicKeyVersion?, int>
-      publicKeyVersion = GeneratedColumn<int>(
-              'public_key_version', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<PublicKeyVersion?>(
-              $ProfilesTable.$converterpublicKeyVersion);
-  static const VerificationMeta _conversationNextSenderMessageIdMeta =
-      const VerificationMeta('conversationNextSenderMessageId');
-  @override
-  late final GeneratedColumnWithTypeConverter<SenderMessageId?, int>
-      conversationNextSenderMessageId = GeneratedColumn<int>(
-              'conversation_next_sender_message_id', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<SenderMessageId?>(
-              $ProfilesTable.$converterconversationNextSenderMessageId);
-  static const VerificationMeta _conversationUnreadMessagesCountMeta =
-      const VerificationMeta('conversationUnreadMessagesCount');
-  @override
-  late final GeneratedColumnWithTypeConverter<UnreadMessagesCount, int>
-      conversationUnreadMessagesCount = GeneratedColumn<int>(
-              'conversation_unread_messages_count', aliasedName, false,
-              type: DriftSqlType.int,
-              requiredDuringInsert: false,
-              defaultValue: const Constant(0))
-          .withConverter<UnreadMessagesCount>(
-              $ProfilesTable.$converterconversationUnreadMessagesCount);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -3875,12 +3830,7 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
         jsonProfileAttributes,
         primaryContentGridCropSize,
         primaryContentGridCropX,
-        primaryContentGridCropY,
-        publicKeyData,
-        publicKeyId,
-        publicKeyVersion,
-        conversationNextSenderMessageId,
-        conversationUnreadMessagesCount
+        primaryContentGridCropY
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -3959,13 +3909,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
               data['primary_content_grid_crop_y']!,
               _primaryContentGridCropYMeta));
     }
-    context.handle(_publicKeyDataMeta, const VerificationResult.success());
-    context.handle(_publicKeyIdMeta, const VerificationResult.success());
-    context.handle(_publicKeyVersionMeta, const VerificationResult.success());
-    context.handle(_conversationNextSenderMessageIdMeta,
-        const VerificationResult.success());
-    context.handle(_conversationUnreadMessagesCountMeta,
-        const VerificationResult.success());
     return context;
   }
 
@@ -4027,23 +3970,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       primaryContentGridCropY: attachedDatabase.typeMapping.read(
           DriftSqlType.double,
           data['${effectivePrefix}primary_content_grid_crop_y']),
-      publicKeyData: $ProfilesTable.$converterpublicKeyData.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}public_key_data'])),
-      publicKeyId: $ProfilesTable.$converterpublicKeyId.fromSql(attachedDatabase
-          .typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}public_key_id'])),
-      publicKeyVersion: $ProfilesTable.$converterpublicKeyVersion.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}public_key_version'])),
-      conversationNextSenderMessageId: $ProfilesTable
-          .$converterconversationNextSenderMessageId
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}conversation_next_sender_message_id'])),
-      conversationUnreadMessagesCount: $ProfilesTable
-          .$converterconversationUnreadMessagesCount
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}conversation_unread_messages_count'])!),
     );
   }
 
@@ -4073,18 +3999,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       const NullAwareTypeConverter.wrap(ProfileVersionConverter());
   static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
       NullAwareTypeConverter.wrap(JsonList.driftConverter);
-  static TypeConverter<PublicKeyData?, String?> $converterpublicKeyData =
-      const NullAwareTypeConverter.wrap(PublicKeyDataConverter());
-  static TypeConverter<PublicKeyId?, int?> $converterpublicKeyId =
-      const NullAwareTypeConverter.wrap(PublicKeyIdConverter());
-  static TypeConverter<PublicKeyVersion?, int?> $converterpublicKeyVersion =
-      const NullAwareTypeConverter.wrap(PublicKeyVersionConverter());
-  static TypeConverter<SenderMessageId?, int?>
-      $converterconversationNextSenderMessageId =
-      const NullAwareTypeConverter.wrap(SenderMessageIdConverter());
-  static TypeConverter<UnreadMessagesCount, int>
-      $converterconversationUnreadMessagesCount =
-      UnreadMessagesCountConverter();
 }
 
 class Profile extends DataClass implements Insertable<Profile> {
@@ -4109,11 +4023,6 @@ class Profile extends DataClass implements Insertable<Profile> {
   final double? primaryContentGridCropSize;
   final double? primaryContentGridCropX;
   final double? primaryContentGridCropY;
-  final PublicKeyData? publicKeyData;
-  final PublicKeyId? publicKeyId;
-  final PublicKeyVersion? publicKeyVersion;
-  final SenderMessageId? conversationNextSenderMessageId;
-  final UnreadMessagesCount conversationUnreadMessagesCount;
   const Profile(
       {required this.id,
       required this.uuidAccountId,
@@ -4133,12 +4042,7 @@ class Profile extends DataClass implements Insertable<Profile> {
       this.jsonProfileAttributes,
       this.primaryContentGridCropSize,
       this.primaryContentGridCropX,
-      this.primaryContentGridCropY,
-      this.publicKeyData,
-      this.publicKeyId,
-      this.publicKeyVersion,
-      this.conversationNextSenderMessageId,
-      required this.conversationUnreadMessagesCount});
+      this.primaryContentGridCropY});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4213,28 +4117,6 @@ class Profile extends DataClass implements Insertable<Profile> {
       map['primary_content_grid_crop_y'] =
           Variable<double>(primaryContentGridCropY);
     }
-    if (!nullToAbsent || publicKeyData != null) {
-      map['public_key_data'] = Variable<String>(
-          $ProfilesTable.$converterpublicKeyData.toSql(publicKeyData));
-    }
-    if (!nullToAbsent || publicKeyId != null) {
-      map['public_key_id'] = Variable<int>(
-          $ProfilesTable.$converterpublicKeyId.toSql(publicKeyId));
-    }
-    if (!nullToAbsent || publicKeyVersion != null) {
-      map['public_key_version'] = Variable<int>(
-          $ProfilesTable.$converterpublicKeyVersion.toSql(publicKeyVersion));
-    }
-    if (!nullToAbsent || conversationNextSenderMessageId != null) {
-      map['conversation_next_sender_message_id'] = Variable<int>($ProfilesTable
-          .$converterconversationNextSenderMessageId
-          .toSql(conversationNextSenderMessageId));
-    }
-    {
-      map['conversation_unread_messages_count'] = Variable<int>($ProfilesTable
-          .$converterconversationUnreadMessagesCount
-          .toSql(conversationUnreadMessagesCount));
-    }
     return map;
   }
 
@@ -4294,20 +4176,6 @@ class Profile extends DataClass implements Insertable<Profile> {
       primaryContentGridCropY: primaryContentGridCropY == null && nullToAbsent
           ? const Value.absent()
           : Value(primaryContentGridCropY),
-      publicKeyData: publicKeyData == null && nullToAbsent
-          ? const Value.absent()
-          : Value(publicKeyData),
-      publicKeyId: publicKeyId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(publicKeyId),
-      publicKeyVersion: publicKeyVersion == null && nullToAbsent
-          ? const Value.absent()
-          : Value(publicKeyVersion),
-      conversationNextSenderMessageId:
-          conversationNextSenderMessageId == null && nullToAbsent
-              ? const Value.absent()
-              : Value(conversationNextSenderMessageId),
-      conversationUnreadMessagesCount: Value(conversationUnreadMessagesCount),
     );
   }
 
@@ -4342,14 +4210,6 @@ class Profile extends DataClass implements Insertable<Profile> {
           serializer.fromJson<double?>(json['primaryContentGridCropX']),
       primaryContentGridCropY:
           serializer.fromJson<double?>(json['primaryContentGridCropY']),
-      publicKeyData: serializer.fromJson<PublicKeyData?>(json['publicKeyData']),
-      publicKeyId: serializer.fromJson<PublicKeyId?>(json['publicKeyId']),
-      publicKeyVersion:
-          serializer.fromJson<PublicKeyVersion?>(json['publicKeyVersion']),
-      conversationNextSenderMessageId: serializer
-          .fromJson<SenderMessageId?>(json['conversationNextSenderMessageId']),
-      conversationUnreadMessagesCount: serializer.fromJson<UnreadMessagesCount>(
-          json['conversationUnreadMessagesCount']),
     );
   }
   @override
@@ -4381,14 +4241,6 @@ class Profile extends DataClass implements Insertable<Profile> {
           serializer.toJson<double?>(primaryContentGridCropX),
       'primaryContentGridCropY':
           serializer.toJson<double?>(primaryContentGridCropY),
-      'publicKeyData': serializer.toJson<PublicKeyData?>(publicKeyData),
-      'publicKeyId': serializer.toJson<PublicKeyId?>(publicKeyId),
-      'publicKeyVersion':
-          serializer.toJson<PublicKeyVersion?>(publicKeyVersion),
-      'conversationNextSenderMessageId':
-          serializer.toJson<SenderMessageId?>(conversationNextSenderMessageId),
-      'conversationUnreadMessagesCount': serializer
-          .toJson<UnreadMessagesCount>(conversationUnreadMessagesCount),
     };
   }
 
@@ -4412,13 +4264,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           Value<JsonList?> jsonProfileAttributes = const Value.absent(),
           Value<double?> primaryContentGridCropSize = const Value.absent(),
           Value<double?> primaryContentGridCropX = const Value.absent(),
-          Value<double?> primaryContentGridCropY = const Value.absent(),
-          Value<PublicKeyData?> publicKeyData = const Value.absent(),
-          Value<PublicKeyId?> publicKeyId = const Value.absent(),
-          Value<PublicKeyVersion?> publicKeyVersion = const Value.absent(),
-          Value<SenderMessageId?> conversationNextSenderMessageId =
-              const Value.absent(),
-          UnreadMessagesCount? conversationUnreadMessagesCount}) =>
+          Value<double?> primaryContentGridCropY = const Value.absent()}) =>
       Profile(
         id: id ?? this.id,
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -4460,17 +4306,6 @@ class Profile extends DataClass implements Insertable<Profile> {
         primaryContentGridCropY: primaryContentGridCropY.present
             ? primaryContentGridCropY.value
             : this.primaryContentGridCropY,
-        publicKeyData:
-            publicKeyData.present ? publicKeyData.value : this.publicKeyData,
-        publicKeyId: publicKeyId.present ? publicKeyId.value : this.publicKeyId,
-        publicKeyVersion: publicKeyVersion.present
-            ? publicKeyVersion.value
-            : this.publicKeyVersion,
-        conversationNextSenderMessageId: conversationNextSenderMessageId.present
-            ? conversationNextSenderMessageId.value
-            : this.conversationNextSenderMessageId,
-        conversationUnreadMessagesCount: conversationUnreadMessagesCount ??
-            this.conversationUnreadMessagesCount,
       );
   @override
   String toString() {
@@ -4493,45 +4328,32 @@ class Profile extends DataClass implements Insertable<Profile> {
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
-          ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
-          ..write('publicKeyData: $publicKeyData, ')
-          ..write('publicKeyId: $publicKeyId, ')
-          ..write('publicKeyVersion: $publicKeyVersion, ')
-          ..write(
-              'conversationNextSenderMessageId: $conversationNextSenderMessageId, ')
-          ..write(
-              'conversationUnreadMessagesCount: $conversationUnreadMessagesCount')
+          ..write('primaryContentGridCropY: $primaryContentGridCropY')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hashAll([
-        id,
-        uuidAccountId,
-        uuidContentId0,
-        uuidContentId1,
-        uuidContentId2,
-        uuidContentId3,
-        uuidContentId4,
-        uuidContentId5,
-        profileContentVersion,
-        profileName,
-        profileText,
-        profileVersion,
-        profileAge,
-        profileLastSeenTimeValue,
-        profileUnlimitedLikes,
-        jsonProfileAttributes,
-        primaryContentGridCropSize,
-        primaryContentGridCropX,
-        primaryContentGridCropY,
-        publicKeyData,
-        publicKeyId,
-        publicKeyVersion,
-        conversationNextSenderMessageId,
-        conversationUnreadMessagesCount
-      ]);
+  int get hashCode => Object.hash(
+      id,
+      uuidAccountId,
+      uuidContentId0,
+      uuidContentId1,
+      uuidContentId2,
+      uuidContentId3,
+      uuidContentId4,
+      uuidContentId5,
+      profileContentVersion,
+      profileName,
+      profileText,
+      profileVersion,
+      profileAge,
+      profileLastSeenTimeValue,
+      profileUnlimitedLikes,
+      jsonProfileAttributes,
+      primaryContentGridCropSize,
+      primaryContentGridCropX,
+      primaryContentGridCropY);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4554,14 +4376,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           other.jsonProfileAttributes == this.jsonProfileAttributes &&
           other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
           other.primaryContentGridCropX == this.primaryContentGridCropX &&
-          other.primaryContentGridCropY == this.primaryContentGridCropY &&
-          other.publicKeyData == this.publicKeyData &&
-          other.publicKeyId == this.publicKeyId &&
-          other.publicKeyVersion == this.publicKeyVersion &&
-          other.conversationNextSenderMessageId ==
-              this.conversationNextSenderMessageId &&
-          other.conversationUnreadMessagesCount ==
-              this.conversationUnreadMessagesCount);
+          other.primaryContentGridCropY == this.primaryContentGridCropY);
 }
 
 class ProfilesCompanion extends UpdateCompanion<Profile> {
@@ -4584,11 +4399,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<double?> primaryContentGridCropSize;
   final Value<double?> primaryContentGridCropX;
   final Value<double?> primaryContentGridCropY;
-  final Value<PublicKeyData?> publicKeyData;
-  final Value<PublicKeyId?> publicKeyId;
-  final Value<PublicKeyVersion?> publicKeyVersion;
-  final Value<SenderMessageId?> conversationNextSenderMessageId;
-  final Value<UnreadMessagesCount> conversationUnreadMessagesCount;
   const ProfilesCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -4609,11 +4419,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
     this.primaryContentGridCropY = const Value.absent(),
-    this.publicKeyData = const Value.absent(),
-    this.publicKeyId = const Value.absent(),
-    this.publicKeyVersion = const Value.absent(),
-    this.conversationNextSenderMessageId = const Value.absent(),
-    this.conversationUnreadMessagesCount = const Value.absent(),
   });
   ProfilesCompanion.insert({
     this.id = const Value.absent(),
@@ -4635,11 +4440,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
     this.primaryContentGridCropY = const Value.absent(),
-    this.publicKeyData = const Value.absent(),
-    this.publicKeyId = const Value.absent(),
-    this.publicKeyVersion = const Value.absent(),
-    this.conversationNextSenderMessageId = const Value.absent(),
-    this.conversationUnreadMessagesCount = const Value.absent(),
   }) : uuidAccountId = Value(uuidAccountId);
   static Insertable<Profile> custom({
     Expression<int>? id,
@@ -4661,11 +4461,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     Expression<double>? primaryContentGridCropSize,
     Expression<double>? primaryContentGridCropX,
     Expression<double>? primaryContentGridCropY,
-    Expression<String>? publicKeyData,
-    Expression<int>? publicKeyId,
-    Expression<int>? publicKeyVersion,
-    Expression<int>? conversationNextSenderMessageId,
-    Expression<int>? conversationUnreadMessagesCount,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -4694,13 +4489,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
         'primary_content_grid_crop_x': primaryContentGridCropX,
       if (primaryContentGridCropY != null)
         'primary_content_grid_crop_y': primaryContentGridCropY,
-      if (publicKeyData != null) 'public_key_data': publicKeyData,
-      if (publicKeyId != null) 'public_key_id': publicKeyId,
-      if (publicKeyVersion != null) 'public_key_version': publicKeyVersion,
-      if (conversationNextSenderMessageId != null)
-        'conversation_next_sender_message_id': conversationNextSenderMessageId,
-      if (conversationUnreadMessagesCount != null)
-        'conversation_unread_messages_count': conversationUnreadMessagesCount,
     });
   }
 
@@ -4723,12 +4511,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       Value<JsonList?>? jsonProfileAttributes,
       Value<double?>? primaryContentGridCropSize,
       Value<double?>? primaryContentGridCropX,
-      Value<double?>? primaryContentGridCropY,
-      Value<PublicKeyData?>? publicKeyData,
-      Value<PublicKeyId?>? publicKeyId,
-      Value<PublicKeyVersion?>? publicKeyVersion,
-      Value<SenderMessageId?>? conversationNextSenderMessageId,
-      Value<UnreadMessagesCount>? conversationUnreadMessagesCount}) {
+      Value<double?>? primaryContentGridCropY}) {
     return ProfilesCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -4756,13 +4539,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           primaryContentGridCropX ?? this.primaryContentGridCropX,
       primaryContentGridCropY:
           primaryContentGridCropY ?? this.primaryContentGridCropY,
-      publicKeyData: publicKeyData ?? this.publicKeyData,
-      publicKeyId: publicKeyId ?? this.publicKeyId,
-      publicKeyVersion: publicKeyVersion ?? this.publicKeyVersion,
-      conversationNextSenderMessageId: conversationNextSenderMessageId ??
-          this.conversationNextSenderMessageId,
-      conversationUnreadMessagesCount: conversationUnreadMessagesCount ??
-          this.conversationUnreadMessagesCount,
     );
   }
 
@@ -4843,29 +4619,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       map['primary_content_grid_crop_y'] =
           Variable<double>(primaryContentGridCropY.value);
     }
-    if (publicKeyData.present) {
-      map['public_key_data'] = Variable<String>(
-          $ProfilesTable.$converterpublicKeyData.toSql(publicKeyData.value));
-    }
-    if (publicKeyId.present) {
-      map['public_key_id'] = Variable<int>(
-          $ProfilesTable.$converterpublicKeyId.toSql(publicKeyId.value));
-    }
-    if (publicKeyVersion.present) {
-      map['public_key_version'] = Variable<int>($ProfilesTable
-          .$converterpublicKeyVersion
-          .toSql(publicKeyVersion.value));
-    }
-    if (conversationNextSenderMessageId.present) {
-      map['conversation_next_sender_message_id'] = Variable<int>($ProfilesTable
-          .$converterconversationNextSenderMessageId
-          .toSql(conversationNextSenderMessageId.value));
-    }
-    if (conversationUnreadMessagesCount.present) {
-      map['conversation_unread_messages_count'] = Variable<int>($ProfilesTable
-          .$converterconversationUnreadMessagesCount
-          .toSql(conversationUnreadMessagesCount.value));
-    }
     return map;
   }
 
@@ -4890,14 +4643,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
-          ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
-          ..write('publicKeyData: $publicKeyData, ')
-          ..write('publicKeyId: $publicKeyId, ')
-          ..write('publicKeyVersion: $publicKeyVersion, ')
-          ..write(
-              'conversationNextSenderMessageId: $conversationNextSenderMessageId, ')
-          ..write(
-              'conversationUnreadMessagesCount: $conversationUnreadMessagesCount')
+          ..write('primaryContentGridCropY: $primaryContentGridCropY')
           ..write(')'))
         .toString();
   }
@@ -6207,6 +5953,455 @@ class MessagesCompanion extends UpdateCompanion<Message> {
   }
 }
 
+class $ConversationsTable extends Conversations
+    with TableInfo<$ConversationsTable, Conversation> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ConversationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _uuidAccountIdMeta =
+      const VerificationMeta('uuidAccountId');
+  @override
+  late final GeneratedColumnWithTypeConverter<AccountId, String> uuidAccountId =
+      GeneratedColumn<String>('uuid_account_id', aliasedName, false,
+              type: DriftSqlType.string,
+              requiredDuringInsert: true,
+              defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
+          .withConverter<AccountId>(
+              $ConversationsTable.$converteruuidAccountId);
+  static const VerificationMeta _publicKeyDataMeta =
+      const VerificationMeta('publicKeyData');
+  @override
+  late final GeneratedColumnWithTypeConverter<PublicKeyData?, String>
+      publicKeyData = GeneratedColumn<String>(
+              'public_key_data', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<PublicKeyData?>(
+              $ConversationsTable.$converterpublicKeyData);
+  static const VerificationMeta _publicKeyIdMeta =
+      const VerificationMeta('publicKeyId');
+  @override
+  late final GeneratedColumnWithTypeConverter<PublicKeyId?, int> publicKeyId =
+      GeneratedColumn<int>('public_key_id', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<PublicKeyId?>(
+              $ConversationsTable.$converterpublicKeyId);
+  static const VerificationMeta _publicKeyVersionMeta =
+      const VerificationMeta('publicKeyVersion');
+  @override
+  late final GeneratedColumnWithTypeConverter<PublicKeyVersion?, int>
+      publicKeyVersion = GeneratedColumn<int>(
+              'public_key_version', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<PublicKeyVersion?>(
+              $ConversationsTable.$converterpublicKeyVersion);
+  static const VerificationMeta _conversationNextSenderMessageIdMeta =
+      const VerificationMeta('conversationNextSenderMessageId');
+  @override
+  late final GeneratedColumnWithTypeConverter<SenderMessageId?, int>
+      conversationNextSenderMessageId = GeneratedColumn<int>(
+              'conversation_next_sender_message_id', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<SenderMessageId?>(
+              $ConversationsTable.$converterconversationNextSenderMessageId);
+  static const VerificationMeta _conversationUnreadMessagesCountMeta =
+      const VerificationMeta('conversationUnreadMessagesCount');
+  @override
+  late final GeneratedColumnWithTypeConverter<UnreadMessagesCount, int>
+      conversationUnreadMessagesCount = GeneratedColumn<int>(
+              'conversation_unread_messages_count', aliasedName, false,
+              type: DriftSqlType.int,
+              requiredDuringInsert: false,
+              defaultValue: const Constant(0))
+          .withConverter<UnreadMessagesCount>(
+              $ConversationsTable.$converterconversationUnreadMessagesCount);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        uuidAccountId,
+        publicKeyData,
+        publicKeyId,
+        publicKeyVersion,
+        conversationNextSenderMessageId,
+        conversationUnreadMessagesCount
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'conversations';
+  @override
+  VerificationContext validateIntegrity(Insertable<Conversation> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
+    context.handle(_publicKeyDataMeta, const VerificationResult.success());
+    context.handle(_publicKeyIdMeta, const VerificationResult.success());
+    context.handle(_publicKeyVersionMeta, const VerificationResult.success());
+    context.handle(_conversationNextSenderMessageIdMeta,
+        const VerificationResult.success());
+    context.handle(_conversationUnreadMessagesCountMeta,
+        const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Conversation map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Conversation(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      uuidAccountId: $ConversationsTable.$converteruuidAccountId.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
+      publicKeyData: $ConversationsTable.$converterpublicKeyData.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}public_key_data'])),
+      publicKeyId: $ConversationsTable.$converterpublicKeyId.fromSql(
+          attachedDatabase.typeMapping
+              .read(DriftSqlType.int, data['${effectivePrefix}public_key_id'])),
+      publicKeyVersion: $ConversationsTable.$converterpublicKeyVersion.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.int, data['${effectivePrefix}public_key_version'])),
+      conversationNextSenderMessageId: $ConversationsTable
+          .$converterconversationNextSenderMessageId
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}conversation_next_sender_message_id'])),
+      conversationUnreadMessagesCount: $ConversationsTable
+          .$converterconversationUnreadMessagesCount
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}conversation_unread_messages_count'])!),
+    );
+  }
+
+  @override
+  $ConversationsTable createAlias(String alias) {
+    return $ConversationsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<AccountId, String> $converteruuidAccountId =
+      const AccountIdConverter();
+  static TypeConverter<PublicKeyData?, String?> $converterpublicKeyData =
+      const NullAwareTypeConverter.wrap(PublicKeyDataConverter());
+  static TypeConverter<PublicKeyId?, int?> $converterpublicKeyId =
+      const NullAwareTypeConverter.wrap(PublicKeyIdConverter());
+  static TypeConverter<PublicKeyVersion?, int?> $converterpublicKeyVersion =
+      const NullAwareTypeConverter.wrap(PublicKeyVersionConverter());
+  static TypeConverter<SenderMessageId?, int?>
+      $converterconversationNextSenderMessageId =
+      const NullAwareTypeConverter.wrap(SenderMessageIdConverter());
+  static TypeConverter<UnreadMessagesCount, int>
+      $converterconversationUnreadMessagesCount =
+      UnreadMessagesCountConverter();
+}
+
+class Conversation extends DataClass implements Insertable<Conversation> {
+  final int id;
+  final AccountId uuidAccountId;
+  final PublicKeyData? publicKeyData;
+  final PublicKeyId? publicKeyId;
+  final PublicKeyVersion? publicKeyVersion;
+  final SenderMessageId? conversationNextSenderMessageId;
+  final UnreadMessagesCount conversationUnreadMessagesCount;
+  const Conversation(
+      {required this.id,
+      required this.uuidAccountId,
+      this.publicKeyData,
+      this.publicKeyId,
+      this.publicKeyVersion,
+      this.conversationNextSenderMessageId,
+      required this.conversationUnreadMessagesCount});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    {
+      map['uuid_account_id'] = Variable<String>(
+          $ConversationsTable.$converteruuidAccountId.toSql(uuidAccountId));
+    }
+    if (!nullToAbsent || publicKeyData != null) {
+      map['public_key_data'] = Variable<String>(
+          $ConversationsTable.$converterpublicKeyData.toSql(publicKeyData));
+    }
+    if (!nullToAbsent || publicKeyId != null) {
+      map['public_key_id'] = Variable<int>(
+          $ConversationsTable.$converterpublicKeyId.toSql(publicKeyId));
+    }
+    if (!nullToAbsent || publicKeyVersion != null) {
+      map['public_key_version'] = Variable<int>($ConversationsTable
+          .$converterpublicKeyVersion
+          .toSql(publicKeyVersion));
+    }
+    if (!nullToAbsent || conversationNextSenderMessageId != null) {
+      map['conversation_next_sender_message_id'] = Variable<int>(
+          $ConversationsTable.$converterconversationNextSenderMessageId
+              .toSql(conversationNextSenderMessageId));
+    }
+    {
+      map['conversation_unread_messages_count'] = Variable<int>(
+          $ConversationsTable.$converterconversationUnreadMessagesCount
+              .toSql(conversationUnreadMessagesCount));
+    }
+    return map;
+  }
+
+  ConversationsCompanion toCompanion(bool nullToAbsent) {
+    return ConversationsCompanion(
+      id: Value(id),
+      uuidAccountId: Value(uuidAccountId),
+      publicKeyData: publicKeyData == null && nullToAbsent
+          ? const Value.absent()
+          : Value(publicKeyData),
+      publicKeyId: publicKeyId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(publicKeyId),
+      publicKeyVersion: publicKeyVersion == null && nullToAbsent
+          ? const Value.absent()
+          : Value(publicKeyVersion),
+      conversationNextSenderMessageId:
+          conversationNextSenderMessageId == null && nullToAbsent
+              ? const Value.absent()
+              : Value(conversationNextSenderMessageId),
+      conversationUnreadMessagesCount: Value(conversationUnreadMessagesCount),
+    );
+  }
+
+  factory Conversation.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Conversation(
+      id: serializer.fromJson<int>(json['id']),
+      uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
+      publicKeyData: serializer.fromJson<PublicKeyData?>(json['publicKeyData']),
+      publicKeyId: serializer.fromJson<PublicKeyId?>(json['publicKeyId']),
+      publicKeyVersion:
+          serializer.fromJson<PublicKeyVersion?>(json['publicKeyVersion']),
+      conversationNextSenderMessageId: serializer
+          .fromJson<SenderMessageId?>(json['conversationNextSenderMessageId']),
+      conversationUnreadMessagesCount: serializer.fromJson<UnreadMessagesCount>(
+          json['conversationUnreadMessagesCount']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
+      'publicKeyData': serializer.toJson<PublicKeyData?>(publicKeyData),
+      'publicKeyId': serializer.toJson<PublicKeyId?>(publicKeyId),
+      'publicKeyVersion':
+          serializer.toJson<PublicKeyVersion?>(publicKeyVersion),
+      'conversationNextSenderMessageId':
+          serializer.toJson<SenderMessageId?>(conversationNextSenderMessageId),
+      'conversationUnreadMessagesCount': serializer
+          .toJson<UnreadMessagesCount>(conversationUnreadMessagesCount),
+    };
+  }
+
+  Conversation copyWith(
+          {int? id,
+          AccountId? uuidAccountId,
+          Value<PublicKeyData?> publicKeyData = const Value.absent(),
+          Value<PublicKeyId?> publicKeyId = const Value.absent(),
+          Value<PublicKeyVersion?> publicKeyVersion = const Value.absent(),
+          Value<SenderMessageId?> conversationNextSenderMessageId =
+              const Value.absent(),
+          UnreadMessagesCount? conversationUnreadMessagesCount}) =>
+      Conversation(
+        id: id ?? this.id,
+        uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+        publicKeyData:
+            publicKeyData.present ? publicKeyData.value : this.publicKeyData,
+        publicKeyId: publicKeyId.present ? publicKeyId.value : this.publicKeyId,
+        publicKeyVersion: publicKeyVersion.present
+            ? publicKeyVersion.value
+            : this.publicKeyVersion,
+        conversationNextSenderMessageId: conversationNextSenderMessageId.present
+            ? conversationNextSenderMessageId.value
+            : this.conversationNextSenderMessageId,
+        conversationUnreadMessagesCount: conversationUnreadMessagesCount ??
+            this.conversationUnreadMessagesCount,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Conversation(')
+          ..write('id: $id, ')
+          ..write('uuidAccountId: $uuidAccountId, ')
+          ..write('publicKeyData: $publicKeyData, ')
+          ..write('publicKeyId: $publicKeyId, ')
+          ..write('publicKeyVersion: $publicKeyVersion, ')
+          ..write(
+              'conversationNextSenderMessageId: $conversationNextSenderMessageId, ')
+          ..write(
+              'conversationUnreadMessagesCount: $conversationUnreadMessagesCount')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id,
+      uuidAccountId,
+      publicKeyData,
+      publicKeyId,
+      publicKeyVersion,
+      conversationNextSenderMessageId,
+      conversationUnreadMessagesCount);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Conversation &&
+          other.id == this.id &&
+          other.uuidAccountId == this.uuidAccountId &&
+          other.publicKeyData == this.publicKeyData &&
+          other.publicKeyId == this.publicKeyId &&
+          other.publicKeyVersion == this.publicKeyVersion &&
+          other.conversationNextSenderMessageId ==
+              this.conversationNextSenderMessageId &&
+          other.conversationUnreadMessagesCount ==
+              this.conversationUnreadMessagesCount);
+}
+
+class ConversationsCompanion extends UpdateCompanion<Conversation> {
+  final Value<int> id;
+  final Value<AccountId> uuidAccountId;
+  final Value<PublicKeyData?> publicKeyData;
+  final Value<PublicKeyId?> publicKeyId;
+  final Value<PublicKeyVersion?> publicKeyVersion;
+  final Value<SenderMessageId?> conversationNextSenderMessageId;
+  final Value<UnreadMessagesCount> conversationUnreadMessagesCount;
+  const ConversationsCompanion({
+    this.id = const Value.absent(),
+    this.uuidAccountId = const Value.absent(),
+    this.publicKeyData = const Value.absent(),
+    this.publicKeyId = const Value.absent(),
+    this.publicKeyVersion = const Value.absent(),
+    this.conversationNextSenderMessageId = const Value.absent(),
+    this.conversationUnreadMessagesCount = const Value.absent(),
+  });
+  ConversationsCompanion.insert({
+    this.id = const Value.absent(),
+    required AccountId uuidAccountId,
+    this.publicKeyData = const Value.absent(),
+    this.publicKeyId = const Value.absent(),
+    this.publicKeyVersion = const Value.absent(),
+    this.conversationNextSenderMessageId = const Value.absent(),
+    this.conversationUnreadMessagesCount = const Value.absent(),
+  }) : uuidAccountId = Value(uuidAccountId);
+  static Insertable<Conversation> custom({
+    Expression<int>? id,
+    Expression<String>? uuidAccountId,
+    Expression<String>? publicKeyData,
+    Expression<int>? publicKeyId,
+    Expression<int>? publicKeyVersion,
+    Expression<int>? conversationNextSenderMessageId,
+    Expression<int>? conversationUnreadMessagesCount,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
+      if (publicKeyData != null) 'public_key_data': publicKeyData,
+      if (publicKeyId != null) 'public_key_id': publicKeyId,
+      if (publicKeyVersion != null) 'public_key_version': publicKeyVersion,
+      if (conversationNextSenderMessageId != null)
+        'conversation_next_sender_message_id': conversationNextSenderMessageId,
+      if (conversationUnreadMessagesCount != null)
+        'conversation_unread_messages_count': conversationUnreadMessagesCount,
+    });
+  }
+
+  ConversationsCompanion copyWith(
+      {Value<int>? id,
+      Value<AccountId>? uuidAccountId,
+      Value<PublicKeyData?>? publicKeyData,
+      Value<PublicKeyId?>? publicKeyId,
+      Value<PublicKeyVersion?>? publicKeyVersion,
+      Value<SenderMessageId?>? conversationNextSenderMessageId,
+      Value<UnreadMessagesCount>? conversationUnreadMessagesCount}) {
+    return ConversationsCompanion(
+      id: id ?? this.id,
+      uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+      publicKeyData: publicKeyData ?? this.publicKeyData,
+      publicKeyId: publicKeyId ?? this.publicKeyId,
+      publicKeyVersion: publicKeyVersion ?? this.publicKeyVersion,
+      conversationNextSenderMessageId: conversationNextSenderMessageId ??
+          this.conversationNextSenderMessageId,
+      conversationUnreadMessagesCount: conversationUnreadMessagesCount ??
+          this.conversationUnreadMessagesCount,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (uuidAccountId.present) {
+      map['uuid_account_id'] = Variable<String>($ConversationsTable
+          .$converteruuidAccountId
+          .toSql(uuidAccountId.value));
+    }
+    if (publicKeyData.present) {
+      map['public_key_data'] = Variable<String>($ConversationsTable
+          .$converterpublicKeyData
+          .toSql(publicKeyData.value));
+    }
+    if (publicKeyId.present) {
+      map['public_key_id'] = Variable<int>(
+          $ConversationsTable.$converterpublicKeyId.toSql(publicKeyId.value));
+    }
+    if (publicKeyVersion.present) {
+      map['public_key_version'] = Variable<int>($ConversationsTable
+          .$converterpublicKeyVersion
+          .toSql(publicKeyVersion.value));
+    }
+    if (conversationNextSenderMessageId.present) {
+      map['conversation_next_sender_message_id'] = Variable<int>(
+          $ConversationsTable.$converterconversationNextSenderMessageId
+              .toSql(conversationNextSenderMessageId.value));
+    }
+    if (conversationUnreadMessagesCount.present) {
+      map['conversation_unread_messages_count'] = Variable<int>(
+          $ConversationsTable.$converterconversationUnreadMessagesCount
+              .toSql(conversationUnreadMessagesCount.value));
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ConversationsCompanion(')
+          ..write('id: $id, ')
+          ..write('uuidAccountId: $uuidAccountId, ')
+          ..write('publicKeyData: $publicKeyData, ')
+          ..write('publicKeyId: $publicKeyId, ')
+          ..write('publicKeyVersion: $publicKeyVersion, ')
+          ..write(
+              'conversationNextSenderMessageId: $conversationNextSenderMessageId, ')
+          ..write(
+              'conversationUnreadMessagesCount: $conversationUnreadMessagesCount')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AccountDatabase extends GeneratedDatabase {
   _$AccountDatabase(QueryExecutor e) : super(e);
   late final $AccountTable account = $AccountTable(this);
@@ -6214,6 +6409,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $ProfileStatesTable profileStates = $ProfileStatesTable(this);
   late final $MatchesTable matches = $MatchesTable(this);
   late final $MessagesTable messages = $MessagesTable(this);
+  late final $ConversationsTable conversations = $ConversationsTable(this);
   late final DaoCurrentContent daoCurrentContent =
       DaoCurrentContent(this as AccountDatabase);
   late final DaoPendingContent daoPendingContent =
@@ -6237,10 +6433,12 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final DaoProfiles daoProfiles = DaoProfiles(this as AccountDatabase);
   late final DaoProfileStates daoProfileStates =
       DaoProfileStates(this as AccountDatabase);
+  late final DaoConversations daoConversations =
+      DaoConversations(this as AccountDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [account, profiles, profileStates, matches, messages];
+      [account, profiles, profileStates, matches, messages, conversations];
 }

@@ -356,8 +356,8 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     // Hide notification
     await NotificationMessageReceived.getInstance()
       .updateMessageReceivedCount(accountId, 0, accountBackgroundDb);
-    return db.profileAction(
-      (db) => db.setUnreadMessagesCount(accountId, const UnreadMessagesCount(0)),
+    return db.accountAction(
+      (db) => db.daoConversations.setUnreadMessagesCount(accountId, const UnreadMessagesCount(0)),
     );
   }
 
@@ -389,7 +389,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   Stream<UnreadMessagesCount?> getUnreadMessagesCountStream(AccountId accountId) {
     return db.accountStream(
-      (db) => db.daoProfiles.watchUnreadMessageCount(accountId),
+      (db) => db.daoConversations.watchUnreadMessageCount(accountId),
     );
   }
 }

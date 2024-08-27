@@ -359,7 +359,7 @@ class MessageManager extends LifecycleMethods {
       profile.sendProfileChange(LikesChanged());
     }
 
-    final nextExpectedIdResult = await db.accountData((db) => db.daoProfiles.getNextSenderMessageId(
+    final nextExpectedIdResult = await db.accountData((db) => db.daoConversations.getNextSenderMessageId(
       accountId,
     ));
     SenderMessageId nextSenderMessageId;
@@ -378,7 +378,7 @@ class MessageManager extends LifecycleMethods {
             yield const ErrorBeforeMessageSaving();
             return;
           }
-          final dbResult = await db.accountAction((db) => db.daoProfiles.setNextSenderMessageId(
+          final dbResult = await db.accountAction((db) => db.daoConversations.setNextSenderMessageId(
             accountId,
             initialId,
           ));
@@ -555,7 +555,7 @@ class MessageManager extends LifecycleMethods {
 
           // Use expected sender message ID on next try
           nextSenderMessageId = notExpectedSenderMessageId;
-          final dbResult = await db.accountAction((db) => db.daoProfiles.setNextSenderMessageId(
+          final dbResult = await db.accountAction((db) => db.daoConversations.setNextSenderMessageId(
             accountId,
             nextSenderMessageId,
           ));
@@ -587,7 +587,7 @@ class MessageManager extends LifecycleMethods {
       break;
     }
 
-    final setNextSenderMessasgeIdResult = await db.accountAction((db) => db.daoProfiles.setNextSenderMessageId(
+    final setNextSenderMessasgeIdResult = await db.accountAction((db) => db.daoConversations.setNextSenderMessageId(
       accountId,
       SenderMessageId(id: nextSenderMessageId.id + 1)
     ));
@@ -620,13 +620,13 @@ class MessageManager extends LifecycleMethods {
       }
     }
 
-    switch (await db.profileData((db) => db.getPublicKey(accountId))) {
+    switch (await db.accountData((db) => db.daoConversations.getPublicKey(accountId))) {
       case Ok(:final v):
         if (v == null) {
           if (await _refreshForeignPublicKey(accountId).isErr()) {
             return const Err(null);
           }
-          return await db.profileData((db) => db.getPublicKey(accountId));
+          return await db.accountData((db) => db.daoConversations.getPublicKey(accountId));
         } else {
           return Ok(v);
         }
@@ -637,7 +637,7 @@ class MessageManager extends LifecycleMethods {
 
   Future<Result<void, void>> _refreshForeignPublicKey(AccountId accountId) async {
     return await api.chat((api) => api.getPublicKey(accountId.accountId, 1))
-      .andThen((key) => db.profileAction((db) => db.updatePublicKey(accountId, key.key)))
+      .andThen((key) => db.accountAction((db) => db.daoConversations.updatePublicKey(accountId, key.key)))
       .mapErr((_) => null);
   }
 

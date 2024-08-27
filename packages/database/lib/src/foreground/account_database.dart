@@ -5,6 +5,7 @@ import 'package:database/src/foreground/account/dao_account_settings.dart';
 import 'package:database/src/foreground/account/dao_local_image_settings.dart';
 import 'package:database/src/foreground/account/dao_message_keys.dart';
 import 'package:database/src/foreground/account/dao_sync_versions.dart';
+import 'package:database/src/foreground/conversations_table.dart';
 import 'package:database/src/foreground/matches_table.dart';
 import 'package:database/src/foreground/profile_states_table.dart';
 import 'package:database/src/foreground/profile_table.dart';
@@ -150,6 +151,7 @@ class Account extends Table {
     ProfileStates,
     Matches,
     Messages,
+    Conversations,
   ],
   daos: [
     // Account table
@@ -168,6 +170,7 @@ class Account extends Table {
     DaoMatches,
     DaoProfiles,
     DaoProfileStates,
+    DaoConversations,
   ],
 )
 class AccountDatabase extends _$AccountDatabase {
