@@ -17,6 +17,7 @@ import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 import 'package:pihka_frontend/ui_utils/scroll_controller.dart';
+import 'package:pihka_frontend/utils/cache.dart';
 import 'package:pihka_frontend/utils/immutable_list.dart';
 
 var log = Logger("ChatView");
@@ -49,7 +50,8 @@ class _ChatViewState extends State<ChatView> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
   /// Avoid UI flickering when conversation animation runs
-  final Map<AccountId, UnreadMessagesCount> countCache = {};
+  final RemoveOldestCache<AccountId, UnreadMessagesCount> countCache =
+    RemoveOldestCache(maxValues: 25);
 
   @override
   void initState() {
@@ -241,9 +243,9 @@ class _ChatViewState extends State<ChatView> {
         final countFromStream = state.data;
         final int unreadCount;
         if (countFromStream == null) {
-          unreadCount = countCache[entry.uuid]?.count ?? 0;
+          unreadCount = countCache.get(entry.uuid)?.count ?? 0;
         } else {
-          countCache[entry.uuid] = countFromStream;
+          countCache.update(entry.uuid, countFromStream);
           unreadCount = countFromStream.count;
         }
 
