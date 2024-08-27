@@ -76,7 +76,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     );
 
     return await transaction(() async {
-      await db.daoProfiles.setCurrentTimeToConversationLastChanged(remoteAccountId);
+      await db.daoMatches.setCurrentTimeToConversationLastChanged(remoteAccountId);
       return await _insert(message);
     });
   }
@@ -129,7 +129,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       final currentUnreadMessageCount = await db.daoProfiles.getUnreadMessageCount(entry.id.accountIdSender) ?? UnreadMessagesCount(0);
       final updatedValue = UnreadMessagesCount(currentUnreadMessageCount.count + 1);
       await db.daoProfiles.setUnreadMessagesCount(entry.id.accountIdSender, updatedValue);
-      await db.daoProfiles.setCurrentTimeToConversationLastChanged(entry.id.accountIdSender);
+      await db.daoMatches.setCurrentTimeToConversationLastChanged(entry.id.accountIdSender);
     });
   }
 

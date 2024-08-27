@@ -140,7 +140,7 @@ class MessageManager extends LifecycleMethods {
     for (final (message, messageBytes) in newMessages) {
       final isMatch = await isInMatches(message.id.accountIdSender);
       if (!isMatch) {
-        await db.profileAction((db) => db.setMatchStatus(message.id.accountIdSender, true));
+        await db.accountAction((db) => db.daoMatches.setMatchStatus(message.id.accountIdSender, true));
         profile.sendProfileChange(MatchesChanged());
       }
 
@@ -341,7 +341,7 @@ class MessageManager extends LifecycleMethods {
         yield const ErrorBeforeMessageSaving();
         return;
       }
-      final matchStatusChange = await db.profileAction((db) => db.setMatchStatus(accountId, true));
+      final matchStatusChange = await db.accountAction((db) => db.daoMatches.setMatchStatus(accountId, true));
       if (matchStatusChange.isErr()) {
         yield const ErrorBeforeMessageSaving();
         return;
@@ -642,7 +642,7 @@ class MessageManager extends LifecycleMethods {
   }
 
   Future<bool> isInMatches(AccountId accountId) async {
-    return await db.profileData((db) => db.isInMatches(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.daoMatches.isInMatches(accountId)).ok() ?? false;
   }
 
   Future<Result<void, DeleteSendFailedError>> _deleteSendFailedMessage(

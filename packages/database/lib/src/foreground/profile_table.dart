@@ -44,12 +44,15 @@ class Profiles extends Table {
 
   IntColumn get conversationNextSenderMessageId => integer().map(const NullAwareTypeConverter.wrap(SenderMessageIdConverter())).nullable()();
   IntColumn get conversationUnreadMessagesCount => integer().map(UnreadMessagesCountConverter()).withDefault(const Constant(0))();
-  IntColumn get conversationLastChangedTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+
+  // TODO(prod): Consider changing isIn* to individual tables as Drift
+  // watch method will emit also when changing other columns in a table
+  // even if the query will not contain those.
+  // At least isInProfileGrid should be changed to separate table.
 
   // If column is not null, then it is in the specific group.
   // The time is the time when the profile was added to the group.
   IntColumn get isInFavorites => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
-  IntColumn get isInMatches => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInReceivedBlocks => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInReceivedLikes => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInSentBlocks => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
@@ -72,23 +75,6 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
       ),
       onConflict: DoUpdate((old) => ProfilesCompanion(
         isInFavorites: _toGroupValue(value),
-      ),
-        target: [profiles.uuidAccountId]
-      ),
-    );
-  }
-
-  Future<void> setMatchStatus(
-    AccountId accountId,
-    bool value,
-  ) async {
-    await into(profiles).insert(
-      ProfilesCompanion.insert(
-        uuidAccountId: accountId,
-        isInMatches: _toGroupValue(value),
-      ),
-      onConflict: DoUpdate((old) => ProfilesCompanion(
-        isInMatches: _toGroupValue(value),
       ),
         target: [profiles.uuidAccountId]
       ),
@@ -192,19 +178,6 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     });
   }
 
-  Future<void> setMatchStatusList(api.MatchesPage matches) async {
-    await transaction(() async {
-      // Clear
-      await update(profiles)
-        .write(const ProfilesCompanion(isInMatches: Value(null)));
-
-      for (final a in matches.profiles) {
-        await setMatchStatus(a, true);
-      }
-
-      await db.daoSyncVersions.updateSyncVersionMatches(matches.version);
-    });
-  }
 
   Future<void> setReceivedBlockStatusList(api.ReceivedBlocksPage receivedBlocs) async {
     await transaction(() async {
@@ -277,8 +250,6 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
   Future<bool> isInFavorites(AccountId accountId) =>
     _existenceCheck(accountId, (t) => t.isInFavorites.isNotNull());
 
-  Future<bool> isInMatches(AccountId accountId) =>
-    _existenceCheck(accountId, (t) => t.isInMatches.isNotNull());
 
   Future<bool> isInReceivedBlocks(AccountId accountId) =>
     _existenceCheck(accountId, (t) => t.isInReceivedBlocks.isNotNull());
@@ -297,9 +268,6 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
 
   Future<List<AccountId>> getFavoritesList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInFavorites);
-
-  Future<List<AccountId>> getMatchesList(int startIndex, int limit) =>
-    _getProfilesList(startIndex, limit, (t) => t.isInMatches);
 
   Future<List<AccountId>> getReceivedBlocksList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInReceivedBlocks);
@@ -663,49 +631,5 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         target: [profiles.uuidAccountId]
       ),
     );
-  }
-
-  Future<UtcDateTime?> getConversationLastChanged(AccountId accountId) async {
-    final r = await (select(profiles)
-      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
-    )
-      .getSingleOrNull();
-
-    return r?.conversationLastChangedTime;
-  }
-
-  Future<void> setCurrentTimeToConversationLastChanged(AccountId accountId) async {
-    final currentTime = UtcDateTime.now();
-    await into(profiles).insert(
-      ProfilesCompanion.insert(
-        uuidAccountId: accountId,
-        conversationLastChangedTime: Value(currentTime),
-      ),
-      onConflict: DoUpdate((old) => ProfilesCompanion(
-        conversationLastChangedTime: Value(currentTime),
-      ),
-        target: [profiles.uuidAccountId]
-      ),
-    );
-  }
-
-  // Latest conversation is the first one in the emitted list
-  Stream<List<AccountId>> watchConversationList() {
-    return (select(profiles)
-      ..where((t) => t.isInMatches.isNotNull())
-      ..orderBy([
-        (t) => OrderingTerm(
-          expression: t.conversationLastChangedTime,
-          mode: OrderingMode.desc,
-        ),
-        // Use ID ordering if there is same time values
-        (t) => OrderingTerm(
-          expression: t.id,
-          mode: OrderingMode.desc,
-        ),
-      ])
-    )
-      .map((t) => t.uuidAccountId)
-      .watch();
   }
 }

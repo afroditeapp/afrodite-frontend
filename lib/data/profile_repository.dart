@@ -380,17 +380,11 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   }
 
   /// Latest conversation is the first conversation in every emitted list
-  /// TODO(perf): The performance might be better if this just emits
-  /// List<ProfileEntry> as currently the bloc gets those one by one.
   Stream<List<AccountId>> getConversationListUpdates() {
     return db.accountStreamOrDefault(
-      (db) => db.daoProfiles.watchConversationList(),
+      (db) => db.daoMatches.watchConversationList(),
       <AccountId>[],
-    )
-      // TODO(prod): Check if drift selectOnly feature makes this unnecessary.
-      .distinct((list1, list2) {
-        return listEquals(list1, list2);
-      });
+    );
   }
 
   Stream<UnreadMessagesCount?> getUnreadMessagesCountStream(AccountId accountId) {

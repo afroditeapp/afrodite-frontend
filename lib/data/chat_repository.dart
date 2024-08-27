@@ -42,7 +42,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     profileEntryDownloader = ProfileEntryDownloader(media, accountBackgroundDb, db, connectionManager.api),
     sentBlocksIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getSentBlocksList(startIndex, limit)).ok()),
     receivedLikesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getReceivedLikesList(startIndex, limit)).ok()),
-    matchesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getMatchesList(startIndex, limit)).ok()),
+    matchesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.accountData((db) => db.daoMatches.getMatchesList(startIndex, limit)).ok()),
     api = connectionManager.api,
     messageManager = MessageManager(messageKeyManager, connectionManager.api, db, profile, accountBackgroundDb, currentUser);
 
@@ -148,7 +148,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         if (v.status != LimitedActionStatus.failureLimitAlreadyReached) {
           final isReceivedLike = await isInReceivedLikes(accountId);
           if (isReceivedLike) {
-            await db.profileAction((db) => db.setMatchStatus(accountId, true));
+            await db.accountAction((db) => db.daoMatches.setMatchStatus(accountId, true));
           } else {
             await db.profileAction((db) => db.setSentLikeStatus(accountId, true));
           }
@@ -232,7 +232,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
       for (final account in receivedBlocks.profiles) {
         if (!currentReceivedBlocks.contains(account)) {
           await db.profileAction((db) => db.setReceivedLikeStatus(account, false));
-          await db.profileAction((db) => db.setMatchStatus(account, false));
+          await db.accountAction((db) => db.daoMatches.setMatchStatus(account, false));
           await db.profileAction((db) => db.setSentLikeStatus(account, false));
           // Perhaps if both users blocks same time, the same account could be
           // in both sent and received blocks. This handles that case.
@@ -320,7 +320,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<void> receivedMatchesRefresh() async {
     final data = await api.chat((api) => api.getMatches()).ok();
     if (data != null) {
-      await db.profileAction((db) => db.setMatchStatusList(data));
+      await db.accountAction((db) => db.daoMatches.setMatchStatusList(data));
       profile.sendProfileChange(MatchesChanged());
     }
   }
