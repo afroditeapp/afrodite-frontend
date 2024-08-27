@@ -13,13 +13,13 @@ final _privateConstructorErrorConversationListData = UnsupportedError(
 
 /// @nodoc
 mixin _$ConversationListData {
-  UnmodifiableList<IdAndEntry> get conversations => throw _privateConstructorErrorConversationListData;
-  UnmodifiableList<ListItemChangeWithEntry> get changesBetweenCurrentAndPrevious => throw _privateConstructorErrorConversationListData;
+  UnmodifiableList<AccountId> get conversations => throw _privateConstructorErrorConversationListData;
+  UnmodifiableList<ListItemChange> get changesBetweenCurrentAndPrevious => throw _privateConstructorErrorConversationListData;
   bool get initialLoadDone => throw _privateConstructorErrorConversationListData;
 
   ConversationListData copyWith({
-    UnmodifiableList<IdAndEntry>? conversations,
-    UnmodifiableList<ListItemChangeWithEntry>? changesBetweenCurrentAndPrevious,
+    UnmodifiableList<AccountId>? conversations,
+    UnmodifiableList<ListItemChange>? changesBetweenCurrentAndPrevious,
     bool? initialLoadDone,
   }) => throw _privateConstructorErrorConversationListData;
 }
@@ -27,16 +27,16 @@ mixin _$ConversationListData {
 /// @nodoc
 abstract class _ConversationListData implements ConversationListData {
   factory _ConversationListData({
-    UnmodifiableList<IdAndEntry> conversations,
-    UnmodifiableList<ListItemChangeWithEntry> changesBetweenCurrentAndPrevious,
+    UnmodifiableList<AccountId> conversations,
+    UnmodifiableList<ListItemChange> changesBetweenCurrentAndPrevious,
     bool initialLoadDone,
   }) = _$ConversationListDataImpl;
 }
 
 /// @nodoc
 class _$ConversationListDataImpl with DiagnosticableTreeMixin implements _ConversationListData {
-  static const UnmodifiableList<IdAndEntry> _conversationsDefaultValue = UnmodifiableList<IdAndEntry>.empty();
-  static const UnmodifiableList<ListItemChangeWithEntry> _changesBetweenCurrentAndPreviousDefaultValue = UnmodifiableList<ListItemChangeWithEntry>.empty();
+  static const UnmodifiableList<AccountId> _conversationsDefaultValue = UnmodifiableList<AccountId>.empty();
+  static const UnmodifiableList<ListItemChange> _changesBetweenCurrentAndPreviousDefaultValue = UnmodifiableList<ListItemChange>.empty();
   static const bool _initialLoadDoneDefaultValue = false;
   
   _$ConversationListDataImpl({
@@ -46,9 +46,9 @@ class _$ConversationListDataImpl with DiagnosticableTreeMixin implements _Conver
   });
 
   @override
-  final UnmodifiableList<IdAndEntry> conversations;
+  final UnmodifiableList<AccountId> conversations;
   @override
-  final UnmodifiableList<ListItemChangeWithEntry> changesBetweenCurrentAndPrevious;
+  final UnmodifiableList<ListItemChange> changesBetweenCurrentAndPrevious;
   @override
   final bool initialLoadDone;
 
@@ -95,8 +95,8 @@ class _$ConversationListDataImpl with DiagnosticableTreeMixin implements _Conver
     Object? changesBetweenCurrentAndPrevious,
     Object? initialLoadDone,
   }) => _$ConversationListDataImpl(
-    conversations: (conversations ?? this.conversations) as UnmodifiableList<IdAndEntry>,
-    changesBetweenCurrentAndPrevious: (changesBetweenCurrentAndPrevious ?? this.changesBetweenCurrentAndPrevious) as UnmodifiableList<ListItemChangeWithEntry>,
+    conversations: (conversations ?? this.conversations) as UnmodifiableList<AccountId>,
+    changesBetweenCurrentAndPrevious: (changesBetweenCurrentAndPrevious ?? this.changesBetweenCurrentAndPrevious) as UnmodifiableList<ListItemChange>,
     initialLoadDone: (initialLoadDone ?? this.initialLoadDone) as bool,
   );
 }

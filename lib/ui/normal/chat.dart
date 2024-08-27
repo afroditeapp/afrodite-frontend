@@ -19,6 +19,7 @@ import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 import 'package:pihka_frontend/ui_utils/scroll_controller.dart';
 import 'package:pihka_frontend/utils/cache.dart';
 import 'package:pihka_frontend/utils/immutable_list.dart';
+import 'package:rxdart/rxdart.dart';
 
 var log = Logger("ChatView");
 
@@ -39,18 +40,24 @@ typedef MatchEntry = ProfileEntry;
 const _IMG_SIZE = 100.0;
 const _ITEM_PADDING_SIZE = 8.0;
 
+class ConversationData {
+  final ProfileEntry entry;
+  final UnreadMessagesCount count;
+  ConversationData(this.entry, this.count);
+}
+
 class _ChatViewState extends State<ChatView> {
   final ScrollController _scrollController = ScrollController();
 
   final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
 
   int? initialItemCount;
-  UnmodifiableList<IdAndEntry> conversations = const UnmodifiableList<IdAndEntry>.empty();
+  UnmodifiableList<AccountId> conversations = const UnmodifiableList<AccountId>.empty();
 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
   /// Avoid UI flickering when conversation animation runs
-  final RemoveOldestCache<AccountId, UnreadMessagesCount> countCache =
+  final RemoveOldestCache<AccountId, ConversationData> dataCache =
     RemoveOldestCache(maxValues: 25);
 
   @override
@@ -79,6 +86,19 @@ class _ChatViewState extends State<ChatView> {
       );
   }
 
+  Stream<ConversationData> conversationData(AccountId id) {
+    return Rx.combineLatest2(
+      profile.getProfileEntryUpdates(id),
+      profile.getUnreadMessagesCountStream(id),
+      (a, b) {
+        if (a != null) {
+          return ConversationData(a, b ?? const UnreadMessagesCount(0));
+        } else {
+          return null;
+        }
+      },
+    ).whereNotNull();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,10 +125,10 @@ class _ChatViewState extends State<ChatView> {
                 // Animations
                 for (final change in state.changesBetweenCurrentAndPrevious) {
                   switch (change) {
-                    case AddItemEntry(:final i):
+                    case AddItem(:final i):
                       log.finest("Add, i: $i");
                       listState.insertItem(i);
-                    case RemoveItemEntry(:final i, :final entry):
+                    case RemoveItem(:final i, :final id):
                       log.finest("Remove, i: $i");
                       listState.removeItem(
                         i,
@@ -117,7 +137,7 @@ class _ChatViewState extends State<ChatView> {
                             sizeFactor: animation,
                             child: FadeTransition(
                               opacity: animation,
-                              child: itemWidgetForAnimation(context, entry, allowOpenConversation: false),
+                              child: itemWidgetForAnimation(context, id, allowOpenConversation: false),
                             )
                           );
                         }
@@ -150,7 +170,7 @@ class _ChatViewState extends State<ChatView> {
             child: itemWidgetForAnimation(
               context,
               // It is not sure is getAtOrNull needed or not
-              conversations.getAtOrNull(index)?.entry,
+              conversations.getAtOrNull(index),
               allowOpenConversation: true,
             ),
           )
@@ -159,17 +179,42 @@ class _ChatViewState extends State<ChatView> {
     );
   }
 
-  Widget itemWidgetForAnimation(BuildContext context, ProfileEntry? entry, {required bool allowOpenConversation}) {
+  Widget errorWidget(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Text(context.strings.generic_error),
+      ),
+    );
+  }
+
+  Widget itemWidgetForAnimation(BuildContext context, AccountId? id, {required bool allowOpenConversation}) {
     Widget w;
-    if (entry == null) {
-      w = Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Text(context.strings.generic_error),
-        ),
-      );
+    if (id == null) {
+      w = errorWidget(context);
     } else {
-      w = conversationItem(entry, allowOpenConversation: allowOpenConversation);
+      w = StreamBuilder(
+        // Avoid UI flickering. Probably Flutter tries to reuse
+        // old widget in the widget tree and that causes the flickering.
+        key: UniqueKey(),
+        stream: conversationData(id),
+        builder: (context, state) {
+          final dataFromStream = state.data;
+          final ConversationData? cData;
+          if (dataFromStream == null) {
+            cData = dataCache.get(id);
+          } else {
+            dataCache.update(id, dataFromStream);
+            cData = dataFromStream;
+          }
+
+          if (cData == null) {
+            return errorWidget(context);
+          } else {
+            return conversationItem(cData, allowOpenConversation: allowOpenConversation);
+          }
+        },
+      );
     }
 
     return SizedBox(
@@ -179,30 +224,35 @@ class _ChatViewState extends State<ChatView> {
   }
 
   Widget conversationItem(
-    ProfileEntry profileEntry,
+    ConversationData data,
     {required bool allowOpenConversation}
   ) {
     final Widget imageWidget = ProfileThumbnailImage.fromProfileEntry(
-      entry: profileEntry,
+      entry: data.entry,
       width: _IMG_SIZE,
       height: _IMG_SIZE,
       cacheSize: ImageCacheSize.sizeForAppBarThumbnail(),
-      // NOTE: There seems to be duplicate single color images sometimes after
-      // conversation position changes if widget
-      // tree does not have other unique content (like the AccountId visible).
-      // The GlobalKey seems to fix that.
-      key: GlobalKey(),
     );
     final Widget textColumn = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
        Text(
-          profileEntry.profileTitle(),
+          data.entry.profileTitle(),
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const Padding(padding: EdgeInsets.only(top: 8.0)),
-        conversationStatusText(profileEntry),
+        if (data.count.count == 0) Text(
+          // TODO(prod): Replace with empty once this has info about latest
+          // message.
+          "No new messages",
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        if (data.count.count > 0) Text(
+          // TODO(prod): Add to strings XML
+          "New message",
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
       ],
     );
     final Widget rowWidget = Row(
@@ -225,46 +275,12 @@ class _ChatViewState extends State<ChatView> {
 
     if (allowOpenConversation) {
       return InkWell(
-        onTap: () => openConversationScreen(context, profileEntry),
+        onTap: () => openConversationScreen(context, data.entry),
         child: rowAndPadding,
       );
     } else {
       return rowAndPadding;
     }
-  }
-
-  Widget conversationStatusText(ProfileEntry entry) {
-    return StreamBuilder(
-      // Avoid UI flickering. Probably Flutter tries to reuse
-      // old widget in the widget tree and that causes the flickering.
-      key: UniqueKey(),
-      stream: profile.getUnreadMessagesCountStream(entry.uuid),
-      builder: (context, state) {
-        final countFromStream = state.data;
-        final int unreadCount;
-        if (countFromStream == null) {
-          unreadCount = countCache.get(entry.uuid)?.count ?? 0;
-        } else {
-          countCache.update(entry.uuid, countFromStream);
-          unreadCount = countFromStream.count;
-        }
-
-        if (unreadCount == 0) {
-          return Text(
-             // TODO(prod): Replace with empty once this has info about latest
-             // message.
-            "No new messages",
-            style: Theme.of(context).textTheme.bodyMedium,
-          );
-        } else {
-          return Text(
-            // TODO(prod): Add to strings XML
-            "New message",
-            style: Theme.of(context).textTheme.titleMedium,
-          );
-        }
-      },
-    );
   }
 
   @override

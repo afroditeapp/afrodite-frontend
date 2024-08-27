@@ -17,11 +17,6 @@ import "package:pihka_frontend/utils/iterator.dart";
 var log = Logger("ConversationListBloc");
 
 sealed class ConversationListEvent {}
-class InitEvent extends ConversationListEvent {}
-class HandleProfileChange extends ConversationListEvent {
-  final ProfileChange change;
-  HandleProfileChange(this.change);
-}
 class HandleNewConversationList extends ConversationListEvent {
   final List<AccountId> data;
   HandleNewConversationList(this.data);
@@ -33,85 +28,33 @@ class ConversationListBloc extends Bloc<ConversationListEvent, ConversationListD
   final ConversationListChangeCalculator calculator = ConversationListChangeCalculator();
 
   StreamSubscription<List<AccountId>>? _conversationListSubscription;
-  StreamSubscription<ProfileChange>? _profileChangeSubscription;
 
   ConversationListBloc() : super(ConversationListData()) {
-
-    on<InitEvent>((data, emit) async {
-      log.info("Set initial state");
-      // TODO: Remove?
-    });
-    on<HandleProfileChange>((data, emit) async {
-      final change = data.change;
-      switch (change) {
-        case ProfileBlocked() || MatchesChanged(): {
-          // Not needed as list change event handles these
-        }
-        case ProfileNowPrivate() ||
-          ProfileUnblocked() ||
-          LikesChanged() ||
-          ConversationChanged() ||
-          MatchesChanged() ||
-          ReloadMainProfileView() ||
-          ProfileFavoriteStatusChange(): {}
-      }
-    },
-      transformer: sequential(),
-    );
     on<HandleNewConversationList>((data, emit) async {
       final calculatorResult = calculator.calculate(data.data);
-      final conversationsAsEntries = <IdAndEntry>[];
-      for (final id in calculatorResult.current) {
-        final e = await profile.getProfile(id, cache: true);
-        conversationsAsEntries.add(IdAndEntry(id, e));
-      }
-      final changes = <ListItemChangeWithEntry>[];
-      for (final c in calculatorResult.changes) {
-        switch (c) {
-          case AddItem():
-            final e = await profile.getProfile(c.id, cache: true);
-            changes.add(AddItemEntry(c.i, c.id, e));
-          case RemoveItem():
-            final e = await profile.getProfile(c.id, cache: true);
-            changes.add(RemoveItemEntry(c.i, c.id, e));
-        }
-      }
-
       emit(state.copyWith(
-        conversations: UnmodifiableList(conversationsAsEntries),
-        changesBetweenCurrentAndPrevious: UnmodifiableList(changes),
+        conversations: UnmodifiableList(calculatorResult.current),
+        changesBetweenCurrentAndPrevious: UnmodifiableList(calculatorResult.changes),
         initialLoadDone: true,
       ));
     },
       transformer: sequential(),
     );
 
-    _profileChangeSubscription = profile
-      .profileChanges
-      .listen((event) {
-        add(HandleProfileChange(event));
-      });
-
     _conversationListSubscription = profile.getConversationListUpdates().listen((data) {
       log.finest(data);
       add(HandleNewConversationList(data));
     });
-
-    add(InitEvent());
   }
 
   @override
   Future<void> close() async {
     await _conversationListSubscription?.cancel();
-    await _profileChangeSubscription?.cancel();
     return super.close();
   }
 }
 
 // TODO(test): Unit tests for the calculator would be nice
-// TODO(performance): The conversation list Stream in DB emits
-// many times, so perhaps triggering emit manually would save some
-// CPU?
 class ConversationListChangeCalculator {
   Map<AccountId, int> currentIndexes = {};
   LinkedHashSet<AccountId> currentAccounts = LinkedHashSet();
@@ -201,7 +144,6 @@ class CalculatorLogic {
     }
   }
 }
-
 
 class ChangeCalculationResult {
   final List<AccountId> current;
