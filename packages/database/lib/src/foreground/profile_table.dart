@@ -635,6 +635,22 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     return r?.conversationUnreadMessagesCount;
   }
 
+  Stream<UnreadMessagesCount?> watchUnreadMessageCount(AccountId accountId) {
+    return (selectOnly(profiles)
+      ..addColumns([profiles.conversationUnreadMessagesCount])
+      ..where(profiles.uuidAccountId.equals(accountId.accountId))
+    )
+      .map((r) {
+        final raw = r.read(profiles.conversationUnreadMessagesCount);
+        if (raw == null) {
+          return null;
+        } else {
+          return UnreadMessagesCount(raw);
+        }
+      })
+      .watchSingleOrNull();
+  }
+
   Future<void> setUnreadMessagesCount(AccountId accountId, UnreadMessagesCount unreadMessagesCount) async {
     await into(profiles).insert(
       ProfilesCompanion.insert(

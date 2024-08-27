@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
@@ -46,6 +47,9 @@ class _ChatViewState extends State<ChatView> {
   UnmodifiableList<IdAndEntry> conversations = const UnmodifiableList<IdAndEntry>.empty();
 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+
+  /// Avoid UI flickering when conversation animation runs
+  final Map<AccountId, UnreadMessagesCount> countCache = {};
 
   @override
   void initState() {
@@ -187,17 +191,25 @@ class _ChatViewState extends State<ChatView> {
       // The GlobalKey seems to fix that.
       key: GlobalKey(),
     );
-    final textWidget = Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
-        profileEntry.profileTitle(),
-        style: Theme.of(context).textTheme.titleMedium,
-      ),
+    final Widget textColumn = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+       Text(
+          profileEntry.profileTitle(),
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const Padding(padding: EdgeInsets.only(top: 8.0)),
+        conversationStatusText(profileEntry),
+      ],
     );
     final Widget rowWidget = Row(
       children: [
         imageWidget,
-        textWidget,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: textColumn,
+        ),
       ],
     );
 
@@ -217,6 +229,40 @@ class _ChatViewState extends State<ChatView> {
     } else {
       return rowAndPadding;
     }
+  }
+
+  Widget conversationStatusText(ProfileEntry entry) {
+    return StreamBuilder(
+      // Avoid UI flickering. Probably Flutter tries to reuse
+      // old widget in the widget tree and that causes the flickering.
+      key: UniqueKey(),
+      stream: profile.getUnreadMessagesCountStream(entry.uuid),
+      builder: (context, state) {
+        final countFromStream = state.data;
+        final int unreadCount;
+        if (countFromStream == null) {
+          unreadCount = countCache[entry.uuid]?.count ?? 0;
+        } else {
+          countCache[entry.uuid] = countFromStream;
+          unreadCount = countFromStream.count;
+        }
+
+        if (unreadCount == 0) {
+          return Text(
+             // TODO(prod): Replace with empty once this has info about latest
+             // message.
+            "No new messages",
+            style: Theme.of(context).textTheme.bodyMedium,
+          );
+        } else {
+          return Text(
+            // TODO(prod): Add to strings XML
+            "New message",
+            style: Theme.of(context).textTheme.titleMedium,
+          );
+        }
+      },
+    );
   }
 
   @override
