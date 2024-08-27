@@ -351,7 +351,7 @@ class MessageManager extends LifecycleMethods {
       //       to server side iterator. This will be removed so it does not
       //       matter that this is not a transaction. And it is unlikely
       //       that this would return an error.
-      final likeStatusChange = await db.profileAction((db) => db.setReceivedLikeStatus(accountId, false));
+      final likeStatusChange = await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatus(accountId, false));
       if (likeStatusChange.isErr()) {
         yield const ErrorBeforeMessageSaving();
         return;

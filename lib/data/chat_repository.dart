@@ -40,8 +40,8 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }) :
     syncHandler = ConnectedActionScheduler(connectionManager),
     profileEntryDownloader = ProfileEntryDownloader(media, accountBackgroundDb, db, connectionManager.api),
-    sentBlocksIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getSentBlocksList(startIndex, limit)).ok()),
-    receivedLikesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.profileData((db) => db.getReceivedLikesList(startIndex, limit)).ok()),
+    sentBlocksIterator = AccountIdDatabaseIterator((startIndex, limit) => db.accountData((db) => db.daoProfileStates.getSentBlocksList(startIndex, limit)).ok()),
+    receivedLikesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.accountData((db) => db.daoProfileStates.getReceivedLikesList(startIndex, limit)).ok()),
     matchesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.accountData((db) => db.daoMatches.getMatchesList(startIndex, limit)).ok()),
     api = connectionManager.api,
     messageManager = MessageManager(messageKeyManager, connectionManager.api, db, profile, accountBackgroundDb, currentUser);
@@ -126,19 +126,19 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<bool> isInLikedProfiles(AccountId accountId) async {
-    return await db.profileData((db) => db.isInSentLikes(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.daoProfileStates.isInSentLikes(accountId)).ok() ?? false;
   }
 
   Future<bool> isInReceivedLikes(AccountId accountId) async {
-    return await db.profileData((db) => db.isInReceivedLikes(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.daoProfileStates.isInReceivedLikes(accountId)).ok() ?? false;
   }
 
   Future<bool> isInSentBlocks(AccountId accountId) async {
-    return await db.profileData((db) => db.isInSentBlocks(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.daoProfileStates.isInSentBlocks(accountId)).ok() ?? false;
   }
 
   Future<bool> isInReceivedBlocks(AccountId accountId) async {
-    return await db.profileData((db) => db.isInReceivedBlocks(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.daoProfileStates.isInReceivedBlocks(accountId)).ok() ?? false;
   }
 
   Future<Result<LimitedActionStatus, void>> sendLikeTo(AccountId accountId) async {
@@ -150,7 +150,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
           if (isReceivedLike) {
             await db.accountAction((db) => db.daoMatches.setMatchStatus(accountId, true));
           } else {
-            await db.profileAction((db) => db.setSentLikeStatus(accountId, true));
+            await db.accountAction((db) => db.daoProfileStates.setSentLikeStatus(accountId, true));
           }
         }
         return Ok(v.status);
@@ -164,7 +164,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     switch (result) {
       case Ok(:final v):
         if (v.status != LimitedActionStatus.failureLimitAlreadyReached) {
-           await db.profileAction((db) => db.setSentLikeStatus(accountId, false));
+           await db.accountAction((db) => db.daoProfileStates.setSentLikeStatus(accountId, false));
         }
         return Ok(v.status);
       case Err():
@@ -175,8 +175,8 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<bool> sendBlockTo(AccountId accountId) async {
     final result = await api.chatAction((api) => api.postBlockProfile(accountId));
     if (result.isOk()) {
-      await db.profileAction((db) => db.setSentBlockStatus(accountId, true));
-      await db.profileAction((db) => db.setReceivedLikeStatus(accountId, false));
+      await db.accountAction((db) => db.daoProfileStates.setSentBlockStatus(accountId, true));
+      await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatus(accountId, false));
       profile.sendProfileChange(ProfileBlocked(accountId));
     }
     return result.isOk();
@@ -185,7 +185,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<bool> removeBlockFrom(AccountId accountId) async {
     final result = await api.chatAction((api) => api.postUnblockProfile(accountId));
     if (result.isOk()) {
-      await db.profileAction((db) => db.setSentBlockStatus(accountId, false));
+      await db.accountAction((db) => db.daoProfileStates.setSentBlockStatus(accountId, false));
       profile.sendProfileChange(ProfileUnblocked(accountId));
     }
     return result.isOk();
@@ -226,17 +226,17 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<void> receivedBlocksRefresh() async {
     final receivedBlocks = await api.chat((api) => api.getReceivedBlocks()).ok();
     if (receivedBlocks != null) {
-      final currentReceivedBlocks = await db.profileData((db) => db.getReceivedBlocksListAll()).ok() ?? [];
-      await db.profileAction((db) => db.setReceivedBlockStatusList(receivedBlocks));
+      final currentReceivedBlocks = await db.accountData((db) => db.daoProfileStates.getReceivedBlocksListAll()).ok() ?? [];
+      await db.accountAction((db) => db.daoProfileStates.setReceivedBlockStatusList(receivedBlocks));
 
       for (final account in receivedBlocks.profiles) {
         if (!currentReceivedBlocks.contains(account)) {
-          await db.profileAction((db) => db.setReceivedLikeStatus(account, false));
+          await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatus(account, false));
           await db.accountAction((db) => db.daoMatches.setMatchStatus(account, false));
-          await db.profileAction((db) => db.setSentLikeStatus(account, false));
+          await db.accountAction((db) => db.daoProfileStates.setSentLikeStatus(account, false));
           // Perhaps if both users blocks same time, the same account could be
           // in both sent and received blocks. This handles that case.
-          await db.profileAction((db) => db.setSentBlockStatus(account, false));
+          await db.accountAction((db) => db.daoProfileStates.setSentBlockStatus(account, false));
           profile.sendProfileChange(ProfileBlocked(account));
         }
       }
@@ -246,14 +246,14 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<void> sentBlocksRefresh() async {
     final sentBlocks = await api.chat((api) => api.getSentBlocks()).ok();
     if (sentBlocks != null) {
-      await db.profileAction((db) => db.setSentBlockStatusList(sentBlocks));
+      await db.accountAction((db) => db.daoProfileStates.setSentBlockStatusList(sentBlocks));
     }
   }
 
   Future<void> sentLikesRefresh() async {
     final sentLikes = await api.chat((api) => api.getSentLikes()).ok();
     if (sentLikes != null) {
-      await db.profileAction((db) => db.setSentLikeStatusList(sentLikes));
+      await db.accountAction((db) => db.daoProfileStates.setSentLikeStatusList(sentLikes));
     }
   }
 
@@ -293,11 +293,11 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<void> receivedLikesRefresh() async {
     // TODO(prod): Add event to API which has info that there is new like
     // available.
-    final currentReceivedLikes = await db.profileData((db) => db.getReceivedLikesList(0, 1000000000)).ok() ?? [];
+    final currentReceivedLikes = await db.accountData((db) => db.daoProfileStates.getReceivedLikesList(0, 1000000000)).ok() ?? [];
 
     final receivedLikes = await api.chat((api) => api.getReceivedLikes()).ok();
     if (receivedLikes != null) {
-      await db.profileAction((db) => db.setReceivedLikeStatusList(receivedLikes));
+      await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatusList(receivedLikes));
       profile.sendProfileChange(LikesChanged());
 
       final newList = receivedLikes.profiles;

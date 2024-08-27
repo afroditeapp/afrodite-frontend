@@ -57,7 +57,7 @@ class OnlineIterator extends IteratorType {
         case Ok(:final v):
           resetServerIterator = false;
           await db.accountAction((db) => db.updateProfileIteratorSessionId(v));
-          await db.profileAction((db) => db.setProfileGridStatusList(null, false, clear: true));
+          await db.accountAction((db) => db.daoProfileStates.setProfileGridStatusList(null, false, clear: true));
         case Err():
           log.error("Profile paging reset failed");
           return const Err(null);
@@ -122,7 +122,7 @@ class OnlineIterator extends IteratorType {
               continue;
             }
 
-            await db.profileAction((db) => db.setProfileGridStatus(p.id, true));
+            await db.accountAction((db) => db.daoProfileStates.setProfileGridStatus(p.id, true));
             list.add(gridEntry);
           }
 

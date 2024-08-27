@@ -3855,55 +3855,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
               defaultValue: const Constant(0))
           .withConverter<UnreadMessagesCount>(
               $ProfilesTable.$converterconversationUnreadMessagesCount);
-  static const VerificationMeta _isInFavoritesMeta =
-      const VerificationMeta('isInFavorites');
-  @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> isInFavorites =
-      GeneratedColumn<int>('is_in_favorites', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>($ProfilesTable.$converterisInFavorites);
-  static const VerificationMeta _isInReceivedBlocksMeta =
-      const VerificationMeta('isInReceivedBlocks');
-  @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      isInReceivedBlocks = GeneratedColumn<int>(
-              'is_in_received_blocks', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ProfilesTable.$converterisInReceivedBlocks);
-  static const VerificationMeta _isInReceivedLikesMeta =
-      const VerificationMeta('isInReceivedLikes');
-  @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      isInReceivedLikes = GeneratedColumn<int>(
-              'is_in_received_likes', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ProfilesTable.$converterisInReceivedLikes);
-  static const VerificationMeta _isInSentBlocksMeta =
-      const VerificationMeta('isInSentBlocks');
-  @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      isInSentBlocks = GeneratedColumn<int>(
-              'is_in_sent_blocks', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>($ProfilesTable.$converterisInSentBlocks);
-  static const VerificationMeta _isInSentLikesMeta =
-      const VerificationMeta('isInSentLikes');
-  @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> isInSentLikes =
-      GeneratedColumn<int>('is_in_sent_likes', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>($ProfilesTable.$converterisInSentLikes);
-  static const VerificationMeta _isInProfileGridMeta =
-      const VerificationMeta('isInProfileGrid');
-  @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      isInProfileGrid = GeneratedColumn<int>(
-              'is_in_profile_grid', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ProfilesTable.$converterisInProfileGrid);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -3929,13 +3880,7 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
         publicKeyId,
         publicKeyVersion,
         conversationNextSenderMessageId,
-        conversationUnreadMessagesCount,
-        isInFavorites,
-        isInReceivedBlocks,
-        isInReceivedLikes,
-        isInSentBlocks,
-        isInSentLikes,
-        isInProfileGrid
+        conversationUnreadMessagesCount
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -4021,12 +3966,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
         const VerificationResult.success());
     context.handle(_conversationUnreadMessagesCountMeta,
         const VerificationResult.success());
-    context.handle(_isInFavoritesMeta, const VerificationResult.success());
-    context.handle(_isInReceivedBlocksMeta, const VerificationResult.success());
-    context.handle(_isInReceivedLikesMeta, const VerificationResult.success());
-    context.handle(_isInSentBlocksMeta, const VerificationResult.success());
-    context.handle(_isInSentLikesMeta, const VerificationResult.success());
-    context.handle(_isInProfileGridMeta, const VerificationResult.success());
     return context;
   }
 
@@ -4105,24 +4044,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
           .$converterconversationUnreadMessagesCount
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
               data['${effectivePrefix}conversation_unread_messages_count'])!),
-      isInFavorites: $ProfilesTable.$converterisInFavorites.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}is_in_favorites'])),
-      isInReceivedBlocks: $ProfilesTable.$converterisInReceivedBlocks.fromSql(
-          attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}is_in_received_blocks'])),
-      isInReceivedLikes: $ProfilesTable.$converterisInReceivedLikes.fromSql(
-          attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}is_in_received_likes'])),
-      isInSentBlocks: $ProfilesTable.$converterisInSentBlocks.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}is_in_sent_blocks'])),
-      isInSentLikes: $ProfilesTable.$converterisInSentLikes.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}is_in_sent_likes'])),
-      isInProfileGrid: $ProfilesTable.$converterisInProfileGrid.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}is_in_profile_grid'])),
     );
   }
 
@@ -4164,18 +4085,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   static TypeConverter<UnreadMessagesCount, int>
       $converterconversationUnreadMessagesCount =
       UnreadMessagesCountConverter();
-  static TypeConverter<UtcDateTime?, int?> $converterisInFavorites =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
-  static TypeConverter<UtcDateTime?, int?> $converterisInReceivedBlocks =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
-  static TypeConverter<UtcDateTime?, int?> $converterisInReceivedLikes =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
-  static TypeConverter<UtcDateTime?, int?> $converterisInSentBlocks =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
-  static TypeConverter<UtcDateTime?, int?> $converterisInSentLikes =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
-  static TypeConverter<UtcDateTime?, int?> $converterisInProfileGrid =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
 
 class Profile extends DataClass implements Insertable<Profile> {
@@ -4205,12 +4114,6 @@ class Profile extends DataClass implements Insertable<Profile> {
   final PublicKeyVersion? publicKeyVersion;
   final SenderMessageId? conversationNextSenderMessageId;
   final UnreadMessagesCount conversationUnreadMessagesCount;
-  final UtcDateTime? isInFavorites;
-  final UtcDateTime? isInReceivedBlocks;
-  final UtcDateTime? isInReceivedLikes;
-  final UtcDateTime? isInSentBlocks;
-  final UtcDateTime? isInSentLikes;
-  final UtcDateTime? isInProfileGrid;
   const Profile(
       {required this.id,
       required this.uuidAccountId,
@@ -4235,13 +4138,7 @@ class Profile extends DataClass implements Insertable<Profile> {
       this.publicKeyId,
       this.publicKeyVersion,
       this.conversationNextSenderMessageId,
-      required this.conversationUnreadMessagesCount,
-      this.isInFavorites,
-      this.isInReceivedBlocks,
-      this.isInReceivedLikes,
-      this.isInSentBlocks,
-      this.isInSentLikes,
-      this.isInProfileGrid});
+      required this.conversationUnreadMessagesCount});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4338,31 +4235,6 @@ class Profile extends DataClass implements Insertable<Profile> {
           .$converterconversationUnreadMessagesCount
           .toSql(conversationUnreadMessagesCount));
     }
-    if (!nullToAbsent || isInFavorites != null) {
-      map['is_in_favorites'] = Variable<int>(
-          $ProfilesTable.$converterisInFavorites.toSql(isInFavorites));
-    }
-    if (!nullToAbsent || isInReceivedBlocks != null) {
-      map['is_in_received_blocks'] = Variable<int>($ProfilesTable
-          .$converterisInReceivedBlocks
-          .toSql(isInReceivedBlocks));
-    }
-    if (!nullToAbsent || isInReceivedLikes != null) {
-      map['is_in_received_likes'] = Variable<int>(
-          $ProfilesTable.$converterisInReceivedLikes.toSql(isInReceivedLikes));
-    }
-    if (!nullToAbsent || isInSentBlocks != null) {
-      map['is_in_sent_blocks'] = Variable<int>(
-          $ProfilesTable.$converterisInSentBlocks.toSql(isInSentBlocks));
-    }
-    if (!nullToAbsent || isInSentLikes != null) {
-      map['is_in_sent_likes'] = Variable<int>(
-          $ProfilesTable.$converterisInSentLikes.toSql(isInSentLikes));
-    }
-    if (!nullToAbsent || isInProfileGrid != null) {
-      map['is_in_profile_grid'] = Variable<int>(
-          $ProfilesTable.$converterisInProfileGrid.toSql(isInProfileGrid));
-    }
     return map;
   }
 
@@ -4436,24 +4308,6 @@ class Profile extends DataClass implements Insertable<Profile> {
               ? const Value.absent()
               : Value(conversationNextSenderMessageId),
       conversationUnreadMessagesCount: Value(conversationUnreadMessagesCount),
-      isInFavorites: isInFavorites == null && nullToAbsent
-          ? const Value.absent()
-          : Value(isInFavorites),
-      isInReceivedBlocks: isInReceivedBlocks == null && nullToAbsent
-          ? const Value.absent()
-          : Value(isInReceivedBlocks),
-      isInReceivedLikes: isInReceivedLikes == null && nullToAbsent
-          ? const Value.absent()
-          : Value(isInReceivedLikes),
-      isInSentBlocks: isInSentBlocks == null && nullToAbsent
-          ? const Value.absent()
-          : Value(isInSentBlocks),
-      isInSentLikes: isInSentLikes == null && nullToAbsent
-          ? const Value.absent()
-          : Value(isInSentLikes),
-      isInProfileGrid: isInProfileGrid == null && nullToAbsent
-          ? const Value.absent()
-          : Value(isInProfileGrid),
     );
   }
 
@@ -4496,15 +4350,6 @@ class Profile extends DataClass implements Insertable<Profile> {
           .fromJson<SenderMessageId?>(json['conversationNextSenderMessageId']),
       conversationUnreadMessagesCount: serializer.fromJson<UnreadMessagesCount>(
           json['conversationUnreadMessagesCount']),
-      isInFavorites: serializer.fromJson<UtcDateTime?>(json['isInFavorites']),
-      isInReceivedBlocks:
-          serializer.fromJson<UtcDateTime?>(json['isInReceivedBlocks']),
-      isInReceivedLikes:
-          serializer.fromJson<UtcDateTime?>(json['isInReceivedLikes']),
-      isInSentBlocks: serializer.fromJson<UtcDateTime?>(json['isInSentBlocks']),
-      isInSentLikes: serializer.fromJson<UtcDateTime?>(json['isInSentLikes']),
-      isInProfileGrid:
-          serializer.fromJson<UtcDateTime?>(json['isInProfileGrid']),
     );
   }
   @override
@@ -4544,12 +4389,6 @@ class Profile extends DataClass implements Insertable<Profile> {
           serializer.toJson<SenderMessageId?>(conversationNextSenderMessageId),
       'conversationUnreadMessagesCount': serializer
           .toJson<UnreadMessagesCount>(conversationUnreadMessagesCount),
-      'isInFavorites': serializer.toJson<UtcDateTime?>(isInFavorites),
-      'isInReceivedBlocks': serializer.toJson<UtcDateTime?>(isInReceivedBlocks),
-      'isInReceivedLikes': serializer.toJson<UtcDateTime?>(isInReceivedLikes),
-      'isInSentBlocks': serializer.toJson<UtcDateTime?>(isInSentBlocks),
-      'isInSentLikes': serializer.toJson<UtcDateTime?>(isInSentLikes),
-      'isInProfileGrid': serializer.toJson<UtcDateTime?>(isInProfileGrid),
     };
   }
 
@@ -4579,13 +4418,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           Value<PublicKeyVersion?> publicKeyVersion = const Value.absent(),
           Value<SenderMessageId?> conversationNextSenderMessageId =
               const Value.absent(),
-          UnreadMessagesCount? conversationUnreadMessagesCount,
-          Value<UtcDateTime?> isInFavorites = const Value.absent(),
-          Value<UtcDateTime?> isInReceivedBlocks = const Value.absent(),
-          Value<UtcDateTime?> isInReceivedLikes = const Value.absent(),
-          Value<UtcDateTime?> isInSentBlocks = const Value.absent(),
-          Value<UtcDateTime?> isInSentLikes = const Value.absent(),
-          Value<UtcDateTime?> isInProfileGrid = const Value.absent()}) =>
+          UnreadMessagesCount? conversationUnreadMessagesCount}) =>
       Profile(
         id: id ?? this.id,
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -4638,21 +4471,6 @@ class Profile extends DataClass implements Insertable<Profile> {
             : this.conversationNextSenderMessageId,
         conversationUnreadMessagesCount: conversationUnreadMessagesCount ??
             this.conversationUnreadMessagesCount,
-        isInFavorites:
-            isInFavorites.present ? isInFavorites.value : this.isInFavorites,
-        isInReceivedBlocks: isInReceivedBlocks.present
-            ? isInReceivedBlocks.value
-            : this.isInReceivedBlocks,
-        isInReceivedLikes: isInReceivedLikes.present
-            ? isInReceivedLikes.value
-            : this.isInReceivedLikes,
-        isInSentBlocks:
-            isInSentBlocks.present ? isInSentBlocks.value : this.isInSentBlocks,
-        isInSentLikes:
-            isInSentLikes.present ? isInSentLikes.value : this.isInSentLikes,
-        isInProfileGrid: isInProfileGrid.present
-            ? isInProfileGrid.value
-            : this.isInProfileGrid,
       );
   @override
   String toString() {
@@ -4682,13 +4500,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           ..write(
               'conversationNextSenderMessageId: $conversationNextSenderMessageId, ')
           ..write(
-              'conversationUnreadMessagesCount: $conversationUnreadMessagesCount, ')
-          ..write('isInFavorites: $isInFavorites, ')
-          ..write('isInReceivedBlocks: $isInReceivedBlocks, ')
-          ..write('isInReceivedLikes: $isInReceivedLikes, ')
-          ..write('isInSentBlocks: $isInSentBlocks, ')
-          ..write('isInSentLikes: $isInSentLikes, ')
-          ..write('isInProfileGrid: $isInProfileGrid')
+              'conversationUnreadMessagesCount: $conversationUnreadMessagesCount')
           ..write(')'))
         .toString();
   }
@@ -4718,13 +4530,7 @@ class Profile extends DataClass implements Insertable<Profile> {
         publicKeyId,
         publicKeyVersion,
         conversationNextSenderMessageId,
-        conversationUnreadMessagesCount,
-        isInFavorites,
-        isInReceivedBlocks,
-        isInReceivedLikes,
-        isInSentBlocks,
-        isInSentLikes,
-        isInProfileGrid
+        conversationUnreadMessagesCount
       ]);
   @override
   bool operator ==(Object other) =>
@@ -4755,13 +4561,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           other.conversationNextSenderMessageId ==
               this.conversationNextSenderMessageId &&
           other.conversationUnreadMessagesCount ==
-              this.conversationUnreadMessagesCount &&
-          other.isInFavorites == this.isInFavorites &&
-          other.isInReceivedBlocks == this.isInReceivedBlocks &&
-          other.isInReceivedLikes == this.isInReceivedLikes &&
-          other.isInSentBlocks == this.isInSentBlocks &&
-          other.isInSentLikes == this.isInSentLikes &&
-          other.isInProfileGrid == this.isInProfileGrid);
+              this.conversationUnreadMessagesCount);
 }
 
 class ProfilesCompanion extends UpdateCompanion<Profile> {
@@ -4789,12 +4589,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<PublicKeyVersion?> publicKeyVersion;
   final Value<SenderMessageId?> conversationNextSenderMessageId;
   final Value<UnreadMessagesCount> conversationUnreadMessagesCount;
-  final Value<UtcDateTime?> isInFavorites;
-  final Value<UtcDateTime?> isInReceivedBlocks;
-  final Value<UtcDateTime?> isInReceivedLikes;
-  final Value<UtcDateTime?> isInSentBlocks;
-  final Value<UtcDateTime?> isInSentLikes;
-  final Value<UtcDateTime?> isInProfileGrid;
   const ProfilesCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -4820,12 +4614,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.publicKeyVersion = const Value.absent(),
     this.conversationNextSenderMessageId = const Value.absent(),
     this.conversationUnreadMessagesCount = const Value.absent(),
-    this.isInFavorites = const Value.absent(),
-    this.isInReceivedBlocks = const Value.absent(),
-    this.isInReceivedLikes = const Value.absent(),
-    this.isInSentBlocks = const Value.absent(),
-    this.isInSentLikes = const Value.absent(),
-    this.isInProfileGrid = const Value.absent(),
   });
   ProfilesCompanion.insert({
     this.id = const Value.absent(),
@@ -4852,12 +4640,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.publicKeyVersion = const Value.absent(),
     this.conversationNextSenderMessageId = const Value.absent(),
     this.conversationUnreadMessagesCount = const Value.absent(),
-    this.isInFavorites = const Value.absent(),
-    this.isInReceivedBlocks = const Value.absent(),
-    this.isInReceivedLikes = const Value.absent(),
-    this.isInSentBlocks = const Value.absent(),
-    this.isInSentLikes = const Value.absent(),
-    this.isInProfileGrid = const Value.absent(),
   }) : uuidAccountId = Value(uuidAccountId);
   static Insertable<Profile> custom({
     Expression<int>? id,
@@ -4884,12 +4666,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     Expression<int>? publicKeyVersion,
     Expression<int>? conversationNextSenderMessageId,
     Expression<int>? conversationUnreadMessagesCount,
-    Expression<int>? isInFavorites,
-    Expression<int>? isInReceivedBlocks,
-    Expression<int>? isInReceivedLikes,
-    Expression<int>? isInSentBlocks,
-    Expression<int>? isInSentLikes,
-    Expression<int>? isInProfileGrid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -4925,13 +4701,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
         'conversation_next_sender_message_id': conversationNextSenderMessageId,
       if (conversationUnreadMessagesCount != null)
         'conversation_unread_messages_count': conversationUnreadMessagesCount,
-      if (isInFavorites != null) 'is_in_favorites': isInFavorites,
-      if (isInReceivedBlocks != null)
-        'is_in_received_blocks': isInReceivedBlocks,
-      if (isInReceivedLikes != null) 'is_in_received_likes': isInReceivedLikes,
-      if (isInSentBlocks != null) 'is_in_sent_blocks': isInSentBlocks,
-      if (isInSentLikes != null) 'is_in_sent_likes': isInSentLikes,
-      if (isInProfileGrid != null) 'is_in_profile_grid': isInProfileGrid,
     });
   }
 
@@ -4959,13 +4728,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       Value<PublicKeyId?>? publicKeyId,
       Value<PublicKeyVersion?>? publicKeyVersion,
       Value<SenderMessageId?>? conversationNextSenderMessageId,
-      Value<UnreadMessagesCount>? conversationUnreadMessagesCount,
-      Value<UtcDateTime?>? isInFavorites,
-      Value<UtcDateTime?>? isInReceivedBlocks,
-      Value<UtcDateTime?>? isInReceivedLikes,
-      Value<UtcDateTime?>? isInSentBlocks,
-      Value<UtcDateTime?>? isInSentLikes,
-      Value<UtcDateTime?>? isInProfileGrid}) {
+      Value<UnreadMessagesCount>? conversationUnreadMessagesCount}) {
     return ProfilesCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -5000,12 +4763,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           this.conversationNextSenderMessageId,
       conversationUnreadMessagesCount: conversationUnreadMessagesCount ??
           this.conversationUnreadMessagesCount,
-      isInFavorites: isInFavorites ?? this.isInFavorites,
-      isInReceivedBlocks: isInReceivedBlocks ?? this.isInReceivedBlocks,
-      isInReceivedLikes: isInReceivedLikes ?? this.isInReceivedLikes,
-      isInSentBlocks: isInSentBlocks ?? this.isInSentBlocks,
-      isInSentLikes: isInSentLikes ?? this.isInSentLikes,
-      isInProfileGrid: isInProfileGrid ?? this.isInProfileGrid,
     );
   }
 
@@ -5109,33 +4866,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           .$converterconversationUnreadMessagesCount
           .toSql(conversationUnreadMessagesCount.value));
     }
-    if (isInFavorites.present) {
-      map['is_in_favorites'] = Variable<int>(
-          $ProfilesTable.$converterisInFavorites.toSql(isInFavorites.value));
-    }
-    if (isInReceivedBlocks.present) {
-      map['is_in_received_blocks'] = Variable<int>($ProfilesTable
-          .$converterisInReceivedBlocks
-          .toSql(isInReceivedBlocks.value));
-    }
-    if (isInReceivedLikes.present) {
-      map['is_in_received_likes'] = Variable<int>($ProfilesTable
-          .$converterisInReceivedLikes
-          .toSql(isInReceivedLikes.value));
-    }
-    if (isInSentBlocks.present) {
-      map['is_in_sent_blocks'] = Variable<int>(
-          $ProfilesTable.$converterisInSentBlocks.toSql(isInSentBlocks.value));
-    }
-    if (isInSentLikes.present) {
-      map['is_in_sent_likes'] = Variable<int>(
-          $ProfilesTable.$converterisInSentLikes.toSql(isInSentLikes.value));
-    }
-    if (isInProfileGrid.present) {
-      map['is_in_profile_grid'] = Variable<int>($ProfilesTable
-          .$converterisInProfileGrid
-          .toSql(isInProfileGrid.value));
-    }
     return map;
   }
 
@@ -5167,7 +4897,477 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           ..write(
               'conversationNextSenderMessageId: $conversationNextSenderMessageId, ')
           ..write(
-              'conversationUnreadMessagesCount: $conversationUnreadMessagesCount, ')
+              'conversationUnreadMessagesCount: $conversationUnreadMessagesCount')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ProfileStatesTable extends ProfileStates
+    with TableInfo<$ProfileStatesTable, ProfileState> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ProfileStatesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _uuidAccountIdMeta =
+      const VerificationMeta('uuidAccountId');
+  @override
+  late final GeneratedColumnWithTypeConverter<AccountId, String> uuidAccountId =
+      GeneratedColumn<String>('uuid_account_id', aliasedName, false,
+              type: DriftSqlType.string,
+              requiredDuringInsert: true,
+              defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
+          .withConverter<AccountId>(
+              $ProfileStatesTable.$converteruuidAccountId);
+  static const VerificationMeta _isInFavoritesMeta =
+      const VerificationMeta('isInFavorites');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> isInFavorites =
+      GeneratedColumn<int>('is_in_favorites', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $ProfileStatesTable.$converterisInFavorites);
+  static const VerificationMeta _isInReceivedBlocksMeta =
+      const VerificationMeta('isInReceivedBlocks');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+      isInReceivedBlocks = GeneratedColumn<int>(
+              'is_in_received_blocks', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $ProfileStatesTable.$converterisInReceivedBlocks);
+  static const VerificationMeta _isInReceivedLikesMeta =
+      const VerificationMeta('isInReceivedLikes');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+      isInReceivedLikes = GeneratedColumn<int>(
+              'is_in_received_likes', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $ProfileStatesTable.$converterisInReceivedLikes);
+  static const VerificationMeta _isInSentBlocksMeta =
+      const VerificationMeta('isInSentBlocks');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+      isInSentBlocks = GeneratedColumn<int>(
+              'is_in_sent_blocks', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $ProfileStatesTable.$converterisInSentBlocks);
+  static const VerificationMeta _isInSentLikesMeta =
+      const VerificationMeta('isInSentLikes');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> isInSentLikes =
+      GeneratedColumn<int>('is_in_sent_likes', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $ProfileStatesTable.$converterisInSentLikes);
+  static const VerificationMeta _isInProfileGridMeta =
+      const VerificationMeta('isInProfileGrid');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+      isInProfileGrid = GeneratedColumn<int>(
+              'is_in_profile_grid', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $ProfileStatesTable.$converterisInProfileGrid);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        uuidAccountId,
+        isInFavorites,
+        isInReceivedBlocks,
+        isInReceivedLikes,
+        isInSentBlocks,
+        isInSentLikes,
+        isInProfileGrid
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'profile_states';
+  @override
+  VerificationContext validateIntegrity(Insertable<ProfileState> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
+    context.handle(_isInFavoritesMeta, const VerificationResult.success());
+    context.handle(_isInReceivedBlocksMeta, const VerificationResult.success());
+    context.handle(_isInReceivedLikesMeta, const VerificationResult.success());
+    context.handle(_isInSentBlocksMeta, const VerificationResult.success());
+    context.handle(_isInSentLikesMeta, const VerificationResult.success());
+    context.handle(_isInProfileGridMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ProfileState map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProfileState(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      uuidAccountId: $ProfileStatesTable.$converteruuidAccountId.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
+      isInFavorites: $ProfileStatesTable.$converterisInFavorites.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.int, data['${effectivePrefix}is_in_favorites'])),
+      isInReceivedBlocks: $ProfileStatesTable.$converterisInReceivedBlocks
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}is_in_received_blocks'])),
+      isInReceivedLikes: $ProfileStatesTable.$converterisInReceivedLikes
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}is_in_received_likes'])),
+      isInSentBlocks: $ProfileStatesTable.$converterisInSentBlocks.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.int, data['${effectivePrefix}is_in_sent_blocks'])),
+      isInSentLikes: $ProfileStatesTable.$converterisInSentLikes.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.int, data['${effectivePrefix}is_in_sent_likes'])),
+      isInProfileGrid: $ProfileStatesTable.$converterisInProfileGrid.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.int, data['${effectivePrefix}is_in_profile_grid'])),
+    );
+  }
+
+  @override
+  $ProfileStatesTable createAlias(String alias) {
+    return $ProfileStatesTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<AccountId, String> $converteruuidAccountId =
+      const AccountIdConverter();
+  static TypeConverter<UtcDateTime?, int?> $converterisInFavorites =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterisInReceivedBlocks =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterisInReceivedLikes =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterisInSentBlocks =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterisInSentLikes =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterisInProfileGrid =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+}
+
+class ProfileState extends DataClass implements Insertable<ProfileState> {
+  final int id;
+  final AccountId uuidAccountId;
+  final UtcDateTime? isInFavorites;
+  final UtcDateTime? isInReceivedBlocks;
+  final UtcDateTime? isInReceivedLikes;
+  final UtcDateTime? isInSentBlocks;
+  final UtcDateTime? isInSentLikes;
+  final UtcDateTime? isInProfileGrid;
+  const ProfileState(
+      {required this.id,
+      required this.uuidAccountId,
+      this.isInFavorites,
+      this.isInReceivedBlocks,
+      this.isInReceivedLikes,
+      this.isInSentBlocks,
+      this.isInSentLikes,
+      this.isInProfileGrid});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    {
+      map['uuid_account_id'] = Variable<String>(
+          $ProfileStatesTable.$converteruuidAccountId.toSql(uuidAccountId));
+    }
+    if (!nullToAbsent || isInFavorites != null) {
+      map['is_in_favorites'] = Variable<int>(
+          $ProfileStatesTable.$converterisInFavorites.toSql(isInFavorites));
+    }
+    if (!nullToAbsent || isInReceivedBlocks != null) {
+      map['is_in_received_blocks'] = Variable<int>($ProfileStatesTable
+          .$converterisInReceivedBlocks
+          .toSql(isInReceivedBlocks));
+    }
+    if (!nullToAbsent || isInReceivedLikes != null) {
+      map['is_in_received_likes'] = Variable<int>($ProfileStatesTable
+          .$converterisInReceivedLikes
+          .toSql(isInReceivedLikes));
+    }
+    if (!nullToAbsent || isInSentBlocks != null) {
+      map['is_in_sent_blocks'] = Variable<int>(
+          $ProfileStatesTable.$converterisInSentBlocks.toSql(isInSentBlocks));
+    }
+    if (!nullToAbsent || isInSentLikes != null) {
+      map['is_in_sent_likes'] = Variable<int>(
+          $ProfileStatesTable.$converterisInSentLikes.toSql(isInSentLikes));
+    }
+    if (!nullToAbsent || isInProfileGrid != null) {
+      map['is_in_profile_grid'] = Variable<int>(
+          $ProfileStatesTable.$converterisInProfileGrid.toSql(isInProfileGrid));
+    }
+    return map;
+  }
+
+  ProfileStatesCompanion toCompanion(bool nullToAbsent) {
+    return ProfileStatesCompanion(
+      id: Value(id),
+      uuidAccountId: Value(uuidAccountId),
+      isInFavorites: isInFavorites == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isInFavorites),
+      isInReceivedBlocks: isInReceivedBlocks == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isInReceivedBlocks),
+      isInReceivedLikes: isInReceivedLikes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isInReceivedLikes),
+      isInSentBlocks: isInSentBlocks == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isInSentBlocks),
+      isInSentLikes: isInSentLikes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isInSentLikes),
+      isInProfileGrid: isInProfileGrid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isInProfileGrid),
+    );
+  }
+
+  factory ProfileState.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ProfileState(
+      id: serializer.fromJson<int>(json['id']),
+      uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
+      isInFavorites: serializer.fromJson<UtcDateTime?>(json['isInFavorites']),
+      isInReceivedBlocks:
+          serializer.fromJson<UtcDateTime?>(json['isInReceivedBlocks']),
+      isInReceivedLikes:
+          serializer.fromJson<UtcDateTime?>(json['isInReceivedLikes']),
+      isInSentBlocks: serializer.fromJson<UtcDateTime?>(json['isInSentBlocks']),
+      isInSentLikes: serializer.fromJson<UtcDateTime?>(json['isInSentLikes']),
+      isInProfileGrid:
+          serializer.fromJson<UtcDateTime?>(json['isInProfileGrid']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
+      'isInFavorites': serializer.toJson<UtcDateTime?>(isInFavorites),
+      'isInReceivedBlocks': serializer.toJson<UtcDateTime?>(isInReceivedBlocks),
+      'isInReceivedLikes': serializer.toJson<UtcDateTime?>(isInReceivedLikes),
+      'isInSentBlocks': serializer.toJson<UtcDateTime?>(isInSentBlocks),
+      'isInSentLikes': serializer.toJson<UtcDateTime?>(isInSentLikes),
+      'isInProfileGrid': serializer.toJson<UtcDateTime?>(isInProfileGrid),
+    };
+  }
+
+  ProfileState copyWith(
+          {int? id,
+          AccountId? uuidAccountId,
+          Value<UtcDateTime?> isInFavorites = const Value.absent(),
+          Value<UtcDateTime?> isInReceivedBlocks = const Value.absent(),
+          Value<UtcDateTime?> isInReceivedLikes = const Value.absent(),
+          Value<UtcDateTime?> isInSentBlocks = const Value.absent(),
+          Value<UtcDateTime?> isInSentLikes = const Value.absent(),
+          Value<UtcDateTime?> isInProfileGrid = const Value.absent()}) =>
+      ProfileState(
+        id: id ?? this.id,
+        uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+        isInFavorites:
+            isInFavorites.present ? isInFavorites.value : this.isInFavorites,
+        isInReceivedBlocks: isInReceivedBlocks.present
+            ? isInReceivedBlocks.value
+            : this.isInReceivedBlocks,
+        isInReceivedLikes: isInReceivedLikes.present
+            ? isInReceivedLikes.value
+            : this.isInReceivedLikes,
+        isInSentBlocks:
+            isInSentBlocks.present ? isInSentBlocks.value : this.isInSentBlocks,
+        isInSentLikes:
+            isInSentLikes.present ? isInSentLikes.value : this.isInSentLikes,
+        isInProfileGrid: isInProfileGrid.present
+            ? isInProfileGrid.value
+            : this.isInProfileGrid,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('ProfileState(')
+          ..write('id: $id, ')
+          ..write('uuidAccountId: $uuidAccountId, ')
+          ..write('isInFavorites: $isInFavorites, ')
+          ..write('isInReceivedBlocks: $isInReceivedBlocks, ')
+          ..write('isInReceivedLikes: $isInReceivedLikes, ')
+          ..write('isInSentBlocks: $isInSentBlocks, ')
+          ..write('isInSentLikes: $isInSentLikes, ')
+          ..write('isInProfileGrid: $isInProfileGrid')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id,
+      uuidAccountId,
+      isInFavorites,
+      isInReceivedBlocks,
+      isInReceivedLikes,
+      isInSentBlocks,
+      isInSentLikes,
+      isInProfileGrid);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProfileState &&
+          other.id == this.id &&
+          other.uuidAccountId == this.uuidAccountId &&
+          other.isInFavorites == this.isInFavorites &&
+          other.isInReceivedBlocks == this.isInReceivedBlocks &&
+          other.isInReceivedLikes == this.isInReceivedLikes &&
+          other.isInSentBlocks == this.isInSentBlocks &&
+          other.isInSentLikes == this.isInSentLikes &&
+          other.isInProfileGrid == this.isInProfileGrid);
+}
+
+class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
+  final Value<int> id;
+  final Value<AccountId> uuidAccountId;
+  final Value<UtcDateTime?> isInFavorites;
+  final Value<UtcDateTime?> isInReceivedBlocks;
+  final Value<UtcDateTime?> isInReceivedLikes;
+  final Value<UtcDateTime?> isInSentBlocks;
+  final Value<UtcDateTime?> isInSentLikes;
+  final Value<UtcDateTime?> isInProfileGrid;
+  const ProfileStatesCompanion({
+    this.id = const Value.absent(),
+    this.uuidAccountId = const Value.absent(),
+    this.isInFavorites = const Value.absent(),
+    this.isInReceivedBlocks = const Value.absent(),
+    this.isInReceivedLikes = const Value.absent(),
+    this.isInSentBlocks = const Value.absent(),
+    this.isInSentLikes = const Value.absent(),
+    this.isInProfileGrid = const Value.absent(),
+  });
+  ProfileStatesCompanion.insert({
+    this.id = const Value.absent(),
+    required AccountId uuidAccountId,
+    this.isInFavorites = const Value.absent(),
+    this.isInReceivedBlocks = const Value.absent(),
+    this.isInReceivedLikes = const Value.absent(),
+    this.isInSentBlocks = const Value.absent(),
+    this.isInSentLikes = const Value.absent(),
+    this.isInProfileGrid = const Value.absent(),
+  }) : uuidAccountId = Value(uuidAccountId);
+  static Insertable<ProfileState> custom({
+    Expression<int>? id,
+    Expression<String>? uuidAccountId,
+    Expression<int>? isInFavorites,
+    Expression<int>? isInReceivedBlocks,
+    Expression<int>? isInReceivedLikes,
+    Expression<int>? isInSentBlocks,
+    Expression<int>? isInSentLikes,
+    Expression<int>? isInProfileGrid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
+      if (isInFavorites != null) 'is_in_favorites': isInFavorites,
+      if (isInReceivedBlocks != null)
+        'is_in_received_blocks': isInReceivedBlocks,
+      if (isInReceivedLikes != null) 'is_in_received_likes': isInReceivedLikes,
+      if (isInSentBlocks != null) 'is_in_sent_blocks': isInSentBlocks,
+      if (isInSentLikes != null) 'is_in_sent_likes': isInSentLikes,
+      if (isInProfileGrid != null) 'is_in_profile_grid': isInProfileGrid,
+    });
+  }
+
+  ProfileStatesCompanion copyWith(
+      {Value<int>? id,
+      Value<AccountId>? uuidAccountId,
+      Value<UtcDateTime?>? isInFavorites,
+      Value<UtcDateTime?>? isInReceivedBlocks,
+      Value<UtcDateTime?>? isInReceivedLikes,
+      Value<UtcDateTime?>? isInSentBlocks,
+      Value<UtcDateTime?>? isInSentLikes,
+      Value<UtcDateTime?>? isInProfileGrid}) {
+    return ProfileStatesCompanion(
+      id: id ?? this.id,
+      uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+      isInFavorites: isInFavorites ?? this.isInFavorites,
+      isInReceivedBlocks: isInReceivedBlocks ?? this.isInReceivedBlocks,
+      isInReceivedLikes: isInReceivedLikes ?? this.isInReceivedLikes,
+      isInSentBlocks: isInSentBlocks ?? this.isInSentBlocks,
+      isInSentLikes: isInSentLikes ?? this.isInSentLikes,
+      isInProfileGrid: isInProfileGrid ?? this.isInProfileGrid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (uuidAccountId.present) {
+      map['uuid_account_id'] = Variable<String>($ProfileStatesTable
+          .$converteruuidAccountId
+          .toSql(uuidAccountId.value));
+    }
+    if (isInFavorites.present) {
+      map['is_in_favorites'] = Variable<int>($ProfileStatesTable
+          .$converterisInFavorites
+          .toSql(isInFavorites.value));
+    }
+    if (isInReceivedBlocks.present) {
+      map['is_in_received_blocks'] = Variable<int>($ProfileStatesTable
+          .$converterisInReceivedBlocks
+          .toSql(isInReceivedBlocks.value));
+    }
+    if (isInReceivedLikes.present) {
+      map['is_in_received_likes'] = Variable<int>($ProfileStatesTable
+          .$converterisInReceivedLikes
+          .toSql(isInReceivedLikes.value));
+    }
+    if (isInSentBlocks.present) {
+      map['is_in_sent_blocks'] = Variable<int>($ProfileStatesTable
+          .$converterisInSentBlocks
+          .toSql(isInSentBlocks.value));
+    }
+    if (isInSentLikes.present) {
+      map['is_in_sent_likes'] = Variable<int>($ProfileStatesTable
+          .$converterisInSentLikes
+          .toSql(isInSentLikes.value));
+    }
+    if (isInProfileGrid.present) {
+      map['is_in_profile_grid'] = Variable<int>($ProfileStatesTable
+          .$converterisInProfileGrid
+          .toSql(isInProfileGrid.value));
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProfileStatesCompanion(')
+          ..write('id: $id, ')
+          ..write('uuidAccountId: $uuidAccountId, ')
           ..write('isInFavorites: $isInFavorites, ')
           ..write('isInReceivedBlocks: $isInReceivedBlocks, ')
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
@@ -6011,6 +6211,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   _$AccountDatabase(QueryExecutor e) : super(e);
   late final $AccountTable account = $AccountTable(this);
   late final $ProfilesTable profiles = $ProfilesTable(this);
+  late final $ProfileStatesTable profileStates = $ProfileStatesTable(this);
   late final $MatchesTable matches = $MatchesTable(this);
   late final $MessagesTable messages = $MessagesTable(this);
   late final DaoCurrentContent daoCurrentContent =
@@ -6034,10 +6235,12 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
   late final DaoMatches daoMatches = DaoMatches(this as AccountDatabase);
   late final DaoProfiles daoProfiles = DaoProfiles(this as AccountDatabase);
+  late final DaoProfileStates daoProfileStates =
+      DaoProfileStates(this as AccountDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [account, profiles, matches, messages];
+      [account, profiles, profileStates, matches, messages];
 }

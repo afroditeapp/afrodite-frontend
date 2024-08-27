@@ -27,7 +27,7 @@ class DatabaseIterator extends IteratorType {
 
   Future<Result<List<ProfileEntry>, void>> nextListFromPublicProfiles() async {
     const queryCount = 10;
-    final profiles = await db.profileData((db) => db.getProfileGridList(currentIndex, queryCount)).ok();
+    final profiles = await db.accountData((db) => db.daoProfileStates.getProfileGridList(currentIndex, queryCount)).ok();
     if (profiles != null) {
       currentIndex += queryCount;
       return Ok(await db.profileData((db) => db.convertToProfileEntries(profiles)).ok() ?? []);
@@ -38,7 +38,7 @@ class DatabaseIterator extends IteratorType {
 
   Future<Result<List<ProfileEntry>, void>> nextListFromFavorites() async {
     const queryCount = 10;
-    final profiles = await db.profileData((db) => db.getFavoritesList(currentIndex, queryCount)).ok();
+    final profiles = await db.accountData((db) => db.daoProfileStates.getFavoritesList(currentIndex, queryCount)).ok();
     if (profiles != null) {
       currentIndex += queryCount;
       return Ok(await db.profileData((db) => db.convertToProfileEntries(profiles)).ok() ?? []);

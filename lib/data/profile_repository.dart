@@ -187,7 +187,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
           case PrivateProfile():
             // Accessing profile failed (not public or something else)
             await db.profileAction((db) => db.removeProfileData(id));
-            await db.profileAction((db) => db.setProfileGridStatus(id, false));
+            await db.accountAction((db) => db.daoProfileStates.setProfileGridStatus(id, false));
             // Favorites are not changed even if profile will become private
             yield GetProfileDoesNotExist();
             _profileChangesRelay.add(
@@ -211,7 +211,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<bool> isInFavorites(AccountId accountId) async {
-    return await db.profileData((db) => db.isInFavorites(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.daoProfileStates.isInFavorites(accountId)).ok() ?? false;
   }
 
   // Returns new isFavorite status for account. The status might not change
@@ -230,7 +230,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       return currentValue;
     } else {
       final newValue = !currentValue;
-      await db.profileAction((db) => db.setFavoriteStatus(accountId, newValue));
+      await db.accountAction((db) => db.daoProfileStates.setFavoriteStatus(accountId, newValue));
       _profileChangesRelay.add(
         ProfileFavoriteStatusChange(accountId, newValue)
       );
@@ -280,7 +280,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> reloadFavoriteProfiles() async {
     return await _api.profile((api) => api.getFavoriteProfiles())
       .emptyErr()
-      .andThen((f) => db.profileAction((db) => db.setFavoriteStatusList(f.profiles, true, clear: true)));
+      .andThen((f) => db.accountAction((db) => db.daoProfileStates.setFavoriteStatusList(f.profiles, true, clear: true)));
   }
 
   Future<Result<void, void>> reloadLocation() async {

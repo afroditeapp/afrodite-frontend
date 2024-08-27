@@ -6,6 +6,7 @@ import 'package:database/src/foreground/account/dao_local_image_settings.dart';
 import 'package:database/src/foreground/account/dao_message_keys.dart';
 import 'package:database/src/foreground/account/dao_sync_versions.dart';
 import 'package:database/src/foreground/matches_table.dart';
+import 'package:database/src/foreground/profile_states_table.dart';
 import 'package:database/src/foreground/profile_table.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
@@ -146,6 +147,7 @@ class Account extends Table {
   tables: [
     Account,
     Profiles,
+    ProfileStates,
     Matches,
     Messages,
   ],
@@ -165,6 +167,7 @@ class Account extends Table {
     DaoMessages,
     DaoMatches,
     DaoProfiles,
+    DaoProfileStates,
   ],
 )
 class AccountDatabase extends _$AccountDatabase {
