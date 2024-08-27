@@ -2399,6 +2399,230 @@ class AccountData extends DataClass implements Insertable<AccountData> {
             ? publicKeyVersion.value
             : this.publicKeyVersion,
       );
+  AccountData copyWithCompanion(AccountCompanion data) {
+    return AccountData(
+      id: data.id.present ? data.id.value : this.id,
+      uuidAccountId: data.uuidAccountId.present
+          ? data.uuidAccountId.value
+          : this.uuidAccountId,
+      jsonAccountState: data.jsonAccountState.present
+          ? data.jsonAccountState.value
+          : this.jsonAccountState,
+      jsonCapabilities: data.jsonCapabilities.present
+          ? data.jsonCapabilities.value
+          : this.jsonCapabilities,
+      jsonAvailableProfileAttributes:
+          data.jsonAvailableProfileAttributes.present
+              ? data.jsonAvailableProfileAttributes.value
+              : this.jsonAvailableProfileAttributes,
+      profileFilterFavorites: data.profileFilterFavorites.present
+          ? data.profileFilterFavorites.value
+          : this.profileFilterFavorites,
+      profileIteratorSessionId: data.profileIteratorSessionId.present
+          ? data.profileIteratorSessionId.value
+          : this.profileIteratorSessionId,
+      initialSyncDoneLoginRepository:
+          data.initialSyncDoneLoginRepository.present
+              ? data.initialSyncDoneLoginRepository.value
+              : this.initialSyncDoneLoginRepository,
+      initialSyncDoneAccountRepository:
+          data.initialSyncDoneAccountRepository.present
+              ? data.initialSyncDoneAccountRepository.value
+              : this.initialSyncDoneAccountRepository,
+      initialSyncDoneMediaRepository:
+          data.initialSyncDoneMediaRepository.present
+              ? data.initialSyncDoneMediaRepository.value
+              : this.initialSyncDoneMediaRepository,
+      initialSyncDoneProfileRepository:
+          data.initialSyncDoneProfileRepository.present
+              ? data.initialSyncDoneProfileRepository.value
+              : this.initialSyncDoneProfileRepository,
+      initialSyncDoneChatRepository: data.initialSyncDoneChatRepository.present
+          ? data.initialSyncDoneChatRepository.value
+          : this.initialSyncDoneChatRepository,
+      syncVersionAccount: data.syncVersionAccount.present
+          ? data.syncVersionAccount.value
+          : this.syncVersionAccount,
+      syncVersionReceivedLikes: data.syncVersionReceivedLikes.present
+          ? data.syncVersionReceivedLikes.value
+          : this.syncVersionReceivedLikes,
+      syncVersionReceivedBlocks: data.syncVersionReceivedBlocks.present
+          ? data.syncVersionReceivedBlocks.value
+          : this.syncVersionReceivedBlocks,
+      syncVersionSentLikes: data.syncVersionSentLikes.present
+          ? data.syncVersionSentLikes.value
+          : this.syncVersionSentLikes,
+      syncVersionSentBlocks: data.syncVersionSentBlocks.present
+          ? data.syncVersionSentBlocks.value
+          : this.syncVersionSentBlocks,
+      syncVersionMatches: data.syncVersionMatches.present
+          ? data.syncVersionMatches.value
+          : this.syncVersionMatches,
+      syncVersionAvailableProfileAttributes:
+          data.syncVersionAvailableProfileAttributes.present
+              ? data.syncVersionAvailableProfileAttributes.value
+              : this.syncVersionAvailableProfileAttributes,
+      uuidPendingContentId0: data.uuidPendingContentId0.present
+          ? data.uuidPendingContentId0.value
+          : this.uuidPendingContentId0,
+      uuidPendingContentId1: data.uuidPendingContentId1.present
+          ? data.uuidPendingContentId1.value
+          : this.uuidPendingContentId1,
+      uuidPendingContentId2: data.uuidPendingContentId2.present
+          ? data.uuidPendingContentId2.value
+          : this.uuidPendingContentId2,
+      uuidPendingContentId3: data.uuidPendingContentId3.present
+          ? data.uuidPendingContentId3.value
+          : this.uuidPendingContentId3,
+      uuidPendingContentId4: data.uuidPendingContentId4.present
+          ? data.uuidPendingContentId4.value
+          : this.uuidPendingContentId4,
+      uuidPendingContentId5: data.uuidPendingContentId5.present
+          ? data.uuidPendingContentId5.value
+          : this.uuidPendingContentId5,
+      uuidPendingSecurityContentId: data.uuidPendingSecurityContentId.present
+          ? data.uuidPendingSecurityContentId.value
+          : this.uuidPendingSecurityContentId,
+      pendingPrimaryContentGridCropSize:
+          data.pendingPrimaryContentGridCropSize.present
+              ? data.pendingPrimaryContentGridCropSize.value
+              : this.pendingPrimaryContentGridCropSize,
+      pendingPrimaryContentGridCropX:
+          data.pendingPrimaryContentGridCropX.present
+              ? data.pendingPrimaryContentGridCropX.value
+              : this.pendingPrimaryContentGridCropX,
+      pendingPrimaryContentGridCropY:
+          data.pendingPrimaryContentGridCropY.present
+              ? data.pendingPrimaryContentGridCropY.value
+              : this.pendingPrimaryContentGridCropY,
+      uuidContentId0: data.uuidContentId0.present
+          ? data.uuidContentId0.value
+          : this.uuidContentId0,
+      uuidContentId1: data.uuidContentId1.present
+          ? data.uuidContentId1.value
+          : this.uuidContentId1,
+      uuidContentId2: data.uuidContentId2.present
+          ? data.uuidContentId2.value
+          : this.uuidContentId2,
+      uuidContentId3: data.uuidContentId3.present
+          ? data.uuidContentId3.value
+          : this.uuidContentId3,
+      uuidContentId4: data.uuidContentId4.present
+          ? data.uuidContentId4.value
+          : this.uuidContentId4,
+      uuidContentId5: data.uuidContentId5.present
+          ? data.uuidContentId5.value
+          : this.uuidContentId5,
+      uuidSecurityContentId: data.uuidSecurityContentId.present
+          ? data.uuidSecurityContentId.value
+          : this.uuidSecurityContentId,
+      primaryContentGridCropSize: data.primaryContentGridCropSize.present
+          ? data.primaryContentGridCropSize.value
+          : this.primaryContentGridCropSize,
+      primaryContentGridCropX: data.primaryContentGridCropX.present
+          ? data.primaryContentGridCropX.value
+          : this.primaryContentGridCropX,
+      primaryContentGridCropY: data.primaryContentGridCropY.present
+          ? data.primaryContentGridCropY.value
+          : this.primaryContentGridCropY,
+      profileContentVersion: data.profileContentVersion.present
+          ? data.profileContentVersion.value
+          : this.profileContentVersion,
+      profileName:
+          data.profileName.present ? data.profileName.value : this.profileName,
+      profileText:
+          data.profileText.present ? data.profileText.value : this.profileText,
+      profileAge:
+          data.profileAge.present ? data.profileAge.value : this.profileAge,
+      profileUnlimitedLikes: data.profileUnlimitedLikes.present
+          ? data.profileUnlimitedLikes.value
+          : this.profileUnlimitedLikes,
+      profileVersion: data.profileVersion.present
+          ? data.profileVersion.value
+          : this.profileVersion,
+      jsonProfileAttributes: data.jsonProfileAttributes.present
+          ? data.jsonProfileAttributes.value
+          : this.jsonProfileAttributes,
+      profileLocationLatitude: data.profileLocationLatitude.present
+          ? data.profileLocationLatitude.value
+          : this.profileLocationLatitude,
+      profileLocationLongitude: data.profileLocationLongitude.present
+          ? data.profileLocationLongitude.value
+          : this.profileLocationLongitude,
+      jsonProfileVisibility: data.jsonProfileVisibility.present
+          ? data.jsonProfileVisibility.value
+          : this.jsonProfileVisibility,
+      jsonSearchGroups: data.jsonSearchGroups.present
+          ? data.jsonSearchGroups.value
+          : this.jsonSearchGroups,
+      jsonProfileAttributeFilters: data.jsonProfileAttributeFilters.present
+          ? data.jsonProfileAttributeFilters.value
+          : this.jsonProfileAttributeFilters,
+      profileSearchAgeRangeMin: data.profileSearchAgeRangeMin.present
+          ? data.profileSearchAgeRangeMin.value
+          : this.profileSearchAgeRangeMin,
+      profileSearchAgeRangeMax: data.profileSearchAgeRangeMax.present
+          ? data.profileSearchAgeRangeMax.value
+          : this.profileSearchAgeRangeMax,
+      profileLastSeenTimeFilter: data.profileLastSeenTimeFilter.present
+          ? data.profileLastSeenTimeFilter.value
+          : this.profileLastSeenTimeFilter,
+      profileUnlimitedLikesFilter: data.profileUnlimitedLikesFilter.present
+          ? data.profileUnlimitedLikesFilter.value
+          : this.profileUnlimitedLikesFilter,
+      accountEmailAddress: data.accountEmailAddress.present
+          ? data.accountEmailAddress.value
+          : this.accountEmailAddress,
+      refreshTokenAccount: data.refreshTokenAccount.present
+          ? data.refreshTokenAccount.value
+          : this.refreshTokenAccount,
+      refreshTokenMedia: data.refreshTokenMedia.present
+          ? data.refreshTokenMedia.value
+          : this.refreshTokenMedia,
+      refreshTokenProfile: data.refreshTokenProfile.present
+          ? data.refreshTokenProfile.value
+          : this.refreshTokenProfile,
+      refreshTokenChat: data.refreshTokenChat.present
+          ? data.refreshTokenChat.value
+          : this.refreshTokenChat,
+      accessTokenAccount: data.accessTokenAccount.present
+          ? data.accessTokenAccount.value
+          : this.accessTokenAccount,
+      accessTokenMedia: data.accessTokenMedia.present
+          ? data.accessTokenMedia.value
+          : this.accessTokenMedia,
+      accessTokenProfile: data.accessTokenProfile.present
+          ? data.accessTokenProfile.value
+          : this.accessTokenProfile,
+      accessTokenChat: data.accessTokenChat.present
+          ? data.accessTokenChat.value
+          : this.accessTokenChat,
+      localImageSettingImageCacheMaxBytes:
+          data.localImageSettingImageCacheMaxBytes.present
+              ? data.localImageSettingImageCacheMaxBytes.value
+              : this.localImageSettingImageCacheMaxBytes,
+      localImageSettingCacheFullSizedImages:
+          data.localImageSettingCacheFullSizedImages.present
+              ? data.localImageSettingCacheFullSizedImages.value
+              : this.localImageSettingCacheFullSizedImages,
+      localImageSettingImageCacheDownscalingSize:
+          data.localImageSettingImageCacheDownscalingSize.present
+              ? data.localImageSettingImageCacheDownscalingSize.value
+              : this.localImageSettingImageCacheDownscalingSize,
+      privateKeyData: data.privateKeyData.present
+          ? data.privateKeyData.value
+          : this.privateKeyData,
+      publicKeyData: data.publicKeyData.present
+          ? data.publicKeyData.value
+          : this.publicKeyData,
+      publicKeyId:
+          data.publicKeyId.present ? data.publicKeyId.value : this.publicKeyId,
+      publicKeyVersion: data.publicKeyVersion.present
+          ? data.publicKeyVersion.value
+          : this.publicKeyVersion,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('AccountData(')
@@ -4307,6 +4531,63 @@ class Profile extends DataClass implements Insertable<Profile> {
             ? primaryContentGridCropY.value
             : this.primaryContentGridCropY,
       );
+  Profile copyWithCompanion(ProfilesCompanion data) {
+    return Profile(
+      id: data.id.present ? data.id.value : this.id,
+      uuidAccountId: data.uuidAccountId.present
+          ? data.uuidAccountId.value
+          : this.uuidAccountId,
+      uuidContentId0: data.uuidContentId0.present
+          ? data.uuidContentId0.value
+          : this.uuidContentId0,
+      uuidContentId1: data.uuidContentId1.present
+          ? data.uuidContentId1.value
+          : this.uuidContentId1,
+      uuidContentId2: data.uuidContentId2.present
+          ? data.uuidContentId2.value
+          : this.uuidContentId2,
+      uuidContentId3: data.uuidContentId3.present
+          ? data.uuidContentId3.value
+          : this.uuidContentId3,
+      uuidContentId4: data.uuidContentId4.present
+          ? data.uuidContentId4.value
+          : this.uuidContentId4,
+      uuidContentId5: data.uuidContentId5.present
+          ? data.uuidContentId5.value
+          : this.uuidContentId5,
+      profileContentVersion: data.profileContentVersion.present
+          ? data.profileContentVersion.value
+          : this.profileContentVersion,
+      profileName:
+          data.profileName.present ? data.profileName.value : this.profileName,
+      profileText:
+          data.profileText.present ? data.profileText.value : this.profileText,
+      profileVersion: data.profileVersion.present
+          ? data.profileVersion.value
+          : this.profileVersion,
+      profileAge:
+          data.profileAge.present ? data.profileAge.value : this.profileAge,
+      profileLastSeenTimeValue: data.profileLastSeenTimeValue.present
+          ? data.profileLastSeenTimeValue.value
+          : this.profileLastSeenTimeValue,
+      profileUnlimitedLikes: data.profileUnlimitedLikes.present
+          ? data.profileUnlimitedLikes.value
+          : this.profileUnlimitedLikes,
+      jsonProfileAttributes: data.jsonProfileAttributes.present
+          ? data.jsonProfileAttributes.value
+          : this.jsonProfileAttributes,
+      primaryContentGridCropSize: data.primaryContentGridCropSize.present
+          ? data.primaryContentGridCropSize.value
+          : this.primaryContentGridCropSize,
+      primaryContentGridCropX: data.primaryContentGridCropX.present
+          ? data.primaryContentGridCropX.value
+          : this.primaryContentGridCropX,
+      primaryContentGridCropY: data.primaryContentGridCropY.present
+          ? data.primaryContentGridCropY.value
+          : this.primaryContentGridCropY,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Profile(')
@@ -4953,6 +5234,33 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
             ? isInProfileGrid.value
             : this.isInProfileGrid,
       );
+  ProfileState copyWithCompanion(ProfileStatesCompanion data) {
+    return ProfileState(
+      id: data.id.present ? data.id.value : this.id,
+      uuidAccountId: data.uuidAccountId.present
+          ? data.uuidAccountId.value
+          : this.uuidAccountId,
+      isInFavorites: data.isInFavorites.present
+          ? data.isInFavorites.value
+          : this.isInFavorites,
+      isInReceivedBlocks: data.isInReceivedBlocks.present
+          ? data.isInReceivedBlocks.value
+          : this.isInReceivedBlocks,
+      isInReceivedLikes: data.isInReceivedLikes.present
+          ? data.isInReceivedLikes.value
+          : this.isInReceivedLikes,
+      isInSentBlocks: data.isInSentBlocks.present
+          ? data.isInSentBlocks.value
+          : this.isInSentBlocks,
+      isInSentLikes: data.isInSentLikes.present
+          ? data.isInSentLikes.value
+          : this.isInSentLikes,
+      isInProfileGrid: data.isInProfileGrid.present
+          ? data.isInProfileGrid.value
+          : this.isInProfileGrid,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('ProfileState(')
@@ -5303,6 +5611,20 @@ class Matche extends DataClass implements Insertable<Matche> {
             : this.conversationLastChangedTime,
         isInMatches: isInMatches.present ? isInMatches.value : this.isInMatches,
       );
+  Matche copyWithCompanion(MatchesCompanion data) {
+    return Matche(
+      id: data.id.present ? data.id.value : this.id,
+      uuidAccountId: data.uuidAccountId.present
+          ? data.uuidAccountId.value
+          : this.uuidAccountId,
+      conversationLastChangedTime: data.conversationLastChangedTime.present
+          ? data.conversationLastChangedTime.value
+          : this.conversationLastChangedTime,
+      isInMatches:
+          data.isInMatches.present ? data.isInMatches.value : this.isInMatches,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Matche(')
@@ -5753,6 +6075,36 @@ class Message extends DataClass implements Insertable<Message> {
             messageNumber.present ? messageNumber.value : this.messageNumber,
         unixTime: unixTime.present ? unixTime.value : this.unixTime,
       );
+  Message copyWithCompanion(MessagesCompanion data) {
+    return Message(
+      id: data.id.present ? data.id.value : this.id,
+      uuidLocalAccountId: data.uuidLocalAccountId.present
+          ? data.uuidLocalAccountId.value
+          : this.uuidLocalAccountId,
+      uuidRemoteAccountId: data.uuidRemoteAccountId.present
+          ? data.uuidRemoteAccountId.value
+          : this.uuidRemoteAccountId,
+      messageText:
+          data.messageText.present ? data.messageText.value : this.messageText,
+      localUnixTime: data.localUnixTime.present
+          ? data.localUnixTime.value
+          : this.localUnixTime,
+      sentMessageState: data.sentMessageState.present
+          ? data.sentMessageState.value
+          : this.sentMessageState,
+      receivedMessageState: data.receivedMessageState.present
+          ? data.receivedMessageState.value
+          : this.receivedMessageState,
+      senderMessageId: data.senderMessageId.present
+          ? data.senderMessageId.value
+          : this.senderMessageId,
+      messageNumber: data.messageNumber.present
+          ? data.messageNumber.value
+          : this.messageNumber,
+      unixTime: data.unixTime.present ? data.unixTime.value : this.unixTime,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Message(')
@@ -6238,6 +6590,31 @@ class Conversation extends DataClass implements Insertable<Conversation> {
         conversationUnreadMessagesCount: conversationUnreadMessagesCount ??
             this.conversationUnreadMessagesCount,
       );
+  Conversation copyWithCompanion(ConversationsCompanion data) {
+    return Conversation(
+      id: data.id.present ? data.id.value : this.id,
+      uuidAccountId: data.uuidAccountId.present
+          ? data.uuidAccountId.value
+          : this.uuidAccountId,
+      publicKeyData: data.publicKeyData.present
+          ? data.publicKeyData.value
+          : this.publicKeyData,
+      publicKeyId:
+          data.publicKeyId.present ? data.publicKeyId.value : this.publicKeyId,
+      publicKeyVersion: data.publicKeyVersion.present
+          ? data.publicKeyVersion.value
+          : this.publicKeyVersion,
+      conversationNextSenderMessageId:
+          data.conversationNextSenderMessageId.present
+              ? data.conversationNextSenderMessageId.value
+              : this.conversationNextSenderMessageId,
+      conversationUnreadMessagesCount:
+          data.conversationUnreadMessagesCount.present
+              ? data.conversationUnreadMessagesCount.value
+              : this.conversationUnreadMessagesCount,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Conversation(')

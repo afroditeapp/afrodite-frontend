@@ -378,6 +378,39 @@ class CommonBackgroundData extends DataClass
         currentLocale:
             currentLocale.present ? currentLocale.value : this.currentLocale,
       );
+  CommonBackgroundData copyWithCompanion(CommonBackgroundCompanion data) {
+    return CommonBackgroundData(
+      id: data.id.present ? data.id.value : this.id,
+      serverUrlAccount: data.serverUrlAccount.present
+          ? data.serverUrlAccount.value
+          : this.serverUrlAccount,
+      serverUrlMedia: data.serverUrlMedia.present
+          ? data.serverUrlMedia.value
+          : this.serverUrlMedia,
+      serverUrlProfile: data.serverUrlProfile.present
+          ? data.serverUrlProfile.value
+          : this.serverUrlProfile,
+      serverUrlChat: data.serverUrlChat.present
+          ? data.serverUrlChat.value
+          : this.serverUrlChat,
+      uuidAccountId: data.uuidAccountId.present
+          ? data.uuidAccountId.value
+          : this.uuidAccountId,
+      notificationSessionId: data.notificationSessionId.present
+          ? data.notificationSessionId.value
+          : this.notificationSessionId,
+      fcmDeviceToken: data.fcmDeviceToken.present
+          ? data.fcmDeviceToken.value
+          : this.fcmDeviceToken,
+      pendingNotificationToken: data.pendingNotificationToken.present
+          ? data.pendingNotificationToken.value
+          : this.pendingNotificationToken,
+      currentLocale: data.currentLocale.present
+          ? data.currentLocale.value
+          : this.currentLocale,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('CommonBackgroundData(')

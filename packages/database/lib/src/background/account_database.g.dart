@@ -253,6 +253,26 @@ class AccountBackgroundData extends DataClass
                 ? localNotificationSettingModerationRequestStatus.value
                 : this.localNotificationSettingModerationRequestStatus,
       );
+  AccountBackgroundData copyWithCompanion(AccountBackgroundCompanion data) {
+    return AccountBackgroundData(
+      id: data.id.present ? data.id.value : this.id,
+      uuidAccountId: data.uuidAccountId.present
+          ? data.uuidAccountId.value
+          : this.uuidAccountId,
+      localNotificationSettingMessages:
+          data.localNotificationSettingMessages.present
+              ? data.localNotificationSettingMessages.value
+              : this.localNotificationSettingMessages,
+      localNotificationSettingLikes: data.localNotificationSettingLikes.present
+          ? data.localNotificationSettingLikes.value
+          : this.localNotificationSettingLikes,
+      localNotificationSettingModerationRequestStatus:
+          data.localNotificationSettingModerationRequestStatus.present
+              ? data.localNotificationSettingModerationRequestStatus.value
+              : this.localNotificationSettingModerationRequestStatus,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('AccountBackgroundData(')
@@ -562,6 +582,19 @@ class ProfilesBackgroundData extends DataClass
         profileName: profileName.present ? profileName.value : this.profileName,
         profileAge: profileAge.present ? profileAge.value : this.profileAge,
       );
+  ProfilesBackgroundData copyWithCompanion(ProfilesBackgroundCompanion data) {
+    return ProfilesBackgroundData(
+      id: data.id.present ? data.id.value : this.id,
+      uuidAccountId: data.uuidAccountId.present
+          ? data.uuidAccountId.value
+          : this.uuidAccountId,
+      profileName:
+          data.profileName.present ? data.profileName.value : this.profileName,
+      profileAge:
+          data.profileAge.present ? data.profileAge.value : this.profileAge,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('ProfilesBackgroundData(')
@@ -805,6 +838,19 @@ class NewMessageNotificationData extends DataClass
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
         notificationShown: notificationShown ?? this.notificationShown,
       );
+  NewMessageNotificationData copyWithCompanion(
+      NewMessageNotificationCompanion data) {
+    return NewMessageNotificationData(
+      id: data.id.present ? data.id.value : this.id,
+      uuidAccountId: data.uuidAccountId.present
+          ? data.uuidAccountId.value
+          : this.uuidAccountId,
+      notificationShown: data.notificationShown.present
+          ? data.notificationShown.value
+          : this.notificationShown,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('NewMessageNotificationData(')

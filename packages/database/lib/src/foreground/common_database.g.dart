@@ -246,6 +246,27 @@ class CommonData extends DataClass implements Insertable<CommonData> {
         notificationPermissionAsked:
             notificationPermissionAsked ?? this.notificationPermissionAsked,
       );
+  CommonData copyWithCompanion(CommonCompanion data) {
+    return CommonData(
+      id: data.id.present ? data.id.value : this.id,
+      demoAccountUserId: data.demoAccountUserId.present
+          ? data.demoAccountUserId.value
+          : this.demoAccountUserId,
+      demoAccountPassword: data.demoAccountPassword.present
+          ? data.demoAccountPassword.value
+          : this.demoAccountPassword,
+      demoAccountToken: data.demoAccountToken.present
+          ? data.demoAccountToken.value
+          : this.demoAccountToken,
+      imageEncryptionKey: data.imageEncryptionKey.present
+          ? data.imageEncryptionKey.value
+          : this.imageEncryptionKey,
+      notificationPermissionAsked: data.notificationPermissionAsked.present
+          ? data.notificationPermissionAsked.value
+          : this.notificationPermissionAsked,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('CommonData(')
