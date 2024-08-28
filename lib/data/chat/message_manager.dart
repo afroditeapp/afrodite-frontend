@@ -392,6 +392,44 @@ class MessageManager extends LifecycleMethods {
         }
     }
 
+    final lastSentMessageResult = await db.accountData((db) => db.daoMessages.getLatestSentMessage(
+      currentUser,
+      accountId,
+    ));
+    final LocalMessageId? lastSentMessageLocalId;
+    final SentMessageState? lastSentMessageSentState;
+    switch (lastSentMessageResult) {
+      case Err():
+        yield const ErrorBeforeMessageSaving();
+        return;
+      case Ok(v: final lastSentMessage):
+        // If previous sent message is still in pending state, then the app is
+        // probably closed or crashed too early.
+        final SentMessageState? stateForLastMessage;
+        if (lastSentMessage != null && lastSentMessage.sentMessageState == SentMessageState.pending) {
+          final result = await db.messageAction((db) => db.updateSentMessageState(
+            lastSentMessage.localId,
+            sentState: SentMessageState.sendingError,
+          ));
+          if (result.isErr()) {
+            yield const ErrorBeforeMessageSaving();
+            return;
+          }
+          stateForLastMessage = SentMessageState.sendingError;
+        } else {
+          stateForLastMessage = lastSentMessage?.sentMessageState;
+        }
+
+        if (lastSentMessage?.senderMessageId != null) {
+          // Error correction session is still valid
+          lastSentMessageLocalId = lastSentMessage?.localId;
+          lastSentMessageSentState = stateForLastMessage;
+        } else {
+          lastSentMessageLocalId = null;
+          lastSentMessageSentState = null;
+        }
+    }
+
     final saveMessageResult = await db.messageData((db) => db.insertToBeSentMessage(
       currentUser,
       accountId,
@@ -445,44 +483,6 @@ class MessageManager extends LifecycleMethods {
 
     final dataIdentifierAndEncryptedMessage = [0]; // 0 is PGP message
     dataIdentifierAndEncryptedMessage.addAll(encryptedMessage);
-
-    final lastSentMessageResult = await db.accountData((db) => db.daoMessages.getLatestSentMessage(
-      currentUser,
-      accountId,
-    ));
-    final LocalMessageId? lastSentMessageLocalId;
-    final SentMessageState? lastSentMessageSentState;
-    switch (lastSentMessageResult) {
-      case Err():
-        yield ErrorAfterMessageSaving(localId);
-        return;
-      case Ok(v: final lastSentMessage):
-        // If previous sent message is still in pending state, then the app is
-        // probably closed or crashed too early.
-        final SentMessageState? stateForLastMessage;
-        if (lastSentMessage != null && lastSentMessage.sentMessageState == SentMessageState.pending) {
-          final result = await db.messageAction((db) => db.updateSentMessageState(
-            lastSentMessage.localId,
-            sentState: SentMessageState.sendingError,
-          ));
-          if (result.isErr()) {
-            yield ErrorAfterMessageSaving(localId);
-            return;
-          }
-          stateForLastMessage = SentMessageState.sendingError;
-        } else {
-          stateForLastMessage = lastSentMessage?.sentMessageState;
-        }
-
-        if (lastSentMessage?.senderMessageId != null) {
-          // Error correction session is still valid
-          lastSentMessageLocalId = lastSentMessage?.localId;
-          lastSentMessageSentState = stateForLastMessage;
-        } else {
-          lastSentMessageLocalId = null;
-          lastSentMessageSentState = null;
-        }
-    }
 
     int unixTimeFromServer;
     int messageNumberFromServer;
