@@ -37,3 +37,8 @@
 -keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
 
 ##---------------End: proguard configuration for Gson  ----------
+
+# Fix release building after Flutter 3.24 or other dependency
+# updates. Android Gradle plugin suggested to add these rules here.
+-dontwarn com.google.j2objc.annotations.ReflectionSupport$Level
+-dontwarn com.google.j2objc.annotations.ReflectionSupport
