@@ -11,6 +11,5 @@ class AccountDetailsBlocData with _$AccountDetailsBlocData {
     @Default(false) bool isLoading,
     @Default(false) bool isError,
     String? email,
-    String? birthdate,
   }) = _AccountDetailsBlocData;
 }

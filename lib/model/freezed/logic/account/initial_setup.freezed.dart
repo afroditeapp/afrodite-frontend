@@ -22,7 +22,7 @@ final _privateConstructorErrorInitialSetupData = UnsupportedError(
 /// @nodoc
 mixin _$InitialSetupData {
   String? get email => throw _privateConstructorErrorInitialSetupData;
-  DateTime? get birthdate => throw _privateConstructorErrorInitialSetupData;
+  bool? get isAdult => throw _privateConstructorErrorInitialSetupData;
   String? get profileName => throw _privateConstructorErrorInitialSetupData;
   int? get profileAge => throw _privateConstructorErrorInitialSetupData;
   ProcessedAccountImage? get securitySelfie => throw _privateConstructorErrorInitialSetupData;
@@ -38,7 +38,7 @@ mixin _$InitialSetupData {
 
   InitialSetupData copyWith({
     String? email,
-    DateTime? birthdate,
+    bool? isAdult,
     String? profileName,
     int? profileAge,
     ProcessedAccountImage? securitySelfie,
@@ -58,7 +58,7 @@ mixin _$InitialSetupData {
 abstract class _InitialSetupData implements InitialSetupData {
   factory _InitialSetupData({
     String? email,
-    DateTime? birthdate,
+    bool? isAdult,
     String? profileName,
     int? profileAge,
     ProcessedAccountImage? securitySelfie,
@@ -83,7 +83,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   
   _$InitialSetupDataImpl({
     this.email,
-    this.birthdate,
+    this.isAdult,
     this.profileName,
     this.profileAge,
     this.securitySelfie,
@@ -101,7 +101,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   @override
   final String? email;
   @override
-  final DateTime? birthdate;
+  final bool? isAdult;
   @override
   final String? profileName;
   @override
@@ -129,7 +129,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
 
   @override
   String toString() {
-    return 'InitialSetupData(email: $email, birthdate: $birthdate, profileName: $profileName, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, genderSearchSetting: $genderSearchSetting, searchAgeRangeInitDone: $searchAgeRangeInitDone, searchAgeRangeMin: $searchAgeRangeMin, searchAgeRangeMax: $searchAgeRangeMax, profileLocation: $profileLocation, profileAttributes: $profileAttributes, sendingInProgress: $sendingInProgress)';
+    return 'InitialSetupData(email: $email, isAdult: $isAdult, profileName: $profileName, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, genderSearchSetting: $genderSearchSetting, searchAgeRangeInitDone: $searchAgeRangeInitDone, searchAgeRangeMin: $searchAgeRangeMin, searchAgeRangeMax: $searchAgeRangeMax, profileLocation: $profileLocation, profileAttributes: $profileAttributes, sendingInProgress: $sendingInProgress)';
   }
 
   @override
@@ -139,8 +139,8 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
         other is _$InitialSetupDataImpl &&
         (identical(other.email, email) ||
           other.email == email) &&
-        (identical(other.birthdate, birthdate) ||
-          other.birthdate == birthdate) &&
+        (identical(other.isAdult, isAdult) ||
+          other.isAdult == isAdult) &&
         (identical(other.profileName, profileName) ||
           other.profileName == profileName) &&
         (identical(other.profileAge, profileAge) ||
@@ -172,7 +172,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   int get hashCode => Object.hash(
     runtimeType,
     email,
-    birthdate,
+    isAdult,
     profileName,
     profileAge,
     securitySelfie,
@@ -190,7 +190,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   @override
   InitialSetupData copyWith({
     Object? email = _detectDefaultValueInCopyWith,
-    Object? birthdate = _detectDefaultValueInCopyWith,
+    Object? isAdult = _detectDefaultValueInCopyWith,
     Object? profileName = _detectDefaultValueInCopyWith,
     Object? profileAge = _detectDefaultValueInCopyWith,
     Object? securitySelfie = _detectDefaultValueInCopyWith,
@@ -205,7 +205,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
     Object? sendingInProgress,
   }) => _$InitialSetupDataImpl(
     email: (email == _detectDefaultValueInCopyWith ? this.email : email) as String?,
-    birthdate: (birthdate == _detectDefaultValueInCopyWith ? this.birthdate : birthdate) as DateTime?,
+    isAdult: (isAdult == _detectDefaultValueInCopyWith ? this.isAdult : isAdult) as bool?,
     profileName: (profileName == _detectDefaultValueInCopyWith ? this.profileName : profileName) as String?,
     profileAge: (profileAge == _detectDefaultValueInCopyWith ? this.profileAge : profileAge) as int?,
     securitySelfie: (securitySelfie == _detectDefaultValueInCopyWith ? this.securitySelfie : securitySelfie) as ProcessedAccountImage?,

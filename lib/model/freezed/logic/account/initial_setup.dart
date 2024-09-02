@@ -15,7 +15,7 @@ part 'initial_setup.freezed.dart';
 class InitialSetupData with _$InitialSetupData {
   factory InitialSetupData({
     String? email,
-    DateTime? birthdate,
+    bool? isAdult,
     String? profileName,
     int? profileAge,
     ProcessedAccountImage? securitySelfie,

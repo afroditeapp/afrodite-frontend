@@ -24,13 +24,11 @@ mixin _$AccountDetailsBlocData {
   bool get isLoading => throw _privateConstructorErrorAccountDetailsBlocData;
   bool get isError => throw _privateConstructorErrorAccountDetailsBlocData;
   String? get email => throw _privateConstructorErrorAccountDetailsBlocData;
-  String? get birthdate => throw _privateConstructorErrorAccountDetailsBlocData;
 
   AccountDetailsBlocData copyWith({
     bool? isLoading,
     bool? isError,
     String? email,
-    String? birthdate,
   }) => throw _privateConstructorErrorAccountDetailsBlocData;
 }
 
@@ -40,7 +38,6 @@ abstract class _AccountDetailsBlocData implements AccountDetailsBlocData {
     bool isLoading,
     bool isError,
     String? email,
-    String? birthdate,
   }) = _$AccountDetailsBlocDataImpl;
 }
 
@@ -53,7 +50,6 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
     this.isLoading = _isLoadingDefaultValue,
     this.isError = _isErrorDefaultValue,
     this.email,
-    this.birthdate,
   });
 
   @override
@@ -62,12 +58,10 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
   final bool isError;
   @override
   final String? email;
-  @override
-  final String? birthdate;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountDetailsBlocData(isLoading: $isLoading, isError: $isError, email: $email, birthdate: $birthdate)';
+    return 'AccountDetailsBlocData(isLoading: $isLoading, isError: $isError, email: $email)';
   }
 
   @override
@@ -77,8 +71,7 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
       ..add(DiagnosticsProperty('type', 'AccountDetailsBlocData'))
       ..add(DiagnosticsProperty('isLoading', isLoading))
       ..add(DiagnosticsProperty('isError', isError))
-      ..add(DiagnosticsProperty('email', email))
-      ..add(DiagnosticsProperty('birthdate', birthdate));
+      ..add(DiagnosticsProperty('email', email));
   }
 
   @override
@@ -91,9 +84,7 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
         (identical(other.isError, isError) ||
           other.isError == isError) &&
         (identical(other.email, email) ||
-          other.email == email) &&
-        (identical(other.birthdate, birthdate) ||
-          other.birthdate == birthdate)
+          other.email == email)
     );
   }
 
@@ -103,7 +94,6 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
     isLoading,
     isError,
     email,
-    birthdate,
   );
 
   @override
@@ -111,11 +101,9 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
     Object? isLoading,
     Object? isError,
     Object? email = _detectDefaultValueInCopyWith,
-    Object? birthdate = _detectDefaultValueInCopyWith,
   }) => _$AccountDetailsBlocDataImpl(
     isLoading: (isLoading ?? this.isLoading) as bool,
     isError: (isError ?? this.isError) as bool,
     email: (email == _detectDefaultValueInCopyWith ? this.email : email) as String?,
-    birthdate: (birthdate == _detectDefaultValueInCopyWith ? this.birthdate : birthdate) as String?,
   );
 }

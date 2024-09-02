@@ -25,17 +25,10 @@ class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocDat
           return;
         }
 
-        final birthdate = await account.downloadLatestBirthdate().ok();
-        if (birthdate == null) {
-          emit(state.copyWith(isLoading: false, isError: true));
-          return;
-        }
-
         emit(state.copyWith(
           isLoading: false,
           isError: false,
           email: accountData.email,
-          birthdate: birthdate.birthdate,
         ));
       });
     });

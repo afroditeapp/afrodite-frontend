@@ -1,8 +1,4 @@
 {
-  "account_settings_screen_birthdate_title": "Birthdate",
-  "@account_settings_screen_birthdate_title": {
-    "description": "Title for birthdate text"
-  },
   "account_settings_screen_delete_account_action": "Request account deletion",
   "@account_settings_screen_delete_account_action": {
     "description": "Title for delete account action"
@@ -513,13 +509,13 @@
   "@image_quality_settings_screen_title": {
     "description": "Image quality settings screen title"
   },
-  "initial_setup_screen_birthdate_button": "Select birthdate",
-  "@initial_setup_screen_birthdate_button": {
-    "description": "Title for birthdate selection button"
+  "initial_setup_screen_age_confirmation_checkbox": "I'm at least 18 years old",
+  "@initial_setup_screen_age_confirmation_checkbox": {
+    "description": "Title for age confirmation checkbox"
   },
-  "initial_setup_screen_birthdate_title": "My birthdate is…",
-  "@initial_setup_screen_birthdate_title": {
-    "description": "Title for birthdate question"
+  "initial_setup_screen_age_confirmation_title": "Age confirmation",
+  "@initial_setup_screen_age_confirmation_title": {
+    "description": "Title for age confirmation screen"
   },
   "initial_setup_screen_email_hint_text": "Insert email address",
   "@initial_setup_screen_email_hint_text": {
@@ -612,10 +608,6 @@
   "initial_setup_screen_security_selfie_title": "My security selfie is…",
   "@initial_setup_screen_security_selfie_title": {
     "description": "Title for initial setup security selfie screen"
-  },
-  "initial_setup_screen_too_young_error": "To use the app you must be 18 years old.",
-  "@initial_setup_screen_too_young_error": {
-    "description": "Error text displayed when age is under 18."
   },
   "likes_screen_no_received_likes_found": "No received likes found",
   "@likes_screen_no_received_likes_found": {
@@ -912,7 +904,7 @@
   },
   "profile_grid_screen_profile_filter_settings_update_ongoing": "Profile filter settings update is ongoing",
   "@profile_grid_screen_profile_filter_settings_update_ongoing": {
-    "description": "Snakcbar text that profile filter settings update is ongoing"
+    "description": "Snackbar text that profile filter settings update is ongoing"
   },
   "profile_grid_screen_profile_is_private_info": "To view profiles, set your profile visibility to public from app settings.",
   "@profile_grid_screen_profile_is_private_info": {

@@ -110,9 +110,8 @@
     <!-- Initial setup -->
     <string name="initial_setup_screen_email_title" description="Title for initial setup email address info">My email address is…</string>
     <string name="initial_setup_screen_email_hint_text" description="Hint text for inserting email address to text field">Insert email address</string>
-    <string name="initial_setup_screen_birthdate_title" description="Title for birthdate question">My birthdate is…</string>
-    <string name="initial_setup_screen_birthdate_button" description="Title for birthdate selection button">Select birthdate</string>
-    <string name="initial_setup_screen_too_young_error" description="Error text displayed when age is under 18.">To use the app you must be 18 years old.</string>
+    <string name="initial_setup_screen_age_confirmation_title" description="Title for age confirmation screen">Age confirmation</string>
+    <string name="initial_setup_screen_age_confirmation_checkbox" description="Title for age confirmation checkbox">I\'m at least 18 years old</string>
     <string name="initial_setup_screen_security_selfie_title" description="Title for initial setup security selfie screen">My security selfie is…</string>
     <string name="initial_setup_screen_security_selfie_description" description="Description for initial setup security selfie step">Take selfie with your phone\'s front camera. The selfie is used for moderating your profile images and by default it is only visible to content Moderators.</string>
     <string name="initial_setup_screen_profile_pictures_title" description="Title for profile pictures selection screen">My profile pictures are…</string>
@@ -165,7 +164,7 @@
     <string name="profile_grid_screen_no_profiles_found_title" description="Title that no profiles were found">No profiles found</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_enabled" description="Description displayed when there is no profiles and some filter is enabled">Change or disable filter settings</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_disabled" description="Description displayed when there is no profiles and there is no filters enabled">Spread the word about the app in social media</string>
-    <string name="profile_grid_screen_profile_filter_settings_update_ongoing" description="Snakcbar text that profile filter settings update is ongoing">Profile filter settings update is ongoing</string>
+    <string name="profile_grid_screen_profile_filter_settings_update_ongoing" description="Snackbar text that profile filter settings update is ongoing">Profile filter settings update is ongoing</string>
     <string name="profile_gridg_screen_profile_loading_failed" description="Text displayed profile loading fails">Profile loading failed</string>
 
     <!-- View profile screen -->
@@ -324,7 +323,6 @@
     <!-- Account settings selfie -->
     <string name="account_settings_screen_title" description="Title for account settings">Account</string>
     <string name="account_settings_screen_email_title" description="Title for email text">Email address</string>
-    <string name="account_settings_screen_birthdate_title" description="Title for birthdate text">Birthdate</string>
     <string name="account_settings_screen_delete_account_action" description="Title for delete account action">Request account deletion</string>
     <string name="account_settings_screen_delete_account_action_error" description="Snackbar text about delete account action failure">Requesting account deletion failed</string>
     <string name="account_settings_screen_delete_account_confirm_dialog_title" description="Title for delete account confirm dialog title">Request account deletion?</string>

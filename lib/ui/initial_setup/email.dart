@@ -23,7 +23,7 @@ class AskEmailScreen extends StatelessWidget {
               final email = state.email;
               if ((email != null && isValidEmail(email)) || currentAccountEmail != null) {
                 return () {
-                  MyNavigator.push(context, MaterialPage<void>(child: const AskBirthdateScreen()));
+                  MyNavigator.push(context, const MaterialPage<void>(child: AgeConfirmationScreen()));
                 };
               } else {
                 return null;

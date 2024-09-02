@@ -240,9 +240,4 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       .mapErr((_) => ())
       .mapOk((_) => ());
   }
-
-  Future<Result<LatestBirthdate, ()>> downloadLatestBirthdate() async {
-    return await api.account((api) => api.getLatestBirthdate())
-      .mapErr((_) => ());
-  }
 }

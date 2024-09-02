@@ -41,15 +41,13 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   Widget content() {
     return BlocBuilder<AccountDetailsBloc, AccountDetailsBlocData>(
       builder: (context, state) {
-
-        final birthdate = state.birthdate;
         final email = state.email;
         if (state.isLoading) {
           return const Center(child: CircularProgressIndicator());
-        } else if (state.isError || birthdate == null || email == null) {
+        } else if (state.isError || email == null) {
           return Center(child: Text(context.strings.generic_error));
         } else {
-          return successfulLoading(context, email, birthdate);
+          return successfulLoading(context, email);
         }
       }
     );
@@ -58,7 +56,6 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   Widget successfulLoading(
     BuildContext context,
     String email,
-    String birthdate,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,12 +66,6 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
           style: Theme.of(context).textTheme.titleSmall,
         )),
         hPad(Text(email)),
-        const Padding(padding: EdgeInsets.all(4)),
-        hPad(Text(
-          context.strings.account_settings_screen_birthdate_title,
-          style: Theme.of(context).textTheme.titleSmall,
-        )),
-        hPad(Text(birthdate)),
         const Padding(padding: EdgeInsets.all(4)),
         deleteAccount(),
       ],

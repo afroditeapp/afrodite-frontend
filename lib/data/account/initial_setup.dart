@@ -3,7 +3,6 @@
 
 import 'package:camera/camera.dart';
 import 'package:http/http.dart';
-import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
@@ -90,15 +89,10 @@ class InitialSetupUtils {
     // Other setup
 
     await _api.accountAction((api) => api.postAccountData(AccountData(email: email)));
-
-    const wantedAge = 30;
-    final date = DateTime.now();
-    final wantedBirthdateYear = date.year - wantedAge;
-    final birthdateString = DateFormat("yyyy-MM-dd").format(DateTime(wantedBirthdateYear, 1, 1));
-    await _api.accountAction((api) => api.postAccountSetup(SetAccountSetup(birthdate: birthdateString, isAdult: true)));
+    await _api.accountAction((api) => api.postAccountSetup(SetAccountSetup(isAdult: true)));
 
     final update = ProfileUpdate(
-      age: wantedAge,
+      age: 30,
       name: "X",
       profileText: "",
       attributes: [],
@@ -141,11 +135,10 @@ class InitialSetupUtils {
     }
 
     {
-      final birthdate = data.birthdate;
-      if (birthdate == null) return errAndLog("Birthdate is null");
-      final datePart = birthdate.toIso8601String().substring(0, 10);
-      final r = await _api.accountAction((api) => api.postAccountSetup(SetAccountSetup(birthdate: datePart, isAdult: true)));
-      if (r.isErr()) return errAndLog("Setting birthdate failed");
+      final isAdult = data.isAdult;
+      if (isAdult == null) return errAndLog("Age info is null");
+      final r = await _api.accountAction((api) => api.postAccountSetup(SetAccountSetup(isAdult: isAdult)));
+      if (r.isErr()) return errAndLog("Setting account setup info failed");
     }
 
     {

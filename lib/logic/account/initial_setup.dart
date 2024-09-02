@@ -17,7 +17,6 @@ import "package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/utils.dart";
 import "package:pihka_frontend/utils/api.dart";
-import "package:pihka_frontend/utils/age.dart";
 import "package:pihka_frontend/utils/immutable_list.dart";
 import "package:pihka_frontend/utils/tmp_dir.dart";
 
@@ -31,9 +30,9 @@ final log = Logger("InitialSetupBloc");
 
 sealed class InitialSetupEvent {}
 
-class SetBirthdate extends InitialSetupEvent {
-  final DateTime birthdate;
-  SetBirthdate(this.birthdate);
+class SetAgeConfirmation extends InitialSetupEvent {
+  final bool isAdult;
+  SetAgeConfirmation(this.isAdult);
 }
 class SetEmail extends InitialSetupEvent {
   final String email;
@@ -43,7 +42,6 @@ class SetProfileName extends InitialSetupEvent {
   final String value;
   SetProfileName(this.value);
 }
-class CalculateSuggestedProfileAge extends InitialSetupEvent {}
 class SetProfileAge extends InitialSetupEvent {
   final int? age;
   SetProfileAge(this.age);
@@ -109,9 +107,9 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
     on<ResetState>((data, emit) {
       emit(InitialSetupData());
     });
-    on<SetBirthdate>((data, emit) {
+    on<SetAgeConfirmation>((data, emit) {
       emit(state.copyWith(
-        birthdate: data.birthdate,
+        isAdult: data.isAdult,
       ));
     });
     on<SetEmail>((data, emit) {
@@ -123,14 +121,6 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
       emit(state.copyWith(
         profileName: data.value,
       ));
-    });
-    on<CalculateSuggestedProfileAge>((data, emit) {
-      final birthdate = state.birthdate;
-      if (state.profileAge == null && birthdate != null) {
-        emit(state.copyWith(
-          profileAge: ageInYearsFromBirthdate(birthdate),
-        ));
-      }
     });
     on<SetProfileAge>((data, emit) {
       emit(state.copyWith(

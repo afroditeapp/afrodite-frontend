@@ -1,17 +1,15 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:intl/intl.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/initial_setup.dart";
 import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/model/freezed/logic/account/initial_setup.dart";
 import "package:pihka_frontend/ui/initial_setup/security_selfie.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
-import "package:pihka_frontend/utils/date.dart";
 
 
-class AskBirthdateScreen extends StatelessWidget {
-  const AskBirthdateScreen({Key? key}) : super(key: key);
+class AgeConfirmationScreen extends StatelessWidget {
+  const AgeConfirmationScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +17,8 @@ class AskBirthdateScreen extends StatelessWidget {
       context: context,
       child: QuestionAsker(
         getContinueButtonCallback: (context, state) {
-          final birthdate = state.birthdate;
-          if (birthdate != null && birthdate.isNowAdult()) {
+          final isAdult = state.isAdult;
+          if (isAdult != null && isAdult) {
             return () {
               MyNavigator.push(context, MaterialPage<void>(child: const AskSecuritySelfieScreen()));
             };
@@ -28,114 +26,44 @@ class AskBirthdateScreen extends StatelessWidget {
             return null;
           }
         },
-        question: const AskBirthdate(),
+        question: const AskAgeConfirmation(),
       ),
     );
   }
 }
 
 
-class AskBirthdate extends StatefulWidget {
-  const AskBirthdate({super.key});
+class AskAgeConfirmation extends StatefulWidget {
+  const AskAgeConfirmation({super.key});
 
   @override
-  State<AskBirthdate> createState() => _AskBirthdateState();
+  State<AskAgeConfirmation> createState() => _AskAgeConfirmationState();
 }
 
-class _AskBirthdateState extends State<AskBirthdate> {
+class _AskAgeConfirmationState extends State<AskAgeConfirmation> {
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        questionTitleText(context, context.strings.initial_setup_screen_birthdate_title),
-        birthDateRow(context),
-        tooYoungError(context),
+        questionTitleText(context, context.strings.initial_setup_screen_age_confirmation_title),
+        isAdultCheckbox(context),
       ],
     );
   }
 
-  Widget birthDateRow(BuildContext context) {
+  Widget isAdultCheckbox(BuildContext context) {
     return BlocBuilder<InitialSetupBloc, InitialSetupData>(
       builder: (context, state) {
-        final birthdate = state.birthdate;
-        final List<Widget> widgets;
-        if (birthdate != null) {
-          final locale = Localizations.localeOf(context);
-          widgets = [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(DateFormat.yMMMMd(locale.toLanguageTag()).format(birthdate)),
-            ),
-            calendarButton(context, birthdate),
-          ];
-        } else {
-          widgets = [
-            calendarButton(context, birthdate),
-          ];
-        }
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: widgets,
+        return CheckboxListTile(
+          value: state.isAdult ?? false,
+          controlAffinity: ListTileControlAffinity.leading,
+          title: Text(context.strings.initial_setup_screen_age_confirmation_checkbox),
+          onChanged: (value) {
+            context.read<InitialSetupBloc>().add(SetAgeConfirmation(value ?? false));
+          }
         );
       }
     );
-  }
-
-  Widget tooYoungError(BuildContext context) {
-    return BlocBuilder<InitialSetupBloc, InitialSetupData>(
-      builder: (context, state) {
-        final birthdate = state.birthdate;
-        if (birthdate != null) {
-          if (!birthdate.isNowAdult()) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(context.strings.initial_setup_screen_too_young_error),
-            );
-          } else {
-            return Container();
-          }
-        } else {
-          return Container();
-        }
-      }
-    );
-  }
-
-  Widget calendarButton(BuildContext context, DateTime? birthdate) {
-    if (birthdate == null) {
-      return ElevatedButton.icon(
-        onPressed: () => showCalendar(context, birthdate),
-        icon: const Icon(Icons.calendar_today),
-        label: Text(context.strings.initial_setup_screen_birthdate_button),
-      );
-    } else {
-      return IconButton(
-        onPressed: () => showCalendar(context, birthdate),
-        icon: const Icon(Icons.edit),
-      );
-    }
-  }
-
-  void showCalendar(BuildContext context, DateTime? birthdate) {
-    final DatePickerMode mode;
-    if (birthdate == null) {
-      mode = DatePickerMode.year;
-    } else {
-      mode = DatePickerMode.day;
-    }
-
-    showDatePicker(
-      context: context,
-      firstDate: DateTime(1920),
-      lastDate: DateTime.now(),
-      initialEntryMode: DatePickerEntryMode.calendar,
-      initialDatePickerMode: mode,
-      initialDate: birthdate,
-    ).then((value) {
-      if (value != null) {
-        context.read<InitialSetupBloc>().add(SetBirthdate(value));
-      }
-    });
   }
 }

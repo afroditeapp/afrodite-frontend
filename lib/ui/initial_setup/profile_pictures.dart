@@ -40,7 +40,6 @@ class AskProfilePicturesScreen extends StatelessWidget {
               if (pictures[0] is ImageSelected) {
                 onPressed = () {
                   context.read<InitialSetupBloc>().add(SetProfileImages(pictures));
-                  context.read<InitialSetupBloc>().add(CalculateSuggestedProfileAge());
                   MyNavigator.push(context, const MaterialPage<void>(child: AskProfileBasicInfoScreen()));
                 };
               }
