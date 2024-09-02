@@ -169,6 +169,9 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
         interactionOptions: const InteractionOptions(
           flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
         ),
+        onTap: (tapPosition, point) {
+          handleOnTap(context, point);
+        },
         onLongPress: (tapPosition, point) {
           handleOnTap(context, point);
         },

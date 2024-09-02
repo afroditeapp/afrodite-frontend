@@ -129,7 +129,7 @@
     <string name="initial_setup_screen_search_settings_min_age_subtitle" description="Subtitle for min age search setting">…with min age…</string>
     <string name="initial_setup_screen_search_settings_max_age_subtitle" description="Subtitle for max age search setting">…with max age…</string>
     <string name="initial_setup_screen_location_title" description="Title for initial setup location screen">My profile\'s location is…</string>
-    <string name="initial_setup_screen_location_help_dialog_text" description="Text for initial setup location help dialog">Select a location for your profile by long pressing the map.</string>
+    <string name="initial_setup_screen_location_help_dialog_text" description="Text for initial setup location help dialog">Select a location for your profile by tapping or long pressing the map.</string>
     <string name="initial_setup_screen_profile_attributes_missing_error_text" description="Error text displayed when profile attributes are not yet downloaded">Profile questions are not yet downloaded.</string>
     <string name="initial_setup_screen_profile_attributes_download_button" description="Button text for downloading profile attributes">Download questions</string>
     <string name="initial_setup_screen_profile_attributes_no_questions_text" description="Info text that all required questions are already answered">All required questions already answered.</string>
@@ -149,7 +149,7 @@
     <string name="camera_screen_take_photo_error" description="Snackbar error text displayed when taking photo fails">Taking photo failed</string>
 
     <!-- Map texts -->
-    <string name="map_select_location_help_text" description="Help text for selecting map location">Long press the map to select a location.</string>
+    <string name="map_select_location_help_text" description="Help text for selecting map location">Tap or long press the map to select a location.</string>
     <string name="map_location_update_successful" description="Snackbar text about successful location update">Location update successful</string>
     <string name="map_location_update_failed" description="Snackbar text about failed location update">Location update failed</string>
     <string name="map_openstreetmap_data_attribution_link_text" description="OpenStreetMap data attribution link text">OpenStreetMap contributors</string>
