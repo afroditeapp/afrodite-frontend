@@ -13,26 +13,37 @@ part of openapi.api;
 class SetAccountSetup {
   /// Returns a new [SetAccountSetup] instance.
   SetAccountSetup({
-    required this.birthdate,
+    this.birthdate,
+    required this.isAdult,
   });
 
-  String birthdate;
+  /// String date with \"YYYY-MM-DD\" format.  This is not required at the moment to reduce sensitive user data.
+  String? birthdate;
+
+  bool isAdult;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SetAccountSetup &&
-    other.birthdate == birthdate;
+    other.birthdate == birthdate &&
+    other.isAdult == isAdult;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (birthdate.hashCode);
+    (birthdate == null ? 0 : birthdate!.hashCode) +
+    (isAdult.hashCode);
 
   @override
-  String toString() => 'SetAccountSetup[birthdate=$birthdate]';
+  String toString() => 'SetAccountSetup[birthdate=$birthdate, isAdult=$isAdult]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.birthdate != null) {
       json[r'birthdate'] = this.birthdate;
+    } else {
+      json[r'birthdate'] = null;
+    }
+      json[r'is_adult'] = this.isAdult;
     return json;
   }
 
@@ -55,7 +66,8 @@ class SetAccountSetup {
       }());
 
       return SetAccountSetup(
-        birthdate: mapValueOfType<String>(json, r'birthdate')!,
+        birthdate: mapValueOfType<String>(json, r'birthdate'),
+        isAdult: mapValueOfType<bool>(json, r'is_adult')!,
       );
     }
     return null;
@@ -103,7 +115,7 @@ class SetAccountSetup {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'birthdate',
+    'is_adult',
   };
 }
 

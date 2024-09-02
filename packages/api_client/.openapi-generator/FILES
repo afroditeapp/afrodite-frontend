@@ -1,6 +1,7 @@
 .gitignore
 .travis.yml
 README.md
+doc/AcceptedProfileAges.md
 doc/AccessToken.md
 doc/AccessibleAccount.md
 doc/Account.md
@@ -55,6 +56,8 @@ doc/EventType.md
 doc/FavoriteProfilesPage.md
 doc/FcmDeviceToken.md
 doc/GetContentQueryParams.md
+doc/GetInitialProfileAgeInfoResult.md
+doc/GetMyProfileResult.md
 doc/GetProfileContentQueryParams.md
 doc/GetProfileContentResult.md
 doc/GetProfileQueryParam.md
@@ -119,6 +122,7 @@ doc/ProfileContentVersion.md
 doc/ProfileLink.md
 doc/ProfilePage.md
 doc/ProfileSearchAgeRange.md
+doc/ProfileSyncVersion.md
 doc/ProfileUpdate.md
 doc/ProfileVersion.md
 doc/ProfileVisibility.md
@@ -174,6 +178,7 @@ lib/auth/authentication.dart
 lib/auth/http_basic_auth.dart
 lib/auth/http_bearer_auth.dart
 lib/auth/oauth.dart
+lib/model/accepted_profile_ages.dart
 lib/model/access_token.dart
 lib/model/accessible_account.dart
 lib/model/account.dart
@@ -223,6 +228,8 @@ lib/model/event_type.dart
 lib/model/favorite_profiles_page.dart
 lib/model/fcm_device_token.dart
 lib/model/get_content_query_params.dart
+lib/model/get_initial_profile_age_info_result.dart
+lib/model/get_my_profile_result.dart
 lib/model/get_profile_content_query_params.dart
 lib/model/get_profile_content_result.dart
 lib/model/get_profile_query_param.dart
@@ -283,6 +290,7 @@ lib/model/profile_content_version.dart
 lib/model/profile_link.dart
 lib/model/profile_page.dart
 lib/model/profile_search_age_range.dart
+lib/model/profile_sync_version.dart
 lib/model/profile_update.dart
 lib/model/profile_version.dart
 lib/model/profile_visibility.dart
@@ -319,3 +327,7 @@ lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
+test/accepted_profile_ages_test.dart
+test/get_initial_profile_age_info_result_test.dart
+test/get_my_profile_result_test.dart
+test/profile_sync_version_test.dart

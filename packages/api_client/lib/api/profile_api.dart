@@ -148,6 +148,54 @@ class ProfileApi {
     return null;
   }
 
+  /// Get initial profile age information which can be used for calculating
+  ///
+  /// current accepted profile ages.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getInitialProfileAgeInfoWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/initial_profile_age_info';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get initial profile age information which can be used for calculating
+  ///
+  /// current accepted profile ages.
+  Future<GetInitialProfileAgeInfoResult?> getInitialProfileAgeInfo() async {
+    final response = await getInitialProfileAgeInfoWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetInitialProfileAgeInfoResult',) as GetInitialProfileAgeInfoResult;
+    
+    }
+    return null;
+  }
+
   /// Get location for account which makes this request.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -187,6 +235,50 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Location',) as Location;
+    
+    }
+    return null;
+  }
+
+  /// Get my profile
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getMyProfileWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/my_profile';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get my profile
+  Future<GetMyProfileResult?> getMyProfile() async {
+    final response = await getMyProfileWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetMyProfileResult',) as GetMyProfileResult;
     
     }
     return null;
@@ -559,7 +651,7 @@ class ProfileApi {
 
   /// Update profile information.
   ///
-  /// Writes the profile to the database only if it is changed.  # Requirements - Profile attributes must be valid - Profile text must be empty - Profile age must be same as currently or same as the current age calculated from birthdate  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
+  /// Writes the profile to the database only if it is changed.  WebSocket event about profile change will not be emitted. The event is emitted only from server side profile updates.  # Requirements - Profile attributes must be valid - Profile text must be empty - Profile age must match with currently valid age range. The first min value for the age range is the age at the initial setup. The second min and max value is calculated using the following algorithm: - The initial age (initialAge) is paired with the year of initial setup completed (initialSetupYear). - Year difference (yearDifference = currentYear - initialSetupYear) is used for changing the range min and max. - Min value: initialAge + yearDifference - 1. - Max value: initialAge + yearDifference + 1.  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -593,7 +685,7 @@ class ProfileApi {
 
   /// Update profile information.
   ///
-  /// Writes the profile to the database only if it is changed.  # Requirements - Profile attributes must be valid - Profile text must be empty - Profile age must be same as currently or same as the current age calculated from birthdate  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
+  /// Writes the profile to the database only if it is changed.  WebSocket event about profile change will not be emitted. The event is emitted only from server side profile updates.  # Requirements - Profile attributes must be valid - Profile text must be empty - Profile age must match with currently valid age range. The first min value for the age range is the age at the initial setup. The second min and max value is calculated using the following algorithm: - The initial age (initialAge) is paired with the year of initial setup completed (initialSetupYear). - Year difference (yearDifference = currentYear - initialSetupYear) is used for changing the range min and max. - Min value: initialAge + yearDifference - 1. - Max value: initialAge + yearDifference + 1.  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
   ///
   /// Parameters:
   ///

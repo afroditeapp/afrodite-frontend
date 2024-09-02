@@ -182,6 +182,8 @@ class ApiClient {
           return valueString == 'true' || valueString == '1';
         case 'DateTime':
           return value is DateTime ? value : DateTime.tryParse(value);
+        case 'AcceptedProfileAges':
+          return AcceptedProfileAges.fromJson(value);
         case 'AccessToken':
           return AccessToken.fromJson(value);
         case 'AccessibleAccount':
@@ -280,6 +282,10 @@ class ApiClient {
           return FcmDeviceToken.fromJson(value);
         case 'GetContentQueryParams':
           return GetContentQueryParams.fromJson(value);
+        case 'GetInitialProfileAgeInfoResult':
+          return GetInitialProfileAgeInfoResult.fromJson(value);
+        case 'GetMyProfileResult':
+          return GetMyProfileResult.fromJson(value);
         case 'GetProfileContentQueryParams':
           return GetProfileContentQueryParams.fromJson(value);
         case 'GetProfileContentResult':
@@ -400,6 +406,8 @@ class ApiClient {
           return ProfilePage.fromJson(value);
         case 'ProfileSearchAgeRange':
           return ProfileSearchAgeRange.fromJson(value);
+        case 'ProfileSyncVersion':
+          return ProfileSyncVersion.fromJson(value);
         case 'ProfileUpdate':
           return ProfileUpdate.fromJson(value);
         case 'ProfileVersion':

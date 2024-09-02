@@ -36,6 +36,7 @@ class EventType {
   static const latestViewedMessageChanged = EventType._(r'LatestViewedMessageChanged');
   static const contentProcessingStateChanged = EventType._(r'ContentProcessingStateChanged');
   static const availableProfileAttributesChanged = EventType._(r'AvailableProfileAttributesChanged');
+  static const profileChanged = EventType._(r'ProfileChanged');
 
   /// List of all possible values in this [enum][EventType].
   static const values = <EventType>[
@@ -52,6 +53,7 @@ class EventType {
     latestViewedMessageChanged,
     contentProcessingStateChanged,
     availableProfileAttributesChanged,
+    profileChanged,
   ];
 
   static EventType? fromJson(dynamic value) => EventTypeTypeTransformer().decode(value);
@@ -103,6 +105,7 @@ class EventTypeTypeTransformer {
         case r'LatestViewedMessageChanged': return EventType.latestViewedMessageChanged;
         case r'ContentProcessingStateChanged': return EventType.contentProcessingStateChanged;
         case r'AvailableProfileAttributesChanged': return EventType.availableProfileAttributesChanged;
+        case r'ProfileChanged': return EventType.profileChanged;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

@@ -14,21 +14,26 @@ class AccountSetup {
   /// Returns a new [AccountSetup] instance.
   AccountSetup({
     this.birthdate,
+    this.isAdult,
   });
 
   String? birthdate;
 
+  bool? isAdult;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is AccountSetup &&
-    other.birthdate == birthdate;
+    other.birthdate == birthdate &&
+    other.isAdult == isAdult;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (birthdate == null ? 0 : birthdate!.hashCode);
+    (birthdate == null ? 0 : birthdate!.hashCode) +
+    (isAdult == null ? 0 : isAdult!.hashCode);
 
   @override
-  String toString() => 'AccountSetup[birthdate=$birthdate]';
+  String toString() => 'AccountSetup[birthdate=$birthdate, isAdult=$isAdult]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -36,6 +41,11 @@ class AccountSetup {
       json[r'birthdate'] = this.birthdate;
     } else {
       json[r'birthdate'] = null;
+    }
+    if (this.isAdult != null) {
+      json[r'is_adult'] = this.isAdult;
+    } else {
+      json[r'is_adult'] = null;
     }
     return json;
   }
@@ -60,6 +70,7 @@ class AccountSetup {
 
       return AccountSetup(
         birthdate: mapValueOfType<String>(json, r'birthdate'),
+        isAdult: mapValueOfType<bool>(json, r'is_adult'),
       );
     }
     return null;
