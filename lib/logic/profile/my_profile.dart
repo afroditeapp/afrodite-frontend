@@ -46,6 +46,10 @@ class NewMyProfile extends MyProfileEvent {
   final ProfileEntry? profile;
   NewMyProfile(this.profile);
 }
+class NewInitialAgeInfo extends MyProfileEvent {
+  final InitialAgeInfo? value;
+  NewInitialAgeInfo(this.value);
+}
 class ReloadMyProfile extends MyProfileEvent {}
 
 class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunner {
@@ -55,6 +59,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
   final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
 
   StreamSubscription<ProfileEntry?>? _profileSubscription;
+  StreamSubscription<InitialAgeInfo?>? _initialAgeInfoSubscription;
 
   MyProfileBloc() : super(MyProfileData()) {
     on<SetProfile>((data, emit) async {
@@ -133,6 +138,9 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
     on<NewMyProfile>((data, emit) async {
       emit(state.copyWith(profile: data.profile));
     });
+    on<NewInitialAgeInfo>((data, emit) async {
+      emit(state.copyWith(initialAgeInfo: data.value));
+    });
     on<ReloadMyProfile>((data, emit) async {
       await runOnce(() async {
         emit(state.copyWith(loadingMyProfile: true));
@@ -161,11 +169,15 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
     _profileSubscription = db.accountStream((db) => db.getProfileEntryForMyProfile()).listen((event) {
       add(NewMyProfile(event));
     });
+    _initialAgeInfoSubscription = db.accountStream((db) => db.daoProfileInitialAgeInfo.watchInitialAgeInfo()).listen((event) {
+      add(NewInitialAgeInfo(event));
+    });
   }
 
   @override
   Future<void> close() async {
     await _profileSubscription?.cancel();
+    await _initialAgeInfoSubscription?.cancel();
     await super.close();
   }
 }

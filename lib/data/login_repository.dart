@@ -245,7 +245,7 @@ class LoginRepository extends DataRepository {
     );
     final common = CommonRepository(connectionManager);
     final media = MediaRepository(account, accountDb, connectionManager, accountId);
-    final profile = ProfileRepository(media, accountDb, accountBackgroundDb, connectionManager, accountId);
+    final profile = ProfileRepository(media, account, accountDb, accountBackgroundDb, connectionManager, accountId);
     final chat = ChatRepository(
       media: media,
       profile: profile,

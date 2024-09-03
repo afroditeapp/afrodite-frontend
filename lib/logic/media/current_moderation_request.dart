@@ -12,6 +12,9 @@ import "package:pihka_frontend/utils/result.dart";
 
 final log = Logger("CurrentModerationRequestBloc");
 
+// TODO(prod): Is current moderation request refreshed every time app opens
+// to profile grid view?
+// Probably only when initial moderation request is ongoing.
 
 sealed class CurrentModerationRequestEvent {}
 class Reload extends CurrentModerationRequestEvent {}

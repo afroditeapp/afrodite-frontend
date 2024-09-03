@@ -24,13 +24,28 @@ sealed class ApiError extends AppError {
   String title() => "API error";
 }
 
-class ActionApiError extends ApiError {
+sealed class ActionApiError extends ApiError {
+  const ActionApiError();
+}
+
+class ActionApiErrorException extends ActionApiError {
   final ApiException e;
-  const ActionApiError(this.e);
+  const ActionApiErrorException(this.e);
 
   @override
   void logError(Logger log) {
     log.error("Action API error, code: ${e.code}");
+    log.fine(StackTrace.current);
+    ErrorManager.getInstance().show(this);
+  }
+}
+
+class ActionApiErrorUnknownException extends ActionApiError {
+  const ActionApiErrorUnknownException();
+
+  @override
+  void logError(Logger log) {
+    log.error("Action API returned unknown exception");
     log.fine(StackTrace.current);
     ErrorManager.getInstance().show(this);
   }
@@ -55,6 +70,17 @@ class NullError extends ValueApiError {
   @override
   void logError(Logger log) {
     log.error("API function returned null");
+    log.fine(StackTrace.current);
+    ErrorManager.getInstance().show(this);
+  }
+}
+
+class ValueApiUnknownException extends ValueApiError {
+  const ValueApiUnknownException();
+
+  @override
+  void logError(Logger log) {
+    log.error("API function returned unknown exception");
     log.fine(StackTrace.current);
     ErrorManager.getInstance().show(this);
   }

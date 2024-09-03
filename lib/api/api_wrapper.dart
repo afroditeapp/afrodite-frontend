@@ -41,6 +41,10 @@ class ApiWrapper<T> {
         err.logError(log);
       }
       return Err(err);
+    } catch (e) {
+      const err = ValueApiUnknownException();
+      err.logError(log);
+      return const Err(err);
     }
   }
 
@@ -50,11 +54,15 @@ class ApiWrapper<T> {
       return Ok(await action(api));
     } on ApiException catch (e) {
       await restartConnectionIfNeeded(e);
-      final err = ActionApiError(e);
+      final err = ActionApiErrorException(e);
       if (logError) {
         err.logError(log);
       }
       return Err(err);
+    } catch (e) {
+      const err = ActionApiErrorUnknownException();
+      err.logError(log);
+      return const Err(err);
     }
   }
 

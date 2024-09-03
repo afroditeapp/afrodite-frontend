@@ -4,6 +4,7 @@ import 'package:async/async.dart';
 import 'package:database/src/foreground/account/dao_account_settings.dart';
 import 'package:database/src/foreground/account/dao_local_image_settings.dart';
 import 'package:database/src/foreground/account/dao_message_keys.dart';
+import 'package:database/src/foreground/account/dao_profile_initial_age_info.dart';
 import 'package:database/src/foreground/account/dao_sync_versions.dart';
 import 'package:database/src/foreground/conversations_table.dart';
 import 'package:database/src/foreground/matches_table.dart';
@@ -142,6 +143,11 @@ class Account extends Table {
   TextColumn get publicKeyData => text().map(const NullAwareTypeConverter.wrap(PublicKeyDataConverter())).nullable()();
   IntColumn get publicKeyId => integer().map(const NullAwareTypeConverter.wrap(PublicKeyIdConverter())).nullable()();
   IntColumn get publicKeyVersion => integer().map(const NullAwareTypeConverter.wrap(PublicKeyVersionConverter())).nullable()();
+
+  // DaoProfileInitialAgeInfo
+
+  IntColumn get profileInitialAgeSetUnixTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  IntColumn get profileInitialAge => integer().nullable()();
 }
 
 @DriftDatabase(
@@ -165,6 +171,7 @@ class Account extends Table {
     DaoSyncVersions,
     DaoLocalImageSettings,
     DaoMessageKeys,
+    DaoProfileInitialAgeInfo,
     // Other tables
     DaoMessages,
     DaoMatches,

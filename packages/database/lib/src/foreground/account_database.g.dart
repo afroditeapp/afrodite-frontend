@@ -562,6 +562,21 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<PublicKeyVersion?>(
               $AccountTable.$converterpublicKeyVersion);
+  static const VerificationMeta _profileInitialAgeSetUnixTimeMeta =
+      const VerificationMeta('profileInitialAgeSetUnixTime');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+      profileInitialAgeSetUnixTime = GeneratedColumn<int>(
+              'profile_initial_age_set_unix_time', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $AccountTable.$converterprofileInitialAgeSetUnixTime);
+  static const VerificationMeta _profileInitialAgeMeta =
+      const VerificationMeta('profileInitialAge');
+  @override
+  late final GeneratedColumn<int> profileInitialAge = GeneratedColumn<int>(
+      'profile_initial_age', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -634,7 +649,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         privateKeyData,
         publicKeyData,
         publicKeyId,
-        publicKeyVersion
+        publicKeyVersion,
+        profileInitialAgeSetUnixTime,
+        profileInitialAge
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -956,6 +973,14 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     context.handle(_publicKeyDataMeta, const VerificationResult.success());
     context.handle(_publicKeyIdMeta, const VerificationResult.success());
     context.handle(_publicKeyVersionMeta, const VerificationResult.success());
+    context.handle(
+        _profileInitialAgeSetUnixTimeMeta, const VerificationResult.success());
+    if (data.containsKey('profile_initial_age')) {
+      context.handle(
+          _profileInitialAgeMeta,
+          profileInitialAge.isAcceptableOrUnknown(
+              data['profile_initial_age']!, _profileInitialAgeMeta));
+    }
     return context;
   }
 
@@ -1166,6 +1191,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       publicKeyVersion: $AccountTable.$converterpublicKeyVersion.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}public_key_version'])),
+      profileInitialAgeSetUnixTime: $AccountTable
+          .$converterprofileInitialAgeSetUnixTime
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}profile_initial_age_set_unix_time'])),
+      profileInitialAge: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}profile_initial_age']),
     );
   }
 
@@ -1240,6 +1271,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       const NullAwareTypeConverter.wrap(PublicKeyIdConverter());
   static TypeConverter<PublicKeyVersion?, int?> $converterpublicKeyVersion =
       const NullAwareTypeConverter.wrap(PublicKeyVersionConverter());
+  static TypeConverter<UtcDateTime?, int?>
+      $converterprofileInitialAgeSetUnixTime =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
 
 class AccountData extends DataClass implements Insertable<AccountData> {
@@ -1316,6 +1350,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final PublicKeyData? publicKeyData;
   final PublicKeyId? publicKeyId;
   final PublicKeyVersion? publicKeyVersion;
+  final UtcDateTime? profileInitialAgeSetUnixTime;
+  final int? profileInitialAge;
   const AccountData(
       {required this.id,
       this.uuidAccountId,
@@ -1387,7 +1423,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.privateKeyData,
       this.publicKeyData,
       this.publicKeyId,
-      this.publicKeyVersion});
+      this.publicKeyVersion,
+      this.profileInitialAgeSetUnixTime,
+      this.profileInitialAge});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1657,6 +1695,14 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['public_key_version'] = Variable<int>(
           $AccountTable.$converterpublicKeyVersion.toSql(publicKeyVersion));
     }
+    if (!nullToAbsent || profileInitialAgeSetUnixTime != null) {
+      map['profile_initial_age_set_unix_time'] = Variable<int>($AccountTable
+          .$converterprofileInitialAgeSetUnixTime
+          .toSql(profileInitialAgeSetUnixTime));
+    }
+    if (!nullToAbsent || profileInitialAge != null) {
+      map['profile_initial_age'] = Variable<int>(profileInitialAge);
+    }
     return map;
   }
 
@@ -1875,6 +1921,13 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       publicKeyVersion: publicKeyVersion == null && nullToAbsent
           ? const Value.absent()
           : Value(publicKeyVersion),
+      profileInitialAgeSetUnixTime:
+          profileInitialAgeSetUnixTime == null && nullToAbsent
+              ? const Value.absent()
+              : Value(profileInitialAgeSetUnixTime),
+      profileInitialAge: profileInitialAge == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileInitialAge),
     );
   }
 
@@ -2006,6 +2059,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       publicKeyId: serializer.fromJson<PublicKeyId?>(json['publicKeyId']),
       publicKeyVersion:
           serializer.fromJson<PublicKeyVersion?>(json['publicKeyVersion']),
+      profileInitialAgeSetUnixTime: serializer
+          .fromJson<UtcDateTime?>(json['profileInitialAgeSetUnixTime']),
+      profileInitialAge: serializer.fromJson<int?>(json['profileInitialAge']),
     );
   }
   @override
@@ -2121,6 +2177,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'publicKeyId': serializer.toJson<PublicKeyId?>(publicKeyId),
       'publicKeyVersion':
           serializer.toJson<PublicKeyVersion?>(publicKeyVersion),
+      'profileInitialAgeSetUnixTime':
+          serializer.toJson<UtcDateTime?>(profileInitialAgeSetUnixTime),
+      'profileInitialAge': serializer.toJson<int?>(profileInitialAge),
     };
   }
 
@@ -2204,7 +2263,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<PrivateKeyData?> privateKeyData = const Value.absent(),
           Value<PublicKeyData?> publicKeyData = const Value.absent(),
           Value<PublicKeyId?> publicKeyId = const Value.absent(),
-          Value<PublicKeyVersion?> publicKeyVersion = const Value.absent()}) =>
+          Value<PublicKeyVersion?> publicKeyVersion = const Value.absent(),
+          Value<UtcDateTime?> profileInitialAgeSetUnixTime =
+              const Value.absent(),
+          Value<int?> profileInitialAge = const Value.absent()}) =>
       AccountData(
         id: id ?? this.id,
         uuidAccountId:
@@ -2398,6 +2460,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         publicKeyVersion: publicKeyVersion.present
             ? publicKeyVersion.value
             : this.publicKeyVersion,
+        profileInitialAgeSetUnixTime: profileInitialAgeSetUnixTime.present
+            ? profileInitialAgeSetUnixTime.value
+            : this.profileInitialAgeSetUnixTime,
+        profileInitialAge: profileInitialAge.present
+            ? profileInitialAge.value
+            : this.profileInitialAge,
       );
   AccountData copyWithCompanion(AccountCompanion data) {
     return AccountData(
@@ -2620,6 +2688,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       publicKeyVersion: data.publicKeyVersion.present
           ? data.publicKeyVersion.value
           : this.publicKeyVersion,
+      profileInitialAgeSetUnixTime: data.profileInitialAgeSetUnixTime.present
+          ? data.profileInitialAgeSetUnixTime.value
+          : this.profileInitialAgeSetUnixTime,
+      profileInitialAge: data.profileInitialAge.present
+          ? data.profileInitialAge.value
+          : this.profileInitialAge,
     );
   }
 
@@ -2710,7 +2784,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('privateKeyData: $privateKeyData, ')
           ..write('publicKeyData: $publicKeyData, ')
           ..write('publicKeyId: $publicKeyId, ')
-          ..write('publicKeyVersion: $publicKeyVersion')
+          ..write('publicKeyVersion: $publicKeyVersion, ')
+          ..write(
+              'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ')
+          ..write('profileInitialAge: $profileInitialAge')
           ..write(')'))
         .toString();
   }
@@ -2787,7 +2864,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         privateKeyData,
         publicKeyData,
         publicKeyId,
-        publicKeyVersion
+        publicKeyVersion,
+        profileInitialAgeSetUnixTime,
+        profileInitialAge
       ]);
   @override
   bool operator ==(Object other) =>
@@ -2879,7 +2958,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.privateKeyData == this.privateKeyData &&
           other.publicKeyData == this.publicKeyData &&
           other.publicKeyId == this.publicKeyId &&
-          other.publicKeyVersion == this.publicKeyVersion);
+          other.publicKeyVersion == this.publicKeyVersion &&
+          other.profileInitialAgeSetUnixTime ==
+              this.profileInitialAgeSetUnixTime &&
+          other.profileInitialAge == this.profileInitialAge);
 }
 
 class AccountCompanion extends UpdateCompanion<AccountData> {
@@ -2954,6 +3036,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<PublicKeyData?> publicKeyData;
   final Value<PublicKeyId?> publicKeyId;
   final Value<PublicKeyVersion?> publicKeyVersion;
+  final Value<UtcDateTime?> profileInitialAgeSetUnixTime;
+  final Value<int?> profileInitialAge;
   const AccountCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -3026,6 +3110,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.publicKeyData = const Value.absent(),
     this.publicKeyId = const Value.absent(),
     this.publicKeyVersion = const Value.absent(),
+    this.profileInitialAgeSetUnixTime = const Value.absent(),
+    this.profileInitialAge = const Value.absent(),
   });
   AccountCompanion.insert({
     this.id = const Value.absent(),
@@ -3099,6 +3185,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.publicKeyData = const Value.absent(),
     this.publicKeyId = const Value.absent(),
     this.publicKeyVersion = const Value.absent(),
+    this.profileInitialAgeSetUnixTime = const Value.absent(),
+    this.profileInitialAge = const Value.absent(),
   });
   static Insertable<AccountData> custom({
     Expression<int>? id,
@@ -3172,6 +3260,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<String>? publicKeyData,
     Expression<int>? publicKeyId,
     Expression<int>? publicKeyVersion,
+    Expression<int>? profileInitialAgeSetUnixTime,
+    Expression<int>? profileInitialAge,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -3300,6 +3390,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (publicKeyData != null) 'public_key_data': publicKeyData,
       if (publicKeyId != null) 'public_key_id': publicKeyId,
       if (publicKeyVersion != null) 'public_key_version': publicKeyVersion,
+      if (profileInitialAgeSetUnixTime != null)
+        'profile_initial_age_set_unix_time': profileInitialAgeSetUnixTime,
+      if (profileInitialAge != null) 'profile_initial_age': profileInitialAge,
     });
   }
 
@@ -3374,7 +3467,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<PrivateKeyData?>? privateKeyData,
       Value<PublicKeyData?>? publicKeyData,
       Value<PublicKeyId?>? publicKeyId,
-      Value<PublicKeyVersion?>? publicKeyVersion}) {
+      Value<PublicKeyVersion?>? publicKeyVersion,
+      Value<UtcDateTime?>? profileInitialAgeSetUnixTime,
+      Value<int?>? profileInitialAge}) {
     return AccountCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -3491,6 +3586,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       publicKeyData: publicKeyData ?? this.publicKeyData,
       publicKeyId: publicKeyId ?? this.publicKeyId,
       publicKeyVersion: publicKeyVersion ?? this.publicKeyVersion,
+      profileInitialAgeSetUnixTime:
+          profileInitialAgeSetUnixTime ?? this.profileInitialAgeSetUnixTime,
+      profileInitialAge: profileInitialAge ?? this.profileInitialAge,
     );
   }
 
@@ -3788,6 +3886,14 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           .$converterpublicKeyVersion
           .toSql(publicKeyVersion.value));
     }
+    if (profileInitialAgeSetUnixTime.present) {
+      map['profile_initial_age_set_unix_time'] = Variable<int>($AccountTable
+          .$converterprofileInitialAgeSetUnixTime
+          .toSql(profileInitialAgeSetUnixTime.value));
+    }
+    if (profileInitialAge.present) {
+      map['profile_initial_age'] = Variable<int>(profileInitialAge.value);
+    }
     return map;
   }
 
@@ -3878,7 +3984,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('privateKeyData: $privateKeyData, ')
           ..write('publicKeyData: $publicKeyData, ')
           ..write('publicKeyId: $publicKeyId, ')
-          ..write('publicKeyVersion: $publicKeyVersion')
+          ..write('publicKeyVersion: $publicKeyVersion, ')
+          ..write(
+              'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ')
+          ..write('profileInitialAge: $profileInitialAge')
           ..write(')'))
         .toString();
   }
@@ -6805,6 +6914,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       DaoLocalImageSettings(this as AccountDatabase);
   late final DaoMessageKeys daoMessageKeys =
       DaoMessageKeys(this as AccountDatabase);
+  late final DaoProfileInitialAgeInfo daoProfileInitialAgeInfo =
+      DaoProfileInitialAgeInfo(this as AccountDatabase);
   late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
   late final DaoMatches daoMatches = DaoMatches(this as AccountDatabase);
   late final DaoProfiles daoProfiles = DaoProfiles(this as AccountDatabase);

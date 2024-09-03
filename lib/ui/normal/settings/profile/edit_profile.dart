@@ -234,12 +234,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           const Padding(padding: EdgeInsets.all(8)),
           const Divider(),
           const Padding(padding: EdgeInsets.all(8)),
-          AskProfileBasicInfo(
-            profileNameInitialValue: widget.initialProfile.name,
-            setterProfileName: (value) {
-              widget.editMyProfileBloc.add(NewName(value));
-            },
-            ageInitialValue: widget.initialProfile.age.toString(),
+          EditProfileBasicInfo(
+            ageInitialValue: widget.initialProfile.age,
             setterProfileAge: (value) {
               widget.editMyProfileBloc.add(NewAge(value));
             },
@@ -464,4 +460,87 @@ abstract class AttributeInfoProvider {
   List<String> extraValues(BuildContext context);
 
   bool get isFilter;
+}
+
+class EditProfileBasicInfo extends StatefulWidget {
+  final int? ageInitialValue;
+  final void Function(int?) setterProfileAge;
+  const EditProfileBasicInfo({
+    required this.ageInitialValue,
+    required this.setterProfileAge,
+    super.key,
+  });
+
+  @override
+  State<EditProfileBasicInfo> createState() => _EditProfileBasicInfoState();
+}
+
+class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: INITIAL_SETUP_PADDING),
+              child: askInfo(context),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget askInfo(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          context.strings.initial_setup_screen_profile_basic_info_age_title,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const Padding(padding: EdgeInsets.only(top: 8)),
+        ageSelectionOrError(),
+      ],
+    );
+  }
+
+  Widget ageSelectionOrError() {
+    return BlocBuilder<MyProfileBloc, MyProfileData>(
+      builder: (context, state) {
+        final info = state.initialAgeInfo;
+        final currentAge = state.profile?.age;
+        if (info == null || currentAge == null) {
+          return Text(context.strings.generic_error);
+        } else {
+          return ageSelection(context, currentAge, info);
+        }
+      }
+    );
+  }
+
+  Widget ageSelection(BuildContext context, int currentAge, InitialAgeInfo info) {
+    return DropdownMenu<int>(
+      initialSelection: widget.ageInitialValue,
+      dropdownMenuEntries: info.availableAges(currentAge, MAX_AGE)
+        .map((value) {
+          return DropdownMenuEntry<int>(
+            value: value,
+            label: value.toString(),
+          );
+        })
+        .toList(),
+      onSelected: (value) {
+        if (value != null) {
+          widget.setterProfileAge(value);
+        }
+      },
+    );
+  }
 }

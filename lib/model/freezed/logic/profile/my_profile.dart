@@ -13,5 +13,6 @@ class MyProfileData with _$MyProfileData, UpdateStateProvider {
     @Default(UpdateIdle()) UpdateState updateState,
     ProfileEntry? profile,
     @Default(false) bool loadingMyProfile,
+    InitialAgeInfo? initialAgeInfo,
   }) = _MyProfileData;
 }

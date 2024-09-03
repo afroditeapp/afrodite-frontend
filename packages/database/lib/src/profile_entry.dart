@@ -1,5 +1,8 @@
 
+import 'dart:math';
+
 import 'package:openapi/api.dart';
+import 'package:utils/utils.dart';
 
 class ProfileEntry {
   final AccountId uuid;
@@ -105,4 +108,29 @@ class ProfileTitle {
 class NewMessageNotificationId {
   final int id;
   const NewMessageNotificationId(this.id);
+}
+
+class InitialAgeInfo {
+  final int age;
+  final UtcDateTime time;
+  const InitialAgeInfo(this.age, this.time);
+
+  List<int> availableAges(int currentAge, int maxAgeSupported) {
+    final currentTime = UtcDateTime.now();
+    final currentYear = currentTime.dateTime.year;
+    final initialAgeYear = time.dateTime.year;
+    final yearDiff = currentYear - initialAgeYear;
+
+    final minAge = age + yearDiff - 1;
+    final maxAge = min(age + yearDiff + 1, maxAgeSupported);
+
+    final ages = <int>[];
+
+    if (minAge > age) {
+      ages.add(minAge);
+    }
+    ages.add(currentAge);
+    ages.add(maxAge);
+    return ages;
+  }
 }

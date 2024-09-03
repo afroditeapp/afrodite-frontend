@@ -24,11 +24,13 @@ mixin _$MyProfileData {
   UpdateState get updateState => throw _privateConstructorErrorMyProfileData;
   ProfileEntry? get profile => throw _privateConstructorErrorMyProfileData;
   bool get loadingMyProfile => throw _privateConstructorErrorMyProfileData;
+  InitialAgeInfo? get initialAgeInfo => throw _privateConstructorErrorMyProfileData;
 
   MyProfileData copyWith({
     UpdateState? updateState,
     ProfileEntry? profile,
     bool? loadingMyProfile,
+    InitialAgeInfo? initialAgeInfo,
   }) => throw _privateConstructorErrorMyProfileData;
 }
 
@@ -38,6 +40,7 @@ abstract class _MyProfileData extends MyProfileData {
     UpdateState updateState,
     ProfileEntry? profile,
     bool loadingMyProfile,
+    InitialAgeInfo? initialAgeInfo,
   }) = _$MyProfileDataImpl;
   _MyProfileData._() : super._();
 }
@@ -51,6 +54,7 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
     this.updateState = _updateStateDefaultValue,
     this.profile,
     this.loadingMyProfile = _loadingMyProfileDefaultValue,
+    this.initialAgeInfo,
   }) : super._();
 
   @override
@@ -59,10 +63,12 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
   final ProfileEntry? profile;
   @override
   final bool loadingMyProfile;
+  @override
+  final InitialAgeInfo? initialAgeInfo;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MyProfileData(updateState: $updateState, profile: $profile, loadingMyProfile: $loadingMyProfile)';
+    return 'MyProfileData(updateState: $updateState, profile: $profile, loadingMyProfile: $loadingMyProfile, initialAgeInfo: $initialAgeInfo)';
   }
 
   @override
@@ -72,7 +78,8 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('type', 'MyProfileData'))
       ..add(DiagnosticsProperty('updateState', updateState))
       ..add(DiagnosticsProperty('profile', profile))
-      ..add(DiagnosticsProperty('loadingMyProfile', loadingMyProfile));
+      ..add(DiagnosticsProperty('loadingMyProfile', loadingMyProfile))
+      ..add(DiagnosticsProperty('initialAgeInfo', initialAgeInfo));
   }
 
   @override
@@ -85,7 +92,9 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
         (identical(other.profile, profile) ||
           other.profile == profile) &&
         (identical(other.loadingMyProfile, loadingMyProfile) ||
-          other.loadingMyProfile == loadingMyProfile)
+          other.loadingMyProfile == loadingMyProfile) &&
+        (identical(other.initialAgeInfo, initialAgeInfo) ||
+          other.initialAgeInfo == initialAgeInfo)
     );
   }
 
@@ -95,6 +104,7 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
     updateState,
     profile,
     loadingMyProfile,
+    initialAgeInfo,
   );
 
   @override
@@ -102,9 +112,11 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
     Object? updateState,
     Object? profile = _detectDefaultValueInCopyWith,
     Object? loadingMyProfile,
+    Object? initialAgeInfo = _detectDefaultValueInCopyWith,
   }) => _$MyProfileDataImpl(
     updateState: (updateState ?? this.updateState) as UpdateState,
     profile: (profile == _detectDefaultValueInCopyWith ? this.profile : profile) as ProfileEntry?,
     loadingMyProfile: (loadingMyProfile ?? this.loadingMyProfile) as bool,
+    initialAgeInfo: (initialAgeInfo == _detectDefaultValueInCopyWith ? this.initialAgeInfo : initialAgeInfo) as InitialAgeInfo?,
   );
 }

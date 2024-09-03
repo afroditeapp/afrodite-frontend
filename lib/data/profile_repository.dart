@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:async/async.dart' show StreamExtensions;
-import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
@@ -26,10 +26,11 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   final ServerConnectionManager connectionManager;
 
   final MediaRepository media;
+  final AccountRepository account;
 
   final AccountId currentUser;
 
-  ProfileRepository(this.media, this.db, this.accountBackgroundDb, this.connectionManager, this.currentUser) :
+  ProfileRepository(this.media, this.account, this.db, this.accountBackgroundDb, this.connectionManager, this.currentUser) :
     syncHandler = ConnectedActionScheduler(connectionManager),
     _api = connectionManager.api;
 
@@ -74,6 +75,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       await reloadAttributeFilters();
       await reloadSearchAgeRange();
       await reloadSearchGroups();
+      await downloadInitialSetupAgeInfoIfNull(skipIfAccountStateIsInitialSetup: true);
       final result = await reloadFavoriteProfiles();
       if (result.isOk()) {
         await db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(true));
@@ -84,6 +86,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   @override
   Future<void> onResumeAppUsage() async {
     syncHandler.onResumeAppUsageSync(() async {
+      // TODO(quality): Replace ok method with okAndNull to avoid reload when
+      // database query fails.
+
       final result = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileLocation()).ok();
       if (result == null) {
         await reloadLocation();
@@ -110,6 +115,11 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         await reloadSearchGroups();
       }
 
+      final initialAgeInfo = await db.accountStreamSingle((db) => db.daoProfileInitialAgeInfo.watchInitialAgeInfo()).ok();
+      if (initialAgeInfo == null) {
+        await downloadInitialSetupAgeInfoIfNull(skipIfAccountStateIsInitialSetup: false);
+      }
+
       final syncDone = await db.accountStreamSingle((db) => db.daoInitialSync.watchProfileSyncDone()).ok() ?? false;
       if (!syncDone) {
         await reloadFavoriteProfiles();
@@ -125,6 +135,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     await reloadAttributeFilters();
     await reloadSearchAgeRange();
     await reloadSearchGroups();
+    // The account state might still be InitialSetup as events from server
+    // updates the state, so skip account state check.
+    await downloadInitialSetupAgeInfoIfNull(skipIfAccountStateIsInitialSetup: true);
   }
 
   @override
@@ -391,6 +404,45 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return db.accountStream(
       (db) => db.daoConversations.watchUnreadMessageCount(accountId),
     );
+  }
+
+  Future<void> downloadInitialSetupAgeInfoIfNull({required bool skipIfAccountStateIsInitialSetup}) async {
+    if (skipIfAccountStateIsInitialSetup) {
+      final state = await account.accountState.firstOrNull;
+      if (state == AccountState.initialSetup) {
+        // It is not possible to download the info when
+        // the state is initial setup.
+        return;
+      }
+    }
+
+    final value = await db.accountStreamSingle(
+      (db) => db.daoProfileInitialAgeInfo.watchInitialAgeInfo(),
+    ).ok();
+    if (value != null) {
+      // Already downloaded
+      return;
+    }
+
+    final apiResult = await _api.profile((api) => api.getInitialProfileAgeInfo());
+    switch (apiResult) {
+      case Err():
+        return;
+      case Ok(:final v):
+        final info = v.info;
+        if (info == null) {
+          // Initial setup is ongoing. This might happen at least for
+          // new accounts as onLogin runs for those and client might not
+          // received the state yet. That could be perhaps avoided by
+          // skipping null values from the skipIfAccountStateIsInitialSetup
+          // related account state stream, but extra API call does not matter
+          // that much.
+        } else {
+          await db.accountAction(
+            (db) => db.daoProfileInitialAgeInfo.setInitialAgeInfo(info: info),
+          );
+        }
+    }
   }
 }
 
