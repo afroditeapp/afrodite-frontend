@@ -17,7 +17,7 @@ class AcceptedProfileAges {
     required this.profileInitialAgeSetUnixTime,
   });
 
-  ProfileAge profileInitialAge;
+  int profileInitialAge;
 
   UnixTime profileInitialAgeSetUnixTime;
 
@@ -61,7 +61,7 @@ class AcceptedProfileAges {
       }());
 
       return AcceptedProfileAges(
-        profileInitialAge: ProfileAge.fromJson(json[r'profile_initial_age'])!,
+        profileInitialAge: mapValueOfType<int>(json, r'profile_initial_age')!,
         profileInitialAgeSetUnixTime: UnixTime.fromJson(json[r'profile_initial_age_set_unix_time'])!,
       );
     }

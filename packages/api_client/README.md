@@ -255,7 +255,6 @@ Class | Method | HTTP request | Description
  - [PerfHistoryValue](doc//PerfHistoryValue.md)
  - [PerfValueArea](doc//PerfValueArea.md)
  - [Profile](doc//Profile.md)
- - [ProfileAge](doc//ProfileAge.md)
  - [ProfileAttributeFilterList](doc//ProfileAttributeFilterList.md)
  - [ProfileAttributeFilterListUpdate](doc//ProfileAttributeFilterListUpdate.md)
  - [ProfileAttributeFilterValue](doc//ProfileAttributeFilterValue.md)

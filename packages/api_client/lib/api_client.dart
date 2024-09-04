@@ -378,8 +378,6 @@ class ApiClient {
           return PerfValueArea.fromJson(value);
         case 'Profile':
           return Profile.fromJson(value);
-        case 'ProfileAge':
-          return ProfileAge.fromJson(value);
         case 'ProfileAttributeFilterList':
           return ProfileAttributeFilterList.fromJson(value);
         case 'ProfileAttributeFilterListUpdate':

@@ -107,7 +107,6 @@ doc/PerfHistoryQueryResult.md
 doc/PerfHistoryValue.md
 doc/PerfValueArea.md
 doc/Profile.md
-doc/ProfileAge.md
 doc/ProfileApi.md
 doc/ProfileAttributeFilterList.md
 doc/ProfileAttributeFilterListUpdate.md
@@ -276,7 +275,6 @@ lib/model/perf_history_query_result.dart
 lib/model/perf_history_value.dart
 lib/model/perf_value_area.dart
 lib/model/profile.dart
-lib/model/profile_age.dart
 lib/model/profile_attribute_filter_list.dart
 lib/model/profile_attribute_filter_list_update.dart
 lib/model/profile_attribute_filter_value.dart
@@ -327,7 +325,3 @@ lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
-test/accepted_profile_ages_test.dart
-test/get_initial_profile_age_info_result_test.dart
-test/get_my_profile_result_test.dart
-test/profile_sync_version_test.dart

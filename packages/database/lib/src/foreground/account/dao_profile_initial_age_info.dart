@@ -20,7 +20,7 @@ class DaoProfileInitialAgeInfo extends DatabaseAccessor<AccountDatabase> with _$
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
-        profileInitialAge: Value(info.profileInitialAge.value),
+        profileInitialAge: Value(info.profileInitialAge),
         profileInitialAgeSetUnixTime: Value(time),
       ),
     );
