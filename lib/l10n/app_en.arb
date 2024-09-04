@@ -270,6 +270,18 @@
   "@edit_my_gender_screen_gender_setting_title": {
     "description": "Title for gender setting"
   },
+  "edit_profile_screen_automatic_min_age_incrementing_info_dialog_text": "Min age will be increased to {p0} in {p1}",
+  "@edit_profile_screen_automatic_min_age_incrementing_info_dialog_text": {
+    "description": "Dialog text for notifying user when profile age min value is incremented",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      },
+      "p1": {
+        "type": "String"
+      }
+    }
+  },
   "edit_profile_screen_invalid_age": "Invalid age",
   "@edit_profile_screen_invalid_age": {
     "description": "Snackbar text for notifying about invalid age"

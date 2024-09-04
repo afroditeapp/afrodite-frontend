@@ -111,26 +111,68 @@ class NewMessageNotificationId {
 }
 
 class InitialAgeInfo {
-  final int age;
+  final int initialAge;
   final UtcDateTime time;
-  const InitialAgeInfo(this.age, this.time);
+  const InitialAgeInfo(this.initialAge, this.time);
 
-  List<int> availableAges(int currentAge, int maxAgeSupported) {
+  AvailableAges availableAges(int maxAgeSupported) {
     final currentTime = UtcDateTime.now();
     final currentYear = currentTime.dateTime.year;
     final initialAgeYear = time.dateTime.year;
     final yearDiff = currentYear - initialAgeYear;
 
-    final minAge = age + yearDiff - 1;
-    final maxAge = min(age + yearDiff + 1, maxAgeSupported);
+    final minAge = min(initialAge + yearDiff - 1, maxAgeSupported);
+    final middleAge = min(minAge + 1, maxAgeSupported);
+    final maxAge = min(initialAge + yearDiff + 1, maxAgeSupported);
 
     final ages = <int>[];
 
-    if (minAge > age) {
+    if (initialAge != middleAge && minAge != middleAge) {
       ages.add(minAge);
     }
-    ages.add(currentAge);
-    ages.add(maxAge);
-    return ages;
+    ages.add(middleAge);
+    if (middleAge != maxAge) {
+      ages.add(maxAge);
+    }
+
+    final AutomaticAgeChangeInfo? nextAutomaticAgeChange;
+    if (minAge >= maxAgeSupported || initialAge == maxAgeSupported) {
+      nextAutomaticAgeChange = null;
+    } else {
+      if (initialAge == middleAge) {
+        nextAutomaticAgeChange = AutomaticAgeChangeInfo(
+          age: minAge + 2,
+          year: currentYear + 2,
+        );
+      } else {
+        nextAutomaticAgeChange = AutomaticAgeChangeInfo(
+          age: minAge + 1,
+          year: currentYear + 1,
+        );
+      }
+    }
+
+    return AvailableAges(
+      availableAges: ages,
+      nextAutomaticAgeChange: nextAutomaticAgeChange,
+    );
   }
+}
+
+class AvailableAges {
+  final List<int> availableAges;
+  final AutomaticAgeChangeInfo? nextAutomaticAgeChange;
+  AvailableAges({
+    required this.availableAges,
+    required this.nextAutomaticAgeChange,
+  });
+}
+
+class AutomaticAgeChangeInfo {
+  final int age;
+  final int year;
+  AutomaticAgeChangeInfo({
+    required this.age,
+    required this.year,
+  });
 }

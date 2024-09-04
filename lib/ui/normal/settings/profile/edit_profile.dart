@@ -515,20 +515,37 @@ class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
     return BlocBuilder<MyProfileBloc, MyProfileData>(
       builder: (context, state) {
         final info = state.initialAgeInfo;
-        final currentAge = state.profile?.age;
-        if (info == null || currentAge == null) {
+        if (info == null) {
           return Text(context.strings.generic_error);
         } else {
-          return ageSelection(context, currentAge, info);
+          final availableAges = info.availableAges(MAX_AGE);
+          final nextAutomaticAgeChange = availableAges.nextAutomaticAgeChange;
+          return Row(
+            children: [
+              ageSelection(context, availableAges),
+              if (nextAutomaticAgeChange != null) IconButton(
+                onPressed: () {
+                  showInfoDialog(
+                    context,
+                    context.strings.edit_profile_screen_automatic_min_age_incrementing_info_dialog_text(
+                      nextAutomaticAgeChange.age.toString(),
+                      nextAutomaticAgeChange.year.toString(),
+                    )
+                  );
+                },
+                icon: const Icon(Icons.info),
+              )
+            ]
+          );
         }
       }
     );
   }
 
-  Widget ageSelection(BuildContext context, int currentAge, InitialAgeInfo info) {
+  Widget ageSelection(BuildContext context, AvailableAges info) {
     return DropdownMenu<int>(
       initialSelection: widget.ageInitialValue,
-      dropdownMenuEntries: info.availableAges(currentAge, MAX_AGE)
+      dropdownMenuEntries: info.availableAges
         .map((value) {
           return DropdownMenuEntry<int>(
             value: value,
