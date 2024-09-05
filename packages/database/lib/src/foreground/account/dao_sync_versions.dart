@@ -1,6 +1,7 @@
 
 import 'package:openapi/api.dart' show
   AccountSyncVersion,
+  ProfileSyncVersion,
   ReceivedBlocksSyncVersion,
   ReceivedLikesSyncVersion,
   SentBlocksSyncVersion,
@@ -23,6 +24,15 @@ class DaoSyncVersions extends DatabaseAccessor<AccountDatabase> with _$DaoSyncVe
       AccountCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
         syncVersionAccount: Value(value.version),
+      ),
+    );
+  }
+
+  Future<void> updateSyncVersionProfile(ProfileSyncVersion value) async {
+    await into(account).insertOnConflictUpdate(
+      AccountCompanion.insert(
+        id: ACCOUNT_DB_DATA_ID,
+        syncVersionProfile: Value(value.version),
       ),
     );
   }
@@ -83,6 +93,8 @@ class DaoSyncVersions extends DatabaseAccessor<AccountDatabase> with _$DaoSyncVe
 
   Stream<int?> watchSyncVersionAccount() =>
     watchColumn((r) => r.syncVersionAccount);
+  Stream<int?> watchSyncVersionProfile() =>
+    watchColumn((r) => r.syncVersionProfile);
   Stream<int?> watchSyncVersionReceivedLikes() =>
     watchColumn((r) => r.syncVersionReceivedLikes);
   Stream<int?> watchSyncVersionReceivedBlocks() =>

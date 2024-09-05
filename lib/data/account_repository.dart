@@ -165,6 +165,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       chat.receiveNewMessages();
     } else if (event.event == EventType.availableProfileAttributesChanged) {
       profile.receiveProfileAttributes();
+    } else if (event.event == EventType.profileChanged) {
+      profile.reloadMyProfile();
     } else {
       log.error("Unknown EventToClient");
     }

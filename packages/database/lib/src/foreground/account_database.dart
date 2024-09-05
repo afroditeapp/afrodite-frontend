@@ -61,6 +61,7 @@ class Account extends Table {
   // DaoSyncVersions
 
   IntColumn get syncVersionAccount => integer().nullable()();
+  IntColumn get syncVersionProfile => integer().nullable()();
   IntColumn get syncVersionReceivedLikes => integer().nullable()();
   IntColumn get syncVersionReceivedBlocks => integer().nullable()();
   IntColumn get syncVersionSentLikes => integer().nullable()();

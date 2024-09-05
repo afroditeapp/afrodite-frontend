@@ -71,7 +71,6 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       // No Result checking needed for these calls as db null value is checked
       // onResumeAppUsage.
       await reloadLocation();
-      await reloadMyProfile();
       await reloadAttributeFilters();
       await reloadSearchAgeRange();
       await reloadSearchGroups();
@@ -92,11 +91,6 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       final result = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileLocation()).ok();
       if (result == null) {
         await reloadLocation();
-      }
-
-      final attributes = await db.accountStreamSingle((db) => db.daoMyProfile.watchProfileAttributes()).ok();
-      if (attributes == null) {
-        await reloadMyProfile();
       }
 
       final attributeFilters = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileAttributeFilters()).ok();
@@ -276,17 +270,11 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<void, void>> reloadMyProfile() async {
-    return await _api.profile((api) => api.getProfile(currentUser.accountId))
+    return await _api.profile((api) => api.getMyProfile())
       .emptyErr()
-      .andThen((info) async {
-        final p = info.profile;
-        final v = info.version;
-        if (p != null && v != null) {
-          return await db.accountAction((db) => db.daoMyProfile.setApiProfile(profile: p, version: v));
-        } else {
-          log.warning("reloadMyProfile: profile or version is null");
-          return const Err(null);
-        }
+      .andThen((info) {
+        return db.accountAction((db) => db.daoMyProfile.setApiProfile(profile: info.profile, version: info.version))
+          .andThen((_) => db.accountAction((db) => db.daoSyncVersions.updateSyncVersionProfile(info.syncVersion)));
       });
   }
 
