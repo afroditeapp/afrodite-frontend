@@ -42,6 +42,7 @@ clean:
 	cd packages/database && flutter clean
 	cd packages/api_client && flutter clean
 	cd packages/native_utils && flutter clean
+	rm -rf packages/native_utils/android/.cxx
 	cd packages/native_utils/rust_utils && cargo clean
 
 code-stats:
