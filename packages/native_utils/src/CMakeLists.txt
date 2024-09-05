@@ -1,6 +1,6 @@
 # Flutter tooling requires at least CMake 3.10 and Corrosion
-# requires at least CMake 3.14.
-cmake_minimum_required(VERSION 3.14)
+# requires at least CMake 3.15.
+cmake_minimum_required(VERSION 3.15)
 
 project(native_utils_library VERSION 0.0.1 LANGUAGES C)
 
@@ -9,7 +9,7 @@ include(FetchContent)
 FetchContent_Declare(
     Corrosion
     GIT_REPOSITORY https://github.com/corrosion-rs/corrosion.git
-    GIT_TAG v0.4
+    GIT_TAG v0.5
 )
 FetchContent_MakeAvailable(Corrosion)
 
