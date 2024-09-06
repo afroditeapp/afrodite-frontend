@@ -7,7 +7,7 @@ import 'dart:typed_data';
 import 'package:database/database.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
-import 'package:native_utils_ffi/message.dart';
+import 'package:native_utils_ffi/src/message.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
