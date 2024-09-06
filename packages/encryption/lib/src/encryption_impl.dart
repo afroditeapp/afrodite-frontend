@@ -63,7 +63,9 @@ class SecureStorageManager extends AppSingleton {
       iOptions: iosOptions,
     );
 
-    testEncryptionSupport();
+    if (!kIsWeb) {
+      testEncryptionSupport();
+    }
   }
 
   Future<String> getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir(
@@ -72,6 +74,10 @@ class SecureStorageManager extends AppSingleton {
       required DatabaseRemover remover,
     }
   ) async {
+    if (kIsWeb) {
+      throw UnsupportedError("Encryption is not supported on web");
+    }
+
     final IOSOptions iosOptions;
     if (backgroundDb) {
       iosOptions = const IOSOptions(

@@ -54,3 +54,7 @@ devtools_options.yaml
 
 doc
 tmp
+
+# Drift web dependencies
+web/drift_worker.js
+web/sqlite3.wasm

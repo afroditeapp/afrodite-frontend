@@ -37,6 +37,12 @@ watch-translations-linux:
 watch-freezed-code:
 	fswatch -o -e Updated lib/model/freezed | xargs -n1 -I{} make update-freezed-code
 
+remove-and-download-drift-web-dependencies:
+	rm -f web/drift_worker.js
+	rm -f web/sqlite3.wasm
+	cd web && curl "https://github.com/simolus3/drift/releases/download/drift-2.19.1/drift_worker.js" -L -o drift_worker.js
+	cd web && curl "https://github.com/simolus3/sqlite3.dart/releases/download/sqlite3-2.4.6/sqlite3.wasm" -L -o sqlite3.wasm
+
 clean:
 	flutter clean
 	cd packages/database && flutter clean
