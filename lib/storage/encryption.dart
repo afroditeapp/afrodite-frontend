@@ -19,10 +19,16 @@ class ImageEncryptionManager extends AppSingleton {
 
   @override
   Future<void> init() async {
-    await _getOrLoadOrGenerateImageEncryptionKey();
+    if (!kIsWeb) {
+      await _getOrLoadOrGenerateImageEncryptionKey();
+    }
   }
 
   Future<Uint8List> encryptImageData(Uint8List data) async {
+    if (kIsWeb) {
+      throw UnsupportedError("Image data encrypting is not supported on web");
+    }
+
     if (data.isEmpty) {
       log.warning("Empty data");
       return data;
@@ -39,6 +45,10 @@ class ImageEncryptionManager extends AppSingleton {
   }
 
   Future<Uint8List> decryptImageData(Uint8List data) async {
+    if (kIsWeb) {
+      throw UnsupportedError("Image data decrypting is not supported on web");
+    }
+
     if (data.isEmpty) {
       log.warning("Empty data");
       return data;
