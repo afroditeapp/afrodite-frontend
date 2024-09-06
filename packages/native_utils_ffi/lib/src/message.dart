@@ -4,13 +4,8 @@ import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
+import 'package:native_utils_common/native_utils_common.dart';
 import 'package:native_utils_ffi/src/bindings.dart';
-
-class GeneratedMessageKeys {
-  final String armoredPublicKey;
-  final String armoredPrivateKey;
-  GeneratedMessageKeys({required this.armoredPublicKey, required this.armoredPrivateKey});
-}
 
 /// If generation fails, null is returned.
 (GeneratedMessageKeys?, int) generateMessageKeys(String accountId) {

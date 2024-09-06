@@ -4,7 +4,7 @@ import 'dart:isolate';
 
 import 'package:database/database.dart';
 import 'package:logging/logging.dart';
-import 'package:native_utils_ffi/src/message.dart';
+import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/database/account_database_manager.dart';
