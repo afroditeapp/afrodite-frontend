@@ -954,10 +954,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
-  native_utils:
+  native_utils_ffi:
     dependency: "direct main"
     description:
-      path: "packages/native_utils"
+      path: "packages/native_utils_ffi"
       relative: true
     source: path
     version: "0.0.1"

@@ -4,7 +4,7 @@ import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
-import 'package:native_utils/bindings.dart';
+import 'package:native_utils_ffi/bindings.dart';
 
 class GeneratedMessageKeys {
   final String armoredPublicKey;

@@ -1,4 +1,4 @@
-#include "native_utils.h"
+#include "native_utils_ffi.h"
 
 // Content encryption API
 

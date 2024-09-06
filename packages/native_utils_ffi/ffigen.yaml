@@ -1,15 +1,15 @@
 # Run with `flutter pub run ffigen --config ffigen.yaml`.
 name: NativeUtilsBindings
 description: |
-  Bindings for `src/native_utils.h`.
+  Bindings for `src/native_utils_ffi.h`.
 
   Regenerate bindings with `flutter pub run ffigen --config ffigen.yaml`.
-output: 'lib/native_utils_bindings_generated.dart'
+output: 'lib/native_utils_ffi_bindings_generated.dart'
 headers:
   entry-points:
-    - 'src/native_utils.h'
+    - 'src/native_utils_ffi.h'
   include-directives:
-    - 'src/native_utils.h'
+    - 'src/native_utils_ffi.h'
 functions:
   leaf:
     include:

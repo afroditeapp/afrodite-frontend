@@ -95,7 +95,7 @@ rustup target add x86_64-linux-android
 3. Build app normally
 
 4. If Rust dependencies are changed download cargo about and update
-LICENSE file of native_utils Dart package:
+LICENSE file of native_utils_ffi Dart package:
 
 ```
 cargo install cargo-about --locked

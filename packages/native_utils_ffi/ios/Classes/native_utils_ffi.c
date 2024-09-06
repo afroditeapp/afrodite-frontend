@@ -1,3 +1,3 @@
 // Relative import to be able to reuse the C sources.
 // See the comment in ../{projectName}}.podspec for more information.
-#include "../../src/native_utils.c"
+#include "../../src/native_utils_ffi.c"

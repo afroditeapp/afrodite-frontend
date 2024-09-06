@@ -3,9 +3,9 @@
 import 'dart:ffi';
 import 'dart:io';
 
-import 'native_utils_bindings_generated.dart';
+import 'native_utils_ffi_bindings_generated.dart';
 
-const String _libName = 'native_utils';
+const String _libName = 'native_utils_ffi';
 
 /// The dynamic library in which the symbols for [NativeUtilsBindings] can be found.
 final DynamicLibrary _dylib = () {

@@ -52,8 +52,8 @@ dependencies:
   database:
     path: "packages/database"
 
-  native_utils:
-    path: "packages/native_utils"
+  native_utils_ffi:
+    path: "packages/native_utils_ffi"
 
   utils:
     path: "packages/utils"

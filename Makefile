@@ -23,10 +23,10 @@ update-app-icon:
 	dart run flutter_launcher_icons
 
 update-native-utils-ffi-code:
-	cd packages/native_utils && dart run ffigen --config ffigen.yaml
+	cd packages/native_utils_ffi && dart run ffigen --config ffigen.yaml
 
 update-licenses-for-native-utils:
-	cd packages/native_utils/rust_utils && cargo about generate --threshold 1.0 --fail -o ../LICENSE about.hbs
+	cd packages/native_utils_ffi/rust_utils && cargo about generate --threshold 1.0 --fail -o ../LICENSE about.hbs
 
 watch-translations:
 	fswatch -o -e Updated translations/app/src/main/res | xargs -n1 -I{} make update-translations
@@ -41,9 +41,9 @@ clean:
 	flutter clean
 	cd packages/database && flutter clean
 	cd packages/api_client && flutter clean
-	cd packages/native_utils && flutter clean
-	rm -rf packages/native_utils/android/.cxx
-	cd packages/native_utils/rust_utils && cargo clean
+	cd packages/native_utils_ffi && flutter clean
+	rm -rf packages/native_utils_ffi/android/.cxx
+	cd packages/native_utils_ffi/rust_utils && cargo clean
 
 code-stats:
 	@/bin/echo -n "Lines:"
