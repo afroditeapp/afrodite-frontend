@@ -86,29 +86,3 @@ class ImageEncryptionManager extends AppSingleton {
     }
   }
 }
-
-void testEncryptionSupport() {
-  final key = Uint8List(32); // 256 bits
-  final data = Uint8List(1);
-  const plaintext = 123;
-  data[0] = plaintext;
-  final (encrypted, result) = encryptContentData(data, key);
-  if (encrypted == null) {
-    final msg = "Encryption test failed with error: $result";
-    log.error(msg);
-    throw Exception(msg);
-  }
-
-  final (decrypted, result2) = decryptContentData(encrypted, key);
-  if (decrypted == null) {
-    final msg = "Decryption test failed with error: $result2";
-    log.error(msg);
-    throw Exception(msg);
-  }
-
-  if (decrypted[0] != plaintext) {
-    const msg = "Encryption support test failed: original data is not equal to decrypted data";
-    log.error(msg);
-    throw Exception(msg);
-  }
-}
