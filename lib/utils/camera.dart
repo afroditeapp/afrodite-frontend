@@ -73,10 +73,11 @@ class CameraManager extends AppSingleton {
     return _instance;
   }
 
-  int deadlockDebugValue = 0;
-  ScheduledAction? action;
-  bool managerInitCompleted = false;
-  List<CameraDescription> availableCamerasList = [];
+  int _deadlockDebugValue = 0;
+  ScheduledAction? _action;
+  bool _managerInitCompleted = false;
+  bool _availableCamerasInitComplete = false;
+  List<CameraDescription> _availableCamerasList = [];
 
   final BehaviorSubject<CameraManagerState> _state =
     BehaviorSubject.seeded(Closed(null));
@@ -88,12 +89,10 @@ class CameraManager extends AppSingleton {
 
   @override
   Future<void> init() async {
-    if (managerInitCompleted) {
+    if (_managerInitCompleted) {
       return;
     }
-    managerInitCompleted = true;
-
-    await _initAvailableCameras();
+    _managerInitCompleted = true;
 
     _cmds.stream
       .asyncMap((event) async => await _runCmd(event))
@@ -121,9 +120,14 @@ class CameraManager extends AppSingleton {
   }
 
   Future<void> _initAvailableCameras() async {
-    availableCamerasList = await availableCameras();
-    log.fine(availableCamerasList);
-    availableCamerasList = availableCamerasList
+    if (_availableCamerasInitComplete) {
+      return;
+    }
+    _availableCamerasInitComplete = true;
+
+    _availableCamerasList = await availableCameras();
+    log.fine(_availableCamerasList);
+    _availableCamerasList = _availableCamerasList
       .where((element) => element.lensDirection == CameraLensDirection.front)
       .toList();
   }
@@ -132,7 +136,7 @@ class CameraManager extends AppSingleton {
     switch (_currentState) {
       case DisposeOngoing(): {
         log.info("Open camera again after camera disposing is done");
-        action = ScheduledAction.openCameraAgain;
+        _action = ScheduledAction.openCameraAgain;
         return;
       }
       case Open(): {
@@ -142,7 +146,9 @@ class CameraManager extends AppSingleton {
       case Closed(): {}
     }
 
-    final firstCamera = availableCamerasList.firstOrNull;
+    await _initAvailableCameras();
+
+    final firstCamera = _availableCamerasList.firstOrNull;
     if (firstCamera == null) {
       _state.add(Closed(NoCamera()));
       return;
@@ -156,7 +162,7 @@ class CameraManager extends AppSingleton {
 
     CameraInitError? error;
     try {
-      deadlockDebugValue = 1;
+      _deadlockDebugValue = 1;
       await controller.initialize();
 
       final timeout = await Future.any<bool>([
@@ -165,8 +171,8 @@ class CameraManager extends AppSingleton {
       ]);
 
       if (timeout) {
-        log.error("Camera init timeout, deadlock debug value $deadlockDebugValue");
-        error = InitFailedWithErrorCode(deadlockDebugValue);
+        log.error("Camera init timeout, deadlock debug value $_deadlockDebugValue");
+        error = InitFailedWithErrorCode(_deadlockDebugValue);
       }
     } on CameraException catch (e) {
       log.error("Camera init failed");
@@ -189,33 +195,33 @@ class CameraManager extends AppSingleton {
   }
 
   Future<void> setControllerSettingsAfterInit(CameraController controller) async {
-    deadlockDebugValue = 2;
+    _deadlockDebugValue = 2;
     await controller.lockCaptureOrientation(DeviceOrientation.portraitUp);
-    deadlockDebugValue = 3;
+    _deadlockDebugValue = 3;
     await controller.setFocusMode(FocusMode.auto);
-    deadlockDebugValue = 4;
+    _deadlockDebugValue = 4;
     // On Android emulator (Pixel 2 API 31) this has deadlocked
     // after going in and out from camera screen several times.
     await controller.setFlashMode(FlashMode.off);
-    deadlockDebugValue = 5;
+    _deadlockDebugValue = 5;
   }
 
   Future<void> _closeCmd() async {
     switch (_currentState) {
       case Open(:final controller): {
         if (controller.isDisposed()) {
-          action = null;
+          _action = null;
           _state.add(Closed(null));
         } else {
-          action = ScheduledAction.closeComplately;
+          _action = ScheduledAction.closeComplately;
           controller.dispose();
         }
       }
       case DisposeOngoing(): {
-        action = ScheduledAction.closeComplately;
+        _action = ScheduledAction.closeComplately;
       }
       case Closed(): {
-        action = null;
+        _action = null;
         _state.add(Closed(null));
       }
     }
@@ -228,8 +234,8 @@ class CameraManager extends AppSingleton {
   }
 
   Future<void> _disposeCompleted() async {
-    final a = action;
-    action = null;
+    final a = _action;
+    _action = null;
     switch (a) {
       case ScheduledAction.openCameraAgain: {
         if (_state.value case Closed(:final error)) {
