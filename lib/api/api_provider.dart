@@ -1,6 +1,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'package:openapi/api.dart';
@@ -74,7 +75,12 @@ class ApiProvider {
   }
 
   Future<void> init() async {
-    final client = IOClient(HttpClient(context: await createSecurityContextForBackendConnection()));
+    final Client client;
+    if (kIsWeb) {
+      client = Client();
+    } else {
+      client = IOClient(HttpClient(context: await createSecurityContextForBackendConnection()));
+    }
     httpClient = client;
     _refreshApiClient(_serverAddress, _apiKey);
   }

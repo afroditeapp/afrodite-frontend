@@ -6,7 +6,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
@@ -23,6 +22,7 @@ import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:utils/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
@@ -199,48 +199,58 @@ class ServerConnection {
       return;
     }
 
-    final r = Random.secure();
-    final bytes = List<int>.generate(16, (_) => r.nextInt(255));
-    final key = base64.encode(bytes);
+    final WebSocketChannel ws;
+    if (kIsWeb) {
+      // TODO(web): websocket ping support
+      if (!_address.startsWith("http")) {
+        throw UnsupportedError("Unsupported URI scheme");
+      }
+      final wsAddress = Uri.parse(_address.replaceFirst("http", "ws"));
+      ws = WebSocketChannel.connect(wsAddress, protocols: ["0", accessToken]);
+    } else {
+      final r = Random.secure();
+      final bytes = List<int>.generate(16, (_) => r.nextInt(255));
+      final key = base64.encode(bytes);
 
-    final client = IOClient(HttpClient(context: await createSecurityContextForBackendConnection()));
-    final headers = {
-      accessTokenHeaderName: accessToken,
-      HttpHeaders.connectionHeader: "upgrade",
-      HttpHeaders.upgradeHeader: "websocket",
-      "sec-websocket-version": "13",
-      "sec-websocket-key": key,
-    };
-    final request = Request("GET", Uri.parse(_address));
-    request.headers.addAll(headers);
+      final client = IOClient(HttpClient(context: await createSecurityContextForBackendConnection()));
+      final headers = {
+        HttpHeaders.connectionHeader: "upgrade",
+        HttpHeaders.upgradeHeader: "websocket",
+        "sec-websocket-version": "13",
+        "sec-websocket-key": key,
+        "sec-websocket-protocol": "0,$accessToken",
+      };
+      final request = Request("GET", Uri.parse(_address));
+      request.headers.addAll(headers);
 
-    final IOStreamedResponse response;
-    try {
-       response = await client.send(request);
-    } on ClientException catch (e) {
-      log.error("Server connection: client exception");
-      log.fine(e);
-      _state.add(Error(ServerConnectionError.connectionFailure));
-      return;
-    } on HandshakeException catch (e) {
-      log.error("Server connection: handshake exception");
-      log.fine(e);
-      _state.add(Error(ServerConnectionError.connectionFailure));
-      return;
+      final IOStreamedResponse response;
+      try {
+        response = await client.send(request);
+      } on ClientException catch (e) {
+        log.error("Server connection: client exception");
+        log.fine(e);
+        _state.add(Error(ServerConnectionError.connectionFailure));
+        return;
+      } on HandshakeException catch (e) {
+        log.error("Server connection: handshake exception");
+        log.fine(e);
+        _state.add(Error(ServerConnectionError.connectionFailure));
+        return;
+      }
+
+      if (response.statusCode == HttpStatus.unauthorized) {
+        _state.add(Error(ServerConnectionError.invalidToken));
+        return;
+      } else if (response.statusCode != HttpStatus.switchingProtocols) {
+        _state.add(Error(ServerConnectionError.connectionFailure));
+        return;
+      }
+
+      final webSocket = WebSocket.fromUpgradedSocket(await response.detachSocket(), serverSide: false);
+      _connection = webSocket;
+      updatePingInterval(webSocket, NavigationStateBlocInstance.getInstance().bloc.state);
+      ws = IOWebSocketChannel(webSocket);
     }
-
-    if (response.statusCode == HttpStatus.unauthorized) {
-      _state.add(Error(ServerConnectionError.invalidToken));
-      return;
-    } else if (response.statusCode != HttpStatus.switchingProtocols) {
-      _state.add(Error(ServerConnectionError.connectionFailure));
-      return;
-    }
-
-    final webSocket = WebSocket.fromUpgradedSocket(await response.detachSocket(), serverSide: false);
-    _connection = webSocket;
-    updatePingInterval(webSocket, NavigationStateBlocInstance.getInstance().bloc.state);
-    final IOWebSocketChannel ws = IOWebSocketChannel(webSocket);
 
     // Client starts the messaging
     ws.sink.add(clientVersionInfoBytes());

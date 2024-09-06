@@ -149,7 +149,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
 
   Future<void> _loadAddressesFromConfig() async {
     final accountAddress = await _account.updateAddressFromConfigAndReturnIt();
-    accountConnection.setAddress(toWebSocketUri(accountAddress));
+    accountConnection.setAddress(addWebSocketRoutePathToAddress(accountAddress));
   }
 
   Future<void> _connect() async {
@@ -238,15 +238,8 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   }
 }
 
-String toWebSocketUri(String baseUrl) {
+String addWebSocketRoutePathToAddress(String baseUrl) {
   final base = Uri.parse(baseUrl);
-
-  // final String newScheme;
-  // switch (base.scheme) {
-  //   case "http": newScheme = "ws";
-  //   case "https": newScheme = "wss";
-  //   case _: throw Exception(); // TODO: better error handling
-  // }
 
   final newAddress = Uri(
     scheme: base.scheme,
