@@ -25,7 +25,7 @@ class DbProvider implements QueryExcecutorProvider {
       final result = await WasmDatabase.open(
         databaseName: dbFileToDbName(db),
         sqlite3Uri: Uri.parse("sqlite3.wasm"),
-        driftWorkerUri: Uri.parse("drift_worker.dart.js"),
+        driftWorkerUri: Uri.parse("drift_worker.js"),
       );
 
       log.info("Drift database implementation: ${result.chosenImplementation.name}");
