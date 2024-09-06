@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:database/database.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_category.dart';
@@ -102,7 +103,9 @@ class NotificationManager extends AppSingleton {
   }
 
   Future<void> askPermissions() async {
-    if (Platform.isAndroid) {
+    if (kIsWeb) {
+      return;
+    } if (Platform.isAndroid) {
       await _pluginHandle.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
     } else if (Platform.isIOS) {
       await _pluginHandle.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
@@ -118,7 +121,9 @@ class NotificationManager extends AppSingleton {
   }
 
   Future<bool> _notificationPermissionShouldBeAsked() async {
-    if (Platform.isAndroid) {
+    if (kIsWeb) {
+      return false;
+    } else if (Platform.isAndroid) {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       if (androidInfo.version.sdkInt >= _ANDROID_13_API_LEVEL) {
@@ -134,7 +139,9 @@ class NotificationManager extends AppSingleton {
   }
 
   Future<bool> _isAndroid8OrLater() async {
-    if (Platform.isAndroid) {
+    if (kIsWeb) {
+      return false;
+    } else if (Platform.isAndroid) {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       if (androidInfo.version.sdkInt >= ANDROID_8_API_LEVEL) {
@@ -227,7 +234,9 @@ class NotificationManager extends AppSingleton {
   }
 
   Future<bool> areNotificationsEnabled() async {
-    if (Platform.isAndroid) {
+    if (kIsWeb) {
+      return false;
+    } else if (Platform.isAndroid) {
       return await _pluginHandle.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.areNotificationsEnabled() ?? false;
     } else if (Platform.isIOS) {
       final permissions = await _pluginHandle.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.checkPermissions();
@@ -248,7 +257,9 @@ class NotificationManager extends AppSingleton {
   }
 
   Future<List<String>> disabledNotificationChannelsIdsOnAndroid() async {
-    if (Platform.isAndroid) {
+    if (kIsWeb) {
+      return [];
+    } else if (Platform.isAndroid) {
       final channels = await _pluginHandle.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.getNotificationChannels();
       if (channels == null) {
         log.error("Failed to get notification channels list");

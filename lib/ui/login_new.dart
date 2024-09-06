@@ -175,7 +175,7 @@ Widget termsOfServiceAndPrivacyPolicyInfo(BuildContext context) {
 }
 
 Widget firstSignInButton(BuildContext context) {
-  if (Platform.isIOS) {
+  if (!kIsWeb && Platform.isIOS) {
     return signInWithAppleButton(context);
   } else {
     return signInWithGoogleButton(context);
@@ -183,7 +183,7 @@ Widget firstSignInButton(BuildContext context) {
 }
 
 Widget secondSignInButton(BuildContext context) {
-  if (Platform.isIOS) {
+  if (!kIsWeb && Platform.isIOS) {
     return signInWithGoogleButton(context);
   } else {
     return signInWithAppleButton(context);

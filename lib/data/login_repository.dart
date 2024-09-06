@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:async/async.dart' show StreamExtensions;
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -515,7 +516,8 @@ enum SignInWithGoogleEvent {
 const String emailScope = "https://www.googleapis.com/auth/userinfo.email";
 
 GoogleSignIn createSignInWithGoogle() {
-  if (Platform.isAndroid) {
+  // TODO(web): Sign in with Google support for web
+  if (kIsWeb || Platform.isAndroid) {
     return GoogleSignIn(
       serverClientId: signInWithGoogleBackendClientId(),
       scopes: [emailScope],

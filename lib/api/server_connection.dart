@@ -370,7 +370,9 @@ class ServerConnection {
 Uint8List clientVersionInfoBytes() {
   const protocolVersion = 0;
   final int platform;
-  if (Platform.isAndroid) {
+  if (kIsWeb) {
+    platform = 2;
+  } else if (Platform.isAndroid) {
     platform = 0;
   } else if (Platform.isIOS) {
     platform = 1;

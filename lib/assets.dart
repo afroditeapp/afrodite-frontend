@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
 
@@ -10,7 +11,7 @@ Future<Uint8List> loadLetsEncryptRootCertificates() async {
 }
 
 Future<SecurityContext> createSecurityContextForBackendConnection() async {
-  if (Platform.isAndroid) {
+  if (!kIsWeb && Platform.isAndroid) {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     if (androidInfo.version.sdkInt >= ANDROID_8_API_LEVEL) {
@@ -39,7 +40,7 @@ enum ImageAsset {
   final String path;
 
   static ImageAsset signInWithGoogleButtonImageDark() {
-    if (Platform.isAndroid) {
+    if (kIsWeb || Platform.isAndroid) {
       return signInWithGoogleButtonAndroidDark;
     } else if (Platform.isIOS) {
       return signInWithGoogleButtonIosDark;
@@ -49,7 +50,7 @@ enum ImageAsset {
   }
 
   static ImageAsset signInWithGoogleButtonImageLight() {
-    if (Platform.isAndroid) {
+    if (kIsWeb || Platform.isAndroid) {
       return signInWithGoogleButtonAndroidLight;
     } else if (Platform.isIOS) {
       return signInWithGoogleButtonIosLight;

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_api_availability/google_api_availability.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -55,6 +56,11 @@ class PushNotificationManager extends AppSingleton {
 
   /// Initializes push notifications. Can be called multiple times.
   Future<void> initPushNotifications() async {
+    if (kIsWeb) {
+      /// Push notifications are not supported on web
+      return;
+    }
+
     final enabled = await NotificationManager.getInstance().areNotificationsEnabled();
     if (!enabled) {
       return;

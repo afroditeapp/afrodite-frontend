@@ -14,10 +14,10 @@ String defaultServerUrlAccount() {
      return developmentServerUrl;
   }
 
-  if (Platform.isAndroid) {
-    return _defaultAccountServerAddressAndroid;
-  } else if (Platform.isIOS) {
+  if (kIsWeb || Platform.isIOS) {
     return _defaultAccountServerAddressIos;
+  } else if (Platform.isAndroid) {
+    return _defaultAccountServerAddressAndroid;
   } else {
     throw UnimplementedError();
   }
