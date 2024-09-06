@@ -11,7 +11,7 @@ import "package:pihka_frontend/ui_utils/consts/padding.dart";
 import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
 import "package:pihka_frontend/ui_utils/loading_dialog.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
-import "package:pihka_frontend/utils.dart";
+import 'package:utils/utils.dart';
 import "package:pihka_frontend/utils/api.dart";
 
 final log = Logger("AskProfileAttributesScreen");

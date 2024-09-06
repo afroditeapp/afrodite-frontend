@@ -10,7 +10,7 @@ import 'package:pihka_frontend/data/general/notification/utils/notification_payl
 import 'package:pihka_frontend/data/push_notification_manager.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
-import 'package:pihka_frontend/utils.dart';
+import 'package:utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 
 var log = Logger("NotificationManager");

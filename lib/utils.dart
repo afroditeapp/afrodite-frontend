@@ -2,15 +2,7 @@
 
 import 'dart:async';
 
-import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
-
-abstract class AppSingleton {
-  /// Initialize the singleton. Runs when app splash screen is visible.
-  Future<void> init();
-}
-
-abstract class AppSingletonNoInit {}
 
 mixin ActionRunner {
   bool isRunning = false;
@@ -24,7 +16,6 @@ mixin ActionRunner {
     }
   }
 }
-
 
 class TaskStatus {
   final BehaviorSubject<bool> taskRunning = BehaviorSubject.seeded(false);
@@ -40,12 +31,5 @@ class TaskStatus {
   Future<void> taskCancelled() {
     final value = taskRunning.stream.where((event) => !event).first;
     return value;
-  }
-}
-
-
-extension LogUtils on Logger {
-  void error(Object? message, [Object? error, StackTrace? stackTrace]) {
-    severe(message, error, stackTrace);
   }
 }

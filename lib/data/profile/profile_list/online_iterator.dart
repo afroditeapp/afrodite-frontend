@@ -10,7 +10,7 @@ import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart'
 import 'package:database/database.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/account_database_manager.dart';
-import 'package:pihka_frontend/utils.dart';
+import 'package:utils/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
 final log = Logger("OnlineIterator");

@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:encryption/encryption.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -49,17 +50,16 @@ class DbDirUtils {
     final dbName = "$account.background_account.db";
     return await _dbPath(dbName, backgroundDb: true);
   }
+}
 
-  static Future<void> recreateDatabasesDir(
-    {
-      required bool backgroundDb,
-    }
-  ) async {
-    final dbDirPath = await _dbDirPath(backgroundDb: backgroundDb);
+class DatabaseRemoverImpl extends DatabaseRemover {
+  @override
+  Future<void> recreateDatabasesDir({required bool backgroundDb}) async {
+    final dbDirPath = await DbDirUtils._dbDirPath(backgroundDb: backgroundDb);
     final dir = Directory(dbDirPath);
     if (await dir.exists()) {
       await dir.delete(recursive: true);
-      await _dbDirPath(); // Recreate the directory
+      await DbDirUtils._dbDirPath(); // Recreate the directory
       log.info("Databases directory recreated");
     }
   }

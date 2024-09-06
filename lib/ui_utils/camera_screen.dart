@@ -10,7 +10,7 @@ import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/app/navigator_state.dart";
 import "package:pihka_frontend/ui_utils/dialog.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
-import "package:pihka_frontend/utils.dart";
+import 'package:utils/utils.dart';
 import "package:pihka_frontend/utils/camera.dart";
 import "package:pihka_frontend/utils/image.dart";
 

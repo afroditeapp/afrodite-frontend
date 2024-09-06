@@ -1,0 +1,32 @@
+name: database_provider_native
+description: "Database provider native implementation"
+version: 0.0.1
+
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.3.2 <4.0.0'
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  logging: ^1.2.0
+  path_provider: ^2.1.1
+  path: ^1.9.0
+
+  drift: ^2.19.1+1
+  sqlcipher_flutter_libs: ^0.6.4
+  sqlite3: ^2.4.5
+
+  database:
+    path: "../database"
+
+  encryption:
+    path: "../encryption"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0

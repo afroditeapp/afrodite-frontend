@@ -4,7 +4,7 @@
 import 'dart:async';
 
 import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/utils.dart';
+import 'package:utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class DataRepository extends AppSingleton implements DataRepositoryMethods {

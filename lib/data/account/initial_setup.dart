@@ -8,10 +8,10 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
-import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/api.dart';
 import 'package:pihka_frontend/utils/list.dart';
 import 'package:pihka_frontend/utils/result.dart';
+import 'package:utils/utils.dart';
 
 var log = Logger("InitialSetupUtils");
 

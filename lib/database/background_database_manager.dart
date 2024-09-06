@@ -1,14 +1,14 @@
 
 import 'dart:async';
 
+import 'package:database_provider/database_provider.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/isolate.dart';
 import 'package:database/database.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
-import 'package:pihka_frontend/database/utils.dart';
-import 'package:pihka_frontend/utils.dart';
+import 'package:utils/utils.dart';
 import 'package:pihka_frontend/utils/app_error.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -32,9 +32,9 @@ class BackgroundDatabaseManager extends AppSingleton {
   }
 
   bool initDone = false;
-  late final LazyDatabase commonLazyDatabase;
+  late final DbProvider commonLazyDatabase;
   late final CommonBackgroundDatabase commonDatabase;
-  final accountDatabases = <AccountId, (LazyDatabase, AccountBackgroundDatabase)>{};
+  final accountDatabases = <AccountId, (DbProvider, AccountBackgroundDatabase)>{};
 
   @override
   Future<void> init() async {
@@ -48,12 +48,12 @@ class BackgroundDatabaseManager extends AppSingleton {
     // in: https://github.com/simolus3/drift/discussions/2596
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
 
-    commonLazyDatabase = openDbConnection(
+    commonLazyDatabase = DbProvider(
       CommonBackgroundDbFile(),
       doSqlchipherInit: true,
       backgroundDb: true,
     );
-    commonDatabase = CommonBackgroundDatabase(DbProvider(commonLazyDatabase));
+    commonDatabase = CommonBackgroundDatabase(commonLazyDatabase);
     // Make sure that the database libraries are initialized
     await commonStream((db) => db.watchAccountId()).first;
   }
@@ -118,12 +118,13 @@ class BackgroundDatabaseManager extends AppSingleton {
     if (db != null) {
       return db.$2;
     } else {
-      final lazyDb = openDbConnection(
+      final dbProvider = DbProvider(
         AccountBackgroundDbFile(accountId.accountId),
+        doSqlchipherInit: false,
         backgroundDb: true,
       );
-      final newDb = AccountBackgroundDatabase(DbProvider(lazyDb));
-      accountDatabases[accountId] = (lazyDb, newDb);
+      final newDb = AccountBackgroundDatabase(dbProvider);
+      accountDatabases[accountId] = (dbProvider, newDb);
       return newDb;
     }
   }

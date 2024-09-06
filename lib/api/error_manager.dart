@@ -2,7 +2,7 @@
 
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
-import 'package:pihka_frontend/utils.dart';
+import 'package:utils/utils.dart';
 import 'package:pihka_frontend/utils/app_error.dart';
 
 final log = Logger("ErrorManager");

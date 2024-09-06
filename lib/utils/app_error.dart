@@ -3,7 +3,7 @@
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
-import 'package:pihka_frontend/utils.dart';
+import 'package:utils/utils.dart';
 
 sealed class AppError {
   const AppError();

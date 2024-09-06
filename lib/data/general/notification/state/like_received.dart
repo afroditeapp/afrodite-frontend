@@ -13,7 +13,7 @@ import 'package:pihka_frontend/logic/app/app_visibility_provider.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
-import 'package:pihka_frontend/utils.dart';
+import 'package:utils/utils.dart';
 
 class NotificationLikeReceived extends AppSingletonNoInit {
   NotificationLikeReceived._();

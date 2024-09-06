@@ -12,10 +12,10 @@ import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
-import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/api.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:utils/utils.dart';
 
 var log = Logger("AccountRepository");
 

@@ -1,70 +1,58 @@
 
-
 import 'dart:io';
 
+import 'package:database_provider_native/src/db_dir.dart';
+import 'package:database_provider_native/src/tmp_dir.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:encryption/encryption.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
-import 'package:pihka_frontend/storage/encryption.dart';
-import 'package:pihka_frontend/utils/db_dir.dart';
-import 'package:pihka_frontend/utils/tmp_dir.dart';
 import 'package:sqlite3/open.dart';
 import 'package:sqlcipher_flutter_libs/sqlcipher_flutter_libs.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:database/database.dart';
 
-final log = Logger("DatabaseUtils");
-
-
-sealed class DbFile {
-  Future<File> getFile();
-}
-class CommonDbFile extends DbFile {
-  @override
-  Future<File> getFile() async {
-    final dbLocation = await DbDirUtils.commonDbPath();
-    return File(dbLocation);
-  }
-}
-
-class CommonBackgroundDbFile extends DbFile {
-  @override
-  Future<File> getFile() async {
-    final dbLocation = await DbDirUtils.commonBackgroundDbPath();
-    return File(dbLocation);
-  }
-}
-
-class AccountDbFile extends DbFile {
-  final String account;
-  AccountDbFile(this.account);
-
-  @override
-  Future<File> getFile() async {
-    final dbLocation = await DbDirUtils.accountDbPath(account);
-    return File(dbLocation);
-  }
-}
-
-class AccountBackgroundDbFile extends DbFile {
-  final String account;
-  AccountBackgroundDbFile(this.account);
-
-  @override
-  Future<File> getFile() async {
-    final dbLocation = await DbDirUtils.accountBackgroundDbPath(account);
-    return File(dbLocation);
-  }
-}
+final log = Logger("DbProviderNative");
 
 class DbProvider implements QueryExcecutorProvider {
-  final LazyDatabase db;
-  DbProvider(this.db);
+  final DbFile _db;
+  final bool _doSqlchipherInit;
+  final bool _backgroundDb;
+  DbProvider(
+    this._db,
+    {
+      required bool doSqlchipherInit,
+      required bool backgroundDb,
+    }
+  ) : _backgroundDb = backgroundDb, _doSqlchipherInit = doSqlchipherInit;
+
+  LazyDatabase? _dbConnection;
 
   @override
-  LazyDatabase getQueryExcecutor() {
-    return db;
+  QueryExecutor getQueryExcecutor() {
+    _dbConnection ??= openDbConnection(
+      _db,
+      doSqlchipherInit: _doSqlchipherInit,
+      backgroundDb: _backgroundDb
+    );
+    return _dbConnection!;
+  }
+
+  Future<void> close() async =>
+    await _dbConnection?.close();
+}
+
+Future<File> dbFileToFile(DbFile dbFile) async {
+  switch (dbFile) {
+    case CommonDbFile():
+      return File(await DbDirUtils.commonDbPath());
+    case CommonBackgroundDbFile():
+      return File(await DbDirUtils.commonBackgroundDbPath());
+    case AccountDbFile():
+      return File(await DbDirUtils.accountDbPath(dbFile.accountId));
+    case AccountBackgroundDbFile():
+      return File(await DbDirUtils.accountBackgroundDbPath(dbFile.accountId));
   }
 }
 
@@ -78,8 +66,9 @@ LazyDatabase openDbConnection(
   return LazyDatabase(() async {
     final encryptionKey = await SecureStorageManager.getInstance().getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir(
       backgroundDb: backgroundDb,
+      remover: DatabaseRemoverImpl(),
     );
-    final dbFile = await db.getFile();
+    final dbFile = await dbFileToFile(db);
     final isolateToken = RootIsolateToken.instance!;
     return NativeDatabase.createInBackground(
       dbFile,

@@ -1,6 +1,7 @@
 
 import 'dart:async';
 
+import 'package:database_provider/database_provider.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/isolate.dart';
 import 'package:database/database.dart';
@@ -8,11 +9,10 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
-import 'package:pihka_frontend/database/utils.dart';
-import 'package:pihka_frontend/utils.dart';
 import 'package:pihka_frontend/utils/app_error.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:utils/utils.dart';
 
 final log = Logger("DatabaseManager");
 
@@ -35,9 +35,9 @@ class DatabaseManager extends AppSingleton {
   final backgroundDbManager = BackgroundDatabaseManager.getInstance();
 
   bool initDone = false;
-  late final LazyDatabase commonLazyDatabase;
+  late final DbProvider commonLazyDatabase;
   late final CommonDatabase commonDatabase;
-  final accountDatabases = <AccountId, (LazyDatabase, AccountDatabase)>{};
+  final accountDatabases = <AccountId, (DbProvider, AccountDatabase)>{};
 
   @override
   Future<void> init() async {
@@ -50,8 +50,14 @@ class DatabaseManager extends AppSingleton {
     // related things.
     await backgroundDbManager.init();
 
-    commonLazyDatabase = openDbConnection(CommonDbFile());
-    commonDatabase = CommonDatabase(DbProvider(commonLazyDatabase));
+    commonLazyDatabase = DbProvider(
+      CommonDbFile(),
+      doSqlchipherInit: false,
+      backgroundDb: false,
+    );
+    commonDatabase = CommonDatabase(
+      commonLazyDatabase,
+    );
   }
 
   // Common database
@@ -116,9 +122,13 @@ class DatabaseManager extends AppSingleton {
     if (db != null) {
       return db.$2;
     } else {
-      final lazyDb = openDbConnection(AccountDbFile(accountId.accountId));
-      final newDb = AccountDatabase(DbProvider(lazyDb));
-      accountDatabases[accountId] = (lazyDb, newDb);
+      final dbProvider = DbProvider(
+        AccountDbFile(accountId.accountId),
+        doSqlchipherInit: false,
+        backgroundDb: false,
+      );
+      final newDb = AccountDatabase(dbProvider);
+      accountDatabases[accountId] = (dbProvider, newDb);
       return newDb;
     }
   }

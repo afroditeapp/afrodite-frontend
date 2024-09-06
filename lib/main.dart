@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 
 import 'package:async/async.dart' show StreamExtensions;
+import 'package:encryption/encryption.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

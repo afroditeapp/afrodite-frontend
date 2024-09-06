@@ -52,8 +52,14 @@ dependencies:
   database:
     path: "packages/database"
 
+  database_provider:
+    path: "packages/database_provider"
+
   native_utils:
     path: "packages/native_utils"
+
+  encryption:
+    path: "packages/encryption"
 
   utils:
     path: "packages/utils"
@@ -90,10 +96,6 @@ dependencies:
 
   path: ^1.9.0
   drift: ^2.19.1+1
-  sqlcipher_flutter_libs: ^0.6.4
-  sqlite3: ^2.4.5
-
-  flutter_secure_storage: ^9.0.0
 
   meta: ^1.11.0
 

@@ -17,8 +17,8 @@ import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/firebase_options.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/main.dart';
-import 'package:pihka_frontend/storage/encryption.dart';
-import 'package:pihka_frontend/utils.dart';
+import 'package:utils/utils.dart';
+import 'package:encryption/encryption.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 

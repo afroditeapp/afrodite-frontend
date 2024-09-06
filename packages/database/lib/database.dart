@@ -17,3 +17,4 @@ export 'src/profile_entry.dart' show ProfileEntry, ProfileLocalDbId, NewMessageN
 export 'src/notification_session_id.dart' show NotificationSessionId;
 export 'src/private_key_data.dart' show PrivateKeyData, AllKeyData;
 export 'src/utils.dart' show QueryExcecutorProvider;
+export 'src/db_file.dart' show DbFile, CommonDbFile, CommonBackgroundDbFile, AccountDbFile, AccountBackgroundDbFile;

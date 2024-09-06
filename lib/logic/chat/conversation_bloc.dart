@@ -7,6 +7,7 @@ import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
+import 'package:utils/utils.dart';
 import "package:pihka_frontend/data/chat/message_database_iterator.dart";
 import "package:pihka_frontend/data/chat/message_manager.dart";
 import "package:pihka_frontend/data/chat_repository.dart";

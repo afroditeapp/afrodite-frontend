@@ -1,7 +1,7 @@
 
 
 
-import 'package:pihka_frontend/utils.dart';
+import 'package:utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AppVisibilityProvider extends AppSingletonNoInit {

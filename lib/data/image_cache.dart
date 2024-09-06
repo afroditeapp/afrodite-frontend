@@ -11,7 +11,7 @@ import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/storage/encryption.dart';
 import 'package:pihka_frontend/ui/normal/settings/location.dart';
-import 'package:pihka_frontend/utils.dart';
+import 'package:utils/utils.dart';
 
 import 'package:image/image.dart' as img;
 import 'package:pihka_frontend/model/freezed/utils/account_img_key.dart';

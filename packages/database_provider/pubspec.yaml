@@ -1,0 +1,27 @@
+name: database_provider
+description: "Database provider"
+version: 0.0.1
+
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.3.2 <4.0.0'
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  drift: ^2.19.1+1
+
+  database_provider_native:
+    path: "../database_provider_native"
+  database_provider_web:
+    path: "../database_provider_web"
+  database:
+    path: "../database"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0

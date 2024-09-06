@@ -20,7 +20,7 @@ import 'package:pihka_frontend/assets.dart';
 import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
-import 'package:pihka_frontend/utils.dart';
+import 'package:utils/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:web_socket_channel/io.dart';

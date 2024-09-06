@@ -1,0 +1,27 @@
+name: encryption
+description: "Encryption related utils"
+version: 0.0.1
+
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.3.2 <4.0.0'
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  logging: ^1.2.0
+  flutter_secure_storage: ^9.0.0
+
+  native_utils:
+    path: "../native_utils"
+
+  utils:
+    path: "../utils"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0

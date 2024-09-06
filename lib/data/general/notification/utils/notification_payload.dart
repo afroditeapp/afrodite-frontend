@@ -6,7 +6,7 @@ import 'package:database/database.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
-import 'package:pihka_frontend/utils.dart';
+import 'package:utils/utils.dart';
 
 final log = Logger("NotificationPayload");
 

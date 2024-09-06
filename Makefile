@@ -40,7 +40,11 @@ watch-freezed-code:
 clean:
 	flutter clean
 	cd packages/database && flutter clean
+	cd packages/database_provider && flutter clean
+	cd packages/database_provider_native && flutter clean
+	cd packages/database_provider_web && flutter clean
 	cd packages/api_client && flutter clean
+	cd packages/utils && flutter clean
 	cd packages/native_utils && flutter clean
 	cd packages/native_utils_common && flutter clean
 	cd packages/native_utils_ffi && flutter clean

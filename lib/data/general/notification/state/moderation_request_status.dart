@@ -8,7 +8,7 @@ import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/utils.dart';
+import 'package:utils/utils.dart';
 
 class NotificationModerationRequestStatus extends AppSingletonNoInit {
   NotificationModerationRequestStatus._();
