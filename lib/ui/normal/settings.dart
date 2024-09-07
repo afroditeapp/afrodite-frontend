@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
@@ -102,7 +103,7 @@ class _SettingsViewState extends State<SettingsView> {
               pageKey,
             );
           }),
-          Setting.createSetting(Icons.notifications, context.strings.notification_settings_screen_title, () {
+          if (!kIsWeb) Setting.createSetting(Icons.notifications, context.strings.notification_settings_screen_title, () {
               openNotificationSettings(context);
             }
           ),
