@@ -14,7 +14,7 @@ import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/api/api_provider.dart';
+import 'package:pihka_frontend/api/websocket_wrapper.dart';
 import 'package:pihka_frontend/assets.dart';
 import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
@@ -142,7 +142,7 @@ class ServerConnection {
   String _address;
   final AccountDatabaseManager db;
 
-  WebSocket? _connection;
+  WebSocketWrapper? _connection;
 
   final BehaviorSubject<ServerConnectionState> _state =
     BehaviorSubject.seeded(ReadyToConnect());
@@ -176,7 +176,7 @@ class ServerConnection {
     _navigationSubscription ??= NavigationStateBlocInstance.getInstance().bloc.stream.listen((navigationState) {
       final ws = _connection;
       if (ws != null) {
-        updatePingInterval(ws, navigationState);
+        ws.updatePingInterval(navigationState);
       }
     });
 
@@ -199,14 +199,21 @@ class ServerConnection {
       return;
     }
 
-    final WebSocketChannel ws;
+    final WebSocketWrapper ws;
     if (kIsWeb) {
-      // TODO(web): websocket ping support
       if (!_address.startsWith("http")) {
         throw UnsupportedError("Unsupported URI scheme");
       }
       final wsAddress = Uri.parse(_address.replaceFirst("http", "ws"));
-      ws = WebSocketChannel.connect(wsAddress, protocols: ["0", accessToken]);
+      try {
+        ws = WebSocketWrapper(WebSocketChannel.connect(wsAddress, protocols: ["0", accessToken]));
+        _connection = ws;
+      } catch (e) {
+        log.error("Server connection: WebScocket connecting exception");
+        log.fine(e);
+        _state.add(Error(ServerConnectionError.connectionFailure));
+        return;
+      }
     } else {
       final r = Random.secure();
       final bytes = List<int>.generate(16, (_) => r.nextInt(255));
@@ -247,17 +254,17 @@ class ServerConnection {
       }
 
       final webSocket = WebSocket.fromUpgradedSocket(await response.detachSocket(), serverSide: false);
-      _connection = webSocket;
-      updatePingInterval(webSocket, NavigationStateBlocInstance.getInstance().bloc.state);
-      ws = IOWebSocketChannel(webSocket);
+      ws = WebSocketWrapper(IOWebSocketChannel(webSocket));
+      _connection = ws;
     }
 
     // Client starts the messaging
-    ws.sink.add(clientVersionInfoBytes());
+    ws.connection.sink.add(clientVersionInfoBytes());
     final byteToken = base64Decode(refreshToken);
-    ws.sink.add(byteToken);
+    ws.connection.sink.add(byteToken);
 
     ws
+      .connection
       .stream
       .asyncMap((message) async {
         switch (protocolState) {
@@ -278,10 +285,11 @@ class ServerConnection {
                 .encode(message)
                 .replaceAll("=", "");
               await db.accountAction(_server.setterForAccessTokenKey(newAccessToken));
-              ws.sink.add(await syncDataBytes(db));
+              ws.connection.sink.add(await syncDataBytes(db));
               protocolState = ConnectionProtocolState.receiveEvents;
               log.info("Connection ready");
               _state.add(Ready());
+              await ws.updatePingInterval(NavigationStateBlocInstance.getInstance().bloc.state);
             } else {
               await _endConnectionToGeneralError();
             }
@@ -309,14 +317,15 @@ class ServerConnection {
             return;
           }
 
-          if (ws.closeCode != null &&
-            ws.closeCode == status.internalServerError) {
+          if (ws.connection.closeCode != null &&
+            ws.connection.closeCode == status.internalServerError) {
             log.error("Invalid token");
             _state.add(Error(ServerConnectionError.invalidToken));
           } else {
             log.error("Connection closed");
             _state.add(Error(ServerConnectionError.connectionFailure));
           }
+          ws.close();
           _connection = null;
         },
         cancelOnError: true,
@@ -330,7 +339,7 @@ class ServerConnection {
     final c = _connection;
     _connection = null;
     if (c != null)  {
-      await c.close(status.goingAway);
+      await c.close();
       _state.add(Error(error));
     }
   }
@@ -341,7 +350,7 @@ class ServerConnection {
     // feels safer.
     final c = _connection;
     _connection = null;
-    await c?.close(status.goingAway);
+    await c?.close();
     // Run this even if null to make sure that state is overriden
     if (logoutClose) {
       _state.add(Error(ServerConnectionError.invalidToken));
@@ -357,7 +366,7 @@ class ServerConnection {
     // feels safer.
     final c = _connection;
     _connection = null;
-    await c?.close(status.goingAway);
+    await c?.close();
   }
 
   void setAddress(String address) {
@@ -366,17 +375,6 @@ class ServerConnection {
 
   bool inUse() {
     return !(_state.value is ReadyToConnect || _state.value is Error);
-  }
-
-  void updatePingInterval(WebSocket ws, NavigatorStateData navigatorState) {
-    final visiblePage = navigatorState.pages.lastOrNull;
-    const CONVERSATION_PING_INTERVAL = Duration(seconds: 10);
-    const DEFAULT_PING_INTERVAL = Duration(minutes: 5);
-    if (visiblePage != null && visiblePage.pageInfo is ConversationPageInfo && ws.pingInterval != CONVERSATION_PING_INTERVAL) {
-      ws.pingInterval = CONVERSATION_PING_INTERVAL;
-    } else if (ws.pingInterval != DEFAULT_PING_INTERVAL) {
-      ws.pingInterval = DEFAULT_PING_INTERVAL;
-    }
   }
 }
 
