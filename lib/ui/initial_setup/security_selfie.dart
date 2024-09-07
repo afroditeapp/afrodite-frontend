@@ -1,4 +1,5 @@
 import "dart:async";
+import "dart:typed_data";
 
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -181,9 +182,9 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
           return;
         }
 
-        final image = await MyNavigator.push<XFile?>(
+        final image = await MyNavigator.push<Uint8List?>(
           context,
-          MaterialPage<XFile?>(child: CameraScreen(controller: controller)),
+          MaterialPage<Uint8List?>(child: CameraScreen(controller: controller)),
         );
 
         if (image != null) {

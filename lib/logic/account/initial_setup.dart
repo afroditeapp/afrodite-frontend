@@ -1,4 +1,5 @@
 import "dart:io";
+import "dart:typed_data";
 
 import "package:camera/camera.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -237,17 +238,14 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
   }
 }
 
-Future<XFile> createImage(String fileName, void Function(img.Pixel) pixelModifier) async {
+Future<Uint8List> createImage(String fileName, void Function(img.Pixel) pixelModifier) async {
   final imageBuffer = img.Image(width: 512, height: 512);
 
   for (var pixel in imageBuffer) {
     pixelModifier(pixel);
   }
 
-  final jpg = img.encodeJpg(imageBuffer);
-  final imgPath = await TmpDirUtils.initialSetupFilePath(fileName);
-  await XFile.fromData(jpg).saveTo(imgPath);
-  return XFile(imgPath);
+  return img.encodeJpg(imageBuffer);
 }
 
 

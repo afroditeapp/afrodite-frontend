@@ -1,6 +1,7 @@
 
 
-import "package:camera/camera.dart";
+import "dart:typed_data";
+
 import "package:flutter/material.dart";
 import "package:openapi/api.dart";
 
@@ -14,9 +15,9 @@ class ViewImageAccountContent extends ViewImageScreenMode {
   final AccountId imageOwner;
   final ContentId imageId;
 }
-class ViewImageFileContent extends ViewImageScreenMode {
-  ViewImageFileContent(this.imageFile);
-  final XFile imageFile;
+class ViewImageBytesContent extends ViewImageScreenMode {
+  ViewImageBytesContent(this.imageBytes);
+  final Uint8List imageBytes;
 }
 
 void openViewImageScreenForAccountImage(BuildContext context, AccountId accountId, ContentId contentId) {
@@ -48,8 +49,8 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
     final imageWidget = switch (widget.mode) {
       ViewImageAccountContent(:final imageOwner, :final imageId) =>
         buildImage(context, imageOwner, imageId),
-      ViewImageFileContent(:final imageFile) =>
-        viewerForWidget(xfileImgWidget(imageFile)),
+      ViewImageBytesContent(:final imageBytes) =>
+        viewerForWidget(bytesImgWidget(imageBytes)),
     };
 
     return Scaffold(

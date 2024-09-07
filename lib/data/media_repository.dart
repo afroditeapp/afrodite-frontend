@@ -173,9 +173,9 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   }
 
   /// Last event from stream is ProcessingCompleted or SendToSlotError.
-  Stream<SendToSlotEvent> sendImageToSlot(XFile file, int slot, {bool secureCapture = false}) async* {
+  Stream<SendToSlotEvent> sendImageToSlot(Uint8List imgBytes, int slot, {bool secureCapture = false}) async* {
     final task = SendImageToSlotTask(account, api);
-    yield* task.sendImageToSlot(file, slot, secureCapture: secureCapture);
+    yield* task.sendImageToSlot(imgBytes, slot, secureCapture: secureCapture);
   }
 
   Future<Result<ModerationRequest?, void>> currentModerationRequestState() =>

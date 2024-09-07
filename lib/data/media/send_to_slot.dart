@@ -2,7 +2,6 @@
 
 import 'dart:async';
 
-import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
@@ -39,23 +38,17 @@ class SendImageToSlotTask {
   final AccountRepository account;
   SendImageToSlotTask(this.account, this.api);
 
-  Stream<SendToSlotEvent> sendImageToSlot(XFile file, int slot, {bool secureCapture = false}) {
+  Stream<SendToSlotEvent> sendImageToSlot(Uint8List imgBytes, int slot, {bool secureCapture = false}) {
     return Rx.merge([
-      _uploadImageToSlot(file, slot, secureCapture: secureCapture),
+      _uploadImageToSlot(imgBytes, slot, secureCapture: secureCapture),
       _trackEvents(slot),
     ]);
   }
 
   /// Only uploading part of the sendImageToSlot method
-  Stream<SendToSlotEvent> _uploadImageToSlot(XFile file, int slot, {bool secureCapture = false}) async* {
+  Stream<SendToSlotEvent> _uploadImageToSlot(Uint8List imgBytes, int slot, {bool secureCapture = false}) async* {
     yield Uploading();
-    final MultipartFile data;
-    if (kIsWeb) {
-      final bytes = await file.readAsBytes();
-      data = MultipartFile.fromBytes("", bytes);
-    } else {
-      data = await MultipartFile.fromPath("", file.path);
-    }
+    final MultipartFile data = MultipartFile.fromBytes("", imgBytes);
     final processingId = await api.media((api) => api.putContentToContentSlot(slot, secureCapture, MediaContentType.jpegImage, data));
     switch (processingId) {
       case Ok(:final v):

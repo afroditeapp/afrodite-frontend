@@ -268,7 +268,7 @@ class _CameraScreenState extends State<CameraScreen>
     );
   }
 
-  Future<XFile?> takePhoto(CameraController currentCamera) async {
+  Future<Uint8List?> takePhoto(CameraController currentCamera) async {
     if (!mounted) {
       return null;
     }
@@ -290,26 +290,18 @@ class _CameraScreenState extends State<CameraScreen>
       return null;
     }
 
-    final processedFile = await processImage(file);
-    if (processedFile == null) {
+    final processedImgBytes = await processImage(file);
+    if (processedImgBytes == null) {
       if (mounted) {
         showSnackBar(R.strings.camera_screen_take_photo_error);
       }
-    } else {
-      final cache = PaintingBinding.instance.imageCache;
-      cache.evict(FileImage(File(processedFile.path)));
     }
-
-    return processedFile;
+    return processedImgBytes;
   }
 
-  Future<XFile?> processImage(XFile file) async {
-    if (kIsWeb) {
-      throw UnsupportedError("processImage is not supported on web");
-    }
-
+  Future<Uint8List?> processImage(XFile file) async {
     try {
-      final decodedImg = await img.decodeJpgFile(file.path);
+      final decodedImg = img.decodeJpg(await file.readAsBytes());
       if (decodedImg == null) {
         return null;
       }
@@ -324,24 +316,20 @@ class _CameraScreenState extends State<CameraScreen>
       logImageSize(croppedImage, "croppedImage");
 
       final finalImg = img.copyFlip(croppedImage, direction: img.FlipDirection.horizontal);
-      final finalImgPath = await TmpDirUtils.initialSetupSecuritySelfieFilePath();
-      final result = await img.encodeJpgFile(finalImgPath, finalImg);
-
-      if (result) {
-        final f =  File(finalImgPath);
-        final l = await f.length();
-        final kb = l / 1024;
-        log.fine("Image size: $kb KB");
-        return XFile(finalImgPath);
-      } else {
-        return null;
-      }
+      final finalImgBytes = img.encodeJpg(finalImg);
+      logFinalImageFileSize(finalImgBytes.length);
+      return finalImgBytes;
     } on img.ImageException catch (e) {
       log.error("Image processing error");
       log.fine(e);
       return null;
     }
   }
+}
+
+void logFinalImageFileSize(int byteCount) {
+  final kb = byteCount / 1024;
+  log.fine("Image size: $kb KB");
 }
 
 void logImageSize(img.Image imgData, String info) {

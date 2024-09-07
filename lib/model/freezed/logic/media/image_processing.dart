@@ -1,3 +1,5 @@
+import "dart:typed_data";
+
 import "package:camera/camera.dart";
 import "package:flutter/material.dart";
 import "package:openapi/api.dart";
@@ -23,10 +25,10 @@ class ImageProcessingData with _$ImageProcessingData {
 
 sealed class ProcessingState {}
 class UnconfirmedImage extends ProcessingState {
-  final XFile img;
+  final Uint8List imgBytes;
   final int slot;
   final bool secureCapture;
-  UnconfirmedImage(this.img, this.slot, {required this.secureCapture});
+  UnconfirmedImage(this.imgBytes, this.slot, {required this.secureCapture});
 }
 class SendingInProgress extends ProcessingState {
   final ContentUploadState state;

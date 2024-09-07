@@ -1,4 +1,5 @@
-import "package:camera/camera.dart";
+import "dart:typed_data";
+
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:pihka_frontend/data/account_repository.dart";
@@ -16,16 +17,16 @@ final log = Logger("ImageProcessingBloc");
 sealed class ImageProcessingEvent {}
 
 class ConfirmImage extends ImageProcessingEvent {
-  final XFile img;
+  final Uint8List imgBytes;
   final int slot;
   final bool secureCapture;
-  ConfirmImage(this.img, this.slot, {this.secureCapture = false});
+  ConfirmImage(this.imgBytes, this.slot, {this.secureCapture = false});
 }
 class SendImageToSlot extends ImageProcessingEvent {
-  final XFile img;
+  final Uint8List imgBytes;
   final int slot;
   final bool secureCapture;
-  SendImageToSlot(this.img, this.slot, {this.secureCapture = false});
+  SendImageToSlot(this.imgBytes, this.slot, {this.secureCapture = false});
 }
 class ResetState extends ImageProcessingEvent {}
 
@@ -40,7 +41,7 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
     });
     on<ConfirmImage>((data, emit) {
       emit(state.copyWith(
-        processingState: UnconfirmedImage(data.img, data.slot, secureCapture: data.secureCapture),
+        processingState: UnconfirmedImage(data.imgBytes, data.slot, secureCapture: data.secureCapture),
       ));
     });
     on<SendImageToSlot>((data, emit) async {
@@ -50,7 +51,7 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
 
       final currentUser = media.currentUser;
 
-      await for (final e in media.sendImageToSlot(data.img, data.slot, secureCapture: data.secureCapture)) {
+      await for (final e in media.sendImageToSlot(data.imgBytes, data.slot, secureCapture: data.secureCapture)) {
         switch (e) {
           case Uploading(): {}
           case UploadCompleted(): {}

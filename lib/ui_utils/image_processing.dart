@@ -1,6 +1,6 @@
 import "dart:async";
+import "dart:typed_data";
 
-import "package:camera/camera.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:pihka_frontend/localizations.dart";
@@ -31,10 +31,10 @@ Widget confirmDialogOpener<B extends Bloc<ImageProcessingEvent, ImageProcessingD
       if (processingState is UnconfirmedImage) {
         final bloc = context.read<B>();
         bloc.add(ResetState());
-        final accepted = await _confirmDialogForImage(context, processingState.img);
+        final accepted = await _confirmDialogForImage(context, processingState.imgBytes);
         if (accepted == true) {
           bloc.add(SendImageToSlot(
-            processingState.img,
+            processingState.imgBytes,
             processingState.slot,
             secureCapture: processingState.secureCapture,
           ));
@@ -45,17 +45,18 @@ Widget confirmDialogOpener<B extends Bloc<ImageProcessingEvent, ImageProcessingD
   );
 }
 
-Future<bool?> _confirmDialogForImage(BuildContext context, XFile image) async {
+Future<bool?> _confirmDialogForImage(BuildContext context, Uint8List imageBytes) async {
   Widget img = InkWell(
     onTap: () {
       MyNavigator.push(
         context,
         MaterialPage<void>(
-          child: ViewImageScreen(ViewImageFileContent(image))
+          child: ViewImageScreen(ViewImageBytesContent(imageBytes))
         )
       );
     },
-    child: xfileImgWidget(image, height: 200),
+    // Width seems to prevent the dialog from expanding horizontaly
+    child: bytesImgWidget(imageBytes, height: 200, width: 150),
   );
 
   Widget dialog = AlertDialog(

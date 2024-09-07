@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:camera/camera.dart';
@@ -178,14 +179,14 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Future<String?> doDeveloperInitialSetup(
     String email,
     String name,
-    XFile securitySelfieFile,
-    XFile profileImageFile
+    Uint8List securitySelfieBytes,
+    Uint8List profileImageBytes
   ) async {
     final resultString = await InitialSetupUtils(api).doDeveloperInitialSetup(
       email,
       name,
-      securitySelfieFile,
-      profileImageFile
+      securitySelfieBytes,
+      profileImageBytes
     );
 
     if (resultString == null) {

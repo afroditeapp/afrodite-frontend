@@ -1,6 +1,8 @@
 
 
 
+import 'dart:typed_data';
+
 import 'package:camera/camera.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
@@ -52,14 +54,13 @@ class InitialSetupUtils {
   Future<String?> doDeveloperInitialSetup(
     String email,
     String name,
-    XFile securitySelfieFile,
-    XFile profileImageFile
+    Uint8List securitySelfieBytes,
+    Uint8List profileImageBytes
   ) async {
     // Handle images
 
-    final String securitySelfiePath = securitySelfieFile.path;
-    final String profileImagePath = profileImageFile.path;
-    final securitySelfie = await MultipartFile.fromPath("", securitySelfiePath);
+
+    final securitySelfie = MultipartFile.fromBytes("", securitySelfieBytes);
     final processingId = await _api.media((api) => api.putContentToContentSlot(0, true, MediaContentType.jpegImage, securitySelfie));
     if (processingId case Err()) {
       return "Server did not return content processing ID";
@@ -72,7 +73,7 @@ class InitialSetupUtils {
     }
     await _api.mediaAction((api) => api.putPendingSecurityContentInfo(contentId0));
 
-    final profileImage = await MultipartFile.fromPath("", profileImagePath);
+    final profileImage = MultipartFile.fromBytes("", profileImageBytes);
     final processingId2 = await _api.media((api) => api.putContentToContentSlot(1, false, MediaContentType.jpegImage, profileImage));
     if (processingId2 case Err()) {
       return "Server did not return content processing ID";

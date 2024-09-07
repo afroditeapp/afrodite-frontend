@@ -1,6 +1,7 @@
 
 
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/localizations.dart';
@@ -125,11 +126,22 @@ class CameraManager extends AppSingleton {
     }
     _availableCamerasInitComplete = true;
 
-    _availableCamerasList = await availableCameras();
-    log.fine(_availableCamerasList);
-    _availableCamerasList = _availableCamerasList
+    final cameras = await availableCameras();
+    log.fine(cameras);
+    final frontCameras = cameras
       .where((element) => element.lensDirection == CameraLensDirection.front)
       .toList();
+    if (frontCameras.isEmpty) {
+      if (kIsWeb) {
+        // At least on macOS Chrome, web camera is external camera, so
+        // allow all cameras.
+        _availableCamerasList = cameras;
+      } else {
+        _availableCamerasList = [];
+      }
+    } else {
+      _availableCamerasList = frontCameras;
+    }
   }
 
   Future<void> _openCameraCmd() async {
@@ -195,6 +207,12 @@ class CameraManager extends AppSingleton {
   }
 
   Future<void> setControllerSettingsAfterInit(CameraController controller) async {
+    if (kIsWeb) {
+      // Camera settings are not supported on web
+      _deadlockDebugValue = 5;
+      return;
+    }
+
     _deadlockDebugValue = 2;
     await controller.lockCaptureOrientation(DeviceOrientation.portraitUp);
     _deadlockDebugValue = 3;

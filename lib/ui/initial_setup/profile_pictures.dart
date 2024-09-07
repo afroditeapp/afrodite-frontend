@@ -1,7 +1,9 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:image_picker/image_picker.dart";
+import "package:logging/logging.dart";
 import "package:openapi/api.dart";
+import "package:utils/utils.dart";
 import "package:pihka_frontend/data/image_cache.dart";
 import "package:pihka_frontend/data/login_repository.dart";
 import "package:pihka_frontend/localizations.dart";
@@ -23,6 +25,8 @@ import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
 import "package:pihka_frontend/ui_utils/profile_thumbnail_image.dart";
 import "package:pihka_frontend/ui_utils/snack_bar.dart";
 import "package:pihka_frontend/ui_utils/view_image_screen.dart";
+
+final log = Logger("ProfilePictures");
 
 class AskProfilePicturesScreen extends StatelessWidget {
   const AskProfilePicturesScreen({Key? key}) : super(key: key);
@@ -479,12 +483,19 @@ void openSelectPictureDialog(
               // TODO: Consider resizing image on client side?
               // The built in ImagePicker resizing produces poor quality
               // images at least on Android.
-              final image  = await ImagePicker().pickImage(
-                source: ImageSource.gallery,
-                requestFullMetadata: false
-              );
-              if (image != null) {
-                imageProcessingBloc.add(SendImageToSlot(image, serverSlotIndex));
+
+              try {
+                final image  = await ImagePicker().pickImage(
+                  source: ImageSource.gallery,
+                  requestFullMetadata: false
+                );
+                if (image != null) {
+                  final imageBytes = await image.readAsBytes();
+                  imageProcessingBloc.add(SendImageToSlot(imageBytes, serverSlotIndex));
+                }
+              } catch (e) {
+                log.error("Picking image failed");
+                log.finest("$e");
               }
             },
           ),
@@ -494,13 +505,20 @@ void openSelectPictureDialog(
             onTap: () async {
               final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
               MyNavigator.removePage(context, pageKey, null);
-              final image  = await ImagePicker().pickImage(
-                source: ImageSource.camera,
-                requestFullMetadata: false,
-                preferredCameraDevice: CameraDevice.front,
-              );
-              if (image != null) {
-                imageProcessingBloc.add(ConfirmImage(image, serverSlotIndex));
+
+              try {
+                final image  = await ImagePicker().pickImage(
+                  source: ImageSource.camera,
+                  requestFullMetadata: false,
+                  preferredCameraDevice: CameraDevice.front,
+                );
+                if (image != null) {
+                  final imageBytes = await image.readAsBytes();
+                  imageProcessingBloc.add(ConfirmImage(imageBytes, serverSlotIndex));
+                }
+              } catch (e) {
+                log.error("Taking image failed");
+                log.finest("$e");
               }
             }
           ),
