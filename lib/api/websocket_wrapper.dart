@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:web_socket_channel/status.dart' as status;
 
 const _CONVERSATION_PING_INTERVAL = Duration(seconds: 10);
 const _DEFAULT_PING_INTERVAL = Duration(minutes: 5);
@@ -27,7 +26,7 @@ class WebSocketWrapper {
     _pingTimer = null;
     await p?.cancel();
     if (connection.closeCode == null) {
-      await connection.sink.close(status.goingAway);
+      await connection.sink.close();
     }
   }
 
