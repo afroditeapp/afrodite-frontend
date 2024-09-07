@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -16,6 +17,7 @@ import 'package:pihka_frontend/ui/normal/chat/one_ended_list.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/common_actions.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/menu_actions.dart';
+import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
@@ -118,6 +120,24 @@ class ConversationPageState extends State<ConversationPage> {
   }
 
   Widget page(BuildContext context) {
+    if (kIsWeb) {
+      return buildListReplacementMessage(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              context.strings.generic_not_supported_on_web,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ],
+        ),
+      );
+    } else {
+      return pageSupported(context);
+    }
+  }
+
+  Widget pageSupported(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [

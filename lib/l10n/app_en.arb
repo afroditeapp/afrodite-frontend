@@ -394,6 +394,10 @@
   "@generic_no": {
     "description": "Generic no text"
   },
+  "generic_not_supported_on_web": "Not supported on Web",
+  "@generic_not_supported_on_web": {
+    "description": "Generic not supported on web text"
+  },
   "generic_ok": "OK",
   "@generic_ok": {
     "description": "Generic OK text"

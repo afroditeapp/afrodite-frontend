@@ -2,9 +2,9 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:database/database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:native_utils/native_utils.dart';
@@ -121,6 +121,11 @@ class MessageManager extends LifecycleMethods {
   }
 
   Future<void> _receiveNewMessages() async {
+    if (kIsWeb) {
+      // Messages are not supported on web
+      return;
+    }
+
     final allKeys = await messageKeyManager.generateOrLoadMessageKeys().ok();
     if (allKeys == null) {
       return;
@@ -297,21 +302,26 @@ class MessageManager extends LifecycleMethods {
       bool sendUiEvent = true,
     }
   ) async* {
-      await for (final e in _sendMessageToInternal(accountId, message, sendUiEvent: sendUiEvent)) {
-        switch (e) {
-          case SavedToLocalDb():
-            yield e;
-          case ErrorBeforeMessageSaving():
-            yield e;
-          case ErrorAfterMessageSaving(:final id):
-            // The existing error is more important, so ignore
-            // the state change result.
-            await db.messageAction((db) => db.updateSentMessageState(
-              id,
-              sentState: SentMessageState.sendingError,
-            ));
-            yield e;
-        }
+    if (kIsWeb) {
+      // Messages are not supported on web
+      yield const ErrorBeforeMessageSaving();
+    }
+
+    await for (final e in _sendMessageToInternal(accountId, message, sendUiEvent: sendUiEvent)) {
+      switch (e) {
+        case SavedToLocalDb():
+          yield e;
+        case ErrorBeforeMessageSaving():
+          yield e;
+        case ErrorAfterMessageSaving(:final id):
+          // The existing error is more important, so ignore
+          // the state change result.
+          await db.messageAction((db) => db.updateSentMessageState(
+            id,
+            sentState: SentMessageState.sendingError,
+          ));
+          yield e;
+      }
     }
   }
 
@@ -652,6 +662,11 @@ class MessageManager extends LifecycleMethods {
       bool sendUiEvent = true,
     }
   ) async {
+    if (kIsWeb) {
+      // Messages are not supported on web
+      return const Err(DeleteSendFailedError.unspecifiedError);
+    }
+
     final lastSentMessageResult = await db.accountData((db) => db.daoMessages.getLatestSentMessage(
       currentUser,
       receiverAccount,
@@ -719,6 +734,11 @@ class MessageManager extends LifecycleMethods {
     AccountId receiverAccount,
     LocalMessageId localId,
   ) async {
+    if (kIsWeb) {
+      // Messages are not supported on web
+      return const Err(DeleteSendFailedError.unspecifiedError);
+    }
+
     final toBeResent = await db.accountData((db) => db.daoMessages.getMessageUsingLocalMessageId(
       localId,
     )).ok();

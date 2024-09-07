@@ -3,6 +3,7 @@
 import 'dart:isolate';
 
 import 'package:database/database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
@@ -31,6 +32,11 @@ class MessageKeyManager {
   MessageKeyManager(this.db, this.api, this.currentUser);
 
   Future<Result<AllKeyData, void>> generateOrLoadMessageKeys() async {
+    if (kIsWeb) {
+      // Messages are not supported on web
+      return const Err(null);
+    }
+
     if (generation.value == KeyGeneratorState.inProgress) {
       await generation.where((v) => v == KeyGeneratorState.idle).first;
       // Key generation is now complete and it should be in database

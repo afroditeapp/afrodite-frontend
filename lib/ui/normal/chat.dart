@@ -1,4 +1,5 @@
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -17,6 +18,7 @@ import 'package:pihka_frontend/ui/normal/chat/message_row.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 import 'package:pihka_frontend/ui_utils/scroll_controller.dart';
 import 'package:pihka_frontend/utils/cache.dart';
@@ -111,6 +113,24 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
+    if (kIsWeb) {
+      return buildListReplacementMessage(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              context.strings.generic_not_supported_on_web,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ],
+        ),
+      );
+    } else {
+      return conversationsSupported(context);
+    }
+  }
+
+  Widget conversationsSupported(BuildContext context) {
     return NotificationListener<ScrollMetricsNotification>(
       onNotification: (notification) {
         final isScrolled = notification.metrics.pixels > 0;
