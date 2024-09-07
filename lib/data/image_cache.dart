@@ -39,7 +39,8 @@ class ImageCacheData extends AppSingleton {
   /// Get image bytes for profile picture.
   Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false, required MediaRepository media}) async {
     if (kIsWeb) {
-      throw UnsupportedError("getImage is not supported on web");
+      // Web uses XMLHttpRequest for caching
+      return await media.getImage(imageOwner, id, isMatch: isMatch);
     }
 
     final fileInfo = await cacheManager.getFileFromCache(id.contentId);
