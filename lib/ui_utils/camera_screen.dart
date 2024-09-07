@@ -299,6 +299,8 @@ class _CameraScreenState extends State<CameraScreen>
     return processedImgBytes;
   }
 
+  // TODO(web): Support landscape images when cropping image
+
   Future<Uint8List?> processImage(XFile file) async {
     try {
       final decodedImg = img.decodeJpg(await file.readAsBytes());

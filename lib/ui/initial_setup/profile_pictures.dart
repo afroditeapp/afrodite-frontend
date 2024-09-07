@@ -1,3 +1,4 @@
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:image_picker/image_picker.dart";
@@ -499,7 +500,7 @@ void openSelectPictureDialog(
               }
             },
           ),
-          ListTile(
+          if (!kIsWeb) ListTile(
             leading: const Icon(Icons.camera_alt),
             title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_take_new_picture_title),
             onTap: () async {
