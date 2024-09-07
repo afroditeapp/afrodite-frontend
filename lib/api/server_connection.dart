@@ -273,8 +273,11 @@ class ServerConnection {
             }
           }
           case ConnectionProtocolState.receiveNewAccessToken: {
-            if (message is String) {
-              await db.accountAction(_server.setterForAccessTokenKey(message));
+            if (message is List<int>) {
+              final newAccessToken = base64Url
+                .encode(message)
+                .replaceAll("=", "");
+              await db.accountAction(_server.setterForAccessTokenKey(newAccessToken));
               ws.sink.add(await syncDataBytes(db));
               protocolState = ConnectionProtocolState.receiveEvents;
               log.info("Connection ready");
