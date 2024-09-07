@@ -63,20 +63,29 @@ class ImageCacheData extends AppSingleton {
 
   /// Get PNG file bytes for map tile.
   Future<Uint8List?> getMapTile(int z, int x, int y, {required MediaRepository media}) async {
-    final key = createMapTileKey(z, x, y);
-    final fileInfo = await cacheManager.getFileFromCache(key);
-    if (fileInfo != null) {
-      // TODO: error handling?
-      final encryptedImgBytes = await fileInfo.file.readAsBytes();
-      final decryptedImgBytes = await ImageEncryptionManager.getInstance().decryptImageData(encryptedImgBytes);
-      return decryptedImgBytes;
+    final String? mapTileCacheKey;
+    if (kIsWeb) {
+      // Web uses XMLHttpRequest for caching
+      mapTileCacheKey = null;
+    } else {
+      final key = createMapTileKey(z, x, y);
+      mapTileCacheKey = key;
+      final fileInfo = await cacheManager.getFileFromCache(key);
+      if (fileInfo != null) {
+        // TODO: error handling?
+        final encryptedImgBytes = await fileInfo.file.readAsBytes();
+        final decryptedImgBytes = await ImageEncryptionManager.getInstance().decryptImageData(encryptedImgBytes);
+        return decryptedImgBytes;
+      }
     }
 
     final tileResult = await media.getMapTile(z, x, y);
     switch (tileResult) {
       case MapTileSuccess tileResult:
-        final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(tileResult.pngData);
-        await cacheManager.putFile("null", encryptedImgBytes, key: key);
+        if (mapTileCacheKey != null) {
+          final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(tileResult.pngData);
+          await cacheManager.putFile("null", encryptedImgBytes, key: mapTileCacheKey);
+        }
         return tileResult.pngData;
       case MapTileNotAvailable():
         return await emptyMapTile();
@@ -95,7 +104,14 @@ String createMapTileKey(int z, int x, int y) {
   return "map_tile_${z}_${x}_$y";
 }
 
+Uint8List? emptyMapTilePngBytesWeb;
+
 Future<Uint8List?> emptyMapTile() async {
+  if (kIsWeb) {
+    emptyMapTilePngBytesWeb ??= emptyMapTilePngBytes();
+    return emptyMapTilePngBytesWeb;
+  }
+
   final imgFile = await TmpDirUtils.emptyMapTileFilePath();
   if (await imgFile.exists()) {
     final encryptedImgBytes = await imgFile.readAsBytes();
@@ -103,16 +119,7 @@ Future<Uint8List?> emptyMapTile() async {
     return decryptedImgBytes;
   }
 
-  final imageBuffer = img.Image(width: 1, height: 1);
-
-  for (var pixel in imageBuffer) {
-    pixel..r = MAP_BACKGROUND_COLOR.red
-        ..g = MAP_BACKGROUND_COLOR.green
-        ..b = MAP_BACKGROUND_COLOR.blue
-        ..a = 255;
-  }
-
-  final pngBytes = img.encodePng(imageBuffer);
+  final pngBytes = emptyMapTilePngBytes();
   final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(pngBytes);
 
   try {
@@ -124,6 +131,19 @@ Future<Uint8List?> emptyMapTile() async {
     ErrorManager.getInstance().show(const FileError());
     return null;
   }
+}
+
+Uint8List emptyMapTilePngBytes() {
+  final imageBuffer = img.Image(width: 1, height: 1);
+
+  for (var pixel in imageBuffer) {
+    pixel..r = MAP_BACKGROUND_COLOR.red
+        ..g = MAP_BACKGROUND_COLOR.green
+        ..b = MAP_BACKGROUND_COLOR.blue
+        ..a = 255;
+  }
+
+  return img.encodePng(imageBuffer);
 }
 
 // Use only ContentId as key for image cache as that is most likely
