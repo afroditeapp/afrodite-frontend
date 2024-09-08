@@ -263,6 +263,7 @@ class ApiManager implements LifecycleMethods {
   @override
   Future<void> init() async {
     await _account.init();
+    await updateAddressFromConfigAndReturnIt();
   }
 
   @override
