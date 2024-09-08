@@ -23,7 +23,7 @@ import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/logic/app/app_visibility_provider.dart';
 import 'package:pihka_frontend/main.dart';
-import 'package:pihka_frontend/secrets.dart';
+import 'package:pihka_frontend/sign_with_google_ids.dart';
 import 'package:utils/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -511,8 +511,6 @@ enum SignInWithGoogleEvent {
   otherError,
 }
 
-// TODO: make sure that iOS client id does not end in Android apk.
-
 const String emailScope = "https://www.googleapis.com/auth/userinfo.email";
 
 GoogleSignIn createSignInWithGoogle() {
@@ -523,7 +521,6 @@ GoogleSignIn createSignInWithGoogle() {
     );
   } else if (Platform.isIOS) {
     return GoogleSignIn(
-      clientId: signInWithGoogleIosClientId(),
       serverClientId: signInWithGoogleBackendClientId(),
       scopes: [emailScope],
     );
