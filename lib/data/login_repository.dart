@@ -519,7 +519,6 @@ GoogleSignIn createSignInWithGoogle() {
   // TODO(web): Sign in with Google support for web
   if (kIsWeb || Platform.isAndroid) {
     return GoogleSignIn(
-      serverClientId: signInWithGoogleBackendClientId(),
       scopes: [emailScope],
     );
   } else if (Platform.isIOS) {
