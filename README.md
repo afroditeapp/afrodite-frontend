@@ -56,10 +56,22 @@ editing translations easier.
 
 ### After git clone
 
-1. Install native code building dependencies. Instructions for that are in
+1. Create lib/secrets.dart
+
+```dart
+String signInWithGoogleBackendClientId() {
+    return "HELLO";
+}
+
+String signInWithGoogleIosClientId() {
+    return "HELLO";
+}
+```
+
+2. Install native code building dependencies. Instructions for that are in
 this file.
 
-2. Start Android emulator and run `flutter run`.
+3. Start Android emulator and run `flutter run`.
 
 # About Assets
 
