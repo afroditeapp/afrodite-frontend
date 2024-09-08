@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:logging/logging.dart';
 import 'package:pihka_frontend/api/error_manager.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
@@ -82,6 +83,7 @@ void initLogging() {
 
 Future<void> main() async {
   initLogging();
+  setUrlStrategy(null);
 
   WidgetsFlutterBinding.ensureInitialized();
 

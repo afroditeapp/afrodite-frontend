@@ -73,6 +73,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
+  flutter_web_plugins:
+    sdk: flutter
 
   flutter_cache_manager: ^3.4.1
   logging: ^1.2.0
