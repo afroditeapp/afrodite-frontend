@@ -17,6 +17,7 @@ import "package:pihka_frontend/ui_utils/consts/colors.dart";
 import "package:pihka_frontend/ui_utils/loading_dialog.dart";
 import "package:pihka_frontend/ui_utils/app_bar/common_actions.dart";
 import "package:pihka_frontend/ui_utils/app_bar/menu_actions.dart";
+import "package:pihka_frontend/ui_utils/sign_in_with_google_web_button/button.dart";
 import "package:pihka_frontend/ui_utils/text_field.dart";
 
 import "package:sign_in_with_apple/sign_in_with_apple.dart";
@@ -106,7 +107,7 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-const BUTTON_HEIGHT = 50.0;
+const SIGN_IN_BUTTON_HEIGHT = 50.0;
 
 Widget signInButtonArea(BuildContext context) {
   const COMMON_PADDING = 8.0;
@@ -175,7 +176,17 @@ Widget termsOfServiceAndPrivacyPolicyInfo(BuildContext context) {
 }
 
 Widget firstSignInButton(BuildContext context) {
-  if (!kIsWeb && Platform.isIOS) {
+  if (kIsWeb) {
+    return SizedBox(
+      height: SIGN_IN_BUTTON_HEIGHT,
+      child: Center(
+        child: signInWithGoogleButtonWeb(
+          Theme.of(context).brightness == Brightness.dark,
+          context.strings.localeName,
+        ),
+      ),
+    );
+  } else if (Platform.isIOS) {
     return signInWithAppleButton(context);
   } else {
     return signInWithGoogleButton(context);
@@ -202,7 +213,7 @@ Widget signInWithAppleButton(BuildContext context) {
     onPressed: () =>
       context.read<SignInWithBloc>().add(SignInWithAppleEvent()),
     borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-    height: BUTTON_HEIGHT,
+    height: SIGN_IN_BUTTON_HEIGHT,
     style: style,
   );
 }
@@ -219,7 +230,7 @@ Widget signInWithGoogleButton(BuildContext context) {
     icon: Image.asset(
       iconPath,
       width: null,
-      height: BUTTON_HEIGHT,
+      height: SIGN_IN_BUTTON_HEIGHT,
     ),
     padding: EdgeInsets.zero,
     onPressed: () =>

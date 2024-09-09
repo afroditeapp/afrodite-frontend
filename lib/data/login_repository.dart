@@ -22,6 +22,7 @@ import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/logic/app/app_visibility_provider.dart';
+import 'package:pihka_frontend/logic/sign_in_with.dart';
 import 'package:pihka_frontend/main.dart';
 import 'package:pihka_frontend/sign_with_google_ids.dart';
 import 'package:utils/utils.dart';
@@ -60,7 +61,7 @@ class LoginRepository extends DataRepository {
 
   final ApiManager _apiNoConnection = ApiManager.withDefaultAddressAndNoConnection();
 
-  GoogleSignIn google = createSignInWithGoogle();
+  late final GoogleSignIn _google;
 
   final BehaviorSubject<AccountState?> _accountState =
     BehaviorSubject.seeded(null);
@@ -114,6 +115,23 @@ class LoginRepository extends DataRepository {
       return;
     }
     _internalState.add(LoginRepositoryState.initComplete);
+
+    _google = createSignInWithGoogle();
+    if (kIsWeb) {
+      _google.onCurrentUserChanged
+      .asyncMap((signedIn) async {
+        if (signedIn == null) {
+          return;
+        }
+
+        switch (await _handleSignInWithGoogleAccountInfo(signedIn)) {
+          case Ok():
+            ();
+          case Err(:final e):
+            showSnackBarTextsForSignInWithGoogle(e);
+        }
+      }).listen((_) {});
+    }
 
     await _apiNoConnection.init();
 
@@ -294,7 +312,7 @@ class LoginRepository extends DataRepository {
   Stream<SignInWithGoogleEvent> signInWithGoogle() async* {
     final GoogleSignInAccount? signedIn;
     try {
-      signedIn = await google.signIn();
+      signedIn = await _google.signIn();
     } catch (e) { // No documentation, just catch everything
       yield SignInWithGoogleEvent.signInWithGoogleFailed;
       return;
@@ -307,22 +325,24 @@ class LoginRepository extends DataRepository {
 
     yield SignInWithGoogleEvent.getGoogleAccountTokenCompleted;
 
-    var token = await signedIn.authentication;
-    final login = await _apiNoConnection.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(googleToken: token.idToken))).ok();
-    if (login == null) {
-      yield SignInWithGoogleEvent.serverRequestFailed;
-      return;
-    }
-
-    final result = await _handleLoginResult(login)
-      .mapErr((_) => SignInWithGoogleEvent.otherError);
-
-    switch (result) {
+    switch (await _handleSignInWithGoogleAccountInfo(signedIn)) {
       case Ok():
         ();
       case Err(:final e):
         yield e;
     }
+  }
+
+  Future<Result<void, SignInWithGoogleEvent>> _handleSignInWithGoogleAccountInfo(GoogleSignInAccount signedIn) async {
+    final token = await signedIn.authentication;
+    final info = SignInWithLoginInfo(googleToken: token.idToken);
+    final login = await _apiNoConnection.account((api) => api.postSignInWithLogin(info)).ok();
+    if (login == null) {
+      return const Err(SignInWithGoogleEvent.serverRequestFailed);
+    }
+
+    return await _handleLoginResult(login)
+      .mapErr((_) => SignInWithGoogleEvent.otherError);
   }
 
   Future<Result<void, void>> _handleLoginResult(LoginResult loginResult) async {
@@ -370,7 +390,7 @@ class LoginRepository extends DataRepository {
 
     try {
       // TODO(prod): There is also google.disconnect(). Should that used instead?
-      await google.signOut();
+      await _google.signOut();
     } catch (e) { // No documentation, just catch everything
       log.error("Sign in with Google error: sign out failed");
     }
@@ -514,7 +534,6 @@ enum SignInWithGoogleEvent {
 const String emailScope = "https://www.googleapis.com/auth/userinfo.email";
 
 GoogleSignIn createSignInWithGoogle() {
-  // TODO(web): Sign in with Google support for web
   if (kIsWeb || Platform.isAndroid) {
     return GoogleSignIn(
       scopes: [emailScope],

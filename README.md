@@ -116,3 +116,32 @@ flutterfire configure
 
 Install instructions for that tool is at
 <https://firebase.google.com/docs/flutter/setup?platform=android>
+
+# Local web build development
+
+Create Visual Studio Code launch configuration like this:
+
+```
+ {
+    "name": "pihka_frontend (Flutter Chrome)",
+    "program": "lib/main.dart",
+    "deviceId": "chrome",
+    "request": "launch",
+    "type": "dart",
+    "args": [
+        "--web-hostname",
+        "localhost",
+        "--web-port",
+        "51758",
+        "--web-browser-flag",
+        "--disable-web-security",
+    ]
+}
+```
+
+The port must be 51758 as Sign in with Google
+authorized JavaScript origins config currently includes URL
+http://localhost:51758
+
+The backend runs on port 3000 so web security needs to be
+disabled.

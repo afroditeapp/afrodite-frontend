@@ -27,12 +27,13 @@ class SignInWithBloc extends Bloc<SignInWithEvent, SignInWithData> with ActionRu
                 showProgress: true,
               ));
             case SignInWithGoogleEvent.signInWithGoogleFailed:
-              showSnackBar(R.strings.login_screen_sign_in_with_error);
+              ();
             case SignInWithGoogleEvent.serverRequestFailed:
-              showSnackBar(R.strings.generic_error_occurred);
+              ();
             case SignInWithGoogleEvent.otherError:
-              showSnackBar(R.strings.generic_error);
+              ();
           }
+          showSnackBarTextsForSignInWithGoogle(event);
         }
 
         emit(state.copyWith(
@@ -44,5 +45,18 @@ class SignInWithBloc extends Bloc<SignInWithEvent, SignInWithData> with ActionRu
     on<SignInWithAppleEvent>((data, emit) async {
       await runOnce(() async => await login.signInWithApple());
     });
+  }
+}
+
+void showSnackBarTextsForSignInWithGoogle(SignInWithGoogleEvent event) {
+  switch (event) {
+    case SignInWithGoogleEvent.getGoogleAccountTokenCompleted:
+      ();
+    case SignInWithGoogleEvent.signInWithGoogleFailed:
+      showSnackBar(R.strings.login_screen_sign_in_with_error);
+    case SignInWithGoogleEvent.serverRequestFailed:
+      showSnackBar(R.strings.generic_error_occurred);
+    case SignInWithGoogleEvent.otherError:
+      showSnackBar(R.strings.generic_error);
   }
 }
