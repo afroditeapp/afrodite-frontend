@@ -64,6 +64,7 @@ class _LoginScreenOldState extends State<LoginScreenOld> {
     ];
 
     return Scaffold(
+      appBar: AppBar(),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
