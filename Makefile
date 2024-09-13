@@ -53,6 +53,16 @@ build-web-release-tar-macos:
 	cd build && tar --uid=0 --gid=0 -czf web-release.tar.gz web
 	@echo "Packaged build/web-release.tar.gz"
 
+build-web-profile-tar-linux:
+	flutter build web --profile
+	cd build && tar --owner=0 --group=0 -czf web-profile.tar.gz web
+	@echo "Packaged build/web-profile.tar.gz"
+
+build-web-profile-tar-macos:
+	flutter build web --profile
+	cd build && tar --uid=0 --gid=0 -czf web-profile.tar.gz web
+	@echo "Packaged build/web-profile.tar.gz"
+
 clean:
 	flutter clean
 	cd packages/database && flutter clean
