@@ -14,7 +14,7 @@ class GetProfileQueryParam {
   /// Returns a new [GetProfileQueryParam] instance.
   GetProfileQueryParam({
     this.isMatch,
-    this.version,
+    this.v,
   });
 
   /// If requested profile is not public, allow getting the profile data if the requested profile is a match.
@@ -27,21 +27,21 @@ class GetProfileQueryParam {
   bool? isMatch;
 
   /// Profile version UUID
-  String? version;
+  String? v;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetProfileQueryParam &&
     other.isMatch == isMatch &&
-    other.version == version;
+    other.v == v;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (isMatch == null ? 0 : isMatch!.hashCode) +
-    (version == null ? 0 : version!.hashCode);
+    (v == null ? 0 : v!.hashCode);
 
   @override
-  String toString() => 'GetProfileQueryParam[isMatch=$isMatch, version=$version]';
+  String toString() => 'GetProfileQueryParam[isMatch=$isMatch, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -50,10 +50,10 @@ class GetProfileQueryParam {
     } else {
       json[r'is_match'] = null;
     }
-    if (this.version != null) {
-      json[r'version'] = this.version;
+    if (this.v != null) {
+      json[r'v'] = this.v;
     } else {
-      json[r'version'] = null;
+      json[r'v'] = null;
     }
     return json;
   }
@@ -78,7 +78,7 @@ class GetProfileQueryParam {
 
       return GetProfileQueryParam(
         isMatch: mapValueOfType<bool>(json, r'is_match'),
-        version: mapValueOfType<String>(json, r'version'),
+        v: mapValueOfType<String>(json, r'v'),
       );
     }
     return null;

@@ -13,49 +13,49 @@ part of openapi.api;
 class GetMyProfileResult {
   /// Returns a new [GetMyProfileResult] instance.
   GetMyProfileResult({
-    this.lastSeenTime,
-    required this.profile,
-    required this.syncVersion,
-    required this.version,
+    this.lst,
+    required this.p,
+    required this.sv,
+    required this.v,
   });
 
   /// Account's most recent disconnect time.  If the last seen time is not None, then it is Unix timestamp or -1 if the profile is currently online.
-  int? lastSeenTime;
+  int? lst;
 
-  Profile profile;
+  Profile p;
 
-  ProfileSyncVersion syncVersion;
+  ProfileSyncVersion sv;
 
-  ProfileVersion version;
+  ProfileVersion v;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetMyProfileResult &&
-    other.lastSeenTime == lastSeenTime &&
-    other.profile == profile &&
-    other.syncVersion == syncVersion &&
-    other.version == version;
+    other.lst == lst &&
+    other.p == p &&
+    other.sv == sv &&
+    other.v == v;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (lastSeenTime == null ? 0 : lastSeenTime!.hashCode) +
-    (profile.hashCode) +
-    (syncVersion.hashCode) +
-    (version.hashCode);
+    (lst == null ? 0 : lst!.hashCode) +
+    (p.hashCode) +
+    (sv.hashCode) +
+    (v.hashCode);
 
   @override
-  String toString() => 'GetMyProfileResult[lastSeenTime=$lastSeenTime, profile=$profile, syncVersion=$syncVersion, version=$version]';
+  String toString() => 'GetMyProfileResult[lst=$lst, p=$p, sv=$sv, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.lastSeenTime != null) {
-      json[r'last_seen_time'] = this.lastSeenTime;
+    if (this.lst != null) {
+      json[r'lst'] = this.lst;
     } else {
-      json[r'last_seen_time'] = null;
+      json[r'lst'] = null;
     }
-      json[r'profile'] = this.profile;
-      json[r'sync_version'] = this.syncVersion;
-      json[r'version'] = this.version;
+      json[r'p'] = this.p;
+      json[r'sv'] = this.sv;
+      json[r'v'] = this.v;
     return json;
   }
 
@@ -78,10 +78,10 @@ class GetMyProfileResult {
       }());
 
       return GetMyProfileResult(
-        lastSeenTime: mapValueOfType<int>(json, r'last_seen_time'),
-        profile: Profile.fromJson(json[r'profile'])!,
-        syncVersion: ProfileSyncVersion.fromJson(json[r'sync_version'])!,
-        version: ProfileVersion.fromJson(json[r'version'])!,
+        lst: mapValueOfType<int>(json, r'lst'),
+        p: Profile.fromJson(json[r'p'])!,
+        sv: ProfileSyncVersion.fromJson(json[r'sv'])!,
+        v: ProfileVersion.fromJson(json[r'v'])!,
       );
     }
     return null;
@@ -129,9 +129,9 @@ class GetMyProfileResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'profile',
-    'sync_version',
-    'version',
+    'p',
+    'sv',
+    'v',
   };
 }
 

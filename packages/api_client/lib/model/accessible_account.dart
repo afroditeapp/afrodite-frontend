@@ -14,31 +14,31 @@ class AccessibleAccount {
   /// Returns a new [AccessibleAccount] instance.
   AccessibleAccount({
     this.age,
-    required this.id,
+    required this.aid,
     this.name,
   });
 
   int? age;
 
-  AccountId id;
+  AccountId aid;
 
   String? name;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AccessibleAccount &&
     other.age == age &&
-    other.id == id &&
+    other.aid == aid &&
     other.name == name;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (age == null ? 0 : age!.hashCode) +
-    (id.hashCode) +
+    (aid.hashCode) +
     (name == null ? 0 : name!.hashCode);
 
   @override
-  String toString() => 'AccessibleAccount[age=$age, id=$id, name=$name]';
+  String toString() => 'AccessibleAccount[age=$age, aid=$aid, name=$name]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -47,7 +47,7 @@ class AccessibleAccount {
     } else {
       json[r'age'] = null;
     }
-      json[r'id'] = this.id;
+      json[r'aid'] = this.aid;
     if (this.name != null) {
       json[r'name'] = this.name;
     } else {
@@ -76,7 +76,7 @@ class AccessibleAccount {
 
       return AccessibleAccount(
         age: mapValueOfType<int>(json, r'age'),
-        id: AccountId.fromJson(json[r'id'])!,
+        aid: AccountId.fromJson(json[r'aid'])!,
         name: mapValueOfType<String>(json, r'name'),
       );
     }
@@ -125,7 +125,7 @@ class AccessibleAccount {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'id',
+    'aid',
   };
 }
 

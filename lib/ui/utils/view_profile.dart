@@ -541,7 +541,7 @@ class AttributeAndValue implements AttributeInfoProvider {
       }
     } else if (attribute.mode == AttributeMode.selectMultipleFilterMultipleNumberList) {
       for (final v in attribute.values) {
-        if (value.values.contains(v.id)) {
+        if (value.v.contains(v.id)) {
           result.add(v);
         }
       }

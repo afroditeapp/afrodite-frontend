@@ -16,7 +16,7 @@ class ProfileUpdate {
     required this.age,
     this.attributes = const [],
     required this.name,
-    required this.profileText,
+    required this.ptext,
   });
 
   int age;
@@ -26,14 +26,14 @@ class ProfileUpdate {
   String name;
 
   /// This must be empty because profile text support is disabled.
-  String profileText;
+  String ptext;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileUpdate &&
     other.age == age &&
     _deepEquality.equals(other.attributes, attributes) &&
     other.name == name &&
-    other.profileText == profileText;
+    other.ptext == ptext;
 
   @override
   int get hashCode =>
@@ -41,17 +41,17 @@ class ProfileUpdate {
     (age.hashCode) +
     (attributes.hashCode) +
     (name.hashCode) +
-    (profileText.hashCode);
+    (ptext.hashCode);
 
   @override
-  String toString() => 'ProfileUpdate[age=$age, attributes=$attributes, name=$name, profileText=$profileText]';
+  String toString() => 'ProfileUpdate[age=$age, attributes=$attributes, name=$name, ptext=$ptext]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'age'] = this.age;
       json[r'attributes'] = this.attributes;
       json[r'name'] = this.name;
-      json[r'profile_text'] = this.profileText;
+      json[r'ptext'] = this.ptext;
     return json;
   }
 
@@ -77,7 +77,7 @@ class ProfileUpdate {
         age: mapValueOfType<int>(json, r'age')!,
         attributes: ProfileAttributeValueUpdate.listFromJson(json[r'attributes']),
         name: mapValueOfType<String>(json, r'name')!,
-        profileText: mapValueOfType<String>(json, r'profile_text')!,
+        ptext: mapValueOfType<String>(json, r'ptext')!,
       );
     }
     return null;
@@ -128,7 +128,7 @@ class ProfileUpdate {
     'age',
     'attributes',
     'name',
-    'profile_text',
+    'ptext',
   };
 }
 

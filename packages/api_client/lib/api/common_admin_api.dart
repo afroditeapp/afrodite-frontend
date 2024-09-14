@@ -23,7 +23,7 @@ class CommonAdminApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getBackendConfigWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/backend_config';
+    final path = r'/E1D6g_Gvk0QMUdCm5KecTU_CfxY';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -75,7 +75,7 @@ class CommonAdminApi {
   /// * [SoftwareOptions] softwareOptions (required):
   Future<Response> getLatestBuildInfoWithHttpInfo(SoftwareOptions softwareOptions,) async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/get_latest_build_info';
+    final path = r'/iTg7lktGRkK6vDTVhYAZcnfGSQk';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -137,7 +137,7 @@ class CommonAdminApi {
   ///   End time for query results.
   Future<Response> getPerfDataWithHttpInfo({ UnixTime? startTime, UnixTime? endTime, }) async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/perf_data';
+    final path = r'/LFF7-r3TWVsPUnfVzncXBphb0CM';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -198,7 +198,7 @@ class CommonAdminApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getSoftwareInfoWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/software_info';
+    final path = r'/uAURrHBf-ePlVvcYS0FslKy5pV8';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -242,7 +242,7 @@ class CommonAdminApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getSystemInfoWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/system_info';
+    final path = r'/NZCbtziElAJucvGefGs9Z6btUrQ';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -292,7 +292,7 @@ class CommonAdminApi {
   /// * [BackendConfig] backendConfig (required):
   Future<Response> postBackendConfigWithHttpInfo(BackendConfig backendConfig,) async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/backend_config';
+    final path = r'/E1D6g_Gvk0QMUdCm5KecTU_CfxY';
 
     // ignore: prefer_final_locals
     Object? postBody = backendConfig;
@@ -338,7 +338,7 @@ class CommonAdminApi {
   /// * [SoftwareOptions] softwareOptions (required):
   Future<Response> postRequestBuildSoftwareWithHttpInfo(SoftwareOptions softwareOptions,) async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/request_build_software';
+    final path = r'/vGQvKiH7zbpopxyScZILldwiCsg';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -386,7 +386,7 @@ class CommonAdminApi {
   /// * [bool] resetData (required):
   Future<Response> postRequestRestartOrResetBackendWithHttpInfo(bool resetData,) async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/request_restart_or_reset_backend';
+    final path = r'/rAIji-qOFiclUKWs_5JIR_-dLoI';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -440,7 +440,7 @@ class CommonAdminApi {
   /// * [bool] resetData (required):
   Future<Response> postRequestUpdateSoftwareWithHttpInfo(SoftwareOptions softwareOptions, bool reboot, bool resetData,) async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/request_update_software';
+    final path = r'/yFSS8sqNjFU8nfjNqoKN1qQ743w';
 
     // ignore: prefer_final_locals
     Object? postBody;

@@ -73,14 +73,14 @@ class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with
         if (content.state == ContentState.moderatedAsAccepted ||
           // When initial moderation is ongoing the pending content can be edited
           (isInitialModerationOngoing && (content.state == ContentState.inSlot || content.state == ContentState.inModeration))) {
-          allContent.add(content.id);
+          allContent.add(content.cid);
         }
 
         if (!isInitialModerationOngoing &&
           isModerationRequestOngoing &&
-          imgsInCurrentModerationRequest.contains(content.id) &&
+          imgsInCurrentModerationRequest.contains(content.cid) &&
           (content.state == ContentState.inSlot || content.state == ContentState.inModeration)) {
-          pendingModeration.add(content.id);
+          pendingModeration.add(content.cid);
         }
       }
     }

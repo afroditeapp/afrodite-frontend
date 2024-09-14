@@ -275,7 +275,7 @@ ProfileAttributesState modifyAttributes(
   if (!updated) {
     newAnswers.add(ProfileAttributeValueUpdate(
       id: modifyCmd.attribute.id,
-      values: [modifyCmd.value ? modifyCmd.attributeValue.id : 0],
+      v: [modifyCmd.value ? modifyCmd.attributeValue.id : 0],
     ));
   }
 

@@ -44,7 +44,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
   DaoProfiles(AccountDatabase db) : super(db);
 
   Future<void> removeProfileData(AccountId accountId) async {
-    await (update(profiles)..where((t) => t.uuidAccountId.equals(accountId.accountId)))
+    await (update(profiles)..where((t) => t.uuidAccountId.equals(accountId.aid)))
       .write(const ProfilesCompanion(
         uuidContentId0: Value(null),
         uuidContentId1: Value(null),
@@ -73,7 +73,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
         profileName: Value(profile.name),
-        profileText: Value(profile.profileText),
+        profileText: Value(profile.ptext),
         profileAge: Value(profile.age),
         profileVersion: Value(profileVersion),
         profileLastSeenTimeValue: Value(profileLastSeenTime),
@@ -82,7 +82,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
       ),
       onConflict: DoUpdate((old) => ProfilesCompanion(
         profileName: Value(profile.name),
-        profileText: Value(profile.profileText),
+        profileText: Value(profile.ptext),
         profileAge: Value(profile.age),
         profileVersion: Value(profileVersion),
         profileLastSeenTimeValue: Value(profileLastSeenTime),
@@ -116,24 +116,24 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     await into(profiles).insert(
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
-        uuidContentId0: Value(content.contentId0?.id),
-        uuidContentId1: Value(content.contentId1?.id),
-        uuidContentId2: Value(content.contentId2?.id),
-        uuidContentId3: Value(content.contentId3?.id),
-        uuidContentId4: Value(content.contentId4?.id),
-        uuidContentId5: Value(content.contentId5?.id),
+        uuidContentId0: Value(content.c0?.cid),
+        uuidContentId1: Value(content.c1?.cid),
+        uuidContentId2: Value(content.c2?.cid),
+        uuidContentId3: Value(content.c3?.cid),
+        uuidContentId4: Value(content.c4?.cid),
+        uuidContentId5: Value(content.c5?.cid),
         primaryContentGridCropSize: Value(content.gridCropSize),
         primaryContentGridCropX: Value(content.gridCropX),
         primaryContentGridCropY: Value(content.gridCropY),
         profileContentVersion: Value(contentVersion),
       ),
       onConflict: DoUpdate((old) => ProfilesCompanion(
-        uuidContentId0: Value(content.contentId0?.id),
-        uuidContentId1: Value(content.contentId1?.id),
-        uuidContentId2: Value(content.contentId2?.id),
-        uuidContentId3: Value(content.contentId3?.id),
-        uuidContentId4: Value(content.contentId4?.id),
-        uuidContentId5: Value(content.contentId5?.id),
+        uuidContentId0: Value(content.c0?.cid),
+        uuidContentId1: Value(content.c1?.cid),
+        uuidContentId2: Value(content.c2?.cid),
+        uuidContentId3: Value(content.c3?.cid),
+        uuidContentId4: Value(content.c4?.cid),
+        uuidContentId5: Value(content.c5?.cid),
         primaryContentGridCropSize: Value(content.gridCropSize),
         primaryContentGridCropX: Value(content.gridCropX),
         primaryContentGridCropY: Value(content.gridCropY),
@@ -146,7 +146,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
 
   Future<ProfileEntry?> getProfileEntry(AccountId accountId) async {
     final r = await (select(profiles)
-      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+      ..where((t) => t.uuidAccountId.equals(accountId.aid))
     )
       .getSingleOrNull();
 
@@ -155,7 +155,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
 
   Stream<ProfileEntry?> watchProfileEntry(AccountId accountId) {
     return (select(profiles)
-      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+      ..where((t) => t.uuidAccountId.equals(accountId.aid))
     )
       .map((t) => _rowToProfileEntry(t))
       .watchSingleOrNull();
@@ -215,7 +215,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
 
   Future<ProfileLocalDbId?> getProfileLocalDbId(AccountId accountId) async {
     final r = await (select(profiles)
-      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+      ..where((t) => t.uuidAccountId.equals(accountId.aid))
     )
       .getSingleOrNull();
 

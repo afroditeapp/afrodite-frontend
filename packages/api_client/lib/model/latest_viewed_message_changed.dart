@@ -13,32 +13,32 @@ part of openapi.api;
 class LatestViewedMessageChanged {
   /// Returns a new [LatestViewedMessageChanged] instance.
   LatestViewedMessageChanged({
-    required this.accountIdViewer,
     required this.newLatestViewedMessage,
+    required this.viewer,
   });
-
-  AccountId accountIdViewer;
 
   MessageNumber newLatestViewedMessage;
 
+  AccountId viewer;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is LatestViewedMessageChanged &&
-    other.accountIdViewer == accountIdViewer &&
-    other.newLatestViewedMessage == newLatestViewedMessage;
+    other.newLatestViewedMessage == newLatestViewedMessage &&
+    other.viewer == viewer;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (accountIdViewer.hashCode) +
-    (newLatestViewedMessage.hashCode);
+    (newLatestViewedMessage.hashCode) +
+    (viewer.hashCode);
 
   @override
-  String toString() => 'LatestViewedMessageChanged[accountIdViewer=$accountIdViewer, newLatestViewedMessage=$newLatestViewedMessage]';
+  String toString() => 'LatestViewedMessageChanged[newLatestViewedMessage=$newLatestViewedMessage, viewer=$viewer]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'account_id_viewer'] = this.accountIdViewer;
       json[r'new_latest_viewed_message'] = this.newLatestViewedMessage;
+      json[r'viewer'] = this.viewer;
     return json;
   }
 
@@ -61,8 +61,8 @@ class LatestViewedMessageChanged {
       }());
 
       return LatestViewedMessageChanged(
-        accountIdViewer: AccountId.fromJson(json[r'account_id_viewer'])!,
         newLatestViewedMessage: MessageNumber.fromJson(json[r'new_latest_viewed_message'])!,
+        viewer: AccountId.fromJson(json[r'viewer'])!,
       );
     }
     return null;
@@ -110,8 +110,8 @@ class LatestViewedMessageChanged {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'account_id_viewer',
     'new_latest_viewed_message',
+    'viewer',
   };
 }
 

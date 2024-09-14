@@ -16,7 +16,7 @@ class DaoProfileInitialAgeInfo extends DatabaseAccessor<AccountDatabase> with _$
   Future<void> setInitialAgeInfo({
     required api.AcceptedProfileAges info,
   }) async {
-    final time = UtcDateTime.fromUnixEpochMilliseconds(info.profileInitialAgeSetUnixTime.unixTime * 1000);
+    final time = UtcDateTime.fromUnixEpochMilliseconds(info.profileInitialAgeSetUnixTime.ut * 1000);
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,

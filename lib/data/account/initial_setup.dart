@@ -37,7 +37,7 @@ class InitialSetupUtils {
         case ContentProcessingStateType.failed: return ProcessingError("Security selfie processing failed");
         case ContentProcessingStateType.empty: return ProcessingError("Slot is empty");
         case ContentProcessingStateType.completed: {
-          final contentId = state.contentId;
+          final contentId = state.cid;
           if (contentId == null) {
             return ProcessingError("Server did not return content ID");
           } else {
@@ -84,8 +84,8 @@ class InitialSetupUtils {
       case ProcessingError(): return result2.message;
       case ProcessingSuccess(): contentId1 = result2.contentId;
     }
-    await _api.mediaAction((api) => api.putPendingProfileContent(SetProfileContent(contentId0: contentId1)));
-    await _api.mediaAction((api) => api.putModerationRequest(ModerationRequestContent(content0: contentId0, content1: contentId1)));
+    await _api.mediaAction((api) => api.putPendingProfileContent(SetProfileContent(c0: contentId1)));
+    await _api.mediaAction((api) => api.putModerationRequest(ModerationRequestContent(c0: contentId0, c1: contentId1)));
 
     // Other setup
 
@@ -95,7 +95,7 @@ class InitialSetupUtils {
     final update = ProfileUpdate(
       age: 30,
       name: "X",
-      profileText: "",
+      ptext: "",
       attributes: [],
     );
     await _api.profileAction((api) => api.postProfile(update));
@@ -150,7 +150,7 @@ class InitialSetupUtils {
       final update = ProfileUpdate(
         age: age,
         name: name,
-        profileText: "",
+        ptext: "",
         attributes: data.profileAttributes.answers,
       );
       final r = await _api.profileAction((api) => api.postProfile(update));
@@ -235,21 +235,21 @@ ModerationRequestContent createModerationRequest(
 ) {
   final List<ContentId> l = [];
 
-  _addNotEqualOrNull(securitySelfie, profileContent.contentId0, l);
-  _addNotEqualOrNull(securitySelfie, profileContent.contentId1, l);
-  _addNotEqualOrNull(securitySelfie, profileContent.contentId2, l);
-  _addNotEqualOrNull(securitySelfie, profileContent.contentId3, l);
-  _addNotEqualOrNull(securitySelfie, profileContent.contentId4, l);
-  _addNotEqualOrNull(securitySelfie, profileContent.contentId5, l);
+  _addNotEqualOrNull(securitySelfie, profileContent.c0, l);
+  _addNotEqualOrNull(securitySelfie, profileContent.c1, l);
+  _addNotEqualOrNull(securitySelfie, profileContent.c2, l);
+  _addNotEqualOrNull(securitySelfie, profileContent.c3, l);
+  _addNotEqualOrNull(securitySelfie, profileContent.c4, l);
+  _addNotEqualOrNull(securitySelfie, profileContent.c5, l);
 
   return ModerationRequestContent(
-    content0: securitySelfie,
-    content1: l.getAtOrNull(0),
-    content2: l.getAtOrNull(1),
-    content3: l.getAtOrNull(2),
-    content4: l.getAtOrNull(3),
-    content5: l.getAtOrNull(4),
-    content6: l.getAtOrNull(5),
+    c0: securitySelfie,
+    c1: l.getAtOrNull(0),
+    c2: l.getAtOrNull(1),
+    c3: l.getAtOrNull(2),
+    c4: l.getAtOrNull(3),
+    c5: l.getAtOrNull(4),
+    c6: l.getAtOrNull(5),
   );
 }
 
@@ -293,10 +293,10 @@ Result<SetProfileContent, void> createProfileContent(
   if (contentId0 == null) return errAndLog("First profile image is not selected");
 
   return Ok(SetProfileContent(
-    contentId0: contentId0,
-    contentId1: contentId1,
-    contentId2: contentId2,
-    contentId3: contentId3,
+    c0: contentId0,
+    c1: contentId1,
+    c2: contentId2,
+    c3: contentId3,
     gridCropSize: gridCropSize,
     gridCropX: gridCropX,
     gridCropY: gridCropY,

@@ -54,14 +54,14 @@ class ProfilePicturesData with _$ProfilePicturesData {
     }
 
     return SetProfileContent(
-      contentId0: img0Info.id.contentId,
+      c0: img0Info.id.contentId,
       gridCropSize: img0.cropResults.gridCropSize,
       gridCropX: img0.cropResults.gridCropX,
       gridCropY: img0.cropResults.gridCropY,
 
-      contentId1: imgStateToContentId(picture1),
-      contentId2: imgStateToContentId(picture2),
-      contentId3: imgStateToContentId(picture3),
+      c1: imgStateToContentId(picture1),
+      c2: imgStateToContentId(picture2),
+      c3: imgStateToContentId(picture3),
     );
   }
 }

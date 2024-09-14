@@ -226,7 +226,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
             SimpleDialogOption(
               onPressed: () {
                 MyNavigator.removePage(context, pageKey);
-                showInfoDialog(context, "Account ID\n\n${account.accountId}\n\nContent ID\n\n${contentId.contentId}");
+                showInfoDialog(context, "Account ID\n\n${account.aid}\n\nContent ID\n\n${contentId.cid}");
               },
               child: const Text("Show info"),
             ),

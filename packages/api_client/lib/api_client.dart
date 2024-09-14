@@ -270,8 +270,6 @@ class ApiClient {
           return DownloadTypeTypeTransformer().decode(value);
         case 'DownloadTypeQueryParam':
           return DownloadTypeQueryParam.fromJson(value);
-        case 'EncryptedMessage':
-          return EncryptedMessage.fromJson(value);
         case 'EventToClient':
           return EventToClient.fromJson(value);
         case 'EventType':

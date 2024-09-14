@@ -40,7 +40,7 @@ class EditMyProfileBloc extends Bloc<EditMyProfileEvent, EditMyProfileData> with
   EditMyProfileBloc() : super(EditMyProfileData()) {
     on<SetInitialValues>((data, emit) async {
       final attributes = data.profile.attributes
-        .map((e) => ProfileAttributeValueUpdate(id: e.id, values: [...e.values]))
+        .map((e) => ProfileAttributeValueUpdate(id: e.id, v: [...e.v]))
         .toList();
 
       emit(EditMyProfileData(

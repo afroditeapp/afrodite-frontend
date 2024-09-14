@@ -8,8 +8,8 @@ import 'package:pihka_frontend/utils/result.dart';
 class MessageDatabaseIterator {
   int startLocalKey = 0;
   int nextLocalKey = 0;
-  AccountId localAccountId = AccountId(accountId: "");
-  AccountId remoteAccountId = AccountId(accountId: "");
+  AccountId localAccountId = AccountId(aid: "");
+  AccountId remoteAccountId = AccountId(aid: "");
   final AccountDatabaseManager db;
   MessageDatabaseIterator(this.db);
 
@@ -42,8 +42,8 @@ class MessageDatabaseIterator {
   void resetToInitialState() {
     startLocalKey = 0;
     nextLocalKey = 0;
-    localAccountId = AccountId(accountId: "");
-    remoteAccountId = AccountId(accountId: "");
+    localAccountId = AccountId(aid: "");
+    remoteAccountId = AccountId(aid: "");
   }
 
   // Get max 10 next messages.

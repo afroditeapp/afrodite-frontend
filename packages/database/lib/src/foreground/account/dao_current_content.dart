@@ -17,12 +17,12 @@ class DaoCurrentContent extends DatabaseAccessor<AccountDatabase> with _$DaoCurr
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
-        uuidContentId0: Value(content.contentId0?.id),
-        uuidContentId1: Value(content.contentId1?.id),
-        uuidContentId2: Value(content.contentId2?.id),
-        uuidContentId3: Value(content.contentId3?.id),
-        uuidContentId4: Value(content.contentId4?.id),
-        uuidContentId5: Value(content.contentId5?.id),
+        uuidContentId0: Value(content.c0?.cid),
+        uuidContentId1: Value(content.c1?.cid),
+        uuidContentId2: Value(content.c2?.cid),
+        uuidContentId3: Value(content.c3?.cid),
+        uuidContentId4: Value(content.c4?.cid),
+        uuidContentId5: Value(content.c5?.cid),
         primaryContentGridCropSize: Value(content.gridCropSize),
         primaryContentGridCropX: Value(content.gridCropX),
         primaryContentGridCropY: Value(content.gridCropY),

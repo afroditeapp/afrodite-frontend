@@ -27,7 +27,7 @@ class MediaAdminApi {
   /// * [ModerationQueueType] queue (required):
   Future<Response> patchModerationRequestListWithHttpInfo(ModerationQueueType queue,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/admin/moderation/page/next';
+    final path = r'/6GF9AybnmCb3J1d4ZfTT95UoiSg';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -82,13 +82,13 @@ class MediaAdminApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
+  /// * [String] aid (required):
   ///
   /// * [HandleModerationRequest] handleModerationRequest (required):
-  Future<Response> postHandleModerationRequestWithHttpInfo(String accountId, HandleModerationRequest handleModerationRequest,) async {
+  Future<Response> postHandleModerationRequestWithHttpInfo(String aid, HandleModerationRequest handleModerationRequest,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/admin/moderation/handle_request/{account_id}'
-      .replaceAll('{account_id}', accountId);
+    final path = r'/SiEktmT-jyNLA69x7qffV8c0YUk/{aid}'
+      .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
     Object? postBody = handleModerationRequest;
@@ -117,11 +117,11 @@ class MediaAdminApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
+  /// * [String] aid (required):
   ///
   /// * [HandleModerationRequest] handleModerationRequest (required):
-  Future<void> postHandleModerationRequest(String accountId, HandleModerationRequest handleModerationRequest,) async {
-    final response = await postHandleModerationRequestWithHttpInfo(accountId, handleModerationRequest,);
+  Future<void> postHandleModerationRequest(String aid, HandleModerationRequest handleModerationRequest,) async {
+    final response = await postHandleModerationRequestWithHttpInfo(aid, handleModerationRequest,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

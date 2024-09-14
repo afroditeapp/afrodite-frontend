@@ -53,7 +53,7 @@ class DaoConversations extends DatabaseAccessor<AccountDatabase> with _$DaoConve
 
   Future<api.PublicKey?> getPublicKey(AccountId accountId) async {
     final r = await (select(conversations)
-      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+      ..where((t) => t.uuidAccountId.equals(accountId.aid))
     )
       .getSingleOrNull();
 
@@ -70,7 +70,7 @@ class DaoConversations extends DatabaseAccessor<AccountDatabase> with _$DaoConve
 
   Future<api.SenderMessageId?> getNextSenderMessageId(AccountId accountId) async {
     return await (select(conversations)
-      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+      ..where((t) => t.uuidAccountId.equals(accountId.aid))
     )
       .map((r) => r.conversationNextSenderMessageId)
       .getSingleOrNull();
@@ -97,7 +97,7 @@ class DaoConversations extends DatabaseAccessor<AccountDatabase> with _$DaoConve
 
   Future<UnreadMessagesCount?> getUnreadMessageCount(AccountId accountId) async {
     final r = await (select(conversations)
-      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+      ..where((t) => t.uuidAccountId.equals(accountId.aid))
     )
       .getSingleOrNull();
 
@@ -107,7 +107,7 @@ class DaoConversations extends DatabaseAccessor<AccountDatabase> with _$DaoConve
   Stream<UnreadMessagesCount?> watchUnreadMessageCount(AccountId accountId) {
     return (selectOnly(conversations)
       ..addColumns([conversations.conversationUnreadMessagesCount])
-      ..where(conversations.uuidAccountId.equals(accountId.accountId))
+      ..where(conversations.uuidAccountId.equals(accountId.aid))
     )
       .map((r) {
         final raw = r.read(conversations.conversationUnreadMessagesCount);

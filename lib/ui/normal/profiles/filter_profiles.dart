@@ -348,7 +348,7 @@ class EditAttributeFilters extends StatelessWidget {
       } else {
         return ProfileAttributeValue(
           id: e.id,
-          values: e.filterValues,
+          v: e.filterValues,
         );
       }
     }).nonNulls;

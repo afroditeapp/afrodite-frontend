@@ -25,7 +25,7 @@ class ProfileApi {
   /// * [AccountId] accountId (required):
   Future<Response> deleteFavoriteProfileWithHttpInfo(AccountId accountId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/favorite_profile';
+    final path = r'/yD1PtVhVvdk-usEran42JmCTFVQ';
 
     // ignore: prefer_final_locals
     Object? postBody = accountId;
@@ -65,7 +65,7 @@ class ProfileApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getAvailableProfileAttributesWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/available_profile_attributes';
+    final path = r'/_lqy4YCINbw_RCxebKLGXdDq2AM';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -109,7 +109,7 @@ class ProfileApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getFavoriteProfilesWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/favorite_profiles';
+    final path = r'/Oep5nM7bWqTdRfRoULt-_FTkKJQ';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -155,7 +155,7 @@ class ProfileApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getInitialProfileAgeInfoWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/initial_profile_age_info';
+    final path = r'/NWOWjOlm6oTYsXiPsbhBDgknan0';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -201,7 +201,7 @@ class ProfileApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getLocationWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/location';
+    final path = r'/lf5KMD9dBSVuaVcwjm4TB0d7bfY';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -245,7 +245,7 @@ class ProfileApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getMyProfileWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/my_profile';
+    final path = r'/iu25rmmvUzADXhW5SsP_DBGY2_w';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -292,17 +292,17 @@ class ProfileApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
+  /// * [String] aid (required):
   ///
-  /// * [String] version:
+  /// * [String] v:
   ///   Profile version UUID
   ///
   /// * [bool] isMatch:
   ///   If requested profile is not public, allow getting the profile data if the requested profile is a match.
-  Future<Response> getProfileWithHttpInfo(String accountId, { String? version, bool? isMatch, }) async {
+  Future<Response> getProfileWithHttpInfo(String aid, { String? v, bool? isMatch, }) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/profile/{account_id}'
-      .replaceAll('{account_id}', accountId);
+    final path = r'/5i55ZcY0jIPD7B6pyyridKY0j0Q/{aid}'
+      .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -311,8 +311,8 @@ class ProfileApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
-    if (version != null) {
-      queryParams.addAll(_queryParams('', 'version', version));
+    if (v != null) {
+      queryParams.addAll(_queryParams('', 'v', v));
     }
     if (isMatch != null) {
       queryParams.addAll(_queryParams('', 'is_match', isMatch));
@@ -338,15 +338,15 @@ class ProfileApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
+  /// * [String] aid (required):
   ///
-  /// * [String] version:
+  /// * [String] v:
   ///   Profile version UUID
   ///
   /// * [bool] isMatch:
   ///   If requested profile is not public, allow getting the profile data if the requested profile is a match.
-  Future<GetProfileResult?> getProfile(String accountId, { String? version, bool? isMatch, }) async {
-    final response = await getProfileWithHttpInfo(accountId,  version: version, isMatch: isMatch, );
+  Future<GetProfileResult?> getProfile(String aid, { String? v, bool? isMatch, }) async {
+    final response = await getProfileWithHttpInfo(aid,  v: v, isMatch: isMatch, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -365,7 +365,7 @@ class ProfileApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getProfileAttributeFiltersWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/profile_attribute_filters';
+    final path = r'/AL531AoIDRcTSWC-pdxcexf6tOM';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -412,11 +412,11 @@ class ProfileApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  Future<Response> getProfileFromDatabaseDebugModeBenchmarkWithHttpInfo(String accountId,) async {
+  /// * [String] aid (required):
+  Future<Response> getProfileFromDatabaseDebugModeBenchmarkWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/benchmark/profile/{account_id}'
-      .replaceAll('{account_id}', accountId);
+    final path = r'/XDTSz35S_5tOKIsSpDITOc46MR4/{aid}'
+      .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -445,9 +445,9 @@ class ProfileApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  Future<Profile?> getProfileFromDatabaseDebugModeBenchmark(String accountId,) async {
-    final response = await getProfileFromDatabaseDebugModeBenchmarkWithHttpInfo(accountId,);
+  /// * [String] aid (required):
+  Future<Profile?> getProfileFromDatabaseDebugModeBenchmark(String aid,) async {
+    final response = await getProfileFromDatabaseDebugModeBenchmarkWithHttpInfo(aid,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -466,7 +466,7 @@ class ProfileApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getSearchAgeRangeWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/search_age_range';
+    final path = r'/xTy-zcnl0LQlfPKQalAEnWQQ-rw';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -512,7 +512,7 @@ class ProfileApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getSearchGroupsWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/search_groups';
+    final path = r'/p1KA-sqKKtU3FHvUqYRZnQgj7RQ';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -562,7 +562,7 @@ class ProfileApi {
   /// * [AccountId] accountId (required):
   Future<Response> postFavoriteProfileWithHttpInfo(AccountId accountId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/favorite_profile';
+    final path = r'/yD1PtVhVvdk-usEran42JmCTFVQ';
 
     // ignore: prefer_final_locals
     Object? postBody = accountId;
@@ -606,7 +606,7 @@ class ProfileApi {
   /// * [IteratorSessionId] iteratorSessionId (required):
   Future<Response> postGetNextProfilePageWithHttpInfo(IteratorSessionId iteratorSessionId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/page/next';
+    final path = r'/_XRgLHtmWtbgW3ZAlgfTH5bs6bE';
 
     // ignore: prefer_final_locals
     Object? postBody = iteratorSessionId;
@@ -660,7 +660,7 @@ class ProfileApi {
   /// * [ProfileUpdate] profileUpdate (required):
   Future<Response> postProfileWithHttpInfo(ProfileUpdate profileUpdate,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/profile';
+    final path = r'/5i55ZcY0jIPD7B6pyyridKY0j0Q';
 
     // ignore: prefer_final_locals
     Object? postBody = profileUpdate;
@@ -706,7 +706,7 @@ class ProfileApi {
   /// * [ProfileAttributeFilterListUpdate] profileAttributeFilterListUpdate (required):
   Future<Response> postProfileAttributeFiltersWithHttpInfo(ProfileAttributeFilterListUpdate profileAttributeFilterListUpdate,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/profile_attribute_filters';
+    final path = r'/AL531AoIDRcTSWC-pdxcexf6tOM';
 
     // ignore: prefer_final_locals
     Object? postBody = profileAttributeFilterListUpdate;
@@ -752,7 +752,7 @@ class ProfileApi {
   /// * [ProfileUpdate] profileUpdate (required):
   Future<Response> postProfileToDatabaseDebugModeBenchmarkWithHttpInfo(ProfileUpdate profileUpdate,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/benchmark/profile';
+    final path = r'/XDTSz35S_5tOKIsSpDITOc46MR4';
 
     // ignore: prefer_final_locals
     Object? postBody = profileUpdate;
@@ -796,7 +796,7 @@ class ProfileApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> postResetProfilePagingWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/page/reset';
+    final path = r'/uUYIl9C8DoXwTj1icArj0S4RTFI';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -846,7 +846,7 @@ class ProfileApi {
   /// * [ProfileSearchAgeRange] profileSearchAgeRange (required):
   Future<Response> postSearchAgeRangeWithHttpInfo(ProfileSearchAgeRange profileSearchAgeRange,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/search_age_range';
+    final path = r'/xTy-zcnl0LQlfPKQalAEnWQQ-rw';
 
     // ignore: prefer_final_locals
     Object? postBody = profileSearchAgeRange;
@@ -892,7 +892,7 @@ class ProfileApi {
   /// * [SearchGroups] searchGroups (required):
   Future<Response> postSearchGroupsWithHttpInfo(SearchGroups searchGroups,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/search_groups';
+    final path = r'/p1KA-sqKKtU3FHvUqYRZnQgj7RQ';
 
     // ignore: prefer_final_locals
     Object? postBody = searchGroups;
@@ -938,7 +938,7 @@ class ProfileApi {
   /// * [Location] location (required):
   Future<Response> putLocationWithHttpInfo(Location location,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/location';
+    final path = r'/lf5KMD9dBSVuaVcwjm4TB0d7bfY';
 
     // ignore: prefer_final_locals
     Object? postBody = location;

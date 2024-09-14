@@ -346,8 +346,8 @@ class LoginRepository extends DataRepository {
   }
 
   Future<Result<void, void>> _handleLoginResult(LoginResult loginResult) async {
-    final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(loginResult.accountId);
-    final r = await DatabaseManager.getInstance().setAccountId(loginResult.accountId)
+    final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(loginResult.aid);
+    final r = await DatabaseManager.getInstance().setAccountId(loginResult.aid)
       .andThen(
         (_) => accountDb.accountAction(
           (db) => db.daoAccountSettings.updateEmailAddress(loginResult.email)
@@ -363,7 +363,7 @@ class LoginRepository extends DataRepository {
     // TODO(microservice): microservice support
     await onLogin();
 
-    final theNewRepositories = await _createRepositories(loginResult.accountId);
+    final theNewRepositories = await _createRepositories(loginResult.aid);
 
     // Other repostories
     await theNewRepositories.onLogin();
@@ -497,7 +497,7 @@ class LoginRepository extends DataRepository {
       return Err(OtherError());
     }
     final demoToken = DemoModeToken(token: token);
-    final loginResult = await _apiNoConnection.account((api) => api.postDemoModeLoginToAccount(DemoModeLoginToAccount(accountId: id, token: demoToken))).ok();
+    final loginResult = await _apiNoConnection.account((api) => api.postDemoModeLoginToAccount(DemoModeLoginToAccount(aid: id, token: demoToken))).ok();
     if (loginResult != null) {
       switch (await _handleLoginResult(loginResult)) {
         case Err():

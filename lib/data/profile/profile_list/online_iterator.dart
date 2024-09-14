@@ -154,19 +154,19 @@ class ProfileEntryDownloader {
     final currentVersion = currentData?.version;
     final currentContentVersion = currentData?.contentVersion;
 
-    final contentInfoResult = await api.media((api) => api.getProfileContentInfo(accountId.accountId, isMatch: isMatch, version: currentContentVersion?.version));
+    final contentInfoResult = await api.media((api) => api.getProfileContentInfo(accountId.aid, isMatch: isMatch, version: currentContentVersion?.v));
     switch (contentInfoResult) {
       case Ok(:final v):
-        final contentVersion = v.version;
+        final contentVersion = v.v;
         if (contentVersion == null) {
           // Profile private (or account state might not be Normal)
           return Err(PrivateProfile());
         }
-        final contentInfo = v.content;
+        final contentInfo = v.c;
         if (contentInfo != null) {
           await db.profileAction((db) => db.updateProfileContent(accountId, contentInfo, contentVersion));
 
-          final primaryContentId = contentInfo.contentId0?.id;
+          final primaryContentId = contentInfo.c0?.cid;
           if (primaryContentId == null) {
             log.warning("Profile content info is missing");
             return Err(OtherProfileDownloadError());
@@ -185,26 +185,26 @@ class ProfileEntryDownloader {
     // Prevent displaying error when profile is made private while iterating
     final profileDetailsResult = await api
       .profileWrapper()
-      .requestValue(logError: false, (api) => api.getProfile(accountId.accountId, isMatch: isMatch, version: currentVersion?.version));
+      .requestValue(logError: false, (api) => api.getProfile(accountId.aid, isMatch: isMatch, v: currentVersion?.v));
 
     switch (profileDetailsResult) {
       case Ok(:final v):
-        final version = v.version;
+        final version = v.v;
         if (version == null) {
           // Profile not accessible (or account state might not be Normal)
           return Err(PrivateProfile());
         }
 
-        final profile = v.profile;
+        final profile = v.p;
         if (profile != null) {
           // Sent profile version didn't match the latest profile version, so
           // server sent the latest profile.
           await accountBackgroundDb.profileAction((db) => db.updateProfileData(accountId, profile));
-          await db.profileAction((db) => db.updateProfileData(accountId, profile, version, v.lastSeenTime));
+          await db.profileAction((db) => db.updateProfileData(accountId, profile, version, v.lst));
         } else {
           // Current profile version is the latest.
           // Only updating last seen time to database is latest.
-          await db.profileAction((db) => db.updateProfileLastSeenTime(accountId, v.lastSeenTime));
+          await db.profileAction((db) => db.updateProfileLastSeenTime(accountId, v.lst));
         }
       case Err(:final e):
         e.logError(log);

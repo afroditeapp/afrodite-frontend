@@ -14,7 +14,7 @@ class ProfileAttributeValueUpdate {
   /// Returns a new [ProfileAttributeValueUpdate] instance.
   ProfileAttributeValueUpdate({
     required this.id,
-    this.values = const [],
+    this.v = const [],
   });
 
   /// Attribute ID
@@ -23,26 +23,26 @@ class ProfileAttributeValueUpdate {
   int id;
 
   /// Empty list removes the attribute.  - First value is bitflags value or top level attribute value ID or first number list value. - Second value is sub level attribute value ID or second number list value. - Third and rest are number list values.
-  List<int> values;
+  List<int> v;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileAttributeValueUpdate &&
     other.id == id &&
-    _deepEquality.equals(other.values, values);
+    _deepEquality.equals(other.v, v);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (id.hashCode) +
-    (values.hashCode);
+    (v.hashCode);
 
   @override
-  String toString() => 'ProfileAttributeValueUpdate[id=$id, values=$values]';
+  String toString() => 'ProfileAttributeValueUpdate[id=$id, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'id'] = this.id;
-      json[r'values'] = this.values;
+      json[r'v'] = this.v;
     return json;
   }
 
@@ -66,8 +66,8 @@ class ProfileAttributeValueUpdate {
 
       return ProfileAttributeValueUpdate(
         id: mapValueOfType<int>(json, r'id')!,
-        values: json[r'values'] is Iterable
-            ? (json[r'values'] as Iterable).cast<int>().toList(growable: false)
+        v: json[r'v'] is Iterable
+            ? (json[r'v'] as Iterable).cast<int>().toList(growable: false)
             : const [],
       );
     }
@@ -117,7 +117,7 @@ class ProfileAttributeValueUpdate {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'id',
-    'values',
+    'v',
   };
 }
 

@@ -14,7 +14,7 @@ class LoginResult {
   /// Returns a new [LoginResult] instance.
   LoginResult({
     required this.account,
-    required this.accountId,
+    required this.aid,
     this.email,
     this.media,
     this.profile,
@@ -22,7 +22,7 @@ class LoginResult {
 
   AuthPair account;
 
-  AccountId accountId;
+  AccountId aid;
 
   String? email;
 
@@ -33,7 +33,7 @@ class LoginResult {
   @override
   bool operator ==(Object other) => identical(this, other) || other is LoginResult &&
     other.account == account &&
-    other.accountId == accountId &&
+    other.aid == aid &&
     other.email == email &&
     other.media == media &&
     other.profile == profile;
@@ -42,18 +42,18 @@ class LoginResult {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (account.hashCode) +
-    (accountId.hashCode) +
+    (aid.hashCode) +
     (email == null ? 0 : email!.hashCode) +
     (media == null ? 0 : media!.hashCode) +
     (profile == null ? 0 : profile!.hashCode);
 
   @override
-  String toString() => 'LoginResult[account=$account, accountId=$accountId, email=$email, media=$media, profile=$profile]';
+  String toString() => 'LoginResult[account=$account, aid=$aid, email=$email, media=$media, profile=$profile]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'account'] = this.account;
-      json[r'account_id'] = this.accountId;
+      json[r'aid'] = this.aid;
     if (this.email != null) {
       json[r'email'] = this.email;
     } else {
@@ -92,7 +92,7 @@ class LoginResult {
 
       return LoginResult(
         account: AuthPair.fromJson(json[r'account'])!,
-        accountId: AccountId.fromJson(json[r'account_id'])!,
+        aid: AccountId.fromJson(json[r'aid'])!,
         email: mapValueOfType<String>(json, r'email'),
         media: AuthPair.fromJson(json[r'media']),
         profile: AuthPair.fromJson(json[r'profile']),
@@ -144,7 +144,7 @@ class LoginResult {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'account',
-    'account_id',
+    'aid',
   };
 }
 

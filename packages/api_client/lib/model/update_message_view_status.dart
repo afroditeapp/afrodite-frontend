@@ -13,32 +13,32 @@ part of openapi.api;
 class UpdateMessageViewStatus {
   /// Returns a new [UpdateMessageViewStatus] instance.
   UpdateMessageViewStatus({
-    required this.accountIdSender,
-    required this.messageNumber,
+    required this.mn,
+    required this.sender,
   });
 
-  AccountId accountIdSender;
+  MessageNumber mn;
 
-  MessageNumber messageNumber;
+  AccountId sender;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is UpdateMessageViewStatus &&
-    other.accountIdSender == accountIdSender &&
-    other.messageNumber == messageNumber;
+    other.mn == mn &&
+    other.sender == sender;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (accountIdSender.hashCode) +
-    (messageNumber.hashCode);
+    (mn.hashCode) +
+    (sender.hashCode);
 
   @override
-  String toString() => 'UpdateMessageViewStatus[accountIdSender=$accountIdSender, messageNumber=$messageNumber]';
+  String toString() => 'UpdateMessageViewStatus[mn=$mn, sender=$sender]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'account_id_sender'] = this.accountIdSender;
-      json[r'message_number'] = this.messageNumber;
+      json[r'mn'] = this.mn;
+      json[r'sender'] = this.sender;
     return json;
   }
 
@@ -61,8 +61,8 @@ class UpdateMessageViewStatus {
       }());
 
       return UpdateMessageViewStatus(
-        accountIdSender: AccountId.fromJson(json[r'account_id_sender'])!,
-        messageNumber: MessageNumber.fromJson(json[r'message_number'])!,
+        mn: MessageNumber.fromJson(json[r'mn'])!,
+        sender: AccountId.fromJson(json[r'sender'])!,
       );
     }
     return null;
@@ -110,8 +110,8 @@ class UpdateMessageViewStatus {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'account_id_sender',
-    'message_number',
+    'mn',
+    'sender',
   };
 }
 

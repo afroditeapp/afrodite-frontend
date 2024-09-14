@@ -13,85 +13,85 @@ part of openapi.api;
 class ModerationRequestContent {
   /// Returns a new [ModerationRequestContent] instance.
   ModerationRequestContent({
-    required this.content0,
-    this.content1,
-    this.content2,
-    this.content3,
-    this.content4,
-    this.content5,
-    this.content6,
+    required this.c0,
+    this.c1,
+    this.c2,
+    this.c3,
+    this.c4,
+    this.c5,
+    this.c6,
   });
 
-  ContentId content0;
+  ContentId c0;
 
-  ContentId? content1;
+  ContentId? c1;
 
-  ContentId? content2;
+  ContentId? c2;
 
-  ContentId? content3;
+  ContentId? c3;
 
-  ContentId? content4;
+  ContentId? c4;
 
-  ContentId? content5;
+  ContentId? c5;
 
-  ContentId? content6;
+  ContentId? c6;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ModerationRequestContent &&
-    other.content0 == content0 &&
-    other.content1 == content1 &&
-    other.content2 == content2 &&
-    other.content3 == content3 &&
-    other.content4 == content4 &&
-    other.content5 == content5 &&
-    other.content6 == content6;
+    other.c0 == c0 &&
+    other.c1 == c1 &&
+    other.c2 == c2 &&
+    other.c3 == c3 &&
+    other.c4 == c4 &&
+    other.c5 == c5 &&
+    other.c6 == c6;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (content0.hashCode) +
-    (content1 == null ? 0 : content1!.hashCode) +
-    (content2 == null ? 0 : content2!.hashCode) +
-    (content3 == null ? 0 : content3!.hashCode) +
-    (content4 == null ? 0 : content4!.hashCode) +
-    (content5 == null ? 0 : content5!.hashCode) +
-    (content6 == null ? 0 : content6!.hashCode);
+    (c0.hashCode) +
+    (c1 == null ? 0 : c1!.hashCode) +
+    (c2 == null ? 0 : c2!.hashCode) +
+    (c3 == null ? 0 : c3!.hashCode) +
+    (c4 == null ? 0 : c4!.hashCode) +
+    (c5 == null ? 0 : c5!.hashCode) +
+    (c6 == null ? 0 : c6!.hashCode);
 
   @override
-  String toString() => 'ModerationRequestContent[content0=$content0, content1=$content1, content2=$content2, content3=$content3, content4=$content4, content5=$content5, content6=$content6]';
+  String toString() => 'ModerationRequestContent[c0=$c0, c1=$c1, c2=$c2, c3=$c3, c4=$c4, c5=$c5, c6=$c6]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'content0'] = this.content0;
-    if (this.content1 != null) {
-      json[r'content1'] = this.content1;
+      json[r'c0'] = this.c0;
+    if (this.c1 != null) {
+      json[r'c1'] = this.c1;
     } else {
-      json[r'content1'] = null;
+      json[r'c1'] = null;
     }
-    if (this.content2 != null) {
-      json[r'content2'] = this.content2;
+    if (this.c2 != null) {
+      json[r'c2'] = this.c2;
     } else {
-      json[r'content2'] = null;
+      json[r'c2'] = null;
     }
-    if (this.content3 != null) {
-      json[r'content3'] = this.content3;
+    if (this.c3 != null) {
+      json[r'c3'] = this.c3;
     } else {
-      json[r'content3'] = null;
+      json[r'c3'] = null;
     }
-    if (this.content4 != null) {
-      json[r'content4'] = this.content4;
+    if (this.c4 != null) {
+      json[r'c4'] = this.c4;
     } else {
-      json[r'content4'] = null;
+      json[r'c4'] = null;
     }
-    if (this.content5 != null) {
-      json[r'content5'] = this.content5;
+    if (this.c5 != null) {
+      json[r'c5'] = this.c5;
     } else {
-      json[r'content5'] = null;
+      json[r'c5'] = null;
     }
-    if (this.content6 != null) {
-      json[r'content6'] = this.content6;
+    if (this.c6 != null) {
+      json[r'c6'] = this.c6;
     } else {
-      json[r'content6'] = null;
+      json[r'c6'] = null;
     }
     return json;
   }
@@ -115,13 +115,13 @@ class ModerationRequestContent {
       }());
 
       return ModerationRequestContent(
-        content0: ContentId.fromJson(json[r'content0'])!,
-        content1: ContentId.fromJson(json[r'content1']),
-        content2: ContentId.fromJson(json[r'content2']),
-        content3: ContentId.fromJson(json[r'content3']),
-        content4: ContentId.fromJson(json[r'content4']),
-        content5: ContentId.fromJson(json[r'content5']),
-        content6: ContentId.fromJson(json[r'content6']),
+        c0: ContentId.fromJson(json[r'c0'])!,
+        c1: ContentId.fromJson(json[r'c1']),
+        c2: ContentId.fromJson(json[r'c2']),
+        c3: ContentId.fromJson(json[r'c3']),
+        c4: ContentId.fromJson(json[r'c4']),
+        c5: ContentId.fromJson(json[r'c5']),
+        c6: ContentId.fromJson(json[r'c6']),
       );
     }
     return null;
@@ -169,7 +169,7 @@ class ModerationRequestContent {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'content0',
+    'c0',
   };
 }
 

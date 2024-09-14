@@ -13,29 +13,29 @@ part of openapi.api;
 class PendingSecurityContent {
   /// Returns a new [PendingSecurityContent] instance.
   PendingSecurityContent({
-    this.contentId,
+    this.c0,
   });
 
-  ContentInfo? contentId;
+  ContentInfo? c0;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PendingSecurityContent &&
-    other.contentId == contentId;
+    other.c0 == c0;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (contentId == null ? 0 : contentId!.hashCode);
+    (c0 == null ? 0 : c0!.hashCode);
 
   @override
-  String toString() => 'PendingSecurityContent[contentId=$contentId]';
+  String toString() => 'PendingSecurityContent[c0=$c0]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.contentId != null) {
-      json[r'content_id'] = this.contentId;
+    if (this.c0 != null) {
+      json[r'c0'] = this.c0;
     } else {
-      json[r'content_id'] = null;
+      json[r'c0'] = null;
     }
     return json;
   }
@@ -59,7 +59,7 @@ class PendingSecurityContent {
       }());
 
       return PendingSecurityContent(
-        contentId: ContentInfo.fromJson(json[r'content_id']),
+        c0: ContentInfo.fromJson(json[r'c0']),
       );
     }
     return null;

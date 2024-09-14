@@ -13,12 +13,12 @@ part of openapi.api;
 class ContentProcessingState {
   /// Returns a new [ContentProcessingState] instance.
   ContentProcessingState({
-    this.contentId,
+    this.cid,
     required this.state,
     this.waitQueuePosition,
   });
 
-  ContentId? contentId;
+  ContentId? cid;
 
   ContentProcessingStateType state;
 
@@ -29,26 +29,26 @@ class ContentProcessingState {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentProcessingState &&
-    other.contentId == contentId &&
+    other.cid == cid &&
     other.state == state &&
     other.waitQueuePosition == waitQueuePosition;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (contentId == null ? 0 : contentId!.hashCode) +
+    (cid == null ? 0 : cid!.hashCode) +
     (state.hashCode) +
     (waitQueuePosition == null ? 0 : waitQueuePosition!.hashCode);
 
   @override
-  String toString() => 'ContentProcessingState[contentId=$contentId, state=$state, waitQueuePosition=$waitQueuePosition]';
+  String toString() => 'ContentProcessingState[cid=$cid, state=$state, waitQueuePosition=$waitQueuePosition]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.contentId != null) {
-      json[r'content_id'] = this.contentId;
+    if (this.cid != null) {
+      json[r'cid'] = this.cid;
     } else {
-      json[r'content_id'] = null;
+      json[r'cid'] = null;
     }
       json[r'state'] = this.state;
     if (this.waitQueuePosition != null) {
@@ -78,7 +78,7 @@ class ContentProcessingState {
       }());
 
       return ContentProcessingState(
-        contentId: ContentId.fromJson(json[r'content_id']),
+        cid: ContentId.fromJson(json[r'cid']),
         state: ContentProcessingStateType.fromJson(json[r'state'])!,
         waitQueuePosition: mapValueOfType<int>(json, r'wait_queue_position'),
       );

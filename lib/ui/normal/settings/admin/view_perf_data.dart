@@ -219,7 +219,7 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
       }
 
       for (final (index, point) in pointArea.values.indexed) {
-        final time = pointArea.startTime.unixTime + (index * 60);
+        final time = pointArea.startTime.ut + (index * 60);
         data.add(FlSpot(time.toDouble(), point.toDouble()));
       }
     }

@@ -43,7 +43,7 @@ class ImageCacheData extends AppSingleton {
       return await media.getImage(imageOwner, id, isMatch: isMatch);
     }
 
-    final fileInfo = await cacheManager.getFileFromCache(id.contentId);
+    final fileInfo = await cacheManager.getFileFromCache(id.cid);
     if (fileInfo != null) {
       // TODO: error handling?
 
@@ -58,7 +58,7 @@ class ImageCacheData extends AppSingleton {
     }
 
     final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(imageData);
-    await cacheManager.putFile("null", encryptedImgBytes, key: id.contentId);
+    await cacheManager.putFile("null", encryptedImgBytes, key: id.cid);
     return imageData;
   }
 

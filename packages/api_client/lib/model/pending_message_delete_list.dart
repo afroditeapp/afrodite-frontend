@@ -13,26 +13,26 @@ part of openapi.api;
 class PendingMessageDeleteList {
   /// Returns a new [PendingMessageDeleteList] instance.
   PendingMessageDeleteList({
-    this.messagesIds = const [],
+    this.ids = const [],
   });
 
-  List<PendingMessageId> messagesIds;
+  List<PendingMessageId> ids;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PendingMessageDeleteList &&
-    _deepEquality.equals(other.messagesIds, messagesIds);
+    _deepEquality.equals(other.ids, ids);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (messagesIds.hashCode);
+    (ids.hashCode);
 
   @override
-  String toString() => 'PendingMessageDeleteList[messagesIds=$messagesIds]';
+  String toString() => 'PendingMessageDeleteList[ids=$ids]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'messages_ids'] = this.messagesIds;
+      json[r'ids'] = this.ids;
     return json;
   }
 
@@ -55,7 +55,7 @@ class PendingMessageDeleteList {
       }());
 
       return PendingMessageDeleteList(
-        messagesIds: PendingMessageId.listFromJson(json[r'messages_ids']),
+        ids: PendingMessageId.listFromJson(json[r'ids']),
       );
     }
     return null;
@@ -103,7 +103,7 @@ class PendingMessageDeleteList {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'messages_ids',
+    'ids',
   };
 }
 

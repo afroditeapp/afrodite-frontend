@@ -47,7 +47,7 @@ class DaoProfilesBackground extends DatabaseAccessor<AccountBackgroundDatabase> 
   Future<bool> _existenceCheck(AccountId accountId, Expression<bool> Function($ProfilesBackgroundTable) additionalCheck) async {
     final r = await (select(profilesBackground)
       ..where((t) => Expression.and([
-        t.uuidAccountId.equals(accountId.accountId),
+        t.uuidAccountId.equals(accountId.aid),
         additionalCheck(t),
        ]))
     ).getSingleOrNull();
@@ -63,7 +63,7 @@ class DaoProfilesBackground extends DatabaseAccessor<AccountBackgroundDatabase> 
   }
 
   Future<void> removeProfileData(AccountId accountId) async {
-    await (update(profilesBackground)..where((t) => t.uuidAccountId.equals(accountId.accountId)))
+    await (update(profilesBackground)..where((t) => t.uuidAccountId.equals(accountId.aid)))
       .write(const ProfilesBackgroundCompanion(
         profileName: Value(null),
         profileAge: Value(null),
@@ -88,7 +88,7 @@ class DaoProfilesBackground extends DatabaseAccessor<AccountBackgroundDatabase> 
 
   Future<ProfileLocalDbId?> getProfileLocalDbId(AccountId accountId) async {
     final r = await (select(profilesBackground)
-      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+      ..where((t) => t.uuidAccountId.equals(accountId.aid))
     )
       .getSingleOrNull();
 
@@ -101,7 +101,7 @@ class DaoProfilesBackground extends DatabaseAccessor<AccountBackgroundDatabase> 
 
   Future<ProfileTitle?> getProfileTitle(AccountId accountId) async {
     final r = await (select(profilesBackground)
-      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+      ..where((t) => t.uuidAccountId.equals(accountId.aid))
     )
       .getSingleOrNull();
 

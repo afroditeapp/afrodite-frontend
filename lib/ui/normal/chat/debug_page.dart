@@ -17,7 +17,7 @@ import 'package:utils/utils.dart';
 
 void openConversationDebugScreen(BuildContext context, int initialMsgCount) {
   final details = _newDebugConversationPage(
-    AccountId(accountId: ""),
+    AccountId(aid: ""),
     initialMsgCount,
   );
   context.read<NavigatorStateBloc>()
@@ -87,8 +87,8 @@ class DebugConversationDataProvider extends ConversationDataProvider {
 
       final entryId = localIdCounter++;
       final e = MessageEntry(
-        localAccountId: AccountId(accountId: ""),
-        remoteAccountId: AccountId(accountId: ""),
+        localAccountId: AccountId(aid: ""),
+        remoteAccountId: AccountId(aid: ""),
         messageText: text,
         localUnixTime: UtcDateTime.now(),
         sentMessageState: state,
@@ -100,9 +100,9 @@ class DebugConversationDataProvider extends ConversationDataProvider {
 
     final ConversationChanged changed;
     if (isSent) {
-      changed = ConversationChanged(AccountId(accountId: ""), ConversationChangeType.messageSent);
+      changed = ConversationChanged(AccountId(aid: ""), ConversationChangeType.messageSent);
     } else {
-      changed = ConversationChanged(AccountId(accountId: ""), ConversationChangeType.messageReceived);
+      changed = ConversationChanged(AccountId(aid: ""), ConversationChangeType.messageReceived);
     }
 
     chatUpdates.add((messages.length, changed));
@@ -155,7 +155,7 @@ class DebugConversationDataProvider extends ConversationDataProvider {
 class ChatViewDebuggerPage extends StatefulWidget {
   final int initialMsgCount;
   final DebugConversationDataProvider dataProvider;
-  final AccountId accountId = AccountId(accountId: "");
+  final AccountId accountId = AccountId(aid: "");
   ChatViewDebuggerPage({required this.initialMsgCount, required this.dataProvider, Key? key}) : super(key: key);
 
   @override

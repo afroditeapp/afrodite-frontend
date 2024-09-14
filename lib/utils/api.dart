@@ -7,14 +7,14 @@ import 'package:pihka_frontend/utils/list.dart';
 extension ModerationExtensions on Moderation {
   List<ContentId> contentList() {
     final l = [
-      content.content0,
+      content.c0,
     ];
-    _addNotNull(l, content.content1);
-    _addNotNull(l, content.content2);
-    _addNotNull(l, content.content3);
-    _addNotNull(l, content.content4);
-    _addNotNull(l, content.content5);
-    _addNotNull(l, content.content6);
+    _addNotNull(l, content.c1);
+    _addNotNull(l, content.c2);
+    _addNotNull(l, content.c3);
+    _addNotNull(l, content.c4);
+    _addNotNull(l, content.c5);
+    _addNotNull(l, content.c6);
     return l;
   }
 }
@@ -44,14 +44,14 @@ extension ModerationRequestStateExtensions on ModerationRequest {
 
   List<ContentId> contentList() {
     final l = [
-      content.content0,
+      content.c0,
     ];
-    _addNotNull(l, content.content1);
-    _addNotNull(l, content.content2);
-    _addNotNull(l, content.content3);
-    _addNotNull(l, content.content4);
-    _addNotNull(l, content.content5);
-    _addNotNull(l, content.content6);
+    _addNotNull(l, content.c1);
+    _addNotNull(l, content.c2);
+    _addNotNull(l, content.c3);
+    _addNotNull(l, content.c4);
+    _addNotNull(l, content.c5);
+    _addNotNull(l, content.c6);
     return l;
   }
 }
@@ -62,13 +62,13 @@ extension ModerationRequestContentExtensions on ModerationRequestContent {
       return null;
     }
     return ModerationRequestContent(
-      content0: content[0],
-      content1: content.getAtOrNull(1),
-      content2: content.getAtOrNull(2),
-      content3: content.getAtOrNull(3),
-      content4: content.getAtOrNull(4),
-      content5: content.getAtOrNull(5),
-      content6: content.getAtOrNull(6),
+      c0: content[0],
+      c1: content.getAtOrNull(1),
+      c2: content.getAtOrNull(2),
+      c3: content.getAtOrNull(3),
+      c4: content.getAtOrNull(4),
+      c5: content.getAtOrNull(5),
+      c6: content.getAtOrNull(6),
     );
   }
 }
@@ -91,29 +91,29 @@ extension AttributeExtensions on Attribute {
 
 extension ProfileAttributeValueUpdateExtensions on ProfileAttributeValueUpdate {
   void setBitflagValue(int value) {
-    values = [value];
+    v = [value];
   }
 
   int? bitflagValue() {
-    return values.firstOrNull;
+    return v.firstOrNull;
   }
 
   int? firstValue() {
-    return values.firstOrNull;
+    return v.firstOrNull;
   }
 
   int? secondValue() {
-    return values.getAtOrNull(1);
+    return v.getAtOrNull(1);
   }
 }
 
 extension ProfileAttributeValueExtensions on ProfileAttributeValue {
   int? firstValue() {
-    return values.firstOrNull;
+    return v.firstOrNull;
   }
 
   int? secondValue() {
-    return values.getAtOrNull(1);
+    return v.getAtOrNull(1);
   }
 }
 

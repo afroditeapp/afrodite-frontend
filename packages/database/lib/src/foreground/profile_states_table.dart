@@ -280,7 +280,7 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
   Future<bool> _existenceCheck(AccountId accountId, Expression<bool> Function($ProfileStatesTable) additionalCheck) async {
     final r = await (select(profileStates)
       ..where((t) => Expression.and([
-        t.uuidAccountId.equals(accountId.accountId),
+        t.uuidAccountId.equals(accountId.aid),
         additionalCheck(t),
        ]))
     ).getSingleOrNull();

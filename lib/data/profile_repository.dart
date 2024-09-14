@@ -273,8 +273,8 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return await _api.profile((api) => api.getMyProfile())
       .emptyErr()
       .andThen((info) {
-        return db.accountAction((db) => db.daoMyProfile.setApiProfile(profile: info.profile, version: info.version))
-          .andThen((_) => db.accountAction((db) => db.daoSyncVersions.updateSyncVersionProfile(info.syncVersion)));
+        return db.accountAction((db) => db.daoMyProfile.setApiProfile(profile: info.p, version: info.v))
+          .andThen((_) => db.accountAction((db) => db.daoSyncVersions.updateSyncVersionProfile(info.sv)));
       });
   }
 

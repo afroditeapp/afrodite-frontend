@@ -13,32 +13,32 @@ part of openapi.api;
 class ContentInfo {
   /// Returns a new [ContentInfo] instance.
   ContentInfo({
-    required this.contentType,
-    required this.id,
+    required this.cid,
+    required this.ctype,
   });
 
-  MediaContentType contentType;
+  ContentId cid;
 
-  ContentId id;
+  MediaContentType ctype;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentInfo &&
-    other.contentType == contentType &&
-    other.id == id;
+    other.cid == cid &&
+    other.ctype == ctype;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (contentType.hashCode) +
-    (id.hashCode);
+    (cid.hashCode) +
+    (ctype.hashCode);
 
   @override
-  String toString() => 'ContentInfo[contentType=$contentType, id=$id]';
+  String toString() => 'ContentInfo[cid=$cid, ctype=$ctype]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'content_type'] = this.contentType;
-      json[r'id'] = this.id;
+      json[r'cid'] = this.cid;
+      json[r'ctype'] = this.ctype;
     return json;
   }
 
@@ -61,8 +61,8 @@ class ContentInfo {
       }());
 
       return ContentInfo(
-        contentType: MediaContentType.fromJson(json[r'content_type'])!,
-        id: ContentId.fromJson(json[r'id'])!,
+        cid: ContentId.fromJson(json[r'cid'])!,
+        ctype: MediaContentType.fromJson(json[r'ctype'])!,
       );
     }
     return null;
@@ -110,8 +110,8 @@ class ContentInfo {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'content_type',
-    'id',
+    'cid',
+    'ctype',
   };
 }
 

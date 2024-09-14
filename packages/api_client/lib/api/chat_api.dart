@@ -27,7 +27,7 @@ class ChatApi {
   /// * [AccountId] accountId (required):
   Future<Response> deleteLikeWithHttpInfo(AccountId accountId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/delete_like';
+    final path = r'/O3DZlGOjDYbQ8PlCorta0onQDLI';
 
     // ignore: prefer_final_locals
     Object? postBody = accountId;
@@ -81,7 +81,7 @@ class ChatApi {
   /// * [PendingMessageDeleteList] pendingMessageDeleteList (required):
   Future<Response> deletePendingMessagesWithHttpInfo(PendingMessageDeleteList pendingMessageDeleteList,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/pending_messages';
+    final path = r'/7sKe87sefWrLYS0JvbPS10_F8oc';
 
     // ignore: prefer_final_locals
     Object? postBody = pendingMessageDeleteList;
@@ -121,7 +121,7 @@ class ChatApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getMatchesWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/matches';
+    final path = r'/kzySqAe9qYi69MoCBnFGKdn76-Q';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -169,7 +169,7 @@ class ChatApi {
   /// * [AccountId] accountId (required):
   Future<Response> getMessageNumberOfLatestViewedMessageWithHttpInfo(AccountId accountId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/message_number_of_latest_viewed_message';
+    final path = r'/gas7m77c7kw7N7TKyMQVzUKy3AQ';
 
     // ignore: prefer_final_locals
     Object? postBody = accountId;
@@ -219,7 +219,7 @@ class ChatApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getPendingMessagesWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/pending_messages';
+    final path = r'/7sKe87sefWrLYS0JvbPS10_F8oc';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -266,13 +266,13 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
+  /// * [String] aid (required):
   ///
   /// * [int] version (required):
-  Future<Response> getPublicKeyWithHttpInfo(String accountId, int version,) async {
+  Future<Response> getPublicKeyWithHttpInfo(String aid, int version,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/public_key/{account_id}'
-      .replaceAll('{account_id}', accountId);
+    final path = r'/e-r4VrqWJD1kIttg1McD9kv5o0k/{aid}'
+      .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -301,11 +301,11 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
+  /// * [String] aid (required):
   ///
   /// * [int] version (required):
-  Future<GetPublicKey?> getPublicKey(String accountId, int version,) async {
-    final response = await getPublicKeyWithHttpInfo(accountId, version,);
+  Future<GetPublicKey?> getPublicKey(String aid, int version,) async {
+    final response = await getPublicKeyWithHttpInfo(aid, version,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -324,7 +324,7 @@ class ChatApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getReceivedBlocksWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/received_blocks';
+    final path = r'/hjP9LovH2kBxnbwWKSyVgFL4o58';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -370,7 +370,7 @@ class ChatApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getReceivedLikesWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/received_likes';
+    final path = r'/eEB4pq6DGUYlMVAYwPCm2RT5HP0';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -419,11 +419,11 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  Future<Response> getSenderMessageIdWithHttpInfo(String accountId,) async {
+  /// * [String] aid (required):
+  Future<Response> getSenderMessageIdWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/sender_message_id/{account_id}'
-      .replaceAll('{account_id}', accountId);
+    final path = r'/tn7H7RialxF_rBX74MazT7jYaqg/{aid}'
+      .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -452,9 +452,9 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  Future<SenderMessageId?> getSenderMessageId(String accountId,) async {
-    final response = await getSenderMessageIdWithHttpInfo(accountId,);
+  /// * [String] aid (required):
+  Future<SenderMessageId?> getSenderMessageId(String aid,) async {
+    final response = await getSenderMessageIdWithHttpInfo(aid,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -473,7 +473,7 @@ class ChatApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getSentBlocksWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/sent_blocks';
+    final path = r'/3qT3qSKKzXHjo8LGEphwMLF8vjk';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -519,7 +519,7 @@ class ChatApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getSentLikesWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/sent_likes';
+    final path = r'/pTybb424uGsXvCyOLljsPujVe5Y';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -569,7 +569,7 @@ class ChatApi {
   /// * [AccountId] accountId (required):
   Future<Response> postBlockProfileWithHttpInfo(AccountId accountId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/block_profile';
+    final path = r'/MpWSY01lXj7KaDK1KCNHLWRg9k4';
 
     // ignore: prefer_final_locals
     Object? postBody = accountId;
@@ -615,7 +615,7 @@ class ChatApi {
   /// * [PendingNotificationToken] pendingNotificationToken (required):
   Future<Response> postGetPendingNotificationWithHttpInfo(PendingNotificationToken pendingNotificationToken,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/get_pending_notification';
+    final path = r'/MhQXhJMKgrUh0s95FueOgalQg-o';
 
     // ignore: prefer_final_locals
     Object? postBody = pendingNotificationToken;
@@ -669,7 +669,7 @@ class ChatApi {
   /// * [UpdateMessageViewStatus] updateMessageViewStatus (required):
   Future<Response> postMessageNumberOfLatestViewedMessageWithHttpInfo(UpdateMessageViewStatus updateMessageViewStatus,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/message_number_of_latest_viewed_message';
+    final path = r'/gas7m77c7kw7N7TKyMQVzUKy3AQ';
 
     // ignore: prefer_final_locals
     Object? postBody = updateMessageViewStatus;
@@ -715,7 +715,7 @@ class ChatApi {
   /// * [SetPublicKey] setPublicKey (required):
   Future<Response> postPublicKeyWithHttpInfo(SetPublicKey setPublicKey,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/public_key';
+    final path = r'/e-r4VrqWJD1kIttg1McD9kv5o0k';
 
     // ignore: prefer_final_locals
     Object? postBody = setPublicKey;
@@ -771,7 +771,7 @@ class ChatApi {
   /// * [AccountId] accountId (required):
   Future<Response> postSendLikeWithHttpInfo(AccountId accountId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/send_like';
+    final path = r'/sXq6ko76GtT7DuNXnkTTtFL6isY';
 
     // ignore: prefer_final_locals
     Object? postBody = accountId;
@@ -837,7 +837,7 @@ class ChatApi {
   /// * [MultipartFile] body (required):
   Future<Response> postSendMessageWithHttpInfo(String receiver, int receiverPublicKeyId, int receiverPublicKeyVersion, int senderMessageId, MultipartFile body,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/send_message';
+    final path = r'/YEFESgzw0YxQUETcUmnmfWCaF1g';
 
     // ignore: prefer_final_locals
     Object? postBody = body;
@@ -905,13 +905,13 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
+  /// * [String] aid (required):
   ///
   /// * [SenderMessageId] senderMessageId (required):
-  Future<Response> postSenderMessageIdWithHttpInfo(String accountId, SenderMessageId senderMessageId,) async {
+  Future<Response> postSenderMessageIdWithHttpInfo(String aid, SenderMessageId senderMessageId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/sender_message_id/{account_id}'
-      .replaceAll('{account_id}', accountId);
+    final path = r'/tn7H7RialxF_rBX74MazT7jYaqg/{aid}'
+      .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
     Object? postBody = senderMessageId;
@@ -940,23 +940,23 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
+  /// * [String] aid (required):
   ///
   /// * [SenderMessageId] senderMessageId (required):
-  Future<void> postSenderMessageId(String accountId, SenderMessageId senderMessageId,) async {
-    final response = await postSenderMessageIdWithHttpInfo(accountId, senderMessageId,);
+  Future<void> postSenderMessageId(String aid, SenderMessageId senderMessageId,) async {
+    final response = await postSenderMessageIdWithHttpInfo(aid, senderMessageId,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
 
-  /// Performs an HTTP 'POST /chat_api/set_device_token' operation and returns the [Response].
+  /// Performs an HTTP 'POST /CBoGGZ4HDW0REbM6SxasDCvXJNM' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [FcmDeviceToken] fcmDeviceToken (required):
   Future<Response> postSetDeviceTokenWithHttpInfo(FcmDeviceToken fcmDeviceToken,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/set_device_token';
+    final path = r'/CBoGGZ4HDW0REbM6SxasDCvXJNM';
 
     // ignore: prefer_final_locals
     Object? postBody = fcmDeviceToken;
@@ -1006,7 +1006,7 @@ class ChatApi {
   /// * [AccountId] accountId (required):
   Future<Response> postUnblockProfileWithHttpInfo(AccountId accountId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/unblock_profile';
+    final path = r'/j2Ofh-WeAFmjCQqO_AyHIM1eZEo';
 
     // ignore: prefer_final_locals
     Object? postBody = accountId;

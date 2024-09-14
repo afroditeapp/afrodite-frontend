@@ -36,8 +36,8 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
   ) async {
     final messageCount = messages.id.count();
     final q = (selectOnly(messages)
-      ..where(messages.uuidLocalAccountId.equals(localAccountId.accountId))
-      ..where(messages.uuidRemoteAccountId.equals(remoteAccountId.accountId))
+      ..where(messages.uuidLocalAccountId.equals(localAccountId.aid))
+      ..where(messages.uuidRemoteAccountId.equals(remoteAccountId.aid))
       ..addColumns([messageCount])
     );
     return await q.map((r) => r.read(messageCount)).getSingleOrNull();
@@ -86,14 +86,14 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     LocalMessageId localId,
     {
       SentMessageState? sentState,
-      int? unixTimeFromServer,
+      UnixTime? unixTimeFromServer,
       MessageNumber? messageNumberFromServer,
       SenderMessageId? senderMessageId,
     }
   ) async {
     final UtcDateTime? unixTime;
     if (unixTimeFromServer != null) {
-      unixTime = UtcDateTime.fromUnixEpochMilliseconds(unixTimeFromServer * 1000);
+      unixTime = UtcDateTime.fromUnixEpochMilliseconds(unixTimeFromServer.ut * 1000);
     } else {
       unixTime = null;
     }
@@ -113,23 +113,23 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     String decryptedMessage,
     ReceivedMessageState state,
   ) async {
-    final unixTime = UtcDateTime.fromUnixEpochMilliseconds(entry.unixTime.unixTime * 1000);
+    final unixTime = UtcDateTime.fromUnixEpochMilliseconds(entry.unixTime.ut * 1000);
     final message = NewMessageEntry(
       localAccountId: localAccountId,
-      remoteAccountId: entry.id.accountIdSender,
+      remoteAccountId: entry.id.sender,
       localUnixTime: UtcDateTime.now(),
       messageText: decryptedMessage,
       sentMessageState: null,
       receivedMessageState: state,
-      messageNumber: entry.id.messageNumber,
+      messageNumber: entry.id.mn,
       unixTime: unixTime,
     );
     await transaction(() async {
       await _insert(message);
-      final currentUnreadMessageCount = await db.daoConversations.getUnreadMessageCount(entry.id.accountIdSender) ?? UnreadMessagesCount(0);
+      final currentUnreadMessageCount = await db.daoConversations.getUnreadMessageCount(entry.id.sender) ?? UnreadMessagesCount(0);
       final updatedValue = UnreadMessagesCount(currentUnreadMessageCount.count + 1);
-      await db.daoConversations.setUnreadMessagesCount(entry.id.accountIdSender, updatedValue);
-      await db.daoMatches.setCurrentTimeToConversationLastChanged(entry.id.accountIdSender);
+      await db.daoConversations.setUnreadMessagesCount(entry.id.sender, updatedValue);
+      await db.daoMatches.setCurrentTimeToConversationLastChanged(entry.id.sender);
     });
   }
 
@@ -140,9 +140,9 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     ReceivedMessageState receivedMessageState,
   ) async {
     await (update(messages)
-      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.accountId))
-      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.accountId))
-      ..where((t) => t.messageNumber.equals(messageNumber.messageNumber))
+      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
+      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
+      ..where((t) => t.messageNumber.equals(messageNumber.mn))
     ).write(MessagesCompanion(
       receivedMessageState: Value(receivedMessageState.number),
     ));
@@ -156,8 +156,8 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     int index,
   ) async {
     return await (select(messages)
-      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.accountId))
-      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.accountId))
+      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
+      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
       ..limit(1, offset: index)
       ..orderBy([
         (t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc),
@@ -172,8 +172,8 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     AccountId remoteAccountId,
   ) {
     return (select(messages)
-      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.accountId))
-      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.accountId))
+      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
+      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
       ..limit(1)
       ..orderBy([
         (t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc),
@@ -191,8 +191,8 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     int limit,
   ) async {
     return await (select(messages)
-      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.accountId))
-      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.accountId))
+      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
+      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
       ..where((t) => t.id.isSmallerOrEqualValue(startId.id))
       ..limit(limit)
       ..orderBy([
@@ -260,8 +260,8 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     AccountId remoteAccountId,
   ) {
     return (select(messages)
-      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.accountId))
-      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.accountId))
+      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
+      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
       ..where((t) => t.sentMessageState.isNotNull())
       ..limit(1)
       ..orderBy([
@@ -278,9 +278,9 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     MessageNumber messageNumber,
   ) {
     return (select(messages)
-      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.accountId))
-      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.accountId))
-      ..where((t) => t.messageNumber.equals(messageNumber.messageNumber))
+      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
+      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
+      ..where((t) => t.messageNumber.equals(messageNumber.mn))
       ..limit(1)
     )
       .map((m) => _fromMessage(m))

@@ -13,39 +13,39 @@ part of openapi.api;
 class GetProfileContentResult {
   /// Returns a new [GetProfileContentResult] instance.
   GetProfileContentResult({
-    this.content,
-    this.version,
+    this.c,
+    this.v,
   });
 
-  ProfileContent? content;
+  ProfileContent? c;
 
-  ProfileContentVersion? version;
+  ProfileContentVersion? v;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetProfileContentResult &&
-    other.content == content &&
-    other.version == version;
+    other.c == c &&
+    other.v == v;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (content == null ? 0 : content!.hashCode) +
-    (version == null ? 0 : version!.hashCode);
+    (c == null ? 0 : c!.hashCode) +
+    (v == null ? 0 : v!.hashCode);
 
   @override
-  String toString() => 'GetProfileContentResult[content=$content, version=$version]';
+  String toString() => 'GetProfileContentResult[c=$c, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.content != null) {
-      json[r'content'] = this.content;
+    if (this.c != null) {
+      json[r'c'] = this.c;
     } else {
-      json[r'content'] = null;
+      json[r'c'] = null;
     }
-    if (this.version != null) {
-      json[r'version'] = this.version;
+    if (this.v != null) {
+      json[r'v'] = this.v;
     } else {
-      json[r'version'] = null;
+      json[r'v'] = null;
     }
     return json;
   }
@@ -69,8 +69,8 @@ class GetProfileContentResult {
       }());
 
       return GetProfileContentResult(
-        content: ProfileContent.fromJson(json[r'content']),
-        version: ProfileContentVersion.fromJson(json[r'version']),
+        c: ProfileContent.fromJson(json[r'c']),
+        v: ProfileContentVersion.fromJson(json[r'v']),
       );
     }
     return null;

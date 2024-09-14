@@ -13,26 +13,26 @@ part of openapi.api;
 class AccountId {
   /// Returns a new [AccountId] instance.
   AccountId({
-    required this.accountId,
+    required this.aid,
   });
 
-  String accountId;
+  String aid;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AccountId &&
-    other.accountId == accountId;
+    other.aid == aid;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (accountId.hashCode);
+    (aid.hashCode);
 
   @override
-  String toString() => 'AccountId[accountId=$accountId]';
+  String toString() => 'AccountId[aid=$aid]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'account_id'] = this.accountId;
+      json[r'aid'] = this.aid;
     return json;
   }
 
@@ -55,7 +55,7 @@ class AccountId {
       }());
 
       return AccountId(
-        accountId: mapValueOfType<String>(json, r'account_id')!,
+        aid: mapValueOfType<String>(json, r'aid')!,
       );
     }
     return null;
@@ -103,7 +103,7 @@ class AccountId {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'account_id',
+    'aid',
   };
 }
 

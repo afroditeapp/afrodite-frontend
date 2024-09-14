@@ -50,7 +50,6 @@ doc/DemoModePassword.md
 doc/DemoModeToken.md
 doc/DownloadType.md
 doc/DownloadTypeQueryParam.md
-doc/EncryptedMessage.md
 doc/EventToClient.md
 doc/EventType.md
 doc/FavoriteProfilesPage.md
@@ -221,7 +220,6 @@ lib/model/demo_mode_password.dart
 lib/model/demo_mode_token.dart
 lib/model/download_type.dart
 lib/model/download_type_query_param.dart
-lib/model/encrypted_message.dart
 lib/model/event_to_client.dart
 lib/model/event_type.dart
 lib/model/favorite_profiles_page.dart

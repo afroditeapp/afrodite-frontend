@@ -19,12 +19,12 @@ class DaoPendingContent extends DatabaseAccessor<AccountDatabase> with _$DaoPend
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
-        uuidPendingContentId0: Value(pendingContent.contentId0?.id),
-        uuidPendingContentId1: Value(pendingContent.contentId1?.id),
-        uuidPendingContentId2: Value(pendingContent.contentId2?.id),
-        uuidPendingContentId3: Value(pendingContent.contentId3?.id),
-        uuidPendingContentId4: Value(pendingContent.contentId4?.id),
-        uuidPendingContentId5: Value(pendingContent.contentId5?.id),
+        uuidPendingContentId0: Value(pendingContent.c0?.cid),
+        uuidPendingContentId1: Value(pendingContent.c1?.cid),
+        uuidPendingContentId2: Value(pendingContent.c2?.cid),
+        uuidPendingContentId3: Value(pendingContent.c3?.cid),
+        uuidPendingContentId4: Value(pendingContent.c4?.cid),
+        uuidPendingContentId5: Value(pendingContent.c5?.cid),
         pendingPrimaryContentGridCropSize: Value(pendingContent.gridCropSize),
         pendingPrimaryContentGridCropX: Value(pendingContent.gridCropX),
         pendingPrimaryContentGridCropY: Value(pendingContent.gridCropY),

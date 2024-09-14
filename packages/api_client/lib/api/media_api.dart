@@ -24,14 +24,14 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
+  /// * [String] aid (required):
   ///
-  /// * [String] contentId (required):
-  Future<Response> deleteContentWithHttpInfo(String accountId, String contentId,) async {
+  /// * [String] cid (required):
+  Future<Response> deleteContentWithHttpInfo(String aid, String cid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/content/{account_id}/{content_id}'
-      .replaceAll('{account_id}', accountId)
-      .replaceAll('{content_id}', contentId);
+    final path = r'/9ztWJZUmcnzICLL2gJ8qV8gVoR8/{aid}/{cid}'
+      .replaceAll('{aid}', aid)
+      .replaceAll('{cid}', cid);
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -60,11 +60,11 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
+  /// * [String] aid (required):
   ///
-  /// * [String] contentId (required):
-  Future<void> deleteContent(String accountId, String contentId,) async {
-    final response = await deleteContentWithHttpInfo(accountId, contentId,);
+  /// * [String] cid (required):
+  Future<void> deleteContent(String aid, String cid,) async {
+    final response = await deleteContentWithHttpInfo(aid, cid,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -75,7 +75,7 @@ class MediaApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> deleteModerationRequestWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/moderation/request';
+    final path = r'/O6uTeSLARVqY1bvDxmX96ITtBCM';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -113,7 +113,7 @@ class MediaApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> deletePendingSecurityContentInfoWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/pending_security_content_info';
+    final path = r'/sO2QJPZs98Emtu1vW1k4iHD-gz8';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -152,11 +152,11 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  Future<Response> getAllAccountMediaContentWithHttpInfo(String accountId,) async {
+  /// * [String] aid (required):
+  Future<Response> getAllAccountMediaContentWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/all_account_media_content/{account_id}'
-      .replaceAll('{account_id}', accountId);
+    final path = r'/RzBkQfHdmWHdL0L1Uq-DVE6kiVY/{aid}'
+      .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -183,9 +183,9 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  Future<AccountContent?> getAllAccountMediaContent(String accountId,) async {
-    final response = await getAllAccountMediaContentWithHttpInfo(accountId,);
+  /// * [String] aid (required):
+  Future<AccountContent?> getAllAccountMediaContent(String aid,) async {
+    final response = await getAllAccountMediaContentWithHttpInfo(aid,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -207,17 +207,17 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
+  /// * [String] aid (required):
   ///
-  /// * [String] contentId (required):
+  /// * [String] cid (required):
   ///
   /// * [bool] isMatch:
   ///   If false media content access is allowed when profile is set as public. If true media content access is allowed when users are a match.
-  Future<Response> getContentWithHttpInfo(String accountId, String contentId, { bool? isMatch, }) async {
+  Future<Response> getContentWithHttpInfo(String aid, String cid, { bool? isMatch, }) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/content/{account_id}/{content_id}'
-      .replaceAll('{account_id}', accountId)
-      .replaceAll('{content_id}', contentId);
+    final path = r'/9ztWJZUmcnzICLL2gJ8qV8gVoR8/{aid}/{cid}'
+      .replaceAll('{aid}', aid)
+      .replaceAll('{cid}', cid);
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -250,14 +250,14 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
+  /// * [String] aid (required):
   ///
-  /// * [String] contentId (required):
+  /// * [String] cid (required):
   ///
   /// * [bool] isMatch:
   ///   If false media content access is allowed when profile is set as public. If true media content access is allowed when users are a match.
-  Future<MultipartFile?> getContent(String accountId, String contentId, { bool? isMatch, }) async {
-    final response = await getContentWithHttpInfo(accountId, contentId,  isMatch: isMatch, );
+  Future<MultipartFile?> getContent(String aid, String cid, { bool? isMatch, }) async {
+    final response = await getContentWithHttpInfo(aid, cid,  isMatch: isMatch, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -282,7 +282,7 @@ class MediaApi {
   /// * [int] slotId (required):
   Future<Response> getContentSlotStateWithHttpInfo(int slotId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/content_slot/{slot_id}'
+    final path = r'/y5DgJJAaDZF89y6X4ge84klpBq0/{slot_id}'
       .replaceAll('{slot_id}', slotId.toString());
 
     // ignore: prefer_final_locals
@@ -343,7 +343,7 @@ class MediaApi {
   /// * [String] y (required):
   Future<Response> getMapTileWithHttpInfo(int z, int x, String y,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/map_tile/{z}/{x}/{y}'
+    final path = r'/BoFh54UgWwlQvwJfb0TpJqd4gaM/{z}/{x}/{y}'
       .replaceAll('{z}', z.toString())
       .replaceAll('{x}', x.toString())
       .replaceAll('{y}', y);
@@ -400,7 +400,7 @@ class MediaApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getModerationRequestWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/moderation/request';
+    final path = r'/O6uTeSLARVqY1bvDxmX96ITtBCM';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -445,11 +445,11 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  Future<Response> getPendingProfileContentInfoWithHttpInfo(String accountId,) async {
+  /// * [String] aid (required):
+  Future<Response> getPendingProfileContentInfoWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/pending_profile_content_info/{account_id}'
-      .replaceAll('{account_id}', accountId);
+    final path = r'/-NOw5oduzs2zI-cDLwFQKJkiO2U/{aid}'
+      .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -476,9 +476,9 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  Future<PendingProfileContent?> getPendingProfileContentInfo(String accountId,) async {
-    final response = await getPendingProfileContentInfoWithHttpInfo(accountId,);
+  /// * [String] aid (required):
+  Future<PendingProfileContent?> getPendingProfileContentInfo(String aid,) async {
+    final response = await getPendingProfileContentInfoWithHttpInfo(aid,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -498,11 +498,11 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  Future<Response> getPendingSecurityContentInfoWithHttpInfo(String accountId,) async {
+  /// * [String] aid (required):
+  Future<Response> getPendingSecurityContentInfoWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/pending_security_content_info/{account_id}'
-      .replaceAll('{account_id}', accountId);
+    final path = r'/sO2QJPZs98Emtu1vW1k4iHD-gz8/{aid}'
+      .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -529,9 +529,9 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  Future<PendingSecurityContent?> getPendingSecurityContentInfo(String accountId,) async {
-    final response = await getPendingSecurityContentInfoWithHttpInfo(accountId,);
+  /// * [String] aid (required):
+  Future<PendingSecurityContent?> getPendingSecurityContentInfo(String aid,) async {
+    final response = await getPendingSecurityContentInfoWithHttpInfo(aid,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -553,16 +553,16 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
+  /// * [String] aid (required):
   ///
   /// * [String] version:
   ///
   /// * [bool] isMatch:
   ///   If false profile content access is allowed when profile is set as public. If true profile content access is allowed when users are a match.
-  Future<Response> getProfileContentInfoWithHttpInfo(String accountId, { String? version, bool? isMatch, }) async {
+  Future<Response> getProfileContentInfoWithHttpInfo(String aid, { String? version, bool? isMatch, }) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/profile_content_info/{account_id}'
-      .replaceAll('{account_id}', accountId);
+    final path = r'/ZYlzEPvPMBx2V1S6Ee-kIhp2_rg/{aid}'
+      .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -598,14 +598,14 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
+  /// * [String] aid (required):
   ///
   /// * [String] version:
   ///
   /// * [bool] isMatch:
   ///   If false profile content access is allowed when profile is set as public. If true profile content access is allowed when users are a match.
-  Future<GetProfileContentResult?> getProfileContentInfo(String accountId, { String? version, bool? isMatch, }) async {
-    final response = await getProfileContentInfoWithHttpInfo(accountId,  version: version, isMatch: isMatch, );
+  Future<GetProfileContentResult?> getProfileContentInfo(String aid, { String? version, bool? isMatch, }) async {
+    final response = await getProfileContentInfoWithHttpInfo(aid,  version: version, isMatch: isMatch, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -625,11 +625,11 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  Future<Response> getSecurityContentInfoWithHttpInfo(String accountId,) async {
+  /// * [String] aid (required):
+  Future<Response> getSecurityContentInfoWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/security_content_info/{account_id}'
-      .replaceAll('{account_id}', accountId);
+    final path = r'/6lWoyl4YuurCAEnkJbnSy1wP22M/{aid}'
+      .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -656,9 +656,9 @@ class MediaApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  Future<SecurityContent?> getSecurityContentInfo(String accountId,) async {
-    final response = await getSecurityContentInfoWithHttpInfo(accountId,);
+  /// * [String] aid (required):
+  Future<SecurityContent?> getSecurityContentInfo(String aid,) async {
+    final response = await getSecurityContentInfoWithHttpInfo(aid,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -690,7 +690,7 @@ class MediaApi {
   /// * [MultipartFile] body (required):
   Future<Response> putContentToContentSlotWithHttpInfo(int slotId, bool secureCapture, MediaContentType contentType, MultipartFile body,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/content_slot/{slot_id}'
+    final path = r'/y5DgJJAaDZF89y6X4ge84klpBq0/{slot_id}'
       .replaceAll('{slot_id}', slotId.toString());
 
     // ignore: prefer_final_locals
@@ -757,7 +757,7 @@ class MediaApi {
   /// * [ModerationRequestContent] moderationRequestContent (required):
   Future<Response> putModerationRequestWithHttpInfo(ModerationRequestContent moderationRequestContent,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/moderation/request';
+    final path = r'/O6uTeSLARVqY1bvDxmX96ITtBCM';
 
     // ignore: prefer_final_locals
     Object? postBody = moderationRequestContent;
@@ -805,7 +805,7 @@ class MediaApi {
   /// * [SetProfileContent] setProfileContent (required):
   Future<Response> putPendingProfileContentWithHttpInfo(SetProfileContent setProfileContent,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/pending_profile_content';
+    final path = r'/6LYLKEUqrhj86bf2PXWOjUYHbls';
 
     // ignore: prefer_final_locals
     Object? postBody = setProfileContent;
@@ -851,7 +851,7 @@ class MediaApi {
   /// * [ContentId] contentId (required):
   Future<Response> putPendingSecurityContentInfoWithHttpInfo(ContentId contentId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/pending_security_content_info';
+    final path = r'/sO2QJPZs98Emtu1vW1k4iHD-gz8';
 
     // ignore: prefer_final_locals
     Object? postBody = contentId;
@@ -897,7 +897,7 @@ class MediaApi {
   /// * [SetProfileContent] setProfileContent (required):
   Future<Response> putProfileContentWithHttpInfo(SetProfileContent setProfileContent,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/profile_content';
+    final path = r'/_rsyG4gpvDy3O3Aj5hpLp3-8oPE';
 
     // ignore: prefer_final_locals
     Object? postBody = setProfileContent;
@@ -945,7 +945,7 @@ class MediaApi {
   /// * [ContentId] contentId (required):
   Future<Response> putSecurityContentInfoWithHttpInfo(ContentId contentId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/security_content_info';
+    final path = r'/6lWoyl4YuurCAEnkJbnSy1wP22M';
 
     // ignore: prefer_final_locals
     Object? postBody = contentId;

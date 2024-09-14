@@ -82,7 +82,6 @@ part 'model/demo_mode_password.dart';
 part 'model/demo_mode_token.dart';
 part 'model/download_type.dart';
 part 'model/download_type_query_param.dart';
-part 'model/encrypted_message.dart';
 part 'model/event_to_client.dart';
 part 'model/event_type.dart';
 part 'model/favorite_profiles_page.dart';

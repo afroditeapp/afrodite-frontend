@@ -13,31 +13,31 @@ part of openapi.api;
 class DemoModeLoginToAccount {
   /// Returns a new [DemoModeLoginToAccount] instance.
   DemoModeLoginToAccount({
-    required this.accountId,
+    required this.aid,
     required this.token,
   });
 
-  AccountId accountId;
+  AccountId aid;
 
   DemoModeToken token;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is DemoModeLoginToAccount &&
-    other.accountId == accountId &&
+    other.aid == aid &&
     other.token == token;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (accountId.hashCode) +
+    (aid.hashCode) +
     (token.hashCode);
 
   @override
-  String toString() => 'DemoModeLoginToAccount[accountId=$accountId, token=$token]';
+  String toString() => 'DemoModeLoginToAccount[aid=$aid, token=$token]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'account_id'] = this.accountId;
+      json[r'aid'] = this.aid;
       json[r'token'] = this.token;
     return json;
   }
@@ -61,7 +61,7 @@ class DemoModeLoginToAccount {
       }());
 
       return DemoModeLoginToAccount(
-        accountId: AccountId.fromJson(json[r'account_id'])!,
+        aid: AccountId.fromJson(json[r'aid'])!,
         token: DemoModeToken.fromJson(json[r'token'])!,
       );
     }
@@ -110,7 +110,7 @@ class DemoModeLoginToAccount {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'account_id',
+    'aid',
     'token',
   };
 }

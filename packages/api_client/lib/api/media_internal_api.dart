@@ -22,11 +22,11 @@ class MediaInternalApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  Future<Response> internalGetCheckModerationRequestForAccountWithHttpInfo(String accountId,) async {
+  /// * [String] aid (required):
+  Future<Response> internalGetCheckModerationRequestForAccountWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/internal/media_api/moderation/request/{account_id}'
-      .replaceAll('{account_id}', accountId);
+    final path = r'/internal/media_api/moderation/request/{aid}'
+      .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -53,9 +53,9 @@ class MediaInternalApi {
   ///
   /// Parameters:
   ///
-  /// * [String] accountId (required):
-  Future<void> internalGetCheckModerationRequestForAccount(String accountId,) async {
-    final response = await internalGetCheckModerationRequestForAccountWithHttpInfo(accountId,);
+  /// * [String] aid (required):
+  Future<void> internalGetCheckModerationRequestForAccount(String aid,) async {
+    final response = await internalGetCheckModerationRequestForAccountWithHttpInfo(aid,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

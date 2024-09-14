@@ -67,7 +67,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
     final controller = _pagingController;
     if (controller != null) {
       setState(() {
-        controller.itemList?.removeWhere((item) => item.$1.accountId == accountId.accountId);
+        controller.itemList?.removeWhere((item) => item.$1.aid == accountId.aid);
       });
     }
   }

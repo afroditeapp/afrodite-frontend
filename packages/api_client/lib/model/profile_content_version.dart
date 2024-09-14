@@ -13,26 +13,26 @@ part of openapi.api;
 class ProfileContentVersion {
   /// Returns a new [ProfileContentVersion] instance.
   ProfileContentVersion({
-    required this.version,
+    required this.v,
   });
 
-  String version;
+  String v;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileContentVersion &&
-    other.version == version;
+    other.v == v;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (version.hashCode);
+    (v.hashCode);
 
   @override
-  String toString() => 'ProfileContentVersion[version=$version]';
+  String toString() => 'ProfileContentVersion[v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'version'] = this.version;
+      json[r'v'] = this.v;
     return json;
   }
 
@@ -55,7 +55,7 @@ class ProfileContentVersion {
       }());
 
       return ProfileContentVersion(
-        version: mapValueOfType<String>(json, r'version')!,
+        v: mapValueOfType<String>(json, r'v')!,
       );
     }
     return null;
@@ -103,7 +103,7 @@ class ProfileContentVersion {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'version',
+    'v',
   };
 }
 

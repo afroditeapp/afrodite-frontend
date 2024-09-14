@@ -16,7 +16,7 @@ class Profile {
     required this.age,
     this.attributes = const [],
     required this.name,
-    required this.profileText,
+    this.ptext = '',
     this.unlimitedLikes = false,
   });
 
@@ -27,7 +27,7 @@ class Profile {
   String name;
 
   /// Profile text support is disabled for now.
-  String profileText;
+  String ptext;
 
   bool unlimitedLikes;
 
@@ -36,7 +36,7 @@ class Profile {
     other.age == age &&
     _deepEquality.equals(other.attributes, attributes) &&
     other.name == name &&
-    other.profileText == profileText &&
+    other.ptext == ptext &&
     other.unlimitedLikes == unlimitedLikes;
 
   @override
@@ -45,18 +45,18 @@ class Profile {
     (age.hashCode) +
     (attributes.hashCode) +
     (name.hashCode) +
-    (profileText.hashCode) +
+    (ptext.hashCode) +
     (unlimitedLikes.hashCode);
 
   @override
-  String toString() => 'Profile[age=$age, attributes=$attributes, name=$name, profileText=$profileText, unlimitedLikes=$unlimitedLikes]';
+  String toString() => 'Profile[age=$age, attributes=$attributes, name=$name, ptext=$ptext, unlimitedLikes=$unlimitedLikes]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'age'] = this.age;
       json[r'attributes'] = this.attributes;
       json[r'name'] = this.name;
-      json[r'profile_text'] = this.profileText;
+      json[r'ptext'] = this.ptext;
       json[r'unlimited_likes'] = this.unlimitedLikes;
     return json;
   }
@@ -83,7 +83,7 @@ class Profile {
         age: mapValueOfType<int>(json, r'age')!,
         attributes: ProfileAttributeValue.listFromJson(json[r'attributes']),
         name: mapValueOfType<String>(json, r'name')!,
-        profileText: mapValueOfType<String>(json, r'profile_text')!,
+        ptext: mapValueOfType<String>(json, r'ptext') ?? '',
         unlimitedLikes: mapValueOfType<bool>(json, r'unlimited_likes') ?? false,
       );
     }
@@ -133,9 +133,7 @@ class Profile {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'age',
-    'attributes',
     'name',
-    'profile_text',
   };
 }
 

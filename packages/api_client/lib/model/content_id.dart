@@ -13,26 +13,26 @@ part of openapi.api;
 class ContentId {
   /// Returns a new [ContentId] instance.
   ContentId({
-    required this.contentId,
+    required this.cid,
   });
 
-  String contentId;
+  String cid;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentId &&
-    other.contentId == contentId;
+    other.cid == cid;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (contentId.hashCode);
+    (cid.hashCode);
 
   @override
-  String toString() => 'ContentId[contentId=$contentId]';
+  String toString() => 'ContentId[cid=$cid]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'content_id'] = this.contentId;
+      json[r'cid'] = this.cid;
     return json;
   }
 
@@ -55,7 +55,7 @@ class ContentId {
       }());
 
       return ContentId(
-        contentId: mapValueOfType<String>(json, r'content_id')!,
+        cid: mapValueOfType<String>(json, r'cid')!,
       );
     }
     return null;
@@ -103,7 +103,7 @@ class ContentId {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'content_id',
+    'cid',
   };
 }
 

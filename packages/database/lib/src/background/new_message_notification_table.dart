@@ -22,7 +22,7 @@ class DaoNewMessageNotification extends DatabaseAccessor<AccountBackgroundDataba
   Future<NewMessageNotificationId> getOrCreateNewMessageNotificationId(AccountId id) async {
     return await transaction(() async {
       final r = await (select(newMessageNotification)
-        ..where((t) => t.uuidAccountId.equals(id.accountId))
+        ..where((t) => t.uuidAccountId.equals(id.aid))
       )
         .getSingleOrNull();
 
@@ -49,7 +49,7 @@ class DaoNewMessageNotification extends DatabaseAccessor<AccountBackgroundDataba
 
   Future<bool> getNotificationShown(AccountId accountId) async {
     final r = await (select(newMessageNotification)
-        ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+        ..where((t) => t.uuidAccountId.equals(accountId.aid))
       )
         .getSingleOrNull();
     return r?.notificationShown ?? false;

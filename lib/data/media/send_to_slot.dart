@@ -167,7 +167,7 @@ class SendImageToSlotTask {
       case ContentProcessingStateType.empty:
         return SendToSlotError();
       case ContentProcessingStateType.completed: {
-        final contentId = state.contentId;
+        final contentId = state.cid;
         if (contentId == null) {
           return SendToSlotError();
         } else {

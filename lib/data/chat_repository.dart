@@ -103,7 +103,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
       return;
     }
     final currentPublicKeyOnServer =
-      await api.chat((api) => api.getPublicKey(currentUser.accountId, 1)).ok();
+      await api.chat((api) => api.getPublicKey(currentUser.aid, 1)).ok();
     if (currentPublicKeyOnServer == null) {
       return;
     }

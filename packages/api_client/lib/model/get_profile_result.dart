@@ -13,50 +13,50 @@ part of openapi.api;
 class GetProfileResult {
   /// Returns a new [GetProfileResult] instance.
   GetProfileResult({
-    this.lastSeenTime,
-    this.profile,
-    this.version,
+    this.lst,
+    this.p,
+    this.v,
   });
 
   /// Account's most recent disconnect time.  If the last seen time is not None, then it is Unix timestamp or -1 if the profile is currently online.
-  int? lastSeenTime;
+  int? lst;
 
-  Profile? profile;
+  Profile? p;
 
-  ProfileVersion? version;
+  ProfileVersion? v;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetProfileResult &&
-    other.lastSeenTime == lastSeenTime &&
-    other.profile == profile &&
-    other.version == version;
+    other.lst == lst &&
+    other.p == p &&
+    other.v == v;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (lastSeenTime == null ? 0 : lastSeenTime!.hashCode) +
-    (profile == null ? 0 : profile!.hashCode) +
-    (version == null ? 0 : version!.hashCode);
+    (lst == null ? 0 : lst!.hashCode) +
+    (p == null ? 0 : p!.hashCode) +
+    (v == null ? 0 : v!.hashCode);
 
   @override
-  String toString() => 'GetProfileResult[lastSeenTime=$lastSeenTime, profile=$profile, version=$version]';
+  String toString() => 'GetProfileResult[lst=$lst, p=$p, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.lastSeenTime != null) {
-      json[r'last_seen_time'] = this.lastSeenTime;
+    if (this.lst != null) {
+      json[r'lst'] = this.lst;
     } else {
-      json[r'last_seen_time'] = null;
+      json[r'lst'] = null;
     }
-    if (this.profile != null) {
-      json[r'profile'] = this.profile;
+    if (this.p != null) {
+      json[r'p'] = this.p;
     } else {
-      json[r'profile'] = null;
+      json[r'p'] = null;
     }
-    if (this.version != null) {
-      json[r'version'] = this.version;
+    if (this.v != null) {
+      json[r'v'] = this.v;
     } else {
-      json[r'version'] = null;
+      json[r'v'] = null;
     }
     return json;
   }
@@ -80,9 +80,9 @@ class GetProfileResult {
       }());
 
       return GetProfileResult(
-        lastSeenTime: mapValueOfType<int>(json, r'last_seen_time'),
-        profile: Profile.fromJson(json[r'profile']),
-        version: ProfileVersion.fromJson(json[r'version']),
+        lst: mapValueOfType<int>(json, r'lst'),
+        p: Profile.fromJson(json[r'p']),
+        v: ProfileVersion.fromJson(json[r'v']),
       );
     }
     return null;

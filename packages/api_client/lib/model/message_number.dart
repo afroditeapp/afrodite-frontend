@@ -13,26 +13,26 @@ part of openapi.api;
 class MessageNumber {
   /// Returns a new [MessageNumber] instance.
   MessageNumber({
-    required this.messageNumber,
+    required this.mn,
   });
 
-  int messageNumber;
+  int mn;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is MessageNumber &&
-    other.messageNumber == messageNumber;
+    other.mn == mn;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (messageNumber.hashCode);
+    (mn.hashCode);
 
   @override
-  String toString() => 'MessageNumber[messageNumber=$messageNumber]';
+  String toString() => 'MessageNumber[mn=$mn]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'message_number'] = this.messageNumber;
+      json[r'mn'] = this.mn;
     return json;
   }
 
@@ -55,7 +55,7 @@ class MessageNumber {
       }());
 
       return MessageNumber(
-        messageNumber: mapValueOfType<int>(json, r'message_number')!,
+        mn: mapValueOfType<int>(json, r'mn')!,
       );
     }
     return null;
@@ -103,7 +103,7 @@ class MessageNumber {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'message_number',
+    'mn',
   };
 }
 

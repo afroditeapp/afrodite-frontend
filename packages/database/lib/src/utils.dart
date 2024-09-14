@@ -16,12 +16,12 @@ class AccountIdConverter extends TypeConverter<AccountId, String> {
 
   @override
   AccountId fromSql(fromDb) {
-    return AccountId(accountId: fromDb);
+    return AccountId(aid: fromDb);
   }
 
   @override
   String toSql(value) {
-    return value.accountId;
+    return value.aid;
   }
 }
 
@@ -30,12 +30,12 @@ class ContentIdConverter extends TypeConverter<ContentId, String> {
 
   @override
   ContentId fromSql(fromDb) {
-    return ContentId(contentId: fromDb);
+    return ContentId(cid: fromDb);
   }
 
   @override
   String toSql(value) {
-    return value.contentId;
+    return value.cid;
   }
 }
 
@@ -44,12 +44,12 @@ class ProfileVersionConverter extends TypeConverter<ProfileVersion, String> {
 
   @override
   ProfileVersion fromSql(fromDb) {
-    return ProfileVersion(version: fromDb);
+    return ProfileVersion(v: fromDb);
   }
 
   @override
   String toSql(value) {
-    return value.version;
+    return value.v;
   }
 }
 
@@ -58,12 +58,12 @@ class ProfileContentVersionConverter extends TypeConverter<ProfileContentVersion
 
   @override
   ProfileContentVersion fromSql(fromDb) {
-    return ProfileContentVersion(version: fromDb);
+    return ProfileContentVersion(v: fromDb);
   }
 
   @override
   String toSql(value) {
-    return value.version;
+    return value.v;
   }
 }
 
@@ -72,12 +72,12 @@ class MessageNumberConverter extends TypeConverter<MessageNumber, int> {
 
   @override
   MessageNumber fromSql(fromDb) {
-    return MessageNumber(messageNumber: fromDb);
+    return MessageNumber(mn: fromDb);
   }
 
   @override
   int toSql(value) {
-    return value.messageNumber;
+    return value.mn;
   }
 }
 

@@ -123,7 +123,7 @@ class DatabaseManager extends AppSingleton {
       return db.$2;
     } else {
       final dbProvider = DbProvider(
-        AccountDbFile(accountId.accountId),
+        AccountDbFile(accountId.aid),
         doSqlchipherInit: false,
         backgroundDb: false,
       );

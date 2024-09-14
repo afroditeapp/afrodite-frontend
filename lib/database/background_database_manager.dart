@@ -119,7 +119,7 @@ class BackgroundDatabaseManager extends AppSingleton {
       return db.$2;
     } else {
       final dbProvider = DbProvider(
-        AccountBackgroundDbFile(accountId.accountId),
+        AccountBackgroundDbFile(accountId.aid),
         doSqlchipherInit: false,
         backgroundDb: true,
       );

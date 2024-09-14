@@ -117,7 +117,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ProfileUpdate(
         age: age,
         name: name,
-        profileText: widget.initialProfile.profileText,
+        ptext: widget.initialProfile.profileText,
         attributes: s.attributes.toList(),
       ),
       imgUpdate,
@@ -142,12 +142,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final editedImgs = editedImgData.toSetProfileContent();
     if (
       editedImgs == null ||
-      currentState.imageUuid != editedImgs.contentId0 ||
-      currentState.content1 != editedImgs.contentId1 ||
-      currentState.content2 != editedImgs.contentId2 ||
-      currentState.content3 != editedImgs.contentId3 ||
-      currentState.content4 != editedImgs.contentId4 ||
-      currentState.content5 != editedImgs.contentId5 ||
+      currentState.imageUuid != editedImgs.c0 ||
+      currentState.content1 != editedImgs.c1 ||
+      currentState.content2 != editedImgs.c2 ||
+      currentState.content3 != editedImgs.c3 ||
+      currentState.content4 != editedImgs.c4 ||
+      currentState.content5 != editedImgs.c5 ||
       currentState.primaryContentGridCropSize != editedImgs.gridCropSize ||
       currentState.primaryContentGridCropX != editedImgs.gridCropX ||
       currentState.primaryContentGridCropY != editedImgs.gridCropY
@@ -160,7 +160,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       final currentOrNull = currentState.attributes.where((e) => e.id == a.id).firstOrNull;
       final current = ProfileAttributeValueUpdate(
         id: a.id,
-        values: currentOrNull?.values ?? [],
+        v: currentOrNull?.v ?? [],
       );
       final attributeInfo = availableAttributes.where((e) => e.id == a.id).firstOrNull;
 
@@ -173,7 +173,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         attributeInfo?.isNumberListAttribute() ?? false;
       if (
         (!isNumberListAttribute && nonNumberListAttributeChanges) ||
-        (isNumberListAttribute && !const SetEquality<int>().equals(current.values.toSet(), a.values.toSet()))
+        (isNumberListAttribute && !const SetEquality<int>().equals(current.v.toSet(), a.v.toSet()))
       ) {
         return true;
       }
@@ -322,7 +322,7 @@ class EditAttributes extends StatelessWidget {
       } else {
         return ProfileAttributeValue(
           id: e.id,
-          values: e.values,
+          v: e.v,
         );
       }
     }).nonNulls;

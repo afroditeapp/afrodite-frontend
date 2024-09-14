@@ -13,16 +13,16 @@ part of openapi.api;
 class ContentInfoDetailed {
   /// Returns a new [ContentInfoDetailed] instance.
   ContentInfoDetailed({
-    required this.contentType,
-    required this.id,
+    required this.cid,
+    required this.ctype,
     required this.secureCapture,
     this.slot,
     required this.state,
   });
 
-  MediaContentType contentType;
+  ContentId cid;
 
-  ContentId id;
+  MediaContentType ctype;
 
   bool secureCapture;
 
@@ -32,8 +32,8 @@ class ContentInfoDetailed {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentInfoDetailed &&
-    other.contentType == contentType &&
-    other.id == id &&
+    other.cid == cid &&
+    other.ctype == ctype &&
     other.secureCapture == secureCapture &&
     other.slot == slot &&
     other.state == state;
@@ -41,19 +41,19 @@ class ContentInfoDetailed {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (contentType.hashCode) +
-    (id.hashCode) +
+    (cid.hashCode) +
+    (ctype.hashCode) +
     (secureCapture.hashCode) +
     (slot == null ? 0 : slot!.hashCode) +
     (state.hashCode);
 
   @override
-  String toString() => 'ContentInfoDetailed[contentType=$contentType, id=$id, secureCapture=$secureCapture, slot=$slot, state=$state]';
+  String toString() => 'ContentInfoDetailed[cid=$cid, ctype=$ctype, secureCapture=$secureCapture, slot=$slot, state=$state]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'content_type'] = this.contentType;
-      json[r'id'] = this.id;
+      json[r'cid'] = this.cid;
+      json[r'ctype'] = this.ctype;
       json[r'secure_capture'] = this.secureCapture;
     if (this.slot != null) {
       json[r'slot'] = this.slot;
@@ -83,8 +83,8 @@ class ContentInfoDetailed {
       }());
 
       return ContentInfoDetailed(
-        contentType: MediaContentType.fromJson(json[r'content_type'])!,
-        id: ContentId.fromJson(json[r'id'])!,
+        cid: ContentId.fromJson(json[r'cid'])!,
+        ctype: MediaContentType.fromJson(json[r'ctype'])!,
         secureCapture: mapValueOfType<bool>(json, r'secure_capture')!,
         slot: ContentSlot.fromJson(json[r'slot']),
         state: ContentState.fromJson(json[r'state'])!,
@@ -135,8 +135,8 @@ class ContentInfoDetailed {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'content_type',
-    'id',
+    'cid',
+    'ctype',
     'secure_capture',
     'state',
   };

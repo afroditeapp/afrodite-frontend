@@ -108,15 +108,15 @@ Widget content(BuildContext context) {
             final account = data.accounts[index];
             return ListTile(
               title: Text("${account.name}, ${account.age}"),
-              subtitle: Text(account.id.accountId),
+              subtitle: Text(account.aid.aid),
               onTap: () =>
                 showConfirmDialogAdvanced(
                   context: context,
                   title: context.strings.demo_account_screen_login_to_account_dialog_title,
-                  details: account.id.accountId,
+                  details: account.aid.aid,
                   onSuccess: () => context
                     .read<DemoAccountBloc>()
-                    .add(DoDemoAccountLoginToAccount(account.id)),
+                    .add(DoDemoAccountLoginToAccount(account.aid)),
                 ),
             );
           },

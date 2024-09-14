@@ -143,16 +143,16 @@ class MessageManager extends LifecycleMethods {
     final toBeDeleted = <PendingMessageId>[];
 
     for (final (message, messageBytes) in newMessages) {
-      final isMatch = await isInMatches(message.id.accountIdSender);
+      final isMatch = await isInMatches(message.id.sender);
       if (!isMatch) {
-        await db.accountAction((db) => db.daoMatches.setMatchStatus(message.id.accountIdSender, true));
+        await db.accountAction((db) => db.daoMatches.setMatchStatus(message.id.sender, true));
         profile.sendProfileChange(MatchesChanged());
       }
 
       final alreadyExistingMessageResult = await db.accountData((db) => db.daoMessages.getMessageUsingMessageNumber(
         currentUser,
-        message.id.accountIdSender,
-        message.id.messageNumber
+        message.id.sender,
+        message.id.mn
       ));
       switch (alreadyExistingMessageResult) {
         case Err():
@@ -188,18 +188,18 @@ class MessageManager extends LifecycleMethods {
       ));
       if (r.isOk()) {
         toBeDeleted.add(message.id);
-        profile.sendProfileChange(ConversationChanged(message.id.accountIdSender, ConversationChangeType.messageReceived));
+        profile.sendProfileChange(ConversationChanged(message.id.sender, ConversationChangeType.messageReceived));
         // TODO(prod): Update with unread message message count from DB once
         // push notifications support other than the first new message.
-        await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.id.accountIdSender, 1, accountBackgroundDb);
+        await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.id.sender, 1, accountBackgroundDb);
       }
     }
 
-    for (final sender in newMessages.map((item) => item.$1.id.accountIdSender).toSet()) {
+    for (final sender in newMessages.map((item) => item.$1.id.sender).toSet()) {
       await accountBackgroundDb.accountAction((db) => db.daoNewMessageNotification.setNotificationShown(sender, false));
     }
 
-    final toBeDeletedList = PendingMessageDeleteList(messagesIds: toBeDeleted);
+    final toBeDeletedList = PendingMessageDeleteList(ids: toBeDeleted);
     final result = await api.chatAction((api) => api.deletePendingMessages(toBeDeletedList));
     if (result.isErr()) {
       log.error("Receive messages: deleting from server failed");
@@ -269,7 +269,7 @@ class MessageManager extends LifecycleMethods {
 
     bool forcePublicKeyDownload = false;
     while (true) {
-      var publicKey = await _getPublicKeyForForeignAccount(message.id.accountIdSender, forceDownload: forcePublicKeyDownload).ok();
+      var publicKey = await _getPublicKeyForForeignAccount(message.id.sender, forceDownload: forcePublicKeyDownload).ok();
       if (publicKey == null) {
         return const Err(ReceivedMessageError.decryptingFailed);
       }
@@ -381,7 +381,7 @@ class MessageManager extends LifecycleMethods {
         if (v == null) {
           final initialId = SenderMessageId(id: 0);
           final senderMessageIdResult = await api.chatAction((api) => api.postSenderMessageId(
-            accountId.accountId,
+            accountId.aid,
             initialId,
           ));
           if (senderMessageIdResult.isErr()) {
@@ -494,13 +494,13 @@ class MessageManager extends LifecycleMethods {
     final dataIdentifierAndEncryptedMessage = [0]; // 0 is PGP message
     dataIdentifierAndEncryptedMessage.addAll(encryptedMessage);
 
-    int unixTimeFromServer;
-    int messageNumberFromServer;
+    UnixTime unixTimeFromServer;
+    MessageNumber messageNumberFromServer;
     var publicKeyRefreshTried = false;
     var messageSenderIdUpdateTried = false;
     while (true) {
       final result = await api.chat((api) => api.postSendMessage(
-        accountId.accountId,
+        accountId.aid,
         receiverPublicKey.id.id,
         receiverPublicKey.version.version,
         nextSenderMessageId.id,
@@ -586,8 +586,8 @@ class MessageManager extends LifecycleMethods {
         }
       }
 
-      final unixTimeFromResult = result.unixTime;
-      final messageNumberFromResult = result.messageNumber;
+      final unixTimeFromResult = result.ut;
+      final messageNumberFromResult = result.mn;
       if (unixTimeFromResult == null || messageNumberFromResult == null) {
         yield ErrorAfterMessageSaving(localId);
         return;
@@ -610,7 +610,7 @@ class MessageManager extends LifecycleMethods {
       localId,
       sentState: SentMessageState.sent,
       unixTimeFromServer: unixTimeFromServer,
-      messageNumberFromServer: MessageNumber(messageNumber: messageNumberFromServer),
+      messageNumberFromServer: messageNumberFromServer,
       senderMessageId: nextSenderMessageId,
     ));
     if (updateSentState.isErr()) {
@@ -646,7 +646,7 @@ class MessageManager extends LifecycleMethods {
   }
 
   Future<Result<void, void>> _refreshForeignPublicKey(AccountId accountId) async {
-    return await api.chat((api) => api.getPublicKey(accountId.accountId, 1))
+    return await api.chat((api) => api.getPublicKey(accountId.aid, 1))
       .andThen((key) => db.accountAction((db) => db.daoConversations.updatePublicKey(accountId, key.key)))
       .mapErr((_) => null);
   }
@@ -695,7 +695,7 @@ class MessageManager extends LifecycleMethods {
       // Error correction check is possible to do
 
       final senderMessageIdOnServerResult = await api.chat((api) => api.getSenderMessageId(
-        receiverAccount.accountId,
+        receiverAccount.aid,
       ));
       switch (senderMessageIdOnServerResult) {
         case Err():

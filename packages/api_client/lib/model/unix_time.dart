@@ -13,26 +13,26 @@ part of openapi.api;
 class UnixTime {
   /// Returns a new [UnixTime] instance.
   UnixTime({
-    required this.unixTime,
+    required this.ut,
   });
 
-  int unixTime;
+  int ut;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is UnixTime &&
-    other.unixTime == unixTime;
+    other.ut == ut;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (unixTime.hashCode);
+    (ut.hashCode);
 
   @override
-  String toString() => 'UnixTime[unixTime=$unixTime]';
+  String toString() => 'UnixTime[ut=$ut]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'unix_time'] = this.unixTime;
+      json[r'ut'] = this.ut;
     return json;
   }
 
@@ -55,7 +55,7 @@ class UnixTime {
       }());
 
       return UnixTime(
-        unixTime: mapValueOfType<int>(json, r'unix_time')!,
+        ut: mapValueOfType<int>(json, r'ut')!,
       );
     }
     return null;
@@ -103,7 +103,7 @@ class UnixTime {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'unix_time',
+    'ut',
   };
 }
 

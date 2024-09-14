@@ -44,7 +44,7 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
         widget.a.attribute.required_ &&
         (
           (widget.a.attribute.isStoredAsBitflagValue() && (a.bitflagValue() == null || a.bitflagValue() == 0)) ||
-          (!widget.a.attribute.isStoredAsBitflagValue() && a.values.isEmpty)
+          (!widget.a.attribute.isStoredAsBitflagValue() && a.v.isEmpty)
         )
       ) {
         return true;
@@ -189,7 +189,7 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
     widget.onNewAttributeValue(
       ProfileAttributeValueUpdate(
         id: widget.a.attribute.id,
-        values: updatedValues,
+        v: updatedValues,
       )
     );
   }
@@ -520,7 +520,7 @@ class _EditSingleAttributeNumberListState extends State<EditSingleAttributeNumbe
   void initState() {
     super.initState();
 
-    final currentValues = widget.a.value?.values ?? [];
+    final currentValues = widget.a.value?.v ?? [];
     values = currentValues.toSet();
 
     final attribute = widget.a.attribute;
@@ -560,7 +560,7 @@ class _EditSingleAttributeNumberListState extends State<EditSingleAttributeNumbe
     widget.onNewAttributeValue(
       ProfileAttributeValueUpdate(
         id: widget.a.attribute.id,
-        values: values.toList(),
+        v: values.toList(),
       )
     );
   }

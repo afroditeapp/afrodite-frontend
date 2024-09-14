@@ -68,7 +68,7 @@ class DaoMatches extends DatabaseAccessor<AccountDatabase> with _$DaoMatchesMixi
   Future<bool> _existenceCheck(AccountId accountId, Expression<bool> Function($MatchesTable) additionalCheck) async {
     final r = await (select(matches)
       ..where((t) => Expression.and([
-        t.uuidAccountId.equals(accountId.accountId),
+        t.uuidAccountId.equals(accountId.aid),
         additionalCheck(t),
        ]))
     ).getSingleOrNull();
@@ -109,7 +109,7 @@ class DaoMatches extends DatabaseAccessor<AccountDatabase> with _$DaoMatchesMixi
 
   Future<UtcDateTime?> getConversationLastChanged(AccountId accountId) async {
     final r = await (select(matches)
-      ..where((t) => t.uuidAccountId.equals(accountId.accountId))
+      ..where((t) => t.uuidAccountId.equals(accountId.aid))
     )
       .getSingleOrNull();
 
@@ -150,7 +150,7 @@ class DaoMatches extends DatabaseAccessor<AccountDatabase> with _$DaoMatchesMixi
     )
       .map((r) {
         final raw = r.read(matches.uuidAccountId)!;
-        return AccountId(accountId: raw);
+        return AccountId(aid: raw);
       })
       .watch();
   }

@@ -13,28 +13,28 @@ part of openapi.api;
 class PendingProfileContent {
   /// Returns a new [PendingProfileContent] instance.
   PendingProfileContent({
-    this.contentId0,
-    this.contentId1,
-    this.contentId2,
-    this.contentId3,
-    this.contentId4,
-    this.contentId5,
+    this.c0,
+    this.c1,
+    this.c2,
+    this.c3,
+    this.c4,
+    this.c5,
     this.gridCropSize,
     this.gridCropX,
     this.gridCropY,
   });
 
-  ContentInfo? contentId0;
+  ContentInfo? c0;
 
-  ContentInfo? contentId1;
+  ContentInfo? c1;
 
-  ContentInfo? contentId2;
+  ContentInfo? c2;
 
-  ContentInfo? contentId3;
+  ContentInfo? c3;
 
-  ContentInfo? contentId4;
+  ContentInfo? c4;
 
-  ContentInfo? contentId5;
+  ContentInfo? c5;
 
   double? gridCropSize;
 
@@ -44,12 +44,12 @@ class PendingProfileContent {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PendingProfileContent &&
-    other.contentId0 == contentId0 &&
-    other.contentId1 == contentId1 &&
-    other.contentId2 == contentId2 &&
-    other.contentId3 == contentId3 &&
-    other.contentId4 == contentId4 &&
-    other.contentId5 == contentId5 &&
+    other.c0 == c0 &&
+    other.c1 == c1 &&
+    other.c2 == c2 &&
+    other.c3 == c3 &&
+    other.c4 == c4 &&
+    other.c5 == c5 &&
     other.gridCropSize == gridCropSize &&
     other.gridCropX == gridCropX &&
     other.gridCropY == gridCropY;
@@ -57,50 +57,50 @@ class PendingProfileContent {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (contentId0 == null ? 0 : contentId0!.hashCode) +
-    (contentId1 == null ? 0 : contentId1!.hashCode) +
-    (contentId2 == null ? 0 : contentId2!.hashCode) +
-    (contentId3 == null ? 0 : contentId3!.hashCode) +
-    (contentId4 == null ? 0 : contentId4!.hashCode) +
-    (contentId5 == null ? 0 : contentId5!.hashCode) +
+    (c0 == null ? 0 : c0!.hashCode) +
+    (c1 == null ? 0 : c1!.hashCode) +
+    (c2 == null ? 0 : c2!.hashCode) +
+    (c3 == null ? 0 : c3!.hashCode) +
+    (c4 == null ? 0 : c4!.hashCode) +
+    (c5 == null ? 0 : c5!.hashCode) +
     (gridCropSize == null ? 0 : gridCropSize!.hashCode) +
     (gridCropX == null ? 0 : gridCropX!.hashCode) +
     (gridCropY == null ? 0 : gridCropY!.hashCode);
 
   @override
-  String toString() => 'PendingProfileContent[contentId0=$contentId0, contentId1=$contentId1, contentId2=$contentId2, contentId3=$contentId3, contentId4=$contentId4, contentId5=$contentId5, gridCropSize=$gridCropSize, gridCropX=$gridCropX, gridCropY=$gridCropY]';
+  String toString() => 'PendingProfileContent[c0=$c0, c1=$c1, c2=$c2, c3=$c3, c4=$c4, c5=$c5, gridCropSize=$gridCropSize, gridCropX=$gridCropX, gridCropY=$gridCropY]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.contentId0 != null) {
-      json[r'content_id_0'] = this.contentId0;
+    if (this.c0 != null) {
+      json[r'c0'] = this.c0;
     } else {
-      json[r'content_id_0'] = null;
+      json[r'c0'] = null;
     }
-    if (this.contentId1 != null) {
-      json[r'content_id_1'] = this.contentId1;
+    if (this.c1 != null) {
+      json[r'c1'] = this.c1;
     } else {
-      json[r'content_id_1'] = null;
+      json[r'c1'] = null;
     }
-    if (this.contentId2 != null) {
-      json[r'content_id_2'] = this.contentId2;
+    if (this.c2 != null) {
+      json[r'c2'] = this.c2;
     } else {
-      json[r'content_id_2'] = null;
+      json[r'c2'] = null;
     }
-    if (this.contentId3 != null) {
-      json[r'content_id_3'] = this.contentId3;
+    if (this.c3 != null) {
+      json[r'c3'] = this.c3;
     } else {
-      json[r'content_id_3'] = null;
+      json[r'c3'] = null;
     }
-    if (this.contentId4 != null) {
-      json[r'content_id_4'] = this.contentId4;
+    if (this.c4 != null) {
+      json[r'c4'] = this.c4;
     } else {
-      json[r'content_id_4'] = null;
+      json[r'c4'] = null;
     }
-    if (this.contentId5 != null) {
-      json[r'content_id_5'] = this.contentId5;
+    if (this.c5 != null) {
+      json[r'c5'] = this.c5;
     } else {
-      json[r'content_id_5'] = null;
+      json[r'c5'] = null;
     }
     if (this.gridCropSize != null) {
       json[r'grid_crop_size'] = this.gridCropSize;
@@ -139,12 +139,12 @@ class PendingProfileContent {
       }());
 
       return PendingProfileContent(
-        contentId0: ContentInfo.fromJson(json[r'content_id_0']),
-        contentId1: ContentInfo.fromJson(json[r'content_id_1']),
-        contentId2: ContentInfo.fromJson(json[r'content_id_2']),
-        contentId3: ContentInfo.fromJson(json[r'content_id_3']),
-        contentId4: ContentInfo.fromJson(json[r'content_id_4']),
-        contentId5: ContentInfo.fromJson(json[r'content_id_5']),
+        c0: ContentInfo.fromJson(json[r'c0']),
+        c1: ContentInfo.fromJson(json[r'c1']),
+        c2: ContentInfo.fromJson(json[r'c2']),
+        c3: ContentInfo.fromJson(json[r'c3']),
+        c4: ContentInfo.fromJson(json[r'c4']),
+        c5: ContentInfo.fromJson(json[r'c5']),
         gridCropSize: mapValueOfType<double>(json, r'grid_crop_size'),
         gridCropX: mapValueOfType<double>(json, r'grid_crop_x'),
         gridCropY: mapValueOfType<double>(json, r'grid_crop_y'),

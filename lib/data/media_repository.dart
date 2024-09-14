@@ -83,8 +83,8 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) =>
     api.media((api) => api.getContentFixed(
-      imageOwner.accountId,
-      id.contentId,
+      imageOwner.aid,
+      id.cid,
       isMatch,
     ))
     .onErr(() => log.error("Image loading error"))
@@ -116,25 +116,25 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   Future<void> handleModerationRequest(AccountId accountId, bool accept) =>
     api.mediaAdminAction((api) => api.postHandleModerationRequest(
-      accountId.accountId,
+      accountId.aid,
       HandleModerationRequest(accept: accept))
     );
 
   Future<ContentId?> getSecuritySelfie(AccountId account) =>
-    api.media((api) => api.getSecurityContentInfo(account.accountId))
+    api.media((api) => api.getSecurityContentInfo(account.aid))
       .ok()
-      .map((img) => img.contentId?.id);
+      .map((img) => img.c0?.cid);
 
   Future<ContentId?> getPendingSecuritySelfie(AccountId account) =>
-    api.media((api) => api.getPendingSecurityContentInfo(account.accountId))
+    api.media((api) => api.getPendingSecurityContentInfo(account.aid))
       .ok()
-      .map((img) => img.contentId?.id);
+      .map((img) => img.c0?.cid);
 
   /// Reload current and pending profile content.
   Future<Result<void, void>> reloadMyProfileContent() async {
-    final infoResult = await api.media((api) => api.getProfileContentInfo(currentUser.accountId, isMatch: false)).ok();
-    final info = infoResult?.content;
-    final version = infoResult?.version;
+    final infoResult = await api.media((api) => api.getProfileContentInfo(currentUser.aid, isMatch: false)).ok();
+    final info = infoResult?.c;
+    final version = infoResult?.v;
     if (info == null || version == null) {
       return const Err(null);
     }
@@ -144,7 +144,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
       return const Err(null);
     }
 
-    final pendingInfo = await api.media((api) => api.getPendingProfileContentInfo(currentUser.accountId)).ok();
+    final pendingInfo = await api.media((api) => api.getPendingProfileContentInfo(currentUser.aid)).ok();
     if (pendingInfo == null) {
       return const Err(null);
     }
@@ -154,22 +154,22 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   /// Reload current and pending security content.
   Future<Result<void, void>> reloadMySecurityContent() async {
-    final info = await api.media((api) => api.getSecurityContentInfo(currentUser.accountId)).ok();
+    final info = await api.media((api) => api.getSecurityContentInfo(currentUser.aid)).ok();
     if (info == null) {
       return const Err(null);
     }
 
-    final r = await db.accountAction((db) => db.daoCurrentContent.setSecurityContent(securityContent: Value(info.contentId?.id)));
+    final r = await db.accountAction((db) => db.daoCurrentContent.setSecurityContent(securityContent: Value(info.c0?.cid)));
     if (r.isErr()) {
       return const Err(null);
     }
 
-    final pendingInfo = await api.media((api) => api.getPendingSecurityContentInfo(currentUser.accountId)).ok();
+    final pendingInfo = await api.media((api) => api.getPendingSecurityContentInfo(currentUser.aid)).ok();
     if (pendingInfo == null) {
       return const Err(null);
     }
 
-    return await db.accountAction((db) => db.daoPendingContent.setPendingSecurityContent(pendingSecurityContent: Value(pendingInfo.contentId?.id)));
+    return await db.accountAction((db) => db.daoPendingContent.setPendingSecurityContent(pendingSecurityContent: Value(pendingInfo.c0?.cid)));
   }
 
   /// Last event from stream is ProcessingCompleted or SendToSlotError.
@@ -191,7 +191,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
       .onOk(() => reloadMyProfileContent());
 
   Future<Result<AccountContent, void>> loadAllContent() =>
-    api.media((api) => api.getAllAccountMediaContent(currentUser.accountId));
+    api.media((api) => api.getAllAccountMediaContent(currentUser.aid));
 
   Future<Result<void, void>> createNewModerationRequest(List<ContentId> content) =>
     Future.value(ModerationRequestContentExtensions.fromList(content))
