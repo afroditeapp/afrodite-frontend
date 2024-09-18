@@ -228,6 +228,14 @@ class ApiClient {
           return BuildInfo.fromJson(value);
         case 'Capabilities':
           return Capabilities.fromJson(value);
+        case 'ClientId':
+          return ClientId.fromJson(value);
+        case 'ClientInfo':
+          return ClientInfo.fromJson(value);
+        case 'ClientLocalId':
+          return ClientLocalId.fromJson(value);
+        case 'ClientType':
+          return ClientTypeTypeTransformer().decode(value);
         case 'CommandOutput':
           return CommandOutput.fromJson(value);
         case 'ContentId':
@@ -352,10 +360,12 @@ class ApiClient {
           return ModerationRequestStateTypeTransformer().decode(value);
         case 'NewContentParams':
           return NewContentParams.fromJson(value);
+        case 'NewReceivedLikesAvailableResult':
+          return NewReceivedLikesAvailableResult.fromJson(value);
         case 'PendingMessage':
           return PendingMessage.fromJson(value);
-        case 'PendingMessageDeleteList':
-          return PendingMessageDeleteList.fromJson(value);
+        case 'PendingMessageAcknowledgementList':
+          return PendingMessageAcknowledgementList.fromJson(value);
         case 'PendingMessageId':
           return PendingMessageId.fromJson(value);
         case 'PendingNotificationToken':
@@ -416,6 +426,8 @@ class ApiClient {
           return PublicKeyData.fromJson(value);
         case 'PublicKeyId':
           return PublicKeyId.fromJson(value);
+        case 'PublicKeyIdAndVersion':
+          return PublicKeyIdAndVersion.fromJson(value);
         case 'PublicKeyVersion':
           return PublicKeyVersion.fromJson(value);
         case 'RebootQueryParam':
@@ -424,6 +436,8 @@ class ApiClient {
           return ReceivedBlocksPage.fromJson(value);
         case 'ReceivedBlocksSyncVersion':
           return ReceivedBlocksSyncVersion.fromJson(value);
+        case 'ReceivedLikesIteratorSessionId':
+          return ReceivedLikesIteratorSessionId.fromJson(value);
         case 'ReceivedLikesPage':
           return ReceivedLikesPage.fromJson(value);
         case 'ReceivedLikesSyncVersion':
@@ -432,14 +446,14 @@ class ApiClient {
           return RefreshToken.fromJson(value);
         case 'ResetDataQueryParam':
           return ResetDataQueryParam.fromJson(value);
+        case 'ResetReceivedLikesIteratorResult':
+          return ResetReceivedLikesIteratorResult.fromJson(value);
         case 'SearchGroups':
           return SearchGroups.fromJson(value);
         case 'SecurityContent':
           return SecurityContent.fromJson(value);
         case 'SendMessageResult':
           return SendMessageResult.fromJson(value);
-        case 'SenderMessageId':
-          return SenderMessageId.fromJson(value);
         case 'SentBlocksPage':
           return SentBlocksPage.fromJson(value);
         case 'SentBlocksSyncVersion':
@@ -448,6 +462,10 @@ class ApiClient {
           return SentLikesPage.fromJson(value);
         case 'SentLikesSyncVersion':
           return SentLikesSyncVersion.fromJson(value);
+        case 'SentMessageId':
+          return SentMessageId.fromJson(value);
+        case 'SentMessageIdList':
+          return SentMessageIdList.fromJson(value);
         case 'SetAccountSetup':
           return SetAccountSetup.fromJson(value);
         case 'SetProfileContent':

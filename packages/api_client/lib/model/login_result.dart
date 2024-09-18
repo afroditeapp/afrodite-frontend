@@ -13,18 +13,25 @@ part of openapi.api;
 class LoginResult {
   /// Returns a new [LoginResult] instance.
   LoginResult({
-    required this.account,
-    required this.aid,
+    this.account,
+    this.aid,
     this.email,
+    this.errorUnsupportedClient = false,
+    this.latestPublicKeys = const [],
     this.media,
     this.profile,
   });
 
-  AuthPair account;
+  AuthPair? account;
 
-  AccountId aid;
+  AccountId? aid;
 
   String? email;
+
+  bool errorUnsupportedClient;
+
+  /// Info about latest public keys. Client can use this value to ask if user wants to copy existing private and public key from other device. If empty, public key is not set or the client is unsupported.
+  List<PublicKeyIdAndVersion> latestPublicKeys;
 
   AuthPair? media;
 
@@ -35,30 +42,44 @@ class LoginResult {
     other.account == account &&
     other.aid == aid &&
     other.email == email &&
+    other.errorUnsupportedClient == errorUnsupportedClient &&
+    _deepEquality.equals(other.latestPublicKeys, latestPublicKeys) &&
     other.media == media &&
     other.profile == profile;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (account.hashCode) +
-    (aid.hashCode) +
+    (account == null ? 0 : account!.hashCode) +
+    (aid == null ? 0 : aid!.hashCode) +
     (email == null ? 0 : email!.hashCode) +
+    (errorUnsupportedClient.hashCode) +
+    (latestPublicKeys.hashCode) +
     (media == null ? 0 : media!.hashCode) +
     (profile == null ? 0 : profile!.hashCode);
 
   @override
-  String toString() => 'LoginResult[account=$account, aid=$aid, email=$email, media=$media, profile=$profile]';
+  String toString() => 'LoginResult[account=$account, aid=$aid, email=$email, errorUnsupportedClient=$errorUnsupportedClient, latestPublicKeys=$latestPublicKeys, media=$media, profile=$profile]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.account != null) {
       json[r'account'] = this.account;
+    } else {
+      json[r'account'] = null;
+    }
+    if (this.aid != null) {
       json[r'aid'] = this.aid;
+    } else {
+      json[r'aid'] = null;
+    }
     if (this.email != null) {
       json[r'email'] = this.email;
     } else {
       json[r'email'] = null;
     }
+      json[r'error_unsupported_client'] = this.errorUnsupportedClient;
+      json[r'latest_public_keys'] = this.latestPublicKeys;
     if (this.media != null) {
       json[r'media'] = this.media;
     } else {
@@ -91,9 +112,11 @@ class LoginResult {
       }());
 
       return LoginResult(
-        account: AuthPair.fromJson(json[r'account'])!,
-        aid: AccountId.fromJson(json[r'aid'])!,
+        account: AuthPair.fromJson(json[r'account']),
+        aid: AccountId.fromJson(json[r'aid']),
         email: mapValueOfType<String>(json, r'email'),
+        errorUnsupportedClient: mapValueOfType<bool>(json, r'error_unsupported_client') ?? false,
+        latestPublicKeys: PublicKeyIdAndVersion.listFromJson(json[r'latest_public_keys']),
         media: AuthPair.fromJson(json[r'media']),
         profile: AuthPair.fromJson(json[r'profile']),
       );
@@ -143,8 +166,6 @@ class LoginResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'account',
-    'aid',
   };
 }
 

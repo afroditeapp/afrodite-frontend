@@ -72,50 +72,6 @@ class ChatApi {
     return null;
   }
 
-  /// Delete list of pending messages
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [PendingMessageDeleteList] pendingMessageDeleteList (required):
-  Future<Response> deletePendingMessagesWithHttpInfo(PendingMessageDeleteList pendingMessageDeleteList,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/7sKe87sefWrLYS0JvbPS10_F8oc';
-
-    // ignore: prefer_final_locals
-    Object? postBody = pendingMessageDeleteList;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'DELETE',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Delete list of pending messages
-  ///
-  /// Parameters:
-  ///
-  /// * [PendingMessageDeleteList] pendingMessageDeleteList (required):
-  Future<void> deletePendingMessages(PendingMessageDeleteList pendingMessageDeleteList,) async {
-    final response = await deletePendingMessagesWithHttpInfo(pendingMessageDeleteList,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
   /// Get matches
   ///
   /// Note: This method returns the HTTP [Response].
@@ -363,111 +319,6 @@ class ChatApi {
     return null;
   }
 
-  /// Get received likes.
-  ///
-  /// Profile will not be returned if: - Profile is blocked - Profile is a match
-  ///
-  /// Note: This method returns the HTTP [Response].
-  Future<Response> getReceivedLikesWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/eEB4pq6DGUYlMVAYwPCm2RT5HP0';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get received likes.
-  ///
-  /// Profile will not be returned if: - Profile is blocked - Profile is a match
-  Future<ReceivedLikesPage?> getReceivedLikes() async {
-    final response = await getReceivedLikesWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ReceivedLikesPage',) as ReceivedLikesPage;
-    
-    }
-    return null;
-  }
-
-  /// Get conversation specific expected sender message ID which API caller
-  ///
-  /// account owns.  Default value is returned if the accounts are not in match state. Also state change to match state will reset the ID.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [String] aid (required):
-  Future<Response> getSenderMessageIdWithHttpInfo(String aid,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/tn7H7RialxF_rBX74MazT7jYaqg/{aid}'
-      .replaceAll('{aid}', aid);
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get conversation specific expected sender message ID which API caller
-  ///
-  /// account owns.  Default value is returned if the accounts are not in match state. Also state change to match state will reset the ID.
-  ///
-  /// Parameters:
-  ///
-  /// * [String] aid (required):
-  Future<SenderMessageId?> getSenderMessageId(String aid,) async {
-    final response = await getSenderMessageIdWithHttpInfo(aid,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SenderMessageId',) as SenderMessageId;
-    
-    }
-    return null;
-  }
-
   /// Get list of sent blocks
   ///
   /// Note: This method returns the HTTP [Response].
@@ -560,6 +411,125 @@ class ChatApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /-sDy1a8MS72uNy3UUtX9K8-wYWU' operation and returns the [Response].
+  Future<Response> getSentMessageIdsWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/-sDy1a8MS72uNy3UUtX9K8-wYWU';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<SentMessageIdList?> getSentMessageIds() async {
+    final response = await getSentMessageIdsWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SentMessageIdList',) as SentMessageIdList;
+    
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'POST /PBreZU5Cmo7tTtNMMb58yN_xFZ8' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [PendingMessageAcknowledgementList] pendingMessageAcknowledgementList (required):
+  Future<Response> postAddReceiverAcknowledgementWithHttpInfo(PendingMessageAcknowledgementList pendingMessageAcknowledgementList,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/PBreZU5Cmo7tTtNMMb58yN_xFZ8';
+
+    // ignore: prefer_final_locals
+    Object? postBody = pendingMessageAcknowledgementList;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [PendingMessageAcknowledgementList] pendingMessageAcknowledgementList (required):
+  Future<void> postAddReceiverAcknowledgement(PendingMessageAcknowledgementList pendingMessageAcknowledgementList,) async {
+    final response = await postAddReceiverAcknowledgementWithHttpInfo(pendingMessageAcknowledgementList,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'POST /E-yVIcGOLJyZ7nsT_Lh4KPCRkQg' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [SentMessageIdList] sentMessageIdList (required):
+  Future<Response> postAddSenderAcknowledgementWithHttpInfo(SentMessageIdList sentMessageIdList,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/E-yVIcGOLJyZ7nsT_Lh4KPCRkQg';
+
+    // ignore: prefer_final_locals
+    Object? postBody = sentMessageIdList;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [SentMessageIdList] sentMessageIdList (required):
+  Future<void> postAddSenderAcknowledgement(SentMessageIdList sentMessageIdList,) async {
+    final response = await postAddSenderAcknowledgementWithHttpInfo(sentMessageIdList,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Block profile
   ///
   /// Note: This method returns the HTTP [Response].
@@ -602,6 +572,62 @@ class ChatApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Update received likes iterator and get next page
+  ///
+  /// of received likes. If the page is empty there is no more received likes available.  Profile will not be returned if: - Profile is blocked - Profile is a match
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [ReceivedLikesIteratorSessionId] receivedLikesIteratorSessionId (required):
+  Future<Response> postGetNextReceivedLikesPageWithHttpInfo(ReceivedLikesIteratorSessionId receivedLikesIteratorSessionId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/eEB4pq6DGUYlMVAYwPCm2RT5HP0';
+
+    // ignore: prefer_final_locals
+    Object? postBody = receivedLikesIteratorSessionId;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Update received likes iterator and get next page
+  ///
+  /// of received likes. If the page is empty there is no more received likes available.  Profile will not be returned if: - Profile is blocked - Profile is a match
+  ///
+  /// Parameters:
+  ///
+  /// * [ReceivedLikesIteratorSessionId] receivedLikesIteratorSessionId (required):
+  Future<ReceivedLikesPage?> postGetNextReceivedLikesPage(ReceivedLikesIteratorSessionId receivedLikesIteratorSessionId,) async {
+    final response = await postGetNextReceivedLikesPageWithHttpInfo(receivedLikesIteratorSessionId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ReceivedLikesPage',) as ReceivedLikesPage;
+    
+    }
+    return null;
   }
 
   /// Get pending notification and reset pending notification.
@@ -760,6 +786,47 @@ class ChatApi {
     return null;
   }
 
+  /// Performs an HTTP 'POST /B75BRIylLV-JmwoB4YiOYSlyO-A' operation and returns the [Response].
+  Future<Response> postResetReceivedLikesPagingWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/B75BRIylLV-JmwoB4YiOYSlyO-A';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<ResetReceivedLikesIteratorResult?> postResetReceivedLikesPaging() async {
+    final response = await postResetReceivedLikesPagingWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ResetReceivedLikesIteratorResult',) as ResetReceivedLikesIteratorResult;
+    
+    }
+    return null;
+  }
+
   /// Send a like to some account. If both will like each other, then
   ///
   /// the accounts will be a match.
@@ -832,10 +899,12 @@ class ChatApi {
   ///
   /// * [int] receiverPublicKeyVersion (required):
   ///
-  /// * [int] senderMessageId (required):
+  /// * [int] clientId (required):
+  ///
+  /// * [int] clientLocalId (required):
   ///
   /// * [MultipartFile] body (required):
-  Future<Response> postSendMessageWithHttpInfo(String receiver, int receiverPublicKeyId, int receiverPublicKeyVersion, int senderMessageId, MultipartFile body,) async {
+  Future<Response> postSendMessageWithHttpInfo(String receiver, int receiverPublicKeyId, int receiverPublicKeyVersion, int clientId, int clientLocalId, MultipartFile body,) async {
     // ignore: prefer_const_declarations
     final path = r'/YEFESgzw0YxQUETcUmnmfWCaF1g';
 
@@ -849,7 +918,8 @@ class ChatApi {
       queryParams.addAll(_queryParams('', 'receiver', receiver));
       queryParams.addAll(_queryParams('', 'receiver_public_key_id', receiverPublicKeyId));
       queryParams.addAll(_queryParams('', 'receiver_public_key_version', receiverPublicKeyVersion));
-      queryParams.addAll(_queryParams('', 'sender_message_id', senderMessageId));
+      queryParams.addAll(_queryParams('', 'client_id', clientId));
+      queryParams.addAll(_queryParams('', 'client_local_id', clientLocalId));
 
     const contentTypes = <String>['application/octet-stream'];
 
@@ -879,11 +949,13 @@ class ChatApi {
   ///
   /// * [int] receiverPublicKeyVersion (required):
   ///
-  /// * [int] senderMessageId (required):
+  /// * [int] clientId (required):
+  ///
+  /// * [int] clientLocalId (required):
   ///
   /// * [MultipartFile] body (required):
-  Future<SendMessageResult?> postSendMessage(String receiver, int receiverPublicKeyId, int receiverPublicKeyVersion, int senderMessageId, MultipartFile body,) async {
-    final response = await postSendMessageWithHttpInfo(receiver, receiverPublicKeyId, receiverPublicKeyVersion, senderMessageId, body,);
+  Future<SendMessageResult?> postSendMessage(String receiver, int receiverPublicKeyId, int receiverPublicKeyVersion, int clientId, int clientLocalId, MultipartFile body,) async {
+    final response = await postSendMessageWithHttpInfo(receiver, receiverPublicKeyId, receiverPublicKeyVersion, clientId, clientLocalId, body,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -895,59 +967,6 @@ class ChatApi {
     
     }
     return null;
-  }
-
-  /// Set conversation specific expected sender message ID which API caller
-  ///
-  /// account owns.  This errors if the accounts are not in match state.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [String] aid (required):
-  ///
-  /// * [SenderMessageId] senderMessageId (required):
-  Future<Response> postSenderMessageIdWithHttpInfo(String aid, SenderMessageId senderMessageId,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/tn7H7RialxF_rBX74MazT7jYaqg/{aid}'
-      .replaceAll('{aid}', aid);
-
-    // ignore: prefer_final_locals
-    Object? postBody = senderMessageId;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Set conversation specific expected sender message ID which API caller
-  ///
-  /// account owns.  This errors if the accounts are not in match state.
-  ///
-  /// Parameters:
-  ///
-  /// * [String] aid (required):
-  ///
-  /// * [SenderMessageId] senderMessageId (required):
-  Future<void> postSenderMessageId(String aid, SenderMessageId senderMessageId,) async {
-    final response = await postSenderMessageIdWithHttpInfo(aid, senderMessageId,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
   }
 
   /// Performs an HTTP 'POST /CBoGGZ4HDW0REbM6SxasDCvXJNM' operation and returns the [Response].

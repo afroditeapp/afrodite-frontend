@@ -14,26 +14,31 @@ class SignInWithLoginInfo {
   /// Returns a new [SignInWithLoginInfo] instance.
   SignInWithLoginInfo({
     this.appleToken,
+    required this.clientInfo,
     this.googleToken,
   });
 
   String? appleToken;
+
+  ClientInfo clientInfo;
 
   String? googleToken;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SignInWithLoginInfo &&
     other.appleToken == appleToken &&
+    other.clientInfo == clientInfo &&
     other.googleToken == googleToken;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (appleToken == null ? 0 : appleToken!.hashCode) +
+    (clientInfo.hashCode) +
     (googleToken == null ? 0 : googleToken!.hashCode);
 
   @override
-  String toString() => 'SignInWithLoginInfo[appleToken=$appleToken, googleToken=$googleToken]';
+  String toString() => 'SignInWithLoginInfo[appleToken=$appleToken, clientInfo=$clientInfo, googleToken=$googleToken]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -42,6 +47,7 @@ class SignInWithLoginInfo {
     } else {
       json[r'apple_token'] = null;
     }
+      json[r'client_info'] = this.clientInfo;
     if (this.googleToken != null) {
       json[r'google_token'] = this.googleToken;
     } else {
@@ -70,6 +76,7 @@ class SignInWithLoginInfo {
 
       return SignInWithLoginInfo(
         appleToken: mapValueOfType<String>(json, r'apple_token'),
+        clientInfo: ClientInfo.fromJson(json[r'client_info'])!,
         googleToken: mapValueOfType<String>(json, r'google_token'),
       );
     }
@@ -118,6 +125,7 @@ class SignInWithLoginInfo {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'client_info',
   };
 }
 

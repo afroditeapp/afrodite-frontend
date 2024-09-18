@@ -19,7 +19,6 @@ class Messages extends Table {
   IntColumn get localUnixTime => integer().map(const UtcDateTimeConverter())();
   IntColumn get sentMessageState => integer().nullable()();
   IntColumn get receivedMessageState => integer().nullable()();
-  IntColumn get senderMessageId => integer().map(const NullAwareTypeConverter.wrap(SenderMessageIdConverter())).nullable()();
 
   // Server sends valid values for the next two colums.
   IntColumn get messageNumber => integer().map(const NullAwareTypeConverter.wrap(MessageNumberConverter())).nullable()();
@@ -54,7 +53,6 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       receivedMessageState: Value(entry.receivedMessageState?.number),
       messageNumber: Value(entry.messageNumber),
       unixTime: Value(entry.unixTime),
-      senderMessageId: Value(entry.senderMessageId),
     ));
 
     return LocalMessageId(localId);
@@ -64,7 +62,6 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     AccountId localAccountId,
     AccountId remoteAccountId,
     String messageText,
-    SenderMessageId senderMessageId,
   ) async {
     final message = NewMessageEntry(
       localAccountId: localAccountId,
@@ -72,7 +69,6 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       messageText: messageText,
       localUnixTime: UtcDateTime.now(),
       sentMessageState: SentMessageState.pending,
-      senderMessageId: senderMessageId,
     );
 
     return await transaction(() async {
@@ -88,7 +84,6 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       SentMessageState? sentState,
       UnixTime? unixTimeFromServer,
       MessageNumber? messageNumberFromServer,
-      SenderMessageId? senderMessageId,
     }
   ) async {
     final UtcDateTime? unixTime;
@@ -251,7 +246,6 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       receivedMessageState: receivedMessageState,
       messageNumber: m.messageNumber,
       unixTime: m.unixTime,
-      senderMessageId: m.senderMessageId,
     );
   }
 
@@ -285,12 +279,6 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     )
       .map((m) => _fromMessage(m))
       .getSingleOrNull();
-  }
-
-  Future<void> resetSenderMessageIdForAllMessages() async {
-    await (update(messages)).write(MessagesCompanion(
-      senderMessageId: Value(null),
-    ));
   }
 
   Future<void> deleteMessage(

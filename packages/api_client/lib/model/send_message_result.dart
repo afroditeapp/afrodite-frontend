@@ -14,17 +14,17 @@ class SendMessageResult {
   /// Returns a new [SendMessageResult] instance.
   SendMessageResult({
     this.errorReceiverPublicKeyOutdated = false,
-    this.errorSenderMessageIdWasNotExpectedId,
-    this.errorTooManyPendingMessages = false,
+    this.errorTooManyReceiverAcknowledgementsMissing = false,
+    this.errorTooManySenderAcknowledgementsMissing = false,
     this.mn,
     this.ut,
   });
 
   bool errorReceiverPublicKeyOutdated;
 
-  SenderMessageId? errorSenderMessageIdWasNotExpectedId;
+  bool errorTooManyReceiverAcknowledgementsMissing;
 
-  bool errorTooManyPendingMessages;
+  bool errorTooManySenderAcknowledgementsMissing;
 
   MessageNumber? mn;
 
@@ -33,8 +33,8 @@ class SendMessageResult {
   @override
   bool operator ==(Object other) => identical(this, other) || other is SendMessageResult &&
     other.errorReceiverPublicKeyOutdated == errorReceiverPublicKeyOutdated &&
-    other.errorSenderMessageIdWasNotExpectedId == errorSenderMessageIdWasNotExpectedId &&
-    other.errorTooManyPendingMessages == errorTooManyPendingMessages &&
+    other.errorTooManyReceiverAcknowledgementsMissing == errorTooManyReceiverAcknowledgementsMissing &&
+    other.errorTooManySenderAcknowledgementsMissing == errorTooManySenderAcknowledgementsMissing &&
     other.mn == mn &&
     other.ut == ut;
 
@@ -42,23 +42,19 @@ class SendMessageResult {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (errorReceiverPublicKeyOutdated.hashCode) +
-    (errorSenderMessageIdWasNotExpectedId == null ? 0 : errorSenderMessageIdWasNotExpectedId!.hashCode) +
-    (errorTooManyPendingMessages.hashCode) +
+    (errorTooManyReceiverAcknowledgementsMissing.hashCode) +
+    (errorTooManySenderAcknowledgementsMissing.hashCode) +
     (mn == null ? 0 : mn!.hashCode) +
     (ut == null ? 0 : ut!.hashCode);
 
   @override
-  String toString() => 'SendMessageResult[errorReceiverPublicKeyOutdated=$errorReceiverPublicKeyOutdated, errorSenderMessageIdWasNotExpectedId=$errorSenderMessageIdWasNotExpectedId, errorTooManyPendingMessages=$errorTooManyPendingMessages, mn=$mn, ut=$ut]';
+  String toString() => 'SendMessageResult[errorReceiverPublicKeyOutdated=$errorReceiverPublicKeyOutdated, errorTooManyReceiverAcknowledgementsMissing=$errorTooManyReceiverAcknowledgementsMissing, errorTooManySenderAcknowledgementsMissing=$errorTooManySenderAcknowledgementsMissing, mn=$mn, ut=$ut]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'error_receiver_public_key_outdated'] = this.errorReceiverPublicKeyOutdated;
-    if (this.errorSenderMessageIdWasNotExpectedId != null) {
-      json[r'error_sender_message_id_was_not_expected_id'] = this.errorSenderMessageIdWasNotExpectedId;
-    } else {
-      json[r'error_sender_message_id_was_not_expected_id'] = null;
-    }
-      json[r'error_too_many_pending_messages'] = this.errorTooManyPendingMessages;
+      json[r'error_too_many_receiver_acknowledgements_missing'] = this.errorTooManyReceiverAcknowledgementsMissing;
+      json[r'error_too_many_sender_acknowledgements_missing'] = this.errorTooManySenderAcknowledgementsMissing;
     if (this.mn != null) {
       json[r'mn'] = this.mn;
     } else {
@@ -92,8 +88,8 @@ class SendMessageResult {
 
       return SendMessageResult(
         errorReceiverPublicKeyOutdated: mapValueOfType<bool>(json, r'error_receiver_public_key_outdated') ?? false,
-        errorSenderMessageIdWasNotExpectedId: SenderMessageId.fromJson(json[r'error_sender_message_id_was_not_expected_id']),
-        errorTooManyPendingMessages: mapValueOfType<bool>(json, r'error_too_many_pending_messages') ?? false,
+        errorTooManyReceiverAcknowledgementsMissing: mapValueOfType<bool>(json, r'error_too_many_receiver_acknowledgements_missing') ?? false,
+        errorTooManySenderAcknowledgementsMissing: mapValueOfType<bool>(json, r'error_too_many_sender_acknowledgements_missing') ?? false,
         mn: MessageNumber.fromJson(json[r'mn']),
         ut: UnixTime.fromJson(json[r'ut']),
       );

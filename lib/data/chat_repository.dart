@@ -74,11 +74,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     matchesIterator.reset();
     await db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(false));
 
-    // Reset message sending error detection counter value as other client
-    // might have used the current value in server.
-    await db.accountAction((db) => db.daoConversations.resetAllSenderMessageIds());
-    await db.accountAction((db) => db.daoMessages.resetSenderMessageIdForAllMessages());
-
     syncHandler.onLoginSync(() async {
       await _generateMessageKeyIfNeeded();
     });
@@ -295,15 +290,34 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     // available.
     final currentReceivedLikes = await db.accountData((db) => db.daoProfileStates.getReceivedLikesList(0, 1000000000)).ok() ?? [];
 
-    final receivedLikes = await api.chat((api) => api.getReceivedLikes()).ok();
-    if (receivedLikes != null) {
-      await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatusList(receivedLikes));
-      profile.sendProfileChange(LikesChanged());
+    final receivedLikesIteratorResult = await api.chat((api) => api.postResetReceivedLikesPaging()).ok();
+    final v = receivedLikesIteratorResult?.version;
+    final session = receivedLikesIteratorResult?.sessionId;
+    if (v == null || session == null) {
+      return;
+    }
 
-      final newList = receivedLikes.profiles;
-      if (newList.length > currentReceivedLikes.length) {
-        await NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb);
+    final List<AccountId> newList = [];
+    while (true) {
+      final receivedLikes = await api.chat((api) => api.postGetNextReceivedLikesPage(session)).ok();
+      if (receivedLikes != null) {
+        if (receivedLikes.errorInvalidIteratorSessionId) {
+          return;
+        }
+        if (receivedLikes.profiles.isEmpty) {
+          break;
+        }
+        newList.addAll(receivedLikes.profiles);
+      } else {
+        return;
       }
+    }
+
+    await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatusList(newList, v));
+    profile.sendProfileChange(LikesChanged());
+
+    if (newList.length > currentReceivedLikes.length) {
+      await NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb);
     }
   }
 

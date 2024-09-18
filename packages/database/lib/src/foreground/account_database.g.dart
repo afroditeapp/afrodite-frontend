@@ -5943,15 +5943,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   late final GeneratedColumn<int> receivedMessageState = GeneratedColumn<int>(
       'received_message_state', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _senderMessageIdMeta =
-      const VerificationMeta('senderMessageId');
-  @override
-  late final GeneratedColumnWithTypeConverter<SenderMessageId?, int>
-      senderMessageId = GeneratedColumn<int>(
-              'sender_message_id', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<SenderMessageId?>(
-              $MessagesTable.$convertersenderMessageId);
   static const VerificationMeta _messageNumberMeta =
       const VerificationMeta('messageNumber');
   @override
@@ -5976,7 +5967,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
         localUnixTime,
         sentMessageState,
         receivedMessageState,
-        senderMessageId,
         messageNumber,
         unixTime
       ];
@@ -6017,7 +6007,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
           receivedMessageState.isAcceptableOrUnknown(
               data['received_message_state']!, _receivedMessageStateMeta));
     }
-    context.handle(_senderMessageIdMeta, const VerificationResult.success());
     context.handle(_messageNumberMeta, const VerificationResult.success());
     context.handle(_unixTimeMeta, const VerificationResult.success());
     return context;
@@ -6046,9 +6035,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
           .read(DriftSqlType.int, data['${effectivePrefix}sent_message_state']),
       receivedMessageState: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}received_message_state']),
-      senderMessageId: $MessagesTable.$convertersenderMessageId.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}sender_message_id'])),
       messageNumber: $MessagesTable.$convertermessageNumber.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}message_number'])),
@@ -6069,8 +6055,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       const AccountIdConverter();
   static TypeConverter<UtcDateTime, int> $converterlocalUnixTime =
       const UtcDateTimeConverter();
-  static TypeConverter<SenderMessageId?, int?> $convertersenderMessageId =
-      const NullAwareTypeConverter.wrap(SenderMessageIdConverter());
   static TypeConverter<MessageNumber?, int?> $convertermessageNumber =
       const NullAwareTypeConverter.wrap(MessageNumberConverter());
   static TypeConverter<UtcDateTime?, int?> $converterunixTime =
@@ -6085,7 +6069,6 @@ class Message extends DataClass implements Insertable<Message> {
   final UtcDateTime localUnixTime;
   final int? sentMessageState;
   final int? receivedMessageState;
-  final SenderMessageId? senderMessageId;
   final MessageNumber? messageNumber;
   final UtcDateTime? unixTime;
   const Message(
@@ -6096,7 +6079,6 @@ class Message extends DataClass implements Insertable<Message> {
       required this.localUnixTime,
       this.sentMessageState,
       this.receivedMessageState,
-      this.senderMessageId,
       this.messageNumber,
       this.unixTime});
   @override
@@ -6124,10 +6106,6 @@ class Message extends DataClass implements Insertable<Message> {
     if (!nullToAbsent || receivedMessageState != null) {
       map['received_message_state'] = Variable<int>(receivedMessageState);
     }
-    if (!nullToAbsent || senderMessageId != null) {
-      map['sender_message_id'] = Variable<int>(
-          $MessagesTable.$convertersenderMessageId.toSql(senderMessageId));
-    }
     if (!nullToAbsent || messageNumber != null) {
       map['message_number'] = Variable<int>(
           $MessagesTable.$convertermessageNumber.toSql(messageNumber));
@@ -6152,9 +6130,6 @@ class Message extends DataClass implements Insertable<Message> {
       receivedMessageState: receivedMessageState == null && nullToAbsent
           ? const Value.absent()
           : Value(receivedMessageState),
-      senderMessageId: senderMessageId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(senderMessageId),
       messageNumber: messageNumber == null && nullToAbsent
           ? const Value.absent()
           : Value(messageNumber),
@@ -6178,8 +6153,6 @@ class Message extends DataClass implements Insertable<Message> {
       sentMessageState: serializer.fromJson<int?>(json['sentMessageState']),
       receivedMessageState:
           serializer.fromJson<int?>(json['receivedMessageState']),
-      senderMessageId:
-          serializer.fromJson<SenderMessageId?>(json['senderMessageId']),
       messageNumber: serializer.fromJson<MessageNumber?>(json['messageNumber']),
       unixTime: serializer.fromJson<UtcDateTime?>(json['unixTime']),
     );
@@ -6195,7 +6168,6 @@ class Message extends DataClass implements Insertable<Message> {
       'localUnixTime': serializer.toJson<UtcDateTime>(localUnixTime),
       'sentMessageState': serializer.toJson<int?>(sentMessageState),
       'receivedMessageState': serializer.toJson<int?>(receivedMessageState),
-      'senderMessageId': serializer.toJson<SenderMessageId?>(senderMessageId),
       'messageNumber': serializer.toJson<MessageNumber?>(messageNumber),
       'unixTime': serializer.toJson<UtcDateTime?>(unixTime),
     };
@@ -6209,7 +6181,6 @@ class Message extends DataClass implements Insertable<Message> {
           UtcDateTime? localUnixTime,
           Value<int?> sentMessageState = const Value.absent(),
           Value<int?> receivedMessageState = const Value.absent(),
-          Value<SenderMessageId?> senderMessageId = const Value.absent(),
           Value<MessageNumber?> messageNumber = const Value.absent(),
           Value<UtcDateTime?> unixTime = const Value.absent()}) =>
       Message(
@@ -6224,9 +6195,6 @@ class Message extends DataClass implements Insertable<Message> {
         receivedMessageState: receivedMessageState.present
             ? receivedMessageState.value
             : this.receivedMessageState,
-        senderMessageId: senderMessageId.present
-            ? senderMessageId.value
-            : this.senderMessageId,
         messageNumber:
             messageNumber.present ? messageNumber.value : this.messageNumber,
         unixTime: unixTime.present ? unixTime.value : this.unixTime,
@@ -6251,9 +6219,6 @@ class Message extends DataClass implements Insertable<Message> {
       receivedMessageState: data.receivedMessageState.present
           ? data.receivedMessageState.value
           : this.receivedMessageState,
-      senderMessageId: data.senderMessageId.present
-          ? data.senderMessageId.value
-          : this.senderMessageId,
       messageNumber: data.messageNumber.present
           ? data.messageNumber.value
           : this.messageNumber,
@@ -6271,7 +6236,6 @@ class Message extends DataClass implements Insertable<Message> {
           ..write('localUnixTime: $localUnixTime, ')
           ..write('sentMessageState: $sentMessageState, ')
           ..write('receivedMessageState: $receivedMessageState, ')
-          ..write('senderMessageId: $senderMessageId, ')
           ..write('messageNumber: $messageNumber, ')
           ..write('unixTime: $unixTime')
           ..write(')'))
@@ -6287,7 +6251,6 @@ class Message extends DataClass implements Insertable<Message> {
       localUnixTime,
       sentMessageState,
       receivedMessageState,
-      senderMessageId,
       messageNumber,
       unixTime);
   @override
@@ -6301,7 +6264,6 @@ class Message extends DataClass implements Insertable<Message> {
           other.localUnixTime == this.localUnixTime &&
           other.sentMessageState == this.sentMessageState &&
           other.receivedMessageState == this.receivedMessageState &&
-          other.senderMessageId == this.senderMessageId &&
           other.messageNumber == this.messageNumber &&
           other.unixTime == this.unixTime);
 }
@@ -6314,7 +6276,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
   final Value<UtcDateTime> localUnixTime;
   final Value<int?> sentMessageState;
   final Value<int?> receivedMessageState;
-  final Value<SenderMessageId?> senderMessageId;
   final Value<MessageNumber?> messageNumber;
   final Value<UtcDateTime?> unixTime;
   const MessagesCompanion({
@@ -6325,7 +6286,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     this.localUnixTime = const Value.absent(),
     this.sentMessageState = const Value.absent(),
     this.receivedMessageState = const Value.absent(),
-    this.senderMessageId = const Value.absent(),
     this.messageNumber = const Value.absent(),
     this.unixTime = const Value.absent(),
   });
@@ -6337,7 +6297,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     required UtcDateTime localUnixTime,
     this.sentMessageState = const Value.absent(),
     this.receivedMessageState = const Value.absent(),
-    this.senderMessageId = const Value.absent(),
     this.messageNumber = const Value.absent(),
     this.unixTime = const Value.absent(),
   })  : uuidLocalAccountId = Value(uuidLocalAccountId),
@@ -6352,7 +6311,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     Expression<int>? localUnixTime,
     Expression<int>? sentMessageState,
     Expression<int>? receivedMessageState,
-    Expression<int>? senderMessageId,
     Expression<int>? messageNumber,
     Expression<int>? unixTime,
   }) {
@@ -6367,7 +6325,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       if (sentMessageState != null) 'sent_message_state': sentMessageState,
       if (receivedMessageState != null)
         'received_message_state': receivedMessageState,
-      if (senderMessageId != null) 'sender_message_id': senderMessageId,
       if (messageNumber != null) 'message_number': messageNumber,
       if (unixTime != null) 'unix_time': unixTime,
     });
@@ -6381,7 +6338,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       Value<UtcDateTime>? localUnixTime,
       Value<int?>? sentMessageState,
       Value<int?>? receivedMessageState,
-      Value<SenderMessageId?>? senderMessageId,
       Value<MessageNumber?>? messageNumber,
       Value<UtcDateTime?>? unixTime}) {
     return MessagesCompanion(
@@ -6392,7 +6348,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       localUnixTime: localUnixTime ?? this.localUnixTime,
       sentMessageState: sentMessageState ?? this.sentMessageState,
       receivedMessageState: receivedMessageState ?? this.receivedMessageState,
-      senderMessageId: senderMessageId ?? this.senderMessageId,
       messageNumber: messageNumber ?? this.messageNumber,
       unixTime: unixTime ?? this.unixTime,
     );
@@ -6427,11 +6382,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     if (receivedMessageState.present) {
       map['received_message_state'] = Variable<int>(receivedMessageState.value);
     }
-    if (senderMessageId.present) {
-      map['sender_message_id'] = Variable<int>($MessagesTable
-          .$convertersenderMessageId
-          .toSql(senderMessageId.value));
-    }
     if (messageNumber.present) {
       map['message_number'] = Variable<int>(
           $MessagesTable.$convertermessageNumber.toSql(messageNumber.value));
@@ -6453,7 +6403,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
           ..write('localUnixTime: $localUnixTime, ')
           ..write('sentMessageState: $sentMessageState, ')
           ..write('receivedMessageState: $receivedMessageState, ')
-          ..write('senderMessageId: $senderMessageId, ')
           ..write('messageNumber: $messageNumber, ')
           ..write('unixTime: $unixTime')
           ..write(')'))
@@ -6512,15 +6461,6 @@ class $ConversationsTable extends Conversations
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<PublicKeyVersion?>(
               $ConversationsTable.$converterpublicKeyVersion);
-  static const VerificationMeta _conversationNextSenderMessageIdMeta =
-      const VerificationMeta('conversationNextSenderMessageId');
-  @override
-  late final GeneratedColumnWithTypeConverter<SenderMessageId?, int>
-      conversationNextSenderMessageId = GeneratedColumn<int>(
-              'conversation_next_sender_message_id', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<SenderMessageId?>(
-              $ConversationsTable.$converterconversationNextSenderMessageId);
   static const VerificationMeta _conversationUnreadMessagesCountMeta =
       const VerificationMeta('conversationUnreadMessagesCount');
   @override
@@ -6539,7 +6479,6 @@ class $ConversationsTable extends Conversations
         publicKeyData,
         publicKeyId,
         publicKeyVersion,
-        conversationNextSenderMessageId,
         conversationUnreadMessagesCount
       ];
   @override
@@ -6559,8 +6498,6 @@ class $ConversationsTable extends Conversations
     context.handle(_publicKeyDataMeta, const VerificationResult.success());
     context.handle(_publicKeyIdMeta, const VerificationResult.success());
     context.handle(_publicKeyVersionMeta, const VerificationResult.success());
-    context.handle(_conversationNextSenderMessageIdMeta,
-        const VerificationResult.success());
     context.handle(_conversationUnreadMessagesCountMeta,
         const VerificationResult.success());
     return context;
@@ -6586,10 +6523,6 @@ class $ConversationsTable extends Conversations
       publicKeyVersion: $ConversationsTable.$converterpublicKeyVersion.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}public_key_version'])),
-      conversationNextSenderMessageId: $ConversationsTable
-          .$converterconversationNextSenderMessageId
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}conversation_next_sender_message_id'])),
       conversationUnreadMessagesCount: $ConversationsTable
           .$converterconversationUnreadMessagesCount
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
@@ -6610,9 +6543,6 @@ class $ConversationsTable extends Conversations
       const NullAwareTypeConverter.wrap(PublicKeyIdConverter());
   static TypeConverter<PublicKeyVersion?, int?> $converterpublicKeyVersion =
       const NullAwareTypeConverter.wrap(PublicKeyVersionConverter());
-  static TypeConverter<SenderMessageId?, int?>
-      $converterconversationNextSenderMessageId =
-      const NullAwareTypeConverter.wrap(SenderMessageIdConverter());
   static TypeConverter<UnreadMessagesCount, int>
       $converterconversationUnreadMessagesCount =
       UnreadMessagesCountConverter();
@@ -6624,7 +6554,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
   final PublicKeyData? publicKeyData;
   final PublicKeyId? publicKeyId;
   final PublicKeyVersion? publicKeyVersion;
-  final SenderMessageId? conversationNextSenderMessageId;
   final UnreadMessagesCount conversationUnreadMessagesCount;
   const Conversation(
       {required this.id,
@@ -6632,7 +6561,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
       this.publicKeyData,
       this.publicKeyId,
       this.publicKeyVersion,
-      this.conversationNextSenderMessageId,
       required this.conversationUnreadMessagesCount});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -6655,11 +6583,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
           .$converterpublicKeyVersion
           .toSql(publicKeyVersion));
     }
-    if (!nullToAbsent || conversationNextSenderMessageId != null) {
-      map['conversation_next_sender_message_id'] = Variable<int>(
-          $ConversationsTable.$converterconversationNextSenderMessageId
-              .toSql(conversationNextSenderMessageId));
-    }
     {
       map['conversation_unread_messages_count'] = Variable<int>(
           $ConversationsTable.$converterconversationUnreadMessagesCount
@@ -6681,10 +6604,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
       publicKeyVersion: publicKeyVersion == null && nullToAbsent
           ? const Value.absent()
           : Value(publicKeyVersion),
-      conversationNextSenderMessageId:
-          conversationNextSenderMessageId == null && nullToAbsent
-              ? const Value.absent()
-              : Value(conversationNextSenderMessageId),
       conversationUnreadMessagesCount: Value(conversationUnreadMessagesCount),
     );
   }
@@ -6699,8 +6618,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
       publicKeyId: serializer.fromJson<PublicKeyId?>(json['publicKeyId']),
       publicKeyVersion:
           serializer.fromJson<PublicKeyVersion?>(json['publicKeyVersion']),
-      conversationNextSenderMessageId: serializer
-          .fromJson<SenderMessageId?>(json['conversationNextSenderMessageId']),
       conversationUnreadMessagesCount: serializer.fromJson<UnreadMessagesCount>(
           json['conversationUnreadMessagesCount']),
     );
@@ -6715,8 +6632,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
       'publicKeyId': serializer.toJson<PublicKeyId?>(publicKeyId),
       'publicKeyVersion':
           serializer.toJson<PublicKeyVersion?>(publicKeyVersion),
-      'conversationNextSenderMessageId':
-          serializer.toJson<SenderMessageId?>(conversationNextSenderMessageId),
       'conversationUnreadMessagesCount': serializer
           .toJson<UnreadMessagesCount>(conversationUnreadMessagesCount),
     };
@@ -6728,8 +6643,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
           Value<PublicKeyData?> publicKeyData = const Value.absent(),
           Value<PublicKeyId?> publicKeyId = const Value.absent(),
           Value<PublicKeyVersion?> publicKeyVersion = const Value.absent(),
-          Value<SenderMessageId?> conversationNextSenderMessageId =
-              const Value.absent(),
           UnreadMessagesCount? conversationUnreadMessagesCount}) =>
       Conversation(
         id: id ?? this.id,
@@ -6740,9 +6653,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
         publicKeyVersion: publicKeyVersion.present
             ? publicKeyVersion.value
             : this.publicKeyVersion,
-        conversationNextSenderMessageId: conversationNextSenderMessageId.present
-            ? conversationNextSenderMessageId.value
-            : this.conversationNextSenderMessageId,
         conversationUnreadMessagesCount: conversationUnreadMessagesCount ??
             this.conversationUnreadMessagesCount,
       );
@@ -6760,10 +6670,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
       publicKeyVersion: data.publicKeyVersion.present
           ? data.publicKeyVersion.value
           : this.publicKeyVersion,
-      conversationNextSenderMessageId:
-          data.conversationNextSenderMessageId.present
-              ? data.conversationNextSenderMessageId.value
-              : this.conversationNextSenderMessageId,
       conversationUnreadMessagesCount:
           data.conversationUnreadMessagesCount.present
               ? data.conversationUnreadMessagesCount.value
@@ -6780,22 +6686,14 @@ class Conversation extends DataClass implements Insertable<Conversation> {
           ..write('publicKeyId: $publicKeyId, ')
           ..write('publicKeyVersion: $publicKeyVersion, ')
           ..write(
-              'conversationNextSenderMessageId: $conversationNextSenderMessageId, ')
-          ..write(
               'conversationUnreadMessagesCount: $conversationUnreadMessagesCount')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id,
-      uuidAccountId,
-      publicKeyData,
-      publicKeyId,
-      publicKeyVersion,
-      conversationNextSenderMessageId,
-      conversationUnreadMessagesCount);
+  int get hashCode => Object.hash(id, uuidAccountId, publicKeyData, publicKeyId,
+      publicKeyVersion, conversationUnreadMessagesCount);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -6805,8 +6703,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
           other.publicKeyData == this.publicKeyData &&
           other.publicKeyId == this.publicKeyId &&
           other.publicKeyVersion == this.publicKeyVersion &&
-          other.conversationNextSenderMessageId ==
-              this.conversationNextSenderMessageId &&
           other.conversationUnreadMessagesCount ==
               this.conversationUnreadMessagesCount);
 }
@@ -6817,7 +6713,6 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
   final Value<PublicKeyData?> publicKeyData;
   final Value<PublicKeyId?> publicKeyId;
   final Value<PublicKeyVersion?> publicKeyVersion;
-  final Value<SenderMessageId?> conversationNextSenderMessageId;
   final Value<UnreadMessagesCount> conversationUnreadMessagesCount;
   const ConversationsCompanion({
     this.id = const Value.absent(),
@@ -6825,7 +6720,6 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
     this.publicKeyData = const Value.absent(),
     this.publicKeyId = const Value.absent(),
     this.publicKeyVersion = const Value.absent(),
-    this.conversationNextSenderMessageId = const Value.absent(),
     this.conversationUnreadMessagesCount = const Value.absent(),
   });
   ConversationsCompanion.insert({
@@ -6834,7 +6728,6 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
     this.publicKeyData = const Value.absent(),
     this.publicKeyId = const Value.absent(),
     this.publicKeyVersion = const Value.absent(),
-    this.conversationNextSenderMessageId = const Value.absent(),
     this.conversationUnreadMessagesCount = const Value.absent(),
   }) : uuidAccountId = Value(uuidAccountId);
   static Insertable<Conversation> custom({
@@ -6843,7 +6736,6 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
     Expression<String>? publicKeyData,
     Expression<int>? publicKeyId,
     Expression<int>? publicKeyVersion,
-    Expression<int>? conversationNextSenderMessageId,
     Expression<int>? conversationUnreadMessagesCount,
   }) {
     return RawValuesInsertable({
@@ -6852,8 +6744,6 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
       if (publicKeyData != null) 'public_key_data': publicKeyData,
       if (publicKeyId != null) 'public_key_id': publicKeyId,
       if (publicKeyVersion != null) 'public_key_version': publicKeyVersion,
-      if (conversationNextSenderMessageId != null)
-        'conversation_next_sender_message_id': conversationNextSenderMessageId,
       if (conversationUnreadMessagesCount != null)
         'conversation_unread_messages_count': conversationUnreadMessagesCount,
     });
@@ -6865,7 +6755,6 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
       Value<PublicKeyData?>? publicKeyData,
       Value<PublicKeyId?>? publicKeyId,
       Value<PublicKeyVersion?>? publicKeyVersion,
-      Value<SenderMessageId?>? conversationNextSenderMessageId,
       Value<UnreadMessagesCount>? conversationUnreadMessagesCount}) {
     return ConversationsCompanion(
       id: id ?? this.id,
@@ -6873,8 +6762,6 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
       publicKeyData: publicKeyData ?? this.publicKeyData,
       publicKeyId: publicKeyId ?? this.publicKeyId,
       publicKeyVersion: publicKeyVersion ?? this.publicKeyVersion,
-      conversationNextSenderMessageId: conversationNextSenderMessageId ??
-          this.conversationNextSenderMessageId,
       conversationUnreadMessagesCount: conversationUnreadMessagesCount ??
           this.conversationUnreadMessagesCount,
     );
@@ -6905,11 +6792,6 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
           .$converterpublicKeyVersion
           .toSql(publicKeyVersion.value));
     }
-    if (conversationNextSenderMessageId.present) {
-      map['conversation_next_sender_message_id'] = Variable<int>(
-          $ConversationsTable.$converterconversationNextSenderMessageId
-              .toSql(conversationNextSenderMessageId.value));
-    }
     if (conversationUnreadMessagesCount.present) {
       map['conversation_unread_messages_count'] = Variable<int>(
           $ConversationsTable.$converterconversationUnreadMessagesCount
@@ -6926,8 +6808,6 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
           ..write('publicKeyData: $publicKeyData, ')
           ..write('publicKeyId: $publicKeyId, ')
           ..write('publicKeyVersion: $publicKeyVersion, ')
-          ..write(
-              'conversationNextSenderMessageId: $conversationNextSenderMessageId, ')
           ..write(
               'conversationUnreadMessagesCount: $conversationUnreadMessagesCount')
           ..write(')'))

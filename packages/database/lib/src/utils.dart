@@ -347,12 +347,12 @@ class PrivateKeyDataConverter extends TypeConverter<PrivateKeyData, String> {
   }
 }
 
-class SenderMessageIdConverter extends TypeConverter<SenderMessageId, int> {
-  const SenderMessageIdConverter();
+class ClientIdConverter extends TypeConverter<ClientId, int> {
+  const ClientIdConverter();
 
   @override
-  SenderMessageId fromSql(fromDb) {
-    return SenderMessageId(id: fromDb);
+  ClientId fromSql(fromDb) {
+    return ClientId(id: fromDb);
   }
 
   @override

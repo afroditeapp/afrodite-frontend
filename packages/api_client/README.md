@@ -76,29 +76,31 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postDemoModeLogin**](doc//AccountApi.md#postdemomodelogin) | **POST** /TYbxniP-G9ibgdoAkpvVWTKkxaU | Access demo mode, which allows accessing all or specific accounts
 *AccountApi* | [**postDemoModeLoginToAccount**](doc//AccountApi.md#postdemomodelogintoaccount) | **POST** /sBH-LyNGOOFXivrv5clCpNrkwcA | 
 *AccountApi* | [**postDemoModeRegisterAccount**](doc//AccountApi.md#postdemomoderegisteraccount) | **POST** /oDv1gK4Y6nMrPgEo5nArQAckh6Q | 
+*AccountApi* | [**postGetNextClientId**](doc//AccountApi.md#postgetnextclientid) | **GET** /b5kd4x8_ybr1Rj_tprU5BxF_xGo | 
 *AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /ijts6B4AAg_6Dyjhaw85iBnw5Bo | Start new session with sign in with Apple or Google. Creates new account if
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /yG0OQXcMed-EGdvhSoq3qlXTYQc | Update current or pending profile visiblity value.
 *AccountApi* | [**putSettingUnlimitedLikes**](doc//AccountApi.md#putsettingunlimitedlikes) | **PUT** /oKbgnRxyzLb50Y2_ZCuLJYtEIcM | 
 *AccountInternalApi* | [**postLogin**](doc//AccountInternalApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken for a bot account. If the account is not registered
 *AccountInternalApi* | [**postRegister**](doc//AccountInternalApi.md#postregister) | **POST** /account_api/register | Register a new bot account. Returns new account ID which is UUID.
 *ChatApi* | [**deleteLike**](doc//ChatApi.md#deletelike) | **DELETE** /O3DZlGOjDYbQ8PlCorta0onQDLI | Delete sent like.
-*ChatApi* | [**deletePendingMessages**](doc//ChatApi.md#deletependingmessages) | **DELETE** /7sKe87sefWrLYS0JvbPS10_F8oc | Delete list of pending messages
 *ChatApi* | [**getMatches**](doc//ChatApi.md#getmatches) | **GET** /kzySqAe9qYi69MoCBnFGKdn76-Q | Get matches
 *ChatApi* | [**getMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#getmessagenumberoflatestviewedmessage) | **GET** /gas7m77c7kw7N7TKyMQVzUKy3AQ | Get message number of the most recent message that the recipient has viewed.
 *ChatApi* | [**getPendingMessages**](doc//ChatApi.md#getpendingmessages) | **GET** /7sKe87sefWrLYS0JvbPS10_F8oc | Get list of pending messages.
 *ChatApi* | [**getPublicKey**](doc//ChatApi.md#getpublickey) | **GET** /e-r4VrqWJD1kIttg1McD9kv5o0k/{aid} | Get current public key of some account
 *ChatApi* | [**getReceivedBlocks**](doc//ChatApi.md#getreceivedblocks) | **GET** /hjP9LovH2kBxnbwWKSyVgFL4o58 | Get list of received blocks
-*ChatApi* | [**getReceivedLikes**](doc//ChatApi.md#getreceivedlikes) | **GET** /eEB4pq6DGUYlMVAYwPCm2RT5HP0 | Get received likes.
-*ChatApi* | [**getSenderMessageId**](doc//ChatApi.md#getsendermessageid) | **GET** /tn7H7RialxF_rBX74MazT7jYaqg/{aid} | Get conversation specific expected sender message ID which API caller
 *ChatApi* | [**getSentBlocks**](doc//ChatApi.md#getsentblocks) | **GET** /3qT3qSKKzXHjo8LGEphwMLF8vjk | Get list of sent blocks
 *ChatApi* | [**getSentLikes**](doc//ChatApi.md#getsentlikes) | **GET** /pTybb424uGsXvCyOLljsPujVe5Y | Get sent likes.
+*ChatApi* | [**getSentMessageIds**](doc//ChatApi.md#getsentmessageids) | **GET** /-sDy1a8MS72uNy3UUtX9K8-wYWU | 
+*ChatApi* | [**postAddReceiverAcknowledgement**](doc//ChatApi.md#postaddreceiveracknowledgement) | **POST** /PBreZU5Cmo7tTtNMMb58yN_xFZ8 | 
+*ChatApi* | [**postAddSenderAcknowledgement**](doc//ChatApi.md#postaddsenderacknowledgement) | **POST** /E-yVIcGOLJyZ7nsT_Lh4KPCRkQg | 
 *ChatApi* | [**postBlockProfile**](doc//ChatApi.md#postblockprofile) | **POST** /MpWSY01lXj7KaDK1KCNHLWRg9k4 | Block profile
+*ChatApi* | [**postGetNextReceivedLikesPage**](doc//ChatApi.md#postgetnextreceivedlikespage) | **POST** /eEB4pq6DGUYlMVAYwPCm2RT5HP0 | Update received likes iterator and get next page
 *ChatApi* | [**postGetPendingNotification**](doc//ChatApi.md#postgetpendingnotification) | **POST** /MhQXhJMKgrUh0s95FueOgalQg-o | Get pending notification and reset pending notification.
 *ChatApi* | [**postMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#postmessagenumberoflatestviewedmessage) | **POST** /gas7m77c7kw7N7TKyMQVzUKy3AQ | Update message number of the most recent message that the recipient has viewed.
 *ChatApi* | [**postPublicKey**](doc//ChatApi.md#postpublickey) | **POST** /e-r4VrqWJD1kIttg1McD9kv5o0k | Replace current public key with a new public key.
+*ChatApi* | [**postResetReceivedLikesPaging**](doc//ChatApi.md#postresetreceivedlikespaging) | **POST** /B75BRIylLV-JmwoB4YiOYSlyO-A | 
 *ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /sXq6ko76GtT7DuNXnkTTtFL6isY | Send a like to some account. If both will like each other, then
 *ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /YEFESgzw0YxQUETcUmnmfWCaF1g | Send message to a match.
-*ChatApi* | [**postSenderMessageId**](doc//ChatApi.md#postsendermessageid) | **POST** /tn7H7RialxF_rBX74MazT7jYaqg/{aid} | Set conversation specific expected sender message ID which API caller
 *ChatApi* | [**postSetDeviceToken**](doc//ChatApi.md#postsetdevicetoken) | **POST** /CBoGGZ4HDW0REbM6SxasDCvXJNM | 
 *ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /j2Ofh-WeAFmjCQqO_AyHIM1eZEo | Unblock profile
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /6qQZ2jQO5exMKFI2jCzGAdMysxE | Connect to server using WebSocket after getting refresh and access tokens.
@@ -180,6 +182,10 @@ Class | Method | HTTP request | Description
  - [BotConfig](doc//BotConfig.md)
  - [BuildInfo](doc//BuildInfo.md)
  - [Capabilities](doc//Capabilities.md)
+ - [ClientId](doc//ClientId.md)
+ - [ClientInfo](doc//ClientInfo.md)
+ - [ClientLocalId](doc//ClientLocalId.md)
+ - [ClientType](doc//ClientType.md)
  - [CommandOutput](doc//CommandOutput.md)
  - [ContentId](doc//ContentId.md)
  - [ContentInfo](doc//ContentInfo.md)
@@ -242,8 +248,9 @@ Class | Method | HTTP request | Description
  - [ModerationRequestId](doc//ModerationRequestId.md)
  - [ModerationRequestState](doc//ModerationRequestState.md)
  - [NewContentParams](doc//NewContentParams.md)
+ - [NewReceivedLikesAvailableResult](doc//NewReceivedLikesAvailableResult.md)
  - [PendingMessage](doc//PendingMessage.md)
- - [PendingMessageDeleteList](doc//PendingMessageDeleteList.md)
+ - [PendingMessageAcknowledgementList](doc//PendingMessageAcknowledgementList.md)
  - [PendingMessageId](doc//PendingMessageId.md)
  - [PendingNotificationToken](doc//PendingNotificationToken.md)
  - [PendingNotificationWithData](doc//PendingNotificationWithData.md)
@@ -274,22 +281,26 @@ Class | Method | HTTP request | Description
  - [PublicKey](doc//PublicKey.md)
  - [PublicKeyData](doc//PublicKeyData.md)
  - [PublicKeyId](doc//PublicKeyId.md)
+ - [PublicKeyIdAndVersion](doc//PublicKeyIdAndVersion.md)
  - [PublicKeyVersion](doc//PublicKeyVersion.md)
  - [RebootQueryParam](doc//RebootQueryParam.md)
  - [ReceivedBlocksPage](doc//ReceivedBlocksPage.md)
  - [ReceivedBlocksSyncVersion](doc//ReceivedBlocksSyncVersion.md)
+ - [ReceivedLikesIteratorSessionId](doc//ReceivedLikesIteratorSessionId.md)
  - [ReceivedLikesPage](doc//ReceivedLikesPage.md)
  - [ReceivedLikesSyncVersion](doc//ReceivedLikesSyncVersion.md)
  - [RefreshToken](doc//RefreshToken.md)
  - [ResetDataQueryParam](doc//ResetDataQueryParam.md)
+ - [ResetReceivedLikesIteratorResult](doc//ResetReceivedLikesIteratorResult.md)
  - [SearchGroups](doc//SearchGroups.md)
  - [SecurityContent](doc//SecurityContent.md)
  - [SendMessageResult](doc//SendMessageResult.md)
- - [SenderMessageId](doc//SenderMessageId.md)
  - [SentBlocksPage](doc//SentBlocksPage.md)
  - [SentBlocksSyncVersion](doc//SentBlocksSyncVersion.md)
  - [SentLikesPage](doc//SentLikesPage.md)
  - [SentLikesSyncVersion](doc//SentLikesSyncVersion.md)
+ - [SentMessageId](doc//SentMessageId.md)
+ - [SentMessageIdList](doc//SentMessageIdList.md)
  - [SetAccountSetup](doc//SetAccountSetup.md)
  - [SetProfileContent](doc//SetProfileContent.md)
  - [SetPublicKey](doc//SetPublicKey.md)

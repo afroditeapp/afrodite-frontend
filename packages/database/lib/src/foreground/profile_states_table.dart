@@ -162,17 +162,20 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
     });
   }
 
-  Future<void> setReceivedLikeStatusList(api.ReceivedLikesPage receivedLikes) async {
+  Future<void> setReceivedLikeStatusList(
+    List<AccountId> receivedLikes,
+    api.ReceivedLikesSyncVersion recievedLikesSyncVersion,
+  ) async {
     await transaction(() async {
       // Clear
       await update(profileStates)
         .write(const ProfileStatesCompanion(isInReceivedLikes: Value(null)));
 
-      for (final a in receivedLikes.profiles) {
+      for (final a in receivedLikes) {
         await setReceivedLikeStatus(a, true);
       }
 
-      await db.daoSyncVersions.updateSyncVersionReceivedLikes(receivedLikes.version);
+      await db.daoSyncVersions.updateSyncVersionReceivedLikes(recievedLikesSyncVersion);
     });
   }
 

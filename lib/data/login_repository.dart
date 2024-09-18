@@ -333,9 +333,26 @@ class LoginRepository extends DataRepository {
     }
   }
 
+  ClientInfo _clientInfo() {
+    final ClientType clientType;
+    if (kIsWeb) {
+      clientType = ClientType.web;
+    } else if (Platform.isAndroid) {
+      clientType = ClientType.android;
+    } else if (Platform.isIOS) {
+      clientType = ClientType.ios;
+    } else {
+      throw UnsupportedError("Unsupported platform");
+    }
+    // TODO(prod): Send proper version number. Check also websocket code version
+    // number.
+    return ClientInfo(
+      clientType: clientType, majorVersion: 0, minorVersion: 0, patchVersion: 0);
+  }
+
   Future<Result<void, SignInWithGoogleEvent>> _handleSignInWithGoogleAccountInfo(GoogleSignInAccount signedIn) async {
     final token = await signedIn.authentication;
-    final info = SignInWithLoginInfo(googleToken: token.idToken);
+    final info = SignInWithLoginInfo(googleToken: token.idToken, clientInfo: _clientInfo());
     final login = await _apiNoConnection.account((api) => api.postSignInWithLogin(info)).ok();
     if (login == null) {
       return const Err(SignInWithGoogleEvent.serverRequestFailed);
@@ -346,8 +363,17 @@ class LoginRepository extends DataRepository {
   }
 
   Future<Result<void, void>> _handleLoginResult(LoginResult loginResult) async {
-    final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(loginResult.aid);
-    final r = await DatabaseManager.getInstance().setAccountId(loginResult.aid)
+    if (loginResult.errorUnsupportedClient) {
+      // TODO(prod): Add proper error type and show error in bloc
+      return const Err(null);
+    }
+    final aid = loginResult.aid;
+    final authPair = loginResult.account;
+    if (aid == null || authPair == null) {
+      return const Err(null);
+    }
+    final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(aid);
+    final r = await DatabaseManager.getInstance().setAccountId(aid)
       .andThen(
         (_) => accountDb.accountAction(
           (db) => db.daoAccountSettings.updateEmailAddress(loginResult.email)
@@ -358,12 +384,12 @@ class LoginRepository extends DataRepository {
     }
 
     // Login repository
-    await accountDb.accountAction((db) => db.daoTokens.updateRefreshTokenAccount(loginResult.account.refresh.token));
-    await accountDb.accountAction((db) => db.daoTokens.updateAccessTokenAccount(loginResult.account.access.accessToken));
+    await accountDb.accountAction((db) => db.daoTokens.updateRefreshTokenAccount(authPair.refresh.token));
+    await accountDb.accountAction((db) => db.daoTokens.updateAccessTokenAccount(authPair.access.accessToken));
     // TODO(microservice): microservice support
     await onLogin();
 
-    final theNewRepositories = await _createRepositories(loginResult.aid);
+    final theNewRepositories = await _createRepositories(aid);
 
     // Other repostories
     await theNewRepositories.onLogin();
@@ -404,7 +430,7 @@ class LoginRepository extends DataRepository {
       signedIn = await SignInWithApple.getAppleIDCredential(scopes: [
         AppleIDAuthorizationScopes.email,
       ]);
-      await _apiNoConnection.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(appleToken: signedIn.identityToken)));
+      await _apiNoConnection.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(appleToken: signedIn.identityToken, clientInfo: _clientInfo())));
     } on SignInWithAppleException catch (_) {
       log.error("Sign in with Apple failed");
     }

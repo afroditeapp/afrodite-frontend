@@ -22,7 +22,6 @@ class Conversations extends Table {
   IntColumn get publicKeyId => integer().map(const NullAwareTypeConverter.wrap(PublicKeyIdConverter())).nullable()();
   IntColumn get publicKeyVersion => integer().map(const NullAwareTypeConverter.wrap(PublicKeyVersionConverter())).nullable()();
 
-  IntColumn get conversationNextSenderMessageId => integer().map(const NullAwareTypeConverter.wrap(SenderMessageIdConverter())).nullable()();
   IntColumn get conversationUnreadMessagesCount => integer().map(UnreadMessagesCountConverter()).withDefault(const Constant(0))();
 }
 
@@ -66,33 +65,6 @@ class DaoConversations extends DatabaseAccessor<AccountDatabase> with _$DaoConve
     } else {
       return null;
     }
-  }
-
-  Future<api.SenderMessageId?> getNextSenderMessageId(AccountId accountId) async {
-    return await (select(conversations)
-      ..where((t) => t.uuidAccountId.equals(accountId.aid))
-    )
-      .map((r) => r.conversationNextSenderMessageId)
-      .getSingleOrNull();
-  }
-
-  Future<void> setNextSenderMessageId(AccountId accountId, api.SenderMessageId newId) async {
-    await into(conversations).insert(
-      ConversationsCompanion.insert(
-        uuidAccountId: accountId,
-        conversationNextSenderMessageId: Value(newId),
-      ),
-      onConflict: DoUpdate((old) => ConversationsCompanion(
-        conversationNextSenderMessageId: Value(newId),
-      ),
-        target: [conversations.uuidAccountId]
-      ),
-    );
-  }
-
-  Future<void> resetAllSenderMessageIds() async {
-    await update(conversations)
-      .write(const ConversationsCompanion(conversationNextSenderMessageId: Value(null)));
   }
 
   Future<UnreadMessagesCount?> getUnreadMessageCount(AccountId accountId) async {
