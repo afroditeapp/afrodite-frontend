@@ -346,6 +346,7 @@
   "@generic_error": {
     "description": "Generic error message"
   },
+  "generic_error_app_version_is_unsupported": "Current app version is unsupported",
   "generic_error_occurred": "Error occurred",
   "@generic_error_occurred": {
     "description": "Generic error occurred text"

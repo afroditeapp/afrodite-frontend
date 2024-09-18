@@ -65,6 +65,9 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
         case Err(e: SessionExpired()):
           log.info("Demo account session expired");
           showSnackBar(R.strings.login_screen_demo_account_login_session_expired);
+        case Err(e: UnsupportedClient()):
+          log.info("Unsupported app version");
+          showSnackBar(R.strings.generic_error_app_version_is_unsupported);
         case Err(e: OtherError()):
           log.info("Demo account account list refresh other error");
       }
@@ -111,6 +114,8 @@ void handleErrors(Result<void, SessionOrOtherError> result) {
       null;
     case Err(e: SessionExpired()):
       showSnackBar(R.strings.login_screen_demo_account_login_session_expired);
+    case Err(e: UnsupportedClient()):
+      showSnackBar(R.strings.generic_error_app_version_is_unsupported);
     case Err(e: OtherError()):
       showSnackBar(R.strings.generic_error_occurred);
   }

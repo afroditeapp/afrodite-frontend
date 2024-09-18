@@ -359,18 +359,25 @@ class LoginRepository extends DataRepository {
     }
 
     return await _handleLoginResult(login)
-      .mapErr((_) => SignInWithGoogleEvent.otherError);
+      .mapErr((e) {
+        switch (e) {
+          case CommonSignInError.unsupportedClient:
+            return SignInWithGoogleEvent.unsupportedClient;
+          case CommonSignInError.otherError:
+            return SignInWithGoogleEvent.otherError;
+        }
+      });
   }
 
-  Future<Result<void, void>> _handleLoginResult(LoginResult loginResult) async {
+  Future<Result<void, CommonSignInError>> _handleLoginResult(LoginResult loginResult) async {
     if (loginResult.errorUnsupportedClient) {
       // TODO(prod): Add proper error type and show error in bloc
-      return const Err(null);
+      return const Err(CommonSignInError.unsupportedClient);
     }
     final aid = loginResult.aid;
     final authPair = loginResult.account;
     if (aid == null || authPair == null) {
-      return const Err(null);
+      return const Err(CommonSignInError.otherError);
     }
     final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(aid);
     final r = await DatabaseManager.getInstance().setAccountId(aid)
@@ -380,7 +387,7 @@ class LoginRepository extends DataRepository {
         )
       );
     if (r.isErr()) {
-      return const Err(null);
+      return const Err(CommonSignInError.otherError);
     }
 
     // Login repository
@@ -526,8 +533,13 @@ class LoginRepository extends DataRepository {
     final loginResult = await _apiNoConnection.account((api) => api.postDemoModeLoginToAccount(DemoModeLoginToAccount(aid: id, token: demoToken))).ok();
     if (loginResult != null) {
       switch (await _handleLoginResult(loginResult)) {
-        case Err():
-          return Err(OtherError());
+        case Err(:final e):
+          switch (e) {
+            case CommonSignInError.unsupportedClient:
+              return Err(UnsupportedClient());
+            case CommonSignInError.otherError:
+              return Err(OtherError());
+          }
         case Ok():
           return const Ok(null);
       }
@@ -548,12 +560,19 @@ class DemoAccountCredentials {
 
 sealed class SessionOrOtherError {}
 class SessionExpired extends SessionOrOtherError {}
+class UnsupportedClient extends SessionOrOtherError {}
 class OtherError extends SessionOrOtherError {}
 
 enum SignInWithGoogleEvent {
   getGoogleAccountTokenCompleted,
   signInWithGoogleFailed,
   serverRequestFailed,
+  unsupportedClient,
+  otherError,
+}
+
+enum CommonSignInError {
+  unsupportedClient,
   otherError,
 }
 

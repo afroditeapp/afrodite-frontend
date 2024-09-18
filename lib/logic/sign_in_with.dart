@@ -30,6 +30,8 @@ class SignInWithBloc extends Bloc<SignInWithEvent, SignInWithData> with ActionRu
               ();
             case SignInWithGoogleEvent.serverRequestFailed:
               ();
+            case SignInWithGoogleEvent.unsupportedClient:
+              ();
             case SignInWithGoogleEvent.otherError:
               ();
           }
@@ -56,6 +58,8 @@ void showSnackBarTextsForSignInWithGoogle(SignInWithGoogleEvent event) {
       showSnackBar(R.strings.login_screen_sign_in_with_error);
     case SignInWithGoogleEvent.serverRequestFailed:
       showSnackBar(R.strings.generic_error_occurred);
+    case SignInWithGoogleEvent.unsupportedClient:
+      showSnackBar(R.strings.generic_error_app_version_is_unsupported);
     case SignInWithGoogleEvent.otherError:
       showSnackBar(R.strings.generic_error);
   }
