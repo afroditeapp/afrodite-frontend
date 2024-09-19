@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  drift: ^2.19.1+1
+  drift: ^2.20.2
 
   database_provider_native:
     path: "../database_provider_native"

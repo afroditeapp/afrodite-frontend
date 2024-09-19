@@ -60,10 +60,10 @@ packages:
     dependency: "direct main"
     description:
       name: drift
-      sha256: "15b51e0ee1970455c0c3f7e560f3ac02ecb9c04711a9657586e470b234659dba"
+      sha256: "5b561ec76fff260e1e0593a29ca0d058a140a4b4dfb11dcc0c3813820cd20200"
       url: "https://pub.dev"
     source: hosted
-    version: "2.20.0"
+    version: "2.20.2"
   fake_async:
     dependency: transitive
     description:
@@ -122,14 +122,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.19.0"
-  js:
-    dependency: transitive
-    description:
-      name: js
-      sha256: c1b2e9b5ea78c45e1a0788d29606ba27dc5f71f019f32ca5140f61ef071838cf
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.1"
   leak_tracker:
     dependency: transitive
     description:

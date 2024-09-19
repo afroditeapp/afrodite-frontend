@@ -98,7 +98,7 @@ dependencies:
   device_info_plus: ^10.1.2
 
   path: ^1.9.0
-  drift: ^2.19.1+1
+  drift: ^2.20.2
 
   meta: ^1.11.0
 
@@ -107,8 +107,8 @@ dependencies:
     git:
       url: https://github.com/jutuon/app_settings.git
       ref: e1d39e4ea052e9dd9a47fbab49737846d9b43264
-  firebase_core: ^3.4.0
-  firebase_messaging: ^15.1.0
+  firebase_core: ^3.5.0
+  firebase_messaging: ^15.1.2
   google_api_availability: ^5.0.0
 
 dev_dependencies:
