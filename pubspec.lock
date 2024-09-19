@@ -275,10 +275,10 @@ packages:
     dependency: transitive
     description:
       name: dart_style
-      sha256: "99e066ce75c89d6b29903d788a7bb9369cf754f7b24bf70bf4b6d6d6b26853b9"
+      sha256: "7856d364b589d1f08986e140938578ed36ed948581fbc3bc9aef1805039ac5ab"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.6"
+    version: "2.3.7"
   database:
     dependency: "direct main"
     description:
@@ -698,18 +698,18 @@ packages:
     dependency: transitive
     description:
       name: google_sign_in_android
-      sha256: "5a47ebec9af97daf0822e800e4f101c3340b5ebc3f6898cf860c1a71b53cf077"
+      sha256: "0608de03fc541ece4f91ba3e01a68b17cce7a6cf42bd59e40bbe5c55cc3a49d8"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.28"
+    version: "6.1.30"
   google_sign_in_ios:
     dependency: transitive
     description:
       name: google_sign_in_ios
-      sha256: a058c9880be456f21e2e8571c1126eaacd570bdc5b6c6d9d15aea4bdf22ca9fe
+      sha256: "4898410f55440049e1ba8f15411612d9f89299d89c61cd9baf7e02d56ff81ac7"
       url: "https://pub.dev"
     source: hosted
-    version: "5.7.6"
+    version: "5.7.7"
   google_sign_in_platform_interface:
     dependency: transitive
     description:
@@ -786,10 +786,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_for_web
-      sha256: "869fe8a64771b7afbc99fc433a5f7be2fea4d1cb3d7c11a48b6b579eb9c797f0"
+      sha256: "65d94623e15372c5c51bebbcb820848d7bcb323836e12dfdba60b5d3a8b39e50"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "3.0.5"
   image_picker_ios:
     dependency: transitive
     description:
@@ -1299,10 +1299,10 @@ packages:
     dependency: transitive
     description:
       name: sqflite_common
-      sha256: "7b41b6c3507854a159e24ae90a8e3e9cc01eb26a477c118d6dca065b5f55453e"
+      sha256: "4058172e418eb7e7f2058dcb7657d451a8fc264afa0dea4dbd0f304a57131611"
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.4+2"
+    version: "2.5.4+3"
   sqlcipher_flutter_libs:
     dependency: transitive
     description:
@@ -1355,10 +1355,10 @@ packages:
     dependency: transitive
     description:
       name: synchronized
-      sha256: a824e842b8a054f91a728b783c177c1e4731f6b124f9192468457a8913371255
+      sha256: "51b08572b9f091f8c3eb4d9d4be253f196ff0075d5ec9b10a884026d5b55d7bc"
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.0"
+    version: "3.3.0+2"
   term_glyph:
     dependency: transitive
     description:
@@ -1482,10 +1482,10 @@ packages:
     dependency: transitive
     description:
       name: uuid
-      sha256: "83d37c7ad7aaf9aa8e275490669535c8080377cfa7a7004c24dfac53afffaa90"
+      sha256: f33d6bb662f0e4f79dcd7ada2e6170f3b3a2530c28fc41f49a411ddedd576a77
       url: "https://pub.dev"
     source: hosted
-    version: "4.4.2"
+    version: "4.5.0"
   vector_math:
     dependency: transitive
     description:
@@ -1546,10 +1546,10 @@ packages:
     dependency: transitive
     description:
       name: win32_registry
-      sha256: "723b7f851e5724c55409bb3d5a32b203b3afe8587eaf5dafb93a5fed8ecda0d6"
+      sha256: "21ec76dfc731550fd3e2ce7a33a9ea90b828fdf19a5c3bcf556fa992cfa99852"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.4"
+    version: "1.1.5"
   wkt_parser:
     dependency: transitive
     description:
