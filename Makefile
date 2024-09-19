@@ -44,22 +44,22 @@ remove-and-download-drift-web-dependencies:
 	cd web && curl "https://github.com/simolus3/sqlite3.dart/releases/download/sqlite3-2.4.6/sqlite3.wasm" -L -o sqlite3.wasm
 
 build-web-release-tar-linux:
-	flutter build web --release
+	flutter build web --release --wasm
 	cd build && tar --owner=0 --group=0 -czf web-release.tar.gz web
 	@echo "Packaged build/web-release.tar.gz"
 
 build-web-release-tar-macos:
-	flutter build web --release
+	flutter build web --release --wasm
 	cd build && tar --uid=0 --gid=0 -czf web-release.tar.gz web
 	@echo "Packaged build/web-release.tar.gz"
 
 build-web-profile-tar-linux:
-	flutter build web --profile
+	flutter build web --profile --wasm
 	cd build && tar --owner=0 --group=0 -czf web-profile.tar.gz web
 	@echo "Packaged build/web-profile.tar.gz"
 
 build-web-profile-tar-macos:
-	flutter build web --profile
+	flutter build web --profile --wasm
 	cd build && tar --uid=0 --gid=0 -czf web-profile.tar.gz web
 	@echo "Packaged build/web-profile.tar.gz"
 

@@ -129,6 +129,7 @@ Create Visual Studio Code launch configuration like this:
     "request": "launch",
     "type": "dart",
     "args": [
+        "--wasm",
         "--web-hostname",
         "localhost",
         "--web-port",
