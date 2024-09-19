@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:encryption_common/encryption_common.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logging/logging.dart';
@@ -63,9 +64,7 @@ class SecureStorageManager extends AppSingleton {
       iOptions: iosOptions,
     );
 
-    if (!kIsWeb) {
-      testEncryptionSupport();
-    }
+    _testEncryptionSupport();
   }
 
   Future<String> getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir(
@@ -117,7 +116,7 @@ class SecureStorageManager extends AppSingleton {
   }
 }
 
-void testEncryptionSupport() {
+void _testEncryptionSupport() {
   final key = Uint8List(32); // 256 bits
   final data = Uint8List(1);
   const plaintext = 123;
@@ -141,12 +140,4 @@ void testEncryptionSupport() {
     log.error(msg);
     throw Exception(msg);
   }
-}
-
-abstract class DatabaseRemover {
-  Future<void> recreateDatabasesDir(
-  {
-    required bool backgroundDb,
-  }
-  );
 }

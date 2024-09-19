@@ -70,6 +70,10 @@ clean:
 	cd packages/database_provider_native && flutter clean
 	cd packages/database_provider_web && flutter clean
 	cd packages/api_client && flutter clean
+	cd packages/encryption && flutter clean
+	cd packages/encryption_common && flutter clean
+	cd packages/encryption_native && flutter clean
+	cd packages/encryption_web && flutter clean
 	cd packages/utils && flutter clean
 	cd packages/native_utils && flutter clean
 	cd packages/native_utils_common && flutter clean

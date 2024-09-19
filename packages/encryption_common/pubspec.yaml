@@ -1,4 +1,4 @@
-name: encryption
+name: encryption_common
 description: "Encryption related utils"
 version: 0.0.1
 
@@ -11,16 +11,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  utils:
-    path: "../utils"
-
-  encryption_common:
-    path: "../encryption_common"
-  encryption_native:
-    path: "../encryption_native"
-  encryption_web:
-    path: "../encryption_web"
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,5 @@
-name: encryption
-description: "Encryption related utils"
+name: encryption_native
+description: "Encryption related utils implementation for native platforms"
 version: 0.0.1
 
 publish_to: 'none'
@@ -12,15 +12,17 @@ dependencies:
   flutter:
     sdk: flutter
 
+  logging: ^1.2.0
+  flutter_secure_storage: ^9.0.0
+
+  native_utils:
+    path: "../native_utils"
+
   utils:
     path: "../utils"
 
   encryption_common:
     path: "../encryption_common"
-  encryption_native:
-    path: "../encryption_native"
-  encryption_web:
-    path: "../encryption_web"
 
 dev_dependencies:
   flutter_test:

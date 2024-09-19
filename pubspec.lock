@@ -346,6 +346,27 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  encryption_common:
+    dependency: transitive
+    description:
+      path: "packages/encryption_common"
+      relative: true
+    source: path
+    version: "0.0.1"
+  encryption_native:
+    dependency: transitive
+    description:
+      path: "packages/encryption_native"
+      relative: true
+    source: path
+    version: "0.0.1"
+  encryption_web:
+    dependency: transitive
+    description:
+      path: "packages/encryption_web"
+      relative: true
+    source: path
+    version: "0.0.1"
   equatable:
     dependency: transitive
     description:
