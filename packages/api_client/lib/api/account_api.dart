@@ -701,7 +701,7 @@ class AccountApi {
     return null;
   }
 
-  /// Performs an HTTP 'GET /b5kd4x8_ybr1Rj_tprU5BxF_xGo' operation and returns the [Response].
+  /// Performs an HTTP 'POST /b5kd4x8_ybr1Rj_tprU5BxF_xGo' operation and returns the [Response].
   Future<Response> postGetNextClientIdWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final path = r'/b5kd4x8_ybr1Rj_tprU5BxF_xGo';
@@ -718,7 +718,7 @@ class AccountApi {
 
     return apiClient.invokeAPI(
       path,
-      'GET',
+      'POST',
       queryParams,
       postBody,
       headerParams,

@@ -341,14 +341,3 @@ lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
-test/client_id_test.dart
-test/client_info_test.dart
-test/client_local_id_test.dart
-test/client_type_test.dart
-test/new_received_likes_available_result_test.dart
-test/pending_message_acknowledgement_list_test.dart
-test/public_key_id_and_version_test.dart
-test/received_likes_iterator_session_id_test.dart
-test/reset_received_likes_iterator_result_test.dart
-test/sent_message_id_list_test.dart
-test/sent_message_id_test.dart

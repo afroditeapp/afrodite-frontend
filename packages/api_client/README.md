@@ -76,7 +76,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postDemoModeLogin**](doc//AccountApi.md#postdemomodelogin) | **POST** /TYbxniP-G9ibgdoAkpvVWTKkxaU | Access demo mode, which allows accessing all or specific accounts
 *AccountApi* | [**postDemoModeLoginToAccount**](doc//AccountApi.md#postdemomodelogintoaccount) | **POST** /sBH-LyNGOOFXivrv5clCpNrkwcA | 
 *AccountApi* | [**postDemoModeRegisterAccount**](doc//AccountApi.md#postdemomoderegisteraccount) | **POST** /oDv1gK4Y6nMrPgEo5nArQAckh6Q | 
-*AccountApi* | [**postGetNextClientId**](doc//AccountApi.md#postgetnextclientid) | **GET** /b5kd4x8_ybr1Rj_tprU5BxF_xGo | 
+*AccountApi* | [**postGetNextClientId**](doc//AccountApi.md#postgetnextclientid) | **POST** /b5kd4x8_ybr1Rj_tprU5BxF_xGo | 
 *AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /ijts6B4AAg_6Dyjhaw85iBnw5Bo | Start new session with sign in with Apple or Google. Creates new account if
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /yG0OQXcMed-EGdvhSoq3qlXTYQc | Update current or pending profile visiblity value.
 *AccountApi* | [**putSettingUnlimitedLikes**](doc//AccountApi.md#putsettingunlimitedlikes) | **PUT** /oKbgnRxyzLb50Y2_ZCuLJYtEIcM | 
