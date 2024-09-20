@@ -85,5 +85,28 @@ code-stats:
 	@/bin/echo -n "Lines:"
 	@find \
 	lib \
-	-name '*.dart' | xargs wc -l | tail -n 1
+	packages/database \
+	packages/database_provider \
+	packages/database_provider_native \
+	packages/database_provider_web \
+	packages/encryption \
+	packages/encryption_common \
+	packages/encryption_native \
+	packages/encryption_web \
+	packages/utils \
+	packages/native_utils \
+	packages/native_utils_common \
+	packages/native_utils_ffi/rust_utils/src \
+	packages/native_utils_ffi/lib \
+	'(' \
+	-name '*.dart' \
+	-or \
+	-name '*.rs' \
+	')' \
+	-and \
+	! -name '*.g.dart' \
+	-and \
+	! -name 'native_utils_ffi_generated.dart' \
+	-and \
+	! -name '*.freezed.dart' | xargs wc -l | tail -n 1
 	@echo "\nCommits:   `git rev-list --count HEAD` total"
