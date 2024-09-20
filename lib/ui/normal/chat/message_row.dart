@@ -4,15 +4,17 @@
 import 'package:flutter/material.dart';
 import 'package:database/database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
+import 'package:utils/utils.dart';
 
 Align messageRowWidget(BuildContext context, MessageEntry entry, {Key? key, required TextStyle parentTextStyle}) {
-  final (message, sentMessageState, receivedMessageState) = (entry.messageText, entry.messageState.toSentState(), entry.messageState.toReceivedState());
+  final (sentMessageState, receivedMessageState) = (entry.messageState.toSentState(), entry.messageState.toReceivedState());
   final isSent = sentMessageState != null;
   return Align(
     //key: key,
@@ -27,7 +29,7 @@ Align messageRowWidget(BuildContext context, MessageEntry entry, {Key? key, requ
               alignment: isSent ? Alignment.centerRight : Alignment.centerLeft,
               child: GestureDetector(
                 onLongPress: () => openMessageMenu(context, entry),
-                child: _messageAndErrorWidget(context, message, sentMessageState, receivedMessageState, parentTextStyle: parentTextStyle),
+                child: _messageAndErrorWidget(context, entry, sentMessageState, receivedMessageState, parentTextStyle: parentTextStyle),
               ),
             ),
           ),
@@ -39,7 +41,7 @@ Align messageRowWidget(BuildContext context, MessageEntry entry, {Key? key, requ
 
 Widget _messageAndErrorWidget(
   BuildContext context,
-  String message,
+  MessageEntry entry,
   SentMessageState? sentMessageState,
   ReceivedMessageState? receivedMessageState,
   {
@@ -63,7 +65,7 @@ Widget _messageAndErrorWidget(
         ),
         Flexible(
           flex: 10,
-          child: _messageWidget(context, message, sentMessageState, receivedMessageState, parentTextStyle: parentTextStyle),
+          child: _messageWidget(context, entry, sentMessageState, receivedMessageState, parentTextStyle: parentTextStyle),
         ),
       ],
     );
@@ -81,7 +83,7 @@ Widget _messageAndErrorWidget(
           ),
         Flexible(
           flex: 10,
-          child: _messageWidget(context, message, sentMessageState, receivedMessageState, parentTextStyle: parentTextStyle),
+          child: _messageWidget(context, entry, sentMessageState, receivedMessageState, parentTextStyle: parentTextStyle),
         ),
       ],
     );
@@ -105,37 +107,82 @@ String messageWidgetText(
 
 Widget _messageWidget(
   BuildContext context,
-  String message,
+  MessageEntry entry,
   SentMessageState? sentMessageState,
   ReceivedMessageState? receivedMessageState,
   {
     required TextStyle parentTextStyle,
   }
 ) {
-  final String text = messageWidgetText(context, message, sentMessageState, receivedMessageState);
+  final String text = messageWidgetText(context, entry.messageText, sentMessageState, receivedMessageState);
   final showErrorColor =
     (sentMessageState?.isError() ?? false) ||
     (receivedMessageState?.isError() ?? false);
-  final styleChanges = TextStyle(
-    // color: Theme.of(context).colorScheme.onPrimary,
-    color: showErrorColor ?
+  final textColor = showErrorColor ?
       Theme.of(context).colorScheme.onErrorContainer :
-      Theme.of(context).colorScheme.onPrimaryContainer,
+      Theme.of(context).colorScheme.onPrimaryContainer;
+  final messageTextStyle = parentTextStyle.merge(TextStyle(
+    color: textColor,
     fontSize: 16.0,
-  );
-  final style = parentTextStyle.merge(styleChanges);
-  return Container(
-    margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+  ));
+  final messageWidget = Container(
     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
     decoration: BoxDecoration(
-      // color: Theme.of(context).colorScheme.primary,
       color: showErrorColor ?
         Theme.of(context).colorScheme.errorContainer :
         Theme.of(context).colorScheme.primaryContainer,
-      borderRadius: BorderRadius.circular(20.0),
+      borderRadius: BorderRadius.circular(10.0),
     ),
-    child: Text(text, style: style),
+    child: Text(text, style: messageTextStyle),
   );
+  final messageTimeTextStyle = parentTextStyle.merge(TextStyle(
+    color: Theme.of(context).colorScheme.onSurface.withAlpha(128),
+    fontSize: 12.0,
+  ));
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+    child: Column(
+      mainAxisAlignment: receivedMessageState != null ?
+        MainAxisAlignment.start :
+        MainAxisAlignment.end,
+      crossAxisAlignment: receivedMessageState != null ?
+        CrossAxisAlignment.start :
+        CrossAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        messageWidget,
+        Align(
+          alignment: receivedMessageState != null ?
+            Alignment.centerLeft :
+            Alignment.centerRight,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
+            child: Text(timeString(entry), style: messageTimeTextStyle),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+String timeString(MessageEntry entry) {
+  final messageTime = entry.unixTime ?? entry.localUnixTime;
+  final currentTime = UtcDateTime.now();
+  if (messageTime.dateTime.year == currentTime.dateTime.year) {
+    if (
+      messageTime.dateTime.month == currentTime.dateTime.month &&
+      messageTime.dateTime.day == currentTime.dateTime.day
+    ) {
+      // Time
+      return DateFormat.Hm().format(messageTime.dateTime);
+    } else {
+      // Month and day
+      return DateFormat.Md().format(messageTime.dateTime);
+    }
+  } else {
+    // Full date
+    return DateFormat.yMd().format(messageTime.dateTime);
+  }
 }
 
 void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
