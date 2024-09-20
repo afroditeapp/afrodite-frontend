@@ -6504,26 +6504,9 @@ class $ConversationsTable extends Conversations
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<PublicKeyVersion?>(
               $ConversationsTable.$converterpublicKeyVersion);
-  static const VerificationMeta _conversationUnreadMessagesCountMeta =
-      const VerificationMeta('conversationUnreadMessagesCount');
   @override
-  late final GeneratedColumnWithTypeConverter<UnreadMessagesCount, int>
-      conversationUnreadMessagesCount = GeneratedColumn<int>(
-              'conversation_unread_messages_count', aliasedName, false,
-              type: DriftSqlType.int,
-              requiredDuringInsert: false,
-              defaultValue: const Constant(0))
-          .withConverter<UnreadMessagesCount>(
-              $ConversationsTable.$converterconversationUnreadMessagesCount);
-  @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        uuidAccountId,
-        publicKeyData,
-        publicKeyId,
-        publicKeyVersion,
-        conversationUnreadMessagesCount
-      ];
+  List<GeneratedColumn> get $columns =>
+      [id, uuidAccountId, publicKeyData, publicKeyId, publicKeyVersion];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -6541,8 +6524,6 @@ class $ConversationsTable extends Conversations
     context.handle(_publicKeyDataMeta, const VerificationResult.success());
     context.handle(_publicKeyIdMeta, const VerificationResult.success());
     context.handle(_publicKeyVersionMeta, const VerificationResult.success());
-    context.handle(_conversationUnreadMessagesCountMeta,
-        const VerificationResult.success());
     return context;
   }
 
@@ -6566,10 +6547,6 @@ class $ConversationsTable extends Conversations
       publicKeyVersion: $ConversationsTable.$converterpublicKeyVersion.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}public_key_version'])),
-      conversationUnreadMessagesCount: $ConversationsTable
-          .$converterconversationUnreadMessagesCount
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}conversation_unread_messages_count'])!),
     );
   }
 
@@ -6586,9 +6563,6 @@ class $ConversationsTable extends Conversations
       const NullAwareTypeConverter.wrap(PublicKeyIdConverter());
   static TypeConverter<PublicKeyVersion?, int?> $converterpublicKeyVersion =
       const NullAwareTypeConverter.wrap(PublicKeyVersionConverter());
-  static TypeConverter<UnreadMessagesCount, int>
-      $converterconversationUnreadMessagesCount =
-      UnreadMessagesCountConverter();
 }
 
 class Conversation extends DataClass implements Insertable<Conversation> {
@@ -6597,14 +6571,12 @@ class Conversation extends DataClass implements Insertable<Conversation> {
   final PublicKeyData? publicKeyData;
   final PublicKeyId? publicKeyId;
   final PublicKeyVersion? publicKeyVersion;
-  final UnreadMessagesCount conversationUnreadMessagesCount;
   const Conversation(
       {required this.id,
       required this.uuidAccountId,
       this.publicKeyData,
       this.publicKeyId,
-      this.publicKeyVersion,
-      required this.conversationUnreadMessagesCount});
+      this.publicKeyVersion});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -6626,11 +6598,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
           .$converterpublicKeyVersion
           .toSql(publicKeyVersion));
     }
-    {
-      map['conversation_unread_messages_count'] = Variable<int>(
-          $ConversationsTable.$converterconversationUnreadMessagesCount
-              .toSql(conversationUnreadMessagesCount));
-    }
     return map;
   }
 
@@ -6647,7 +6614,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
       publicKeyVersion: publicKeyVersion == null && nullToAbsent
           ? const Value.absent()
           : Value(publicKeyVersion),
-      conversationUnreadMessagesCount: Value(conversationUnreadMessagesCount),
     );
   }
 
@@ -6661,8 +6627,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
       publicKeyId: serializer.fromJson<PublicKeyId?>(json['publicKeyId']),
       publicKeyVersion:
           serializer.fromJson<PublicKeyVersion?>(json['publicKeyVersion']),
-      conversationUnreadMessagesCount: serializer.fromJson<UnreadMessagesCount>(
-          json['conversationUnreadMessagesCount']),
     );
   }
   @override
@@ -6675,8 +6639,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
       'publicKeyId': serializer.toJson<PublicKeyId?>(publicKeyId),
       'publicKeyVersion':
           serializer.toJson<PublicKeyVersion?>(publicKeyVersion),
-      'conversationUnreadMessagesCount': serializer
-          .toJson<UnreadMessagesCount>(conversationUnreadMessagesCount),
     };
   }
 
@@ -6685,8 +6647,7 @@ class Conversation extends DataClass implements Insertable<Conversation> {
           AccountId? uuidAccountId,
           Value<PublicKeyData?> publicKeyData = const Value.absent(),
           Value<PublicKeyId?> publicKeyId = const Value.absent(),
-          Value<PublicKeyVersion?> publicKeyVersion = const Value.absent(),
-          UnreadMessagesCount? conversationUnreadMessagesCount}) =>
+          Value<PublicKeyVersion?> publicKeyVersion = const Value.absent()}) =>
       Conversation(
         id: id ?? this.id,
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -6696,8 +6657,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
         publicKeyVersion: publicKeyVersion.present
             ? publicKeyVersion.value
             : this.publicKeyVersion,
-        conversationUnreadMessagesCount: conversationUnreadMessagesCount ??
-            this.conversationUnreadMessagesCount,
       );
   Conversation copyWithCompanion(ConversationsCompanion data) {
     return Conversation(
@@ -6713,10 +6672,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
       publicKeyVersion: data.publicKeyVersion.present
           ? data.publicKeyVersion.value
           : this.publicKeyVersion,
-      conversationUnreadMessagesCount:
-          data.conversationUnreadMessagesCount.present
-              ? data.conversationUnreadMessagesCount.value
-              : this.conversationUnreadMessagesCount,
     );
   }
 
@@ -6727,16 +6682,14 @@ class Conversation extends DataClass implements Insertable<Conversation> {
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('publicKeyData: $publicKeyData, ')
           ..write('publicKeyId: $publicKeyId, ')
-          ..write('publicKeyVersion: $publicKeyVersion, ')
-          ..write(
-              'conversationUnreadMessagesCount: $conversationUnreadMessagesCount')
+          ..write('publicKeyVersion: $publicKeyVersion')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, uuidAccountId, publicKeyData, publicKeyId,
-      publicKeyVersion, conversationUnreadMessagesCount);
+  int get hashCode => Object.hash(
+      id, uuidAccountId, publicKeyData, publicKeyId, publicKeyVersion);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -6745,9 +6698,7 @@ class Conversation extends DataClass implements Insertable<Conversation> {
           other.uuidAccountId == this.uuidAccountId &&
           other.publicKeyData == this.publicKeyData &&
           other.publicKeyId == this.publicKeyId &&
-          other.publicKeyVersion == this.publicKeyVersion &&
-          other.conversationUnreadMessagesCount ==
-              this.conversationUnreadMessagesCount);
+          other.publicKeyVersion == this.publicKeyVersion);
 }
 
 class ConversationsCompanion extends UpdateCompanion<Conversation> {
@@ -6756,14 +6707,12 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
   final Value<PublicKeyData?> publicKeyData;
   final Value<PublicKeyId?> publicKeyId;
   final Value<PublicKeyVersion?> publicKeyVersion;
-  final Value<UnreadMessagesCount> conversationUnreadMessagesCount;
   const ConversationsCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
     this.publicKeyData = const Value.absent(),
     this.publicKeyId = const Value.absent(),
     this.publicKeyVersion = const Value.absent(),
-    this.conversationUnreadMessagesCount = const Value.absent(),
   });
   ConversationsCompanion.insert({
     this.id = const Value.absent(),
@@ -6771,7 +6720,6 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
     this.publicKeyData = const Value.absent(),
     this.publicKeyId = const Value.absent(),
     this.publicKeyVersion = const Value.absent(),
-    this.conversationUnreadMessagesCount = const Value.absent(),
   }) : uuidAccountId = Value(uuidAccountId);
   static Insertable<Conversation> custom({
     Expression<int>? id,
@@ -6779,7 +6727,6 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
     Expression<String>? publicKeyData,
     Expression<int>? publicKeyId,
     Expression<int>? publicKeyVersion,
-    Expression<int>? conversationUnreadMessagesCount,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -6787,8 +6734,6 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
       if (publicKeyData != null) 'public_key_data': publicKeyData,
       if (publicKeyId != null) 'public_key_id': publicKeyId,
       if (publicKeyVersion != null) 'public_key_version': publicKeyVersion,
-      if (conversationUnreadMessagesCount != null)
-        'conversation_unread_messages_count': conversationUnreadMessagesCount,
     });
   }
 
@@ -6797,16 +6742,13 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
       Value<AccountId>? uuidAccountId,
       Value<PublicKeyData?>? publicKeyData,
       Value<PublicKeyId?>? publicKeyId,
-      Value<PublicKeyVersion?>? publicKeyVersion,
-      Value<UnreadMessagesCount>? conversationUnreadMessagesCount}) {
+      Value<PublicKeyVersion?>? publicKeyVersion}) {
     return ConversationsCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
       publicKeyData: publicKeyData ?? this.publicKeyData,
       publicKeyId: publicKeyId ?? this.publicKeyId,
       publicKeyVersion: publicKeyVersion ?? this.publicKeyVersion,
-      conversationUnreadMessagesCount: conversationUnreadMessagesCount ??
-          this.conversationUnreadMessagesCount,
     );
   }
 
@@ -6835,11 +6777,6 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
           .$converterpublicKeyVersion
           .toSql(publicKeyVersion.value));
     }
-    if (conversationUnreadMessagesCount.present) {
-      map['conversation_unread_messages_count'] = Variable<int>(
-          $ConversationsTable.$converterconversationUnreadMessagesCount
-              .toSql(conversationUnreadMessagesCount.value));
-    }
     return map;
   }
 
@@ -6850,9 +6787,7 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('publicKeyData: $publicKeyData, ')
           ..write('publicKeyId: $publicKeyId, ')
-          ..write('publicKeyVersion: $publicKeyVersion, ')
-          ..write(
-              'conversationUnreadMessagesCount: $conversationUnreadMessagesCount')
+          ..write('publicKeyVersion: $publicKeyVersion')
           ..write(')'))
         .toString();
   }

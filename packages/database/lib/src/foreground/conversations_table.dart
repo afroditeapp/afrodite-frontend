@@ -21,8 +21,6 @@ class Conversations extends Table {
   TextColumn get publicKeyData => text().map(const NullAwareTypeConverter.wrap(PublicKeyDataConverter())).nullable()();
   IntColumn get publicKeyId => integer().map(const NullAwareTypeConverter.wrap(PublicKeyIdConverter())).nullable()();
   IntColumn get publicKeyVersion => integer().map(const NullAwareTypeConverter.wrap(PublicKeyVersionConverter())).nullable()();
-
-  IntColumn get conversationUnreadMessagesCount => integer().map(UnreadMessagesCountConverter()).withDefault(const Constant(0))();
 }
 
 @DriftAccessor(tables: [Conversations])
@@ -65,44 +63,5 @@ class DaoConversations extends DatabaseAccessor<AccountDatabase> with _$DaoConve
     } else {
       return null;
     }
-  }
-
-  Future<UnreadMessagesCount?> getUnreadMessageCount(AccountId accountId) async {
-    final r = await (select(conversations)
-      ..where((t) => t.uuidAccountId.equals(accountId.aid))
-    )
-      .getSingleOrNull();
-
-    return r?.conversationUnreadMessagesCount;
-  }
-
-  Stream<UnreadMessagesCount?> watchUnreadMessageCount(AccountId accountId) {
-    return (selectOnly(conversations)
-      ..addColumns([conversations.conversationUnreadMessagesCount])
-      ..where(conversations.uuidAccountId.equals(accountId.aid))
-    )
-      .map((r) {
-        final raw = r.read(conversations.conversationUnreadMessagesCount);
-        if (raw == null) {
-          return null;
-        } else {
-          return UnreadMessagesCount(raw);
-        }
-      })
-      .watchSingleOrNull();
-  }
-
-  Future<void> setUnreadMessagesCount(AccountId accountId, UnreadMessagesCount unreadMessagesCount) async {
-    await into(conversations).insert(
-      ConversationsCompanion.insert(
-        uuidAccountId: accountId,
-        conversationUnreadMessagesCount: Value(unreadMessagesCount),
-      ),
-      onConflict: DoUpdate((old) => ConversationsCompanion(
-        conversationUnreadMessagesCount: Value(unreadMessagesCount),
-      ),
-        target: [conversations.uuidAccountId]
-      ),
-    );
   }
 }

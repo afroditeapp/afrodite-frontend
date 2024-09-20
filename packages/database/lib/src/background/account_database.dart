@@ -2,8 +2,10 @@
 
 import 'package:async/async.dart';
 import 'package:database/src/background/account/dao_local_notification_settings.dart';
+import 'package:database/src/background/conversations_table.dart';
 import 'package:database/src/background/new_message_notification_table.dart';
 import 'package:database/src/background/profile_table.dart';
+import 'package:database/src/message_entry.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 import '../utils.dart';
@@ -30,6 +32,7 @@ class AccountBackground extends Table {
   tables: [
     AccountBackground,
     ProfilesBackground,
+    ConversationsBackground,
     NewMessageNotification,
   ],
   daos: [
@@ -37,6 +40,8 @@ class AccountBackground extends Table {
     DaoLocalNotificationSettings,
     // Related to ProfilesBackground table
     DaoProfilesBackground,
+    // Related to ConversationsBackground table
+    DaoConversationsBackground,
     // Related to NewMessageNotification table
     DaoNewMessageNotification,
   ],

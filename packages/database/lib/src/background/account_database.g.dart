@@ -695,6 +695,272 @@ class ProfilesBackgroundCompanion
   }
 }
 
+class $ConversationsBackgroundTable extends ConversationsBackground
+    with TableInfo<$ConversationsBackgroundTable, ConversationsBackgroundData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ConversationsBackgroundTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _uuidAccountIdMeta =
+      const VerificationMeta('uuidAccountId');
+  @override
+  late final GeneratedColumnWithTypeConverter<AccountId, String> uuidAccountId =
+      GeneratedColumn<String>('uuid_account_id', aliasedName, false,
+              type: DriftSqlType.string,
+              requiredDuringInsert: true,
+              defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
+          .withConverter<AccountId>(
+              $ConversationsBackgroundTable.$converteruuidAccountId);
+  static const VerificationMeta _conversationUnreadMessagesCountMeta =
+      const VerificationMeta('conversationUnreadMessagesCount');
+  @override
+  late final GeneratedColumnWithTypeConverter<UnreadMessagesCount, int>
+      conversationUnreadMessagesCount = GeneratedColumn<int>(
+              'conversation_unread_messages_count', aliasedName, false,
+              type: DriftSqlType.int,
+              requiredDuringInsert: false,
+              defaultValue: const Constant(0))
+          .withConverter<UnreadMessagesCount>($ConversationsBackgroundTable
+              .$converterconversationUnreadMessagesCount);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, uuidAccountId, conversationUnreadMessagesCount];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'conversations_background';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<ConversationsBackgroundData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
+    context.handle(_conversationUnreadMessagesCountMeta,
+        const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ConversationsBackgroundData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ConversationsBackgroundData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      uuidAccountId: $ConversationsBackgroundTable.$converteruuidAccountId
+          .fromSql(attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
+      conversationUnreadMessagesCount: $ConversationsBackgroundTable
+          .$converterconversationUnreadMessagesCount
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}conversation_unread_messages_count'])!),
+    );
+  }
+
+  @override
+  $ConversationsBackgroundTable createAlias(String alias) {
+    return $ConversationsBackgroundTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<AccountId, String> $converteruuidAccountId =
+      const AccountIdConverter();
+  static TypeConverter<UnreadMessagesCount, int>
+      $converterconversationUnreadMessagesCount =
+      UnreadMessagesCountConverter();
+}
+
+class ConversationsBackgroundData extends DataClass
+    implements Insertable<ConversationsBackgroundData> {
+  final int id;
+  final AccountId uuidAccountId;
+  final UnreadMessagesCount conversationUnreadMessagesCount;
+  const ConversationsBackgroundData(
+      {required this.id,
+      required this.uuidAccountId,
+      required this.conversationUnreadMessagesCount});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    {
+      map['uuid_account_id'] = Variable<String>($ConversationsBackgroundTable
+          .$converteruuidAccountId
+          .toSql(uuidAccountId));
+    }
+    {
+      map['conversation_unread_messages_count'] = Variable<int>(
+          $ConversationsBackgroundTable
+              .$converterconversationUnreadMessagesCount
+              .toSql(conversationUnreadMessagesCount));
+    }
+    return map;
+  }
+
+  ConversationsBackgroundCompanion toCompanion(bool nullToAbsent) {
+    return ConversationsBackgroundCompanion(
+      id: Value(id),
+      uuidAccountId: Value(uuidAccountId),
+      conversationUnreadMessagesCount: Value(conversationUnreadMessagesCount),
+    );
+  }
+
+  factory ConversationsBackgroundData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ConversationsBackgroundData(
+      id: serializer.fromJson<int>(json['id']),
+      uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
+      conversationUnreadMessagesCount: serializer.fromJson<UnreadMessagesCount>(
+          json['conversationUnreadMessagesCount']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
+      'conversationUnreadMessagesCount': serializer
+          .toJson<UnreadMessagesCount>(conversationUnreadMessagesCount),
+    };
+  }
+
+  ConversationsBackgroundData copyWith(
+          {int? id,
+          AccountId? uuidAccountId,
+          UnreadMessagesCount? conversationUnreadMessagesCount}) =>
+      ConversationsBackgroundData(
+        id: id ?? this.id,
+        uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+        conversationUnreadMessagesCount: conversationUnreadMessagesCount ??
+            this.conversationUnreadMessagesCount,
+      );
+  ConversationsBackgroundData copyWithCompanion(
+      ConversationsBackgroundCompanion data) {
+    return ConversationsBackgroundData(
+      id: data.id.present ? data.id.value : this.id,
+      uuidAccountId: data.uuidAccountId.present
+          ? data.uuidAccountId.value
+          : this.uuidAccountId,
+      conversationUnreadMessagesCount:
+          data.conversationUnreadMessagesCount.present
+              ? data.conversationUnreadMessagesCount.value
+              : this.conversationUnreadMessagesCount,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ConversationsBackgroundData(')
+          ..write('id: $id, ')
+          ..write('uuidAccountId: $uuidAccountId, ')
+          ..write(
+              'conversationUnreadMessagesCount: $conversationUnreadMessagesCount')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, uuidAccountId, conversationUnreadMessagesCount);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ConversationsBackgroundData &&
+          other.id == this.id &&
+          other.uuidAccountId == this.uuidAccountId &&
+          other.conversationUnreadMessagesCount ==
+              this.conversationUnreadMessagesCount);
+}
+
+class ConversationsBackgroundCompanion
+    extends UpdateCompanion<ConversationsBackgroundData> {
+  final Value<int> id;
+  final Value<AccountId> uuidAccountId;
+  final Value<UnreadMessagesCount> conversationUnreadMessagesCount;
+  const ConversationsBackgroundCompanion({
+    this.id = const Value.absent(),
+    this.uuidAccountId = const Value.absent(),
+    this.conversationUnreadMessagesCount = const Value.absent(),
+  });
+  ConversationsBackgroundCompanion.insert({
+    this.id = const Value.absent(),
+    required AccountId uuidAccountId,
+    this.conversationUnreadMessagesCount = const Value.absent(),
+  }) : uuidAccountId = Value(uuidAccountId);
+  static Insertable<ConversationsBackgroundData> custom({
+    Expression<int>? id,
+    Expression<String>? uuidAccountId,
+    Expression<int>? conversationUnreadMessagesCount,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
+      if (conversationUnreadMessagesCount != null)
+        'conversation_unread_messages_count': conversationUnreadMessagesCount,
+    });
+  }
+
+  ConversationsBackgroundCompanion copyWith(
+      {Value<int>? id,
+      Value<AccountId>? uuidAccountId,
+      Value<UnreadMessagesCount>? conversationUnreadMessagesCount}) {
+    return ConversationsBackgroundCompanion(
+      id: id ?? this.id,
+      uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+      conversationUnreadMessagesCount: conversationUnreadMessagesCount ??
+          this.conversationUnreadMessagesCount,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (uuidAccountId.present) {
+      map['uuid_account_id'] = Variable<String>($ConversationsBackgroundTable
+          .$converteruuidAccountId
+          .toSql(uuidAccountId.value));
+    }
+    if (conversationUnreadMessagesCount.present) {
+      map['conversation_unread_messages_count'] = Variable<int>(
+          $ConversationsBackgroundTable
+              .$converterconversationUnreadMessagesCount
+              .toSql(conversationUnreadMessagesCount.value));
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ConversationsBackgroundCompanion(')
+          ..write('id: $id, ')
+          ..write('uuidAccountId: $uuidAccountId, ')
+          ..write(
+              'conversationUnreadMessagesCount: $conversationUnreadMessagesCount')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $NewMessageNotificationTable extends NewMessageNotification
     with TableInfo<$NewMessageNotificationTable, NewMessageNotificationData> {
   @override
@@ -944,18 +1210,26 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
       $AccountBackgroundTable(this);
   late final $ProfilesBackgroundTable profilesBackground =
       $ProfilesBackgroundTable(this);
+  late final $ConversationsBackgroundTable conversationsBackground =
+      $ConversationsBackgroundTable(this);
   late final $NewMessageNotificationTable newMessageNotification =
       $NewMessageNotificationTable(this);
   late final DaoLocalNotificationSettings daoLocalNotificationSettings =
       DaoLocalNotificationSettings(this as AccountBackgroundDatabase);
   late final DaoProfilesBackground daoProfilesBackground =
       DaoProfilesBackground(this as AccountBackgroundDatabase);
+  late final DaoConversationsBackground daoConversationsBackground =
+      DaoConversationsBackground(this as AccountBackgroundDatabase);
   late final DaoNewMessageNotification daoNewMessageNotification =
       DaoNewMessageNotification(this as AccountBackgroundDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [accountBackground, profilesBackground, newMessageNotification];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+        accountBackground,
+        profilesBackground,
+        conversationsBackground,
+        newMessageNotification
+      ];
 }

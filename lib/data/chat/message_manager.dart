@@ -71,11 +71,6 @@ class ResendSendFailedMessage extends MessageManagerCommand {
   }
 }
 
-// TODO(prod): Move unread messages counter to background DB
-// so that in the future push notifications can have count of messages
-// pending on the server and app can show notification with count value
-// where current DB count value is added with the pending messages count value.
-
 /// Synchronized message actions
 class MessageManager extends LifecycleMethods {
   final MessageKeyManager messageKeyManager;
@@ -190,10 +185,11 @@ class MessageManager extends LifecycleMethods {
       ));
       if (r.isOk()) {
         toBeDeleted.add(message.id);
+      }
+      final unreadMessagesCount = await accountBackgroundDb.accountData((db) => db.daoConversationsBackground.incrementUnreadMessagesCount(message.id.sender)).ok();
+      if (unreadMessagesCount != null) {
         profile.sendProfileChange(ConversationChanged(message.id.sender, ConversationChangeType.messageReceived));
-        // TODO(prod): Update with unread message message count from DB once
-        // push notifications support other than the first new message.
-        await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.id.sender, 1, accountBackgroundDb);
+        await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.id.sender, unreadMessagesCount.count, accountBackgroundDb);
       }
     }
 
