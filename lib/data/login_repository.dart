@@ -9,6 +9,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/config.dart';
+import 'package:pihka_frontend/data/account/client_id_manager.dart';
 import 'package:pihka_frontend/data/account_repository.dart';
 import 'package:pihka_frontend/data/chat/message_key_generator.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
@@ -254,12 +255,15 @@ class LoginRepository extends DataRepository {
     final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(accountId);
 
     final connectionManager = ServerConnectionManager(accountDb);
+    final clientIdManager = ClientIdManager(accountDb, connectionManager.api);
 
     final imageCacheSettings = ImageCacheSettings(accountDb);
 
     final account = AccountRepository(
       db: accountDb,
       api: connectionManager.api,
+      connectionManager: connectionManager,
+      clientIdManager: clientIdManager,
       rememberToInitRepositoriesLateFinal: true,
     );
     final common = CommonRepository(connectionManager);
@@ -271,6 +275,7 @@ class LoginRepository extends DataRepository {
       accountBackgroundDb: accountBackgroundDb,
       db: accountDb,
       connectionManager: connectionManager,
+      clientIdManager: clientIdManager,
       messageKeyManager: MessageKeyManager(accountDb, connectionManager.api, accountId),
       currentUser: accountId,
     );

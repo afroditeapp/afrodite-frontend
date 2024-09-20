@@ -3,10 +3,10 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:async/async.dart' show StreamExtensions;
-import 'package:camera/camera.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/account/client_id_manager.dart';
 import 'package:pihka_frontend/data/account/initial_setup.dart';
 import 'package:pihka_frontend/data/general/notification/state/moderation_request_status.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
@@ -33,6 +33,8 @@ const ProfileVisibility PROFILE_VISIBILITY_DEFAULT =
 // makes operations to those lists.
 
 class AccountRepository extends DataRepositoryWithLifecycle {
+  final ConnectedActionScheduler _syncHandler;
+  final ClientIdManager clientIdManager;
   final ApiManager api;
   final AccountDatabaseManager db;
 
@@ -40,8 +42,11 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   AccountRepository({
     required this.db,
     required this.api,
+    required ServerConnectionManager connectionManager,
+    required this.clientIdManager,
     required bool rememberToInitRepositoriesLateFinal,
-  });
+  }) :
+    _syncHandler = ConnectedActionScheduler(connectionManager);
 
   final BehaviorSubject<AccountRepositoryState> _internalState =
     BehaviorSubject.seeded(AccountRepositoryState.initRequired);
@@ -94,9 +99,24 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Future<void> dispose() async {
     await _cachedEmailSubscription?.cancel();
     await _cachedProfileVisibilitySubscription?.cancel();
+    await _syncHandler.dispose();
   }
 
   // TODO(prod): Run onLogout when server connection has authentication failure
+
+  @override
+  Future<void> onLogin() async {
+    _syncHandler.onLoginSync(() async {
+      await clientIdManager.getClientId();
+    });
+  }
+
+  @override
+  Future<void> onResumeAppUsage() async {
+    _syncHandler.onResumeAppUsageSync(() async {
+      await clientIdManager.getClientId();
+    });
+  }
 
   Future<void> _saveAccountState(AccountState state) async {
     await db.accountAction((db) => db.updateAccountState(state));

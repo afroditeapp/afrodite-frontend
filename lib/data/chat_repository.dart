@@ -4,6 +4,7 @@ import 'package:logging/logging.dart';
 import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/account/client_id_manager.dart';
 import 'package:pihka_frontend/data/chat/message_database_iterator.dart';
 import 'package:pihka_frontend/data/chat/message_manager.dart';
 import 'package:pihka_frontend/data/chat/message_key_generator.dart';
@@ -35,6 +36,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     required this.accountBackgroundDb,
     required this.db,
     required this.messageKeyManager,
+    required ClientIdManager clientIdManager,
     required ServerConnectionManager connectionManager,
     required this.currentUser,
   }) :
@@ -44,7 +46,15 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     receivedLikesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.accountData((db) => db.daoProfileStates.getReceivedLikesList(startIndex, limit)).ok()),
     matchesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.accountData((db) => db.daoMatches.getMatchesList(startIndex, limit)).ok()),
     api = connectionManager.api,
-    messageManager = MessageManager(messageKeyManager, connectionManager.api, db, profile, accountBackgroundDb, currentUser);
+    messageManager = MessageManager(
+      messageKeyManager,
+      clientIdManager,
+      connectionManager.api,
+      db,
+      profile,
+      accountBackgroundDb,
+      currentUser
+    );
 
   final ConnectedActionScheduler syncHandler;
 

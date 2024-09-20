@@ -11,6 +11,7 @@ import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/account/client_id_manager.dart';
 import 'package:pihka_frontend/data/chat/message_converter.dart';
 import 'package:pihka_frontend/data/chat/message_key_generator.dart';
 import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
@@ -78,13 +79,14 @@ class ResendSendFailedMessage extends MessageManagerCommand {
 /// Synchronized message actions
 class MessageManager extends LifecycleMethods {
   final MessageKeyManager messageKeyManager;
+  final ClientIdManager clientIdManager;
   final ApiManager api;
   final AccountDatabaseManager db;
   final ProfileRepository profile;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountId currentUser;
 
-  MessageManager(this.messageKeyManager, this.api, this.db, this.profile, this.accountBackgroundDb, this.currentUser);
+  MessageManager(this.messageKeyManager, this.clientIdManager, this.api, this.db, this.profile, this.accountBackgroundDb, this.currentUser);
 
   final PublishSubject<MessageManagerCommand> _commands = PublishSubject();
   StreamSubscription<void>? _commandsSubscription;

@@ -69,6 +69,13 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<IteratorSessionId?>(
               $AccountTable.$converterprofileIteratorSessionId);
+  static const VerificationMeta _clientIdMeta =
+      const VerificationMeta('clientId');
+  @override
+  late final GeneratedColumnWithTypeConverter<ClientId?, int> clientId =
+      GeneratedColumn<int>('client_id', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<ClientId?>($AccountTable.$converterclientId);
   static const VerificationMeta _initialSyncDoneLoginRepositoryMeta =
       const VerificationMeta('initialSyncDoneLoginRepository');
   @override
@@ -592,6 +599,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         jsonAvailableProfileAttributes,
         profileFilterFavorites,
         profileIteratorSessionId,
+        clientId,
         initialSyncDoneLoginRepository,
         initialSyncDoneAccountRepository,
         initialSyncDoneMediaRepository,
@@ -686,6 +694,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     }
     context.handle(
         _profileIteratorSessionIdMeta, const VerificationResult.success());
+    context.handle(_clientIdMeta, const VerificationResult.success());
     if (data.containsKey('initial_sync_done_login_repository')) {
       context.handle(
           _initialSyncDoneLoginRepositoryMeta,
@@ -1024,6 +1033,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       profileIteratorSessionId: $AccountTable.$converterprofileIteratorSessionId
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}profile_iterator_session_id'])),
+      clientId: $AccountTable.$converterclientId.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}client_id'])),
       initialSyncDoneLoginRepository: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
           data['${effectivePrefix}initial_sync_done_login_repository'])!,
@@ -1232,6 +1244,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<IteratorSessionId?, String?>
       $converterprofileIteratorSessionId =
       const NullAwareTypeConverter.wrap(IteratorSessionIdConverter());
+  static TypeConverter<ClientId?, int?> $converterclientId =
+      const NullAwareTypeConverter.wrap(ClientIdConverter());
   static TypeConverter<ContentId?, String?> $converteruuidPendingContentId0 =
       const NullAwareTypeConverter.wrap(ContentIdConverter());
   static TypeConverter<ContentId?, String?> $converteruuidPendingContentId1 =
@@ -1301,6 +1315,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   /// If true show only favorite profiles
   final bool profileFilterFavorites;
   final IteratorSessionId? profileIteratorSessionId;
+  final ClientId? clientId;
   final bool initialSyncDoneLoginRepository;
   final bool initialSyncDoneAccountRepository;
   final bool initialSyncDoneMediaRepository;
@@ -1376,6 +1391,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.jsonAvailableProfileAttributes,
       required this.profileFilterFavorites,
       this.profileIteratorSessionId,
+      this.clientId,
       required this.initialSyncDoneLoginRepository,
       required this.initialSyncDoneAccountRepository,
       required this.initialSyncDoneMediaRepository,
@@ -1469,6 +1485,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['profile_iterator_session_id'] = Variable<String>($AccountTable
           .$converterprofileIteratorSessionId
           .toSql(profileIteratorSessionId));
+    }
+    if (!nullToAbsent || clientId != null) {
+      map['client_id'] =
+          Variable<int>($AccountTable.$converterclientId.toSql(clientId));
     }
     map['initial_sync_done_login_repository'] =
         Variable<bool>(initialSyncDoneLoginRepository);
@@ -1746,6 +1766,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileIteratorSessionId: profileIteratorSessionId == null && nullToAbsent
           ? const Value.absent()
           : Value(profileIteratorSessionId),
+      clientId: clientId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(clientId),
       initialSyncDoneLoginRepository: Value(initialSyncDoneLoginRepository),
       initialSyncDoneAccountRepository: Value(initialSyncDoneAccountRepository),
       initialSyncDoneMediaRepository: Value(initialSyncDoneMediaRepository),
@@ -1970,6 +1993,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<bool>(json['profileFilterFavorites']),
       profileIteratorSessionId: serializer
           .fromJson<IteratorSessionId?>(json['profileIteratorSessionId']),
+      clientId: serializer.fromJson<ClientId?>(json['clientId']),
       initialSyncDoneLoginRepository:
           serializer.fromJson<bool>(json['initialSyncDoneLoginRepository']),
       initialSyncDoneAccountRepository:
@@ -2101,6 +2125,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'profileFilterFavorites': serializer.toJson<bool>(profileFilterFavorites),
       'profileIteratorSessionId':
           serializer.toJson<IteratorSessionId?>(profileIteratorSessionId),
+      'clientId': serializer.toJson<ClientId?>(clientId),
       'initialSyncDoneLoginRepository':
           serializer.toJson<bool>(initialSyncDoneLoginRepository),
       'initialSyncDoneAccountRepository':
@@ -2218,6 +2243,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           bool? profileFilterFavorites,
           Value<IteratorSessionId?> profileIteratorSessionId =
               const Value.absent(),
+          Value<ClientId?> clientId = const Value.absent(),
           bool? initialSyncDoneLoginRepository,
           bool? initialSyncDoneAccountRepository,
           bool? initialSyncDoneMediaRepository,
@@ -2311,6 +2337,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileIteratorSessionId: profileIteratorSessionId.present
             ? profileIteratorSessionId.value
             : this.profileIteratorSessionId,
+        clientId: clientId.present ? clientId.value : this.clientId,
         initialSyncDoneLoginRepository: initialSyncDoneLoginRepository ??
             this.initialSyncDoneLoginRepository,
         initialSyncDoneAccountRepository: initialSyncDoneAccountRepository ??
@@ -2518,6 +2545,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileIteratorSessionId: data.profileIteratorSessionId.present
           ? data.profileIteratorSessionId.value
           : this.profileIteratorSessionId,
+      clientId: data.clientId.present ? data.clientId.value : this.clientId,
       initialSyncDoneLoginRepository:
           data.initialSyncDoneLoginRepository.present
               ? data.initialSyncDoneLoginRepository.value
@@ -2740,6 +2768,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
               'jsonAvailableProfileAttributes: $jsonAvailableProfileAttributes, ')
           ..write('profileFilterFavorites: $profileFilterFavorites, ')
           ..write('profileIteratorSessionId: $profileIteratorSessionId, ')
+          ..write('clientId: $clientId, ')
           ..write(
               'initialSyncDoneLoginRepository: $initialSyncDoneLoginRepository, ')
           ..write(
@@ -2834,6 +2863,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         jsonAvailableProfileAttributes,
         profileFilterFavorites,
         profileIteratorSessionId,
+        clientId,
         initialSyncDoneLoginRepository,
         initialSyncDoneAccountRepository,
         initialSyncDoneMediaRepository,
@@ -2914,6 +2944,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
               this.jsonAvailableProfileAttributes &&
           other.profileFilterFavorites == this.profileFilterFavorites &&
           other.profileIteratorSessionId == this.profileIteratorSessionId &&
+          other.clientId == this.clientId &&
           other.initialSyncDoneLoginRepository ==
               this.initialSyncDoneLoginRepository &&
           other.initialSyncDoneAccountRepository ==
@@ -3007,6 +3038,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<JsonString?> jsonAvailableProfileAttributes;
   final Value<bool> profileFilterFavorites;
   final Value<IteratorSessionId?> profileIteratorSessionId;
+  final Value<ClientId?> clientId;
   final Value<bool> initialSyncDoneLoginRepository;
   final Value<bool> initialSyncDoneAccountRepository;
   final Value<bool> initialSyncDoneMediaRepository;
@@ -3082,6 +3114,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.jsonAvailableProfileAttributes = const Value.absent(),
     this.profileFilterFavorites = const Value.absent(),
     this.profileIteratorSessionId = const Value.absent(),
+    this.clientId = const Value.absent(),
     this.initialSyncDoneLoginRepository = const Value.absent(),
     this.initialSyncDoneAccountRepository = const Value.absent(),
     this.initialSyncDoneMediaRepository = const Value.absent(),
@@ -3158,6 +3191,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.jsonAvailableProfileAttributes = const Value.absent(),
     this.profileFilterFavorites = const Value.absent(),
     this.profileIteratorSessionId = const Value.absent(),
+    this.clientId = const Value.absent(),
     this.initialSyncDoneLoginRepository = const Value.absent(),
     this.initialSyncDoneAccountRepository = const Value.absent(),
     this.initialSyncDoneMediaRepository = const Value.absent(),
@@ -3234,6 +3268,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<String>? jsonAvailableProfileAttributes,
     Expression<bool>? profileFilterFavorites,
     Expression<String>? profileIteratorSessionId,
+    Expression<int>? clientId,
     Expression<bool>? initialSyncDoneLoginRepository,
     Expression<bool>? initialSyncDoneAccountRepository,
     Expression<bool>? initialSyncDoneMediaRepository,
@@ -3313,6 +3348,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'profile_filter_favorites': profileFilterFavorites,
       if (profileIteratorSessionId != null)
         'profile_iterator_session_id': profileIteratorSessionId,
+      if (clientId != null) 'client_id': clientId,
       if (initialSyncDoneLoginRepository != null)
         'initial_sync_done_login_repository': initialSyncDoneLoginRepository,
       if (initialSyncDoneAccountRepository != null)
@@ -3445,6 +3481,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<JsonString?>? jsonAvailableProfileAttributes,
       Value<bool>? profileFilterFavorites,
       Value<IteratorSessionId?>? profileIteratorSessionId,
+      Value<ClientId?>? clientId,
       Value<bool>? initialSyncDoneLoginRepository,
       Value<bool>? initialSyncDoneAccountRepository,
       Value<bool>? initialSyncDoneMediaRepository,
@@ -3523,6 +3560,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           profileFilterFavorites ?? this.profileFilterFavorites,
       profileIteratorSessionId:
           profileIteratorSessionId ?? this.profileIteratorSessionId,
+      clientId: clientId ?? this.clientId,
       initialSyncDoneLoginRepository:
           initialSyncDoneLoginRepository ?? this.initialSyncDoneLoginRepository,
       initialSyncDoneAccountRepository: initialSyncDoneAccountRepository ??
@@ -3668,6 +3706,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['profile_iterator_session_id'] = Variable<String>($AccountTable
           .$converterprofileIteratorSessionId
           .toSql(profileIteratorSessionId.value));
+    }
+    if (clientId.present) {
+      map['client_id'] =
+          Variable<int>($AccountTable.$converterclientId.toSql(clientId.value));
     }
     if (initialSyncDoneLoginRepository.present) {
       map['initial_sync_done_login_repository'] =
@@ -3954,6 +3996,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
               'jsonAvailableProfileAttributes: $jsonAvailableProfileAttributes, ')
           ..write('profileFilterFavorites: $profileFilterFavorites, ')
           ..write('profileIteratorSessionId: $profileIteratorSessionId, ')
+          ..write('clientId: $clientId, ')
           ..write(
               'initialSyncDoneLoginRepository: $initialSyncDoneLoginRepository, ')
           ..write(

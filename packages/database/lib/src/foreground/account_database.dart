@@ -45,6 +45,8 @@ class Account extends Table {
   TextColumn get profileIteratorSessionId => text()
     .map(const NullAwareTypeConverter.wrap(IteratorSessionIdConverter())).nullable()();
 
+  IntColumn get clientId => integer().map(const NullAwareTypeConverter.wrap(ClientIdConverter())).nullable()();
+
   // DaoInitialSync
 
   BoolColumn get initialSyncDoneLoginRepository => boolean()
@@ -250,6 +252,20 @@ class AccountDatabase extends _$AccountDatabase {
     });
   }
 
+  Future<void> updateClientIdIfNull(ClientId value) async {
+    await transaction(() async {
+      final currentClientId = await watchClientId().firstOrNull;
+      if (currentClientId == null) {
+        await into(account).insertOnConflictUpdate(
+          AccountCompanion.insert(
+            id: ACCOUNT_DB_DATA_ID,
+            clientId: Value(value),
+          ),
+        );
+      }
+    });
+  }
+
   Stream<AccountId?> watchAccountId() =>
     watchColumn((r) => r.uuidAccountId);
 
@@ -267,6 +283,9 @@ class AccountDatabase extends _$AccountDatabase {
 
   Stream<AvailableProfileAttributes?> watchAvailableProfileAttributes() =>
     watchColumn((r) => r.jsonAvailableProfileAttributes?.toAvailableProfileAttributes());
+
+  Stream<ClientId?> watchClientId() =>
+    watchColumn((r) => r.clientId);
 
   SimpleSelectStatement<$AccountTable, AccountData> _selectFromDataId() {
     return select(account)
