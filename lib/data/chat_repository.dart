@@ -430,7 +430,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     return await cmd.waitUntilReady();
   }
 
-  Future<Result<void, DeleteSendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) async {
+  Future<Result<void, ResendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) async {
     final cmd = ResendSendFailedMessage(receiverAccountId, localId);
     messageManager.queueCmd(cmd);
     return await cmd.waitUntilReady();

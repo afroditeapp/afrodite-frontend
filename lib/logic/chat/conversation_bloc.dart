@@ -72,7 +72,7 @@ abstract class ConversationDataProvider {
   Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, LocalMessageId? latestCurrentMessageLocalId);
 
   Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId);
-  Future<Result<void, DeleteSendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId);
+  Future<Result<void, ResendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId);
 }
 
 class DefaultConversationDataProvider extends ConversationDataProvider {
@@ -144,7 +144,7 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   }
 
   @override
-  Future<Result<void, DeleteSendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) {
+  Future<Result<void, ResendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) {
     return chat.resendSendFailedMessage(receiverAccountId, localId);
   }
 }
@@ -270,10 +270,14 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
           ();
         case Err(:final e):
           switch (e) {
-            case DeleteSendFailedError.unspecifiedError:
+            case ResendFailedError.unspecifiedError:
               showSnackBar(R.strings.generic_error_occurred);
-            case DeleteSendFailedError.isActuallySentSuccessfully:
+            case ResendFailedError.isActuallySentSuccessfully:
               showSnackBar(R.strings.conversation_screen_message_error_is_actually_sent_successfully);
+            case ResendFailedError.messageTooLarge:
+              showSnackBar(R.strings.conversation_screen_message_too_long);
+            case ResendFailedError.tooManyPendingMessages:
+              showSnackBar(R.strings.conversation_screen_message_too_many_pending_messages);
           }
       }
 

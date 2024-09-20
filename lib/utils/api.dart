@@ -1,5 +1,6 @@
 
 
+import 'package:database/database.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/utils/list.dart';
@@ -206,5 +207,11 @@ extension SearchGroupsExtensions on SearchGroups {
           nonBinaryForNonBinary: genderSearchSetting.nonBinary,
         );
     }
+  }
+}
+
+extension ClientLocalIdExtensions on ClientLocalId {
+  LocalMessageId toLocalMessageId() {
+    return LocalMessageId(id);
   }
 }

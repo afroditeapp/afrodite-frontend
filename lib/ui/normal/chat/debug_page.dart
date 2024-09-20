@@ -147,7 +147,7 @@ class DebugConversationDataProvider extends ConversationDataProvider {
   }
 
   @override
-  Future<Result<void, DeleteSendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) async {
+  Future<Result<void, ResendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) async {
     return const Ok(null);
   }
 }

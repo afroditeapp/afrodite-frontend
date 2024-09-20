@@ -19,6 +19,7 @@ import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/account_database_manager.dart';
+import 'package:pihka_frontend/utils/api.dart';
 import 'package:utils/utils.dart';
 import 'package:pihka_frontend/utils/iterator.dart';
 import 'package:pihka_frontend/utils/result.dart';
@@ -61,12 +62,12 @@ class DeleteSendFailedMessage extends MessageManagerCommand {
   }
 }
 class ResendSendFailedMessage extends MessageManagerCommand {
-  final BehaviorSubject<Result<void, DeleteSendFailedError>?> _completed = BehaviorSubject.seeded(null);
+  final BehaviorSubject<Result<void, ResendFailedError>?> _completed = BehaviorSubject.seeded(null);
   final AccountId receiverAccount;
   final LocalMessageId localId;
   ResendSendFailedMessage(this.receiverAccount, this.localId);
 
-  Future<Result<void, DeleteSendFailedError>> waitUntilReady() async  {
+  Future<Result<void, ResendFailedError>> waitUntilReady() async  {
     return await _completed.whereNotNull().first;
   }
 }
@@ -85,6 +86,8 @@ class MessageManager extends LifecycleMethods {
 
   final PublishSubject<MessageManagerCommand> _commands = PublishSubject();
   StreamSubscription<void>? _commandsSubscription;
+
+  bool allSentMessagesAcknoledgedOnce = false;
 
   @override
   Future<void> init() async {
@@ -323,24 +326,6 @@ class MessageManager extends LifecycleMethods {
     }
   }
 
-  // TODO(prod): The error correction needs to happend before the message sending
-  // because if sending fails for multiple messages it is not sure what
-  // message will succeed.
-  //
-  // Or not. Change message sending API to have check sent messages queue
-  // (like receive messages queue). With that the message sending
-  // is reliable and the logic is simple.
-  // If everything related to message sending in client is synchronous, then
-  // it could be possible to use one "slot" for the sent message and
-  // remove/check that every time the message is sent. But that makes multiple
-  // clients problematic so implement queue instead.
-  //
-  // The message uniqueness is still problem between clients. Randomnes kinda
-  // works (or in practice works) but all client's could have ID number and
-  // that could be combined with message local ID, so the new ID for the message
-  // will be unique. The API which returns client ID, could be HTTP POST
-  // so server will increment the ID, so next value returned will be unique.
-
   Stream<MessageSendingEvent> _sendMessageToInternal(AccountId accountId, String message, {bool sendUiEvent = true}) async* {
     final isMatch = await isInMatches(accountId);
     if (!isMatch) {
@@ -378,8 +363,6 @@ class MessageManager extends LifecycleMethods {
       case Ok(v: final lastSentMessage):
         // If previous sent message is still in pending state, then the app is
         // probably closed or crashed too early.
-        // TODO(prod): is this needed?
-        final SentMessageState? stateForLastMessage;
         if (lastSentMessage != null && lastSentMessage.sentMessageState == SentMessageState.pending) {
           final result = await db.messageAction((db) => db.updateSentMessageState(
             lastSentMessage.localId,
@@ -389,9 +372,6 @@ class MessageManager extends LifecycleMethods {
             yield const ErrorBeforeMessageSaving();
             return;
           }
-          stateForLastMessage = SentMessageState.sendingError;
-        } else {
-          stateForLastMessage = lastSentMessage?.sentMessageState;
         }
     }
 
@@ -412,6 +392,12 @@ class MessageManager extends LifecycleMethods {
 
     if (sendUiEvent) {
       profile.sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
+    }
+
+    final clientId = await clientIdManager.getClientId().ok();
+    if (clientId == null) {
+      yield ErrorAfterMessageSaving(localId);
+      return;
     }
 
     final currentUserKeys = await messageKeyManager.generateOrLoadMessageKeys().ok();
@@ -451,14 +437,14 @@ class MessageManager extends LifecycleMethods {
     UnixTime unixTimeFromServer;
     MessageNumber messageNumberFromServer;
     var publicKeyRefreshTried = false;
-    var messageSenderIdUpdateTried = false;
+    var messageSenderAcknowledgementTried = false;
     while (true) {
       final result = await api.chat((api) => api.postSendMessage(
         accountId.aid,
         receiverPublicKey.id.id,
         receiverPublicKey.version.version,
-        0,
-        0,
+        clientId.id,
+        localId.id,
         MultipartFile.fromBytes("", dataIdentifierAndEncryptedMessage),
       )).ok();
       if (result == null) {
@@ -466,11 +452,28 @@ class MessageManager extends LifecycleMethods {
         return;
       }
 
-      // TODO(prod): Handle acknowledgement count errors
-      // if (result.errorTooManyPendingMessages) {
-      //   yield ErrorAfterMessageSaving(localId, MessageSendingErrorDetails.tooManyPendingMessages);
-      //   return;
-      // }
+      if (result.errorTooManyReceiverAcknowledgementsMissing) {
+        yield ErrorAfterMessageSaving(localId, MessageSendingErrorDetails.tooManyPendingMessages);
+        return;
+      }
+
+      if (result.errorTooManySenderAcknowledgementsMissing) {
+        if (messageSenderAcknowledgementTried) {
+          yield ErrorAfterMessageSaving(localId);
+          return;
+        } else {
+          messageSenderAcknowledgementTried = true;
+
+          log.error("Send message error: too many sender acknowledgements missing");
+
+          final acknowledgeResult = await _markSentMessagesAcknowledged(clientId);
+          if (acknowledgeResult.isErr()) {
+            yield ErrorAfterMessageSaving(localId);
+            return;
+          }
+          continue;
+        }
+      }
 
       if (result.errorReceiverPublicKeyOutdated) {
         if (publicKeyRefreshTried) {
@@ -513,6 +516,49 @@ class MessageManager extends LifecycleMethods {
       yield ErrorAfterMessageSaving(localId);
       return;
     }
+
+    if (!allSentMessagesAcknoledgedOnce) {
+      await _markSentMessagesAcknowledged(clientId);
+    } else {
+      await api.chatAction((api) => api.postAddSenderAcknowledgement(
+        SentMessageIdList(ids: [
+          SentMessageId(c: clientId, l: ClientLocalId(id: localId.id))],
+        )
+      ));
+    }
+  }
+
+  Future<Result<void, void>> _markSentMessagesAcknowledged(ClientId clientId) async {
+    final sentMessages = await api.chat((api) => api.getSentMessageIds()).ok();
+    if (sentMessages == null) {
+      return const Err(null);
+    }
+    for (final sentMessageId in sentMessages.ids) {
+      if (clientId != sentMessageId.c) {
+        continue;
+      }
+      final sentMessageLocalId = sentMessageId.l.toLocalMessageId();
+      final currentMessage = await db.messageData((db) => db.getMessageUsingLocalMessageId(
+        sentMessageLocalId,
+      )).ok();
+      if (currentMessage?.sentMessageState == SentMessageState.sendingError) {
+        final updateSentState = await db.messageAction((db) => db.updateSentMessageState(
+          sentMessageLocalId,
+          sentState: SentMessageState.sent,
+        ));
+        if (updateSentState.isErr()) {
+          return const Err(null);
+        }
+      }
+    }
+
+    final acknowledgeResult = await api.chatAction((api) => api.postAddSenderAcknowledgement(sentMessages));
+    if (acknowledgeResult.isErr()) {
+      return const Err(null);
+    }
+
+    allSentMessagesAcknoledgedOnce = true;
+    return const Ok(null);
   }
 
   /// If PublicKey is null then PublicKey for that account does not exist.
@@ -556,6 +602,7 @@ class MessageManager extends LifecycleMethods {
     LocalMessageId localId,
     {
       bool sendUiEvent = true,
+      bool actuallySentMessageCheck = true,
     }
   ) async {
     if (kIsWeb) {
@@ -563,35 +610,26 @@ class MessageManager extends LifecycleMethods {
       return const Err(DeleteSendFailedError.unspecifiedError);
     }
 
-    final lastSentMessageResult = await db.accountData((db) => db.daoMessages.getLatestSentMessage(
-      currentUser,
-      receiverAccount,
-    ));
-    final MessageEntry? lastSentMessage;
-    switch (lastSentMessageResult) {
-      case Err():
+    if (actuallySentMessageCheck) {
+      final clientId = await clientIdManager.getClientId().ok();
+      if (clientId == null) {
         return const Err(DeleteSendFailedError.unspecifiedError);
-      case Ok(:final v):
-        lastSentMessage = v;
+      }
+
+      // Try to move failed messages to correct state if message sending
+      // HTTP response receiving failed.
+      final acknowledgeResult = await _markSentMessagesAcknowledged(clientId);
+      if (acknowledgeResult.isErr()) {
+        return const Err(DeleteSendFailedError.unspecifiedError);
+      }
     }
 
     final toBeRemoved = await db.accountData((db) => db.daoMessages.getMessageUsingLocalMessageId(
       localId,
     )).ok();
-    if (toBeRemoved == null) {
+    if (toBeRemoved == null || toBeRemoved.sentMessageState != SentMessageState.sendingError) {
       return const Err(DeleteSendFailedError.unspecifiedError);
     }
-
-    if (toBeRemoved.sentMessageState != SentMessageState.sendingError) {
-      return const Err(DeleteSendFailedError.unspecifiedError);
-    }
-
-    // final toBeRemovedSenderMessageId = toBeRemoved.senderMessageId;
-    // if (toBeRemovedSenderMessageId != null && lastSentMessage?.localId == localId) {
-      // Error correction check is possible to do
-
-      // TODO(prod): Update error correction
-    // }
 
     final deleteResult = await db.accountData((db) => db.daoMessages.deleteMessage(
       localId,
@@ -606,52 +644,67 @@ class MessageManager extends LifecycleMethods {
     }
   }
 
-  Future<Result<void, DeleteSendFailedError>> _resendSendFailedMessage(
+  Future<Result<void, ResendFailedError>> _resendSendFailedMessage(
     AccountId receiverAccount,
     LocalMessageId localId,
   ) async {
     if (kIsWeb) {
       // Messages are not supported on web
-      return const Err(DeleteSendFailedError.unspecifiedError);
+      return const Err(ResendFailedError.unspecifiedError);
+    }
+
+    final clientId = await clientIdManager.getClientId().ok();
+    if (clientId == null) {
+      return const Err(ResendFailedError.unspecifiedError);
+    }
+
+    // Try to move failed messages to correct state if message sending
+    // HTTP response receiving failed.
+    final acknowledgeResult = await _markSentMessagesAcknowledged(clientId);
+    if (acknowledgeResult.isErr()) {
+      return const Err(ResendFailedError.unspecifiedError);
     }
 
     final toBeResent = await db.accountData((db) => db.daoMessages.getMessageUsingLocalMessageId(
       localId,
     )).ok();
     if (toBeResent == null) {
-      return const Err(DeleteSendFailedError.unspecifiedError);
+      return const Err(ResendFailedError.unspecifiedError);
     }
 
-    // TODO(prod): Change delete to happen after sending in the future.
-    // TODO(prod): Change error type to include MessageSendingErrorDetails
-    //             cases.
-
-    final deleteResult = await _deleteSendFailedMessage(receiverAccount, localId, sendUiEvent: false);
-    switch (deleteResult) {
-      case Err(:final e):
-        return Err(e);
-      case Ok():
-        ();
-    }
-
-    var sendError = false;
+    ResendFailedError? error;
+    bool resentMessageSavedToLocalDb = false;
     await for (var e in _sendMessageTo(receiverAccount, toBeResent.messageText, sendUiEvent: false)) {
       switch (e) {
         case SavedToLocalDb():
-          ();
+          resentMessageSavedToLocalDb = true;
         case ErrorBeforeMessageSaving():
-          sendError = true;
+          error = ResendFailedError.unspecifiedError;
         case ErrorAfterMessageSaving():
-          sendError = true;
+          error = e.details?.toResendFailedError() ?? ResendFailedError.unspecifiedError;
       }
     }
 
-    if (sendError) {
-      profile.sendProfileChange(ConversationChanged(toBeResent.remoteAccountId, ConversationChangeType.messageRemoved));
-      return const Err(DeleteSendFailedError.unspecifiedError);
-    } else {
+    final currentError = error;
+    if (currentError != null) {
+      if (resentMessageSavedToLocalDb) {
+        profile.sendProfileChange(ConversationChanged(toBeResent.remoteAccountId, ConversationChangeType.messageResent));
+      }
+      return Err(currentError);
+    }
+
+    if (resentMessageSavedToLocalDb) {
+      final deleteResult = await _deleteSendFailedMessage(receiverAccount, localId, sendUiEvent: false, actuallySentMessageCheck: false);
       profile.sendProfileChange(ConversationChanged(toBeResent.remoteAccountId, ConversationChangeType.messageResent));
-      return const Ok(null);
+      switch (deleteResult) {
+        case Err(:final e):
+          return Err(e.toResendFailedError());
+        case Ok():
+          profile.sendProfileChange(ConversationChanged(toBeResent.remoteAccountId, ConversationChangeType.messageResent));
+          return const Ok(null);
+      }
+    } else {
+      return const Err(ResendFailedError.unspecifiedError);
     }
   }
 }
@@ -665,7 +718,16 @@ class SavedToLocalDb extends MessageSendingEvent {
 
 enum MessageSendingErrorDetails {
   messageTooLarge,
-  tooManyPendingMessages,
+  tooManyPendingMessages;
+
+  ResendFailedError toResendFailedError() {
+    switch (this) {
+      case messageTooLarge:
+        return ResendFailedError.messageTooLarge;
+      case tooManyPendingMessages:
+        return ResendFailedError.tooManyPendingMessages;
+    }
+  }
 }
 
 /// Error happened before the message was saved successfully
@@ -685,5 +747,21 @@ enum ReceivedMessageError {
 
 enum DeleteSendFailedError {
   unspecifiedError,
+  isActuallySentSuccessfully;
+
+  ResendFailedError toResendFailedError() {
+    switch (this) {
+      case unspecifiedError:
+        return ResendFailedError.unspecifiedError;
+      case isActuallySentSuccessfully:
+        return ResendFailedError.isActuallySentSuccessfully;
+    }
+  }
+}
+
+enum ResendFailedError {
+  unspecifiedError,
   isActuallySentSuccessfully,
+  messageTooLarge,
+  tooManyPendingMessages,
 }
