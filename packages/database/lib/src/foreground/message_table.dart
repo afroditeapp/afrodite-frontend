@@ -17,8 +17,7 @@ class Messages extends Table {
   TextColumn get uuidRemoteAccountId => text().map(const AccountIdConverter())();
   TextColumn get messageText => text()();
   IntColumn get localUnixTime => integer().map(const UtcDateTimeConverter())();
-  IntColumn get sentMessageState => integer().nullable()();
-  IntColumn get receivedMessageState => integer().nullable()();
+  IntColumn get messageState => integer()();
 
   // Server sends valid values for the next two colums.
   IntColumn get messageNumber => integer().map(const NullAwareTypeConverter.wrap(MessageNumberConverter())).nullable()();
@@ -49,8 +48,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       uuidRemoteAccountId: entry.remoteAccountId,
       messageText: entry.messageText,
       localUnixTime: entry.localUnixTime,
-      sentMessageState: Value(entry.sentMessageState?.number),
-      receivedMessageState: Value(entry.receivedMessageState?.number),
+      messageState: entry.messageState.number,
       messageNumber: Value(entry.messageNumber),
       unixTime: Value(entry.unixTime),
     ));
@@ -68,7 +66,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       remoteAccountId: remoteAccountId,
       messageText: messageText,
       localUnixTime: UtcDateTime.now(),
-      sentMessageState: SentMessageState.pending,
+      messageState: SentMessageState.pending.toDbState(),
     );
 
     return await transaction(() async {
@@ -95,7 +93,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     await (update(messages)
       ..where((t) => t.id.equals(localId.id))
     ).write(MessagesCompanion(
-      sentMessageState: Value.absentIfNull(sentState?.number),
+      messageState: Value.absentIfNull(sentState?.toDbState().number),
       unixTime: Value.absentIfNull(unixTime),
       messageNumber: Value.absentIfNull(messageNumberFromServer),
     ));
@@ -114,8 +112,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       remoteAccountId: entry.id.sender,
       localUnixTime: UtcDateTime.now(),
       messageText: decryptedMessage,
-      sentMessageState: null,
-      receivedMessageState: state,
+      messageState: state.toDbState(),
       messageNumber: entry.id.mn,
       unixTime: unixTime,
     );
@@ -136,7 +133,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
       ..where((t) => t.messageNumber.equals(messageNumber.mn))
     ).write(MessagesCompanion(
-      receivedMessageState: Value(receivedMessageState.number),
+      messageState: Value(receivedMessageState.toDbState().number),
     ));
   }
 
@@ -182,7 +179,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     LocalMessageId startId,
     int limit,
   ) async {
-    return await (select(messages)
+    final list = await (select(messages)
       ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
       ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
       ..where((t) => t.id.isSmallerOrEqualValue(startId.id))
@@ -193,6 +190,8 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     )
       .map((m) => _fromMessage(m))
       .get();
+
+    return list.nonNulls.toList();
   }
 
   Future<MessageEntry?> getMessageUsingLocalMessageId(
@@ -216,21 +215,10 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       .watchSingleOrNull();
   }
 
-  MessageEntry _fromMessage(Message m) {
-    final sentMessageStateNumber = m.sentMessageState;
-    final SentMessageState? sentMessageState;
-    if (sentMessageStateNumber != null) {
-      sentMessageState = SentMessageState.values[sentMessageStateNumber];
-    } else {
-      sentMessageState = null;
-    }
-
-    final receivedMessageStateNumber = m.receivedMessageState;
-    final ReceivedMessageState? receivedMessageState;
-    if (receivedMessageStateNumber != null) {
-      receivedMessageState = ReceivedMessageState.values[receivedMessageStateNumber];
-    } else {
-      receivedMessageState = null;
+  MessageEntry? _fromMessage(Message m) {
+    final MessageState? messageState = MessageState.fromInt(m.messageState);
+    if (messageState == null) {
+      return null;
     }
 
     return MessageEntry(
@@ -239,8 +227,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       remoteAccountId: m.uuidRemoteAccountId,
       messageText: m.messageText,
       localUnixTime: m.localUnixTime,
-      sentMessageState: sentMessageState,
-      receivedMessageState: receivedMessageState,
+      messageState: messageState,
       messageNumber: m.messageNumber,
       unixTime: m.unixTime,
     );
@@ -253,7 +240,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     return (select(messages)
       ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
       ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
-      ..where((t) => t.sentMessageState.isNotNull())
+      ..where((t) => t.messageState.isBetweenValues(MessageState.MIN_VALUE_SENT_MESSAGE, MessageState.MAX_VALUE_SENT_MESSAGE))
       ..limit(1)
       ..orderBy([
         (t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc),

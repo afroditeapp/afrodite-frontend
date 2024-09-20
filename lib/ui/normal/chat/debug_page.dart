@@ -72,11 +72,11 @@ class DebugConversationDataProvider extends ConversationDataProvider {
   }
 
   void sendMessageToSync(AccountId accountId, String message) {
-    final SentMessageState? state;
+    final MessageState state;
     if (isSent) {
-      state = SentMessageState.pending;
+      state = MessageState.pendingSending;
     } else {
-      state = null;
+      state = MessageState.received;
     }
 
     for (int i = 0; i < msgCountPerUpdate; i++) {
@@ -91,7 +91,7 @@ class DebugConversationDataProvider extends ConversationDataProvider {
         remoteAccountId: AccountId(aid: ""),
         messageText: text,
         localUnixTime: UtcDateTime.now(),
-        sentMessageState: state,
+        messageState: state,
         localId: LocalMessageId(entryId),
       );
 

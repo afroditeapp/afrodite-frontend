@@ -363,7 +363,7 @@ class MessageManager extends LifecycleMethods {
       case Ok(v: final lastSentMessage):
         // If previous sent message is still in pending state, then the app is
         // probably closed or crashed too early.
-        if (lastSentMessage != null && lastSentMessage.sentMessageState == SentMessageState.pending) {
+        if (lastSentMessage != null && lastSentMessage.messageState.toSentState() == SentMessageState.pending) {
           final result = await db.messageAction((db) => db.updateSentMessageState(
             lastSentMessage.localId,
             sentState: SentMessageState.sendingError,
@@ -541,7 +541,7 @@ class MessageManager extends LifecycleMethods {
       final currentMessage = await db.messageData((db) => db.getMessageUsingLocalMessageId(
         sentMessageLocalId,
       )).ok();
-      if (currentMessage?.sentMessageState == SentMessageState.sendingError) {
+      if (currentMessage?.messageState.toSentState() == SentMessageState.sendingError) {
         final updateSentState = await db.messageAction((db) => db.updateSentMessageState(
           sentMessageLocalId,
           sentState: SentMessageState.sent,
@@ -627,7 +627,7 @@ class MessageManager extends LifecycleMethods {
     final toBeRemoved = await db.accountData((db) => db.daoMessages.getMessageUsingLocalMessageId(
       localId,
     )).ok();
-    if (toBeRemoved == null || toBeRemoved.sentMessageState != SentMessageState.sendingError) {
+    if (toBeRemoved == null || toBeRemoved.messageState.toSentState() != SentMessageState.sendingError) {
       return const Err(DeleteSendFailedError.unspecifiedError);
     }
 

@@ -12,7 +12,7 @@ import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 
 Align messageRowWidget(BuildContext context, MessageEntry entry, {Key? key, required TextStyle parentTextStyle}) {
-  final (message, sentMessageState, receivedMessageState) = (entry.messageText, entry.sentMessageState, entry.receivedMessageState);
+  final (message, sentMessageState, receivedMessageState) = (entry.messageText, entry.messageState.toSentState(), entry.messageState.toReceivedState());
   final isSent = sentMessageState != null;
   return Align(
     //key: key,
@@ -156,7 +156,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
             closeActionsAndOpenDetails(screenContext, entry, pageKey);
           },
         ),
-        if (entry.sentMessageState == SentMessageState.sendingError) ListTile(
+        if (entry.messageState.toSentState() == SentMessageState.sendingError) ListTile(
           title: Text(context.strings.generic_delete),
           onTap: () async {
             final bloc = screenContext.read<ConversationBloc>();
@@ -168,7 +168,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
             MyNavigator.removePage(context, pageKey, null);
           },
         ),
-        if (entry.sentMessageState == SentMessageState.sendingError) ListTile(
+        if (entry.messageState.toSentState() == SentMessageState.sendingError) ListTile(
           title: Text(context.strings.generic_resend),
           onTap: () async {
             final bloc = screenContext.read<ConversationBloc>();
@@ -191,17 +191,19 @@ void closeActionsAndOpenDetails(BuildContext screenContext, MessageEntry entry, 
   }
 
   final String stateText;
-  if (entry.sentMessageState == SentMessageState.pending) {
+  final sentMessageState = entry.messageState.toSentState();
+  final receivedMessageState = entry.messageState.toReceivedState();
+  if (sentMessageState == SentMessageState.pending) {
     stateText = screenContext.strings.conversation_screen_message_state_sending_in_progress;
-  } else if (entry.sentMessageState == SentMessageState.sendingError) {
+  } else if (sentMessageState == SentMessageState.sendingError) {
     stateText = screenContext.strings.conversation_screen_message_state_sending_failed;
-  } else if (entry.sentMessageState == SentMessageState.sent) {
+  } else if (sentMessageState == SentMessageState.sent) {
     stateText = screenContext.strings.conversation_screen_message_state_sent_successfully;
-  } else if (entry.receivedMessageState == ReceivedMessageState.received) {
+  } else if (receivedMessageState == ReceivedMessageState.received) {
     stateText = screenContext.strings.conversation_screen_message_state_received_successfully;
-  } else if (entry.receivedMessageState == ReceivedMessageState.decryptingFailed) {
+  } else if (receivedMessageState == ReceivedMessageState.decryptingFailed) {
     stateText = screenContext.strings.conversation_screen_message_state_decrypting_failed;
-  } else if (entry.receivedMessageState == ReceivedMessageState.unknownMessageType) {
+  } else if (receivedMessageState == ReceivedMessageState.unknownMessageType) {
     stateText = screenContext.strings.conversation_screen_message_state_unknown_message_type;
   } else {
     stateText = "";

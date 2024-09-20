@@ -5974,18 +5974,12 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       GeneratedColumn<int>('local_unix_time', aliasedName, false,
               type: DriftSqlType.int, requiredDuringInsert: true)
           .withConverter<UtcDateTime>($MessagesTable.$converterlocalUnixTime);
-  static const VerificationMeta _sentMessageStateMeta =
-      const VerificationMeta('sentMessageState');
+  static const VerificationMeta _messageStateMeta =
+      const VerificationMeta('messageState');
   @override
-  late final GeneratedColumn<int> sentMessageState = GeneratedColumn<int>(
-      'sent_message_state', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _receivedMessageStateMeta =
-      const VerificationMeta('receivedMessageState');
-  @override
-  late final GeneratedColumn<int> receivedMessageState = GeneratedColumn<int>(
-      'received_message_state', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+  late final GeneratedColumn<int> messageState = GeneratedColumn<int>(
+      'message_state', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _messageNumberMeta =
       const VerificationMeta('messageNumber');
   @override
@@ -6008,8 +6002,7 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
         uuidRemoteAccountId,
         messageText,
         localUnixTime,
-        sentMessageState,
-        receivedMessageState,
+        messageState,
         messageNumber,
         unixTime
       ];
@@ -6038,17 +6031,13 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       context.missing(_messageTextMeta);
     }
     context.handle(_localUnixTimeMeta, const VerificationResult.success());
-    if (data.containsKey('sent_message_state')) {
+    if (data.containsKey('message_state')) {
       context.handle(
-          _sentMessageStateMeta,
-          sentMessageState.isAcceptableOrUnknown(
-              data['sent_message_state']!, _sentMessageStateMeta));
-    }
-    if (data.containsKey('received_message_state')) {
-      context.handle(
-          _receivedMessageStateMeta,
-          receivedMessageState.isAcceptableOrUnknown(
-              data['received_message_state']!, _receivedMessageStateMeta));
+          _messageStateMeta,
+          messageState.isAcceptableOrUnknown(
+              data['message_state']!, _messageStateMeta));
+    } else if (isInserting) {
+      context.missing(_messageStateMeta);
     }
     context.handle(_messageNumberMeta, const VerificationResult.success());
     context.handle(_unixTimeMeta, const VerificationResult.success());
@@ -6074,10 +6063,8 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       localUnixTime: $MessagesTable.$converterlocalUnixTime.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}local_unix_time'])!),
-      sentMessageState: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}sent_message_state']),
-      receivedMessageState: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}received_message_state']),
+      messageState: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}message_state'])!,
       messageNumber: $MessagesTable.$convertermessageNumber.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}message_number'])),
@@ -6110,8 +6097,7 @@ class Message extends DataClass implements Insertable<Message> {
   final AccountId uuidRemoteAccountId;
   final String messageText;
   final UtcDateTime localUnixTime;
-  final int? sentMessageState;
-  final int? receivedMessageState;
+  final int messageState;
   final MessageNumber? messageNumber;
   final UtcDateTime? unixTime;
   const Message(
@@ -6120,8 +6106,7 @@ class Message extends DataClass implements Insertable<Message> {
       required this.uuidRemoteAccountId,
       required this.messageText,
       required this.localUnixTime,
-      this.sentMessageState,
-      this.receivedMessageState,
+      required this.messageState,
       this.messageNumber,
       this.unixTime});
   @override
@@ -6143,12 +6128,7 @@ class Message extends DataClass implements Insertable<Message> {
       map['local_unix_time'] = Variable<int>(
           $MessagesTable.$converterlocalUnixTime.toSql(localUnixTime));
     }
-    if (!nullToAbsent || sentMessageState != null) {
-      map['sent_message_state'] = Variable<int>(sentMessageState);
-    }
-    if (!nullToAbsent || receivedMessageState != null) {
-      map['received_message_state'] = Variable<int>(receivedMessageState);
-    }
+    map['message_state'] = Variable<int>(messageState);
     if (!nullToAbsent || messageNumber != null) {
       map['message_number'] = Variable<int>(
           $MessagesTable.$convertermessageNumber.toSql(messageNumber));
@@ -6167,12 +6147,7 @@ class Message extends DataClass implements Insertable<Message> {
       uuidRemoteAccountId: Value(uuidRemoteAccountId),
       messageText: Value(messageText),
       localUnixTime: Value(localUnixTime),
-      sentMessageState: sentMessageState == null && nullToAbsent
-          ? const Value.absent()
-          : Value(sentMessageState),
-      receivedMessageState: receivedMessageState == null && nullToAbsent
-          ? const Value.absent()
-          : Value(receivedMessageState),
+      messageState: Value(messageState),
       messageNumber: messageNumber == null && nullToAbsent
           ? const Value.absent()
           : Value(messageNumber),
@@ -6193,9 +6168,7 @@ class Message extends DataClass implements Insertable<Message> {
           serializer.fromJson<AccountId>(json['uuidRemoteAccountId']),
       messageText: serializer.fromJson<String>(json['messageText']),
       localUnixTime: serializer.fromJson<UtcDateTime>(json['localUnixTime']),
-      sentMessageState: serializer.fromJson<int?>(json['sentMessageState']),
-      receivedMessageState:
-          serializer.fromJson<int?>(json['receivedMessageState']),
+      messageState: serializer.fromJson<int>(json['messageState']),
       messageNumber: serializer.fromJson<MessageNumber?>(json['messageNumber']),
       unixTime: serializer.fromJson<UtcDateTime?>(json['unixTime']),
     );
@@ -6209,8 +6182,7 @@ class Message extends DataClass implements Insertable<Message> {
       'uuidRemoteAccountId': serializer.toJson<AccountId>(uuidRemoteAccountId),
       'messageText': serializer.toJson<String>(messageText),
       'localUnixTime': serializer.toJson<UtcDateTime>(localUnixTime),
-      'sentMessageState': serializer.toJson<int?>(sentMessageState),
-      'receivedMessageState': serializer.toJson<int?>(receivedMessageState),
+      'messageState': serializer.toJson<int>(messageState),
       'messageNumber': serializer.toJson<MessageNumber?>(messageNumber),
       'unixTime': serializer.toJson<UtcDateTime?>(unixTime),
     };
@@ -6222,8 +6194,7 @@ class Message extends DataClass implements Insertable<Message> {
           AccountId? uuidRemoteAccountId,
           String? messageText,
           UtcDateTime? localUnixTime,
-          Value<int?> sentMessageState = const Value.absent(),
-          Value<int?> receivedMessageState = const Value.absent(),
+          int? messageState,
           Value<MessageNumber?> messageNumber = const Value.absent(),
           Value<UtcDateTime?> unixTime = const Value.absent()}) =>
       Message(
@@ -6232,12 +6203,7 @@ class Message extends DataClass implements Insertable<Message> {
         uuidRemoteAccountId: uuidRemoteAccountId ?? this.uuidRemoteAccountId,
         messageText: messageText ?? this.messageText,
         localUnixTime: localUnixTime ?? this.localUnixTime,
-        sentMessageState: sentMessageState.present
-            ? sentMessageState.value
-            : this.sentMessageState,
-        receivedMessageState: receivedMessageState.present
-            ? receivedMessageState.value
-            : this.receivedMessageState,
+        messageState: messageState ?? this.messageState,
         messageNumber:
             messageNumber.present ? messageNumber.value : this.messageNumber,
         unixTime: unixTime.present ? unixTime.value : this.unixTime,
@@ -6256,12 +6222,9 @@ class Message extends DataClass implements Insertable<Message> {
       localUnixTime: data.localUnixTime.present
           ? data.localUnixTime.value
           : this.localUnixTime,
-      sentMessageState: data.sentMessageState.present
-          ? data.sentMessageState.value
-          : this.sentMessageState,
-      receivedMessageState: data.receivedMessageState.present
-          ? data.receivedMessageState.value
-          : this.receivedMessageState,
+      messageState: data.messageState.present
+          ? data.messageState.value
+          : this.messageState,
       messageNumber: data.messageNumber.present
           ? data.messageNumber.value
           : this.messageNumber,
@@ -6277,8 +6240,7 @@ class Message extends DataClass implements Insertable<Message> {
           ..write('uuidRemoteAccountId: $uuidRemoteAccountId, ')
           ..write('messageText: $messageText, ')
           ..write('localUnixTime: $localUnixTime, ')
-          ..write('sentMessageState: $sentMessageState, ')
-          ..write('receivedMessageState: $receivedMessageState, ')
+          ..write('messageState: $messageState, ')
           ..write('messageNumber: $messageNumber, ')
           ..write('unixTime: $unixTime')
           ..write(')'))
@@ -6286,16 +6248,8 @@ class Message extends DataClass implements Insertable<Message> {
   }
 
   @override
-  int get hashCode => Object.hash(
-      id,
-      uuidLocalAccountId,
-      uuidRemoteAccountId,
-      messageText,
-      localUnixTime,
-      sentMessageState,
-      receivedMessageState,
-      messageNumber,
-      unixTime);
+  int get hashCode => Object.hash(id, uuidLocalAccountId, uuidRemoteAccountId,
+      messageText, localUnixTime, messageState, messageNumber, unixTime);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -6305,8 +6259,7 @@ class Message extends DataClass implements Insertable<Message> {
           other.uuidRemoteAccountId == this.uuidRemoteAccountId &&
           other.messageText == this.messageText &&
           other.localUnixTime == this.localUnixTime &&
-          other.sentMessageState == this.sentMessageState &&
-          other.receivedMessageState == this.receivedMessageState &&
+          other.messageState == this.messageState &&
           other.messageNumber == this.messageNumber &&
           other.unixTime == this.unixTime);
 }
@@ -6317,8 +6270,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
   final Value<AccountId> uuidRemoteAccountId;
   final Value<String> messageText;
   final Value<UtcDateTime> localUnixTime;
-  final Value<int?> sentMessageState;
-  final Value<int?> receivedMessageState;
+  final Value<int> messageState;
   final Value<MessageNumber?> messageNumber;
   final Value<UtcDateTime?> unixTime;
   const MessagesCompanion({
@@ -6327,8 +6279,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     this.uuidRemoteAccountId = const Value.absent(),
     this.messageText = const Value.absent(),
     this.localUnixTime = const Value.absent(),
-    this.sentMessageState = const Value.absent(),
-    this.receivedMessageState = const Value.absent(),
+    this.messageState = const Value.absent(),
     this.messageNumber = const Value.absent(),
     this.unixTime = const Value.absent(),
   });
@@ -6338,22 +6289,21 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     required AccountId uuidRemoteAccountId,
     required String messageText,
     required UtcDateTime localUnixTime,
-    this.sentMessageState = const Value.absent(),
-    this.receivedMessageState = const Value.absent(),
+    required int messageState,
     this.messageNumber = const Value.absent(),
     this.unixTime = const Value.absent(),
   })  : uuidLocalAccountId = Value(uuidLocalAccountId),
         uuidRemoteAccountId = Value(uuidRemoteAccountId),
         messageText = Value(messageText),
-        localUnixTime = Value(localUnixTime);
+        localUnixTime = Value(localUnixTime),
+        messageState = Value(messageState);
   static Insertable<Message> custom({
     Expression<int>? id,
     Expression<String>? uuidLocalAccountId,
     Expression<String>? uuidRemoteAccountId,
     Expression<String>? messageText,
     Expression<int>? localUnixTime,
-    Expression<int>? sentMessageState,
-    Expression<int>? receivedMessageState,
+    Expression<int>? messageState,
     Expression<int>? messageNumber,
     Expression<int>? unixTime,
   }) {
@@ -6365,9 +6315,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
         'uuid_remote_account_id': uuidRemoteAccountId,
       if (messageText != null) 'message_text': messageText,
       if (localUnixTime != null) 'local_unix_time': localUnixTime,
-      if (sentMessageState != null) 'sent_message_state': sentMessageState,
-      if (receivedMessageState != null)
-        'received_message_state': receivedMessageState,
+      if (messageState != null) 'message_state': messageState,
       if (messageNumber != null) 'message_number': messageNumber,
       if (unixTime != null) 'unix_time': unixTime,
     });
@@ -6379,8 +6327,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       Value<AccountId>? uuidRemoteAccountId,
       Value<String>? messageText,
       Value<UtcDateTime>? localUnixTime,
-      Value<int?>? sentMessageState,
-      Value<int?>? receivedMessageState,
+      Value<int>? messageState,
       Value<MessageNumber?>? messageNumber,
       Value<UtcDateTime?>? unixTime}) {
     return MessagesCompanion(
@@ -6389,8 +6336,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       uuidRemoteAccountId: uuidRemoteAccountId ?? this.uuidRemoteAccountId,
       messageText: messageText ?? this.messageText,
       localUnixTime: localUnixTime ?? this.localUnixTime,
-      sentMessageState: sentMessageState ?? this.sentMessageState,
-      receivedMessageState: receivedMessageState ?? this.receivedMessageState,
+      messageState: messageState ?? this.messageState,
       messageNumber: messageNumber ?? this.messageNumber,
       unixTime: unixTime ?? this.unixTime,
     );
@@ -6419,11 +6365,8 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       map['local_unix_time'] = Variable<int>(
           $MessagesTable.$converterlocalUnixTime.toSql(localUnixTime.value));
     }
-    if (sentMessageState.present) {
-      map['sent_message_state'] = Variable<int>(sentMessageState.value);
-    }
-    if (receivedMessageState.present) {
-      map['received_message_state'] = Variable<int>(receivedMessageState.value);
+    if (messageState.present) {
+      map['message_state'] = Variable<int>(messageState.value);
     }
     if (messageNumber.present) {
       map['message_number'] = Variable<int>(
@@ -6444,8 +6387,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
           ..write('uuidRemoteAccountId: $uuidRemoteAccountId, ')
           ..write('messageText: $messageText, ')
           ..write('localUnixTime: $localUnixTime, ')
-          ..write('sentMessageState: $sentMessageState, ')
-          ..write('receivedMessageState: $receivedMessageState, ')
+          ..write('messageState: $messageState, ')
           ..write('messageNumber: $messageNumber, ')
           ..write('unixTime: $unixTime')
           ..write(')'))

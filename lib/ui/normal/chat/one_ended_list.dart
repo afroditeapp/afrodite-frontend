@@ -100,7 +100,8 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
         final invertedIndex = visibleMessages.length - 1 - index;
         final entry = visibleMessages[invertedIndex];
         final style = DefaultTextStyle.of(context);
-        if (entry.sentMessageState != null && entry.sentMessageState != SentMessageState.sent) {
+        final sentMessageState = entry.messageState.toSentState();
+        if (sentMessageState != null && sentMessageState != SentMessageState.sent) {
           return StreamBuilder<MessageEntry?>(
             stream: widget.conversationBloc.dataProvider.getMessageWithLocalId(entry.localId).whereNotNull(),
             builder: (context, snapshot) {

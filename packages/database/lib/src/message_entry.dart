@@ -15,10 +15,7 @@ class MessageEntry {
   final String messageText;
   /// Local/client time when message entry is inserted to database.
   final UtcDateTime localUnixTime;
-  /// Null if message was received.
-  final SentMessageState? sentMessageState;
-  /// Null if message was sent.
-  final ReceivedMessageState? receivedMessageState;
+  final MessageState messageState;
   /// Message number in a conversation. Server sets this value.
   final MessageNumber? messageNumber;
   /// Time since Unix epoch. Server sets this falue.
@@ -31,8 +28,7 @@ class MessageEntry {
       required this.remoteAccountId,
       required this.messageText,
       required this.localUnixTime,
-      this.sentMessageState,
-      this.receivedMessageState,
+      required this.messageState,
       this.messageNumber,
       this.unixTime,
     }
@@ -40,41 +36,138 @@ class MessageEntry {
 
   @override
   String toString() {
-    return "MessageEntry(localId: $localId, localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, sentMessageState: $sentMessageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime)";
+    return "MessageEntry(localId: $localId, localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, messageState: $messageState, messageNumber: $messageNumber, unixTime: $unixTime)";
+  }
+}
+
+enum MessageState {
+  // Sent message
+
+  /// Message is waiting to be sent to server.
+  pendingSending(_VALUE_PENDING_SENDING),
+  /// Message sent to server.
+  sent(_VALUE_SENT),
+  /// Message sending failed.
+  sendingError(_VALUE_SENDING_ERROR),
+
+  // Received message
+
+  /// Message received successfully.
+  received(_VALUE_RECEIVED),
+  /// Message received, but decrypting failed.
+  receivedAndDecryptingFailed(_VALUE_RECEIVED_AND_DECRYPTING_FAILED),
+  /// Message received, but message type is unknown.
+  receivedAndUnknownMessageType(_VALUE_RECEIVED_AND_UNKNOWN_MESSAGE_TYPE);
+
+  static const int _VALUE_PENDING_SENDING = 0;
+  static const int _VALUE_SENT = 1;
+  static const int _VALUE_SENDING_ERROR = 2;
+  static const int _VALUE_RECEIVED = 10;
+  static const int _VALUE_RECEIVED_AND_DECRYPTING_FAILED = 11;
+  static const int _VALUE_RECEIVED_AND_UNKNOWN_MESSAGE_TYPE = 12;
+
+  static const int MIN_VALUE_SENT_MESSAGE = _VALUE_PENDING_SENDING;
+  static const int MAX_VALUE_SENT_MESSAGE = _VALUE_SENDING_ERROR;
+
+  const MessageState(this.number);
+  final int number;
+
+  static MessageState? fromInt(int value) {
+    return switch (value) {
+      _VALUE_PENDING_SENDING => pendingSending,
+      _VALUE_SENT => sent,
+      _VALUE_SENDING_ERROR => sendingError,
+      _VALUE_RECEIVED => received,
+      _VALUE_RECEIVED_AND_DECRYPTING_FAILED => receivedAndDecryptingFailed,
+      _VALUE_RECEIVED_AND_UNKNOWN_MESSAGE_TYPE => receivedAndUnknownMessageType,
+      _ => null,
+    };
+  }
+
+  bool isSent() {
+    return toSentState() != null;
+  }
+
+  SentMessageState? toSentState() {
+    switch (this) {
+      case pendingSending:
+        return SentMessageState.pending;
+      case sent:
+        return SentMessageState.sent;
+      case sendingError:
+        return SentMessageState.sendingError;
+      case received || receivedAndDecryptingFailed || receivedAndUnknownMessageType:
+        return null;
+    }
+  }
+
+  bool isReceived() {
+    return toReceivedState() != null;
+  }
+
+  ReceivedMessageState? toReceivedState() {
+    switch (this) {
+      case received:
+        return ReceivedMessageState.received;
+      case receivedAndDecryptingFailed:
+        return ReceivedMessageState.decryptingFailed;
+      case receivedAndUnknownMessageType:
+        return ReceivedMessageState.unknownMessageType;
+      case pendingSending || sent || sendingError:
+        return null;
+    }
   }
 }
 
 enum SentMessageState {
   /// Waiting to be sent to server.
-  pending(0),
+  pending,
   /// Sent to server, but not yet received by the other user.
-  sent(1),
+  sent,
   /// Sending failed.
-  sendingError(2);
+  sendingError;
 
   bool isError() {
     return this == SentMessageState.sendingError;
   }
 
-  const SentMessageState(this.number);
-  final int number;
+  MessageState toDbState() {
+    switch (this) {
+      case pending:
+        return MessageState.pendingSending;
+      case sent:
+        return MessageState.sent;
+      case sendingError:
+        return MessageState.sendingError;
+    }
+  }
 }
 
 enum ReceivedMessageState {
   /// Received successfully
-  received(0),
+  received,
   /// Received, but decrypting failed
-  decryptingFailed(1),
+  decryptingFailed,
   /// Received, but message type is unknown.
-  unknownMessageType(2);
+  unknownMessageType;
 
   bool isError() {
     return this == ReceivedMessageState.decryptingFailed ||
       this == ReceivedMessageState.unknownMessageType;
   }
 
-  const ReceivedMessageState(this.number);
-  final int number;
+  const ReceivedMessageState();
+
+  MessageState toDbState() {
+    switch (this) {
+      case received:
+        return MessageState.received;
+      case decryptingFailed:
+        return MessageState.receivedAndDecryptingFailed;
+      case unknownMessageType:
+        return MessageState.receivedAndUnknownMessageType;
+    }
+  }
 }
 
 class NewMessageEntry {
@@ -83,8 +176,7 @@ class NewMessageEntry {
   final String messageText;
   /// Local/client time when message entry is inserted to database.
   final UtcDateTime localUnixTime;
-  /// Null if message was received.
-  final SentMessageState? sentMessageState;
+  final MessageState messageState;
   /// Null if message was sent.
   final ReceivedMessageState? receivedMessageState;
   /// Message number in a conversation. Server sets this value.
@@ -98,7 +190,7 @@ class NewMessageEntry {
       required this.remoteAccountId,
       required this.messageText,
       required this.localUnixTime,
-      this.sentMessageState,
+      required this.messageState,
       this.receivedMessageState,
       this.messageNumber,
       this.unixTime,
@@ -107,7 +199,7 @@ class NewMessageEntry {
 
   @override
   String toString() {
-    return "NewMessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, sentMessageState: $sentMessageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime)";
+    return "NewMessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, messageState: $messageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime)";
   }
 }
 

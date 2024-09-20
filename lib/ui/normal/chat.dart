@@ -307,8 +307,8 @@ class _ChatViewState extends State<ChatView> {
 
   List<Widget> conversationStatusText(BuildContext context, ConversationData data) {
     final String? messageText = data.message?.messageText;
-    final SentMessageState? sentMessageState = data.message?.sentMessageState;
-    final ReceivedMessageState? receivedMessageState = data.message?.receivedMessageState;
+    final SentMessageState? sentMessageState = data.message?.messageState.toSentState();
+    final ReceivedMessageState? receivedMessageState = data.message?.messageState.toReceivedState();
     final TextStyle? textStyle;
     final String text;
     if (data.count.count > 0) {
