@@ -211,6 +211,12 @@ class ProfileEntryDownloader {
         return Err(OtherProfileDownloadError());
     }
 
+    final refreshTimeUpdateResult = await db.profileAction((db) => db.updateProfileDataRefreshTimeToCurrentTime(accountId));
+    if (refreshTimeUpdateResult.isErr()) {
+      log.error("Refresh time update failed");
+      return Err(OtherProfileDownloadError());
+    }
+
     final dataEntry = await db.profileData((db) => db.getProfileEntry(accountId)).ok();
 
     if (dataEntry == null) {

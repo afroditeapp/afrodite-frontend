@@ -7,6 +7,7 @@ import 'package:logging/logging.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
+import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
@@ -84,7 +85,7 @@ class ConversationPageState extends State<ConversationPage> {
           children: [
             InkWell(
               onTap: () {
-                openProfileView(context, widget.profileEntry, noAction: true);
+                openProfileView(context, widget.profileEntry, ProfileRefreshPriority.high, noAction: true);
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0),

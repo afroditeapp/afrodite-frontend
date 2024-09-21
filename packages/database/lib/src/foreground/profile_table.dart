@@ -37,6 +37,8 @@ class Profiles extends Table {
   RealColumn get primaryContentGridCropSize => real().nullable()();
   RealColumn get primaryContentGridCropX => real().nullable()();
   RealColumn get primaryContentGridCropY => real().nullable()();
+
+  IntColumn get profileDataRefreshTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 }
 
 @DriftAccessor(tables: [Profiles])
@@ -244,5 +246,33 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
       }
     }
     return data;
+  }
+
+  Future<UtcDateTime?> getProfileDataRefreshTime(AccountId accountId) async {
+    final r = await (select(profiles)
+      ..where((t) => t.uuidAccountId.equals(accountId.aid))
+    )
+      .getSingleOrNull();
+
+    if (r == null) {
+      return null;
+    }
+
+    return r.profileDataRefreshTime;
+  }
+
+  Future<void> updateProfileDataRefreshTimeToCurrentTime(AccountId accountId) async {
+    final currentTime = UtcDateTime.now();
+    await into(profiles).insert(
+      ProfilesCompanion.insert(
+        uuidAccountId: accountId,
+        profileDataRefreshTime: Value(currentTime),
+      ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        profileDataRefreshTime: Value(currentTime),
+      ),
+        target: [profiles.uuidAccountId]
+      ),
+    );
   }
 }

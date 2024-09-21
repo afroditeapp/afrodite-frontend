@@ -4233,6 +4233,15 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   late final GeneratedColumn<double> primaryContentGridCropY =
       GeneratedColumn<double>('primary_content_grid_crop_y', aliasedName, true,
           type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _profileDataRefreshTimeMeta =
+      const VerificationMeta('profileDataRefreshTime');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+      profileDataRefreshTime = GeneratedColumn<int>(
+              'profile_data_refresh_time', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $ProfilesTable.$converterprofileDataRefreshTime);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -4253,7 +4262,8 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
         jsonProfileAttributes,
         primaryContentGridCropSize,
         primaryContentGridCropX,
-        primaryContentGridCropY
+        primaryContentGridCropY,
+        profileDataRefreshTime
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -4332,6 +4342,8 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
               data['primary_content_grid_crop_y']!,
               _primaryContentGridCropYMeta));
     }
+    context.handle(
+        _profileDataRefreshTimeMeta, const VerificationResult.success());
     return context;
   }
 
@@ -4393,6 +4405,9 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       primaryContentGridCropY: attachedDatabase.typeMapping.read(
           DriftSqlType.double,
           data['${effectivePrefix}primary_content_grid_crop_y']),
+      profileDataRefreshTime: $ProfilesTable.$converterprofileDataRefreshTime
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}profile_data_refresh_time'])),
     );
   }
 
@@ -4422,6 +4437,8 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       const NullAwareTypeConverter.wrap(ProfileVersionConverter());
   static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
       NullAwareTypeConverter.wrap(JsonList.driftConverter);
+  static TypeConverter<UtcDateTime?, int?> $converterprofileDataRefreshTime =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
 
 class Profile extends DataClass implements Insertable<Profile> {
@@ -4446,6 +4463,7 @@ class Profile extends DataClass implements Insertable<Profile> {
   final double? primaryContentGridCropSize;
   final double? primaryContentGridCropX;
   final double? primaryContentGridCropY;
+  final UtcDateTime? profileDataRefreshTime;
   const Profile(
       {required this.id,
       required this.uuidAccountId,
@@ -4465,7 +4483,8 @@ class Profile extends DataClass implements Insertable<Profile> {
       this.jsonProfileAttributes,
       this.primaryContentGridCropSize,
       this.primaryContentGridCropX,
-      this.primaryContentGridCropY});
+      this.primaryContentGridCropY,
+      this.profileDataRefreshTime});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4540,6 +4559,11 @@ class Profile extends DataClass implements Insertable<Profile> {
       map['primary_content_grid_crop_y'] =
           Variable<double>(primaryContentGridCropY);
     }
+    if (!nullToAbsent || profileDataRefreshTime != null) {
+      map['profile_data_refresh_time'] = Variable<int>($ProfilesTable
+          .$converterprofileDataRefreshTime
+          .toSql(profileDataRefreshTime));
+    }
     return map;
   }
 
@@ -4599,6 +4623,9 @@ class Profile extends DataClass implements Insertable<Profile> {
       primaryContentGridCropY: primaryContentGridCropY == null && nullToAbsent
           ? const Value.absent()
           : Value(primaryContentGridCropY),
+      profileDataRefreshTime: profileDataRefreshTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileDataRefreshTime),
     );
   }
 
@@ -4633,6 +4660,8 @@ class Profile extends DataClass implements Insertable<Profile> {
           serializer.fromJson<double?>(json['primaryContentGridCropX']),
       primaryContentGridCropY:
           serializer.fromJson<double?>(json['primaryContentGridCropY']),
+      profileDataRefreshTime:
+          serializer.fromJson<UtcDateTime?>(json['profileDataRefreshTime']),
     );
   }
   @override
@@ -4664,6 +4693,8 @@ class Profile extends DataClass implements Insertable<Profile> {
           serializer.toJson<double?>(primaryContentGridCropX),
       'primaryContentGridCropY':
           serializer.toJson<double?>(primaryContentGridCropY),
+      'profileDataRefreshTime':
+          serializer.toJson<UtcDateTime?>(profileDataRefreshTime),
     };
   }
 
@@ -4687,7 +4718,8 @@ class Profile extends DataClass implements Insertable<Profile> {
           Value<JsonList?> jsonProfileAttributes = const Value.absent(),
           Value<double?> primaryContentGridCropSize = const Value.absent(),
           Value<double?> primaryContentGridCropX = const Value.absent(),
-          Value<double?> primaryContentGridCropY = const Value.absent()}) =>
+          Value<double?> primaryContentGridCropY = const Value.absent(),
+          Value<UtcDateTime?> profileDataRefreshTime = const Value.absent()}) =>
       Profile(
         id: id ?? this.id,
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -4729,6 +4761,9 @@ class Profile extends DataClass implements Insertable<Profile> {
         primaryContentGridCropY: primaryContentGridCropY.present
             ? primaryContentGridCropY.value
             : this.primaryContentGridCropY,
+        profileDataRefreshTime: profileDataRefreshTime.present
+            ? profileDataRefreshTime.value
+            : this.profileDataRefreshTime,
       );
   Profile copyWithCompanion(ProfilesCompanion data) {
     return Profile(
@@ -4784,6 +4819,9 @@ class Profile extends DataClass implements Insertable<Profile> {
       primaryContentGridCropY: data.primaryContentGridCropY.present
           ? data.primaryContentGridCropY.value
           : this.primaryContentGridCropY,
+      profileDataRefreshTime: data.profileDataRefreshTime.present
+          ? data.profileDataRefreshTime.value
+          : this.profileDataRefreshTime,
     );
   }
 
@@ -4808,7 +4846,8 @@ class Profile extends DataClass implements Insertable<Profile> {
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
-          ..write('primaryContentGridCropY: $primaryContentGridCropY')
+          ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
+          ..write('profileDataRefreshTime: $profileDataRefreshTime')
           ..write(')'))
         .toString();
   }
@@ -4833,7 +4872,8 @@ class Profile extends DataClass implements Insertable<Profile> {
       jsonProfileAttributes,
       primaryContentGridCropSize,
       primaryContentGridCropX,
-      primaryContentGridCropY);
+      primaryContentGridCropY,
+      profileDataRefreshTime);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4856,7 +4896,8 @@ class Profile extends DataClass implements Insertable<Profile> {
           other.jsonProfileAttributes == this.jsonProfileAttributes &&
           other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
           other.primaryContentGridCropX == this.primaryContentGridCropX &&
-          other.primaryContentGridCropY == this.primaryContentGridCropY);
+          other.primaryContentGridCropY == this.primaryContentGridCropY &&
+          other.profileDataRefreshTime == this.profileDataRefreshTime);
 }
 
 class ProfilesCompanion extends UpdateCompanion<Profile> {
@@ -4879,6 +4920,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<double?> primaryContentGridCropSize;
   final Value<double?> primaryContentGridCropX;
   final Value<double?> primaryContentGridCropY;
+  final Value<UtcDateTime?> profileDataRefreshTime;
   const ProfilesCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -4899,6 +4941,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
     this.primaryContentGridCropY = const Value.absent(),
+    this.profileDataRefreshTime = const Value.absent(),
   });
   ProfilesCompanion.insert({
     this.id = const Value.absent(),
@@ -4920,6 +4963,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
     this.primaryContentGridCropY = const Value.absent(),
+    this.profileDataRefreshTime = const Value.absent(),
   }) : uuidAccountId = Value(uuidAccountId);
   static Insertable<Profile> custom({
     Expression<int>? id,
@@ -4941,6 +4985,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     Expression<double>? primaryContentGridCropSize,
     Expression<double>? primaryContentGridCropX,
     Expression<double>? primaryContentGridCropY,
+    Expression<int>? profileDataRefreshTime,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -4969,6 +5014,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
         'primary_content_grid_crop_x': primaryContentGridCropX,
       if (primaryContentGridCropY != null)
         'primary_content_grid_crop_y': primaryContentGridCropY,
+      if (profileDataRefreshTime != null)
+        'profile_data_refresh_time': profileDataRefreshTime,
     });
   }
 
@@ -4991,7 +5038,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       Value<JsonList?>? jsonProfileAttributes,
       Value<double?>? primaryContentGridCropSize,
       Value<double?>? primaryContentGridCropX,
-      Value<double?>? primaryContentGridCropY}) {
+      Value<double?>? primaryContentGridCropY,
+      Value<UtcDateTime?>? profileDataRefreshTime}) {
     return ProfilesCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -5019,6 +5067,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           primaryContentGridCropX ?? this.primaryContentGridCropX,
       primaryContentGridCropY:
           primaryContentGridCropY ?? this.primaryContentGridCropY,
+      profileDataRefreshTime:
+          profileDataRefreshTime ?? this.profileDataRefreshTime,
     );
   }
 
@@ -5099,6 +5149,11 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       map['primary_content_grid_crop_y'] =
           Variable<double>(primaryContentGridCropY.value);
     }
+    if (profileDataRefreshTime.present) {
+      map['profile_data_refresh_time'] = Variable<int>($ProfilesTable
+          .$converterprofileDataRefreshTime
+          .toSql(profileDataRefreshTime.value));
+    }
     return map;
   }
 
@@ -5123,7 +5178,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
-          ..write('primaryContentGridCropY: $primaryContentGridCropY')
+          ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
+          ..write('profileDataRefreshTime: $profileDataRefreshTime')
           ..write(')'))
         .toString();
   }

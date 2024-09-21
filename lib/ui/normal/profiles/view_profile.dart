@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/profile/view_profiles.dart';
@@ -32,6 +33,7 @@ extension type ProfileHeroTag(ProfileHeroTagRaw value) {
 void openProfileView(
   BuildContext context,
   ProfileEntry profile,
+  ProfileRefreshPriority priority,
   {
     ProfileHeroTag? heroTag,
     bool noAction = false,
@@ -42,7 +44,7 @@ void openProfileView(
     context,
     MaterialPage<void>(child:
       BlocProvider(
-        create: (_) => ViewProfileBloc(profile),
+        create: (_) => ViewProfileBloc(profile, priority),
         lazy: false,
         child: ViewProfilePage(
           pageKey: pageKey,

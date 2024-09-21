@@ -268,7 +268,7 @@ class _ProfileGridState extends State<ProfileGrid> {
                           // Hero animation is disabled currently as UI looks better
                           // without it.
                           // openProfileView(context, item.profile, heroTag: item.heroTag);
-                          openProfileView(context, item.profile, heroTag: null);
+                          openProfileView(context, item.profile, ProfileRefreshPriority.low, heroTag: null);
                         },
                       ),
                     ),

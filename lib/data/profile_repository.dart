@@ -15,6 +15,7 @@ import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/utils/app_error.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:utils/utils.dart';
 
 var log = Logger("ProfileRepository");
 
@@ -174,8 +175,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return entry;
   }
 
-  /// Get cached (if available) and then latest profile (if available).
-  Stream<GetProfileResultClient> getProfileStream(AccountId id) async* {
+  /// Get cached (if available) and then latest profile (if available and enough
+  /// time has passed since last profile data refresh).
+  Stream<GetProfileResultClient> getProfileStream(AccountId id, ProfileRefreshPriority priority) async* {
     // TODO: perhaps more detailed error message, so that changes from public to
     // private profile can be handled.
 
@@ -184,6 +186,18 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       yield GetProfileSuccess(profile);
     }
 
+    final lastRefreshTime = await db.profileData((db) => db.getProfileDataRefreshTime(id)).ok();
+    if (profile != null && lastRefreshTime != null) {
+      final currentTime = UtcDateTime.now();
+      final difference = currentTime.dateTime.difference(lastRefreshTime.dateTime);
+      final int timePassedAtLeastSeconds = switch (priority) {
+        ProfileRefreshPriority.high => 60,
+        ProfileRefreshPriority.low => 60 * 5,
+      };
+      if (difference.inSeconds < timePassedAtLeastSeconds) {
+        return;
+      }
+    }
 
     final result = await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(id);
     switch (result) {
@@ -483,4 +497,11 @@ enum ConversationChangeType {
   messageReceived,
   messageRemoved,
   messageResent,
+}
+
+enum ProfileRefreshPriority {
+  /// Refresh if 1 minute have passed since last refresh
+  high,
+  /// Refresh if 5 minutes have passed since last refresh
+  low,
 }

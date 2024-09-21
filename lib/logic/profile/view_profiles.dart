@@ -50,7 +50,9 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
   StreamSubscription<GetProfileResultClient>? _getProfileDataSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
 
-  ViewProfileBloc(ProfileEntry currentProfile) : super(ViewProfilesData(profile: currentProfile)) {
+  final ProfileRefreshPriority priority;
+
+  ViewProfileBloc(ProfileEntry currentProfile, this.priority) : super(ViewProfilesData(profile: currentProfile)) {
     on<InitEvent>((data, emit) async {
       final isInFavorites = await profile.isInFavorites(state.profile.uuid);
       final isBlocked = await chat.isInSentBlocks(state.profile.uuid) ||
@@ -193,7 +195,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
       });
 
     _getProfileDataSubscription = profile
-      .getProfileStream(state.profile.uuid)
+      .getProfileStream(state.profile.uuid, priority)
       .listen((event) {
         add(HandleProfileResult(event));
       });
