@@ -27,25 +27,32 @@ class Conversations extends Table {
 class DaoConversations extends DatabaseAccessor<AccountDatabase> with _$DaoConversationsMixin {
   DaoConversations(AccountDatabase db) : super(db);
 
-  Future<void> updatePublicKey(
-    AccountId accountId,
+  Future<void> updatePublicKeyAndAddInfoMessage(
+    AccountId localAccountId,
+    AccountId remoteAccountId,
     api.PublicKey? value,
+    InfoMessageState? infoState,
   ) async {
-    await into(conversations).insert(
-      ConversationsCompanion.insert(
-        uuidAccountId: accountId,
-        publicKeyData: Value(value?.data),
-        publicKeyId: Value(value?.id),
-        publicKeyVersion: Value(value?.version),
-      ),
-      onConflict: DoUpdate((old) => ConversationsCompanion(
-        publicKeyData: Value(value?.data),
-        publicKeyId: Value(value?.id),
-        publicKeyVersion: Value(value?.version),
-      ),
-        target: [conversations.uuidAccountId]
-      ),
-    );
+    await transaction(() async {
+      await into(conversations).insert(
+        ConversationsCompanion.insert(
+          uuidAccountId: remoteAccountId,
+          publicKeyData: Value(value?.data),
+          publicKeyId: Value(value?.id),
+          publicKeyVersion: Value(value?.version),
+        ),
+        onConflict: DoUpdate((old) => ConversationsCompanion(
+          publicKeyData: Value(value?.data),
+          publicKeyId: Value(value?.id),
+          publicKeyVersion: Value(value?.version),
+        ),
+          target: [conversations.uuidAccountId]
+        ),
+      );
+      if (infoState != null) {
+        await db.daoMessages.insertInfoMessage(localAccountId, remoteAccountId, infoState);
+      }
+    });
   }
 
   Future<api.PublicKey?> getPublicKey(AccountId accountId) async {

@@ -46,8 +46,8 @@ final GlobalKey<LikeViewContentState> likeViewContentState = GlobalKey();
 
 /*
 
-TODO(prod): Remove likeViewContentState once server API paging is better (multiple
-iterators are supported).
+TODO(prod): The LikeGridInstanceManagerBloc is not enough as there was GlobalKey
+error. Perhaps init state changes using Future.delay(Duration.zero)?
 
 If that is not done perhaps open the likes screen only when the original widget
 is disappeared.

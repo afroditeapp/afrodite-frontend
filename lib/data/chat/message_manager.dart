@@ -72,6 +72,9 @@ class ResendSendFailedMessage extends MessageManagerCommand {
   }
 }
 
+// TODO(prod): Make possible to retry decryption if public key downloading
+//             fails. New received message state is needed?
+
 /// Synchronized message actions
 class MessageManager extends LifecycleMethods {
   final MessageKeyManager messageKeyManager;
@@ -375,6 +378,14 @@ class MessageManager extends LifecycleMethods {
         }
     }
 
+    final PublicKey receiverPublicKey;
+    final receiverPublicKeyOrNull = await _getPublicKeyForForeignAccount(accountId, forceDownload: false).ok();
+    if (receiverPublicKeyOrNull == null) {
+      yield const ErrorBeforeMessageSaving();
+      return;
+    }
+    receiverPublicKey = receiverPublicKeyOrNull;
+
     final saveMessageResult = await db.messageData((db) => db.insertToBeSentMessage(
       currentUser,
       accountId,
@@ -405,13 +416,6 @@ class MessageManager extends LifecycleMethods {
       yield ErrorAfterMessageSaving(localId);
       return;
     }
-    PublicKey receiverPublicKey;
-    final receiverPublicKeyOrNull = await _getPublicKeyForForeignAccount(accountId, forceDownload: false).ok();
-    if (receiverPublicKeyOrNull == null) {
-      yield ErrorAfterMessageSaving(localId);
-      return;
-    }
-    receiverPublicKey = receiverPublicKeyOrNull;
 
     final messageBytes = MessageConverter().textToBytes(message).ok();
     if (messageBytes == null) {
@@ -436,7 +440,6 @@ class MessageManager extends LifecycleMethods {
 
     UnixTime unixTimeFromServer;
     MessageNumber messageNumberFromServer;
-    var publicKeyRefreshTried = false;
     var messageSenderAcknowledgementTried = false;
     while (true) {
       final result = await api.chat((api) => api.postSendMessage(
@@ -476,23 +479,11 @@ class MessageManager extends LifecycleMethods {
       }
 
       if (result.errorReceiverPublicKeyOutdated) {
-        if (publicKeyRefreshTried) {
-          yield ErrorAfterMessageSaving(localId);
-          return;
-        } else {
-          publicKeyRefreshTried = true;
+        log.error("Send message error: public key outdated");
 
-          // Retry once after public key refresh
-          log.error("Send message error: public key outdated");
-
-          final receiverPublicKeyOrNull = await _getPublicKeyForForeignAccount(accountId, forceDownload: true).ok();
-          if (receiverPublicKeyOrNull == null) {
-            yield ErrorAfterMessageSaving(localId);
-            return;
-          }
-          receiverPublicKey = receiverPublicKeyOrNull;
-          continue;
-        }
+        await _getPublicKeyForForeignAccount(accountId, forceDownload: true);
+        yield ErrorAfterMessageSaving(localId);
+        return;
       }
 
       final unixTimeFromResult = result.ut;
@@ -588,8 +579,30 @@ class MessageManager extends LifecycleMethods {
   }
 
   Future<Result<void, void>> _refreshForeignPublicKey(AccountId accountId) async {
-    return await api.chat((api) => api.getPublicKey(accountId.aid, 1))
-      .andThen((key) => db.accountAction((db) => db.daoConversations.updatePublicKey(accountId, key.key)))
+    final keyResult = await api.chat((api) => api.getPublicKey(accountId.aid, 1));
+    final PublicKey? key;
+    switch (keyResult) {
+      case Ok(:final v):
+        key = v.key;
+      case Err():
+        return const Err(null);
+    }
+
+    final InfoMessageState? infoState;
+    switch (await db.accountData((db) => db.daoConversations.getPublicKey(accountId))) {
+      case Ok(:final v):
+        if (v == null && key != null) {
+          infoState = InfoMessageState.infoMatchFirstPublicKeyReceived;
+        } else if (v != key) {
+          infoState = InfoMessageState.infoMatchPublicKeyChanged;
+        } else {
+          infoState = null;
+        }
+      case Err():
+        return const Err(null);
+    }
+
+    return await db.accountAction((db) => db.daoConversations.updatePublicKeyAndAddInfoMessage(currentUser, accountId, key, infoState))
       .mapErr((_) => null);
   }
 

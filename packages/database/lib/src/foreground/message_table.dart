@@ -99,7 +99,6 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     ));
   }
 
-  /// Null message means decrypting failure
   Future<void> insertReceivedMessage(
     AccountId localAccountId,
     PendingMessage entry,
@@ -119,6 +118,23 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     await transaction(() async {
       await _insert(message);
       await db.daoMatches.setCurrentTimeToConversationLastChanged(entry.id.sender);
+    });
+  }
+
+  Future<void> insertInfoMessage(
+    AccountId localAccountId,
+    AccountId remoteAccountId,
+    InfoMessageState state,
+  ) async {
+    final message = NewMessageEntry(
+      localAccountId: localAccountId,
+      remoteAccountId: remoteAccountId,
+      localUnixTime: UtcDateTime.now(),
+      messageText: "",
+      messageState: state.toDbState(),
+    );
+    await transaction(() async {
+      await _insert(message);
     });
   }
 

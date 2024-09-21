@@ -57,14 +57,24 @@ enum MessageState {
   /// Message received, but decrypting failed.
   receivedAndDecryptingFailed(_VALUE_RECEIVED_AND_DECRYPTING_FAILED),
   /// Message received, but message type is unknown.
-  receivedAndUnknownMessageType(_VALUE_RECEIVED_AND_UNKNOWN_MESSAGE_TYPE);
+  receivedAndUnknownMessageType(_VALUE_RECEIVED_AND_UNKNOWN_MESSAGE_TYPE),
+
+  // Info messages which client automatically adds
+
+  /// Initial public key for match received
+  infoMatchFirstPublicKeyReceived(_VALUE_INFO_MATCH_FIRST_PUBLIC_KEY_RECEIVED),
+  infoMatchPublicKeyChanged(_VALUE_INFO_MATCH_PUBLIC_KEY_CHANGED);
 
   static const int _VALUE_PENDING_SENDING = 0;
   static const int _VALUE_SENT = 1;
   static const int _VALUE_SENDING_ERROR = 2;
-  static const int _VALUE_RECEIVED = 10;
-  static const int _VALUE_RECEIVED_AND_DECRYPTING_FAILED = 11;
-  static const int _VALUE_RECEIVED_AND_UNKNOWN_MESSAGE_TYPE = 12;
+
+  static const int _VALUE_RECEIVED = 20;
+  static const int _VALUE_RECEIVED_AND_DECRYPTING_FAILED = 21;
+  static const int _VALUE_RECEIVED_AND_UNKNOWN_MESSAGE_TYPE = 22;
+
+  static const int _VALUE_INFO_MATCH_FIRST_PUBLIC_KEY_RECEIVED = 40;
+  static const int _VALUE_INFO_MATCH_PUBLIC_KEY_CHANGED = 41;
 
   static const int MIN_VALUE_SENT_MESSAGE = _VALUE_PENDING_SENDING;
   static const int MAX_VALUE_SENT_MESSAGE = _VALUE_SENDING_ERROR;
@@ -80,6 +90,8 @@ enum MessageState {
       _VALUE_RECEIVED => received,
       _VALUE_RECEIVED_AND_DECRYPTING_FAILED => receivedAndDecryptingFailed,
       _VALUE_RECEIVED_AND_UNKNOWN_MESSAGE_TYPE => receivedAndUnknownMessageType,
+      _VALUE_INFO_MATCH_FIRST_PUBLIC_KEY_RECEIVED => infoMatchFirstPublicKeyReceived,
+      _VALUE_INFO_MATCH_PUBLIC_KEY_CHANGED => infoMatchPublicKeyChanged,
       _ => null,
     };
   }
@@ -96,7 +108,11 @@ enum MessageState {
         return SentMessageState.sent;
       case sendingError:
         return SentMessageState.sendingError;
-      case received || receivedAndDecryptingFailed || receivedAndUnknownMessageType:
+      case received ||
+        receivedAndDecryptingFailed ||
+        receivedAndUnknownMessageType ||
+        infoMatchFirstPublicKeyReceived ||
+        infoMatchPublicKeyChanged:
         return null;
     }
   }
@@ -113,7 +129,27 @@ enum MessageState {
         return ReceivedMessageState.decryptingFailed;
       case receivedAndUnknownMessageType:
         return ReceivedMessageState.unknownMessageType;
-      case pendingSending || sent || sendingError:
+      case pendingSending ||
+        sent ||
+        sendingError ||
+        infoMatchFirstPublicKeyReceived ||
+        infoMatchPublicKeyChanged:
+        return null;
+    }
+  }
+
+  InfoMessageState? toInfoState() {
+    switch (this) {
+      case infoMatchFirstPublicKeyReceived:
+        return InfoMessageState.infoMatchFirstPublicKeyReceived;
+      case infoMatchPublicKeyChanged:
+        return InfoMessageState.infoMatchPublicKeyChanged;
+      case received ||
+        receivedAndDecryptingFailed ||
+        receivedAndUnknownMessageType ||
+        pendingSending ||
+        sent ||
+        sendingError:
         return null;
     }
   }
@@ -166,6 +202,22 @@ enum ReceivedMessageState {
         return MessageState.receivedAndDecryptingFailed;
       case unknownMessageType:
         return MessageState.receivedAndUnknownMessageType;
+    }
+  }
+}
+
+enum InfoMessageState {
+  infoMatchFirstPublicKeyReceived,
+  infoMatchPublicKeyChanged;
+
+  const InfoMessageState();
+
+  MessageState toDbState() {
+    switch (this) {
+      case infoMatchFirstPublicKeyReceived:
+        return MessageState.infoMatchFirstPublicKeyReceived;
+      case infoMatchPublicKeyChanged:
+        return MessageState.infoMatchPublicKeyChanged;
     }
   }
 }

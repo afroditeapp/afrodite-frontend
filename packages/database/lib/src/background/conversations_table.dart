@@ -49,7 +49,7 @@ class DaoConversationsBackground extends DatabaseAccessor<AccountBackgroundDatab
   }
 
   Future<UnreadMessagesCount> incrementUnreadMessagesCount(AccountId accountId) async {
-    return transaction(() async {
+    return await transaction(() async {
       final currentUnreadMessageCount = await db.daoConversationsBackground.getUnreadMessageCount(accountId) ?? UnreadMessagesCount(0);
       final updatedValue = UnreadMessagesCount(currentUnreadMessageCount.count + 1);
       await db.daoConversationsBackground.setUnreadMessagesCount(accountId, updatedValue);

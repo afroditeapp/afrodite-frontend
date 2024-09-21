@@ -49,7 +49,7 @@ class MessageRendererState extends State<MessageRenderer> {
                   child: messageRowWidget(
                     context,
                     message.entry,
-                    key: key,
+                    keyFromMessageRenderer: key,
                     parentTextStyle: style.style,
                   ),
                 ),
