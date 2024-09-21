@@ -14,7 +14,7 @@ class Attribute {
   /// Returns a new [Attribute] instance.
   Attribute({
     this.editable = true,
-    required this.icon,
+    this.icon,
     required this.id,
     required this.key,
     required this.mode,
@@ -31,7 +31,7 @@ class Attribute {
   bool editable;
 
   /// Icon for the attribute.
-  String icon;
+  String? icon;
 
   /// Numeric unique identifier for the attribute.
   ///
@@ -84,7 +84,7 @@ class Attribute {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (editable.hashCode) +
-    (icon.hashCode) +
+    (icon == null ? 0 : icon!.hashCode) +
     (id.hashCode) +
     (key.hashCode) +
     (mode.hashCode) +
@@ -102,7 +102,11 @@ class Attribute {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'editable'] = this.editable;
+    if (this.icon != null) {
       json[r'icon'] = this.icon;
+    } else {
+      json[r'icon'] = null;
+    }
       json[r'id'] = this.id;
       json[r'key'] = this.key;
       json[r'mode'] = this.mode;
@@ -136,7 +140,7 @@ class Attribute {
 
       return Attribute(
         editable: mapValueOfType<bool>(json, r'editable') ?? true,
-        icon: mapValueOfType<String>(json, r'icon')!,
+        icon: mapValueOfType<String>(json, r'icon'),
         id: mapValueOfType<int>(json, r'id')!,
         key: mapValueOfType<String>(json, r'key')!,
         mode: AttributeMode.fromJson(json[r'mode'])!,
@@ -194,7 +198,6 @@ class Attribute {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'icon',
     'id',
     'key',
     'mode',
