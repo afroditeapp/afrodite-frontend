@@ -40,35 +40,23 @@ class LikeView extends BottomNavigationScreen {
 
 /// Use global instance for likes grid as notification navigation makes
 /// possible to open a new screen which displays likes. Moving iterator state
-/// to here from repository is not possible currently as there will be
-/// server API change which changes likes to have paging.
+/// to here from repository is not possible as server only supports only one
+/// iterator instance.
 final GlobalKey<LikeViewContentState> likeViewContentState = GlobalKey();
-
-/*
-
-TODO(prod): The LikeGridInstanceManagerBloc is not enough as there was GlobalKey
-error. Perhaps init state changes using Future.delay(Duration.zero)?
-
-If that is not done perhaps open the likes screen only when the original widget
-is disappeared.
-
-════════ Exception caught by widgets library ═══════════════════════════════════
-The following assertion was thrown while finalizing the widget tree:
-Multiple widgets used the same GlobalKey.
-The key [LabeledGlobalKey<LikeViewContentState>#099b4] was used by multiple widgets. The parents of those widgets were:
-- BlocListener<LikeGridInstanceManagerBloc, int>(state: _BlocListenerBaseState<LikeGridInstanceManagerBloc, int>#c21cd)
-- BlocListener<LikeGridInstanceManagerBloc, int>(state: _BlocListenerBaseState<LikeGridInstanceManagerBloc, int>#85737)
-A GlobalKey can only be specified on one widget at a time in the widget tree.
-
-*/
 
 class _LikeViewState extends State<LikeView> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LikeGridInstanceManagerBloc, LikeGridInstanceManagerData>(
       builder: (context, state) {
-        if (state.currentlyVisibleId == 0) {
+        if (state.currentlyVisibleId == 0 && state.visible) {
           return LikeViewContent(key: likeViewContentState);
+        } else if (state.currentlyVisibleId == 0 && !state.visible) {
+          final bloc = context.read<LikeGridInstanceManagerBloc>();
+          Future.delayed(Duration.zero, () {
+            bloc.add(SetVisible(state.currentlyVisibleId));
+          });
+          return Center(child: Text(context.strings.generic_error));
         } else {
           return Center(child: Text(context.strings.generic_error));
         }
@@ -119,8 +107,14 @@ class _LikesScreenState extends State<LikesScreen> {
   Widget content() {
     return BlocBuilder<LikeGridInstanceManagerBloc, LikeGridInstanceManagerData>(
       builder: (context, state) {
-        if (state.currentlyVisibleId == widget.gridInstanceId) {
+        if (state.currentlyVisibleId == widget.gridInstanceId && state.visible) {
           return LikeViewContent(key: likeViewContentState);
+        } else if (state.currentlyVisibleId == widget.gridInstanceId && !state.visible) {
+          final bloc = context.read<LikeGridInstanceManagerBloc>();
+          Future.delayed(Duration.zero, () {
+            bloc.add(SetVisible(state.currentlyVisibleId));
+          });
+          return const SizedBox.shrink();
         } else {
           return const SizedBox.shrink();
         }
