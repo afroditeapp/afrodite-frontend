@@ -103,6 +103,8 @@ String messageWidgetText(
     return context.strings.conversation_screen_message_state_decrypting_failed;
   } else if (receivedMessageState == ReceivedMessageState.unknownMessageType) {
     return context.strings.conversation_screen_message_state_unknown_message_type;
+  } else if (receivedMessageState == ReceivedMessageState.publicKeyDownloadFailed) {
+    return context.strings.conversation_screen_message_state_public_key_download_failed;
   } else {
     return message;
   }
@@ -269,7 +271,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
           title: Text(context.strings.generic_delete),
           onTap: () async {
             final bloc = screenContext.read<ConversationBloc>();
-            if (bloc.state.isMessageRemovingInProgress || bloc.state.isMessageResendingInProgress) {
+            if (bloc.state.isActionsInProgress()) {
               showSnackBar(context.strings.generic_previous_action_in_progress);
             } else {
               bloc.add(RemoveSendFailedMessage(entry.remoteAccountId, entry.localId));
@@ -281,10 +283,22 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
           title: Text(context.strings.generic_resend),
           onTap: () async {
             final bloc = screenContext.read<ConversationBloc>();
-            if (bloc.state.isMessageRemovingInProgress || bloc.state.isMessageResendingInProgress) {
+            if (bloc.state.isActionsInProgress()) {
               showSnackBar(context.strings.generic_previous_action_in_progress);
             } else {
               bloc.add(ResendSendFailedMessage(entry.remoteAccountId, entry.localId));
+            }
+            MyNavigator.removePage(context, pageKey, null);
+          },
+        ),
+        if (entry.messageState.toReceivedState() == ReceivedMessageState.publicKeyDownloadFailed) ListTile(
+          title: Text(context.strings.generic_retry),
+          onTap: () async {
+            final bloc = screenContext.read<ConversationBloc>();
+            if (bloc.state.isActionsInProgress()) {
+              showSnackBar(context.strings.generic_previous_action_in_progress);
+            } else {
+              bloc.add(RetryPublicKeyDownload(entry.remoteAccountId, entry.localId));
             }
             MyNavigator.removePage(context, pageKey, null);
           },
@@ -314,6 +328,8 @@ void closeActionsAndOpenDetails(BuildContext screenContext, MessageEntry entry, 
     stateText = screenContext.strings.conversation_screen_message_state_decrypting_failed;
   } else if (receivedMessageState == ReceivedMessageState.unknownMessageType) {
     stateText = screenContext.strings.conversation_screen_message_state_unknown_message_type;
+  } else if (receivedMessageState == ReceivedMessageState.publicKeyDownloadFailed) {
+    stateText = screenContext.strings.conversation_screen_message_state_public_key_download_failed;
   } else {
     stateText = "";
   }

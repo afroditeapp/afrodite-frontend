@@ -138,11 +138,15 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     });
   }
 
+  /// Null values are not updated
   Future<void> updateReceivedMessageState(
     AccountId localAccountId,
     AccountId remoteAccountId,
     MessageNumber messageNumber,
     ReceivedMessageState receivedMessageState,
+    {
+      String? messageText,
+    }
   ) async {
     await (update(messages)
       ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
@@ -150,6 +154,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       ..where((t) => t.messageNumber.equals(messageNumber.mn))
     ).write(MessagesCompanion(
       messageState: Value(receivedMessageState.toDbState().number),
+      messageText: Value.absentIfNull(messageText),
     ));
   }
 

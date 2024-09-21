@@ -9,6 +9,8 @@ part 'conversation_bloc.freezed.dart';
 
 @freezed
 class ConversationData with _$ConversationData {
+  const ConversationData._();
+
   factory ConversationData({
     required AccountId accountId,
     @Default(true) bool isMatch,
@@ -17,11 +19,19 @@ class ConversationData with _$ConversationData {
     @Default(false) bool isMessageSendingInProgress,
     @Default(false) bool isMessageRemovingInProgress,
     @Default(false) bool isMessageResendingInProgress,
+    @Default(false) bool isRetryPublicKeyDownloadInProgress,
     ReadyVisibleMessageListUpdate? visibleMessages,
 
     // Message renderer
     EntryAndJumpInfo? rendererCurrentlyRendering,
   }) = _ConversationData;
+
+  bool isActionsInProgress() {
+    return isMessageSendingInProgress ||
+    isMessageRemovingInProgress ||
+    isMessageResendingInProgress ||
+    isRetryPublicKeyDownloadInProgress;
+  }
 }
 
 /// Wrapper for messages to prevent printing to console

@@ -28,6 +28,7 @@ mixin _$ConversationData {
   bool get isMessageSendingInProgress => throw _privateConstructorErrorConversationData;
   bool get isMessageRemovingInProgress => throw _privateConstructorErrorConversationData;
   bool get isMessageResendingInProgress => throw _privateConstructorErrorConversationData;
+  bool get isRetryPublicKeyDownloadInProgress => throw _privateConstructorErrorConversationData;
   ReadyVisibleMessageListUpdate? get visibleMessages => throw _privateConstructorErrorConversationData;
   EntryAndJumpInfo? get rendererCurrentlyRendering => throw _privateConstructorErrorConversationData;
 
@@ -39,13 +40,14 @@ mixin _$ConversationData {
     bool? isMessageSendingInProgress,
     bool? isMessageRemovingInProgress,
     bool? isMessageResendingInProgress,
+    bool? isRetryPublicKeyDownloadInProgress,
     ReadyVisibleMessageListUpdate? visibleMessages,
     EntryAndJumpInfo? rendererCurrentlyRendering,
   }) => throw _privateConstructorErrorConversationData;
 }
 
 /// @nodoc
-abstract class _ConversationData implements ConversationData {
+abstract class _ConversationData extends ConversationData {
   factory _ConversationData({
     required AccountId accountId,
     bool isMatch,
@@ -54,19 +56,22 @@ abstract class _ConversationData implements ConversationData {
     bool isMessageSendingInProgress,
     bool isMessageRemovingInProgress,
     bool isMessageResendingInProgress,
+    bool isRetryPublicKeyDownloadInProgress,
     ReadyVisibleMessageListUpdate? visibleMessages,
     EntryAndJumpInfo? rendererCurrentlyRendering,
   }) = _$ConversationDataImpl;
+  const _ConversationData._() : super._();
 }
 
 /// @nodoc
-class _$ConversationDataImpl with DiagnosticableTreeMixin implements _ConversationData {
+class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMixin {
   static const bool _isMatchDefaultValue = true;
   static const bool _isBlockedDefaultValue = false;
   static const bool _resetMessageInputFieldDefaultValue = false;
   static const bool _isMessageSendingInProgressDefaultValue = false;
   static const bool _isMessageRemovingInProgressDefaultValue = false;
   static const bool _isMessageResendingInProgressDefaultValue = false;
+  static const bool _isRetryPublicKeyDownloadInProgressDefaultValue = false;
   
   _$ConversationDataImpl({
     required this.accountId,
@@ -76,9 +81,10 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
     this.isMessageSendingInProgress = _isMessageSendingInProgressDefaultValue,
     this.isMessageRemovingInProgress = _isMessageRemovingInProgressDefaultValue,
     this.isMessageResendingInProgress = _isMessageResendingInProgressDefaultValue,
+    this.isRetryPublicKeyDownloadInProgress = _isRetryPublicKeyDownloadInProgressDefaultValue,
     this.visibleMessages,
     this.rendererCurrentlyRendering,
-  });
+  }) : super._();
 
   @override
   final AccountId accountId;
@@ -95,13 +101,15 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
   @override
   final bool isMessageResendingInProgress;
   @override
+  final bool isRetryPublicKeyDownloadInProgress;
+  @override
   final ReadyVisibleMessageListUpdate? visibleMessages;
   @override
   final EntryAndJumpInfo? rendererCurrentlyRendering;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ConversationData(accountId: $accountId, isMatch: $isMatch, isBlocked: $isBlocked, resetMessageInputField: $resetMessageInputField, isMessageSendingInProgress: $isMessageSendingInProgress, isMessageRemovingInProgress: $isMessageRemovingInProgress, isMessageResendingInProgress: $isMessageResendingInProgress, visibleMessages: $visibleMessages, rendererCurrentlyRendering: $rendererCurrentlyRendering)';
+    return 'ConversationData(accountId: $accountId, isMatch: $isMatch, isBlocked: $isBlocked, resetMessageInputField: $resetMessageInputField, isMessageSendingInProgress: $isMessageSendingInProgress, isMessageRemovingInProgress: $isMessageRemovingInProgress, isMessageResendingInProgress: $isMessageResendingInProgress, isRetryPublicKeyDownloadInProgress: $isRetryPublicKeyDownloadInProgress, visibleMessages: $visibleMessages, rendererCurrentlyRendering: $rendererCurrentlyRendering)';
   }
 
   @override
@@ -116,6 +124,7 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
       ..add(DiagnosticsProperty('isMessageSendingInProgress', isMessageSendingInProgress))
       ..add(DiagnosticsProperty('isMessageRemovingInProgress', isMessageRemovingInProgress))
       ..add(DiagnosticsProperty('isMessageResendingInProgress', isMessageResendingInProgress))
+      ..add(DiagnosticsProperty('isRetryPublicKeyDownloadInProgress', isRetryPublicKeyDownloadInProgress))
       ..add(DiagnosticsProperty('visibleMessages', visibleMessages))
       ..add(DiagnosticsProperty('rendererCurrentlyRendering', rendererCurrentlyRendering));
   }
@@ -139,6 +148,8 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
           other.isMessageRemovingInProgress == isMessageRemovingInProgress) &&
         (identical(other.isMessageResendingInProgress, isMessageResendingInProgress) ||
           other.isMessageResendingInProgress == isMessageResendingInProgress) &&
+        (identical(other.isRetryPublicKeyDownloadInProgress, isRetryPublicKeyDownloadInProgress) ||
+          other.isRetryPublicKeyDownloadInProgress == isRetryPublicKeyDownloadInProgress) &&
         (identical(other.visibleMessages, visibleMessages) ||
           other.visibleMessages == visibleMessages) &&
         (identical(other.rendererCurrentlyRendering, rendererCurrentlyRendering) ||
@@ -156,6 +167,7 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
     isMessageSendingInProgress,
     isMessageRemovingInProgress,
     isMessageResendingInProgress,
+    isRetryPublicKeyDownloadInProgress,
     visibleMessages,
     rendererCurrentlyRendering,
   );
@@ -169,6 +181,7 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
     Object? isMessageSendingInProgress,
     Object? isMessageRemovingInProgress,
     Object? isMessageResendingInProgress,
+    Object? isRetryPublicKeyDownloadInProgress,
     Object? visibleMessages = _detectDefaultValueInCopyWith,
     Object? rendererCurrentlyRendering = _detectDefaultValueInCopyWith,
   }) => _$ConversationDataImpl(
@@ -179,6 +192,7 @@ class _$ConversationDataImpl with DiagnosticableTreeMixin implements _Conversati
     isMessageSendingInProgress: (isMessageSendingInProgress ?? this.isMessageSendingInProgress) as bool,
     isMessageRemovingInProgress: (isMessageRemovingInProgress ?? this.isMessageRemovingInProgress) as bool,
     isMessageResendingInProgress: (isMessageResendingInProgress ?? this.isMessageResendingInProgress) as bool,
+    isRetryPublicKeyDownloadInProgress: (isRetryPublicKeyDownloadInProgress ?? this.isRetryPublicKeyDownloadInProgress) as bool,
     visibleMessages: (visibleMessages == _detectDefaultValueInCopyWith ? this.visibleMessages : visibleMessages) as ReadyVisibleMessageListUpdate?,
     rendererCurrentlyRendering: (rendererCurrentlyRendering == _detectDefaultValueInCopyWith ? this.rendererCurrentlyRendering : rendererCurrentlyRendering) as EntryAndJumpInfo?,
   );

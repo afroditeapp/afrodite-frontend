@@ -14,6 +14,7 @@
     <string name="generic_disabled" description="Generic disabled text">Disabled</string>
     <string name="generic_details" description="Generic details text">Details</string>
     <string name="generic_resend" description="Generic resend text">Resend</string>
+    <string name="generic_retry" description="Generic retry text">Retry</string>
     <string name="generic_delete" description="Generic delete text">Delete</string>
     <string name="generic_message" description="Generic message text">Message</string>
     <string name="generic_time" description="Generic time text">Time</string>
@@ -289,6 +290,7 @@
     <string name="conversation_screen_message_state_sending_failed" description="Message state text that message sending failed">Sending failed</string>
     <string name="conversation_screen_message_state_decrypting_failed" description="Message state text that message decrypting failed">Decrypting failed</string>
     <string name="conversation_screen_message_state_unknown_message_type" description="Message state text that message type is unknown">Unknown message type</string>
+    <string name="conversation_screen_message_state_public_key_download_failed" description="Message state text that public key download failed">Public key download failed</string>
     <string name="conversation_screen_message_state_received_successfully" description="Message state text that message was received successfully">Received successfully</string>
     <string name="conversation_screen_message_details_message_id" description="Title text for message ID value">Message ID</string>
     <string name="conversation_screen_message_error_is_actually_sent_successfully" description="Message remove or resend error that message is actually sent successfully">The message is actually sent successfully</string>

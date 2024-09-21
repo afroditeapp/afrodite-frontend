@@ -435,4 +435,10 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     messageManager.queueCmd(cmd);
     return await cmd.waitUntilReady();
   }
+
+  Future<Result<void, RetryPublicKeyDownloadError>> retryPublicKeyDownload(AccountId receiverAccountId, LocalMessageId localId) async {
+    final cmd = RetryPublicKeyDownload(receiverAccountId, localId);
+    messageManager.queueCmd(cmd);
+    return await cmd.waitUntilReady();
+  }
 }

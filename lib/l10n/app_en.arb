@@ -145,6 +145,10 @@
   "@conversation_screen_message_state_decrypting_failed": {
     "description": "Message state text that message decrypting failed"
   },
+  "conversation_screen_message_state_public_key_download_failed": "Public key download failed",
+  "@conversation_screen_message_state_public_key_download_failed": {
+    "description": "Message state text that public key download failed"
+  },
   "conversation_screen_message_state_received_successfully": "Received successfully",
   "@conversation_screen_message_state_received_successfully": {
     "description": "Message state text that message was received successfully"
@@ -418,6 +422,10 @@
   "generic_resend": "Resend",
   "@generic_resend": {
     "description": "Generic resend text"
+  },
+  "generic_retry": "Retry",
+  "@generic_retry": {
+    "description": "Generic retry text"
   },
   "generic_save_confirmation_title": "Save?",
   "@generic_save_confirmation_title": {

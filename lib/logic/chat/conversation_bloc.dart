@@ -57,6 +57,11 @@ class ResendSendFailedMessage extends ConversationEvent {
   final LocalMessageId id;
   ResendSendFailedMessage(this.receiverAccountId, this.id);
 }
+class RetryPublicKeyDownload extends ConversationEvent {
+  final AccountId receiverAccountId;
+  final LocalMessageId id;
+  RetryPublicKeyDownload(this.receiverAccountId, this.id);
+}
 
 abstract class ConversationDataProvider {
   Future<bool> isInMatches(AccountId accountId);
@@ -73,6 +78,7 @@ abstract class ConversationDataProvider {
 
   Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId);
   Future<Result<void, ResendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId);
+  Future<Result<void, RetryPublicKeyDownloadError>> retryPublicKeyDownload(AccountId receiverAccountId, LocalMessageId localId);
 }
 
 class DefaultConversationDataProvider extends ConversationDataProvider {
@@ -146,6 +152,11 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   @override
   Future<Result<void, ResendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) {
     return chat.resendSendFailedMessage(receiverAccountId, localId);
+  }
+
+  @override
+  Future<Result<void, RetryPublicKeyDownloadError>> retryPublicKeyDownload(AccountId receiverAccountId, LocalMessageId localId) {
+    return chat.retryPublicKeyDownload(receiverAccountId, localId);
   }
 }
 
@@ -283,6 +294,27 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
 
       emit(state.copyWith(
         isMessageResendingInProgress: false,
+      ));
+    },
+      transformer: sequential(),
+    );
+    on<RetryPublicKeyDownload>((data, emit) async {
+      emit(state.copyWith(
+        isRetryPublicKeyDownloadInProgress: true,
+      ));
+
+      switch (await dataProvider.retryPublicKeyDownload(data.receiverAccountId, data.id)) {
+        case Ok():
+          ();
+        case Err(:final e):
+          switch (e) {
+            case RetryPublicKeyDownloadError.unspecifiedError:
+              showSnackBar(R.strings.generic_error_occurred);
+          }
+      }
+
+      emit(state.copyWith(
+        isRetryPublicKeyDownloadInProgress: false,
       ));
     },
       transformer: sequential(),

@@ -71,9 +71,18 @@ class ResendSendFailedMessage extends MessageManagerCommand {
     return await _completed.whereNotNull().first;
   }
 }
+class RetryPublicKeyDownload extends MessageManagerCommand {
+  final BehaviorSubject<Result<void, RetryPublicKeyDownloadError>?> _completed = BehaviorSubject.seeded(null);
+  final AccountId receiverAccount;
+  final LocalMessageId localId;
+  RetryPublicKeyDownload(this.receiverAccount, this.localId);
 
-// TODO(prod): Make possible to retry decryption if public key downloading
-//             fails. New received message state is needed?
+  Future<Result<void, RetryPublicKeyDownloadError>> waitUntilReady() async  {
+    return await _completed.whereNotNull().first;
+  }
+}
+
+// TODO(prod): Enable message sender verification from Rust code
 
 /// Synchronized message actions
 class MessageManager extends LifecycleMethods {
@@ -109,6 +118,8 @@ class MessageManager extends LifecycleMethods {
             _completed.add(await _deleteSendFailedMessage(receiverAccount, localId));
           case ResendSendFailedMessage(:final _completed, :final receiverAccount, :final localId):
             _completed.add(await _resendSendFailedMessage(receiverAccount, localId));
+          case RetryPublicKeyDownload(:final _completed, :final receiverAccount, :final localId):
+            _completed.add(await _retryPublicKeyDownload(receiverAccount, localId));
         }
       })
       .listen((_) {});
@@ -169,7 +180,7 @@ class MessageManager extends LifecycleMethods {
 
       final String decryptedMessage;
       final ReceivedMessageState messageState;
-      switch (await _decryptReceivedMessage(allKeys, message, messageBytes)) {
+      switch (await _decryptReceivedMessage(allKeys, message.id.sender, messageBytes)) {
         case Err(:final e):
           decryptedMessage = base64Encode(messageBytes);
           switch (e) {
@@ -177,6 +188,8 @@ class MessageManager extends LifecycleMethods {
               messageState = ReceivedMessageState.decryptingFailed;
             case ReceivedMessageError.unknownMessageType:
               messageState = ReceivedMessageState.unknownMessageType;
+            case ReceivedMessageError.publicKeyDonwloadingFailed:
+              messageState = ReceivedMessageState.publicKeyDownloadFailed;
           }
         case Ok(:final v):
           decryptedMessage = v;
@@ -264,7 +277,7 @@ class MessageManager extends LifecycleMethods {
     }
   }
 
-  Future<Result<String, ReceivedMessageError>> _decryptReceivedMessage(AllKeyData allKeys, PendingMessage message, Uint8List messageBytesFromServer) async {
+  Future<Result<String, ReceivedMessageError>> _decryptReceivedMessage(AllKeyData allKeys, AccountId messageSender, Uint8List messageBytesFromServer) async {
     // 0 is PGP message
     if (messageBytesFromServer.isEmpty || messageBytesFromServer.first != 0) {
       return const Err(ReceivedMessageError.unknownMessageType);
@@ -273,9 +286,9 @@ class MessageManager extends LifecycleMethods {
 
     bool forcePublicKeyDownload = false;
     while (true) {
-      var publicKey = await _getPublicKeyForForeignAccount(message.id.sender, forceDownload: forcePublicKeyDownload).ok();
+      var publicKey = await _getPublicKeyForForeignAccount(messageSender, forceDownload: forcePublicKeyDownload).ok();
       if (publicKey == null) {
-        return const Err(ReceivedMessageError.decryptingFailed);
+        return const Err(ReceivedMessageError.publicKeyDonwloadingFailed);
       }
 
       final (messageBytes, decryptingResult) = decryptMessage(
@@ -720,6 +733,64 @@ class MessageManager extends LifecycleMethods {
       return const Err(ResendFailedError.unspecifiedError);
     }
   }
+
+  Future<Result<void, RetryPublicKeyDownloadError>> _retryPublicKeyDownload(
+    // TODO(refactor): receiverAccount can be removed from every error handling
+    //                 related action as it is also in MessageEntry
+    AccountId receiverAccount,
+    LocalMessageId localId,
+  ) async {
+    if (kIsWeb) {
+      // Messages are not supported on web
+      return const Err(RetryPublicKeyDownloadError.unspecifiedError);
+    }
+
+    final allKeys = await messageKeyManager.generateOrLoadMessageKeys().ok();
+    if (allKeys == null) {
+      return const Err(RetryPublicKeyDownloadError.unspecifiedError);
+    }
+
+    final toBeDecrypted = await db.accountData((db) => db.daoMessages.getMessageUsingLocalMessageId(
+      localId,
+    )).ok();
+    final messageNumber = toBeDecrypted?.messageNumber;
+    if (toBeDecrypted == null || messageNumber == null || toBeDecrypted.messageState != MessageState.receivedAndPublicKeyDownloadFailed) {
+      return const Err(RetryPublicKeyDownloadError.unspecifiedError);
+    }
+
+    final messageBytes = base64.decode(toBeDecrypted.messageText);
+
+    final String decryptedMessage;
+    final ReceivedMessageState messageState;
+    switch (await _decryptReceivedMessage(allKeys, toBeDecrypted.remoteAccountId, messageBytes)) {
+      case Err(:final e):
+        decryptedMessage = toBeDecrypted.messageText;
+        switch (e) {
+          case ReceivedMessageError.decryptingFailed:
+            messageState = ReceivedMessageState.decryptingFailed;
+          case ReceivedMessageError.unknownMessageType:
+            messageState = ReceivedMessageState.unknownMessageType;
+          case ReceivedMessageError.publicKeyDonwloadingFailed:
+            return const Err(RetryPublicKeyDownloadError.unspecifiedError);
+        }
+      case Ok(:final v):
+        decryptedMessage = v;
+        messageState = ReceivedMessageState.received;
+    }
+
+    final r = await db.messageAction((db) => db.updateReceivedMessageState(
+      currentUser,
+      toBeDecrypted.remoteAccountId,
+      messageNumber,
+      messageState,
+      messageText: decryptedMessage,
+    ));
+    if (r.isErr()) {
+      return const Err(RetryPublicKeyDownloadError.unspecifiedError);
+    } else {
+      return const Ok(null);
+    }
+  }
 }
 
 sealed class MessageSendingEvent {
@@ -756,6 +827,7 @@ class ErrorAfterMessageSaving extends MessageSendingEvent {
 enum ReceivedMessageError {
   unknownMessageType,
   decryptingFailed,
+  publicKeyDonwloadingFailed,
 }
 
 enum DeleteSendFailedError {
@@ -777,4 +849,8 @@ enum ResendFailedError {
   isActuallySentSuccessfully,
   messageTooLarge,
   tooManyPendingMessages,
+}
+
+enum RetryPublicKeyDownloadError {
+  unspecifiedError,
 }

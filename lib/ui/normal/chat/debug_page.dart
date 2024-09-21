@@ -150,6 +150,11 @@ class DebugConversationDataProvider extends ConversationDataProvider {
   Future<Result<void, ResendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) async {
     return const Ok(null);
   }
+
+  @override
+  Future<Result<void, RetryPublicKeyDownloadError>> retryPublicKeyDownload(AccountId receiverAccountId, LocalMessageId localId) async {
+    return const Ok(null);
+  }
 }
 
 class ChatViewDebuggerPage extends StatefulWidget {

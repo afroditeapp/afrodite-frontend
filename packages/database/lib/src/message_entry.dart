@@ -58,6 +58,8 @@ enum MessageState {
   receivedAndDecryptingFailed(_VALUE_RECEIVED_AND_DECRYPTING_FAILED),
   /// Message received, but message type is unknown.
   receivedAndUnknownMessageType(_VALUE_RECEIVED_AND_UNKNOWN_MESSAGE_TYPE),
+  /// Message received, but public key download failed.
+  receivedAndPublicKeyDownloadFailed(_VALUE_RECEIVED_AND_PUBLIC_KEY_DOWNLOAD_FAILED),
 
   // Info messages which client automatically adds
 
@@ -72,6 +74,7 @@ enum MessageState {
   static const int _VALUE_RECEIVED = 20;
   static const int _VALUE_RECEIVED_AND_DECRYPTING_FAILED = 21;
   static const int _VALUE_RECEIVED_AND_UNKNOWN_MESSAGE_TYPE = 22;
+  static const int _VALUE_RECEIVED_AND_PUBLIC_KEY_DOWNLOAD_FAILED = 23;
 
   static const int _VALUE_INFO_MATCH_FIRST_PUBLIC_KEY_RECEIVED = 40;
   static const int _VALUE_INFO_MATCH_PUBLIC_KEY_CHANGED = 41;
@@ -90,6 +93,7 @@ enum MessageState {
       _VALUE_RECEIVED => received,
       _VALUE_RECEIVED_AND_DECRYPTING_FAILED => receivedAndDecryptingFailed,
       _VALUE_RECEIVED_AND_UNKNOWN_MESSAGE_TYPE => receivedAndUnknownMessageType,
+      _VALUE_RECEIVED_AND_PUBLIC_KEY_DOWNLOAD_FAILED => receivedAndPublicKeyDownloadFailed,
       _VALUE_INFO_MATCH_FIRST_PUBLIC_KEY_RECEIVED => infoMatchFirstPublicKeyReceived,
       _VALUE_INFO_MATCH_PUBLIC_KEY_CHANGED => infoMatchPublicKeyChanged,
       _ => null,
@@ -111,6 +115,7 @@ enum MessageState {
       case received ||
         receivedAndDecryptingFailed ||
         receivedAndUnknownMessageType ||
+        receivedAndPublicKeyDownloadFailed ||
         infoMatchFirstPublicKeyReceived ||
         infoMatchPublicKeyChanged:
         return null;
@@ -129,6 +134,8 @@ enum MessageState {
         return ReceivedMessageState.decryptingFailed;
       case receivedAndUnknownMessageType:
         return ReceivedMessageState.unknownMessageType;
+      case receivedAndPublicKeyDownloadFailed:
+        return ReceivedMessageState.publicKeyDownloadFailed;
       case pendingSending ||
         sent ||
         sendingError ||
@@ -147,6 +154,7 @@ enum MessageState {
       case received ||
         receivedAndDecryptingFailed ||
         receivedAndUnknownMessageType ||
+        receivedAndPublicKeyDownloadFailed ||
         pendingSending ||
         sent ||
         sendingError:
@@ -164,7 +172,7 @@ enum SentMessageState {
   sendingError;
 
   bool isError() {
-    return this == SentMessageState.sendingError;
+    return this == sendingError;
   }
 
   MessageState toDbState() {
@@ -185,11 +193,14 @@ enum ReceivedMessageState {
   /// Received, but decrypting failed
   decryptingFailed,
   /// Received, but message type is unknown.
-  unknownMessageType;
+  unknownMessageType,
+  /// Received, but public key download failed.
+  publicKeyDownloadFailed;
 
   bool isError() {
-    return this == ReceivedMessageState.decryptingFailed ||
-      this == ReceivedMessageState.unknownMessageType;
+    return this == decryptingFailed ||
+      this == unknownMessageType ||
+      this == publicKeyDownloadFailed;
   }
 
   const ReceivedMessageState();
@@ -202,6 +213,8 @@ enum ReceivedMessageState {
         return MessageState.receivedAndDecryptingFailed;
       case unknownMessageType:
         return MessageState.receivedAndUnknownMessageType;
+      case publicKeyDownloadFailed:
+        return MessageState.receivedAndPublicKeyDownloadFailed;
     }
   }
 }
