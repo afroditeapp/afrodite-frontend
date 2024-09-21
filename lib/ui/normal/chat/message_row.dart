@@ -31,7 +31,7 @@ Align messageRowWidget(BuildContext context, MessageEntry entry, {Key? keyFromMe
               alignment: isSent ? Alignment.centerRight : Alignment.centerLeft,
               child: GestureDetector(
                 onLongPress: () => openMessageMenu(context, entry),
-                child: _messageAndErrorWidget(
+                child: _messageWidget(
                   context,
                   entry,
                   sentMessageState,
@@ -60,71 +60,6 @@ Align messageRowWidget(BuildContext context, MessageEntry entry, {Key? keyFromMe
     alignment: isSent ? Alignment.centerRight : Alignment.centerLeft,
     child: rowContent,
   );
-}
-
-Widget _messageAndErrorWidget(
-  BuildContext context,
-  MessageEntry entry,
-  SentMessageState? sentMessageState,
-  ReceivedMessageState? receivedMessageState,
-  {
-    required TextStyle parentTextStyle
-  }
-) {
-  if (sentMessageState != null) {
-    // Sent message
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Flexible(
-          flex: 1,
-          child: Visibility(
-            visible: sentMessageState.isError(),
-            maintainSize: true,
-            maintainAnimation: true,
-            maintainState: true,
-            child: Icon(Icons.error, color: Theme.of(context).colorScheme.error),
-          ),
-        ),
-        Flexible(
-          flex: 10,
-          child: _messageWidget(
-            context,
-            entry,
-            sentMessageState,
-            receivedMessageState,
-            parentTextStyle: parentTextStyle
-          ),
-        ),
-      ],
-    );
-  } else if (receivedMessageState != null) {
-    // Received message
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (receivedMessageState.isError()) Flexible(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Icon(Icons.error, color: Theme.of(context).colorScheme.error),
-            ),
-          ),
-        Flexible(
-          flex: 10,
-          child: _messageWidget(
-            context,
-            entry,
-            sentMessageState,
-            receivedMessageState,
-            parentTextStyle: parentTextStyle
-          ),
-        ),
-      ],
-    );
-  } else {
-    return const SizedBox.shrink();
-  }
 }
 
 List<Widget> infoMessage(
@@ -218,7 +153,12 @@ Widget _messageWidget(
         CrossAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
       children: [
-        messageWidget,
+        showErrorIconIfNeeded(
+          context,
+          messageWidget,
+          sentMessageState,
+          receivedMessageState,
+        ),
         Align(
           alignment: receivedMessageState != null ?
             Alignment.centerLeft :
@@ -231,6 +171,60 @@ Widget _messageWidget(
       ],
     ),
   );
+}
+
+Widget showErrorIconIfNeeded(
+  BuildContext context,
+  Widget messageWidget,
+  SentMessageState? sentMessageState,
+  ReceivedMessageState? receivedMessageState,
+) {
+  if (sentMessageState != null) {
+    // Sent message
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          flex: 1,
+          // Visibility is here to avoid text area size changes
+          child: Visibility(
+            visible: sentMessageState.isError(),
+            maintainSize: true,
+            maintainAnimation: true,
+            maintainState: true,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Icon(Icons.error, color: Theme.of(context).colorScheme.error),
+            ),
+          ),
+        ),
+        Flexible(
+          flex: 10,
+          child: messageWidget,
+        ),
+      ],
+    );
+  } else if (receivedMessageState != null) {
+    // Received message
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (receivedMessageState.isError()) Flexible(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Icon(Icons.error, color: Theme.of(context).colorScheme.error),
+            ),
+          ),
+        Flexible(
+          flex: 10,
+          child: messageWidget,
+        ),
+      ],
+    );
+  } else {
+    return const SizedBox.shrink();
+  }
 }
 
 String timeString(MessageEntry entry) {
