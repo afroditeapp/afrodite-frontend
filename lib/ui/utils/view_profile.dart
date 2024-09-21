@@ -20,7 +20,6 @@ import 'package:pihka_frontend/ui_utils/consts/corners.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/loading_dialog.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
-import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils/api.dart';
 
 const double PROFILE_IMG_HEIGHT = 400;
@@ -79,7 +78,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               ...profileTextWidgets,
               const Padding(padding: EdgeInsets.all(8)),
               attributes(),
-              const Padding(padding: EdgeInsets.all(8)),
+              const Padding(padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA)),
               // Zero sized widgets
               ProgressDialogOpener<ProfileAttributesBloc, AttributesData>(
                 dialogVisibilityGetter: (state) =>
@@ -183,10 +182,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
         if (info == null) {
           return const SizedBox.shrink();
         } else {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
-            child: AttributeList(availableAttributes: info, attributes: widget.profile.attributes),
-          );
+          return AttributeList(availableAttributes: info, attributes: widget.profile.attributes);
         }
       }
     );
@@ -391,18 +387,16 @@ class AttributeList extends StatelessWidget {
   Widget attributeWidget(BuildContext context, AttributeAndValue a) {
     final attributeText = a.title(context);
     final icon = iconResourceToMaterialIcon(a.attribute.icon);
-    if (icon == null) {
-      return const SizedBox.shrink();
-    }
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        IconButton(
-          icon: Icon(icon),
-          onPressed: () => showSnackBar(attributeText),
-          tooltip: attributeText
+        const Padding(padding: EdgeInsets.all(4)),
+        ViewAttributeTitle(attributeText, icon: icon),
+        const Padding(padding: EdgeInsets.all(4)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
+          child: AttributeValuesArea(a: a),
         ),
-        const Padding(padding: EdgeInsets.only(right: COMMON_SCREEN_EDGE_PADDING)),
-        Expanded(child: AttributeValuesArea(a: a)),
       ],
     );
   }

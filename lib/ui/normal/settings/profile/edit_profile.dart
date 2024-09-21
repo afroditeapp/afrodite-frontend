@@ -370,9 +370,6 @@ class EditAttributeRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final attributeText = a.title(context);
     final icon = iconResourceToMaterialIcon(a.attribute.icon);
-    if (icon == null) {
-      return const SizedBox.shrink();
-    }
 
     final void Function()? startEditorCallback;
     final Widget valueWidget;
@@ -397,15 +394,12 @@ class EditAttributeRow extends StatelessWidget {
           child: Column(
             children: [
               const Padding(padding: EdgeInsets.all(4)),
-              ViewAttributeTitle(attributeText, isEnabled: isEnabled),
+              ViewAttributeTitle(attributeText, isEnabled: isEnabled, icon: icon),
               const Padding(padding: EdgeInsets.all(4)),
               Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0),
-                    child: IconWithIconButtonPadding(icon, iconColor: iconColor),
-                  ),
-                  const Padding(padding: EdgeInsets.only(right: 8)),
+                  const SizedBox(height: 48),
+                  const Padding(padding: EdgeInsets.only(right: 16)),
                   Expanded(child: valueWidget),
                 ],
               ),
@@ -429,22 +423,34 @@ class EditAttributeRow extends StatelessWidget {
 class ViewAttributeTitle extends StatelessWidget {
   final String text;
   final bool isEnabled;
-  const ViewAttributeTitle(this.text, {this.isEnabled = true, super.key});
+  final IconData? icon;
+  const ViewAttributeTitle(this.text, {this.isEnabled = true, this.icon, super.key});
 
   @override
   Widget build(BuildContext context) {
     final TextStyle? titleStyle;
+    final Color? disabledColor;
     if (isEnabled) {
       titleStyle = Theme.of(context).textTheme.bodyLarge;
+      disabledColor = null;
     } else {
-      final disabledTextColor = Theme.of(context).disabledColor;
-      titleStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(color: disabledTextColor);
+      disabledColor = Theme.of(context).disabledColor;
+      titleStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(color: disabledColor);
     }
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.only(left: COMMON_SCREEN_EDGE_PADDING),
-        child: Text(text, style: titleStyle),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Icon(icon, color: disabledColor),
+            ),
+            Text(text, style: titleStyle),
+          ],
+        ),
       ),
     );
   }
