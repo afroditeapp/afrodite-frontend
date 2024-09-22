@@ -7,6 +7,7 @@ import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
+import "package:rxdart/rxdart.dart";
 import 'package:utils/utils.dart';
 import "package:pihka_frontend/data/chat/message_database_iterator.dart";
 import "package:pihka_frontend/data/chat/message_manager.dart";
@@ -167,6 +168,8 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
 
   StreamSubscription<(int, ConversationChanged?)>? _messageCountSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
+
+  final BehaviorSubject<bool> _renderingSynchronizer = BehaviorSubject<bool>.seeded(false);
 
   ConversationBloc(
     AccountId messageSenderAccountId,
@@ -369,9 +372,13 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
         log.info("No in-progress rendering");
         final msgForRendering = renderingManager.getAndRemoveNextToBeRendered();
         if (msgForRendering != null) {
+          _renderingSynchronizer.add(false);
           emit(state.copyWith(
             rendererCurrentlyRendering: msgForRendering,
           ));
+          // Wait that rendering completes to avoid sending the same
+          // messages to renderer.
+          await _renderingSynchronizer.where((v) => v).firstOrNull;
         }
       }
     },
@@ -395,6 +402,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
             visibleMessages: currentUpdate,
             rendererCurrentlyRendering: null,
           ));
+          _renderingSynchronizer.add(true);
         }
       } else {
         log.info("Continue rendering");
