@@ -16,7 +16,10 @@ pub struct PrivateKeyString {
     pub value: String,
 }
 
-pub fn generate_keys(account_id: String) -> Result<(PublicKeyString, PrivateKeyString), MessageEncryptionError>  {
+pub fn generate_keys(
+    // Not used at the moment
+    _account_id: String,
+) -> Result<(PublicKeyString, PrivateKeyString), MessageEncryptionError>  {
     // 2024-08-02
     // Some reasons for current algorithms
     //
@@ -76,13 +79,26 @@ pub fn generate_keys(account_id: String) -> Result<(PublicKeyString, PrivateKeyS
     // Also the message signing is not needed as it is assumed that
     // server will not be compromised and it is not possible to send
     // messages which would be from other account than the current one.
+    //
+    // 2024-09-22
+    //
+    // Current message size for decryptMessage with 1 byte character: 183 bytes.
+    //
+    // Message size with changes to code:
+    // Message signing added: 317 bytes
+    // Message signing added, empty primary user ID: 317 bytes
+    // Message signing added, empty primary user ID, no preferred algorithms: 317 bytes
+    //
+    // The key user ID is removed as OpenPGP does not require it and server
+    // does not validate it. Also message signing is added to prevent receiving
+    // messages without warning from someone who has access to the server.
 
     let params = SecretKeyParamsBuilder::default()
         .key_type(KeyType::ECDSA(ECCCurve::P256))
         .can_encrypt(false)
         .can_certify(false)
         .can_sign(true)
-        .primary_user_id(account_id)
+        .primary_user_id("".to_string())
         .preferred_symmetric_algorithms(smallvec![
             SymmetricKeyAlgorithm::AES128,
         ])

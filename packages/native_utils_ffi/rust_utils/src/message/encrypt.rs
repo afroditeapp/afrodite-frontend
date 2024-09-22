@@ -1,5 +1,5 @@
 use bstr::BStr;
-use pgp::{ser::Serialize, Deserializable, Message, SignedPublicKey};
+use pgp::{crypto::hash::HashAlgorithm, ser::Serialize, Deserializable, Message, SignedPublicKey, SignedSecretKey};
 use rand::rngs::OsRng;
 
 use super::MessageEncryptionError;
@@ -12,12 +12,12 @@ use super::MessageEncryptionError;
 
 pub fn encrypt_data(
     // The sender private key can be used for signing the message
-    _data_sender_armored_private_key: &str,
+    data_sender_armored_private_key: &str,
     data_receiver_armored_public_key: &str,
     data: &[u8],
 ) -> Result<Vec<u8>, MessageEncryptionError> {
-    // let (my_private_key, _) = SignedSecretKey::from_string(data_sender_armored_private_key)
-    //     .map_err(|_| MessageEncryptionError::EncryptDataPrivateKeyParse)?;
+    let (my_private_key, _) = SignedSecretKey::from_string(data_sender_armored_private_key)
+        .map_err(|_| MessageEncryptionError::EncryptDataPrivateKeyParse)?;
     let (other_person_public_key, _) = SignedPublicKey::from_string(data_receiver_armored_public_key)
         .map_err(|_| MessageEncryptionError::EncryptDataPublicKeyParse)?;
 
@@ -39,8 +39,8 @@ pub fn encrypt_data(
                 &[encryption_public_subkey],
             )
             .map_err(|_| MessageEncryptionError::EncryptDataEncrypt)?
-            // .sign(&my_private_key, String::new, HashAlgorithm::SHA2_256)
-            // .map_err(|_| MessageEncryptionError::EncryptDataSign)?
+            .sign(&my_private_key, String::new, HashAlgorithm::SHA2_256)
+            .map_err(|_| MessageEncryptionError::EncryptDataSign)?
             .to_bytes()
             .map_err(|_| MessageEncryptionError::EncryptDataToBytes)?;
 
