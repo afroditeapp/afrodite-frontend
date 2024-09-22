@@ -495,6 +495,10 @@ class MessageManager extends LifecycleMethods {
         log.error("Send message error: public key outdated");
 
         await _getPublicKeyForForeignAccount(accountId, forceDownload: true);
+        // Show possible key change info to user
+        if (sendUiEvent) {
+          profile.sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
+        }
         yield ErrorAfterMessageSaving(localId);
         return;
       }
