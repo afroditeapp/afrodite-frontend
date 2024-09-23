@@ -70,4 +70,15 @@ class DaoConversationsBackground extends DatabaseAccessor<AccountBackgroundDatab
       ),
     );
   }
+
+  Stream<int?> watchUnreadConversationsCount() {
+    final countExpression = countAll(filter: conversationsBackground.conversationUnreadMessagesCount.isBiggerThanValue(0));
+    return (selectOnly(conversationsBackground)
+      ..addColumns([countExpression])
+    )
+      .map((r) {
+        return r.read(countExpression);
+      })
+      .watchSingleOrNull();
+  }
 }

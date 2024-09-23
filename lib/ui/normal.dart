@@ -9,11 +9,13 @@ import "package:pihka_frontend/logic/app/bottom_navigation_state.dart";
 import "package:pihka_frontend/logic/app/navigator_state.dart";
 
 import "package:pihka_frontend/logic/app/notification_permission.dart";
+import "package:pihka_frontend/logic/chat/unread_conversations_bloc.dart";
 import "package:pihka_frontend/logic/login.dart";
 import "package:pihka_frontend/logic/media/content.dart";
 import "package:pihka_frontend/logic/profile/attributes.dart";
 import "package:pihka_frontend/logic/profile/my_profile.dart";
 import "package:pihka_frontend/model/freezed/logic/account/account.dart";
+import "package:pihka_frontend/model/freezed/logic/chat/unread_conversations_count_bloc.dart";
 import "package:pihka_frontend/model/freezed/logic/login.dart";
 import "package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.dart";
 import "package:pihka_frontend/model/freezed/logic/main/navigator_state.dart";
@@ -84,6 +86,12 @@ class NormalStateContent extends StatefulWidget {
 }
 
 class _NormalStateContentState extends State<NormalStateContent> {
+  static const VIEWS = [
+    ProfileView(),
+    LikeView(),
+    ChatView(),
+    SettingsView(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -107,12 +115,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
   }
 
   Widget buildScreen(BuildContext context, int selectedView, bool isScrolled) {
-    const views = [
-      ProfileView(),
-      LikeView(),
-      ChatView(),
-      SettingsView(),
-    ];
+
 
     return Scaffold(
       appBar: AppBar(
@@ -128,8 +131,8 @@ class _NormalStateContentState extends State<NormalStateContent> {
           padding: const EdgeInsets.only(top: 8, bottom: 8, left: 8),
           child: primaryImageButton(),
         ),
-        title: Text(views[selectedView].title(context)),
-        actions: views[selectedView].actions(context),
+        title: Text(VIEWS[selectedView].title(context)),
+        actions: VIEWS[selectedView].actions(context),
         notificationPredicate: (scrollNotification) => false,
       ),
       body: Column(
@@ -137,7 +140,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
           Expanded(
             child: IndexedStack(
               index: selectedView,
-              children: views,
+              children: VIEWS,
             )
           ),
           const NotificationPermissionDialogOpener(),
@@ -146,24 +149,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(selectedView == 0 ? Icons.people : Icons.people_outline),
-            label: views[0].title(context)
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(selectedView == 1 ? Icons.favorite : Icons.favorite_outline),
-            label: views[1].title(context)
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(selectedView == 2 ? Icons.message : Icons.message_outlined),
-            label: views[2].title(context),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(selectedView == 3 ? Icons.settings : Icons.settings_outlined),
-            label: views[3].title(context),
-          ),
-        ],
+        items: bottomNavigationBarContent(selectedView),
         useLegacyColorScheme: false,
         currentIndex: selectedView,
         onTap: (value) {
@@ -177,6 +163,36 @@ class _NormalStateContentState extends State<NormalStateContent> {
         },
       ),
     );
+  }
+
+  List<BottomNavigationBarItem> bottomNavigationBarContent(int selectedView) {
+    return [
+      BottomNavigationBarItem(
+        icon: Icon(selectedView == 0 ? Icons.people : Icons.people_outline),
+        label: VIEWS[0].title(context)
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(selectedView == 1 ? Icons.favorite : Icons.favorite_outline),
+        label: VIEWS[1].title(context)
+      ),
+      BottomNavigationBarItem(
+        icon: BlocBuilder<UnreadConversationsCountBloc, UnreadConversationsCountData>(
+          builder: (context, state) {
+            final icon = Icon(selectedView == 2 ? Icons.message : Icons.message_outlined);
+            if (state.unreadConversations == 0) {
+              return icon;
+            } else {
+              return Badge.count(count: state.unreadConversations, child: icon);
+            }
+          }
+        ),
+        label: VIEWS[2].title(context),
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(selectedView == 3 ? Icons.settings : Icons.settings_outlined),
+        label: VIEWS[3].title(context),
+      ),
+    ];
   }
 
   Widget primaryImageButton() {
