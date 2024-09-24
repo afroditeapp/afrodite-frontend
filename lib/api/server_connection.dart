@@ -16,6 +16,7 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/api/websocket_wrapper.dart';
 import 'package:pihka_frontend/assets.dart';
+import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
@@ -141,6 +142,7 @@ class ServerConnection {
   final ServerSlot _server;
   String _address;
   final AccountDatabaseManager db;
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
 
   WebSocketWrapper? _connection;
 
@@ -156,7 +158,7 @@ class ServerConnection {
 
   bool _startInProgress = false;
 
-  ServerConnection(this._server, this._address, this.db);
+  ServerConnection(this._server, this._address, this.db, this.accountBackgroundDb);
 
   /// Starts new connection if it does not already exists.
   Future<void> start() async {
@@ -285,7 +287,7 @@ class ServerConnection {
                 .encode(message)
                 .replaceAll("=", "");
               await db.accountAction(_server.setterForAccessTokenKey(newAccessToken));
-              ws.connection.sink.add(await syncDataBytes(db));
+              ws.connection.sink.add(await syncDataBytes(db, accountBackgroundDb));
               protocolState = ConnectionProtocolState.receiveEvents;
               log.info("Connection ready");
               _state.add(Ready());
@@ -423,12 +425,12 @@ const forceSync = 255;
 
 // TODO(prod): Implement sync data version handling
 
-Future<Uint8List> syncDataBytes(AccountDatabaseManager db) async {
+Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundDatabaseManager accountBackgroundDb) async {
   final syncVersionAccount = await db.accountStreamSingle(
     (db) => db.daoSyncVersions.watchSyncVersionAccount()
   ).ok() ?? forceSync;
-  final syncVersionReceivedLikes = await db.accountStreamSingle(
-    (db) => db.daoSyncVersions.watchSyncVersionReceivedLikes()
+  final syncVersionReceivedLikes = await accountBackgroundDb.accountStreamSingle(
+    (db) => db.daoNewReceivedLikesAvailable.watchSyncVersionReceivedLikes()
   ).ok() ?? forceSync;
   final syncVersionReceivedBlocks = await db.accountStreamSingle(
     (db) => db.daoSyncVersions.watchSyncVersionReceivedBlocks()

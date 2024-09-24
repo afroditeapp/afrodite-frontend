@@ -173,7 +173,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     } else if (event.event == EventType.contentProcessingStateChanged && contentProcessingEvent != null) {
       _contentProcessingStateChanges.add(contentProcessingEvent);
     } else if (event.event == EventType.receivedLikesChanged) {
-      chat.receivedLikesRefresh();
+      chat.receivedLikesCountRefresh();
     } else if (event.event == EventType.receivedBlocksChanged) {
       chat.receivedBlocksRefresh();
     } else if (event.event == EventType.sentLikesChanged) {

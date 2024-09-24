@@ -3,6 +3,7 @@
 import 'package:async/async.dart';
 import 'package:database/src/background/account/dao_local_notification_settings.dart';
 import 'package:database/src/background/conversations_table.dart';
+import 'package:database/src/background/new_received_likes_available_table.dart';
 import 'package:database/src/background/new_message_notification_table.dart';
 import 'package:database/src/background/profile_table.dart';
 import 'package:database/src/message_entry.dart';
@@ -34,6 +35,7 @@ class AccountBackground extends Table {
     ProfilesBackground,
     ConversationsBackground,
     NewMessageNotification,
+    NewReceivedLikesAvailable,
   ],
   daos: [
     // Related to AccountBackground table
@@ -44,6 +46,8 @@ class AccountBackground extends Table {
     DaoConversationsBackground,
     // Related to NewMessageNotification table
     DaoNewMessageNotification,
+    // Related to NewReceivedLikesAvailable table
+    DaoNewReceivedLikesAvailable,
   ],
 )
 class AccountBackgroundDatabase extends _$AccountBackgroundDatabase {

@@ -374,3 +374,17 @@ class UnreadMessagesCountConverter extends TypeConverter<UnreadMessagesCount, in
     return value.count;
   }
 }
+
+class NewReceivedLikesCountConverter extends TypeConverter<NewReceivedLikesCount, int> {
+  const NewReceivedLikesCountConverter();
+
+  @override
+  NewReceivedLikesCount fromSql(fromDb) {
+    return NewReceivedLikesCount(c: fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.c;
+  }
+}

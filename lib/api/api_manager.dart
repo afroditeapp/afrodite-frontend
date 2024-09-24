@@ -9,6 +9,7 @@ import 'package:pihka_frontend/api/server_connection.dart';
 import 'package:pihka_frontend/config.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/data/utils.dart';
+import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
@@ -51,13 +52,15 @@ class EventToClientContainer implements ServerWsEvent {
 class ServerConnectionManager implements LifecycleMethods, ServerConnectionInterface {
   final ApiManager _account = ApiManager.withDefaultAddress(rememberToInitializeConnectionLateFinalField: true);
   final AccountDatabaseManager accountDb;
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
   ServerConnection accountConnection;
 
-  ServerConnectionManager(this.accountDb) :
+  ServerConnectionManager(this.accountDb, this.accountBackgroundDb) :
     accountConnection =  ServerConnection(
       ServerSlot.account,
       "",
       accountDb,
+      accountBackgroundDb,
     );
 
   final BehaviorSubject<ApiManagerState> _state =

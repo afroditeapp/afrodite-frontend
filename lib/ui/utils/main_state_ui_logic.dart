@@ -16,6 +16,7 @@ import 'package:pihka_frontend/logic/app/notification_payload_handler.dart';
 import 'package:pihka_frontend/logic/app/notification_permission.dart';
 import 'package:pihka_frontend/logic/app/notification_settings.dart';
 import 'package:pihka_frontend/logic/chat/conversation_list_bloc.dart';
+import 'package:pihka_frontend/logic/chat/new_received_likes_available_bloc.dart';
 import 'package:pihka_frontend/logic/chat/unread_conversations_bloc.dart';
 import 'package:pihka_frontend/logic/media/content.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
@@ -146,6 +147,7 @@ class MainStateUiLogic extends StatelessWidget {
               BlocProvider(create: (_) => ProfileAttributesBloc()),
               BlocProvider(create: (_) => ConversationListBloc()),
               BlocProvider(create: (_) => UnreadConversationsCountBloc()),
+              BlocProvider(create: (_) => NewReceivedLikesAvailableBloc()),
 
               // Account data
               BlocProvider(create: (_) => AccountBloc()),

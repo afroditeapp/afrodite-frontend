@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
@@ -80,7 +81,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   @override
   Future<void> onLogin() async {
     sentBlocksIterator.reset();
-    receivedLikesIterator.reset();
     matchesIterator.reset();
     await db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(false));
 
@@ -289,21 +289,22 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   /// is cached or the profile is public.
   ///
   /// Private profiles are not returned (except the cached ones).
-  Future<List<ProfileEntry>> receivedLikesIteratorNext() =>
-    _genericIteratorNextOnlySuccessful(receivedLikesIterator, cache: true, download: true);
+  Future<List<ProfileEntry>> receivedLikesIteratorNext() async {
+    if (receivedLikesIterator.currentIndex == 0) {
+      await _receivedLikesRefresh();
+    }
+    return await _genericIteratorNextOnlySuccessful(receivedLikesIterator, cache: true, download: true);
+  }
 
   void receivedLikesIteratorReset() =>
     receivedLikesIterator.reset();
 
-  Future<void> receivedLikesRefresh() async {
-    // TODO(prod): Add event to API which has info that there is new like
-    // available.
-    final currentReceivedLikes = await db.accountData((db) => db.daoProfileStates.getReceivedLikesList(0, 1000000000)).ok() ?? [];
-
+  Future<void> _receivedLikesRefresh() async {
     final receivedLikesIteratorResult = await api.chat((api) => api.postResetReceivedLikesPaging()).ok();
     final v = receivedLikesIteratorResult?.v;
+    final c = receivedLikesIteratorResult?.c;
     final session = receivedLikesIteratorResult?.s;
-    if (v == null || session == null) {
+    if (v == null || c == null || session == null) {
       return;
     }
 
@@ -323,10 +324,23 @@ class ChatRepository extends DataRepositoryWithLifecycle {
       }
     }
 
-    await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatusList(newList, v));
-    profile.sendProfileChange(LikesChanged());
+    await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(v, c));
+    await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatusList(newList));
+  }
 
-    if (newList.length > currentReceivedLikes.length) {
+  Future<void> receivedLikesCountRefresh() async {
+    final currentCount = await accountBackgroundDb.accountStream((db) => db.daoNewReceivedLikesAvailable.watchReceivedLikesCount()).firstOrNull;
+    final currentCountInt = currentCount?.c ?? 0;
+
+    final r = await api.chat((api) => api.getNewReceivedLikesAvailable()).ok();
+    final v = r?.v;
+    final c = r?.c;
+    if (v == null || c == null) {
+      return;
+    }
+    await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(v, c));
+
+    if (currentCountInt == 0 && c.c > 0) {
       await NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb);
     }
   }

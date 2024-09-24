@@ -1204,6 +1204,276 @@ class NewMessageNotificationCompanion
   }
 }
 
+class $NewReceivedLikesAvailableTable extends NewReceivedLikesAvailable
+    with
+        TableInfo<$NewReceivedLikesAvailableTable,
+            NewReceivedLikesAvailableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $NewReceivedLikesAvailableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _syncVersionReceivedLikesMeta =
+      const VerificationMeta('syncVersionReceivedLikes');
+  @override
+  late final GeneratedColumn<int> syncVersionReceivedLikes =
+      GeneratedColumn<int>('sync_version_received_likes', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _newReceivedLikesCountMeta =
+      const VerificationMeta('newReceivedLikesCount');
+  @override
+  late final GeneratedColumnWithTypeConverter<NewReceivedLikesCount?, int>
+      newReceivedLikesCount = GeneratedColumn<int>(
+              'new_received_likes_count', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<NewReceivedLikesCount?>(
+              $NewReceivedLikesAvailableTable.$converternewReceivedLikesCount);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, syncVersionReceivedLikes, newReceivedLikesCount];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'new_received_likes_available';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<NewReceivedLikesAvailableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('sync_version_received_likes')) {
+      context.handle(
+          _syncVersionReceivedLikesMeta,
+          syncVersionReceivedLikes.isAcceptableOrUnknown(
+              data['sync_version_received_likes']!,
+              _syncVersionReceivedLikesMeta));
+    }
+    context.handle(
+        _newReceivedLikesCountMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  NewReceivedLikesAvailableData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return NewReceivedLikesAvailableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      syncVersionReceivedLikes: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}sync_version_received_likes']),
+      newReceivedLikesCount: $NewReceivedLikesAvailableTable
+          .$converternewReceivedLikesCount
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}new_received_likes_count'])),
+    );
+  }
+
+  @override
+  $NewReceivedLikesAvailableTable createAlias(String alias) {
+    return $NewReceivedLikesAvailableTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<NewReceivedLikesCount?, int?>
+      $converternewReceivedLikesCount =
+      const NullAwareTypeConverter.wrap(NewReceivedLikesCountConverter());
+}
+
+class NewReceivedLikesAvailableData extends DataClass
+    implements Insertable<NewReceivedLikesAvailableData> {
+  final int id;
+  final int? syncVersionReceivedLikes;
+  final NewReceivedLikesCount? newReceivedLikesCount;
+  const NewReceivedLikesAvailableData(
+      {required this.id,
+      this.syncVersionReceivedLikes,
+      this.newReceivedLikesCount});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || syncVersionReceivedLikes != null) {
+      map['sync_version_received_likes'] =
+          Variable<int>(syncVersionReceivedLikes);
+    }
+    if (!nullToAbsent || newReceivedLikesCount != null) {
+      map['new_received_likes_count'] = Variable<int>(
+          $NewReceivedLikesAvailableTable.$converternewReceivedLikesCount
+              .toSql(newReceivedLikesCount));
+    }
+    return map;
+  }
+
+  NewReceivedLikesAvailableCompanion toCompanion(bool nullToAbsent) {
+    return NewReceivedLikesAvailableCompanion(
+      id: Value(id),
+      syncVersionReceivedLikes: syncVersionReceivedLikes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncVersionReceivedLikes),
+      newReceivedLikesCount: newReceivedLikesCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(newReceivedLikesCount),
+    );
+  }
+
+  factory NewReceivedLikesAvailableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return NewReceivedLikesAvailableData(
+      id: serializer.fromJson<int>(json['id']),
+      syncVersionReceivedLikes:
+          serializer.fromJson<int?>(json['syncVersionReceivedLikes']),
+      newReceivedLikesCount: serializer
+          .fromJson<NewReceivedLikesCount?>(json['newReceivedLikesCount']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'syncVersionReceivedLikes':
+          serializer.toJson<int?>(syncVersionReceivedLikes),
+      'newReceivedLikesCount':
+          serializer.toJson<NewReceivedLikesCount?>(newReceivedLikesCount),
+    };
+  }
+
+  NewReceivedLikesAvailableData copyWith(
+          {int? id,
+          Value<int?> syncVersionReceivedLikes = const Value.absent(),
+          Value<NewReceivedLikesCount?> newReceivedLikesCount =
+              const Value.absent()}) =>
+      NewReceivedLikesAvailableData(
+        id: id ?? this.id,
+        syncVersionReceivedLikes: syncVersionReceivedLikes.present
+            ? syncVersionReceivedLikes.value
+            : this.syncVersionReceivedLikes,
+        newReceivedLikesCount: newReceivedLikesCount.present
+            ? newReceivedLikesCount.value
+            : this.newReceivedLikesCount,
+      );
+  NewReceivedLikesAvailableData copyWithCompanion(
+      NewReceivedLikesAvailableCompanion data) {
+    return NewReceivedLikesAvailableData(
+      id: data.id.present ? data.id.value : this.id,
+      syncVersionReceivedLikes: data.syncVersionReceivedLikes.present
+          ? data.syncVersionReceivedLikes.value
+          : this.syncVersionReceivedLikes,
+      newReceivedLikesCount: data.newReceivedLikesCount.present
+          ? data.newReceivedLikesCount.value
+          : this.newReceivedLikesCount,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NewReceivedLikesAvailableData(')
+          ..write('id: $id, ')
+          ..write('syncVersionReceivedLikes: $syncVersionReceivedLikes, ')
+          ..write('newReceivedLikesCount: $newReceivedLikesCount')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, syncVersionReceivedLikes, newReceivedLikesCount);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NewReceivedLikesAvailableData &&
+          other.id == this.id &&
+          other.syncVersionReceivedLikes == this.syncVersionReceivedLikes &&
+          other.newReceivedLikesCount == this.newReceivedLikesCount);
+}
+
+class NewReceivedLikesAvailableCompanion
+    extends UpdateCompanion<NewReceivedLikesAvailableData> {
+  final Value<int> id;
+  final Value<int?> syncVersionReceivedLikes;
+  final Value<NewReceivedLikesCount?> newReceivedLikesCount;
+  const NewReceivedLikesAvailableCompanion({
+    this.id = const Value.absent(),
+    this.syncVersionReceivedLikes = const Value.absent(),
+    this.newReceivedLikesCount = const Value.absent(),
+  });
+  NewReceivedLikesAvailableCompanion.insert({
+    this.id = const Value.absent(),
+    this.syncVersionReceivedLikes = const Value.absent(),
+    this.newReceivedLikesCount = const Value.absent(),
+  });
+  static Insertable<NewReceivedLikesAvailableData> custom({
+    Expression<int>? id,
+    Expression<int>? syncVersionReceivedLikes,
+    Expression<int>? newReceivedLikesCount,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncVersionReceivedLikes != null)
+        'sync_version_received_likes': syncVersionReceivedLikes,
+      if (newReceivedLikesCount != null)
+        'new_received_likes_count': newReceivedLikesCount,
+    });
+  }
+
+  NewReceivedLikesAvailableCompanion copyWith(
+      {Value<int>? id,
+      Value<int?>? syncVersionReceivedLikes,
+      Value<NewReceivedLikesCount?>? newReceivedLikesCount}) {
+    return NewReceivedLikesAvailableCompanion(
+      id: id ?? this.id,
+      syncVersionReceivedLikes:
+          syncVersionReceivedLikes ?? this.syncVersionReceivedLikes,
+      newReceivedLikesCount:
+          newReceivedLikesCount ?? this.newReceivedLikesCount,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (syncVersionReceivedLikes.present) {
+      map['sync_version_received_likes'] =
+          Variable<int>(syncVersionReceivedLikes.value);
+    }
+    if (newReceivedLikesCount.present) {
+      map['new_received_likes_count'] = Variable<int>(
+          $NewReceivedLikesAvailableTable.$converternewReceivedLikesCount
+              .toSql(newReceivedLikesCount.value));
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NewReceivedLikesAvailableCompanion(')
+          ..write('id: $id, ')
+          ..write('syncVersionReceivedLikes: $syncVersionReceivedLikes, ')
+          ..write('newReceivedLikesCount: $newReceivedLikesCount')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
   _$AccountBackgroundDatabase(QueryExecutor e) : super(e);
   late final $AccountBackgroundTable accountBackground =
@@ -1214,6 +1484,8 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
       $ConversationsBackgroundTable(this);
   late final $NewMessageNotificationTable newMessageNotification =
       $NewMessageNotificationTable(this);
+  late final $NewReceivedLikesAvailableTable newReceivedLikesAvailable =
+      $NewReceivedLikesAvailableTable(this);
   late final DaoLocalNotificationSettings daoLocalNotificationSettings =
       DaoLocalNotificationSettings(this as AccountBackgroundDatabase);
   late final DaoProfilesBackground daoProfilesBackground =
@@ -1222,6 +1494,8 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
       DaoConversationsBackground(this as AccountBackgroundDatabase);
   late final DaoNewMessageNotification daoNewMessageNotification =
       DaoNewMessageNotification(this as AccountBackgroundDatabase);
+  late final DaoNewReceivedLikesAvailable daoNewReceivedLikesAvailable =
+      DaoNewReceivedLikesAvailable(this as AccountBackgroundDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1230,6 +1504,7 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
         accountBackground,
         profilesBackground,
         conversationsBackground,
-        newMessageNotification
+        newMessageNotification,
+        newReceivedLikesAvailable
       ];
 }
