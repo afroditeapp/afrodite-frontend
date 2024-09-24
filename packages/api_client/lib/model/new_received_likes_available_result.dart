@@ -13,32 +13,32 @@ part of openapi.api;
 class NewReceivedLikesAvailableResult {
   /// Returns a new [NewReceivedLikesAvailableResult] instance.
   NewReceivedLikesAvailableResult({
-    this.newReceivedLikesAvailable = false,
-    required this.version,
+    required this.c,
+    required this.v,
   });
 
-  bool newReceivedLikesAvailable;
+  NewReceivedLikesCount c;
 
-  ReceivedLikesSyncVersion version;
+  ReceivedLikesSyncVersion v;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is NewReceivedLikesAvailableResult &&
-    other.newReceivedLikesAvailable == newReceivedLikesAvailable &&
-    other.version == version;
+    other.c == c &&
+    other.v == v;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (newReceivedLikesAvailable.hashCode) +
-    (version.hashCode);
+    (c.hashCode) +
+    (v.hashCode);
 
   @override
-  String toString() => 'NewReceivedLikesAvailableResult[newReceivedLikesAvailable=$newReceivedLikesAvailable, version=$version]';
+  String toString() => 'NewReceivedLikesAvailableResult[c=$c, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'new_received_likes_available'] = this.newReceivedLikesAvailable;
-      json[r'version'] = this.version;
+      json[r'c'] = this.c;
+      json[r'v'] = this.v;
     return json;
   }
 
@@ -61,8 +61,8 @@ class NewReceivedLikesAvailableResult {
       }());
 
       return NewReceivedLikesAvailableResult(
-        newReceivedLikesAvailable: mapValueOfType<bool>(json, r'new_received_likes_available') ?? false,
-        version: ReceivedLikesSyncVersion.fromJson(json[r'version'])!,
+        c: NewReceivedLikesCount.fromJson(json[r'c'])!,
+        v: ReceivedLikesSyncVersion.fromJson(json[r'v'])!,
       );
     }
     return null;
@@ -110,7 +110,8 @@ class NewReceivedLikesAvailableResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'version',
+    'c',
+    'v',
   };
 }
 

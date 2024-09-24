@@ -362,6 +362,8 @@ class ApiClient {
           return NewContentParams.fromJson(value);
         case 'NewReceivedLikesAvailableResult':
           return NewReceivedLikesAvailableResult.fromJson(value);
+        case 'NewReceivedLikesCount':
+          return NewReceivedLikesCount.fromJson(value);
         case 'PendingMessage':
           return PendingMessage.fromJson(value);
         case 'PendingMessageAcknowledgementList':

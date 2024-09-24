@@ -128,6 +128,7 @@ part 'model/moderation_request_id.dart';
 part 'model/moderation_request_state.dart';
 part 'model/new_content_params.dart';
 part 'model/new_received_likes_available_result.dart';
+part 'model/new_received_likes_count.dart';
 part 'model/pending_message.dart';
 part 'model/pending_message_acknowledgement_list.dart';
 part 'model/pending_message_id.dart';

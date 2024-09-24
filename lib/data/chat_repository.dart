@@ -301,8 +301,8 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     final currentReceivedLikes = await db.accountData((db) => db.daoProfileStates.getReceivedLikesList(0, 1000000000)).ok() ?? [];
 
     final receivedLikesIteratorResult = await api.chat((api) => api.postResetReceivedLikesPaging()).ok();
-    final v = receivedLikesIteratorResult?.version;
-    final session = receivedLikesIteratorResult?.sessionId;
+    final v = receivedLikesIteratorResult?.v;
+    final session = receivedLikesIteratorResult?.s;
     if (v == null || session == null) {
       return;
     }
@@ -314,10 +314,10 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         if (receivedLikes.errorInvalidIteratorSessionId) {
           return;
         }
-        if (receivedLikes.profiles.isEmpty) {
+        if (receivedLikes.p.isEmpty) {
           break;
         }
-        newList.addAll(receivedLikes.profiles);
+        newList.addAll(receivedLikes.p);
       } else {
         return;
       }

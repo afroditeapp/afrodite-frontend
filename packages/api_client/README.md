@@ -249,6 +249,7 @@ Class | Method | HTTP request | Description
  - [ModerationRequestState](doc//ModerationRequestState.md)
  - [NewContentParams](doc//NewContentParams.md)
  - [NewReceivedLikesAvailableResult](doc//NewReceivedLikesAvailableResult.md)
+ - [NewReceivedLikesCount](doc//NewReceivedLikesCount.md)
  - [PendingMessage](doc//PendingMessage.md)
  - [PendingMessageAcknowledgementList](doc//PendingMessageAcknowledgementList.md)
  - [PendingMessageId](doc//PendingMessageId.md)

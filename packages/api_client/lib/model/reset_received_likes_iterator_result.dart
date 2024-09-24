@@ -13,38 +13,38 @@ part of openapi.api;
 class ResetReceivedLikesIteratorResult {
   /// Returns a new [ResetReceivedLikesIteratorResult] instance.
   ResetReceivedLikesIteratorResult({
-    this.newReceivedLikesAvailable = false,
-    required this.sessionId,
-    required this.version,
+    required this.c,
+    required this.s,
+    required this.v,
   });
 
-  bool newReceivedLikesAvailable;
+  NewReceivedLikesCount c;
 
-  ReceivedLikesIteratorSessionId sessionId;
+  ReceivedLikesIteratorSessionId s;
 
-  ReceivedLikesSyncVersion version;
+  ReceivedLikesSyncVersion v;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ResetReceivedLikesIteratorResult &&
-    other.newReceivedLikesAvailable == newReceivedLikesAvailable &&
-    other.sessionId == sessionId &&
-    other.version == version;
+    other.c == c &&
+    other.s == s &&
+    other.v == v;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (newReceivedLikesAvailable.hashCode) +
-    (sessionId.hashCode) +
-    (version.hashCode);
+    (c.hashCode) +
+    (s.hashCode) +
+    (v.hashCode);
 
   @override
-  String toString() => 'ResetReceivedLikesIteratorResult[newReceivedLikesAvailable=$newReceivedLikesAvailable, sessionId=$sessionId, version=$version]';
+  String toString() => 'ResetReceivedLikesIteratorResult[c=$c, s=$s, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'new_received_likes_available'] = this.newReceivedLikesAvailable;
-      json[r'session_id'] = this.sessionId;
-      json[r'version'] = this.version;
+      json[r'c'] = this.c;
+      json[r's'] = this.s;
+      json[r'v'] = this.v;
     return json;
   }
 
@@ -67,9 +67,9 @@ class ResetReceivedLikesIteratorResult {
       }());
 
       return ResetReceivedLikesIteratorResult(
-        newReceivedLikesAvailable: mapValueOfType<bool>(json, r'new_received_likes_available') ?? false,
-        sessionId: ReceivedLikesIteratorSessionId.fromJson(json[r'session_id'])!,
-        version: ReceivedLikesSyncVersion.fromJson(json[r'version'])!,
+        c: NewReceivedLikesCount.fromJson(json[r'c'])!,
+        s: ReceivedLikesIteratorSessionId.fromJson(json[r's'])!,
+        v: ReceivedLikesSyncVersion.fromJson(json[r'v'])!,
       );
     }
     return null;
@@ -117,8 +117,9 @@ class ResetReceivedLikesIteratorResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'session_id',
-    'version',
+    'c',
+    's',
+    'v',
   };
 }
 
