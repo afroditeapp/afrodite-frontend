@@ -168,6 +168,47 @@ class ChatApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /r-TPulKKQM_a5EYkzbi6KNH5dpU' operation and returns the [Response].
+  Future<Response> getNewReceivedLikesAvailableWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/r-TPulKKQM_a5EYkzbi6KNH5dpU';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<NewReceivedLikesAvailableResult?> getNewReceivedLikesAvailable() async {
+    final response = await getNewReceivedLikesAvailableWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'NewReceivedLikesAvailableResult',) as NewReceivedLikesAvailableResult;
+    
+    }
+    return null;
+  }
+
   /// Get list of pending messages.
   ///
   /// The returned bytes is list of objects with following data: - UTF-8 text length encoded as 16 bit little endian number. - UTF-8 text which is PendingMessage JSON. - Binary message data length as 16 bit little endian number. - Binary message data

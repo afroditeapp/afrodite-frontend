@@ -85,6 +85,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**deleteLike**](doc//ChatApi.md#deletelike) | **DELETE** /O3DZlGOjDYbQ8PlCorta0onQDLI | Delete sent like.
 *ChatApi* | [**getMatches**](doc//ChatApi.md#getmatches) | **GET** /kzySqAe9qYi69MoCBnFGKdn76-Q | Get matches
 *ChatApi* | [**getMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#getmessagenumberoflatestviewedmessage) | **GET** /gas7m77c7kw7N7TKyMQVzUKy3AQ | Get message number of the most recent message that the recipient has viewed.
+*ChatApi* | [**getNewReceivedLikesAvailable**](doc//ChatApi.md#getnewreceivedlikesavailable) | **GET** /r-TPulKKQM_a5EYkzbi6KNH5dpU | 
 *ChatApi* | [**getPendingMessages**](doc//ChatApi.md#getpendingmessages) | **GET** /7sKe87sefWrLYS0JvbPS10_F8oc | Get list of pending messages.
 *ChatApi* | [**getPublicKey**](doc//ChatApi.md#getpublickey) | **GET** /e-r4VrqWJD1kIttg1McD9kv5o0k/{aid} | Get current public key of some account
 *ChatApi* | [**getReceivedBlocks**](doc//ChatApi.md#getreceivedblocks) | **GET** /hjP9LovH2kBxnbwWKSyVgFL4o58 | Get list of received blocks
