@@ -360,10 +360,12 @@ class ApiClient {
           return ModerationRequestStateTypeTransformer().decode(value);
         case 'NewContentParams':
           return NewContentParams.fromJson(value);
-        case 'NewReceivedLikesAvailableResult':
-          return NewReceivedLikesAvailableResult.fromJson(value);
         case 'NewReceivedLikesCount':
           return NewReceivedLikesCount.fromJson(value);
+        case 'NewReceivedLikesCountResult':
+          return NewReceivedLikesCountResult.fromJson(value);
+        case 'PageItemCountForNewLikes':
+          return PageItemCountForNewLikes.fromJson(value);
         case 'PendingMessage':
           return PendingMessage.fromJson(value);
         case 'PendingMessageAcknowledgementList':

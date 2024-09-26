@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class NewReceivedLikesAvailableResult {
-  /// Returns a new [NewReceivedLikesAvailableResult] instance.
-  NewReceivedLikesAvailableResult({
+class NewReceivedLikesCountResult {
+  /// Returns a new [NewReceivedLikesCountResult] instance.
+  NewReceivedLikesCountResult({
     required this.c,
     required this.v,
   });
@@ -22,7 +22,7 @@ class NewReceivedLikesAvailableResult {
   ReceivedLikesSyncVersion v;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is NewReceivedLikesAvailableResult &&
+  bool operator ==(Object other) => identical(this, other) || other is NewReceivedLikesCountResult &&
     other.c == c &&
     other.v == v;
 
@@ -33,7 +33,7 @@ class NewReceivedLikesAvailableResult {
     (v.hashCode);
 
   @override
-  String toString() => 'NewReceivedLikesAvailableResult[c=$c, v=$v]';
+  String toString() => 'NewReceivedLikesCountResult[c=$c, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -42,10 +42,10 @@ class NewReceivedLikesAvailableResult {
     return json;
   }
 
-  /// Returns a new [NewReceivedLikesAvailableResult] instance and imports its values from
+  /// Returns a new [NewReceivedLikesCountResult] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static NewReceivedLikesAvailableResult? fromJson(dynamic value) {
+  static NewReceivedLikesCountResult? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,13 +54,13 @@ class NewReceivedLikesAvailableResult {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "NewReceivedLikesAvailableResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "NewReceivedLikesAvailableResult[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "NewReceivedLikesCountResult[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "NewReceivedLikesCountResult[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return NewReceivedLikesAvailableResult(
+      return NewReceivedLikesCountResult(
         c: NewReceivedLikesCount.fromJson(json[r'c'])!,
         v: ReceivedLikesSyncVersion.fromJson(json[r'v'])!,
       );
@@ -68,11 +68,11 @@ class NewReceivedLikesAvailableResult {
     return null;
   }
 
-  static List<NewReceivedLikesAvailableResult> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <NewReceivedLikesAvailableResult>[];
+  static List<NewReceivedLikesCountResult> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <NewReceivedLikesCountResult>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = NewReceivedLikesAvailableResult.fromJson(row);
+        final value = NewReceivedLikesCountResult.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +81,12 @@ class NewReceivedLikesAvailableResult {
     return result.toList(growable: growable);
   }
 
-  static Map<String, NewReceivedLikesAvailableResult> mapFromJson(dynamic json) {
-    final map = <String, NewReceivedLikesAvailableResult>{};
+  static Map<String, NewReceivedLikesCountResult> mapFromJson(dynamic json) {
+    final map = <String, NewReceivedLikesCountResult>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = NewReceivedLikesAvailableResult.fromJson(entry.value);
+        final value = NewReceivedLikesCountResult.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,14 +95,14 @@ class NewReceivedLikesAvailableResult {
     return map;
   }
 
-  // maps a json object with a list of NewReceivedLikesAvailableResult-objects as value to a dart map
-  static Map<String, List<NewReceivedLikesAvailableResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<NewReceivedLikesAvailableResult>>{};
+  // maps a json object with a list of NewReceivedLikesCountResult-objects as value to a dart map
+  static Map<String, List<NewReceivedLikesCountResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<NewReceivedLikesCountResult>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = NewReceivedLikesAvailableResult.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = NewReceivedLikesCountResult.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

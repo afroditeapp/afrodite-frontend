@@ -14,28 +14,33 @@ class PendingNotificationWithData {
   /// Returns a new [PendingNotificationWithData] instance.
   PendingNotificationWithData({
     this.newMessageReceivedFrom = const [],
+    this.receivedLikesChanged,
     required this.value,
   });
 
   /// Data for NEW_MESSAGE notification.  List of account IDs which have sent a new message.
   List<AccountId>? newMessageReceivedFrom;
 
-  /// Pending notification (or multiple notifications which each have different type) not yet received notifications which push notification requests client to download.  The integer is a bitflag.  - const NEW_MESSAGE = 0x1; 
+  NewReceivedLikesCountResult? receivedLikesChanged;
+
+  /// Pending notification (or multiple notifications which each have different type) not yet received notifications which push notification requests client to download.  The integer is a bitflag.  - const NEW_MESSAGE = 0x1; - const RECEIVED_LIKES_CHANGED = 0x2; 
   int value;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PendingNotificationWithData &&
     _deepEquality.equals(other.newMessageReceivedFrom, newMessageReceivedFrom) &&
+    other.receivedLikesChanged == receivedLikesChanged &&
     other.value == value;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (newMessageReceivedFrom == null ? 0 : newMessageReceivedFrom!.hashCode) +
+    (receivedLikesChanged == null ? 0 : receivedLikesChanged!.hashCode) +
     (value.hashCode);
 
   @override
-  String toString() => 'PendingNotificationWithData[newMessageReceivedFrom=$newMessageReceivedFrom, value=$value]';
+  String toString() => 'PendingNotificationWithData[newMessageReceivedFrom=$newMessageReceivedFrom, receivedLikesChanged=$receivedLikesChanged, value=$value]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -43,6 +48,11 @@ class PendingNotificationWithData {
       json[r'new_message_received_from'] = this.newMessageReceivedFrom;
     } else {
       json[r'new_message_received_from'] = null;
+    }
+    if (this.receivedLikesChanged != null) {
+      json[r'received_likes_changed'] = this.receivedLikesChanged;
+    } else {
+      json[r'received_likes_changed'] = null;
     }
       json[r'value'] = this.value;
     return json;
@@ -68,6 +78,7 @@ class PendingNotificationWithData {
 
       return PendingNotificationWithData(
         newMessageReceivedFrom: AccountId.listFromJson(json[r'new_message_received_from']),
+        receivedLikesChanged: NewReceivedLikesCountResult.fromJson(json[r'received_likes_changed']),
         value: mapValueOfType<int>(json, r'value')!,
       );
     }

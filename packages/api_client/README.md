@@ -85,7 +85,6 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**deleteLike**](doc//ChatApi.md#deletelike) | **DELETE** /O3DZlGOjDYbQ8PlCorta0onQDLI | Delete sent like.
 *ChatApi* | [**getMatches**](doc//ChatApi.md#getmatches) | **GET** /kzySqAe9qYi69MoCBnFGKdn76-Q | Get matches
 *ChatApi* | [**getMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#getmessagenumberoflatestviewedmessage) | **GET** /gas7m77c7kw7N7TKyMQVzUKy3AQ | Get message number of the most recent message that the recipient has viewed.
-*ChatApi* | [**getNewReceivedLikesAvailable**](doc//ChatApi.md#getnewreceivedlikesavailable) | **GET** /r-TPulKKQM_a5EYkzbi6KNH5dpU | 
 *ChatApi* | [**getPendingMessages**](doc//ChatApi.md#getpendingmessages) | **GET** /7sKe87sefWrLYS0JvbPS10_F8oc | Get list of pending messages.
 *ChatApi* | [**getPublicKey**](doc//ChatApi.md#getpublickey) | **GET** /e-r4VrqWJD1kIttg1McD9kv5o0k/{aid} | Get current public key of some account
 *ChatApi* | [**getReceivedBlocks**](doc//ChatApi.md#getreceivedblocks) | **GET** /hjP9LovH2kBxnbwWKSyVgFL4o58 | Get list of received blocks
@@ -95,6 +94,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postAddReceiverAcknowledgement**](doc//ChatApi.md#postaddreceiveracknowledgement) | **POST** /PBreZU5Cmo7tTtNMMb58yN_xFZ8 | 
 *ChatApi* | [**postAddSenderAcknowledgement**](doc//ChatApi.md#postaddsenderacknowledgement) | **POST** /E-yVIcGOLJyZ7nsT_Lh4KPCRkQg | 
 *ChatApi* | [**postBlockProfile**](doc//ChatApi.md#postblockprofile) | **POST** /MpWSY01lXj7KaDK1KCNHLWRg9k4 | Block profile
+*ChatApi* | [**postGetNewReceivedLikesCount**](doc//ChatApi.md#postgetnewreceivedlikescount) | **POST** /dCPla4TZep6KONk57U2J7p7s6jw | 
 *ChatApi* | [**postGetNextReceivedLikesPage**](doc//ChatApi.md#postgetnextreceivedlikespage) | **POST** /eEB4pq6DGUYlMVAYwPCm2RT5HP0 | Update received likes iterator and get next page
 *ChatApi* | [**postGetPendingNotification**](doc//ChatApi.md#postgetpendingnotification) | **POST** /MhQXhJMKgrUh0s95FueOgalQg-o | Get pending notification and reset pending notification.
 *ChatApi* | [**postMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#postmessagenumberoflatestviewedmessage) | **POST** /gas7m77c7kw7N7TKyMQVzUKy3AQ | Update message number of the most recent message that the recipient has viewed.
@@ -249,8 +249,9 @@ Class | Method | HTTP request | Description
  - [ModerationRequestId](doc//ModerationRequestId.md)
  - [ModerationRequestState](doc//ModerationRequestState.md)
  - [NewContentParams](doc//NewContentParams.md)
- - [NewReceivedLikesAvailableResult](doc//NewReceivedLikesAvailableResult.md)
  - [NewReceivedLikesCount](doc//NewReceivedLikesCount.md)
+ - [NewReceivedLikesCountResult](doc//NewReceivedLikesCountResult.md)
+ - [PageItemCountForNewLikes](doc//PageItemCountForNewLikes.md)
  - [PendingMessage](doc//PendingMessage.md)
  - [PendingMessageAcknowledgementList](doc//PendingMessageAcknowledgementList.md)
  - [PendingMessageId](doc//PendingMessageId.md)

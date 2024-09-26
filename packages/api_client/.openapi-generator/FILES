@@ -98,8 +98,9 @@ doc/ModerationRequestContent.md
 doc/ModerationRequestId.md
 doc/ModerationRequestState.md
 doc/NewContentParams.md
-doc/NewReceivedLikesAvailableResult.md
 doc/NewReceivedLikesCount.md
+doc/NewReceivedLikesCountResult.md
+doc/PageItemCountForNewLikes.md
 doc/PendingMessage.md
 doc/PendingMessageAcknowledgementList.md
 doc/PendingMessageId.md
@@ -275,8 +276,9 @@ lib/model/moderation_request_content.dart
 lib/model/moderation_request_id.dart
 lib/model/moderation_request_state.dart
 lib/model/new_content_params.dart
-lib/model/new_received_likes_available_result.dart
 lib/model/new_received_likes_count.dart
+lib/model/new_received_likes_count_result.dart
+lib/model/page_item_count_for_new_likes.dart
 lib/model/pending_message.dart
 lib/model/pending_message_acknowledgement_list.dart
 lib/model/pending_message_id.dart
@@ -343,3 +345,5 @@ lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
+test/new_received_likes_count_result_test.dart
+test/page_item_count_for_new_likes_test.dart
