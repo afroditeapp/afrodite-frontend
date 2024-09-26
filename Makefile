@@ -7,7 +7,8 @@ update-api-bindings:
 	openapi-generator-cli generate \
 	-i http://localhost:3001/api-doc/pihka_api.json \
 	-g dart \
-	-o packages/api_client
+	-o packages/api_client \
+	--global-property apiTests=false,modelTests=false
 
 update-freezed-code:
 	icegen --code-dir lib/model/freezed

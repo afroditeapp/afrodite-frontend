@@ -345,5 +345,3 @@ lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
-test/new_received_likes_count_result_test.dart
-test/page_item_count_for_new_likes_test.dart
