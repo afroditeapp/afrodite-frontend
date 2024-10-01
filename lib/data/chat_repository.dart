@@ -12,7 +12,7 @@ import 'package:pihka_frontend/data/chat/message_key_generator.dart';
 import 'package:pihka_frontend/data/general/notification/state/like_received.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile/account_id_database_iterator.dart';
-import 'package:pihka_frontend/data/profile/profile_list/online_iterator.dart';
+import 'package:pihka_frontend/data/profile/profile_downloader.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/data/utils.dart';
 import 'package:database/database.dart';
