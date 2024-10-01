@@ -6,7 +6,7 @@ import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_downloader.dart';
 import 'package:pihka_frontend/data/general/iterator/profile_iterator.dart';
-import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
+import 'package:pihka_frontend/data/profile/profile_list/profiles_database_iterator.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
 import 'package:pihka_frontend/database/account_database_manager.dart';

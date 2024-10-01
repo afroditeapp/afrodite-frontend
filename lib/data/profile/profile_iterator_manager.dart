@@ -5,7 +5,8 @@ import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/general/iterator/profile_iterator.dart';
-import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
+import 'package:pihka_frontend/data/profile/profile_list/favorites_database_iterator.dart';
+import 'package:pihka_frontend/data/profile/profile_list/profiles_database_iterator.dart';
 import 'package:pihka_frontend/data/general/iterator/online_iterator.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
@@ -41,7 +42,7 @@ class ProfileIteratorManager {
   void reset(ProfileIteratorMode mode) async {
     switch (mode) {
       case ModeFavorites(): {
-        _currentIterator = ProfileListDatabaseIterator(iterateFavorites: true, db: db);
+        _currentIterator = FavoritesDatabaseIterator(db: db);
       }
       case ModePublicProfiles(): {
         if (mode.clearDatabase) {

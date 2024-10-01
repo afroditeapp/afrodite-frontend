@@ -5,11 +5,10 @@ import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/data/general/iterator/profile_iterator.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
-class ProfileListDatabaseIterator extends IteratorType {
+class FavoritesDatabaseIterator extends IteratorType {
   int currentIndex;
-  final bool iterateFavorites;
   final AccountDatabaseManager db;
-  ProfileListDatabaseIterator({this.currentIndex = 0, this.iterateFavorites = false, required this.db});
+  FavoritesDatabaseIterator({this.currentIndex = 0, required this.db});
 
   @override
   void reset() {
@@ -18,22 +17,7 @@ class ProfileListDatabaseIterator extends IteratorType {
 
   @override
   Future<Result<List<ProfileEntry>, void>> nextList() async {
-    if (iterateFavorites) {
-      return await nextListFromFavorites();
-    } else {
-      return await nextListFromPublicProfiles();
-    }
-  }
-
-  Future<Result<List<ProfileEntry>, void>> nextListFromPublicProfiles() async {
-    const queryCount = 10;
-    final profiles = await db.accountData((db) => db.daoProfileStates.getProfileGridList(currentIndex, queryCount)).ok();
-    if (profiles != null) {
-      currentIndex += queryCount;
-      return Ok(await db.profileData((db) => db.convertToProfileEntries(profiles)).ok() ?? []);
-    } else {
-      return const Ok([]);
-    }
+    return await nextListFromFavorites();
   }
 
   Future<Result<List<ProfileEntry>, void>> nextListFromFavorites() async {
