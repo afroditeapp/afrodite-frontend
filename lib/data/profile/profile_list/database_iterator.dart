@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:database/database.dart';
 import 'package:pihka_frontend/database/account_database_manager.dart';
-import 'package:pihka_frontend/data/profile/profile_iterator.dart';
+import 'package:pihka_frontend/data/general/iterator/profile_iterator.dart';
 import 'package:pihka_frontend/utils/result.dart';
 
-class DatabaseIterator extends IteratorType {
+class ProfileListDatabaseIterator extends IteratorType {
   int currentIndex;
   final bool iterateFavorites;
   final AccountDatabaseManager db;
-  DatabaseIterator({this.currentIndex = 0, this.iterateFavorites = false, required this.db});
+  ProfileListDatabaseIterator({this.currentIndex = 0, this.iterateFavorites = false, required this.db});
 
   @override
   void reset() {

@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart';
+import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_downloader.dart';
-import 'package:pihka_frontend/data/profile/profile_iterator.dart';
+import 'package:pihka_frontend/data/general/iterator/profile_iterator.dart';
 import 'package:pihka_frontend/data/profile/profile_list/database_iterator.dart';
 import 'package:database/database.dart';
 import 'package:pihka_frontend/database/account_background_database_manager.dart';
@@ -16,7 +17,7 @@ final log = Logger("OnlineIterator");
 
 class OnlineIterator extends IteratorType {
   int currentIndex = 0;
-  DatabaseIterator? databaseIterator;
+  final OnlineIteratorIo io;
   bool resetServerIterator;
   final ServerConnectionManager connectionManager;
   final ApiManager api;
@@ -28,6 +29,7 @@ class OnlineIterator extends IteratorType {
   OnlineIterator({
     this.resetServerIterator = false,
     required MediaRepository media,
+    required this.io,
     required AccountBackgroundDatabaseManager accountBackgroundDb,
     required this.db,
     required this.connectionManager,
@@ -40,7 +42,7 @@ class OnlineIterator extends IteratorType {
     if (!resetServerIterator) {
       /// Reset to use database iterator and then continue online profile
       /// iterating.
-      databaseIterator = DatabaseIterator(db: db);
+      io.resetDatabaseIterator();
     }
   }
 
@@ -52,11 +54,9 @@ class OnlineIterator extends IteratorType {
         return const Err(null);
       }
 
-      switch (await api.profile((api) => api.postResetProfilePaging())) {
-        case Ok(:final v):
+      switch (await io.resetServerPaging()) {
+        case Ok():
           resetServerIterator = false;
-          await db.accountAction((db) => db.updateProfileIteratorSessionId(v));
-          await db.accountAction((db) => db.daoProfileStates.setProfileGridStatusList(null, false, clear: true));
         case Err():
           log.error("Profile paging reset failed");
           return const Err(null);
@@ -65,14 +65,14 @@ class OnlineIterator extends IteratorType {
 
     // Handle case where iterator has been reseted in the middle
     // of online iteration. Get the beginning from the database.
-    final iterator = databaseIterator;
+    final iterator = io.databaseIterator;
     if (iterator != null) {
       switch (await iterator.nextList()) {
         case Ok(value: final list):
           if (list.isNotEmpty) {
             return Ok(list);
           } else {
-            databaseIterator = null;
+            io.setDatabaseIteratorToNull();
           }
         case Err():
           log.error("Database iterator failed");
@@ -80,8 +80,7 @@ class OnlineIterator extends IteratorType {
       }
     }
 
-    final iteratorSessionId = await db.accountStreamSingle((db) => db.watchProfileSessionId()).ok();
-    if (iteratorSessionId == null) {
+    if (!await io.loadIteratorSessionIdFromDbAndReturnTrueIfItExists()) {
       log.error("No iterator session ID in database");
       return const Err(null);
     }
@@ -92,7 +91,7 @@ class OnlineIterator extends IteratorType {
         log.error("Connection waiting failed");
         return const Err(null);
       }
-      switch (await api.profile((api) => api.postGetNextProfilePage(iteratorSessionId))) {
+      switch (await io.nextServerPage()) {
         case Ok(value: final profiles):
           if (profiles.errorInvalidIteratorSessionId) {
             log.error("Current iterator session ID is invalid");
@@ -121,7 +120,20 @@ class OnlineIterator extends IteratorType {
               continue;
             }
 
-            await db.accountAction((db) => db.daoProfileStates.setProfileGridStatus(p.id, true));
+            await io.setDbVisibility(p.id, true);
+            list.add(gridEntry);
+          }
+
+          for (final p in profiles.basicProfiles) {
+            var entry = await db.profileData((db) => db.getProfileEntry(p)).ok();
+            entry ??= await downloader.download(p).ok();
+
+            final gridEntry = entry;
+            if (gridEntry == null) {
+              continue;
+            }
+
+            await io.setDbVisibility(p, true);
             list.add(gridEntry);
           }
 
@@ -138,4 +150,89 @@ class OnlineIterator extends IteratorType {
       return Ok(list);
     }
   }
+}
+
+/// Interface for different server side iterators
+abstract class OnlineIteratorIo {
+  IteratorType? get databaseIterator;
+  void resetDatabaseIterator();
+  void setDatabaseIteratorToNull();
+
+  Future<Result<void, void>> resetServerPaging();
+  Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists();
+  /// Await loadIteratorSessionIdFromDbAndReturnTrueIfItExists before awaiting
+  /// Future returned from this method.
+  Future<Result<IteratorPage, void>> nextServerPage();
+  Future<void> setDbVisibility(AccountId id, bool visibility);
+}
+
+class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
+  final AccountDatabaseManager db;
+  final ApiManager api;
+  IteratorType? iteratorValue;
+  IteratorSessionId? currentSessionId;
+
+  ProfileListOnlineIteratorIo(this.db, this.api);
+
+  @override
+  IteratorType? get databaseIterator => iteratorValue;
+
+  @override
+  void resetDatabaseIterator() {
+    iteratorValue = ProfileListDatabaseIterator(db: db);
+  }
+
+  @override
+  void setDatabaseIteratorToNull() {
+    iteratorValue = null;
+  }
+
+  @override
+  Future<Result<void, void>> resetServerPaging() async {
+    switch (await api.profile((api) => api.postResetProfilePaging())) {
+      case Ok(:final v):
+        await db.accountAction((db) => db.updateProfileIteratorSessionId(v));
+        await db.accountAction((db) => db.daoProfileStates.setProfileGridStatusList(null, false, clear: true));
+        return const Ok(null);
+      case Err():
+        return const Err(null);
+    }
+  }
+
+  @override
+  Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists() async {
+    currentSessionId = await db.accountStreamSingle((db) => db.watchProfileSessionId()).ok();
+    if (currentSessionId == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  @override
+  Future<Result<IteratorPage, void>> nextServerPage() async {
+    final sessionId = currentSessionId;
+    if (sessionId == null) {
+      return const Err(null);
+    }
+    return await api.profile((api) => api.postGetNextProfilePage(sessionId))
+      .mapOk((value) => IteratorPage(
+        value.profiles,
+        [],
+        errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId
+      ));
+  }
+
+  @override
+  Future<void> setDbVisibility(AccountId id, bool visibility) async {
+    await db.accountAction((db) => db.daoProfileStates.setProfileGridStatus(id, true));
+  }
+}
+
+class IteratorPage {
+  final bool errorInvalidIteratorSessionId;
+  List<ProfileLink> profiles;
+  List<AccountId> basicProfiles;
+
+  IteratorPage(this.profiles, this.basicProfiles, {this.errorInvalidIteratorSessionId = false});
 }
