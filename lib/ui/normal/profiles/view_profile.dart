@@ -201,8 +201,10 @@ class ViewProfilePage extends StatelessWidget {
         state.showRemoveFromFavoritesCompleted ||
         state.showLikeCompleted ||
         state.showLikeFailedBecauseOfLimit ||
+        state.showLikeFailedBecauseAlreadyLiked ||
         state.showRemoveLikeCompleted ||
-        state.showRemoveLikeFailedBecauseOfLimit
+        state.showRemoveLikeFailedBecauseOfDoneBefore ||
+        state.showGenericError
       ) {
         if (state.showAddToFavoritesCompleted) {
           showSnackBar(context.strings.view_profile_screen_add_to_favorites_action_successful);
@@ -216,11 +218,17 @@ class ViewProfilePage extends StatelessWidget {
         if (state.showLikeFailedBecauseOfLimit) {
           showSnackBar(context.strings.view_profile_screen_like_action_try_again_tomorrow);
         }
+        if (state.showLikeFailedBecauseAlreadyLiked) {
+          showSnackBar(context.strings.view_profile_screen_like_action_like_already_sent);
+        }
         if (state.showRemoveLikeCompleted) {
           showSnackBar(context.strings.view_profile_screen_remove_like_action_successful);
         }
-        if (state.showRemoveLikeFailedBecauseOfLimit) {
-          showSnackBar(context.strings.view_profile_screen_remove_like_action_try_again_tomorrow);
+        if (state.showRemoveLikeFailedBecauseOfDoneBefore) {
+          showSnackBar(context.strings.view_profile_screen_remove_like_action_remove_done_previously);
+        }
+        if (state.showGenericError) {
+          showSnackBar(context.strings.generic_error_occurred);
         }
         context.read<ViewProfileBloc>().add(ResetShowMessages());
       }

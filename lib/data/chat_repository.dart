@@ -146,11 +146,19 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     return await db.accountData((db) => db.daoProfileStates.isInReceivedBlocks(accountId)).ok() ?? false;
   }
 
-  Future<Result<LimitedActionStatus, void>> sendLikeTo(AccountId accountId) async {
+  Future<Result<LimitedActionStatus, SendLikeError>> sendLikeTo(AccountId accountId) async {
     final result = await api.chat((api) => api.postSendLike(accountId));
     switch (result) {
       case Ok(:final v):
-        if (v.status != LimitedActionStatus.failureLimitAlreadyReached) {
+        if (v.errorAlreadyLiked) {
+          await db.accountAction((db) => db.daoProfileStates.setSentLikeStatus(accountId, true));
+          return const Err(SendLikeError.alreadyLiked);
+        }
+        final status = v.status;
+        if (status == null) {
+          return const Err(SendLikeError.unspecifiedError);
+        }
+        if (status != LimitedActionStatus.failureLimitAlreadyReached) {
           final isReceivedLike = await isInReceivedLikes(accountId);
           if (isReceivedLike) {
             await db.accountAction((db) => db.daoMatches.setMatchStatus(accountId, true));
@@ -158,22 +166,23 @@ class ChatRepository extends DataRepositoryWithLifecycle {
             await db.accountAction((db) => db.daoProfileStates.setSentLikeStatus(accountId, true));
           }
         }
-        return Ok(v.status);
+        return Ok(status);
       case Err():
-        return const Err(null);
+        return const Err(SendLikeError.unspecifiedError);
     }
   }
 
-  Future<Result<LimitedActionStatus, void>> removeLikeFrom(AccountId accountId) async {
+  Future<Result<void, RemoveLikeError>> removeLikeFrom(AccountId accountId) async {
     final result = await api.chat((api) => api.deleteLike(accountId));
     switch (result) {
       case Ok(:final v):
-        if (v.status != LimitedActionStatus.failureLimitAlreadyReached) {
-           await db.accountAction((db) => db.daoProfileStates.setSentLikeStatus(accountId, false));
+        if (v.errorDeleteAlreadyDoneBefore) {
+          return const Err(RemoveLikeError.actionDoneBefore);
         }
-        return Ok(v.status);
+        await db.accountAction((db) => db.daoProfileStates.setSentLikeStatus(accountId, false));
+        return const Ok(null);
       case Err():
-        return const Err(null);
+        return const Err(RemoveLikeError.unspecifiedError);
     }
   }
 
@@ -455,4 +464,14 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     messageManager.queueCmd(cmd);
     return await cmd.waitUntilReady();
   }
+}
+
+enum SendLikeError {
+  alreadyLiked,
+  unspecifiedError,
+}
+
+enum RemoveLikeError {
+  actionDoneBefore,
+  unspecifiedError,
 }

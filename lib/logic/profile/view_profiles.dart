@@ -138,8 +138,10 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
         showRemoveFromFavoritesCompleted: false,
         showLikeCompleted: false,
         showLikeFailedBecauseOfLimit: false,
+        showLikeFailedBecauseAlreadyLiked: false,
         showRemoveLikeCompleted: false,
-        showRemoveLikeFailedBecauseOfLimit: false,
+        showRemoveLikeFailedBecauseOfDoneBefore: false,
+        showGenericError: false
       ));
     });
     on<BlockProfile>((data, emit) async {
@@ -155,31 +157,47 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
       await runOnce(() async {
         switch (data.action) {
           case ProfileActionState.like: {
-            final result = await chat.sendLikeTo(data.accountId).ok();
-            if (result == LimitedActionStatus.failureLimitAlreadyReached) {
-              emit(state.copyWith(
-                showLikeFailedBecauseOfLimit: true,
-              ));
-            } else if (result == LimitedActionStatus.success || result == LimitedActionStatus.successAndLimitReached) {
-              final newAction = await resolveProfileAction(data.accountId);
-              emit(state.copyWith(
-                profileActionState: newAction,
-                showLikeCompleted: true,
-              ));
+            switch (await chat.sendLikeTo(data.accountId)) {
+              case Ok(:final v):
+                if (v == LimitedActionStatus.failureLimitAlreadyReached) {
+                  emit(state.copyWith(
+                    showLikeFailedBecauseOfLimit: true,
+                  ));
+                } else if (v == LimitedActionStatus.success || v == LimitedActionStatus.successAndLimitReached) {
+                  final newAction = await resolveProfileAction(data.accountId);
+                  emit(state.copyWith(
+                    profileActionState: newAction,
+                    showLikeCompleted: true,
+                  ));
+                }
+              case Err(e: SendLikeError.alreadyLiked):
+                final newAction = await resolveProfileAction(data.accountId);
+                emit(state.copyWith(
+                  profileActionState: newAction,
+                  showLikeFailedBecauseAlreadyLiked: true,
+                ));
+              case Err(e: SendLikeError.unspecifiedError):
+                emit(state.copyWith(
+                  showGenericError: true,
+                ));
             }
           }
           case ProfileActionState.removeLike: {
-            final result = await chat.removeLikeFrom(data.accountId).ok();
-            if (result == LimitedActionStatus.failureLimitAlreadyReached) {
-              emit(state.copyWith(
-                showRemoveLikeFailedBecauseOfLimit: true,
-              ));
-            } else if (result == LimitedActionStatus.success || result == LimitedActionStatus.successAndLimitReached) {
-              final newAction = await resolveProfileAction(data.accountId);
-              emit(state.copyWith(
-                profileActionState: newAction,
-                showRemoveLikeCompleted: true,
-              ));
+            switch (await chat.removeLikeFrom(data.accountId)) {
+              case Ok():
+                final newAction = await resolveProfileAction(data.accountId);
+                emit(state.copyWith(
+                  profileActionState: newAction,
+                  showRemoveLikeCompleted: true,
+                ));
+              case Err(e: RemoveLikeError.actionDoneBefore):
+                emit(state.copyWith(
+                  showRemoveLikeFailedBecauseOfDoneBefore: true,
+                ));
+              case Err(e: RemoveLikeError.unspecifiedError):
+                emit(state.copyWith(
+                  showGenericError: true,
+                ));
             }
           }
           case ProfileActionState.makeMatch: {}

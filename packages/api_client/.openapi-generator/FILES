@@ -44,6 +44,7 @@ doc/ContentProcessingStateType.md
 doc/ContentSlot.md
 doc/ContentState.md
 doc/CurrentModerationRequest.md
+doc/DeleteLikeResult.md
 doc/DeleteStatus.md
 doc/DemoModeConfirmLogin.md
 doc/DemoModeConfirmLoginResult.md
@@ -75,7 +76,6 @@ doc/Language.md
 doc/LastSeenTimeFilter.md
 doc/LatestBirthdate.md
 doc/LatestViewedMessageChanged.md
-doc/LimitedActionResult.md
 doc/LimitedActionStatus.md
 doc/Location.md
 doc/LoginResult.md
@@ -147,6 +147,7 @@ doc/ResetDataQueryParam.md
 doc/ResetReceivedLikesIteratorResult.md
 doc/SearchGroups.md
 doc/SecurityContent.md
+doc/SendLikeResult.md
 doc/SendMessageResult.md
 doc/SentBlocksPage.md
 doc/SentBlocksSyncVersion.md
@@ -225,6 +226,7 @@ lib/model/content_processing_state_type.dart
 lib/model/content_slot.dart
 lib/model/content_state.dart
 lib/model/current_moderation_request.dart
+lib/model/delete_like_result.dart
 lib/model/delete_status.dart
 lib/model/demo_mode_confirm_login.dart
 lib/model/demo_mode_confirm_login_result.dart
@@ -256,7 +258,6 @@ lib/model/language.dart
 lib/model/last_seen_time_filter.dart
 lib/model/latest_birthdate.dart
 lib/model/latest_viewed_message_changed.dart
-lib/model/limited_action_result.dart
 lib/model/limited_action_status.dart
 lib/model/location.dart
 lib/model/login_result.dart
@@ -324,6 +325,7 @@ lib/model/reset_data_query_param.dart
 lib/model/reset_received_likes_iterator_result.dart
 lib/model/search_groups.dart
 lib/model/security_content.dart
+lib/model/send_like_result.dart
 lib/model/send_message_result.dart
 lib/model/sent_blocks_page.dart
 lib/model/sent_blocks_sync_version.dart

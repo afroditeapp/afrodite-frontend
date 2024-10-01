@@ -25,9 +25,11 @@ class ViewProfilesData with _$ViewProfilesData {
     @Default(false) bool showAddToFavoritesCompleted,
     @Default(false) bool showRemoveFromFavoritesCompleted,
     @Default(false) bool showLikeCompleted,
+    @Default(false) bool showLikeFailedBecauseAlreadyLiked,
     @Default(false) bool showLikeFailedBecauseOfLimit,
     @Default(false) bool showRemoveLikeCompleted,
-    @Default(false) bool showRemoveLikeFailedBecauseOfLimit,
+    @Default(false) bool showRemoveLikeFailedBecauseOfDoneBefore,
+    @Default(false) bool showGenericError,
   }) = _ViewProfilesData;
 }
 

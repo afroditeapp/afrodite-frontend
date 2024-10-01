@@ -258,6 +258,8 @@ class ApiClient {
           return ContentStateTypeTransformer().decode(value);
         case 'CurrentModerationRequest':
           return CurrentModerationRequest.fromJson(value);
+        case 'DeleteLikeResult':
+          return DeleteLikeResult.fromJson(value);
         case 'DeleteStatus':
           return DeleteStatus.fromJson(value);
         case 'DemoModeConfirmLogin':
@@ -320,8 +322,6 @@ class ApiClient {
           return LatestBirthdate.fromJson(value);
         case 'LatestViewedMessageChanged':
           return LatestViewedMessageChanged.fromJson(value);
-        case 'LimitedActionResult':
-          return LimitedActionResult.fromJson(value);
         case 'LimitedActionStatus':
           return LimitedActionStatusTypeTransformer().decode(value);
         case 'Location':
@@ -456,6 +456,8 @@ class ApiClient {
           return SearchGroups.fromJson(value);
         case 'SecurityContent':
           return SecurityContent.fromJson(value);
+        case 'SendLikeResult':
+          return SendLikeResult.fromJson(value);
         case 'SendMessageResult':
           return SendMessageResult.fromJson(value);
         case 'SentBlocksPage':

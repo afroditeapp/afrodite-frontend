@@ -10,36 +10,46 @@
 
 part of openapi.api;
 
-class LimitedActionResult {
-  /// Returns a new [LimitedActionResult] instance.
-  LimitedActionResult({
-    required this.status,
+class SendLikeResult {
+  /// Returns a new [SendLikeResult] instance.
+  SendLikeResult({
+    this.errorAlreadyLiked = false,
+    this.status,
   });
 
-  LimitedActionStatus status;
+  bool errorAlreadyLiked;
+
+  LimitedActionStatus? status;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is LimitedActionResult &&
+  bool operator ==(Object other) => identical(this, other) || other is SendLikeResult &&
+    other.errorAlreadyLiked == errorAlreadyLiked &&
     other.status == status;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (status.hashCode);
+    (errorAlreadyLiked.hashCode) +
+    (status == null ? 0 : status!.hashCode);
 
   @override
-  String toString() => 'LimitedActionResult[status=$status]';
+  String toString() => 'SendLikeResult[errorAlreadyLiked=$errorAlreadyLiked, status=$status]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'error_already_liked'] = this.errorAlreadyLiked;
+    if (this.status != null) {
       json[r'status'] = this.status;
+    } else {
+      json[r'status'] = null;
+    }
     return json;
   }
 
-  /// Returns a new [LimitedActionResult] instance and imports its values from
+  /// Returns a new [SendLikeResult] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static LimitedActionResult? fromJson(dynamic value) {
+  static SendLikeResult? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +58,25 @@ class LimitedActionResult {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "LimitedActionResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "LimitedActionResult[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "SendLikeResult[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "SendLikeResult[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return LimitedActionResult(
-        status: LimitedActionStatus.fromJson(json[r'status'])!,
+      return SendLikeResult(
+        errorAlreadyLiked: mapValueOfType<bool>(json, r'error_already_liked') ?? false,
+        status: LimitedActionStatus.fromJson(json[r'status']),
       );
     }
     return null;
   }
 
-  static List<LimitedActionResult> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <LimitedActionResult>[];
+  static List<SendLikeResult> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <SendLikeResult>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = LimitedActionResult.fromJson(row);
+        final value = SendLikeResult.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +85,12 @@ class LimitedActionResult {
     return result.toList(growable: growable);
   }
 
-  static Map<String, LimitedActionResult> mapFromJson(dynamic json) {
-    final map = <String, LimitedActionResult>{};
+  static Map<String, SendLikeResult> mapFromJson(dynamic json) {
+    final map = <String, SendLikeResult>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = LimitedActionResult.fromJson(entry.value);
+        final value = SendLikeResult.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +99,14 @@ class LimitedActionResult {
     return map;
   }
 
-  // maps a json object with a list of LimitedActionResult-objects as value to a dart map
-  static Map<String, List<LimitedActionResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<LimitedActionResult>>{};
+  // maps a json object with a list of SendLikeResult-objects as value to a dart map
+  static Map<String, List<SendLikeResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<SendLikeResult>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = LimitedActionResult.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = SendLikeResult.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +114,6 @@ class LimitedActionResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'status',
   };
 }
 
