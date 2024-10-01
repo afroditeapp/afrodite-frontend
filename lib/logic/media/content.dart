@@ -3,6 +3,8 @@ import "dart:async";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
+import "package:pihka_frontend/api/api_manager.dart";
+import "package:pihka_frontend/data/image_cache.dart";
 import "package:pihka_frontend/data/login_repository.dart";
 
 import "package:pihka_frontend/data/media_repository.dart";
@@ -32,15 +34,23 @@ class NewPendingSecurityContent extends ContentEvent {
   final ContentId? content;
   NewPendingSecurityContent(this.content);
 }
+class NewPrimaryImageDataAvailable extends ContentEvent {
+  final bool value;
+  NewPrimaryImageDataAvailable(this.value);
+}
 
 class ContentBloc extends Bloc<ContentEvent, ContentData> {
   final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
+  final ServerConnectionManager connection = LoginRepository.getInstance().repositories.connectionManager;
+  final ImageCacheData cache = ImageCacheData.getInstance();
+  final AccountId currentUser =  LoginRepository.getInstance().repositories.accountId;
 
   StreamSubscription<CurrentProfileContent?>? _publicContentSubscription;
   StreamSubscription<ContentId?>? _securityContentSubscription;
   StreamSubscription<PendingProfileContentInternal?>? _pendingContentSubscription;
   StreamSubscription<ContentId?>? _pendingSecurityContentSubscription;
+  StreamSubscription<void>? _primaryImageDataAvailable;
 
   ContentBloc() : super(ContentData()) {
     on<NewPublicContent>((data, emit) {
@@ -63,6 +73,11 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> {
         pendingSecurityContent: data.content,
       ));
     });
+    on<NewPrimaryImageDataAvailable>((data, emit) {
+      emit(state.copyWith(
+        primaryImageDataAvailable: data.value,
+      ));
+    });
 
     _publicContentSubscription = db.accountStream((db) => db.daoCurrentContent.watchCurrentProfileContent()).listen((event) {
       add(NewPublicContent(event));
@@ -76,6 +91,35 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> {
     _pendingSecurityContentSubscription = db.accountStream((db) => db.daoPendingContent.watchPendingSecurityContent()).listen((event) {
       add(NewPendingSecurityContent(event));
     });
+
+    // Retry main screen my profile primary image thumbnail loading
+    // if it is not available at the first try.
+    _primaryImageDataAvailable = primaryImageDataAvailable().listen((event) {
+      add(NewPrimaryImageDataAvailable(event));
+    });
+  }
+
+  Stream<bool> primaryImageDataAvailable() async* {
+    ContentId? previousImg;
+    await for (final s in stream) {
+      final newImg = s.primaryProfilePicture;
+      if (newImg != null && previousImg != newImg) {
+        previousImg = newImg;
+        final imgData = await cache.getImage(currentUser, newImg, media: media);
+        if (imgData == null) {
+          yield false;
+        } else {
+          yield true;
+        }
+        await connection.state.where((v) => v == ApiManagerState.connected).first;
+        final imgData2 = await cache.getImage(currentUser, newImg, media: media);
+        if (imgData2 == null) {
+          yield false;
+        } else {
+          yield true;
+        }
+      }
+    }
   }
 
   @override
@@ -84,6 +128,7 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> {
     await _securityContentSubscription?.cancel();
     await _pendingContentSubscription?.cancel();
     await _pendingSecurityContentSubscription?.cancel();
+    await _primaryImageDataAvailable?.cancel();
     await super.close();
   }
 }

@@ -214,7 +214,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
           builder: (context, state) {
             final img = state.primaryProfilePicture;
             final cropInfo = state.primaryProfilePictureCropInfo;
-            if (id != null && img != null) {
+            if (id != null && img != null && state.primaryImageDataAvailable) {
               return ProfileThumbnailImage(
                 accountId: id,
                 contentId: img,
@@ -228,14 +228,18 @@ class _NormalStateContentState extends State<NormalStateContent> {
                 )
               );
             } else {
-              return IconButton(
-                icon: const Icon(Icons.warning_rounded),
-                onPressed: openMyProfileScreen,
-              );
+              return primaryImageButtonError();
             }
           }
         );
       }
+    );
+  }
+
+  Widget primaryImageButtonError() {
+    return IconButton(
+      icon: const Icon(Icons.warning_rounded),
+      onPressed: openMyProfileScreen,
     );
   }
 

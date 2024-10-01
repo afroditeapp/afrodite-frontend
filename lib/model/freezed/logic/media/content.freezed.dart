@@ -25,12 +25,14 @@ mixin _$ContentData {
   ContentId? get securityContent => throw _privateConstructorErrorContentData;
   PendingProfileContentInternal? get pendingContent => throw _privateConstructorErrorContentData;
   ContentId? get pendingSecurityContent => throw _privateConstructorErrorContentData;
+  bool get primaryImageDataAvailable => throw _privateConstructorErrorContentData;
 
   ContentData copyWith({
     CurrentProfileContent? content,
     ContentId? securityContent,
     PendingProfileContentInternal? pendingContent,
     ContentId? pendingSecurityContent,
+    bool? primaryImageDataAvailable,
   }) => throw _privateConstructorErrorContentData;
 }
 
@@ -41,17 +43,21 @@ abstract class _ContentData extends ContentData {
     ContentId? securityContent,
     PendingProfileContentInternal? pendingContent,
     ContentId? pendingSecurityContent,
+    bool primaryImageDataAvailable,
   }) = _$ContentDataImpl;
   const _ContentData._() : super._();
 }
 
 /// @nodoc
 class _$ContentDataImpl extends _ContentData {
+  static const bool _primaryImageDataAvailableDefaultValue = false;
+  
   _$ContentDataImpl({
     this.content,
     this.securityContent,
     this.pendingContent,
     this.pendingSecurityContent,
+    this.primaryImageDataAvailable = _primaryImageDataAvailableDefaultValue,
   }) : super._();
 
   @override
@@ -62,10 +68,12 @@ class _$ContentDataImpl extends _ContentData {
   final PendingProfileContentInternal? pendingContent;
   @override
   final ContentId? pendingSecurityContent;
+  @override
+  final bool primaryImageDataAvailable;
 
   @override
   String toString() {
-    return 'ContentData(content: $content, securityContent: $securityContent, pendingContent: $pendingContent, pendingSecurityContent: $pendingSecurityContent)';
+    return 'ContentData(content: $content, securityContent: $securityContent, pendingContent: $pendingContent, pendingSecurityContent: $pendingSecurityContent, primaryImageDataAvailable: $primaryImageDataAvailable)';
   }
 
   @override
@@ -80,7 +88,9 @@ class _$ContentDataImpl extends _ContentData {
         (identical(other.pendingContent, pendingContent) ||
           other.pendingContent == pendingContent) &&
         (identical(other.pendingSecurityContent, pendingSecurityContent) ||
-          other.pendingSecurityContent == pendingSecurityContent)
+          other.pendingSecurityContent == pendingSecurityContent) &&
+        (identical(other.primaryImageDataAvailable, primaryImageDataAvailable) ||
+          other.primaryImageDataAvailable == primaryImageDataAvailable)
     );
   }
 
@@ -91,6 +101,7 @@ class _$ContentDataImpl extends _ContentData {
     securityContent,
     pendingContent,
     pendingSecurityContent,
+    primaryImageDataAvailable,
   );
 
   @override
@@ -99,10 +110,12 @@ class _$ContentDataImpl extends _ContentData {
     Object? securityContent = _detectDefaultValueInCopyWith,
     Object? pendingContent = _detectDefaultValueInCopyWith,
     Object? pendingSecurityContent = _detectDefaultValueInCopyWith,
+    Object? primaryImageDataAvailable,
   }) => _$ContentDataImpl(
     content: (content == _detectDefaultValueInCopyWith ? this.content : content) as CurrentProfileContent?,
     securityContent: (securityContent == _detectDefaultValueInCopyWith ? this.securityContent : securityContent) as ContentId?,
     pendingContent: (pendingContent == _detectDefaultValueInCopyWith ? this.pendingContent : pendingContent) as PendingProfileContentInternal?,
     pendingSecurityContent: (pendingSecurityContent == _detectDefaultValueInCopyWith ? this.pendingSecurityContent : pendingSecurityContent) as ContentId?,
+    primaryImageDataAvailable: (primaryImageDataAvailable ?? this.primaryImageDataAvailable) as bool,
   );
 }

@@ -17,6 +17,7 @@ class ContentData with _$ContentData {
     ContentId? securityContent,
     PendingProfileContentInternal? pendingContent,
     ContentId? pendingSecurityContent,
+    @Default(false) bool primaryImageDataAvailable,
   }) = _ContentData;
 
   ContentId? get primaryProfilePicture {
