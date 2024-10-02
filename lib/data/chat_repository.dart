@@ -44,7 +44,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     syncHandler = ConnectedActionScheduler(connectionManager),
     profileEntryDownloader = ProfileEntryDownloader(media, accountBackgroundDb, db, connectionManager.api),
     sentBlocksIterator = AccountIdDatabaseIterator((startIndex, limit) => db.accountData((db) => db.daoProfileStates.getSentBlocksList(startIndex, limit)).ok()),
-    receivedLikesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.accountData((db) => db.daoProfileStates.getReceivedLikesList(startIndex, limit)).ok()),
     matchesIterator = AccountIdDatabaseIterator((startIndex, limit) => db.accountData((db) => db.daoMatches.getMatchesList(startIndex, limit)).ok()),
     api = connectionManager.api,
     messageManager = MessageManager(
@@ -61,7 +60,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
   final ProfileEntryDownloader profileEntryDownloader;
   final AccountIdDatabaseIterator sentBlocksIterator;
-  final AccountIdDatabaseIterator receivedLikesIterator;
   final AccountIdDatabaseIterator matchesIterator;
   final ApiManager api;
 
@@ -292,49 +290,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         return profiles;
       }
     }
-  }
-
-  /// ProfileEntry is returned if a profile of the like sender
-  /// is cached or the profile is public.
-  ///
-  /// Private profiles are not returned (except the cached ones).
-  Future<List<ProfileEntry>> receivedLikesIteratorNext() async {
-    if (receivedLikesIterator.currentIndex == 0) {
-      await _receivedLikesRefresh();
-    }
-    return await _genericIteratorNextOnlySuccessful(receivedLikesIterator, cache: true, download: true);
-  }
-
-  void receivedLikesIteratorReset() =>
-    receivedLikesIterator.reset();
-
-  Future<void> _receivedLikesRefresh() async {
-    final receivedLikesIteratorResult = await api.chat((api) => api.postResetReceivedLikesPaging()).ok();
-    final v = receivedLikesIteratorResult?.v;
-    final c = receivedLikesIteratorResult?.c;
-    final session = receivedLikesIteratorResult?.s;
-    if (v == null || c == null || session == null) {
-      return;
-    }
-
-    final List<AccountId> newList = [];
-    while (true) {
-      final receivedLikes = await api.chat((api) => api.postGetNextReceivedLikesPage(session)).ok();
-      if (receivedLikes != null) {
-        if (receivedLikes.errorInvalidIteratorSessionId) {
-          return;
-        }
-        if (receivedLikes.p.isEmpty) {
-          break;
-        }
-        newList.addAll(receivedLikes.p);
-      } else {
-        return;
-      }
-    }
-
-    await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(v, c));
-    await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatusList(newList));
   }
 
   Future<void> receivedLikesCountRefresh() async {

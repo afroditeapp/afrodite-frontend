@@ -43,6 +43,8 @@ class Account extends Table {
 
   TextColumn get profileIteratorSessionId => text()
     .map(const NullAwareTypeConverter.wrap(IteratorSessionIdConverter())).nullable()();
+  TextColumn get receivedLikesIteratorSessionId => text()
+    .map(const NullAwareTypeConverter.wrap(ReceivedLikesIteratorSessionIdConverter())).nullable()();
 
   IntColumn get clientId => integer().map(const NullAwareTypeConverter.wrap(ClientIdConverter())).nullable()();
 
@@ -211,6 +213,15 @@ class AccountDatabase extends _$AccountDatabase {
     );
   }
 
+  Future<void> updateReceivedLikesIteratorSessionId(ReceivedLikesIteratorSessionId value) async {
+    await into(account).insertOnConflictUpdate(
+      AccountCompanion.insert(
+        id: ACCOUNT_DB_DATA_ID,
+        receivedLikesIteratorSessionId: Value(value),
+      ),
+    );
+  }
+
   Future<void> updateProfileFilterFavorites(bool value) async {
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
@@ -272,6 +283,9 @@ class AccountDatabase extends _$AccountDatabase {
 
   Stream<IteratorSessionId?> watchProfileSessionId() =>
     watchColumn((r) => r.profileIteratorSessionId);
+
+  Stream<ReceivedLikesIteratorSessionId?> watchReceivedLikesSessionId() =>
+    watchColumn((r) => r.receivedLikesIteratorSessionId);
 
   Stream<AccountState?> watchAccountState() =>
     watchColumn((r) => r.jsonAccountState?.toAccountState());

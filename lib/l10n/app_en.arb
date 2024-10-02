@@ -642,6 +642,10 @@
   "@initial_setup_screen_security_selfie_title": {
     "description": "Title for initial setup security selfie screen"
   },
+  "likes_screen_like_loading_failed": "Like loading failed",
+  "@likes_screen_like_loading_failed": {
+    "description": "Text displayed when like loading fails"
+  },
   "likes_screen_no_received_likes_found": "No received likes found",
   "@likes_screen_no_received_likes_found": {
     "description": "Info text displayed when there is no received likes"
@@ -943,13 +947,13 @@
   "@profile_grid_screen_profile_is_private_info": {
     "description": "Info text which is shown when profile visibility is set to private"
   },
+  "profile_grid_screen_profile_loading_failed": "Profile loading failed",
+  "@profile_grid_screen_profile_loading_failed": {
+    "description": "Text displayed profile loading fails"
+  },
   "profile_grid_screen_title": "Profiles",
   "@profile_grid_screen_title": {
     "description": "Title for profile grid screen"
-  },
-  "profile_gridg_screen_profile_loading_failed": "Profile loading failed",
-  "@profile_gridg_screen_profile_loading_failed": {
-    "description": "Text displayed profile loading fails"
   },
   "profile_location_screen_title": "My profile's location",
   "@profile_location_screen_title": {

@@ -480,8 +480,10 @@ class ConversationChanged extends ProfileChange {
   final ConversationChangeType change;
   ConversationChanged(this.conversationWith, this.change);
 }
-// TODO(prod): Is this needed after removing local received likes?
-class LikesChanged extends ProfileChange {}
+class ReceivedLikeRemoved extends ProfileChange {
+  final AccountId id;
+  ReceivedLikeRemoved(this.id);
+}
 class MatchesChanged extends ProfileChange {}
 class ProfileFavoriteStatusChange extends ProfileChange {
   final AccountId profile;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
+import 'package:pihka_frontend/data/chat/received_likes_iterator_manager.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
@@ -23,6 +24,7 @@ import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 import 'package:pihka_frontend/ui_utils/scroll_controller.dart';
+import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("LikeView");
 
@@ -148,16 +150,28 @@ class LikeViewContentState extends State<LikeViewContent> {
   final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
   final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
 
+  final ReceivedLikesIteratorManager _mainProfilesViewIterator = ReceivedLikesIteratorManager(
+    LoginRepository.getInstance().repositories.chat,
+    LoginRepository.getInstance().repositories.media,
+    LoginRepository.getInstance().repositories.accountBackgroundDb,
+    LoginRepository.getInstance().repositories.accountDb,
+    LoginRepository.getInstance().repositories.connectionManager,
+    LoginRepository.getInstance().repositories.chat.currentUser,
+  );
+  bool _reloadInProgress = false;
+
   @override
   void initState() {
     super.initState();
+    _mainProfilesViewIterator.reset(true);
+
     _heroUniqueIdCounter = 0;
     _pagingController?.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = profile.profileChanges.listen((event) {
-        _handleProfileChange(event);
+      _handleProfileChange(event);
     });
     _scrollController.addListener(scrollEventListener);
   }
@@ -188,8 +202,8 @@ class LikeViewContentState extends State<LikeViewContent> {
         _removeAccountIdFromList(event.profile);
       case ProfileBlocked():
         _removeAccountIdFromList(event.profile);
-      case LikesChanged():
-        _refreshLikes();
+      case ReceivedLikeRemoved():
+        _removeAccountIdFromList(event.id);
       case ProfileUnblocked() ||
         ConversationChanged() ||
         MatchesChanged() ||
@@ -207,18 +221,18 @@ class LikeViewContentState extends State<LikeViewContent> {
     }
   }
 
-  void _refreshLikes() {
-    chat.receivedLikesIteratorReset();
-    // This might be disposed after resetProfileIterator completes.
-    _pagingController?.refresh();
-  }
-
   Future<void> _fetchPage(int pageKey) async {
     if (pageKey == 0) {
-      chat.receivedLikesIteratorReset();
+      _mainProfilesViewIterator.resetToBeginning();
     }
 
-    final profileList = await chat.receivedLikesIteratorNext();
+    final profileList = await _mainProfilesViewIterator.nextList().ok();
+    if (profileList == null) {
+      // Show error UI
+      _pagingController?.error = true;
+      return;
+    }
+
     final newList = List<LikeViewEntry>.empty(growable: true);
     for (final profile in profileList) {
       newList.add((profile: profile, heroTag: ProfileHeroTag.from(profile.uuid, _heroUniqueIdCounter)));
@@ -236,9 +250,9 @@ class LikeViewContentState extends State<LikeViewContent> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        chat.receivedLikesIteratorReset();
-        // This might be disposed after resetProfileIterator completes.
-        _pagingController?.refresh();
+        if (!_reloadInProgress) {
+          await refreshProfileGrid();
+        }
       },
       child: NotificationListener<ScrollMetricsNotification>(
         onNotification: (notification) {
@@ -303,6 +317,17 @@ class LikeViewContentState extends State<LikeViewContent> {
             ),
           );
         },
+        firstPageErrorIndicatorBuilder: (context) {
+          return errorDetectedWidgetWithRetryButton();
+        },
+        newPageErrorIndicatorBuilder: (context) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(context.strings.likes_screen_like_loading_failed),
+            ),
+          );
+        },
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -310,6 +335,36 @@ class LikeViewContentState extends State<LikeViewContent> {
         mainAxisSpacing: 8,
       ),
     );
+  }
+
+  Widget errorDetectedWidgetWithRetryButton() {
+    return Center(
+      child: Column(
+        children: [
+          const Spacer(),
+          Text(context.strings.likes_screen_like_loading_failed),
+          const Padding(padding: EdgeInsets.all(8)),
+          ElevatedButton(
+            onPressed: () {
+              if (!_reloadInProgress) {
+                refreshProfileGrid();
+              }
+            },
+            child: Text(context.strings.generic_try_again),
+          ),
+          const Spacer(flex: 3),
+        ],
+      ),
+    );
+  }
+
+  Future<void> refreshProfileGrid() async {
+    _reloadInProgress = true;
+    await _mainProfilesViewIterator.loadingInProgress.firstWhere((e) => e == false);
+    _mainProfilesViewIterator.refresh();
+    // This might be disposed after resetProfileIterator completes.
+    _pagingController?.refresh();
+    _reloadInProgress = false;
   }
 
   @override

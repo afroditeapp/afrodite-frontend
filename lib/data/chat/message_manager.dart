@@ -365,7 +365,7 @@ class MessageManager extends LifecycleMethods {
         yield const ErrorBeforeMessageSaving();
         return;
       }
-      profile.sendProfileChange(LikesChanged());
+      profile.sendProfileChange(ReceivedLikeRemoved(accountId));
     }
 
     final lastSentMessageResult = await db.accountData((db) => db.daoMessages.getLatestSentMessage(

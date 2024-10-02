@@ -163,15 +163,17 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
   }
 
   Future<void> setReceivedLikeStatusList(
-    List<AccountId> receivedLikes,
+    List<AccountId>? accounts,
+    bool value,
+    {bool clear = false}
   ) async {
-    await transaction(() async {
-      // Clear
-      await update(profileStates)
-        .write(const ProfileStatesCompanion(isInReceivedLikes: Value(null)));
-
-      for (final a in receivedLikes) {
-        await setReceivedLikeStatus(a, true);
+     await transaction(() async {
+      if (clear) {
+        await update(profileStates)
+          .write(const ProfileStatesCompanion(isInReceivedLikes: Value(null)));
+      }
+      for (final a in accounts ?? <AccountId>[]) {
+        await setReceivedLikeStatus(a, value);
       }
     });
   }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/chat/received_likes_database_iterator.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_downloader.dart';
 import 'package:pihka_frontend/data/general/iterator/profile_iterator.dart';
@@ -98,7 +99,7 @@ class OnlineIterator extends IteratorType {
             return const Err(null);
           }
 
-          if (profiles.profiles.isEmpty) {
+          if (profiles.profiles.isEmpty && profiles.basicProfiles.isEmpty) {
             return const Ok([]);
           }
 
@@ -235,4 +236,69 @@ class IteratorPage {
   List<AccountId> basicProfiles;
 
   IteratorPage(this.profiles, this.basicProfiles, {this.errorInvalidIteratorSessionId = false});
+}
+
+class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
+  final AccountDatabaseManager db;
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final ApiManager api;
+  IteratorType? iteratorValue;
+  ReceivedLikesIteratorSessionId? currentSessionId;
+
+  ReceivedLikesOnlineIteratorIo(this.db, this.accountBackgroundDb, this.api);
+
+  @override
+  IteratorType? get databaseIterator => iteratorValue;
+
+  @override
+  void resetDatabaseIterator() {
+    iteratorValue = ReceivedLikesDatabaseIterator(db: db);
+  }
+
+  @override
+  void setDatabaseIteratorToNull() {
+    iteratorValue = null;
+  }
+
+  @override
+  Future<Result<void, void>> resetServerPaging() async {
+    switch (await api.chat((api) => api.postResetReceivedLikesPaging())) {
+      case Ok(:final v):
+        await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(v.v, v.c));
+        await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatusList(null, false, clear: true));
+        await db.accountAction((db) => db.updateReceivedLikesIteratorSessionId(v.s));
+        return const Ok(null);
+      case Err():
+        return const Err(null);
+    }
+  }
+
+  @override
+  Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists() async {
+    currentSessionId = await db.accountStreamSingle((db) => db.watchReceivedLikesSessionId()).ok();
+    if (currentSessionId == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  @override
+  Future<Result<IteratorPage, void>> nextServerPage() async {
+    final sessionId = currentSessionId;
+    if (sessionId == null) {
+      return const Err(null);
+    }
+    return await api.chat((api) => api.postGetNextReceivedLikesPage(sessionId))
+      .mapOk((value) => IteratorPage(
+        [],
+        value.p,
+        errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId
+      ));
+  }
+
+  @override
+  Future<void> setDbVisibility(AccountId id, bool visibility) async {
+    await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatus(id, true));
+  }
 }

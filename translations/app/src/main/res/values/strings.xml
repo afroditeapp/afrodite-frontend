@@ -168,7 +168,7 @@
     <string name="profile_grid_screen_no_profiles_found_description_filters_enabled" description="Description displayed when there is no profiles and some filter is enabled">Change or disable filter settings</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_disabled" description="Description displayed when there is no profiles and there is no filters enabled">Spread the word about the app in social media</string>
     <string name="profile_grid_screen_profile_filter_settings_update_ongoing" description="Snackbar text that profile filter settings update is ongoing">Profile filter settings update is ongoing</string>
-    <string name="profile_gridg_screen_profile_loading_failed" description="Text displayed profile loading fails">Profile loading failed</string>
+    <string name="profile_grid_screen_profile_loading_failed" description="Text displayed profile loading fails">Profile loading failed</string>
 
     <!-- View profile screen -->
     <string name="view_profile_screen_my_profile_title" description="Title for view profile screen when my profile is viewed">My profile</string>
@@ -274,6 +274,7 @@
     <!-- Likes -->
     <string name="likes_screen_title" description="Title for likes screen">Likes</string>
     <string name="likes_screen_no_received_likes_found" description="Info text displayed when there is no received likes">No received likes found</string>
+    <string name="likes_screen_like_loading_failed" description="Text displayed when like loading fails">Like loading failed</string>
 
     <!-- Chat list -->
     <string name="chat_list_screen_title" description="Title for chat list screen">Chats</string>
