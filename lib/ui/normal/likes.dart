@@ -6,7 +6,6 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/chat/received_likes_iterator_manager.dart';
 import 'package:pihka_frontend/data/chat_repository.dart';
-import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
@@ -28,7 +27,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
-import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 import 'package:pihka_frontend/ui_utils/scroll_controller.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:utils/utils.dart';
@@ -314,6 +312,7 @@ class LikeViewContentState extends State<LikeViewContent> {
 
   Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled) {
     return PagedGridView(
+      scrollController: _scrollController,
       pagingController: _pagingController!,
       padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
       builderDelegate: PagedChildBuilderDelegate<LikeViewEntry>(
