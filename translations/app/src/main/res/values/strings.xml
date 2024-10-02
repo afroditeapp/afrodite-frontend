@@ -275,6 +275,7 @@
     <string name="likes_screen_title" description="Title for likes screen">Likes</string>
     <string name="likes_screen_no_received_likes_found" description="Info text displayed when there is no received likes">No received likes found</string>
     <string name="likes_screen_like_loading_failed" description="Text displayed when like loading fails">Like loading failed</string>
+    <string name="likes_screen_refresh_action" description="Title for likes screen refresh action">Refresh</string>
 
     <!-- Chat list -->
     <string name="chat_list_screen_title" description="Title for chat list screen">Chats</string>

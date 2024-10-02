@@ -15,10 +15,12 @@ final _privateConstructorErrorNewReceivedLikesAvailableData = UnsupportedError(
 mixin _$NewReceivedLikesAvailableData {
   int get newReceivedLikesCount => throw _privateConstructorErrorNewReceivedLikesAvailableData;
   int get newReceivedLikesCountNotViewed => throw _privateConstructorErrorNewReceivedLikesAvailableData;
+  bool get triggerReceivedLikesRefresh => throw _privateConstructorErrorNewReceivedLikesAvailableData;
 
   NewReceivedLikesAvailableData copyWith({
     int? newReceivedLikesCount,
     int? newReceivedLikesCountNotViewed,
+    bool? triggerReceivedLikesRefresh,
   }) => throw _privateConstructorErrorNewReceivedLikesAvailableData;
 }
 
@@ -27,6 +29,7 @@ abstract class _NewReceivedLikesAvailableData extends NewReceivedLikesAvailableD
   factory _NewReceivedLikesAvailableData({
     int newReceivedLikesCount,
     int newReceivedLikesCountNotViewed,
+    bool triggerReceivedLikesRefresh,
   }) = _$NewReceivedLikesAvailableDataImpl;
   const _NewReceivedLikesAvailableData._() : super._();
 }
@@ -35,20 +38,24 @@ abstract class _NewReceivedLikesAvailableData extends NewReceivedLikesAvailableD
 class _$NewReceivedLikesAvailableDataImpl extends _NewReceivedLikesAvailableData with DiagnosticableTreeMixin {
   static const int _newReceivedLikesCountDefaultValue = 0;
   static const int _newReceivedLikesCountNotViewedDefaultValue = 0;
+  static const bool _triggerReceivedLikesRefreshDefaultValue = false;
   
   _$NewReceivedLikesAvailableDataImpl({
     this.newReceivedLikesCount = _newReceivedLikesCountDefaultValue,
     this.newReceivedLikesCountNotViewed = _newReceivedLikesCountNotViewedDefaultValue,
+    this.triggerReceivedLikesRefresh = _triggerReceivedLikesRefreshDefaultValue,
   }) : super._();
 
   @override
   final int newReceivedLikesCount;
   @override
   final int newReceivedLikesCountNotViewed;
+  @override
+  final bool triggerReceivedLikesRefresh;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'NewReceivedLikesAvailableData(newReceivedLikesCount: $newReceivedLikesCount, newReceivedLikesCountNotViewed: $newReceivedLikesCountNotViewed)';
+    return 'NewReceivedLikesAvailableData(newReceivedLikesCount: $newReceivedLikesCount, newReceivedLikesCountNotViewed: $newReceivedLikesCountNotViewed, triggerReceivedLikesRefresh: $triggerReceivedLikesRefresh)';
   }
 
   @override
@@ -57,7 +64,8 @@ class _$NewReceivedLikesAvailableDataImpl extends _NewReceivedLikesAvailableData
     properties
       ..add(DiagnosticsProperty('type', 'NewReceivedLikesAvailableData'))
       ..add(DiagnosticsProperty('newReceivedLikesCount', newReceivedLikesCount))
-      ..add(DiagnosticsProperty('newReceivedLikesCountNotViewed', newReceivedLikesCountNotViewed));
+      ..add(DiagnosticsProperty('newReceivedLikesCountNotViewed', newReceivedLikesCountNotViewed))
+      ..add(DiagnosticsProperty('triggerReceivedLikesRefresh', triggerReceivedLikesRefresh));
   }
 
   @override
@@ -68,7 +76,9 @@ class _$NewReceivedLikesAvailableDataImpl extends _NewReceivedLikesAvailableData
         (identical(other.newReceivedLikesCount, newReceivedLikesCount) ||
           other.newReceivedLikesCount == newReceivedLikesCount) &&
         (identical(other.newReceivedLikesCountNotViewed, newReceivedLikesCountNotViewed) ||
-          other.newReceivedLikesCountNotViewed == newReceivedLikesCountNotViewed)
+          other.newReceivedLikesCountNotViewed == newReceivedLikesCountNotViewed) &&
+        (identical(other.triggerReceivedLikesRefresh, triggerReceivedLikesRefresh) ||
+          other.triggerReceivedLikesRefresh == triggerReceivedLikesRefresh)
     );
   }
 
@@ -77,14 +87,17 @@ class _$NewReceivedLikesAvailableDataImpl extends _NewReceivedLikesAvailableData
     runtimeType,
     newReceivedLikesCount,
     newReceivedLikesCountNotViewed,
+    triggerReceivedLikesRefresh,
   );
 
   @override
   NewReceivedLikesAvailableData copyWith({
     Object? newReceivedLikesCount,
     Object? newReceivedLikesCountNotViewed,
+    Object? triggerReceivedLikesRefresh,
   }) => _$NewReceivedLikesAvailableDataImpl(
     newReceivedLikesCount: (newReceivedLikesCount ?? this.newReceivedLikesCount) as int,
     newReceivedLikesCountNotViewed: (newReceivedLikesCountNotViewed ?? this.newReceivedLikesCountNotViewed) as int,
+    triggerReceivedLikesRefresh: (triggerReceivedLikesRefresh ?? this.triggerReceivedLikesRefresh) as bool,
   );
 }

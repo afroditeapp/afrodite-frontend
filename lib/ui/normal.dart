@@ -164,6 +164,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
           }
         },
       ),
+      floatingActionButton: VIEWS[selectedView].floatingActionButton(context),
     );
   }
 

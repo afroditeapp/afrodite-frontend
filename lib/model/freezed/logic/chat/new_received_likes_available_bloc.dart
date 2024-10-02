@@ -12,6 +12,7 @@ class NewReceivedLikesAvailableData with _$NewReceivedLikesAvailableData {
   factory NewReceivedLikesAvailableData({
     @Default(0) int newReceivedLikesCount,
     @Default(0) int newReceivedLikesCountNotViewed,
+    @Default(false) bool triggerReceivedLikesRefresh,
   }) = _NewReceivedLikesAvailableData;
 
   int receivedLikesCountForUi() {

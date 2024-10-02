@@ -9,4 +9,6 @@ abstract class BottomNavigationScreen extends StatefulWidget {
   String title(BuildContext context);
   /// Action bar actions
   List<Widget>? actions(BuildContext context) => null;
+
+  Widget? floatingActionButton(BuildContext context) => null;
 }

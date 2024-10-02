@@ -650,6 +650,10 @@
   "@likes_screen_no_received_likes_found": {
     "description": "Info text displayed when there is no received likes"
   },
+  "likes_screen_refresh_action": "Refresh",
+  "@likes_screen_refresh_action": {
+    "description": "Title for likes screen refresh action"
+  },
   "likes_screen_title": "Likes",
   "@likes_screen_title": {
     "description": "Title for likes screen"

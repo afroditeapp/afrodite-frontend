@@ -24,6 +24,10 @@ class UpdateReceivedLikesCountNotViewed extends NewReceivedLikesAvailableEvent {
   final BehaviorSubject<bool> waitDone = BehaviorSubject.seeded(false);
   UpdateReceivedLikesCountNotViewed(this.value);
 }
+class SetTriggerReceivedLikesRefresh extends NewReceivedLikesAvailableEvent {
+  final bool value;
+  SetTriggerReceivedLikesRefresh(this.value);
+}
 
 class NewReceivedLikesAvailableBloc extends Bloc<NewReceivedLikesAvailableEvent, NewReceivedLikesAvailableData> {
   final AccountBackgroundDatabaseManager db = LoginRepository.getInstance().repositories.accountBackgroundDb;
@@ -49,6 +53,13 @@ class NewReceivedLikesAvailableBloc extends Bloc<NewReceivedLikesAvailableEvent,
     on<UpdateReceivedLikesCountNotViewed>((data, emit) async {
       await db.accountAction((db) => db.daoNewReceivedLikesAvailable.updateReceivedLikesCountNotViewed(NewReceivedLikesCount(c: data.value)));
       data.waitDone.add(true);
+    },
+      transformer: sequential(),
+    );
+    on<SetTriggerReceivedLikesRefresh>((data, emit) async {
+      emit(state.copyWith(
+        triggerReceivedLikesRefresh: data.value,
+      ));
     },
       transformer: sequential(),
     );

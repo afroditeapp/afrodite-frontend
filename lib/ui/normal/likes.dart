@@ -41,6 +41,11 @@ class LikeView extends BottomNavigationScreen {
   String title(BuildContext context) {
     return context.strings.likes_screen_title;
   }
+
+  @override
+  Widget? floatingActionButton(BuildContext context) {
+    return refreshLikesFloatingActionButton();
+  }
 }
 
 /// Use global instance for likes grid as notification navigation makes
@@ -109,6 +114,7 @@ class _LikesScreenState extends State<LikesScreen> {
         title: Text(context.strings.likes_screen_title),
       ),
       body: content(),
+      floatingActionButton: refreshLikesFloatingActionButton(),
     );
   }
 
@@ -285,6 +291,7 @@ class LikeViewContentState extends State<LikeViewContent> {
           },
           child: Column(children: [
             Expanded(child: grid(context)),
+            logicRefreshLikesCommandFromFloatingActionButton(),
             logicResetLikesCountWhenLikesScreenOpens(),
             logicAutomaticReloadOnAppStart(),
           ],),
@@ -378,6 +385,21 @@ class LikeViewContentState extends State<LikeViewContent> {
     );
   }
 
+  Widget logicRefreshLikesCommandFromFloatingActionButton() {
+    return BlocBuilder<NewReceivedLikesAvailableBloc, NewReceivedLikesAvailableData>(
+      buildWhen: (previous, current) => previous.triggerReceivedLikesRefresh != current.triggerReceivedLikesRefresh,
+      builder: (context, state) {
+        if (state.triggerReceivedLikesRefresh) {
+          final bloc = context.read<NewReceivedLikesAvailableBloc>();
+          bloc.add(UpdateReceivedLikesCountNotViewed(0));
+          bloc.add(SetTriggerReceivedLikesRefresh(false));
+          refreshProfileGrid();
+        }
+        return const SizedBox.shrink();
+      }
+    );
+  }
+
   Widget logicResetLikesCountWhenLikesScreenOpens() {
     return BlocBuilder<BottomNavigationStateBloc, BottomNavigationStateData>(
       buildWhen: (previous, current) => previous.screen != current.screen,
@@ -443,4 +465,21 @@ class LikeViewContentState extends State<LikeViewContent> {
     _profileChangesSubscription = null;
     super.dispose();
   }
+}
+
+Widget refreshLikesFloatingActionButton() {
+  return BlocBuilder<NewReceivedLikesAvailableBloc, NewReceivedLikesAvailableData>(
+    builder: (context, state) {
+      if (state.newReceivedLikesCount > 0) {
+        final bloc = context.read<NewReceivedLikesAvailableBloc>();
+        return FloatingActionButton.extended(
+          onPressed: () => bloc.add(SetTriggerReceivedLikesRefresh(true)),
+          label: Text(context.strings.likes_screen_refresh_action),
+          icon: const Icon(Icons.refresh),
+        );
+      } else {
+        return const SizedBox.shrink();
+      }
+    }
+  );
 }
