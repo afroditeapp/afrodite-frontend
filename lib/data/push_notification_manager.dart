@@ -10,6 +10,7 @@ import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_provider.dart';
 import 'package:pihka_frontend/api/api_wrapper.dart';
 import 'package:pihka_frontend/config.dart';
+import 'package:pihka_frontend/data/general/notification/state/like_received.dart';
 import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/notification_manager.dart';
@@ -197,8 +198,11 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         return;
       }
 
-      if (v.value == 0x1) {
+      if ((v.value & 0x1) == 0x1) {
         await _handlePushNotificationNewMessageReceived(v.newMessageReceivedFrom ?? [], accountBackgroundDb);
+      }
+      if ((v.value & 0x2) == 0x2) {
+        await _handlePushNotificationReceivedLikesChanged(v.receivedLikesChanged, accountBackgroundDb);
       }
     case Err():
       log.error("Downloading pending notification failed");
@@ -213,4 +217,13 @@ Future<void> _handlePushNotificationNewMessageReceived(List<AccountId> messageSe
     // opened (retrieving pending messages from the server resets this value)
     await accountBackgroundDb.accountAction((db) => db.daoNewMessageNotification.setNotificationShown(sender, true));
   }
+}
+
+Future<void> _handlePushNotificationReceivedLikesChanged(NewReceivedLikesCountResult? r, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+  if (r == null) {
+    return;
+  }
+
+  await NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb);
+  await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(r.v, r.c));
 }
