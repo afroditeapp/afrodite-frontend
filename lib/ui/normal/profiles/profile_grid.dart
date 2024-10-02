@@ -10,6 +10,7 @@ import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_iterator_manager.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/profile/my_profile.dart';
@@ -27,6 +28,7 @@ import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 import 'package:pihka_frontend/ui_utils/scroll_controller.dart';
 import 'package:pihka_frontend/utils/result.dart';
+import 'package:rxdart/rxdart.dart';
 
 var log = Logger("ProfileGrid");
 
@@ -54,6 +56,8 @@ class _ProfileGridState extends State<ProfileGrid> {
   // Use same progress indicator state that transition between
   // filter settings progress and grid progress is smooth.
   final GlobalKey _progressKey = GlobalKey();
+
+  final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
 
   final ProfileIteratorManager _mainProfilesViewIterator = ProfileIteratorManager(
     LoginRepository.getInstance().repositories.chat,
@@ -241,6 +245,8 @@ class _ProfileGridState extends State<ProfileGrid> {
             child: Hero(
               tag: item.heroTag.value,
               flightShuttleBuilder: (flightContext, animation, flightDirection, fromHeroContext, toHeroContext) {
+                // The animation might have issues because the data updates with
+                // StreamBuilder.
                 return AnimatedBuilder(
                   animation: animation,
                   builder: (context, child) {
@@ -255,26 +261,7 @@ class _ProfileGridState extends State<ProfileGrid> {
                   }
                 );
               },
-              child: ProfileThumbnailImage.fromProfileEntry(
-                entry: item.profile,
-                cacheSize: ImageCacheSize.sizeForGrid(),
-                child: Stack(
-                  children: [
-                    thumbnailStatusIndicators(item.profile, iHaveUnlimitedLikesEnabled),
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {
-                          // Hero animation is disabled currently as UI looks better
-                          // without it.
-                          // openProfileView(context, item.profile, heroTag: item.heroTag);
-                          openProfileView(context, item.profile, ProfileRefreshPriority.low, heroTag: null);
-                        },
-                      ),
-                    ),
-                  ]
-                ),
-              ),
+              child: profileEntryWidgetStream(item.profile, iHaveUnlimitedLikesEnabled, accountDb),
             )
           );
         },
@@ -327,36 +314,6 @@ class _ProfileGridState extends State<ProfileGrid> {
     );
   }
 
-  Widget thumbnailStatusIndicators(ProfileEntry profile, bool iHaveUnlimitedLikesEnabled) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Row(
-        children: [
-          if (profile.lastSeenTimeValue == -1) Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: PROFILE_CURRENTLY_ONLINE_SIZE,
-              height: PROFILE_CURRENTLY_ONLINE_SIZE,
-              decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
-              ),
-            ),
-          ),
-          const Spacer(),
-          iHaveUnlimitedLikesEnabled && profile.unlimitedLikes ?
-            const Padding(
-              padding: EdgeInsets.only(right: 8.0),
-              child: Icon(
-                Icons.all_inclusive,
-                color: Colors.black,
-              ),
-            ) :
-            const SizedBox.shrink(),
-        ],
-      ),
-    );
-  }
 
   Widget errorDetectedWidgetWithRetryButton() {
     return Center(
@@ -398,4 +355,64 @@ class _ProfileGridState extends State<ProfileGrid> {
     _profileChangesSubscription = null;
     super.dispose();
   }
+}
+
+Widget profileEntryWidgetStream(ProfileEntry entry, bool iHaveUnlimitedLikesEnabled, AccountDatabaseManager db) {
+  return StreamBuilder(
+    stream: db.accountStream((db) => db.daoProfiles.watchProfileEntry(entry.uuid)).whereNotNull(),
+    builder: (context, data) {
+      final e = data.data ?? entry;
+      return ProfileThumbnailImage.fromProfileEntry(
+        entry: e,
+        cacheSize: ImageCacheSize.sizeForGrid(),
+        child: Stack(
+          children: [
+            thumbnailStatusIndicators(e, iHaveUnlimitedLikesEnabled),
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  // Hero animation is disabled currently as UI looks better
+                  // without it.
+                  // openProfileView(context, item.profile, heroTag: item.heroTag);
+                  openProfileView(context, e, ProfileRefreshPriority.low, heroTag: null);
+                },
+              ),
+            ),
+          ]
+        ),
+      );
+    }
+  );
+}
+
+Widget thumbnailStatusIndicators(ProfileEntry profile, bool iHaveUnlimitedLikesEnabled) {
+  return Align(
+    alignment: Alignment.bottomCenter,
+    child: Row(
+      children: [
+        if (profile.lastSeenTimeValue == -1) Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            width: PROFILE_CURRENTLY_ONLINE_SIZE,
+            height: PROFILE_CURRENTLY_ONLINE_SIZE,
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
+            ),
+          ),
+        ),
+        const Spacer(),
+        iHaveUnlimitedLikesEnabled && profile.unlimitedLikes ?
+          const Padding(
+            padding: EdgeInsets.only(right: 8.0),
+            child: Icon(
+              Icons.all_inclusive,
+              color: Colors.black,
+            ),
+          ) :
+          const SizedBox.shrink(),
+      ],
+    ),
+  );
 }

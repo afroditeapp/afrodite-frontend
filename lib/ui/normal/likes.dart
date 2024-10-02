@@ -10,13 +10,17 @@ import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/chat/new_received_likes_available_bloc.dart';
+import 'package:pihka_frontend/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/model/freezed/logic/chat/new_received_likes_available_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
+import 'package:pihka_frontend/model/freezed/logic/profile/my_profile.dart';
+import 'package:pihka_frontend/ui/normal/profiles/profile_grid.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -170,6 +174,8 @@ class LikeViewContentState extends State<LikeViewContent> {
   final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
   final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
 
+  final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
+
   final ReceivedLikesIteratorManager _mainProfilesViewIterator = ReceivedLikesIteratorManager(
     LoginRepository.getInstance().repositories.chat,
     LoginRepository.getInstance().repositories.media,
@@ -290,7 +296,13 @@ class LikeViewContentState extends State<LikeViewContent> {
             }
           },
           child: Column(children: [
-            Expanded(child: grid(context)),
+            Expanded(
+              child: BlocBuilder<MyProfileBloc, MyProfileData>(
+                builder: (context, myProfileState) {
+                  return grid(context, myProfileState.profile?.unlimitedLikes ?? false);
+                },
+              ),
+            ),
             logicRefreshLikesCommandFromFloatingActionButton(),
             logicResetLikesCountWhenLikesScreenOpens(),
             logicAutomaticReloadOnAppStart(),
@@ -300,7 +312,7 @@ class LikeViewContentState extends State<LikeViewContent> {
     );
   }
 
-  Widget grid(BuildContext context) {
+  Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled) {
     return PagedGridView(
       pagingController: _pagingController!,
       padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
@@ -312,21 +324,7 @@ class LikeViewContentState extends State<LikeViewContent> {
             // onTap: () => openProfileView(context, item.profile, heroTag: item.heroTag),
             child: Hero(
               tag: item.heroTag.value,
-              child: ProfileThumbnailImage.fromProfileEntry(
-                entry: item.profile,
-                cacheSize: ImageCacheSize.sizeForGrid(),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      // Hero animation is disabled currently as UI looks better
-                      // without it.
-                      // openProfileView(context, item.profile, heroTag: item.heroTag);
-                      openProfileView(context, item.profile, ProfileRefreshPriority.low, heroTag: null);
-                    },
-                  ),
-                ),
-              ),
+              child: profileEntryWidgetStream(item.profile, iHaveUnlimitedLikesEnabled, accountDb)
             )
           );
         },
