@@ -13,6 +13,8 @@ import 'package:database/database.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
+import 'package:pihka_frontend/logic/chat/new_received_likes_available_bloc.dart';
+import 'package:pihka_frontend/model/freezed/logic/chat/new_received_likes_available_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui/normal/profiles/view_profile.dart';
@@ -25,6 +27,7 @@ import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 import 'package:pihka_frontend/ui_utils/scroll_controller.dart';
 import 'package:pihka_frontend/utils/result.dart';
+import 'package:utils/utils.dart';
 
 var log = Logger("LikeView");
 
@@ -52,7 +55,10 @@ class _LikeViewState extends State<LikeView> {
     return BlocBuilder<LikeGridInstanceManagerBloc, LikeGridInstanceManagerData>(
       builder: (context, state) {
         if (state.currentlyVisibleId == 0 && state.visible) {
-          return LikeViewContent(key: likeViewContentState);
+          return LikeViewContent(
+            receivedLikesBloc: context.read<NewReceivedLikesAvailableBloc>(),
+            key: likeViewContentState,
+          );
         } else if (state.currentlyVisibleId == 0 && !state.visible) {
           final bloc = context.read<LikeGridInstanceManagerBloc>();
           Future.delayed(Duration.zero, () {
@@ -110,7 +116,10 @@ class _LikesScreenState extends State<LikesScreen> {
     return BlocBuilder<LikeGridInstanceManagerBloc, LikeGridInstanceManagerData>(
       builder: (context, state) {
         if (state.currentlyVisibleId == widget.gridInstanceId && state.visible) {
-          return LikeViewContent(key: likeViewContentState);
+          return LikeViewContent(
+            receivedLikesBloc: context.read<NewReceivedLikesAvailableBloc>(),
+            key: likeViewContentState
+          );
         } else if (state.currentlyVisibleId == widget.gridInstanceId && !state.visible) {
           final bloc = context.read<LikeGridInstanceManagerBloc>();
           Future.delayed(Duration.zero, () {
@@ -132,7 +141,12 @@ class _LikesScreenState extends State<LikesScreen> {
 }
 
 class LikeViewContent extends StatefulWidget {
-  const LikeViewContent({Key? key}) : super(key: key);
+  final NewReceivedLikesAvailableBloc receivedLikesBloc;
+  const LikeViewContent({
+    required this.receivedLikesBloc,
+    Key? key,
+  }) : super(key: key);
+
 
   @override
   State<LikeViewContent> createState() => LikeViewContentState();
@@ -163,7 +177,7 @@ class LikeViewContentState extends State<LikeViewContent> {
   @override
   void initState() {
     super.initState();
-    _mainProfilesViewIterator.reset(true);
+    _mainProfilesViewIterator.reset(false);
 
     _heroUniqueIdCounter = 0;
     _pagingController?.addPageRequestListener((pageKey) {
@@ -251,6 +265,7 @@ class LikeViewContentState extends State<LikeViewContent> {
     return RefreshIndicator(
       onRefresh: () async {
         if (!_reloadInProgress) {
+          widget.receivedLikesBloc.add(UpdateReceivedLikesCountNotViewed(0));
           await refreshProfileGrid();
         }
       },
@@ -268,7 +283,11 @@ class LikeViewContentState extends State<LikeViewContent> {
               _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
             }
           },
-          child: grid(context),
+          child: Column(children: [
+            Expanded(child: grid(context)),
+            logicResetLikesCountWhenLikesScreenOpens(),
+            logicAutomaticReloadOnAppStart(),
+          ],),
         ),
       ),
     );
@@ -318,7 +337,7 @@ class LikeViewContentState extends State<LikeViewContent> {
           );
         },
         firstPageErrorIndicatorBuilder: (context) {
-          return errorDetectedWidgetWithRetryButton();
+          return errorDetectedWidgetWithRetryButton(context);
         },
         newPageErrorIndicatorBuilder: (context) {
           return Center(
@@ -337,7 +356,7 @@ class LikeViewContentState extends State<LikeViewContent> {
     );
   }
 
-  Widget errorDetectedWidgetWithRetryButton() {
+  Widget errorDetectedWidgetWithRetryButton(BuildContext context) {
     return Center(
       child: Column(
         children: [
@@ -347,6 +366,7 @@ class LikeViewContentState extends State<LikeViewContent> {
           ElevatedButton(
             onPressed: () {
               if (!_reloadInProgress) {
+                context.read<NewReceivedLikesAvailableBloc>().add(UpdateReceivedLikesCountNotViewed(0));
                 refreshProfileGrid();
               }
             },
@@ -356,6 +376,52 @@ class LikeViewContentState extends State<LikeViewContent> {
         ],
       ),
     );
+  }
+
+  Widget logicResetLikesCountWhenLikesScreenOpens() {
+    return BlocBuilder<BottomNavigationStateBloc, BottomNavigationStateData>(
+      buildWhen: (previous, current) => previous.screen != current.screen,
+      builder: (context, state) {
+        if (state.screen == BottomNavigationScreenId.likes) {
+          final bloc = context.read<NewReceivedLikesAvailableBloc>();
+          bloc.add(UpdateReceivedLikesCountNotViewed(0));
+        }
+        return const SizedBox.shrink();
+      }
+    );
+  }
+
+  Widget logicAutomaticReloadOnAppStart() {
+    return BlocBuilder<NewReceivedLikesAvailableBloc, NewReceivedLikesAvailableData>(
+      buildWhen: (previous, current) => previous.newReceivedLikesCount != current.newReceivedLikesCount,
+      builder: (context, state) {
+        final currentTime = UtcDateTime.now();
+        final repositories = LoginRepository.getInstance().repositoriesOrNull;
+
+        if (state.newReceivedLikesCount > 0 && repositories != null && currentTime.difference(repositories.creationTime).inSeconds < 5) {
+          // Automatic like screen reload
+          automaticReloadLogic(state);
+        }
+        return const SizedBox.shrink();
+      }
+    );
+  }
+
+  Future<void> automaticReloadLogic(NewReceivedLikesAvailableData state) async {
+    final bloc = widget.receivedLikesBloc;
+    final navigationBloc = BottomNavigationStateBlocInstance.getInstance().bloc;
+    // Refresh resets server side new likes count so it needs to be saved
+    // to keep the count badge visible.
+    if (navigationBloc.state.screen != BottomNavigationScreenId.likes) {
+      log.info("Automatic like screen refresh on background");
+      final newReceivedLikesCountBeforeReload = bloc.state.newReceivedLikesCount;
+      final event = UpdateReceivedLikesCountNotViewed(newReceivedLikesCountBeforeReload);
+      bloc.add(event);
+      await event.waitDone.firstWhere((v) => v);
+    } else {
+      log.info("Automatic like screen refresh");
+    }
+    await refreshProfileGrid();
   }
 
   Future<void> refreshProfileGrid() async {

@@ -17,6 +17,7 @@ class UtcDateTime {
     return dateTime.millisecondsSinceEpoch;
   }
 
+  /// This duration must be newer than [other] to avoid negative values.
   Duration difference(UtcDateTime other) {
     return dateTime.difference(other.dateTime);
   }

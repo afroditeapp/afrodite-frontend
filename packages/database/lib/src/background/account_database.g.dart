@@ -1236,9 +1236,22 @@ class $NewReceivedLikesAvailableTable extends NewReceivedLikesAvailable
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<NewReceivedLikesCount?>(
               $NewReceivedLikesAvailableTable.$converternewReceivedLikesCount);
+  static const VerificationMeta _newReceivedLikesCountNotViewedMeta =
+      const VerificationMeta('newReceivedLikesCountNotViewed');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, syncVersionReceivedLikes, newReceivedLikesCount];
+  late final GeneratedColumnWithTypeConverter<NewReceivedLikesCount?, int>
+      newReceivedLikesCountNotViewed = GeneratedColumn<int>(
+              'new_received_likes_count_not_viewed', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<NewReceivedLikesCount?>($NewReceivedLikesAvailableTable
+              .$converternewReceivedLikesCountNotViewed);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        syncVersionReceivedLikes,
+        newReceivedLikesCount,
+        newReceivedLikesCountNotViewed
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1262,6 +1275,8 @@ class $NewReceivedLikesAvailableTable extends NewReceivedLikesAvailable
     }
     context.handle(
         _newReceivedLikesCountMeta, const VerificationResult.success());
+    context.handle(_newReceivedLikesCountNotViewedMeta,
+        const VerificationResult.success());
     return context;
   }
 
@@ -1281,6 +1296,10 @@ class $NewReceivedLikesAvailableTable extends NewReceivedLikesAvailable
           .$converternewReceivedLikesCount
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
               data['${effectivePrefix}new_received_likes_count'])),
+      newReceivedLikesCountNotViewed: $NewReceivedLikesAvailableTable
+          .$converternewReceivedLikesCountNotViewed
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}new_received_likes_count_not_viewed'])),
     );
   }
 
@@ -1292,6 +1311,9 @@ class $NewReceivedLikesAvailableTable extends NewReceivedLikesAvailable
   static TypeConverter<NewReceivedLikesCount?, int?>
       $converternewReceivedLikesCount =
       const NullAwareTypeConverter.wrap(NewReceivedLikesCountConverter());
+  static TypeConverter<NewReceivedLikesCount?, int?>
+      $converternewReceivedLikesCountNotViewed =
+      const NullAwareTypeConverter.wrap(NewReceivedLikesCountConverter());
 }
 
 class NewReceivedLikesAvailableData extends DataClass
@@ -1299,10 +1321,14 @@ class NewReceivedLikesAvailableData extends DataClass
   final int id;
   final int? syncVersionReceivedLikes;
   final NewReceivedLikesCount? newReceivedLikesCount;
+
+  /// Count which will be reset once user views received likes screen
+  final NewReceivedLikesCount? newReceivedLikesCountNotViewed;
   const NewReceivedLikesAvailableData(
       {required this.id,
       this.syncVersionReceivedLikes,
-      this.newReceivedLikesCount});
+      this.newReceivedLikesCount,
+      this.newReceivedLikesCountNotViewed});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1316,6 +1342,12 @@ class NewReceivedLikesAvailableData extends DataClass
           $NewReceivedLikesAvailableTable.$converternewReceivedLikesCount
               .toSql(newReceivedLikesCount));
     }
+    if (!nullToAbsent || newReceivedLikesCountNotViewed != null) {
+      map['new_received_likes_count_not_viewed'] = Variable<int>(
+          $NewReceivedLikesAvailableTable
+              .$converternewReceivedLikesCountNotViewed
+              .toSql(newReceivedLikesCountNotViewed));
+    }
     return map;
   }
 
@@ -1328,6 +1360,10 @@ class NewReceivedLikesAvailableData extends DataClass
       newReceivedLikesCount: newReceivedLikesCount == null && nullToAbsent
           ? const Value.absent()
           : Value(newReceivedLikesCount),
+      newReceivedLikesCountNotViewed:
+          newReceivedLikesCountNotViewed == null && nullToAbsent
+              ? const Value.absent()
+              : Value(newReceivedLikesCountNotViewed),
     );
   }
 
@@ -1340,6 +1376,9 @@ class NewReceivedLikesAvailableData extends DataClass
           serializer.fromJson<int?>(json['syncVersionReceivedLikes']),
       newReceivedLikesCount: serializer
           .fromJson<NewReceivedLikesCount?>(json['newReceivedLikesCount']),
+      newReceivedLikesCountNotViewed:
+          serializer.fromJson<NewReceivedLikesCount?>(
+              json['newReceivedLikesCountNotViewed']),
     );
   }
   @override
@@ -1351,6 +1390,8 @@ class NewReceivedLikesAvailableData extends DataClass
           serializer.toJson<int?>(syncVersionReceivedLikes),
       'newReceivedLikesCount':
           serializer.toJson<NewReceivedLikesCount?>(newReceivedLikesCount),
+      'newReceivedLikesCountNotViewed': serializer
+          .toJson<NewReceivedLikesCount?>(newReceivedLikesCountNotViewed),
     };
   }
 
@@ -1358,6 +1399,8 @@ class NewReceivedLikesAvailableData extends DataClass
           {int? id,
           Value<int?> syncVersionReceivedLikes = const Value.absent(),
           Value<NewReceivedLikesCount?> newReceivedLikesCount =
+              const Value.absent(),
+          Value<NewReceivedLikesCount?> newReceivedLikesCountNotViewed =
               const Value.absent()}) =>
       NewReceivedLikesAvailableData(
         id: id ?? this.id,
@@ -1367,6 +1410,9 @@ class NewReceivedLikesAvailableData extends DataClass
         newReceivedLikesCount: newReceivedLikesCount.present
             ? newReceivedLikesCount.value
             : this.newReceivedLikesCount,
+        newReceivedLikesCountNotViewed: newReceivedLikesCountNotViewed.present
+            ? newReceivedLikesCountNotViewed.value
+            : this.newReceivedLikesCountNotViewed,
       );
   NewReceivedLikesAvailableData copyWithCompanion(
       NewReceivedLikesAvailableCompanion data) {
@@ -1378,6 +1424,10 @@ class NewReceivedLikesAvailableData extends DataClass
       newReceivedLikesCount: data.newReceivedLikesCount.present
           ? data.newReceivedLikesCount.value
           : this.newReceivedLikesCount,
+      newReceivedLikesCountNotViewed:
+          data.newReceivedLikesCountNotViewed.present
+              ? data.newReceivedLikesCountNotViewed.value
+              : this.newReceivedLikesCountNotViewed,
     );
   }
 
@@ -1386,21 +1436,25 @@ class NewReceivedLikesAvailableData extends DataClass
     return (StringBuffer('NewReceivedLikesAvailableData(')
           ..write('id: $id, ')
           ..write('syncVersionReceivedLikes: $syncVersionReceivedLikes, ')
-          ..write('newReceivedLikesCount: $newReceivedLikesCount')
+          ..write('newReceivedLikesCount: $newReceivedLikesCount, ')
+          ..write(
+              'newReceivedLikesCountNotViewed: $newReceivedLikesCountNotViewed')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, syncVersionReceivedLikes, newReceivedLikesCount);
+  int get hashCode => Object.hash(id, syncVersionReceivedLikes,
+      newReceivedLikesCount, newReceivedLikesCountNotViewed);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NewReceivedLikesAvailableData &&
           other.id == this.id &&
           other.syncVersionReceivedLikes == this.syncVersionReceivedLikes &&
-          other.newReceivedLikesCount == this.newReceivedLikesCount);
+          other.newReceivedLikesCount == this.newReceivedLikesCount &&
+          other.newReceivedLikesCountNotViewed ==
+              this.newReceivedLikesCountNotViewed);
 }
 
 class NewReceivedLikesAvailableCompanion
@@ -1408,20 +1462,24 @@ class NewReceivedLikesAvailableCompanion
   final Value<int> id;
   final Value<int?> syncVersionReceivedLikes;
   final Value<NewReceivedLikesCount?> newReceivedLikesCount;
+  final Value<NewReceivedLikesCount?> newReceivedLikesCountNotViewed;
   const NewReceivedLikesAvailableCompanion({
     this.id = const Value.absent(),
     this.syncVersionReceivedLikes = const Value.absent(),
     this.newReceivedLikesCount = const Value.absent(),
+    this.newReceivedLikesCountNotViewed = const Value.absent(),
   });
   NewReceivedLikesAvailableCompanion.insert({
     this.id = const Value.absent(),
     this.syncVersionReceivedLikes = const Value.absent(),
     this.newReceivedLikesCount = const Value.absent(),
+    this.newReceivedLikesCountNotViewed = const Value.absent(),
   });
   static Insertable<NewReceivedLikesAvailableData> custom({
     Expression<int>? id,
     Expression<int>? syncVersionReceivedLikes,
     Expression<int>? newReceivedLikesCount,
+    Expression<int>? newReceivedLikesCountNotViewed,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1429,19 +1487,24 @@ class NewReceivedLikesAvailableCompanion
         'sync_version_received_likes': syncVersionReceivedLikes,
       if (newReceivedLikesCount != null)
         'new_received_likes_count': newReceivedLikesCount,
+      if (newReceivedLikesCountNotViewed != null)
+        'new_received_likes_count_not_viewed': newReceivedLikesCountNotViewed,
     });
   }
 
   NewReceivedLikesAvailableCompanion copyWith(
       {Value<int>? id,
       Value<int?>? syncVersionReceivedLikes,
-      Value<NewReceivedLikesCount?>? newReceivedLikesCount}) {
+      Value<NewReceivedLikesCount?>? newReceivedLikesCount,
+      Value<NewReceivedLikesCount?>? newReceivedLikesCountNotViewed}) {
     return NewReceivedLikesAvailableCompanion(
       id: id ?? this.id,
       syncVersionReceivedLikes:
           syncVersionReceivedLikes ?? this.syncVersionReceivedLikes,
       newReceivedLikesCount:
           newReceivedLikesCount ?? this.newReceivedLikesCount,
+      newReceivedLikesCountNotViewed:
+          newReceivedLikesCountNotViewed ?? this.newReceivedLikesCountNotViewed,
     );
   }
 
@@ -1460,6 +1523,12 @@ class NewReceivedLikesAvailableCompanion
           $NewReceivedLikesAvailableTable.$converternewReceivedLikesCount
               .toSql(newReceivedLikesCount.value));
     }
+    if (newReceivedLikesCountNotViewed.present) {
+      map['new_received_likes_count_not_viewed'] = Variable<int>(
+          $NewReceivedLikesAvailableTable
+              .$converternewReceivedLikesCountNotViewed
+              .toSql(newReceivedLikesCountNotViewed.value));
+    }
     return map;
   }
 
@@ -1468,7 +1537,9 @@ class NewReceivedLikesAvailableCompanion
     return (StringBuffer('NewReceivedLikesAvailableCompanion(')
           ..write('id: $id, ')
           ..write('syncVersionReceivedLikes: $syncVersionReceivedLikes, ')
-          ..write('newReceivedLikesCount: $newReceivedLikesCount')
+          ..write('newReceivedLikesCount: $newReceivedLikesCount, ')
+          ..write(
+              'newReceivedLikesCountNotViewed: $newReceivedLikesCountNotViewed')
           ..write(')'))
         .toString();
   }

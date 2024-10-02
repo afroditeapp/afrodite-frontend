@@ -19,7 +19,7 @@ final log = Logger("OnlineIterator");
 class OnlineIterator extends IteratorType {
   int currentIndex = 0;
   final OnlineIteratorIo io;
-  bool resetServerIterator;
+  bool _resetServerIterator;
   final ServerConnectionManager connectionManager;
   final ApiManager api;
   final AccountDatabaseManager db;
@@ -28,19 +28,19 @@ class OnlineIterator extends IteratorType {
   /// If [resetServerIterator] is true, the iterator will reset the
   /// server iterator to the beginning.
   OnlineIterator({
-    this.resetServerIterator = false,
+    bool resetServerIterator = false,
     required MediaRepository media,
     required this.io,
     required AccountBackgroundDatabaseManager accountBackgroundDb,
     required this.db,
     required this.connectionManager,
-  }) :
+  }) : _resetServerIterator = resetServerIterator,
     downloader = ProfileEntryDownloader(media, accountBackgroundDb, db, connectionManager.api),
     api = connectionManager.api;
 
   @override
   void reset() {
-    if (!resetServerIterator) {
+    if (!_resetServerIterator) {
       /// Reset to use database iterator and then continue online profile
       /// iterating.
       io.resetDatabaseIterator();
@@ -49,7 +49,7 @@ class OnlineIterator extends IteratorType {
 
   @override
   Future<Result<List<ProfileEntry>, void>> nextList() async {
-    if (resetServerIterator) {
+    if (_resetServerIterator) {
       if (await connectionManager.waitUntilCurrentSessionConnects().isErr()) {
         log.error("Connection waiting failed");
         return const Err(null);
@@ -57,7 +57,7 @@ class OnlineIterator extends IteratorType {
 
       switch (await io.resetServerPaging()) {
         case Ok():
-          resetServerIterator = false;
+          _resetServerIterator = false;
         case Err():
           log.error("Profile paging reset failed");
           return const Err(null);

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 
@@ -9,5 +11,10 @@ class NewReceivedLikesAvailableData with _$NewReceivedLikesAvailableData {
 
   factory NewReceivedLikesAvailableData({
     @Default(0) int newReceivedLikesCount,
+    @Default(0) int newReceivedLikesCountNotViewed,
   }) = _NewReceivedLikesAvailableData;
+
+  int receivedLikesCountForUi() {
+    return max(newReceivedLikesCount, newReceivedLikesCountNotViewed);
+  }
 }

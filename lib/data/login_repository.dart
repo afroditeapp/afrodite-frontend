@@ -605,6 +605,7 @@ GoogleSignIn createSignInWithGoogle() {
 /// class.
 class RepositoryInstances implements DataRepositoryMethods {
   final AccountId accountId;
+  final UtcDateTime creationTime = UtcDateTime.now();
   final CommonRepository common;
   final ChatRepository chat;
   final MediaRepository media;
@@ -621,7 +622,7 @@ class RepositoryInstances implements DataRepositoryMethods {
 
   ApiManager get api => connectionManager.api;
 
-  const RepositoryInstances({
+  RepositoryInstances({
     required this.accountId,
     required this.common,
     required this.chat,

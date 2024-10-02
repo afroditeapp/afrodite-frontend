@@ -177,10 +177,11 @@ class _NormalStateContentState extends State<NormalStateContent> {
         icon: BlocBuilder<NewReceivedLikesAvailableBloc, NewReceivedLikesAvailableData>(
           builder: (context, state) {
             final icon = Icon(selectedView == 1 ? Icons.favorite : Icons.favorite_outline);
-            if (state.newReceivedLikesCount == 0) {
+            final count = state.receivedLikesCountForUi();
+            if (count == 0) {
               return icon;
             } else {
-              return Badge(child: icon);
+              return Badge.count(count: count, child: icon);
             }
           }
         ),
