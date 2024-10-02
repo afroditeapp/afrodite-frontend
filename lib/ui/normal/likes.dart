@@ -323,7 +323,12 @@ class LikeViewContentState extends State<LikeViewContent> {
             // onTap: () => openProfileView(context, item.profile, heroTag: item.heroTag),
             child: Hero(
               tag: item.heroTag.value,
-              child: profileEntryWidgetStream(item.profile, iHaveUnlimitedLikesEnabled, accountDb)
+              child: profileEntryWidgetStream(
+                item.profile,
+                iHaveUnlimitedLikesEnabled,
+                accountDb,
+                showNewLikeMarker: true,
+              )
             )
           );
         },

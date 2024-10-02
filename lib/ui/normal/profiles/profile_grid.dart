@@ -29,6 +29,7 @@ import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 import 'package:pihka_frontend/ui_utils/scroll_controller.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:utils/utils.dart';
 
 var log = Logger("ProfileGrid");
 
@@ -357,17 +358,30 @@ class _ProfileGridState extends State<ProfileGrid> {
   }
 }
 
-Widget profileEntryWidgetStream(ProfileEntry entry, bool iHaveUnlimitedLikesEnabled, AccountDatabaseManager db) {
+Widget profileEntryWidgetStream(
+  ProfileEntry entry,
+  bool iHaveUnlimitedLikesEnabled,
+  AccountDatabaseManager db,
+  {
+    bool showNewLikeMarker = false,
+  }
+) {
   return StreamBuilder(
     stream: db.accountStream((db) => db.daoProfiles.watchProfileEntry(entry.uuid)).whereNotNull(),
     builder: (context, data) {
       final e = data.data ?? entry;
+      final newLikeInfoReceivedTime = e.newLikeInfoReceivedTime;
       return ProfileThumbnailImage.fromProfileEntry(
         entry: e,
         cacheSize: ImageCacheSize.sizeForGrid(),
         child: Stack(
           children: [
-            thumbnailStatusIndicators(e, iHaveUnlimitedLikesEnabled),
+            if (showNewLikeMarker && newLikeInfoReceivedTime != null)
+              thumbnailStatusIndicatorForNewLikeMarker(newLikeInfoReceivedTime),
+            thumbnailStatusIndicators(
+              e,
+              iHaveUnlimitedLikesEnabled,
+            ),
             Material(
               color: Colors.transparent,
               child: InkWell(
@@ -386,7 +400,10 @@ Widget profileEntryWidgetStream(ProfileEntry entry, bool iHaveUnlimitedLikesEnab
   );
 }
 
-Widget thumbnailStatusIndicators(ProfileEntry profile, bool iHaveUnlimitedLikesEnabled) {
+Widget thumbnailStatusIndicators(
+  ProfileEntry profile,
+  bool iHaveUnlimitedLikesEnabled,
+) {
   return Align(
     alignment: Alignment.bottomCenter,
     child: Row(
@@ -415,4 +432,24 @@ Widget thumbnailStatusIndicators(ProfileEntry profile, bool iHaveUnlimitedLikesE
       ],
     ),
   );
+}
+
+Widget thumbnailStatusIndicatorForNewLikeMarker(
+  UtcDateTime newLikeInfoReceivedTime,
+) {
+  final currentTime = UtcDateTime.now();
+  if (currentTime.difference(newLikeInfoReceivedTime).inHours < 24) {
+    return const Align(
+      alignment: Alignment.topLeft,
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Icon(
+          Icons.auto_awesome,
+          color: Colors.amber,
+        ),
+      ),
+    );
+  } else {
+    return const SizedBox.shrink();
+  }
 }

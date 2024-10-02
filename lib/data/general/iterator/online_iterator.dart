@@ -125,7 +125,11 @@ class OnlineIterator extends IteratorType {
             list.add(gridEntry);
           }
 
-          for (final p in profiles.basicProfiles) {
+          for (final (i, p) in profiles.basicProfiles.indexed) {
+            if (i + 1 <= profiles.basicProfilesNewLikesCount) {
+              await db.profileData((db) => db.updateNewLikeInfoReceivedTimeToCurrentTime(p));
+            }
+
             var entry = await db.profileData((db) => db.getProfileEntry(p)).ok();
             entry ??= await downloader.download(p).ok();
 
@@ -234,8 +238,9 @@ class IteratorPage {
   final bool errorInvalidIteratorSessionId;
   List<ProfileLink> profiles;
   List<AccountId> basicProfiles;
+  final int basicProfilesNewLikesCount;
 
-  IteratorPage(this.profiles, this.basicProfiles, {this.errorInvalidIteratorSessionId = false});
+  IteratorPage(this.profiles, this.basicProfiles, {this.errorInvalidIteratorSessionId = false, this.basicProfilesNewLikesCount = 0});
 }
 
 class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
@@ -293,7 +298,8 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
       .mapOk((value) => IteratorPage(
         [],
         value.p,
-        errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId
+        errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
+        basicProfilesNewLikesCount: value.n.c,
       ));
   }
 

@@ -39,6 +39,7 @@ class Profiles extends Table {
   RealColumn get primaryContentGridCropY => real().nullable()();
 
   IntColumn get profileDataRefreshTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  IntColumn get newLikeInfoReceivedTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 }
 
 @DriftAccessor(tables: [Profiles])
@@ -54,17 +55,19 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         uuidContentId3: Value(null),
         uuidContentId4: Value(null),
         uuidContentId5: Value(null),
+        profileContentVersion: Value(null),
         profileName: Value(null),
         profileText: Value(null),
         profileAge: Value(null),
         profileVersion: Value(null),
-        profileContentVersion: Value(null),
         profileLastSeenTimeValue: Value(null),
         profileUnlimitedLikes: Value(null),
         jsonProfileAttributes: Value(null),
         primaryContentGridCropSize: Value(null),
         primaryContentGridCropX: Value(null),
         primaryContentGridCropY: Value(null),
+        profileDataRefreshTime: Value(null),
+        newLikeInfoReceivedTime: Value(null),
       ));
   }
 
@@ -104,6 +107,21 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
       ),
       onConflict: DoUpdate((old) => ProfilesCompanion(
         profileLastSeenTimeValue: Value(profileLastSeenTime),
+      ),
+        target: [profiles.uuidAccountId]
+      ),
+    );
+  }
+
+  Future<void> updateNewLikeInfoReceivedTimeToCurrentTime(AccountId accountId) async {
+    final currentTime = UtcDateTime.now();
+    await into(profiles).insert(
+      ProfilesCompanion.insert(
+        uuidAccountId: accountId,
+        newLikeInfoReceivedTime: Value(currentTime),
+      ),
+      onConflict: DoUpdate((old) => ProfilesCompanion(
+        newLikeInfoReceivedTime: Value(currentTime),
       ),
         target: [profiles.uuidAccountId]
       ),
@@ -209,6 +227,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         content3: r.uuidContentId3,
         content4: r.uuidContentId4,
         content5: r.uuidContentId5,
+        newLikeInfoReceivedTime: r.newLikeInfoReceivedTime,
       );
     } else {
       return null;

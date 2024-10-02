@@ -28,6 +28,7 @@ class ProfileEntry {
   final ContentId? content4;
   final ContentId? content5;
   final ContentId? content6;
+  final UtcDateTime? newLikeInfoReceivedTime;
   ProfileEntry(
     {
       required this.uuid,
@@ -49,6 +50,7 @@ class ProfileEntry {
       this.content4,
       this.content5,
       this.content6,
+      this.newLikeInfoReceivedTime,
     }
   );
 
