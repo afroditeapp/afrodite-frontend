@@ -183,6 +183,7 @@ class LikeViewContentState extends State<LikeViewContent> {
     LoginRepository.getInstance().repositories.chat.currentUser,
   );
   bool _reloadInProgress = false;
+  bool _automaticReloadDoneOnce = false;
 
   @override
   void initState() {
@@ -423,9 +424,13 @@ class LikeViewContentState extends State<LikeViewContent> {
         final currentTime = UtcDateTime.now();
         final repositories = LoginRepository.getInstance().repositoriesOrNull;
 
-        if (state.newReceivedLikesCount > 0 && repositories != null && currentTime.difference(repositories.creationTime).inSeconds < 5) {
+        if (state.newReceivedLikesCount > 0 && repositories != null && currentTime.difference(repositories.creationTime).inSeconds < 5 && !_automaticReloadDoneOnce) {
           // Automatic like screen reload
           automaticReloadLogic(state);
+          _automaticReloadDoneOnce = true;
+        } else if (state.newReceivedLikesCount == 0 && repositories != null && repositories.accountLoginHappened && !_automaticReloadDoneOnce) {
+          automaticReloadLogic(state);
+          _automaticReloadDoneOnce = true;
         }
         return const SizedBox.shrink();
       }

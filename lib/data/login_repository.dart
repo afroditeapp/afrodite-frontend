@@ -247,7 +247,7 @@ class LoginRepository extends DataRepository {
       .listen(null);
   }
 
-  Future<RepositoryInstances> _createRepositories(AccountId accountId) async {
+  Future<RepositoryInstances> _createRepositories(AccountId accountId, {bool accountLoginHappened = false}) async {
     final currentRepositories = _repositories;
     await currentRepositories?.dispose();
 
@@ -281,6 +281,7 @@ class LoginRepository extends DataRepository {
     );
     final newRepositories = RepositoryInstances(
       accountId: accountId,
+      accountLoginHappened: accountLoginHappened,
       common: common,
       chat: chat,
       media: media,
@@ -401,7 +402,7 @@ class LoginRepository extends DataRepository {
     // TODO(microservice): microservice support
     await onLogin();
 
-    final theNewRepositories = await _createRepositories(aid);
+    final theNewRepositories = await _createRepositories(aid, accountLoginHappened: true);
 
     // Other repostories
     await theNewRepositories.onLogin();
@@ -606,6 +607,7 @@ GoogleSignIn createSignInWithGoogle() {
 class RepositoryInstances implements DataRepositoryMethods {
   final AccountId accountId;
   final UtcDateTime creationTime = UtcDateTime.now();
+  final bool accountLoginHappened;
   final CommonRepository common;
   final ChatRepository chat;
   final MediaRepository media;
@@ -624,6 +626,7 @@ class RepositoryInstances implements DataRepositoryMethods {
 
   RepositoryInstances({
     required this.accountId,
+    required this.accountLoginHappened,
     required this.common,
     required this.chat,
     required this.media,
