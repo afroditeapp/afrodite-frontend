@@ -312,6 +312,7 @@ class LikeViewContentState extends State<LikeViewContent> {
 
   Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled) {
     return PagedGridView(
+      physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
       pagingController: _pagingController!,
       padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),

@@ -1033,6 +1033,10 @@
   "@view_profile_screen_add_to_favorites_action_successful": {
     "description": "Snackbar text for view profile screen add to favorites action result successful"
   },
+  "view_profile_screen_already_match": "Already match",
+  "@view_profile_screen_already_match": {
+    "description": "Snackbar text for view profile screen displayed when action failed because of the profile is already a match"
+  },
   "view_profile_screen_block_action": "Block",
   "@view_profile_screen_block_action": {
     "description": "Text for view profile screen block action"
@@ -1184,6 +1188,10 @@
   "view_profile_screen_remove_like_action_dialog_title": "Remove like?",
   "@view_profile_screen_remove_like_action_dialog_title": {
     "description": "Title for view profile screen remove like action dialog"
+  },
+  "view_profile_screen_remove_like_action_like_not_found": "Like not found",
+  "@view_profile_screen_remove_like_action_like_not_found": {
+    "description": "Snackbar text for view profile screen remove like action failed because like is not found"
   },
   "view_profile_screen_remove_like_action_remove_done_previously": "Remove like failed because the previous like removal was detected for the profile",
   "@view_profile_screen_remove_like_action_remove_done_previously": {

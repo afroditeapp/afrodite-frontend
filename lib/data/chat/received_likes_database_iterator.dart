@@ -18,7 +18,7 @@ class ReceivedLikesDatabaseIterator extends IteratorType {
   @override
   Future<Result<List<ProfileEntry>, void>> nextList() async {
     const queryCount = 10;
-    final profiles = await db.accountData((db) => db.daoProfileStates.getReceivedLikesList(currentIndex, queryCount)).ok();
+    final profiles = await db.accountData((db) => db.daoProfileStates.getReceivedLikesGridList(currentIndex, queryCount)).ok();
     if (profiles != null) {
       currentIndex += queryCount;
       return Ok(await db.profileData((db) => db.convertToProfileEntries(profiles)).ok() ?? []);

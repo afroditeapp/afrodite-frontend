@@ -256,6 +256,8 @@ class ApiClient {
           return ContentSlotTypeTransformer().decode(value);
         case 'ContentState':
           return ContentStateTypeTransformer().decode(value);
+        case 'CurrentAccountInteractionState':
+          return CurrentAccountInteractionStateTypeTransformer().decode(value);
         case 'CurrentModerationRequest':
           return CurrentModerationRequest.fromJson(value);
         case 'DeleteLikeResult':

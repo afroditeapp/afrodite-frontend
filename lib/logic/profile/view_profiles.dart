@@ -139,8 +139,11 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
         showLikeCompleted: false,
         showLikeFailedBecauseOfLimit: false,
         showLikeFailedBecauseAlreadyLiked: false,
+        showLikeFailedBecauseAlreadyMatch: false,
         showRemoveLikeCompleted: false,
         showRemoveLikeFailedBecauseOfDoneBefore: false,
+        showRemoveLikeFailedBecauseOfAlreadyMatch: false,
+        showRemoveLikeFailedBecauseOfNotLiked: false,
         showGenericError: false
       ));
     });
@@ -157,45 +160,65 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
       await runOnce(() async {
         switch (data.action) {
           case ProfileActionState.like: {
-            switch (await chat.sendLikeTo(data.accountId)) {
+            final r = await chat.sendLikeTo(data.accountId);
+            final newAction = await resolveProfileAction(data.accountId);
+            switch (r) {
               case Ok(:final v):
                 if (v == LimitedActionStatus.failureLimitAlreadyReached) {
                   emit(state.copyWith(
+                    profileActionState: newAction,
                     showLikeFailedBecauseOfLimit: true,
                   ));
                 } else if (v == LimitedActionStatus.success || v == LimitedActionStatus.successAndLimitReached) {
-                  final newAction = await resolveProfileAction(data.accountId);
                   emit(state.copyWith(
                     profileActionState: newAction,
                     showLikeCompleted: true,
                   ));
                 }
               case Err(e: SendLikeError.alreadyLiked):
-                final newAction = await resolveProfileAction(data.accountId);
                 emit(state.copyWith(
                   profileActionState: newAction,
                   showLikeFailedBecauseAlreadyLiked: true,
                 ));
+              case Err(e: SendLikeError.alreadyMatch):
+                emit(state.copyWith(
+                  profileActionState: newAction,
+                  showLikeFailedBecauseAlreadyMatch: true,
+                ));
               case Err(e: SendLikeError.unspecifiedError):
                 emit(state.copyWith(
+                  profileActionState: newAction,
                   showGenericError: true,
                 ));
             }
           }
           case ProfileActionState.removeLike: {
-            switch (await chat.removeLikeFrom(data.accountId)) {
+            final r = await chat.removeLikeFrom(data.accountId);
+            final newAction = await resolveProfileAction(data.accountId);
+            switch (r) {
               case Ok():
-                final newAction = await resolveProfileAction(data.accountId);
                 emit(state.copyWith(
                   profileActionState: newAction,
                   showRemoveLikeCompleted: true,
                 ));
               case Err(e: RemoveLikeError.actionDoneBefore):
                 emit(state.copyWith(
+                  profileActionState: newAction,
                   showRemoveLikeFailedBecauseOfDoneBefore: true,
+                ));
+              case Err(e: RemoveLikeError.alreadyMatch):
+                emit(state.copyWith(
+                  profileActionState: newAction,
+                  showRemoveLikeFailedBecauseOfAlreadyMatch: true,
+                ));
+              case Err(e: RemoveLikeError.likeNotFound):
+                emit(state.copyWith(
+                  profileActionState: newAction,
+                  showRemoveLikeFailedBecauseOfNotLiked: true,
                 ));
               case Err(e: RemoveLikeError.unspecifiedError):
                 emit(state.copyWith(
+                  profileActionState: newAction,
                   showGenericError: true,
                 ));
             }

@@ -144,13 +144,32 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     return await db.accountData((db) => db.daoProfileStates.isInReceivedBlocks(accountId)).ok() ?? false;
   }
 
+  Future<void> _updateAccountInteractionState(
+    AccountId accountId,
+    CurrentAccountInteractionState state,
+  ) async {
+    final sentLike = state == CurrentAccountInteractionState.likeSent;
+    final receivedLike = state == CurrentAccountInteractionState.likeReceived;
+    final match = state == CurrentAccountInteractionState.match;
+    await db.accountAction((db) => db.daoProfileStates.setSentLikeStatus(accountId, sentLike));
+    await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatus(accountId, receivedLike));
+    await db.accountAction((db) => db.daoMatches.setMatchStatus(accountId, match));
+  }
+
   Future<Result<LimitedActionStatus, SendLikeError>> sendLikeTo(AccountId accountId) async {
     final result = await api.chat((api) => api.postSendLike(accountId));
     switch (result) {
       case Ok(:final v):
-        if (v.errorAlreadyLiked) {
-          await db.accountAction((db) => db.daoProfileStates.setSentLikeStatus(accountId, true));
-          return const Err(SendLikeError.alreadyLiked);
+        final newState = v.errorAccountInteractionStateMismatch;
+        if (newState != null) {
+          await _updateAccountInteractionState(accountId, newState);
+          if (newState == CurrentAccountInteractionState.likeSent) {
+            return const Err(SendLikeError.alreadyLiked);
+          } else if (newState == CurrentAccountInteractionState.match) {
+            return const Err(SendLikeError.alreadyMatch);
+          } else {
+            return const Err(SendLikeError.unspecifiedError);
+          }
         }
         final status = v.status;
         if (status == null) {
@@ -174,6 +193,17 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     final result = await api.chat((api) => api.deleteLike(accountId));
     switch (result) {
       case Ok(:final v):
+        final newState = v.errorAccountInteractionStateMismatch;
+        if (newState != null) {
+          await _updateAccountInteractionState(accountId, newState);
+          if (newState == CurrentAccountInteractionState.empty) {
+            return const Err(RemoveLikeError.likeNotFound);
+          } else if (newState == CurrentAccountInteractionState.match) {
+            return const Err(RemoveLikeError.alreadyMatch);
+          } else {
+            return const Err(RemoveLikeError.unspecifiedError);
+          }
+        }
         if (v.errorDeleteAlreadyDoneBefore) {
           return const Err(RemoveLikeError.actionDoneBefore);
         }
@@ -423,10 +453,13 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
 enum SendLikeError {
   alreadyLiked,
+  alreadyMatch,
   unspecifiedError,
 }
 
 enum RemoveLikeError {
   actionDoneBefore,
+  alreadyMatch,
+  likeNotFound,
   unspecifiedError,
 }

@@ -5333,6 +5333,15 @@ class $ProfileStatesTable extends ProfileStates
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $ProfileStatesTable.$converterisInProfileGrid);
+  static const VerificationMeta _isInReceivedLikesGridMeta =
+      const VerificationMeta('isInReceivedLikesGrid');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+      isInReceivedLikesGrid = GeneratedColumn<int>(
+              'is_in_received_likes_grid', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $ProfileStatesTable.$converterisInReceivedLikesGrid);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -5342,7 +5351,8 @@ class $ProfileStatesTable extends ProfileStates
         isInReceivedLikes,
         isInSentBlocks,
         isInSentLikes,
-        isInProfileGrid
+        isInProfileGrid,
+        isInReceivedLikesGrid
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -5364,6 +5374,8 @@ class $ProfileStatesTable extends ProfileStates
     context.handle(_isInSentBlocksMeta, const VerificationResult.success());
     context.handle(_isInSentLikesMeta, const VerificationResult.success());
     context.handle(_isInProfileGridMeta, const VerificationResult.success());
+    context.handle(
+        _isInReceivedLikesGridMeta, const VerificationResult.success());
     return context;
   }
 
@@ -5396,6 +5408,9 @@ class $ProfileStatesTable extends ProfileStates
       isInProfileGrid: $ProfileStatesTable.$converterisInProfileGrid.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}is_in_profile_grid'])),
+      isInReceivedLikesGrid: $ProfileStatesTable.$converterisInReceivedLikesGrid
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}is_in_received_likes_grid'])),
     );
   }
 
@@ -5418,6 +5433,8 @@ class $ProfileStatesTable extends ProfileStates
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInProfileGrid =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterisInReceivedLikesGrid =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
 
 class ProfileState extends DataClass implements Insertable<ProfileState> {
@@ -5429,6 +5446,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
   final UtcDateTime? isInSentBlocks;
   final UtcDateTime? isInSentLikes;
   final UtcDateTime? isInProfileGrid;
+  final UtcDateTime? isInReceivedLikesGrid;
   const ProfileState(
       {required this.id,
       required this.uuidAccountId,
@@ -5437,7 +5455,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       this.isInReceivedLikes,
       this.isInSentBlocks,
       this.isInSentLikes,
-      this.isInProfileGrid});
+      this.isInProfileGrid,
+      this.isInReceivedLikesGrid});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -5472,6 +5491,11 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       map['is_in_profile_grid'] = Variable<int>(
           $ProfileStatesTable.$converterisInProfileGrid.toSql(isInProfileGrid));
     }
+    if (!nullToAbsent || isInReceivedLikesGrid != null) {
+      map['is_in_received_likes_grid'] = Variable<int>($ProfileStatesTable
+          .$converterisInReceivedLikesGrid
+          .toSql(isInReceivedLikesGrid));
+    }
     return map;
   }
 
@@ -5497,6 +5521,9 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInProfileGrid: isInProfileGrid == null && nullToAbsent
           ? const Value.absent()
           : Value(isInProfileGrid),
+      isInReceivedLikesGrid: isInReceivedLikesGrid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isInReceivedLikesGrid),
     );
   }
 
@@ -5515,6 +5542,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInSentLikes: serializer.fromJson<UtcDateTime?>(json['isInSentLikes']),
       isInProfileGrid:
           serializer.fromJson<UtcDateTime?>(json['isInProfileGrid']),
+      isInReceivedLikesGrid:
+          serializer.fromJson<UtcDateTime?>(json['isInReceivedLikesGrid']),
     );
   }
   @override
@@ -5529,6 +5558,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       'isInSentBlocks': serializer.toJson<UtcDateTime?>(isInSentBlocks),
       'isInSentLikes': serializer.toJson<UtcDateTime?>(isInSentLikes),
       'isInProfileGrid': serializer.toJson<UtcDateTime?>(isInProfileGrid),
+      'isInReceivedLikesGrid':
+          serializer.toJson<UtcDateTime?>(isInReceivedLikesGrid),
     };
   }
 
@@ -5540,7 +5571,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           Value<UtcDateTime?> isInReceivedLikes = const Value.absent(),
           Value<UtcDateTime?> isInSentBlocks = const Value.absent(),
           Value<UtcDateTime?> isInSentLikes = const Value.absent(),
-          Value<UtcDateTime?> isInProfileGrid = const Value.absent()}) =>
+          Value<UtcDateTime?> isInProfileGrid = const Value.absent(),
+          Value<UtcDateTime?> isInReceivedLikesGrid = const Value.absent()}) =>
       ProfileState(
         id: id ?? this.id,
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -5559,6 +5591,9 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
         isInProfileGrid: isInProfileGrid.present
             ? isInProfileGrid.value
             : this.isInProfileGrid,
+        isInReceivedLikesGrid: isInReceivedLikesGrid.present
+            ? isInReceivedLikesGrid.value
+            : this.isInReceivedLikesGrid,
       );
   ProfileState copyWithCompanion(ProfileStatesCompanion data) {
     return ProfileState(
@@ -5584,6 +5619,9 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInProfileGrid: data.isInProfileGrid.present
           ? data.isInProfileGrid.value
           : this.isInProfileGrid,
+      isInReceivedLikesGrid: data.isInReceivedLikesGrid.present
+          ? data.isInReceivedLikesGrid.value
+          : this.isInReceivedLikesGrid,
     );
   }
 
@@ -5597,7 +5635,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
           ..write('isInSentBlocks: $isInSentBlocks, ')
           ..write('isInSentLikes: $isInSentLikes, ')
-          ..write('isInProfileGrid: $isInProfileGrid')
+          ..write('isInProfileGrid: $isInProfileGrid, ')
+          ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid')
           ..write(')'))
         .toString();
   }
@@ -5611,7 +5650,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInReceivedLikes,
       isInSentBlocks,
       isInSentLikes,
-      isInProfileGrid);
+      isInProfileGrid,
+      isInReceivedLikesGrid);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -5623,7 +5663,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           other.isInReceivedLikes == this.isInReceivedLikes &&
           other.isInSentBlocks == this.isInSentBlocks &&
           other.isInSentLikes == this.isInSentLikes &&
-          other.isInProfileGrid == this.isInProfileGrid);
+          other.isInProfileGrid == this.isInProfileGrid &&
+          other.isInReceivedLikesGrid == this.isInReceivedLikesGrid);
 }
 
 class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
@@ -5635,6 +5676,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   final Value<UtcDateTime?> isInSentBlocks;
   final Value<UtcDateTime?> isInSentLikes;
   final Value<UtcDateTime?> isInProfileGrid;
+  final Value<UtcDateTime?> isInReceivedLikesGrid;
   const ProfileStatesCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -5644,6 +5686,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     this.isInSentBlocks = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
     this.isInProfileGrid = const Value.absent(),
+    this.isInReceivedLikesGrid = const Value.absent(),
   });
   ProfileStatesCompanion.insert({
     this.id = const Value.absent(),
@@ -5654,6 +5697,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     this.isInSentBlocks = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
     this.isInProfileGrid = const Value.absent(),
+    this.isInReceivedLikesGrid = const Value.absent(),
   }) : uuidAccountId = Value(uuidAccountId);
   static Insertable<ProfileState> custom({
     Expression<int>? id,
@@ -5664,6 +5708,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     Expression<int>? isInSentBlocks,
     Expression<int>? isInSentLikes,
     Expression<int>? isInProfileGrid,
+    Expression<int>? isInReceivedLikesGrid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -5675,6 +5720,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       if (isInSentBlocks != null) 'is_in_sent_blocks': isInSentBlocks,
       if (isInSentLikes != null) 'is_in_sent_likes': isInSentLikes,
       if (isInProfileGrid != null) 'is_in_profile_grid': isInProfileGrid,
+      if (isInReceivedLikesGrid != null)
+        'is_in_received_likes_grid': isInReceivedLikesGrid,
     });
   }
 
@@ -5686,7 +5733,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       Value<UtcDateTime?>? isInReceivedLikes,
       Value<UtcDateTime?>? isInSentBlocks,
       Value<UtcDateTime?>? isInSentLikes,
-      Value<UtcDateTime?>? isInProfileGrid}) {
+      Value<UtcDateTime?>? isInProfileGrid,
+      Value<UtcDateTime?>? isInReceivedLikesGrid}) {
     return ProfileStatesCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -5696,6 +5744,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       isInSentBlocks: isInSentBlocks ?? this.isInSentBlocks,
       isInSentLikes: isInSentLikes ?? this.isInSentLikes,
       isInProfileGrid: isInProfileGrid ?? this.isInProfileGrid,
+      isInReceivedLikesGrid:
+          isInReceivedLikesGrid ?? this.isInReceivedLikesGrid,
     );
   }
 
@@ -5740,6 +5790,11 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
           .$converterisInProfileGrid
           .toSql(isInProfileGrid.value));
     }
+    if (isInReceivedLikesGrid.present) {
+      map['is_in_received_likes_grid'] = Variable<int>($ProfileStatesTable
+          .$converterisInReceivedLikesGrid
+          .toSql(isInReceivedLikesGrid.value));
+    }
     return map;
   }
 
@@ -5753,7 +5808,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
           ..write('isInSentBlocks: $isInSentBlocks, ')
           ..write('isInSentLikes: $isInSentLikes, ')
-          ..write('isInProfileGrid: $isInProfileGrid')
+          ..write('isInProfileGrid: $isInProfileGrid, ')
+          ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid')
           ..write(')'))
         .toString();
   }

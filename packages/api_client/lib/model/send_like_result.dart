@@ -13,31 +13,35 @@ part of openapi.api;
 class SendLikeResult {
   /// Returns a new [SendLikeResult] instance.
   SendLikeResult({
-    this.errorAlreadyLiked = false,
+    this.errorAccountInteractionStateMismatch,
     this.status,
   });
 
-  bool errorAlreadyLiked;
+  CurrentAccountInteractionState? errorAccountInteractionStateMismatch;
 
   LimitedActionStatus? status;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SendLikeResult &&
-    other.errorAlreadyLiked == errorAlreadyLiked &&
+    other.errorAccountInteractionStateMismatch == errorAccountInteractionStateMismatch &&
     other.status == status;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (errorAlreadyLiked.hashCode) +
+    (errorAccountInteractionStateMismatch == null ? 0 : errorAccountInteractionStateMismatch!.hashCode) +
     (status == null ? 0 : status!.hashCode);
 
   @override
-  String toString() => 'SendLikeResult[errorAlreadyLiked=$errorAlreadyLiked, status=$status]';
+  String toString() => 'SendLikeResult[errorAccountInteractionStateMismatch=$errorAccountInteractionStateMismatch, status=$status]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'error_already_liked'] = this.errorAlreadyLiked;
+    if (this.errorAccountInteractionStateMismatch != null) {
+      json[r'error_account_interaction_state_mismatch'] = this.errorAccountInteractionStateMismatch;
+    } else {
+      json[r'error_account_interaction_state_mismatch'] = null;
+    }
     if (this.status != null) {
       json[r'status'] = this.status;
     } else {
@@ -65,7 +69,7 @@ class SendLikeResult {
       }());
 
       return SendLikeResult(
-        errorAlreadyLiked: mapValueOfType<bool>(json, r'error_already_liked') ?? false,
+        errorAccountInteractionStateMismatch: CurrentAccountInteractionState.fromJson(json[r'error_account_interaction_state_mismatch']),
         status: LimitedActionStatus.fromJson(json[r'status']),
       );
     }

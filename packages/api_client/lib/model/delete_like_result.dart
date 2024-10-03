@@ -13,26 +13,36 @@ part of openapi.api;
 class DeleteLikeResult {
   /// Returns a new [DeleteLikeResult] instance.
   DeleteLikeResult({
+    this.errorAccountInteractionStateMismatch,
     this.errorDeleteAlreadyDoneBefore = false,
   });
+
+  CurrentAccountInteractionState? errorAccountInteractionStateMismatch;
 
   /// The account tracking for delete like only tracks the latest deleter account, so it is possible that this error resets if delete like target account likes and removes the like.
   bool errorDeleteAlreadyDoneBefore;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is DeleteLikeResult &&
+    other.errorAccountInteractionStateMismatch == errorAccountInteractionStateMismatch &&
     other.errorDeleteAlreadyDoneBefore == errorDeleteAlreadyDoneBefore;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (errorAccountInteractionStateMismatch == null ? 0 : errorAccountInteractionStateMismatch!.hashCode) +
     (errorDeleteAlreadyDoneBefore.hashCode);
 
   @override
-  String toString() => 'DeleteLikeResult[errorDeleteAlreadyDoneBefore=$errorDeleteAlreadyDoneBefore]';
+  String toString() => 'DeleteLikeResult[errorAccountInteractionStateMismatch=$errorAccountInteractionStateMismatch, errorDeleteAlreadyDoneBefore=$errorDeleteAlreadyDoneBefore]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.errorAccountInteractionStateMismatch != null) {
+      json[r'error_account_interaction_state_mismatch'] = this.errorAccountInteractionStateMismatch;
+    } else {
+      json[r'error_account_interaction_state_mismatch'] = null;
+    }
       json[r'error_delete_already_done_before'] = this.errorDeleteAlreadyDoneBefore;
     return json;
   }
@@ -56,6 +66,7 @@ class DeleteLikeResult {
       }());
 
       return DeleteLikeResult(
+        errorAccountInteractionStateMismatch: CurrentAccountInteractionState.fromJson(json[r'error_account_interaction_state_mismatch']),
         errorDeleteAlreadyDoneBefore: mapValueOfType<bool>(json, r'error_delete_already_done_before') ?? false,
       );
     }

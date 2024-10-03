@@ -75,6 +75,7 @@ part 'model/content_processing_state_changed.dart';
 part 'model/content_processing_state_type.dart';
 part 'model/content_slot.dart';
 part 'model/content_state.dart';
+part 'model/current_account_interaction_state.dart';
 part 'model/current_moderation_request.dart';
 part 'model/delete_like_result.dart';
 part 'model/delete_status.dart';

@@ -43,6 +43,7 @@ doc/ContentProcessingStateChanged.md
 doc/ContentProcessingStateType.md
 doc/ContentSlot.md
 doc/ContentState.md
+doc/CurrentAccountInteractionState.md
 doc/CurrentModerationRequest.md
 doc/DeleteLikeResult.md
 doc/DeleteStatus.md
@@ -225,6 +226,7 @@ lib/model/content_processing_state_changed.dart
 lib/model/content_processing_state_type.dart
 lib/model/content_slot.dart
 lib/model/content_state.dart
+lib/model/current_account_interaction_state.dart
 lib/model/current_moderation_request.dart
 lib/model/delete_like_result.dart
 lib/model/delete_status.dart

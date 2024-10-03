@@ -79,6 +79,9 @@ String parameterToString(dynamic value) {
   if (value is ContentState) {
     return ContentStateTypeTransformer().encode(value).toString();
   }
+  if (value is CurrentAccountInteractionState) {
+    return CurrentAccountInteractionStateTypeTransformer().encode(value).toString();
+  }
   if (value is DownloadType) {
     return DownloadTypeTypeTransformer().encode(value).toString();
   }

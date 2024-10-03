@@ -202,8 +202,11 @@ class ViewProfilePage extends StatelessWidget {
         state.showLikeCompleted ||
         state.showLikeFailedBecauseOfLimit ||
         state.showLikeFailedBecauseAlreadyLiked ||
+        state.showLikeFailedBecauseAlreadyMatch ||
         state.showRemoveLikeCompleted ||
         state.showRemoveLikeFailedBecauseOfDoneBefore ||
+        state.showRemoveLikeFailedBecauseOfAlreadyMatch ||
+        state.showRemoveLikeFailedBecauseOfNotLiked ||
         state.showGenericError
       ) {
         if (state.showAddToFavoritesCompleted) {
@@ -221,11 +224,17 @@ class ViewProfilePage extends StatelessWidget {
         if (state.showLikeFailedBecauseAlreadyLiked) {
           showSnackBar(context.strings.view_profile_screen_like_action_like_already_sent);
         }
+        if (state.showLikeFailedBecauseAlreadyMatch || state.showRemoveLikeFailedBecauseOfAlreadyMatch) {
+          showSnackBar(context.strings.view_profile_screen_already_match);
+        }
         if (state.showRemoveLikeCompleted) {
           showSnackBar(context.strings.view_profile_screen_remove_like_action_successful);
         }
         if (state.showRemoveLikeFailedBecauseOfDoneBefore) {
           showSnackBar(context.strings.view_profile_screen_remove_like_action_remove_done_previously);
+        }
+        if (state.showRemoveLikeFailedBecauseOfNotLiked) {
+          showSnackBar(context.strings.view_profile_screen_remove_like_action_like_not_found);
         }
         if (state.showGenericError) {
           showSnackBar(context.strings.generic_error_occurred);

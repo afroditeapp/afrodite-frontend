@@ -190,8 +190,10 @@
     <string name="view_profile_screen_like_action_successful" description="Snackbar text for view profile screen like action successful">Like sent</string>
     <string name="view_profile_screen_like_action_try_again_tomorrow" description="Snackbar text for view profile screen like action failed because of like limit">No daily likes left. Try again tomorrow.</string>
     <string name="view_profile_screen_like_action_like_already_sent" description="Snackbar text for view profile screen like action failed because of like is already sent">Like already sent</string>
+    <string name="view_profile_screen_already_match" description="Snackbar text for view profile screen displayed when action failed because of the profile is already a match">Already match</string>
     <string name="view_profile_screen_remove_like_action_successful" description="Snackbar text for view profile screen remove like action successful">Like removed</string>
     <string name="view_profile_screen_remove_like_action_remove_done_previously" description="Snackbar text for view profile screen remove like action failed because it is done previously">Remove like failed because the previous like removal was detected for the profile</string>
+    <string name="view_profile_screen_remove_like_action_like_not_found" description="Snackbar text for view profile screen remove like action failed because like is not found">Like not found</string>
     <string name="view_profile_screen_block_action_successful" description="Snackbar text for view profile screen block action successful">Profile blocked</string>
     <string name="view_profile_screen_profile_edit_failed" description="Snackbar text for notifying about failed profile edit">Profile editing failed</string>
     <string name="view_profile_screen_profile_currently_online" description="View profile screen text that profile is currently online">Online</string>
