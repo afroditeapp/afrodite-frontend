@@ -211,20 +211,6 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
     });
   }
 
-  Future<void> setSentLikeStatusList(api.SentLikesPage sentLikes) async {
-    await transaction(() async {
-      // Clear
-      await update(profileStates)
-        .write(const ProfileStatesCompanion(isInSentLikes: Value(null)));
-
-      for (final a in sentLikes.profiles) {
-        await setSentLikeStatus(a, true);
-      }
-
-      await db.daoSyncVersions.updateSyncVersionSentLikes(sentLikes.version);
-    });
-  }
-
   Future<void> setReceivedLikeGridStatusList(List<AccountId>? accounts, bool value, {bool clear = false}) async {
     await transaction(() async {
       if (clear) {

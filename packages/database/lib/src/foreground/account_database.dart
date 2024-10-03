@@ -66,7 +66,6 @@ class Account extends Table {
   IntColumn get syncVersionAccount => integer().nullable()();
   IntColumn get syncVersionProfile => integer().nullable()();
   IntColumn get syncVersionReceivedBlocks => integer().nullable()();
-  IntColumn get syncVersionSentLikes => integer().nullable()();
   IntColumn get syncVersionSentBlocks => integer().nullable()();
   IntColumn get syncVersionMatches => integer().nullable()();
   IntColumn get syncVersionAvailableProfileAttributes => integer().nullable()();

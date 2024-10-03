@@ -158,12 +158,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<int> syncVersionReceivedBlocks =
       GeneratedColumn<int>('sync_version_received_blocks', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _syncVersionSentLikesMeta =
-      const VerificationMeta('syncVersionSentLikes');
-  @override
-  late final GeneratedColumn<int> syncVersionSentLikes = GeneratedColumn<int>(
-      'sync_version_sent_likes', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _syncVersionSentBlocksMeta =
       const VerificationMeta('syncVersionSentBlocks');
   @override
@@ -612,7 +606,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         syncVersionAccount,
         syncVersionProfile,
         syncVersionReceivedBlocks,
-        syncVersionSentLikes,
         syncVersionSentBlocks,
         syncVersionMatches,
         syncVersionAvailableProfileAttributes,
@@ -753,12 +746,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           syncVersionReceivedBlocks.isAcceptableOrUnknown(
               data['sync_version_received_blocks']!,
               _syncVersionReceivedBlocksMeta));
-    }
-    if (data.containsKey('sync_version_sent_likes')) {
-      context.handle(
-          _syncVersionSentLikesMeta,
-          syncVersionSentLikes.isAcceptableOrUnknown(
-              data['sync_version_sent_likes']!, _syncVersionSentLikesMeta));
     }
     if (data.containsKey('sync_version_sent_blocks')) {
       context.handle(
@@ -1060,8 +1047,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       syncVersionReceivedBlocks: attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}sync_version_received_blocks']),
-      syncVersionSentLikes: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}sync_version_sent_likes']),
       syncVersionSentBlocks: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}sync_version_sent_blocks']),
       syncVersionMatches: attachedDatabase.typeMapping.read(
@@ -1328,7 +1313,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final int? syncVersionAccount;
   final int? syncVersionProfile;
   final int? syncVersionReceivedBlocks;
-  final int? syncVersionSentLikes;
   final int? syncVersionSentBlocks;
   final int? syncVersionMatches;
   final int? syncVersionAvailableProfileAttributes;
@@ -1404,7 +1388,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.syncVersionAccount,
       this.syncVersionProfile,
       this.syncVersionReceivedBlocks,
-      this.syncVersionSentLikes,
       this.syncVersionSentBlocks,
       this.syncVersionMatches,
       this.syncVersionAvailableProfileAttributes,
@@ -1517,9 +1500,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     if (!nullToAbsent || syncVersionReceivedBlocks != null) {
       map['sync_version_received_blocks'] =
           Variable<int>(syncVersionReceivedBlocks);
-    }
-    if (!nullToAbsent || syncVersionSentLikes != null) {
-      map['sync_version_sent_likes'] = Variable<int>(syncVersionSentLikes);
     }
     if (!nullToAbsent || syncVersionSentBlocks != null) {
       map['sync_version_sent_blocks'] = Variable<int>(syncVersionSentBlocks);
@@ -1792,9 +1772,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           syncVersionReceivedBlocks == null && nullToAbsent
               ? const Value.absent()
               : Value(syncVersionReceivedBlocks),
-      syncVersionSentLikes: syncVersionSentLikes == null && nullToAbsent
-          ? const Value.absent()
-          : Value(syncVersionSentLikes),
       syncVersionSentBlocks: syncVersionSentBlocks == null && nullToAbsent
           ? const Value.absent()
           : Value(syncVersionSentBlocks),
@@ -2016,8 +1993,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       syncVersionProfile: serializer.fromJson<int?>(json['syncVersionProfile']),
       syncVersionReceivedBlocks:
           serializer.fromJson<int?>(json['syncVersionReceivedBlocks']),
-      syncVersionSentLikes:
-          serializer.fromJson<int?>(json['syncVersionSentLikes']),
       syncVersionSentBlocks:
           serializer.fromJson<int?>(json['syncVersionSentBlocks']),
       syncVersionMatches: serializer.fromJson<int?>(json['syncVersionMatches']),
@@ -2149,7 +2124,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'syncVersionProfile': serializer.toJson<int?>(syncVersionProfile),
       'syncVersionReceivedBlocks':
           serializer.toJson<int?>(syncVersionReceivedBlocks),
-      'syncVersionSentLikes': serializer.toJson<int?>(syncVersionSentLikes),
       'syncVersionSentBlocks': serializer.toJson<int?>(syncVersionSentBlocks),
       'syncVersionMatches': serializer.toJson<int?>(syncVersionMatches),
       'syncVersionAvailableProfileAttributes':
@@ -2261,7 +2235,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<int?> syncVersionAccount = const Value.absent(),
           Value<int?> syncVersionProfile = const Value.absent(),
           Value<int?> syncVersionReceivedBlocks = const Value.absent(),
-          Value<int?> syncVersionSentLikes = const Value.absent(),
           Value<int?> syncVersionSentBlocks = const Value.absent(),
           Value<int?> syncVersionMatches = const Value.absent(),
           Value<int?> syncVersionAvailableProfileAttributes =
@@ -2368,9 +2341,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         syncVersionReceivedBlocks: syncVersionReceivedBlocks.present
             ? syncVersionReceivedBlocks.value
             : this.syncVersionReceivedBlocks,
-        syncVersionSentLikes: syncVersionSentLikes.present
-            ? syncVersionSentLikes.value
-            : this.syncVersionSentLikes,
         syncVersionSentBlocks: syncVersionSentBlocks.present
             ? syncVersionSentBlocks.value
             : this.syncVersionSentBlocks,
@@ -2586,9 +2556,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       syncVersionReceivedBlocks: data.syncVersionReceivedBlocks.present
           ? data.syncVersionReceivedBlocks.value
           : this.syncVersionReceivedBlocks,
-      syncVersionSentLikes: data.syncVersionSentLikes.present
-          ? data.syncVersionSentLikes.value
-          : this.syncVersionSentLikes,
       syncVersionSentBlocks: data.syncVersionSentBlocks.present
           ? data.syncVersionSentBlocks.value
           : this.syncVersionSentBlocks,
@@ -2793,7 +2760,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('syncVersionAccount: $syncVersionAccount, ')
           ..write('syncVersionProfile: $syncVersionProfile, ')
           ..write('syncVersionReceivedBlocks: $syncVersionReceivedBlocks, ')
-          ..write('syncVersionSentLikes: $syncVersionSentLikes, ')
           ..write('syncVersionSentBlocks: $syncVersionSentBlocks, ')
           ..write('syncVersionMatches: $syncVersionMatches, ')
           ..write(
@@ -2883,7 +2849,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         syncVersionAccount,
         syncVersionProfile,
         syncVersionReceivedBlocks,
-        syncVersionSentLikes,
         syncVersionSentBlocks,
         syncVersionMatches,
         syncVersionAvailableProfileAttributes,
@@ -2970,7 +2935,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.syncVersionAccount == this.syncVersionAccount &&
           other.syncVersionProfile == this.syncVersionProfile &&
           other.syncVersionReceivedBlocks == this.syncVersionReceivedBlocks &&
-          other.syncVersionSentLikes == this.syncVersionSentLikes &&
           other.syncVersionSentBlocks == this.syncVersionSentBlocks &&
           other.syncVersionMatches == this.syncVersionMatches &&
           other.syncVersionAvailableProfileAttributes ==
@@ -3059,7 +3023,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<int?> syncVersionAccount;
   final Value<int?> syncVersionProfile;
   final Value<int?> syncVersionReceivedBlocks;
-  final Value<int?> syncVersionSentLikes;
   final Value<int?> syncVersionSentBlocks;
   final Value<int?> syncVersionMatches;
   final Value<int?> syncVersionAvailableProfileAttributes;
@@ -3135,7 +3098,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.syncVersionAccount = const Value.absent(),
     this.syncVersionProfile = const Value.absent(),
     this.syncVersionReceivedBlocks = const Value.absent(),
-    this.syncVersionSentLikes = const Value.absent(),
     this.syncVersionSentBlocks = const Value.absent(),
     this.syncVersionMatches = const Value.absent(),
     this.syncVersionAvailableProfileAttributes = const Value.absent(),
@@ -3212,7 +3174,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.syncVersionAccount = const Value.absent(),
     this.syncVersionProfile = const Value.absent(),
     this.syncVersionReceivedBlocks = const Value.absent(),
-    this.syncVersionSentLikes = const Value.absent(),
     this.syncVersionSentBlocks = const Value.absent(),
     this.syncVersionMatches = const Value.absent(),
     this.syncVersionAvailableProfileAttributes = const Value.absent(),
@@ -3289,7 +3250,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<int>? syncVersionAccount,
     Expression<int>? syncVersionProfile,
     Expression<int>? syncVersionReceivedBlocks,
-    Expression<int>? syncVersionSentLikes,
     Expression<int>? syncVersionSentBlocks,
     Expression<int>? syncVersionMatches,
     Expression<int>? syncVersionAvailableProfileAttributes,
@@ -3380,8 +3340,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'sync_version_profile': syncVersionProfile,
       if (syncVersionReceivedBlocks != null)
         'sync_version_received_blocks': syncVersionReceivedBlocks,
-      if (syncVersionSentLikes != null)
-        'sync_version_sent_likes': syncVersionSentLikes,
       if (syncVersionSentBlocks != null)
         'sync_version_sent_blocks': syncVersionSentBlocks,
       if (syncVersionMatches != null)
@@ -3502,7 +3460,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<int?>? syncVersionAccount,
       Value<int?>? syncVersionProfile,
       Value<int?>? syncVersionReceivedBlocks,
-      Value<int?>? syncVersionSentLikes,
       Value<int?>? syncVersionSentBlocks,
       Value<int?>? syncVersionMatches,
       Value<int?>? syncVersionAvailableProfileAttributes,
@@ -3588,7 +3545,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       syncVersionProfile: syncVersionProfile ?? this.syncVersionProfile,
       syncVersionReceivedBlocks:
           syncVersionReceivedBlocks ?? this.syncVersionReceivedBlocks,
-      syncVersionSentLikes: syncVersionSentLikes ?? this.syncVersionSentLikes,
       syncVersionSentBlocks:
           syncVersionSentBlocks ?? this.syncVersionSentBlocks,
       syncVersionMatches: syncVersionMatches ?? this.syncVersionMatches,
@@ -3756,10 +3712,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (syncVersionReceivedBlocks.present) {
       map['sync_version_received_blocks'] =
           Variable<int>(syncVersionReceivedBlocks.value);
-    }
-    if (syncVersionSentLikes.present) {
-      map['sync_version_sent_likes'] =
-          Variable<int>(syncVersionSentLikes.value);
     }
     if (syncVersionSentBlocks.present) {
       map['sync_version_sent_blocks'] =
@@ -4024,7 +3976,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('syncVersionAccount: $syncVersionAccount, ')
           ..write('syncVersionProfile: $syncVersionProfile, ')
           ..write('syncVersionReceivedBlocks: $syncVersionReceivedBlocks, ')
-          ..write('syncVersionSentLikes: $syncVersionSentLikes, ')
           ..write('syncVersionSentBlocks: $syncVersionSentBlocks, ')
           ..write('syncVersionMatches: $syncVersionMatches, ')
           ..write(

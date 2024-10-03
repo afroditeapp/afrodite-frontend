@@ -29,7 +29,7 @@ const ProfileVisibility PROFILE_VISIBILITY_DEFAULT =
   ProfileVisibility.pendingPrivate;
 
 // TODO: Add automatic sync version incrementing to
-// sentLikesChanged and sentBlocksChanged as only client
+// sentBlocksChanged as only client
 // makes operations to those lists.
 
 class AccountRepository extends DataRepositoryWithLifecycle {
@@ -177,7 +177,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     } else if (event.event == EventType.receivedBlocksChanged) {
       chat.receivedBlocksRefresh();
     } else if (event.event == EventType.sentLikesChanged) {
-      chat.sentLikesRefresh();
+      log.info("Ignoring sent likes changed event");
     } else if (event.event == EventType.sentBlocksChanged) {
       chat.sentBlocksRefresh();
     } else if (event.event == EventType.matchesChanged) {

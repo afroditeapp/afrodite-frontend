@@ -292,13 +292,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     }
   }
 
-  Future<void> sentLikesRefresh() async {
-    final sentLikes = await api.chat((api) => api.getSentLikes()).ok();
-    if (sentLikes != null) {
-      await db.accountAction((db) => db.daoProfileStates.setSentLikeStatusList(sentLikes));
-    }
-  }
-
   Future<List<ProfileEntry>> _genericIteratorNextOnlySuccessful(
     AccountIdDatabaseIterator iterator,
     {
