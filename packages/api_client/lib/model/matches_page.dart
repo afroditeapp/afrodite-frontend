@@ -13,32 +13,32 @@ part of openapi.api;
 class MatchesPage {
   /// Returns a new [MatchesPage] instance.
   MatchesPage({
-    this.profiles = const [],
-    required this.version,
+    this.errorInvalidIteratorSessionId = false,
+    this.p = const [],
   });
 
-  List<AccountId> profiles;
+  bool errorInvalidIteratorSessionId;
 
-  MatchesSyncVersion version;
+  List<AccountId> p;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is MatchesPage &&
-    _deepEquality.equals(other.profiles, profiles) &&
-    other.version == version;
+    other.errorInvalidIteratorSessionId == errorInvalidIteratorSessionId &&
+    _deepEquality.equals(other.p, p);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (profiles.hashCode) +
-    (version.hashCode);
+    (errorInvalidIteratorSessionId.hashCode) +
+    (p.hashCode);
 
   @override
-  String toString() => 'MatchesPage[profiles=$profiles, version=$version]';
+  String toString() => 'MatchesPage[errorInvalidIteratorSessionId=$errorInvalidIteratorSessionId, p=$p]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'profiles'] = this.profiles;
-      json[r'version'] = this.version;
+      json[r'error_invalid_iterator_session_id'] = this.errorInvalidIteratorSessionId;
+      json[r'p'] = this.p;
     return json;
   }
 
@@ -61,8 +61,8 @@ class MatchesPage {
       }());
 
       return MatchesPage(
-        profiles: AccountId.listFromJson(json[r'profiles']),
-        version: MatchesSyncVersion.fromJson(json[r'version'])!,
+        errorInvalidIteratorSessionId: mapValueOfType<bool>(json, r'error_invalid_iterator_session_id') ?? false,
+        p: AccountId.listFromJson(json[r'p']),
       );
     }
     return null;
@@ -110,8 +110,7 @@ class MatchesPage {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'profiles',
-    'version',
+    'p',
   };
 }
 

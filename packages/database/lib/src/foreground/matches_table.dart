@@ -48,7 +48,7 @@ class DaoMatches extends DatabaseAccessor<AccountDatabase> with _$DaoMatchesMixi
     );
   }
 
-  Future<void> setMatchStatusList(api.MatchesPage matchesPage) async {
+  Future<void> setMatchStatusList(api.AllMatchesPage matchesPage) async {
     await transaction(() async {
       // Clear
       await update(matches)

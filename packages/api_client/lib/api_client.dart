@@ -202,6 +202,8 @@ class ApiClient {
           return AccountStateTypeTransformer().decode(value);
         case 'AccountSyncVersion':
           return AccountSyncVersion.fromJson(value);
+        case 'AllMatchesPage':
+          return AllMatchesPage.fromJson(value);
         case 'Attribute':
           return Attribute.fromJson(value);
         case 'AttributeMode':
@@ -336,6 +338,8 @@ class ApiClient {
           return MapTileY.fromJson(value);
         case 'MapTileZ':
           return MapTileZ.fromJson(value);
+        case 'MatchesIteratorSessionId':
+          return MatchesIteratorSessionId.fromJson(value);
         case 'MatchesPage':
           return MatchesPage.fromJson(value);
         case 'MatchesSyncVersion':
@@ -452,6 +456,8 @@ class ApiClient {
           return RefreshToken.fromJson(value);
         case 'ResetDataQueryParam':
           return ResetDataQueryParam.fromJson(value);
+        case 'ResetMatchesIteratorResult':
+          return ResetMatchesIteratorResult.fromJson(value);
         case 'ResetReceivedLikesIteratorResult':
           return ResetReceivedLikesIteratorResult.fromJson(value);
         case 'SearchGroups':

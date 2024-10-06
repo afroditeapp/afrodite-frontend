@@ -101,7 +101,7 @@ class ChatApi {
   }
 
   /// Get matches
-  Future<MatchesPage?> getMatches() async {
+  Future<AllMatchesPage?> getMatches() async {
     final response = await getMatchesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -110,7 +110,7 @@ class ChatApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MatchesPage',) as MatchesPage;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AllMatchesPage',) as AllMatchesPage;
     
     }
     return null;
@@ -365,7 +365,7 @@ class ChatApi {
 
   /// Get sent likes.
   ///
-  /// Profile will not be returned if:  - Profile is hidden (not public) - Profile is blocked - Profile is a match
+  /// Profile will not be returned if:  - Profile is hidden (not public) - Profile is a match
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getSentLikesWithHttpInfo() async {
@@ -395,7 +395,7 @@ class ChatApi {
 
   /// Get sent likes.
   ///
-  /// Profile will not be returned if:  - Profile is hidden (not public) - Profile is blocked - Profile is a match
+  /// Profile will not be returned if:  - Profile is hidden (not public) - Profile is a match
   Future<SentLikesPage?> getSentLikes() async {
     final response = await getSentLikesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -615,6 +615,62 @@ class ChatApi {
     return null;
   }
 
+  /// Update matches iterator and get next page
+  ///
+  /// of matches. If the page is empty there is no more matches available.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [MatchesIteratorSessionId] matchesIteratorSessionId (required):
+  Future<Response> postGetNextMatchesPageWithHttpInfo(MatchesIteratorSessionId matchesIteratorSessionId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/dci4ZhBnUr5EXK09jAQMfsKE9EM';
+
+    // ignore: prefer_final_locals
+    Object? postBody = matchesIteratorSessionId;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Update matches iterator and get next page
+  ///
+  /// of matches. If the page is empty there is no more matches available.
+  ///
+  /// Parameters:
+  ///
+  /// * [MatchesIteratorSessionId] matchesIteratorSessionId (required):
+  Future<MatchesPage?> postGetNextMatchesPage(MatchesIteratorSessionId matchesIteratorSessionId,) async {
+    final response = await postGetNextMatchesPageWithHttpInfo(matchesIteratorSessionId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MatchesPage',) as MatchesPage;
+    
+    }
+    return null;
+  }
+
   /// Update received likes iterator and get next page
   ///
   /// of received likes. If the page is empty there is no more received likes available.  Profile will not be returned if: - Profile is blocked - Profile is a match
@@ -827,6 +883,47 @@ class ChatApi {
     return null;
   }
 
+  /// Performs an HTTP 'POST /kxGkIkvlKvyWPvovHYRtlC7fYXI' operation and returns the [Response].
+  Future<Response> postResetMatchesPagingWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/kxGkIkvlKvyWPvovHYRtlC7fYXI';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<ResetMatchesIteratorResult?> postResetMatchesPaging() async {
+    final response = await postResetMatchesPagingWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ResetMatchesIteratorResult',) as ResetMatchesIteratorResult;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'POST /B75BRIylLV-JmwoB4YiOYSlyO-A' operation and returns the [Response].
   Future<Response> postResetReceivedLikesPagingWithHttpInfo() async {
     // ignore: prefer_const_declarations
@@ -926,7 +1023,7 @@ class ChatApi {
 
   /// Send message to a match.
   ///
-  /// Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.
+  /// Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.  Sending will fail if one or two way block exists.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -978,7 +1075,7 @@ class ChatApi {
 
   /// Send message to a match.
   ///
-  /// Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.
+  /// Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.  Sending will fail if one or two way block exists.
   ///
   /// Parameters:
   ///

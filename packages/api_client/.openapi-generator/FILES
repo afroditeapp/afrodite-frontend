@@ -13,6 +13,7 @@ doc/AccountInternalApi.md
 doc/AccountSetup.md
 doc/AccountState.md
 doc/AccountSyncVersion.md
+doc/AllMatchesPage.md
 doc/Attribute.md
 doc/AttributeMode.md
 doc/AttributeOrderMode.md
@@ -83,6 +84,7 @@ doc/LoginResult.md
 doc/MapTileX.md
 doc/MapTileY.md
 doc/MapTileZ.md
+doc/MatchesIteratorSessionId.md
 doc/MatchesPage.md
 doc/MatchesSyncVersion.md
 doc/MediaAdminApi.md
@@ -145,6 +147,7 @@ doc/ReceivedLikesPage.md
 doc/ReceivedLikesSyncVersion.md
 doc/RefreshToken.md
 doc/ResetDataQueryParam.md
+doc/ResetMatchesIteratorResult.md
 doc/ResetReceivedLikesIteratorResult.md
 doc/SearchGroups.md
 doc/SecurityContent.md
@@ -199,6 +202,7 @@ lib/model/account_id.dart
 lib/model/account_setup.dart
 lib/model/account_state.dart
 lib/model/account_sync_version.dart
+lib/model/all_matches_page.dart
 lib/model/attribute.dart
 lib/model/attribute_mode.dart
 lib/model/attribute_order_mode.dart
@@ -266,6 +270,7 @@ lib/model/login_result.dart
 lib/model/map_tile_x.dart
 lib/model/map_tile_y.dart
 lib/model/map_tile_z.dart
+lib/model/matches_iterator_session_id.dart
 lib/model/matches_page.dart
 lib/model/matches_sync_version.dart
 lib/model/media_content_type.dart
@@ -324,6 +329,7 @@ lib/model/received_likes_page.dart
 lib/model/received_likes_sync_version.dart
 lib/model/refresh_token.dart
 lib/model/reset_data_query_param.dart
+lib/model/reset_matches_iterator_result.dart
 lib/model/reset_received_likes_iterator_result.dart
 lib/model/search_groups.dart
 lib/model/security_content.dart
