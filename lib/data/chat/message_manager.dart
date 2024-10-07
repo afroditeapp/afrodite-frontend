@@ -159,8 +159,12 @@ class MessageManager extends LifecycleMethods {
     for (final (message, messageBytes) in newMessages) {
       final isMatch = await isInMatches(message.id.sender);
       if (!isMatch) {
-        await db.accountAction((db) => db.daoMatches.setMatchStatus(message.id.sender, true));
+        await db.accountAction((db) => db.daoProfileStates.setMatchStatus(message.id.sender, true));
         profile.sendProfileChange(MatchesChanged());
+      }
+
+      if (!await isInConversationList(message.id.sender)) {
+        await db.accountAction((db) => db.daoConversationList.setConversationListVisibility(message.id.sender, true));
       }
 
       final alreadyExistingMessageResult = await db.accountData((db) => db.daoMessages.getMessageUsingMessageNumber(
@@ -350,7 +354,7 @@ class MessageManager extends LifecycleMethods {
         yield const ErrorBeforeMessageSaving();
         return;
       }
-      final matchStatusChange = await db.accountAction((db) => db.daoMatches.setMatchStatus(accountId, true));
+      final matchStatusChange = await db.accountAction((db) => db.daoProfileStates.setMatchStatus(accountId, true));
       if (matchStatusChange.isErr()) {
         yield const ErrorBeforeMessageSaving();
         return;
@@ -366,6 +370,14 @@ class MessageManager extends LifecycleMethods {
         return;
       }
       profile.sendProfileChange(ReceivedLikeRemoved(accountId));
+    }
+
+    if (!await isInConversationList(accountId)) {
+      final r = await db.accountAction((db) => db.daoConversationList.setConversationListVisibility(accountId, true));
+      if (r.isErr()) {
+        yield const ErrorBeforeMessageSaving();
+        return;
+      }
     }
 
     final lastSentMessageResult = await db.accountData((db) => db.daoMessages.getLatestSentMessage(
@@ -624,7 +636,11 @@ class MessageManager extends LifecycleMethods {
   }
 
   Future<bool> isInMatches(AccountId accountId) async {
-    return await db.accountData((db) => db.daoMatches.isInMatches(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.daoProfileStates.isInMatches(accountId)).ok() ?? false;
+  }
+
+  Future<bool> isInConversationList(AccountId accountId) async {
+    return await db.accountData((db) => db.daoConversationList.isInConversationList(accountId)).ok() ?? false;
   }
 
   Future<Result<void, DeleteSendFailedError>> _deleteSendFailedMessage(

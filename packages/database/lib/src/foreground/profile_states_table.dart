@@ -24,8 +24,8 @@ class ProfileStates extends Table {
   IntColumn get isInFavorites => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInReceivedBlocks => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInReceivedLikes => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
-  IntColumn get isInSentBlocks => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInSentLikes => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  IntColumn get isInMatches => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 
   IntColumn get isInProfileGrid => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInReceivedLikesGrid => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
@@ -86,23 +86,6 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
     );
   }
 
-  Future<void> setSentBlockStatus(
-    AccountId accountId,
-    bool value,
-  ) async {
-    await into(profileStates).insert(
-      ProfileStatesCompanion.insert(
-        uuidAccountId: accountId,
-        isInSentBlocks: _toGroupValue(value),
-      ),
-      onConflict: DoUpdate((old) => ProfileStatesCompanion(
-        isInSentBlocks: _toGroupValue(value),
-      ),
-        target: [profileStates.uuidAccountId]
-      ),
-    );
-  }
-
   Future<void> setSentLikeStatus(
     AccountId accountId,
     bool value,
@@ -114,6 +97,23 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
       ),
       onConflict: DoUpdate((old) => ProfileStatesCompanion(
         isInSentLikes: _toGroupValue(value),
+      ),
+        target: [profileStates.uuidAccountId]
+      ),
+    );
+  }
+
+  Future<void> setMatchStatus(
+    AccountId accountId,
+    bool value,
+  ) async {
+    await into(profileStates).insert(
+      ProfileStatesCompanion.insert(
+        uuidAccountId: accountId,
+        isInMatches: _toGroupValue(value),
+      ),
+      onConflict: DoUpdate((old) => ProfileStatesCompanion(
+        isInMatches: _toGroupValue(value),
       ),
         target: [profileStates.uuidAccountId]
       ),
@@ -197,17 +197,17 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
     });
   }
 
-  Future<void> setSentBlockStatusList(api.SentBlocksPage sentBlocks) async {
+  Future<void> setMatchStatusList(api.AllMatchesPage matchesPage) async {
     await transaction(() async {
       // Clear
       await update(profileStates)
-        .write(const ProfileStatesCompanion(isInSentBlocks: Value(null)));
+        .write(const ProfileStatesCompanion(isInMatches: Value(null)));
 
-      for (final a in sentBlocks.profiles) {
-        await setSentBlockStatus(a, true);
+      for (final a in matchesPage.profiles) {
+        await setMatchStatus(a, true);
       }
 
-      await db.daoSyncVersions.updateSyncVersionSentBlocks(sentBlocks.version);
+      await db.daoSyncVersions.updateSyncVersionMatches(matchesPage.version);
     });
   }
 
@@ -244,11 +244,11 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
   Future<bool> isInReceivedLikes(AccountId accountId) =>
     _existenceCheck(accountId, (t) => t.isInReceivedLikes.isNotNull());
 
-  Future<bool> isInSentBlocks(AccountId accountId) =>
-    _existenceCheck(accountId, (t) => t.isInSentBlocks.isNotNull());
-
   Future<bool> isInSentLikes(AccountId accountId) =>
     _existenceCheck(accountId, (t) => t.isInSentLikes.isNotNull());
+
+  Future<bool> isInMatches(AccountId accountId) =>
+    _existenceCheck(accountId, (t) => t.isInMatches.isNotNull());
 
   Future<bool> isInProfileGrid(AccountId accountId) =>
     _existenceCheck(accountId, (t) => t.isInProfileGrid.isNotNull());

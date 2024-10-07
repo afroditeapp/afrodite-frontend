@@ -397,7 +397,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   /// Latest conversation is the first conversation in every emitted list
   Stream<List<AccountId>> getConversationListUpdates() {
     return db.accountStreamOrDefault(
-      (db) => db.daoMatches.watchConversationList(),
+      (db) => db.daoConversationList.watchConversationList(),
       <AccountId>[],
     );
   }
@@ -484,6 +484,7 @@ class ReceivedLikeRemoved extends ProfileChange {
   final AccountId id;
   ReceivedLikeRemoved(this.id);
 }
+// TODO: Remove
 class MatchesChanged extends ProfileChange {}
 class ProfileFavoriteStatusChange extends ProfileChange {
   final AccountId profile;

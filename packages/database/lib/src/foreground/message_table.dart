@@ -70,7 +70,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     );
 
     return await transaction(() async {
-      await db.daoMatches.setCurrentTimeToConversationLastChanged(remoteAccountId);
+      await db.daoConversationList.setCurrentTimeToConversationLastChanged(remoteAccountId);
       return await _insert(message);
     });
   }
@@ -117,7 +117,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     );
     await transaction(() async {
       await _insert(message);
-      await db.daoMatches.setCurrentTimeToConversationLastChanged(entry.id.sender);
+      await db.daoConversationList.setCurrentTimeToConversationLastChanged(entry.id.sender);
     });
   }
 

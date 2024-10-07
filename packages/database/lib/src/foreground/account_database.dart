@@ -7,7 +7,7 @@ import 'package:database/src/foreground/account/dao_message_keys.dart';
 import 'package:database/src/foreground/account/dao_profile_initial_age_info.dart';
 import 'package:database/src/foreground/account/dao_sync_versions.dart';
 import 'package:database/src/foreground/conversations_table.dart';
-import 'package:database/src/foreground/matches_table.dart';
+import 'package:database/src/foreground/conversation_list_table.dart';
 import 'package:database/src/foreground/profile_states_table.dart';
 import 'package:database/src/foreground/profile_table.dart';
 import 'package:drift/drift.dart';
@@ -157,7 +157,7 @@ class Account extends Table {
     Account,
     Profiles,
     ProfileStates,
-    Matches,
+    ConversationList,
     Messages,
     Conversations,
   ],
@@ -176,7 +176,7 @@ class Account extends Table {
     DaoProfileInitialAgeInfo,
     // Other tables
     DaoMessages,
-    DaoMatches,
+    DaoConversationList,
     DaoProfiles,
     DaoProfileStates,
     DaoConversations,

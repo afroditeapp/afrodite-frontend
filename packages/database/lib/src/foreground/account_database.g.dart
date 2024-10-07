@@ -5258,15 +5258,6 @@ class $ProfileStatesTable extends ProfileStates
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $ProfileStatesTable.$converterisInReceivedLikes);
-  static const VerificationMeta _isInSentBlocksMeta =
-      const VerificationMeta('isInSentBlocks');
-  @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      isInSentBlocks = GeneratedColumn<int>(
-              'is_in_sent_blocks', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ProfileStatesTable.$converterisInSentBlocks);
   static const VerificationMeta _isInSentLikesMeta =
       const VerificationMeta('isInSentLikes');
   @override
@@ -5275,6 +5266,14 @@ class $ProfileStatesTable extends ProfileStates
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $ProfileStatesTable.$converterisInSentLikes);
+  static const VerificationMeta _isInMatchesMeta =
+      const VerificationMeta('isInMatches');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> isInMatches =
+      GeneratedColumn<int>('is_in_matches', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $ProfileStatesTable.$converterisInMatches);
   static const VerificationMeta _isInProfileGridMeta =
       const VerificationMeta('isInProfileGrid');
   @override
@@ -5300,8 +5299,8 @@ class $ProfileStatesTable extends ProfileStates
         isInFavorites,
         isInReceivedBlocks,
         isInReceivedLikes,
-        isInSentBlocks,
         isInSentLikes,
+        isInMatches,
         isInProfileGrid,
         isInReceivedLikesGrid
       ];
@@ -5322,8 +5321,8 @@ class $ProfileStatesTable extends ProfileStates
     context.handle(_isInFavoritesMeta, const VerificationResult.success());
     context.handle(_isInReceivedBlocksMeta, const VerificationResult.success());
     context.handle(_isInReceivedLikesMeta, const VerificationResult.success());
-    context.handle(_isInSentBlocksMeta, const VerificationResult.success());
     context.handle(_isInSentLikesMeta, const VerificationResult.success());
+    context.handle(_isInMatchesMeta, const VerificationResult.success());
     context.handle(_isInProfileGridMeta, const VerificationResult.success());
     context.handle(
         _isInReceivedLikesGridMeta, const VerificationResult.success());
@@ -5350,12 +5349,12 @@ class $ProfileStatesTable extends ProfileStates
       isInReceivedLikes: $ProfileStatesTable.$converterisInReceivedLikes
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
               data['${effectivePrefix}is_in_received_likes'])),
-      isInSentBlocks: $ProfileStatesTable.$converterisInSentBlocks.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}is_in_sent_blocks'])),
       isInSentLikes: $ProfileStatesTable.$converterisInSentLikes.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}is_in_sent_likes'])),
+      isInMatches: $ProfileStatesTable.$converterisInMatches.fromSql(
+          attachedDatabase.typeMapping
+              .read(DriftSqlType.int, data['${effectivePrefix}is_in_matches'])),
       isInProfileGrid: $ProfileStatesTable.$converterisInProfileGrid.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}is_in_profile_grid'])),
@@ -5378,9 +5377,9 @@ class $ProfileStatesTable extends ProfileStates
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInReceivedLikes =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
-  static TypeConverter<UtcDateTime?, int?> $converterisInSentBlocks =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInSentLikes =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterisInMatches =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInProfileGrid =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
@@ -5394,8 +5393,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
   final UtcDateTime? isInFavorites;
   final UtcDateTime? isInReceivedBlocks;
   final UtcDateTime? isInReceivedLikes;
-  final UtcDateTime? isInSentBlocks;
   final UtcDateTime? isInSentLikes;
+  final UtcDateTime? isInMatches;
   final UtcDateTime? isInProfileGrid;
   final UtcDateTime? isInReceivedLikesGrid;
   const ProfileState(
@@ -5404,8 +5403,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       this.isInFavorites,
       this.isInReceivedBlocks,
       this.isInReceivedLikes,
-      this.isInSentBlocks,
       this.isInSentLikes,
+      this.isInMatches,
       this.isInProfileGrid,
       this.isInReceivedLikesGrid});
   @override
@@ -5430,13 +5429,13 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           .$converterisInReceivedLikes
           .toSql(isInReceivedLikes));
     }
-    if (!nullToAbsent || isInSentBlocks != null) {
-      map['is_in_sent_blocks'] = Variable<int>(
-          $ProfileStatesTable.$converterisInSentBlocks.toSql(isInSentBlocks));
-    }
     if (!nullToAbsent || isInSentLikes != null) {
       map['is_in_sent_likes'] = Variable<int>(
           $ProfileStatesTable.$converterisInSentLikes.toSql(isInSentLikes));
+    }
+    if (!nullToAbsent || isInMatches != null) {
+      map['is_in_matches'] = Variable<int>(
+          $ProfileStatesTable.$converterisInMatches.toSql(isInMatches));
     }
     if (!nullToAbsent || isInProfileGrid != null) {
       map['is_in_profile_grid'] = Variable<int>(
@@ -5463,12 +5462,12 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInReceivedLikes: isInReceivedLikes == null && nullToAbsent
           ? const Value.absent()
           : Value(isInReceivedLikes),
-      isInSentBlocks: isInSentBlocks == null && nullToAbsent
-          ? const Value.absent()
-          : Value(isInSentBlocks),
       isInSentLikes: isInSentLikes == null && nullToAbsent
           ? const Value.absent()
           : Value(isInSentLikes),
+      isInMatches: isInMatches == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isInMatches),
       isInProfileGrid: isInProfileGrid == null && nullToAbsent
           ? const Value.absent()
           : Value(isInProfileGrid),
@@ -5489,8 +5488,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           serializer.fromJson<UtcDateTime?>(json['isInReceivedBlocks']),
       isInReceivedLikes:
           serializer.fromJson<UtcDateTime?>(json['isInReceivedLikes']),
-      isInSentBlocks: serializer.fromJson<UtcDateTime?>(json['isInSentBlocks']),
       isInSentLikes: serializer.fromJson<UtcDateTime?>(json['isInSentLikes']),
+      isInMatches: serializer.fromJson<UtcDateTime?>(json['isInMatches']),
       isInProfileGrid:
           serializer.fromJson<UtcDateTime?>(json['isInProfileGrid']),
       isInReceivedLikesGrid:
@@ -5506,8 +5505,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       'isInFavorites': serializer.toJson<UtcDateTime?>(isInFavorites),
       'isInReceivedBlocks': serializer.toJson<UtcDateTime?>(isInReceivedBlocks),
       'isInReceivedLikes': serializer.toJson<UtcDateTime?>(isInReceivedLikes),
-      'isInSentBlocks': serializer.toJson<UtcDateTime?>(isInSentBlocks),
       'isInSentLikes': serializer.toJson<UtcDateTime?>(isInSentLikes),
+      'isInMatches': serializer.toJson<UtcDateTime?>(isInMatches),
       'isInProfileGrid': serializer.toJson<UtcDateTime?>(isInProfileGrid),
       'isInReceivedLikesGrid':
           serializer.toJson<UtcDateTime?>(isInReceivedLikesGrid),
@@ -5520,8 +5519,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           Value<UtcDateTime?> isInFavorites = const Value.absent(),
           Value<UtcDateTime?> isInReceivedBlocks = const Value.absent(),
           Value<UtcDateTime?> isInReceivedLikes = const Value.absent(),
-          Value<UtcDateTime?> isInSentBlocks = const Value.absent(),
           Value<UtcDateTime?> isInSentLikes = const Value.absent(),
+          Value<UtcDateTime?> isInMatches = const Value.absent(),
           Value<UtcDateTime?> isInProfileGrid = const Value.absent(),
           Value<UtcDateTime?> isInReceivedLikesGrid = const Value.absent()}) =>
       ProfileState(
@@ -5535,10 +5534,9 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
         isInReceivedLikes: isInReceivedLikes.present
             ? isInReceivedLikes.value
             : this.isInReceivedLikes,
-        isInSentBlocks:
-            isInSentBlocks.present ? isInSentBlocks.value : this.isInSentBlocks,
         isInSentLikes:
             isInSentLikes.present ? isInSentLikes.value : this.isInSentLikes,
+        isInMatches: isInMatches.present ? isInMatches.value : this.isInMatches,
         isInProfileGrid: isInProfileGrid.present
             ? isInProfileGrid.value
             : this.isInProfileGrid,
@@ -5561,12 +5559,11 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInReceivedLikes: data.isInReceivedLikes.present
           ? data.isInReceivedLikes.value
           : this.isInReceivedLikes,
-      isInSentBlocks: data.isInSentBlocks.present
-          ? data.isInSentBlocks.value
-          : this.isInSentBlocks,
       isInSentLikes: data.isInSentLikes.present
           ? data.isInSentLikes.value
           : this.isInSentLikes,
+      isInMatches:
+          data.isInMatches.present ? data.isInMatches.value : this.isInMatches,
       isInProfileGrid: data.isInProfileGrid.present
           ? data.isInProfileGrid.value
           : this.isInProfileGrid,
@@ -5584,8 +5581,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           ..write('isInFavorites: $isInFavorites, ')
           ..write('isInReceivedBlocks: $isInReceivedBlocks, ')
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
-          ..write('isInSentBlocks: $isInSentBlocks, ')
           ..write('isInSentLikes: $isInSentLikes, ')
+          ..write('isInMatches: $isInMatches, ')
           ..write('isInProfileGrid: $isInProfileGrid, ')
           ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid')
           ..write(')'))
@@ -5599,8 +5596,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInFavorites,
       isInReceivedBlocks,
       isInReceivedLikes,
-      isInSentBlocks,
       isInSentLikes,
+      isInMatches,
       isInProfileGrid,
       isInReceivedLikesGrid);
   @override
@@ -5612,8 +5609,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           other.isInFavorites == this.isInFavorites &&
           other.isInReceivedBlocks == this.isInReceivedBlocks &&
           other.isInReceivedLikes == this.isInReceivedLikes &&
-          other.isInSentBlocks == this.isInSentBlocks &&
           other.isInSentLikes == this.isInSentLikes &&
+          other.isInMatches == this.isInMatches &&
           other.isInProfileGrid == this.isInProfileGrid &&
           other.isInReceivedLikesGrid == this.isInReceivedLikesGrid);
 }
@@ -5624,8 +5621,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   final Value<UtcDateTime?> isInFavorites;
   final Value<UtcDateTime?> isInReceivedBlocks;
   final Value<UtcDateTime?> isInReceivedLikes;
-  final Value<UtcDateTime?> isInSentBlocks;
   final Value<UtcDateTime?> isInSentLikes;
+  final Value<UtcDateTime?> isInMatches;
   final Value<UtcDateTime?> isInProfileGrid;
   final Value<UtcDateTime?> isInReceivedLikesGrid;
   const ProfileStatesCompanion({
@@ -5634,8 +5631,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     this.isInFavorites = const Value.absent(),
     this.isInReceivedBlocks = const Value.absent(),
     this.isInReceivedLikes = const Value.absent(),
-    this.isInSentBlocks = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
+    this.isInMatches = const Value.absent(),
     this.isInProfileGrid = const Value.absent(),
     this.isInReceivedLikesGrid = const Value.absent(),
   });
@@ -5645,8 +5642,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     this.isInFavorites = const Value.absent(),
     this.isInReceivedBlocks = const Value.absent(),
     this.isInReceivedLikes = const Value.absent(),
-    this.isInSentBlocks = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
+    this.isInMatches = const Value.absent(),
     this.isInProfileGrid = const Value.absent(),
     this.isInReceivedLikesGrid = const Value.absent(),
   }) : uuidAccountId = Value(uuidAccountId);
@@ -5656,8 +5653,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     Expression<int>? isInFavorites,
     Expression<int>? isInReceivedBlocks,
     Expression<int>? isInReceivedLikes,
-    Expression<int>? isInSentBlocks,
     Expression<int>? isInSentLikes,
+    Expression<int>? isInMatches,
     Expression<int>? isInProfileGrid,
     Expression<int>? isInReceivedLikesGrid,
   }) {
@@ -5668,8 +5665,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       if (isInReceivedBlocks != null)
         'is_in_received_blocks': isInReceivedBlocks,
       if (isInReceivedLikes != null) 'is_in_received_likes': isInReceivedLikes,
-      if (isInSentBlocks != null) 'is_in_sent_blocks': isInSentBlocks,
       if (isInSentLikes != null) 'is_in_sent_likes': isInSentLikes,
+      if (isInMatches != null) 'is_in_matches': isInMatches,
       if (isInProfileGrid != null) 'is_in_profile_grid': isInProfileGrid,
       if (isInReceivedLikesGrid != null)
         'is_in_received_likes_grid': isInReceivedLikesGrid,
@@ -5682,8 +5679,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       Value<UtcDateTime?>? isInFavorites,
       Value<UtcDateTime?>? isInReceivedBlocks,
       Value<UtcDateTime?>? isInReceivedLikes,
-      Value<UtcDateTime?>? isInSentBlocks,
       Value<UtcDateTime?>? isInSentLikes,
+      Value<UtcDateTime?>? isInMatches,
       Value<UtcDateTime?>? isInProfileGrid,
       Value<UtcDateTime?>? isInReceivedLikesGrid}) {
     return ProfileStatesCompanion(
@@ -5692,8 +5689,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       isInFavorites: isInFavorites ?? this.isInFavorites,
       isInReceivedBlocks: isInReceivedBlocks ?? this.isInReceivedBlocks,
       isInReceivedLikes: isInReceivedLikes ?? this.isInReceivedLikes,
-      isInSentBlocks: isInSentBlocks ?? this.isInSentBlocks,
       isInSentLikes: isInSentLikes ?? this.isInSentLikes,
+      isInMatches: isInMatches ?? this.isInMatches,
       isInProfileGrid: isInProfileGrid ?? this.isInProfileGrid,
       isInReceivedLikesGrid:
           isInReceivedLikesGrid ?? this.isInReceivedLikesGrid,
@@ -5726,15 +5723,14 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
           .$converterisInReceivedLikes
           .toSql(isInReceivedLikes.value));
     }
-    if (isInSentBlocks.present) {
-      map['is_in_sent_blocks'] = Variable<int>($ProfileStatesTable
-          .$converterisInSentBlocks
-          .toSql(isInSentBlocks.value));
-    }
     if (isInSentLikes.present) {
       map['is_in_sent_likes'] = Variable<int>($ProfileStatesTable
           .$converterisInSentLikes
           .toSql(isInSentLikes.value));
+    }
+    if (isInMatches.present) {
+      map['is_in_matches'] = Variable<int>(
+          $ProfileStatesTable.$converterisInMatches.toSql(isInMatches.value));
     }
     if (isInProfileGrid.present) {
       map['is_in_profile_grid'] = Variable<int>($ProfileStatesTable
@@ -5757,8 +5753,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
           ..write('isInFavorites: $isInFavorites, ')
           ..write('isInReceivedBlocks: $isInReceivedBlocks, ')
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
-          ..write('isInSentBlocks: $isInSentBlocks, ')
           ..write('isInSentLikes: $isInSentLikes, ')
+          ..write('isInMatches: $isInMatches, ')
           ..write('isInProfileGrid: $isInProfileGrid, ')
           ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid')
           ..write(')'))
@@ -5766,11 +5762,12 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   }
 }
 
-class $MatchesTable extends Matches with TableInfo<$MatchesTable, Matche> {
+class $ConversationListTable extends ConversationList
+    with TableInfo<$ConversationListTable, ConversationListData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $MatchesTable(this.attachedDatabase, [this._alias]);
+  $ConversationListTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -5788,7 +5785,8 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Matche> {
               type: DriftSqlType.string,
               requiredDuringInsert: true,
               defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
-          .withConverter<AccountId>($MatchesTable.$converteruuidAccountId);
+          .withConverter<AccountId>(
+              $ConversationListTable.$converteruuidAccountId);
   static const VerificationMeta _conversationLastChangedTimeMeta =
       const VerificationMeta('conversationLastChangedTime');
   @override
@@ -5797,24 +5795,41 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Matche> {
               'conversation_last_changed_time', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
-              $MatchesTable.$converterconversationLastChangedTime);
-  static const VerificationMeta _isInMatchesMeta =
-      const VerificationMeta('isInMatches');
+              $ConversationListTable.$converterconversationLastChangedTime);
+  static const VerificationMeta _isInConversationListMeta =
+      const VerificationMeta('isInConversationList');
   @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> isInMatches =
-      GeneratedColumn<int>('is_in_matches', aliasedName, true,
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+      isInConversationList = GeneratedColumn<int>(
+              'is_in_conversation_list', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>($MatchesTable.$converterisInMatches);
+          .withConverter<UtcDateTime?>(
+              $ConversationListTable.$converterisInConversationList);
+  static const VerificationMeta _isInSentBlocksMeta =
+      const VerificationMeta('isInSentBlocks');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, uuidAccountId, conversationLastChangedTime, isInMatches];
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+      isInSentBlocks = GeneratedColumn<int>(
+              'is_in_sent_blocks', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $ConversationListTable.$converterisInSentBlocks);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        uuidAccountId,
+        conversationLastChangedTime,
+        isInConversationList,
+        isInSentBlocks
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'matches';
+  static const String $name = 'conversation_list';
   @override
-  VerificationContext validateIntegrity(Insertable<Matche> instance,
+  VerificationContext validateIntegrity(
+      Insertable<ConversationListData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -5824,34 +5839,40 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Matche> {
     context.handle(_uuidAccountIdMeta, const VerificationResult.success());
     context.handle(
         _conversationLastChangedTimeMeta, const VerificationResult.success());
-    context.handle(_isInMatchesMeta, const VerificationResult.success());
+    context.handle(
+        _isInConversationListMeta, const VerificationResult.success());
+    context.handle(_isInSentBlocksMeta, const VerificationResult.success());
     return context;
   }
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Matche map(Map<String, dynamic> data, {String? tablePrefix}) {
+  ConversationListData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Matche(
+    return ConversationListData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      uuidAccountId: $MatchesTable.$converteruuidAccountId.fromSql(
+      uuidAccountId: $ConversationListTable.$converteruuidAccountId.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
-      conversationLastChangedTime: $MatchesTable
+      conversationLastChangedTime: $ConversationListTable
           .$converterconversationLastChangedTime
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
               data['${effectivePrefix}conversation_last_changed_time'])),
-      isInMatches: $MatchesTable.$converterisInMatches.fromSql(attachedDatabase
-          .typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}is_in_matches'])),
+      isInConversationList: $ConversationListTable
+          .$converterisInConversationList
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}is_in_conversation_list'])),
+      isInSentBlocks: $ConversationListTable.$converterisInSentBlocks.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.int, data['${effectivePrefix}is_in_sent_blocks'])),
     );
   }
 
   @override
-  $MatchesTable createAlias(String alias) {
-    return $MatchesTable(attachedDatabase, alias);
+  $ConversationListTable createAlias(String alias) {
+    return $ConversationListTable(attachedDatabase, alias);
   }
 
   static TypeConverter<AccountId, String> $converteruuidAccountId =
@@ -5859,63 +5880,79 @@ class $MatchesTable extends Matches with TableInfo<$MatchesTable, Matche> {
   static TypeConverter<UtcDateTime?, int?>
       $converterconversationLastChangedTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
-  static TypeConverter<UtcDateTime?, int?> $converterisInMatches =
+  static TypeConverter<UtcDateTime?, int?> $converterisInConversationList =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterisInSentBlocks =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
 
-class Matche extends DataClass implements Insertable<Matche> {
+class ConversationListData extends DataClass
+    implements Insertable<ConversationListData> {
   final int id;
   final AccountId uuidAccountId;
   final UtcDateTime? conversationLastChangedTime;
-  final UtcDateTime? isInMatches;
-  const Matche(
+  final UtcDateTime? isInConversationList;
+  final UtcDateTime? isInSentBlocks;
+  const ConversationListData(
       {required this.id,
       required this.uuidAccountId,
       this.conversationLastChangedTime,
-      this.isInMatches});
+      this.isInConversationList,
+      this.isInSentBlocks});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     {
       map['uuid_account_id'] = Variable<String>(
-          $MatchesTable.$converteruuidAccountId.toSql(uuidAccountId));
+          $ConversationListTable.$converteruuidAccountId.toSql(uuidAccountId));
     }
     if (!nullToAbsent || conversationLastChangedTime != null) {
-      map['conversation_last_changed_time'] = Variable<int>($MatchesTable
-          .$converterconversationLastChangedTime
-          .toSql(conversationLastChangedTime));
+      map['conversation_last_changed_time'] = Variable<int>(
+          $ConversationListTable.$converterconversationLastChangedTime
+              .toSql(conversationLastChangedTime));
     }
-    if (!nullToAbsent || isInMatches != null) {
-      map['is_in_matches'] =
-          Variable<int>($MatchesTable.$converterisInMatches.toSql(isInMatches));
+    if (!nullToAbsent || isInConversationList != null) {
+      map['is_in_conversation_list'] = Variable<int>($ConversationListTable
+          .$converterisInConversationList
+          .toSql(isInConversationList));
+    }
+    if (!nullToAbsent || isInSentBlocks != null) {
+      map['is_in_sent_blocks'] = Variable<int>($ConversationListTable
+          .$converterisInSentBlocks
+          .toSql(isInSentBlocks));
     }
     return map;
   }
 
-  MatchesCompanion toCompanion(bool nullToAbsent) {
-    return MatchesCompanion(
+  ConversationListCompanion toCompanion(bool nullToAbsent) {
+    return ConversationListCompanion(
       id: Value(id),
       uuidAccountId: Value(uuidAccountId),
       conversationLastChangedTime:
           conversationLastChangedTime == null && nullToAbsent
               ? const Value.absent()
               : Value(conversationLastChangedTime),
-      isInMatches: isInMatches == null && nullToAbsent
+      isInConversationList: isInConversationList == null && nullToAbsent
           ? const Value.absent()
-          : Value(isInMatches),
+          : Value(isInConversationList),
+      isInSentBlocks: isInSentBlocks == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isInSentBlocks),
     );
   }
 
-  factory Matche.fromJson(Map<String, dynamic> json,
+  factory ConversationListData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Matche(
+    return ConversationListData(
       id: serializer.fromJson<int>(json['id']),
       uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
       conversationLastChangedTime: serializer
           .fromJson<UtcDateTime?>(json['conversationLastChangedTime']),
-      isInMatches: serializer.fromJson<UtcDateTime?>(json['isInMatches']),
+      isInConversationList:
+          serializer.fromJson<UtcDateTime?>(json['isInConversationList']),
+      isInSentBlocks: serializer.fromJson<UtcDateTime?>(json['isInSentBlocks']),
     );
   }
   @override
@@ -5926,26 +5963,33 @@ class Matche extends DataClass implements Insertable<Matche> {
       'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
       'conversationLastChangedTime':
           serializer.toJson<UtcDateTime?>(conversationLastChangedTime),
-      'isInMatches': serializer.toJson<UtcDateTime?>(isInMatches),
+      'isInConversationList':
+          serializer.toJson<UtcDateTime?>(isInConversationList),
+      'isInSentBlocks': serializer.toJson<UtcDateTime?>(isInSentBlocks),
     };
   }
 
-  Matche copyWith(
+  ConversationListData copyWith(
           {int? id,
           AccountId? uuidAccountId,
           Value<UtcDateTime?> conversationLastChangedTime =
               const Value.absent(),
-          Value<UtcDateTime?> isInMatches = const Value.absent()}) =>
-      Matche(
+          Value<UtcDateTime?> isInConversationList = const Value.absent(),
+          Value<UtcDateTime?> isInSentBlocks = const Value.absent()}) =>
+      ConversationListData(
         id: id ?? this.id,
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
         conversationLastChangedTime: conversationLastChangedTime.present
             ? conversationLastChangedTime.value
             : this.conversationLastChangedTime,
-        isInMatches: isInMatches.present ? isInMatches.value : this.isInMatches,
+        isInConversationList: isInConversationList.present
+            ? isInConversationList.value
+            : this.isInConversationList,
+        isInSentBlocks:
+            isInSentBlocks.present ? isInSentBlocks.value : this.isInSentBlocks,
       );
-  Matche copyWithCompanion(MatchesCompanion data) {
-    return Matche(
+  ConversationListData copyWithCompanion(ConversationListCompanion data) {
+    return ConversationListData(
       id: data.id.present ? data.id.value : this.id,
       uuidAccountId: data.uuidAccountId.present
           ? data.uuidAccountId.value
@@ -5953,79 +5997,93 @@ class Matche extends DataClass implements Insertable<Matche> {
       conversationLastChangedTime: data.conversationLastChangedTime.present
           ? data.conversationLastChangedTime.value
           : this.conversationLastChangedTime,
-      isInMatches:
-          data.isInMatches.present ? data.isInMatches.value : this.isInMatches,
+      isInConversationList: data.isInConversationList.present
+          ? data.isInConversationList.value
+          : this.isInConversationList,
+      isInSentBlocks: data.isInSentBlocks.present
+          ? data.isInSentBlocks.value
+          : this.isInSentBlocks,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('Matche(')
+    return (StringBuffer('ConversationListData(')
           ..write('id: $id, ')
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('conversationLastChangedTime: $conversationLastChangedTime, ')
-          ..write('isInMatches: $isInMatches')
+          ..write('isInConversationList: $isInConversationList, ')
+          ..write('isInSentBlocks: $isInSentBlocks')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, uuidAccountId, conversationLastChangedTime, isInMatches);
+  int get hashCode => Object.hash(id, uuidAccountId,
+      conversationLastChangedTime, isInConversationList, isInSentBlocks);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Matche &&
+      (other is ConversationListData &&
           other.id == this.id &&
           other.uuidAccountId == this.uuidAccountId &&
           other.conversationLastChangedTime ==
               this.conversationLastChangedTime &&
-          other.isInMatches == this.isInMatches);
+          other.isInConversationList == this.isInConversationList &&
+          other.isInSentBlocks == this.isInSentBlocks);
 }
 
-class MatchesCompanion extends UpdateCompanion<Matche> {
+class ConversationListCompanion extends UpdateCompanion<ConversationListData> {
   final Value<int> id;
   final Value<AccountId> uuidAccountId;
   final Value<UtcDateTime?> conversationLastChangedTime;
-  final Value<UtcDateTime?> isInMatches;
-  const MatchesCompanion({
+  final Value<UtcDateTime?> isInConversationList;
+  final Value<UtcDateTime?> isInSentBlocks;
+  const ConversationListCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
     this.conversationLastChangedTime = const Value.absent(),
-    this.isInMatches = const Value.absent(),
+    this.isInConversationList = const Value.absent(),
+    this.isInSentBlocks = const Value.absent(),
   });
-  MatchesCompanion.insert({
+  ConversationListCompanion.insert({
     this.id = const Value.absent(),
     required AccountId uuidAccountId,
     this.conversationLastChangedTime = const Value.absent(),
-    this.isInMatches = const Value.absent(),
+    this.isInConversationList = const Value.absent(),
+    this.isInSentBlocks = const Value.absent(),
   }) : uuidAccountId = Value(uuidAccountId);
-  static Insertable<Matche> custom({
+  static Insertable<ConversationListData> custom({
     Expression<int>? id,
     Expression<String>? uuidAccountId,
     Expression<int>? conversationLastChangedTime,
-    Expression<int>? isInMatches,
+    Expression<int>? isInConversationList,
+    Expression<int>? isInSentBlocks,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
       if (conversationLastChangedTime != null)
         'conversation_last_changed_time': conversationLastChangedTime,
-      if (isInMatches != null) 'is_in_matches': isInMatches,
+      if (isInConversationList != null)
+        'is_in_conversation_list': isInConversationList,
+      if (isInSentBlocks != null) 'is_in_sent_blocks': isInSentBlocks,
     });
   }
 
-  MatchesCompanion copyWith(
+  ConversationListCompanion copyWith(
       {Value<int>? id,
       Value<AccountId>? uuidAccountId,
       Value<UtcDateTime?>? conversationLastChangedTime,
-      Value<UtcDateTime?>? isInMatches}) {
-    return MatchesCompanion(
+      Value<UtcDateTime?>? isInConversationList,
+      Value<UtcDateTime?>? isInSentBlocks}) {
+    return ConversationListCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
       conversationLastChangedTime:
           conversationLastChangedTime ?? this.conversationLastChangedTime,
-      isInMatches: isInMatches ?? this.isInMatches,
+      isInConversationList: isInConversationList ?? this.isInConversationList,
+      isInSentBlocks: isInSentBlocks ?? this.isInSentBlocks,
     );
   }
 
@@ -6036,28 +6094,36 @@ class MatchesCompanion extends UpdateCompanion<Matche> {
       map['id'] = Variable<int>(id.value);
     }
     if (uuidAccountId.present) {
-      map['uuid_account_id'] = Variable<String>(
-          $MatchesTable.$converteruuidAccountId.toSql(uuidAccountId.value));
+      map['uuid_account_id'] = Variable<String>($ConversationListTable
+          .$converteruuidAccountId
+          .toSql(uuidAccountId.value));
     }
     if (conversationLastChangedTime.present) {
-      map['conversation_last_changed_time'] = Variable<int>($MatchesTable
-          .$converterconversationLastChangedTime
-          .toSql(conversationLastChangedTime.value));
+      map['conversation_last_changed_time'] = Variable<int>(
+          $ConversationListTable.$converterconversationLastChangedTime
+              .toSql(conversationLastChangedTime.value));
     }
-    if (isInMatches.present) {
-      map['is_in_matches'] = Variable<int>(
-          $MatchesTable.$converterisInMatches.toSql(isInMatches.value));
+    if (isInConversationList.present) {
+      map['is_in_conversation_list'] = Variable<int>($ConversationListTable
+          .$converterisInConversationList
+          .toSql(isInConversationList.value));
+    }
+    if (isInSentBlocks.present) {
+      map['is_in_sent_blocks'] = Variable<int>($ConversationListTable
+          .$converterisInSentBlocks
+          .toSql(isInSentBlocks.value));
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('MatchesCompanion(')
+    return (StringBuffer('ConversationListCompanion(')
           ..write('id: $id, ')
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('conversationLastChangedTime: $conversationLastChangedTime, ')
-          ..write('isInMatches: $isInMatches')
+          ..write('isInConversationList: $isInConversationList, ')
+          ..write('isInSentBlocks: $isInSentBlocks')
           ..write(')'))
         .toString();
   }
@@ -6874,7 +6940,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $AccountTable account = $AccountTable(this);
   late final $ProfilesTable profiles = $ProfilesTable(this);
   late final $ProfileStatesTable profileStates = $ProfileStatesTable(this);
-  late final $MatchesTable matches = $MatchesTable(this);
+  late final $ConversationListTable conversationList =
+      $ConversationListTable(this);
   late final $MessagesTable messages = $MessagesTable(this);
   late final $ConversationsTable conversations = $ConversationsTable(this);
   late final DaoCurrentContent daoCurrentContent =
@@ -6898,7 +6965,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final DaoProfileInitialAgeInfo daoProfileInitialAgeInfo =
       DaoProfileInitialAgeInfo(this as AccountDatabase);
   late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
-  late final DaoMatches daoMatches = DaoMatches(this as AccountDatabase);
+  late final DaoConversationList daoConversationList =
+      DaoConversationList(this as AccountDatabase);
   late final DaoProfiles daoProfiles = DaoProfiles(this as AccountDatabase);
   late final DaoProfileStates daoProfileStates =
       DaoProfileStates(this as AccountDatabase);
@@ -6908,6 +6976,12 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [account, profiles, profileStates, matches, messages, conversations];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+        account,
+        profiles,
+        profileStates,
+        conversationList,
+        messages,
+        conversations
+      ];
 }
