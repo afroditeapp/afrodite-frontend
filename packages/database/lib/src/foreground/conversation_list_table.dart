@@ -176,7 +176,7 @@ class DaoConversationList extends DatabaseAccessor<AccountDatabase> with _$DaoCo
   Stream<List<AccountId>> watchConversationList() {
     return (selectOnly(conversationList)
       ..addColumns([conversationList.uuidAccountId])
-      ..where(conversationList.isInConversationList.isNotNull() & conversationList.isInConversationList.isNull())
+      ..where(conversationList.isInConversationList.isNotNull() & conversationList.isInSentBlocks.isNull())
       ..orderBy([
         OrderingTerm(
           expression: conversationList.conversationLastChangedTime,
