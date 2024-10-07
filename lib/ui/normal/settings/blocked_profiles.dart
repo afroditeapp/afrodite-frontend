@@ -139,6 +139,10 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
             ),
           );
           final Widget rowWidget = Row(
+            // Workaround for issue where unblocking profile does not update
+            // list item contents. That happens at least when all the blocked
+            // are bots.
+            key: GlobalKey(),
             children: [
               imageWidget,
               textWidget,
