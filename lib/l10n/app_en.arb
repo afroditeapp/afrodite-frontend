@@ -105,9 +105,9 @@
   "@camera_screen_take_photo_error": {
     "description": "Snackbar error text displayed when taking photo fails"
   },
-  "chat_list_screen_no_chats_or_matches_found": "No chats or matches found",
-  "@chat_list_screen_no_chats_or_matches_found": {
-    "description": "Info text displayed when there is no chats or matches"
+  "chat_list_screen_no_chats_found": "No chats found",
+  "@chat_list_screen_no_chats_found": {
+    "description": "Info text displayed when there is no chats"
   },
   "chat_list_screen_title": "Chats",
   "@chat_list_screen_title": {

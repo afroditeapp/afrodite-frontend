@@ -150,7 +150,6 @@ class _ChatViewState extends State<ChatView> {
             if (state.initialLoadDone) {
               final listState = _listKey.currentState;
               if (initialItemCount != null && listState != null) {
-
                 // Animations
                 for (final change in state.changesBetweenCurrentAndPrevious) {
                   switch (change) {
@@ -176,7 +175,22 @@ class _ChatViewState extends State<ChatView> {
               }
               initialItemCount ??= state.conversations.length;
               conversations = state.conversations;
-              return grid(context);
+              return Stack(
+                children: [
+                  grid(context),
+                  if (conversations.isEmpty) buildListReplacementMessage(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          context.strings.chat_list_screen_no_chats_found,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
             } else {
               return Container();
             }

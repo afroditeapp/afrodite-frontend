@@ -105,7 +105,7 @@ class CalculatorLogic {
     if (newNextFinal == null) {
       // The new list is already processed
 
-      if (currentList.length > progressIndex + 1) {
+      if (currentList.length >= progressIndex + 1) {
         // Remove removed items from end of the current list
         final lastI = currentList.length - 1;
         final id = currentList.removeLast();
@@ -119,7 +119,14 @@ class CalculatorLogic {
     }
 
     final itemAtProgress = currentList.elementAtOrNull(progressIndex);
-    if (itemAtProgress != newNextFinal) {
+    final itemAtNextProgress = currentList.elementAtOrNull(progressIndex + 1);
+    if (itemAtProgress != newNextFinal && itemAtNextProgress == newNextFinal) {
+      log.finest("calculator: single value removal detected, remove: $progressIndex");
+      currentList.removeAt(progressIndex);
+      final List<ListItemChange> changes = [RemoveItem(progressIndex, newNextFinal)];
+      progressIndex++;
+      return changes;
+    } else if (itemAtProgress != newNextFinal) {
       log.finest("calculator: items not equal at index $progressIndex");
       currentList.insert(progressIndex, newNextFinal);
       final List<ListItemChange> changes = [AddItem(progressIndex, newNextFinal)];
