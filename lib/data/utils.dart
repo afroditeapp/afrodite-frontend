@@ -4,12 +4,17 @@
 import 'dart:async';
 
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/utils/result.dart';
 import 'package:utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class DataRepository extends AppSingleton implements DataRepositoryMethods {
   @override
   Future<void> onLogin() async {}
+  @override
+  Future<Result<void, void>> onLoginDataSync() async {
+    return const Ok(null);
+  }
   @override
   Future<void> onLogout() async {}
   @override
@@ -27,6 +32,10 @@ abstract class DataRepositoryWithLifecycle implements DataRepositoryMethods, Lif
   @override
   Future<void> onLogin() async {}
   @override
+  Future<Result<void, void>> onLoginDataSync() async {
+    return const Ok(null);
+  }
+  @override
   Future<void> onLogout() async {}
   @override
   Future<void> onResumeAppUsage() async {}
@@ -40,6 +49,17 @@ abstract class DataRepositoryMethods {
   ///
   /// Server API is not available.
   Future<void> onLogin() async {}
+
+  /// Called when the user logs in. Note that this is not called
+  /// every time the app is opened, but only when the user logs in.
+  ///
+  /// It is not quaranteed that this is called as first failure in one
+  /// repository will stop calling this method.
+  ///
+  /// Server API is available.
+  Future<Result<void, void>> onLoginDataSync() async {
+    return const Ok(null);
+  }
 
   /// Called when the user logs out. Note that this is not called
   /// every time the app is closed, but only when the user logs out.

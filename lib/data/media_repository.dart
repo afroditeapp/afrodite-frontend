@@ -51,14 +51,13 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   @override
   Future<void> onLogin() async {
     await db.accountAction((db) => db.daoInitialSync.updateMediaSyncDone(false));
+  }
 
-    syncHandler.onLoginSync(() async {
-      final r1 = await reloadMyProfileContent();
-      final r2 = await reloadMySecurityContent();
-      if (r1.isOk() && r2.isOk()) {
-        await db.accountAction((db) => db.daoInitialSync.updateMediaSyncDone(true));
-      }
-    });
+  @override
+  Future<Result<void, void>> onLoginDataSync() async {
+    return await reloadMyProfileContent()
+      .andThen((_) => reloadMySecurityContent())
+      .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateMediaSyncDone(true)));
   }
 
   @override

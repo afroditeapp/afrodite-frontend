@@ -105,10 +105,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   // TODO(prod): Run onLogout when server connection has authentication failure
 
   @override
-  Future<void> onLogin() async {
-    _syncHandler.onLoginSync(() async {
-      await clientIdManager.getClientId();
-    });
+  Future<Result<void, void>> onLoginDataSync() async {
+    return await clientIdManager.getClientId();
   }
 
   @override

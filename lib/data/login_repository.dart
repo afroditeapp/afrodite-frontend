@@ -22,10 +22,12 @@ import 'package:pihka_frontend/database/account_background_database_manager.dart
 import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/app_visibility_provider.dart';
 import 'package:pihka_frontend/logic/sign_in_with.dart';
 import 'package:pihka_frontend/main.dart';
 import 'package:pihka_frontend/sign_with_google_ids.dart';
+import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:utils/utils.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -74,6 +76,8 @@ class LoginRepository extends DataRepository {
   final BehaviorSubject<LoginRepositoryState> _internalState =
     BehaviorSubject.seeded(LoginRepositoryState.initRequired);
   final BehaviorSubject<bool> _demoAccountLoginInProgress =
+    BehaviorSubject.seeded(false);
+  final BehaviorSubject<bool> _loginInProgress =
     BehaviorSubject.seeded(false);
 
   final PublishSubject<ServerWsEvent> _serverEvents =
@@ -149,13 +153,23 @@ class LoginRepository extends DataRepository {
       }
     }
 
-    Rx.combineLatest2(
+    Rx.combineLatest3(
       _serverConnectionManagerStateEvents,
       demoAccountToken,
-      (a, b) => (a, b),
+      _loginInProgress,
+      (a, b, c) => (a, b, c),
     ).listen((event) {
-      final (apiState, demoAccountToken) = event;
-      log.finer("state changed. apiState: $apiState, demoAccountToken: ${demoAccountToken != null}");
+      final (apiState, demoAccountToken, loginInProgress) = event;
+      log.finer("state changed. apiState: $apiState, demoAccountToken: ${demoAccountToken != null}, loginInProgress: $loginInProgress");
+      if (loginInProgress) {
+        if (demoAccountToken != null) {
+          _loginState.add(LoginState.demoAccount);
+        } else {
+          _loginState.add(LoginState.loginRequired);
+        }
+        return;
+      }
+
       switch (apiState) {
         case ApiManagerState.waitingRefreshToken:
           if (demoAccountToken != null) {
@@ -407,8 +421,19 @@ class LoginRepository extends DataRepository {
     // Other repostories
     await theNewRepositories.onLogin();
 
+    // The loginInProgress keeps the UI in login screen even if app
+    // connects to server.
+    _loginInProgress.add(true);
     await theNewRepositories.connectionManager.restart();
-
+    if (await theNewRepositories.connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 7)) {
+      final r = await theNewRepositories.onLoginDataSync();
+      if (r.isErr()) {
+        showSnackBar(R.strings.generic_data_sync_failed);
+      }
+    } else {
+      showSnackBar(R.strings.generic_data_sync_failed);
+    }
+    _loginInProgress.add(false);
     return const Ok(null);
   }
 
@@ -674,6 +699,15 @@ class RepositoryInstances implements DataRepositoryMethods {
     await media.onLogin();
     await profile.onLogin();
     await account.onLogin();
+  }
+
+  @override
+  Future<Result<void, void>> onLoginDataSync() async {
+    return await common.onLoginDataSync()
+      .andThen((_) => chat.onLoginDataSync())
+      .andThen((_) => media.onLoginDataSync())
+      .andThen((_) => profile.onLoginDataSync())
+      .andThen((_) => account.onLoginDataSync());
   }
 
   @override

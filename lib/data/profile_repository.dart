@@ -67,20 +67,20 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     // TODO(prod): reset sync versions to "force sync"
 
     await db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(false));
+  }
 
-    syncHandler.onLoginSync(() async {
-      // No Result checking needed for these calls as db null value is checked
-      // onResumeAppUsage.
-      await reloadLocation();
-      await reloadAttributeFilters();
-      await reloadSearchAgeRange();
-      await reloadSearchGroups();
-      await downloadInitialSetupAgeInfoIfNull(skipIfAccountStateIsInitialSetup: true);
-      final result = await reloadFavoriteProfiles();
-      if (result.isOk()) {
-        await db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(true));
-      }
-    });
+  @override
+  Future<Result<void, void>> onLoginDataSync() async {
+    return await reloadLocation()
+      .andThen((_) => reloadAttributeFilters())
+      .andThen((_) => reloadSearchAgeRange())
+      .andThen((_) => reloadSearchGroups())
+      .andThen((_) async {
+        await downloadInitialSetupAgeInfoIfNull(skipIfAccountStateIsInitialSetup: true);
+        return const Ok(null);
+      })
+      .andThen((_) => reloadFavoriteProfiles())
+      .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(true)));
   }
 
   @override

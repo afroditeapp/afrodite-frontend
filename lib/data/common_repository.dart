@@ -9,6 +9,7 @@ import 'package:database/database.dart';
 import 'package:pihka_frontend/database/background_database_manager.dart';
 import 'package:pihka_frontend/database/database_manager.dart';
 import 'package:pihka_frontend/storage/kv.dart';
+import 'package:pihka_frontend/utils/result.dart';
 
 var log = Logger("CommonRepository");
 
@@ -47,12 +48,15 @@ class CommonRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<void> onLogin() async {
-    syncHandler.onLoginSync(() async {
-      // Force sending the FCM token to server. This is needed if this login
-      // is for different account than previously.
-      await BackgroundDatabaseManager.getInstance().commonAction((db) => db.updateFcmDeviceTokenAndPendingNotificationToken(null, null));
-      await PushNotificationManager.getInstance().initPushNotifications();
-    });
+    // Force sending the FCM token to server. This is needed if this login
+    // is for different account than previously.
+    await BackgroundDatabaseManager.getInstance().commonAction((db) => db.updateFcmDeviceTokenAndPendingNotificationToken(null, null));
+  }
+
+  @override
+  Future<Result<void, void>> onLoginDataSync() async {
+    await PushNotificationManager.getInstance().initPushNotifications();
+    return const Ok(null);
   }
 
   @override

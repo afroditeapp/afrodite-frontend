@@ -338,6 +338,10 @@
   "@generic_continue": {
     "description": "Generic continue text"
   },
+  "generic_data_sync_failed": "Data sync failed",
+  "@generic_data_sync_failed": {
+    "description": "Generic data sync failed"
+  },
   "generic_delete": "Delete",
   "@generic_delete": {
     "description": "Generic delete text"

@@ -78,10 +78,12 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<void> onLogin() async {
     sentBlocksIterator.reset();
     await db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(false));
+  }
 
-    syncHandler.onLoginSync(() async {
-      await _generateMessageKeyIfNeeded();
-    });
+  @override
+  Future<Result<void, void>> onLoginDataSync() async {
+    await _generateMessageKeyIfNeeded();
+    return const Ok(null);
   }
 
   @override
