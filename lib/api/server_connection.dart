@@ -432,12 +432,6 @@ Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundData
   final syncVersionReceivedLikes = await accountBackgroundDb.accountStreamSingle(
     (db) => db.daoNewReceivedLikesAvailable.watchSyncVersionReceivedLikes()
   ).ok() ?? forceSync;
-  final syncVersionReceivedBlocks = await db.accountStreamSingle(
-    (db) => db.daoSyncVersions.watchSyncVersionReceivedBlocks()
-  ).ok() ?? forceSync;
-  final syncVersionSentBlocks = await db.accountStreamSingle(
-    (db) => db.daoSyncVersions.watchSyncVersionSentBlocks()
-  ).ok() ?? forceSync;
   final syncVersionAvailableProfileAttributes = await db.accountStreamSingle(
     (db) => db.daoSyncVersions.watchSyncVersionAvailableProfileAttributes()
   ).ok() ?? forceSync;
@@ -450,10 +444,6 @@ Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundData
     syncVersionAccount,
     1, // ReveivedLikes
     syncVersionReceivedLikes,
-    2, // ReveivedBlocks
-    syncVersionReceivedBlocks,
-    4, // SentBlocks
-    syncVersionSentBlocks,
     6, // AvailableProfileAttributes
     syncVersionAvailableProfileAttributes,
     7, // Profile

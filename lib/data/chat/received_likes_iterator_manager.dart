@@ -89,8 +89,7 @@ class ReceivedLikesIteratorManager {
       }
       final toBeRemoved = <ProfileEntry>[];
       for (final p in list) {
-        final isBlocked = await chat.isInReceivedBlocks(p.uuid) ||
-          await chat.isInSentBlocks(p.uuid);
+        final isBlocked = await chat.isInSentBlocks(p.uuid);
 
         if (isBlocked || p.uuid == currentUser) {
           toBeRemoved.add(p);

@@ -82,32 +82,34 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<Result<void, void>> onLoginDataSync() async {
-    await _generateMessageKeyIfNeeded();
-    return const Ok(null);
+    return await _sentBlocksRefresh()
+      .andThen((_) => _generateMessageKeyIfNeeded())
+      .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(true)));
   }
 
   @override
   Future<void> onResumeAppUsage() async {
     syncHandler.onResumeAppUsageSync(() async {
-      await _generateMessageKeyIfNeeded();
+      final currentChatSyncValue = await db.accountStreamSingle((db) => db.daoInitialSync.watchChatSyncDone()).ok() ?? false;
+      if (currentChatSyncValue) {
+        // Already done
+        return;
+      }
+      await _sentBlocksRefresh()
+        .andThen((_) => _generateMessageKeyIfNeeded())
+        .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(true)));
     });
   }
 
-  Future<void> _generateMessageKeyIfNeeded() async {
-    final currentChatSyncValue = await db.accountStreamSingle((db) => db.daoInitialSync.watchChatSyncDone()).ok() ?? false;
-    if (currentChatSyncValue) {
-      // Already done
-      return;
-    }
-
+  Future<Result<void, void>> _generateMessageKeyIfNeeded() async {
     final keys = await messageKeyManager.generateOrLoadMessageKeys().ok();
     if (keys == null) {
-      return;
+      return const Err(null);
     }
     final currentPublicKeyOnServer =
       await api.chat((api) => api.getPublicKey(currentUser.aid, 1)).ok();
     if (currentPublicKeyOnServer == null) {
-      return;
+      return const Err(null);
     }
 
     if (currentPublicKeyOnServer.key?.id != keys.public.id) {
@@ -116,11 +118,11 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         armoredPrivateKey: keys.private.data,
       ));
       if (uploadAndSaveResult.isErr()) {
-        return;
+        return const Err(null);
       }
     }
 
-    await db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(true));
+    return const Ok(null);
   }
 
   Future<bool> isInMatches(AccountId accountId) {
@@ -137,10 +139,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
   Future<bool> isInSentBlocks(AccountId accountId) async {
     return await db.accountData((db) => db.daoConversationList.isInSentBlocks(accountId)).ok() ?? false;
-  }
-
-  Future<bool> isInReceivedBlocks(AccountId accountId) async {
-    return await db.accountData((db) => db.daoProfileStates.isInReceivedBlocks(accountId)).ok() ?? false;
   }
 
   Future<void> _updateAccountInteractionState(
@@ -264,11 +262,9 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     sentBlocksIterator.reset();
   }
 
-  Future<void> sentBlocksRefresh() async {
-    final sentBlocks = await api.chat((api) => api.getSentBlocks()).ok();
-    if (sentBlocks != null) {
-      await db.accountAction((db) => db.daoConversationList.setSentBlockStatusList(sentBlocks));
-    }
+  Future<Result<void, void>> _sentBlocksRefresh() {
+    return api.chat((api) => api.getSentBlocks())
+      .andThen((value) => db.accountAction((db) => db.daoConversationList.setSentBlockStatusList(value)));
   }
 
   Future<List<ProfileEntry>> _genericIteratorNextOnlySuccessful(

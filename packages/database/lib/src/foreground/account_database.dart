@@ -65,7 +65,6 @@ class Account extends Table {
 
   IntColumn get syncVersionAccount => integer().nullable()();
   IntColumn get syncVersionProfile => integer().nullable()();
-  IntColumn get syncVersionSentBlocks => integer().nullable()();
   IntColumn get syncVersionAvailableProfileAttributes => integer().nullable()();
 
   // DaoPendingContent

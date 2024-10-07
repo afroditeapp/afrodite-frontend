@@ -67,7 +67,6 @@ class RetryPublicKeyDownload extends ConversationEvent {
 abstract class ConversationDataProvider {
   Future<bool> isInMatches(AccountId accountId);
   Future<bool> isInSentBlocks(AccountId accountId);
-  Future<bool> isInReceivedBlocks(AccountId accountId);
   Future<bool> sendBlockTo(AccountId accountId);
   Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, String message);
   Future<List<MessageEntry>> getAllMessages(AccountId accountId);
@@ -91,9 +90,6 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
 
   @override
   Future<bool> isInSentBlocks(AccountId accountId) => chat.isInSentBlocks(accountId);
-
-  @override
-  Future<bool> isInReceivedBlocks(AccountId accountId) => chat.isInReceivedBlocks(accountId);
 
   @override
   Future<bool> sendBlockTo(AccountId accountId) => chat.sendBlockTo(accountId);
@@ -180,8 +176,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       log.info("Set conversation bloc initial state");
 
       final isMatch = await dataProvider.isInMatches(state.accountId);
-      final isBlocked = await dataProvider.isInSentBlocks(state.accountId) ||
-        await dataProvider.isInReceivedBlocks(state.accountId);
+      final isBlocked = await dataProvider.isInSentBlocks(state.accountId);
 
       await profile.resetUnreadMessagesCount(state.accountId);
 

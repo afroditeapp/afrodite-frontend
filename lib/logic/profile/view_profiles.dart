@@ -55,8 +55,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
   ViewProfileBloc(ProfileEntry currentProfile, this.priority) : super(ViewProfilesData(profile: currentProfile)) {
     on<InitEvent>((data, emit) async {
       final isInFavorites = await profile.isInFavorites(state.profile.uuid);
-      final isBlocked = await chat.isInSentBlocks(state.profile.uuid) ||
-        await chat.isInReceivedBlocks(state.profile.uuid);
+      final isBlocked = await chat.isInSentBlocks(state.profile.uuid);
       final ProfileActionState action = await resolveProfileAction(state.profile.uuid);
 
       emit(state.copyWith(

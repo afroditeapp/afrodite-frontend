@@ -176,7 +176,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     } else if (event.event == EventType.sentLikesChanged) {
       log.finest("Ignoring sent likes changed event");
     } else if (event.event == EventType.sentBlocksChanged) {
-      chat.sentBlocksRefresh();
+      log.finest("Ignoring sent blocks changed event");
     } else if (event.event == EventType.matchesChanged) {
       log.finest("Ignoring matches changed event");
     } else if (event.event == EventType.newMessageReceived) {

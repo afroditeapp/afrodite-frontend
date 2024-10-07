@@ -152,18 +152,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<int> syncVersionProfile = GeneratedColumn<int>(
       'sync_version_profile', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _syncVersionReceivedBlocksMeta =
-      const VerificationMeta('syncVersionReceivedBlocks');
-  @override
-  late final GeneratedColumn<int> syncVersionReceivedBlocks =
-      GeneratedColumn<int>('sync_version_received_blocks', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _syncVersionSentBlocksMeta =
-      const VerificationMeta('syncVersionSentBlocks');
-  @override
-  late final GeneratedColumn<int> syncVersionSentBlocks = GeneratedColumn<int>(
-      'sync_version_sent_blocks', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _syncVersionAvailableProfileAttributesMeta =
       const VerificationMeta('syncVersionAvailableProfileAttributes');
   @override
@@ -599,8 +587,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         initialSyncDoneChatRepository,
         syncVersionAccount,
         syncVersionProfile,
-        syncVersionReceivedBlocks,
-        syncVersionSentBlocks,
         syncVersionAvailableProfileAttributes,
         uuidPendingContentId0,
         uuidPendingContentId1,
@@ -732,19 +718,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           _syncVersionProfileMeta,
           syncVersionProfile.isAcceptableOrUnknown(
               data['sync_version_profile']!, _syncVersionProfileMeta));
-    }
-    if (data.containsKey('sync_version_received_blocks')) {
-      context.handle(
-          _syncVersionReceivedBlocksMeta,
-          syncVersionReceivedBlocks.isAcceptableOrUnknown(
-              data['sync_version_received_blocks']!,
-              _syncVersionReceivedBlocksMeta));
-    }
-    if (data.containsKey('sync_version_sent_blocks')) {
-      context.handle(
-          _syncVersionSentBlocksMeta,
-          syncVersionSentBlocks.isAcceptableOrUnknown(
-              data['sync_version_sent_blocks']!, _syncVersionSentBlocksMeta));
     }
     if (data.containsKey('sync_version_available_profile_attributes')) {
       context.handle(
@@ -1031,11 +1004,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           DriftSqlType.int, data['${effectivePrefix}sync_version_account']),
       syncVersionProfile: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}sync_version_profile']),
-      syncVersionReceivedBlocks: attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}sync_version_received_blocks']),
-      syncVersionSentBlocks: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}sync_version_sent_blocks']),
       syncVersionAvailableProfileAttributes: attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}sync_version_available_profile_attributes']),
@@ -1297,8 +1265,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final bool initialSyncDoneChatRepository;
   final int? syncVersionAccount;
   final int? syncVersionProfile;
-  final int? syncVersionReceivedBlocks;
-  final int? syncVersionSentBlocks;
   final int? syncVersionAvailableProfileAttributes;
   final ContentId? uuidPendingContentId0;
   final ContentId? uuidPendingContentId1;
@@ -1371,8 +1337,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       required this.initialSyncDoneChatRepository,
       this.syncVersionAccount,
       this.syncVersionProfile,
-      this.syncVersionReceivedBlocks,
-      this.syncVersionSentBlocks,
       this.syncVersionAvailableProfileAttributes,
       this.uuidPendingContentId0,
       this.uuidPendingContentId1,
@@ -1479,13 +1443,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     }
     if (!nullToAbsent || syncVersionProfile != null) {
       map['sync_version_profile'] = Variable<int>(syncVersionProfile);
-    }
-    if (!nullToAbsent || syncVersionReceivedBlocks != null) {
-      map['sync_version_received_blocks'] =
-          Variable<int>(syncVersionReceivedBlocks);
-    }
-    if (!nullToAbsent || syncVersionSentBlocks != null) {
-      map['sync_version_sent_blocks'] = Variable<int>(syncVersionSentBlocks);
     }
     if (!nullToAbsent || syncVersionAvailableProfileAttributes != null) {
       map['sync_version_available_profile_attributes'] =
@@ -1748,13 +1705,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       syncVersionProfile: syncVersionProfile == null && nullToAbsent
           ? const Value.absent()
           : Value(syncVersionProfile),
-      syncVersionReceivedBlocks:
-          syncVersionReceivedBlocks == null && nullToAbsent
-              ? const Value.absent()
-              : Value(syncVersionReceivedBlocks),
-      syncVersionSentBlocks: syncVersionSentBlocks == null && nullToAbsent
-          ? const Value.absent()
-          : Value(syncVersionSentBlocks),
       syncVersionAvailableProfileAttributes:
           syncVersionAvailableProfileAttributes == null && nullToAbsent
               ? const Value.absent()
@@ -1968,10 +1918,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<bool>(json['initialSyncDoneChatRepository']),
       syncVersionAccount: serializer.fromJson<int?>(json['syncVersionAccount']),
       syncVersionProfile: serializer.fromJson<int?>(json['syncVersionProfile']),
-      syncVersionReceivedBlocks:
-          serializer.fromJson<int?>(json['syncVersionReceivedBlocks']),
-      syncVersionSentBlocks:
-          serializer.fromJson<int?>(json['syncVersionSentBlocks']),
       syncVersionAvailableProfileAttributes: serializer
           .fromJson<int?>(json['syncVersionAvailableProfileAttributes']),
       uuidPendingContentId0:
@@ -2098,9 +2044,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.toJson<bool>(initialSyncDoneChatRepository),
       'syncVersionAccount': serializer.toJson<int?>(syncVersionAccount),
       'syncVersionProfile': serializer.toJson<int?>(syncVersionProfile),
-      'syncVersionReceivedBlocks':
-          serializer.toJson<int?>(syncVersionReceivedBlocks),
-      'syncVersionSentBlocks': serializer.toJson<int?>(syncVersionSentBlocks),
       'syncVersionAvailableProfileAttributes':
           serializer.toJson<int?>(syncVersionAvailableProfileAttributes),
       'uuidPendingContentId0':
@@ -2209,8 +2152,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           bool? initialSyncDoneChatRepository,
           Value<int?> syncVersionAccount = const Value.absent(),
           Value<int?> syncVersionProfile = const Value.absent(),
-          Value<int?> syncVersionReceivedBlocks = const Value.absent(),
-          Value<int?> syncVersionSentBlocks = const Value.absent(),
           Value<int?> syncVersionAvailableProfileAttributes =
               const Value.absent(),
           Value<ContentId?> uuidPendingContentId0 = const Value.absent(),
@@ -2312,12 +2253,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         syncVersionProfile: syncVersionProfile.present
             ? syncVersionProfile.value
             : this.syncVersionProfile,
-        syncVersionReceivedBlocks: syncVersionReceivedBlocks.present
-            ? syncVersionReceivedBlocks.value
-            : this.syncVersionReceivedBlocks,
-        syncVersionSentBlocks: syncVersionSentBlocks.present
-            ? syncVersionSentBlocks.value
-            : this.syncVersionSentBlocks,
         syncVersionAvailableProfileAttributes:
             syncVersionAvailableProfileAttributes.present
                 ? syncVersionAvailableProfileAttributes.value
@@ -2524,12 +2459,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       syncVersionProfile: data.syncVersionProfile.present
           ? data.syncVersionProfile.value
           : this.syncVersionProfile,
-      syncVersionReceivedBlocks: data.syncVersionReceivedBlocks.present
-          ? data.syncVersionReceivedBlocks.value
-          : this.syncVersionReceivedBlocks,
-      syncVersionSentBlocks: data.syncVersionSentBlocks.present
-          ? data.syncVersionSentBlocks.value
-          : this.syncVersionSentBlocks,
       syncVersionAvailableProfileAttributes:
           data.syncVersionAvailableProfileAttributes.present
               ? data.syncVersionAvailableProfileAttributes.value
@@ -2727,8 +2656,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
               'initialSyncDoneChatRepository: $initialSyncDoneChatRepository, ')
           ..write('syncVersionAccount: $syncVersionAccount, ')
           ..write('syncVersionProfile: $syncVersionProfile, ')
-          ..write('syncVersionReceivedBlocks: $syncVersionReceivedBlocks, ')
-          ..write('syncVersionSentBlocks: $syncVersionSentBlocks, ')
           ..write(
               'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
           ..write('uuidPendingContentId0: $uuidPendingContentId0, ')
@@ -2815,8 +2742,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         initialSyncDoneChatRepository,
         syncVersionAccount,
         syncVersionProfile,
-        syncVersionReceivedBlocks,
-        syncVersionSentBlocks,
         syncVersionAvailableProfileAttributes,
         uuidPendingContentId0,
         uuidPendingContentId1,
@@ -2900,8 +2825,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
               this.initialSyncDoneChatRepository &&
           other.syncVersionAccount == this.syncVersionAccount &&
           other.syncVersionProfile == this.syncVersionProfile &&
-          other.syncVersionReceivedBlocks == this.syncVersionReceivedBlocks &&
-          other.syncVersionSentBlocks == this.syncVersionSentBlocks &&
           other.syncVersionAvailableProfileAttributes ==
               this.syncVersionAvailableProfileAttributes &&
           other.uuidPendingContentId0 == this.uuidPendingContentId0 &&
@@ -2987,8 +2910,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<bool> initialSyncDoneChatRepository;
   final Value<int?> syncVersionAccount;
   final Value<int?> syncVersionProfile;
-  final Value<int?> syncVersionReceivedBlocks;
-  final Value<int?> syncVersionSentBlocks;
   final Value<int?> syncVersionAvailableProfileAttributes;
   final Value<ContentId?> uuidPendingContentId0;
   final Value<ContentId?> uuidPendingContentId1;
@@ -3061,8 +2982,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.initialSyncDoneChatRepository = const Value.absent(),
     this.syncVersionAccount = const Value.absent(),
     this.syncVersionProfile = const Value.absent(),
-    this.syncVersionReceivedBlocks = const Value.absent(),
-    this.syncVersionSentBlocks = const Value.absent(),
     this.syncVersionAvailableProfileAttributes = const Value.absent(),
     this.uuidPendingContentId0 = const Value.absent(),
     this.uuidPendingContentId1 = const Value.absent(),
@@ -3136,8 +3055,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.initialSyncDoneChatRepository = const Value.absent(),
     this.syncVersionAccount = const Value.absent(),
     this.syncVersionProfile = const Value.absent(),
-    this.syncVersionReceivedBlocks = const Value.absent(),
-    this.syncVersionSentBlocks = const Value.absent(),
     this.syncVersionAvailableProfileAttributes = const Value.absent(),
     this.uuidPendingContentId0 = const Value.absent(),
     this.uuidPendingContentId1 = const Value.absent(),
@@ -3211,8 +3128,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<bool>? initialSyncDoneChatRepository,
     Expression<int>? syncVersionAccount,
     Expression<int>? syncVersionProfile,
-    Expression<int>? syncVersionReceivedBlocks,
-    Expression<int>? syncVersionSentBlocks,
     Expression<int>? syncVersionAvailableProfileAttributes,
     Expression<String>? uuidPendingContentId0,
     Expression<String>? uuidPendingContentId1,
@@ -3299,10 +3214,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'sync_version_account': syncVersionAccount,
       if (syncVersionProfile != null)
         'sync_version_profile': syncVersionProfile,
-      if (syncVersionReceivedBlocks != null)
-        'sync_version_received_blocks': syncVersionReceivedBlocks,
-      if (syncVersionSentBlocks != null)
-        'sync_version_sent_blocks': syncVersionSentBlocks,
       if (syncVersionAvailableProfileAttributes != null)
         'sync_version_available_profile_attributes':
             syncVersionAvailableProfileAttributes,
@@ -3418,8 +3329,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<bool>? initialSyncDoneChatRepository,
       Value<int?>? syncVersionAccount,
       Value<int?>? syncVersionProfile,
-      Value<int?>? syncVersionReceivedBlocks,
-      Value<int?>? syncVersionSentBlocks,
       Value<int?>? syncVersionAvailableProfileAttributes,
       Value<ContentId?>? uuidPendingContentId0,
       Value<ContentId?>? uuidPendingContentId1,
@@ -3501,10 +3410,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           initialSyncDoneChatRepository ?? this.initialSyncDoneChatRepository,
       syncVersionAccount: syncVersionAccount ?? this.syncVersionAccount,
       syncVersionProfile: syncVersionProfile ?? this.syncVersionProfile,
-      syncVersionReceivedBlocks:
-          syncVersionReceivedBlocks ?? this.syncVersionReceivedBlocks,
-      syncVersionSentBlocks:
-          syncVersionSentBlocks ?? this.syncVersionSentBlocks,
       syncVersionAvailableProfileAttributes:
           syncVersionAvailableProfileAttributes ??
               this.syncVersionAvailableProfileAttributes,
@@ -3665,14 +3570,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     }
     if (syncVersionProfile.present) {
       map['sync_version_profile'] = Variable<int>(syncVersionProfile.value);
-    }
-    if (syncVersionReceivedBlocks.present) {
-      map['sync_version_received_blocks'] =
-          Variable<int>(syncVersionReceivedBlocks.value);
-    }
-    if (syncVersionSentBlocks.present) {
-      map['sync_version_sent_blocks'] =
-          Variable<int>(syncVersionSentBlocks.value);
     }
     if (syncVersionAvailableProfileAttributes.present) {
       map['sync_version_available_profile_attributes'] =
@@ -3929,8 +3826,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
               'initialSyncDoneChatRepository: $initialSyncDoneChatRepository, ')
           ..write('syncVersionAccount: $syncVersionAccount, ')
           ..write('syncVersionProfile: $syncVersionProfile, ')
-          ..write('syncVersionReceivedBlocks: $syncVersionReceivedBlocks, ')
-          ..write('syncVersionSentBlocks: $syncVersionSentBlocks, ')
           ..write(
               'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
           ..write('uuidPendingContentId0: $uuidPendingContentId0, ')
@@ -5193,15 +5088,6 @@ class $ProfileStatesTable extends ProfileStates
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $ProfileStatesTable.$converterisInFavorites);
-  static const VerificationMeta _isInReceivedBlocksMeta =
-      const VerificationMeta('isInReceivedBlocks');
-  @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      isInReceivedBlocks = GeneratedColumn<int>(
-              'is_in_received_blocks', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ProfileStatesTable.$converterisInReceivedBlocks);
   static const VerificationMeta _isInReceivedLikesMeta =
       const VerificationMeta('isInReceivedLikes');
   @override
@@ -5250,7 +5136,6 @@ class $ProfileStatesTable extends ProfileStates
         id,
         uuidAccountId,
         isInFavorites,
-        isInReceivedBlocks,
         isInReceivedLikes,
         isInSentLikes,
         isInMatches,
@@ -5272,7 +5157,6 @@ class $ProfileStatesTable extends ProfileStates
     }
     context.handle(_uuidAccountIdMeta, const VerificationResult.success());
     context.handle(_isInFavoritesMeta, const VerificationResult.success());
-    context.handle(_isInReceivedBlocksMeta, const VerificationResult.success());
     context.handle(_isInReceivedLikesMeta, const VerificationResult.success());
     context.handle(_isInSentLikesMeta, const VerificationResult.success());
     context.handle(_isInMatchesMeta, const VerificationResult.success());
@@ -5296,9 +5180,6 @@ class $ProfileStatesTable extends ProfileStates
       isInFavorites: $ProfileStatesTable.$converterisInFavorites.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}is_in_favorites'])),
-      isInReceivedBlocks: $ProfileStatesTable.$converterisInReceivedBlocks
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}is_in_received_blocks'])),
       isInReceivedLikes: $ProfileStatesTable.$converterisInReceivedLikes
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
               data['${effectivePrefix}is_in_received_likes'])),
@@ -5326,8 +5207,6 @@ class $ProfileStatesTable extends ProfileStates
       const AccountIdConverter();
   static TypeConverter<UtcDateTime?, int?> $converterisInFavorites =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
-  static TypeConverter<UtcDateTime?, int?> $converterisInReceivedBlocks =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInReceivedLikes =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInSentLikes =
@@ -5344,7 +5223,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
   final int id;
   final AccountId uuidAccountId;
   final UtcDateTime? isInFavorites;
-  final UtcDateTime? isInReceivedBlocks;
   final UtcDateTime? isInReceivedLikes;
   final UtcDateTime? isInSentLikes;
   final UtcDateTime? isInMatches;
@@ -5354,7 +5232,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       {required this.id,
       required this.uuidAccountId,
       this.isInFavorites,
-      this.isInReceivedBlocks,
       this.isInReceivedLikes,
       this.isInSentLikes,
       this.isInMatches,
@@ -5371,11 +5248,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
     if (!nullToAbsent || isInFavorites != null) {
       map['is_in_favorites'] = Variable<int>(
           $ProfileStatesTable.$converterisInFavorites.toSql(isInFavorites));
-    }
-    if (!nullToAbsent || isInReceivedBlocks != null) {
-      map['is_in_received_blocks'] = Variable<int>($ProfileStatesTable
-          .$converterisInReceivedBlocks
-          .toSql(isInReceivedBlocks));
     }
     if (!nullToAbsent || isInReceivedLikes != null) {
       map['is_in_received_likes'] = Variable<int>($ProfileStatesTable
@@ -5409,9 +5281,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInFavorites: isInFavorites == null && nullToAbsent
           ? const Value.absent()
           : Value(isInFavorites),
-      isInReceivedBlocks: isInReceivedBlocks == null && nullToAbsent
-          ? const Value.absent()
-          : Value(isInReceivedBlocks),
       isInReceivedLikes: isInReceivedLikes == null && nullToAbsent
           ? const Value.absent()
           : Value(isInReceivedLikes),
@@ -5437,8 +5306,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       id: serializer.fromJson<int>(json['id']),
       uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
       isInFavorites: serializer.fromJson<UtcDateTime?>(json['isInFavorites']),
-      isInReceivedBlocks:
-          serializer.fromJson<UtcDateTime?>(json['isInReceivedBlocks']),
       isInReceivedLikes:
           serializer.fromJson<UtcDateTime?>(json['isInReceivedLikes']),
       isInSentLikes: serializer.fromJson<UtcDateTime?>(json['isInSentLikes']),
@@ -5456,7 +5323,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       'id': serializer.toJson<int>(id),
       'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
       'isInFavorites': serializer.toJson<UtcDateTime?>(isInFavorites),
-      'isInReceivedBlocks': serializer.toJson<UtcDateTime?>(isInReceivedBlocks),
       'isInReceivedLikes': serializer.toJson<UtcDateTime?>(isInReceivedLikes),
       'isInSentLikes': serializer.toJson<UtcDateTime?>(isInSentLikes),
       'isInMatches': serializer.toJson<UtcDateTime?>(isInMatches),
@@ -5470,7 +5336,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           {int? id,
           AccountId? uuidAccountId,
           Value<UtcDateTime?> isInFavorites = const Value.absent(),
-          Value<UtcDateTime?> isInReceivedBlocks = const Value.absent(),
           Value<UtcDateTime?> isInReceivedLikes = const Value.absent(),
           Value<UtcDateTime?> isInSentLikes = const Value.absent(),
           Value<UtcDateTime?> isInMatches = const Value.absent(),
@@ -5481,9 +5346,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
         isInFavorites:
             isInFavorites.present ? isInFavorites.value : this.isInFavorites,
-        isInReceivedBlocks: isInReceivedBlocks.present
-            ? isInReceivedBlocks.value
-            : this.isInReceivedBlocks,
         isInReceivedLikes: isInReceivedLikes.present
             ? isInReceivedLikes.value
             : this.isInReceivedLikes,
@@ -5506,9 +5368,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInFavorites: data.isInFavorites.present
           ? data.isInFavorites.value
           : this.isInFavorites,
-      isInReceivedBlocks: data.isInReceivedBlocks.present
-          ? data.isInReceivedBlocks.value
-          : this.isInReceivedBlocks,
       isInReceivedLikes: data.isInReceivedLikes.present
           ? data.isInReceivedLikes.value
           : this.isInReceivedLikes,
@@ -5532,7 +5391,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           ..write('id: $id, ')
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('isInFavorites: $isInFavorites, ')
-          ..write('isInReceivedBlocks: $isInReceivedBlocks, ')
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
           ..write('isInSentLikes: $isInSentLikes, ')
           ..write('isInMatches: $isInMatches, ')
@@ -5547,7 +5405,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       id,
       uuidAccountId,
       isInFavorites,
-      isInReceivedBlocks,
       isInReceivedLikes,
       isInSentLikes,
       isInMatches,
@@ -5560,7 +5417,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           other.id == this.id &&
           other.uuidAccountId == this.uuidAccountId &&
           other.isInFavorites == this.isInFavorites &&
-          other.isInReceivedBlocks == this.isInReceivedBlocks &&
           other.isInReceivedLikes == this.isInReceivedLikes &&
           other.isInSentLikes == this.isInSentLikes &&
           other.isInMatches == this.isInMatches &&
@@ -5572,7 +5428,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   final Value<int> id;
   final Value<AccountId> uuidAccountId;
   final Value<UtcDateTime?> isInFavorites;
-  final Value<UtcDateTime?> isInReceivedBlocks;
   final Value<UtcDateTime?> isInReceivedLikes;
   final Value<UtcDateTime?> isInSentLikes;
   final Value<UtcDateTime?> isInMatches;
@@ -5582,7 +5437,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
     this.isInFavorites = const Value.absent(),
-    this.isInReceivedBlocks = const Value.absent(),
     this.isInReceivedLikes = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
     this.isInMatches = const Value.absent(),
@@ -5593,7 +5447,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     this.id = const Value.absent(),
     required AccountId uuidAccountId,
     this.isInFavorites = const Value.absent(),
-    this.isInReceivedBlocks = const Value.absent(),
     this.isInReceivedLikes = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
     this.isInMatches = const Value.absent(),
@@ -5604,7 +5457,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     Expression<int>? id,
     Expression<String>? uuidAccountId,
     Expression<int>? isInFavorites,
-    Expression<int>? isInReceivedBlocks,
     Expression<int>? isInReceivedLikes,
     Expression<int>? isInSentLikes,
     Expression<int>? isInMatches,
@@ -5615,8 +5467,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       if (id != null) 'id': id,
       if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
       if (isInFavorites != null) 'is_in_favorites': isInFavorites,
-      if (isInReceivedBlocks != null)
-        'is_in_received_blocks': isInReceivedBlocks,
       if (isInReceivedLikes != null) 'is_in_received_likes': isInReceivedLikes,
       if (isInSentLikes != null) 'is_in_sent_likes': isInSentLikes,
       if (isInMatches != null) 'is_in_matches': isInMatches,
@@ -5630,7 +5480,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       {Value<int>? id,
       Value<AccountId>? uuidAccountId,
       Value<UtcDateTime?>? isInFavorites,
-      Value<UtcDateTime?>? isInReceivedBlocks,
       Value<UtcDateTime?>? isInReceivedLikes,
       Value<UtcDateTime?>? isInSentLikes,
       Value<UtcDateTime?>? isInMatches,
@@ -5640,7 +5489,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
       isInFavorites: isInFavorites ?? this.isInFavorites,
-      isInReceivedBlocks: isInReceivedBlocks ?? this.isInReceivedBlocks,
       isInReceivedLikes: isInReceivedLikes ?? this.isInReceivedLikes,
       isInSentLikes: isInSentLikes ?? this.isInSentLikes,
       isInMatches: isInMatches ?? this.isInMatches,
@@ -5665,11 +5513,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       map['is_in_favorites'] = Variable<int>($ProfileStatesTable
           .$converterisInFavorites
           .toSql(isInFavorites.value));
-    }
-    if (isInReceivedBlocks.present) {
-      map['is_in_received_blocks'] = Variable<int>($ProfileStatesTable
-          .$converterisInReceivedBlocks
-          .toSql(isInReceivedBlocks.value));
     }
     if (isInReceivedLikes.present) {
       map['is_in_received_likes'] = Variable<int>($ProfileStatesTable
@@ -5704,7 +5547,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
           ..write('id: $id, ')
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('isInFavorites: $isInFavorites, ')
-          ..write('isInReceivedBlocks: $isInReceivedBlocks, ')
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
           ..write('isInSentLikes: $isInSentLikes, ')
           ..write('isInMatches: $isInMatches, ')

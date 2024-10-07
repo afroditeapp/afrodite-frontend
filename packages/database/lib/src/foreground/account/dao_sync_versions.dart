@@ -33,15 +33,6 @@ class DaoSyncVersions extends DatabaseAccessor<AccountDatabase> with _$DaoSyncVe
     );
   }
 
-  Future<void> updateSyncVersionSentBlocks(SentBlocksSyncVersion value) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        syncVersionSentBlocks: Value(value.version),
-      ),
-    );
-  }
-
   Future<void> updateSyncVersionAvailableProfileAttributes(ProfileAttributesSyncVersion value) async {
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
@@ -55,10 +46,6 @@ class DaoSyncVersions extends DatabaseAccessor<AccountDatabase> with _$DaoSyncVe
     watchColumn((r) => r.syncVersionAccount);
   Stream<int?> watchSyncVersionProfile() =>
     watchColumn((r) => r.syncVersionProfile);
-  Stream<int?> watchSyncVersionReceivedBlocks() =>
-    watchColumn((r) => r.syncVersionReceivedBlocks);
-  Stream<int?> watchSyncVersionSentBlocks() =>
-    watchColumn((r) => r.syncVersionSentBlocks);
   Stream<int?> watchSyncVersionAvailableProfileAttributes() =>
     watchColumn((r) => r.syncVersionAvailableProfileAttributes);
 }

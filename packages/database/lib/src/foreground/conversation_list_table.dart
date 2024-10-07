@@ -76,8 +76,6 @@ class DaoConversationList extends DatabaseAccessor<AccountDatabase> with _$DaoCo
       for (final a in sentBlocks.profiles) {
         await setSentBlockStatus(a, true);
       }
-
-      await db.daoSyncVersions.updateSyncVersionSentBlocks(sentBlocks.version);
     });
   }
 

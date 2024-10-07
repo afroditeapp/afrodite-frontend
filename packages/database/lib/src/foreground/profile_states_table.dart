@@ -51,23 +51,6 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
     );
   }
 
-  Future<void> setReceivedBlockStatus(
-    AccountId accountId,
-    bool value,
-  ) async {
-    await into(profileStates).insert(
-      ProfileStatesCompanion.insert(
-        uuidAccountId: accountId,
-        isInReceivedBlocks: _toGroupValue(value),
-      ),
-      onConflict: DoUpdate((old) => ProfileStatesCompanion(
-        isInReceivedBlocks: _toGroupValue(value),
-      ),
-        target: [profileStates.uuidAccountId]
-      ),
-    );
-  }
-
   Future<void> setReceivedLikeStatus(
     AccountId accountId,
     bool value,
@@ -208,9 +191,6 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
   Future<bool> isInFavorites(AccountId accountId) =>
     _existenceCheck(accountId, (t) => t.isInFavorites.isNotNull());
 
-  Future<bool> isInReceivedBlocks(AccountId accountId) =>
-    _existenceCheck(accountId, (t) => t.isInReceivedBlocks.isNotNull());
-
   Future<bool> isInReceivedLikes(AccountId accountId) =>
     _existenceCheck(accountId, (t) => t.isInReceivedLikes.isNotNull());
 
@@ -229,9 +209,6 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
   Future<List<AccountId>> getFavoritesList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInFavorites);
 
-  Future<List<AccountId>> getReceivedBlocksList(int startIndex, int limit) =>
-    _getProfilesList(startIndex, limit, (t) => t.isInReceivedBlocks);
-
   Future<List<AccountId>> getReceivedLikesList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInReceivedLikes);
 
@@ -243,9 +220,6 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
 
   Future<List<AccountId>> getReceivedLikesGridList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInReceivedLikesGrid);
-
-  Future<List<AccountId>> getReceivedBlocksListAll() =>
-    _getProfilesList(null, null, (t) => t.isInReceivedBlocks);
 
   Future<List<AccountId>> _getProfilesList(int? startIndex, int? limit, GeneratedColumnWithTypeConverter<UtcDateTime?, int> Function($ProfileStatesTable) getter) async {
     final q = select(profileStates)
