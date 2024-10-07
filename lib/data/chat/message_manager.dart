@@ -160,7 +160,6 @@ class MessageManager extends LifecycleMethods {
       final isMatch = await isInMatches(message.id.sender);
       if (!isMatch) {
         await db.accountAction((db) => db.daoProfileStates.setMatchStatus(message.id.sender, true));
-        profile.sendProfileChange(MatchesChanged());
       }
 
       if (!await isInConversationList(message.id.sender)) {
@@ -359,7 +358,6 @@ class MessageManager extends LifecycleMethods {
         yield const ErrorBeforeMessageSaving();
         return;
       }
-      profile.sendProfileChange(MatchesChanged());
       // TODO: Remove received likes status change once those are changed
       //       to server side iterator. This will be removed so it does not
       //       matter that this is not a transaction. And it is unlikely

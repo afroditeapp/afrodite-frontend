@@ -329,15 +329,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     }
   }
 
-  // TODO: Remove
-  Future<void> receivedMatchesRefresh() async {
-    final data = await api.chat((api) => api.getMatches()).ok();
-    if (data != null) {
-      await db.accountAction((db) => db.daoProfileStates.setMatchStatusList(data));
-      profile.sendProfileChange(MatchesChanged());
-    }
-  }
-
   // Local messages
   Stream<MessageEntry?> watchLatestMessage(AccountId match) {
     return db.accountStream((db) => db.daoMessages.watchLatestMessage(currentUser, match));

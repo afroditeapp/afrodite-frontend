@@ -484,8 +484,6 @@ class ReceivedLikeRemoved extends ProfileChange {
   final AccountId id;
   ReceivedLikeRemoved(this.id);
 }
-// TODO: Remove
-class MatchesChanged extends ProfileChange {}
 class ProfileFavoriteStatusChange extends ProfileChange {
   final AccountId profile;
   final bool isFavorite;

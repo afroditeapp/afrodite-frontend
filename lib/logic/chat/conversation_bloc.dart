@@ -198,15 +198,10 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
             emit(state.copyWith(isBlocked: true));
           }
         }
-        case MatchesChanged(): {
-          final isMatch = await dataProvider.isInMatches(state.accountId);
-          emit(state.copyWith(isMatch: isMatch));
-        }
         case ProfileNowPrivate() ||
           ProfileUnblocked() ||
           ReceivedLikeRemoved() ||
           ConversationChanged() ||
-          MatchesChanged() ||
           ReloadMainProfileView() ||
           ProfileFavoriteStatusChange(): {}
       }
@@ -245,8 +240,10 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
         }
       }
 
+      final isMatch = await dataProvider.isInMatches(state.accountId);
       emit(state.copyWith(
         isMessageSendingInProgress: false,
+        isMatch: isMatch,
       ));
     },
       transformer: sequential(),

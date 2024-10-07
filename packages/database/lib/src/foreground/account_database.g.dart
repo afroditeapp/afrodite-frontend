@@ -164,12 +164,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<int> syncVersionSentBlocks = GeneratedColumn<int>(
       'sync_version_sent_blocks', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _syncVersionMatchesMeta =
-      const VerificationMeta('syncVersionMatches');
-  @override
-  late final GeneratedColumn<int> syncVersionMatches = GeneratedColumn<int>(
-      'sync_version_matches', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _syncVersionAvailableProfileAttributesMeta =
       const VerificationMeta('syncVersionAvailableProfileAttributes');
   @override
@@ -607,7 +601,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         syncVersionProfile,
         syncVersionReceivedBlocks,
         syncVersionSentBlocks,
-        syncVersionMatches,
         syncVersionAvailableProfileAttributes,
         uuidPendingContentId0,
         uuidPendingContentId1,
@@ -752,12 +745,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           _syncVersionSentBlocksMeta,
           syncVersionSentBlocks.isAcceptableOrUnknown(
               data['sync_version_sent_blocks']!, _syncVersionSentBlocksMeta));
-    }
-    if (data.containsKey('sync_version_matches')) {
-      context.handle(
-          _syncVersionMatchesMeta,
-          syncVersionMatches.isAcceptableOrUnknown(
-              data['sync_version_matches']!, _syncVersionMatchesMeta));
     }
     if (data.containsKey('sync_version_available_profile_attributes')) {
       context.handle(
@@ -1049,8 +1036,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           data['${effectivePrefix}sync_version_received_blocks']),
       syncVersionSentBlocks: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}sync_version_sent_blocks']),
-      syncVersionMatches: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}sync_version_matches']),
       syncVersionAvailableProfileAttributes: attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}sync_version_available_profile_attributes']),
@@ -1314,7 +1299,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final int? syncVersionProfile;
   final int? syncVersionReceivedBlocks;
   final int? syncVersionSentBlocks;
-  final int? syncVersionMatches;
   final int? syncVersionAvailableProfileAttributes;
   final ContentId? uuidPendingContentId0;
   final ContentId? uuidPendingContentId1;
@@ -1389,7 +1373,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.syncVersionProfile,
       this.syncVersionReceivedBlocks,
       this.syncVersionSentBlocks,
-      this.syncVersionMatches,
       this.syncVersionAvailableProfileAttributes,
       this.uuidPendingContentId0,
       this.uuidPendingContentId1,
@@ -1503,9 +1486,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     }
     if (!nullToAbsent || syncVersionSentBlocks != null) {
       map['sync_version_sent_blocks'] = Variable<int>(syncVersionSentBlocks);
-    }
-    if (!nullToAbsent || syncVersionMatches != null) {
-      map['sync_version_matches'] = Variable<int>(syncVersionMatches);
     }
     if (!nullToAbsent || syncVersionAvailableProfileAttributes != null) {
       map['sync_version_available_profile_attributes'] =
@@ -1775,9 +1755,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       syncVersionSentBlocks: syncVersionSentBlocks == null && nullToAbsent
           ? const Value.absent()
           : Value(syncVersionSentBlocks),
-      syncVersionMatches: syncVersionMatches == null && nullToAbsent
-          ? const Value.absent()
-          : Value(syncVersionMatches),
       syncVersionAvailableProfileAttributes:
           syncVersionAvailableProfileAttributes == null && nullToAbsent
               ? const Value.absent()
@@ -1995,7 +1972,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<int?>(json['syncVersionReceivedBlocks']),
       syncVersionSentBlocks:
           serializer.fromJson<int?>(json['syncVersionSentBlocks']),
-      syncVersionMatches: serializer.fromJson<int?>(json['syncVersionMatches']),
       syncVersionAvailableProfileAttributes: serializer
           .fromJson<int?>(json['syncVersionAvailableProfileAttributes']),
       uuidPendingContentId0:
@@ -2125,7 +2101,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'syncVersionReceivedBlocks':
           serializer.toJson<int?>(syncVersionReceivedBlocks),
       'syncVersionSentBlocks': serializer.toJson<int?>(syncVersionSentBlocks),
-      'syncVersionMatches': serializer.toJson<int?>(syncVersionMatches),
       'syncVersionAvailableProfileAttributes':
           serializer.toJson<int?>(syncVersionAvailableProfileAttributes),
       'uuidPendingContentId0':
@@ -2236,7 +2211,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<int?> syncVersionProfile = const Value.absent(),
           Value<int?> syncVersionReceivedBlocks = const Value.absent(),
           Value<int?> syncVersionSentBlocks = const Value.absent(),
-          Value<int?> syncVersionMatches = const Value.absent(),
           Value<int?> syncVersionAvailableProfileAttributes =
               const Value.absent(),
           Value<ContentId?> uuidPendingContentId0 = const Value.absent(),
@@ -2344,9 +2318,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         syncVersionSentBlocks: syncVersionSentBlocks.present
             ? syncVersionSentBlocks.value
             : this.syncVersionSentBlocks,
-        syncVersionMatches: syncVersionMatches.present
-            ? syncVersionMatches.value
-            : this.syncVersionMatches,
         syncVersionAvailableProfileAttributes:
             syncVersionAvailableProfileAttributes.present
                 ? syncVersionAvailableProfileAttributes.value
@@ -2559,9 +2530,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       syncVersionSentBlocks: data.syncVersionSentBlocks.present
           ? data.syncVersionSentBlocks.value
           : this.syncVersionSentBlocks,
-      syncVersionMatches: data.syncVersionMatches.present
-          ? data.syncVersionMatches.value
-          : this.syncVersionMatches,
       syncVersionAvailableProfileAttributes:
           data.syncVersionAvailableProfileAttributes.present
               ? data.syncVersionAvailableProfileAttributes.value
@@ -2761,7 +2729,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('syncVersionProfile: $syncVersionProfile, ')
           ..write('syncVersionReceivedBlocks: $syncVersionReceivedBlocks, ')
           ..write('syncVersionSentBlocks: $syncVersionSentBlocks, ')
-          ..write('syncVersionMatches: $syncVersionMatches, ')
           ..write(
               'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
           ..write('uuidPendingContentId0: $uuidPendingContentId0, ')
@@ -2850,7 +2817,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         syncVersionProfile,
         syncVersionReceivedBlocks,
         syncVersionSentBlocks,
-        syncVersionMatches,
         syncVersionAvailableProfileAttributes,
         uuidPendingContentId0,
         uuidPendingContentId1,
@@ -2936,7 +2902,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.syncVersionProfile == this.syncVersionProfile &&
           other.syncVersionReceivedBlocks == this.syncVersionReceivedBlocks &&
           other.syncVersionSentBlocks == this.syncVersionSentBlocks &&
-          other.syncVersionMatches == this.syncVersionMatches &&
           other.syncVersionAvailableProfileAttributes ==
               this.syncVersionAvailableProfileAttributes &&
           other.uuidPendingContentId0 == this.uuidPendingContentId0 &&
@@ -3024,7 +2989,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<int?> syncVersionProfile;
   final Value<int?> syncVersionReceivedBlocks;
   final Value<int?> syncVersionSentBlocks;
-  final Value<int?> syncVersionMatches;
   final Value<int?> syncVersionAvailableProfileAttributes;
   final Value<ContentId?> uuidPendingContentId0;
   final Value<ContentId?> uuidPendingContentId1;
@@ -3099,7 +3063,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.syncVersionProfile = const Value.absent(),
     this.syncVersionReceivedBlocks = const Value.absent(),
     this.syncVersionSentBlocks = const Value.absent(),
-    this.syncVersionMatches = const Value.absent(),
     this.syncVersionAvailableProfileAttributes = const Value.absent(),
     this.uuidPendingContentId0 = const Value.absent(),
     this.uuidPendingContentId1 = const Value.absent(),
@@ -3175,7 +3138,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.syncVersionProfile = const Value.absent(),
     this.syncVersionReceivedBlocks = const Value.absent(),
     this.syncVersionSentBlocks = const Value.absent(),
-    this.syncVersionMatches = const Value.absent(),
     this.syncVersionAvailableProfileAttributes = const Value.absent(),
     this.uuidPendingContentId0 = const Value.absent(),
     this.uuidPendingContentId1 = const Value.absent(),
@@ -3251,7 +3213,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<int>? syncVersionProfile,
     Expression<int>? syncVersionReceivedBlocks,
     Expression<int>? syncVersionSentBlocks,
-    Expression<int>? syncVersionMatches,
     Expression<int>? syncVersionAvailableProfileAttributes,
     Expression<String>? uuidPendingContentId0,
     Expression<String>? uuidPendingContentId1,
@@ -3342,8 +3303,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'sync_version_received_blocks': syncVersionReceivedBlocks,
       if (syncVersionSentBlocks != null)
         'sync_version_sent_blocks': syncVersionSentBlocks,
-      if (syncVersionMatches != null)
-        'sync_version_matches': syncVersionMatches,
       if (syncVersionAvailableProfileAttributes != null)
         'sync_version_available_profile_attributes':
             syncVersionAvailableProfileAttributes,
@@ -3461,7 +3420,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<int?>? syncVersionProfile,
       Value<int?>? syncVersionReceivedBlocks,
       Value<int?>? syncVersionSentBlocks,
-      Value<int?>? syncVersionMatches,
       Value<int?>? syncVersionAvailableProfileAttributes,
       Value<ContentId?>? uuidPendingContentId0,
       Value<ContentId?>? uuidPendingContentId1,
@@ -3547,7 +3505,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           syncVersionReceivedBlocks ?? this.syncVersionReceivedBlocks,
       syncVersionSentBlocks:
           syncVersionSentBlocks ?? this.syncVersionSentBlocks,
-      syncVersionMatches: syncVersionMatches ?? this.syncVersionMatches,
       syncVersionAvailableProfileAttributes:
           syncVersionAvailableProfileAttributes ??
               this.syncVersionAvailableProfileAttributes,
@@ -3716,9 +3673,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (syncVersionSentBlocks.present) {
       map['sync_version_sent_blocks'] =
           Variable<int>(syncVersionSentBlocks.value);
-    }
-    if (syncVersionMatches.present) {
-      map['sync_version_matches'] = Variable<int>(syncVersionMatches.value);
     }
     if (syncVersionAvailableProfileAttributes.present) {
       map['sync_version_available_profile_attributes'] =
@@ -3977,7 +3931,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('syncVersionProfile: $syncVersionProfile, ')
           ..write('syncVersionReceivedBlocks: $syncVersionReceivedBlocks, ')
           ..write('syncVersionSentBlocks: $syncVersionSentBlocks, ')
-          ..write('syncVersionMatches: $syncVersionMatches, ')
           ..write(
               'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
           ..write('uuidPendingContentId0: $uuidPendingContentId0, ')

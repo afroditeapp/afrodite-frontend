@@ -145,7 +145,6 @@ class _ProfileGridState extends State<ProfileGrid> {
         });
       case ProfileUnblocked() ||
         ConversationChanged() ||
-        MatchesChanged() ||
         ReceivedLikeRemoved(): {}
     }
   }

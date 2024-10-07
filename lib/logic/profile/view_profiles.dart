@@ -119,7 +119,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
             emit(state.copyWith(isBlocked: true));
           }
         }
-        case ReceivedLikeRemoved() || MatchesChanged(): {
+        case ReceivedLikeRemoved(): {
           final ProfileActionState action = await resolveProfileAction(state.profile.uuid);
           emit(state.copyWith(
             profileActionState: action,

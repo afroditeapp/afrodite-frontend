@@ -57,7 +57,6 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
         ProfileBlocked() ||
         ProfileFavoriteStatusChange() ||
         ConversationChanged() ||
-        MatchesChanged() ||
         ReloadMainProfileView() ||
         ReceivedLikeRemoved(): {}
     }

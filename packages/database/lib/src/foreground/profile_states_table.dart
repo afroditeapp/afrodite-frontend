@@ -197,20 +197,6 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
     });
   }
 
-  Future<void> setMatchStatusList(api.AllMatchesPage matchesPage) async {
-    await transaction(() async {
-      // Clear
-      await update(profileStates)
-        .write(const ProfileStatesCompanion(isInMatches: Value(null)));
-
-      for (final a in matchesPage.profiles) {
-        await setMatchStatus(a, true);
-      }
-
-      await db.daoSyncVersions.updateSyncVersionMatches(matchesPage.version);
-    });
-  }
-
   Future<void> setReceivedLikeGridStatusList(List<AccountId>? accounts, bool value, {bool clear = false}) async {
     await transaction(() async {
       if (clear) {
@@ -264,9 +250,6 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
 
   Future<List<AccountId>> getReceivedLikesList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInReceivedLikes);
-
-  Future<List<AccountId>> getSentBlocksList(int startIndex, int limit) =>
-    _getProfilesList(startIndex, limit, (t) => t.isInSentBlocks);
 
   Future<List<AccountId>> getSentLikesList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInSentLikes);
