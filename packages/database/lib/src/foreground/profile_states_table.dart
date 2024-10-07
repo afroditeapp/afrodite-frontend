@@ -22,7 +22,6 @@ class ProfileStates extends Table {
   // If column is not null, then it is in the specific group.
   // The time is the time when the profile was added to the group.
   IntColumn get isInFavorites => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
-  IntColumn get isInReceivedBlocks => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInReceivedLikes => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInSentLikes => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInMatches => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
@@ -163,21 +162,6 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
       for (final a in accounts ?? <AccountId>[]) {
         await setFavoriteStatus(a, value);
       }
-    });
-  }
-
-
-  Future<void> setReceivedBlockStatusList(api.ReceivedBlocksPage receivedBlocs) async {
-    await transaction(() async {
-      // Clear
-      await update(profileStates)
-        .write(const ProfileStatesCompanion(isInReceivedBlocks: Value(null)));
-
-      for (final a in receivedBlocs.profiles) {
-        await setReceivedBlockStatus(a, true);
-      }
-
-      await db.daoSyncVersions.updateSyncVersionReceivedBlocks(receivedBlocs.version);
     });
   }
 

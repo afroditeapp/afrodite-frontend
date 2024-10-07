@@ -168,20 +168,19 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     } else if (event.event == EventType.accountSyncVersionChanged && accountSyncVersion != null) {
       _saveAccountSyncVersion(accountSyncVersion);
     } else if (event.event == EventType.latestViewedMessageChanged && latestViewedMessageChanged != null) {
-      // TODO
-      log.warning("Unhandled event");
+      log.finest("Ignoring latest viewed message changed event");
     } else if (event.event == EventType.contentProcessingStateChanged && contentProcessingEvent != null) {
       _contentProcessingStateChanges.add(contentProcessingEvent);
     } else if (event.event == EventType.receivedLikesChanged) {
       chat.receivedLikesCountRefresh();
     } else if (event.event == EventType.receivedBlocksChanged) {
-      chat.receivedBlocksRefresh();
+      log.finest("Ignoring received blocks changed event");
     } else if (event.event == EventType.sentLikesChanged) {
-      log.info("Ignoring sent likes changed event");
+      log.finest("Ignoring sent likes changed event");
     } else if (event.event == EventType.sentBlocksChanged) {
       chat.sentBlocksRefresh();
     } else if (event.event == EventType.matchesChanged) {
-      log.info("Ignoring matches changed event");
+      log.finest("Ignoring matches changed event");
     } else if (event.event == EventType.newMessageReceived) {
       chat.receiveNewMessages();
     } else if (event.event == EventType.availableProfileAttributesChanged) {

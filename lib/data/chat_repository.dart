@@ -262,26 +262,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     sentBlocksIterator.reset();
   }
 
-  Future<void> receivedBlocksRefresh() async {
-    final receivedBlocks = await api.chat((api) => api.getReceivedBlocks()).ok();
-    if (receivedBlocks != null) {
-      final currentReceivedBlocks = await db.accountData((db) => db.daoProfileStates.getReceivedBlocksListAll()).ok() ?? [];
-      await db.accountAction((db) => db.daoProfileStates.setReceivedBlockStatusList(receivedBlocks));
-
-      for (final account in receivedBlocks.profiles) {
-        if (!currentReceivedBlocks.contains(account)) {
-          await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatus(account, false));
-          await db.accountAction((db) => db.daoProfileStates.setMatchStatus(account, false));
-          await db.accountAction((db) => db.daoProfileStates.setSentLikeStatus(account, false));
-          // Perhaps if both users blocks same time, the same account could be
-          // in both sent and received blocks. This handles that case.
-          await db.accountAction((db) => db.daoConversationList.setSentBlockStatus(account, false));
-          profile.sendProfileChange(ProfileBlocked(account));
-        }
-      }
-    }
-  }
-
   Future<void> sentBlocksRefresh() async {
     final sentBlocks = await api.chat((api) => api.getSentBlocks()).ok();
     if (sentBlocks != null) {

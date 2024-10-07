@@ -2,7 +2,6 @@
 import 'package:openapi/api.dart' show
   AccountSyncVersion,
   ProfileSyncVersion,
-  ReceivedBlocksSyncVersion,
   SentBlocksSyncVersion,
   ProfileAttributesSyncVersion;
 
@@ -30,15 +29,6 @@ class DaoSyncVersions extends DatabaseAccessor<AccountDatabase> with _$DaoSyncVe
       AccountCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
         syncVersionProfile: Value(value.version),
-      ),
-    );
-  }
-
-  Future<void> updateSyncVersionReceivedBlocks(ReceivedBlocksSyncVersion value) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        syncVersionReceivedBlocks: Value(value.version),
       ),
     );
   }
