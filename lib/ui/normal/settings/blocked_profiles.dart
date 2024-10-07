@@ -94,13 +94,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
   }
 
   Widget page(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        // This might be disposed after resetProfileIterator completes.
-        _pagingController?.refresh();
-      },
-      child: grid(context),
-    );
+    return grid(context);
   }
 
   Widget grid(BuildContext context) {
