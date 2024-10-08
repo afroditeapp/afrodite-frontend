@@ -15,9 +15,11 @@ import 'package:pihka_frontend/model/freezed/logic/chat/conversation_list_bloc.d
 import 'package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_row.dart';
+import 'package:pihka_frontend/ui/normal/chat/select_match.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 import 'package:pihka_frontend/ui_utils/scroll_controller.dart';
@@ -60,7 +62,7 @@ class _ChatViewState extends State<ChatView> {
   int? initialItemCount;
   UnmodifiableList<AccountId> conversations = const UnmodifiableList<AccountId>.empty();
 
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+  final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey<SliverAnimatedListState>();
 
   /// Avoid UI flickering when conversation animation runs
   final RemoveOldestCache<AccountId, ConversationData> dataCache =
@@ -178,6 +180,23 @@ class _ChatViewState extends State<ChatView> {
               return Stack(
                 children: [
                   grid(context),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: FloatingActionButton(
+                        onPressed: () async {
+                          final entry = await openSelectMatchView(context);
+                          if (entry == null || !context.mounted) {
+                            return;
+                          }
+                          openConversationScreen(context, entry);
+                        },
+                        tooltip: context.strings.chat_list_screen_new_chat,
+                        child: const Icon(Icons.add),
+                      ),
+                    ),
+                  ),
                   if (conversations.isEmpty) buildListReplacementMessage(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -201,24 +220,29 @@ class _ChatViewState extends State<ChatView> {
   }
 
   Widget grid(BuildContext context) {
-    return AnimatedList(
-      key: _listKey,
+    return CustomScrollView(
       controller: _scrollController,
-      initialItemCount: initialItemCount!,
-      itemBuilder: (context, index, animation) {
-        return SizeTransition(
-          sizeFactor: animation,
-          child: FadeTransition(
-            opacity: animation,
-            child: itemWidgetForAnimation(
-              context,
-              // It is not sure is getAtOrNull needed or not
-              conversations.getAtOrNull(index),
-              allowOpenConversation: true,
-            ),
-          )
-        );
-      },
+      slivers: [
+        SliverAnimatedList(
+          key: _listKey,
+          initialItemCount: initialItemCount!,
+          itemBuilder: (context, index, animation) {
+            return SizeTransition(
+              sizeFactor: animation,
+              child: FadeTransition(
+                opacity: animation,
+                child: itemWidgetForAnimation(
+                  context,
+                  // It is not sure is getAtOrNull needed or not
+                  conversations.getAtOrNull(index),
+                  allowOpenConversation: true,
+                ),
+              )
+            );
+          },
+        ),
+        const SliverToBoxAdapter(child: SizedBox(height: FLOATING_ACTION_BUTTON_EMPTY_AREA)),
+      ],
     );
   }
 

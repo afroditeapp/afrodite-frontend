@@ -363,6 +363,7 @@ Widget profileEntryWidgetStream(
   AccountDatabaseManager db,
   {
     bool showNewLikeMarker = false,
+    void Function(BuildContext)? overrideOnTap,
   }
 ) {
   return StreamBuilder(
@@ -385,6 +386,9 @@ Widget profileEntryWidgetStream(
               color: Colors.transparent,
               child: InkWell(
                 onTap: () {
+                  if (overrideOnTap != null) {
+                    return overrideOnTap(context);
+                  }
                   // Hero animation is disabled currently as UI looks better
                   // without it.
                   // openProfileView(context, item.profile, heroTag: item.heroTag);

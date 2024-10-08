@@ -28,6 +28,7 @@ class ProfileStates extends Table {
 
   IntColumn get isInProfileGrid => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInReceivedLikesGrid => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  IntColumn get isInMatchesGrid => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 }
 
 @DriftAccessor(tables: [ProfileStates])
@@ -136,6 +137,23 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
     );
   }
 
+  Future<void> setMatchesGridStatus(
+    AccountId accountId,
+    bool value,
+  ) async {
+    await into(profileStates).insert(
+      ProfileStatesCompanion.insert(
+        uuidAccountId: accountId,
+        isInMatchesGrid: _toGroupValue(value),
+      ),
+      onConflict: DoUpdate((old) => ProfileStatesCompanion(
+        isInMatchesGrid: _toGroupValue(value),
+      ),
+        target: [profileStates.uuidAccountId]
+      ),
+    );
+  }
+
   Future<void> setFavoriteStatusList(List<AccountId>? accounts, bool value, {bool clear = false}) async {
     await transaction(() async {
       if (clear) {
@@ -176,6 +194,18 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
     });
   }
 
+  Future<void> setMatchesGridStatusList(List<AccountId>? accounts, bool value, {bool clear = false}) async {
+    await transaction(() async {
+      if (clear) {
+        await update(profileStates)
+          .write(const ProfileStatesCompanion(isInMatchesGrid: Value(null)));
+      }
+      for (final a in accounts ?? <AccountId>[]) {
+        await setMatchesGridStatus(a, value);
+      }
+    });
+  }
+
   Future<void> setProfileGridStatusList(List<AccountId>? accounts, bool value, {bool clear = false}) async {
     await transaction(() async {
       if (clear) {
@@ -206,6 +236,9 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
   Future<bool> isInReceivedLikesGrid(AccountId accountId) =>
     _existenceCheck(accountId, (t) => t.isInReceivedLikesGrid.isNotNull());
 
+  Future<bool> isInMatchesGrid(AccountId accountId) =>
+    _existenceCheck(accountId, (t) => t.isInMatchesGrid.isNotNull());
+
   Future<List<AccountId>> getFavoritesList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInFavorites);
 
@@ -220,6 +253,9 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
 
   Future<List<AccountId>> getReceivedLikesGridList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInReceivedLikesGrid);
+
+  Future<List<AccountId>> getMatchesGridList(int startIndex, int limit) =>
+    _getProfilesList(startIndex, limit, (t) => t.isInMatchesGrid);
 
   Future<List<AccountId>> _getProfilesList(int? startIndex, int? limit, GeneratedColumnWithTypeConverter<UtcDateTime?, int> Function($ProfileStatesTable) getter) async {
     final q = select(profileStates)

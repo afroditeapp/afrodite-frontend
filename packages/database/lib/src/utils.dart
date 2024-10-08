@@ -291,6 +291,20 @@ class ReceivedLikesIteratorSessionIdConverter extends TypeConverter<ReceivedLike
   }
 }
 
+class MatchesIteratorSessionIdConverter extends TypeConverter<MatchesIteratorSessionId, String> {
+  const MatchesIteratorSessionIdConverter();
+
+  @override
+  MatchesIteratorSessionId fromSql(fromDb) {
+    return MatchesIteratorSessionId(id: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.id;
+  }
+}
+
 class LastSeenTimeFilterConverter extends TypeConverter<LastSeenTimeFilter, int> {
   const LastSeenTimeFilterConverter();
 

@@ -78,6 +78,15 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           type: DriftSqlType.string, requiredDuringInsert: false)
       .withConverter<ReceivedLikesIteratorSessionId?>(
           $AccountTable.$converterreceivedLikesIteratorSessionId);
+  static const VerificationMeta _matchesIteratorSessionIdMeta =
+      const VerificationMeta('matchesIteratorSessionId');
+  @override
+  late final GeneratedColumnWithTypeConverter<MatchesIteratorSessionId?, String>
+      matchesIteratorSessionId = GeneratedColumn<String>(
+              'matches_iterator_session_id', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<MatchesIteratorSessionId?>(
+              $AccountTable.$convertermatchesIteratorSessionId);
   static const VerificationMeta _clientIdMeta =
       const VerificationMeta('clientId');
   @override
@@ -579,6 +588,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         profileFilterFavorites,
         profileIteratorSessionId,
         receivedLikesIteratorSessionId,
+        matchesIteratorSessionId,
         clientId,
         initialSyncDoneLoginRepository,
         initialSyncDoneAccountRepository,
@@ -671,6 +681,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         _profileIteratorSessionIdMeta, const VerificationResult.success());
     context.handle(_receivedLikesIteratorSessionIdMeta,
         const VerificationResult.success());
+    context.handle(
+        _matchesIteratorSessionIdMeta, const VerificationResult.success());
     context.handle(_clientIdMeta, const VerificationResult.success());
     if (data.containsKey('initial_sync_done_login_repository')) {
       context.handle(
@@ -982,6 +994,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           .$converterreceivedLikesIteratorSessionId
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}received_likes_iterator_session_id'])),
+      matchesIteratorSessionId: $AccountTable.$convertermatchesIteratorSessionId
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}matches_iterator_session_id'])),
       clientId: $AccountTable.$converterclientId.fromSql(attachedDatabase
           .typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}client_id'])),
@@ -1185,6 +1200,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       $converterreceivedLikesIteratorSessionId =
       const NullAwareTypeConverter.wrap(
           ReceivedLikesIteratorSessionIdConverter());
+  static TypeConverter<MatchesIteratorSessionId?, String?>
+      $convertermatchesIteratorSessionId =
+      const NullAwareTypeConverter.wrap(MatchesIteratorSessionIdConverter());
   static TypeConverter<ClientId?, int?> $converterclientId =
       const NullAwareTypeConverter.wrap(ClientIdConverter());
   static TypeConverter<ContentId?, String?> $converteruuidPendingContentId0 =
@@ -1257,6 +1275,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final bool profileFilterFavorites;
   final IteratorSessionId? profileIteratorSessionId;
   final ReceivedLikesIteratorSessionId? receivedLikesIteratorSessionId;
+  final MatchesIteratorSessionId? matchesIteratorSessionId;
   final ClientId? clientId;
   final bool initialSyncDoneLoginRepository;
   final bool initialSyncDoneAccountRepository;
@@ -1329,6 +1348,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       required this.profileFilterFavorites,
       this.profileIteratorSessionId,
       this.receivedLikesIteratorSessionId,
+      this.matchesIteratorSessionId,
       this.clientId,
       required this.initialSyncDoneLoginRepository,
       required this.initialSyncDoneAccountRepository,
@@ -1423,6 +1443,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['received_likes_iterator_session_id'] = Variable<String>($AccountTable
           .$converterreceivedLikesIteratorSessionId
           .toSql(receivedLikesIteratorSessionId));
+    }
+    if (!nullToAbsent || matchesIteratorSessionId != null) {
+      map['matches_iterator_session_id'] = Variable<String>($AccountTable
+          .$convertermatchesIteratorSessionId
+          .toSql(matchesIteratorSessionId));
     }
     if (!nullToAbsent || clientId != null) {
       map['client_id'] =
@@ -1691,6 +1716,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           receivedLikesIteratorSessionId == null && nullToAbsent
               ? const Value.absent()
               : Value(receivedLikesIteratorSessionId),
+      matchesIteratorSessionId: matchesIteratorSessionId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(matchesIteratorSessionId),
       clientId: clientId == null && nullToAbsent
           ? const Value.absent()
           : Value(clientId),
@@ -1905,6 +1933,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       receivedLikesIteratorSessionId:
           serializer.fromJson<ReceivedLikesIteratorSessionId?>(
               json['receivedLikesIteratorSessionId']),
+      matchesIteratorSessionId: serializer.fromJson<MatchesIteratorSessionId?>(
+          json['matchesIteratorSessionId']),
       clientId: serializer.fromJson<ClientId?>(json['clientId']),
       initialSyncDoneLoginRepository:
           serializer.fromJson<bool>(json['initialSyncDoneLoginRepository']),
@@ -2031,6 +2061,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'receivedLikesIteratorSessionId':
           serializer.toJson<ReceivedLikesIteratorSessionId?>(
               receivedLikesIteratorSessionId),
+      'matchesIteratorSessionId': serializer
+          .toJson<MatchesIteratorSessionId?>(matchesIteratorSessionId),
       'clientId': serializer.toJson<ClientId?>(clientId),
       'initialSyncDoneLoginRepository':
           serializer.toJson<bool>(initialSyncDoneLoginRepository),
@@ -2144,6 +2176,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
               const Value.absent(),
           Value<ReceivedLikesIteratorSessionId?>
               receivedLikesIteratorSessionId = const Value.absent(),
+          Value<MatchesIteratorSessionId?> matchesIteratorSessionId =
+              const Value.absent(),
           Value<ClientId?> clientId = const Value.absent(),
           bool? initialSyncDoneLoginRepository,
           bool? initialSyncDoneAccountRepository,
@@ -2236,6 +2270,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         receivedLikesIteratorSessionId: receivedLikesIteratorSessionId.present
             ? receivedLikesIteratorSessionId.value
             : this.receivedLikesIteratorSessionId,
+        matchesIteratorSessionId: matchesIteratorSessionId.present
+            ? matchesIteratorSessionId.value
+            : this.matchesIteratorSessionId,
         clientId: clientId.present ? clientId.value : this.clientId,
         initialSyncDoneLoginRepository: initialSyncDoneLoginRepository ??
             this.initialSyncDoneLoginRepository,
@@ -2433,6 +2470,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           data.receivedLikesIteratorSessionId.present
               ? data.receivedLikesIteratorSessionId.value
               : this.receivedLikesIteratorSessionId,
+      matchesIteratorSessionId: data.matchesIteratorSessionId.present
+          ? data.matchesIteratorSessionId.value
+          : this.matchesIteratorSessionId,
       clientId: data.clientId.present ? data.clientId.value : this.clientId,
       initialSyncDoneLoginRepository:
           data.initialSyncDoneLoginRepository.present
@@ -2643,6 +2683,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('profileIteratorSessionId: $profileIteratorSessionId, ')
           ..write(
               'receivedLikesIteratorSessionId: $receivedLikesIteratorSessionId, ')
+          ..write('matchesIteratorSessionId: $matchesIteratorSessionId, ')
           ..write('clientId: $clientId, ')
           ..write(
               'initialSyncDoneLoginRepository: $initialSyncDoneLoginRepository, ')
@@ -2734,6 +2775,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileFilterFavorites,
         profileIteratorSessionId,
         receivedLikesIteratorSessionId,
+        matchesIteratorSessionId,
         clientId,
         initialSyncDoneLoginRepository,
         initialSyncDoneAccountRepository,
@@ -2812,6 +2854,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.profileIteratorSessionId == this.profileIteratorSessionId &&
           other.receivedLikesIteratorSessionId ==
               this.receivedLikesIteratorSessionId &&
+          other.matchesIteratorSessionId == this.matchesIteratorSessionId &&
           other.clientId == this.clientId &&
           other.initialSyncDoneLoginRepository ==
               this.initialSyncDoneLoginRepository &&
@@ -2902,6 +2945,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<bool> profileFilterFavorites;
   final Value<IteratorSessionId?> profileIteratorSessionId;
   final Value<ReceivedLikesIteratorSessionId?> receivedLikesIteratorSessionId;
+  final Value<MatchesIteratorSessionId?> matchesIteratorSessionId;
   final Value<ClientId?> clientId;
   final Value<bool> initialSyncDoneLoginRepository;
   final Value<bool> initialSyncDoneAccountRepository;
@@ -2974,6 +3018,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileFilterFavorites = const Value.absent(),
     this.profileIteratorSessionId = const Value.absent(),
     this.receivedLikesIteratorSessionId = const Value.absent(),
+    this.matchesIteratorSessionId = const Value.absent(),
     this.clientId = const Value.absent(),
     this.initialSyncDoneLoginRepository = const Value.absent(),
     this.initialSyncDoneAccountRepository = const Value.absent(),
@@ -3047,6 +3092,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileFilterFavorites = const Value.absent(),
     this.profileIteratorSessionId = const Value.absent(),
     this.receivedLikesIteratorSessionId = const Value.absent(),
+    this.matchesIteratorSessionId = const Value.absent(),
     this.clientId = const Value.absent(),
     this.initialSyncDoneLoginRepository = const Value.absent(),
     this.initialSyncDoneAccountRepository = const Value.absent(),
@@ -3120,6 +3166,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<bool>? profileFilterFavorites,
     Expression<String>? profileIteratorSessionId,
     Expression<String>? receivedLikesIteratorSessionId,
+    Expression<String>? matchesIteratorSessionId,
     Expression<int>? clientId,
     Expression<bool>? initialSyncDoneLoginRepository,
     Expression<bool>? initialSyncDoneAccountRepository,
@@ -3197,6 +3244,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'profile_iterator_session_id': profileIteratorSessionId,
       if (receivedLikesIteratorSessionId != null)
         'received_likes_iterator_session_id': receivedLikesIteratorSessionId,
+      if (matchesIteratorSessionId != null)
+        'matches_iterator_session_id': matchesIteratorSessionId,
       if (clientId != null) 'client_id': clientId,
       if (initialSyncDoneLoginRepository != null)
         'initial_sync_done_login_repository': initialSyncDoneLoginRepository,
@@ -3321,6 +3370,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<bool>? profileFilterFavorites,
       Value<IteratorSessionId?>? profileIteratorSessionId,
       Value<ReceivedLikesIteratorSessionId?>? receivedLikesIteratorSessionId,
+      Value<MatchesIteratorSessionId?>? matchesIteratorSessionId,
       Value<ClientId?>? clientId,
       Value<bool>? initialSyncDoneLoginRepository,
       Value<bool>? initialSyncDoneAccountRepository,
@@ -3397,6 +3447,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           profileIteratorSessionId ?? this.profileIteratorSessionId,
       receivedLikesIteratorSessionId:
           receivedLikesIteratorSessionId ?? this.receivedLikesIteratorSessionId,
+      matchesIteratorSessionId:
+          matchesIteratorSessionId ?? this.matchesIteratorSessionId,
       clientId: clientId ?? this.clientId,
       initialSyncDoneLoginRepository:
           initialSyncDoneLoginRepository ?? this.initialSyncDoneLoginRepository,
@@ -3540,6 +3592,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['received_likes_iterator_session_id'] = Variable<String>($AccountTable
           .$converterreceivedLikesIteratorSessionId
           .toSql(receivedLikesIteratorSessionId.value));
+    }
+    if (matchesIteratorSessionId.present) {
+      map['matches_iterator_session_id'] = Variable<String>($AccountTable
+          .$convertermatchesIteratorSessionId
+          .toSql(matchesIteratorSessionId.value));
     }
     if (clientId.present) {
       map['client_id'] =
@@ -3813,6 +3870,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('profileIteratorSessionId: $profileIteratorSessionId, ')
           ..write(
               'receivedLikesIteratorSessionId: $receivedLikesIteratorSessionId, ')
+          ..write('matchesIteratorSessionId: $matchesIteratorSessionId, ')
           ..write('clientId: $clientId, ')
           ..write(
               'initialSyncDoneLoginRepository: $initialSyncDoneLoginRepository, ')
@@ -5131,6 +5189,15 @@ class $ProfileStatesTable extends ProfileStates
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $ProfileStatesTable.$converterisInReceivedLikesGrid);
+  static const VerificationMeta _isInMatchesGridMeta =
+      const VerificationMeta('isInMatchesGrid');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+      isInMatchesGrid = GeneratedColumn<int>(
+              'is_in_matches_grid', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $ProfileStatesTable.$converterisInMatchesGrid);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -5140,7 +5207,8 @@ class $ProfileStatesTable extends ProfileStates
         isInSentLikes,
         isInMatches,
         isInProfileGrid,
-        isInReceivedLikesGrid
+        isInReceivedLikesGrid,
+        isInMatchesGrid
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -5163,6 +5231,7 @@ class $ProfileStatesTable extends ProfileStates
     context.handle(_isInProfileGridMeta, const VerificationResult.success());
     context.handle(
         _isInReceivedLikesGridMeta, const VerificationResult.success());
+    context.handle(_isInMatchesGridMeta, const VerificationResult.success());
     return context;
   }
 
@@ -5195,6 +5264,9 @@ class $ProfileStatesTable extends ProfileStates
       isInReceivedLikesGrid: $ProfileStatesTable.$converterisInReceivedLikesGrid
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
               data['${effectivePrefix}is_in_received_likes_grid'])),
+      isInMatchesGrid: $ProfileStatesTable.$converterisInMatchesGrid.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.int, data['${effectivePrefix}is_in_matches_grid'])),
     );
   }
 
@@ -5217,6 +5289,8 @@ class $ProfileStatesTable extends ProfileStates
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInReceivedLikesGrid =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterisInMatchesGrid =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
 
 class ProfileState extends DataClass implements Insertable<ProfileState> {
@@ -5228,6 +5302,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
   final UtcDateTime? isInMatches;
   final UtcDateTime? isInProfileGrid;
   final UtcDateTime? isInReceivedLikesGrid;
+  final UtcDateTime? isInMatchesGrid;
   const ProfileState(
       {required this.id,
       required this.uuidAccountId,
@@ -5236,7 +5311,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       this.isInSentLikes,
       this.isInMatches,
       this.isInProfileGrid,
-      this.isInReceivedLikesGrid});
+      this.isInReceivedLikesGrid,
+      this.isInMatchesGrid});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -5271,6 +5347,10 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           .$converterisInReceivedLikesGrid
           .toSql(isInReceivedLikesGrid));
     }
+    if (!nullToAbsent || isInMatchesGrid != null) {
+      map['is_in_matches_grid'] = Variable<int>(
+          $ProfileStatesTable.$converterisInMatchesGrid.toSql(isInMatchesGrid));
+    }
     return map;
   }
 
@@ -5296,6 +5376,9 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInReceivedLikesGrid: isInReceivedLikesGrid == null && nullToAbsent
           ? const Value.absent()
           : Value(isInReceivedLikesGrid),
+      isInMatchesGrid: isInMatchesGrid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isInMatchesGrid),
     );
   }
 
@@ -5314,6 +5397,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           serializer.fromJson<UtcDateTime?>(json['isInProfileGrid']),
       isInReceivedLikesGrid:
           serializer.fromJson<UtcDateTime?>(json['isInReceivedLikesGrid']),
+      isInMatchesGrid:
+          serializer.fromJson<UtcDateTime?>(json['isInMatchesGrid']),
     );
   }
   @override
@@ -5329,6 +5414,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       'isInProfileGrid': serializer.toJson<UtcDateTime?>(isInProfileGrid),
       'isInReceivedLikesGrid':
           serializer.toJson<UtcDateTime?>(isInReceivedLikesGrid),
+      'isInMatchesGrid': serializer.toJson<UtcDateTime?>(isInMatchesGrid),
     };
   }
 
@@ -5340,7 +5426,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           Value<UtcDateTime?> isInSentLikes = const Value.absent(),
           Value<UtcDateTime?> isInMatches = const Value.absent(),
           Value<UtcDateTime?> isInProfileGrid = const Value.absent(),
-          Value<UtcDateTime?> isInReceivedLikesGrid = const Value.absent()}) =>
+          Value<UtcDateTime?> isInReceivedLikesGrid = const Value.absent(),
+          Value<UtcDateTime?> isInMatchesGrid = const Value.absent()}) =>
       ProfileState(
         id: id ?? this.id,
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -5358,6 +5445,9 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
         isInReceivedLikesGrid: isInReceivedLikesGrid.present
             ? isInReceivedLikesGrid.value
             : this.isInReceivedLikesGrid,
+        isInMatchesGrid: isInMatchesGrid.present
+            ? isInMatchesGrid.value
+            : this.isInMatchesGrid,
       );
   ProfileState copyWithCompanion(ProfileStatesCompanion data) {
     return ProfileState(
@@ -5382,6 +5472,9 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInReceivedLikesGrid: data.isInReceivedLikesGrid.present
           ? data.isInReceivedLikesGrid.value
           : this.isInReceivedLikesGrid,
+      isInMatchesGrid: data.isInMatchesGrid.present
+          ? data.isInMatchesGrid.value
+          : this.isInMatchesGrid,
     );
   }
 
@@ -5395,7 +5488,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           ..write('isInSentLikes: $isInSentLikes, ')
           ..write('isInMatches: $isInMatches, ')
           ..write('isInProfileGrid: $isInProfileGrid, ')
-          ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid')
+          ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid, ')
+          ..write('isInMatchesGrid: $isInMatchesGrid')
           ..write(')'))
         .toString();
   }
@@ -5409,7 +5503,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInSentLikes,
       isInMatches,
       isInProfileGrid,
-      isInReceivedLikesGrid);
+      isInReceivedLikesGrid,
+      isInMatchesGrid);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -5421,7 +5516,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           other.isInSentLikes == this.isInSentLikes &&
           other.isInMatches == this.isInMatches &&
           other.isInProfileGrid == this.isInProfileGrid &&
-          other.isInReceivedLikesGrid == this.isInReceivedLikesGrid);
+          other.isInReceivedLikesGrid == this.isInReceivedLikesGrid &&
+          other.isInMatchesGrid == this.isInMatchesGrid);
 }
 
 class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
@@ -5433,6 +5529,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   final Value<UtcDateTime?> isInMatches;
   final Value<UtcDateTime?> isInProfileGrid;
   final Value<UtcDateTime?> isInReceivedLikesGrid;
+  final Value<UtcDateTime?> isInMatchesGrid;
   const ProfileStatesCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -5442,6 +5539,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     this.isInMatches = const Value.absent(),
     this.isInProfileGrid = const Value.absent(),
     this.isInReceivedLikesGrid = const Value.absent(),
+    this.isInMatchesGrid = const Value.absent(),
   });
   ProfileStatesCompanion.insert({
     this.id = const Value.absent(),
@@ -5452,6 +5550,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     this.isInMatches = const Value.absent(),
     this.isInProfileGrid = const Value.absent(),
     this.isInReceivedLikesGrid = const Value.absent(),
+    this.isInMatchesGrid = const Value.absent(),
   }) : uuidAccountId = Value(uuidAccountId);
   static Insertable<ProfileState> custom({
     Expression<int>? id,
@@ -5462,6 +5561,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     Expression<int>? isInMatches,
     Expression<int>? isInProfileGrid,
     Expression<int>? isInReceivedLikesGrid,
+    Expression<int>? isInMatchesGrid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -5473,6 +5573,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       if (isInProfileGrid != null) 'is_in_profile_grid': isInProfileGrid,
       if (isInReceivedLikesGrid != null)
         'is_in_received_likes_grid': isInReceivedLikesGrid,
+      if (isInMatchesGrid != null) 'is_in_matches_grid': isInMatchesGrid,
     });
   }
 
@@ -5484,7 +5585,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       Value<UtcDateTime?>? isInSentLikes,
       Value<UtcDateTime?>? isInMatches,
       Value<UtcDateTime?>? isInProfileGrid,
-      Value<UtcDateTime?>? isInReceivedLikesGrid}) {
+      Value<UtcDateTime?>? isInReceivedLikesGrid,
+      Value<UtcDateTime?>? isInMatchesGrid}) {
     return ProfileStatesCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -5495,6 +5597,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       isInProfileGrid: isInProfileGrid ?? this.isInProfileGrid,
       isInReceivedLikesGrid:
           isInReceivedLikesGrid ?? this.isInReceivedLikesGrid,
+      isInMatchesGrid: isInMatchesGrid ?? this.isInMatchesGrid,
     );
   }
 
@@ -5538,6 +5641,11 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
           .$converterisInReceivedLikesGrid
           .toSql(isInReceivedLikesGrid.value));
     }
+    if (isInMatchesGrid.present) {
+      map['is_in_matches_grid'] = Variable<int>($ProfileStatesTable
+          .$converterisInMatchesGrid
+          .toSql(isInMatchesGrid.value));
+    }
     return map;
   }
 
@@ -5551,7 +5659,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
           ..write('isInSentLikes: $isInSentLikes, ')
           ..write('isInMatches: $isInMatches, ')
           ..write('isInProfileGrid: $isInProfileGrid, ')
-          ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid')
+          ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid, ')
+          ..write('isInMatchesGrid: $isInMatchesGrid')
           ..write(')'))
         .toString();
   }

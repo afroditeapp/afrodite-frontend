@@ -105,9 +105,21 @@
   "@camera_screen_take_photo_error": {
     "description": "Snackbar error text displayed when taking photo fails"
   },
+  "chat_list_screen_match_loading_failed": "Match loading failed",
+  "@chat_list_screen_match_loading_failed": {
+    "description": "Error text displayed when match loading fails"
+  },
+  "chat_list_screen_new_chat": "New chat",
+  "@chat_list_screen_new_chat": {
+    "description": "Floating action button tooltip for new chat action"
+  },
   "chat_list_screen_no_chats_found": "No chats found",
   "@chat_list_screen_no_chats_found": {
     "description": "Info text displayed when there is no chats"
+  },
+  "chat_list_screen_no_matches_found": "No matches found",
+  "@chat_list_screen_no_matches_found": {
+    "description": "Info text displayed when no matches are found"
   },
   "chat_list_screen_title": "Chats",
   "@chat_list_screen_title": {
@@ -1018,6 +1030,10 @@
   "select_content_screen_title": "Select image",
   "@select_content_screen_title": {
     "description": "Title for select content screen"
+  },
+  "select_match_screen_title": "Select match",
+  "@select_match_screen_title": {
+    "description": "Title for select match screen"
   },
   "settings_screen_title": "Settings",
   "@settings_screen_title": {

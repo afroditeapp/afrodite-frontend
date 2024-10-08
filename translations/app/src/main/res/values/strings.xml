@@ -284,6 +284,12 @@
     <string name="chat_list_screen_title" description="Title for chat list screen">Chats</string>
     <string name="chat_list_screen_no_chats_found" description="Info text displayed when there is no chats">No chats found</string>
     <string name="chat_list_screen_unread_message" description="Conversation status text for unread message">New message</string>
+    <string name="chat_list_screen_new_chat" description="Floating action button tooltip for new chat action">New chat</string>
+
+    <!-- Select match screen -->
+    <string name="select_match_screen_title" description="Title for select match screen">Select match</string>
+    <string name="chat_list_screen_match_loading_failed" description="Error text displayed when match loading fails">Match loading failed</string>
+    <string name="chat_list_screen_no_matches_found" description="Info text displayed when no matches are found">No matches found</string>
 
     <!-- Conversation screen -->
     <string name="conversation_screen_profile_blocked" description="Snackbar text displayed when profile blocking is successful">Profile was blocked</string>

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/api/api_manager.dart';
+import 'package:pihka_frontend/data/chat/matches_database_iterator.dart';
 import 'package:pihka_frontend/data/chat/received_likes_database_iterator.dart';
 import 'package:pihka_frontend/data/media_repository.dart';
 import 'package:pihka_frontend/data/profile/profile_downloader.dart';
@@ -307,5 +308,70 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
   Future<void> setDbVisibility(AccountId id, bool visibility) async {
     await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatus(id, true));
     await db.accountAction((db) => db.daoProfileStates.setReceivedLikeGridStatus(id, true));
+  }
+}
+
+
+class MatchesOnlineIteratorIo extends OnlineIteratorIo {
+  final AccountDatabaseManager db;
+  final ApiManager api;
+  IteratorType? iteratorValue;
+  MatchesIteratorSessionId? currentSessionId;
+
+  MatchesOnlineIteratorIo(this.db, this.api);
+
+  @override
+  IteratorType? get databaseIterator => iteratorValue;
+
+  @override
+  void resetDatabaseIterator() {
+    iteratorValue = MatchesDatabaseIterator(db: db);
+  }
+
+  @override
+  void setDatabaseIteratorToNull() {
+    iteratorValue = null;
+  }
+
+  @override
+  Future<Result<void, void>> resetServerPaging() async {
+    switch (await api.chat((api) => api.postResetMatchesPaging())) {
+      case Ok(:final v):
+        await db.accountAction((db) => db.daoProfileStates.setMatchesGridStatusList(null, false, clear: true));
+        await db.accountAction((db) => db.updateMatchesIteratorSessionId(v.s));
+        return const Ok(null);
+      case Err():
+        return const Err(null);
+    }
+  }
+
+  @override
+  Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists() async {
+    currentSessionId = await db.accountStreamSingle((db) => db.watchMatchesSessionId()).ok();
+    if (currentSessionId == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  @override
+  Future<Result<IteratorPage, void>> nextServerPage() async {
+    final sessionId = currentSessionId;
+    if (sessionId == null) {
+      return const Err(null);
+    }
+    return await api.chat((api) => api.postGetNextMatchesPage(sessionId))
+      .mapOk((value) => IteratorPage(
+        [],
+        value.p,
+        errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
+      ));
+  }
+
+  @override
+  Future<void> setDbVisibility(AccountId id, bool visibility) async {
+    await db.accountAction((db) => db.daoProfileStates.setMatchStatus(id, true));
+    await db.accountAction((db) => db.daoProfileStates.setMatchesGridStatus(id, true));
   }
 }
