@@ -284,7 +284,7 @@
     <string name="chat_list_screen_title" description="Title for chat list screen">Chats</string>
     <string name="chat_list_screen_no_chats_found" description="Info text displayed when there is no chats">No chats found</string>
     <string name="chat_list_screen_unread_message" description="Conversation status text for unread message">New message</string>
-    <string name="chat_list_screen_new_chat" description="Floating action button tooltip for new chat action">New chat</string>
+    <string name="chat_list_screen_open_matches_screen_action" description="Title for action which opens matches screen">Matches</string>
 
     <!-- Select match screen -->
     <string name="select_match_screen_title" description="Title for select match screen">Select match</string>

@@ -16,10 +16,9 @@ import 'package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_row.dart';
 import 'package:pihka_frontend/ui/normal/chat/select_match.dart';
+import 'package:pihka_frontend/ui_utils/app_bar/menu_actions.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
-
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
 import 'package:pihka_frontend/ui_utils/scroll_controller.dart';
@@ -34,6 +33,24 @@ class ChatView extends BottomNavigationScreen {
 
   @override
   State<ChatView> createState() => _ChatViewState();
+
+  @override
+  List<Widget> actions(BuildContext context) {
+    return [
+      menuActions([
+        MenuItemButton(
+          child: Text(context.strings.chat_list_screen_open_matches_screen_action),
+          onPressed: () async {
+            final entry = await openSelectMatchView(context);
+            if (entry == null || !context.mounted) {
+              return;
+            }
+            openConversationScreen(context, entry);
+          },
+        ),
+      ]),
+    ];
+  }
 
   @override
   String title(BuildContext context) {
@@ -180,23 +197,6 @@ class _ChatViewState extends State<ChatView> {
               return Stack(
                 children: [
                   grid(context),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: FloatingActionButton(
-                        onPressed: () async {
-                          final entry = await openSelectMatchView(context);
-                          if (entry == null || !context.mounted) {
-                            return;
-                          }
-                          openConversationScreen(context, entry);
-                        },
-                        tooltip: context.strings.chat_list_screen_new_chat,
-                        child: const Icon(Icons.add),
-                      ),
-                    ),
-                  ),
                   if (conversations.isEmpty) buildListReplacementMessage(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -241,7 +241,6 @@ class _ChatViewState extends State<ChatView> {
             );
           },
         ),
-        const SliverToBoxAdapter(child: SizedBox(height: FLOATING_ACTION_BUTTON_EMPTY_AREA)),
       ],
     );
   }

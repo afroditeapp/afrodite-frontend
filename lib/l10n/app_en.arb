@@ -109,10 +109,6 @@
   "@chat_list_screen_match_loading_failed": {
     "description": "Error text displayed when match loading fails"
   },
-  "chat_list_screen_new_chat": "New chat",
-  "@chat_list_screen_new_chat": {
-    "description": "Floating action button tooltip for new chat action"
-  },
   "chat_list_screen_no_chats_found": "No chats found",
   "@chat_list_screen_no_chats_found": {
     "description": "Info text displayed when there is no chats"
@@ -120,6 +116,10 @@
   "chat_list_screen_no_matches_found": "No matches found",
   "@chat_list_screen_no_matches_found": {
     "description": "Info text displayed when no matches are found"
+  },
+  "chat_list_screen_open_matches_screen_action": "Matches",
+  "@chat_list_screen_open_matches_screen_action": {
+    "description": "Title for action which opens matches screen"
   },
   "chat_list_screen_title": "Chats",
   "@chat_list_screen_title": {
