@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class MapTileY {
-  /// Returns a new [MapTileY] instance.
-  MapTileY({
-    required this.y,
+class ProfileIteratorSessionId {
+  /// Returns a new [ProfileIteratorSessionId] instance.
+  ProfileIteratorSessionId({
+    required this.id,
   });
 
-  String y;
+  int id;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is MapTileY &&
-    other.y == y;
+  bool operator ==(Object other) => identical(this, other) || other is ProfileIteratorSessionId &&
+    other.id == id;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (y.hashCode);
+    (id.hashCode);
 
   @override
-  String toString() => 'MapTileY[y=$y]';
+  String toString() => 'ProfileIteratorSessionId[id=$id]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'y'] = this.y;
+      json[r'id'] = this.id;
     return json;
   }
 
-  /// Returns a new [MapTileY] instance and imports its values from
+  /// Returns a new [ProfileIteratorSessionId] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static MapTileY? fromJson(dynamic value) {
+  static ProfileIteratorSessionId? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class MapTileY {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "MapTileY[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MapTileY[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ProfileIteratorSessionId[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ProfileIteratorSessionId[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return MapTileY(
-        y: mapValueOfType<String>(json, r'y')!,
+      return ProfileIteratorSessionId(
+        id: mapValueOfType<int>(json, r'id')!,
       );
     }
     return null;
   }
 
-  static List<MapTileY> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <MapTileY>[];
+  static List<ProfileIteratorSessionId> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ProfileIteratorSessionId>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = MapTileY.fromJson(row);
+        final value = ProfileIteratorSessionId.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class MapTileY {
     return result.toList(growable: growable);
   }
 
-  static Map<String, MapTileY> mapFromJson(dynamic json) {
-    final map = <String, MapTileY>{};
+  static Map<String, ProfileIteratorSessionId> mapFromJson(dynamic json) {
+    final map = <String, ProfileIteratorSessionId>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = MapTileY.fromJson(entry.value);
+        final value = ProfileIteratorSessionId.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class MapTileY {
     return map;
   }
 
-  // maps a json object with a list of MapTileY-objects as value to a dart map
-  static Map<String, List<MapTileY>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<MapTileY>>{};
+  // maps a json object with a list of ProfileIteratorSessionId-objects as value to a dart map
+  static Map<String, List<ProfileIteratorSessionId>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ProfileIteratorSessionId>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = MapTileY.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ProfileIteratorSessionId.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +103,7 @@ class MapTileY {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'y',
+    'id',
   };
 }
 

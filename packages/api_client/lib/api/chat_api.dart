@@ -615,9 +615,7 @@ class ChatApi {
     return null;
   }
 
-  /// Update matches iterator and get next page
-  ///
-  /// of matches. If the page is empty there is no more matches available.
+  /// Update matches iterator and get next page of matches. If the page is empty there is no more matches available.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -649,9 +647,7 @@ class ChatApi {
     );
   }
 
-  /// Update matches iterator and get next page
-  ///
-  /// of matches. If the page is empty there is no more matches available.
+  /// Update matches iterator and get next page of matches. If the page is empty there is no more matches available.
   ///
   /// Parameters:
   ///
@@ -671,9 +667,9 @@ class ChatApi {
     return null;
   }
 
-  /// Update received likes iterator and get next page
+  /// Update received likes iterator and get next page of received likes. If the page is empty there is no more received likes available.
   ///
-  /// of received likes. If the page is empty there is no more received likes available.  Profile will not be returned if: - Profile is blocked - Profile is a match
+  /// Profile will not be returned if: - Profile is blocked - Profile is a match
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -705,9 +701,9 @@ class ChatApi {
     );
   }
 
-  /// Update received likes iterator and get next page
+  /// Update received likes iterator and get next page of received likes. If the page is empty there is no more received likes available.
   ///
-  /// of received likes. If the page is empty there is no more received likes available.  Profile will not be returned if: - Profile is blocked - Profile is a match
+  /// Profile will not be returned if: - Profile is blocked - Profile is a match
   ///
   /// Parameters:
   ///
@@ -827,9 +823,9 @@ class ChatApi {
     }
   }
 
-  /// Replace current public key with a new public key.
+  /// Replace current public key with a new public key. Returns public key ID number which server increments. This must be called only when needed as this route will fail every time if current public key ID number is i64::MAX.
   ///
-  /// Returns public key ID number which server increments. This must be called only when needed as this route will fail every time if current public key ID number is i64::MAX.  Only version 1 public keys are currently supported.
+  /// Only version 1 public keys are currently supported.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -861,9 +857,9 @@ class ChatApi {
     );
   }
 
-  /// Replace current public key with a new public key.
+  /// Replace current public key with a new public key. Returns public key ID number which server increments. This must be called only when needed as this route will fail every time if current public key ID number is i64::MAX.
   ///
-  /// Returns public key ID number which server increments. This must be called only when needed as this route will fail every time if current public key ID number is i64::MAX.  Only version 1 public keys are currently supported.
+  /// Only version 1 public keys are currently supported.
   ///
   /// Parameters:
   ///
@@ -965,9 +961,7 @@ class ChatApi {
     return null;
   }
 
-  /// Send a like to some account. If both will like each other, then
-  ///
-  /// the accounts will be a match.
+  /// Send a like to some account. If both will like each other, then the accounts will be a match.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -999,9 +993,7 @@ class ChatApi {
     );
   }
 
-  /// Send a like to some account. If both will like each other, then
-  ///
-  /// the accounts will be a match.
+  /// Send a like to some account. If both will like each other, then the accounts will be a match.
   ///
   /// Parameters:
   ///

@@ -16,7 +16,7 @@ class ReceivedLikesIteratorSessionId {
     required this.id,
   });
 
-  String id;
+  int id;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ReceivedLikesIteratorSessionId &&
@@ -55,7 +55,7 @@ class ReceivedLikesIteratorSessionId {
       }());
 
       return ReceivedLikesIteratorSessionId(
-        id: mapValueOfType<String>(json, r'id')!,
+        id: mapValueOfType<int>(json, r'id')!,
       );
     }
     return null;

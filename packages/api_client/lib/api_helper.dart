@@ -82,14 +82,8 @@ String parameterToString(dynamic value) {
   if (value is CurrentAccountInteractionState) {
     return CurrentAccountInteractionStateTypeTransformer().encode(value).toString();
   }
-  if (value is DownloadType) {
-    return DownloadTypeTypeTransformer().encode(value).toString();
-  }
   if (value is EventType) {
     return EventTypeTypeTransformer().encode(value).toString();
-  }
-  if (value is IconLocation) {
-    return IconLocationTypeTransformer().encode(value).toString();
   }
   if (value is LimitedActionStatus) {
     return LimitedActionStatusTypeTransformer().encode(value).toString();

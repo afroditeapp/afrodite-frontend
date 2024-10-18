@@ -18,8 +18,10 @@ class PerfValueArea {
     this.values = const [],
   });
 
+  /// Time for first data point in values.
   UnixTime startTime;
 
+  /// Time granularity for values in between start time and time points.
   TimeGranularity timeGranularity;
 
   List<int> values;

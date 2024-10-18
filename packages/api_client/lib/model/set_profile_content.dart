@@ -24,6 +24,7 @@ class SetProfileContent {
     this.gridCropY,
   });
 
+  /// Primary profile image which is shown in grid view.
   ContentId c0;
 
   ContentId? c1;

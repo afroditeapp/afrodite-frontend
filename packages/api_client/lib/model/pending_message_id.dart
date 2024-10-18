@@ -19,6 +19,7 @@ class PendingMessageId {
 
   MessageNumber mn;
 
+  /// Sender of the message.
   AccountId sender;
 
   @override

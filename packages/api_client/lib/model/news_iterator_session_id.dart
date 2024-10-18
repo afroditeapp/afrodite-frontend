@@ -10,37 +10,36 @@
 
 part of openapi.api;
 
-class MapTileX {
-  /// Returns a new [MapTileX] instance.
-  MapTileX({
-    required this.x,
+class NewsIteratorSessionId {
+  /// Returns a new [NewsIteratorSessionId] instance.
+  NewsIteratorSessionId({
+    required this.id,
   });
 
-  /// Minimum value: 0
-  int x;
+  int id;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is MapTileX &&
-    other.x == x;
+  bool operator ==(Object other) => identical(this, other) || other is NewsIteratorSessionId &&
+    other.id == id;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (x.hashCode);
+    (id.hashCode);
 
   @override
-  String toString() => 'MapTileX[x=$x]';
+  String toString() => 'NewsIteratorSessionId[id=$id]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'x'] = this.x;
+      json[r'id'] = this.id;
     return json;
   }
 
-  /// Returns a new [MapTileX] instance and imports its values from
+  /// Returns a new [NewsIteratorSessionId] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static MapTileX? fromJson(dynamic value) {
+  static NewsIteratorSessionId? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -49,24 +48,24 @@ class MapTileX {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "MapTileX[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MapTileX[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "NewsIteratorSessionId[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "NewsIteratorSessionId[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return MapTileX(
-        x: mapValueOfType<int>(json, r'x')!,
+      return NewsIteratorSessionId(
+        id: mapValueOfType<int>(json, r'id')!,
       );
     }
     return null;
   }
 
-  static List<MapTileX> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <MapTileX>[];
+  static List<NewsIteratorSessionId> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <NewsIteratorSessionId>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = MapTileX.fromJson(row);
+        final value = NewsIteratorSessionId.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -75,12 +74,12 @@ class MapTileX {
     return result.toList(growable: growable);
   }
 
-  static Map<String, MapTileX> mapFromJson(dynamic json) {
-    final map = <String, MapTileX>{};
+  static Map<String, NewsIteratorSessionId> mapFromJson(dynamic json) {
+    final map = <String, NewsIteratorSessionId>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = MapTileX.fromJson(entry.value);
+        final value = NewsIteratorSessionId.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -89,14 +88,14 @@ class MapTileX {
     return map;
   }
 
-  // maps a json object with a list of MapTileX-objects as value to a dart map
-  static Map<String, List<MapTileX>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<MapTileX>>{};
+  // maps a json object with a list of NewsIteratorSessionId-objects as value to a dart map
+  static Map<String, List<NewsIteratorSessionId>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<NewsIteratorSessionId>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = MapTileX.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = NewsIteratorSessionId.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -104,7 +103,7 @@ class MapTileX {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'x',
+    'id',
   };
 }
 

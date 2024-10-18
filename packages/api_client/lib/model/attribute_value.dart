@@ -25,6 +25,7 @@ class AttributeValue {
 
   bool editable;
 
+  /// Sub level values for this attribute value.
   GroupValues? groupValues;
 
   String? icon;

@@ -10,42 +10,36 @@
 
 part of openapi.api;
 
-class IconResource {
-  /// Returns a new [IconResource] instance.
-  IconResource({
-    required this.identifier,
-    required this.location,
+class ResetNewsIteratorResult {
+  /// Returns a new [ResetNewsIteratorResult] instance.
+  ResetNewsIteratorResult({
+    required this.s,
   });
 
-  String identifier;
-
-  IconLocation location;
+  NewsIteratorSessionId s;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is IconResource &&
-    other.identifier == identifier &&
-    other.location == location;
+  bool operator ==(Object other) => identical(this, other) || other is ResetNewsIteratorResult &&
+    other.s == s;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (identifier.hashCode) +
-    (location.hashCode);
+    (s.hashCode);
 
   @override
-  String toString() => 'IconResource[identifier=$identifier, location=$location]';
+  String toString() => 'ResetNewsIteratorResult[s=$s]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'identifier'] = this.identifier;
-      json[r'location'] = this.location;
+      json[r's'] = this.s;
     return json;
   }
 
-  /// Returns a new [IconResource] instance and imports its values from
+  /// Returns a new [ResetNewsIteratorResult] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static IconResource? fromJson(dynamic value) {
+  static ResetNewsIteratorResult? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,25 +48,24 @@ class IconResource {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "IconResource[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "IconResource[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ResetNewsIteratorResult[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ResetNewsIteratorResult[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return IconResource(
-        identifier: mapValueOfType<String>(json, r'identifier')!,
-        location: IconLocation.fromJson(json[r'location'])!,
+      return ResetNewsIteratorResult(
+        s: NewsIteratorSessionId.fromJson(json[r's'])!,
       );
     }
     return null;
   }
 
-  static List<IconResource> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <IconResource>[];
+  static List<ResetNewsIteratorResult> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ResetNewsIteratorResult>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = IconResource.fromJson(row);
+        final value = ResetNewsIteratorResult.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +74,12 @@ class IconResource {
     return result.toList(growable: growable);
   }
 
-  static Map<String, IconResource> mapFromJson(dynamic json) {
-    final map = <String, IconResource>{};
+  static Map<String, ResetNewsIteratorResult> mapFromJson(dynamic json) {
+    final map = <String, ResetNewsIteratorResult>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = IconResource.fromJson(entry.value);
+        final value = ResetNewsIteratorResult.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,14 +88,14 @@ class IconResource {
     return map;
   }
 
-  // maps a json object with a list of IconResource-objects as value to a dart map
-  static Map<String, List<IconResource>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<IconResource>>{};
+  // maps a json object with a list of ResetNewsIteratorResult-objects as value to a dart map
+  static Map<String, List<ResetNewsIteratorResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ResetNewsIteratorResult>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = IconResource.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ResetNewsIteratorResult.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -110,8 +103,7 @@ class IconResource {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'identifier',
-    'location',
+    's',
   };
 }
 

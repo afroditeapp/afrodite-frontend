@@ -367,7 +367,7 @@ class AccountApi {
 
   /// Complete initial setup.
   ///
-  /// Requirements: - Account must be in `InitialSetup` state. - Account must have a valid AccountSetup info set. - Account must have a moderation request. - The current or pending security image of the account is in the request. - The current or pending first profile image of the account is in the request. 
+  /// Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.  - Account must have a moderation request.  - The current or pending security image of the account is in the request.  - The current or pending first profile image of the account is in the    request.  
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> postCompleteSetupWithHttpInfo() async {
@@ -397,7 +397,7 @@ class AccountApi {
 
   /// Complete initial setup.
   ///
-  /// Requirements: - Account must be in `InitialSetup` state. - Account must have a valid AccountSetup info set. - Account must have a moderation request. - The current or pending security image of the account is in the request. - The current or pending first profile image of the account is in the request. 
+  /// Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.  - Account must have a moderation request.  - The current or pending security image of the account is in the request.  - The current or pending first profile image of the account is in the    request.  
   Future<void> postCompleteSetup() async {
     final response = await postCompleteSetupWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -551,9 +551,7 @@ class AccountApi {
     return null;
   }
 
-  /// Access demo mode, which allows accessing all or specific accounts
-  ///
-  /// depending on the server configuration.
+  /// Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -585,9 +583,7 @@ class AccountApi {
     );
   }
 
-  /// Access demo mode, which allows accessing all or specific accounts
-  ///
-  /// depending on the server configuration.
+  /// Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
   ///
   /// Parameters:
   ///
@@ -701,6 +697,47 @@ class AccountApi {
     return null;
   }
 
+  /// Performs an HTTP 'POST /ljfyAP7CbP0864cA6nZX7ESufjY' operation and returns the [Response].
+  Future<Response> postGetNewsCountWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/ljfyAP7CbP0864cA6nZX7ESufjY';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<NewsCountResult?> postGetNewsCount() async {
+    final response = await postGetNewsCountWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'NewsCountResult',) as NewsCountResult;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'POST /b5kd4x8_ybr1Rj_tprU5BxF_xGo' operation and returns the [Response].
   Future<Response> postGetNextClientIdWithHttpInfo() async {
     // ignore: prefer_const_declarations
@@ -742,9 +779,95 @@ class AccountApi {
     return null;
   }
 
-  /// Start new session with sign in with Apple or Google. Creates new account if
+  /// Performs an HTTP 'POST /BUFRdjIQCtPBjy00uEOHIA9X8CI' operation and returns the [Response].
+  /// Parameters:
   ///
-  /// it does not exists.
+  /// * [NewsIteratorSessionId] newsIteratorSessionId (required):
+  Future<Response> postGetNextNewsPageWithHttpInfo(NewsIteratorSessionId newsIteratorSessionId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/BUFRdjIQCtPBjy00uEOHIA9X8CI';
+
+    // ignore: prefer_final_locals
+    Object? postBody = newsIteratorSessionId;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [NewsIteratorSessionId] newsIteratorSessionId (required):
+  Future<NewsPage?> postGetNextNewsPage(NewsIteratorSessionId newsIteratorSessionId,) async {
+    final response = await postGetNextNewsPageWithHttpInfo(newsIteratorSessionId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'NewsPage',) as NewsPage;
+    
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'POST /OVfZ-hXmiyX1uFTG4k-9SIBUh7U' operation and returns the [Response].
+  Future<Response> postResetNewsPagingWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/OVfZ-hXmiyX1uFTG4k-9SIBUh7U';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<ResetNewsIteratorResult?> postResetNewsPaging() async {
+    final response = await postResetNewsPagingWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ResetNewsIteratorResult',) as ResetNewsIteratorResult;
+    
+    }
+    return null;
+  }
+
+  /// Start new session with sign in with Apple or Google. Creates new account if it does not exists.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -776,9 +899,7 @@ class AccountApi {
     );
   }
 
-  /// Start new session with sign in with Apple or Google. Creates new account if
-  ///
-  /// it does not exists.
+  /// Start new session with sign in with Apple or Google. Creates new account if it does not exists.
   ///
   /// Parameters:
   ///

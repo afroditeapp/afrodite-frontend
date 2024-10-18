@@ -18,6 +18,7 @@ class ContentProcessingState {
     this.waitQueuePosition,
   });
 
+  /// Content ID of the processed content.
   ContentId? cid;
 
   ContentProcessingStateType state;

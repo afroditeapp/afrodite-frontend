@@ -41,6 +41,7 @@ class Attribute {
   /// String unique identifier for the attribute.
   String key;
 
+  /// Mode of the attribute.
   AttributeMode mode;
 
   /// English text for the attribute.
@@ -57,6 +58,7 @@ class Attribute {
   /// Translations for attribute name and attribute values.
   List<Language> translations;
 
+  /// Attribute value ordering mode for client to determine in what order the values should be displayed.
   AttributeValueOrderMode valueOrder;
 
   /// Top level values for the attribute.  Values are sorted by AttributeValue ID. Indexing with it is not possible as ID might be a bitflag value.

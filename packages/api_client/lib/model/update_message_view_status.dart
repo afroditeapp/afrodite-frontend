@@ -17,8 +17,10 @@ class UpdateMessageViewStatus {
     required this.sender,
   });
 
+  /// New message number for message view status.
   MessageNumber mn;
 
+  /// Sender of the messages.
   AccountId sender;
 
   @override

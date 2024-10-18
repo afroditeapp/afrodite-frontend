@@ -10,36 +10,42 @@
 
 part of openapi.api;
 
-class ModerationQueueTypeParam {
-  /// Returns a new [ModerationQueueTypeParam] instance.
-  ModerationQueueTypeParam({
-    required this.queue,
+class NewsCountResult {
+  /// Returns a new [NewsCountResult] instance.
+  NewsCountResult({
+    required this.c,
+    required this.v,
   });
 
-  ModerationQueueType queue;
+  NewsCount c;
+
+  NewsSyncVersion v;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ModerationQueueTypeParam &&
-    other.queue == queue;
+  bool operator ==(Object other) => identical(this, other) || other is NewsCountResult &&
+    other.c == c &&
+    other.v == v;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (queue.hashCode);
+    (c.hashCode) +
+    (v.hashCode);
 
   @override
-  String toString() => 'ModerationQueueTypeParam[queue=$queue]';
+  String toString() => 'NewsCountResult[c=$c, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'queue'] = this.queue;
+      json[r'c'] = this.c;
+      json[r'v'] = this.v;
     return json;
   }
 
-  /// Returns a new [ModerationQueueTypeParam] instance and imports its values from
+  /// Returns a new [NewsCountResult] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ModerationQueueTypeParam? fromJson(dynamic value) {
+  static NewsCountResult? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +54,25 @@ class ModerationQueueTypeParam {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ModerationQueueTypeParam[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ModerationQueueTypeParam[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "NewsCountResult[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "NewsCountResult[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ModerationQueueTypeParam(
-        queue: ModerationQueueType.fromJson(json[r'queue'])!,
+      return NewsCountResult(
+        c: NewsCount.fromJson(json[r'c'])!,
+        v: NewsSyncVersion.fromJson(json[r'v'])!,
       );
     }
     return null;
   }
 
-  static List<ModerationQueueTypeParam> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ModerationQueueTypeParam>[];
+  static List<NewsCountResult> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <NewsCountResult>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ModerationQueueTypeParam.fromJson(row);
+        final value = NewsCountResult.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +81,12 @@ class ModerationQueueTypeParam {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ModerationQueueTypeParam> mapFromJson(dynamic json) {
-    final map = <String, ModerationQueueTypeParam>{};
+  static Map<String, NewsCountResult> mapFromJson(dynamic json) {
+    final map = <String, NewsCountResult>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ModerationQueueTypeParam.fromJson(entry.value);
+        final value = NewsCountResult.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +95,14 @@ class ModerationQueueTypeParam {
     return map;
   }
 
-  // maps a json object with a list of ModerationQueueTypeParam-objects as value to a dart map
-  static Map<String, List<ModerationQueueTypeParam>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ModerationQueueTypeParam>>{};
+  // maps a json object with a list of NewsCountResult-objects as value to a dart map
+  static Map<String, List<NewsCountResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<NewsCountResult>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ModerationQueueTypeParam.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = NewsCountResult.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +110,8 @@ class ModerationQueueTypeParam {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'queue',
+    'c',
+    'v',
   };
 }
 

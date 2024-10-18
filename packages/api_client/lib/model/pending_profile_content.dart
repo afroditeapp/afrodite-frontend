@@ -24,6 +24,7 @@ class PendingProfileContent {
     this.gridCropY,
   });
 
+  /// Primary profile image which is shown in grid view.  If this is None, then server will not change the current profile content when moderation is accepted.
   ContentInfo? c0;
 
   ContentInfo? c1;

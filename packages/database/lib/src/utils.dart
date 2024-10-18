@@ -263,21 +263,21 @@ class NewMessageNotificationIdConverter extends TypeConverter<NewMessageNotifica
   }
 }
 
-class IteratorSessionIdConverter extends TypeConverter<IteratorSessionId, String> {
-  const IteratorSessionIdConverter();
+class ProfileIteratorSessionIdConverter extends TypeConverter<ProfileIteratorSessionId, int> {
+  const ProfileIteratorSessionIdConverter();
 
   @override
-  IteratorSessionId fromSql(fromDb) {
-    return IteratorSessionId(id: fromDb);
+  ProfileIteratorSessionId fromSql(fromDb) {
+    return ProfileIteratorSessionId(id: fromDb);
   }
 
   @override
-  String toSql(value) {
+  int toSql(value) {
     return value.id;
   }
 }
 
-class ReceivedLikesIteratorSessionIdConverter extends TypeConverter<ReceivedLikesIteratorSessionId, String> {
+class ReceivedLikesIteratorSessionIdConverter extends TypeConverter<ReceivedLikesIteratorSessionId, int> {
   const ReceivedLikesIteratorSessionIdConverter();
 
   @override
@@ -286,12 +286,12 @@ class ReceivedLikesIteratorSessionIdConverter extends TypeConverter<ReceivedLike
   }
 
   @override
-  String toSql(value) {
+  int toSql(value) {
     return value.id;
   }
 }
 
-class MatchesIteratorSessionIdConverter extends TypeConverter<MatchesIteratorSessionId, String> {
+class MatchesIteratorSessionIdConverter extends TypeConverter<MatchesIteratorSessionId, int> {
   const MatchesIteratorSessionIdConverter();
 
   @override
@@ -300,7 +300,7 @@ class MatchesIteratorSessionIdConverter extends TypeConverter<MatchesIteratorSes
   }
 
   @override
-  String toSql(value) {
+  int toSql(value) {
     return value.id;
   }
 }

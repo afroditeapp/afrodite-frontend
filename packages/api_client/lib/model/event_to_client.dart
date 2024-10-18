@@ -22,18 +22,24 @@ class EventToClient {
     this.visibility,
   });
 
+  /// Data for event AccountStateChanged
   AccountState? accountState;
 
+  /// Data for event AccountSyncVersionChanged
   AccountSyncVersion? accountSyncVersion;
 
+  /// Data for event AccountCapabilitiesChanged
   Capabilities? capabilities;
 
+  /// Data for event ContentProcessingStateChanged
   ContentProcessingStateChanged? contentProcessingStateChanged;
 
   EventType event;
 
+  /// Data for event LatestViewedMessageChanged
   LatestViewedMessageChanged? latestViewedMessageChanged;
 
+  /// Data for event ProfileVisibilityChanged
   ProfileVisibility? visibility;
 
   @override

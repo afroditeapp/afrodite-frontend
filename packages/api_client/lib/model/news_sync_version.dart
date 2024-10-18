@@ -10,37 +10,36 @@
 
 part of openapi.api;
 
-class MapTileZ {
-  /// Returns a new [MapTileZ] instance.
-  MapTileZ({
-    required this.z,
+class NewsSyncVersion {
+  /// Returns a new [NewsSyncVersion] instance.
+  NewsSyncVersion({
+    required this.version,
   });
 
-  /// Minimum value: 0
-  int z;
+  int version;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is MapTileZ &&
-    other.z == z;
+  bool operator ==(Object other) => identical(this, other) || other is NewsSyncVersion &&
+    other.version == version;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (z.hashCode);
+    (version.hashCode);
 
   @override
-  String toString() => 'MapTileZ[z=$z]';
+  String toString() => 'NewsSyncVersion[version=$version]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'z'] = this.z;
+      json[r'version'] = this.version;
     return json;
   }
 
-  /// Returns a new [MapTileZ] instance and imports its values from
+  /// Returns a new [NewsSyncVersion] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static MapTileZ? fromJson(dynamic value) {
+  static NewsSyncVersion? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -49,24 +48,24 @@ class MapTileZ {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "MapTileZ[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MapTileZ[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "NewsSyncVersion[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "NewsSyncVersion[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return MapTileZ(
-        z: mapValueOfType<int>(json, r'z')!,
+      return NewsSyncVersion(
+        version: mapValueOfType<int>(json, r'version')!,
       );
     }
     return null;
   }
 
-  static List<MapTileZ> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <MapTileZ>[];
+  static List<NewsSyncVersion> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <NewsSyncVersion>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = MapTileZ.fromJson(row);
+        final value = NewsSyncVersion.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -75,12 +74,12 @@ class MapTileZ {
     return result.toList(growable: growable);
   }
 
-  static Map<String, MapTileZ> mapFromJson(dynamic json) {
-    final map = <String, MapTileZ>{};
+  static Map<String, NewsSyncVersion> mapFromJson(dynamic json) {
+    final map = <String, NewsSyncVersion>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = MapTileZ.fromJson(entry.value);
+        final value = NewsSyncVersion.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -89,14 +88,14 @@ class MapTileZ {
     return map;
   }
 
-  // maps a json object with a list of MapTileZ-objects as value to a dart map
-  static Map<String, List<MapTileZ>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<MapTileZ>>{};
+  // maps a json object with a list of NewsSyncVersion-objects as value to a dart map
+  static Map<String, List<NewsSyncVersion>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<NewsSyncVersion>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = MapTileZ.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = NewsSyncVersion.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -104,7 +103,7 @@ class MapTileZ {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'z',
+    'version',
   };
 }
 

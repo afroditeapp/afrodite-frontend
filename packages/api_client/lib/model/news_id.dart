@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class RebootQueryParam {
-  /// Returns a new [RebootQueryParam] instance.
-  RebootQueryParam({
-    required this.reboot,
+class NewsId {
+  /// Returns a new [NewsId] instance.
+  NewsId({
+    required this.nid,
   });
 
-  bool reboot;
+  int nid;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is RebootQueryParam &&
-    other.reboot == reboot;
+  bool operator ==(Object other) => identical(this, other) || other is NewsId &&
+    other.nid == nid;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (reboot.hashCode);
+    (nid.hashCode);
 
   @override
-  String toString() => 'RebootQueryParam[reboot=$reboot]';
+  String toString() => 'NewsId[nid=$nid]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'reboot'] = this.reboot;
+      json[r'nid'] = this.nid;
     return json;
   }
 
-  /// Returns a new [RebootQueryParam] instance and imports its values from
+  /// Returns a new [NewsId] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static RebootQueryParam? fromJson(dynamic value) {
+  static NewsId? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class RebootQueryParam {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "RebootQueryParam[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "RebootQueryParam[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "NewsId[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "NewsId[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return RebootQueryParam(
-        reboot: mapValueOfType<bool>(json, r'reboot')!,
+      return NewsId(
+        nid: mapValueOfType<int>(json, r'nid')!,
       );
     }
     return null;
   }
 
-  static List<RebootQueryParam> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <RebootQueryParam>[];
+  static List<NewsId> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <NewsId>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = RebootQueryParam.fromJson(row);
+        final value = NewsId.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class RebootQueryParam {
     return result.toList(growable: growable);
   }
 
-  static Map<String, RebootQueryParam> mapFromJson(dynamic json) {
-    final map = <String, RebootQueryParam>{};
+  static Map<String, NewsId> mapFromJson(dynamic json) {
+    final map = <String, NewsId>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = RebootQueryParam.fromJson(entry.value);
+        final value = NewsId.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class RebootQueryParam {
     return map;
   }
 
-  // maps a json object with a list of RebootQueryParam-objects as value to a dart map
-  static Map<String, List<RebootQueryParam>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<RebootQueryParam>>{};
+  // maps a json object with a list of NewsId-objects as value to a dart map
+  static Map<String, List<NewsId>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<NewsId>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = RebootQueryParam.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = NewsId.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +103,7 @@ class RebootQueryParam {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'reboot',
+    'nid',
   };
 }
 

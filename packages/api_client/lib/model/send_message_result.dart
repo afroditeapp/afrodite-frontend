@@ -26,8 +26,10 @@ class SendMessageResult {
 
   bool errorTooManySenderAcknowledgementsMissing;
 
+  /// None if error happened
   MessageNumber? mn;
 
+  /// None if error happened
   UnixTime? ut;
 
   @override

@@ -16,9 +16,9 @@ class MediaAdminApi {
 
   final ApiClient apiClient;
 
-  /// Get current list of moderation requests in my moderation queue.
+  /// Get current list of moderation requests in my moderation queue. Additional requests will be added to my queue if necessary.
   ///
-  /// Additional requests will be added to my queue if necessary.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
+  /// ## Access  Account with `admin_moderate_images` capability is required to access this route.  
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -52,9 +52,9 @@ class MediaAdminApi {
     );
   }
 
-  /// Get current list of moderation requests in my moderation queue.
+  /// Get current list of moderation requests in my moderation queue. Additional requests will be added to my queue if necessary.
   ///
-  /// Additional requests will be added to my queue if necessary.  ## Access  Account with `admin_moderate_images` capability is required to access this route. 
+  /// ## Access  Account with `admin_moderate_images` capability is required to access this route.  
   ///
   /// Parameters:
   ///
@@ -76,7 +76,7 @@ class MediaAdminApi {
 
   /// Handle moderation request of some account.
   ///
-  /// ## Access  Account with `admin_moderate_images` capability is required to access this route. 
+  /// ## Access  Account with `admin_moderate_images` capability is required to access this route.  
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -113,7 +113,7 @@ class MediaAdminApi {
 
   /// Handle moderation request of some account.
   ///
-  /// ## Access  Account with `admin_moderate_images` capability is required to access this route. 
+  /// ## Access  Account with `admin_moderate_images` capability is required to access this route.  
   ///
   /// Parameters:
   ///

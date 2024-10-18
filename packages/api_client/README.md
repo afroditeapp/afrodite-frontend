@@ -73,14 +73,17 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postDelete**](doc//AccountApi.md#postdelete) | **PUT** /_aiEAY0WZCquNl_WQ5fDORGuHwA | Delete account.
 *AccountApi* | [**postDemoModeAccessibleAccounts**](doc//AccountApi.md#postdemomodeaccessibleaccounts) | **POST** /xyG8kH6eLanLiKYXdnOx1xxeAdA | Get demo account's available accounts.
 *AccountApi* | [**postDemoModeConfirmLogin**](doc//AccountApi.md#postdemomodeconfirmlogin) | **POST** /3KlEajKOIo1Drd3uW-IzQ1L3qlE | 
-*AccountApi* | [**postDemoModeLogin**](doc//AccountApi.md#postdemomodelogin) | **POST** /TYbxniP-G9ibgdoAkpvVWTKkxaU | Access demo mode, which allows accessing all or specific accounts
+*AccountApi* | [**postDemoModeLogin**](doc//AccountApi.md#postdemomodelogin) | **POST** /TYbxniP-G9ibgdoAkpvVWTKkxaU | Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
 *AccountApi* | [**postDemoModeLoginToAccount**](doc//AccountApi.md#postdemomodelogintoaccount) | **POST** /sBH-LyNGOOFXivrv5clCpNrkwcA | 
 *AccountApi* | [**postDemoModeRegisterAccount**](doc//AccountApi.md#postdemomoderegisteraccount) | **POST** /oDv1gK4Y6nMrPgEo5nArQAckh6Q | 
+*AccountApi* | [**postGetNewsCount**](doc//AccountApi.md#postgetnewscount) | **POST** /ljfyAP7CbP0864cA6nZX7ESufjY | 
 *AccountApi* | [**postGetNextClientId**](doc//AccountApi.md#postgetnextclientid) | **POST** /b5kd4x8_ybr1Rj_tprU5BxF_xGo | 
-*AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /ijts6B4AAg_6Dyjhaw85iBnw5Bo | Start new session with sign in with Apple or Google. Creates new account if
+*AccountApi* | [**postGetNextNewsPage**](doc//AccountApi.md#postgetnextnewspage) | **POST** /BUFRdjIQCtPBjy00uEOHIA9X8CI | 
+*AccountApi* | [**postResetNewsPaging**](doc//AccountApi.md#postresetnewspaging) | **POST** /OVfZ-hXmiyX1uFTG4k-9SIBUh7U | 
+*AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /ijts6B4AAg_6Dyjhaw85iBnw5Bo | Start new session with sign in with Apple or Google. Creates new account if it does not exists.
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /yG0OQXcMed-EGdvhSoq3qlXTYQc | Update current or pending profile visiblity value.
 *AccountApi* | [**putSettingUnlimitedLikes**](doc//AccountApi.md#putsettingunlimitedlikes) | **PUT** /oKbgnRxyzLb50Y2_ZCuLJYtEIcM | 
-*AccountInternalApi* | [**postLogin**](doc//AccountInternalApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken for a bot account. If the account is not registered
+*AccountInternalApi* | [**postLogin**](doc//AccountInternalApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken for a bot account. If the account is not registered as a bot account, then the request will fail.
 *AccountInternalApi* | [**postRegister**](doc//AccountInternalApi.md#postregister) | **POST** /account_api/register | Register a new bot account. Returns new account ID which is UUID.
 *ChatApi* | [**deleteLike**](doc//ChatApi.md#deletelike) | **DELETE** /O3DZlGOjDYbQ8PlCorta0onQDLI | Delete sent like.
 *ChatApi* | [**getMatches**](doc//ChatApi.md#getmatches) | **GET** /kzySqAe9qYi69MoCBnFGKdn76-Q | Get matches
@@ -95,21 +98,21 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postAddSenderAcknowledgement**](doc//ChatApi.md#postaddsenderacknowledgement) | **POST** /E-yVIcGOLJyZ7nsT_Lh4KPCRkQg | 
 *ChatApi* | [**postBlockProfile**](doc//ChatApi.md#postblockprofile) | **POST** /MpWSY01lXj7KaDK1KCNHLWRg9k4 | Block profile
 *ChatApi* | [**postGetNewReceivedLikesCount**](doc//ChatApi.md#postgetnewreceivedlikescount) | **POST** /dCPla4TZep6KONk57U2J7p7s6jw | 
-*ChatApi* | [**postGetNextMatchesPage**](doc//ChatApi.md#postgetnextmatchespage) | **POST** /dci4ZhBnUr5EXK09jAQMfsKE9EM | Update matches iterator and get next page
-*ChatApi* | [**postGetNextReceivedLikesPage**](doc//ChatApi.md#postgetnextreceivedlikespage) | **POST** /eEB4pq6DGUYlMVAYwPCm2RT5HP0 | Update received likes iterator and get next page
+*ChatApi* | [**postGetNextMatchesPage**](doc//ChatApi.md#postgetnextmatchespage) | **POST** /dci4ZhBnUr5EXK09jAQMfsKE9EM | Update matches iterator and get next page of matches. If the page is empty there is no more matches available.
+*ChatApi* | [**postGetNextReceivedLikesPage**](doc//ChatApi.md#postgetnextreceivedlikespage) | **POST** /eEB4pq6DGUYlMVAYwPCm2RT5HP0 | Update received likes iterator and get next page of received likes. If the page is empty there is no more received likes available.
 *ChatApi* | [**postGetPendingNotification**](doc//ChatApi.md#postgetpendingnotification) | **POST** /MhQXhJMKgrUh0s95FueOgalQg-o | Get pending notification and reset pending notification.
 *ChatApi* | [**postMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#postmessagenumberoflatestviewedmessage) | **POST** /gas7m77c7kw7N7TKyMQVzUKy3AQ | Update message number of the most recent message that the recipient has viewed.
-*ChatApi* | [**postPublicKey**](doc//ChatApi.md#postpublickey) | **POST** /e-r4VrqWJD1kIttg1McD9kv5o0k | Replace current public key with a new public key.
+*ChatApi* | [**postPublicKey**](doc//ChatApi.md#postpublickey) | **POST** /e-r4VrqWJD1kIttg1McD9kv5o0k | Replace current public key with a new public key. Returns public key ID number which server increments. This must be called only when needed as this route will fail every time if current public key ID number is i64::MAX.
 *ChatApi* | [**postResetMatchesPaging**](doc//ChatApi.md#postresetmatchespaging) | **POST** /kxGkIkvlKvyWPvovHYRtlC7fYXI | 
 *ChatApi* | [**postResetReceivedLikesPaging**](doc//ChatApi.md#postresetreceivedlikespaging) | **POST** /B75BRIylLV-JmwoB4YiOYSlyO-A | 
-*ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /sXq6ko76GtT7DuNXnkTTtFL6isY | Send a like to some account. If both will like each other, then
+*ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /sXq6ko76GtT7DuNXnkTTtFL6isY | Send a like to some account. If both will like each other, then the accounts will be a match.
 *ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /YEFESgzw0YxQUETcUmnmfWCaF1g | Send message to a match.
 *ChatApi* | [**postSetDeviceToken**](doc//ChatApi.md#postsetdevicetoken) | **POST** /CBoGGZ4HDW0REbM6SxasDCvXJNM | 
 *ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /j2Ofh-WeAFmjCQqO_AyHIM1eZEo | Unblock profile
-*CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /6qQZ2jQO5exMKFI2jCzGAdMysxE | Connect to server using WebSocket after getting refresh and access tokens.
+*CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /6qQZ2jQO5exMKFI2jCzGAdMysxE | Connect to server using WebSocket after getting refresh and access tokens. Connection is required as API access is allowed for connected clients.
 *CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /0E_N3KS0gI2PPBujveMhHLv292Y | Get backend version.
 *CommonAdminApi* | [**getBackendConfig**](doc//CommonAdminApi.md#getbackendconfig) | **GET** /E1D6g_Gvk0QMUdCm5KecTU_CfxY | Get dynamic backend config.
-*CommonAdminApi* | [**getLatestBuildInfo**](doc//CommonAdminApi.md#getlatestbuildinfo) | **GET** /iTg7lktGRkK6vDTVhYAZcnfGSQk | Get latest software build information available for update from manager
+*CommonAdminApi* | [**getLatestBuildInfo**](doc//CommonAdminApi.md#getlatestbuildinfo) | **GET** /iTg7lktGRkK6vDTVhYAZcnfGSQk | Get latest software build information available for update from manager instance.
 *CommonAdminApi* | [**getPerfData**](doc//CommonAdminApi.md#getperfdata) | **GET** /LFF7-r3TWVsPUnfVzncXBphb0CM | Get performance data
 *CommonAdminApi* | [**getSoftwareInfo**](doc//CommonAdminApi.md#getsoftwareinfo) | **GET** /uAURrHBf-ePlVvcYS0FslKy5pV8 | Get software version information from manager instance.
 *CommonAdminApi* | [**getSystemInfo**](doc//CommonAdminApi.md#getsysteminfo) | **GET** /NZCbtziElAJucvGefGs9Z6btUrQ | Get system information from manager instance.
@@ -117,9 +120,10 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**postRequestBuildSoftware**](doc//CommonAdminApi.md#postrequestbuildsoftware) | **POST** /vGQvKiH7zbpopxyScZILldwiCsg | Request building new software from manager instance.
 *CommonAdminApi* | [**postRequestRestartOrResetBackend**](doc//CommonAdminApi.md#postrequestrestartorresetbackend) | **POST** /rAIji-qOFiclUKWs_5JIR_-dLoI | Request restarting or reseting backend through app-manager instance.
 *CommonAdminApi* | [**postRequestUpdateSoftware**](doc//CommonAdminApi.md#postrequestupdatesoftware) | **POST** /yFSS8sqNjFU8nfjNqoKN1qQ743w | Request updating new software from manager instance.
-*MediaApi* | [**deleteContent**](doc//MediaApi.md#deletecontent) | **DELETE** /9ztWJZUmcnzICLL2gJ8qV8gVoR8/{aid}/{cid} | Delete content data. Content can be removed after specific time has passed
+*MediaApi* | [**deleteContent**](doc//MediaApi.md#deletecontent) | **DELETE** /9ztWJZUmcnzICLL2gJ8qV8gVoR8/{aid}/{cid} | Delete content data. Content can be removed after specific time has passed since removing all usage from it (content is not a security image or profile content).
 *MediaApi* | [**deleteModerationRequest**](doc//MediaApi.md#deletemoderationrequest) | **DELETE** /O6uTeSLARVqY1bvDxmX96ITtBCM | Delete current moderation request which is not yet in moderation.
-*MediaApi* | [**deletePendingSecurityContentInfo**](doc//MediaApi.md#deletependingsecuritycontentinfo) | **DELETE** /sO2QJPZs98Emtu1vW1k4iHD-gz8 | Delete pending security content for current account.
+*MediaApi* | [**deletePendingProfileContent**](doc//MediaApi.md#deletependingprofilecontent) | **DELETE** /6LYLKEUqrhj86bf2PXWOjUYHbls | Delete new pending profile content for current account. Server will not switch to pending content when next moderation request is accepted.
+*MediaApi* | [**deletePendingSecurityContentInfo**](doc//MediaApi.md#deletependingsecuritycontentinfo) | **DELETE** /sO2QJPZs98Emtu1vW1k4iHD-gz8 | Delete pending security content for current account. Server will not change the security content when next moderation request is moderated as accepted.
 *MediaApi* | [**getAllAccountMediaContent**](doc//MediaApi.md#getallaccountmediacontent) | **GET** /RzBkQfHdmWHdL0L1Uq-DVE6kiVY/{aid} | Get list of all media content on the server for one account.
 *MediaApi* | [**getContent**](doc//MediaApi.md#getcontent) | **GET** /9ztWJZUmcnzICLL2gJ8qV8gVoR8/{aid}/{cid} | Get content data
 *MediaApi* | [**getContentSlotState**](doc//MediaApi.md#getcontentslotstate) | **GET** /y5DgJJAaDZF89y6X4ge84klpBq0/{slot_id} | Get state of content slot.
@@ -129,34 +133,34 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**getPendingSecurityContentInfo**](doc//MediaApi.md#getpendingsecuritycontentinfo) | **GET** /sO2QJPZs98Emtu1vW1k4iHD-gz8/{aid} | Get pending security content for selected profile.
 *MediaApi* | [**getProfileContentInfo**](doc//MediaApi.md#getprofilecontentinfo) | **GET** /ZYlzEPvPMBx2V1S6Ee-kIhp2_rg/{aid} | Get current profile content for selected profile.
 *MediaApi* | [**getSecurityContentInfo**](doc//MediaApi.md#getsecuritycontentinfo) | **GET** /6lWoyl4YuurCAEnkJbnSy1wP22M/{aid} | Get current security content for selected profile.
-*MediaApi* | [**putContentToContentSlot**](doc//MediaApi.md#putcontenttocontentslot) | **PUT** /y5DgJJAaDZF89y6X4ge84klpBq0/{slot_id} | Set content to content processing slot.
+*MediaApi* | [**putContentToContentSlot**](doc//MediaApi.md#putcontenttocontentslot) | **PUT** /y5DgJJAaDZF89y6X4ge84klpBq0/{slot_id} | Set content to content processing slot. Processing ID will be returned and processing of the content will begin. Events about the content processing will be sent to the client.
 *MediaApi* | [**putModerationRequest**](doc//MediaApi.md#putmoderationrequest) | **PUT** /O6uTeSLARVqY1bvDxmX96ITtBCM | Create new or override old moderation request.
-*MediaApi* | [**putPendingProfileContent**](doc//MediaApi.md#putpendingprofilecontent) | **PUT** /6LYLKEUqrhj86bf2PXWOjUYHbls | Set new pending profile content for current account.
+*MediaApi* | [**putPendingProfileContent**](doc//MediaApi.md#putpendingprofilecontent) | **PUT** /6LYLKEUqrhj86bf2PXWOjUYHbls | Set new pending profile content for current account. Server will switch to pending content when next moderation request is accepted.
 *MediaApi* | [**putPendingSecurityContentInfo**](doc//MediaApi.md#putpendingsecuritycontentinfo) | **PUT** /sO2QJPZs98Emtu1vW1k4iHD-gz8 | Set pending security content for current account.
 *MediaApi* | [**putProfileContent**](doc//MediaApi.md#putprofilecontent) | **PUT** /_rsyG4gpvDy3O3Aj5hpLp3-8oPE | Set new profile content for current account.
 *MediaApi* | [**putSecurityContentInfo**](doc//MediaApi.md#putsecuritycontentinfo) | **PUT** /6lWoyl4YuurCAEnkJbnSy1wP22M | Set current security content content for current account.
-*MediaAdminApi* | [**patchModerationRequestList**](doc//MediaAdminApi.md#patchmoderationrequestlist) | **PATCH** /6GF9AybnmCb3J1d4ZfTT95UoiSg | Get current list of moderation requests in my moderation queue.
+*MediaAdminApi* | [**patchModerationRequestList**](doc//MediaAdminApi.md#patchmoderationrequestlist) | **PATCH** /6GF9AybnmCb3J1d4ZfTT95UoiSg | Get current list of moderation requests in my moderation queue. Additional requests will be added to my queue if necessary.
 *MediaAdminApi* | [**postHandleModerationRequest**](doc//MediaAdminApi.md#posthandlemoderationrequest) | **POST** /SiEktmT-jyNLA69x7qffV8c0YUk/{aid} | Handle moderation request of some account.
 *MediaInternalApi* | [**internalGetCheckModerationRequestForAccount**](doc//MediaInternalApi.md#internalgetcheckmoderationrequestforaccount) | **GET** /internal/media_api/moderation/request/{aid} | Check that media server has correct state for completing initial setup.
 *ProfileApi* | [**deleteFavoriteProfile**](doc//ProfileApi.md#deletefavoriteprofile) | **DELETE** /yD1PtVhVvdk-usEran42JmCTFVQ | Delete favorite profile
 *ProfileApi* | [**getAvailableProfileAttributes**](doc//ProfileApi.md#getavailableprofileattributes) | **GET** /_lqy4YCINbw_RCxebKLGXdDq2AM | Get info what profile attributes server supports.
 *ProfileApi* | [**getFavoriteProfiles**](doc//ProfileApi.md#getfavoriteprofiles) | **GET** /Oep5nM7bWqTdRfRoULt-_FTkKJQ | Get list of all favorite profiles.
-*ProfileApi* | [**getInitialProfileAgeInfo**](doc//ProfileApi.md#getinitialprofileageinfo) | **GET** /NWOWjOlm6oTYsXiPsbhBDgknan0 | Get initial profile age information which can be used for calculating
+*ProfileApi* | [**getInitialProfileAgeInfo**](doc//ProfileApi.md#getinitialprofileageinfo) | **GET** /NWOWjOlm6oTYsXiPsbhBDgknan0 | Get initial profile age information which can be used for calculating current accepted profile ages.
 *ProfileApi* | [**getLocation**](doc//ProfileApi.md#getlocation) | **GET** /lf5KMD9dBSVuaVcwjm4TB0d7bfY | Get location for account which makes this request.
 *ProfileApi* | [**getMyProfile**](doc//ProfileApi.md#getmyprofile) | **GET** /iu25rmmvUzADXhW5SsP_DBGY2_w | Get my profile
 *ProfileApi* | [**getProfile**](doc//ProfileApi.md#getprofile) | **GET** /5i55ZcY0jIPD7B6pyyridKY0j0Q/{aid} | Get account's current profile.
 *ProfileApi* | [**getProfileAttributeFilters**](doc//ProfileApi.md#getprofileattributefilters) | **GET** /AL531AoIDRcTSWC-pdxcexf6tOM | Get current profile attribute filter values.
-*ProfileApi* | [**getProfileFromDatabaseDebugModeBenchmark**](doc//ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /XDTSz35S_5tOKIsSpDITOc46MR4/{aid} | Get account's current profile from database. Debug mode must be enabled
+*ProfileApi* | [**getProfileFromDatabaseDebugModeBenchmark**](doc//ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /XDTSz35S_5tOKIsSpDITOc46MR4/{aid} | Get account's current profile from database. Debug mode must be enabled that route can be used.
 *ProfileApi* | [**getSearchAgeRange**](doc//ProfileApi.md#getsearchagerange) | **GET** /xTy-zcnl0LQlfPKQalAEnWQQ-rw | Get account's current search age range
-*ProfileApi* | [**getSearchGroups**](doc//ProfileApi.md#getsearchgroups) | **GET** /p1KA-sqKKtU3FHvUqYRZnQgj7RQ | Get account's current search groups
+*ProfileApi* | [**getSearchGroups**](doc//ProfileApi.md#getsearchgroups) | **GET** /p1KA-sqKKtU3FHvUqYRZnQgj7RQ | Get account's current search groups (gender and what gender user is looking for)
 *ProfileApi* | [**postFavoriteProfile**](doc//ProfileApi.md#postfavoriteprofile) | **POST** /yD1PtVhVvdk-usEran42JmCTFVQ | Add new favorite profile
 *ProfileApi* | [**postGetNextProfilePage**](doc//ProfileApi.md#postgetnextprofilepage) | **POST** /_XRgLHtmWtbgW3ZAlgfTH5bs6bE | Post (updates iterator) to get next page of profile list.
 *ProfileApi* | [**postProfile**](doc//ProfileApi.md#postprofile) | **POST** /5i55ZcY0jIPD7B6pyyridKY0j0Q | Update profile information.
 *ProfileApi* | [**postProfileAttributeFilters**](doc//ProfileApi.md#postprofileattributefilters) | **POST** /AL531AoIDRcTSWC-pdxcexf6tOM | Set profile attribute filter values.
-*ProfileApi* | [**postProfileToDatabaseDebugModeBenchmark**](doc//ProfileApi.md#postprofiletodatabasedebugmodebenchmark) | **POST** /XDTSz35S_5tOKIsSpDITOc46MR4 | Post account's current profile directly to database. Debug mode must be enabled
+*ProfileApi* | [**postProfileToDatabaseDebugModeBenchmark**](doc//ProfileApi.md#postprofiletodatabasedebugmodebenchmark) | **POST** /XDTSz35S_5tOKIsSpDITOc46MR4 | Post account's current profile directly to database. Debug mode must be enabled that route can be used.
 *ProfileApi* | [**postResetProfilePaging**](doc//ProfileApi.md#postresetprofilepaging) | **POST** /uUYIl9C8DoXwTj1icArj0S4RTFI | Reset profile paging.
 *ProfileApi* | [**postSearchAgeRange**](doc//ProfileApi.md#postsearchagerange) | **POST** /xTy-zcnl0LQlfPKQalAEnWQQ-rw | Set account's current search age range
-*ProfileApi* | [**postSearchGroups**](doc//ProfileApi.md#postsearchgroups) | **POST** /p1KA-sqKKtU3FHvUqYRZnQgj7RQ | Set account's current search groups
+*ProfileApi* | [**postSearchGroups**](doc//ProfileApi.md#postsearchgroups) | **POST** /p1KA-sqKKtU3FHvUqYRZnQgj7RQ | Set account's current search groups (gender and what gender user is looking for)
 *ProfileApi* | [**putLocation**](doc//ProfileApi.md#putlocation) | **PUT** /lf5KMD9dBSVuaVcwjm4TB0d7bfY | Update location for account which makes this request.
 
 
@@ -211,25 +215,17 @@ Class | Method | HTTP request | Description
  - [DemoModeLoginToken](doc//DemoModeLoginToken.md)
  - [DemoModePassword](doc//DemoModePassword.md)
  - [DemoModeToken](doc//DemoModeToken.md)
- - [DownloadType](doc//DownloadType.md)
- - [DownloadTypeQueryParam](doc//DownloadTypeQueryParam.md)
  - [EventToClient](doc//EventToClient.md)
  - [EventType](doc//EventType.md)
  - [FavoriteProfilesPage](doc//FavoriteProfilesPage.md)
  - [FcmDeviceToken](doc//FcmDeviceToken.md)
- - [GetContentQueryParams](doc//GetContentQueryParams.md)
  - [GetInitialProfileAgeInfoResult](doc//GetInitialProfileAgeInfoResult.md)
  - [GetMyProfileResult](doc//GetMyProfileResult.md)
- - [GetProfileContentQueryParams](doc//GetProfileContentQueryParams.md)
  - [GetProfileContentResult](doc//GetProfileContentResult.md)
- - [GetProfileQueryParam](doc//GetProfileQueryParam.md)
  - [GetProfileResult](doc//GetProfileResult.md)
  - [GetPublicKey](doc//GetPublicKey.md)
  - [GroupValues](doc//GroupValues.md)
  - [HandleModerationRequest](doc//HandleModerationRequest.md)
- - [IconLocation](doc//IconLocation.md)
- - [IconResource](doc//IconResource.md)
- - [IteratorSessionId](doc//IteratorSessionId.md)
  - [Language](doc//Language.md)
  - [LastSeenTimeFilter](doc//LastSeenTimeFilter.md)
  - [LatestBirthdate](doc//LatestBirthdate.md)
@@ -237,9 +233,6 @@ Class | Method | HTTP request | Description
  - [LimitedActionStatus](doc//LimitedActionStatus.md)
  - [Location](doc//Location.md)
  - [LoginResult](doc//LoginResult.md)
- - [MapTileX](doc//MapTileX.md)
- - [MapTileY](doc//MapTileY.md)
- - [MapTileZ](doc//MapTileZ.md)
  - [MatchesIteratorSessionId](doc//MatchesIteratorSessionId.md)
  - [MatchesPage](doc//MatchesPage.md)
  - [MatchesSyncVersion](doc//MatchesSyncVersion.md)
@@ -248,14 +241,19 @@ Class | Method | HTTP request | Description
  - [Moderation](doc//Moderation.md)
  - [ModerationList](doc//ModerationList.md)
  - [ModerationQueueType](doc//ModerationQueueType.md)
- - [ModerationQueueTypeParam](doc//ModerationQueueTypeParam.md)
  - [ModerationRequest](doc//ModerationRequest.md)
  - [ModerationRequestContent](doc//ModerationRequestContent.md)
  - [ModerationRequestId](doc//ModerationRequestId.md)
  - [ModerationRequestState](doc//ModerationRequestState.md)
- - [NewContentParams](doc//NewContentParams.md)
  - [NewReceivedLikesCount](doc//NewReceivedLikesCount.md)
  - [NewReceivedLikesCountResult](doc//NewReceivedLikesCountResult.md)
+ - [NewsCount](doc//NewsCount.md)
+ - [NewsCountResult](doc//NewsCountResult.md)
+ - [NewsId](doc//NewsId.md)
+ - [NewsItemSimple](doc//NewsItemSimple.md)
+ - [NewsIteratorSessionId](doc//NewsIteratorSessionId.md)
+ - [NewsPage](doc//NewsPage.md)
+ - [NewsSyncVersion](doc//NewsSyncVersion.md)
  - [PageItemCountForNewLikes](doc//PageItemCountForNewLikes.md)
  - [PendingMessage](doc//PendingMessage.md)
  - [PendingMessageAcknowledgementList](doc//PendingMessageAcknowledgementList.md)
@@ -264,7 +262,6 @@ Class | Method | HTTP request | Description
  - [PendingNotificationWithData](doc//PendingNotificationWithData.md)
  - [PendingProfileContent](doc//PendingProfileContent.md)
  - [PendingSecurityContent](doc//PendingSecurityContent.md)
- - [PerfHistoryQuery](doc//PerfHistoryQuery.md)
  - [PerfHistoryQueryResult](doc//PerfHistoryQueryResult.md)
  - [PerfHistoryValue](doc//PerfHistoryValue.md)
  - [PerfValueArea](doc//PerfValueArea.md)
@@ -279,6 +276,7 @@ Class | Method | HTTP request | Description
  - [ProfileAttributesSyncVersion](doc//ProfileAttributesSyncVersion.md)
  - [ProfileContent](doc//ProfileContent.md)
  - [ProfileContentVersion](doc//ProfileContentVersion.md)
+ - [ProfileIteratorSessionId](doc//ProfileIteratorSessionId.md)
  - [ProfileLink](doc//ProfileLink.md)
  - [ProfilePage](doc//ProfilePage.md)
  - [ProfileSearchAgeRange](doc//ProfileSearchAgeRange.md)
@@ -291,15 +289,14 @@ Class | Method | HTTP request | Description
  - [PublicKeyId](doc//PublicKeyId.md)
  - [PublicKeyIdAndVersion](doc//PublicKeyIdAndVersion.md)
  - [PublicKeyVersion](doc//PublicKeyVersion.md)
- - [RebootQueryParam](doc//RebootQueryParam.md)
  - [ReceivedBlocksPage](doc//ReceivedBlocksPage.md)
  - [ReceivedBlocksSyncVersion](doc//ReceivedBlocksSyncVersion.md)
  - [ReceivedLikesIteratorSessionId](doc//ReceivedLikesIteratorSessionId.md)
  - [ReceivedLikesPage](doc//ReceivedLikesPage.md)
  - [ReceivedLikesSyncVersion](doc//ReceivedLikesSyncVersion.md)
  - [RefreshToken](doc//RefreshToken.md)
- - [ResetDataQueryParam](doc//ResetDataQueryParam.md)
  - [ResetMatchesIteratorResult](doc//ResetMatchesIteratorResult.md)
+ - [ResetNewsIteratorResult](doc//ResetNewsIteratorResult.md)
  - [ResetReceivedLikesIteratorResult](doc//ResetReceivedLikesIteratorResult.md)
  - [SearchGroups](doc//SearchGroups.md)
  - [SecurityContent](doc//SecurityContent.md)
@@ -315,7 +312,6 @@ Class | Method | HTTP request | Description
  - [SetProfileContent](doc//SetProfileContent.md)
  - [SetPublicKey](doc//SetPublicKey.md)
  - [SignInWithLoginInfo](doc//SignInWithLoginInfo.md)
- - [SlotId](doc//SlotId.md)
  - [SoftwareInfo](doc//SoftwareInfo.md)
  - [SoftwareOptions](doc//SoftwareOptions.md)
  - [SyncVersion](doc//SyncVersion.md)

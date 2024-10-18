@@ -16,9 +16,7 @@ class MediaApi {
 
   final ApiClient apiClient;
 
-  /// Delete content data. Content can be removed after specific time has passed
-  ///
-  /// since removing all usage from it (content is not a security image or profile content).
+  /// Delete content data. Content can be removed after specific time has passed since removing all usage from it (content is not a security image or profile content).
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -54,9 +52,7 @@ class MediaApi {
     );
   }
 
-  /// Delete content data. Content can be removed after specific time has passed
-  ///
-  /// since removing all usage from it (content is not a security image or profile content).
+  /// Delete content data. Content can be removed after specific time has passed since removing all usage from it (content is not a security image or profile content).
   ///
   /// Parameters:
   ///
@@ -106,9 +102,43 @@ class MediaApi {
     }
   }
 
-  /// Delete pending security content for current account.
+  /// Delete new pending profile content for current account. Server will not switch to pending content when next moderation request is accepted.
   ///
-  /// Server will not change the security content when next moderation request is moderated as accepted.
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> deletePendingProfileContentWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/6LYLKEUqrhj86bf2PXWOjUYHbls';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'DELETE',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Delete new pending profile content for current account. Server will not switch to pending content when next moderation request is accepted.
+  Future<void> deletePendingProfileContent() async {
+    final response = await deletePendingProfileContentWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Delete pending security content for current account. Server will not change the security content when next moderation request is moderated as accepted.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> deletePendingSecurityContentInfoWithHttpInfo() async {
@@ -136,9 +166,7 @@ class MediaApi {
     );
   }
 
-  /// Delete pending security content for current account.
-  ///
-  /// Server will not change the security content when next moderation request is moderated as accepted.
+  /// Delete pending security content for current account. Server will not change the security content when next moderation request is moderated as accepted.
   Future<void> deletePendingSecurityContentInfo() async {
     final response = await deletePendingSecurityContentInfoWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -201,7 +229,7 @@ class MediaApi {
 
   /// Get content data
   ///
-  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  If the previous is not true, then capability `admin_view_all_profiles` or `admin_moderate_images` is required. 
+  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  If the previous is not true, then capability `admin_view_all_profiles` or `admin_moderate_images` is required.  
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -246,7 +274,7 @@ class MediaApi {
 
   /// Get content data
   ///
-  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  If the previous is not true, then capability `admin_view_all_profiles` or `admin_moderate_images` is required. 
+  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  If the previous is not true, then capability `admin_view_all_profiles` or `admin_moderate_images` is required.  
   ///
   /// Parameters:
   ///
@@ -273,7 +301,7 @@ class MediaApi {
 
   /// Get state of content slot.
   ///
-  /// Slots from 0 to 6 are available. 
+  /// Slots from 0 to 6 are available.  
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -308,7 +336,7 @@ class MediaApi {
 
   /// Get state of content slot.
   ///
-  /// Slots from 0 to 6 are available. 
+  /// Slots from 0 to 6 are available.  
   ///
   /// Parameters:
   ///
@@ -672,9 +700,9 @@ class MediaApi {
     return null;
   }
 
-  /// Set content to content processing slot.
+  /// Set content to content processing slot. Processing ID will be returned and processing of the content will begin. Events about the content processing will be sent to the client.
   ///
-  /// Processing ID will be returned and processing of the content will begin. Events about the content processing will be sent to the client.  The state of the processing can be also queired. The querying is required to receive the content ID.  Slots from 0 to 6 are available.  One account can only have one content in upload or processing state. New upload might potentially delete the previous if processing of it is not complete.  Content processing will fail if image content resolution width or height value is less than 512. 
+  /// The state of the processing can be also queired. The querying is required to receive the content ID.  Slots from 0 to 6 are available.  One account can only have one content in upload or processing state. New upload might potentially delete the previous if processing of it is not complete.  Content processing will fail if image content resolution width or height value is less than 512.  
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -703,7 +731,7 @@ class MediaApi {
       queryParams.addAll(_queryParams('', 'secure_capture', secureCapture));
       queryParams.addAll(_queryParams('', 'content_type', contentType));
 
-    const contentTypes = <String>['image/jpeg'];
+    const contentTypes = <String>['application/octet-stream'];
 
 
     return apiClient.invokeAPI(
@@ -717,9 +745,9 @@ class MediaApi {
     );
   }
 
-  /// Set content to content processing slot.
+  /// Set content to content processing slot. Processing ID will be returned and processing of the content will begin. Events about the content processing will be sent to the client.
   ///
-  /// Processing ID will be returned and processing of the content will begin. Events about the content processing will be sent to the client.  The state of the processing can be also queired. The querying is required to receive the content ID.  Slots from 0 to 6 are available.  One account can only have one content in upload or processing state. New upload might potentially delete the previous if processing of it is not complete.  Content processing will fail if image content resolution width or height value is less than 512. 
+  /// The state of the processing can be also queired. The querying is required to receive the content ID.  Slots from 0 to 6 are available.  One account can only have one content in upload or processing state. New upload might potentially delete the previous if processing of it is not complete.  Content processing will fail if image content resolution width or height value is less than 512.  
   ///
   /// Parameters:
   ///
@@ -748,7 +776,7 @@ class MediaApi {
 
   /// Create new or override old moderation request.
   ///
-  /// Make sure that moderation request has content IDs which points to your own image slots. 
+  /// Make sure that moderation request has content IDs which points to your own image slots.  
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -782,7 +810,7 @@ class MediaApi {
 
   /// Create new or override old moderation request.
   ///
-  /// Make sure that moderation request has content IDs which points to your own image slots. 
+  /// Make sure that moderation request has content IDs which points to your own image slots.  
   ///
   /// Parameters:
   ///
@@ -794,9 +822,9 @@ class MediaApi {
     }
   }
 
-  /// Set new pending profile content for current account.
+  /// Set new pending profile content for current account. Server will switch to pending content when next moderation request is accepted.
   ///
-  /// Server will switch to pending content when next moderation request is accepted.  # Restrictions - All content must not be moderated as rejected. - All content must be owned by the account. - All content must be images.
+  /// # Restrictions - All content must not be moderated as rejected. - All content must be owned by the account. - All content must be images.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -828,9 +856,9 @@ class MediaApi {
     );
   }
 
-  /// Set new pending profile content for current account.
+  /// Set new pending profile content for current account. Server will switch to pending content when next moderation request is accepted.
   ///
-  /// Server will switch to pending content when next moderation request is accepted.  # Restrictions - All content must not be moderated as rejected. - All content must be owned by the account. - All content must be images.
+  /// # Restrictions - All content must not be moderated as rejected. - All content must be owned by the account. - All content must be images.
   ///
   /// Parameters:
   ///

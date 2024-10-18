@@ -16,9 +16,9 @@ class AccountInternalApi {
 
   final ApiClient apiClient;
 
-  /// Get new AccessToken for a bot account. If the account is not registered
+  /// Get new AccessToken for a bot account. If the account is not registered as a bot account, then the request will fail.
   ///
-  /// as a bot account, then the request will fail.  Available only if server internal API is enabled with bot_login from config file.
+  /// Available only if server internal API is enabled with bot_login from config file.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -50,9 +50,9 @@ class AccountInternalApi {
     );
   }
 
-  /// Get new AccessToken for a bot account. If the account is not registered
+  /// Get new AccessToken for a bot account. If the account is not registered as a bot account, then the request will fail.
   ///
-  /// as a bot account, then the request will fail.  Available only if server internal API is enabled with bot_login from config file.
+  /// Available only if server internal API is enabled with bot_login from config file.
   ///
   /// Parameters:
   ///

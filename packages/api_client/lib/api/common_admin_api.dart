@@ -64,9 +64,7 @@ class CommonAdminApi {
     return null;
   }
 
-  /// Get latest software build information available for update from manager
-  ///
-  /// instance.
+  /// Get latest software build information available for update from manager instance.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -100,9 +98,7 @@ class CommonAdminApi {
     );
   }
 
-  /// Get latest software build information available for update from manager
-  ///
-  /// instance.
+  /// Get latest software build information available for update from manager instance.
   ///
   /// Parameters:
   ///

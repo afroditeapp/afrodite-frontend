@@ -280,10 +280,6 @@ class ApiClient {
           return DemoModePassword.fromJson(value);
         case 'DemoModeToken':
           return DemoModeToken.fromJson(value);
-        case 'DownloadType':
-          return DownloadTypeTypeTransformer().decode(value);
-        case 'DownloadTypeQueryParam':
-          return DownloadTypeQueryParam.fromJson(value);
         case 'EventToClient':
           return EventToClient.fromJson(value);
         case 'EventType':
@@ -292,18 +288,12 @@ class ApiClient {
           return FavoriteProfilesPage.fromJson(value);
         case 'FcmDeviceToken':
           return FcmDeviceToken.fromJson(value);
-        case 'GetContentQueryParams':
-          return GetContentQueryParams.fromJson(value);
         case 'GetInitialProfileAgeInfoResult':
           return GetInitialProfileAgeInfoResult.fromJson(value);
         case 'GetMyProfileResult':
           return GetMyProfileResult.fromJson(value);
-        case 'GetProfileContentQueryParams':
-          return GetProfileContentQueryParams.fromJson(value);
         case 'GetProfileContentResult':
           return GetProfileContentResult.fromJson(value);
-        case 'GetProfileQueryParam':
-          return GetProfileQueryParam.fromJson(value);
         case 'GetProfileResult':
           return GetProfileResult.fromJson(value);
         case 'GetPublicKey':
@@ -312,12 +302,6 @@ class ApiClient {
           return GroupValues.fromJson(value);
         case 'HandleModerationRequest':
           return HandleModerationRequest.fromJson(value);
-        case 'IconLocation':
-          return IconLocationTypeTransformer().decode(value);
-        case 'IconResource':
-          return IconResource.fromJson(value);
-        case 'IteratorSessionId':
-          return IteratorSessionId.fromJson(value);
         case 'Language':
           return Language.fromJson(value);
         case 'LastSeenTimeFilter':
@@ -332,12 +316,6 @@ class ApiClient {
           return Location.fromJson(value);
         case 'LoginResult':
           return LoginResult.fromJson(value);
-        case 'MapTileX':
-          return MapTileX.fromJson(value);
-        case 'MapTileY':
-          return MapTileY.fromJson(value);
-        case 'MapTileZ':
-          return MapTileZ.fromJson(value);
         case 'MatchesIteratorSessionId':
           return MatchesIteratorSessionId.fromJson(value);
         case 'MatchesPage':
@@ -354,8 +332,6 @@ class ApiClient {
           return ModerationList.fromJson(value);
         case 'ModerationQueueType':
           return ModerationQueueTypeTypeTransformer().decode(value);
-        case 'ModerationQueueTypeParam':
-          return ModerationQueueTypeParam.fromJson(value);
         case 'ModerationRequest':
           return ModerationRequest.fromJson(value);
         case 'ModerationRequestContent':
@@ -364,12 +340,24 @@ class ApiClient {
           return ModerationRequestId.fromJson(value);
         case 'ModerationRequestState':
           return ModerationRequestStateTypeTransformer().decode(value);
-        case 'NewContentParams':
-          return NewContentParams.fromJson(value);
         case 'NewReceivedLikesCount':
           return NewReceivedLikesCount.fromJson(value);
         case 'NewReceivedLikesCountResult':
           return NewReceivedLikesCountResult.fromJson(value);
+        case 'NewsCount':
+          return NewsCount.fromJson(value);
+        case 'NewsCountResult':
+          return NewsCountResult.fromJson(value);
+        case 'NewsId':
+          return NewsId.fromJson(value);
+        case 'NewsItemSimple':
+          return NewsItemSimple.fromJson(value);
+        case 'NewsIteratorSessionId':
+          return NewsIteratorSessionId.fromJson(value);
+        case 'NewsPage':
+          return NewsPage.fromJson(value);
+        case 'NewsSyncVersion':
+          return NewsSyncVersion.fromJson(value);
         case 'PageItemCountForNewLikes':
           return PageItemCountForNewLikes.fromJson(value);
         case 'PendingMessage':
@@ -386,8 +374,6 @@ class ApiClient {
           return PendingProfileContent.fromJson(value);
         case 'PendingSecurityContent':
           return PendingSecurityContent.fromJson(value);
-        case 'PerfHistoryQuery':
-          return PerfHistoryQuery.fromJson(value);
         case 'PerfHistoryQueryResult':
           return PerfHistoryQueryResult.fromJson(value);
         case 'PerfHistoryValue':
@@ -416,6 +402,8 @@ class ApiClient {
           return ProfileContent.fromJson(value);
         case 'ProfileContentVersion':
           return ProfileContentVersion.fromJson(value);
+        case 'ProfileIteratorSessionId':
+          return ProfileIteratorSessionId.fromJson(value);
         case 'ProfileLink':
           return ProfileLink.fromJson(value);
         case 'ProfilePage':
@@ -440,8 +428,6 @@ class ApiClient {
           return PublicKeyIdAndVersion.fromJson(value);
         case 'PublicKeyVersion':
           return PublicKeyVersion.fromJson(value);
-        case 'RebootQueryParam':
-          return RebootQueryParam.fromJson(value);
         case 'ReceivedBlocksPage':
           return ReceivedBlocksPage.fromJson(value);
         case 'ReceivedBlocksSyncVersion':
@@ -454,10 +440,10 @@ class ApiClient {
           return ReceivedLikesSyncVersion.fromJson(value);
         case 'RefreshToken':
           return RefreshToken.fromJson(value);
-        case 'ResetDataQueryParam':
-          return ResetDataQueryParam.fromJson(value);
         case 'ResetMatchesIteratorResult':
           return ResetMatchesIteratorResult.fromJson(value);
+        case 'ResetNewsIteratorResult':
+          return ResetNewsIteratorResult.fromJson(value);
         case 'ResetReceivedLikesIteratorResult':
           return ResetReceivedLikesIteratorResult.fromJson(value);
         case 'SearchGroups':
@@ -488,8 +474,6 @@ class ApiClient {
           return SetPublicKey.fromJson(value);
         case 'SignInWithLoginInfo':
           return SignInWithLoginInfo.fromJson(value);
-        case 'SlotId':
-          return SlotId.fromJson(value);
         case 'SoftwareInfo':
           return SoftwareInfo.fromJson(value);
         case 'SoftwareOptions':

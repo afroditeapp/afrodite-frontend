@@ -63,28 +63,28 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static const VerificationMeta _profileIteratorSessionIdMeta =
       const VerificationMeta('profileIteratorSessionId');
   @override
-  late final GeneratedColumnWithTypeConverter<IteratorSessionId?, String>
-      profileIteratorSessionId = GeneratedColumn<String>(
+  late final GeneratedColumnWithTypeConverter<ProfileIteratorSessionId?, int>
+      profileIteratorSessionId = GeneratedColumn<int>(
               'profile_iterator_session_id', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<IteratorSessionId?>(
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<ProfileIteratorSessionId?>(
               $AccountTable.$converterprofileIteratorSessionId);
   static const VerificationMeta _receivedLikesIteratorSessionIdMeta =
       const VerificationMeta('receivedLikesIteratorSessionId');
   @override
   late final GeneratedColumnWithTypeConverter<ReceivedLikesIteratorSessionId?,
-      String> receivedLikesIteratorSessionId = GeneratedColumn<String>(
+      int> receivedLikesIteratorSessionId = GeneratedColumn<int>(
           'received_likes_iterator_session_id', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false)
+          type: DriftSqlType.int, requiredDuringInsert: false)
       .withConverter<ReceivedLikesIteratorSessionId?>(
           $AccountTable.$converterreceivedLikesIteratorSessionId);
   static const VerificationMeta _matchesIteratorSessionIdMeta =
       const VerificationMeta('matchesIteratorSessionId');
   @override
-  late final GeneratedColumnWithTypeConverter<MatchesIteratorSessionId?, String>
-      matchesIteratorSessionId = GeneratedColumn<String>(
+  late final GeneratedColumnWithTypeConverter<MatchesIteratorSessionId?, int>
+      matchesIteratorSessionId = GeneratedColumn<int>(
               'matches_iterator_session_id', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
+              type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<MatchesIteratorSessionId?>(
               $AccountTable.$convertermatchesIteratorSessionId);
   static const VerificationMeta _clientIdMeta =
@@ -988,14 +988,14 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           DriftSqlType.bool,
           data['${effectivePrefix}profile_filter_favorites'])!,
       profileIteratorSessionId: $AccountTable.$converterprofileIteratorSessionId
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
               data['${effectivePrefix}profile_iterator_session_id'])),
       receivedLikesIteratorSessionId: $AccountTable
           .$converterreceivedLikesIteratorSessionId
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
               data['${effectivePrefix}received_likes_iterator_session_id'])),
       matchesIteratorSessionId: $AccountTable.$convertermatchesIteratorSessionId
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
               data['${effectivePrefix}matches_iterator_session_id'])),
       clientId: $AccountTable.$converterclientId.fromSql(attachedDatabase
           .typeMapping
@@ -1193,14 +1193,14 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<JsonString?, String?>
       $converterjsonAvailableProfileAttributes =
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
-  static TypeConverter<IteratorSessionId?, String?>
+  static TypeConverter<ProfileIteratorSessionId?, int?>
       $converterprofileIteratorSessionId =
-      const NullAwareTypeConverter.wrap(IteratorSessionIdConverter());
-  static TypeConverter<ReceivedLikesIteratorSessionId?, String?>
+      const NullAwareTypeConverter.wrap(ProfileIteratorSessionIdConverter());
+  static TypeConverter<ReceivedLikesIteratorSessionId?, int?>
       $converterreceivedLikesIteratorSessionId =
       const NullAwareTypeConverter.wrap(
           ReceivedLikesIteratorSessionIdConverter());
-  static TypeConverter<MatchesIteratorSessionId?, String?>
+  static TypeConverter<MatchesIteratorSessionId?, int?>
       $convertermatchesIteratorSessionId =
       const NullAwareTypeConverter.wrap(MatchesIteratorSessionIdConverter());
   static TypeConverter<ClientId?, int?> $converterclientId =
@@ -1273,7 +1273,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
 
   /// If true show only favorite profiles
   final bool profileFilterFavorites;
-  final IteratorSessionId? profileIteratorSessionId;
+  final ProfileIteratorSessionId? profileIteratorSessionId;
   final ReceivedLikesIteratorSessionId? receivedLikesIteratorSessionId;
   final MatchesIteratorSessionId? matchesIteratorSessionId;
   final ClientId? clientId;
@@ -1435,17 +1435,17 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     }
     map['profile_filter_favorites'] = Variable<bool>(profileFilterFavorites);
     if (!nullToAbsent || profileIteratorSessionId != null) {
-      map['profile_iterator_session_id'] = Variable<String>($AccountTable
+      map['profile_iterator_session_id'] = Variable<int>($AccountTable
           .$converterprofileIteratorSessionId
           .toSql(profileIteratorSessionId));
     }
     if (!nullToAbsent || receivedLikesIteratorSessionId != null) {
-      map['received_likes_iterator_session_id'] = Variable<String>($AccountTable
+      map['received_likes_iterator_session_id'] = Variable<int>($AccountTable
           .$converterreceivedLikesIteratorSessionId
           .toSql(receivedLikesIteratorSessionId));
     }
     if (!nullToAbsent || matchesIteratorSessionId != null) {
-      map['matches_iterator_session_id'] = Variable<String>($AccountTable
+      map['matches_iterator_session_id'] = Variable<int>($AccountTable
           .$convertermatchesIteratorSessionId
           .toSql(matchesIteratorSessionId));
     }
@@ -1928,8 +1928,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .fromJson<JsonString?>(json['jsonAvailableProfileAttributes']),
       profileFilterFavorites:
           serializer.fromJson<bool>(json['profileFilterFavorites']),
-      profileIteratorSessionId: serializer
-          .fromJson<IteratorSessionId?>(json['profileIteratorSessionId']),
+      profileIteratorSessionId: serializer.fromJson<ProfileIteratorSessionId?>(
+          json['profileIteratorSessionId']),
       receivedLikesIteratorSessionId:
           serializer.fromJson<ReceivedLikesIteratorSessionId?>(
               json['receivedLikesIteratorSessionId']),
@@ -2056,8 +2056,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'jsonAvailableProfileAttributes':
           serializer.toJson<JsonString?>(jsonAvailableProfileAttributes),
       'profileFilterFavorites': serializer.toJson<bool>(profileFilterFavorites),
-      'profileIteratorSessionId':
-          serializer.toJson<IteratorSessionId?>(profileIteratorSessionId),
+      'profileIteratorSessionId': serializer
+          .toJson<ProfileIteratorSessionId?>(profileIteratorSessionId),
       'receivedLikesIteratorSessionId':
           serializer.toJson<ReceivedLikesIteratorSessionId?>(
               receivedLikesIteratorSessionId),
@@ -2172,7 +2172,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<JsonString?> jsonAvailableProfileAttributes =
               const Value.absent(),
           bool? profileFilterFavorites,
-          Value<IteratorSessionId?> profileIteratorSessionId =
+          Value<ProfileIteratorSessionId?> profileIteratorSessionId =
               const Value.absent(),
           Value<ReceivedLikesIteratorSessionId?>
               receivedLikesIteratorSessionId = const Value.absent(),
@@ -2943,7 +2943,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<JsonString?> jsonCapabilities;
   final Value<JsonString?> jsonAvailableProfileAttributes;
   final Value<bool> profileFilterFavorites;
-  final Value<IteratorSessionId?> profileIteratorSessionId;
+  final Value<ProfileIteratorSessionId?> profileIteratorSessionId;
   final Value<ReceivedLikesIteratorSessionId?> receivedLikesIteratorSessionId;
   final Value<MatchesIteratorSessionId?> matchesIteratorSessionId;
   final Value<ClientId?> clientId;
@@ -3164,9 +3164,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<String>? jsonCapabilities,
     Expression<String>? jsonAvailableProfileAttributes,
     Expression<bool>? profileFilterFavorites,
-    Expression<String>? profileIteratorSessionId,
-    Expression<String>? receivedLikesIteratorSessionId,
-    Expression<String>? matchesIteratorSessionId,
+    Expression<int>? profileIteratorSessionId,
+    Expression<int>? receivedLikesIteratorSessionId,
+    Expression<int>? matchesIteratorSessionId,
     Expression<int>? clientId,
     Expression<bool>? initialSyncDoneLoginRepository,
     Expression<bool>? initialSyncDoneAccountRepository,
@@ -3368,7 +3368,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<JsonString?>? jsonCapabilities,
       Value<JsonString?>? jsonAvailableProfileAttributes,
       Value<bool>? profileFilterFavorites,
-      Value<IteratorSessionId?>? profileIteratorSessionId,
+      Value<ProfileIteratorSessionId?>? profileIteratorSessionId,
       Value<ReceivedLikesIteratorSessionId?>? receivedLikesIteratorSessionId,
       Value<MatchesIteratorSessionId?>? matchesIteratorSessionId,
       Value<ClientId?>? clientId,
@@ -3584,17 +3584,17 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           Variable<bool>(profileFilterFavorites.value);
     }
     if (profileIteratorSessionId.present) {
-      map['profile_iterator_session_id'] = Variable<String>($AccountTable
+      map['profile_iterator_session_id'] = Variable<int>($AccountTable
           .$converterprofileIteratorSessionId
           .toSql(profileIteratorSessionId.value));
     }
     if (receivedLikesIteratorSessionId.present) {
-      map['received_likes_iterator_session_id'] = Variable<String>($AccountTable
+      map['received_likes_iterator_session_id'] = Variable<int>($AccountTable
           .$converterreceivedLikesIteratorSessionId
           .toSql(receivedLikesIteratorSessionId.value));
     }
     if (matchesIteratorSessionId.present) {
-      map['matches_iterator_session_id'] = Variable<String>($AccountTable
+      map['matches_iterator_session_id'] = Variable<int>($AccountTable
           .$convertermatchesIteratorSessionId
           .toSql(matchesIteratorSessionId.value));
     }

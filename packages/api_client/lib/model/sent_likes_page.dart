@@ -19,6 +19,7 @@ class SentLikesPage {
 
   List<AccountId> profiles;
 
+  /// This version can be sent to the server when WebSocket protocol data sync is happening.
   SentLikesSyncVersion version;
 
   @override

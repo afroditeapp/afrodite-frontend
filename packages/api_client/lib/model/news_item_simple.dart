@@ -10,43 +10,48 @@
 
 part of openapi.api;
 
-class PendingMessage {
-  /// Returns a new [PendingMessage] instance.
-  PendingMessage({
+class NewsItemSimple {
+  /// Returns a new [NewsItemSimple] instance.
+  NewsItemSimple({
+    required this.creationTime,
     required this.id,
-    required this.unixTime,
+    required this.title,
   });
 
-  PendingMessageId id;
+  UnixTime creationTime;
 
-  /// Unix time when server received the message.
-  UnixTime unixTime;
+  NewsId id;
+
+  String title;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is PendingMessage &&
+  bool operator ==(Object other) => identical(this, other) || other is NewsItemSimple &&
+    other.creationTime == creationTime &&
     other.id == id &&
-    other.unixTime == unixTime;
+    other.title == title;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (creationTime.hashCode) +
     (id.hashCode) +
-    (unixTime.hashCode);
+    (title.hashCode);
 
   @override
-  String toString() => 'PendingMessage[id=$id, unixTime=$unixTime]';
+  String toString() => 'NewsItemSimple[creationTime=$creationTime, id=$id, title=$title]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'creation_time'] = this.creationTime;
       json[r'id'] = this.id;
-      json[r'unix_time'] = this.unixTime;
+      json[r'title'] = this.title;
     return json;
   }
 
-  /// Returns a new [PendingMessage] instance and imports its values from
+  /// Returns a new [NewsItemSimple] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static PendingMessage? fromJson(dynamic value) {
+  static NewsItemSimple? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -55,25 +60,26 @@ class PendingMessage {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PendingMessage[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PendingMessage[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "NewsItemSimple[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "NewsItemSimple[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return PendingMessage(
-        id: PendingMessageId.fromJson(json[r'id'])!,
-        unixTime: UnixTime.fromJson(json[r'unix_time'])!,
+      return NewsItemSimple(
+        creationTime: UnixTime.fromJson(json[r'creation_time'])!,
+        id: NewsId.fromJson(json[r'id'])!,
+        title: mapValueOfType<String>(json, r'title')!,
       );
     }
     return null;
   }
 
-  static List<PendingMessage> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <PendingMessage>[];
+  static List<NewsItemSimple> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <NewsItemSimple>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = PendingMessage.fromJson(row);
+        final value = NewsItemSimple.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -82,12 +88,12 @@ class PendingMessage {
     return result.toList(growable: growable);
   }
 
-  static Map<String, PendingMessage> mapFromJson(dynamic json) {
-    final map = <String, PendingMessage>{};
+  static Map<String, NewsItemSimple> mapFromJson(dynamic json) {
+    final map = <String, NewsItemSimple>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = PendingMessage.fromJson(entry.value);
+        final value = NewsItemSimple.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -96,14 +102,14 @@ class PendingMessage {
     return map;
   }
 
-  // maps a json object with a list of PendingMessage-objects as value to a dart map
-  static Map<String, List<PendingMessage>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<PendingMessage>>{};
+  // maps a json object with a list of NewsItemSimple-objects as value to a dart map
+  static Map<String, List<NewsItemSimple>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<NewsItemSimple>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = PendingMessage.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = NewsItemSimple.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -111,8 +117,9 @@ class PendingMessage {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'creation_time',
     'id',
-    'unix_time',
+    'title',
   };
 }
 

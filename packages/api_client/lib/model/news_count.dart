@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class ResetDataQueryParam {
-  /// Returns a new [ResetDataQueryParam] instance.
-  ResetDataQueryParam({
-    required this.resetData,
+class NewsCount {
+  /// Returns a new [NewsCount] instance.
+  NewsCount({
+    required this.c,
   });
 
-  bool resetData;
+  int c;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ResetDataQueryParam &&
-    other.resetData == resetData;
+  bool operator ==(Object other) => identical(this, other) || other is NewsCount &&
+    other.c == c;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (resetData.hashCode);
+    (c.hashCode);
 
   @override
-  String toString() => 'ResetDataQueryParam[resetData=$resetData]';
+  String toString() => 'NewsCount[c=$c]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'reset_data'] = this.resetData;
+      json[r'c'] = this.c;
     return json;
   }
 
-  /// Returns a new [ResetDataQueryParam] instance and imports its values from
+  /// Returns a new [NewsCount] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ResetDataQueryParam? fromJson(dynamic value) {
+  static NewsCount? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class ResetDataQueryParam {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ResetDataQueryParam[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ResetDataQueryParam[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "NewsCount[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "NewsCount[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ResetDataQueryParam(
-        resetData: mapValueOfType<bool>(json, r'reset_data')!,
+      return NewsCount(
+        c: mapValueOfType<int>(json, r'c')!,
       );
     }
     return null;
   }
 
-  static List<ResetDataQueryParam> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ResetDataQueryParam>[];
+  static List<NewsCount> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <NewsCount>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ResetDataQueryParam.fromJson(row);
+        final value = NewsCount.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class ResetDataQueryParam {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ResetDataQueryParam> mapFromJson(dynamic json) {
-    final map = <String, ResetDataQueryParam>{};
+  static Map<String, NewsCount> mapFromJson(dynamic json) {
+    final map = <String, NewsCount>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ResetDataQueryParam.fromJson(entry.value);
+        final value = NewsCount.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class ResetDataQueryParam {
     return map;
   }
 
-  // maps a json object with a list of ResetDataQueryParam-objects as value to a dart map
-  static Map<String, List<ResetDataQueryParam>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ResetDataQueryParam>>{};
+  // maps a json object with a list of NewsCount-objects as value to a dart map
+  static Map<String, List<NewsCount>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<NewsCount>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ResetDataQueryParam.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = NewsCount.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +103,7 @@ class ResetDataQueryParam {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'reset_data',
+    'c',
   };
 }
 

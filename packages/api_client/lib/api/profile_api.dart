@@ -148,9 +148,7 @@ class ProfileApi {
     return null;
   }
 
-  /// Get initial profile age information which can be used for calculating
-  ///
-  /// current accepted profile ages.
+  /// Get initial profile age information which can be used for calculating current accepted profile ages.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getInitialProfileAgeInfoWithHttpInfo() async {
@@ -178,9 +176,7 @@ class ProfileApi {
     );
   }
 
-  /// Get initial profile age information which can be used for calculating
-  ///
-  /// current accepted profile ages.
+  /// Get initial profile age information which can be used for calculating current accepted profile ages.
   Future<GetInitialProfileAgeInfoResult?> getInitialProfileAgeInfo() async {
     final response = await getInitialProfileAgeInfoWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -404,9 +400,7 @@ class ProfileApi {
     return null;
   }
 
-  /// Get account's current profile from database. Debug mode must be enabled
-  ///
-  /// that route can be used.
+  /// Get account's current profile from database. Debug mode must be enabled that route can be used.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -439,9 +433,7 @@ class ProfileApi {
     );
   }
 
-  /// Get account's current profile from database. Debug mode must be enabled
-  ///
-  /// that route can be used.
+  /// Get account's current profile from database. Debug mode must be enabled that route can be used.
   ///
   /// Parameters:
   ///
@@ -505,9 +497,7 @@ class ProfileApi {
     return null;
   }
 
-  /// Get account's current search groups
-  ///
-  /// (gender and what gender user is looking for)
+  /// Get account's current search groups (gender and what gender user is looking for)
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getSearchGroupsWithHttpInfo() async {
@@ -535,9 +525,7 @@ class ProfileApi {
     );
   }
 
-  /// Get account's current search groups
-  ///
-  /// (gender and what gender user is looking for)
+  /// Get account's current search groups (gender and what gender user is looking for)
   Future<SearchGroups?> getSearchGroups() async {
     final response = await getSearchGroupsWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -603,13 +591,13 @@ class ProfileApi {
   ///
   /// Parameters:
   ///
-  /// * [IteratorSessionId] iteratorSessionId (required):
-  Future<Response> postGetNextProfilePageWithHttpInfo(IteratorSessionId iteratorSessionId,) async {
+  /// * [ProfileIteratorSessionId] profileIteratorSessionId (required):
+  Future<Response> postGetNextProfilePageWithHttpInfo(ProfileIteratorSessionId profileIteratorSessionId,) async {
     // ignore: prefer_const_declarations
     final path = r'/_XRgLHtmWtbgW3ZAlgfTH5bs6bE';
 
     // ignore: prefer_final_locals
-    Object? postBody = iteratorSessionId;
+    Object? postBody = profileIteratorSessionId;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -633,9 +621,9 @@ class ProfileApi {
   ///
   /// Parameters:
   ///
-  /// * [IteratorSessionId] iteratorSessionId (required):
-  Future<ProfilePage?> postGetNextProfilePage(IteratorSessionId iteratorSessionId,) async {
-    final response = await postGetNextProfilePageWithHttpInfo(iteratorSessionId,);
+  /// * [ProfileIteratorSessionId] profileIteratorSessionId (required):
+  Future<ProfilePage?> postGetNextProfilePage(ProfileIteratorSessionId profileIteratorSessionId,) async {
+    final response = await postGetNextProfilePageWithHttpInfo(profileIteratorSessionId,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -651,7 +639,7 @@ class ProfileApi {
 
   /// Update profile information.
   ///
-  /// Writes the profile to the database only if it is changed.  WebSocket event about profile change will not be emitted. The event is emitted only from server side profile updates.  # Requirements - Profile attributes must be valid. - Profile text must be empty. - Profile name changes are only possible when initial setup is ongoing. - Profile age must match with currently valid age range. The first min value for the age range is the age at the initial setup. The second min and max value is calculated using the following algorithm: - The initial age (initialAge) is paired with the year of initial setup completed (initialSetupYear). - Year difference (yearDifference = currentYear - initialSetupYear) is used for changing the range min and max. - Min value: initialAge + yearDifference - 1. - Max value: initialAge + yearDifference + 1.  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
+  /// Writes the profile to the database only if it is changed.  WebSocket event about profile change will not be emitted. The event is emitted only from server side profile updates.  # Requirements - Profile attributes must be valid. - Profile text must be empty. - Profile name changes are only possible when initial setup is ongoing. - Profile age must match with currently valid age range. The first min   value for the age range is the age at the initial setup. The second min   and max value is calculated using the following algorithm:  - The initial age (initialAge) is paired with the year of initial    setup completed (initialSetupYear).    - Year difference (yearDifference = currentYear - initialSetupYear) is      used for changing the range min and max.      - Min value: initialAge + yearDifference - 1.      - Max value: initialAge + yearDifference + 1.  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -685,7 +673,7 @@ class ProfileApi {
 
   /// Update profile information.
   ///
-  /// Writes the profile to the database only if it is changed.  WebSocket event about profile change will not be emitted. The event is emitted only from server side profile updates.  # Requirements - Profile attributes must be valid. - Profile text must be empty. - Profile name changes are only possible when initial setup is ongoing. - Profile age must match with currently valid age range. The first min value for the age range is the age at the initial setup. The second min and max value is calculated using the following algorithm: - The initial age (initialAge) is paired with the year of initial setup completed (initialSetupYear). - Year difference (yearDifference = currentYear - initialSetupYear) is used for changing the range min and max. - Min value: initialAge + yearDifference - 1. - Max value: initialAge + yearDifference + 1.  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
+  /// Writes the profile to the database only if it is changed.  WebSocket event about profile change will not be emitted. The event is emitted only from server side profile updates.  # Requirements - Profile attributes must be valid. - Profile text must be empty. - Profile name changes are only possible when initial setup is ongoing. - Profile age must match with currently valid age range. The first min   value for the age range is the age at the initial setup. The second min   and max value is calculated using the following algorithm:  - The initial age (initialAge) is paired with the year of initial    setup completed (initialSetupYear).    - Year difference (yearDifference = currentYear - initialSetupYear) is      used for changing the range min and max.      - Min value: initialAge + yearDifference - 1.      - Max value: initialAge + yearDifference + 1.  TODO: string lenght validation, limit saving new profiles TODO: return the new proifle. Edit: is this really needed?
   ///
   /// Parameters:
   ///
@@ -741,9 +729,7 @@ class ProfileApi {
     }
   }
 
-  /// Post account's current profile directly to database. Debug mode must be enabled
-  ///
-  /// that route can be used.
+  /// Post account's current profile directly to database. Debug mode must be enabled that route can be used.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -775,9 +761,7 @@ class ProfileApi {
     );
   }
 
-  /// Post account's current profile directly to database. Debug mode must be enabled
-  ///
-  /// that route can be used.
+  /// Post account's current profile directly to database. Debug mode must be enabled that route can be used.
   ///
   /// Parameters:
   ///
@@ -822,7 +806,7 @@ class ProfileApi {
   /// Reset profile paging.
   ///
   /// After this request getting next profiles will continue from the nearest profiles.
-  Future<IteratorSessionId?> postResetProfilePaging() async {
+  Future<ProfileIteratorSessionId?> postResetProfilePaging() async {
     final response = await postResetProfilePagingWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -831,7 +815,7 @@ class ProfileApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'IteratorSessionId',) as IteratorSessionId;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileIteratorSessionId',) as ProfileIteratorSessionId;
     
     }
     return null;
@@ -881,9 +865,7 @@ class ProfileApi {
     }
   }
 
-  /// Set account's current search groups
-  ///
-  /// (gender and what gender user is looking for)
+  /// Set account's current search groups (gender and what gender user is looking for)
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -915,9 +897,7 @@ class ProfileApi {
     );
   }
 
-  /// Set account's current search groups
-  ///
-  /// (gender and what gender user is looking for)
+  /// Set account's current search groups (gender and what gender user is looking for)
   ///
   /// Parameters:
   ///

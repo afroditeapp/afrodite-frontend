@@ -22,10 +22,18 @@ class LoginResult {
     this.profile,
   });
 
+  /// If `None`, the client is unsupported.
   AuthPair? account;
 
+  /// Account ID of current account. If `None`, the client is unsupported.
   AccountId? aid;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   String? email;
 
   bool errorUnsupportedClient;
@@ -33,8 +41,10 @@ class LoginResult {
   /// Info about latest public keys. Client can use this value to ask if user wants to copy existing private and public key from other device. If empty, public key is not set or the client is unsupported.
   List<PublicKeyIdAndVersion> latestPublicKeys;
 
+  /// If `None`, media microservice is disabled or the client version is unsupported.
   AuthPair? media;
 
+  /// If `None`, profile microservice is disabled or the version client is unsupported.
   AuthPair? profile;
 
   @override

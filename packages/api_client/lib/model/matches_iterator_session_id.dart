@@ -16,7 +16,7 @@ class MatchesIteratorSessionId {
     required this.id,
   });
 
-  String id;
+  int id;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is MatchesIteratorSessionId &&
@@ -55,7 +55,7 @@ class MatchesIteratorSessionId {
       }());
 
       return MatchesIteratorSessionId(
-        id: mapValueOfType<String>(json, r'id')!,
+        id: mapValueOfType<int>(json, r'id')!,
       );
     }
     return null;

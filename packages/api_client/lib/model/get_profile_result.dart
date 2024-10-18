@@ -19,10 +19,18 @@ class GetProfileResult {
   });
 
   /// Account's most recent disconnect time.  If the last seen time is not None, then it is Unix timestamp or -1 if the profile is currently online.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   int? lst;
 
+  /// Profile data if it is newer than the version in the query.
   Profile? p;
 
+  /// If empty then profile does not exist or current account does not have access to the profile.
   ProfileVersion? v;
 
   @override

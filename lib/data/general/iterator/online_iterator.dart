@@ -176,7 +176,7 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
   final AccountDatabaseManager db;
   final ApiManager api;
   IteratorType? iteratorValue;
-  IteratorSessionId? currentSessionId;
+  ProfileIteratorSessionId? currentSessionId;
 
   ProfileListOnlineIteratorIo(this.db, this.api);
 

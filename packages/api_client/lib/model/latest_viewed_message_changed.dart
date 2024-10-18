@@ -17,8 +17,10 @@ class LatestViewedMessageChanged {
     required this.viewer,
   });
 
+  /// New value for latest vieqed message
   MessageNumber newLatestViewedMessage;
 
+  /// Account id of message viewer
   AccountId viewer;
 
   @override
