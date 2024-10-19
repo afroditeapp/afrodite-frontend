@@ -19,7 +19,7 @@ class PendingNotificationWithData {
   });
 
   /// Data for NEW_MESSAGE notification.  List of account IDs which have sent a new message.
-  List<AccountId> newMessageReceivedFrom;
+  List<AccountId>? newMessageReceivedFrom;
 
   /// Data for RECEIVED_LIKES_CHANGED notification.
   NewReceivedLikesCountResult? receivedLikesChanged;
@@ -36,7 +36,7 @@ class PendingNotificationWithData {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (newMessageReceivedFrom.hashCode) +
+    (newMessageReceivedFrom == null ? 0 : newMessageReceivedFrom!.hashCode) +
     (receivedLikesChanged == null ? 0 : receivedLikesChanged!.hashCode) +
     (value.hashCode);
 
@@ -45,7 +45,11 @@ class PendingNotificationWithData {
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.newMessageReceivedFrom != null) {
       json[r'new_message_received_from'] = this.newMessageReceivedFrom;
+    } else {
+      json[r'new_message_received_from'] = null;
+    }
     if (this.receivedLikesChanged != null) {
       json[r'received_likes_changed'] = this.receivedLikesChanged;
     } else {
