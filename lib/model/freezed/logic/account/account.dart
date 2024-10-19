@@ -13,7 +13,7 @@ class AccountBlocData with _$AccountBlocData {
   factory AccountBlocData({
     String? email,
     AccountState? accountState,
-    required Capabilities capabilities,
+    required Permissions permissions,
     required ProfileVisibility visibility,
   }) = _AccountBlocData;
 

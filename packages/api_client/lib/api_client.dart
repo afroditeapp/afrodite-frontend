@@ -228,8 +228,6 @@ class ApiClient {
           return BotConfig.fromJson(value);
         case 'BuildInfo':
           return BuildInfo.fromJson(value);
-        case 'Capabilities':
-          return Capabilities.fromJson(value);
         case 'ClientId':
           return ClientId.fromJson(value);
         case 'ClientInfo':
@@ -292,6 +290,8 @@ class ApiClient {
           return GetInitialProfileAgeInfoResult.fromJson(value);
         case 'GetMyProfileResult':
           return GetMyProfileResult.fromJson(value);
+        case 'GetNewsItemResult':
+          return GetNewsItemResult.fromJson(value);
         case 'GetProfileContentResult':
           return GetProfileContentResult.fromJson(value);
         case 'GetProfileResult':
@@ -350,6 +350,8 @@ class ApiClient {
           return NewsCountResult.fromJson(value);
         case 'NewsId':
           return NewsId.fromJson(value);
+        case 'NewsItem':
+          return NewsItem.fromJson(value);
         case 'NewsItemSimple':
           return NewsItemSimple.fromJson(value);
         case 'NewsIteratorSessionId':
@@ -358,6 +360,8 @@ class ApiClient {
           return NewsPage.fromJson(value);
         case 'NewsSyncVersion':
           return NewsSyncVersion.fromJson(value);
+        case 'NewsTranslationVersion':
+          return NewsTranslationVersion.fromJson(value);
         case 'PageItemCountForNewLikes':
           return PageItemCountForNewLikes.fromJson(value);
         case 'PendingMessage':
@@ -380,6 +384,8 @@ class ApiClient {
           return PerfHistoryValue.fromJson(value);
         case 'PerfValueArea':
           return PerfValueArea.fromJson(value);
+        case 'Permissions':
+          return Permissions.fromJson(value);
         case 'Profile':
           return Profile.fromJson(value);
         case 'ProfileAttributeFilterList':
@@ -492,6 +498,8 @@ class ApiClient {
           return UnixTime.fromJson(value);
         case 'UpdateMessageViewStatus':
           return UpdateMessageViewStatus.fromJson(value);
+        case 'UpdateNewsTranslation':
+          return UpdateNewsTranslation.fromJson(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

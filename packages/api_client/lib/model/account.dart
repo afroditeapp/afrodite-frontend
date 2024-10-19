@@ -13,13 +13,13 @@ part of openapi.api;
 class Account {
   /// Returns a new [Account] instance.
   Account({
-    required this.capabilities,
+    required this.permissions,
     required this.state,
     required this.syncVersion,
     required this.visibility,
   });
 
-  Capabilities capabilities;
+  Permissions permissions;
 
   AccountState state;
 
@@ -29,7 +29,7 @@ class Account {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Account &&
-    other.capabilities == capabilities &&
+    other.permissions == permissions &&
     other.state == state &&
     other.syncVersion == syncVersion &&
     other.visibility == visibility;
@@ -37,17 +37,17 @@ class Account {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (capabilities.hashCode) +
+    (permissions.hashCode) +
     (state.hashCode) +
     (syncVersion.hashCode) +
     (visibility.hashCode);
 
   @override
-  String toString() => 'Account[capabilities=$capabilities, state=$state, syncVersion=$syncVersion, visibility=$visibility]';
+  String toString() => 'Account[permissions=$permissions, state=$state, syncVersion=$syncVersion, visibility=$visibility]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'capabilities'] = this.capabilities;
+      json[r'permissions'] = this.permissions;
       json[r'state'] = this.state;
       json[r'sync_version'] = this.syncVersion;
       json[r'visibility'] = this.visibility;
@@ -73,7 +73,7 @@ class Account {
       }());
 
       return Account(
-        capabilities: Capabilities.fromJson(json[r'capabilities'])!,
+        permissions: Permissions.fromJson(json[r'permissions'])!,
         state: AccountState.fromJson(json[r'state'])!,
         syncVersion: AccountSyncVersion.fromJson(json[r'sync_version'])!,
         visibility: ProfileVisibility.fromJson(json[r'visibility'])!,
@@ -124,7 +124,7 @@ class Account {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'capabilities',
+    'permissions',
     'state',
     'sync_version',
     'visibility',

@@ -8,9 +8,9 @@ import "package:pihka_frontend/model/freezed/logic/account/account.dart";
 import "package:pihka_frontend/utils.dart";
 
 sealed class AccountEvent {}
-class NewCapabilitiesValue extends AccountEvent {
-  final Capabilities value;
-  NewCapabilitiesValue(this.value);
+class NewPermissionsValue extends AccountEvent {
+  final Permissions value;
+  NewPermissionsValue(this.value);
 }
 class NewProfileVisibilityValue extends AccountEvent {
   final ProfileVisibility value;
@@ -29,14 +29,14 @@ class NewEmailAddressValue extends AccountEvent {
 class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner {
   final AccountRepository account = LoginRepository.getInstance().repositories.account;
 
-  StreamSubscription<Capabilities>? _capabilitiesSubscription;
+  StreamSubscription<Permissions>? _permissionsSubscription;
   StreamSubscription<ProfileVisibility>? _profileVisibilitySubscription;
   StreamSubscription<AccountState?>? _accountStateSubscription;
   StreamSubscription<String?>? _emailAddressSubscription;
 
   AccountBloc() :
     super(AccountBlocData(
-      capabilities: Capabilities(),
+      permissions: Permissions(),
       // Use cached profile visiblity to avoid profile grid UI changing quickly
       // from private profile info to profile grid after login.
       visibility: LoginRepository.getInstance().repositories.account.profileVisibilityValue,
@@ -44,8 +44,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
       // when initial setup is displayed.
       email: LoginRepository.getInstance().repositories.account.emailAddressValue,
     )) {
-    on<NewCapabilitiesValue>((key, emit) {
-      emit(state.copyWith(capabilities: key.value));
+    on<NewPermissionsValue>((key, emit) {
+      emit(state.copyWith(permissions: key.value));
     });
     on<NewProfileVisibilityValue>((key, emit) {
       emit(state.copyWith(visibility: key.value));
@@ -57,8 +57,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
       emit(state.copyWith(email: key.value));
     });
 
-    _capabilitiesSubscription = account.capabilities.listen((event) {
-      add(NewCapabilitiesValue(event));
+    _permissionsSubscription = account.permissions.listen((event) {
+      add(NewPermissionsValue(event));
     });
     _profileVisibilitySubscription = account.profileVisibility.listen((event) {
       add(NewProfileVisibilityValue(event));
@@ -73,7 +73,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
 
   @override
   Future<void> close() async {
-    await _capabilitiesSubscription?.cancel();
+    await _permissionsSubscription?.cancel();
     await _profileVisibilitySubscription?.cancel();
     await _accountStateSubscription?.cancel();
     await _emailAddressSubscription?.cancel();

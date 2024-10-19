@@ -5,6 +5,7 @@ doc/AcceptedProfileAges.md
 doc/AccessToken.md
 doc/AccessibleAccount.md
 doc/Account.md
+doc/AccountAdminApi.md
 doc/AccountApi.md
 doc/AccountContent.md
 doc/AccountData.md
@@ -26,7 +27,6 @@ doc/BackendVersion.md
 doc/BooleanSetting.md
 doc/BotConfig.md
 doc/BuildInfo.md
-doc/Capabilities.md
 doc/ChatApi.md
 doc/ClientId.md
 doc/ClientInfo.md
@@ -61,6 +61,7 @@ doc/FavoriteProfilesPage.md
 doc/FcmDeviceToken.md
 doc/GetInitialProfileAgeInfoResult.md
 doc/GetMyProfileResult.md
+doc/GetNewsItemResult.md
 doc/GetProfileContentResult.md
 doc/GetProfileResult.md
 doc/GetPublicKey.md
@@ -93,10 +94,12 @@ doc/NewReceivedLikesCountResult.md
 doc/NewsCount.md
 doc/NewsCountResult.md
 doc/NewsId.md
+doc/NewsItem.md
 doc/NewsItemSimple.md
 doc/NewsIteratorSessionId.md
 doc/NewsPage.md
 doc/NewsSyncVersion.md
+doc/NewsTranslationVersion.md
 doc/PageItemCountForNewLikes.md
 doc/PendingMessage.md
 doc/PendingMessageAcknowledgementList.md
@@ -108,6 +111,7 @@ doc/PendingSecurityContent.md
 doc/PerfHistoryQueryResult.md
 doc/PerfHistoryValue.md
 doc/PerfValueArea.md
+doc/Permissions.md
 doc/Profile.md
 doc/ProfileApi.md
 doc/ProfileAttributeFilterList.md
@@ -165,8 +169,10 @@ doc/TimeGranularity.md
 doc/Translation.md
 doc/UnixTime.md
 doc/UpdateMessageViewStatus.md
+doc/UpdateNewsTranslation.md
 git_push.sh
 lib/api.dart
+lib/api/account_admin_api.dart
 lib/api/account_api.dart
 lib/api/account_internal_api.dart
 lib/api/chat_api.dart
@@ -207,7 +213,6 @@ lib/model/backend_version.dart
 lib/model/boolean_setting.dart
 lib/model/bot_config.dart
 lib/model/build_info.dart
-lib/model/capabilities.dart
 lib/model/client_id.dart
 lib/model/client_info.dart
 lib/model/client_local_id.dart
@@ -239,6 +244,7 @@ lib/model/favorite_profiles_page.dart
 lib/model/fcm_device_token.dart
 lib/model/get_initial_profile_age_info_result.dart
 lib/model/get_my_profile_result.dart
+lib/model/get_news_item_result.dart
 lib/model/get_profile_content_result.dart
 lib/model/get_profile_result.dart
 lib/model/get_public_key.dart
@@ -268,10 +274,12 @@ lib/model/new_received_likes_count_result.dart
 lib/model/news_count.dart
 lib/model/news_count_result.dart
 lib/model/news_id.dart
+lib/model/news_item.dart
 lib/model/news_item_simple.dart
 lib/model/news_iterator_session_id.dart
 lib/model/news_page.dart
 lib/model/news_sync_version.dart
+lib/model/news_translation_version.dart
 lib/model/page_item_count_for_new_likes.dart
 lib/model/pending_message.dart
 lib/model/pending_message_acknowledgement_list.dart
@@ -283,6 +291,7 @@ lib/model/pending_security_content.dart
 lib/model/perf_history_query_result.dart
 lib/model/perf_history_value.dart
 lib/model/perf_value_area.dart
+lib/model/permissions.dart
 lib/model/profile.dart
 lib/model/profile_attribute_filter_list.dart
 lib/model/profile_attribute_filter_list_update.dart
@@ -339,3 +348,4 @@ lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
+lib/model/update_news_translation.dart

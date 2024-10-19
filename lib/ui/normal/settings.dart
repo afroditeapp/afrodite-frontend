@@ -152,7 +152,7 @@ class _SettingsViewState extends State<SettingsView> {
         ];
 
         // TODO(prod): Remove/hide admin settings from production build?
-        if (state.capabilities.adminSettingsVisible()) {
+        if (state.permissions.adminSettingsVisible()) {
           settings.add(Setting.createSetting(Icons.admin_panel_settings, context.strings.admin_settings_title, () =>
             MyNavigator.push(context, const MaterialPage<void>(child: AdminSettingsPage()))
           ));

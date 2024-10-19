@@ -67,6 +67,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**getAccountState**](doc//AccountApi.md#getaccountstate) | **GET** /C9sCP6O2IfIBQCu8LM1_SCybuW0 | Get current account state.
 *AccountApi* | [**getDeletionStatus**](doc//AccountApi.md#getdeletionstatus) | **GET** /_aiEAY0WZCquNl_WQ5fDORGuHwA | Get deletion status.
 *AccountApi* | [**getLatestBirthdate**](doc//AccountApi.md#getlatestbirthdate) | **GET** /Hg2W1drXZ94YVp3Uh38hnQzYIng | 
+*AccountApi* | [**getNewsItem**](doc//AccountApi.md#getnewsitem) | **GET** /2OHF85k7hpH2tAibkA0V9YLwpF4/{nid} | Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
 *AccountApi* | [**postAccountData**](doc//AccountApi.md#postaccountdata) | **POST** /Ln3_j2LpJIbQABKwnMMhUEtio5k | Set changeable user information to account.
 *AccountApi* | [**postAccountSetup**](doc//AccountApi.md#postaccountsetup) | **POST** /RNb6qhf_lZU8t6kOm5kQY7Y34ok | Setup non-changeable user information during `initial setup` state.
 *AccountApi* | [**postCompleteSetup**](doc//AccountApi.md#postcompletesetup) | **POST** /VzPyCXS5Hx50SbAApdpUYfCY-Iw | Complete initial setup.
@@ -76,13 +77,18 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postDemoModeLogin**](doc//AccountApi.md#postdemomodelogin) | **POST** /TYbxniP-G9ibgdoAkpvVWTKkxaU | Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
 *AccountApi* | [**postDemoModeLoginToAccount**](doc//AccountApi.md#postdemomodelogintoaccount) | **POST** /sBH-LyNGOOFXivrv5clCpNrkwcA | 
 *AccountApi* | [**postDemoModeRegisterAccount**](doc//AccountApi.md#postdemomoderegisteraccount) | **POST** /oDv1gK4Y6nMrPgEo5nArQAckh6Q | 
-*AccountApi* | [**postGetNewsCount**](doc//AccountApi.md#postgetnewscount) | **POST** /ljfyAP7CbP0864cA6nZX7ESufjY | 
+*AccountApi* | [**postGetNewsCount**](doc//AccountApi.md#postgetnewscount) | **POST** /ljfyAP7CbP0864cA6nZX7ESufjY | The news count for once public news. It always increments.
 *AccountApi* | [**postGetNextClientId**](doc//AccountApi.md#postgetnextclientid) | **POST** /b5kd4x8_ybr1Rj_tprU5BxF_xGo | 
-*AccountApi* | [**postGetNextNewsPage**](doc//AccountApi.md#postgetnextnewspage) | **POST** /BUFRdjIQCtPBjy00uEOHIA9X8CI | 
-*AccountApi* | [**postResetNewsPaging**](doc//AccountApi.md#postresetnewspaging) | **POST** /OVfZ-hXmiyX1uFTG4k-9SIBUh7U | 
+*AccountApi* | [**postGetNextNewsPage**](doc//AccountApi.md#postgetnextnewspage) | **POST** /i9QOC8N-Nx9PdWvjKyAz8tXD2Q0 | 
+*AccountApi* | [**postResetNewsPaging**](doc//AccountApi.md#postresetnewspaging) | **POST** /BQwxuLNWbM8vN0-p-Wu-QCRy3x0 | 
 *AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /ijts6B4AAg_6Dyjhaw85iBnw5Bo | Start new session with sign in with Apple or Google. Creates new account if it does not exists.
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /yG0OQXcMed-EGdvhSoq3qlXTYQc | Update current or pending profile visiblity value.
 *AccountApi* | [**putSettingUnlimitedLikes**](doc//AccountApi.md#putsettingunlimitedlikes) | **PUT** /oKbgnRxyzLb50Y2_ZCuLJYtEIcM | 
+*AccountAdminApi* | [**deleteNewsItem**](doc//AccountAdminApi.md#deletenewsitem) | **DELETE** /ca0uk9qgmQ82WCpd83_WNNn8qOY/{nid} | 
+*AccountAdminApi* | [**deleteNewsTranslation**](doc//AccountAdminApi.md#deletenewstranslation) | **DELETE** /jo1Lboa4U8YVA07py8NJebpu1zo/{nid}/{locale} | 
+*AccountAdminApi* | [**postCreateNewsItem**](doc//AccountAdminApi.md#postcreatenewsitem) | **POST** /XEss8YDw9lPgwKoH6K9THZIF_N4 | 
+*AccountAdminApi* | [**postSetNewsPublicity**](doc//AccountAdminApi.md#postsetnewspublicity) | **DELETE** /McvctMKFEqrUfola2WlvkbigBDU/{nid} | 
+*AccountAdminApi* | [**postUpdateNewsTranslation**](doc//AccountAdminApi.md#postupdatenewstranslation) | **POST** /4pD-Q4FhZGTNkUGYExHmZN6TxjU/{nid}/{locale} | 
 *AccountInternalApi* | [**postLogin**](doc//AccountInternalApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken for a bot account. If the account is not registered as a bot account, then the request will fail.
 *AccountInternalApi* | [**postRegister**](doc//AccountInternalApi.md#postregister) | **POST** /account_api/register | Register a new bot account. Returns new account ID which is UUID.
 *ChatApi* | [**deleteLike**](doc//ChatApi.md#deletelike) | **DELETE** /O3DZlGOjDYbQ8PlCorta0onQDLI | Delete sent like.
@@ -189,7 +195,6 @@ Class | Method | HTTP request | Description
  - [BooleanSetting](doc//BooleanSetting.md)
  - [BotConfig](doc//BotConfig.md)
  - [BuildInfo](doc//BuildInfo.md)
- - [Capabilities](doc//Capabilities.md)
  - [ClientId](doc//ClientId.md)
  - [ClientInfo](doc//ClientInfo.md)
  - [ClientLocalId](doc//ClientLocalId.md)
@@ -221,6 +226,7 @@ Class | Method | HTTP request | Description
  - [FcmDeviceToken](doc//FcmDeviceToken.md)
  - [GetInitialProfileAgeInfoResult](doc//GetInitialProfileAgeInfoResult.md)
  - [GetMyProfileResult](doc//GetMyProfileResult.md)
+ - [GetNewsItemResult](doc//GetNewsItemResult.md)
  - [GetProfileContentResult](doc//GetProfileContentResult.md)
  - [GetProfileResult](doc//GetProfileResult.md)
  - [GetPublicKey](doc//GetPublicKey.md)
@@ -250,10 +256,12 @@ Class | Method | HTTP request | Description
  - [NewsCount](doc//NewsCount.md)
  - [NewsCountResult](doc//NewsCountResult.md)
  - [NewsId](doc//NewsId.md)
+ - [NewsItem](doc//NewsItem.md)
  - [NewsItemSimple](doc//NewsItemSimple.md)
  - [NewsIteratorSessionId](doc//NewsIteratorSessionId.md)
  - [NewsPage](doc//NewsPage.md)
  - [NewsSyncVersion](doc//NewsSyncVersion.md)
+ - [NewsTranslationVersion](doc//NewsTranslationVersion.md)
  - [PageItemCountForNewLikes](doc//PageItemCountForNewLikes.md)
  - [PendingMessage](doc//PendingMessage.md)
  - [PendingMessageAcknowledgementList](doc//PendingMessageAcknowledgementList.md)
@@ -265,6 +273,7 @@ Class | Method | HTTP request | Description
  - [PerfHistoryQueryResult](doc//PerfHistoryQueryResult.md)
  - [PerfHistoryValue](doc//PerfHistoryValue.md)
  - [PerfValueArea](doc//PerfValueArea.md)
+ - [Permissions](doc//Permissions.md)
  - [Profile](doc//Profile.md)
  - [ProfileAttributeFilterList](doc//ProfileAttributeFilterList.md)
  - [ProfileAttributeFilterListUpdate](doc//ProfileAttributeFilterListUpdate.md)
@@ -321,6 +330,7 @@ Class | Method | HTTP request | Description
  - [Translation](doc//Translation.md)
  - [UnixTime](doc//UnixTime.md)
  - [UpdateMessageViewStatus](doc//UpdateMessageViewStatus.md)
+ - [UpdateNewsTranslation](doc//UpdateNewsTranslation.md)
 
 
 ## Documentation For Authorization

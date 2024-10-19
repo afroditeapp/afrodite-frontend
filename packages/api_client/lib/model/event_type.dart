@@ -24,7 +24,7 @@ class EventType {
   String toJson() => value;
 
   static const accountStateChanged = EventType._(r'AccountStateChanged');
-  static const accountCapabilitiesChanged = EventType._(r'AccountCapabilitiesChanged');
+  static const accountPermissionsChanged = EventType._(r'AccountPermissionsChanged');
   static const profileVisibilityChanged = EventType._(r'ProfileVisibilityChanged');
   static const accountSyncVersionChanged = EventType._(r'AccountSyncVersionChanged');
   static const newMessageReceived = EventType._(r'NewMessageReceived');
@@ -37,11 +37,12 @@ class EventType {
   static const contentProcessingStateChanged = EventType._(r'ContentProcessingStateChanged');
   static const availableProfileAttributesChanged = EventType._(r'AvailableProfileAttributesChanged');
   static const profileChanged = EventType._(r'ProfileChanged');
+  static const newsCountChanged = EventType._(r'NewsCountChanged');
 
   /// List of all possible values in this [enum][EventType].
   static const values = <EventType>[
     accountStateChanged,
-    accountCapabilitiesChanged,
+    accountPermissionsChanged,
     profileVisibilityChanged,
     accountSyncVersionChanged,
     newMessageReceived,
@@ -54,6 +55,7 @@ class EventType {
     contentProcessingStateChanged,
     availableProfileAttributesChanged,
     profileChanged,
+    newsCountChanged,
   ];
 
   static EventType? fromJson(dynamic value) => EventTypeTypeTransformer().decode(value);
@@ -93,7 +95,7 @@ class EventTypeTypeTransformer {
     if (data != null) {
       switch (data) {
         case r'AccountStateChanged': return EventType.accountStateChanged;
-        case r'AccountCapabilitiesChanged': return EventType.accountCapabilitiesChanged;
+        case r'AccountPermissionsChanged': return EventType.accountPermissionsChanged;
         case r'ProfileVisibilityChanged': return EventType.profileVisibilityChanged;
         case r'AccountSyncVersionChanged': return EventType.accountSyncVersionChanged;
         case r'NewMessageReceived': return EventType.newMessageReceived;
@@ -106,6 +108,7 @@ class EventTypeTypeTransformer {
         case r'ContentProcessingStateChanged': return EventType.contentProcessingStateChanged;
         case r'AvailableProfileAttributesChanged': return EventType.availableProfileAttributesChanged;
         case r'ProfileChanged': return EventType.profileChanged;
+        case r'NewsCountChanged': return EventType.newsCountChanged;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

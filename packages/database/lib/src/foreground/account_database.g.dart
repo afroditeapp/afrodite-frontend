@@ -33,14 +33,14 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               'json_account_state', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<EnumString?>($AccountTable.$converterjsonAccountState);
-  static const VerificationMeta _jsonCapabilitiesMeta =
-      const VerificationMeta('jsonCapabilities');
+  static const VerificationMeta _jsonPermissionsMeta =
+      const VerificationMeta('jsonPermissions');
   @override
   late final GeneratedColumnWithTypeConverter<JsonString?, String>
-      jsonCapabilities = GeneratedColumn<String>(
-              'json_capabilities', aliasedName, true,
+      jsonPermissions = GeneratedColumn<String>(
+              'json_permissions', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<JsonString?>($AccountTable.$converterjsonCapabilities);
+          .withConverter<JsonString?>($AccountTable.$converterjsonPermissions);
   static const VerificationMeta _jsonAvailableProfileAttributesMeta =
       const VerificationMeta('jsonAvailableProfileAttributes');
   @override
@@ -583,7 +583,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         id,
         uuidAccountId,
         jsonAccountState,
-        jsonCapabilities,
+        jsonPermissions,
         jsonAvailableProfileAttributes,
         profileFilterFavorites,
         profileIteratorSessionId,
@@ -668,7 +668,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     }
     context.handle(_uuidAccountIdMeta, const VerificationResult.success());
     context.handle(_jsonAccountStateMeta, const VerificationResult.success());
-    context.handle(_jsonCapabilitiesMeta, const VerificationResult.success());
+    context.handle(_jsonPermissionsMeta, const VerificationResult.success());
     context.handle(_jsonAvailableProfileAttributesMeta,
         const VerificationResult.success());
     if (data.containsKey('profile_filter_favorites')) {
@@ -977,9 +977,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       jsonAccountState: $AccountTable.$converterjsonAccountState.fromSql(
           attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}json_account_state'])),
-      jsonCapabilities: $AccountTable.$converterjsonCapabilities.fromSql(
+      jsonPermissions: $AccountTable.$converterjsonPermissions.fromSql(
           attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}json_capabilities'])),
+              data['${effectivePrefix}json_permissions'])),
       jsonAvailableProfileAttributes: $AccountTable
           .$converterjsonAvailableProfileAttributes
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
@@ -1188,7 +1188,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       const NullAwareTypeConverter.wrap(AccountIdConverter());
   static TypeConverter<EnumString?, String?> $converterjsonAccountState =
       NullAwareTypeConverter.wrap(EnumString.driftConverter);
-  static TypeConverter<JsonString?, String?> $converterjsonCapabilities =
+  static TypeConverter<JsonString?, String?> $converterjsonPermissions =
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
   static TypeConverter<JsonString?, String?>
       $converterjsonAvailableProfileAttributes =
@@ -1268,7 +1268,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final int id;
   final AccountId? uuidAccountId;
   final EnumString? jsonAccountState;
-  final JsonString? jsonCapabilities;
+  final JsonString? jsonPermissions;
   final JsonString? jsonAvailableProfileAttributes;
 
   /// If true show only favorite profiles
@@ -1343,7 +1343,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       {required this.id,
       this.uuidAccountId,
       this.jsonAccountState,
-      this.jsonCapabilities,
+      this.jsonPermissions,
       this.jsonAvailableProfileAttributes,
       required this.profileFilterFavorites,
       this.profileIteratorSessionId,
@@ -1424,9 +1424,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['json_account_state'] = Variable<String>(
           $AccountTable.$converterjsonAccountState.toSql(jsonAccountState));
     }
-    if (!nullToAbsent || jsonCapabilities != null) {
-      map['json_capabilities'] = Variable<String>(
-          $AccountTable.$converterjsonCapabilities.toSql(jsonCapabilities));
+    if (!nullToAbsent || jsonPermissions != null) {
+      map['json_permissions'] = Variable<String>(
+          $AccountTable.$converterjsonPermissions.toSql(jsonPermissions));
     }
     if (!nullToAbsent || jsonAvailableProfileAttributes != null) {
       map['json_available_profile_attributes'] = Variable<String>($AccountTable
@@ -1701,9 +1701,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       jsonAccountState: jsonAccountState == null && nullToAbsent
           ? const Value.absent()
           : Value(jsonAccountState),
-      jsonCapabilities: jsonCapabilities == null && nullToAbsent
+      jsonPermissions: jsonPermissions == null && nullToAbsent
           ? const Value.absent()
-          : Value(jsonCapabilities),
+          : Value(jsonPermissions),
       jsonAvailableProfileAttributes:
           jsonAvailableProfileAttributes == null && nullToAbsent
               ? const Value.absent()
@@ -1922,8 +1922,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       uuidAccountId: serializer.fromJson<AccountId?>(json['uuidAccountId']),
       jsonAccountState:
           serializer.fromJson<EnumString?>(json['jsonAccountState']),
-      jsonCapabilities:
-          serializer.fromJson<JsonString?>(json['jsonCapabilities']),
+      jsonPermissions:
+          serializer.fromJson<JsonString?>(json['jsonPermissions']),
       jsonAvailableProfileAttributes: serializer
           .fromJson<JsonString?>(json['jsonAvailableProfileAttributes']),
       profileFilterFavorites:
@@ -2052,7 +2052,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'id': serializer.toJson<int>(id),
       'uuidAccountId': serializer.toJson<AccountId?>(uuidAccountId),
       'jsonAccountState': serializer.toJson<EnumString?>(jsonAccountState),
-      'jsonCapabilities': serializer.toJson<JsonString?>(jsonCapabilities),
+      'jsonPermissions': serializer.toJson<JsonString?>(jsonPermissions),
       'jsonAvailableProfileAttributes':
           serializer.toJson<JsonString?>(jsonAvailableProfileAttributes),
       'profileFilterFavorites': serializer.toJson<bool>(profileFilterFavorites),
@@ -2168,7 +2168,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           {int? id,
           Value<AccountId?> uuidAccountId = const Value.absent(),
           Value<EnumString?> jsonAccountState = const Value.absent(),
-          Value<JsonString?> jsonCapabilities = const Value.absent(),
+          Value<JsonString?> jsonPermissions = const Value.absent(),
           Value<JsonString?> jsonAvailableProfileAttributes =
               const Value.absent(),
           bool? profileFilterFavorites,
@@ -2256,9 +2256,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         jsonAccountState: jsonAccountState.present
             ? jsonAccountState.value
             : this.jsonAccountState,
-        jsonCapabilities: jsonCapabilities.present
-            ? jsonCapabilities.value
-            : this.jsonCapabilities,
+        jsonPermissions: jsonPermissions.present
+            ? jsonPermissions.value
+            : this.jsonPermissions,
         jsonAvailableProfileAttributes: jsonAvailableProfileAttributes.present
             ? jsonAvailableProfileAttributes.value
             : this.jsonAvailableProfileAttributes,
@@ -2453,9 +2453,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       jsonAccountState: data.jsonAccountState.present
           ? data.jsonAccountState.value
           : this.jsonAccountState,
-      jsonCapabilities: data.jsonCapabilities.present
-          ? data.jsonCapabilities.value
-          : this.jsonCapabilities,
+      jsonPermissions: data.jsonPermissions.present
+          ? data.jsonPermissions.value
+          : this.jsonPermissions,
       jsonAvailableProfileAttributes:
           data.jsonAvailableProfileAttributes.present
               ? data.jsonAvailableProfileAttributes.value
@@ -2676,7 +2676,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('id: $id, ')
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('jsonAccountState: $jsonAccountState, ')
-          ..write('jsonCapabilities: $jsonCapabilities, ')
+          ..write('jsonPermissions: $jsonPermissions, ')
           ..write(
               'jsonAvailableProfileAttributes: $jsonAvailableProfileAttributes, ')
           ..write('profileFilterFavorites: $profileFilterFavorites, ')
@@ -2770,7 +2770,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         id,
         uuidAccountId,
         jsonAccountState,
-        jsonCapabilities,
+        jsonPermissions,
         jsonAvailableProfileAttributes,
         profileFilterFavorites,
         profileIteratorSessionId,
@@ -2847,7 +2847,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.id == this.id &&
           other.uuidAccountId == this.uuidAccountId &&
           other.jsonAccountState == this.jsonAccountState &&
-          other.jsonCapabilities == this.jsonCapabilities &&
+          other.jsonPermissions == this.jsonPermissions &&
           other.jsonAvailableProfileAttributes ==
               this.jsonAvailableProfileAttributes &&
           other.profileFilterFavorites == this.profileFilterFavorites &&
@@ -2940,7 +2940,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<int> id;
   final Value<AccountId?> uuidAccountId;
   final Value<EnumString?> jsonAccountState;
-  final Value<JsonString?> jsonCapabilities;
+  final Value<JsonString?> jsonPermissions;
   final Value<JsonString?> jsonAvailableProfileAttributes;
   final Value<bool> profileFilterFavorites;
   final Value<ProfileIteratorSessionId?> profileIteratorSessionId;
@@ -3013,7 +3013,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
     this.jsonAccountState = const Value.absent(),
-    this.jsonCapabilities = const Value.absent(),
+    this.jsonPermissions = const Value.absent(),
     this.jsonAvailableProfileAttributes = const Value.absent(),
     this.profileFilterFavorites = const Value.absent(),
     this.profileIteratorSessionId = const Value.absent(),
@@ -3087,7 +3087,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
     this.jsonAccountState = const Value.absent(),
-    this.jsonCapabilities = const Value.absent(),
+    this.jsonPermissions = const Value.absent(),
     this.jsonAvailableProfileAttributes = const Value.absent(),
     this.profileFilterFavorites = const Value.absent(),
     this.profileIteratorSessionId = const Value.absent(),
@@ -3161,7 +3161,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<int>? id,
     Expression<String>? uuidAccountId,
     Expression<String>? jsonAccountState,
-    Expression<String>? jsonCapabilities,
+    Expression<String>? jsonPermissions,
     Expression<String>? jsonAvailableProfileAttributes,
     Expression<bool>? profileFilterFavorites,
     Expression<int>? profileIteratorSessionId,
@@ -3235,7 +3235,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (id != null) 'id': id,
       if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
       if (jsonAccountState != null) 'json_account_state': jsonAccountState,
-      if (jsonCapabilities != null) 'json_capabilities': jsonCapabilities,
+      if (jsonPermissions != null) 'json_permissions': jsonPermissions,
       if (jsonAvailableProfileAttributes != null)
         'json_available_profile_attributes': jsonAvailableProfileAttributes,
       if (profileFilterFavorites != null)
@@ -3365,7 +3365,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       {Value<int>? id,
       Value<AccountId?>? uuidAccountId,
       Value<EnumString?>? jsonAccountState,
-      Value<JsonString?>? jsonCapabilities,
+      Value<JsonString?>? jsonPermissions,
       Value<JsonString?>? jsonAvailableProfileAttributes,
       Value<bool>? profileFilterFavorites,
       Value<ProfileIteratorSessionId?>? profileIteratorSessionId,
@@ -3438,7 +3438,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
       jsonAccountState: jsonAccountState ?? this.jsonAccountState,
-      jsonCapabilities: jsonCapabilities ?? this.jsonCapabilities,
+      jsonPermissions: jsonPermissions ?? this.jsonPermissions,
       jsonAvailableProfileAttributes:
           jsonAvailableProfileAttributes ?? this.jsonAvailableProfileAttributes,
       profileFilterFavorites:
@@ -3569,10 +3569,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           .$converterjsonAccountState
           .toSql(jsonAccountState.value));
     }
-    if (jsonCapabilities.present) {
-      map['json_capabilities'] = Variable<String>($AccountTable
-          .$converterjsonCapabilities
-          .toSql(jsonCapabilities.value));
+    if (jsonPermissions.present) {
+      map['json_permissions'] = Variable<String>($AccountTable
+          .$converterjsonPermissions
+          .toSql(jsonPermissions.value));
     }
     if (jsonAvailableProfileAttributes.present) {
       map['json_available_profile_attributes'] = Variable<String>($AccountTable
@@ -3863,7 +3863,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('id: $id, ')
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('jsonAccountState: $jsonAccountState, ')
-          ..write('jsonCapabilities: $jsonCapabilities, ')
+          ..write('jsonPermissions: $jsonPermissions, ')
           ..write(
               'jsonAvailableProfileAttributes: $jsonAvailableProfileAttributes, ')
           ..write('profileFilterFavorites: $profileFilterFavorites, ')

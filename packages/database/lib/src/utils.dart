@@ -100,8 +100,8 @@ class JsonString {
   final Map<String, Object?> jsonMap;
   JsonString(this.jsonMap);
 
-  Capabilities? toCapabilities() {
-    return Capabilities.fromJson(jsonMap);
+  Permissions? toPermissions() {
+    return Permissions.fromJson(jsonMap);
   }
 
   AvailableProfileAttributes? toAvailableProfileAttributes() {
@@ -122,7 +122,7 @@ class JsonString {
   );
 }
 
-extension CapabilitiesJson on Capabilities {
+extension PermissionsJson on Permissions {
   JsonString toJsonString() {
     return JsonString(toJson());
   }

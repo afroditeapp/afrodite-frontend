@@ -128,9 +128,9 @@ extension ProfileAttributeFilterValueUpdateExtensions on ProfileAttributeFilterV
   }
 }
 
-extension CapabilitiesExtensions on Capabilities {
+extension PermissionsExtensions on Permissions {
   bool adminSettingsVisible() {
-    // TODO(prod): Add missing capabilities once
+    // TODO(prod): Add missing permissions once
     // capability properies are non-nullable
     return adminModerateImages;
   }

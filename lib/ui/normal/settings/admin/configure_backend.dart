@@ -101,29 +101,29 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
         final Widget currentConfig;
-        if (state.capabilities.adminServerMaintenanceViewBackendConfig) {
+        if (state.permissions.adminServerMaintenanceViewBackendConfig) {
           currentConfig = showBackendConfiguration();
         } else {
           currentConfig = const Text("No capability for viewing backend configuration");
         }
 
         final Widget rebootAction;
-        if (state.capabilities.adminServerMaintenanceRebootBackend) {
+        if (state.permissions.adminServerMaintenanceRebootBackend) {
           rebootAction = displayRestart(context);
         } else {
           rebootAction = const Text("No capability for rebooting backend");
         }
 
         final Widget resetAction;
-        if ((state.capabilities.adminServerMaintenanceRebootBackend) &&
-            (state.capabilities.adminServerMaintenanceResetData)) {
+        if ((state.permissions.adminServerMaintenanceRebootBackend) &&
+            (state.permissions.adminServerMaintenanceResetData)) {
           resetAction = displayReset(context);
         } else {
           resetAction = const Text("No capability for resetting backend");
         }
 
         final Widget configureBackend;
-        if (state.capabilities.adminServerMaintenanceSaveBackendConfig) {
+        if (state.permissions.adminServerMaintenanceSaveBackendConfig) {
           configureBackend = displaySaveConfig(context);
         } else {
           configureBackend = const Text("No capability for saving backend config");

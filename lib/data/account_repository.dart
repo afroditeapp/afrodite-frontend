@@ -61,10 +61,10 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Stream<AccountState?> get accountState => db
     .accountStream((db) => db.watchAccountState());
   Stream<String?> get emailAddress => _cachedEmailAddress;
-  Stream<Capabilities> get capabilities => db
+  Stream<Permissions> get permissions => db
     .accountStreamOrDefault(
-      (db) => db.watchCapabilities(),
-      Capabilities(),
+      (db) => db.watchPermissions(),
+      Permissions(),
     );
   Stream<ProfileVisibility> get profileVisibility => _cachedProfileVisibility;
 
@@ -120,8 +120,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     await db.accountAction((db) => db.updateAccountState(state));
   }
 
-  Future<void> _saveCapabilities(Capabilities capabilities) async {
-    await db.accountAction((db) => db.updateCapabilities(capabilities));
+  Future<void> _savePermissions(Permissions permissions) async {
+    await db.accountAction((db) => db.updatePermissions(permissions));
   }
 
   Future<void> _saveProfileVisibility(ProfileVisibility newProfileVisibility) async {
@@ -152,15 +152,15 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     final profile = repositories.profile;
 
     final accountState = event.accountState;
-    final capabilities = event.capabilities;
+    final permissions = event.permissions;
     final visibility = event.visibility;
     final accountSyncVersion = event.accountSyncVersion;
     final latestViewedMessageChanged = event.latestViewedMessageChanged;
     final contentProcessingEvent = event.contentProcessingStateChanged;
     if (event.event == EventType.accountStateChanged && accountState != null) {
       _saveAccountState(accountState);
-    } else if (event.event == EventType.accountCapabilitiesChanged && capabilities != null) {
-      _saveCapabilities(capabilities);
+    } else if (event.event == EventType.accountPermissionsChanged && permissions != null) {
+      _savePermissions(permissions);
     } else if (event.event == EventType.profileVisibilityChanged && visibility != null) {
       _saveProfileVisibility(visibility);
     } else if (event.event == EventType.accountSyncVersionChanged && accountSyncVersion != null) {

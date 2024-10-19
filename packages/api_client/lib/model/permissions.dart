@@ -10,12 +10,14 @@
 
 part of openapi.api;
 
-class Capabilities {
-  /// Returns a new [Capabilities] instance.
-  Capabilities({
+class Permissions {
+  /// Returns a new [Permissions] instance.
+  Permissions({
     this.adminModerateImages = false,
     this.adminModerateProfiles = false,
-    this.adminModifyCapabilities = false,
+    this.adminModifyPermissions = false,
+    this.adminNewsCreate = false,
+    this.adminNewsEditAll = false,
     this.adminServerMaintenanceRebootBackend = false,
     this.adminServerMaintenanceResetData = false,
     this.adminServerMaintenanceSaveBackendConfig = false,
@@ -31,7 +33,11 @@ class Capabilities {
 
   bool adminModerateProfiles;
 
-  bool adminModifyCapabilities;
+  bool adminModifyPermissions;
+
+  bool adminNewsCreate;
+
+  bool adminNewsEditAll;
 
   bool adminServerMaintenanceRebootBackend;
 
@@ -54,10 +60,12 @@ class Capabilities {
   bool adminViewProfileHistory;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is Capabilities &&
+  bool operator ==(Object other) => identical(this, other) || other is Permissions &&
     other.adminModerateImages == adminModerateImages &&
     other.adminModerateProfiles == adminModerateProfiles &&
-    other.adminModifyCapabilities == adminModifyCapabilities &&
+    other.adminModifyPermissions == adminModifyPermissions &&
+    other.adminNewsCreate == adminNewsCreate &&
+    other.adminNewsEditAll == adminNewsEditAll &&
     other.adminServerMaintenanceRebootBackend == adminServerMaintenanceRebootBackend &&
     other.adminServerMaintenanceResetData == adminServerMaintenanceResetData &&
     other.adminServerMaintenanceSaveBackendConfig == adminServerMaintenanceSaveBackendConfig &&
@@ -73,7 +81,9 @@ class Capabilities {
     // ignore: unnecessary_parenthesis
     (adminModerateImages.hashCode) +
     (adminModerateProfiles.hashCode) +
-    (adminModifyCapabilities.hashCode) +
+    (adminModifyPermissions.hashCode) +
+    (adminNewsCreate.hashCode) +
+    (adminNewsEditAll.hashCode) +
     (adminServerMaintenanceRebootBackend.hashCode) +
     (adminServerMaintenanceResetData.hashCode) +
     (adminServerMaintenanceSaveBackendConfig.hashCode) +
@@ -85,13 +95,15 @@ class Capabilities {
     (adminViewProfileHistory.hashCode);
 
   @override
-  String toString() => 'Capabilities[adminModerateImages=$adminModerateImages, adminModerateProfiles=$adminModerateProfiles, adminModifyCapabilities=$adminModifyCapabilities, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
+  String toString() => 'Permissions[adminModerateImages=$adminModerateImages, adminModerateProfiles=$adminModerateProfiles, adminModifyPermissions=$adminModifyPermissions, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'admin_moderate_images'] = this.adminModerateImages;
       json[r'admin_moderate_profiles'] = this.adminModerateProfiles;
-      json[r'admin_modify_capabilities'] = this.adminModifyCapabilities;
+      json[r'admin_modify_permissions'] = this.adminModifyPermissions;
+      json[r'admin_news_create'] = this.adminNewsCreate;
+      json[r'admin_news_edit_all'] = this.adminNewsEditAll;
       json[r'admin_server_maintenance_reboot_backend'] = this.adminServerMaintenanceRebootBackend;
       json[r'admin_server_maintenance_reset_data'] = this.adminServerMaintenanceResetData;
       json[r'admin_server_maintenance_save_backend_config'] = this.adminServerMaintenanceSaveBackendConfig;
@@ -104,10 +116,10 @@ class Capabilities {
     return json;
   }
 
-  /// Returns a new [Capabilities] instance and imports its values from
+  /// Returns a new [Permissions] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static Capabilities? fromJson(dynamic value) {
+  static Permissions? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -116,16 +128,18 @@ class Capabilities {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "Capabilities[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "Capabilities[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "Permissions[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "Permissions[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return Capabilities(
+      return Permissions(
         adminModerateImages: mapValueOfType<bool>(json, r'admin_moderate_images') ?? false,
         adminModerateProfiles: mapValueOfType<bool>(json, r'admin_moderate_profiles') ?? false,
-        adminModifyCapabilities: mapValueOfType<bool>(json, r'admin_modify_capabilities') ?? false,
+        adminModifyPermissions: mapValueOfType<bool>(json, r'admin_modify_permissions') ?? false,
+        adminNewsCreate: mapValueOfType<bool>(json, r'admin_news_create') ?? false,
+        adminNewsEditAll: mapValueOfType<bool>(json, r'admin_news_edit_all') ?? false,
         adminServerMaintenanceRebootBackend: mapValueOfType<bool>(json, r'admin_server_maintenance_reboot_backend') ?? false,
         adminServerMaintenanceResetData: mapValueOfType<bool>(json, r'admin_server_maintenance_reset_data') ?? false,
         adminServerMaintenanceSaveBackendConfig: mapValueOfType<bool>(json, r'admin_server_maintenance_save_backend_config') ?? false,
@@ -140,11 +154,11 @@ class Capabilities {
     return null;
   }
 
-  static List<Capabilities> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <Capabilities>[];
+  static List<Permissions> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <Permissions>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = Capabilities.fromJson(row);
+        final value = Permissions.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -153,12 +167,12 @@ class Capabilities {
     return result.toList(growable: growable);
   }
 
-  static Map<String, Capabilities> mapFromJson(dynamic json) {
-    final map = <String, Capabilities>{};
+  static Map<String, Permissions> mapFromJson(dynamic json) {
+    final map = <String, Permissions>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = Capabilities.fromJson(entry.value);
+        final value = Permissions.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -167,14 +181,14 @@ class Capabilities {
     return map;
   }
 
-  // maps a json object with a list of Capabilities-objects as value to a dart map
-  static Map<String, List<Capabilities>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<Capabilities>>{};
+  // maps a json object with a list of Permissions-objects as value to a dart map
+  static Map<String, List<Permissions>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<Permissions>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = Capabilities.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = Permissions.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

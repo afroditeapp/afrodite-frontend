@@ -23,13 +23,13 @@ final _privateConstructorErrorAccountBlocData = UnsupportedError(
 mixin _$AccountBlocData {
   String? get email => throw _privateConstructorErrorAccountBlocData;
   AccountState? get accountState => throw _privateConstructorErrorAccountBlocData;
-  Capabilities get capabilities => throw _privateConstructorErrorAccountBlocData;
+  Permissions get permissions => throw _privateConstructorErrorAccountBlocData;
   ProfileVisibility get visibility => throw _privateConstructorErrorAccountBlocData;
 
   AccountBlocData copyWith({
     String? email,
     AccountState? accountState,
-    Capabilities? capabilities,
+    Permissions? permissions,
     ProfileVisibility? visibility,
   }) => throw _privateConstructorErrorAccountBlocData;
 }
@@ -39,7 +39,7 @@ abstract class _AccountBlocData extends AccountBlocData {
   factory _AccountBlocData({
     String? email,
     AccountState? accountState,
-    required Capabilities capabilities,
+    required Permissions permissions,
     required ProfileVisibility visibility,
   }) = _$AccountBlocDataImpl;
   _AccountBlocData._() : super._();
@@ -50,7 +50,7 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
   _$AccountBlocDataImpl({
     this.email,
     this.accountState,
-    required this.capabilities,
+    required this.permissions,
     required this.visibility,
   }) : super._();
 
@@ -59,13 +59,13 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
   @override
   final AccountState? accountState;
   @override
-  final Capabilities capabilities;
+  final Permissions permissions;
   @override
   final ProfileVisibility visibility;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountBlocData(email: $email, accountState: $accountState, capabilities: $capabilities, visibility: $visibility)';
+    return 'AccountBlocData(email: $email, accountState: $accountState, permissions: $permissions, visibility: $visibility)';
   }
 
   @override
@@ -75,7 +75,7 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
       ..add(DiagnosticsProperty('type', 'AccountBlocData'))
       ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('accountState', accountState))
-      ..add(DiagnosticsProperty('capabilities', capabilities))
+      ..add(DiagnosticsProperty('permissions', permissions))
       ..add(DiagnosticsProperty('visibility', visibility));
   }
 
@@ -88,8 +88,8 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
           other.email == email) &&
         (identical(other.accountState, accountState) ||
           other.accountState == accountState) &&
-        (identical(other.capabilities, capabilities) ||
-          other.capabilities == capabilities) &&
+        (identical(other.permissions, permissions) ||
+          other.permissions == permissions) &&
         (identical(other.visibility, visibility) ||
           other.visibility == visibility)
     );
@@ -100,7 +100,7 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
     runtimeType,
     email,
     accountState,
-    capabilities,
+    permissions,
     visibility,
   );
 
@@ -108,12 +108,12 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
   AccountBlocData copyWith({
     Object? email = _detectDefaultValueInCopyWith,
     Object? accountState = _detectDefaultValueInCopyWith,
-    Object? capabilities,
+    Object? permissions,
     Object? visibility,
   }) => _$AccountBlocDataImpl(
     email: (email == _detectDefaultValueInCopyWith ? this.email : email) as String?,
     accountState: (accountState == _detectDefaultValueInCopyWith ? this.accountState : accountState) as AccountState?,
-    capabilities: (capabilities ?? this.capabilities) as Capabilities,
+    permissions: (permissions ?? this.permissions) as Permissions,
     visibility: (visibility ?? this.visibility) as ProfileVisibility,
   );
 }

@@ -277,6 +277,76 @@ class AccountApi {
     return null;
   }
 
+  /// Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
+  ///
+  /// If specific locale is not found when [RequireNewsLocale::require_locale] is `true` then [GetNewsItemResult::item] is `None`.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [int] nid (required):
+  ///
+  /// * [String] locale (required):
+  ///
+  /// * [bool] requireLocale:
+  Future<Response> getNewsItemWithHttpInfo(int nid, String locale, { bool? requireLocale, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/2OHF85k7hpH2tAibkA0V9YLwpF4/{nid}'
+      .replaceAll('{nid}', nid.toString());
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'locale', locale));
+    if (requireLocale != null) {
+      queryParams.addAll(_queryParams('', 'require_locale', requireLocale));
+    }
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
+  ///
+  /// If specific locale is not found when [RequireNewsLocale::require_locale] is `true` then [GetNewsItemResult::item] is `None`.
+  ///
+  /// Parameters:
+  ///
+  /// * [int] nid (required):
+  ///
+  /// * [String] locale (required):
+  ///
+  /// * [bool] requireLocale:
+  Future<GetNewsItemResult?> getNewsItem(int nid, String locale, { bool? requireLocale, }) async {
+    final response = await getNewsItemWithHttpInfo(nid, locale,  requireLocale: requireLocale, );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetNewsItemResult',) as GetNewsItemResult;
+    
+    }
+    return null;
+  }
+
   /// Set changeable user information to account.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -697,7 +767,9 @@ class AccountApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /ljfyAP7CbP0864cA6nZX7ESufjY' operation and returns the [Response].
+  /// The news count for once public news. It always increments.
+  ///
+  /// Note: This method returns the HTTP [Response].
   Future<Response> postGetNewsCountWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final path = r'/ljfyAP7CbP0864cA6nZX7ESufjY';
@@ -723,6 +795,7 @@ class AccountApi {
     );
   }
 
+  /// The news count for once public news. It always increments.
   Future<NewsCountResult?> postGetNewsCount() async {
     final response = await postGetNewsCountWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -779,13 +852,15 @@ class AccountApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /BUFRdjIQCtPBjy00uEOHIA9X8CI' operation and returns the [Response].
+  /// Performs an HTTP 'POST /i9QOC8N-Nx9PdWvjKyAz8tXD2Q0' operation and returns the [Response].
   /// Parameters:
   ///
+  /// * [String] locale (required):
+  ///
   /// * [NewsIteratorSessionId] newsIteratorSessionId (required):
-  Future<Response> postGetNextNewsPageWithHttpInfo(NewsIteratorSessionId newsIteratorSessionId,) async {
+  Future<Response> postGetNextNewsPageWithHttpInfo(String locale, NewsIteratorSessionId newsIteratorSessionId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/BUFRdjIQCtPBjy00uEOHIA9X8CI';
+    final path = r'/i9QOC8N-Nx9PdWvjKyAz8tXD2Q0';
 
     // ignore: prefer_final_locals
     Object? postBody = newsIteratorSessionId;
@@ -793,6 +868,8 @@ class AccountApi {
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'locale', locale));
 
     const contentTypes = <String>['application/json'];
 
@@ -810,9 +887,11 @@ class AccountApi {
 
   /// Parameters:
   ///
+  /// * [String] locale (required):
+  ///
   /// * [NewsIteratorSessionId] newsIteratorSessionId (required):
-  Future<NewsPage?> postGetNextNewsPage(NewsIteratorSessionId newsIteratorSessionId,) async {
-    final response = await postGetNextNewsPageWithHttpInfo(newsIteratorSessionId,);
+  Future<NewsPage?> postGetNextNewsPage(String locale, NewsIteratorSessionId newsIteratorSessionId,) async {
+    final response = await postGetNextNewsPageWithHttpInfo(locale, newsIteratorSessionId,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -826,10 +905,10 @@ class AccountApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /OVfZ-hXmiyX1uFTG4k-9SIBUh7U' operation and returns the [Response].
+  /// Performs an HTTP 'POST /BQwxuLNWbM8vN0-p-Wu-QCRy3x0' operation and returns the [Response].
   Future<Response> postResetNewsPagingWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/OVfZ-hXmiyX1uFTG4k-9SIBUh7U';
+    final path = r'/BQwxuLNWbM8vN0-p-Wu-QCRy3x0';
 
     // ignore: prefer_final_locals
     Object? postBody;

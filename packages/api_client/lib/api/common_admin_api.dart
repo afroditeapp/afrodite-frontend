@@ -18,7 +18,7 @@ class CommonAdminApi {
 
   /// Get dynamic backend config.
   ///
-  /// # Capabilities Requires admin_server_maintenance_view_backend_settings.
+  /// # Permissions Requires admin_server_maintenance_view_backend_settings.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getBackendConfigWithHttpInfo() async {
@@ -48,7 +48,7 @@ class CommonAdminApi {
 
   /// Get dynamic backend config.
   ///
-  /// # Capabilities Requires admin_server_maintenance_view_backend_settings.
+  /// # Permissions Requires admin_server_maintenance_view_backend_settings.
   Future<BackendConfig?> getBackendConfig() async {
     final response = await getBackendConfigWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -120,7 +120,7 @@ class CommonAdminApi {
 
   /// Get performance data
   ///
-  /// # Capabilities Requires admin_server_maintenance_view_info.
+  /// # Permissions Requires admin_server_maintenance_view_info.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -165,7 +165,7 @@ class CommonAdminApi {
 
   /// Get performance data
   ///
-  /// # Capabilities Requires admin_server_maintenance_view_info.
+  /// # Permissions Requires admin_server_maintenance_view_info.
   ///
   /// Parameters:
   ///
@@ -279,7 +279,7 @@ class CommonAdminApi {
 
   /// Save dynamic backend config.
   ///
-  /// # Capabilities Requires admin_server_maintenance_save_backend_settings.
+  /// # Permissions Requires admin_server_maintenance_save_backend_settings.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -313,7 +313,7 @@ class CommonAdminApi {
 
   /// Save dynamic backend config.
   ///
-  /// # Capabilities Requires admin_server_maintenance_save_backend_settings.
+  /// # Permissions Requires admin_server_maintenance_save_backend_settings.
   ///
   /// Parameters:
   ///
@@ -373,7 +373,7 @@ class CommonAdminApi {
 
   /// Request restarting or reseting backend through app-manager instance.
   ///
-  /// # Capabilities Requires admin_server_maintenance_restart_backend. Also requires admin_server_maintenance_reset_data if reset_data is true.
+  /// # Permissions Requires admin_server_maintenance_restart_backend. Also requires admin_server_maintenance_reset_data if reset_data is true.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -409,7 +409,7 @@ class CommonAdminApi {
 
   /// Request restarting or reseting backend through app-manager instance.
   ///
-  /// # Capabilities Requires admin_server_maintenance_restart_backend. Also requires admin_server_maintenance_reset_data if reset_data is true.
+  /// # Permissions Requires admin_server_maintenance_restart_backend. Also requires admin_server_maintenance_reset_data if reset_data is true.
   ///
   /// Parameters:
   ///
@@ -423,7 +423,7 @@ class CommonAdminApi {
 
   /// Request updating new software from manager instance.
   ///
-  /// Reboot query parameter will force reboot of the server after update. If it is off, the server will be rebooted when the usual reboot check is done.  Reset data query parameter will reset data like defined in current app-manager version. If this is true then specific capability is needed for completing this request.  # Capablities Requires admin_server_maintenance_update_software. Also requires admin_server_maintenance_reset_data if reset_data is true.
+  /// Reboot query parameter will force reboot of the server after update. If it is off, the server will be rebooted when the usual reboot check is done.  Reset data query parameter will reset data like defined in current app-manager version. If this is true then specific permission is needed for completing this request.  # Permissions Requires admin_server_maintenance_update_software. Also requires admin_server_maintenance_reset_data if reset_data is true.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -465,7 +465,7 @@ class CommonAdminApi {
 
   /// Request updating new software from manager instance.
   ///
-  /// Reboot query parameter will force reboot of the server after update. If it is off, the server will be rebooted when the usual reboot check is done.  Reset data query parameter will reset data like defined in current app-manager version. If this is true then specific capability is needed for completing this request.  # Capablities Requires admin_server_maintenance_update_software. Also requires admin_server_maintenance_reset_data if reset_data is true.
+  /// Reboot query parameter will force reboot of the server after update. If it is off, the server will be rebooted when the usual reboot check is done.  Reset data query parameter will reset data like defined in current app-manager version. If this is true then specific permission is needed for completing this request.  # Permissions Requires admin_server_maintenance_update_software. Also requires admin_server_maintenance_reset_data if reset_data is true.
   ///
   /// Parameters:
   ///

@@ -13,38 +13,52 @@ part of openapi.api;
 class NewsItemSimple {
   /// Returns a new [NewsItemSimple] instance.
   NewsItemSimple({
-    required this.creationTime,
     required this.id,
-    required this.title,
+    this.private = false,
+    this.time,
+    this.title,
   });
-
-  UnixTime creationTime;
 
   NewsId id;
 
-  String title;
+  bool private;
+
+  UnixTime? time;
+
+  String? title;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is NewsItemSimple &&
-    other.creationTime == creationTime &&
     other.id == id &&
+    other.private == private &&
+    other.time == time &&
     other.title == title;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (creationTime.hashCode) +
     (id.hashCode) +
-    (title.hashCode);
+    (private.hashCode) +
+    (time == null ? 0 : time!.hashCode) +
+    (title == null ? 0 : title!.hashCode);
 
   @override
-  String toString() => 'NewsItemSimple[creationTime=$creationTime, id=$id, title=$title]';
+  String toString() => 'NewsItemSimple[id=$id, private=$private, time=$time, title=$title]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'creation_time'] = this.creationTime;
       json[r'id'] = this.id;
+      json[r'private'] = this.private;
+    if (this.time != null) {
+      json[r'time'] = this.time;
+    } else {
+      json[r'time'] = null;
+    }
+    if (this.title != null) {
       json[r'title'] = this.title;
+    } else {
+      json[r'title'] = null;
+    }
     return json;
   }
 
@@ -67,9 +81,10 @@ class NewsItemSimple {
       }());
 
       return NewsItemSimple(
-        creationTime: UnixTime.fromJson(json[r'creation_time'])!,
         id: NewsId.fromJson(json[r'id'])!,
-        title: mapValueOfType<String>(json, r'title')!,
+        private: mapValueOfType<bool>(json, r'private') ?? false,
+        time: UnixTime.fromJson(json[r'time']),
+        title: mapValueOfType<String>(json, r'title'),
       );
     }
     return null;
@@ -117,9 +132,7 @@ class NewsItemSimple {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'creation_time',
     'id',
-    'title',
   };
 }
 

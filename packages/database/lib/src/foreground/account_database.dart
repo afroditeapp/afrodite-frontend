@@ -34,7 +34,7 @@ class Account extends Table {
 
   TextColumn get uuidAccountId => text().map(const NullAwareTypeConverter.wrap(AccountIdConverter())).nullable()();
   TextColumn get jsonAccountState => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
-  TextColumn get jsonCapabilities => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
+  TextColumn get jsonPermissions => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
   TextColumn get jsonAvailableProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
 
   /// If true show only favorite profiles
@@ -247,11 +247,11 @@ class AccountDatabase extends _$AccountDatabase {
     );
   }
 
-  Future<void> updateCapabilities(Capabilities? value) async {
+  Future<void> updatePermissions(Permissions? value) async {
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
-        jsonCapabilities: Value(value?.toJsonString()),
+        jsonPermissions: Value(value?.toJsonString()),
       ),
     );
   }
@@ -300,8 +300,8 @@ class AccountDatabase extends _$AccountDatabase {
   Stream<AccountState?> watchAccountState() =>
     watchColumn((r) => r.jsonAccountState?.toAccountState());
 
-  Stream<Capabilities?> watchCapabilities() =>
-    watchColumn((r) => r.jsonCapabilities?.toCapabilities());
+  Stream<Permissions?> watchPermissions() =>
+    watchColumn((r) => r.jsonPermissions?.toPermissions());
 
   Stream<AvailableProfileAttributes?> watchAvailableProfileAttributes() =>
     watchColumn((r) => r.jsonAvailableProfileAttributes?.toAvailableProfileAttributes());

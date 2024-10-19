@@ -31,7 +31,7 @@ class AdminSettingsPage extends StatelessWidget {
       builder: (context, state) {
         List<Setting> settings = [];
 
-        if (state.capabilities.adminModerateImages) {
+        if (state.permissions.adminModerateImages) {
           settings.add(Setting.createSetting(Icons.image, "Moderate images (initial moderation)", () =>
             MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.initialMediaModeration)),)
           ));
@@ -39,25 +39,25 @@ class AdminSettingsPage extends StatelessWidget {
             MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.mediaModeration)),)
           ));
         }
-        if (state.capabilities.adminServerMaintenanceRebootBackend ||
-            state.capabilities.adminServerMaintenanceSaveBackendConfig ||
-            state.capabilities.adminServerMaintenanceViewBackendConfig) {
+        if (state.permissions.adminServerMaintenanceRebootBackend ||
+            state.permissions.adminServerMaintenanceSaveBackendConfig ||
+            state.permissions.adminServerMaintenanceViewBackendConfig) {
           settings.add(Setting.createSetting(Icons.settings, "Configure backend", () =>
             MyNavigator.push(context, MaterialPage<void>(child: const ConfigureBackendPage()),)
           ));
         }
-        if (state.capabilities.adminServerMaintenanceViewInfo) {
+        if (state.permissions.adminServerMaintenanceViewInfo) {
           settings.add(Setting.createSetting(Icons.info_outline, "Server system info", () =>
             MyNavigator.push(context, MaterialPage<void>(child: const ServerSystemInfoPage()),)
           ));
         }
-        if (state.capabilities.adminServerMaintenanceViewInfo &&
-            state.capabilities.adminServerMaintenanceUpdateSoftware) {
+        if (state.permissions.adminServerMaintenanceViewInfo &&
+            state.permissions.adminServerMaintenanceUpdateSoftware) {
           settings.add(Setting.createSetting(Icons.system_update_alt, "Server software update", () =>
             MyNavigator.push(context, MaterialPage<void>(child: const ServerSoftwareUpdatePage()),)
           ));
         }
-        if (state.capabilities.adminServerMaintenanceViewInfo) {
+        if (state.permissions.adminServerMaintenanceViewInfo) {
           settings.add(Setting.createSetting(Icons.query_stats, "View server perf data", () =>
             MyNavigator.push(context, MaterialPage<void>(child: const ViewPerfDataPage()))
           ));
