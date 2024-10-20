@@ -25,6 +25,8 @@
     <string name="generic_yes" description="Generic yes text">Yes</string>
     <string name="generic_no" description="Generic no text">No</string>
     <string name="generic_try_again" description="Generic try again text">Try again</string>
+    <string name="generic_not_found" description="Generic not found text">Not found</string>
+    <string name="generic_action_completed" description="Generic action completed text">Action completed</string>
     <string name="generic_login" description="Generic login text">Login</string>
     <string name="generic_logout" description="Generic logout text">Logout</string>
     <string name="generic_logout_confirmation_title" description="Generic logout confirmation title text">Logout?</string>
@@ -371,6 +373,13 @@
 
     <!-- Crop image screen -->
     <string name="crop_image_screen_title" description="Title for crop image screen">Crop image</string>
+
+    <!-- News list screen -->
+    <string name="news_list_screen_title" description="Title for news list screen title">News</string>
+    <string name="news_list_screen_not_published" description="News item state text for not yet published news item">Not published</string>
+    <string name="news_list_screen_no_news_found" description="Info text displayed when no news are found">No news found</string>
+    <string name="news_list_screen_news_loading_failed" description="Info text displayed when news loading fails">News loading failed</string>
+    <string name="news_list_screen_create_new" description="Dialog title for create new news item confirmation dialog">Create new?</string>
 
     <!-- Admin features -->
 

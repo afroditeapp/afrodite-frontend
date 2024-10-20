@@ -321,6 +321,10 @@ class ApiManager implements LifecycleMethods {
     return ApiWrapper(_account.account, connection);
   }
 
+  ApiWrapper<AccountAdminApi> _accountAdminWrapper() {
+    return ApiWrapper(_account.accountAdmin, connection);
+  }
+
   /// This is only useful if server has debugging enabled.
   ApiWrapper<AccountInternalApi> _accountInternalWrapper() {
     return ApiWrapper(_account.accountInternal, connection);
@@ -370,6 +374,10 @@ class ApiManager implements LifecycleMethods {
 
   Future<Result<R, ValueApiError>> account<R extends Object>(Future<R?> Function(AccountApi) action) async {
     return await _accountWrapper().requestValue(action);
+  }
+
+  Future<Result<R, ValueApiError>> accountAdmin<R extends Object>(Future<R?> Function(AccountAdminApi) action) async {
+    return await _accountAdminWrapper().requestValue(action);
   }
 
   Future<Result<R, ValueApiError>> accountInternal<R extends Object>(Future<R?> Function(AccountInternalApi) action) async {
@@ -443,6 +451,10 @@ class ApiManager implements LifecycleMethods {
 
   Future<Result<void, ActionApiError>> accountAction(Future<void> Function(AccountApi) action) async {
     return await _accountWrapper().requestAction(action);
+  }
+
+  Future<Result<void, ActionApiError>> accountAdminAction(Future<void> Function(AccountAdminApi) action) async {
+    return await _accountAdminWrapper().requestAction(action);
   }
 
   Future<Result<void, ActionApiError>> accountInternalAction(Future<void> Function(AccountInternalApi) action) async {

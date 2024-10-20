@@ -1,7 +1,7 @@
 
 
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 
 Widget buildListReplacementMessage({required Widget child}) {
@@ -12,4 +12,11 @@ Widget buildListReplacementMessage({required Widget child}) {
       child: child,
     ),
   );
+}
+
+Widget buildListReplacementMessageSimple(BuildContext context, String text) {
+  return buildListReplacementMessage(child: Text(
+    text,
+    style: Theme.of(context).textTheme.bodyLarge,
+  ));
 }

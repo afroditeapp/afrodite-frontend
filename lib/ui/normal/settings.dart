@@ -19,6 +19,7 @@ import 'package:pihka_frontend/ui/normal/settings/debug.dart';
 import 'package:pihka_frontend/ui/normal/settings/general_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
 import 'package:pihka_frontend/ui/normal/settings/my_profile.dart';
+import 'package:pihka_frontend/ui/normal/settings/news/news_list.dart';
 import 'package:pihka_frontend/ui/normal/settings/notification_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/privacy_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/search_settings.dart';
@@ -85,7 +86,9 @@ class _SettingsViewState extends State<SettingsView> {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
         List<Setting> settings = [
-
+          Setting.createSetting(Icons.newspaper, context.strings.news_list_screen_title, () =>
+            openNewsList(context),
+          ),
           Setting.createSetting(Icons.account_box, context.strings.view_profile_screen_my_profile_title, () =>
             MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()))
           ),

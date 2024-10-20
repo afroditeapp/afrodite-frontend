@@ -167,7 +167,7 @@ Widget _messageWidget(
             Alignment.centerRight,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
-            child: Text(timeString(entry), style: messageTimeTextStyle),
+            child: Text(timeStringFromMessage(entry), style: messageTimeTextStyle),
           ),
         ),
       ],
@@ -229,8 +229,12 @@ Widget showErrorIconIfNeeded(
   }
 }
 
-String timeString(MessageEntry entry) {
+String timeStringFromMessage(MessageEntry entry) {
   final messageTime = entry.unixTime ?? entry.localUnixTime;
+  return timeString(messageTime);
+}
+
+String timeString(UtcDateTime messageTime) {
   final currentTime = UtcDateTime.now();
   if (messageTime.dateTime.year == currentTime.dateTime.year) {
     if (

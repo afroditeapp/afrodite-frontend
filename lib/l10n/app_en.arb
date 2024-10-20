@@ -338,6 +338,10 @@
   "@general_settings_screen_title": {
     "description": "General settings screen title"
   },
+  "generic_action_completed": "Action completed",
+  "@generic_action_completed": {
+    "description": "Generic action completed text"
+  },
   "generic_cancel": "Cancel",
   "@generic_cancel": {
     "description": "Generic cancel text"
@@ -422,6 +426,10 @@
   "generic_no": "No",
   "@generic_no": {
     "description": "Generic no text"
+  },
+  "generic_not_found": "Not found",
+  "@generic_not_found": {
+    "description": "Generic not found text"
   },
   "generic_not_supported_on_web": "Not supported on Web",
   "@generic_not_supported_on_web": {
@@ -773,6 +781,26 @@
   "new_moderation_request_screen_title": "New moderation request",
   "@new_moderation_request_screen_title": {
     "description": "Title for new moderation request screen"
+  },
+  "news_list_screen_create_new": "Create new?",
+  "@news_list_screen_create_new": {
+    "description": "Dialog title for create new news item confirmation dialog"
+  },
+  "news_list_screen_news_loading_failed": "News loading failed",
+  "@news_list_screen_news_loading_failed": {
+    "description": "Info text displayed when news loading fails"
+  },
+  "news_list_screen_no_news_found": "No news found",
+  "@news_list_screen_no_news_found": {
+    "description": "Info text displayed when no news are found"
+  },
+  "news_list_screen_not_published": "Not published",
+  "@news_list_screen_not_published": {
+    "description": "News item state text for not yet published news item"
+  },
+  "news_list_screen_title": "News",
+  "@news_list_screen_title": {
+    "description": "Title for news list screen title"
   },
   "notification_category_likes": "Likes",
   "@notification_category_likes": {

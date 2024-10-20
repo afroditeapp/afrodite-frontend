@@ -4,6 +4,7 @@ import 'package:database/database.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
 import 'package:pihka_frontend/utils/list.dart';
+import 'package:utils/utils.dart';
 
 extension ModerationExtensions on Moderation {
   List<ContentId> contentList() {
@@ -213,5 +214,11 @@ extension SearchGroupsExtensions on SearchGroups {
 extension ClientLocalIdExtensions on ClientLocalId {
   LocalMessageId toLocalMessageId() {
     return LocalMessageId(id);
+  }
+}
+
+extension UnixTimeExtensions on UnixTime {
+  UtcDateTime toUtcDateTime() {
+    return UtcDateTime.fromUnixEpochMilliseconds(ut * 1000);
   }
 }
