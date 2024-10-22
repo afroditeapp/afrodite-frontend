@@ -381,6 +381,10 @@
     <string name="news_list_screen_news_loading_failed" description="Info text displayed when news loading fails">News loading failed</string>
     <string name="news_list_screen_create_new" description="Dialog title for create new news item confirmation dialog">Create new?</string>
 
+    <!-- View news screen -->
+    <string name="view_news_screen_published" description="Text for news published time">Published: %s</string>
+    <string name="view_news_screen_edited" description="Text for news edited time">Edited: %s</string>
+
     <!-- Admin features -->
 
     <!-- Admin screen -->

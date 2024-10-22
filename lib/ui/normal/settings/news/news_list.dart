@@ -184,7 +184,16 @@ class NewsListScreenState extends State<NewsListScreen> {
             title: Text(title),
             subtitle: Text(subtitle),
             onTap: () {
-              openViewNewsScreen(context, widget.locale, item.newsItem.id);
+              openViewNewsScreen(
+                context,
+                widget.locale,
+                item.newsItem.id,
+                () {
+                  if (context.mounted) {
+                    refresh();
+                  }
+                }
+              );
             }
           );
         },

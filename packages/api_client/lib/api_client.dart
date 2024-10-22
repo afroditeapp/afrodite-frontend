@@ -500,6 +500,8 @@ class ApiClient {
           return UpdateMessageViewStatus.fromJson(value);
         case 'UpdateNewsTranslation':
           return UpdateNewsTranslation.fromJson(value);
+        case 'UpdateNewsTranslationResult':
+          return UpdateNewsTranslationResult.fromJson(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

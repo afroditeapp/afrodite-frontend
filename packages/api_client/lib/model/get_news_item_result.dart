@@ -14,21 +14,26 @@ class GetNewsItemResult {
   /// Returns a new [GetNewsItemResult] instance.
   GetNewsItemResult({
     this.item,
+    this.private = false,
   });
 
   NewsItem? item;
 
+  bool private;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetNewsItemResult &&
-    other.item == item;
+    other.item == item &&
+    other.private == private;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (item == null ? 0 : item!.hashCode);
+    (item == null ? 0 : item!.hashCode) +
+    (private.hashCode);
 
   @override
-  String toString() => 'GetNewsItemResult[item=$item]';
+  String toString() => 'GetNewsItemResult[item=$item, private=$private]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -37,6 +42,7 @@ class GetNewsItemResult {
     } else {
       json[r'item'] = null;
     }
+      json[r'private'] = this.private;
     return json;
   }
 
@@ -60,6 +66,7 @@ class GetNewsItemResult {
 
       return GetNewsItemResult(
         item: NewsItem.fromJson(json[r'item']),
+        private: mapValueOfType<bool>(json, r'private') ?? false,
       );
     }
     return null;
@@ -109,4 +116,3 @@ class GetNewsItemResult {
   static const requiredKeys = <String>{
   };
 }
-

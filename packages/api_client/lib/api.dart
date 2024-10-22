@@ -198,6 +198,7 @@ part 'model/translation.dart';
 part 'model/unix_time.dart';
 part 'model/update_message_view_status.dart';
 part 'model/update_news_translation.dart';
+part 'model/update_news_translation_result.dart';
 
 
 /// An [ApiClient] instance that uses the default values obtained from

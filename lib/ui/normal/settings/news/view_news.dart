@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
@@ -12,8 +13,12 @@ import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/news/view_news.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/ui/normal/chat/message_row.dart';
+import 'package:pihka_frontend/ui/normal/settings/news/edit_news.dart';
 import 'package:pihka_frontend/ui_utils/consts/animation.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
+import 'package:pihka_frontend/utils/api.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 final log = Logger("ViewNewsScreen");
 
@@ -21,6 +26,7 @@ Future<void> openViewNewsScreen(
   BuildContext context,
   String locale,
   NewsId id,
+  void Function() refreshNewsList,
 ) {
   final pageKey = PageKey();
   return MyNavigator.pushWithKey(
@@ -29,7 +35,11 @@ Future<void> openViewNewsScreen(
       child: BlocProvider(
         create: (_) => ViewNewsBloc(id, locale),
         lazy: false,
-        child: ViewNewsScreen(pageKey: pageKey)
+        child: ViewNewsScreen(
+          pageKey: pageKey,
+          id: id,
+          refreshNewsList: refreshNewsList,
+        ),
       ),
     ),
     pageKey,
@@ -38,8 +48,12 @@ Future<void> openViewNewsScreen(
 
 class ViewNewsScreen extends StatefulWidget {
   final PageKey pageKey;
+  final NewsId id;
+  final void Function() refreshNewsList;
   const ViewNewsScreen({
     required this.pageKey,
+    required this.id,
+    required this.refreshNewsList,
     super.key,
   });
 
@@ -51,11 +65,6 @@ class ViewNewsScreenState extends State<ViewNewsScreen> {
   final AccountId currentUser = LoginRepository.getInstance().repositories.accountId;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -63,12 +72,12 @@ class ViewNewsScreenState extends State<ViewNewsScreen> {
           BlocBuilder<AccountBloc, AccountBlocData>(
             builder: (context, state) {
               if (state.permissions.adminNewsEditAll) {
-                return editNewsActionButton();
+                return editNewsActionButton(context);
               } else if (state.permissions.adminNewsCreate) {
                 return BlocBuilder<ViewNewsBloc, ViewNewsData>(
                   builder: (context, newsState) {
                     if (newsState.item?.aidCreator == currentUser) {
-                      return editNewsActionButton();
+                      return editNewsActionButton(context);
                     } else {
                       return const SizedBox.shrink();
                     }
@@ -112,32 +121,68 @@ class ViewNewsScreenState extends State<ViewNewsScreen> {
   }
 
   Widget viewItem(BuildContext context, NewsItem item) {
+    final creationTime = timeString(item.creationTime.toUtcDateTime());
+    String details = context.strings.view_news_screen_published(creationTime);
+    final editTime = item.editUnixTime;
+    if (editTime != null) {
+      final editTimeText = timeString(UnixTime(ut: editTime).toUtcDateTime());
+      details += "\n${context.strings.view_news_screen_edited(editTimeText)}";
+    }
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(item.title),
+            ViewNewsItem(title: item.title, body: item.body),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Text(item.body),
+            Text(details),
           ],
         ),
       )
     );
   }
 
-  Widget editNewsActionButton() {
+  Widget editNewsActionButton(BuildContext context) {
     return IconButton(
-      onPressed: () {
-
+      onPressed: () async {
+        final bloc = context.read<ViewNewsBloc>();
+        await openEditNewsScreen(context, widget.id);
+        if (!bloc.isClosed) {
+          bloc.add(Reload());
+          widget.refreshNewsList();
+        }
       },
       icon: const Icon(Icons.edit),
     );
   }
+}
+
+class ViewNewsItem extends StatelessWidget {
+  final String title;
+  final String body;
+  const ViewNewsItem({required this.title, required this.body, super.key});
 
   @override
-  void dispose() {
-    super.dispose();
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+        MarkdownBody(
+          data: body,
+          onTapLink: (text, href, title) {
+            if (href != null) {
+              launchUrlString(href);
+            }
+          },
+        ),
+      ],
+    );
   }
 }

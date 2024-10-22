@@ -1073,6 +1073,24 @@
   "@view_image_screen_title": {
     "description": "Title for view image screen"
   },
+  "view_news_screen_edited": "Edited: {p0}",
+  "@view_news_screen_edited": {
+    "description": "Text for news edited time",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "view_news_screen_published": "Published: {p0}",
+  "@view_news_screen_published": {
+    "description": "Text for news published time",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "view_profile_screen_add_to_favorites_action": "Add to favorites",
   "@view_profile_screen_add_to_favorites_action": {
     "description": "Text for view profile screen add to favorites action"

@@ -170,6 +170,7 @@ doc/Translation.md
 doc/UnixTime.md
 doc/UpdateMessageViewStatus.md
 doc/UpdateNewsTranslation.md
+doc/UpdateNewsTranslationResult.md
 git_push.sh
 lib/api.dart
 lib/api/account_admin_api.dart
@@ -349,3 +350,4 @@ lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/update_message_view_status.dart
 lib/model/update_news_translation.dart
+lib/model/update_news_translation_result.dart

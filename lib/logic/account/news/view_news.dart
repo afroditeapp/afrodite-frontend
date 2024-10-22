@@ -9,14 +9,14 @@ import "package:pihka_frontend/utils.dart";
 import "package:pihka_frontend/utils/result.dart";
 
 abstract class ViewNewsEvent {}
-class InitialLoad extends ViewNewsEvent {}
+class Reload extends ViewNewsEvent {}
 
 class ViewNewsBloc extends Bloc<ViewNewsEvent, ViewNewsData> with ActionRunner {
   final ApiManager api = LoginRepository.getInstance().repositories.api;
   final NewsId id;
   final String locale;
   ViewNewsBloc(this.id, this.locale) : super(ViewNewsData()) {
-    on<InitialLoad>((key, emit) async {
+    on<Reload>((key, emit) async {
       await runOnce(() async {
         emit(ViewNewsData().copyWith(isLoading: true));
 
@@ -37,6 +37,6 @@ class ViewNewsBloc extends Bloc<ViewNewsEvent, ViewNewsData> with ActionRunner {
       });
     });
 
-    add(InitialLoad());
+    add(Reload());
   }
 }
