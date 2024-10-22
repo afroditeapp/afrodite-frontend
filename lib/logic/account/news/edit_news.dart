@@ -104,7 +104,7 @@ class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
   }
 
   Future<Result<void, void>> loadTranslation(Emitter<EditNewsData> emit, String locale) async {
-    final translation = await api.account((api) => api.getNewsItem(id.nid, locale));
+    final translation = await api.account((api) => api.getNewsItem(id.nid, locale, requireLocale: true));
     switch (translation) {
       case Ok():
         final NewsContent c = (
