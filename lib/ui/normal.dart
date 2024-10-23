@@ -5,6 +5,7 @@ import "package:pihka_frontend/data/image_cache.dart";
 import "package:pihka_frontend/data/notification_manager.dart";
 import "package:pihka_frontend/localizations.dart";
 import "package:pihka_frontend/logic/account/account.dart";
+import "package:pihka_frontend/logic/account/news/news_count.dart";
 import "package:pihka_frontend/logic/app/bottom_navigation_state.dart";
 import "package:pihka_frontend/logic/app/navigator_state.dart";
 
@@ -16,6 +17,7 @@ import "package:pihka_frontend/logic/media/content.dart";
 import "package:pihka_frontend/logic/profile/attributes.dart";
 import "package:pihka_frontend/logic/profile/my_profile.dart";
 import "package:pihka_frontend/model/freezed/logic/account/account.dart";
+import "package:pihka_frontend/model/freezed/logic/account/news/news_count.dart";
 import "package:pihka_frontend/model/freezed/logic/chat/new_received_likes_available_bloc.dart";
 import "package:pihka_frontend/model/freezed/logic/chat/unread_conversations_count_bloc.dart";
 import "package:pihka_frontend/model/freezed/logic/login.dart";
@@ -202,7 +204,17 @@ class _NormalStateContentState extends State<NormalStateContent> {
         label: VIEWS[2].title(context),
       ),
       BottomNavigationBarItem(
-        icon: Icon(selectedView == 3 ? Icons.settings : Icons.settings_outlined),
+        icon: BlocBuilder<NewsCountBloc, NewsCountData>(
+          builder: (context, state) {
+            final icon = Icon(selectedView == 3 ? Icons.settings : Icons.settings_outlined);
+            final count = state.newsCountForUi();
+            if (count == 0) {
+              return icon;
+            } else {
+              return Badge.count(count: count, child: icon);
+            }
+          }
+        ),
         label: VIEWS[3].title(context),
       ),
     ];

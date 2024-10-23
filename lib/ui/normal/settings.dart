@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/account_details.dart';
+import 'package:pihka_frontend/logic/account/news/news_count.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/media/current_moderation_request.dart';
@@ -10,6 +11,7 @@ import 'package:pihka_frontend/logic/settings/edit_search_settings.dart';
 import 'package:pihka_frontend/logic/settings/privacy_settings.dart';
 import 'package:pihka_frontend/logic/settings/search_settings.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
+import 'package:pihka_frontend/model/freezed/logic/account/news/news_count.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui/normal/settings/account_settings.dart';
@@ -86,8 +88,19 @@ class _SettingsViewState extends State<SettingsView> {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
         List<Setting> settings = [
-          Setting.createSetting(Icons.newspaper, context.strings.news_list_screen_title, () =>
-            openNewsList(context),
+          Setting.createSettingWithCustomIcon(
+            BlocBuilder<NewsCountBloc, NewsCountData>(
+              builder: (context, state) {
+                const icon = Icon(Icons.newspaper);
+                final count = state.newsCountForUi();
+                if (count == 0) {
+                  return icon;
+                } else {
+                  return Badge.count(count: count, child: icon);
+                }
+              }
+            ),
+            context.strings.news_list_screen_title, () => openNewsList(context),
           ),
           Setting.createSetting(Icons.account_box, context.strings.view_profile_screen_my_profile_title, () =>
             MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()))
@@ -216,6 +229,14 @@ class Setting {
   factory Setting.createSetting(IconData icon, String text, void Function() action) {
     return Setting(
       Icon(icon),
+      Text(text),
+      action,
+    );
+  }
+
+  factory Setting.createSettingWithCustomIcon(Widget icon, String text, void Function() action) {
+    return Setting(
+      icon,
       Text(text),
       action,
     );

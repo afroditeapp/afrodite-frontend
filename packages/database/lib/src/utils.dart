@@ -416,3 +416,17 @@ class NewReceivedLikesCountConverter extends TypeConverter<NewReceivedLikesCount
     return value.c;
   }
 }
+
+class NewsCountConverter extends TypeConverter<NewsCount, int> {
+  const NewsCountConverter();
+
+  @override
+  NewsCount fromSql(fromDb) {
+    return NewsCount(c: fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.c;
+  }
+}

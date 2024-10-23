@@ -185,6 +185,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       profile.receiveProfileAttributes();
     } else if (event.event == EventType.profileChanged) {
       profile.reloadMyProfile();
+    } else if (event.event == EventType.newsCountChanged) {
+      receiveNewsCount();
     } else {
       log.error("Unknown EventToClient");
     }
@@ -259,5 +261,10 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     return await api.accountAction((api) => api.postDelete())
       .mapErr((_) => ())
       .mapOk((_) => ());
+  }
+
+  Future<Result<void, void>> receiveNewsCount() async {
+    return await api.account((api) => api.postGetNewsCount())
+      .andThen((info) => db.accountAction((db) => db.daoNews.setNewsCount(info: info)));
   }
 }

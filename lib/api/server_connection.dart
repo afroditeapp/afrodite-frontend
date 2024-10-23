@@ -421,6 +421,7 @@ const forceSync = 255;
     Matches = 5,
     AvailableProfileAttributes = 6,
     Profile = 7,
+    News = 8,
 */
 
 // TODO(prod): Implement sync data version handling
@@ -438,6 +439,9 @@ Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundData
   final syncVersionProfile = await db.accountStreamSingle(
     (db) => db.daoSyncVersions.watchSyncVersionProfile()
   ).ok() ?? forceSync;
+  final syncVersionNews = await db.accountStreamSingle(
+    (db) => db.daoSyncVersions.watchSyncVersionNews()
+  ).ok() ?? forceSync;
 
   final bytes = <int>[
     0, // Account
@@ -448,6 +452,8 @@ Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundData
     syncVersionAvailableProfileAttributes,
     7, // Profile
     syncVersionProfile,
+    8, // News
+    syncVersionNews,
   ];
 
   return Uint8List.fromList(bytes);

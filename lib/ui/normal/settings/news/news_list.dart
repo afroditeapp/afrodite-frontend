@@ -9,6 +9,7 @@ import 'package:pihka_frontend/api/api_manager.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/database/account_database_manager.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
+import 'package:pihka_frontend/logic/account/news/news_count.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
@@ -28,9 +29,14 @@ Future<void> openNewsList(
 ) {
   final pageKey = PageKey();
   final locale = Localizations.localeOf(context).languageCode;
+  final bloc = context.read<NewsCountBloc>();
   return MyNavigator.pushWithKey(
     context,
-    MaterialPage<void>(child: NewsListScreen(pageKey: pageKey, locale: locale)),
+    MaterialPage<void>(child: NewsListScreen(
+      pageKey: pageKey,
+      locale: locale,
+      bloc: bloc,
+    )),
     pageKey,
   );
 }
@@ -38,11 +44,13 @@ Future<void> openNewsList(
 class NewsListScreen extends StatefulWidget {
   final PageKey pageKey;
   final String locale;
+  final NewsCountBloc bloc;
   const NewsListScreen({
     required this.pageKey,
     required this.locale,
-    Key? key,
-  }) : super(key: key);
+    required this.bloc,
+    super.key,
+  });
 
   @override
   State<NewsListScreen> createState() => NewsListScreenState();
@@ -66,6 +74,7 @@ class NewsListScreenState extends State<NewsListScreen> {
     _pagingController?.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
+    widget.bloc.add(MarkAllNewsViewed());
   }
 
   void showLoadingError() {

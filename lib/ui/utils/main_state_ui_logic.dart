@@ -9,6 +9,7 @@ import 'package:pihka_frontend/data/notification_manager.dart';
 import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/account/account_details.dart';
 import 'package:pihka_frontend/logic/account/initial_setup.dart';
+import 'package:pihka_frontend/logic/account/news/news_count.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/app/main_state.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
@@ -169,6 +170,9 @@ class MainStateUiLogic extends StatelessWidget {
               BlocProvider(create: (_) => SearchSettingsBloc()),
               BlocProvider(create: (_) => EditSearchSettingsBloc()),
               BlocProvider(create: (_) => NotificationSettingsBloc()),
+
+              // News
+              BlocProvider(create: (_) => NewsCountBloc()),
             ],
             child: child,
           ),
