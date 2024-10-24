@@ -13,26 +13,38 @@ part of openapi.api;
 class ResetNewsIteratorResult {
   /// Returns a new [ResetNewsIteratorResult] instance.
   ResetNewsIteratorResult({
+    required this.c,
     required this.s,
+    required this.v,
   });
+
+  UnreadNewsCount c;
 
   NewsIteratorSessionId s;
 
+  NewsSyncVersion v;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is ResetNewsIteratorResult &&
-    other.s == s;
+    other.c == c &&
+    other.s == s &&
+    other.v == v;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (s.hashCode);
+    (c.hashCode) +
+    (s.hashCode) +
+    (v.hashCode);
 
   @override
-  String toString() => 'ResetNewsIteratorResult[s=$s]';
+  String toString() => 'ResetNewsIteratorResult[c=$c, s=$s, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'c'] = this.c;
       json[r's'] = this.s;
+      json[r'v'] = this.v;
     return json;
   }
 
@@ -55,7 +67,9 @@ class ResetNewsIteratorResult {
       }());
 
       return ResetNewsIteratorResult(
+        c: UnreadNewsCount.fromJson(json[r'c'])!,
         s: NewsIteratorSessionId.fromJson(json[r's'])!,
+        v: NewsSyncVersion.fromJson(json[r'v'])!,
       );
     }
     return null;
@@ -103,7 +117,9 @@ class ResetNewsIteratorResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'c',
     's',
+    'v',
   };
 }
 

@@ -10,16 +10,16 @@
 
 part of openapi.api;
 
-class NewsCount {
-  /// Returns a new [NewsCount] instance.
-  NewsCount({
+class PageItemCountForNewPublicNews {
+  /// Returns a new [PageItemCountForNewPublicNews] instance.
+  PageItemCountForNewPublicNews({
     required this.c,
   });
 
   int c;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is NewsCount &&
+  bool operator ==(Object other) => identical(this, other) || other is PageItemCountForNewPublicNews &&
     other.c == c;
 
   @override
@@ -28,7 +28,7 @@ class NewsCount {
     (c.hashCode);
 
   @override
-  String toString() => 'NewsCount[c=$c]';
+  String toString() => 'PageItemCountForNewPublicNews[c=$c]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -36,10 +36,10 @@ class NewsCount {
     return json;
   }
 
-  /// Returns a new [NewsCount] instance and imports its values from
+  /// Returns a new [PageItemCountForNewPublicNews] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static NewsCount? fromJson(dynamic value) {
+  static PageItemCountForNewPublicNews? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class NewsCount {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "NewsCount[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "NewsCount[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "PageItemCountForNewPublicNews[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "PageItemCountForNewPublicNews[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return NewsCount(
+      return PageItemCountForNewPublicNews(
         c: mapValueOfType<int>(json, r'c')!,
       );
     }
     return null;
   }
 
-  static List<NewsCount> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <NewsCount>[];
+  static List<PageItemCountForNewPublicNews> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <PageItemCountForNewPublicNews>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = NewsCount.fromJson(row);
+        final value = PageItemCountForNewPublicNews.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class NewsCount {
     return result.toList(growable: growable);
   }
 
-  static Map<String, NewsCount> mapFromJson(dynamic json) {
-    final map = <String, NewsCount>{};
+  static Map<String, PageItemCountForNewPublicNews> mapFromJson(dynamic json) {
+    final map = <String, PageItemCountForNewPublicNews>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = NewsCount.fromJson(entry.value);
+        final value = PageItemCountForNewPublicNews.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class NewsCount {
     return map;
   }
 
-  // maps a json object with a list of NewsCount-objects as value to a dart map
-  static Map<String, List<NewsCount>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<NewsCount>>{};
+  // maps a json object with a list of PageItemCountForNewPublicNews-objects as value to a dart map
+  static Map<String, List<PageItemCountForNewPublicNews>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<PageItemCountForNewPublicNews>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = NewsCount.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = PageItemCountForNewPublicNews.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

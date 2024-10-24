@@ -10,47 +10,27 @@ part 'dao_news.g.dart';
 class DaoNews extends DatabaseAccessor<AccountDatabase> with _$DaoNewsMixin, AccountTools {
   DaoNews(AccountDatabase db) : super(db);
 
-  Future<void> setNewsCount({
-    required api.NewsCountResult info,
+  Future<void> setUnreadNewsCount({
+    required api.NewsSyncVersion version,
+    required api.UnreadNewsCount unreadNewsCount,
   }) async {
     await transaction(() async {
       await into(account).insertOnConflictUpdate(
         AccountCompanion.insert(
           id: ACCOUNT_DB_DATA_ID,
-          newsCount: Value(info.c),
+          newsCount: Value(unreadNewsCount),
         ),
       );
-      await db.daoSyncVersions.updateSyncVersionNews(info.v);
+      await db.daoSyncVersions.updateSyncVersionNews(version);
     });
   }
 
-  Future<void> setNewsCountUserViewed({
-    required api.NewsCount count,
-  }) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        newsCountUserViewed: Value(count),
-      ),
-    );
-  }
-
-  Stream<api.NewsCount?> watchNewsCount() {
+  Stream<api.UnreadNewsCount?> watchUnreadNewsCount() {
     return (select(account)
       ..where((t) => t.id.equals(ACCOUNT_DB_DATA_ID.value))
     )
       .map((r) {
         return r.newsCount;
-      })
-      .watchSingleOrNull();
-  }
-
-  Stream<api.NewsCount?> watchNewsCountUserViewed() {
-    return (select(account)
-      ..where((t) => t.id.equals(ACCOUNT_DB_DATA_ID.value))
-    )
-      .map((r) {
-        return r.newsCountUserViewed;
       })
       .watchSingleOrNull();
   }

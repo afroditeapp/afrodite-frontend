@@ -9,10 +9,9 @@ class NewsCountData with _$NewsCountData {
 
   factory NewsCountData({
     @Default(0) int newsCount,
-    @Default(0) int newsCountUserViewed,
   }) = _NewsCountData;
 
   int newsCountForUi() {
-    return newsCount - newsCountUserViewed;
+    return newsCount;
   }
 }

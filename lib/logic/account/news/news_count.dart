@@ -14,17 +14,11 @@ class CountUpdate extends NewsCountEvent {
   final int value;
   CountUpdate(this.value);
 }
-class CountUserViewedUpdate extends NewsCountEvent {
-  final int value;
-  CountUserViewedUpdate(this.value);
-}
-class MarkAllNewsViewed extends NewsCountEvent {}
 
 class NewsCountBloc extends Bloc<NewsCountEvent, NewsCountData> {
   final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
 
-  StreamSubscription<NewsCount?>? _countSubscription;
-  StreamSubscription<NewsCount?>? _countUserViewedSubscription;
+  StreamSubscription<UnreadNewsCount?>? _countSubscription;
 
   NewsCountBloc() : super(NewsCountData()) {
     on<CountUpdate>((data, emit) {
@@ -34,31 +28,15 @@ class NewsCountBloc extends Bloc<NewsCountEvent, NewsCountData> {
     },
       transformer: sequential(),
     );
-    on<CountUserViewedUpdate>((data, emit) {
-      emit(state.copyWith(
-        newsCountUserViewed: data.value,
-      ));
-    },
-      transformer: sequential(),
-    );
-    on<MarkAllNewsViewed>((data, emit) async {
-      await db.accountAction((db) => db.daoNews.setNewsCountUserViewed(count: NewsCount(c: state.newsCount)));
-    },
-      transformer: sequential(),
-    );
 
-    _countSubscription = db.accountStream((db) => db.daoNews.watchNewsCount()).listen((data) {
+    _countSubscription = db.accountStream((db) => db.daoNews.watchUnreadNewsCount()).listen((data) {
       add(CountUpdate(data?.c ?? 0));
-    });
-    _countUserViewedSubscription = db.accountStream((db) => db.daoNews.watchNewsCountUserViewed()).listen((data) {
-      add(CountUserViewedUpdate(data?.c ?? 0));
     });
   }
 
   @override
   Future<void> close() async {
     await _countSubscription?.cancel();
-    await _countUserViewedSubscription?.cancel();
     return super.close();
   }
 }

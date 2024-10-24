@@ -587,19 +587,10 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static const VerificationMeta _newsCountMeta =
       const VerificationMeta('newsCount');
   @override
-  late final GeneratedColumnWithTypeConverter<NewsCount?, int> newsCount =
+  late final GeneratedColumnWithTypeConverter<UnreadNewsCount?, int> newsCount =
       GeneratedColumn<int>('news_count', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<NewsCount?>($AccountTable.$converternewsCount);
-  static const VerificationMeta _newsCountUserViewedMeta =
-      const VerificationMeta('newsCountUserViewed');
-  @override
-  late final GeneratedColumnWithTypeConverter<NewsCount?, int>
-      newsCountUserViewed = GeneratedColumn<int>(
-              'news_count_user_viewed', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<NewsCount?>(
-              $AccountTable.$converternewsCountUserViewed);
+          .withConverter<UnreadNewsCount?>($AccountTable.$converternewsCount);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -675,8 +666,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         publicKeyVersion,
         profileInitialAgeSetUnixTime,
         profileInitialAge,
-        newsCount,
-        newsCountUserViewed
+        newsCount
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -992,8 +982,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['profile_initial_age']!, _profileInitialAgeMeta));
     }
     context.handle(_newsCountMeta, const VerificationResult.success());
-    context.handle(
-        _newsCountUserViewedMeta, const VerificationResult.success());
     return context;
   }
 
@@ -1215,9 +1203,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       newsCount: $AccountTable.$converternewsCount.fromSql(attachedDatabase
           .typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}news_count'])),
-      newsCountUserViewed: $AccountTable.$converternewsCountUserViewed.fromSql(
-          attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}news_count_user_viewed'])),
     );
   }
 
@@ -1304,10 +1289,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<UtcDateTime?, int?>
       $converterprofileInitialAgeSetUnixTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
-  static TypeConverter<NewsCount?, int?> $converternewsCount =
-      const NullAwareTypeConverter.wrap(NewsCountConverter());
-  static TypeConverter<NewsCount?, int?> $converternewsCountUserViewed =
-      const NullAwareTypeConverter.wrap(NewsCountConverter());
+  static TypeConverter<UnreadNewsCount?, int?> $converternewsCount =
+      const NullAwareTypeConverter.wrap(UnreadNewsCountConverter());
 }
 
 class AccountData extends DataClass implements Insertable<AccountData> {
@@ -1386,8 +1369,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final PublicKeyVersion? publicKeyVersion;
   final UtcDateTime? profileInitialAgeSetUnixTime;
   final int? profileInitialAge;
-  final NewsCount? newsCount;
-  final NewsCount? newsCountUserViewed;
+  final UnreadNewsCount? newsCount;
   const AccountData(
       {required this.id,
       this.uuidAccountId,
@@ -1462,8 +1444,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.publicKeyVersion,
       this.profileInitialAgeSetUnixTime,
       this.profileInitialAge,
-      this.newsCount,
-      this.newsCountUserViewed});
+      this.newsCount});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1748,11 +1729,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['news_count'] =
           Variable<int>($AccountTable.$converternewsCount.toSql(newsCount));
     }
-    if (!nullToAbsent || newsCountUserViewed != null) {
-      map['news_count_user_viewed'] = Variable<int>($AccountTable
-          .$converternewsCountUserViewed
-          .toSql(newsCountUserViewed));
-    }
     return map;
   }
 
@@ -1981,9 +1957,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       newsCount: newsCount == null && nullToAbsent
           ? const Value.absent()
           : Value(newsCount),
-      newsCountUserViewed: newsCountUserViewed == null && nullToAbsent
-          ? const Value.absent()
-          : Value(newsCountUserViewed),
     );
   }
 
@@ -2117,9 +2090,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileInitialAgeSetUnixTime: serializer
           .fromJson<UtcDateTime?>(json['profileInitialAgeSetUnixTime']),
       profileInitialAge: serializer.fromJson<int?>(json['profileInitialAge']),
-      newsCount: serializer.fromJson<NewsCount?>(json['newsCount']),
-      newsCountUserViewed:
-          serializer.fromJson<NewsCount?>(json['newsCountUserViewed']),
+      newsCount: serializer.fromJson<UnreadNewsCount?>(json['newsCount']),
     );
   }
   @override
@@ -2239,8 +2210,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'profileInitialAgeSetUnixTime':
           serializer.toJson<UtcDateTime?>(profileInitialAgeSetUnixTime),
       'profileInitialAge': serializer.toJson<int?>(profileInitialAge),
-      'newsCount': serializer.toJson<NewsCount?>(newsCount),
-      'newsCountUserViewed': serializer.toJson<NewsCount?>(newsCountUserViewed),
+      'newsCount': serializer.toJson<UnreadNewsCount?>(newsCount),
     };
   }
 
@@ -2330,8 +2300,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<UtcDateTime?> profileInitialAgeSetUnixTime =
               const Value.absent(),
           Value<int?> profileInitialAge = const Value.absent(),
-          Value<NewsCount?> newsCount = const Value.absent(),
-          Value<NewsCount?> newsCountUserViewed = const Value.absent()}) =>
+          Value<UnreadNewsCount?> newsCount = const Value.absent()}) =>
       AccountData(
         id: id ?? this.id,
         uuidAccountId:
@@ -2530,9 +2499,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
             ? profileInitialAge.value
             : this.profileInitialAge,
         newsCount: newsCount.present ? newsCount.value : this.newsCount,
-        newsCountUserViewed: newsCountUserViewed.present
-            ? newsCountUserViewed.value
-            : this.newsCountUserViewed,
       );
   AccountData copyWithCompanion(AccountCompanion data) {
     return AccountData(
@@ -2761,9 +2727,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ? data.profileInitialAge.value
           : this.profileInitialAge,
       newsCount: data.newsCount.present ? data.newsCount.value : this.newsCount,
-      newsCountUserViewed: data.newsCountUserViewed.present
-          ? data.newsCountUserViewed.value
-          : this.newsCountUserViewed,
     );
   }
 
@@ -2859,8 +2822,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write(
               'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ')
           ..write('profileInitialAge: $profileInitialAge, ')
-          ..write('newsCount: $newsCount, ')
-          ..write('newsCountUserViewed: $newsCountUserViewed')
+          ..write('newsCount: $newsCount')
           ..write(')'))
         .toString();
   }
@@ -2940,8 +2902,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         publicKeyVersion,
         profileInitialAgeSetUnixTime,
         profileInitialAge,
-        newsCount,
-        newsCountUserViewed
+        newsCount
       ]);
   @override
   bool operator ==(Object other) =>
@@ -3038,8 +2999,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.profileInitialAgeSetUnixTime ==
               this.profileInitialAgeSetUnixTime &&
           other.profileInitialAge == this.profileInitialAge &&
-          other.newsCount == this.newsCount &&
-          other.newsCountUserViewed == this.newsCountUserViewed);
+          other.newsCount == this.newsCount);
 }
 
 class AccountCompanion extends UpdateCompanion<AccountData> {
@@ -3116,8 +3076,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<PublicKeyVersion?> publicKeyVersion;
   final Value<UtcDateTime?> profileInitialAgeSetUnixTime;
   final Value<int?> profileInitialAge;
-  final Value<NewsCount?> newsCount;
-  final Value<NewsCount?> newsCountUserViewed;
+  final Value<UnreadNewsCount?> newsCount;
   const AccountCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -3193,7 +3152,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileInitialAgeSetUnixTime = const Value.absent(),
     this.profileInitialAge = const Value.absent(),
     this.newsCount = const Value.absent(),
-    this.newsCountUserViewed = const Value.absent(),
   });
   AccountCompanion.insert({
     this.id = const Value.absent(),
@@ -3270,7 +3228,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileInitialAgeSetUnixTime = const Value.absent(),
     this.profileInitialAge = const Value.absent(),
     this.newsCount = const Value.absent(),
-    this.newsCountUserViewed = const Value.absent(),
   });
   static Insertable<AccountData> custom({
     Expression<int>? id,
@@ -3347,7 +3304,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<int>? profileInitialAgeSetUnixTime,
     Expression<int>? profileInitialAge,
     Expression<int>? newsCount,
-    Expression<int>? newsCountUserViewed,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -3478,8 +3434,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'profile_initial_age_set_unix_time': profileInitialAgeSetUnixTime,
       if (profileInitialAge != null) 'profile_initial_age': profileInitialAge,
       if (newsCount != null) 'news_count': newsCount,
-      if (newsCountUserViewed != null)
-        'news_count_user_viewed': newsCountUserViewed,
     });
   }
 
@@ -3557,8 +3511,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<PublicKeyVersion?>? publicKeyVersion,
       Value<UtcDateTime?>? profileInitialAgeSetUnixTime,
       Value<int?>? profileInitialAge,
-      Value<NewsCount?>? newsCount,
-      Value<NewsCount?>? newsCountUserViewed}) {
+      Value<UnreadNewsCount?>? newsCount}) {
     return AccountCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -3678,7 +3631,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           profileInitialAgeSetUnixTime ?? this.profileInitialAgeSetUnixTime,
       profileInitialAge: profileInitialAge ?? this.profileInitialAge,
       newsCount: newsCount ?? this.newsCount,
-      newsCountUserViewed: newsCountUserViewed ?? this.newsCountUserViewed,
     );
   }
 
@@ -3988,11 +3940,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['news_count'] = Variable<int>(
           $AccountTable.$converternewsCount.toSql(newsCount.value));
     }
-    if (newsCountUserViewed.present) {
-      map['news_count_user_viewed'] = Variable<int>($AccountTable
-          .$converternewsCountUserViewed
-          .toSql(newsCountUserViewed.value));
-    }
     return map;
   }
 
@@ -4088,8 +4035,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write(
               'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ')
           ..write('profileInitialAge: $profileInitialAge, ')
-          ..write('newsCount: $newsCount, ')
-          ..write('newsCountUserViewed: $newsCountUserViewed')
+          ..write('newsCount: $newsCount')
           ..write(')'))
         .toString();
   }

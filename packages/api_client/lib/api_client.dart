@@ -344,10 +344,6 @@ class ApiClient {
           return NewReceivedLikesCount.fromJson(value);
         case 'NewReceivedLikesCountResult':
           return NewReceivedLikesCountResult.fromJson(value);
-        case 'NewsCount':
-          return NewsCount.fromJson(value);
-        case 'NewsCountResult':
-          return NewsCountResult.fromJson(value);
         case 'NewsId':
           return NewsId.fromJson(value);
         case 'NewsItem':
@@ -364,6 +360,8 @@ class ApiClient {
           return NewsTranslationVersion.fromJson(value);
         case 'PageItemCountForNewLikes':
           return PageItemCountForNewLikes.fromJson(value);
+        case 'PageItemCountForNewPublicNews':
+          return PageItemCountForNewPublicNews.fromJson(value);
         case 'PendingMessage':
           return PendingMessage.fromJson(value);
         case 'PendingMessageAcknowledgementList':
@@ -496,6 +494,10 @@ class ApiClient {
           return Translation.fromJson(value);
         case 'UnixTime':
           return UnixTime.fromJson(value);
+        case 'UnreadNewsCount':
+          return UnreadNewsCount.fromJson(value);
+        case 'UnreadNewsCountResult':
+          return UnreadNewsCountResult.fromJson(value);
         case 'UpdateMessageViewStatus':
           return UpdateMessageViewStatus.fromJson(value);
         case 'UpdateNewsTranslation':

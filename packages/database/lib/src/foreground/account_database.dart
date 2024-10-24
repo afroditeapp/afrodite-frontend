@@ -154,8 +154,7 @@ class Account extends Table {
 
   // DaoNews
 
-  IntColumn get newsCount => integer().map(const NullAwareTypeConverter.wrap(NewsCountConverter())).nullable()();
-  IntColumn get newsCountUserViewed => integer().map(const NullAwareTypeConverter.wrap(NewsCountConverter())).nullable()();
+  IntColumn get newsCount => integer().map(const NullAwareTypeConverter.wrap(UnreadNewsCountConverter())).nullable()();
 }
 
 @DriftDatabase(

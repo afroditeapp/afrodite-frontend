@@ -105,3 +105,4 @@ class UpdateNewsTranslationResult {
   static const requiredKeys = <String>{
   };
 }
+

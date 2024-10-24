@@ -264,7 +264,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<void, void>> receiveNewsCount() async {
-    return await api.account((api) => api.postGetNewsCount())
-      .andThen((info) => db.accountAction((db) => db.daoNews.setNewsCount(info: info)));
+    return await api.account((api) => api.getUnreadNewsCount())
+      .andThen((info) => db.accountAction((db) => db.daoNews.setUnreadNewsCount(version: info.v, unreadNewsCount: info.c)));
   }
 }

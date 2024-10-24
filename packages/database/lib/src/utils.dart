@@ -417,12 +417,12 @@ class NewReceivedLikesCountConverter extends TypeConverter<NewReceivedLikesCount
   }
 }
 
-class NewsCountConverter extends TypeConverter<NewsCount, int> {
-  const NewsCountConverter();
+class UnreadNewsCountConverter extends TypeConverter<UnreadNewsCount, int> {
+  const UnreadNewsCountConverter();
 
   @override
-  NewsCount fromSql(fromDb) {
-    return NewsCount(c: fromDb);
+  UnreadNewsCount fromSql(fromDb) {
+    return UnreadNewsCount(c: fromDb);
   }
 
   @override

@@ -66,29 +66,29 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**getAccountSetup**](doc//AccountApi.md#getaccountsetup) | **GET** /RNb6qhf_lZU8t6kOm5kQY7Y34ok | Get non-changeable user information to account.
 *AccountApi* | [**getAccountState**](doc//AccountApi.md#getaccountstate) | **GET** /C9sCP6O2IfIBQCu8LM1_SCybuW0 | Get current account state.
 *AccountApi* | [**getDeletionStatus**](doc//AccountApi.md#getdeletionstatus) | **GET** /_aiEAY0WZCquNl_WQ5fDORGuHwA | Get deletion status.
-*AccountApi* | [**getLatestBirthdate**](doc//AccountApi.md#getlatestbirthdate) | **GET** /Hg2W1drXZ94YVp3Uh38hnQzYIng |
+*AccountApi* | [**getLatestBirthdate**](doc//AccountApi.md#getlatestbirthdate) | **GET** /Hg2W1drXZ94YVp3Uh38hnQzYIng | 
 *AccountApi* | [**getNewsItem**](doc//AccountApi.md#getnewsitem) | **GET** /2OHF85k7hpH2tAibkA0V9YLwpF4/{nid} | Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
+*AccountApi* | [**getUnreadNewsCount**](doc//AccountApi.md#getunreadnewscount) | **GET** /ljfyAP7CbP0864cA6nZX7ESufjY | The unread news count for public news.
 *AccountApi* | [**postAccountData**](doc//AccountApi.md#postaccountdata) | **POST** /Ln3_j2LpJIbQABKwnMMhUEtio5k | Set changeable user information to account.
 *AccountApi* | [**postAccountSetup**](doc//AccountApi.md#postaccountsetup) | **POST** /RNb6qhf_lZU8t6kOm5kQY7Y34ok | Setup non-changeable user information during `initial setup` state.
 *AccountApi* | [**postCompleteSetup**](doc//AccountApi.md#postcompletesetup) | **POST** /VzPyCXS5Hx50SbAApdpUYfCY-Iw | Complete initial setup.
 *AccountApi* | [**postDelete**](doc//AccountApi.md#postdelete) | **PUT** /_aiEAY0WZCquNl_WQ5fDORGuHwA | Delete account.
 *AccountApi* | [**postDemoModeAccessibleAccounts**](doc//AccountApi.md#postdemomodeaccessibleaccounts) | **POST** /xyG8kH6eLanLiKYXdnOx1xxeAdA | Get demo account's available accounts.
-*AccountApi* | [**postDemoModeConfirmLogin**](doc//AccountApi.md#postdemomodeconfirmlogin) | **POST** /3KlEajKOIo1Drd3uW-IzQ1L3qlE |
+*AccountApi* | [**postDemoModeConfirmLogin**](doc//AccountApi.md#postdemomodeconfirmlogin) | **POST** /3KlEajKOIo1Drd3uW-IzQ1L3qlE | 
 *AccountApi* | [**postDemoModeLogin**](doc//AccountApi.md#postdemomodelogin) | **POST** /TYbxniP-G9ibgdoAkpvVWTKkxaU | Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
-*AccountApi* | [**postDemoModeLoginToAccount**](doc//AccountApi.md#postdemomodelogintoaccount) | **POST** /sBH-LyNGOOFXivrv5clCpNrkwcA |
-*AccountApi* | [**postDemoModeRegisterAccount**](doc//AccountApi.md#postdemomoderegisteraccount) | **POST** /oDv1gK4Y6nMrPgEo5nArQAckh6Q |
-*AccountApi* | [**postGetNewsCount**](doc//AccountApi.md#postgetnewscount) | **POST** /ljfyAP7CbP0864cA6nZX7ESufjY | The news count for once public news. It always increments.
-*AccountApi* | [**postGetNextClientId**](doc//AccountApi.md#postgetnextclientid) | **POST** /b5kd4x8_ybr1Rj_tprU5BxF_xGo |
-*AccountApi* | [**postGetNextNewsPage**](doc//AccountApi.md#postgetnextnewspage) | **POST** /i9QOC8N-Nx9PdWvjKyAz8tXD2Q0 |
-*AccountApi* | [**postResetNewsPaging**](doc//AccountApi.md#postresetnewspaging) | **POST** /BQwxuLNWbM8vN0-p-Wu-QCRy3x0 |
+*AccountApi* | [**postDemoModeLoginToAccount**](doc//AccountApi.md#postdemomodelogintoaccount) | **POST** /sBH-LyNGOOFXivrv5clCpNrkwcA | 
+*AccountApi* | [**postDemoModeRegisterAccount**](doc//AccountApi.md#postdemomoderegisteraccount) | **POST** /oDv1gK4Y6nMrPgEo5nArQAckh6Q | 
+*AccountApi* | [**postGetNextClientId**](doc//AccountApi.md#postgetnextclientid) | **POST** /b5kd4x8_ybr1Rj_tprU5BxF_xGo | 
+*AccountApi* | [**postGetNextNewsPage**](doc//AccountApi.md#postgetnextnewspage) | **POST** /i9QOC8N-Nx9PdWvjKyAz8tXD2Q0 | 
+*AccountApi* | [**postResetNewsPaging**](doc//AccountApi.md#postresetnewspaging) | **POST** /BQwxuLNWbM8vN0-p-Wu-QCRy3x0 | 
 *AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /ijts6B4AAg_6Dyjhaw85iBnw5Bo | Start new session with sign in with Apple or Google. Creates new account if it does not exists.
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /yG0OQXcMed-EGdvhSoq3qlXTYQc | Update current or pending profile visiblity value.
-*AccountApi* | [**putSettingUnlimitedLikes**](doc//AccountApi.md#putsettingunlimitedlikes) | **PUT** /oKbgnRxyzLb50Y2_ZCuLJYtEIcM |
-*AccountAdminApi* | [**deleteNewsItem**](doc//AccountAdminApi.md#deletenewsitem) | **DELETE** /ca0uk9qgmQ82WCpd83_WNNn8qOY/{nid} |
-*AccountAdminApi* | [**deleteNewsTranslation**](doc//AccountAdminApi.md#deletenewstranslation) | **DELETE** /jo1Lboa4U8YVA07py8NJebpu1zo/{nid}/{locale} |
-*AccountAdminApi* | [**postCreateNewsItem**](doc//AccountAdminApi.md#postcreatenewsitem) | **POST** /XEss8YDw9lPgwKoH6K9THZIF_N4 |
-*AccountAdminApi* | [**postSetNewsPublicity**](doc//AccountAdminApi.md#postsetnewspublicity) | **DELETE** /McvctMKFEqrUfola2WlvkbigBDU/{nid} |
-*AccountAdminApi* | [**postUpdateNewsTranslation**](doc//AccountAdminApi.md#postupdatenewstranslation) | **POST** /4pD-Q4FhZGTNkUGYExHmZN6TxjU/{nid}/{locale} |
+*AccountApi* | [**putSettingUnlimitedLikes**](doc//AccountApi.md#putsettingunlimitedlikes) | **PUT** /oKbgnRxyzLb50Y2_ZCuLJYtEIcM | 
+*AccountAdminApi* | [**deleteNewsItem**](doc//AccountAdminApi.md#deletenewsitem) | **DELETE** /ca0uk9qgmQ82WCpd83_WNNn8qOY/{nid} | 
+*AccountAdminApi* | [**deleteNewsTranslation**](doc//AccountAdminApi.md#deletenewstranslation) | **DELETE** /jo1Lboa4U8YVA07py8NJebpu1zo/{nid}/{locale} | 
+*AccountAdminApi* | [**postCreateNewsItem**](doc//AccountAdminApi.md#postcreatenewsitem) | **POST** /XEss8YDw9lPgwKoH6K9THZIF_N4 | 
+*AccountAdminApi* | [**postSetNewsPublicity**](doc//AccountAdminApi.md#postsetnewspublicity) | **DELETE** /McvctMKFEqrUfola2WlvkbigBDU/{nid} | 
+*AccountAdminApi* | [**postUpdateNewsTranslation**](doc//AccountAdminApi.md#postupdatenewstranslation) | **POST** /4pD-Q4FhZGTNkUGYExHmZN6TxjU/{nid}/{locale} | 
 *AccountInternalApi* | [**postLogin**](doc//AccountInternalApi.md#postlogin) | **POST** /account_api/login | Get new AccessToken for a bot account. If the account is not registered as a bot account, then the request will fail.
 *AccountInternalApi* | [**postRegister**](doc//AccountInternalApi.md#postregister) | **POST** /account_api/register | Register a new bot account. Returns new account ID which is UUID.
 *ChatApi* | [**deleteLike**](doc//ChatApi.md#deletelike) | **DELETE** /O3DZlGOjDYbQ8PlCorta0onQDLI | Delete sent like.
@@ -99,21 +99,21 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**getReceivedBlocks**](doc//ChatApi.md#getreceivedblocks) | **GET** /hjP9LovH2kBxnbwWKSyVgFL4o58 | Get list of received blocks
 *ChatApi* | [**getSentBlocks**](doc//ChatApi.md#getsentblocks) | **GET** /3qT3qSKKzXHjo8LGEphwMLF8vjk | Get list of sent blocks
 *ChatApi* | [**getSentLikes**](doc//ChatApi.md#getsentlikes) | **GET** /pTybb424uGsXvCyOLljsPujVe5Y | Get sent likes.
-*ChatApi* | [**getSentMessageIds**](doc//ChatApi.md#getsentmessageids) | **GET** /-sDy1a8MS72uNy3UUtX9K8-wYWU |
-*ChatApi* | [**postAddReceiverAcknowledgement**](doc//ChatApi.md#postaddreceiveracknowledgement) | **POST** /PBreZU5Cmo7tTtNMMb58yN_xFZ8 |
-*ChatApi* | [**postAddSenderAcknowledgement**](doc//ChatApi.md#postaddsenderacknowledgement) | **POST** /E-yVIcGOLJyZ7nsT_Lh4KPCRkQg |
+*ChatApi* | [**getSentMessageIds**](doc//ChatApi.md#getsentmessageids) | **GET** /-sDy1a8MS72uNy3UUtX9K8-wYWU | 
+*ChatApi* | [**postAddReceiverAcknowledgement**](doc//ChatApi.md#postaddreceiveracknowledgement) | **POST** /PBreZU5Cmo7tTtNMMb58yN_xFZ8 | 
+*ChatApi* | [**postAddSenderAcknowledgement**](doc//ChatApi.md#postaddsenderacknowledgement) | **POST** /E-yVIcGOLJyZ7nsT_Lh4KPCRkQg | 
 *ChatApi* | [**postBlockProfile**](doc//ChatApi.md#postblockprofile) | **POST** /MpWSY01lXj7KaDK1KCNHLWRg9k4 | Block profile
-*ChatApi* | [**postGetNewReceivedLikesCount**](doc//ChatApi.md#postgetnewreceivedlikescount) | **POST** /dCPla4TZep6KONk57U2J7p7s6jw |
+*ChatApi* | [**postGetNewReceivedLikesCount**](doc//ChatApi.md#postgetnewreceivedlikescount) | **POST** /dCPla4TZep6KONk57U2J7p7s6jw | 
 *ChatApi* | [**postGetNextMatchesPage**](doc//ChatApi.md#postgetnextmatchespage) | **POST** /dci4ZhBnUr5EXK09jAQMfsKE9EM | Update matches iterator and get next page of matches. If the page is empty there is no more matches available.
 *ChatApi* | [**postGetNextReceivedLikesPage**](doc//ChatApi.md#postgetnextreceivedlikespage) | **POST** /eEB4pq6DGUYlMVAYwPCm2RT5HP0 | Update received likes iterator and get next page of received likes. If the page is empty there is no more received likes available.
 *ChatApi* | [**postGetPendingNotification**](doc//ChatApi.md#postgetpendingnotification) | **POST** /MhQXhJMKgrUh0s95FueOgalQg-o | Get pending notification and reset pending notification.
 *ChatApi* | [**postMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#postmessagenumberoflatestviewedmessage) | **POST** /gas7m77c7kw7N7TKyMQVzUKy3AQ | Update message number of the most recent message that the recipient has viewed.
 *ChatApi* | [**postPublicKey**](doc//ChatApi.md#postpublickey) | **POST** /e-r4VrqWJD1kIttg1McD9kv5o0k | Replace current public key with a new public key. Returns public key ID number which server increments. This must be called only when needed as this route will fail every time if current public key ID number is i64::MAX.
-*ChatApi* | [**postResetMatchesPaging**](doc//ChatApi.md#postresetmatchespaging) | **POST** /kxGkIkvlKvyWPvovHYRtlC7fYXI |
-*ChatApi* | [**postResetReceivedLikesPaging**](doc//ChatApi.md#postresetreceivedlikespaging) | **POST** /B75BRIylLV-JmwoB4YiOYSlyO-A |
+*ChatApi* | [**postResetMatchesPaging**](doc//ChatApi.md#postresetmatchespaging) | **POST** /kxGkIkvlKvyWPvovHYRtlC7fYXI | 
+*ChatApi* | [**postResetReceivedLikesPaging**](doc//ChatApi.md#postresetreceivedlikespaging) | **POST** /B75BRIylLV-JmwoB4YiOYSlyO-A | 
 *ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /sXq6ko76GtT7DuNXnkTTtFL6isY | Send a like to some account. If both will like each other, then the accounts will be a match.
 *ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /YEFESgzw0YxQUETcUmnmfWCaF1g | Send message to a match.
-*ChatApi* | [**postSetDeviceToken**](doc//ChatApi.md#postsetdevicetoken) | **POST** /CBoGGZ4HDW0REbM6SxasDCvXJNM |
+*ChatApi* | [**postSetDeviceToken**](doc//ChatApi.md#postsetdevicetoken) | **POST** /CBoGGZ4HDW0REbM6SxasDCvXJNM | 
 *ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /j2Ofh-WeAFmjCQqO_AyHIM1eZEo | Unblock profile
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /6qQZ2jQO5exMKFI2jCzGAdMysxE | Connect to server using WebSocket after getting refresh and access tokens. Connection is required as API access is allowed for connected clients.
 *CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /0E_N3KS0gI2PPBujveMhHLv292Y | Get backend version.
@@ -253,8 +253,6 @@ Class | Method | HTTP request | Description
  - [ModerationRequestState](doc//ModerationRequestState.md)
  - [NewReceivedLikesCount](doc//NewReceivedLikesCount.md)
  - [NewReceivedLikesCountResult](doc//NewReceivedLikesCountResult.md)
- - [NewsCount](doc//NewsCount.md)
- - [NewsCountResult](doc//NewsCountResult.md)
  - [NewsId](doc//NewsId.md)
  - [NewsItem](doc//NewsItem.md)
  - [NewsItemSimple](doc//NewsItemSimple.md)
@@ -263,6 +261,7 @@ Class | Method | HTTP request | Description
  - [NewsSyncVersion](doc//NewsSyncVersion.md)
  - [NewsTranslationVersion](doc//NewsTranslationVersion.md)
  - [PageItemCountForNewLikes](doc//PageItemCountForNewLikes.md)
+ - [PageItemCountForNewPublicNews](doc//PageItemCountForNewPublicNews.md)
  - [PendingMessage](doc//PendingMessage.md)
  - [PendingMessageAcknowledgementList](doc//PendingMessageAcknowledgementList.md)
  - [PendingMessageId](doc//PendingMessageId.md)
@@ -329,6 +328,8 @@ Class | Method | HTTP request | Description
  - [TimeGranularity](doc//TimeGranularity.md)
  - [Translation](doc//Translation.md)
  - [UnixTime](doc//UnixTime.md)
+ - [UnreadNewsCount](doc//UnreadNewsCount.md)
+ - [UnreadNewsCountResult](doc//UnreadNewsCountResult.md)
  - [UpdateMessageViewStatus](doc//UpdateMessageViewStatus.md)
  - [UpdateNewsTranslation](doc//UpdateNewsTranslation.md)
  - [UpdateNewsTranslationResult](doc//UpdateNewsTranslationResult.md)
@@ -346,3 +347,6 @@ Authentication schemes defined for the API:
 
 
 ## Author
+
+
+

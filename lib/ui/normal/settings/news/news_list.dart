@@ -74,7 +74,6 @@ class NewsListScreenState extends State<NewsListScreen> {
     _pagingController?.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-    widget.bloc.add(MarkAllNewsViewed());
   }
 
   void showLoadingError() {
@@ -90,6 +89,11 @@ class NewsListScreenState extends State<NewsListScreen> {
         return;
       }
       _sessionId = r.s;
+      final dbResult = await accountDb.accountAction((db) => db.daoNews.setUnreadNewsCount(version: r.v, unreadNewsCount: r.c));
+      if (dbResult.isErr()) {
+        showLoadingError();
+        return;
+      }
     }
 
     final sessionId = _sessionId;

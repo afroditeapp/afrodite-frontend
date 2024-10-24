@@ -116,3 +116,4 @@ class GetNewsItemResult {
   static const requiredKeys = <String>{
   };
 }
+
