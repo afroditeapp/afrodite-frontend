@@ -64,6 +64,8 @@ doc/GetMyProfileResult.md
 doc/GetNewsItemResult.md
 doc/GetProfileContentResult.md
 doc/GetProfileResult.md
+doc/GetProfileStatisticsHistoryResult.md
+doc/GetProfileStatisticsResult.md
 doc/GetPublicKey.md
 doc/GroupValues.md
 doc/HandleModerationRequest.md
@@ -112,6 +114,8 @@ doc/PerfHistoryValue.md
 doc/PerfValueArea.md
 doc/Permissions.md
 doc/Profile.md
+doc/ProfileAdminApi.md
+doc/ProfileAgeCounts.md
 doc/ProfileApi.md
 doc/ProfileAttributeFilterList.md
 doc/ProfileAttributeFilterListUpdate.md
@@ -127,6 +131,8 @@ doc/ProfileIteratorSessionId.md
 doc/ProfileLink.md
 doc/ProfilePage.md
 doc/ProfileSearchAgeRange.md
+doc/ProfileStatisticsHistoryValue.md
+doc/ProfileStatisticsHistoryValueType.md
 doc/ProfileSyncVersion.md
 doc/ProfileUpdate.md
 doc/ProfileVersion.md
@@ -136,6 +142,7 @@ doc/PublicKeyData.md
 doc/PublicKeyId.md
 doc/PublicKeyIdAndVersion.md
 doc/PublicKeyVersion.md
+doc/PublicProfileCounts.md
 doc/ReceivedBlocksPage.md
 doc/ReceivedBlocksSyncVersion.md
 doc/ReceivedLikesIteratorSessionId.md
@@ -161,6 +168,7 @@ doc/SetPublicKey.md
 doc/SignInWithLoginInfo.md
 doc/SoftwareInfo.md
 doc/SoftwareOptions.md
+doc/StatisticsProfileVisibility.md
 doc/SyncVersion.md
 doc/SystemInfo.md
 doc/SystemInfoList.md
@@ -183,6 +191,7 @@ lib/api/common_api.dart
 lib/api/media_admin_api.dart
 lib/api/media_api.dart
 lib/api/media_internal_api.dart
+lib/api/profile_admin_api.dart
 lib/api/profile_api.dart
 lib/api_client.dart
 lib/api_exception.dart
@@ -249,6 +258,8 @@ lib/model/get_my_profile_result.dart
 lib/model/get_news_item_result.dart
 lib/model/get_profile_content_result.dart
 lib/model/get_profile_result.dart
+lib/model/get_profile_statistics_history_result.dart
+lib/model/get_profile_statistics_result.dart
 lib/model/get_public_key.dart
 lib/model/group_values.dart
 lib/model/handle_moderation_request.dart
@@ -294,6 +305,7 @@ lib/model/perf_history_value.dart
 lib/model/perf_value_area.dart
 lib/model/permissions.dart
 lib/model/profile.dart
+lib/model/profile_age_counts.dart
 lib/model/profile_attribute_filter_list.dart
 lib/model/profile_attribute_filter_list_update.dart
 lib/model/profile_attribute_filter_value.dart
@@ -308,6 +320,8 @@ lib/model/profile_iterator_session_id.dart
 lib/model/profile_link.dart
 lib/model/profile_page.dart
 lib/model/profile_search_age_range.dart
+lib/model/profile_statistics_history_value.dart
+lib/model/profile_statistics_history_value_type.dart
 lib/model/profile_sync_version.dart
 lib/model/profile_update.dart
 lib/model/profile_version.dart
@@ -317,6 +331,7 @@ lib/model/public_key_data.dart
 lib/model/public_key_id.dart
 lib/model/public_key_id_and_version.dart
 lib/model/public_key_version.dart
+lib/model/public_profile_counts.dart
 lib/model/received_blocks_page.dart
 lib/model/received_blocks_sync_version.dart
 lib/model/received_likes_iterator_session_id.dart
@@ -342,6 +357,7 @@ lib/model/set_public_key.dart
 lib/model/sign_in_with_login_info.dart
 lib/model/software_info.dart
 lib/model/software_options.dart
+lib/model/statistics_profile_visibility.dart
 lib/model/sync_version.dart
 lib/model/system_info.dart
 lib/model/system_info_list.dart

@@ -97,11 +97,17 @@ String parameterToString(dynamic value) {
   if (value is ModerationRequestState) {
     return ModerationRequestStateTypeTransformer().encode(value).toString();
   }
+  if (value is ProfileStatisticsHistoryValueType) {
+    return ProfileStatisticsHistoryValueTypeTypeTransformer().encode(value).toString();
+  }
   if (value is ProfileVisibility) {
     return ProfileVisibilityTypeTransformer().encode(value).toString();
   }
   if (value is SoftwareOptions) {
     return SoftwareOptionsTypeTransformer().encode(value).toString();
+  }
+  if (value is StatisticsProfileVisibility) {
+    return StatisticsProfileVisibilityTypeTransformer().encode(value).toString();
   }
   if (value is TimeGranularity) {
     return TimeGranularityTypeTransformer().encode(value).toString();

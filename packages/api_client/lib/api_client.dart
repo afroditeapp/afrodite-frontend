@@ -296,6 +296,10 @@ class ApiClient {
           return GetProfileContentResult.fromJson(value);
         case 'GetProfileResult':
           return GetProfileResult.fromJson(value);
+        case 'GetProfileStatisticsHistoryResult':
+          return GetProfileStatisticsHistoryResult.fromJson(value);
+        case 'GetProfileStatisticsResult':
+          return GetProfileStatisticsResult.fromJson(value);
         case 'GetPublicKey':
           return GetPublicKey.fromJson(value);
         case 'GroupValues':
@@ -386,6 +390,8 @@ class ApiClient {
           return Permissions.fromJson(value);
         case 'Profile':
           return Profile.fromJson(value);
+        case 'ProfileAgeCounts':
+          return ProfileAgeCounts.fromJson(value);
         case 'ProfileAttributeFilterList':
           return ProfileAttributeFilterList.fromJson(value);
         case 'ProfileAttributeFilterListUpdate':
@@ -414,6 +420,10 @@ class ApiClient {
           return ProfilePage.fromJson(value);
         case 'ProfileSearchAgeRange':
           return ProfileSearchAgeRange.fromJson(value);
+        case 'ProfileStatisticsHistoryValue':
+          return ProfileStatisticsHistoryValue.fromJson(value);
+        case 'ProfileStatisticsHistoryValueType':
+          return ProfileStatisticsHistoryValueTypeTypeTransformer().decode(value);
         case 'ProfileSyncVersion':
           return ProfileSyncVersion.fromJson(value);
         case 'ProfileUpdate':
@@ -432,6 +442,8 @@ class ApiClient {
           return PublicKeyIdAndVersion.fromJson(value);
         case 'PublicKeyVersion':
           return PublicKeyVersion.fromJson(value);
+        case 'PublicProfileCounts':
+          return PublicProfileCounts.fromJson(value);
         case 'ReceivedBlocksPage':
           return ReceivedBlocksPage.fromJson(value);
         case 'ReceivedBlocksSyncVersion':
@@ -482,6 +494,8 @@ class ApiClient {
           return SoftwareInfo.fromJson(value);
         case 'SoftwareOptions':
           return SoftwareOptionsTypeTransformer().decode(value);
+        case 'StatisticsProfileVisibility':
+          return StatisticsProfileVisibilityTypeTransformer().decode(value);
         case 'SyncVersion':
           return SyncVersion.fromJson(value);
         case 'SystemInfo':

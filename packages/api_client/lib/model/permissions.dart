@@ -18,6 +18,7 @@ class Permissions {
     this.adminModifyPermissions = false,
     this.adminNewsCreate = false,
     this.adminNewsEditAll = false,
+    this.adminProfileStatistics = false,
     this.adminServerMaintenanceRebootBackend = false,
     this.adminServerMaintenanceResetData = false,
     this.adminServerMaintenanceSaveBackendConfig = false,
@@ -38,6 +39,8 @@ class Permissions {
   bool adminNewsCreate;
 
   bool adminNewsEditAll;
+
+  bool adminProfileStatistics;
 
   bool adminServerMaintenanceRebootBackend;
 
@@ -66,6 +69,7 @@ class Permissions {
     other.adminModifyPermissions == adminModifyPermissions &&
     other.adminNewsCreate == adminNewsCreate &&
     other.adminNewsEditAll == adminNewsEditAll &&
+    other.adminProfileStatistics == adminProfileStatistics &&
     other.adminServerMaintenanceRebootBackend == adminServerMaintenanceRebootBackend &&
     other.adminServerMaintenanceResetData == adminServerMaintenanceResetData &&
     other.adminServerMaintenanceSaveBackendConfig == adminServerMaintenanceSaveBackendConfig &&
@@ -84,6 +88,7 @@ class Permissions {
     (adminModifyPermissions.hashCode) +
     (adminNewsCreate.hashCode) +
     (adminNewsEditAll.hashCode) +
+    (adminProfileStatistics.hashCode) +
     (adminServerMaintenanceRebootBackend.hashCode) +
     (adminServerMaintenanceResetData.hashCode) +
     (adminServerMaintenanceSaveBackendConfig.hashCode) +
@@ -95,7 +100,7 @@ class Permissions {
     (adminViewProfileHistory.hashCode);
 
   @override
-  String toString() => 'Permissions[adminModerateImages=$adminModerateImages, adminModerateProfiles=$adminModerateProfiles, adminModifyPermissions=$adminModifyPermissions, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
+  String toString() => 'Permissions[adminModerateImages=$adminModerateImages, adminModerateProfiles=$adminModerateProfiles, adminModifyPermissions=$adminModifyPermissions, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProfileStatistics=$adminProfileStatistics, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -104,6 +109,7 @@ class Permissions {
       json[r'admin_modify_permissions'] = this.adminModifyPermissions;
       json[r'admin_news_create'] = this.adminNewsCreate;
       json[r'admin_news_edit_all'] = this.adminNewsEditAll;
+      json[r'admin_profile_statistics'] = this.adminProfileStatistics;
       json[r'admin_server_maintenance_reboot_backend'] = this.adminServerMaintenanceRebootBackend;
       json[r'admin_server_maintenance_reset_data'] = this.adminServerMaintenanceResetData;
       json[r'admin_server_maintenance_save_backend_config'] = this.adminServerMaintenanceSaveBackendConfig;
@@ -140,6 +146,7 @@ class Permissions {
         adminModifyPermissions: mapValueOfType<bool>(json, r'admin_modify_permissions') ?? false,
         adminNewsCreate: mapValueOfType<bool>(json, r'admin_news_create') ?? false,
         adminNewsEditAll: mapValueOfType<bool>(json, r'admin_news_edit_all') ?? false,
+        adminProfileStatistics: mapValueOfType<bool>(json, r'admin_profile_statistics') ?? false,
         adminServerMaintenanceRebootBackend: mapValueOfType<bool>(json, r'admin_server_maintenance_reboot_backend') ?? false,
         adminServerMaintenanceResetData: mapValueOfType<bool>(json, r'admin_server_maintenance_reset_data') ?? false,
         adminServerMaintenanceSaveBackendConfig: mapValueOfType<bool>(json, r'admin_server_maintenance_save_backend_config') ?? false,

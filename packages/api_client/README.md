@@ -157,6 +157,7 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**getProfile**](doc//ProfileApi.md#getprofile) | **GET** /5i55ZcY0jIPD7B6pyyridKY0j0Q/{aid} | Get account's current profile.
 *ProfileApi* | [**getProfileAttributeFilters**](doc//ProfileApi.md#getprofileattributefilters) | **GET** /AL531AoIDRcTSWC-pdxcexf6tOM | Get current profile attribute filter values.
 *ProfileApi* | [**getProfileFromDatabaseDebugModeBenchmark**](doc//ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /XDTSz35S_5tOKIsSpDITOc46MR4/{aid} | Get account's current profile from database. Debug mode must be enabled that route can be used.
+*ProfileApi* | [**getProfileStatistics**](doc//ProfileApi.md#getprofilestatistics) | **GET** /WJCHYdLNpydn1OkJNyZKKksc4Yw | Non default values for [model::GetProfileStatisticsParams] requires [model::Permissions::admin_profile_statistics].
 *ProfileApi* | [**getSearchAgeRange**](doc//ProfileApi.md#getsearchagerange) | **GET** /xTy-zcnl0LQlfPKQalAEnWQQ-rw | Get account's current search age range
 *ProfileApi* | [**getSearchGroups**](doc//ProfileApi.md#getsearchgroups) | **GET** /p1KA-sqKKtU3FHvUqYRZnQgj7RQ | Get account's current search groups (gender and what gender user is looking for)
 *ProfileApi* | [**postFavoriteProfile**](doc//ProfileApi.md#postfavoriteprofile) | **POST** /yD1PtVhVvdk-usEran42JmCTFVQ | Add new favorite profile
@@ -168,6 +169,7 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**postSearchAgeRange**](doc//ProfileApi.md#postsearchagerange) | **POST** /xTy-zcnl0LQlfPKQalAEnWQQ-rw | Set account's current search age range
 *ProfileApi* | [**postSearchGroups**](doc//ProfileApi.md#postsearchgroups) | **POST** /p1KA-sqKKtU3FHvUqYRZnQgj7RQ | Set account's current search groups (gender and what gender user is looking for)
 *ProfileApi* | [**putLocation**](doc//ProfileApi.md#putlocation) | **PUT** /lf5KMD9dBSVuaVcwjm4TB0d7bfY | Update location for account which makes this request.
+*ProfileAdminApi* | [**getProfileStatisticsHistory**](doc//ProfileAdminApi.md#getprofilestatisticshistory) | **GET** /6CGbSNdoURdJRTBxb3Hb_OGw9ME | 
 
 
 ## Documentation For Models
@@ -229,6 +231,8 @@ Class | Method | HTTP request | Description
  - [GetNewsItemResult](doc//GetNewsItemResult.md)
  - [GetProfileContentResult](doc//GetProfileContentResult.md)
  - [GetProfileResult](doc//GetProfileResult.md)
+ - [GetProfileStatisticsHistoryResult](doc//GetProfileStatisticsHistoryResult.md)
+ - [GetProfileStatisticsResult](doc//GetProfileStatisticsResult.md)
  - [GetPublicKey](doc//GetPublicKey.md)
  - [GroupValues](doc//GroupValues.md)
  - [HandleModerationRequest](doc//HandleModerationRequest.md)
@@ -274,6 +278,7 @@ Class | Method | HTTP request | Description
  - [PerfValueArea](doc//PerfValueArea.md)
  - [Permissions](doc//Permissions.md)
  - [Profile](doc//Profile.md)
+ - [ProfileAgeCounts](doc//ProfileAgeCounts.md)
  - [ProfileAttributeFilterList](doc//ProfileAttributeFilterList.md)
  - [ProfileAttributeFilterListUpdate](doc//ProfileAttributeFilterListUpdate.md)
  - [ProfileAttributeFilterValue](doc//ProfileAttributeFilterValue.md)
@@ -288,6 +293,8 @@ Class | Method | HTTP request | Description
  - [ProfileLink](doc//ProfileLink.md)
  - [ProfilePage](doc//ProfilePage.md)
  - [ProfileSearchAgeRange](doc//ProfileSearchAgeRange.md)
+ - [ProfileStatisticsHistoryValue](doc//ProfileStatisticsHistoryValue.md)
+ - [ProfileStatisticsHistoryValueType](doc//ProfileStatisticsHistoryValueType.md)
  - [ProfileSyncVersion](doc//ProfileSyncVersion.md)
  - [ProfileUpdate](doc//ProfileUpdate.md)
  - [ProfileVersion](doc//ProfileVersion.md)
@@ -297,6 +304,7 @@ Class | Method | HTTP request | Description
  - [PublicKeyId](doc//PublicKeyId.md)
  - [PublicKeyIdAndVersion](doc//PublicKeyIdAndVersion.md)
  - [PublicKeyVersion](doc//PublicKeyVersion.md)
+ - [PublicProfileCounts](doc//PublicProfileCounts.md)
  - [ReceivedBlocksPage](doc//ReceivedBlocksPage.md)
  - [ReceivedBlocksSyncVersion](doc//ReceivedBlocksSyncVersion.md)
  - [ReceivedLikesIteratorSessionId](doc//ReceivedLikesIteratorSessionId.md)
@@ -322,6 +330,7 @@ Class | Method | HTTP request | Description
  - [SignInWithLoginInfo](doc//SignInWithLoginInfo.md)
  - [SoftwareInfo](doc//SoftwareInfo.md)
  - [SoftwareOptions](doc//SoftwareOptions.md)
+ - [StatisticsProfileVisibility](doc//StatisticsProfileVisibility.md)
  - [SyncVersion](doc//SyncVersion.md)
  - [SystemInfo](doc//SystemInfo.md)
  - [SystemInfoList](doc//SystemInfoList.md)

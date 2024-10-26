@@ -453,6 +453,73 @@ class ProfileApi {
     return null;
   }
 
+  /// Non default values for [model::GetProfileStatisticsParams] requires [model::Permissions::admin_profile_statistics].
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [StatisticsProfileVisibility] profileVisibility:
+  ///   Control which profiles are included in [GetProfileStatisticsResult::age_counts] by profile visibility.  Non default value is only for admins.
+  ///
+  /// * [bool] generateNewStatistics:
+  ///   Non default value is only for admins.
+  Future<Response> getProfileStatisticsWithHttpInfo({ StatisticsProfileVisibility? profileVisibility, bool? generateNewStatistics, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/WJCHYdLNpydn1OkJNyZKKksc4Yw';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    if (profileVisibility != null) {
+      queryParams.addAll(_queryParams('', 'profile_visibility', profileVisibility));
+    }
+    if (generateNewStatistics != null) {
+      queryParams.addAll(_queryParams('', 'generate_new_statistics', generateNewStatistics));
+    }
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Non default values for [model::GetProfileStatisticsParams] requires [model::Permissions::admin_profile_statistics].
+  ///
+  /// Parameters:
+  ///
+  /// * [StatisticsProfileVisibility] profileVisibility:
+  ///   Control which profiles are included in [GetProfileStatisticsResult::age_counts] by profile visibility.  Non default value is only for admins.
+  ///
+  /// * [bool] generateNewStatistics:
+  ///   Non default value is only for admins.
+  Future<GetProfileStatisticsResult?> getProfileStatistics({ StatisticsProfileVisibility? profileVisibility, bool? generateNewStatistics, }) async {
+    final response = await getProfileStatisticsWithHttpInfo( profileVisibility: profileVisibility, generateNewStatistics: generateNewStatistics, );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileStatisticsResult',) as GetProfileStatisticsResult;
+    
+    }
+    return null;
+  }
+
   /// Get account's current search age range
   ///
   /// Note: This method returns the HTTP [Response].
