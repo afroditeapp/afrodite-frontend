@@ -1011,6 +1011,10 @@
   "@profile_location_screen_title": {
     "description": "Title for profile location screen"
   },
+  "profile_statistics_history_screen_title": "Profile statistics history",
+  "@profile_statistics_history_screen_title": {
+    "description": "Title for profile statistics history screen"
+  },
   "profile_statistics_screen_count_account": "Accounts: {p0}",
   "@profile_statistics_screen_count_account": {
     "description": "Text for account count",
@@ -1083,7 +1087,7 @@
   },
   "profile_statistics_screen_title": "Profile statistics",
   "@profile_statistics_screen_title": {
-    "description": "Title for profile statistics screen title"
+    "description": "Title for profile statistics screen"
   },
   "search_settings_screen_age_range_is_invalid": "Age range is invalid",
   "@search_settings_screen_age_range_is_invalid": {

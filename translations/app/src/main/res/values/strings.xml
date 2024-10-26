@@ -387,7 +387,7 @@
     <string name="view_news_screen_edited" description="Text for news edited time">Edited: %s</string>
 
     <!-- Profile statistics screen -->
-    <string name="profile_statistics_screen_title" description="Title for profile statistics screen title">Profile statistics</string>
+    <string name="profile_statistics_screen_title" description="Title for profile statistics screen">Profile statistics</string>
     <string name="profile_statistics_screen_profiles_subtitle" description="Subtitle for public profiles info">Public profiles</string>
     <string name="profile_statistics_screen_time" description="Text for data generation time">Time: %s</string>
     <string name="profile_statistics_screen_count_account" description="Text for account count">Accounts: %s</string>
@@ -406,4 +406,6 @@
     <string name="moderate_images_screen_title" description="Title for moderate images page">Moderate images</string>
     <string name="moderate_images_screen_reject_image_dialog_title" description="Dialog title for confirming image rejection">Reject?</string>
 
+    <!-- Profile statistics history screen -->
+    <string name="profile_statistics_history_screen_title" description="Title for profile statistics history screen">Profile statistics history</string>
 </resources>

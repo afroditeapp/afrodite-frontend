@@ -334,6 +334,10 @@ class ApiManager implements LifecycleMethods {
     return ApiWrapper(_profileApiProvider().profile, connection);
   }
 
+  ApiWrapper<ProfileAdminApi> _profileAdminWrapper() {
+    return ApiWrapper(_profileApiProvider().profileAdmin, connection);
+  }
+
   ApiWrapper<ChatApi> chatWrapper() {
     return ApiWrapper(_chatApiProvider().chat, connection);
   }
@@ -412,6 +416,10 @@ class ApiManager implements LifecycleMethods {
     return await profileWrapper().requestValue(action);
   }
 
+  Future<Result<R, ValueApiError>> profileAdmin<R extends Object>(Future<R?> Function(ProfileAdminApi) action) async {
+    return await _profileAdminWrapper().requestValue(action);
+  }
+
   Future<Result<R, ValueApiError>> chat<R extends Object>(Future<R?> Function(ChatApi) action) async {
     return await chatWrapper().requestValue(action);
   }
@@ -487,6 +495,10 @@ class ApiManager implements LifecycleMethods {
 
   Future<Result<void, ActionApiError>> profileAction(Future<void> Function(ProfileApi) action) async {
     return await profileWrapper().requestAction(action);
+  }
+
+  Future<Result<void, ActionApiError>> profileAdminAction(Future<void> Function(ProfileAdminApi) action) async {
+    return await _profileAdminWrapper().requestAction(action);
   }
 
   Future<Result<void, ActionApiError>> chatAction(Future<void> Function(ChatApi) action) async {

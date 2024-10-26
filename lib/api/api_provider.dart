@@ -15,6 +15,7 @@ class ApiProvider {
   AccountAdminApi _accountAdmin;
   AccountInternalApi _accountInternal;
   ProfileApi _profile;
+  ProfileAdminApi _profileAdmin;
   MediaApi _media;
   MediaAdminApi _mediaAdmin;
   CommonApi _common;
@@ -29,6 +30,7 @@ class ApiProvider {
   AccountAdminApi get accountAdmin => _accountAdmin;
   AccountInternalApi get accountInternal => _accountInternal;
   ProfileApi get profile => _profile;
+  ProfileAdminApi get profileAdmin => _profileAdmin;
   MediaApi get media => _media;
   MediaAdminApi get mediaAdmin => _mediaAdmin;
   CommonApi get common => _common;
@@ -45,6 +47,7 @@ class ApiProvider {
     _accountAdmin = AccountAdminApi(client),
     _accountInternal = AccountInternalApi(client),
     _profile = ProfileApi(client),
+    _profileAdmin = ProfileAdminApi(client),
     _media = MediaApi(client),
     _mediaAdmin = MediaAdminApi(client),
     _common = CommonApi(client),
@@ -71,6 +74,7 @@ class ApiProvider {
     _accountAdmin = AccountAdminApi(client);
     _accountInternal = AccountInternalApi(client);
     _profile = ProfileApi(client);
+    _profileAdmin = ProfileAdminApi(client);
     _media = MediaApi(client);
     _mediaAdmin = MediaAdminApi(client);
     _common = CommonApi(client);

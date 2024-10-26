@@ -14,13 +14,16 @@ class AgeDropdown extends StatefulWidget {
   final int Function() getMaxValue;
   final void Function(int) onChanged;
 
+  final bool enabled;
+
   const AgeDropdown({
     required this.getInitialValue,
     required this.getMinValue,
     required this.getMaxValue,
     required this.onChanged,
-    Key? key,
-  }) : super(key: key);
+    this.enabled = true,
+    super.key,
+  });
 
   @override
   State<StatefulWidget> createState() => _AgeDropdownState();
@@ -49,6 +52,7 @@ class _AgeDropdownState extends State<AgeDropdown> {
   Widget build(BuildContext context) {
     return DropdownMenu<int>(
       initialSelection: initialSelection,
+      enabled: widget.enabled,
       dropdownMenuEntries: availableValues
         .map((value) {
           return DropdownMenuEntry<int>(
