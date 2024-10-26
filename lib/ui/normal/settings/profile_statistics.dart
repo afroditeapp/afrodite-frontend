@@ -144,6 +144,7 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
           barGroups: data,
           barTouchData: BarTouchData(
             touchTooltipData: BarTouchTooltipData(
+              fitInsideHorizontally: true,
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
                 return BarTooltipItem(
                   context.strings.profile_statistics_screen_count_bar_chart_tooltip(
@@ -215,30 +216,14 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
           "Admin settings",
           style: Theme.of(context).textTheme.titleLarge,
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-          child: ElevatedButton(
-            onPressed: () {
-              context.read<ProfileStatisticsBloc>().add(Reload(
-                adminRefresh: true,
-                generateNew: adminGenerateStatistics,
-                visibility: switch (adminVisibilitySelection) {
-                  0 => StatisticsProfileVisibility.public,
-                  1 => StatisticsProfileVisibility.private,
-                  2 => StatisticsProfileVisibility.all,
-                  _ => null,
-                }
-              ));
-            },
-            child: Text(context.strings.generic_refresh),
-          ),
-        ),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
         CheckboxListTile(
           title: const Text("Show only fresh statistics"),
           value: adminGenerateStatistics,
           onChanged: (value) {
             setState(() {
               adminGenerateStatistics = value ?? false;
+              reload(context);
             });
         }),
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
@@ -253,40 +238,34 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Wrap(
             spacing: 5.0,
-            children: [
-              ChoiceChip(
-                label: const Text("Public"),
-                selected: adminVisibilitySelection == 0,
-                onSelected: (value) {
-                  setState(() {
-                    adminVisibilitySelection = 0;
-                  });
+            children: List<ChoiceChip>.generate(
+              StatisticsProfileVisibility.values.length,
+                (i) {
+                  return ChoiceChip(
+                    label: Text(StatisticsProfileVisibility.values[i].toString()),
+                    selected: adminVisibilitySelection == i,
+                    onSelected: (value) {
+                      setState(() {
+                        adminVisibilitySelection = i;
+                        reload(context);
+                      });
+                    },
+                  );
                 },
               ),
-              ChoiceChip(
-                label: const Text("Private"),
-                selected: adminVisibilitySelection == 1,
-                onSelected: (value) {
-                  setState(() {
-                    adminVisibilitySelection = 1;
-                  });
-                },
-              ),
-              ChoiceChip(
-                label: const Text("All"),
-                selected: adminVisibilitySelection == 2,
-                onSelected: (value) {
-                  setState(() {
-                    adminVisibilitySelection = 2;
-                  });
-                },
-              ),
-            ],
           ),
         ),
         const Divider(),
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
       ],
     );
+  }
+
+  void reload(BuildContext context) {
+    context.read<ProfileStatisticsBloc>().add(Reload(
+      adminRefresh: true,
+      generateNew: adminGenerateStatistics,
+      visibility: StatisticsProfileVisibility.values[adminVisibilitySelection],
+    ));
   }
 }

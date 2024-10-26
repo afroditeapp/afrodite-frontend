@@ -36,9 +36,7 @@ class ProfileStatisticsBloc extends Bloc<ProfileStatisticsEvent, ProfileStatisti
       ));
 
       if (data.adminRefresh) {
-        if (r.isOk()) {
-          showSnackBar(R.strings.generic_action_completed);
-        } else {
+        if (r.isErr()) {
           showSnackBar(R.strings.generic_error);
         }
         emit(state.copyWith(
