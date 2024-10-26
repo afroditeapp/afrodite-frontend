@@ -130,7 +130,10 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
       final age = startAge + i;
       data.add(BarChartGroupData(
         x: age,
-        barRods: [BarChartRodData(toY: c.toDouble())],
+        barRods: [BarChartRodData(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          toY: c.toDouble(),
+        )],
       ));
     }
 
@@ -150,6 +153,9 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
                   Theme.of(context).textTheme.labelLarge!,
                 );
               },
+              getTooltipColor: (group) {
+                return Theme.of(context).colorScheme.primaryContainer;
+              }
             )
           ),
           titlesData: FlTitlesData(
