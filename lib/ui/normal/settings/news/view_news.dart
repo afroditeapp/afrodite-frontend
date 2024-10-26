@@ -13,11 +13,11 @@ import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/news/view_news.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/ui/normal/chat/message_row.dart';
 import 'package:pihka_frontend/ui/normal/settings/news/edit_news.dart';
 import 'package:pihka_frontend/ui_utils/consts/animation.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/utils/api.dart';
+import 'package:pihka_frontend/utils/time.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 final log = Logger("ViewNewsScreen");

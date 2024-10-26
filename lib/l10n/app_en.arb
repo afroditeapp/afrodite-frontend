@@ -1007,6 +1007,80 @@
   "@profile_location_screen_title": {
     "description": "Title for profile location screen"
   },
+  "profile_statistics_screen_count_account": "Accounts: {p0}",
+  "@profile_statistics_screen_count_account": {
+    "description": "Text for account count",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_statistics_screen_count_bar_chart_tooltip": "Count: {p0}, Age: {p1}",
+  "@profile_statistics_screen_count_bar_chart_tooltip": {
+    "description": "Text for profile bar chart tooltip",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      },
+      "p1": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_statistics_screen_count_man": "Men: {p0}",
+  "@profile_statistics_screen_count_man": {
+    "description": "Text for public man profiles count",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_statistics_screen_count_non_binary": "Non-binaries: {p0}",
+  "@profile_statistics_screen_count_non_binary": {
+    "description": "Text for public non-binary profiles count",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_statistics_screen_count_profiles": "Total: {p0}",
+  "@profile_statistics_screen_count_profiles": {
+    "description": "Text for public profiles count",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_statistics_screen_count_woman": "Women: {p0}",
+  "@profile_statistics_screen_count_woman": {
+    "description": "Text for public woman profiles count",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_statistics_screen_profiles_subtitle": "Public profiles",
+  "@profile_statistics_screen_profiles_subtitle": {
+    "description": "Subtitle for public profiles info"
+  },
+  "profile_statistics_screen_time": "Time: {p0}",
+  "@profile_statistics_screen_time": {
+    "description": "Text for data generation time",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_statistics_screen_title": "Profile statistics",
+  "@profile_statistics_screen_title": {
+    "description": "Title for profile statistics screen title"
+  },
   "search_settings_screen_age_range_is_invalid": "Age range is invalid",
   "@search_settings_screen_age_range_is_invalid": {
     "description": "Snackbar text about invalid age range"

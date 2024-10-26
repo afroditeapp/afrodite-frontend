@@ -13,7 +13,6 @@ import 'package:pihka_frontend/logic/account/news/news_count.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
-import 'package:pihka_frontend/ui/normal/chat/message_row.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui/normal/settings/news/view_news.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
@@ -21,6 +20,7 @@ import 'package:pihka_frontend/ui_utils/list.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
 import 'package:pihka_frontend/utils/result.dart';
 import 'package:pihka_frontend/utils/api.dart';
+import 'package:pihka_frontend/utils/time.dart';
 
 final log = Logger("NewsListScreen");
 

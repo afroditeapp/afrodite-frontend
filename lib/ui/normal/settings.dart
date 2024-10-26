@@ -25,6 +25,7 @@ import 'package:pihka_frontend/ui/normal/settings/news/news_list.dart';
 import 'package:pihka_frontend/ui/normal/settings/notification_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/privacy_settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/profile/search_settings.dart';
+import 'package:pihka_frontend/ui/normal/settings/profile_statistics.dart';
 import 'package:pihka_frontend/ui_utils/bottom_navigation.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/ui_utils/app_bar/common_actions.dart';
@@ -101,6 +102,9 @@ class _SettingsViewState extends State<SettingsView> {
               }
             ),
             context.strings.news_list_screen_title, () => openNewsList(context),
+          ),
+          Setting.createSetting(Icons.bar_chart, context.strings.profile_statistics_screen_title, () =>
+            openProfileStatisticsScreen(context)
           ),
           Setting.createSetting(Icons.account_box, context.strings.view_profile_screen_my_profile_title, () =>
             MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()))

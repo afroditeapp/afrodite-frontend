@@ -4,14 +4,13 @@
 import 'package:flutter/material.dart';
 import 'package:database/database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/snack_bar.dart';
-import 'package:utils/utils.dart';
+import 'package:pihka_frontend/utils/time.dart';
 
 const int _OPACITY_FOR_ON_SURFACE_CONTENT = 128;
 
@@ -167,7 +166,7 @@ Widget _messageWidget(
             Alignment.centerRight,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
-            child: Text(timeStringFromMessage(entry), style: messageTimeTextStyle),
+            child: Text(_timeStringFromMessage(entry), style: messageTimeTextStyle),
           ),
         ),
       ],
@@ -229,28 +228,9 @@ Widget showErrorIconIfNeeded(
   }
 }
 
-String timeStringFromMessage(MessageEntry entry) {
+String _timeStringFromMessage(MessageEntry entry) {
   final messageTime = entry.unixTime ?? entry.localUnixTime;
   return timeString(messageTime);
-}
-
-String timeString(UtcDateTime messageTime) {
-  final currentTime = UtcDateTime.now();
-  if (messageTime.dateTime.year == currentTime.dateTime.year) {
-    if (
-      messageTime.dateTime.month == currentTime.dateTime.month &&
-      messageTime.dateTime.day == currentTime.dateTime.day
-    ) {
-      // Time
-      return DateFormat.Hm().format(messageTime.dateTime);
-    } else {
-      // Month and day
-      return DateFormat.Md().format(messageTime.dateTime);
-    }
-  } else {
-    // Full date
-    return DateFormat.yMd().format(messageTime.dateTime);
-  }
 }
 
 void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
