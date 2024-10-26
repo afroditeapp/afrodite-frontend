@@ -443,6 +443,10 @@
   "@generic_previous_action_in_progress": {
     "description": "Generic previous action in progress text"
   },
+  "generic_refresh": "Refresh",
+  "@generic_refresh": {
+    "description": "Generic refresh text"
+  },
   "generic_resend": "Resend",
   "@generic_resend": {
     "description": "Generic resend text"

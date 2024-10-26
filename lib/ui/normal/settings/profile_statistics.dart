@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/localizations.dart';
+import 'package:pihka_frontend/logic/account/account.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/profile/profile_statistics.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
@@ -43,7 +44,10 @@ class ProfileStatisticsScreen extends StatefulWidget {
 class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
   final api = LoginRepository.getInstance().repositories.api;
 
-    @override
+  bool adminGenerateStatistics = false;
+  int adminVisibilitySelection = 0;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -84,6 +88,7 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
     final publicProfiles = item.publicProfileCounts.man +
       item.publicProfileCounts.woman +
       item.publicProfileCounts.nonBinary;
+    final adminSettingsAvailable = context.read<AccountBloc>().state.permissions.adminProfileStatistics;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -91,6 +96,7 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (adminSettingsAvailable) adminControls(context),
             Text(context.strings.profile_statistics_screen_time(dataTime)),
             Text(context.strings.profile_statistics_screen_count_account(item.accountCount.toString())),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
@@ -191,6 +197,90 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget adminControls(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Admin settings",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+          child: ElevatedButton(
+            onPressed: () {
+              context.read<ProfileStatisticsBloc>().add(Reload(
+                adminRefresh: true,
+                generateNew: adminGenerateStatistics,
+                visibility: switch (adminVisibilitySelection) {
+                  0 => StatisticsProfileVisibility.public,
+                  1 => StatisticsProfileVisibility.private,
+                  2 => StatisticsProfileVisibility.all,
+                  _ => null,
+                }
+              ));
+            },
+            child: Text(context.strings.generic_refresh),
+          ),
+        ),
+        CheckboxListTile(
+          title: const Text("Show only fresh statistics"),
+          value: adminGenerateStatistics,
+          onChanged: (value) {
+            setState(() {
+              adminGenerateStatistics = value ?? false;
+            });
+        }),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            "Bar chart included profiles",
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Wrap(
+            spacing: 5.0,
+            children: [
+              ChoiceChip(
+                label: const Text("Public"),
+                selected: adminVisibilitySelection == 0,
+                onSelected: (value) {
+                  setState(() {
+                    adminVisibilitySelection = 0;
+                  });
+                },
+              ),
+              ChoiceChip(
+                label: const Text("Private"),
+                selected: adminVisibilitySelection == 1,
+                onSelected: (value) {
+                  setState(() {
+                    adminVisibilitySelection = 1;
+                  });
+                },
+              ),
+              ChoiceChip(
+                label: const Text("All"),
+                selected: adminVisibilitySelection == 2,
+                onSelected: (value) {
+                  setState(() {
+                    adminVisibilitySelection = 2;
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
+        const Divider(),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+      ],
     );
   }
 }

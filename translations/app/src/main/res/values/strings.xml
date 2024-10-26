@@ -14,6 +14,7 @@
     <string name="generic_disabled" description="Generic disabled text">Disabled</string>
     <string name="generic_details" description="Generic details text">Details</string>
     <string name="generic_resend" description="Generic resend text">Resend</string>
+    <string name="generic_refresh" description="Generic refresh text">Refresh</string>
     <string name="generic_retry" description="Generic retry text">Retry</string>
     <string name="generic_delete" description="Generic delete text">Delete</string>
     <string name="generic_message" description="Generic message text">Message</string>
