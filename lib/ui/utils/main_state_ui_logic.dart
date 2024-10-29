@@ -35,6 +35,7 @@ import 'package:pihka_frontend/logic/settings/blocked_profiles.dart';
 import 'package:pihka_frontend/logic/settings/edit_search_settings.dart';
 import 'package:pihka_frontend/logic/settings/privacy_settings.dart';
 import 'package:pihka_frontend/logic/settings/search_settings.dart';
+import 'package:pihka_frontend/logic/settings/user_interface.dart';
 import 'package:pihka_frontend/ui/account_banned.dart';
 import 'package:pihka_frontend/ui/demo_account.dart';
 import 'package:pihka_frontend/ui/initial_setup.dart';
@@ -170,6 +171,7 @@ class MainStateUiLogic extends StatelessWidget {
               BlocProvider(create: (_) => SearchSettingsBloc()),
               BlocProvider(create: (_) => EditSearchSettingsBloc()),
               BlocProvider(create: (_) => NotificationSettingsBloc()),
+              BlocProvider(create: (_) => UserInterfaceSettingsBloc()),
 
               // News
               BlocProvider(create: (_) => NewsCountBloc()),

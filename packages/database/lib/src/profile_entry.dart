@@ -11,6 +11,7 @@ class ProfileEntry {
   final double primaryContentGridCropX;
   final double primaryContentGridCropY;
   final String name;
+  final bool nameAccepted;
   final String profileText;
   final int age;
   final bool unlimitedLikes;
@@ -37,6 +38,7 @@ class ProfileEntry {
       required this.primaryContentGridCropX,
       required this.primaryContentGridCropY,
       required this.name,
+      required this.nameAccepted,
       required this.profileText,
       required this.age,
       required this.unlimitedLikes,
@@ -79,12 +81,16 @@ class ProfileEntry {
     return contentList;
   }
 
-  String profileTitle() {
-    return ProfileTitle(name, age).profileTitle();
+  String profileTitle(bool showNonAcceptedProfileNames) {
+    return ProfileTitle(
+      name,
+      nameAccepted,
+      showNonAcceptedProfileNames,
+    ).profileTitle();
   }
 
-  String profileTitleWithAge() {
-    return "$name, $age";
+  String profileTitleWithAge(bool showNonAcceptedProfileNames) {
+    return "${profileTitle(showNonAcceptedProfileNames)}, $age";
   }
 }
 
@@ -99,11 +105,18 @@ class ProfileLocalDbId {
 
 class ProfileTitle {
   final String name;
-  final int age; // TODO(prod): Remove age from background DB and here.
-  const ProfileTitle(this.name, this.age);
+  final bool nameAccepted;
+  final bool showNonAcceptedProfileNames;
+  const ProfileTitle(this.name, this.nameAccepted, this.showNonAcceptedProfileNames);
 
   String profileTitle() {
-    return name;
+    if (showNonAcceptedProfileNames || nameAccepted) {
+      return name;
+    } else {
+      final iterator = name.runes.iterator;
+      iterator.moveNext();
+      return "${iterator.currentAsString}…";
+    }
   }
 }
 

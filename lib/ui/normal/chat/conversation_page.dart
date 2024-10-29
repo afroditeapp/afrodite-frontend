@@ -11,6 +11,7 @@ import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/app/navigator_state.dart';
 import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
+import 'package:pihka_frontend/logic/settings/user_interface.dart';
 import 'package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
 import 'package:pihka_frontend/ui/normal/chat/message_renderer.dart';
@@ -100,7 +101,9 @@ class ConversationPageState extends State<ConversationPage> {
                         cacheSize: ImageCacheSize.sizeForAppBarThumbnail(),
                       ),
                       const Padding(padding: EdgeInsets.all(8.0)),
-                      Text(widget.profileEntry.profileTitle()),
+                      Text(widget.profileEntry.profileTitle(
+                        context.read<UserInterfaceSettingsBloc>().state.showNonAcceptedProfileNames,
+                      )),
                     ],
                   ),
                 ),

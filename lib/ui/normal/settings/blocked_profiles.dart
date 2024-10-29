@@ -11,6 +11,7 @@ import 'package:database/database.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pihka_frontend/localizations.dart';
 import 'package:pihka_frontend/logic/settings/blocked_profiles.dart';
+import 'package:pihka_frontend/logic/settings/user_interface.dart';
 import 'package:pihka_frontend/ui_utils/consts/padding.dart';
 import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:pihka_frontend/ui_utils/list.dart';
@@ -107,7 +108,9 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
           final String name;
           final Widget imageWidget;
           if (profileEntry != null) {
-            name = profileEntry.profileTitle();
+            name = profileEntry.profileTitle(
+              context.read<UserInterfaceSettingsBloc>().state.showNonAcceptedProfileNames,
+            );
             imageWidget = ProfileThumbnailImage.fromProfileEntry(
               entry: profileEntry,
               width: _IMG_SIZE,

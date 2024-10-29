@@ -22,6 +22,7 @@ class DaoMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoMyProfile
       AccountCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
         profileName: Value(profile.name),
+        profileNameAccepted: Value(profile.nameAccepted),
         profileText: Value(profile.ptext),
         profileAge: Value(profile.age),
         profileVersion: Value(version),

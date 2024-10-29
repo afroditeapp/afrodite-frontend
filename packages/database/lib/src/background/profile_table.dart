@@ -16,7 +16,7 @@ class ProfilesBackground extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuidAccountId => text().map(const AccountIdConverter()).unique()();
   TextColumn get profileName => text().nullable()();
-  IntColumn get profileAge => integer().nullable()();
+  BoolColumn get profileNameAccepted => boolean().nullable()();
 }
 
 @DriftAccessor(tables: [ProfilesBackground])
@@ -66,7 +66,7 @@ class DaoProfilesBackground extends DatabaseAccessor<AccountBackgroundDatabase> 
     await (update(profilesBackground)..where((t) => t.uuidAccountId.equals(accountId.aid)))
       .write(const ProfilesBackgroundCompanion(
         profileName: Value(null),
-        profileAge: Value(null),
+        profileNameAccepted: Value(null),
       ));
   }
 
@@ -75,11 +75,11 @@ class DaoProfilesBackground extends DatabaseAccessor<AccountBackgroundDatabase> 
       ProfilesBackgroundCompanion.insert(
         uuidAccountId: accountId,
         profileName: Value(profile.name),
-        profileAge: Value(profile.age),
+        profileNameAccepted: Value(profile.nameAccepted),
       ),
       onConflict: DoUpdate((old) => ProfilesBackgroundCompanion(
         profileName: Value(profile.name),
-        profileAge: Value(profile.age),
+        profileNameAccepted: Value(profile.nameAccepted),
       ),
         target: [profilesBackground.uuidAccountId]
       ),
@@ -113,11 +113,12 @@ class DaoProfilesBackground extends DatabaseAccessor<AccountBackgroundDatabase> 
     if (name == null) {
       return null;
     }
-    final age = r.profileAge;
-    if (age == null) {
+    final nameAccepted = r.profileNameAccepted;
+    if (nameAccepted == null) {
       return null;
     }
 
-    return ProfileTitle(name, age);
+    final result = await db.daoUserInterfaceSettings.watchShowNonAcceptedProfileNames().first;
+    return ProfileTitle(name, nameAccepted, result ?? false);
   }
 }

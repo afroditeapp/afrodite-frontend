@@ -101,6 +101,7 @@ class Account extends Table {
   // DaoMyProfile
 
   TextColumn get profileName => text().nullable()();
+  BoolColumn get profileNameAccepted => boolean().nullable()();
   TextColumn get profileText => text().nullable()();
   IntColumn get profileAge => integer().nullable()();
   BoolColumn get profileUnlimitedLikes => boolean().nullable()();
@@ -332,6 +333,7 @@ class AccountDatabase extends _$AccountDatabase {
     watchColumn((r) {
       final id = r.uuidAccountId;
       final profileName = r.profileName;
+      final profileNameAccepted = r.profileNameAccepted;
       final profileText = r.profileText;
       final profileAge = r.profileAge;
       final profileAttributes = r.jsonProfileAttributes?.toProfileAttributes();
@@ -366,6 +368,7 @@ class AccountDatabase extends _$AccountDatabase {
         id != null &&
         content0 != null &&
         profileName != null &&
+        profileNameAccepted != null &&
         profileText != null &&
         profileAge != null &&
         profileAttributes != null &&
@@ -380,6 +383,7 @@ class AccountDatabase extends _$AccountDatabase {
           primaryContentGridCropX: gridCropX,
           primaryContentGridCropY: gridCropY,
           name: profileName,
+          nameAccepted: profileNameAccepted,
           profileText: profileText,
           age: profileAge,
           unlimitedLikes: profileUnlimitedLikes,

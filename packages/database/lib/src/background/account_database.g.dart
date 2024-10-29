@@ -517,15 +517,18 @@ class $ProfilesBackgroundTable extends ProfilesBackground
   late final GeneratedColumn<String> profileName = GeneratedColumn<String>(
       'profile_name', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _profileAgeMeta =
-      const VerificationMeta('profileAge');
+  static const VerificationMeta _profileNameAcceptedMeta =
+      const VerificationMeta('profileNameAccepted');
   @override
-  late final GeneratedColumn<int> profileAge = GeneratedColumn<int>(
-      'profile_age', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+  late final GeneratedColumn<bool> profileNameAccepted = GeneratedColumn<bool>(
+      'profile_name_accepted', aliasedName, true,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("profile_name_accepted" IN (0, 1))'));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, uuidAccountId, profileName, profileAge];
+      [id, uuidAccountId, profileName, profileNameAccepted];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -547,11 +550,11 @@ class $ProfilesBackgroundTable extends ProfilesBackground
           profileName.isAcceptableOrUnknown(
               data['profile_name']!, _profileNameMeta));
     }
-    if (data.containsKey('profile_age')) {
+    if (data.containsKey('profile_name_accepted')) {
       context.handle(
-          _profileAgeMeta,
-          profileAge.isAcceptableOrUnknown(
-              data['profile_age']!, _profileAgeMeta));
+          _profileNameAcceptedMeta,
+          profileNameAccepted.isAcceptableOrUnknown(
+              data['profile_name_accepted']!, _profileNameAcceptedMeta));
     }
     return context;
   }
@@ -569,8 +572,8 @@ class $ProfilesBackgroundTable extends ProfilesBackground
               DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
       profileName: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}profile_name']),
-      profileAge: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}profile_age']),
+      profileNameAccepted: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool, data['${effectivePrefix}profile_name_accepted']),
     );
   }
 
@@ -588,12 +591,12 @@ class ProfilesBackgroundData extends DataClass
   final int id;
   final AccountId uuidAccountId;
   final String? profileName;
-  final int? profileAge;
+  final bool? profileNameAccepted;
   const ProfilesBackgroundData(
       {required this.id,
       required this.uuidAccountId,
       this.profileName,
-      this.profileAge});
+      this.profileNameAccepted});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -606,8 +609,8 @@ class ProfilesBackgroundData extends DataClass
     if (!nullToAbsent || profileName != null) {
       map['profile_name'] = Variable<String>(profileName);
     }
-    if (!nullToAbsent || profileAge != null) {
-      map['profile_age'] = Variable<int>(profileAge);
+    if (!nullToAbsent || profileNameAccepted != null) {
+      map['profile_name_accepted'] = Variable<bool>(profileNameAccepted);
     }
     return map;
   }
@@ -619,9 +622,9 @@ class ProfilesBackgroundData extends DataClass
       profileName: profileName == null && nullToAbsent
           ? const Value.absent()
           : Value(profileName),
-      profileAge: profileAge == null && nullToAbsent
+      profileNameAccepted: profileNameAccepted == null && nullToAbsent
           ? const Value.absent()
-          : Value(profileAge),
+          : Value(profileNameAccepted),
     );
   }
 
@@ -632,7 +635,8 @@ class ProfilesBackgroundData extends DataClass
       id: serializer.fromJson<int>(json['id']),
       uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
       profileName: serializer.fromJson<String?>(json['profileName']),
-      profileAge: serializer.fromJson<int?>(json['profileAge']),
+      profileNameAccepted:
+          serializer.fromJson<bool?>(json['profileNameAccepted']),
     );
   }
   @override
@@ -642,7 +646,7 @@ class ProfilesBackgroundData extends DataClass
       'id': serializer.toJson<int>(id),
       'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
       'profileName': serializer.toJson<String?>(profileName),
-      'profileAge': serializer.toJson<int?>(profileAge),
+      'profileNameAccepted': serializer.toJson<bool?>(profileNameAccepted),
     };
   }
 
@@ -650,12 +654,14 @@ class ProfilesBackgroundData extends DataClass
           {int? id,
           AccountId? uuidAccountId,
           Value<String?> profileName = const Value.absent(),
-          Value<int?> profileAge = const Value.absent()}) =>
+          Value<bool?> profileNameAccepted = const Value.absent()}) =>
       ProfilesBackgroundData(
         id: id ?? this.id,
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
         profileName: profileName.present ? profileName.value : this.profileName,
-        profileAge: profileAge.present ? profileAge.value : this.profileAge,
+        profileNameAccepted: profileNameAccepted.present
+            ? profileNameAccepted.value
+            : this.profileNameAccepted,
       );
   ProfilesBackgroundData copyWithCompanion(ProfilesBackgroundCompanion data) {
     return ProfilesBackgroundData(
@@ -665,8 +671,9 @@ class ProfilesBackgroundData extends DataClass
           : this.uuidAccountId,
       profileName:
           data.profileName.present ? data.profileName.value : this.profileName,
-      profileAge:
-          data.profileAge.present ? data.profileAge.value : this.profileAge,
+      profileNameAccepted: data.profileNameAccepted.present
+          ? data.profileNameAccepted.value
+          : this.profileNameAccepted,
     );
   }
 
@@ -676,13 +683,14 @@ class ProfilesBackgroundData extends DataClass
           ..write('id: $id, ')
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('profileName: $profileName, ')
-          ..write('profileAge: $profileAge')
+          ..write('profileNameAccepted: $profileNameAccepted')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, uuidAccountId, profileName, profileAge);
+  int get hashCode =>
+      Object.hash(id, uuidAccountId, profileName, profileNameAccepted);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -690,7 +698,7 @@ class ProfilesBackgroundData extends DataClass
           other.id == this.id &&
           other.uuidAccountId == this.uuidAccountId &&
           other.profileName == this.profileName &&
-          other.profileAge == this.profileAge);
+          other.profileNameAccepted == this.profileNameAccepted);
 }
 
 class ProfilesBackgroundCompanion
@@ -698,30 +706,31 @@ class ProfilesBackgroundCompanion
   final Value<int> id;
   final Value<AccountId> uuidAccountId;
   final Value<String?> profileName;
-  final Value<int?> profileAge;
+  final Value<bool?> profileNameAccepted;
   const ProfilesBackgroundCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
     this.profileName = const Value.absent(),
-    this.profileAge = const Value.absent(),
+    this.profileNameAccepted = const Value.absent(),
   });
   ProfilesBackgroundCompanion.insert({
     this.id = const Value.absent(),
     required AccountId uuidAccountId,
     this.profileName = const Value.absent(),
-    this.profileAge = const Value.absent(),
+    this.profileNameAccepted = const Value.absent(),
   }) : uuidAccountId = Value(uuidAccountId);
   static Insertable<ProfilesBackgroundData> custom({
     Expression<int>? id,
     Expression<String>? uuidAccountId,
     Expression<String>? profileName,
-    Expression<int>? profileAge,
+    Expression<bool>? profileNameAccepted,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
       if (profileName != null) 'profile_name': profileName,
-      if (profileAge != null) 'profile_age': profileAge,
+      if (profileNameAccepted != null)
+        'profile_name_accepted': profileNameAccepted,
     });
   }
 
@@ -729,12 +738,12 @@ class ProfilesBackgroundCompanion
       {Value<int>? id,
       Value<AccountId>? uuidAccountId,
       Value<String?>? profileName,
-      Value<int?>? profileAge}) {
+      Value<bool?>? profileNameAccepted}) {
     return ProfilesBackgroundCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
       profileName: profileName ?? this.profileName,
-      profileAge: profileAge ?? this.profileAge,
+      profileNameAccepted: profileNameAccepted ?? this.profileNameAccepted,
     );
   }
 
@@ -752,8 +761,8 @@ class ProfilesBackgroundCompanion
     if (profileName.present) {
       map['profile_name'] = Variable<String>(profileName.value);
     }
-    if (profileAge.present) {
-      map['profile_age'] = Variable<int>(profileAge.value);
+    if (profileNameAccepted.present) {
+      map['profile_name_accepted'] = Variable<bool>(profileNameAccepted.value);
     }
     return map;
   }
@@ -764,7 +773,7 @@ class ProfilesBackgroundCompanion
           ..write('id: $id, ')
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('profileName: $profileName, ')
-          ..write('profileAge: $profileAge')
+          ..write('profileNameAccepted: $profileNameAccepted')
           ..write(')'))
         .toString();
   }

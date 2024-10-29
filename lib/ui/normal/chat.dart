@@ -11,6 +11,7 @@ import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/data/profile_repository.dart';
 import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
 import 'package:pihka_frontend/logic/chat/conversation_list_bloc.dart';
+import 'package:pihka_frontend/logic/settings/user_interface.dart';
 import 'package:pihka_frontend/model/freezed/logic/chat/conversation_list_bloc.dart';
 import 'package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
@@ -303,8 +304,10 @@ class _ChatViewState extends State<ChatView> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-       Text(
-          data.entry.profileTitle(),
+        Text(
+          data.entry.profileTitle(
+            context.read<UserInterfaceSettingsBloc>().state.showNonAcceptedProfileNames,
+          ),
           style: Theme.of(context).textTheme.titleMedium,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,

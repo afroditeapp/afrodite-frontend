@@ -1,7 +1,6 @@
 
 
 
-import 'package:database/src/message_entry.dart';
 import 'package:openapi/api.dart' show AccountId, ProfileContent;
 import 'package:openapi/api.dart' as api;
 import 'package:utils/utils.dart';
@@ -27,6 +26,7 @@ class Profiles extends Table {
   TextColumn get profileContentVersion => text().map(const NullAwareTypeConverter.wrap(ProfileContentVersionConverter())).nullable()();
 
   TextColumn get profileName => text().nullable()();
+  BoolColumn get profileNameAccepted => boolean().nullable()();
   TextColumn get profileText => text().nullable()();
   TextColumn get profileVersion => text().map(const NullAwareTypeConverter.wrap(ProfileVersionConverter())).nullable()();
   IntColumn get profileAge => integer().nullable()();
@@ -57,6 +57,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         uuidContentId5: Value(null),
         profileContentVersion: Value(null),
         profileName: Value(null),
+        profileNameAccepted: Value(null),
         profileText: Value(null),
         profileAge: Value(null),
         profileVersion: Value(null),
@@ -78,6 +79,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
       ProfilesCompanion.insert(
         uuidAccountId: accountId,
         profileName: Value(profile.name),
+        profileNameAccepted: Value(profile.nameAccepted),
         profileText: Value(profile.ptext),
         profileAge: Value(profile.age),
         profileVersion: Value(profileVersion),
@@ -87,6 +89,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
       ),
       onConflict: DoUpdate((old) => ProfilesCompanion(
         profileName: Value(profile.name),
+        profileNameAccepted: Value(profile.nameAccepted),
         profileText: Value(profile.ptext),
         profileAge: Value(profile.age),
         profileVersion: Value(profileVersion),
@@ -191,6 +194,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     final gridCropX = r.primaryContentGridCropX ?? 0.0;
     final gridCropY = r.primaryContentGridCropY ?? 0.0;
     final profileName = r.profileName;
+    final profileNameAccepted = r.profileNameAccepted;
     final profileText = r.profileText;
     final profileAge = r.profileAge;
     final profileVersion = r.profileVersion;
@@ -201,6 +205,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     if (
       content0 != null &&
       profileName != null &&
+      profileNameAccepted != null &&
       profileText != null &&
       profileAge != null &&
       profileVersion != null &&
@@ -215,6 +220,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         primaryContentGridCropX: gridCropX,
         primaryContentGridCropY: gridCropY,
         name: profileName,
+        nameAccepted: profileNameAccepted,
         profileText: profileText,
         version: profileVersion,
         age: profileAge,

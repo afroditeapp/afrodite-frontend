@@ -14,12 +14,8 @@ Future<void> openUserInterfaceSettingsScreen(
   final pageKey = PageKey();
   return MyNavigator.pushWithKey(
     context,
-    MaterialPage<void>(
-      child: BlocProvider(
-        create: (_) => UserInterfaceSettingsBloc(),
-        lazy: false,
-        child: const UserInterfaceSettingsScreen(),
-      ),
+    const MaterialPage<void>(
+      child: UserInterfaceSettingsScreen(),
     ),
     pageKey,
   );

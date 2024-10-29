@@ -349,6 +349,15 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<String> profileName = GeneratedColumn<String>(
       'profile_name', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _profileNameAcceptedMeta =
+      const VerificationMeta('profileNameAccepted');
+  @override
+  late final GeneratedColumn<bool> profileNameAccepted = GeneratedColumn<bool>(
+      'profile_name_accepted', aliasedName, true,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("profile_name_accepted" IN (0, 1))'));
   static const VerificationMeta _profileTextMeta =
       const VerificationMeta('profileText');
   @override
@@ -634,6 +643,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         primaryContentGridCropY,
         profileContentVersion,
         profileName,
+        profileNameAccepted,
         profileText,
         profileAge,
         profileUnlimitedLikes,
@@ -830,6 +840,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           _profileNameMeta,
           profileName.isAcceptableOrUnknown(
               data['profile_name']!, _profileNameMeta));
+    }
+    if (data.containsKey('profile_name_accepted')) {
+      context.handle(
+          _profileNameAcceptedMeta,
+          profileNameAccepted.isAcceptableOrUnknown(
+              data['profile_name_accepted']!, _profileNameAcceptedMeta));
     }
     if (data.containsKey('profile_text')) {
       context.handle(
@@ -1112,6 +1128,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['${effectivePrefix}profile_content_version'])),
       profileName: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}profile_name']),
+      profileNameAccepted: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool, data['${effectivePrefix}profile_name_accepted']),
       profileText: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}profile_text']),
       profileAge: attachedDatabase.typeMapping
@@ -1337,6 +1355,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final double? primaryContentGridCropY;
   final ProfileContentVersion? profileContentVersion;
   final String? profileName;
+  final bool? profileNameAccepted;
   final String? profileText;
   final int? profileAge;
   final bool? profileUnlimitedLikes;
@@ -1412,6 +1431,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.primaryContentGridCropY,
       this.profileContentVersion,
       this.profileName,
+      this.profileNameAccepted,
       this.profileText,
       this.profileAge,
       this.profileUnlimitedLikes,
@@ -1604,6 +1624,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     }
     if (!nullToAbsent || profileName != null) {
       map['profile_name'] = Variable<String>(profileName);
+    }
+    if (!nullToAbsent || profileNameAccepted != null) {
+      map['profile_name_accepted'] = Variable<bool>(profileNameAccepted);
     }
     if (!nullToAbsent || profileText != null) {
       map['profile_text'] = Variable<String>(profileText);
@@ -1851,6 +1874,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileName: profileName == null && nullToAbsent
           ? const Value.absent()
           : Value(profileName),
+      profileNameAccepted: profileNameAccepted == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileNameAccepted),
       profileText: profileText == null && nullToAbsent
           ? const Value.absent()
           : Value(profileText),
@@ -2034,6 +2060,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileContentVersion: serializer
           .fromJson<ProfileContentVersion?>(json['profileContentVersion']),
       profileName: serializer.fromJson<String?>(json['profileName']),
+      profileNameAccepted:
+          serializer.fromJson<bool?>(json['profileNameAccepted']),
       profileText: serializer.fromJson<String?>(json['profileText']),
       profileAge: serializer.fromJson<int?>(json['profileAge']),
       profileUnlimitedLikes:
@@ -2164,6 +2192,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'profileContentVersion':
           serializer.toJson<ProfileContentVersion?>(profileContentVersion),
       'profileName': serializer.toJson<String?>(profileName),
+      'profileNameAccepted': serializer.toJson<bool?>(profileNameAccepted),
       'profileText': serializer.toJson<String?>(profileText),
       'profileAge': serializer.toJson<int?>(profileAge),
       'profileUnlimitedLikes': serializer.toJson<bool?>(profileUnlimitedLikes),
@@ -2263,6 +2292,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<ProfileContentVersion?> profileContentVersion =
               const Value.absent(),
           Value<String?> profileName = const Value.absent(),
+          Value<bool?> profileNameAccepted = const Value.absent(),
           Value<String?> profileText = const Value.absent(),
           Value<int?> profileAge = const Value.absent(),
           Value<bool?> profileUnlimitedLikes = const Value.absent(),
@@ -2408,6 +2438,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
             ? profileContentVersion.value
             : this.profileContentVersion,
         profileName: profileName.present ? profileName.value : this.profileName,
+        profileNameAccepted: profileNameAccepted.present
+            ? profileNameAccepted.value
+            : this.profileNameAccepted,
         profileText: profileText.present ? profileText.value : this.profileText,
         profileAge: profileAge.present ? profileAge.value : this.profileAge,
         profileUnlimitedLikes: profileUnlimitedLikes.present
@@ -2630,6 +2663,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           : this.profileContentVersion,
       profileName:
           data.profileName.present ? data.profileName.value : this.profileName,
+      profileNameAccepted: data.profileNameAccepted.present
+          ? data.profileNameAccepted.value
+          : this.profileNameAccepted,
       profileText:
           data.profileText.present ? data.profileText.value : this.profileText,
       profileAge:
@@ -2786,6 +2822,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
           ..write('profileContentVersion: $profileContentVersion, ')
           ..write('profileName: $profileName, ')
+          ..write('profileNameAccepted: $profileNameAccepted, ')
           ..write('profileText: $profileText, ')
           ..write('profileAge: $profileAge, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
@@ -2870,6 +2907,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         primaryContentGridCropY,
         profileContentVersion,
         profileName,
+        profileNameAccepted,
         profileText,
         profileAge,
         profileUnlimitedLikes,
@@ -2961,6 +2999,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.primaryContentGridCropY == this.primaryContentGridCropY &&
           other.profileContentVersion == this.profileContentVersion &&
           other.profileName == this.profileName &&
+          other.profileNameAccepted == this.profileNameAccepted &&
           other.profileText == this.profileText &&
           other.profileAge == this.profileAge &&
           other.profileUnlimitedLikes == this.profileUnlimitedLikes &&
@@ -3044,6 +3083,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<double?> primaryContentGridCropY;
   final Value<ProfileContentVersion?> profileContentVersion;
   final Value<String?> profileName;
+  final Value<bool?> profileNameAccepted;
   final Value<String?> profileText;
   final Value<int?> profileAge;
   final Value<bool?> profileUnlimitedLikes;
@@ -3119,6 +3159,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.primaryContentGridCropY = const Value.absent(),
     this.profileContentVersion = const Value.absent(),
     this.profileName = const Value.absent(),
+    this.profileNameAccepted = const Value.absent(),
     this.profileText = const Value.absent(),
     this.profileAge = const Value.absent(),
     this.profileUnlimitedLikes = const Value.absent(),
@@ -3195,6 +3236,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.primaryContentGridCropY = const Value.absent(),
     this.profileContentVersion = const Value.absent(),
     this.profileName = const Value.absent(),
+    this.profileNameAccepted = const Value.absent(),
     this.profileText = const Value.absent(),
     this.profileAge = const Value.absent(),
     this.profileUnlimitedLikes = const Value.absent(),
@@ -3271,6 +3313,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<double>? primaryContentGridCropY,
     Expression<String>? profileContentVersion,
     Expression<String>? profileName,
+    Expression<bool>? profileNameAccepted,
     Expression<String>? profileText,
     Expression<int>? profileAge,
     Expression<bool>? profileUnlimitedLikes,
@@ -3379,6 +3422,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (profileContentVersion != null)
         'profile_content_version': profileContentVersion,
       if (profileName != null) 'profile_name': profileName,
+      if (profileNameAccepted != null)
+        'profile_name_accepted': profileNameAccepted,
       if (profileText != null) 'profile_text': profileText,
       if (profileAge != null) 'profile_age': profileAge,
       if (profileUnlimitedLikes != null)
@@ -3479,6 +3524,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<double?>? primaryContentGridCropY,
       Value<ProfileContentVersion?>? profileContentVersion,
       Value<String?>? profileName,
+      Value<bool?>? profileNameAccepted,
       Value<String?>? profileText,
       Value<int?>? profileAge,
       Value<bool?>? profileUnlimitedLikes,
@@ -3581,6 +3627,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       profileContentVersion:
           profileContentVersion ?? this.profileContentVersion,
       profileName: profileName ?? this.profileName,
+      profileNameAccepted: profileNameAccepted ?? this.profileNameAccepted,
       profileText: profileText ?? this.profileText,
       profileAge: profileAge ?? this.profileAge,
       profileUnlimitedLikes:
@@ -3810,6 +3857,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (profileName.present) {
       map['profile_name'] = Variable<String>(profileName.value);
     }
+    if (profileNameAccepted.present) {
+      map['profile_name_accepted'] = Variable<bool>(profileNameAccepted.value);
+    }
     if (profileText.present) {
       map['profile_text'] = Variable<String>(profileText.value);
     }
@@ -3999,6 +4049,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
           ..write('profileContentVersion: $profileContentVersion, ')
           ..write('profileName: $profileName, ')
+          ..write('profileNameAccepted: $profileNameAccepted, ')
           ..write('profileText: $profileText, ')
           ..write('profileAge: $profileAge, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
@@ -4127,6 +4178,15 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   late final GeneratedColumn<String> profileName = GeneratedColumn<String>(
       'profile_name', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _profileNameAcceptedMeta =
+      const VerificationMeta('profileNameAccepted');
+  @override
+  late final GeneratedColumn<bool> profileNameAccepted = GeneratedColumn<bool>(
+      'profile_name_accepted', aliasedName, true,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("profile_name_accepted" IN (0, 1))'));
   static const VerificationMeta _profileTextMeta =
       const VerificationMeta('profileText');
   @override
@@ -4221,6 +4281,7 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
         uuidContentId5,
         profileContentVersion,
         profileName,
+        profileNameAccepted,
         profileText,
         profileVersion,
         profileAge,
@@ -4260,6 +4321,12 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
           _profileNameMeta,
           profileName.isAcceptableOrUnknown(
               data['profile_name']!, _profileNameMeta));
+    }
+    if (data.containsKey('profile_name_accepted')) {
+      context.handle(
+          _profileNameAcceptedMeta,
+          profileNameAccepted.isAcceptableOrUnknown(
+              data['profile_name_accepted']!, _profileNameAcceptedMeta));
     }
     if (data.containsKey('profile_text')) {
       context.handle(
@@ -4351,6 +4418,8 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
               data['${effectivePrefix}profile_content_version'])),
       profileName: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}profile_name']),
+      profileNameAccepted: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool, data['${effectivePrefix}profile_name_accepted']),
       profileText: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}profile_text']),
       profileVersion: $ProfilesTable.$converterprofileVersion.fromSql(
@@ -4429,6 +4498,7 @@ class Profile extends DataClass implements Insertable<Profile> {
   final ContentId? uuidContentId5;
   final ProfileContentVersion? profileContentVersion;
   final String? profileName;
+  final bool? profileNameAccepted;
   final String? profileText;
   final ProfileVersion? profileVersion;
   final int? profileAge;
@@ -4451,6 +4521,7 @@ class Profile extends DataClass implements Insertable<Profile> {
       this.uuidContentId5,
       this.profileContentVersion,
       this.profileName,
+      this.profileNameAccepted,
       this.profileText,
       this.profileVersion,
       this.profileAge,
@@ -4501,6 +4572,9 @@ class Profile extends DataClass implements Insertable<Profile> {
     }
     if (!nullToAbsent || profileName != null) {
       map['profile_name'] = Variable<String>(profileName);
+    }
+    if (!nullToAbsent || profileNameAccepted != null) {
+      map['profile_name_accepted'] = Variable<bool>(profileNameAccepted);
     }
     if (!nullToAbsent || profileText != null) {
       map['profile_text'] = Variable<String>(profileText);
@@ -4577,6 +4651,9 @@ class Profile extends DataClass implements Insertable<Profile> {
       profileName: profileName == null && nullToAbsent
           ? const Value.absent()
           : Value(profileName),
+      profileNameAccepted: profileNameAccepted == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileNameAccepted),
       profileText: profileText == null && nullToAbsent
           ? const Value.absent()
           : Value(profileText),
@@ -4629,6 +4706,8 @@ class Profile extends DataClass implements Insertable<Profile> {
       profileContentVersion: serializer
           .fromJson<ProfileContentVersion?>(json['profileContentVersion']),
       profileName: serializer.fromJson<String?>(json['profileName']),
+      profileNameAccepted:
+          serializer.fromJson<bool?>(json['profileNameAccepted']),
       profileText: serializer.fromJson<String?>(json['profileText']),
       profileVersion:
           serializer.fromJson<ProfileVersion?>(json['profileVersion']),
@@ -4666,6 +4745,7 @@ class Profile extends DataClass implements Insertable<Profile> {
       'profileContentVersion':
           serializer.toJson<ProfileContentVersion?>(profileContentVersion),
       'profileName': serializer.toJson<String?>(profileName),
+      'profileNameAccepted': serializer.toJson<bool?>(profileNameAccepted),
       'profileText': serializer.toJson<String?>(profileText),
       'profileVersion': serializer.toJson<ProfileVersion?>(profileVersion),
       'profileAge': serializer.toJson<int?>(profileAge),
@@ -4699,6 +4779,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           Value<ProfileContentVersion?> profileContentVersion =
               const Value.absent(),
           Value<String?> profileName = const Value.absent(),
+          Value<bool?> profileNameAccepted = const Value.absent(),
           Value<String?> profileText = const Value.absent(),
           Value<ProfileVersion?> profileVersion = const Value.absent(),
           Value<int?> profileAge = const Value.absent(),
@@ -4730,6 +4811,9 @@ class Profile extends DataClass implements Insertable<Profile> {
             ? profileContentVersion.value
             : this.profileContentVersion,
         profileName: profileName.present ? profileName.value : this.profileName,
+        profileNameAccepted: profileNameAccepted.present
+            ? profileNameAccepted.value
+            : this.profileNameAccepted,
         profileText: profileText.present ? profileText.value : this.profileText,
         profileVersion:
             profileVersion.present ? profileVersion.value : this.profileVersion,
@@ -4788,6 +4872,9 @@ class Profile extends DataClass implements Insertable<Profile> {
           : this.profileContentVersion,
       profileName:
           data.profileName.present ? data.profileName.value : this.profileName,
+      profileNameAccepted: data.profileNameAccepted.present
+          ? data.profileNameAccepted.value
+          : this.profileNameAccepted,
       profileText:
           data.profileText.present ? data.profileText.value : this.profileText,
       profileVersion: data.profileVersion.present
@@ -4835,6 +4922,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           ..write('uuidContentId5: $uuidContentId5, ')
           ..write('profileContentVersion: $profileContentVersion, ')
           ..write('profileName: $profileName, ')
+          ..write('profileNameAccepted: $profileNameAccepted, ')
           ..write('profileText: $profileText, ')
           ..write('profileVersion: $profileVersion, ')
           ..write('profileAge: $profileAge, ')
@@ -4862,6 +4950,7 @@ class Profile extends DataClass implements Insertable<Profile> {
         uuidContentId5,
         profileContentVersion,
         profileName,
+        profileNameAccepted,
         profileText,
         profileVersion,
         profileAge,
@@ -4888,6 +4977,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           other.uuidContentId5 == this.uuidContentId5 &&
           other.profileContentVersion == this.profileContentVersion &&
           other.profileName == this.profileName &&
+          other.profileNameAccepted == this.profileNameAccepted &&
           other.profileText == this.profileText &&
           other.profileVersion == this.profileVersion &&
           other.profileAge == this.profileAge &&
@@ -4912,6 +5002,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<ContentId?> uuidContentId5;
   final Value<ProfileContentVersion?> profileContentVersion;
   final Value<String?> profileName;
+  final Value<bool?> profileNameAccepted;
   final Value<String?> profileText;
   final Value<ProfileVersion?> profileVersion;
   final Value<int?> profileAge;
@@ -4934,6 +5025,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.uuidContentId5 = const Value.absent(),
     this.profileContentVersion = const Value.absent(),
     this.profileName = const Value.absent(),
+    this.profileNameAccepted = const Value.absent(),
     this.profileText = const Value.absent(),
     this.profileVersion = const Value.absent(),
     this.profileAge = const Value.absent(),
@@ -4957,6 +5049,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.uuidContentId5 = const Value.absent(),
     this.profileContentVersion = const Value.absent(),
     this.profileName = const Value.absent(),
+    this.profileNameAccepted = const Value.absent(),
     this.profileText = const Value.absent(),
     this.profileVersion = const Value.absent(),
     this.profileAge = const Value.absent(),
@@ -4980,6 +5073,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     Expression<String>? uuidContentId5,
     Expression<String>? profileContentVersion,
     Expression<String>? profileName,
+    Expression<bool>? profileNameAccepted,
     Expression<String>? profileText,
     Expression<String>? profileVersion,
     Expression<int>? profileAge,
@@ -5004,6 +5098,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       if (profileContentVersion != null)
         'profile_content_version': profileContentVersion,
       if (profileName != null) 'profile_name': profileName,
+      if (profileNameAccepted != null)
+        'profile_name_accepted': profileNameAccepted,
       if (profileText != null) 'profile_text': profileText,
       if (profileVersion != null) 'profile_version': profileVersion,
       if (profileAge != null) 'profile_age': profileAge,
@@ -5037,6 +5133,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       Value<ContentId?>? uuidContentId5,
       Value<ProfileContentVersion?>? profileContentVersion,
       Value<String?>? profileName,
+      Value<bool?>? profileNameAccepted,
       Value<String?>? profileText,
       Value<ProfileVersion?>? profileVersion,
       Value<int?>? profileAge,
@@ -5060,6 +5157,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       profileContentVersion:
           profileContentVersion ?? this.profileContentVersion,
       profileName: profileName ?? this.profileName,
+      profileNameAccepted: profileNameAccepted ?? this.profileNameAccepted,
       profileText: profileText ?? this.profileText,
       profileVersion: profileVersion ?? this.profileVersion,
       profileAge: profileAge ?? this.profileAge,
@@ -5124,6 +5222,9 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     if (profileName.present) {
       map['profile_name'] = Variable<String>(profileName.value);
     }
+    if (profileNameAccepted.present) {
+      map['profile_name_accepted'] = Variable<bool>(profileNameAccepted.value);
+    }
     if (profileText.present) {
       map['profile_text'] = Variable<String>(profileText.value);
     }
@@ -5185,6 +5286,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           ..write('uuidContentId5: $uuidContentId5, ')
           ..write('profileContentVersion: $profileContentVersion, ')
           ..write('profileName: $profileName, ')
+          ..write('profileNameAccepted: $profileNameAccepted, ')
           ..write('profileText: $profileText, ')
           ..write('profileVersion: $profileVersion, ')
           ..write('profileAge: $profileAge, ')
