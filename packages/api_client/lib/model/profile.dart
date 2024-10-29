@@ -16,6 +16,7 @@ class Profile {
     required this.age,
     this.attributes = const [],
     required this.name,
+    this.nameAccepted = true,
     this.ptext = '',
     this.unlimitedLikes = false,
   });
@@ -25,6 +26,9 @@ class Profile {
   List<ProfileAttributeValue> attributes;
 
   String name;
+
+  /// The name has been accepted using allowlist or manual moderation.
+  bool nameAccepted;
 
   /// Profile text support is disabled for now.
   String ptext;
@@ -36,6 +40,7 @@ class Profile {
     other.age == age &&
     _deepEquality.equals(other.attributes, attributes) &&
     other.name == name &&
+    other.nameAccepted == nameAccepted &&
     other.ptext == ptext &&
     other.unlimitedLikes == unlimitedLikes;
 
@@ -45,17 +50,19 @@ class Profile {
     (age.hashCode) +
     (attributes.hashCode) +
     (name.hashCode) +
+    (nameAccepted.hashCode) +
     (ptext.hashCode) +
     (unlimitedLikes.hashCode);
 
   @override
-  String toString() => 'Profile[age=$age, attributes=$attributes, name=$name, ptext=$ptext, unlimitedLikes=$unlimitedLikes]';
+  String toString() => 'Profile[age=$age, attributes=$attributes, name=$name, nameAccepted=$nameAccepted, ptext=$ptext, unlimitedLikes=$unlimitedLikes]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'age'] = this.age;
       json[r'attributes'] = this.attributes;
       json[r'name'] = this.name;
+      json[r'name_accepted'] = this.nameAccepted;
       json[r'ptext'] = this.ptext;
       json[r'unlimited_likes'] = this.unlimitedLikes;
     return json;
@@ -83,6 +90,7 @@ class Profile {
         age: mapValueOfType<int>(json, r'age')!,
         attributes: ProfileAttributeValue.listFromJson(json[r'attributes']),
         name: mapValueOfType<String>(json, r'name')!,
+        nameAccepted: mapValueOfType<bool>(json, r'name_accepted') ?? true,
         ptext: mapValueOfType<String>(json, r'ptext') ?? '',
         unlimitedLikes: mapValueOfType<bool>(json, r'unlimited_likes') ?? false,
       );

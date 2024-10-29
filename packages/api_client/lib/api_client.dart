@@ -294,6 +294,8 @@ class ApiClient {
           return GetNewsItemResult.fromJson(value);
         case 'GetProfileContentResult':
           return GetProfileContentResult.fromJson(value);
+        case 'GetProfileNamePendingModerationList':
+          return GetProfileNamePendingModerationList.fromJson(value);
         case 'GetProfileResult':
           return GetProfileResult.fromJson(value);
         case 'GetProfileStatisticsHistoryResult':
@@ -388,6 +390,8 @@ class ApiClient {
           return PerfValueArea.fromJson(value);
         case 'Permissions':
           return Permissions.fromJson(value);
+        case 'PostModerateProfileName':
+          return PostModerateProfileName.fromJson(value);
         case 'Profile':
           return Profile.fromJson(value);
         case 'ProfileAgeCounts':
@@ -416,6 +420,8 @@ class ApiClient {
           return ProfileIteratorSessionId.fromJson(value);
         case 'ProfileLink':
           return ProfileLink.fromJson(value);
+        case 'ProfileNamePendingModeration':
+          return ProfileNamePendingModeration.fromJson(value);
         case 'ProfilePage':
           return ProfilePage.fromJson(value);
         case 'ProfileSearchAgeRange':

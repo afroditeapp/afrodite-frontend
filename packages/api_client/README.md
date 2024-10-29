@@ -169,7 +169,9 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**postSearchAgeRange**](doc//ProfileApi.md#postsearchagerange) | **POST** /xTy-zcnl0LQlfPKQalAEnWQQ-rw | Set account's current search age range
 *ProfileApi* | [**postSearchGroups**](doc//ProfileApi.md#postsearchgroups) | **POST** /p1KA-sqKKtU3FHvUqYRZnQgj7RQ | Set account's current search groups (gender and what gender user is looking for)
 *ProfileApi* | [**putLocation**](doc//ProfileApi.md#putlocation) | **PUT** /lf5KMD9dBSVuaVcwjm4TB0d7bfY | Update location for account which makes this request.
+*ProfileAdminApi* | [**getProfileNamePendingModerationList**](doc//ProfileAdminApi.md#getprofilenamependingmoderationlist) | **GET** /82woXm_Kq9yEtRHP7KAcXkgRWnU | 
 *ProfileAdminApi* | [**getProfileStatisticsHistory**](doc//ProfileAdminApi.md#getprofilestatisticshistory) | **GET** /6CGbSNdoURdJRTBxb3Hb_OGw9ME | 
+*ProfileAdminApi* | [**postModerateProfileName**](doc//ProfileAdminApi.md#postmoderateprofilename) | **POST** /bnrAbC2DpwIftQouXUAVR1W6g8Y | 
 
 
 ## Documentation For Models
@@ -230,6 +232,7 @@ Class | Method | HTTP request | Description
  - [GetMyProfileResult](doc//GetMyProfileResult.md)
  - [GetNewsItemResult](doc//GetNewsItemResult.md)
  - [GetProfileContentResult](doc//GetProfileContentResult.md)
+ - [GetProfileNamePendingModerationList](doc//GetProfileNamePendingModerationList.md)
  - [GetProfileResult](doc//GetProfileResult.md)
  - [GetProfileStatisticsHistoryResult](doc//GetProfileStatisticsHistoryResult.md)
  - [GetProfileStatisticsResult](doc//GetProfileStatisticsResult.md)
@@ -277,6 +280,7 @@ Class | Method | HTTP request | Description
  - [PerfHistoryValue](doc//PerfHistoryValue.md)
  - [PerfValueArea](doc//PerfValueArea.md)
  - [Permissions](doc//Permissions.md)
+ - [PostModerateProfileName](doc//PostModerateProfileName.md)
  - [Profile](doc//Profile.md)
  - [ProfileAgeCounts](doc//ProfileAgeCounts.md)
  - [ProfileAttributeFilterList](doc//ProfileAttributeFilterList.md)
@@ -291,6 +295,7 @@ Class | Method | HTTP request | Description
  - [ProfileContentVersion](doc//ProfileContentVersion.md)
  - [ProfileIteratorSessionId](doc//ProfileIteratorSessionId.md)
  - [ProfileLink](doc//ProfileLink.md)
+ - [ProfileNamePendingModeration](doc//ProfileNamePendingModeration.md)
  - [ProfilePage](doc//ProfilePage.md)
  - [ProfileSearchAgeRange](doc//ProfileSearchAgeRange.md)
  - [ProfileStatisticsHistoryValue](doc//ProfileStatisticsHistoryValue.md)

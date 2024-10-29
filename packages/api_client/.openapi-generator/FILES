@@ -63,6 +63,7 @@ doc/GetInitialProfileAgeInfoResult.md
 doc/GetMyProfileResult.md
 doc/GetNewsItemResult.md
 doc/GetProfileContentResult.md
+doc/GetProfileNamePendingModerationList.md
 doc/GetProfileResult.md
 doc/GetProfileStatisticsHistoryResult.md
 doc/GetProfileStatisticsResult.md
@@ -113,6 +114,7 @@ doc/PerfHistoryQueryResult.md
 doc/PerfHistoryValue.md
 doc/PerfValueArea.md
 doc/Permissions.md
+doc/PostModerateProfileName.md
 doc/Profile.md
 doc/ProfileAdminApi.md
 doc/ProfileAgeCounts.md
@@ -129,6 +131,7 @@ doc/ProfileContent.md
 doc/ProfileContentVersion.md
 doc/ProfileIteratorSessionId.md
 doc/ProfileLink.md
+doc/ProfileNamePendingModeration.md
 doc/ProfilePage.md
 doc/ProfileSearchAgeRange.md
 doc/ProfileStatisticsHistoryValue.md
@@ -257,6 +260,7 @@ lib/model/get_initial_profile_age_info_result.dart
 lib/model/get_my_profile_result.dart
 lib/model/get_news_item_result.dart
 lib/model/get_profile_content_result.dart
+lib/model/get_profile_name_pending_moderation_list.dart
 lib/model/get_profile_result.dart
 lib/model/get_profile_statistics_history_result.dart
 lib/model/get_profile_statistics_result.dart
@@ -304,6 +308,7 @@ lib/model/perf_history_query_result.dart
 lib/model/perf_history_value.dart
 lib/model/perf_value_area.dart
 lib/model/permissions.dart
+lib/model/post_moderate_profile_name.dart
 lib/model/profile.dart
 lib/model/profile_age_counts.dart
 lib/model/profile_attribute_filter_list.dart
@@ -318,6 +323,7 @@ lib/model/profile_content.dart
 lib/model/profile_content_version.dart
 lib/model/profile_iterator_session_id.dart
 lib/model/profile_link.dart
+lib/model/profile_name_pending_moderation.dart
 lib/model/profile_page.dart
 lib/model/profile_search_age_range.dart
 lib/model/profile_statistics_history_value.dart

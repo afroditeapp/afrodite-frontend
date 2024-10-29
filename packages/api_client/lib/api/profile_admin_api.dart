@@ -16,6 +16,47 @@ class ProfileAdminApi {
 
   final ApiClient apiClient;
 
+  /// Performs an HTTP 'GET /82woXm_Kq9yEtRHP7KAcXkgRWnU' operation and returns the [Response].
+  Future<Response> getProfileNamePendingModerationListWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/82woXm_Kq9yEtRHP7KAcXkgRWnU';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<GetProfileNamePendingModerationList?> getProfileNamePendingModerationList() async {
+    final response = await getProfileNamePendingModerationListWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileNamePendingModerationList',) as GetProfileNamePendingModerationList;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'GET /6CGbSNdoURdJRTBxb3Hb_OGw9ME' operation and returns the [Response].
   /// Parameters:
   ///
@@ -72,5 +113,44 @@ class ProfileAdminApi {
     
     }
     return null;
+  }
+
+  /// Performs an HTTP 'POST /bnrAbC2DpwIftQouXUAVR1W6g8Y' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [PostModerateProfileName] postModerateProfileName (required):
+  Future<Response> postModerateProfileNameWithHttpInfo(PostModerateProfileName postModerateProfileName,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/bnrAbC2DpwIftQouXUAVR1W6g8Y';
+
+    // ignore: prefer_final_locals
+    Object? postBody = postModerateProfileName;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [PostModerateProfileName] postModerateProfileName (required):
+  Future<void> postModerateProfileName(PostModerateProfileName postModerateProfileName,) async {
+    final response = await postModerateProfileNameWithHttpInfo(postModerateProfileName,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 }
