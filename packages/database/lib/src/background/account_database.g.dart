@@ -59,13 +59,26 @@ class $AccountBackgroundTable extends AccountBackground
       requiredDuringInsert: false,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("local_notification_setting_moderation_request_status" IN (0, 1))'));
+  static const VerificationMeta
+      _userInterfaceSettingShowNonAcceptedProfileNamesMeta =
+      const VerificationMeta('userInterfaceSettingShowNonAcceptedProfileNames');
+  @override
+  late final GeneratedColumn<
+      bool> userInterfaceSettingShowNonAcceptedProfileNames = GeneratedColumn<
+          bool>('user_interface_setting_show_non_accepted_profile_names',
+      aliasedName, true,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("user_interface_setting_show_non_accepted_profile_names" IN (0, 1))'));
   @override
   List<GeneratedColumn> get $columns => [
         id,
         uuidAccountId,
         localNotificationSettingMessages,
         localNotificationSettingLikes,
-        localNotificationSettingModerationRequestStatus
+        localNotificationSettingModerationRequestStatus,
+        userInterfaceSettingShowNonAcceptedProfileNames
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -104,6 +117,14 @@ class $AccountBackgroundTable extends AccountBackground
               data['local_notification_setting_moderation_request_status']!,
               _localNotificationSettingModerationRequestStatusMeta));
     }
+    if (data.containsKey(
+        'user_interface_setting_show_non_accepted_profile_names')) {
+      context.handle(
+          _userInterfaceSettingShowNonAcceptedProfileNamesMeta,
+          userInterfaceSettingShowNonAcceptedProfileNames.isAcceptableOrUnknown(
+              data['user_interface_setting_show_non_accepted_profile_names']!,
+              _userInterfaceSettingShowNonAcceptedProfileNamesMeta));
+    }
     return context;
   }
 
@@ -129,6 +150,11 @@ class $AccountBackgroundTable extends AccountBackground
               DriftSqlType.bool,
               data[
                   '${effectivePrefix}local_notification_setting_moderation_request_status']),
+      userInterfaceSettingShowNonAcceptedProfileNames:
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.bool,
+              data[
+                  '${effectivePrefix}user_interface_setting_show_non_accepted_profile_names']),
     );
   }
 
@@ -148,12 +174,14 @@ class AccountBackgroundData extends DataClass
   final bool? localNotificationSettingMessages;
   final bool? localNotificationSettingLikes;
   final bool? localNotificationSettingModerationRequestStatus;
+  final bool? userInterfaceSettingShowNonAcceptedProfileNames;
   const AccountBackgroundData(
       {required this.id,
       this.uuidAccountId,
       this.localNotificationSettingMessages,
       this.localNotificationSettingLikes,
-      this.localNotificationSettingModerationRequestStatus});
+      this.localNotificationSettingModerationRequestStatus,
+      this.userInterfaceSettingShowNonAcceptedProfileNames});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -174,6 +202,11 @@ class AccountBackgroundData extends DataClass
         localNotificationSettingModerationRequestStatus != null) {
       map['local_notification_setting_moderation_request_status'] =
           Variable<bool>(localNotificationSettingModerationRequestStatus);
+    }
+    if (!nullToAbsent ||
+        userInterfaceSettingShowNonAcceptedProfileNames != null) {
+      map['user_interface_setting_show_non_accepted_profile_names'] =
+          Variable<bool>(userInterfaceSettingShowNonAcceptedProfileNames);
     }
     return map;
   }
@@ -197,6 +230,11 @@ class AccountBackgroundData extends DataClass
                   nullToAbsent
               ? const Value.absent()
               : Value(localNotificationSettingModerationRequestStatus),
+      userInterfaceSettingShowNonAcceptedProfileNames:
+          userInterfaceSettingShowNonAcceptedProfileNames == null &&
+                  nullToAbsent
+              ? const Value.absent()
+              : Value(userInterfaceSettingShowNonAcceptedProfileNames),
     );
   }
 
@@ -213,6 +251,9 @@ class AccountBackgroundData extends DataClass
       localNotificationSettingModerationRequestStatus:
           serializer.fromJson<bool?>(
               json['localNotificationSettingModerationRequestStatus']),
+      userInterfaceSettingShowNonAcceptedProfileNames:
+          serializer.fromJson<bool?>(
+              json['userInterfaceSettingShowNonAcceptedProfileNames']),
     );
   }
   @override
@@ -227,6 +268,8 @@ class AccountBackgroundData extends DataClass
           serializer.toJson<bool?>(localNotificationSettingLikes),
       'localNotificationSettingModerationRequestStatus': serializer
           .toJson<bool?>(localNotificationSettingModerationRequestStatus),
+      'userInterfaceSettingShowNonAcceptedProfileNames': serializer
+          .toJson<bool?>(userInterfaceSettingShowNonAcceptedProfileNames),
     };
   }
 
@@ -236,6 +279,8 @@ class AccountBackgroundData extends DataClass
           Value<bool?> localNotificationSettingMessages = const Value.absent(),
           Value<bool?> localNotificationSettingLikes = const Value.absent(),
           Value<bool?> localNotificationSettingModerationRequestStatus =
+              const Value.absent(),
+          Value<bool?> userInterfaceSettingShowNonAcceptedProfileNames =
               const Value.absent()}) =>
       AccountBackgroundData(
         id: id ?? this.id,
@@ -252,6 +297,10 @@ class AccountBackgroundData extends DataClass
             localNotificationSettingModerationRequestStatus.present
                 ? localNotificationSettingModerationRequestStatus.value
                 : this.localNotificationSettingModerationRequestStatus,
+        userInterfaceSettingShowNonAcceptedProfileNames:
+            userInterfaceSettingShowNonAcceptedProfileNames.present
+                ? userInterfaceSettingShowNonAcceptedProfileNames.value
+                : this.userInterfaceSettingShowNonAcceptedProfileNames,
       );
   AccountBackgroundData copyWithCompanion(AccountBackgroundCompanion data) {
     return AccountBackgroundData(
@@ -270,6 +319,10 @@ class AccountBackgroundData extends DataClass
           data.localNotificationSettingModerationRequestStatus.present
               ? data.localNotificationSettingModerationRequestStatus.value
               : this.localNotificationSettingModerationRequestStatus,
+      userInterfaceSettingShowNonAcceptedProfileNames:
+          data.userInterfaceSettingShowNonAcceptedProfileNames.present
+              ? data.userInterfaceSettingShowNonAcceptedProfileNames.value
+              : this.userInterfaceSettingShowNonAcceptedProfileNames,
     );
   }
 
@@ -283,7 +336,9 @@ class AccountBackgroundData extends DataClass
           ..write(
               'localNotificationSettingLikes: $localNotificationSettingLikes, ')
           ..write(
-              'localNotificationSettingModerationRequestStatus: $localNotificationSettingModerationRequestStatus')
+              'localNotificationSettingModerationRequestStatus: $localNotificationSettingModerationRequestStatus, ')
+          ..write(
+              'userInterfaceSettingShowNonAcceptedProfileNames: $userInterfaceSettingShowNonAcceptedProfileNames')
           ..write(')'))
         .toString();
   }
@@ -294,7 +349,8 @@ class AccountBackgroundData extends DataClass
       uuidAccountId,
       localNotificationSettingMessages,
       localNotificationSettingLikes,
-      localNotificationSettingModerationRequestStatus);
+      localNotificationSettingModerationRequestStatus,
+      userInterfaceSettingShowNonAcceptedProfileNames);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -306,7 +362,9 @@ class AccountBackgroundData extends DataClass
           other.localNotificationSettingLikes ==
               this.localNotificationSettingLikes &&
           other.localNotificationSettingModerationRequestStatus ==
-              this.localNotificationSettingModerationRequestStatus);
+              this.localNotificationSettingModerationRequestStatus &&
+          other.userInterfaceSettingShowNonAcceptedProfileNames ==
+              this.userInterfaceSettingShowNonAcceptedProfileNames);
 }
 
 class AccountBackgroundCompanion
@@ -316,12 +374,14 @@ class AccountBackgroundCompanion
   final Value<bool?> localNotificationSettingMessages;
   final Value<bool?> localNotificationSettingLikes;
   final Value<bool?> localNotificationSettingModerationRequestStatus;
+  final Value<bool?> userInterfaceSettingShowNonAcceptedProfileNames;
   const AccountBackgroundCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
     this.localNotificationSettingMessages = const Value.absent(),
     this.localNotificationSettingLikes = const Value.absent(),
     this.localNotificationSettingModerationRequestStatus = const Value.absent(),
+    this.userInterfaceSettingShowNonAcceptedProfileNames = const Value.absent(),
   });
   AccountBackgroundCompanion.insert({
     this.id = const Value.absent(),
@@ -329,6 +389,7 @@ class AccountBackgroundCompanion
     this.localNotificationSettingMessages = const Value.absent(),
     this.localNotificationSettingLikes = const Value.absent(),
     this.localNotificationSettingModerationRequestStatus = const Value.absent(),
+    this.userInterfaceSettingShowNonAcceptedProfileNames = const Value.absent(),
   });
   static Insertable<AccountBackgroundData> custom({
     Expression<int>? id,
@@ -336,6 +397,7 @@ class AccountBackgroundCompanion
     Expression<bool>? localNotificationSettingMessages,
     Expression<bool>? localNotificationSettingLikes,
     Expression<bool>? localNotificationSettingModerationRequestStatus,
+    Expression<bool>? userInterfaceSettingShowNonAcceptedProfileNames,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -347,6 +409,9 @@ class AccountBackgroundCompanion
       if (localNotificationSettingModerationRequestStatus != null)
         'local_notification_setting_moderation_request_status':
             localNotificationSettingModerationRequestStatus,
+      if (userInterfaceSettingShowNonAcceptedProfileNames != null)
+        'user_interface_setting_show_non_accepted_profile_names':
+            userInterfaceSettingShowNonAcceptedProfileNames,
     });
   }
 
@@ -355,7 +420,8 @@ class AccountBackgroundCompanion
       Value<AccountId?>? uuidAccountId,
       Value<bool?>? localNotificationSettingMessages,
       Value<bool?>? localNotificationSettingLikes,
-      Value<bool?>? localNotificationSettingModerationRequestStatus}) {
+      Value<bool?>? localNotificationSettingModerationRequestStatus,
+      Value<bool?>? userInterfaceSettingShowNonAcceptedProfileNames}) {
     return AccountBackgroundCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -366,6 +432,9 @@ class AccountBackgroundCompanion
       localNotificationSettingModerationRequestStatus:
           localNotificationSettingModerationRequestStatus ??
               this.localNotificationSettingModerationRequestStatus,
+      userInterfaceSettingShowNonAcceptedProfileNames:
+          userInterfaceSettingShowNonAcceptedProfileNames ??
+              this.userInterfaceSettingShowNonAcceptedProfileNames,
     );
   }
 
@@ -392,6 +461,10 @@ class AccountBackgroundCompanion
       map['local_notification_setting_moderation_request_status'] =
           Variable<bool>(localNotificationSettingModerationRequestStatus.value);
     }
+    if (userInterfaceSettingShowNonAcceptedProfileNames.present) {
+      map['user_interface_setting_show_non_accepted_profile_names'] =
+          Variable<bool>(userInterfaceSettingShowNonAcceptedProfileNames.value);
+    }
     return map;
   }
 
@@ -405,7 +478,9 @@ class AccountBackgroundCompanion
           ..write(
               'localNotificationSettingLikes: $localNotificationSettingLikes, ')
           ..write(
-              'localNotificationSettingModerationRequestStatus: $localNotificationSettingModerationRequestStatus')
+              'localNotificationSettingModerationRequestStatus: $localNotificationSettingModerationRequestStatus, ')
+          ..write(
+              'userInterfaceSettingShowNonAcceptedProfileNames: $userInterfaceSettingShowNonAcceptedProfileNames')
           ..write(')'))
         .toString();
   }
@@ -1559,6 +1634,8 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
       $NewReceivedLikesAvailableTable(this);
   late final DaoLocalNotificationSettings daoLocalNotificationSettings =
       DaoLocalNotificationSettings(this as AccountBackgroundDatabase);
+  late final DaoUserInterfaceSettings daoUserInterfaceSettings =
+      DaoUserInterfaceSettings(this as AccountBackgroundDatabase);
   late final DaoProfilesBackground daoProfilesBackground =
       DaoProfilesBackground(this as AccountBackgroundDatabase);
   late final DaoConversationsBackground daoConversationsBackground =

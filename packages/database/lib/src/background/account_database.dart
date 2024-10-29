@@ -2,6 +2,7 @@
 
 import 'package:async/async.dart';
 import 'package:database/src/background/account/dao_local_notification_settings.dart';
+import 'package:database/src/background/account/dao_user_interface_settings.dart';
 import 'package:database/src/background/conversations_table.dart';
 import 'package:database/src/background/new_received_likes_available_table.dart';
 import 'package:database/src/background/new_message_notification_table.dart';
@@ -27,6 +28,10 @@ class AccountBackground extends Table {
   BoolColumn get localNotificationSettingMessages => boolean().nullable()();
   BoolColumn get localNotificationSettingLikes => boolean().nullable()();
   BoolColumn get localNotificationSettingModerationRequestStatus => boolean().nullable()();
+
+  // DaoUserInterfaceSettings
+
+  BoolColumn get userInterfaceSettingShowNonAcceptedProfileNames => boolean().nullable()();
 }
 
 @DriftDatabase(
@@ -40,6 +45,7 @@ class AccountBackground extends Table {
   daos: [
     // Related to AccountBackground table
     DaoLocalNotificationSettings,
+    DaoUserInterfaceSettings,
     // Related to ProfilesBackground table
     DaoProfilesBackground,
     // Related to ConversationsBackground table

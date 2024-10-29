@@ -55,7 +55,9 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
         appBar: AppBar(
           title: Text(context.strings.image_quality_settings_screen_title),
         ),
-        body: content(context),
+        body: SingleChildScrollView(
+          child: content(context),
+        ),
       ),
     );
   }

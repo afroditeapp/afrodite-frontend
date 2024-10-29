@@ -1155,6 +1155,14 @@
   },
   "url_app_privacy_policy_link": "https://example.com",
   "url_app_tos_link": "https://example.com",
+  "user_interface_settings_screen_show_non_accepted_profile_names": "Show non-accepted profile names",
+  "@user_interface_settings_screen_show_non_accepted_profile_names": {
+    "description": "Title for show non-accepted profile names setting"
+  },
+  "user_interface_settings_screen_title": "User interface",
+  "@user_interface_settings_screen_title": {
+    "description": "User interface settings screen title"
+  },
   "view_image_screen_title": "View image",
   "@view_image_screen_title": {
     "description": "Title for view image screen"
