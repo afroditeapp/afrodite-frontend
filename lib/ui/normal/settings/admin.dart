@@ -10,6 +10,7 @@ import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
 import 'package:pihka_frontend/ui/normal/settings.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin/configure_backend.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin/moderate_images.dart';
+import 'package:pihka_frontend/ui/normal/settings/admin/profile_name_moderation.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin/profile_statistics_history.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin/server_software_update.dart';
 import 'package:pihka_frontend/ui/normal/settings/admin/server_system_info.dart';
@@ -66,6 +67,11 @@ class AdminSettingsPage extends StatelessWidget {
         if (state.permissions.adminProfileStatistics) {
           settings.add(Setting.createSetting(Icons.query_stats, context.strings.profile_statistics_history_screen_title, () =>
             openProfileStatisticsHistoryScreen(context),
+          ));
+        }
+        if (state.permissions.adminModerateProfileNames) {
+          settings.add(Setting.createSetting(Icons.text_fields, context.strings.moderate_profile_names_screen_title, () =>
+            openProfileNameModerationScreen(context),
           ));
         }
 

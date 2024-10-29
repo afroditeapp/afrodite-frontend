@@ -774,6 +774,10 @@
   "@moderate_images_screen_title": {
     "description": "Title for moderate images page"
   },
+  "moderate_profile_names_screen_title": "Moderate profile names",
+  "@moderate_profile_names_screen_title": {
+    "description": "Title for moderate profile names screen"
+  },
   "new_moderation_request_screen_send_content_button": "Send to be moderated",
   "@new_moderation_request_screen_send_content_button": {
     "description": "Text for send images to be moderated button"
