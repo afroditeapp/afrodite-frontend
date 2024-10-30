@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
+import 'package:pihka_frontend/data/login_repository.dart';
 import 'package:pihka_frontend/logic/profile/my_profile.dart';
 import 'package:pihka_frontend/logic/settings/user_interface.dart';
 import 'package:pihka_frontend/ui_utils/consts/size.dart';
+import 'package:pihka_frontend/ui_utils/dialog.dart';
 import 'package:utils/utils.dart';
 import 'package:pihka_frontend/data/image_cache.dart';
 import 'package:pihka_frontend/localizations.dart';
@@ -38,6 +40,7 @@ class ViewProfileEntry extends StatefulWidget {
 }
 
 class _ViewProfileEntryState extends State<ViewProfileEntry> {
+  final currentUser = LoginRepository.getInstance().repositories.accountId;
 
   @override
   void initState() {
@@ -92,6 +95,10 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
     );
   }
 
+  bool isMyProfile() {
+    return currentUser == widget.profile.uuid;
+  }
+
   Widget title(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
@@ -101,9 +108,16 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
           children: [
             Text(
               widget.profile.profileTitleWithAge(
-                context.read<UserInterfaceSettingsBloc>().state.showNonAcceptedProfileNames,
+                context.read<UserInterfaceSettingsBloc>().state.showNonAcceptedProfileNames ||
+                isMyProfile(),
               ),
               style: Theme.of(context).textTheme.titleLarge,
+            ),
+            if (!widget.profile.nameAccepted) IconButton(
+              onPressed: () {
+                showInfoDialog(context, context.strings.view_profile_screen_non_accepted_profile_name_info_dialog_text);
+              },
+              icon: const Icon(Icons.info),
             ),
             const Spacer(),
             (context.read<MyProfileBloc>().state.profile?.unlimitedLikes ?? false) && widget.profile.unlimitedLikes ?

@@ -1249,6 +1249,10 @@
   "@view_profile_screen_my_profile_title": {
     "description": "Title for view profile screen when my profile is viewed"
   },
+  "view_profile_screen_non_accepted_profile_name_info_dialog_text": "Profile name is not yet moderated or it is moderated as denied",
+  "@view_profile_screen_non_accepted_profile_name_info_dialog_text": {
+    "description": "View profile screen info dialog text about non-accepted profile name"
+  },
   "view_profile_screen_profile_currently_online": "Online",
   "@view_profile_screen_profile_currently_online": {
     "description": "View profile screen text that profile is currently online"

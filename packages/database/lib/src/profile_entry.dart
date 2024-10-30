@@ -115,7 +115,13 @@ class ProfileTitle {
     } else {
       final iterator = name.runes.iterator;
       iterator.moveNext();
-      return "${iterator.currentAsString}…";
+      final onlyFirstCharacterVisible = "${iterator.currentAsString}…";
+      if (iterator.moveNext()) {
+        // Name is more than one character
+        return onlyFirstCharacterVisible;
+      } else {
+        return name;
+      }
     }
   }
 }
