@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
-import 'package:pihka_frontend/logic/account/account.dart';
-import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
-import 'package:pihka_frontend/ui_utils/dialog.dart';
-import 'package:pihka_frontend/ui_utils/snack_bar.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/api/api_manager.dart';
+import 'package:app/data/login_repository.dart';
+import 'package:app/logic/account/account.dart';
+import 'package:app/model/freezed/logic/account/account.dart';
+import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/result.dart';
 
 
 

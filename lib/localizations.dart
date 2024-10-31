@@ -7,7 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations_fi.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations_sv.dart';
-import 'package:pihka_frontend/database/background_database_manager.dart';
+import 'package:app/database/background_database_manager.dart';
 
 final log = Logger("localizations");
 

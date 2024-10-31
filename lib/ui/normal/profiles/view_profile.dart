@@ -5,19 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
-import 'package:pihka_frontend/data/profile_repository.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/logic/profile/view_profiles.dart';
-import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
-import 'package:pihka_frontend/model/freezed/logic/profile/view_profiles.dart';
-import 'package:pihka_frontend/ui/normal/chat/conversation_page.dart';
-import 'package:pihka_frontend/ui/utils/view_profile.dart';
-import 'package:pihka_frontend/ui_utils/app_bar/common_actions.dart';
-import 'package:pihka_frontend/ui_utils/app_bar/menu_actions.dart';
+import 'package:app/data/profile_repository.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/logic/profile/view_profiles.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/model/freezed/logic/profile/view_profiles.dart';
+import 'package:app/ui/normal/chat/conversation_page.dart';
+import 'package:app/ui/utils/view_profile.dart';
+import 'package:app/ui_utils/app_bar/common_actions.dart';
+import 'package:app/ui_utils/app_bar/menu_actions.dart';
 
-import 'package:pihka_frontend/ui_utils/dialog.dart';
-import 'package:pihka_frontend/ui_utils/snack_bar.dart';
+import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 
 typedef ProfileHeroTagRaw = ({AccountId accountId, int uniqueCounterNumber});
 

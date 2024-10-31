@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/profile/edit_profile_filtering_settings.dart';
-import 'package:pihka_frontend/ui/normal/profiles/filter_profiles.dart';
-import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile_attribute.dart';
-import 'package:pihka_frontend/ui_utils/app_bar/search.dart';
-import 'package:pihka_frontend/utils/api.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/profile/edit_profile_filtering_settings.dart';
+import 'package:app/ui/normal/profiles/filter_profiles.dart';
+import 'package:app/ui/normal/settings/profile/edit_profile_attribute.dart';
+import 'package:app/ui_utils/app_bar/search.dart';
+import 'package:app/utils/api.dart';
 
 class EditProfileAttributeFilterScreen extends StatefulWidget {
   final AttributeFilterInfo a;

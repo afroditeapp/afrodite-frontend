@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/data/chat/matches_database_iterator.dart';
-import 'package:pihka_frontend/data/chat_repository.dart';
-import 'package:pihka_frontend/data/general/iterator/profile_iterator.dart';
-import 'package:pihka_frontend/data/general/iterator/online_iterator.dart';
+import 'package:app/data/chat/matches_database_iterator.dart';
+import 'package:app/data/chat_repository.dart';
+import 'package:app/data/general/iterator/profile_iterator.dart';
+import 'package:app/data/general/iterator/online_iterator.dart';
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/account_database_manager.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/database/account_database_manager.dart';
+import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class BaseIteratorManager {

@@ -2,7 +2,7 @@
 
 import 'dart:async';
 
-import 'package:pihka_frontend/utils/app_error.dart';
+import 'package:app/utils/app_error.dart';
 
 sealed class Result<Success, Error> {
   const Result();

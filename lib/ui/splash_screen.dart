@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
-import "package:pihka_frontend/assets.dart";
-import "package:pihka_frontend/main.dart";
+import "package:app/assets.dart";
+import "package:app/main.dart";
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);

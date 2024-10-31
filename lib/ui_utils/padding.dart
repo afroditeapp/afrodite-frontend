@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pihka_frontend/ui_utils/consts/padding.dart';
+import 'package:app/ui_utils/consts/padding.dart';
 
 /// Wrap widget with horizontal padding
 Widget hPad(Widget child) {

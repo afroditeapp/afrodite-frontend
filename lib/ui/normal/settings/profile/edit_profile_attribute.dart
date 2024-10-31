@@ -3,16 +3,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/profile/edit_my_profile.dart';
-import 'package:pihka_frontend/model/freezed/logic/profile/edit_my_profile.dart';
-import 'package:pihka_frontend/ui/initial_setup/profile_attributes.dart';
-import 'package:pihka_frontend/ui/normal/settings/profile/edit_profile.dart';
-import 'package:pihka_frontend/ui/utils/view_profile.dart';
-import 'package:pihka_frontend/ui_utils/app_bar/search.dart';
-import 'package:pihka_frontend/ui_utils/consts/padding.dart';
-import 'package:pihka_frontend/ui_utils/snack_bar.dart';
-import 'package:pihka_frontend/utils/api.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/profile/edit_my_profile.dart';
+import 'package:app/model/freezed/logic/profile/edit_my_profile.dart';
+import 'package:app/ui/initial_setup/profile_attributes.dart';
+import 'package:app/ui/normal/settings/profile/edit_profile.dart';
+import 'package:app/ui/utils/view_profile.dart';
+import 'package:app/ui_utils/app_bar/search.dart';
+import 'package:app/ui_utils/consts/padding.dart';
+import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/api.dart';
 
 class EditProfileAttributeScreen extends StatefulWidget {
   final AttributeAndValue a;

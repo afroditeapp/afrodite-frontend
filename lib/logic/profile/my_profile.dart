@@ -2,19 +2,19 @@ import "dart:async";
 
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
-import "package:pihka_frontend/data/account_repository.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/data/media_repository.dart";
-import "package:pihka_frontend/data/profile_repository.dart";
+import "package:app/data/account_repository.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/data/media_repository.dart";
+import "package:app/data/profile_repository.dart";
 import 'package:database/database.dart';
-import "package:pihka_frontend/database/account_database_manager.dart";
-import "package:pihka_frontend/localizations.dart";
-import "package:pihka_frontend/model/freezed/logic/profile/my_profile.dart";
-import "package:pihka_frontend/ui_utils/common_update_logic.dart";
-import "package:pihka_frontend/ui_utils/snack_bar.dart";
-import "package:pihka_frontend/utils.dart";
-import "package:pihka_frontend/utils/result.dart";
-import "package:pihka_frontend/utils/time.dart";
+import "package:app/database/account_database_manager.dart";
+import "package:app/localizations.dart";
+import "package:app/model/freezed/logic/profile/my_profile.dart";
+import "package:app/ui_utils/common_update_logic.dart";
+import "package:app/ui_utils/snack_bar.dart";
+import "package:app/utils.dart";
+import "package:app/utils/result.dart";
+import "package:app/utils/time.dart";
 
 
 sealed class MyProfileEvent {}

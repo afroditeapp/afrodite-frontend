@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:pihka_frontend/data/general/image_cache_settings.dart';
-import 'package:pihka_frontend/data/image_cache.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/ui_utils/dialog.dart';
-import 'package:pihka_frontend/ui_utils/padding.dart';
+import 'package:app/data/general/image_cache_settings.dart';
+import 'package:app/data/image_cache.dart';
+import 'package:app/data/login_repository.dart';
+import 'package:app/localizations.dart';
+import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/padding.dart';
 
 final log = Logger("ImageSettingsScreen");
 

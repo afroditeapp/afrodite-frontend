@@ -3,17 +3,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/logic/login.dart';
-import 'package:pihka_frontend/logic/media/select_content.dart';
-import 'package:pihka_frontend/model/freezed/logic/login.dart';
-import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
-import 'package:pihka_frontend/model/freezed/logic/media/select_content.dart';
-import 'package:pihka_frontend/ui/normal/settings/media/current_moderation_request.dart';
-import 'package:pihka_frontend/ui_utils/consts/padding.dart';
-import 'package:pihka_frontend/ui_utils/image.dart';
-import 'package:pihka_frontend/ui_utils/snack_bar.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/logic/login.dart';
+import 'package:app/logic/media/select_content.dart';
+import 'package:app/model/freezed/logic/login.dart';
+import 'package:app/model/freezed/logic/media/profile_pictures.dart';
+import 'package:app/model/freezed/logic/media/select_content.dart';
+import 'package:app/ui/normal/settings/media/current_moderation_request.dart';
+import 'package:app/ui_utils/consts/padding.dart';
+import 'package:app/ui_utils/image.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 
 const SELECT_CONTENT_IMAGE_HEIGHT = 200.0;
 const SELECT_CONTENT_IMAGE_WIDTH = 150.0;

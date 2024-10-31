@@ -3,14 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/logic/login.dart';
-import 'package:pihka_frontend/logic/media/content.dart';
-import 'package:pihka_frontend/model/freezed/logic/login.dart';
-import 'package:pihka_frontend/model/freezed/logic/media/content.dart';
-import 'package:pihka_frontend/ui_utils/image.dart';
-import 'package:pihka_frontend/ui_utils/view_image_screen.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/logic/login.dart';
+import 'package:app/logic/media/content.dart';
+import 'package:app/model/freezed/logic/login.dart';
+import 'package:app/model/freezed/logic/media/content.dart';
+import 'package:app/ui_utils/image.dart';
+import 'package:app/ui_utils/view_image_screen.dart';
 
 // TODO(prod): Security selfie screen says "Error" when initial modreation
 // is not done yet.

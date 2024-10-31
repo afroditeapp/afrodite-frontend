@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/settings/edit_search_settings.dart';
-import 'package:pihka_frontend/model/freezed/logic/settings/edit_search_settings.dart';
-import 'package:pihka_frontend/ui/initial_setup/gender.dart';
-import 'package:pihka_frontend/ui/normal/settings/profile/search_settings/edit_gender_filter.dart';
-import 'package:pihka_frontend/ui_utils/padding.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/settings/edit_search_settings.dart';
+import 'package:app/model/freezed/logic/settings/edit_search_settings.dart';
+import 'package:app/ui/initial_setup/gender.dart';
+import 'package:app/ui/normal/settings/profile/search_settings/edit_gender_filter.dart';
+import 'package:app/ui_utils/padding.dart';
 
 class EditMyGenderScreen extends StatelessWidget {
   const EditMyGenderScreen({super.key});

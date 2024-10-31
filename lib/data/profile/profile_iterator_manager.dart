@@ -1,17 +1,17 @@
 import 'dart:async';
 
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/data/chat_repository.dart';
-import 'package:pihka_frontend/data/media_repository.dart';
-import 'package:pihka_frontend/data/general/iterator/profile_iterator.dart';
-import 'package:pihka_frontend/data/profile/profile_list/favorites_database_iterator.dart';
-import 'package:pihka_frontend/data/profile/profile_list/profiles_database_iterator.dart';
-import 'package:pihka_frontend/data/general/iterator/online_iterator.dart';
+import 'package:app/api/api_manager.dart';
+import 'package:app/data/chat_repository.dart';
+import 'package:app/data/media_repository.dart';
+import 'package:app/data/general/iterator/profile_iterator.dart';
+import 'package:app/data/profile/profile_list/favorites_database_iterator.dart';
+import 'package:app/data/profile/profile_list/profiles_database_iterator.dart';
+import 'package:app/data/general/iterator/online_iterator.dart';
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/account_background_database_manager.dart';
-import 'package:pihka_frontend/database/account_database_manager.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/database/account_database_manager.dart';
+import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
 sealed class ProfileIteratorMode {}

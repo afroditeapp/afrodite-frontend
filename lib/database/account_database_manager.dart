@@ -5,8 +5,8 @@ import 'package:drift/drift.dart';
 import 'package:drift/isolate.dart';
 import 'package:database/database.dart';
 import 'package:logging/logging.dart';
-import 'package:pihka_frontend/utils/app_error.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/utils/app_error.dart';
+import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
 final log = Logger("AccountDatabaseManager");

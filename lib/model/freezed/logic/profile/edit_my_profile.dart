@@ -2,7 +2,7 @@
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/utils/immutable_list.dart';
+import 'package:app/utils/immutable_list.dart';
 
 part 'edit_my_profile.freezed.dart';
 

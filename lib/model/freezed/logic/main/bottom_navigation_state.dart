@@ -1,7 +1,7 @@
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
-import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
+import 'package:app/logic/app/bottom_navigation_state.dart';
 
 part 'bottom_navigation_state.freezed.dart';
 

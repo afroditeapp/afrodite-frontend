@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/account_database_manager.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/database/account_database_manager.dart';
+import 'package:app/utils/result.dart';
 
 class MessageDatabaseIterator {
   int startLocalKey = 0;

@@ -7,12 +7,12 @@ import "package:async/async.dart" show StreamExtensions;
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/data/profile_repository.dart";
-import "package:pihka_frontend/model/freezed/logic/chat/conversation_list_bloc.dart";
-import "package:pihka_frontend/utils.dart";
-import "package:pihka_frontend/utils/immutable_list.dart";
-import "package:pihka_frontend/utils/iterator.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/data/profile_repository.dart";
+import "package:app/model/freezed/logic/chat/conversation_list_bloc.dart";
+import "package:app/utils.dart";
+import "package:app/utils/immutable_list.dart";
+import "package:app/utils/iterator.dart";
 
 var log = Logger("ConversationListBloc");
 

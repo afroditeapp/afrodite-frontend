@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
+import 'package:app/api/api_manager.dart';
+import 'package:app/data/login_repository.dart';
 
 
-import 'package:pihka_frontend/ui_utils/dialog.dart';
-import 'package:pihka_frontend/ui_utils/snack_bar.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/result.dart';
 
 
 

@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/assets.dart';
+import 'package:app/assets.dart';
 
 const accessTokenHeaderName = "x-access-token";
 

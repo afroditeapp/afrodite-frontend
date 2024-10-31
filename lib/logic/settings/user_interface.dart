@@ -2,9 +2,9 @@ import "dart:async";
 
 import "package:bloc_concurrency/bloc_concurrency.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/database/account_background_database_manager.dart";
-import "package:pihka_frontend/model/freezed/logic/settings/user_interface.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/database/account_background_database_manager.dart";
+import "package:app/model/freezed/logic/settings/user_interface.dart";
 
 sealed class UserInterfaceSettingsEvent {}
 class NewShowNonAcceptedProfileNames extends UserInterfaceSettingsEvent {

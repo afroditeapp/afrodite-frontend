@@ -9,18 +9,18 @@ import "package:openapi/api.dart";
 import 'package:image/image.dart' as img;
 import 'package:utils/utils.dart';
 
-import "package:pihka_frontend/data/account_repository.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/data/media_repository.dart";
-import "package:pihka_frontend/localizations.dart";
-import "package:pihka_frontend/model/freezed/logic/account/initial_setup.dart";
-import "package:pihka_frontend/model/freezed/logic/media/image_processing.dart";
-import "package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart";
-import "package:pihka_frontend/ui_utils/snack_bar.dart";
-import "package:pihka_frontend/utils.dart";
-import "package:pihka_frontend/utils/api.dart";
-import "package:pihka_frontend/utils/immutable_list.dart";
-import "package:pihka_frontend/utils/tmp_dir.dart";
+import "package:app/data/account_repository.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/data/media_repository.dart";
+import "package:app/localizations.dart";
+import "package:app/model/freezed/logic/account/initial_setup.dart";
+import "package:app/model/freezed/logic/media/image_processing.dart";
+import "package:app/model/freezed/logic/media/profile_pictures.dart";
+import "package:app/ui_utils/snack_bar.dart";
+import "package:app/utils.dart";
+import "package:app/utils/api.dart";
+import "package:app/utils/immutable_list.dart";
+import "package:app/utils/tmp_dir.dart";
 
 
 // TODO(prod): Figure out email address changing?

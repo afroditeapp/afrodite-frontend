@@ -1,7 +1,7 @@
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:pihka_frontend/data/general/notification/state/like_received.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/model/freezed/logic/main/bottom_navigation_state.dart";
+import "package:app/data/general/notification/state/like_received.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/model/freezed/logic/main/bottom_navigation_state.dart";
 import 'package:utils/utils.dart';
 
 

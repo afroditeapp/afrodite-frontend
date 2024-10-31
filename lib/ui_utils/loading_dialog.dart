@@ -5,8 +5,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 
 class ProgressDialogOpener<B extends StateStreamable<S>, S> extends StatefulWidget {
   /// Listener which returns true if the dialog should be opened and

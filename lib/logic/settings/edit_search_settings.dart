@@ -1,9 +1,9 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
-import 'package:pihka_frontend/database/database_manager.dart';
-import "package:pihka_frontend/model/freezed/logic/account/initial_setup.dart";
-import "package:pihka_frontend/model/freezed/logic/settings/edit_search_settings.dart";
-import "package:pihka_frontend/utils/api.dart";
+import 'package:app/database/database_manager.dart';
+import "package:app/model/freezed/logic/account/initial_setup.dart";
+import "package:app/model/freezed/logic/settings/edit_search_settings.dart";
+import "package:app/utils/api.dart";
 
 sealed class EditSearchSettingsEvent {}
 class SetInitialValues extends EditSearchSettingsEvent {

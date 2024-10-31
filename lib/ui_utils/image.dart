@@ -2,8 +2,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/data/image_cache.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
+import 'package:app/data/image_cache.dart';
+import 'package:app/data/login_repository.dart';
 
 Widget bytesImgWidget(Uint8List imageBytes, {double? width, double? height, AlignmentGeometry alignment = Alignment.center}) {
   return Image.memory(

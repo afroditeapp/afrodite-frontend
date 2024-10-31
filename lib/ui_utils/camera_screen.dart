@@ -6,16 +6,16 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:logging/logging.dart";
-import "package:pihka_frontend/localizations.dart";
-import "package:pihka_frontend/logic/app/navigator_state.dart";
-import "package:pihka_frontend/ui_utils/dialog.dart";
-import "package:pihka_frontend/ui_utils/snack_bar.dart";
+import "package:app/localizations.dart";
+import "package:app/logic/app/navigator_state.dart";
+import "package:app/ui_utils/dialog.dart";
+import "package:app/ui_utils/snack_bar.dart";
 import 'package:utils/utils.dart';
-import "package:pihka_frontend/utils/camera.dart";
-import "package:pihka_frontend/utils/image.dart";
+import "package:app/utils/camera.dart";
+import "package:app/utils/image.dart";
 
 import 'package:image/image.dart' as img;
-import "package:pihka_frontend/utils/tmp_dir.dart";
+import "package:app/utils/tmp_dir.dart";
 
 var log = Logger("CameraScreen");
 

@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/account/account_details.dart';
-import 'package:pihka_frontend/model/freezed/logic/account/account_details.dart';
-import 'package:pihka_frontend/ui/normal/settings.dart';
-import 'package:pihka_frontend/ui_utils/dialog.dart';
-import 'package:pihka_frontend/ui_utils/padding.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/account/account_details.dart';
+import 'package:app/model/freezed/logic/account/account_details.dart';
+import 'package:app/ui/normal/settings.dart';
+import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/padding.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
   final AccountDetailsBloc accountDetailsBloc;

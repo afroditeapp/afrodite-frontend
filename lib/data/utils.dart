@@ -3,8 +3,8 @@
 
 import 'dart:async';
 
-import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/api/api_manager.dart';
+import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 

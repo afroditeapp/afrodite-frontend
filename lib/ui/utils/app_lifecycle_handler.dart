@@ -2,7 +2,7 @@
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
-import 'package:pihka_frontend/logic/app/app_visibility_provider.dart';
+import 'package:app/logic/app/app_visibility_provider.dart';
 
 class AppLifecycleHandler extends StatefulWidget {
   final Widget child;

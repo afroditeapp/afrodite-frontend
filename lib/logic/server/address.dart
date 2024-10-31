@@ -1,6 +1,6 @@
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:pihka_frontend/config.dart";
-import "package:pihka_frontend/data/login_repository.dart";
+import "package:app/config.dart";
+import "package:app/data/login_repository.dart";
 
 sealed class ServerAddressEvent {}
 class ChangeCachedServerAddress extends ServerAddressEvent {

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/ui/splash_screen.dart';
-import 'package:pihka_frontend/utils/immutable_list.dart';
+import 'package:app/ui/splash_screen.dart';
+import 'package:app/utils/immutable_list.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'navigator_state.freezed.dart';

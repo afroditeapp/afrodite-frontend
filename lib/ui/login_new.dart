@@ -4,26 +4,26 @@ import "package:flutter/foundation.dart";
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:pihka_frontend/assets.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/logic/account/demo_account.dart";
-import "package:pihka_frontend/logic/app/navigator_state.dart";
-import "package:pihka_frontend/logic/sign_in_with.dart";
-import "package:pihka_frontend/model/freezed/logic/account/demo_account.dart";
-import "package:pihka_frontend/model/freezed/logic/main/navigator_state.dart";
-import "package:pihka_frontend/model/freezed/logic/sign_in_with.dart";
-import "package:pihka_frontend/ui/login.dart";
-import "package:pihka_frontend/ui_utils/consts/colors.dart";
-import "package:pihka_frontend/ui_utils/loading_dialog.dart";
-import "package:pihka_frontend/ui_utils/app_bar/common_actions.dart";
-import "package:pihka_frontend/ui_utils/app_bar/menu_actions.dart";
-import "package:pihka_frontend/ui_utils/sign_in_with_google_web_button/button.dart";
-import "package:pihka_frontend/ui_utils/text_field.dart";
+import "package:app/assets.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/logic/account/demo_account.dart";
+import "package:app/logic/app/navigator_state.dart";
+import "package:app/logic/sign_in_with.dart";
+import "package:app/model/freezed/logic/account/demo_account.dart";
+import "package:app/model/freezed/logic/main/navigator_state.dart";
+import "package:app/model/freezed/logic/sign_in_with.dart";
+import "package:app/ui/login.dart";
+import "package:app/ui_utils/consts/colors.dart";
+import "package:app/ui_utils/loading_dialog.dart";
+import "package:app/ui_utils/app_bar/common_actions.dart";
+import "package:app/ui_utils/app_bar/menu_actions.dart";
+import "package:app/ui_utils/sign_in_with_google_web_button/button.dart";
+import "package:app/ui_utils/text_field.dart";
 
 import "package:sign_in_with_apple/sign_in_with_apple.dart";
 
 
-import 'package:pihka_frontend/localizations.dart';
+import 'package:app/localizations.dart';
 import "package:url_launcher/url_launcher_string.dart";
 
 // TODO(prod): Show progress when sign in with google/apple returns and

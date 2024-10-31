@@ -1,6 +1,6 @@
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
-import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
+import 'package:app/model/freezed/logic/account/initial_setup.dart';
 
 part 'edit_search_settings.freezed.dart';
 

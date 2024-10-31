@@ -2,9 +2,9 @@ import "dart:async";
 
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/data/profile_repository.dart";
-import "package:pihka_frontend/utils.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/data/profile_repository.dart";
+import "package:app/utils.dart";
 
 
 sealed class LocationEvent {}

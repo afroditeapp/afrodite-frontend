@@ -1,14 +1,14 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:latlong2/latlong.dart";
-import "package:pihka_frontend/localizations.dart";
-import "package:pihka_frontend/logic/account/initial_setup.dart";
-import "package:pihka_frontend/logic/app/navigator_state.dart";
-import "package:pihka_frontend/logic/profile/attributes.dart";
-import "package:pihka_frontend/ui/initial_setup/profile_attributes.dart";
-import "package:pihka_frontend/ui/normal/settings/location.dart";
-import "package:pihka_frontend/ui_utils/dialog.dart";
-import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
+import "package:app/localizations.dart";
+import "package:app/logic/account/initial_setup.dart";
+import "package:app/logic/app/navigator_state.dart";
+import "package:app/logic/profile/attributes.dart";
+import "package:app/ui/initial_setup/profile_attributes.dart";
+import "package:app/ui/normal/settings/location.dart";
+import "package:app/ui_utils/dialog.dart";
+import "package:app/ui_utils/initial_setup_common.dart";
 
 class AskLocationScreen extends StatelessWidget {
   const AskLocationScreen({Key? key}) : super(key: key);

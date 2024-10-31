@@ -4,9 +4,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/login.dart';
-import 'package:pihka_frontend/ui_utils/dialog.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/login.dart';
+import 'package:app/ui_utils/dialog.dart';
 
 
 /// Common action that should be shown when the user is logged out from

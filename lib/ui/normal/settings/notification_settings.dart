@@ -3,12 +3,12 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pihka_frontend/data/notification_manager.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/logic/app/notification_settings.dart';
-import 'package:pihka_frontend/model/freezed/logic/settings/notification_settings.dart';
-import 'package:pihka_frontend/ui_utils/padding.dart';
+import 'package:app/data/notification_manager.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/logic/app/notification_settings.dart';
+import 'package:app/model/freezed/logic/settings/notification_settings.dart';
+import 'package:app/ui_utils/padding.dart';
 
 void openNotificationSettings(BuildContext context) {
   if (NotificationManager.getInstance().osProvidesNotificationSettingsUi) {

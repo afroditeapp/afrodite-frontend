@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:pihka_frontend/localizations.dart';
+import 'package:app/localizations.dart';
 
 class DataSettingsScreen extends StatefulWidget {
   const DataSettingsScreen({

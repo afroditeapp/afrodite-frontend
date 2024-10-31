@@ -5,15 +5,15 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/data/general/notification/state/like_received.dart';
-import 'package:pihka_frontend/data/general/notification/state/message_received.dart';
-import 'package:pihka_frontend/data/general/notification/state/moderation_request_status.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
-import 'package:pihka_frontend/database/account_background_database_manager.dart';
-import 'package:pihka_frontend/database/account_database_manager.dart';
-import 'package:pihka_frontend/ui/normal/chat/debug_page.dart';
-import 'package:pihka_frontend/ui/normal/settings.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/data/general/notification/state/like_received.dart';
+import 'package:app/data/general/notification/state/message_received.dart';
+import 'package:app/data/general/notification/state/moderation_request_status.dart';
+import 'package:app/data/login_repository.dart';
+import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/database/account_database_manager.dart';
+import 'package:app/ui/normal/chat/debug_page.dart';
+import 'package:app/ui/normal/settings.dart';
+import 'package:app/utils/result.dart';
 
 
 class DebugSettingsPage extends StatefulWidget {

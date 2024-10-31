@@ -2,14 +2,14 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart';
-import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/data/push_notification_manager.dart';
-import 'package:pihka_frontend/data/utils.dart';
+import 'package:app/api/api_manager.dart';
+import 'package:app/data/push_notification_manager.dart';
+import 'package:app/data/utils.dart';
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/background_database_manager.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
-import 'package:pihka_frontend/storage/kv.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/database/background_database_manager.dart';
+import 'package:app/database/database_manager.dart';
+import 'package:app/storage/kv.dart';
+import 'package:app/utils/result.dart';
 
 var log = Logger("CommonRepository");
 

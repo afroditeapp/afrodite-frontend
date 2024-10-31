@@ -8,34 +8,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:logging/logging.dart';
-import 'package:pihka_frontend/api/error_manager.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
-import 'package:pihka_frontend/data/image_cache.dart';
-import 'package:pihka_frontend/data/notification_manager.dart';
-import 'package:pihka_frontend/data/push_notification_manager.dart';
-import 'package:pihka_frontend/database/background_database_manager.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/account/demo_account.dart';
-import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
-import 'package:pihka_frontend/logic/app/like_grid_instance_manager.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
-import 'package:pihka_frontend/logic/login.dart';
-import 'package:pihka_frontend/logic/server/address.dart';
-import 'package:pihka_frontend/logic/sign_in_with.dart';
+import 'package:app/api/error_manager.dart';
+import 'package:app/data/login_repository.dart';
+import 'package:app/data/image_cache.dart';
+import 'package:app/data/notification_manager.dart';
+import 'package:app/data/push_notification_manager.dart';
+import 'package:app/database/background_database_manager.dart';
+import 'package:app/database/database_manager.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/account/demo_account.dart';
+import 'package:app/logic/app/bottom_navigation_state.dart';
+import 'package:app/logic/app/like_grid_instance_manager.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/logic/chat/conversation_bloc.dart';
+import 'package:app/logic/login.dart';
+import 'package:app/logic/server/address.dart';
+import 'package:app/logic/sign_in_with.dart';
 
-import 'package:pihka_frontend/logic/app/main_state.dart';
-import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
-import 'package:pihka_frontend/storage/encryption.dart';
+import 'package:app/logic/app/main_state.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/storage/encryption.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:pihka_frontend/ui/utils/app_lifecycle_handler.dart';
-import 'package:pihka_frontend/ui/utils/main_state_ui_logic.dart';
-import 'package:pihka_frontend/utils/camera.dart';
+import 'package:app/ui/utils/app_lifecycle_handler.dart';
+import 'package:app/ui/utils/main_state_ui_logic.dart';
+import 'package:app/utils/camera.dart';
 
 import 'package:rxdart/rxdart.dart';
 

@@ -1,7 +1,7 @@
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
+import 'package:app/ui_utils/common_update_logic.dart';
 
 part 'privacy_settings.freezed.dart';
 

@@ -3,19 +3,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/account/account.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/logic/settings/privacy_settings.dart';
-import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
-import 'package:pihka_frontend/model/freezed/logic/settings/privacy_settings.dart';
-import 'package:pihka_frontend/ui/normal/settings.dart';
-import 'package:pihka_frontend/ui/normal/settings/blocked_profiles.dart';
-import 'package:pihka_frontend/ui/normal/settings/media/current_security_selfie.dart';
-import 'package:pihka_frontend/ui_utils/common_update_logic.dart';
-import 'package:pihka_frontend/ui_utils/consts/padding.dart';
-import 'package:pihka_frontend/ui_utils/dialog.dart';
-import 'package:pihka_frontend/utils/api.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/account/account.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/logic/settings/privacy_settings.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
+import 'package:app/ui/normal/settings.dart';
+import 'package:app/ui/normal/settings/blocked_profiles.dart';
+import 'package:app/ui/normal/settings/media/current_security_selfie.dart';
+import 'package:app/ui_utils/common_update_logic.dart';
+import 'package:app/ui_utils/consts/padding.dart';
+import 'package:app/ui_utils/dialog.dart';
+import 'package:app/utils/api.dart';
 
 class PrivacySettingsScreen extends StatefulWidget {
   final PageKey pageKey;

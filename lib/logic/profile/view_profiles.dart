@@ -3,15 +3,15 @@ import "dart:async";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
-import "package:pihka_frontend/data/account_repository.dart";
-import "package:pihka_frontend/data/chat_repository.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/data/media_repository.dart";
-import "package:pihka_frontend/data/profile_repository.dart";
+import "package:app/data/account_repository.dart";
+import "package:app/data/chat_repository.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/data/media_repository.dart";
+import "package:app/data/profile_repository.dart";
 import 'package:database/database.dart';
-import "package:pihka_frontend/model/freezed/logic/profile/view_profiles.dart";
-import "package:pihka_frontend/utils.dart";
-import "package:pihka_frontend/utils/result.dart";
+import "package:app/model/freezed/logic/profile/view_profiles.dart";
+import "package:app/utils.dart";
+import "package:app/utils/result.dart";
 
 final log = Logger("ViewProfilesBloc");
 

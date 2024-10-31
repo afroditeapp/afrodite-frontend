@@ -4,7 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
-import 'package:pihka_frontend/localizations.dart';
+import 'package:app/localizations.dart';
 import 'package:utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 

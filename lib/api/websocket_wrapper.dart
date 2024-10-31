@@ -2,7 +2,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 const _CONVERSATION_PING_INTERVAL = Duration(seconds: 10);

@@ -1,11 +1,11 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/ui/normal/settings.dart';
-import 'package:pihka_frontend/ui/normal/settings/general/image_settings.dart';
-import 'package:pihka_frontend/ui/normal/settings/general/user_interface.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/ui/normal/settings.dart';
+import 'package:app/ui/normal/settings/general/image_settings.dart';
+import 'package:app/ui/normal/settings/general/user_interface.dart';
 
 class GeneralSettingsScreen extends StatefulWidget {
   const GeneralSettingsScreen({

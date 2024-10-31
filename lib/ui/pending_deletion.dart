@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:pihka_frontend/logic/app/main_state.dart";
+import "package:app/logic/app/main_state.dart";
 
 // TODO(prod): Translate text
 

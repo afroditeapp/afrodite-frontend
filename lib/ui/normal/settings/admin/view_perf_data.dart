@@ -3,9 +3,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/api/api_manager.dart';
+import 'package:app/data/login_repository.dart';
+import 'package:app/utils/result.dart';
 
 
 class ViewPerfDataPage extends StatefulWidget {

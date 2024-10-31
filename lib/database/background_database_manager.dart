@@ -7,10 +7,10 @@ import 'package:drift/isolate.dart';
 import 'package:database/database.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/database/account_background_database_manager.dart';
+import 'package:app/database/account_background_database_manager.dart';
 import 'package:utils/utils.dart';
-import 'package:pihka_frontend/utils/app_error.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/utils/app_error.dart';
+import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
 final log = Logger("BackgroundDatabaseManager");

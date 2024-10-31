@@ -1,14 +1,14 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:pihka_frontend/localizations.dart";
-import "package:pihka_frontend/logic/account/initial_setup.dart";
-import "package:pihka_frontend/logic/app/navigator_state.dart";
-import "package:pihka_frontend/ui/initial_setup/gender.dart";
-import "package:pihka_frontend/ui_utils/consts/padding.dart";
-import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
-import "package:pihka_frontend/ui_utils/text_field.dart";
-import "package:pihka_frontend/utils/age.dart";
+import "package:app/localizations.dart";
+import "package:app/logic/account/initial_setup.dart";
+import "package:app/logic/app/navigator_state.dart";
+import "package:app/ui/initial_setup/gender.dart";
+import "package:app/ui_utils/consts/padding.dart";
+import "package:app/ui_utils/initial_setup_common.dart";
+import "package:app/ui_utils/text_field.dart";
+import "package:app/utils/age.dart";
 
 final profileNameRegexp = RegExp("[a-zA-ZåäöÅÄÖ-]");
 

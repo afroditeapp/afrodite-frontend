@@ -3,14 +3,14 @@ import "dart:async";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
-import "package:pihka_frontend/api/api_manager.dart";
-import "package:pihka_frontend/data/image_cache.dart";
-import "package:pihka_frontend/data/login_repository.dart";
+import "package:app/api/api_manager.dart";
+import "package:app/data/image_cache.dart";
+import "package:app/data/login_repository.dart";
 
-import "package:pihka_frontend/data/media_repository.dart";
+import "package:app/data/media_repository.dart";
 import 'package:database/database.dart';
-import "package:pihka_frontend/database/account_database_manager.dart";
-import "package:pihka_frontend/model/freezed/logic/media/content.dart";
+import "package:app/database/account_database_manager.dart";
+import "package:app/model/freezed/logic/media/content.dart";
 
 
 final log = Logger("ContentBloc");

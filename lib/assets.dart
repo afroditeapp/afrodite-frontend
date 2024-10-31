@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:pihka_frontend/data/notification_manager.dart';
+import 'package:app/data/notification_manager.dart';
 
 Future<Uint8List> loadLetsEncryptRootCertificates() async {
   final data = await rootBundle.load("assets/isrg-root-x1-and-x2.pem");

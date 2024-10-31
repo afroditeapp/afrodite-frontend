@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:pihka_frontend/logic/account/news/edit_news.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/model/freezed/logic/account/news/edit_news.dart';
-import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
-import 'package:pihka_frontend/ui/normal/settings/news/view_news.dart';
+import 'package:app/logic/account/news/edit_news.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/model/freezed/logic/account/news/edit_news.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui/normal/settings/news/view_news.dart';
 
 final log = Logger("EditNewsTranslationScreen");
 

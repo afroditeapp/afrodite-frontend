@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/settings/edit_search_settings.dart';
-import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
-import 'package:pihka_frontend/model/freezed/logic/settings/edit_search_settings.dart';
-import 'package:pihka_frontend/ui/initial_setup/search_settings.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/settings/edit_search_settings.dart';
+import 'package:app/model/freezed/logic/account/initial_setup.dart';
+import 'package:app/model/freezed/logic/settings/edit_search_settings.dart';
+import 'package:app/ui/initial_setup/search_settings.dart';
 
 class EditGenderFilterScreen extends StatelessWidget {
   const EditGenderFilterScreen({super.key});

@@ -1,10 +1,10 @@
 import "dart:async";
 
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:pihka_frontend/data/general/notification/utils/notification_category.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/data/notification_manager.dart";
-import "package:pihka_frontend/model/freezed/logic/settings/notification_settings.dart";
+import "package:app/data/general/notification/utils/notification_category.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/data/notification_manager.dart";
+import "package:app/model/freezed/logic/settings/notification_settings.dart";
 
 abstract class NotificationSettingsEvent {}
 

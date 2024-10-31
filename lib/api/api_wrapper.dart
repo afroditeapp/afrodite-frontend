@@ -5,9 +5,9 @@
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/utils/app_error.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/api/api_manager.dart';
+import 'package:app/utils/app_error.dart';
+import 'package:app/utils/result.dart';
 
 final log = Logger("ApiWrapper");
 

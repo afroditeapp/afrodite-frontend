@@ -2,7 +2,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:native_utils/native_utils.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
+import 'package:app/database/database_manager.dart';
 import 'package:utils/utils.dart';
 
 final log = Logger("ImageEncryptionManager");

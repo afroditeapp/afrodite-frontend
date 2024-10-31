@@ -1,4 +1,4 @@
-name: pihka_frontend
+name: app
 description: Dating app
 
 # The following line prevents the package from being accidentally published to

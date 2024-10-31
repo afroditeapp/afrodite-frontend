@@ -2,15 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/logic/admin/image_moderation.dart';
+import 'package:app/logic/admin/image_moderation.dart';
 
 
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
-import 'package:pihka_frontend/ui_utils/image.dart';
-import 'package:pihka_frontend/ui_utils/view_image_screen.dart';
-import 'package:pihka_frontend/ui_utils/dialog.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui_utils/image.dart';
+import 'package:app/ui_utils/view_image_screen.dart';
+import 'package:app/ui_utils/dialog.dart';
 
 
 // Plan: Infinite list of rows of two images, first is security selfie, the

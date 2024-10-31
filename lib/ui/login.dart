@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:pihka_frontend/config.dart";
-import "package:pihka_frontend/logic/server/address.dart";
+import "package:app/config.dart";
+import "package:app/logic/server/address.dart";
 
-import 'package:pihka_frontend/localizations.dart';
+import 'package:app/localizations.dart';
 
 const commonPadding = 5.0;
 

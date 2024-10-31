@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pihka_frontend/localizations.dart';
+import 'package:app/localizations.dart';
 
 String _defaultInitialValue() {
   return "";

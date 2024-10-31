@@ -3,18 +3,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/account/account.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/model/freezed/logic/account/account.dart';
-import 'package:pihka_frontend/ui/normal/settings.dart';
-import 'package:pihka_frontend/ui/normal/settings/admin/configure_backend.dart';
-import 'package:pihka_frontend/ui/normal/settings/admin/moderate_images.dart';
-import 'package:pihka_frontend/ui/normal/settings/admin/profile_name_moderation.dart';
-import 'package:pihka_frontend/ui/normal/settings/admin/profile_statistics_history.dart';
-import 'package:pihka_frontend/ui/normal/settings/admin/server_software_update.dart';
-import 'package:pihka_frontend/ui/normal/settings/admin/server_system_info.dart';
-import 'package:pihka_frontend/ui/normal/settings/admin/view_perf_data.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/account/account.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/model/freezed/logic/account/account.dart';
+import 'package:app/ui/normal/settings.dart';
+import 'package:app/ui/normal/settings/admin/configure_backend.dart';
+import 'package:app/ui/normal/settings/admin/moderate_images.dart';
+import 'package:app/ui/normal/settings/admin/profile_name_moderation.dart';
+import 'package:app/ui/normal/settings/admin/profile_statistics_history.dart';
+import 'package:app/ui/normal/settings/admin/server_software_update.dart';
+import 'package:app/ui/normal/settings/admin/server_system_info.dart';
+import 'package:app/ui/normal/settings/admin/view_perf_data.dart';
 
 
 class AdminSettingsPage extends StatelessWidget {

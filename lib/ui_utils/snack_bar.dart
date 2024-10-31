@@ -2,7 +2,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:pihka_frontend/main.dart';
+import 'package:app/main.dart';
 
 
 // TODO: Show details button for displaying more detailed error message

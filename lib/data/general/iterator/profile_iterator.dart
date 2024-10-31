@@ -1,7 +1,7 @@
 
 
 import 'package:database/database.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/utils/result.dart';
 
 class IteratorType {
   /// Resets the iterator to the beginning

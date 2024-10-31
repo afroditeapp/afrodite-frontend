@@ -6,10 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/api/api_manager.dart';
-import 'package:pihka_frontend/data/account_repository.dart';
-import 'package:pihka_frontend/utils/cancellation_token.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/api/api_manager.dart';
+import 'package:app/data/account_repository.dart';
+import 'package:app/utils/cancellation_token.dart';
+import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
 var log = Logger("SendToSlotTask");

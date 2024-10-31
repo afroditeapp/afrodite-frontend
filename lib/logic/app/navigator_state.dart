@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:pihka_frontend/model/freezed/logic/main/navigator_state.dart";
-import "package:pihka_frontend/ui_utils/consts/animation.dart";
+import "package:app/model/freezed/logic/main/navigator_state.dart";
+import "package:app/ui_utils/consts/animation.dart";
 import 'package:utils/utils.dart';
-import "package:pihka_frontend/utils/immutable_list.dart";
+import "package:app/utils/immutable_list.dart";
 import "package:rxdart/rxdart.dart";
 
 abstract class NavigatorStateEvent {}

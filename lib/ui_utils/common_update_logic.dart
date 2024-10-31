@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
-import 'package:pihka_frontend/ui_utils/dialog.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui_utils/dialog.dart';
 
 sealed class UpdateState {
   const UpdateState();

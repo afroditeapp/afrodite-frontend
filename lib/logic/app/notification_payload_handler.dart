@@ -1,13 +1,13 @@
 import "dart:async";
 
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:pihka_frontend/data/general/notification/utils/notification_payload.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/data/notification_manager.dart";
-import "package:pihka_frontend/database/account_background_database_manager.dart";
-import "package:pihka_frontend/database/account_database_manager.dart";
-import "package:pihka_frontend/model/freezed/logic/main/notification_payload_handler.dart";
-import "package:pihka_frontend/utils/immutable_list.dart";
+import "package:app/data/general/notification/utils/notification_payload.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/data/notification_manager.dart";
+import "package:app/database/account_background_database_manager.dart";
+import "package:app/database/account_database_manager.dart";
+import "package:app/model/freezed/logic/main/notification_payload_handler.dart";
+import "package:app/utils/immutable_list.dart";
 
 abstract class NotificationPayloadHandlerEvent {}
 

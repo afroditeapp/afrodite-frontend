@@ -4,23 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/data/chat/matches_iterator_manager.dart';
-import 'package:pihka_frontend/data/chat_repository.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
-import 'package:pihka_frontend/data/profile_repository.dart';
+import 'package:app/data/chat/matches_iterator_manager.dart';
+import 'package:app/data/chat_repository.dart';
+import 'package:app/data/login_repository.dart';
+import 'package:app/data/profile_repository.dart';
 import 'package:database/database.dart';
-import 'package:pihka_frontend/database/account_database_manager.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/logic/profile/my_profile.dart';
-import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
-import 'package:pihka_frontend/model/freezed/logic/profile/my_profile.dart';
-import 'package:pihka_frontend/ui/normal/profiles/profile_grid.dart';
+import 'package:app/database/account_database_manager.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/logic/profile/my_profile.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/model/freezed/logic/profile/my_profile.dart';
+import 'package:app/ui/normal/profiles/profile_grid.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/ui_utils/consts/padding.dart';
-import 'package:pihka_frontend/ui_utils/list.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/localizations.dart';
+import 'package:app/ui_utils/consts/padding.dart';
+import 'package:app/ui_utils/list.dart';
+import 'package:app/utils/result.dart';
 
 final log = Logger("SelectMatchScreen");
 

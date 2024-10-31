@@ -4,10 +4,10 @@ import "package:latlong2/latlong.dart";
 import "package:openapi/api.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
-import "package:pihka_frontend/localizations.dart";
-import "package:pihka_frontend/model/freezed/logic/media/image_processing.dart";
-import "package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart";
-import "package:pihka_frontend/utils/immutable_list.dart";
+import "package:app/localizations.dart";
+import "package:app/model/freezed/logic/media/image_processing.dart";
+import "package:app/model/freezed/logic/media/profile_pictures.dart";
+import "package:app/utils/immutable_list.dart";
 
 part 'initial_setup.freezed.dart';
 

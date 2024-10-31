@@ -1,9 +1,9 @@
 
 import 'package:database/database.dart';
-import 'package:pihka_frontend/data/notification_manager.dart';
-import 'package:pihka_frontend/database/account_background_database_manager.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/data/notification_manager.dart';
+import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/localizations.dart';
+import 'package:app/utils/result.dart';
 
 typedef IsEnabledGetter = Stream<bool?> Function(AccountBackgroundDatabase);
 

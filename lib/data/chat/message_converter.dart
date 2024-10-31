@@ -4,8 +4,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:pihka_frontend/api/server_connection.dart';
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/api/server_connection.dart';
+import 'package:app/utils/result.dart';
 
 /// Packet type lenght is 1 byte.
 enum MessagePacketType {

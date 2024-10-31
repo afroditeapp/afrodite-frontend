@@ -6,17 +6,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/api/error_manager.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
-import 'package:pihka_frontend/data/media_repository.dart';
-import 'package:pihka_frontend/storage/encryption.dart';
-import 'package:pihka_frontend/ui/normal/settings/location.dart';
+import 'package:app/api/error_manager.dart';
+import 'package:app/data/login_repository.dart';
+import 'package:app/data/media_repository.dart';
+import 'package:app/storage/encryption.dart';
+import 'package:app/ui/normal/settings/location.dart';
 import 'package:utils/utils.dart';
 
 import 'package:image/image.dart' as img;
-import 'package:pihka_frontend/model/freezed/utils/account_img_key.dart';
-import 'package:pihka_frontend/utils/app_error.dart';
-import 'package:pihka_frontend/utils/tmp_dir.dart';
+import 'package:app/model/freezed/utils/account_img_key.dart';
+import 'package:app/utils/app_error.dart';
+import 'package:app/utils/tmp_dir.dart';
 
 var log = Logger("ImageCacheData");
 

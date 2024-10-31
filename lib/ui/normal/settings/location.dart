@@ -8,13 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/data/image_cache.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
-import 'package:pihka_frontend/data/profile_repository.dart';
-import 'package:pihka_frontend/logic/profile/location.dart';
+import 'package:app/data/image_cache.dart';
+import 'package:app/data/login_repository.dart';
+import 'package:app/data/profile_repository.dart';
+import 'package:app/logic/profile/location.dart';
 
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/ui_utils/snack_bar.dart';
+import 'package:app/localizations.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 

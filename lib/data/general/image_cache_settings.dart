@@ -2,9 +2,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:pihka_frontend/data/image_cache.dart';
-import 'package:pihka_frontend/data/utils.dart';
-import 'package:pihka_frontend/database/account_database_manager.dart';
+import 'package:app/data/image_cache.dart';
+import 'package:app/data/utils.dart';
+import 'package:app/database/account_database_manager.dart';
 import 'package:rxdart/rxdart.dart';
 
 const MIBIBYTE = 1024 * 1024;

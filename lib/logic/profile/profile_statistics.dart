@@ -2,12 +2,12 @@
 import "package:bloc_concurrency/bloc_concurrency.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
-import "package:pihka_frontend/api/api_manager.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/localizations.dart";
-import "package:pihka_frontend/model/freezed/logic/profile/profile_statistics.dart";
-import "package:pihka_frontend/ui_utils/snack_bar.dart";
-import "package:pihka_frontend/utils.dart";
+import "package:app/api/api_manager.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/localizations.dart";
+import "package:app/model/freezed/logic/profile/profile_statistics.dart";
+import "package:app/ui_utils/snack_bar.dart";
+import "package:app/utils.dart";
 
 
 sealed class ProfileStatisticsEvent {}

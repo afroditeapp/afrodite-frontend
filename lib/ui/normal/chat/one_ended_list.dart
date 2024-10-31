@@ -3,9 +3,9 @@ import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
-import 'package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart';
-import 'package:pihka_frontend/ui/normal/chat/message_row.dart';
+import 'package:app/logic/chat/conversation_bloc.dart';
+import 'package:app/model/freezed/logic/chat/conversation_bloc.dart';
+import 'package:app/ui/normal/chat/message_row.dart';
 import 'package:rxdart/rxdart.dart';
 
 var log = Logger("OneEndedMessageListWidget");

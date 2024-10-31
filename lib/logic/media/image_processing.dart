@@ -2,13 +2,13 @@ import "dart:typed_data";
 
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
-import "package:pihka_frontend/data/account_repository.dart";
+import "package:app/data/account_repository.dart";
 
-import "package:pihka_frontend/data/image_cache.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/data/media_repository.dart";
-import "package:pihka_frontend/data/media/send_to_slot.dart";
-import "package:pihka_frontend/model/freezed/logic/media/image_processing.dart";
+import "package:app/data/image_cache.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/data/media_repository.dart";
+import "package:app/data/media/send_to_slot.dart";
+import "package:app/model/freezed/logic/media/image_processing.dart";
 
 
 final log = Logger("ImageProcessingBloc");

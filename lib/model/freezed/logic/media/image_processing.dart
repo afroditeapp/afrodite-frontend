@@ -5,7 +5,7 @@ import "package:flutter/material.dart";
 import "package:openapi/api.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
-import "package:pihka_frontend/localizations.dart";
+import "package:app/localizations.dart";
 
 part 'image_processing.freezed.dart';
 

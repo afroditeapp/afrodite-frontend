@@ -4,13 +4,13 @@
 import 'package:flutter/material.dart';
 import 'package:database/database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/logic/chat/conversation_bloc.dart';
-import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
-import 'package:pihka_frontend/ui_utils/dialog.dart';
-import 'package:pihka_frontend/ui_utils/snack_bar.dart';
-import 'package:pihka_frontend/utils/time.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/logic/chat/conversation_bloc.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/time.dart';
 
 const int _OPACITY_FOR_ON_SURFACE_CONTENT = 128;
 

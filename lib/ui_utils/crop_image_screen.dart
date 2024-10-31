@@ -6,9 +6,9 @@ import "package:flutter/material.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 
-import 'package:pihka_frontend/localizations.dart';
-import "package:pihka_frontend/ui_utils/consts/corners.dart";
-import "package:pihka_frontend/ui_utils/image.dart";
+import 'package:app/localizations.dart';
+import "package:app/ui_utils/consts/corners.dart";
+import "package:app/ui_utils/image.dart";
 
 final log = Logger("CropImageScreen");
 

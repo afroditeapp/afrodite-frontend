@@ -2,9 +2,9 @@ import "dart:collection";
 
 import "package:async/async.dart";
 import "package:openapi/api.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/data/media_repository.dart";
-import "package:pihka_frontend/utils/api.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/data/media_repository.dart";
+import "package:app/utils/api.dart";
 import "package:rxdart/rxdart.dart";
 
 

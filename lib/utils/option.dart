@@ -3,7 +3,7 @@
 
 import 'dart:async';
 
-import 'package:pihka_frontend/utils/result.dart';
+import 'package:app/utils/result.dart';
 
 extension NullableExt<T extends Object> on T? {
   Result<T, Error> okOrDirect<Error>(Error error) {

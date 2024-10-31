@@ -2,8 +2,8 @@
 
 import 'package:database/database.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/model/freezed/logic/account/initial_setup.dart';
-import 'package:pihka_frontend/utils/list.dart';
+import 'package:app/model/freezed/logic/account/initial_setup.dart';
+import 'package:app/utils/list.dart';
 import 'package:utils/utils.dart';
 
 extension ModerationExtensions on Moderation {

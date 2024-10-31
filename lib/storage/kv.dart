@@ -2,7 +2,7 @@
 
 import 'dart:async';
 
-import 'package:pihka_frontend/storage/base.dart';
+import 'package:app/storage/base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum KvString implements PreferenceKeyProvider<KvString, String> {

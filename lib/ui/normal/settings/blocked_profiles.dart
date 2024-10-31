@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/data/image_cache.dart';
-import 'package:pihka_frontend/data/login_repository.dart';
-import 'package:pihka_frontend/data/profile_repository.dart';
+import 'package:app/data/image_cache.dart';
+import 'package:app/data/login_repository.dart';
+import 'package:app/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/settings/blocked_profiles.dart';
-import 'package:pihka_frontend/logic/settings/user_interface.dart';
-import 'package:pihka_frontend/ui_utils/consts/padding.dart';
-import 'package:pihka_frontend/ui_utils/dialog.dart';
-import 'package:pihka_frontend/ui_utils/list.dart';
-import 'package:pihka_frontend/ui_utils/profile_thumbnail_image.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/settings/blocked_profiles.dart';
+import 'package:app/logic/settings/user_interface.dart';
+import 'package:app/ui_utils/consts/padding.dart';
+import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/list.dart';
+import 'package:app/ui_utils/profile_thumbnail_image.dart';
 
 var log = Logger("BlockedProfilesScreen");
 

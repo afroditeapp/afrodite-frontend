@@ -1,8 +1,8 @@
 import "dart:async";
 
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/data/notification_manager.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/data/notification_manager.dart";
 
 extension type NotificationPermissionAsked(bool? notificationPermissionAsked) {}
 

@@ -4,15 +4,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/account/initial_setup.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/logic/media/profile_pictures.dart';
-import 'package:pihka_frontend/model/freezed/logic/media/profile_pictures.dart';
-import 'package:pihka_frontend/ui/initial_setup/profile_pictures.dart';
-import 'package:pihka_frontend/ui/initial_setup/security_selfie.dart';
-import 'package:pihka_frontend/ui_utils/initial_setup_common.dart';
-import 'package:pihka_frontend/utils/camera.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/account/initial_setup.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/logic/media/profile_pictures.dart';
+import 'package:app/model/freezed/logic/media/profile_pictures.dart';
+import 'package:app/ui/initial_setup/profile_pictures.dart';
+import 'package:app/ui/initial_setup/security_selfie.dart';
+import 'package:app/ui_utils/initial_setup_common.dart';
+import 'package:app/utils/camera.dart';
 
 
 Future<RetryInitialSetupImages?> openRetryInitialSetupImages(BuildContext context) async {

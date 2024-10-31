@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:pihka_frontend/ui/initial_setup/email.dart";
+import "package:app/ui/initial_setup/email.dart";
 
 // TODO: save initial setup values, so that it will be possible to restore state
 //       if system kills the app when selecting profile photo

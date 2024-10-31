@@ -2,17 +2,17 @@
 
 
 
-import 'package:pihka_frontend/data/general/notification/utils/notification_category.dart';
-import 'package:pihka_frontend/data/general/notification/utils/notification_id.dart';
-import 'package:pihka_frontend/data/general/notification/utils/notification_payload.dart';
-import 'package:pihka_frontend/data/notification_manager.dart';
-import 'package:pihka_frontend/database/account_background_database_manager.dart';
-import 'package:pihka_frontend/database/database_manager.dart';
-import 'package:pihka_frontend/localizations.dart';
-import 'package:pihka_frontend/logic/app/app_visibility_provider.dart';
-import 'package:pihka_frontend/logic/app/bottom_navigation_state.dart';
-import 'package:pihka_frontend/logic/app/navigator_state.dart';
-import 'package:pihka_frontend/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/data/general/notification/utils/notification_category.dart';
+import 'package:app/data/general/notification/utils/notification_id.dart';
+import 'package:app/data/general/notification/utils/notification_payload.dart';
+import 'package:app/data/notification_manager.dart';
+import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/database/database_manager.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/app/app_visibility_provider.dart';
+import 'package:app/logic/app/bottom_navigation_state.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:utils/utils.dart';
 
 class NotificationLikeReceived extends AppSingletonNoInit {

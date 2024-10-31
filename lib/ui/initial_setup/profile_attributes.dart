@@ -2,17 +2,17 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
-import "package:pihka_frontend/localizations.dart";
-import "package:pihka_frontend/logic/account/initial_setup.dart";
-import "package:pihka_frontend/logic/profile/attributes.dart";
-import "package:pihka_frontend/model/freezed/logic/account/initial_setup.dart";
-import "package:pihka_frontend/model/freezed/logic/profile/attributes.dart";
-import "package:pihka_frontend/ui_utils/consts/padding.dart";
-import "package:pihka_frontend/ui_utils/initial_setup_common.dart";
-import "package:pihka_frontend/ui_utils/loading_dialog.dart";
-import "package:pihka_frontend/ui_utils/snack_bar.dart";
+import "package:app/localizations.dart";
+import "package:app/logic/account/initial_setup.dart";
+import "package:app/logic/profile/attributes.dart";
+import "package:app/model/freezed/logic/account/initial_setup.dart";
+import "package:app/model/freezed/logic/profile/attributes.dart";
+import "package:app/ui_utils/consts/padding.dart";
+import "package:app/ui_utils/initial_setup_common.dart";
+import "package:app/ui_utils/loading_dialog.dart";
+import "package:app/ui_utils/snack_bar.dart";
 import 'package:utils/utils.dart';
-import "package:pihka_frontend/utils/api.dart";
+import "package:app/utils/api.dart";
 
 final log = Logger("AskProfileAttributesScreen");
 

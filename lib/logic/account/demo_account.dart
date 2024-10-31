@@ -1,13 +1,13 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/localizations.dart";
-import "package:pihka_frontend/model/freezed/logic/account/demo_account.dart";
-import "package:pihka_frontend/ui_utils/snack_bar.dart";
-import "package:pihka_frontend/utils.dart";
-import "package:pihka_frontend/utils/immutable_list.dart";
-import "package:pihka_frontend/utils/result.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/localizations.dart";
+import "package:app/model/freezed/logic/account/demo_account.dart";
+import "package:app/ui_utils/snack_bar.dart";
+import "package:app/utils.dart";
+import "package:app/utils/immutable_list.dart";
+import "package:app/utils/result.dart";
 
 
 var log = Logger("DemoAccountBloc");

@@ -9,16 +9,16 @@ import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:rxdart/rxdart.dart";
 import 'package:utils/utils.dart';
-import "package:pihka_frontend/data/chat/message_database_iterator.dart";
-import "package:pihka_frontend/data/chat/message_manager.dart";
-import "package:pihka_frontend/data/chat_repository.dart";
-import "package:pihka_frontend/data/login_repository.dart";
-import "package:pihka_frontend/data/profile_repository.dart";
-import "package:pihka_frontend/localizations.dart";
-import "package:pihka_frontend/model/freezed/logic/chat/conversation_bloc.dart";
-import "package:pihka_frontend/ui_utils/snack_bar.dart";
-import "package:pihka_frontend/utils.dart";
-import "package:pihka_frontend/utils/result.dart";
+import "package:app/data/chat/message_database_iterator.dart";
+import "package:app/data/chat/message_manager.dart";
+import "package:app/data/chat_repository.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/data/profile_repository.dart";
+import "package:app/localizations.dart";
+import "package:app/model/freezed/logic/chat/conversation_bloc.dart";
+import "package:app/ui_utils/snack_bar.dart";
+import "package:app/utils.dart";
+import "package:app/utils/result.dart";
 
 var log = Logger("ConversationBloc");
 
