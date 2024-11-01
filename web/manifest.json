@@ -1,6 +1,6 @@
 {
-    "name": "pihka_frontend",
-    "short_name": "pihka_frontend",
+    "name": "Afrodite",
+    "short_name": "Afrodite",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

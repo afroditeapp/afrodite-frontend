@@ -27,11 +27,11 @@
   "@app_bar_action_about": {
     "description": "Title for app bar action which opens about dialog"
   },
-  "app_name": "Pihka",
+  "app_name": "Afrodite",
   "@app_name": {
     "description": "Name for the app"
   },
-  "app_slogan": "Finland's fairest dating app",
+  "app_slogan": "Dating app",
   "@app_slogan": {
     "description": "Slogan for the app"
   },

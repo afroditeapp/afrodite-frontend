@@ -24,7 +24,7 @@ void showAppAboutDialog(BuildContext context) {
         width: ICON_SIZE,
         height: ICON_SIZE,
       ),
-      applicationLegalese: "© 2024 Pihka",
+      applicationLegalese: "© 2024 Afrodite",
     ),
   );
 }
