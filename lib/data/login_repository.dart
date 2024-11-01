@@ -26,7 +26,7 @@ import 'package:app/localizations.dart';
 import 'package:app/logic/app/app_visibility_provider.dart';
 import 'package:app/logic/sign_in_with.dart';
 import 'package:app/main.dart';
-import 'package:app/sign_with_google_ids.dart';
+import 'package:app/sign_in_with_google_ids.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';

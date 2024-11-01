@@ -199,7 +199,7 @@ class DefaultFirebaseOptions {
 }
 ```
 
-lib/sign_in_with_google.dart
+lib/sign_in_with_google_ids.dart
 ```dart
 String signInWithGoogleBackendClientId() {
   return "";
