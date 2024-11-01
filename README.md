@@ -210,3 +210,7 @@ String signInWithGoogleBackendClientId() {
 
 The file ios/Runner.xcodeproj is removed to hide development team ID, so it
 should be added back somehow.
+
+## License
+
+MIT License or Apache License 2.0
