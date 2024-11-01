@@ -63,7 +63,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<!-- Copied from downloaded OAuth 2 client info. Value for key REVERSED_CLIENT_ID. -->
-				<string>***REMOVED***</string>
+				<string>TODO</string>
 			</array>
 		</dict>
 	</array>

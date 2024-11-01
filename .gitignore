@@ -57,3 +57,13 @@ tmp
 # Drift web dependencies
 web/drift_worker.js
 web/sqlite3.wasm
+
+# Firebase and Sign in with Google
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+lib/firebase_options.dart
+lib/sign_in_with_google_ids.dart
+firebase.json
+
+# iOS development team
+ios/Runner.xcodeproj

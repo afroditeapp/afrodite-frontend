@@ -146,3 +146,33 @@ http://localhost:51758
 
 The backend runs on port 3000 so web security needs to be
 disabled.
+
+## Adding push notification and Sign in with Google support
+
+Add web client ID by modifying web/index.html line
+
+```html
+<meta name="google-signin-client_id" content="TODO">
+```
+
+Add iOS client ID by modifying ios/Runner/Info.plist location
+
+```xml
+<!-- Copied from downloaded OAuth 2 client info. Value for key REVERSED_CLIENT_ID. -->
+<string>TODO</string>
+```
+
+Also add files
+
+```
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+lib/firebase_options.dart
+lib/sign_in_with_google_ids.dart
+firebase.json
+```
+
+## Add iOS support
+
+The file ios/Runner.xcodeproj is removed to hide development team ID, so it
+should be added back somehow.
