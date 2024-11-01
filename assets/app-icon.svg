@@ -7,8 +7,76 @@
    viewBox="0 0 24 24"
    version="1.1"
    id="svg1"
+   sodipodi:docname="app-icon.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="13.906433"
+     inkscape:cx="9.3841459"
+     inkscape:cy="12.224558"
+     inkscape:window-width="1488"
+     inkscape:window-height="1387"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" />
   <defs
-     id="defs1" />
+     id="defs1">
+    <linearGradient
+       id="linearGradient5"
+       inkscape:collect="always"
+       inkscape:label="#linearGradient1">
+      <stop
+         style="stop-color:#002ed7;stop-opacity:1;"
+         offset="0"
+         id="stop5" />
+      <stop
+         style="stop-color:#ff0054;stop-opacity:1;"
+         offset="1"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5"
+       id="linearGradient6"
+       x1="3.9941406"
+       y1="12"
+       x2="20.005859"
+       y2="12"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="pad" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient14"
+       id="linearGradient16"
+       x1="4.4941406"
+       y1="12"
+       x2="19.505859"
+       y2="12"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <text
+     xml:space="preserve"
+     style="font-size:24px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;display:inline;fill:url(#linearGradient6);stroke:none;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     x="4.1542969"
+     y="20.53125"
+     id="text8"
+     inkscape:label="text1"><tspan
+       id="tspan8"
+       x="4.1542969"
+       y="20.53125"
+       style="font-size:24px;fill:url(#linearGradient6);stroke:none;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       sodipodi:role="line">A</tspan></text>
 </svg>
