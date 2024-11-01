@@ -45,7 +45,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "***REMOVED***.pihka"
+        applicationId "com.example.afrodite"
         // minSdkVersion flutter.minSdkVersion // original
         minSdkVersion 21 // Camera library requires
         targetSdkVersion flutter.targetSdkVersion
@@ -67,7 +67,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'app.pihka.pihka_frontend'
+    namespace 'com.example.afrodite'
 }
 
 flutter {

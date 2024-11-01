@@ -1,4 +1,4 @@
-package app.pihka.pihka_frontend
+package com.example.afrodite
 
 import io.flutter.embedding.android.FlutterActivity
 
