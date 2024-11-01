@@ -4,10 +4,10 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-const String _defaultAccountServerAddressAndroid = "***REMOVED***"; // Should point to 10.0.2.2 (Android emulator host)
+const String _defaultAccountServerAddressAndroid = "http://10.0.2.2:3000"; // Android emulator host
 const String _defaultAccountServerAddressIosAndWeb = "http://localhost:3000"; // This address is for iOS simulator and web browsers
 
-const String developmentServerUrl = "***REMOVED***";
+const String developmentServerUrl = "https://localhost:3000";
 
 String defaultServerUrlAccount() {
   if (kProfileMode && kIsWeb) {

@@ -34,7 +34,7 @@ class _LoginScreenOldState extends State<LoginScreenOld> {
           }
         },
       ),
-      changeAddressButton("***REMOVED***"),
+      changeAddressButton("http://10.0.2.2:3000"),
       changeAddressButton("http://localhost:3000"),
       changeAddressButton("http://192.168.0.13:3000"),
       changeAddressButton(developmentServerUrl),
@@ -132,7 +132,7 @@ class _ServerAddressFieldState extends State<ServerAddressField> {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Is empty";
-              } else if (!(value.contains("***REMOVED***") || value.contains("192.168.") || value.contains("10.0.2.2") || value.contains("127.0.0.1") || value.contains("/localhost:") )) {
+              } else if (!(value.contains("192.168.") || value.contains("10.0.2.2") || value.contains("127.0.0.1") || value.contains("/localhost:") )) {
                 return "Public IP addresses are not supported";
               } else {
                 var uri = Uri.tryParse(value);
