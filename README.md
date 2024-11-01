@@ -1,6 +1,8 @@
 # Afrodite
-Dating app frontend
+Afrodite is a permissively licensed dating app based on profile browsing. This
+repository contains the frontend part.
 
+The app is under development and it is not ready for production.
 
 ## Update server API bindings
 
@@ -10,7 +12,7 @@ Dating app frontend
 4. Start Afrodite backend in debug mode.
 5. Generate bindings
 ```
-openapi-generator-cli generate -i http://localhost:3000/api-doc/dating-app-backend.json -g dart -o api_client
+openapi-generator-cli generate -i http://localhost:3000/api-doc/app_api.json -g dart -o api_client
 ```
 
 ## Update generated code (freezed library)
@@ -47,27 +49,27 @@ And start DNS
 telnet 127.0.0.1 5554
 
 
-# Update localizations
+## Update localizations
 
 Run `make update-localizations`
 
 The localizations are in the `translations` Android Studio project to make
 editing translations easier.
 
-### After git clone
+## After git clone
 
 1. Install native code building dependencies. Instructions for that are in
 this file.
 
 2. Start Android emulator and run `flutter run`.
 
-# About Assets
+## About Assets
 
 Google Sign In with buttons are from
 <https://developers.google.com/static/identity/images/signin-assets.zip>
 zip file found from <https://developers.google.com/identity/branding-guidelines>
 
-# Building native code
+## Building native code
 
 1. Install Rust
 
@@ -90,7 +92,7 @@ cargo install cargo-about --locked
 make update-licenses-for-native-utils
 ```
 
-# Building for iOS and iOS simulator
+## Building for iOS and iOS simulator
 
 1. Install cocoapods
 
@@ -106,7 +108,7 @@ rustup target add aarch64-apple-ios-sim
 rustup target add x86_64-apple-ios
 ```
 
-# Firebase
+## Firebase
 
 If you modify the Firebase projects from Firebase web UI, you
 can update Firebase related config using command
@@ -117,7 +119,7 @@ flutterfire configure
 Install instructions for that tool is at
 <https://firebase.google.com/docs/flutter/setup?platform=android>
 
-# Local web build development
+## Local web build development
 
 Create Visual Studio Code launch configuration like this:
 
