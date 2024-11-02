@@ -1,5 +1,6 @@
 
 
+import 'package:app/utils/list.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -85,10 +86,37 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
 
   Widget viewItem(BuildContext context, GetProfileStatisticsResult item) {
     final dataTime = fullTimeString(item.generationTime.toUtcDateTime());
-    final publicProfiles = item.publicProfileCounts.man +
+    final publicProfilesCount = item.publicProfileCounts.man +
       item.publicProfileCounts.woman +
       item.publicProfileCounts.nonBinary;
+    final privateProfilesCount = item.accountCount - publicProfilesCount;
     final adminSettingsAvailable = context.read<AccountBloc>().state.permissions.adminProfileStatistics;
+    int profileCountMan = 0;
+    int profileCountWoman = 0;
+    int profileCountNonBinary = 0;
+    int profileCount = 0;
+    final List<int> totalAgeCounts = [];
+    for (final (i, age) in item.ageCounts.man.indexed) {
+      profileCountMan += age;
+      final womanCount = item.ageCounts.woman.getAtOrNull(i) ?? 0;
+      profileCountWoman += womanCount;
+      final nonBinaryCount = item.ageCounts.nonBinary.getAtOrNull(i) ?? 0;
+      profileCountNonBinary += profileCountNonBinary;
+      final count = age + womanCount + nonBinaryCount;
+      profileCount += count;
+      totalAgeCounts.add(count);
+    }
+
+    final String ageCountsSubtitle;
+    if (adminVisibilitySelection == 0) {
+      ageCountsSubtitle = context.strings.profile_statistics_screen_public_profiles_subtitle;
+    } else if (adminVisibilitySelection == 1) {
+      ageCountsSubtitle = context.strings.profile_statistics_screen_private_profiles_subtitle;
+    } else if (adminVisibilitySelection == 2) {
+      ageCountsSubtitle = context.strings.profile_statistics_screen_all_profiles_subtitle;
+    } else {
+      ageCountsSubtitle = context.strings.generic_error;
+    }
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -99,25 +127,30 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
             if (adminSettingsAvailable) adminControls(context),
             Text(context.strings.profile_statistics_screen_time(dataTime)),
             Text(context.strings.profile_statistics_screen_count_account(item.accountCount.toString())),
+            Text(context.strings.profile_statistics_screen_count_public_profiles(publicProfilesCount.toString())),
+            Text(context.strings.profile_statistics_screen_count_private_profiles(privateProfilesCount.toString())),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
             Text(
-              context.strings.profile_statistics_screen_profiles_subtitle,
+              ageCountsSubtitle,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-            Text(context.strings.profile_statistics_screen_count_man(item.publicProfileCounts.man.toString())),
+            Text(context.strings.profile_statistics_screen_count_profiles(profileCount.toString())),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+            getChart(context, item.ageCounts.startAge, totalAgeCounts),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+            Text(context.strings.profile_statistics_screen_count_man(profileCountMan.toString())),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             getChart(context, item.ageCounts.startAge, item.ageCounts.man),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Text(context.strings.profile_statistics_screen_count_woman(item.publicProfileCounts.woman.toString())),
+            Text(context.strings.profile_statistics_screen_count_woman(profileCountWoman.toString())),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             getChart(context, item.ageCounts.startAge, item.ageCounts.woman),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Text(context.strings.profile_statistics_screen_count_non_binary(item.publicProfileCounts.nonBinary.toString())),
+            Text(context.strings.profile_statistics_screen_count_non_binary(profileCountNonBinary.toString())),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             getChart(context, item.ageCounts.startAge, item.ageCounts.nonBinary),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Text(context.strings.profile_statistics_screen_count_profiles(publicProfiles.toString())),
           ],
         ),
       )
