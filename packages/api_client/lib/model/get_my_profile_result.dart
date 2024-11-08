@@ -16,6 +16,7 @@ class GetMyProfileResult {
     this.lst,
     required this.p,
     required this.sv,
+    required this.textModerationInfo,
     required this.v,
   });
 
@@ -32,6 +33,8 @@ class GetMyProfileResult {
 
   ProfileSyncVersion sv;
 
+  ProfileTextModerationInfo textModerationInfo;
+
   ProfileVersion v;
 
   @override
@@ -39,6 +42,7 @@ class GetMyProfileResult {
     other.lst == lst &&
     other.p == p &&
     other.sv == sv &&
+    other.textModerationInfo == textModerationInfo &&
     other.v == v;
 
   @override
@@ -47,10 +51,11 @@ class GetMyProfileResult {
     (lst == null ? 0 : lst!.hashCode) +
     (p.hashCode) +
     (sv.hashCode) +
+    (textModerationInfo.hashCode) +
     (v.hashCode);
 
   @override
-  String toString() => 'GetMyProfileResult[lst=$lst, p=$p, sv=$sv, v=$v]';
+  String toString() => 'GetMyProfileResult[lst=$lst, p=$p, sv=$sv, textModerationInfo=$textModerationInfo, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -61,6 +66,7 @@ class GetMyProfileResult {
     }
       json[r'p'] = this.p;
       json[r'sv'] = this.sv;
+      json[r'text_moderation_info'] = this.textModerationInfo;
       json[r'v'] = this.v;
     return json;
   }
@@ -87,6 +93,7 @@ class GetMyProfileResult {
         lst: mapValueOfType<int>(json, r'lst'),
         p: Profile.fromJson(json[r'p'])!,
         sv: ProfileSyncVersion.fromJson(json[r'sv'])!,
+        textModerationInfo: ProfileTextModerationInfo.fromJson(json[r'text_moderation_info'])!,
         v: ProfileVersion.fromJson(json[r'v'])!,
       );
     }
@@ -137,6 +144,7 @@ class GetMyProfileResult {
   static const requiredKeys = <String>{
     'p',
     'sv',
+    'text_moderation_info',
     'v',
   };
 }

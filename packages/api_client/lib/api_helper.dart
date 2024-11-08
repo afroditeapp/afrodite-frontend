@@ -100,6 +100,9 @@ String parameterToString(dynamic value) {
   if (value is ProfileStatisticsHistoryValueType) {
     return ProfileStatisticsHistoryValueTypeTypeTransformer().encode(value).toString();
   }
+  if (value is ProfileTextModerationState) {
+    return ProfileTextModerationStateTypeTransformer().encode(value).toString();
+  }
   if (value is ProfileVisibility) {
     return ProfileVisibilityTypeTransformer().encode(value).toString();
   }

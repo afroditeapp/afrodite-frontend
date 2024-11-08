@@ -347,50 +347,6 @@ class AccountApi {
     return null;
   }
 
-  /// The unread news count for public news.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  Future<Response> getUnreadNewsCountWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/ljfyAP7CbP0864cA6nZX7ESufjY';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// The unread news count for public news.
-  Future<UnreadNewsCountResult?> getUnreadNewsCount() async {
-    final response = await getUnreadNewsCountWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UnreadNewsCountResult',) as UnreadNewsCountResult;
-    
-    }
-    return null;
-  }
-
   /// Set changeable user information to account.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -900,6 +856,50 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'NewsPage',) as NewsPage;
+    
+    }
+    return null;
+  }
+
+  /// The unread news count for public news.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> postGetUnreadNewsCountWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/ljfyAP7CbP0864cA6nZX7ESufjY';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// The unread news count for public news.
+  Future<UnreadNewsCountResult?> postGetUnreadNewsCount() async {
+    final response = await postGetUnreadNewsCountWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UnreadNewsCountResult',) as UnreadNewsCountResult;
     
     }
     return null;

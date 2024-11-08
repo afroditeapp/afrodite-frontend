@@ -18,6 +18,7 @@ class Profile {
     required this.name,
     this.nameAccepted = true,
     this.ptext = '',
+    this.ptextAccepted = true,
     this.unlimitedLikes = false,
   });
 
@@ -33,6 +34,9 @@ class Profile {
   /// Profile text support is disabled for now.
   String ptext;
 
+  /// The profile text has been accepted by bot or human moderator.
+  bool ptextAccepted;
+
   bool unlimitedLikes;
 
   @override
@@ -42,6 +46,7 @@ class Profile {
     other.name == name &&
     other.nameAccepted == nameAccepted &&
     other.ptext == ptext &&
+    other.ptextAccepted == ptextAccepted &&
     other.unlimitedLikes == unlimitedLikes;
 
   @override
@@ -52,10 +57,11 @@ class Profile {
     (name.hashCode) +
     (nameAccepted.hashCode) +
     (ptext.hashCode) +
+    (ptextAccepted.hashCode) +
     (unlimitedLikes.hashCode);
 
   @override
-  String toString() => 'Profile[age=$age, attributes=$attributes, name=$name, nameAccepted=$nameAccepted, ptext=$ptext, unlimitedLikes=$unlimitedLikes]';
+  String toString() => 'Profile[age=$age, attributes=$attributes, name=$name, nameAccepted=$nameAccepted, ptext=$ptext, ptextAccepted=$ptextAccepted, unlimitedLikes=$unlimitedLikes]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -64,6 +70,7 @@ class Profile {
       json[r'name'] = this.name;
       json[r'name_accepted'] = this.nameAccepted;
       json[r'ptext'] = this.ptext;
+      json[r'ptext_accepted'] = this.ptextAccepted;
       json[r'unlimited_likes'] = this.unlimitedLikes;
     return json;
   }
@@ -92,6 +99,7 @@ class Profile {
         name: mapValueOfType<String>(json, r'name')!,
         nameAccepted: mapValueOfType<bool>(json, r'name_accepted') ?? true,
         ptext: mapValueOfType<String>(json, r'ptext') ?? '',
+        ptextAccepted: mapValueOfType<bool>(json, r'ptext_accepted') ?? true,
         unlimitedLikes: mapValueOfType<bool>(json, r'unlimited_likes') ?? false,
       );
     }

@@ -67,6 +67,7 @@ doc/GetProfileNamePendingModerationList.md
 doc/GetProfileResult.md
 doc/GetProfileStatisticsHistoryResult.md
 doc/GetProfileStatisticsResult.md
+doc/GetProfileTextPendingModerationList.md
 doc/GetPublicKey.md
 doc/GroupValues.md
 doc/HandleModerationRequest.md
@@ -115,6 +116,7 @@ doc/PerfHistoryValue.md
 doc/PerfValueArea.md
 doc/Permissions.md
 doc/PostModerateProfileName.md
+doc/PostModerateProfileText.md
 doc/Profile.md
 doc/ProfileAdminApi.md
 doc/ProfileAgeCounts.md
@@ -137,6 +139,11 @@ doc/ProfileSearchAgeRange.md
 doc/ProfileStatisticsHistoryValue.md
 doc/ProfileStatisticsHistoryValueType.md
 doc/ProfileSyncVersion.md
+doc/ProfileTextModerationInfo.md
+doc/ProfileTextModerationRejectedReasonCategory.md
+doc/ProfileTextModerationRejectedReasonDetails.md
+doc/ProfileTextModerationState.md
+doc/ProfileTextPendingModeration.md
 doc/ProfileUpdate.md
 doc/ProfileVersion.md
 doc/ProfileVisibility.md
@@ -264,6 +271,7 @@ lib/model/get_profile_name_pending_moderation_list.dart
 lib/model/get_profile_result.dart
 lib/model/get_profile_statistics_history_result.dart
 lib/model/get_profile_statistics_result.dart
+lib/model/get_profile_text_pending_moderation_list.dart
 lib/model/get_public_key.dart
 lib/model/group_values.dart
 lib/model/handle_moderation_request.dart
@@ -309,6 +317,7 @@ lib/model/perf_history_value.dart
 lib/model/perf_value_area.dart
 lib/model/permissions.dart
 lib/model/post_moderate_profile_name.dart
+lib/model/post_moderate_profile_text.dart
 lib/model/profile.dart
 lib/model/profile_age_counts.dart
 lib/model/profile_attribute_filter_list.dart
@@ -329,6 +338,11 @@ lib/model/profile_search_age_range.dart
 lib/model/profile_statistics_history_value.dart
 lib/model/profile_statistics_history_value_type.dart
 lib/model/profile_sync_version.dart
+lib/model/profile_text_moderation_info.dart
+lib/model/profile_text_moderation_rejected_reason_category.dart
+lib/model/profile_text_moderation_rejected_reason_details.dart
+lib/model/profile_text_moderation_state.dart
+lib/model/profile_text_pending_moderation.dart
 lib/model/profile_update.dart
 lib/model/profile_version.dart
 lib/model/profile_visibility.dart

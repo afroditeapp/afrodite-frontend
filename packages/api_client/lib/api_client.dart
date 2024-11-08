@@ -302,6 +302,8 @@ class ApiClient {
           return GetProfileStatisticsHistoryResult.fromJson(value);
         case 'GetProfileStatisticsResult':
           return GetProfileStatisticsResult.fromJson(value);
+        case 'GetProfileTextPendingModerationList':
+          return GetProfileTextPendingModerationList.fromJson(value);
         case 'GetPublicKey':
           return GetPublicKey.fromJson(value);
         case 'GroupValues':
@@ -392,6 +394,8 @@ class ApiClient {
           return Permissions.fromJson(value);
         case 'PostModerateProfileName':
           return PostModerateProfileName.fromJson(value);
+        case 'PostModerateProfileText':
+          return PostModerateProfileText.fromJson(value);
         case 'Profile':
           return Profile.fromJson(value);
         case 'ProfileAgeCounts':
@@ -432,6 +436,16 @@ class ApiClient {
           return ProfileStatisticsHistoryValueTypeTypeTransformer().decode(value);
         case 'ProfileSyncVersion':
           return ProfileSyncVersion.fromJson(value);
+        case 'ProfileTextModerationInfo':
+          return ProfileTextModerationInfo.fromJson(value);
+        case 'ProfileTextModerationRejectedReasonCategory':
+          return ProfileTextModerationRejectedReasonCategory.fromJson(value);
+        case 'ProfileTextModerationRejectedReasonDetails':
+          return ProfileTextModerationRejectedReasonDetails.fromJson(value);
+        case 'ProfileTextModerationState':
+          return ProfileTextModerationStateTypeTransformer().decode(value);
+        case 'ProfileTextPendingModeration':
+          return ProfileTextPendingModeration.fromJson(value);
         case 'ProfileUpdate':
           return ProfileUpdate.fromJson(value);
         case 'ProfileVersion':

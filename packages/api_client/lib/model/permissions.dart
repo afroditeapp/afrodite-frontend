@@ -15,6 +15,7 @@ class Permissions {
   Permissions({
     this.adminModerateImages = false,
     this.adminModerateProfileNames = false,
+    this.adminModerateProfileTexts = false,
     this.adminModerateProfiles = false,
     this.adminModifyPermissions = false,
     this.adminNewsCreate = false,
@@ -34,6 +35,8 @@ class Permissions {
   bool adminModerateImages;
 
   bool adminModerateProfileNames;
+
+  bool adminModerateProfileTexts;
 
   bool adminModerateProfiles;
 
@@ -69,6 +72,7 @@ class Permissions {
   bool operator ==(Object other) => identical(this, other) || other is Permissions &&
     other.adminModerateImages == adminModerateImages &&
     other.adminModerateProfileNames == adminModerateProfileNames &&
+    other.adminModerateProfileTexts == adminModerateProfileTexts &&
     other.adminModerateProfiles == adminModerateProfiles &&
     other.adminModifyPermissions == adminModifyPermissions &&
     other.adminNewsCreate == adminNewsCreate &&
@@ -89,6 +93,7 @@ class Permissions {
     // ignore: unnecessary_parenthesis
     (adminModerateImages.hashCode) +
     (adminModerateProfileNames.hashCode) +
+    (adminModerateProfileTexts.hashCode) +
     (adminModerateProfiles.hashCode) +
     (adminModifyPermissions.hashCode) +
     (adminNewsCreate.hashCode) +
@@ -105,12 +110,13 @@ class Permissions {
     (adminViewProfileHistory.hashCode);
 
   @override
-  String toString() => 'Permissions[adminModerateImages=$adminModerateImages, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfiles=$adminModerateProfiles, adminModifyPermissions=$adminModifyPermissions, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProfileStatistics=$adminProfileStatistics, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
+  String toString() => 'Permissions[adminModerateImages=$adminModerateImages, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminModerateProfiles=$adminModerateProfiles, adminModifyPermissions=$adminModifyPermissions, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProfileStatistics=$adminProfileStatistics, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'admin_moderate_images'] = this.adminModerateImages;
       json[r'admin_moderate_profile_names'] = this.adminModerateProfileNames;
+      json[r'admin_moderate_profile_texts'] = this.adminModerateProfileTexts;
       json[r'admin_moderate_profiles'] = this.adminModerateProfiles;
       json[r'admin_modify_permissions'] = this.adminModifyPermissions;
       json[r'admin_news_create'] = this.adminNewsCreate;
@@ -149,6 +155,7 @@ class Permissions {
       return Permissions(
         adminModerateImages: mapValueOfType<bool>(json, r'admin_moderate_images') ?? false,
         adminModerateProfileNames: mapValueOfType<bool>(json, r'admin_moderate_profile_names') ?? false,
+        adminModerateProfileTexts: mapValueOfType<bool>(json, r'admin_moderate_profile_texts') ?? false,
         adminModerateProfiles: mapValueOfType<bool>(json, r'admin_moderate_profiles') ?? false,
         adminModifyPermissions: mapValueOfType<bool>(json, r'admin_modify_permissions') ?? false,
         adminNewsCreate: mapValueOfType<bool>(json, r'admin_news_create') ?? false,

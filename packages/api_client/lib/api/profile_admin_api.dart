@@ -115,6 +115,60 @@ class ProfileAdminApi {
     return null;
   }
 
+  /// Get first page of pending profile text moderations. Oldest item is first and count 25.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [bool] showTextsWhichBotsCanModerate (required):
+  Future<Response> getProfileTextPendingModerationListWithHttpInfo(bool showTextsWhichBotsCanModerate,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/pdEU3ussEDsELfe6TOtjqrDojOc';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'show_texts_which_bots_can_moderate', showTextsWhichBotsCanModerate));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get first page of pending profile text moderations. Oldest item is first and count 25.
+  ///
+  /// Parameters:
+  ///
+  /// * [bool] showTextsWhichBotsCanModerate (required):
+  Future<GetProfileTextPendingModerationList?> getProfileTextPendingModerationList(bool showTextsWhichBotsCanModerate,) async {
+    final response = await getProfileTextPendingModerationListWithHttpInfo(showTextsWhichBotsCanModerate,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileTextPendingModerationList',) as GetProfileTextPendingModerationList;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'POST /bnrAbC2DpwIftQouXUAVR1W6g8Y' operation and returns the [Response].
   /// Parameters:
   ///
@@ -149,6 +203,45 @@ class ProfileAdminApi {
   /// * [PostModerateProfileName] postModerateProfileName (required):
   Future<void> postModerateProfileName(PostModerateProfileName postModerateProfileName,) async {
     final response = await postModerateProfileNameWithHttpInfo(postModerateProfileName,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'POST /53BBFzgF9dZhb7_HvZSqLidsqbg' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [PostModerateProfileText] postModerateProfileText (required):
+  Future<Response> postModerateProfileTextWithHttpInfo(PostModerateProfileText postModerateProfileText,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/53BBFzgF9dZhb7_HvZSqLidsqbg';
+
+    // ignore: prefer_final_locals
+    Object? postBody = postModerateProfileText;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [PostModerateProfileText] postModerateProfileText (required):
+  Future<void> postModerateProfileText(PostModerateProfileText postModerateProfileText,) async {
+    final response = await postModerateProfileTextWithHttpInfo(postModerateProfileText,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
