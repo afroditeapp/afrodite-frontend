@@ -138,7 +138,7 @@ class ViewProfilePage extends StatelessWidget {
             context.strings.view_profile_screen_like_action_dialog_title
           ),
           tooltip: context.strings.view_profile_screen_like_action,
-          child: const Icon(Icons.favorite_outline),
+          child: const Icon(Icons.favorite),
         );
       case ProfileActionState.removeLike:
         return FloatingActionButton(
@@ -148,7 +148,7 @@ class ViewProfilePage extends StatelessWidget {
             context.strings.view_profile_screen_remove_like_action_dialog_title,
           ),
           tooltip: context.strings.view_profile_screen_remove_like_action,
-          child: const Icon(Icons.favorite),
+          child: const Icon(Icons.undo),
         );
       case ProfileActionState.makeMatch:
         return FloatingActionButton(
