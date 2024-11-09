@@ -310,6 +310,7 @@
     <string name="conversation_screen_message_state_received_successfully" description="Message state text that message was received successfully">Received successfully</string>
     <string name="conversation_screen_message_details_message_id" description="Title text for message ID value">Message ID</string>
     <string name="conversation_screen_message_error_is_actually_sent_successfully" description="Message remove or resend error that message is actually sent successfully">The message is actually sent successfully</string>
+    <string name="conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found" description="Message send or resend error that receiver blocked sender or receiver not found">Receiver action prevented message sending</string>
     <string name="conversation_screen_message_info_encryption_started" description="Info text that messages in this conversation are end-to-end encrypted">Messages are end-to-end encrypted</string>
     <string name="conversation_screen_message_info_encryption_key_changed" description="Info text that encryption key changed">Encryption key changed</string>
 

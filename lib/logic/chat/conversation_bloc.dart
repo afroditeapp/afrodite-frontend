@@ -231,6 +231,8 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
                 showSnackBar(R.strings.conversation_screen_message_too_long);
               case MessageSendingErrorDetails.tooManyPendingMessages:
                 showSnackBar(R.strings.conversation_screen_message_too_many_pending_messages);
+              case MessageSendingErrorDetails.receiverBlockedSenderOrReceiverNotFound:
+                showSnackBar(R.strings.conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found);
             }
         }
       }
@@ -284,6 +286,8 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
               showSnackBar(R.strings.conversation_screen_message_too_long);
             case ResendFailedError.tooManyPendingMessages:
               showSnackBar(R.strings.conversation_screen_message_too_many_pending_messages);
+            case ResendFailedError.receiverBlockedSenderOrReceiverNotFound:
+              showSnackBar(R.strings.conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found);
           }
       }
 

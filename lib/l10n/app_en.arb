@@ -145,6 +145,10 @@
   "@conversation_screen_message_error_is_actually_sent_successfully": {
     "description": "Message remove or resend error that message is actually sent successfully"
   },
+  "conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found": "Receiver action prevented message sending",
+  "@conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found": {
+    "description": "Message send or resend error that receiver blocked sender or receiver not found"
+  },
   "conversation_screen_message_info_encryption_key_changed": "Encryption key changed",
   "@conversation_screen_message_info_encryption_key_changed": {
     "description": "Info text that encryption key changed"

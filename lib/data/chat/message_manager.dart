@@ -478,6 +478,11 @@ class MessageManager extends LifecycleMethods {
         return;
       }
 
+      if (result.errorReceiverBlockedSenderOrReceiverNotFound) {
+        yield ErrorAfterMessageSaving(localId, MessageSendingErrorDetails.receiverBlockedSenderOrReceiverNotFound);
+        return;
+      }
+
       if (result.errorTooManyReceiverAcknowledgementsMissing) {
         yield ErrorAfterMessageSaving(localId, MessageSendingErrorDetails.tooManyPendingMessages);
         return;
@@ -823,7 +828,8 @@ class SavedToLocalDb extends MessageSendingEvent {
 
 enum MessageSendingErrorDetails {
   messageTooLarge,
-  tooManyPendingMessages;
+  tooManyPendingMessages,
+  receiverBlockedSenderOrReceiverNotFound;
 
   ResendFailedError toResendFailedError() {
     switch (this) {
@@ -831,6 +837,8 @@ enum MessageSendingErrorDetails {
         return ResendFailedError.messageTooLarge;
       case tooManyPendingMessages:
         return ResendFailedError.tooManyPendingMessages;
+      case receiverBlockedSenderOrReceiverNotFound:
+        return ResendFailedError.receiverBlockedSenderOrReceiverNotFound;
     }
   }
 }
@@ -870,6 +878,7 @@ enum ResendFailedError {
   isActuallySentSuccessfully,
   messageTooLarge,
   tooManyPendingMessages,
+  receiverBlockedSenderOrReceiverNotFound,
 }
 
 enum RetryPublicKeyDownloadError {
