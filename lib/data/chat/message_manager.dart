@@ -671,8 +671,11 @@ class MessageManager extends LifecycleMethods {
     final toBeRemoved = await db.accountData((db) => db.daoMessages.getMessageUsingLocalMessageId(
       localId,
     )).ok();
-    if (toBeRemoved == null || toBeRemoved.messageState.toSentState() != SentMessageState.sendingError) {
+    if (toBeRemoved == null) {
       return const Err(DeleteSendFailedError.unspecifiedError);
+    }
+    if (toBeRemoved.messageState.toSentState() != SentMessageState.sendingError) {
+      return const Err(DeleteSendFailedError.isActuallySentSuccessfully);
     }
 
     final deleteResult = await db.accountData((db) => db.daoMessages.deleteMessage(
@@ -715,41 +718,41 @@ class MessageManager extends LifecycleMethods {
     if (toBeResent == null) {
       return const Err(ResendFailedError.unspecifiedError);
     }
+    if (toBeResent.messageState.toSentState() != SentMessageState.sendingError) {
+      return const Err(ResendFailedError.isActuallySentSuccessfully);
+    }
 
-    ResendFailedError? error;
-    bool resentMessageSavedToLocalDb = false;
+    ResendFailedError? sendingError;
+    ResendFailedError? deleteError;
     await for (var e in _sendMessageTo(receiverAccount, toBeResent.messageText, sendUiEvent: false)) {
       switch (e) {
         case SavedToLocalDb():
-          resentMessageSavedToLocalDb = true;
-        case ErrorBeforeMessageSaving():
-          error = ResendFailedError.unspecifiedError;
-        case ErrorAfterMessageSaving():
-          error = e.details?.toResendFailedError() ?? ResendFailedError.unspecifiedError;
-      }
-    }
-
-    final currentError = error;
-    if (currentError != null) {
-      if (resentMessageSavedToLocalDb) {
-        profile.sendProfileChange(ConversationChanged(toBeResent.remoteAccountId, ConversationChangeType.messageResent));
-      }
-      return Err(currentError);
-    }
-
-    if (resentMessageSavedToLocalDb) {
-      final deleteResult = await _deleteSendFailedMessage(receiverAccount, localId, sendUiEvent: false, actuallySentMessageCheck: false);
-      profile.sendProfileChange(ConversationChanged(toBeResent.remoteAccountId, ConversationChangeType.messageResent));
-      switch (deleteResult) {
-        case Err(:final e):
-          return Err(e.toResendFailedError());
-        case Ok():
+          // actuallySentMessageCheck is false because the check is already done
+          final deleteResult = await _deleteSendFailedMessage(receiverAccount, localId, sendUiEvent: false, actuallySentMessageCheck: false);
+          switch (deleteResult) {
+            case Err(:final e):
+              deleteError = e.toResendFailedError();
+            case Ok():
+              ();
+          }
           profile.sendProfileChange(ConversationChanged(toBeResent.remoteAccountId, ConversationChangeType.messageResent));
-          return const Ok(null);
+        case ErrorBeforeMessageSaving():
+          sendingError = ResendFailedError.unspecifiedError;
+        case ErrorAfterMessageSaving():
+          sendingError = e.details?.toResendFailedError() ?? ResendFailedError.unspecifiedError;
       }
-    } else {
-      return const Err(ResendFailedError.unspecifiedError);
     }
+
+    final currentSendingError = sendingError;
+    if (currentSendingError != null) {
+      // The unlikely delete error is ignored in this case
+      return Err(currentSendingError);
+    }
+    final currentDeleteError = deleteError;
+    if (currentDeleteError != null) {
+      return Err(currentDeleteError);
+    }
+    return const Ok(null);
   }
 
   Future<Result<void, RetryPublicKeyDownloadError>> _retryPublicKeyDownload(
