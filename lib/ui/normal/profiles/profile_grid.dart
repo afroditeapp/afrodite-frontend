@@ -159,10 +159,6 @@ class _ProfileGridState extends State<ProfileGrid> {
   }
 
   Future<void> _fetchPage(int pageKey) async {
-    if (pageKey == 0) {
-      _mainProfilesViewIterator.resetToBeginning();
-    }
-
     final profileList = await _mainProfilesViewIterator.nextList().ok();
     if (profileList == null) {
       // Show error UI

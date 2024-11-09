@@ -39,7 +39,15 @@ class ProfileIteratorManager {
 
   BehaviorSubject<bool> loadingInProgress = BehaviorSubject.seeded(false);
 
+  /// Server might return the same profile multiple times because
+  /// the profile index data structure on server is not locked when modifying it
+  /// or the profile iterator is waiting for next profile query and user
+  /// moves profile location to a location from where the iterator can return it.
+  final Set<AccountId> _duplicateAccountsPreventer = {};
+
   void reset(ProfileIteratorMode mode) async {
+    _duplicateAccountsPreventer.clear();
+
     switch (mode) {
       case ModeFavorites(): {
         _currentIterator = FavoritesDatabaseIterator(db: db);
@@ -71,10 +79,6 @@ class ProfileIteratorManager {
       }
     }
     _currentMode = mode;
-  }
-
-  void resetToBeginning() {
-    _currentIterator.reset();
   }
 
   void refresh() async {
@@ -133,9 +137,12 @@ class ProfileIteratorManager {
       final toBeRemoved = <ProfileEntry>[];
       for (final p in list) {
         final isBlocked = await chat.isInSentBlocks(p.uuid);
+        final alreadyReturned = _duplicateAccountsPreventer.contains(p.uuid);
 
-        if (isBlocked || p.uuid == currentUser) {
+        if (isBlocked || alreadyReturned || p.uuid == currentUser) {
           toBeRemoved.add(p);
+        } else {
+          _duplicateAccountsPreventer.add(p.uuid);
         }
       }
       list.removeWhere((element) => toBeRemoved.contains(element));
