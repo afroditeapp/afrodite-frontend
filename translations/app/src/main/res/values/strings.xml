@@ -184,6 +184,7 @@
     <string name="view_profile_screen_like_action_dialog_title" description="Title for view profile screen like action dialog">Like profile?</string>
     <string name="view_profile_screen_remove_like_action" description="Text for view profile screen remove like action">Remove like</string>
     <string name="view_profile_screen_remove_like_action_dialog_title" description="Title for view profile screen remove like action dialog">Remove like?</string>
+    <string name="view_profile_screen_remove_like_action_dialog_text" description="Text for view profile screen remove like action dialog">This can be done only once per profile</string>
     <string name="view_profile_screen_match_with_message_action" description="Text for view profile screen match with message action">Match with message</string>
     <string name="view_profile_screen_chat_action" description="Text for view profile screen chat action">Chat</string>
     <string name="view_profile_screen_add_to_favorites_action" description="Text for view profile screen add to favorites action">Add to favorites</string>

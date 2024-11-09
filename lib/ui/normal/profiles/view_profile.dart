@@ -146,6 +146,7 @@ class ViewProfilePage extends StatelessWidget {
             context,
             s,
             context.strings.view_profile_screen_remove_like_action_dialog_title,
+            details: context.strings.view_profile_screen_remove_like_action_dialog_text,
           ),
           tooltip: context.strings.view_profile_screen_remove_like_action,
           child: const Icon(Icons.undo),
@@ -165,8 +166,8 @@ class ViewProfilePage extends StatelessWidget {
     }
   }
 
-  void confirmProfileAction(BuildContext context, ViewProfilesData s, String dialogTitle) async {
-    final accepted = await showConfirmDialog(context, dialogTitle);
+  void confirmProfileAction(BuildContext context, ViewProfilesData s, String dialogTitle, {String? details}) async {
+    final accepted = await showConfirmDialog(context, dialogTitle, details: details);
     if (context.mounted && accepted == true) {
       context.read<ViewProfileBloc>()
         .add(DoProfileAction(

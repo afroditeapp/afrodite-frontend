@@ -1379,6 +1379,10 @@
   "@view_profile_screen_remove_like_action": {
     "description": "Text for view profile screen remove like action"
   },
+  "view_profile_screen_remove_like_action_dialog_text": "This can be done only once per profile",
+  "@view_profile_screen_remove_like_action_dialog_text": {
+    "description": "Text for view profile screen remove like action dialog"
+  },
   "view_profile_screen_remove_like_action_dialog_title": "Remove like?",
   "@view_profile_screen_remove_like_action_dialog_title": {
     "description": "Title for view profile screen remove like action dialog"
