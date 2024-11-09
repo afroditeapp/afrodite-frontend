@@ -58,7 +58,12 @@ class PushNotificationManager extends AppSingleton {
   /// Initializes push notifications. Can be called multiple times.
   Future<void> initPushNotifications() async {
     if (kIsWeb) {
-      /// Push notifications are not supported on web
+      // Push notifications are not supported on web.
+      return;
+    }
+
+    if (DefaultFirebaseOptions.currentPlatform.apiKey.isEmpty) {
+      // Firebase configuration is missing
       return;
     }
 
