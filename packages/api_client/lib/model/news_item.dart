@@ -16,9 +16,9 @@ class NewsItem {
     this.aidCreator,
     this.aidEditor,
     required this.body,
-    required this.creationTime,
     this.editUnixTime,
     required this.locale,
+    this.time,
     required this.title,
     this.version,
   });
@@ -31,12 +31,13 @@ class NewsItem {
 
   String body;
 
-  UnixTime creationTime;
-
   /// Option<i64> is a workaround for Dart OpenApi generator version 7.9.0
   int? editUnixTime;
 
   String locale;
+
+  /// Latest publication time
+  UnixTime? time;
 
   String title;
 
@@ -48,9 +49,9 @@ class NewsItem {
     other.aidCreator == aidCreator &&
     other.aidEditor == aidEditor &&
     other.body == body &&
-    other.creationTime == creationTime &&
     other.editUnixTime == editUnixTime &&
     other.locale == locale &&
+    other.time == time &&
     other.title == title &&
     other.version == version;
 
@@ -60,14 +61,14 @@ class NewsItem {
     (aidCreator == null ? 0 : aidCreator!.hashCode) +
     (aidEditor == null ? 0 : aidEditor!.hashCode) +
     (body.hashCode) +
-    (creationTime.hashCode) +
     (editUnixTime == null ? 0 : editUnixTime!.hashCode) +
     (locale.hashCode) +
+    (time == null ? 0 : time!.hashCode) +
     (title.hashCode) +
     (version == null ? 0 : version!.hashCode);
 
   @override
-  String toString() => 'NewsItem[aidCreator=$aidCreator, aidEditor=$aidEditor, body=$body, creationTime=$creationTime, editUnixTime=$editUnixTime, locale=$locale, title=$title, version=$version]';
+  String toString() => 'NewsItem[aidCreator=$aidCreator, aidEditor=$aidEditor, body=$body, editUnixTime=$editUnixTime, locale=$locale, time=$time, title=$title, version=$version]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -82,13 +83,17 @@ class NewsItem {
       json[r'aid_editor'] = null;
     }
       json[r'body'] = this.body;
-      json[r'creation_time'] = this.creationTime;
     if (this.editUnixTime != null) {
       json[r'edit_unix_time'] = this.editUnixTime;
     } else {
       json[r'edit_unix_time'] = null;
     }
       json[r'locale'] = this.locale;
+    if (this.time != null) {
+      json[r'time'] = this.time;
+    } else {
+      json[r'time'] = null;
+    }
       json[r'title'] = this.title;
     if (this.version != null) {
       json[r'version'] = this.version;
@@ -120,9 +125,9 @@ class NewsItem {
         aidCreator: AccountId.fromJson(json[r'aid_creator']),
         aidEditor: AccountId.fromJson(json[r'aid_editor']),
         body: mapValueOfType<String>(json, r'body')!,
-        creationTime: UnixTime.fromJson(json[r'creation_time'])!,
         editUnixTime: mapValueOfType<int>(json, r'edit_unix_time'),
         locale: mapValueOfType<String>(json, r'locale')!,
+        time: UnixTime.fromJson(json[r'time']),
         title: mapValueOfType<String>(json, r'title')!,
         version: NewsTranslationVersion.fromJson(json[r'version']),
       );
@@ -173,7 +178,6 @@ class NewsItem {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'body',
-    'creation_time',
     'locale',
     'title',
   };

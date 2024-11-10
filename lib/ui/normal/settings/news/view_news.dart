@@ -121,8 +121,12 @@ class ViewNewsScreenState extends State<ViewNewsScreen> {
   }
 
   Widget viewItem(BuildContext context, NewsItem item) {
-    final creationTime = timeString(item.creationTime.toUtcDateTime());
-    String details = context.strings.view_news_screen_published(creationTime);
+    String details = "";
+    final latestPublicationTime = item.time;
+    if (latestPublicationTime != null) {
+      final latestPublicationTimeString = timeString(latestPublicationTime.toUtcDateTime());
+      details = context.strings.view_news_screen_published(latestPublicationTimeString);
+    }
     final editTime = item.editUnixTime;
     if (editTime != null) {
       final editTimeText = timeString(UnixTime(ut: editTime).toUtcDateTime());

@@ -23,6 +23,7 @@ class NewsItemSimple {
 
   bool private;
 
+  /// Latest publication time
   UnixTime? time;
 
   String? title;
