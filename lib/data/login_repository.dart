@@ -275,6 +275,7 @@ class LoginRepository extends DataRepository {
 
     final account = AccountRepository(
       db: accountDb,
+      accountBackgroundDb: accountBackgroundDb,
       api: connectionManager.api,
       connectionManager: connectionManager,
       clientIdManager: clientIdManager,

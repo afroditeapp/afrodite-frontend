@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:app/data/general/notification/state/news_item_available.dart';
+import 'package:app/database/account_background_database_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -7,12 +9,10 @@ import 'package:openapi/api.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:app/api/api_manager.dart';
 import 'package:app/data/login_repository.dart';
-import 'package:app/database/account_database_manager.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/account/news/news_count.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
-import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui/normal/settings/news/view_news.dart';
 import 'package:app/ui_utils/dialog.dart';
@@ -27,26 +27,37 @@ final log = Logger("NewsListScreen");
 Future<void> openNewsList(
   BuildContext context,
 ) {
-  final pageKey = PageKey();
-  final locale = Localizations.localeOf(context).languageCode;
-  final bloc = context.read<NewsCountBloc>();
-  return MyNavigator.pushWithKey(
+  return MyNavigator.push(
     context,
-    MaterialPage<void>(child: NewsListScreen(
-      pageKey: pageKey,
-      locale: locale,
-      bloc: bloc,
-    )),
-    pageKey,
+    const MaterialPage<void>(child: NewsListScreenOpener()),
   );
 }
 
+class NewsListScreenOpener extends StatefulWidget {
+  const NewsListScreenOpener({super.key});
+
+  @override
+  State<NewsListScreenOpener> createState() => _NewsListScreenOpenerState();
+}
+
+class _NewsListScreenOpenerState extends State<NewsListScreenOpener> {
+  String? initialLocale;
+
+  @override
+  Widget build(BuildContext context) {
+    initialLocale ??= Localizations.localeOf(context).languageCode;
+    final bloc = context.read<NewsCountBloc>();
+    return NewsListScreen(
+      locale: initialLocale!,
+      bloc: bloc,
+    );
+  }
+}
+
 class NewsListScreen extends StatefulWidget {
-  final PageKey pageKey;
   final String locale;
   final NewsCountBloc bloc;
   const NewsListScreen({
-    required this.pageKey,
     required this.locale,
     required this.bloc,
     super.key,
@@ -63,7 +74,7 @@ class NewsListScreenState extends State<NewsListScreen> {
   PagingController<int, NewsViewEntry>? _pagingController =
     PagingController(firstPageKey: 0);
 
-  final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
+  final AccountBackgroundDatabaseManager accountBackgroundDb = LoginRepository.getInstance().repositories.accountBackgroundDb;
   final ApiManager api = LoginRepository.getInstance().repositories.api;
 
   NewsIteratorSessionId? _sessionId;
@@ -71,6 +82,7 @@ class NewsListScreenState extends State<NewsListScreen> {
   @override
   void initState() {
     super.initState();
+    NotificationNewsItemAvailable.getInstance().hide(accountBackgroundDb);
     _pagingController?.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
@@ -89,7 +101,7 @@ class NewsListScreenState extends State<NewsListScreen> {
         return;
       }
       _sessionId = r.s;
-      final dbResult = await accountDb.accountAction((db) => db.daoNews.setUnreadNewsCount(version: r.v, unreadNewsCount: r.c));
+      final dbResult = await accountBackgroundDb.accountAction((db) => db.daoNews.setUnreadNewsCount(version: r.v, unreadNewsCount: r.c));
       if (dbResult.isErr()) {
         showLoadingError();
         return;

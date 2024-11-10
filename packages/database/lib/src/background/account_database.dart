@@ -6,6 +6,7 @@ import 'package:database/src/background/account/dao_user_interface_settings.dart
 import 'package:database/src/background/conversations_table.dart';
 import 'package:database/src/background/new_received_likes_available_table.dart';
 import 'package:database/src/background/new_message_notification_table.dart';
+import 'package:database/src/background/news_table.dart';
 import 'package:database/src/background/profile_table.dart';
 import 'package:database/src/message_entry.dart';
 import 'package:drift/drift.dart';
@@ -28,6 +29,7 @@ class AccountBackground extends Table {
   BoolColumn get localNotificationSettingMessages => boolean().nullable()();
   BoolColumn get localNotificationSettingLikes => boolean().nullable()();
   BoolColumn get localNotificationSettingModerationRequestStatus => boolean().nullable()();
+  BoolColumn get localNotificationSettingNewsItemAvailable => boolean().nullable()();
 
   // DaoUserInterfaceSettings
 
@@ -41,6 +43,7 @@ class AccountBackground extends Table {
     ConversationsBackground,
     NewMessageNotification,
     NewReceivedLikesAvailable,
+    News,
   ],
   daos: [
     // Related to AccountBackground table
@@ -54,6 +57,8 @@ class AccountBackground extends Table {
     DaoNewMessageNotification,
     // Related to NewReceivedLikesAvailable table
     DaoNewReceivedLikesAvailable,
+    // Related to News table
+    DaoNews,
   ],
 )
 class AccountBackgroundDatabase extends _$AccountBackgroundDatabase {

@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:async/async.dart' show StreamExtensions;
 import 'package:app/data/general/notification/state/moderation_request_status.dart';
+import 'package:app/data/general/notification/state/news_item_available.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -213,6 +215,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       if ((v.value & 0x4) == 0x4) {
         await _handlePushNotificationContentModerationRequestCompleted(v.contentModerationRequestCompleted, accountBackgroundDb);
       }
+      if ((v.value & 0x8) == 0x8) {
+        await _handlePushNotificationNewsChanged(v.newsChanged, accountBackgroundDb);
+      }
     case Err():
       log.error("Downloading pending notification failed");
   }
@@ -253,4 +258,11 @@ Future<void> _handlePushNotificationContentModerationRequestCompleted(Moderation
   }
 
   await NotificationModerationRequestStatus.getInstance().show(simpleStatus, accountBackgroundDb);
+}
+
+Future<void> _handlePushNotificationNewsChanged(UnreadNewsCountResult? r, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+  if (r == null) {
+    return;
+  }
+  await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(r, accountBackgroundDb);
 }

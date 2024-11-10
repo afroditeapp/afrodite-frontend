@@ -851,6 +851,10 @@
   "@notification_category_moderation_request_status": {
     "description": "Title for notification category image moderation status"
   },
+  "notification_category_news_item_available": "News",
+  "@notification_category_news_item_available": {
+    "description": "Title for notification category news item available"
+  },
   "notification_like_received_multiple": "Likes received",
   "@notification_like_received_multiple": {
     "description": "Title for like received notification when multiple likes is received"
@@ -888,6 +892,10 @@
   "notification_moderation_request_status_rejected": "Image moderation rejected",
   "@notification_moderation_request_status_rejected": {
     "description": "Title for moderation request status notification when status is rejected"
+  },
+  "notification_news_item_available": "News available",
+  "@notification_news_item_available": {
+    "description": "Title for news item available notification"
   },
   "notification_permission_dialog_description": "Allow notifications to receive notifications for example from new likes and messages.",
   "@notification_permission_dialog_description": {

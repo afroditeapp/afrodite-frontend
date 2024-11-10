@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:app/ui/normal/settings/news/news_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -143,6 +144,12 @@ Future<NewPageDetails?> handlePayload(
       } else {
         return newLikesScreen(likeGridInstanceManagerBloc);
       }
+    case NavigateToNews():
+      return NewPageDetails(
+        const MaterialPage<void>(
+          child: NewsListScreenOpener(),
+        ),
+      );
     case NavigateToModerationRequestStatus():
       return NewPageDetails(
         const MaterialPage<void>(

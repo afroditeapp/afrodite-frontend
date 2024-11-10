@@ -168,12 +168,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       GeneratedColumn<int>(
           'sync_version_available_profile_attributes', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _syncVersionNewsMeta =
-      const VerificationMeta('syncVersionNews');
-  @override
-  late final GeneratedColumn<int> syncVersionNews = GeneratedColumn<int>(
-      'sync_version_news', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _uuidPendingContentId0Meta =
       const VerificationMeta('uuidPendingContentId0');
   @override
@@ -358,6 +352,15 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       requiredDuringInsert: false,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("profile_name_accepted" IN (0, 1))'));
+  static const VerificationMeta _profileNameModerationStateMeta =
+      const VerificationMeta('profileNameModerationState');
+  @override
+  late final GeneratedColumnWithTypeConverter<EnumString?, String>
+      profileNameModerationState = GeneratedColumn<String>(
+              'profile_name_moderation_state', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<EnumString?>(
+              $AccountTable.$converterprofileNameModerationState);
   static const VerificationMeta _profileTextMeta =
       const VerificationMeta('profileText');
   @override
@@ -397,15 +400,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<JsonList?>(
               $AccountTable.$converterjsonProfileAttributes);
-  static const VerificationMeta _profileNameModerationStateMeta =
-      const VerificationMeta('profileNameModerationState');
-  @override
-  late final GeneratedColumnWithTypeConverter<EnumString?, String>
-      profileNameModerationState = GeneratedColumn<String>(
-              'profile_name_moderation_state', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<EnumString?>(
-              $AccountTable.$converterprofileNameModerationState);
   static const VerificationMeta _profileLocationLatitudeMeta =
       const VerificationMeta('profileLocationLatitude');
   @override
@@ -602,13 +596,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<int> profileInitialAge = GeneratedColumn<int>(
       'profile_initial_age', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _newsCountMeta =
-      const VerificationMeta('newsCount');
-  @override
-  late final GeneratedColumnWithTypeConverter<UnreadNewsCount?, int> newsCount =
-      GeneratedColumn<int>('news_count', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UnreadNewsCount?>($AccountTable.$converternewsCount);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -629,7 +616,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         syncVersionAccount,
         syncVersionProfile,
         syncVersionAvailableProfileAttributes,
-        syncVersionNews,
         uuidPendingContentId0,
         uuidPendingContentId1,
         uuidPendingContentId2,
@@ -653,12 +639,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         profileContentVersion,
         profileName,
         profileNameAccepted,
+        profileNameModerationState,
         profileText,
         profileAge,
         profileUnlimitedLikes,
         profileVersion,
         jsonProfileAttributes,
-        profileNameModerationState,
         profileLocationLatitude,
         profileLocationLongitude,
         jsonProfileVisibility,
@@ -685,8 +671,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         publicKeyId,
         publicKeyVersion,
         profileInitialAgeSetUnixTime,
-        profileInitialAge,
-        newsCount
+        profileInitialAge
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -773,12 +758,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['sync_version_available_profile_attributes']!,
               _syncVersionAvailableProfileAttributesMeta));
     }
-    if (data.containsKey('sync_version_news')) {
-      context.handle(
-          _syncVersionNewsMeta,
-          syncVersionNews.isAcceptableOrUnknown(
-              data['sync_version_news']!, _syncVersionNewsMeta));
-    }
     context.handle(
         _uuidPendingContentId0Meta, const VerificationResult.success());
     context.handle(
@@ -857,6 +836,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           profileNameAccepted.isAcceptableOrUnknown(
               data['profile_name_accepted']!, _profileNameAcceptedMeta));
     }
+    context.handle(
+        _profileNameModerationStateMeta, const VerificationResult.success());
     if (data.containsKey('profile_text')) {
       context.handle(
           _profileTextMeta,
@@ -878,8 +859,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     context.handle(_profileVersionMeta, const VerificationResult.success());
     context.handle(
         _jsonProfileAttributesMeta, const VerificationResult.success());
-    context.handle(
-        _profileNameModerationStateMeta, const VerificationResult.success());
     if (data.containsKey('profile_location_latitude')) {
       context.handle(
           _profileLocationLatitudeMeta,
@@ -1009,7 +988,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           profileInitialAge.isAcceptableOrUnknown(
               data['profile_initial_age']!, _profileInitialAgeMeta));
     }
-    context.handle(_newsCountMeta, const VerificationResult.success());
     return context;
   }
 
@@ -1072,8 +1050,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       syncVersionAvailableProfileAttributes: attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}sync_version_available_profile_attributes']),
-      syncVersionNews: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}sync_version_news']),
       uuidPendingContentId0: $AccountTable.$converteruuidPendingContentId0
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}uuid_pending_content_id0'])),
@@ -1142,6 +1118,10 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           .read(DriftSqlType.string, data['${effectivePrefix}profile_name']),
       profileNameAccepted: attachedDatabase.typeMapping.read(
           DriftSqlType.bool, data['${effectivePrefix}profile_name_accepted']),
+      profileNameModerationState: $AccountTable
+          .$converterprofileNameModerationState
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}profile_name_moderation_state'])),
       profileText: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}profile_text']),
       profileAge: attachedDatabase.typeMapping
@@ -1154,10 +1134,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       jsonProfileAttributes: $AccountTable.$converterjsonProfileAttributes
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}json_profile_attributes'])),
-      profileNameModerationState: $AccountTable
-          .$converterprofileNameModerationState
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}profile_name_moderation_state'])),
       profileLocationLatitude: attachedDatabase.typeMapping.read(
           DriftSqlType.double,
           data['${effectivePrefix}profile_location_latitude']),
@@ -1234,9 +1210,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['${effectivePrefix}profile_initial_age_set_unix_time'])),
       profileInitialAge: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}profile_initial_age']),
-      newsCount: $AccountTable.$converternewsCount.fromSql(attachedDatabase
-          .typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}news_count'])),
     );
   }
 
@@ -1298,13 +1271,13 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<ProfileContentVersion?, String?>
       $converterprofileContentVersion =
       const NullAwareTypeConverter.wrap(ProfileContentVersionConverter());
+  static TypeConverter<EnumString?, String?>
+      $converterprofileNameModerationState =
+      NullAwareTypeConverter.wrap(EnumString.driftConverter);
   static TypeConverter<ProfileVersion?, String?> $converterprofileVersion =
       const NullAwareTypeConverter.wrap(ProfileVersionConverter());
   static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
       NullAwareTypeConverter.wrap(JsonList.driftConverter);
-  static TypeConverter<EnumString?, String?>
-      $converterprofileNameModerationState =
-      NullAwareTypeConverter.wrap(EnumString.driftConverter);
   static TypeConverter<EnumString?, String?> $converterjsonProfileVisibility =
       NullAwareTypeConverter.wrap(EnumString.driftConverter);
   static TypeConverter<JsonString?, String?> $converterjsonSearchGroups =
@@ -1326,8 +1299,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<UtcDateTime?, int?>
       $converterprofileInitialAgeSetUnixTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
-  static TypeConverter<UnreadNewsCount?, int?> $converternewsCount =
-      const NullAwareTypeConverter.wrap(UnreadNewsCountConverter());
 }
 
 class AccountData extends DataClass implements Insertable<AccountData> {
@@ -1351,7 +1322,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final int? syncVersionAccount;
   final int? syncVersionProfile;
   final int? syncVersionAvailableProfileAttributes;
-  final int? syncVersionNews;
   final ContentId? uuidPendingContentId0;
   final ContentId? uuidPendingContentId1;
   final ContentId? uuidPendingContentId2;
@@ -1375,12 +1345,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final ProfileContentVersion? profileContentVersion;
   final String? profileName;
   final bool? profileNameAccepted;
+  final EnumString? profileNameModerationState;
   final String? profileText;
   final int? profileAge;
   final bool? profileUnlimitedLikes;
   final ProfileVersion? profileVersion;
   final JsonList? jsonProfileAttributes;
-  final EnumString? profileNameModerationState;
   final double? profileLocationLatitude;
   final double? profileLocationLongitude;
   final EnumString? jsonProfileVisibility;
@@ -1408,7 +1378,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final PublicKeyVersion? publicKeyVersion;
   final UtcDateTime? profileInitialAgeSetUnixTime;
   final int? profileInitialAge;
-  final UnreadNewsCount? newsCount;
   const AccountData(
       {required this.id,
       this.uuidAccountId,
@@ -1428,7 +1397,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.syncVersionAccount,
       this.syncVersionProfile,
       this.syncVersionAvailableProfileAttributes,
-      this.syncVersionNews,
       this.uuidPendingContentId0,
       this.uuidPendingContentId1,
       this.uuidPendingContentId2,
@@ -1452,12 +1420,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.profileContentVersion,
       this.profileName,
       this.profileNameAccepted,
+      this.profileNameModerationState,
       this.profileText,
       this.profileAge,
       this.profileUnlimitedLikes,
       this.profileVersion,
       this.jsonProfileAttributes,
-      this.profileNameModerationState,
       this.profileLocationLatitude,
       this.profileLocationLongitude,
       this.jsonProfileVisibility,
@@ -1484,8 +1452,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.publicKeyId,
       this.publicKeyVersion,
       this.profileInitialAgeSetUnixTime,
-      this.profileInitialAge,
-      this.newsCount});
+      this.profileInitialAge});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1546,9 +1513,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     if (!nullToAbsent || syncVersionAvailableProfileAttributes != null) {
       map['sync_version_available_profile_attributes'] =
           Variable<int>(syncVersionAvailableProfileAttributes);
-    }
-    if (!nullToAbsent || syncVersionNews != null) {
-      map['sync_version_news'] = Variable<int>(syncVersionNews);
     }
     if (!nullToAbsent || uuidPendingContentId0 != null) {
       map['uuid_pending_content_id0'] = Variable<String>($AccountTable
@@ -1649,6 +1613,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     if (!nullToAbsent || profileNameAccepted != null) {
       map['profile_name_accepted'] = Variable<bool>(profileNameAccepted);
     }
+    if (!nullToAbsent || profileNameModerationState != null) {
+      map['profile_name_moderation_state'] = Variable<String>($AccountTable
+          .$converterprofileNameModerationState
+          .toSql(profileNameModerationState));
+    }
     if (!nullToAbsent || profileText != null) {
       map['profile_text'] = Variable<String>(profileText);
     }
@@ -1666,11 +1635,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['json_profile_attributes'] = Variable<String>($AccountTable
           .$converterjsonProfileAttributes
           .toSql(jsonProfileAttributes));
-    }
-    if (!nullToAbsent || profileNameModerationState != null) {
-      map['profile_name_moderation_state'] = Variable<String>($AccountTable
-          .$converterprofileNameModerationState
-          .toSql(profileNameModerationState));
     }
     if (!nullToAbsent || profileLocationLatitude != null) {
       map['profile_location_latitude'] =
@@ -1774,10 +1738,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     if (!nullToAbsent || profileInitialAge != null) {
       map['profile_initial_age'] = Variable<int>(profileInitialAge);
     }
-    if (!nullToAbsent || newsCount != null) {
-      map['news_count'] =
-          Variable<int>($AccountTable.$converternewsCount.toSql(newsCount));
-    }
     return map;
   }
 
@@ -1826,9 +1786,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           syncVersionAvailableProfileAttributes == null && nullToAbsent
               ? const Value.absent()
               : Value(syncVersionAvailableProfileAttributes),
-      syncVersionNews: syncVersionNews == null && nullToAbsent
-          ? const Value.absent()
-          : Value(syncVersionNews),
       uuidPendingContentId0: uuidPendingContentId0 == null && nullToAbsent
           ? const Value.absent()
           : Value(uuidPendingContentId0),
@@ -1903,6 +1860,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileNameAccepted: profileNameAccepted == null && nullToAbsent
           ? const Value.absent()
           : Value(profileNameAccepted),
+      profileNameModerationState:
+          profileNameModerationState == null && nullToAbsent
+              ? const Value.absent()
+              : Value(profileNameModerationState),
       profileText: profileText == null && nullToAbsent
           ? const Value.absent()
           : Value(profileText),
@@ -1918,10 +1879,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       jsonProfileAttributes: jsonProfileAttributes == null && nullToAbsent
           ? const Value.absent()
           : Value(jsonProfileAttributes),
-      profileNameModerationState:
-          profileNameModerationState == null && nullToAbsent
-              ? const Value.absent()
-              : Value(profileNameModerationState),
       profileLocationLatitude: profileLocationLatitude == null && nullToAbsent
           ? const Value.absent()
           : Value(profileLocationLatitude),
@@ -2010,9 +1967,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileInitialAge: profileInitialAge == null && nullToAbsent
           ? const Value.absent()
           : Value(profileInitialAge),
-      newsCount: newsCount == null && nullToAbsent
-          ? const Value.absent()
-          : Value(newsCount),
     );
   }
 
@@ -2052,7 +2006,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       syncVersionProfile: serializer.fromJson<int?>(json['syncVersionProfile']),
       syncVersionAvailableProfileAttributes: serializer
           .fromJson<int?>(json['syncVersionAvailableProfileAttributes']),
-      syncVersionNews: serializer.fromJson<int?>(json['syncVersionNews']),
       uuidPendingContentId0:
           serializer.fromJson<ContentId?>(json['uuidPendingContentId0']),
       uuidPendingContentId1:
@@ -2092,6 +2045,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileName: serializer.fromJson<String?>(json['profileName']),
       profileNameAccepted:
           serializer.fromJson<bool?>(json['profileNameAccepted']),
+      profileNameModerationState:
+          serializer.fromJson<EnumString?>(json['profileNameModerationState']),
       profileText: serializer.fromJson<String?>(json['profileText']),
       profileAge: serializer.fromJson<int?>(json['profileAge']),
       profileUnlimitedLikes:
@@ -2100,8 +2055,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<ProfileVersion?>(json['profileVersion']),
       jsonProfileAttributes:
           serializer.fromJson<JsonList?>(json['jsonProfileAttributes']),
-      profileNameModerationState:
-          serializer.fromJson<EnumString?>(json['profileNameModerationState']),
       profileLocationLatitude:
           serializer.fromJson<double?>(json['profileLocationLatitude']),
       profileLocationLongitude:
@@ -2150,7 +2103,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileInitialAgeSetUnixTime: serializer
           .fromJson<UtcDateTime?>(json['profileInitialAgeSetUnixTime']),
       profileInitialAge: serializer.fromJson<int?>(json['profileInitialAge']),
-      newsCount: serializer.fromJson<UnreadNewsCount?>(json['newsCount']),
     );
   }
   @override
@@ -2186,7 +2138,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'syncVersionProfile': serializer.toJson<int?>(syncVersionProfile),
       'syncVersionAvailableProfileAttributes':
           serializer.toJson<int?>(syncVersionAvailableProfileAttributes),
-      'syncVersionNews': serializer.toJson<int?>(syncVersionNews),
       'uuidPendingContentId0':
           serializer.toJson<ContentId?>(uuidPendingContentId0),
       'uuidPendingContentId1':
@@ -2225,14 +2176,14 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.toJson<ProfileContentVersion?>(profileContentVersion),
       'profileName': serializer.toJson<String?>(profileName),
       'profileNameAccepted': serializer.toJson<bool?>(profileNameAccepted),
+      'profileNameModerationState':
+          serializer.toJson<EnumString?>(profileNameModerationState),
       'profileText': serializer.toJson<String?>(profileText),
       'profileAge': serializer.toJson<int?>(profileAge),
       'profileUnlimitedLikes': serializer.toJson<bool?>(profileUnlimitedLikes),
       'profileVersion': serializer.toJson<ProfileVersion?>(profileVersion),
       'jsonProfileAttributes':
           serializer.toJson<JsonList?>(jsonProfileAttributes),
-      'profileNameModerationState':
-          serializer.toJson<EnumString?>(profileNameModerationState),
       'profileLocationLatitude':
           serializer.toJson<double?>(profileLocationLatitude),
       'profileLocationLongitude':
@@ -2273,7 +2224,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'profileInitialAgeSetUnixTime':
           serializer.toJson<UtcDateTime?>(profileInitialAgeSetUnixTime),
       'profileInitialAge': serializer.toJson<int?>(profileInitialAge),
-      'newsCount': serializer.toJson<UnreadNewsCount?>(newsCount),
     };
   }
 
@@ -2301,7 +2251,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<int?> syncVersionProfile = const Value.absent(),
           Value<int?> syncVersionAvailableProfileAttributes =
               const Value.absent(),
-          Value<int?> syncVersionNews = const Value.absent(),
           Value<ContentId?> uuidPendingContentId0 = const Value.absent(),
           Value<ContentId?> uuidPendingContentId1 = const Value.absent(),
           Value<ContentId?> uuidPendingContentId2 = const Value.absent(),
@@ -2327,12 +2276,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
               const Value.absent(),
           Value<String?> profileName = const Value.absent(),
           Value<bool?> profileNameAccepted = const Value.absent(),
+          Value<EnumString?> profileNameModerationState = const Value.absent(),
           Value<String?> profileText = const Value.absent(),
           Value<int?> profileAge = const Value.absent(),
           Value<bool?> profileUnlimitedLikes = const Value.absent(),
           Value<ProfileVersion?> profileVersion = const Value.absent(),
           Value<JsonList?> jsonProfileAttributes = const Value.absent(),
-          Value<EnumString?> profileNameModerationState = const Value.absent(),
           Value<double?> profileLocationLatitude = const Value.absent(),
           Value<double?> profileLocationLongitude = const Value.absent(),
           Value<EnumString?> jsonProfileVisibility = const Value.absent(),
@@ -2364,8 +2313,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<PublicKeyVersion?> publicKeyVersion = const Value.absent(),
           Value<UtcDateTime?> profileInitialAgeSetUnixTime =
               const Value.absent(),
-          Value<int?> profileInitialAge = const Value.absent(),
-          Value<UnreadNewsCount?> newsCount = const Value.absent()}) =>
+          Value<int?> profileInitialAge = const Value.absent()}) =>
       AccountData(
         id: id ?? this.id,
         uuidAccountId:
@@ -2411,9 +2359,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
             syncVersionAvailableProfileAttributes.present
                 ? syncVersionAvailableProfileAttributes.value
                 : this.syncVersionAvailableProfileAttributes,
-        syncVersionNews: syncVersionNews.present
-            ? syncVersionNews.value
-            : this.syncVersionNews,
         uuidPendingContentId0: uuidPendingContentId0.present
             ? uuidPendingContentId0.value
             : this.uuidPendingContentId0,
@@ -2476,6 +2421,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileNameAccepted: profileNameAccepted.present
             ? profileNameAccepted.value
             : this.profileNameAccepted,
+        profileNameModerationState: profileNameModerationState.present
+            ? profileNameModerationState.value
+            : this.profileNameModerationState,
         profileText: profileText.present ? profileText.value : this.profileText,
         profileAge: profileAge.present ? profileAge.value : this.profileAge,
         profileUnlimitedLikes: profileUnlimitedLikes.present
@@ -2486,9 +2434,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         jsonProfileAttributes: jsonProfileAttributes.present
             ? jsonProfileAttributes.value
             : this.jsonProfileAttributes,
-        profileNameModerationState: profileNameModerationState.present
-            ? profileNameModerationState.value
-            : this.profileNameModerationState,
         profileLocationLatitude: profileLocationLatitude.present
             ? profileLocationLatitude.value
             : this.profileLocationLatitude,
@@ -2569,7 +2514,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileInitialAge: profileInitialAge.present
             ? profileInitialAge.value
             : this.profileInitialAge,
-        newsCount: newsCount.present ? newsCount.value : this.newsCount,
       );
   AccountData copyWithCompanion(AccountCompanion data) {
     return AccountData(
@@ -2630,9 +2574,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           data.syncVersionAvailableProfileAttributes.present
               ? data.syncVersionAvailableProfileAttributes.value
               : this.syncVersionAvailableProfileAttributes,
-      syncVersionNews: data.syncVersionNews.present
-          ? data.syncVersionNews.value
-          : this.syncVersionNews,
       uuidPendingContentId0: data.uuidPendingContentId0.present
           ? data.uuidPendingContentId0.value
           : this.uuidPendingContentId0,
@@ -2704,6 +2645,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileNameAccepted: data.profileNameAccepted.present
           ? data.profileNameAccepted.value
           : this.profileNameAccepted,
+      profileNameModerationState: data.profileNameModerationState.present
+          ? data.profileNameModerationState.value
+          : this.profileNameModerationState,
       profileText:
           data.profileText.present ? data.profileText.value : this.profileText,
       profileAge:
@@ -2717,9 +2661,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       jsonProfileAttributes: data.jsonProfileAttributes.present
           ? data.jsonProfileAttributes.value
           : this.jsonProfileAttributes,
-      profileNameModerationState: data.profileNameModerationState.present
-          ? data.profileNameModerationState.value
-          : this.profileNameModerationState,
       profileLocationLatitude: data.profileLocationLatitude.present
           ? data.profileLocationLatitude.value
           : this.profileLocationLatitude,
@@ -2803,7 +2744,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileInitialAge: data.profileInitialAge.present
           ? data.profileInitialAge.value
           : this.profileInitialAge,
-      newsCount: data.newsCount.present ? data.newsCount.value : this.newsCount,
     );
   }
 
@@ -2836,7 +2776,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('syncVersionProfile: $syncVersionProfile, ')
           ..write(
               'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
-          ..write('syncVersionNews: $syncVersionNews, ')
           ..write('uuidPendingContentId0: $uuidPendingContentId0, ')
           ..write('uuidPendingContentId1: $uuidPendingContentId1, ')
           ..write('uuidPendingContentId2: $uuidPendingContentId2, ')
@@ -2864,12 +2803,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('profileContentVersion: $profileContentVersion, ')
           ..write('profileName: $profileName, ')
           ..write('profileNameAccepted: $profileNameAccepted, ')
+          ..write('profileNameModerationState: $profileNameModerationState, ')
           ..write('profileText: $profileText, ')
           ..write('profileAge: $profileAge, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
           ..write('profileVersion: $profileVersion, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
-          ..write('profileNameModerationState: $profileNameModerationState, ')
           ..write('profileLocationLatitude: $profileLocationLatitude, ')
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
           ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
@@ -2900,8 +2839,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('publicKeyVersion: $publicKeyVersion, ')
           ..write(
               'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ')
-          ..write('profileInitialAge: $profileInitialAge, ')
-          ..write('newsCount: $newsCount')
+          ..write('profileInitialAge: $profileInitialAge')
           ..write(')'))
         .toString();
   }
@@ -2926,7 +2864,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         syncVersionAccount,
         syncVersionProfile,
         syncVersionAvailableProfileAttributes,
-        syncVersionNews,
         uuidPendingContentId0,
         uuidPendingContentId1,
         uuidPendingContentId2,
@@ -2950,12 +2887,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileContentVersion,
         profileName,
         profileNameAccepted,
+        profileNameModerationState,
         profileText,
         profileAge,
         profileUnlimitedLikes,
         profileVersion,
         jsonProfileAttributes,
-        profileNameModerationState,
         profileLocationLatitude,
         profileLocationLongitude,
         jsonProfileVisibility,
@@ -2982,8 +2919,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         publicKeyId,
         publicKeyVersion,
         profileInitialAgeSetUnixTime,
-        profileInitialAge,
-        newsCount
+        profileInitialAge
       ]);
   @override
   bool operator ==(Object other) =>
@@ -3015,7 +2951,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.syncVersionProfile == this.syncVersionProfile &&
           other.syncVersionAvailableProfileAttributes ==
               this.syncVersionAvailableProfileAttributes &&
-          other.syncVersionNews == this.syncVersionNews &&
           other.uuidPendingContentId0 == this.uuidPendingContentId0 &&
           other.uuidPendingContentId1 == this.uuidPendingContentId1 &&
           other.uuidPendingContentId2 == this.uuidPendingContentId2 &&
@@ -3043,12 +2978,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.profileContentVersion == this.profileContentVersion &&
           other.profileName == this.profileName &&
           other.profileNameAccepted == this.profileNameAccepted &&
+          other.profileNameModerationState == this.profileNameModerationState &&
           other.profileText == this.profileText &&
           other.profileAge == this.profileAge &&
           other.profileUnlimitedLikes == this.profileUnlimitedLikes &&
           other.profileVersion == this.profileVersion &&
           other.jsonProfileAttributes == this.jsonProfileAttributes &&
-          other.profileNameModerationState == this.profileNameModerationState &&
           other.profileLocationLatitude == this.profileLocationLatitude &&
           other.profileLocationLongitude == this.profileLocationLongitude &&
           other.jsonProfileVisibility == this.jsonProfileVisibility &&
@@ -3081,8 +3016,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.publicKeyVersion == this.publicKeyVersion &&
           other.profileInitialAgeSetUnixTime ==
               this.profileInitialAgeSetUnixTime &&
-          other.profileInitialAge == this.profileInitialAge &&
-          other.newsCount == this.newsCount);
+          other.profileInitialAge == this.profileInitialAge);
 }
 
 class AccountCompanion extends UpdateCompanion<AccountData> {
@@ -3104,7 +3038,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<int?> syncVersionAccount;
   final Value<int?> syncVersionProfile;
   final Value<int?> syncVersionAvailableProfileAttributes;
-  final Value<int?> syncVersionNews;
   final Value<ContentId?> uuidPendingContentId0;
   final Value<ContentId?> uuidPendingContentId1;
   final Value<ContentId?> uuidPendingContentId2;
@@ -3128,12 +3061,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<ProfileContentVersion?> profileContentVersion;
   final Value<String?> profileName;
   final Value<bool?> profileNameAccepted;
+  final Value<EnumString?> profileNameModerationState;
   final Value<String?> profileText;
   final Value<int?> profileAge;
   final Value<bool?> profileUnlimitedLikes;
   final Value<ProfileVersion?> profileVersion;
   final Value<JsonList?> jsonProfileAttributes;
-  final Value<EnumString?> profileNameModerationState;
   final Value<double?> profileLocationLatitude;
   final Value<double?> profileLocationLongitude;
   final Value<EnumString?> jsonProfileVisibility;
@@ -3161,7 +3094,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<PublicKeyVersion?> publicKeyVersion;
   final Value<UtcDateTime?> profileInitialAgeSetUnixTime;
   final Value<int?> profileInitialAge;
-  final Value<UnreadNewsCount?> newsCount;
   const AccountCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -3181,7 +3113,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.syncVersionAccount = const Value.absent(),
     this.syncVersionProfile = const Value.absent(),
     this.syncVersionAvailableProfileAttributes = const Value.absent(),
-    this.syncVersionNews = const Value.absent(),
     this.uuidPendingContentId0 = const Value.absent(),
     this.uuidPendingContentId1 = const Value.absent(),
     this.uuidPendingContentId2 = const Value.absent(),
@@ -3205,12 +3136,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileContentVersion = const Value.absent(),
     this.profileName = const Value.absent(),
     this.profileNameAccepted = const Value.absent(),
+    this.profileNameModerationState = const Value.absent(),
     this.profileText = const Value.absent(),
     this.profileAge = const Value.absent(),
     this.profileUnlimitedLikes = const Value.absent(),
     this.profileVersion = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
-    this.profileNameModerationState = const Value.absent(),
     this.profileLocationLatitude = const Value.absent(),
     this.profileLocationLongitude = const Value.absent(),
     this.jsonProfileVisibility = const Value.absent(),
@@ -3238,7 +3169,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.publicKeyVersion = const Value.absent(),
     this.profileInitialAgeSetUnixTime = const Value.absent(),
     this.profileInitialAge = const Value.absent(),
-    this.newsCount = const Value.absent(),
   });
   AccountCompanion.insert({
     this.id = const Value.absent(),
@@ -3259,7 +3189,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.syncVersionAccount = const Value.absent(),
     this.syncVersionProfile = const Value.absent(),
     this.syncVersionAvailableProfileAttributes = const Value.absent(),
-    this.syncVersionNews = const Value.absent(),
     this.uuidPendingContentId0 = const Value.absent(),
     this.uuidPendingContentId1 = const Value.absent(),
     this.uuidPendingContentId2 = const Value.absent(),
@@ -3283,12 +3212,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileContentVersion = const Value.absent(),
     this.profileName = const Value.absent(),
     this.profileNameAccepted = const Value.absent(),
+    this.profileNameModerationState = const Value.absent(),
     this.profileText = const Value.absent(),
     this.profileAge = const Value.absent(),
     this.profileUnlimitedLikes = const Value.absent(),
     this.profileVersion = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
-    this.profileNameModerationState = const Value.absent(),
     this.profileLocationLatitude = const Value.absent(),
     this.profileLocationLongitude = const Value.absent(),
     this.jsonProfileVisibility = const Value.absent(),
@@ -3316,7 +3245,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.publicKeyVersion = const Value.absent(),
     this.profileInitialAgeSetUnixTime = const Value.absent(),
     this.profileInitialAge = const Value.absent(),
-    this.newsCount = const Value.absent(),
   });
   static Insertable<AccountData> custom({
     Expression<int>? id,
@@ -3337,7 +3265,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<int>? syncVersionAccount,
     Expression<int>? syncVersionProfile,
     Expression<int>? syncVersionAvailableProfileAttributes,
-    Expression<int>? syncVersionNews,
     Expression<String>? uuidPendingContentId0,
     Expression<String>? uuidPendingContentId1,
     Expression<String>? uuidPendingContentId2,
@@ -3361,12 +3288,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<String>? profileContentVersion,
     Expression<String>? profileName,
     Expression<bool>? profileNameAccepted,
+    Expression<String>? profileNameModerationState,
     Expression<String>? profileText,
     Expression<int>? profileAge,
     Expression<bool>? profileUnlimitedLikes,
     Expression<String>? profileVersion,
     Expression<String>? jsonProfileAttributes,
-    Expression<String>? profileNameModerationState,
     Expression<double>? profileLocationLatitude,
     Expression<double>? profileLocationLongitude,
     Expression<String>? jsonProfileVisibility,
@@ -3394,7 +3321,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<int>? publicKeyVersion,
     Expression<int>? profileInitialAgeSetUnixTime,
     Expression<int>? profileInitialAge,
-    Expression<int>? newsCount,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -3431,7 +3357,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (syncVersionAvailableProfileAttributes != null)
         'sync_version_available_profile_attributes':
             syncVersionAvailableProfileAttributes,
-      if (syncVersionNews != null) 'sync_version_news': syncVersionNews,
       if (uuidPendingContentId0 != null)
         'uuid_pending_content_id0': uuidPendingContentId0,
       if (uuidPendingContentId1 != null)
@@ -3472,6 +3397,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (profileName != null) 'profile_name': profileName,
       if (profileNameAccepted != null)
         'profile_name_accepted': profileNameAccepted,
+      if (profileNameModerationState != null)
+        'profile_name_moderation_state': profileNameModerationState,
       if (profileText != null) 'profile_text': profileText,
       if (profileAge != null) 'profile_age': profileAge,
       if (profileUnlimitedLikes != null)
@@ -3479,8 +3406,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (profileVersion != null) 'profile_version': profileVersion,
       if (jsonProfileAttributes != null)
         'json_profile_attributes': jsonProfileAttributes,
-      if (profileNameModerationState != null)
-        'profile_name_moderation_state': profileNameModerationState,
       if (profileLocationLatitude != null)
         'profile_location_latitude': profileLocationLatitude,
       if (profileLocationLongitude != null)
@@ -3528,7 +3453,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (profileInitialAgeSetUnixTime != null)
         'profile_initial_age_set_unix_time': profileInitialAgeSetUnixTime,
       if (profileInitialAge != null) 'profile_initial_age': profileInitialAge,
-      if (newsCount != null) 'news_count': newsCount,
     });
   }
 
@@ -3551,7 +3475,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<int?>? syncVersionAccount,
       Value<int?>? syncVersionProfile,
       Value<int?>? syncVersionAvailableProfileAttributes,
-      Value<int?>? syncVersionNews,
       Value<ContentId?>? uuidPendingContentId0,
       Value<ContentId?>? uuidPendingContentId1,
       Value<ContentId?>? uuidPendingContentId2,
@@ -3575,12 +3498,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<ProfileContentVersion?>? profileContentVersion,
       Value<String?>? profileName,
       Value<bool?>? profileNameAccepted,
+      Value<EnumString?>? profileNameModerationState,
       Value<String?>? profileText,
       Value<int?>? profileAge,
       Value<bool?>? profileUnlimitedLikes,
       Value<ProfileVersion?>? profileVersion,
       Value<JsonList?>? jsonProfileAttributes,
-      Value<EnumString?>? profileNameModerationState,
       Value<double?>? profileLocationLatitude,
       Value<double?>? profileLocationLongitude,
       Value<EnumString?>? jsonProfileVisibility,
@@ -3607,8 +3530,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<PublicKeyId?>? publicKeyId,
       Value<PublicKeyVersion?>? publicKeyVersion,
       Value<UtcDateTime?>? profileInitialAgeSetUnixTime,
-      Value<int?>? profileInitialAge,
-      Value<UnreadNewsCount?>? newsCount}) {
+      Value<int?>? profileInitialAge}) {
     return AccountCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -3640,7 +3562,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       syncVersionAvailableProfileAttributes:
           syncVersionAvailableProfileAttributes ??
               this.syncVersionAvailableProfileAttributes,
-      syncVersionNews: syncVersionNews ?? this.syncVersionNews,
       uuidPendingContentId0:
           uuidPendingContentId0 ?? this.uuidPendingContentId0,
       uuidPendingContentId1:
@@ -3679,6 +3600,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           profileContentVersion ?? this.profileContentVersion,
       profileName: profileName ?? this.profileName,
       profileNameAccepted: profileNameAccepted ?? this.profileNameAccepted,
+      profileNameModerationState:
+          profileNameModerationState ?? this.profileNameModerationState,
       profileText: profileText ?? this.profileText,
       profileAge: profileAge ?? this.profileAge,
       profileUnlimitedLikes:
@@ -3686,8 +3609,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       profileVersion: profileVersion ?? this.profileVersion,
       jsonProfileAttributes:
           jsonProfileAttributes ?? this.jsonProfileAttributes,
-      profileNameModerationState:
-          profileNameModerationState ?? this.profileNameModerationState,
       profileLocationLatitude:
           profileLocationLatitude ?? this.profileLocationLatitude,
       profileLocationLongitude:
@@ -3730,7 +3651,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       profileInitialAgeSetUnixTime:
           profileInitialAgeSetUnixTime ?? this.profileInitialAgeSetUnixTime,
       profileInitialAge: profileInitialAge ?? this.profileInitialAge,
-      newsCount: newsCount ?? this.newsCount,
     );
   }
 
@@ -3810,9 +3730,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (syncVersionAvailableProfileAttributes.present) {
       map['sync_version_available_profile_attributes'] =
           Variable<int>(syncVersionAvailableProfileAttributes.value);
-    }
-    if (syncVersionNews.present) {
-      map['sync_version_news'] = Variable<int>(syncVersionNews.value);
     }
     if (uuidPendingContentId0.present) {
       map['uuid_pending_content_id0'] = Variable<String>($AccountTable
@@ -3913,6 +3830,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (profileNameAccepted.present) {
       map['profile_name_accepted'] = Variable<bool>(profileNameAccepted.value);
     }
+    if (profileNameModerationState.present) {
+      map['profile_name_moderation_state'] = Variable<String>($AccountTable
+          .$converterprofileNameModerationState
+          .toSql(profileNameModerationState.value));
+    }
     if (profileText.present) {
       map['profile_text'] = Variable<String>(profileText.value);
     }
@@ -3931,11 +3853,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['json_profile_attributes'] = Variable<String>($AccountTable
           .$converterjsonProfileAttributes
           .toSql(jsonProfileAttributes.value));
-    }
-    if (profileNameModerationState.present) {
-      map['profile_name_moderation_state'] = Variable<String>($AccountTable
-          .$converterprofileNameModerationState
-          .toSql(profileNameModerationState.value));
     }
     if (profileLocationLatitude.present) {
       map['profile_location_latitude'] =
@@ -4044,10 +3961,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (profileInitialAge.present) {
       map['profile_initial_age'] = Variable<int>(profileInitialAge.value);
     }
-    if (newsCount.present) {
-      map['news_count'] = Variable<int>(
-          $AccountTable.$converternewsCount.toSql(newsCount.value));
-    }
     return map;
   }
 
@@ -4080,7 +3993,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('syncVersionProfile: $syncVersionProfile, ')
           ..write(
               'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
-          ..write('syncVersionNews: $syncVersionNews, ')
           ..write('uuidPendingContentId0: $uuidPendingContentId0, ')
           ..write('uuidPendingContentId1: $uuidPendingContentId1, ')
           ..write('uuidPendingContentId2: $uuidPendingContentId2, ')
@@ -4108,12 +4020,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('profileContentVersion: $profileContentVersion, ')
           ..write('profileName: $profileName, ')
           ..write('profileNameAccepted: $profileNameAccepted, ')
+          ..write('profileNameModerationState: $profileNameModerationState, ')
           ..write('profileText: $profileText, ')
           ..write('profileAge: $profileAge, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
           ..write('profileVersion: $profileVersion, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
-          ..write('profileNameModerationState: $profileNameModerationState, ')
           ..write('profileLocationLatitude: $profileLocationLatitude, ')
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
           ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
@@ -4144,8 +4056,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('publicKeyVersion: $publicKeyVersion, ')
           ..write(
               'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ')
-          ..write('profileInitialAge: $profileInitialAge, ')
-          ..write('newsCount: $newsCount')
+          ..write('profileInitialAge: $profileInitialAge')
           ..write(')'))
         .toString();
   }
@@ -7117,7 +7028,6 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       DaoMessageKeys(this as AccountDatabase);
   late final DaoProfileInitialAgeInfo daoProfileInitialAgeInfo =
       DaoProfileInitialAgeInfo(this as AccountDatabase);
-  late final DaoNews daoNews = DaoNews(this as AccountDatabase);
   late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
   late final DaoConversationList daoConversationList =
       DaoConversationList(this as AccountDatabase);

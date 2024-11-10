@@ -2,13 +2,14 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:app/data/general/notification/state/news_item_available.dart';
+import 'package:app/database/account_background_database_manager.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/api_manager.dart';
 import 'package:app/data/account/client_id_manager.dart';
 import 'package:app/data/account/initial_setup.dart';
-import 'package:app/data/general/notification/state/moderation_request_status.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_database_manager.dart';
@@ -37,10 +38,12 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   final ClientIdManager clientIdManager;
   final ApiManager api;
   final AccountDatabaseManager db;
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
 
   late final RepositoryInstances repositories;
   AccountRepository({
     required this.db,
+    required this.accountBackgroundDb,
     required this.api,
     required ServerConnectionManager connectionManager,
     required this.clientIdManager,
@@ -258,7 +261,10 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<void, void>> receiveNewsCount() async {
-    return await api.account((api) => api.postGetUnreadNewsCount())
-      .andThen((info) => db.accountAction((db) => db.daoNews.setUnreadNewsCount(version: info.v, unreadNewsCount: info.c)));
+    final r = await api.account((api) => api.postGetUnreadNewsCount()).ok();
+    if (r != null) {
+      return await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(r, accountBackgroundDb);
+    }
+    return const Err(null);
   }
 }

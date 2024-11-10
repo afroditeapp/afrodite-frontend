@@ -59,6 +59,17 @@ class $AccountBackgroundTable extends AccountBackground
       requiredDuringInsert: false,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("local_notification_setting_moderation_request_status" IN (0, 1))'));
+  static const VerificationMeta _localNotificationSettingNewsItemAvailableMeta =
+      const VerificationMeta('localNotificationSettingNewsItemAvailable');
+  @override
+  late final GeneratedColumn<
+      bool> localNotificationSettingNewsItemAvailable = GeneratedColumn<
+          bool>(
+      'local_notification_setting_news_item_available', aliasedName, true,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("local_notification_setting_news_item_available" IN (0, 1))'));
   static const VerificationMeta
       _userInterfaceSettingShowNonAcceptedProfileNamesMeta =
       const VerificationMeta('userInterfaceSettingShowNonAcceptedProfileNames');
@@ -78,6 +89,7 @@ class $AccountBackgroundTable extends AccountBackground
         localNotificationSettingMessages,
         localNotificationSettingLikes,
         localNotificationSettingModerationRequestStatus,
+        localNotificationSettingNewsItemAvailable,
         userInterfaceSettingShowNonAcceptedProfileNames
       ];
   @override
@@ -117,6 +129,13 @@ class $AccountBackgroundTable extends AccountBackground
               data['local_notification_setting_moderation_request_status']!,
               _localNotificationSettingModerationRequestStatusMeta));
     }
+    if (data.containsKey('local_notification_setting_news_item_available')) {
+      context.handle(
+          _localNotificationSettingNewsItemAvailableMeta,
+          localNotificationSettingNewsItemAvailable.isAcceptableOrUnknown(
+              data['local_notification_setting_news_item_available']!,
+              _localNotificationSettingNewsItemAvailableMeta));
+    }
     if (data.containsKey(
         'user_interface_setting_show_non_accepted_profile_names')) {
       context.handle(
@@ -150,6 +169,10 @@ class $AccountBackgroundTable extends AccountBackground
               DriftSqlType.bool,
               data[
                   '${effectivePrefix}local_notification_setting_moderation_request_status']),
+      localNotificationSettingNewsItemAvailable: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data[
+              '${effectivePrefix}local_notification_setting_news_item_available']),
       userInterfaceSettingShowNonAcceptedProfileNames:
           attachedDatabase.typeMapping.read(
               DriftSqlType.bool,
@@ -174,6 +197,7 @@ class AccountBackgroundData extends DataClass
   final bool? localNotificationSettingMessages;
   final bool? localNotificationSettingLikes;
   final bool? localNotificationSettingModerationRequestStatus;
+  final bool? localNotificationSettingNewsItemAvailable;
   final bool? userInterfaceSettingShowNonAcceptedProfileNames;
   const AccountBackgroundData(
       {required this.id,
@@ -181,6 +205,7 @@ class AccountBackgroundData extends DataClass
       this.localNotificationSettingMessages,
       this.localNotificationSettingLikes,
       this.localNotificationSettingModerationRequestStatus,
+      this.localNotificationSettingNewsItemAvailable,
       this.userInterfaceSettingShowNonAcceptedProfileNames});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -202,6 +227,10 @@ class AccountBackgroundData extends DataClass
         localNotificationSettingModerationRequestStatus != null) {
       map['local_notification_setting_moderation_request_status'] =
           Variable<bool>(localNotificationSettingModerationRequestStatus);
+    }
+    if (!nullToAbsent || localNotificationSettingNewsItemAvailable != null) {
+      map['local_notification_setting_news_item_available'] =
+          Variable<bool>(localNotificationSettingNewsItemAvailable);
     }
     if (!nullToAbsent ||
         userInterfaceSettingShowNonAcceptedProfileNames != null) {
@@ -230,6 +259,10 @@ class AccountBackgroundData extends DataClass
                   nullToAbsent
               ? const Value.absent()
               : Value(localNotificationSettingModerationRequestStatus),
+      localNotificationSettingNewsItemAvailable:
+          localNotificationSettingNewsItemAvailable == null && nullToAbsent
+              ? const Value.absent()
+              : Value(localNotificationSettingNewsItemAvailable),
       userInterfaceSettingShowNonAcceptedProfileNames:
           userInterfaceSettingShowNonAcceptedProfileNames == null &&
                   nullToAbsent
@@ -251,6 +284,8 @@ class AccountBackgroundData extends DataClass
       localNotificationSettingModerationRequestStatus:
           serializer.fromJson<bool?>(
               json['localNotificationSettingModerationRequestStatus']),
+      localNotificationSettingNewsItemAvailable: serializer
+          .fromJson<bool?>(json['localNotificationSettingNewsItemAvailable']),
       userInterfaceSettingShowNonAcceptedProfileNames:
           serializer.fromJson<bool?>(
               json['userInterfaceSettingShowNonAcceptedProfileNames']),
@@ -268,6 +303,8 @@ class AccountBackgroundData extends DataClass
           serializer.toJson<bool?>(localNotificationSettingLikes),
       'localNotificationSettingModerationRequestStatus': serializer
           .toJson<bool?>(localNotificationSettingModerationRequestStatus),
+      'localNotificationSettingNewsItemAvailable':
+          serializer.toJson<bool?>(localNotificationSettingNewsItemAvailable),
       'userInterfaceSettingShowNonAcceptedProfileNames': serializer
           .toJson<bool?>(userInterfaceSettingShowNonAcceptedProfileNames),
     };
@@ -279,6 +316,8 @@ class AccountBackgroundData extends DataClass
           Value<bool?> localNotificationSettingMessages = const Value.absent(),
           Value<bool?> localNotificationSettingLikes = const Value.absent(),
           Value<bool?> localNotificationSettingModerationRequestStatus =
+              const Value.absent(),
+          Value<bool?> localNotificationSettingNewsItemAvailable =
               const Value.absent(),
           Value<bool?> userInterfaceSettingShowNonAcceptedProfileNames =
               const Value.absent()}) =>
@@ -297,6 +336,10 @@ class AccountBackgroundData extends DataClass
             localNotificationSettingModerationRequestStatus.present
                 ? localNotificationSettingModerationRequestStatus.value
                 : this.localNotificationSettingModerationRequestStatus,
+        localNotificationSettingNewsItemAvailable:
+            localNotificationSettingNewsItemAvailable.present
+                ? localNotificationSettingNewsItemAvailable.value
+                : this.localNotificationSettingNewsItemAvailable,
         userInterfaceSettingShowNonAcceptedProfileNames:
             userInterfaceSettingShowNonAcceptedProfileNames.present
                 ? userInterfaceSettingShowNonAcceptedProfileNames.value
@@ -319,6 +362,10 @@ class AccountBackgroundData extends DataClass
           data.localNotificationSettingModerationRequestStatus.present
               ? data.localNotificationSettingModerationRequestStatus.value
               : this.localNotificationSettingModerationRequestStatus,
+      localNotificationSettingNewsItemAvailable:
+          data.localNotificationSettingNewsItemAvailable.present
+              ? data.localNotificationSettingNewsItemAvailable.value
+              : this.localNotificationSettingNewsItemAvailable,
       userInterfaceSettingShowNonAcceptedProfileNames:
           data.userInterfaceSettingShowNonAcceptedProfileNames.present
               ? data.userInterfaceSettingShowNonAcceptedProfileNames.value
@@ -338,6 +385,8 @@ class AccountBackgroundData extends DataClass
           ..write(
               'localNotificationSettingModerationRequestStatus: $localNotificationSettingModerationRequestStatus, ')
           ..write(
+              'localNotificationSettingNewsItemAvailable: $localNotificationSettingNewsItemAvailable, ')
+          ..write(
               'userInterfaceSettingShowNonAcceptedProfileNames: $userInterfaceSettingShowNonAcceptedProfileNames')
           ..write(')'))
         .toString();
@@ -350,6 +399,7 @@ class AccountBackgroundData extends DataClass
       localNotificationSettingMessages,
       localNotificationSettingLikes,
       localNotificationSettingModerationRequestStatus,
+      localNotificationSettingNewsItemAvailable,
       userInterfaceSettingShowNonAcceptedProfileNames);
   @override
   bool operator ==(Object other) =>
@@ -363,6 +413,8 @@ class AccountBackgroundData extends DataClass
               this.localNotificationSettingLikes &&
           other.localNotificationSettingModerationRequestStatus ==
               this.localNotificationSettingModerationRequestStatus &&
+          other.localNotificationSettingNewsItemAvailable ==
+              this.localNotificationSettingNewsItemAvailable &&
           other.userInterfaceSettingShowNonAcceptedProfileNames ==
               this.userInterfaceSettingShowNonAcceptedProfileNames);
 }
@@ -374,6 +426,7 @@ class AccountBackgroundCompanion
   final Value<bool?> localNotificationSettingMessages;
   final Value<bool?> localNotificationSettingLikes;
   final Value<bool?> localNotificationSettingModerationRequestStatus;
+  final Value<bool?> localNotificationSettingNewsItemAvailable;
   final Value<bool?> userInterfaceSettingShowNonAcceptedProfileNames;
   const AccountBackgroundCompanion({
     this.id = const Value.absent(),
@@ -381,6 +434,7 @@ class AccountBackgroundCompanion
     this.localNotificationSettingMessages = const Value.absent(),
     this.localNotificationSettingLikes = const Value.absent(),
     this.localNotificationSettingModerationRequestStatus = const Value.absent(),
+    this.localNotificationSettingNewsItemAvailable = const Value.absent(),
     this.userInterfaceSettingShowNonAcceptedProfileNames = const Value.absent(),
   });
   AccountBackgroundCompanion.insert({
@@ -389,6 +443,7 @@ class AccountBackgroundCompanion
     this.localNotificationSettingMessages = const Value.absent(),
     this.localNotificationSettingLikes = const Value.absent(),
     this.localNotificationSettingModerationRequestStatus = const Value.absent(),
+    this.localNotificationSettingNewsItemAvailable = const Value.absent(),
     this.userInterfaceSettingShowNonAcceptedProfileNames = const Value.absent(),
   });
   static Insertable<AccountBackgroundData> custom({
@@ -397,6 +452,7 @@ class AccountBackgroundCompanion
     Expression<bool>? localNotificationSettingMessages,
     Expression<bool>? localNotificationSettingLikes,
     Expression<bool>? localNotificationSettingModerationRequestStatus,
+    Expression<bool>? localNotificationSettingNewsItemAvailable,
     Expression<bool>? userInterfaceSettingShowNonAcceptedProfileNames,
   }) {
     return RawValuesInsertable({
@@ -409,6 +465,9 @@ class AccountBackgroundCompanion
       if (localNotificationSettingModerationRequestStatus != null)
         'local_notification_setting_moderation_request_status':
             localNotificationSettingModerationRequestStatus,
+      if (localNotificationSettingNewsItemAvailable != null)
+        'local_notification_setting_news_item_available':
+            localNotificationSettingNewsItemAvailable,
       if (userInterfaceSettingShowNonAcceptedProfileNames != null)
         'user_interface_setting_show_non_accepted_profile_names':
             userInterfaceSettingShowNonAcceptedProfileNames,
@@ -421,6 +480,7 @@ class AccountBackgroundCompanion
       Value<bool?>? localNotificationSettingMessages,
       Value<bool?>? localNotificationSettingLikes,
       Value<bool?>? localNotificationSettingModerationRequestStatus,
+      Value<bool?>? localNotificationSettingNewsItemAvailable,
       Value<bool?>? userInterfaceSettingShowNonAcceptedProfileNames}) {
     return AccountBackgroundCompanion(
       id: id ?? this.id,
@@ -432,6 +492,9 @@ class AccountBackgroundCompanion
       localNotificationSettingModerationRequestStatus:
           localNotificationSettingModerationRequestStatus ??
               this.localNotificationSettingModerationRequestStatus,
+      localNotificationSettingNewsItemAvailable:
+          localNotificationSettingNewsItemAvailable ??
+              this.localNotificationSettingNewsItemAvailable,
       userInterfaceSettingShowNonAcceptedProfileNames:
           userInterfaceSettingShowNonAcceptedProfileNames ??
               this.userInterfaceSettingShowNonAcceptedProfileNames,
@@ -461,6 +524,10 @@ class AccountBackgroundCompanion
       map['local_notification_setting_moderation_request_status'] =
           Variable<bool>(localNotificationSettingModerationRequestStatus.value);
     }
+    if (localNotificationSettingNewsItemAvailable.present) {
+      map['local_notification_setting_news_item_available'] =
+          Variable<bool>(localNotificationSettingNewsItemAvailable.value);
+    }
     if (userInterfaceSettingShowNonAcceptedProfileNames.present) {
       map['user_interface_setting_show_non_accepted_profile_names'] =
           Variable<bool>(userInterfaceSettingShowNonAcceptedProfileNames.value);
@@ -479,6 +546,8 @@ class AccountBackgroundCompanion
               'localNotificationSettingLikes: $localNotificationSettingLikes, ')
           ..write(
               'localNotificationSettingModerationRequestStatus: $localNotificationSettingModerationRequestStatus, ')
+          ..write(
+              'localNotificationSettingNewsItemAvailable: $localNotificationSettingNewsItemAvailable, ')
           ..write(
               'userInterfaceSettingShowNonAcceptedProfileNames: $userInterfaceSettingShowNonAcceptedProfileNames')
           ..write(')'))
@@ -1629,6 +1698,239 @@ class NewReceivedLikesAvailableCompanion
   }
 }
 
+class $NewsTable extends News with TableInfo<$NewsTable, New> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $NewsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _newsCountMeta =
+      const VerificationMeta('newsCount');
+  @override
+  late final GeneratedColumnWithTypeConverter<UnreadNewsCount?, int> newsCount =
+      GeneratedColumn<int>('news_count', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UnreadNewsCount?>($NewsTable.$converternewsCount);
+  static const VerificationMeta _syncVersionNewsMeta =
+      const VerificationMeta('syncVersionNews');
+  @override
+  late final GeneratedColumn<int> syncVersionNews = GeneratedColumn<int>(
+      'sync_version_news', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [id, newsCount, syncVersionNews];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'news';
+  @override
+  VerificationContext validateIntegrity(Insertable<New> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    context.handle(_newsCountMeta, const VerificationResult.success());
+    if (data.containsKey('sync_version_news')) {
+      context.handle(
+          _syncVersionNewsMeta,
+          syncVersionNews.isAcceptableOrUnknown(
+              data['sync_version_news']!, _syncVersionNewsMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  New map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return New(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      newsCount: $NewsTable.$converternewsCount.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}news_count'])),
+      syncVersionNews: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}sync_version_news']),
+    );
+  }
+
+  @override
+  $NewsTable createAlias(String alias) {
+    return $NewsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<UnreadNewsCount?, int?> $converternewsCount =
+      const NullAwareTypeConverter.wrap(UnreadNewsCountConverter());
+}
+
+class New extends DataClass implements Insertable<New> {
+  final int id;
+  final UnreadNewsCount? newsCount;
+  final int? syncVersionNews;
+  const New({required this.id, this.newsCount, this.syncVersionNews});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || newsCount != null) {
+      map['news_count'] =
+          Variable<int>($NewsTable.$converternewsCount.toSql(newsCount));
+    }
+    if (!nullToAbsent || syncVersionNews != null) {
+      map['sync_version_news'] = Variable<int>(syncVersionNews);
+    }
+    return map;
+  }
+
+  NewsCompanion toCompanion(bool nullToAbsent) {
+    return NewsCompanion(
+      id: Value(id),
+      newsCount: newsCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(newsCount),
+      syncVersionNews: syncVersionNews == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncVersionNews),
+    );
+  }
+
+  factory New.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return New(
+      id: serializer.fromJson<int>(json['id']),
+      newsCount: serializer.fromJson<UnreadNewsCount?>(json['newsCount']),
+      syncVersionNews: serializer.fromJson<int?>(json['syncVersionNews']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'newsCount': serializer.toJson<UnreadNewsCount?>(newsCount),
+      'syncVersionNews': serializer.toJson<int?>(syncVersionNews),
+    };
+  }
+
+  New copyWith(
+          {int? id,
+          Value<UnreadNewsCount?> newsCount = const Value.absent(),
+          Value<int?> syncVersionNews = const Value.absent()}) =>
+      New(
+        id: id ?? this.id,
+        newsCount: newsCount.present ? newsCount.value : this.newsCount,
+        syncVersionNews: syncVersionNews.present
+            ? syncVersionNews.value
+            : this.syncVersionNews,
+      );
+  New copyWithCompanion(NewsCompanion data) {
+    return New(
+      id: data.id.present ? data.id.value : this.id,
+      newsCount: data.newsCount.present ? data.newsCount.value : this.newsCount,
+      syncVersionNews: data.syncVersionNews.present
+          ? data.syncVersionNews.value
+          : this.syncVersionNews,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('New(')
+          ..write('id: $id, ')
+          ..write('newsCount: $newsCount, ')
+          ..write('syncVersionNews: $syncVersionNews')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, newsCount, syncVersionNews);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is New &&
+          other.id == this.id &&
+          other.newsCount == this.newsCount &&
+          other.syncVersionNews == this.syncVersionNews);
+}
+
+class NewsCompanion extends UpdateCompanion<New> {
+  final Value<int> id;
+  final Value<UnreadNewsCount?> newsCount;
+  final Value<int?> syncVersionNews;
+  const NewsCompanion({
+    this.id = const Value.absent(),
+    this.newsCount = const Value.absent(),
+    this.syncVersionNews = const Value.absent(),
+  });
+  NewsCompanion.insert({
+    this.id = const Value.absent(),
+    this.newsCount = const Value.absent(),
+    this.syncVersionNews = const Value.absent(),
+  });
+  static Insertable<New> custom({
+    Expression<int>? id,
+    Expression<int>? newsCount,
+    Expression<int>? syncVersionNews,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (newsCount != null) 'news_count': newsCount,
+      if (syncVersionNews != null) 'sync_version_news': syncVersionNews,
+    });
+  }
+
+  NewsCompanion copyWith(
+      {Value<int>? id,
+      Value<UnreadNewsCount?>? newsCount,
+      Value<int?>? syncVersionNews}) {
+    return NewsCompanion(
+      id: id ?? this.id,
+      newsCount: newsCount ?? this.newsCount,
+      syncVersionNews: syncVersionNews ?? this.syncVersionNews,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (newsCount.present) {
+      map['news_count'] =
+          Variable<int>($NewsTable.$converternewsCount.toSql(newsCount.value));
+    }
+    if (syncVersionNews.present) {
+      map['sync_version_news'] = Variable<int>(syncVersionNews.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NewsCompanion(')
+          ..write('id: $id, ')
+          ..write('newsCount: $newsCount, ')
+          ..write('syncVersionNews: $syncVersionNews')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
   _$AccountBackgroundDatabase(QueryExecutor e) : super(e);
   late final $AccountBackgroundTable accountBackground =
@@ -1641,6 +1943,7 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
       $NewMessageNotificationTable(this);
   late final $NewReceivedLikesAvailableTable newReceivedLikesAvailable =
       $NewReceivedLikesAvailableTable(this);
+  late final $NewsTable news = $NewsTable(this);
   late final DaoLocalNotificationSettings daoLocalNotificationSettings =
       DaoLocalNotificationSettings(this as AccountBackgroundDatabase);
   late final DaoUserInterfaceSettings daoUserInterfaceSettings =
@@ -1653,6 +1956,7 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
       DaoNewMessageNotification(this as AccountBackgroundDatabase);
   late final DaoNewReceivedLikesAvailable daoNewReceivedLikesAvailable =
       DaoNewReceivedLikesAvailable(this as AccountBackgroundDatabase);
+  late final DaoNews daoNews = DaoNews(this as AccountBackgroundDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1662,6 +1966,7 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
         profilesBackground,
         conversationsBackground,
         newMessageNotification,
-        newReceivedLikesAvailable
+        newReceivedLikesAvailable,
+        news
       ];
 }

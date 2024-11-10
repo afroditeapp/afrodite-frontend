@@ -42,4 +42,6 @@ class DaoLocalNotificationSettings extends DatabaseAccessor<AccountBackgroundDat
     watchColumn((r) => r.localNotificationSettingLikes);
   Stream<bool?> watchModerationRequestStatus() =>
     watchColumn((r) => r.localNotificationSettingModerationRequestStatus);
+  Stream<bool?> watchNewsItemAvailable() =>
+    watchColumn((r) => r.localNotificationSettingNewsItemAvailable);
 }

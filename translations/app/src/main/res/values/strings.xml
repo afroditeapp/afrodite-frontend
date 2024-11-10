@@ -61,6 +61,7 @@
     <string name="notification_category_messages" description="Title for notification category messages">Messages</string>
     <string name="notification_category_likes" description="Title for notification category likes">Likes</string>
     <string name="notification_category_moderation_request_status" description="Title for notification category image moderation status">Image moderation status</string>
+    <string name="notification_category_news_item_available" description="Title for notification category news item available">News</string>
 
     <!-- Notification like received -->
     <string name="notification_like_received_single" description="Title for like received notification when single like is received">Like received</string>
@@ -74,6 +75,9 @@
     <string name="notification_message_received_single" description="Title for message received when single message is received">%s sent a message</string>
     <string name="notification_message_received_multiple" description="Title for message received when multiple messages are received">%s sent messages</string>
     <string name="notification_message_received_single_generic" description="Title for message received when single message is received but there is no info who sent it">New message received</string>
+
+    <!-- Notification news item available -->
+    <string name="notification_news_item_available" description="Title for news item available notification">News available</string>
 
     <!-- Notification -->
     <string name="notification_session_expired_error" description="Snackbar text for notifying that notification action was ignored because of expired notification session ID">Notification action ignored because of expired notification session ID</string>

@@ -10,6 +10,7 @@ class NotificationId {
 enum NotificationIdStatic {
   likeReceived(id: NotificationId(0)),
   moderationRequestStatus(id: NotificationId(1)),
+  newsItemAvailable(id: NotificationId(2)),
   lastStaticId(id: NotificationId(1000000));
 
   final NotificationId id;

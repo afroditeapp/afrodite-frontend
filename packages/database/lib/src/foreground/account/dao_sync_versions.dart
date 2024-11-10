@@ -2,8 +2,7 @@
 import 'package:openapi/api.dart' show
   AccountSyncVersion,
   ProfileSyncVersion,
-  ProfileAttributesSyncVersion,
-  NewsSyncVersion;
+  ProfileAttributesSyncVersion;
 
 import '../account_database.dart';
 
@@ -42,21 +41,10 @@ class DaoSyncVersions extends DatabaseAccessor<AccountDatabase> with _$DaoSyncVe
     );
   }
 
-  Future<void> updateSyncVersionNews(NewsSyncVersion value) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        syncVersionNews: Value(value.version),
-      ),
-    );
-  }
-
   Stream<int?> watchSyncVersionAccount() =>
     watchColumn((r) => r.syncVersionAccount);
   Stream<int?> watchSyncVersionProfile() =>
     watchColumn((r) => r.syncVersionProfile);
   Stream<int?> watchSyncVersionAvailableProfileAttributes() =>
     watchColumn((r) => r.syncVersionAvailableProfileAttributes);
-  Stream<int?> watchSyncVersionNews() =>
-    watchColumn((r) => r.syncVersionNews);
 }

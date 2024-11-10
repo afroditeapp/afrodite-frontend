@@ -25,6 +25,7 @@ sealed class NotificationCategory {
     NotificationCategoryLikes(),
     NotificationCategoryMessages(),
     NotificationCategoryModerationRequestStatus(),
+    NotificationCategoryNewsItemAvailable(),
   ];
 }
 
@@ -65,4 +66,17 @@ class NotificationCategoryModerationRequestStatus extends NotificationCategory {
 
   @override
   IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoLocalNotificationSettings.watchModerationRequestStatus();
+}
+
+class NotificationCategoryNewsItemAvailable extends NotificationCategory {
+  const NotificationCategoryNewsItemAvailable() : super(
+    id: "notification_category_news_item_available",
+    headsUpNotification: true,
+  );
+
+  @override
+  String get title => R.strings.notification_category_news_item_available;
+
+  @override
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoLocalNotificationSettings.watchNewsItemAvailable();
 }

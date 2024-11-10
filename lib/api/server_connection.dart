@@ -439,8 +439,8 @@ Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundData
   final syncVersionProfile = await db.accountStreamSingle(
     (db) => db.daoSyncVersions.watchSyncVersionProfile()
   ).ok() ?? forceSync;
-  final syncVersionNews = await db.accountStreamSingle(
-    (db) => db.daoSyncVersions.watchSyncVersionNews()
+  final syncVersionNews = await accountBackgroundDb.accountStreamSingle(
+    (db) => db.daoNews.watchSyncVersionNews()
   ).ok() ?? forceSync;
 
   final bytes = <int>[
