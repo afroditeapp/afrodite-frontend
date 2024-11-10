@@ -125,15 +125,6 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<void> _saveProfileVisibility(ProfileVisibility newProfileVisibility) async {
-    // TODO(prod): Remove notification logic once there is proper events for content
-    // moderation request status updates.
-    final currentProfileVisibility = await profileVisibility.firstOrNull;
-    if ((currentProfileVisibility == ProfileVisibility.pendingPrivate &&
-      newProfileVisibility == ProfileVisibility.private) ||
-        (currentProfileVisibility == ProfileVisibility.pendingPublic &&
-      newProfileVisibility == ProfileVisibility.public)) {
-        await NotificationModerationRequestStatus.getInstance().show(ModerationRequestStateSimple.accepted, repositories.accountBackgroundDb);
-    }
     await db.accountAction((db) => db.daoProfileSettings.updateProfileVisibility(newProfileVisibility));
   }
 
@@ -150,6 +141,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 
     final chat = repositories.chat;
     final profile = repositories.profile;
+    final media = repositories.media;
 
     final accountState = event.accountState;
     final permissions = event.permissions;
@@ -187,6 +179,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       profile.reloadMyProfile();
     } else if (event.event == EventType.newsCountChanged) {
       receiveNewsCount();
+    } else if (event.event == EventType.contentModerationRequestCompleted) {
+      media.handleModerationRequestCompletedEvent();
     } else {
       log.error("Unknown EventToClient");
     }

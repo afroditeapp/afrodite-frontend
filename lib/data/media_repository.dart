@@ -3,6 +3,8 @@
 
 import 'dart:async';
 
+import 'package:app/data/general/notification/state/moderation_request_status.dart';
+import 'package:app/database/account_background_database_manager.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:camera/camera.dart';
 import 'package:drift/drift.dart';
@@ -29,12 +31,13 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   final ConnectedActionScheduler syncHandler;
   final ApiManager api;
   final AccountDatabaseManager db;
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
 
   final AccountRepository account;
 
   final AccountId currentUser;
 
-  MediaRepository(this.account, this.db, ServerConnectionManager connectionManager, this.currentUser) :
+  MediaRepository(this.account, this.db, this.accountBackgroundDb, ServerConnectionManager connectionManager, this.currentUser) :
     syncHandler = ConnectedActionScheduler(connectionManager),
     api = connectionManager.api;
 
@@ -175,6 +178,27 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   Stream<SendToSlotEvent> sendImageToSlot(Uint8List imgBytes, int slot, {bool secureCapture = false}) async* {
     final task = SendImageToSlotTask(account, api);
     yield* task.sendImageToSlot(imgBytes, slot, secureCapture: secureCapture);
+  }
+
+  // TODO(prod): Consider sync version for moderation request state
+  // as notification does not show if the event is lost
+
+  Future<void> handleModerationRequestCompletedEvent() async {
+    final r = await api.media((api) => api.getModerationRequest()).ok();
+    final s = r?.request?.state;
+    if (s != null) {
+      final simpleStatus = switch (s) {
+        ModerationRequestState.accepted => ModerationRequestStateSimple.accepted,
+        ModerationRequestState.rejected => ModerationRequestStateSimple.rejected,
+        _ => null,
+      };
+
+      if (simpleStatus == null) {
+        return;
+      }
+
+      await NotificationModerationRequestStatus.getInstance().show(simpleStatus, accountBackgroundDb);
+    }
   }
 
   Future<Result<ModerationRequest?, void>> currentModerationRequestState() =>

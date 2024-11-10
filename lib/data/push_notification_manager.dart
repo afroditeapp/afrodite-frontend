@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:app/data/general/notification/state/moderation_request_status.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -209,6 +210,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       if ((v.value & 0x2) == 0x2) {
         await _handlePushNotificationReceivedLikesChanged(v.receivedLikesChanged, accountBackgroundDb);
       }
+      if ((v.value & 0x4) == 0x4) {
+        await _handlePushNotificationContentModerationRequestCompleted(v.contentModerationRequestCompleted, accountBackgroundDb);
+      }
     case Err():
       log.error("Downloading pending notification failed");
   }
@@ -231,4 +235,22 @@ Future<void> _handlePushNotificationReceivedLikesChanged(NewReceivedLikesCountRe
 
   await NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb);
   await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(r.v, r.c));
+}
+
+Future<void> _handlePushNotificationContentModerationRequestCompleted(ModerationRequestState? s, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+  if (s == null) {
+    return;
+  }
+
+  final simpleStatus = switch (s) {
+    ModerationRequestState.accepted => ModerationRequestStateSimple.accepted,
+    ModerationRequestState.rejected => ModerationRequestStateSimple.rejected,
+    _ => null,
+  };
+
+  if (simpleStatus == null) {
+    return;
+  }
+
+  await NotificationModerationRequestStatus.getInstance().show(simpleStatus, accountBackgroundDb);
 }
