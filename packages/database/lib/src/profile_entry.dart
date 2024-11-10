@@ -94,6 +94,35 @@ class ProfileEntry {
   }
 }
 
+class MyProfileEntry extends ProfileEntry {
+  final ProfileNameModerationState profileNameModerationState;
+
+  MyProfileEntry({
+    required this.profileNameModerationState,
+    required super.uuid,
+    required super.imageUuid,
+    required super.primaryContentGridCropSize,
+    required super.primaryContentGridCropX,
+    required super.primaryContentGridCropY,
+    required super.name,
+    required super.nameAccepted,
+    required super.profileText,
+    required super.age,
+    required super.unlimitedLikes,
+    required super.attributes,
+    required super.version,
+    required super.contentVersion,
+    super.lastSeenTimeValue,
+    super.content1,
+    super.content2,
+    super.content3,
+    super.content4,
+    super.content5,
+    super.content6,
+    super.newLikeInfoReceivedTime,
+  });
+}
+
 /// Local unique identifier for a profile entry.
 ///
 /// The profile table primary key autoincrements so this ID points only

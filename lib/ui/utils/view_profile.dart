@@ -115,7 +115,21 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
             ),
             if (!widget.profile.nameAccepted) IconButton(
               onPressed: () {
-                showInfoDialog(context, context.strings.view_profile_screen_non_accepted_profile_name_info_dialog_text);
+                var infoText = context.strings.view_profile_screen_non_accepted_profile_name_info_dialog_text;
+                final profile = widget.profile;
+                if (profile is MyProfileEntry) {
+                  final stateText = switch (profile.profileNameModerationState) {
+                    ProfileNameModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
+                    ProfileNameModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
+                    ProfileNameModerationState.waitingBotOrHumanModeration => context.strings.moderation_state_waiting_bot_or_human_moderation,
+                    ProfileNameModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
+                    _ => null,
+                  };
+                  if (stateText != null) {
+                    infoText = "$infoText\n\n${context.strings.moderation_state(stateText)}";
+                  }
+                }
+                showInfoDialog(context, infoText);
               },
               icon: const Icon(Icons.info),
             ),

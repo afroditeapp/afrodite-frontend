@@ -15,17 +15,18 @@ class DaoMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoMyProfile
   DaoMyProfile(AccountDatabase db) : super(db);
 
   Future<void> setApiProfile({
-    required api.Profile profile,
-    required api.ProfileVersion version,
+    required api.GetMyProfileResult result,
   }) async {
+    final profile = result.p;
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
         profileName: Value(profile.name),
         profileNameAccepted: Value(profile.nameAccepted),
+        profileNameModerationState: Value(result.nameModerationState.toEnumString()),
         profileText: Value(profile.ptext),
         profileAge: Value(profile.age),
-        profileVersion: Value(version),
+        profileVersion: Value(result.v),
         profileUnlimitedLikes: Value(profile.unlimitedLikes),
         jsonProfileAttributes: Value(profile.attributes.toJsonList()),
       ),

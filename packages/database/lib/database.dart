@@ -13,7 +13,7 @@ export 'src/foreground/common_database.dart' show CommonDatabase, NOTIFICATION_P
 export 'src/foreground/account_database.dart' show AccountDatabase, PROFILE_FILTER_FAVORITES_DEFAULT;
 
 export 'src/message_entry.dart' show MessageEntry, MessageState, SentMessageState, ReceivedMessageState, InfoMessageState, LocalMessageId, UnreadMessagesCount;
-export 'src/profile_entry.dart' show ProfileEntry, ProfileLocalDbId, NewMessageNotificationId, ProfileTitle, InitialAgeInfo, AvailableAges, AutomaticAgeChangeInfo;
+export 'src/profile_entry.dart' show MyProfileEntry, ProfileEntry, ProfileLocalDbId, NewMessageNotificationId, ProfileTitle, InitialAgeInfo, AvailableAges, AutomaticAgeChangeInfo;
 export 'src/notification_session_id.dart' show NotificationSessionId;
 export 'src/private_key_data.dart' show PrivateKeyData, AllKeyData;
 export 'src/utils.dart' show QueryExcecutorProvider;

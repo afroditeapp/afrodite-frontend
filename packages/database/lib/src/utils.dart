@@ -158,6 +158,10 @@ class EnumString {
     return ProfileVisibility.fromJson(enumString);
   }
 
+  ProfileNameModerationState? toProfileNameModerationState() {
+    return ProfileNameModerationState.fromJson(enumString);
+  }
+
   static TypeConverter<EnumString, String> driftConverter = const EnumStringConverter();
 }
 
@@ -168,6 +172,12 @@ extension AccountStateConverter on AccountState {
 }
 
 extension ProfileVisibilityConverter on ProfileVisibility {
+  EnumString toEnumString() {
+    return EnumString(toJson());
+  }
+}
+
+extension ProfileNameModerationStateConverter on ProfileNameModerationState {
   EnumString toEnumString() {
     return EnumString(toJson());
   }

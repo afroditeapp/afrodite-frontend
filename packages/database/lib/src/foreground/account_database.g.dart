@@ -397,6 +397,15 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<JsonList?>(
               $AccountTable.$converterjsonProfileAttributes);
+  static const VerificationMeta _profileNameModerationStateMeta =
+      const VerificationMeta('profileNameModerationState');
+  @override
+  late final GeneratedColumnWithTypeConverter<EnumString?, String>
+      profileNameModerationState = GeneratedColumn<String>(
+              'profile_name_moderation_state', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<EnumString?>(
+              $AccountTable.$converterprofileNameModerationState);
   static const VerificationMeta _profileLocationLatitudeMeta =
       const VerificationMeta('profileLocationLatitude');
   @override
@@ -649,6 +658,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         profileUnlimitedLikes,
         profileVersion,
         jsonProfileAttributes,
+        profileNameModerationState,
         profileLocationLatitude,
         profileLocationLongitude,
         jsonProfileVisibility,
@@ -868,6 +878,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     context.handle(_profileVersionMeta, const VerificationResult.success());
     context.handle(
         _jsonProfileAttributesMeta, const VerificationResult.success());
+    context.handle(
+        _profileNameModerationStateMeta, const VerificationResult.success());
     if (data.containsKey('profile_location_latitude')) {
       context.handle(
           _profileLocationLatitudeMeta,
@@ -1142,6 +1154,10 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       jsonProfileAttributes: $AccountTable.$converterjsonProfileAttributes
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}json_profile_attributes'])),
+      profileNameModerationState: $AccountTable
+          .$converterprofileNameModerationState
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}profile_name_moderation_state'])),
       profileLocationLatitude: attachedDatabase.typeMapping.read(
           DriftSqlType.double,
           data['${effectivePrefix}profile_location_latitude']),
@@ -1286,6 +1302,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       const NullAwareTypeConverter.wrap(ProfileVersionConverter());
   static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
       NullAwareTypeConverter.wrap(JsonList.driftConverter);
+  static TypeConverter<EnumString?, String?>
+      $converterprofileNameModerationState =
+      NullAwareTypeConverter.wrap(EnumString.driftConverter);
   static TypeConverter<EnumString?, String?> $converterjsonProfileVisibility =
       NullAwareTypeConverter.wrap(EnumString.driftConverter);
   static TypeConverter<JsonString?, String?> $converterjsonSearchGroups =
@@ -1361,6 +1380,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final bool? profileUnlimitedLikes;
   final ProfileVersion? profileVersion;
   final JsonList? jsonProfileAttributes;
+  final EnumString? profileNameModerationState;
   final double? profileLocationLatitude;
   final double? profileLocationLongitude;
   final EnumString? jsonProfileVisibility;
@@ -1437,6 +1457,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.profileUnlimitedLikes,
       this.profileVersion,
       this.jsonProfileAttributes,
+      this.profileNameModerationState,
       this.profileLocationLatitude,
       this.profileLocationLongitude,
       this.jsonProfileVisibility,
@@ -1645,6 +1666,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['json_profile_attributes'] = Variable<String>($AccountTable
           .$converterjsonProfileAttributes
           .toSql(jsonProfileAttributes));
+    }
+    if (!nullToAbsent || profileNameModerationState != null) {
+      map['profile_name_moderation_state'] = Variable<String>($AccountTable
+          .$converterprofileNameModerationState
+          .toSql(profileNameModerationState));
     }
     if (!nullToAbsent || profileLocationLatitude != null) {
       map['profile_location_latitude'] =
@@ -1892,6 +1918,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       jsonProfileAttributes: jsonProfileAttributes == null && nullToAbsent
           ? const Value.absent()
           : Value(jsonProfileAttributes),
+      profileNameModerationState:
+          profileNameModerationState == null && nullToAbsent
+              ? const Value.absent()
+              : Value(profileNameModerationState),
       profileLocationLatitude: profileLocationLatitude == null && nullToAbsent
           ? const Value.absent()
           : Value(profileLocationLatitude),
@@ -2070,6 +2100,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<ProfileVersion?>(json['profileVersion']),
       jsonProfileAttributes:
           serializer.fromJson<JsonList?>(json['jsonProfileAttributes']),
+      profileNameModerationState:
+          serializer.fromJson<EnumString?>(json['profileNameModerationState']),
       profileLocationLatitude:
           serializer.fromJson<double?>(json['profileLocationLatitude']),
       profileLocationLongitude:
@@ -2199,6 +2231,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'profileVersion': serializer.toJson<ProfileVersion?>(profileVersion),
       'jsonProfileAttributes':
           serializer.toJson<JsonList?>(jsonProfileAttributes),
+      'profileNameModerationState':
+          serializer.toJson<EnumString?>(profileNameModerationState),
       'profileLocationLatitude':
           serializer.toJson<double?>(profileLocationLatitude),
       'profileLocationLongitude':
@@ -2298,6 +2332,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<bool?> profileUnlimitedLikes = const Value.absent(),
           Value<ProfileVersion?> profileVersion = const Value.absent(),
           Value<JsonList?> jsonProfileAttributes = const Value.absent(),
+          Value<EnumString?> profileNameModerationState = const Value.absent(),
           Value<double?> profileLocationLatitude = const Value.absent(),
           Value<double?> profileLocationLongitude = const Value.absent(),
           Value<EnumString?> jsonProfileVisibility = const Value.absent(),
@@ -2451,6 +2486,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         jsonProfileAttributes: jsonProfileAttributes.present
             ? jsonProfileAttributes.value
             : this.jsonProfileAttributes,
+        profileNameModerationState: profileNameModerationState.present
+            ? profileNameModerationState.value
+            : this.profileNameModerationState,
         profileLocationLatitude: profileLocationLatitude.present
             ? profileLocationLatitude.value
             : this.profileLocationLatitude,
@@ -2679,6 +2717,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       jsonProfileAttributes: data.jsonProfileAttributes.present
           ? data.jsonProfileAttributes.value
           : this.jsonProfileAttributes,
+      profileNameModerationState: data.profileNameModerationState.present
+          ? data.profileNameModerationState.value
+          : this.profileNameModerationState,
       profileLocationLatitude: data.profileLocationLatitude.present
           ? data.profileLocationLatitude.value
           : this.profileLocationLatitude,
@@ -2828,6 +2869,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
           ..write('profileVersion: $profileVersion, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
+          ..write('profileNameModerationState: $profileNameModerationState, ')
           ..write('profileLocationLatitude: $profileLocationLatitude, ')
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
           ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
@@ -2913,6 +2955,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileUnlimitedLikes,
         profileVersion,
         jsonProfileAttributes,
+        profileNameModerationState,
         profileLocationLatitude,
         profileLocationLongitude,
         jsonProfileVisibility,
@@ -3005,6 +3048,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.profileUnlimitedLikes == this.profileUnlimitedLikes &&
           other.profileVersion == this.profileVersion &&
           other.jsonProfileAttributes == this.jsonProfileAttributes &&
+          other.profileNameModerationState == this.profileNameModerationState &&
           other.profileLocationLatitude == this.profileLocationLatitude &&
           other.profileLocationLongitude == this.profileLocationLongitude &&
           other.jsonProfileVisibility == this.jsonProfileVisibility &&
@@ -3089,6 +3133,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<bool?> profileUnlimitedLikes;
   final Value<ProfileVersion?> profileVersion;
   final Value<JsonList?> jsonProfileAttributes;
+  final Value<EnumString?> profileNameModerationState;
   final Value<double?> profileLocationLatitude;
   final Value<double?> profileLocationLongitude;
   final Value<EnumString?> jsonProfileVisibility;
@@ -3165,6 +3210,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileUnlimitedLikes = const Value.absent(),
     this.profileVersion = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
+    this.profileNameModerationState = const Value.absent(),
     this.profileLocationLatitude = const Value.absent(),
     this.profileLocationLongitude = const Value.absent(),
     this.jsonProfileVisibility = const Value.absent(),
@@ -3242,6 +3288,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileUnlimitedLikes = const Value.absent(),
     this.profileVersion = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
+    this.profileNameModerationState = const Value.absent(),
     this.profileLocationLatitude = const Value.absent(),
     this.profileLocationLongitude = const Value.absent(),
     this.jsonProfileVisibility = const Value.absent(),
@@ -3319,6 +3366,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<bool>? profileUnlimitedLikes,
     Expression<String>? profileVersion,
     Expression<String>? jsonProfileAttributes,
+    Expression<String>? profileNameModerationState,
     Expression<double>? profileLocationLatitude,
     Expression<double>? profileLocationLongitude,
     Expression<String>? jsonProfileVisibility,
@@ -3431,6 +3479,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (profileVersion != null) 'profile_version': profileVersion,
       if (jsonProfileAttributes != null)
         'json_profile_attributes': jsonProfileAttributes,
+      if (profileNameModerationState != null)
+        'profile_name_moderation_state': profileNameModerationState,
       if (profileLocationLatitude != null)
         'profile_location_latitude': profileLocationLatitude,
       if (profileLocationLongitude != null)
@@ -3530,6 +3580,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<bool?>? profileUnlimitedLikes,
       Value<ProfileVersion?>? profileVersion,
       Value<JsonList?>? jsonProfileAttributes,
+      Value<EnumString?>? profileNameModerationState,
       Value<double?>? profileLocationLatitude,
       Value<double?>? profileLocationLongitude,
       Value<EnumString?>? jsonProfileVisibility,
@@ -3635,6 +3686,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       profileVersion: profileVersion ?? this.profileVersion,
       jsonProfileAttributes:
           jsonProfileAttributes ?? this.jsonProfileAttributes,
+      profileNameModerationState:
+          profileNameModerationState ?? this.profileNameModerationState,
       profileLocationLatitude:
           profileLocationLatitude ?? this.profileLocationLatitude,
       profileLocationLongitude:
@@ -3879,6 +3932,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           .$converterjsonProfileAttributes
           .toSql(jsonProfileAttributes.value));
     }
+    if (profileNameModerationState.present) {
+      map['profile_name_moderation_state'] = Variable<String>($AccountTable
+          .$converterprofileNameModerationState
+          .toSql(profileNameModerationState.value));
+    }
     if (profileLocationLatitude.present) {
       map['profile_location_latitude'] =
           Variable<double>(profileLocationLatitude.value);
@@ -4055,6 +4113,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
           ..write('profileVersion: $profileVersion, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
+          ..write('profileNameModerationState: $profileNameModerationState, ')
           ..write('profileLocationLatitude: $profileLocationLatitude, ')
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
           ..write('jsonProfileVisibility: $jsonProfileVisibility, ')

@@ -782,6 +782,31 @@
   "@moderate_profile_names_screen_title": {
     "description": "Title for moderate profile names screen"
   },
+  "moderation_state": "Moderation state: {p0}",
+  "@moderation_state": {
+    "description": "Beginning of moderation state text",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "moderation_state_rejected_by_bot": "Rejected by bot",
+  "@moderation_state_rejected_by_bot": {
+    "description": "Moderation state rejected by bot"
+  },
+  "moderation_state_rejected_by_human": "Rejected by human",
+  "@moderation_state_rejected_by_human": {
+    "description": "Moderation state rejected by human"
+  },
+  "moderation_state_waiting_bot_or_human_moderation": "Waiting bot or human moderation",
+  "@moderation_state_waiting_bot_or_human_moderation": {
+    "description": "Moderation state waiting bot or human moderation"
+  },
+  "moderation_state_waiting_human_moderation": "Waiting human moderation",
+  "@moderation_state_waiting_human_moderation": {
+    "description": "Moderation state waiting human moderation"
+  },
   "new_moderation_request_screen_send_content_button": "Send to be moderated",
   "@new_moderation_request_screen_send_content_button": {
     "description": "Text for send images to be moderated button"

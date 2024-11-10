@@ -50,6 +50,13 @@
     <string name="generic_search_settings_looking_for_all_genders_text" desctiption="Search settings radio button option for men and women who are looking all genders">All</string>
     <string name="generic_error_app_version_is_unsupported" desctiption="Snackbar text that client version is unsupported">Current app version is unsupported</string>
 
+    <!-- Moderation states -->
+    <string name="moderation_state" description="Beginning of moderation state text">Moderation state: %s</string>
+    <string name="moderation_state_waiting_bot_or_human_moderation" description="Moderation state waiting bot or human moderation">Waiting bot or human moderation</string>
+    <string name="moderation_state_waiting_human_moderation" description="Moderation state waiting human moderation">Waiting human moderation</string>
+    <string name="moderation_state_rejected_by_bot" description="Moderation state rejected by bot">Rejected by bot</string>
+    <string name="moderation_state_rejected_by_human" description="Moderation state rejected by human">Rejected by human</string>
+
     <!-- Notification categories -->
     <string name="notification_category_messages" description="Title for notification category messages">Messages</string>
     <string name="notification_category_likes" description="Title for notification category likes">Likes</string>

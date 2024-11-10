@@ -102,6 +102,7 @@ class Account extends Table {
 
   TextColumn get profileName => text().nullable()();
   BoolColumn get profileNameAccepted => boolean().nullable()();
+  TextColumn get profileNameModerationState => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
   TextColumn get profileText => text().nullable()();
   IntColumn get profileAge => integer().nullable()();
   BoolColumn get profileUnlimitedLikes => boolean().nullable()();
@@ -329,11 +330,12 @@ class AccountDatabase extends _$AccountDatabase {
   }
 
   /// Get ProileEntry for my profile
-  Stream<ProfileEntry?> getProfileEntryForMyProfile() =>
+  Stream<MyProfileEntry?> getProfileEntryForMyProfile() =>
     watchColumn((r) {
       final id = r.uuidAccountId;
       final profileName = r.profileName;
       final profileNameAccepted = r.profileNameAccepted;
+      final profileNameModerationState = r.profileNameModerationState?.toProfileNameModerationState();
       final profileText = r.profileText;
       final profileAge = r.profileAge;
       final profileAttributes = r.jsonProfileAttributes?.toProfileAttributes();
@@ -363,12 +365,12 @@ class AccountDatabase extends _$AccountDatabase {
         gridCropY = r.pendingPrimaryContentGridCropY ?? 0.0;
       }
 
-
       if (
         id != null &&
         content0 != null &&
         profileName != null &&
         profileNameAccepted != null &&
+        profileNameModerationState != null &&
         profileText != null &&
         profileAge != null &&
         profileAttributes != null &&
@@ -376,7 +378,7 @@ class AccountDatabase extends _$AccountDatabase {
         profileContentVersion != null &&
         profileUnlimitedLikes != null
       ) {
-        return ProfileEntry(
+        return MyProfileEntry(
           uuid: id,
           imageUuid: content0,
           primaryContentGridCropSize: gridCropSize,
@@ -384,6 +386,7 @@ class AccountDatabase extends _$AccountDatabase {
           primaryContentGridCropY: gridCropY,
           name: profileName,
           nameAccepted: profileNameAccepted,
+          profileNameModerationState: profileNameModerationState,
           profileText: profileText,
           age: profileAge,
           unlimitedLikes: profileUnlimitedLikes,
