@@ -424,6 +424,8 @@ class ApiClient {
           return ProfileIteratorSessionId.fromJson(value);
         case 'ProfileLink':
           return ProfileLink.fromJson(value);
+        case 'ProfileNameModerationState':
+          return ProfileNameModerationStateTypeTransformer().decode(value);
         case 'ProfileNamePendingModeration':
           return ProfileNamePendingModeration.fromJson(value);
         case 'ProfilePage':

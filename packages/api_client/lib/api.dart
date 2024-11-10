@@ -161,6 +161,7 @@ part 'model/profile_content.dart';
 part 'model/profile_content_version.dart';
 part 'model/profile_iterator_session_id.dart';
 part 'model/profile_link.dart';
+part 'model/profile_name_moderation_state.dart';
 part 'model/profile_name_pending_moderation.dart';
 part 'model/profile_page.dart';
 part 'model/profile_search_age_range.dart';

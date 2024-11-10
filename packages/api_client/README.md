@@ -299,6 +299,7 @@ Class | Method | HTTP request | Description
  - [ProfileContentVersion](doc//ProfileContentVersion.md)
  - [ProfileIteratorSessionId](doc//ProfileIteratorSessionId.md)
  - [ProfileLink](doc//ProfileLink.md)
+ - [ProfileNameModerationState](doc//ProfileNameModerationState.md)
  - [ProfileNamePendingModeration](doc//ProfileNamePendingModeration.md)
  - [ProfilePage](doc//ProfilePage.md)
  - [ProfileSearchAgeRange](doc//ProfileSearchAgeRange.md)

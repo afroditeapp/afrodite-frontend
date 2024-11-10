@@ -97,6 +97,9 @@ String parameterToString(dynamic value) {
   if (value is ModerationRequestState) {
     return ModerationRequestStateTypeTransformer().encode(value).toString();
   }
+  if (value is ProfileNameModerationState) {
+    return ProfileNameModerationStateTypeTransformer().encode(value).toString();
+  }
   if (value is ProfileStatisticsHistoryValueType) {
     return ProfileStatisticsHistoryValueTypeTypeTransformer().encode(value).toString();
   }

@@ -14,6 +14,7 @@ class GetMyProfileResult {
   /// Returns a new [GetMyProfileResult] instance.
   GetMyProfileResult({
     this.lst,
+    required this.nameModerationState,
     required this.p,
     required this.sv,
     required this.textModerationInfo,
@@ -29,6 +30,8 @@ class GetMyProfileResult {
   ///
   int? lst;
 
+  ProfileNameModerationState nameModerationState;
+
   Profile p;
 
   ProfileSyncVersion sv;
@@ -40,6 +43,7 @@ class GetMyProfileResult {
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetMyProfileResult &&
     other.lst == lst &&
+    other.nameModerationState == nameModerationState &&
     other.p == p &&
     other.sv == sv &&
     other.textModerationInfo == textModerationInfo &&
@@ -49,13 +53,14 @@ class GetMyProfileResult {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (lst == null ? 0 : lst!.hashCode) +
+    (nameModerationState.hashCode) +
     (p.hashCode) +
     (sv.hashCode) +
     (textModerationInfo.hashCode) +
     (v.hashCode);
 
   @override
-  String toString() => 'GetMyProfileResult[lst=$lst, p=$p, sv=$sv, textModerationInfo=$textModerationInfo, v=$v]';
+  String toString() => 'GetMyProfileResult[lst=$lst, nameModerationState=$nameModerationState, p=$p, sv=$sv, textModerationInfo=$textModerationInfo, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -64,6 +69,7 @@ class GetMyProfileResult {
     } else {
       json[r'lst'] = null;
     }
+      json[r'name_moderation_state'] = this.nameModerationState;
       json[r'p'] = this.p;
       json[r'sv'] = this.sv;
       json[r'text_moderation_info'] = this.textModerationInfo;
@@ -91,6 +97,7 @@ class GetMyProfileResult {
 
       return GetMyProfileResult(
         lst: mapValueOfType<int>(json, r'lst'),
+        nameModerationState: ProfileNameModerationState.fromJson(json[r'name_moderation_state'])!,
         p: Profile.fromJson(json[r'p'])!,
         sv: ProfileSyncVersion.fromJson(json[r'sv'])!,
         textModerationInfo: ProfileTextModerationInfo.fromJson(json[r'text_moderation_info'])!,
@@ -142,6 +149,7 @@ class GetMyProfileResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'name_moderation_state',
     'p',
     'sv',
     'text_moderation_info',
