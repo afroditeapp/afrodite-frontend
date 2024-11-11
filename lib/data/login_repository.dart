@@ -633,6 +633,8 @@ GoogleSignIn createSignInWithGoogle() {
 class RepositoryInstances implements DataRepositoryMethods {
   final AccountId accountId;
   final UtcDateTime creationTime = UtcDateTime.now();
+  /// True only if repository was created because of manual login action.
+  /// Usually this is false as usually the account is logged in when app starts.
   final bool accountLoginHappened;
   final CommonRepository common;
   final ChatRepository chat;

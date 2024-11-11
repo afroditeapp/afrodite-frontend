@@ -109,6 +109,8 @@ class LikesScreen extends StatefulWidget {
 }
 
 class _LikesScreenState extends State<LikesScreen> {
+  bool likesBadgeResetDone = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,6 +123,11 @@ class _LikesScreenState extends State<LikesScreen> {
   }
 
   Widget content() {
+    if (!likesBadgeResetDone) {
+      likesBadgeResetDone = true;
+      context.read<NewReceivedLikesAvailableBloc>().add(UpdateReceivedLikesCountNotViewed(0));
+    }
+
     return BlocBuilder<LikeGridInstanceManagerBloc, LikeGridInstanceManagerData>(
       builder: (context, state) {
         if (state.currentlyVisibleId == widget.gridInstanceId && state.visible) {
@@ -183,7 +190,8 @@ class LikeViewContentState extends State<LikeViewContent> {
     LoginRepository.getInstance().repositories.chat.currentUser,
   );
   bool _reloadInProgress = false;
-  bool _automaticReloadDoneOnce = false;
+  bool _onLoginReloadDoneOnce = false;
+  UtcDateTime? _previousAutomaticReloadTime;
 
   @override
   void initState() {
@@ -303,7 +311,7 @@ class LikeViewContentState extends State<LikeViewContent> {
             ),
             logicRefreshLikesCommandFromFloatingActionButton(),
             logicResetLikesCountWhenLikesScreenOpens(),
-            logicAutomaticReloadOnAppStart(),
+            logicAutomaticReload(),
           ],),
         ),
       ),
@@ -395,7 +403,7 @@ class LikeViewContentState extends State<LikeViewContent> {
         if (state.triggerReceivedLikesRefresh) {
           final bloc = context.read<NewReceivedLikesAvailableBloc>();
           bloc.add(UpdateReceivedLikesCountNotViewed(0));
-          bloc.add(SetTriggerReceivedLikesRefresh(false));
+          bloc.add(SetTriggerReceivedLikesRefreshWithButton(false));
           refreshProfileGrid();
         }
         return const SizedBox.shrink();
@@ -416,21 +424,32 @@ class LikeViewContentState extends State<LikeViewContent> {
     );
   }
 
-  Widget logicAutomaticReloadOnAppStart() {
+  Widget logicAutomaticReload() {
     return BlocBuilder<NewReceivedLikesAvailableBloc, NewReceivedLikesAvailableData>(
       buildWhen: (previous, current) => previous.newReceivedLikesCount != current.newReceivedLikesCount,
       builder: (context, state) {
         final currentTime = UtcDateTime.now();
-        final repositories = LoginRepository.getInstance().repositoriesOrNull;
+        final previousTime = _previousAutomaticReloadTime;
+        final enoughTimeElapsedFromPreviousReload = previousTime == null ||
+          currentTime.difference(previousTime).inSeconds > 5;
 
-        if (state.newReceivedLikesCount > 0 && repositories != null && currentTime.difference(repositories.creationTime).inSeconds < 5 && !_automaticReloadDoneOnce) {
-          // Automatic like screen reload
-          automaticReloadLogic(state);
-          _automaticReloadDoneOnce = true;
-        } else if (state.newReceivedLikesCount == 0 && repositories != null && repositories.accountLoginHappened && !_automaticReloadDoneOnce) {
-          automaticReloadLogic(state);
-          _automaticReloadDoneOnce = true;
+        if (!enoughTimeElapsedFromPreviousReload) {
+          return const SizedBox.shrink();
         }
+
+        final repositories = LoginRepository.getInstance().repositoriesOrNull;
+        if (state.newReceivedLikesCount == 0 && repositories != null && repositories.accountLoginHappened && !_onLoginReloadDoneOnce) {
+          // This exits to get current received likes from the server after
+          // login.
+          automaticReloadLogic(state);
+          _onLoginReloadDoneOnce = true;
+          _previousAutomaticReloadTime = currentTime;
+        } else if (state.newReceivedLikesCount > 0 && !context.read<BottomNavigationStateBloc>().state.isScrolledLikes) {
+          automaticReloadLogic(state);
+          _onLoginReloadDoneOnce = true;
+          _previousAutomaticReloadTime = currentTime;
+        }
+
         return const SizedBox.shrink();
       }
     );
@@ -477,10 +496,10 @@ class LikeViewContentState extends State<LikeViewContent> {
 Widget refreshLikesFloatingActionButton() {
   return BlocBuilder<NewReceivedLikesAvailableBloc, NewReceivedLikesAvailableData>(
     builder: (context, state) {
-      if (state.newReceivedLikesCount > 0) {
+      if (state.showRefreshButton) {
         final bloc = context.read<NewReceivedLikesAvailableBloc>();
         return FloatingActionButton.extended(
-          onPressed: () => bloc.add(SetTriggerReceivedLikesRefresh(true)),
+          onPressed: () => bloc.add(SetTriggerReceivedLikesRefreshWithButton(true)),
           label: Text(context.strings.likes_screen_refresh_action),
           icon: const Icon(Icons.refresh),
         );
