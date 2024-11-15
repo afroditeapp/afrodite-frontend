@@ -323,6 +323,12 @@ class LoginRepository extends DataRepository {
     await _serverConnectionManagerStateEventsSubscription?.cancel();
     _serverConnectionManagerStateEventsSubscription = connectionManager.state.listen((v) {
       _serverConnectionManagerStateEvents.add(v);
+      if (v == ApiManagerState.waitingRefreshToken && !newRepositories.logoutStarted) {
+        // Tokens are invalid. Logout is required.
+        newRepositories.logoutStarted = true;
+        log.info("Automatic logout");
+        _logoutWithRepository(newRepositories);
+      }
     });
 
     _repositories = newRepositories;
@@ -440,18 +446,26 @@ class LoginRepository extends DataRepository {
 
   /// Logout back to login or demo account screen
   Future<void> logout() async {
+    final repository = _repositories;
+    if (repository != null && !repository.logoutStarted) {
+      repository.logoutStarted = true;
+      await _logoutWithRepository(repository);
+    }
+  }
+
+  Future<void> _logoutWithRepository(RepositoryInstances repository) async {
     log.info("Logout started");
     // Disconnect, so that server does not send events to client
-    await _repositories?.connectionManager.closeAndLogout();
+    await repository.connectionManager.closeAndLogout();
 
     // Login repository
-    await repositories.accountDb.accountAction((db) => db.daoTokens.updateRefreshTokenAccount(null));
-    await repositories.accountDb.accountAction((db) => db.daoTokens.updateAccessTokenAccount(null));
-    await onLogout();
+    await repository.accountDb.accountAction((db) => db.daoTokens.updateRefreshTokenAccount(null));
+    await repository.accountDb.accountAction((db) => db.daoTokens.updateAccessTokenAccount(null));
+    // await onLogout(); // Not used currently
     // TODO(microservice): microservice support
 
     // Other repositories
-    await _repositories?.onLogout();
+    await repository.onLogout();
 
     try {
       // TODO(prod): There is also google.disconnect(). Should that used instead?
@@ -649,6 +663,8 @@ class RepositoryInstances implements DataRepositoryMethods {
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountDatabaseManager accountDb;
   final ServerConnectionManager connectionManager;
+
+  bool logoutStarted = false;
 
   ApiManager get api => connectionManager.api;
 

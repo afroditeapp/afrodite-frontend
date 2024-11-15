@@ -101,8 +101,6 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     await _syncHandler.dispose();
   }
 
-  // TODO(prod): Run onLogout when server connection has authentication failure
-
   @override
   Future<void> onLogin() async {
     await db.accountAction((db) => db.daoSyncVersions.resetSyncVersions());
