@@ -198,6 +198,25 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
 
   Future<void> showActionDialog(AccountId account, ContentId contentId, int index) {
     final pageKey = PageKey();
+
+    final rejectAction = SimpleDialogOption(
+      onPressed: () {
+        MyNavigator.removePage(context, pageKey);
+        showConfirmDialog(
+          context,
+          context.strings.moderate_images_screen_reject_image_dialog_title,
+        )
+        .then(
+            (value) {
+              if (value == true) {
+                logic.moderateImageRow(index, false);
+              }
+            }
+        );
+      },
+      child: const Text("Reject image"),
+    );
+
     return MyNavigator.showDialog(
       context: context,
       pageKey: pageKey,
@@ -205,24 +224,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
         return SimpleDialog(
           title: const Text("Select action"),
           children: <Widget>[
-            SimpleDialogOption(
-              onPressed: () {
-                MyNavigator.removePage(context, pageKey);
-                showConfirmDialog(
-                  context,
-                  context.strings.moderate_images_screen_reject_image_dialog_title,
-                  details: "Note that if when all moderation request's image rows are green, you have to ban the profile if you want to make sure that other users can't see the image.",
-                )
-                .then(
-                    (value) {
-                      if (value == true) {
-                        logic.moderateImageRow(index, false);
-                      }
-                    }
-                );
-              },
-              child: const Text("Reject image"),
-            ),
+            if (logic.rejectingIsPossible(index)) rejectAction,
             SimpleDialogOption(
               onPressed: () {
                 MyNavigator.removePage(context, pageKey);

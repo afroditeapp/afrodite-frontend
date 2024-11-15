@@ -132,6 +132,16 @@ class ImageModerationLogic {
       newState.state.sendToServer();
     }
   }
+
+  bool rejectingIsPossible(int index) {
+    final relay = loadManager.moderationData[index];
+    if (relay == null) {
+      return false;
+    }
+
+    final currentState = relay.value;
+    return currentState is ImageRow && !currentState.state.sentToServer;
+  }
 }
 
 sealed class LoadMoreState {}
