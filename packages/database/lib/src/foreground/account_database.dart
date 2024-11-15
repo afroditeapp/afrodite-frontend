@@ -102,6 +102,10 @@ class Account extends Table {
   BoolColumn get profileNameAccepted => boolean().nullable()();
   TextColumn get profileNameModerationState => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
   TextColumn get profileText => text().nullable()();
+  BoolColumn get profileTextAccepted => boolean().nullable()();
+  TextColumn get profileTextModerationState => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
+  IntColumn get profileTextModerationRejectedCategory => integer().map(const NullAwareTypeConverter.wrap(ProfileTextModerationRejectedReasonCategoryConverter())).nullable()();
+  TextColumn get profileTextModerationRejectedDetails => text().map(const NullAwareTypeConverter.wrap(ProfileTextModerationRejectedReasonDetailsConverter())).nullable()();
   IntColumn get profileAge => integer().nullable()();
   BoolColumn get profileUnlimitedLikes => boolean().nullable()();
   TextColumn get profileVersion => text().map(const NullAwareTypeConverter.wrap(ProfileVersionConverter())).nullable()();
@@ -330,6 +334,10 @@ class AccountDatabase extends _$AccountDatabase {
       final profileNameAccepted = r.profileNameAccepted;
       final profileNameModerationState = r.profileNameModerationState?.toProfileNameModerationState();
       final profileText = r.profileText;
+      final profileTextAccepted = r.profileTextAccepted;
+      final profileTextModerationState = r.profileTextModerationState?.toProfileTextModerationState();
+      final profileTextModerationRejectedCategory = r.profileTextModerationRejectedCategory;
+      final profileTextModerationRejectedDetails = r.profileTextModerationRejectedDetails;
       final profileAge = r.profileAge;
       final profileAttributes = r.jsonProfileAttributes?.toProfileAttributes();
       final profileVersion = r.profileVersion;
@@ -365,6 +373,8 @@ class AccountDatabase extends _$AccountDatabase {
         profileNameAccepted != null &&
         profileNameModerationState != null &&
         profileText != null &&
+        profileTextAccepted != null &&
+        profileTextModerationState != null &&
         profileAge != null &&
         profileAttributes != null &&
         profileVersion != null &&
@@ -381,6 +391,10 @@ class AccountDatabase extends _$AccountDatabase {
           nameAccepted: profileNameAccepted,
           profileNameModerationState: profileNameModerationState,
           profileText: profileText,
+          profileTextAccepted: profileTextAccepted,
+          profileTextModerationState: profileTextModerationState,
+          profileTextModerationRejectedCategory: profileTextModerationRejectedCategory,
+          profileTextModerationRejectedDetails: profileTextModerationRejectedDetails,
           age: profileAge,
           unlimitedLikes: profileUnlimitedLikes,
           attributes: profileAttributes,

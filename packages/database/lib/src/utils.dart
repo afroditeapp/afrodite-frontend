@@ -162,6 +162,10 @@ class EnumString {
     return ProfileNameModerationState.fromJson(enumString);
   }
 
+  ProfileTextModerationState? toProfileTextModerationState() {
+    return ProfileTextModerationState.fromJson(enumString);
+  }
+
   static TypeConverter<EnumString, String> driftConverter = const EnumStringConverter();
 }
 
@@ -178,6 +182,12 @@ extension ProfileVisibilityConverter on ProfileVisibility {
 }
 
 extension ProfileNameModerationStateConverter on ProfileNameModerationState {
+  EnumString toEnumString() {
+    return EnumString(toJson());
+  }
+}
+
+extension ProfileTextModerationStateConverter on ProfileTextModerationState {
   EnumString toEnumString() {
     return EnumString(toJson());
   }
@@ -438,5 +448,33 @@ class UnreadNewsCountConverter extends TypeConverter<UnreadNewsCount, int> {
   @override
   int toSql(value) {
     return value.c;
+  }
+}
+
+class ProfileTextModerationRejectedReasonCategoryConverter extends TypeConverter<ProfileTextModerationRejectedReasonCategory, int> {
+  const ProfileTextModerationRejectedReasonCategoryConverter();
+
+  @override
+  ProfileTextModerationRejectedReasonCategory fromSql(fromDb) {
+    return ProfileTextModerationRejectedReasonCategory(value: fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.value;
+  }
+}
+
+class ProfileTextModerationRejectedReasonDetailsConverter extends TypeConverter<ProfileTextModerationRejectedReasonDetails, String> {
+  const ProfileTextModerationRejectedReasonDetailsConverter();
+
+  @override
+  ProfileTextModerationRejectedReasonDetails fromSql(fromDb) {
+    return ProfileTextModerationRejectedReasonDetails(value: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.value;
   }
 }

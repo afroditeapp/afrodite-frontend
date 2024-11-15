@@ -52,21 +52,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        List<Widget> profileTextWidgets;
-        if (widget.profile.profileText.trim().isNotEmpty) {
-          profileTextWidgets = [
-            const Padding(padding: EdgeInsets.all(8)),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
-                child: Text(widget.profile.profileText, style: Theme.of(context).textTheme.bodyLarge),
-              ),
-            )
-          ];
-        } else {
-          profileTextWidgets = const [SizedBox.shrink()];
-        }
+
         return SingleChildScrollView(
           child: Column(
             children: [
@@ -79,7 +65,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               title(context),
               const Padding(padding: EdgeInsets.only(top: 8)),
               lastSeenTime(context),
-              ...profileTextWidgets,
+              profileText(context),
               const Padding(padding: EdgeInsets.all(8)),
               attributes(),
               const Padding(padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA)),
@@ -139,6 +125,68 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               const SizedBox.shrink(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget profileText(BuildContext context) {
+    if (widget.profile.profileText.trim().isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final double rightPadding;
+    if (widget.profile.profileTextAccepted) {
+      rightPadding = COMMON_SCREEN_EDGE_PADDING;
+    } else {
+      rightPadding = 0;
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(
+        top: 8,
+        left: COMMON_SCREEN_EDGE_PADDING,
+        right: rightPadding,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Text(
+              widget.profile.profileTextOrFirstCharacterProfileText(
+                isMyProfile(),
+              ),
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
+          if (!widget.profile.profileTextAccepted) IconButton(
+            onPressed: () {
+              var infoText = context.strings.view_profile_screen_non_accepted_profile_text_info_dialog_text;
+              final profile = widget.profile;
+              if (profile is MyProfileEntry) {
+                final stateText = switch (profile.profileTextModerationState) {
+                  ProfileTextModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
+                  ProfileTextModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
+                  ProfileTextModerationState.waitingBotOrHumanModeration => context.strings.moderation_state_waiting_bot_or_human_moderation,
+                  ProfileTextModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
+                  _ => null,
+                };
+                if (stateText != null) {
+                  infoText = "$infoText\n\n${context.strings.moderation_state(stateText)}";
+                }
+                final rejectedCategory = profile.profileTextModerationRejectedCategory;
+                if (rejectedCategory != null) {
+                  infoText = "$infoText\n\n${context.strings.moderation_rejected_category(rejectedCategory.value.toString())}";
+                }
+                final rejectedDetails = profile.profileTextModerationRejectedCategory;
+                if (rejectedDetails != null) {
+                  infoText = "$infoText\n\n${context.strings.moderation_rejected_details(rejectedDetails.value.toString())}";
+                }
+              }
+              showInfoDialog(context, infoText);
+            },
+            icon: const Icon(Icons.info),
+          ),
+        ],
       ),
     );
   }

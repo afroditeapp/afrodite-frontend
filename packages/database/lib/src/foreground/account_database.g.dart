@@ -367,6 +367,44 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<String> profileText = GeneratedColumn<String>(
       'profile_text', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _profileTextAcceptedMeta =
+      const VerificationMeta('profileTextAccepted');
+  @override
+  late final GeneratedColumn<bool> profileTextAccepted = GeneratedColumn<bool>(
+      'profile_text_accepted', aliasedName, true,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("profile_text_accepted" IN (0, 1))'));
+  static const VerificationMeta _profileTextModerationStateMeta =
+      const VerificationMeta('profileTextModerationState');
+  @override
+  late final GeneratedColumnWithTypeConverter<EnumString?, String>
+      profileTextModerationState = GeneratedColumn<String>(
+              'profile_text_moderation_state', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<EnumString?>(
+              $AccountTable.$converterprofileTextModerationState);
+  static const VerificationMeta _profileTextModerationRejectedCategoryMeta =
+      const VerificationMeta('profileTextModerationRejectedCategory');
+  @override
+  late final GeneratedColumnWithTypeConverter<
+      ProfileTextModerationRejectedReasonCategory?,
+      int> profileTextModerationRejectedCategory = GeneratedColumn<int>(
+          'profile_text_moderation_rejected_category', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false)
+      .withConverter<ProfileTextModerationRejectedReasonCategory?>(
+          $AccountTable.$converterprofileTextModerationRejectedCategory);
+  static const VerificationMeta _profileTextModerationRejectedDetailsMeta =
+      const VerificationMeta('profileTextModerationRejectedDetails');
+  @override
+  late final GeneratedColumnWithTypeConverter<
+      ProfileTextModerationRejectedReasonDetails?,
+      String> profileTextModerationRejectedDetails = GeneratedColumn<String>(
+          'profile_text_moderation_rejected_details', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false)
+      .withConverter<ProfileTextModerationRejectedReasonDetails?>(
+          $AccountTable.$converterprofileTextModerationRejectedDetails);
   static const VerificationMeta _profileAgeMeta =
       const VerificationMeta('profileAge');
   @override
@@ -641,6 +679,10 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         profileNameAccepted,
         profileNameModerationState,
         profileText,
+        profileTextAccepted,
+        profileTextModerationState,
+        profileTextModerationRejectedCategory,
+        profileTextModerationRejectedDetails,
         profileAge,
         profileUnlimitedLikes,
         profileVersion,
@@ -844,6 +886,18 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           profileText.isAcceptableOrUnknown(
               data['profile_text']!, _profileTextMeta));
     }
+    if (data.containsKey('profile_text_accepted')) {
+      context.handle(
+          _profileTextAcceptedMeta,
+          profileTextAccepted.isAcceptableOrUnknown(
+              data['profile_text_accepted']!, _profileTextAcceptedMeta));
+    }
+    context.handle(
+        _profileTextModerationStateMeta, const VerificationResult.success());
+    context.handle(_profileTextModerationRejectedCategoryMeta,
+        const VerificationResult.success());
+    context.handle(_profileTextModerationRejectedDetailsMeta,
+        const VerificationResult.success());
     if (data.containsKey('profile_age')) {
       context.handle(
           _profileAgeMeta,
@@ -1124,6 +1178,24 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['${effectivePrefix}profile_name_moderation_state'])),
       profileText: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}profile_text']),
+      profileTextAccepted: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool, data['${effectivePrefix}profile_text_accepted']),
+      profileTextModerationState: $AccountTable
+          .$converterprofileTextModerationState
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}profile_text_moderation_state'])),
+      profileTextModerationRejectedCategory: $AccountTable
+          .$converterprofileTextModerationRejectedCategory
+          .fromSql(attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data[
+                  '${effectivePrefix}profile_text_moderation_rejected_category'])),
+      profileTextModerationRejectedDetails: $AccountTable
+          .$converterprofileTextModerationRejectedDetails
+          .fromSql(attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data[
+                  '${effectivePrefix}profile_text_moderation_rejected_details'])),
       profileAge: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}profile_age']),
       profileUnlimitedLikes: attachedDatabase.typeMapping.read(
@@ -1274,6 +1346,17 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<EnumString?, String?>
       $converterprofileNameModerationState =
       NullAwareTypeConverter.wrap(EnumString.driftConverter);
+  static TypeConverter<EnumString?, String?>
+      $converterprofileTextModerationState =
+      NullAwareTypeConverter.wrap(EnumString.driftConverter);
+  static TypeConverter<ProfileTextModerationRejectedReasonCategory?, int?>
+      $converterprofileTextModerationRejectedCategory =
+      const NullAwareTypeConverter.wrap(
+          ProfileTextModerationRejectedReasonCategoryConverter());
+  static TypeConverter<ProfileTextModerationRejectedReasonDetails?, String?>
+      $converterprofileTextModerationRejectedDetails =
+      const NullAwareTypeConverter.wrap(
+          ProfileTextModerationRejectedReasonDetailsConverter());
   static TypeConverter<ProfileVersion?, String?> $converterprofileVersion =
       const NullAwareTypeConverter.wrap(ProfileVersionConverter());
   static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
@@ -1347,6 +1430,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final bool? profileNameAccepted;
   final EnumString? profileNameModerationState;
   final String? profileText;
+  final bool? profileTextAccepted;
+  final EnumString? profileTextModerationState;
+  final ProfileTextModerationRejectedReasonCategory?
+      profileTextModerationRejectedCategory;
+  final ProfileTextModerationRejectedReasonDetails?
+      profileTextModerationRejectedDetails;
   final int? profileAge;
   final bool? profileUnlimitedLikes;
   final ProfileVersion? profileVersion;
@@ -1422,6 +1511,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.profileNameAccepted,
       this.profileNameModerationState,
       this.profileText,
+      this.profileTextAccepted,
+      this.profileTextModerationState,
+      this.profileTextModerationRejectedCategory,
+      this.profileTextModerationRejectedDetails,
       this.profileAge,
       this.profileUnlimitedLikes,
       this.profileVersion,
@@ -1620,6 +1713,24 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     }
     if (!nullToAbsent || profileText != null) {
       map['profile_text'] = Variable<String>(profileText);
+    }
+    if (!nullToAbsent || profileTextAccepted != null) {
+      map['profile_text_accepted'] = Variable<bool>(profileTextAccepted);
+    }
+    if (!nullToAbsent || profileTextModerationState != null) {
+      map['profile_text_moderation_state'] = Variable<String>($AccountTable
+          .$converterprofileTextModerationState
+          .toSql(profileTextModerationState));
+    }
+    if (!nullToAbsent || profileTextModerationRejectedCategory != null) {
+      map['profile_text_moderation_rejected_category'] = Variable<int>(
+          $AccountTable.$converterprofileTextModerationRejectedCategory
+              .toSql(profileTextModerationRejectedCategory));
+    }
+    if (!nullToAbsent || profileTextModerationRejectedDetails != null) {
+      map['profile_text_moderation_rejected_details'] = Variable<String>(
+          $AccountTable.$converterprofileTextModerationRejectedDetails
+              .toSql(profileTextModerationRejectedDetails));
     }
     if (!nullToAbsent || profileAge != null) {
       map['profile_age'] = Variable<int>(profileAge);
@@ -1867,6 +1978,21 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileText: profileText == null && nullToAbsent
           ? const Value.absent()
           : Value(profileText),
+      profileTextAccepted: profileTextAccepted == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileTextAccepted),
+      profileTextModerationState:
+          profileTextModerationState == null && nullToAbsent
+              ? const Value.absent()
+              : Value(profileTextModerationState),
+      profileTextModerationRejectedCategory:
+          profileTextModerationRejectedCategory == null && nullToAbsent
+              ? const Value.absent()
+              : Value(profileTextModerationRejectedCategory),
+      profileTextModerationRejectedDetails:
+          profileTextModerationRejectedDetails == null && nullToAbsent
+              ? const Value.absent()
+              : Value(profileTextModerationRejectedDetails),
       profileAge: profileAge == null && nullToAbsent
           ? const Value.absent()
           : Value(profileAge),
@@ -2048,6 +2174,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileNameModerationState:
           serializer.fromJson<EnumString?>(json['profileNameModerationState']),
       profileText: serializer.fromJson<String?>(json['profileText']),
+      profileTextAccepted:
+          serializer.fromJson<bool?>(json['profileTextAccepted']),
+      profileTextModerationState:
+          serializer.fromJson<EnumString?>(json['profileTextModerationState']),
+      profileTextModerationRejectedCategory:
+          serializer.fromJson<ProfileTextModerationRejectedReasonCategory?>(
+              json['profileTextModerationRejectedCategory']),
+      profileTextModerationRejectedDetails:
+          serializer.fromJson<ProfileTextModerationRejectedReasonDetails?>(
+              json['profileTextModerationRejectedDetails']),
       profileAge: serializer.fromJson<int?>(json['profileAge']),
       profileUnlimitedLikes:
           serializer.fromJson<bool?>(json['profileUnlimitedLikes']),
@@ -2179,6 +2315,15 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'profileNameModerationState':
           serializer.toJson<EnumString?>(profileNameModerationState),
       'profileText': serializer.toJson<String?>(profileText),
+      'profileTextAccepted': serializer.toJson<bool?>(profileTextAccepted),
+      'profileTextModerationState':
+          serializer.toJson<EnumString?>(profileTextModerationState),
+      'profileTextModerationRejectedCategory':
+          serializer.toJson<ProfileTextModerationRejectedReasonCategory?>(
+              profileTextModerationRejectedCategory),
+      'profileTextModerationRejectedDetails':
+          serializer.toJson<ProfileTextModerationRejectedReasonDetails?>(
+              profileTextModerationRejectedDetails),
       'profileAge': serializer.toJson<int?>(profileAge),
       'profileUnlimitedLikes': serializer.toJson<bool?>(profileUnlimitedLikes),
       'profileVersion': serializer.toJson<ProfileVersion?>(profileVersion),
@@ -2278,6 +2423,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<bool?> profileNameAccepted = const Value.absent(),
           Value<EnumString?> profileNameModerationState = const Value.absent(),
           Value<String?> profileText = const Value.absent(),
+          Value<bool?> profileTextAccepted = const Value.absent(),
+          Value<EnumString?> profileTextModerationState = const Value.absent(),
+          Value<ProfileTextModerationRejectedReasonCategory?>
+              profileTextModerationRejectedCategory = const Value.absent(),
+          Value<ProfileTextModerationRejectedReasonDetails?>
+              profileTextModerationRejectedDetails = const Value.absent(),
           Value<int?> profileAge = const Value.absent(),
           Value<bool?> profileUnlimitedLikes = const Value.absent(),
           Value<ProfileVersion?> profileVersion = const Value.absent(),
@@ -2425,6 +2576,20 @@ class AccountData extends DataClass implements Insertable<AccountData> {
             ? profileNameModerationState.value
             : this.profileNameModerationState,
         profileText: profileText.present ? profileText.value : this.profileText,
+        profileTextAccepted: profileTextAccepted.present
+            ? profileTextAccepted.value
+            : this.profileTextAccepted,
+        profileTextModerationState: profileTextModerationState.present
+            ? profileTextModerationState.value
+            : this.profileTextModerationState,
+        profileTextModerationRejectedCategory:
+            profileTextModerationRejectedCategory.present
+                ? profileTextModerationRejectedCategory.value
+                : this.profileTextModerationRejectedCategory,
+        profileTextModerationRejectedDetails:
+            profileTextModerationRejectedDetails.present
+                ? profileTextModerationRejectedDetails.value
+                : this.profileTextModerationRejectedDetails,
         profileAge: profileAge.present ? profileAge.value : this.profileAge,
         profileUnlimitedLikes: profileUnlimitedLikes.present
             ? profileUnlimitedLikes.value
@@ -2650,6 +2815,20 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           : this.profileNameModerationState,
       profileText:
           data.profileText.present ? data.profileText.value : this.profileText,
+      profileTextAccepted: data.profileTextAccepted.present
+          ? data.profileTextAccepted.value
+          : this.profileTextAccepted,
+      profileTextModerationState: data.profileTextModerationState.present
+          ? data.profileTextModerationState.value
+          : this.profileTextModerationState,
+      profileTextModerationRejectedCategory:
+          data.profileTextModerationRejectedCategory.present
+              ? data.profileTextModerationRejectedCategory.value
+              : this.profileTextModerationRejectedCategory,
+      profileTextModerationRejectedDetails:
+          data.profileTextModerationRejectedDetails.present
+              ? data.profileTextModerationRejectedDetails.value
+              : this.profileTextModerationRejectedDetails,
       profileAge:
           data.profileAge.present ? data.profileAge.value : this.profileAge,
       profileUnlimitedLikes: data.profileUnlimitedLikes.present
@@ -2805,6 +2984,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('profileNameAccepted: $profileNameAccepted, ')
           ..write('profileNameModerationState: $profileNameModerationState, ')
           ..write('profileText: $profileText, ')
+          ..write('profileTextAccepted: $profileTextAccepted, ')
+          ..write('profileTextModerationState: $profileTextModerationState, ')
+          ..write(
+              'profileTextModerationRejectedCategory: $profileTextModerationRejectedCategory, ')
+          ..write(
+              'profileTextModerationRejectedDetails: $profileTextModerationRejectedDetails, ')
           ..write('profileAge: $profileAge, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
           ..write('profileVersion: $profileVersion, ')
@@ -2889,6 +3074,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileNameAccepted,
         profileNameModerationState,
         profileText,
+        profileTextAccepted,
+        profileTextModerationState,
+        profileTextModerationRejectedCategory,
+        profileTextModerationRejectedDetails,
         profileAge,
         profileUnlimitedLikes,
         profileVersion,
@@ -2980,6 +3169,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.profileNameAccepted == this.profileNameAccepted &&
           other.profileNameModerationState == this.profileNameModerationState &&
           other.profileText == this.profileText &&
+          other.profileTextAccepted == this.profileTextAccepted &&
+          other.profileTextModerationState == this.profileTextModerationState &&
+          other.profileTextModerationRejectedCategory ==
+              this.profileTextModerationRejectedCategory &&
+          other.profileTextModerationRejectedDetails ==
+              this.profileTextModerationRejectedDetails &&
           other.profileAge == this.profileAge &&
           other.profileUnlimitedLikes == this.profileUnlimitedLikes &&
           other.profileVersion == this.profileVersion &&
@@ -3063,6 +3258,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<bool?> profileNameAccepted;
   final Value<EnumString?> profileNameModerationState;
   final Value<String?> profileText;
+  final Value<bool?> profileTextAccepted;
+  final Value<EnumString?> profileTextModerationState;
+  final Value<ProfileTextModerationRejectedReasonCategory?>
+      profileTextModerationRejectedCategory;
+  final Value<ProfileTextModerationRejectedReasonDetails?>
+      profileTextModerationRejectedDetails;
   final Value<int?> profileAge;
   final Value<bool?> profileUnlimitedLikes;
   final Value<ProfileVersion?> profileVersion;
@@ -3138,6 +3339,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileNameAccepted = const Value.absent(),
     this.profileNameModerationState = const Value.absent(),
     this.profileText = const Value.absent(),
+    this.profileTextAccepted = const Value.absent(),
+    this.profileTextModerationState = const Value.absent(),
+    this.profileTextModerationRejectedCategory = const Value.absent(),
+    this.profileTextModerationRejectedDetails = const Value.absent(),
     this.profileAge = const Value.absent(),
     this.profileUnlimitedLikes = const Value.absent(),
     this.profileVersion = const Value.absent(),
@@ -3214,6 +3419,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileNameAccepted = const Value.absent(),
     this.profileNameModerationState = const Value.absent(),
     this.profileText = const Value.absent(),
+    this.profileTextAccepted = const Value.absent(),
+    this.profileTextModerationState = const Value.absent(),
+    this.profileTextModerationRejectedCategory = const Value.absent(),
+    this.profileTextModerationRejectedDetails = const Value.absent(),
     this.profileAge = const Value.absent(),
     this.profileUnlimitedLikes = const Value.absent(),
     this.profileVersion = const Value.absent(),
@@ -3290,6 +3499,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<bool>? profileNameAccepted,
     Expression<String>? profileNameModerationState,
     Expression<String>? profileText,
+    Expression<bool>? profileTextAccepted,
+    Expression<String>? profileTextModerationState,
+    Expression<int>? profileTextModerationRejectedCategory,
+    Expression<String>? profileTextModerationRejectedDetails,
     Expression<int>? profileAge,
     Expression<bool>? profileUnlimitedLikes,
     Expression<String>? profileVersion,
@@ -3400,6 +3613,16 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (profileNameModerationState != null)
         'profile_name_moderation_state': profileNameModerationState,
       if (profileText != null) 'profile_text': profileText,
+      if (profileTextAccepted != null)
+        'profile_text_accepted': profileTextAccepted,
+      if (profileTextModerationState != null)
+        'profile_text_moderation_state': profileTextModerationState,
+      if (profileTextModerationRejectedCategory != null)
+        'profile_text_moderation_rejected_category':
+            profileTextModerationRejectedCategory,
+      if (profileTextModerationRejectedDetails != null)
+        'profile_text_moderation_rejected_details':
+            profileTextModerationRejectedDetails,
       if (profileAge != null) 'profile_age': profileAge,
       if (profileUnlimitedLikes != null)
         'profile_unlimited_likes': profileUnlimitedLikes,
@@ -3500,6 +3723,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<bool?>? profileNameAccepted,
       Value<EnumString?>? profileNameModerationState,
       Value<String?>? profileText,
+      Value<bool?>? profileTextAccepted,
+      Value<EnumString?>? profileTextModerationState,
+      Value<ProfileTextModerationRejectedReasonCategory?>?
+          profileTextModerationRejectedCategory,
+      Value<ProfileTextModerationRejectedReasonDetails?>?
+          profileTextModerationRejectedDetails,
       Value<int?>? profileAge,
       Value<bool?>? profileUnlimitedLikes,
       Value<ProfileVersion?>? profileVersion,
@@ -3603,6 +3832,15 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       profileNameModerationState:
           profileNameModerationState ?? this.profileNameModerationState,
       profileText: profileText ?? this.profileText,
+      profileTextAccepted: profileTextAccepted ?? this.profileTextAccepted,
+      profileTextModerationState:
+          profileTextModerationState ?? this.profileTextModerationState,
+      profileTextModerationRejectedCategory:
+          profileTextModerationRejectedCategory ??
+              this.profileTextModerationRejectedCategory,
+      profileTextModerationRejectedDetails:
+          profileTextModerationRejectedDetails ??
+              this.profileTextModerationRejectedDetails,
       profileAge: profileAge ?? this.profileAge,
       profileUnlimitedLikes:
           profileUnlimitedLikes ?? this.profileUnlimitedLikes,
@@ -3838,6 +4076,24 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (profileText.present) {
       map['profile_text'] = Variable<String>(profileText.value);
     }
+    if (profileTextAccepted.present) {
+      map['profile_text_accepted'] = Variable<bool>(profileTextAccepted.value);
+    }
+    if (profileTextModerationState.present) {
+      map['profile_text_moderation_state'] = Variable<String>($AccountTable
+          .$converterprofileTextModerationState
+          .toSql(profileTextModerationState.value));
+    }
+    if (profileTextModerationRejectedCategory.present) {
+      map['profile_text_moderation_rejected_category'] = Variable<int>(
+          $AccountTable.$converterprofileTextModerationRejectedCategory
+              .toSql(profileTextModerationRejectedCategory.value));
+    }
+    if (profileTextModerationRejectedDetails.present) {
+      map['profile_text_moderation_rejected_details'] = Variable<String>(
+          $AccountTable.$converterprofileTextModerationRejectedDetails
+              .toSql(profileTextModerationRejectedDetails.value));
+    }
     if (profileAge.present) {
       map['profile_age'] = Variable<int>(profileAge.value);
     }
@@ -4022,6 +4278,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('profileNameAccepted: $profileNameAccepted, ')
           ..write('profileNameModerationState: $profileNameModerationState, ')
           ..write('profileText: $profileText, ')
+          ..write('profileTextAccepted: $profileTextAccepted, ')
+          ..write('profileTextModerationState: $profileTextModerationState, ')
+          ..write(
+              'profileTextModerationRejectedCategory: $profileTextModerationRejectedCategory, ')
+          ..write(
+              'profileTextModerationRejectedDetails: $profileTextModerationRejectedDetails, ')
           ..write('profileAge: $profileAge, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
           ..write('profileVersion: $profileVersion, ')
@@ -4163,6 +4425,15 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   late final GeneratedColumn<String> profileText = GeneratedColumn<String>(
       'profile_text', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _profileTextAcceptedMeta =
+      const VerificationMeta('profileTextAccepted');
+  @override
+  late final GeneratedColumn<bool> profileTextAccepted = GeneratedColumn<bool>(
+      'profile_text_accepted', aliasedName, true,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("profile_text_accepted" IN (0, 1))'));
   static const VerificationMeta _profileVersionMeta =
       const VerificationMeta('profileVersion');
   @override
@@ -4253,6 +4524,7 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
         profileName,
         profileNameAccepted,
         profileText,
+        profileTextAccepted,
         profileVersion,
         profileAge,
         profileLastSeenTimeValue,
@@ -4303,6 +4575,12 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
           _profileTextMeta,
           profileText.isAcceptableOrUnknown(
               data['profile_text']!, _profileTextMeta));
+    }
+    if (data.containsKey('profile_text_accepted')) {
+      context.handle(
+          _profileTextAcceptedMeta,
+          profileTextAccepted.isAcceptableOrUnknown(
+              data['profile_text_accepted']!, _profileTextAcceptedMeta));
     }
     context.handle(_profileVersionMeta, const VerificationResult.success());
     if (data.containsKey('profile_age')) {
@@ -4392,6 +4670,8 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
           DriftSqlType.bool, data['${effectivePrefix}profile_name_accepted']),
       profileText: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}profile_text']),
+      profileTextAccepted: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool, data['${effectivePrefix}profile_text_accepted']),
       profileVersion: $ProfilesTable.$converterprofileVersion.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}profile_version'])),
@@ -4470,6 +4750,7 @@ class Profile extends DataClass implements Insertable<Profile> {
   final String? profileName;
   final bool? profileNameAccepted;
   final String? profileText;
+  final bool? profileTextAccepted;
   final ProfileVersion? profileVersion;
   final int? profileAge;
   final int? profileLastSeenTimeValue;
@@ -4493,6 +4774,7 @@ class Profile extends DataClass implements Insertable<Profile> {
       this.profileName,
       this.profileNameAccepted,
       this.profileText,
+      this.profileTextAccepted,
       this.profileVersion,
       this.profileAge,
       this.profileLastSeenTimeValue,
@@ -4548,6 +4830,9 @@ class Profile extends DataClass implements Insertable<Profile> {
     }
     if (!nullToAbsent || profileText != null) {
       map['profile_text'] = Variable<String>(profileText);
+    }
+    if (!nullToAbsent || profileTextAccepted != null) {
+      map['profile_text_accepted'] = Variable<bool>(profileTextAccepted);
     }
     if (!nullToAbsent || profileVersion != null) {
       map['profile_version'] = Variable<String>(
@@ -4627,6 +4912,9 @@ class Profile extends DataClass implements Insertable<Profile> {
       profileText: profileText == null && nullToAbsent
           ? const Value.absent()
           : Value(profileText),
+      profileTextAccepted: profileTextAccepted == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileTextAccepted),
       profileVersion: profileVersion == null && nullToAbsent
           ? const Value.absent()
           : Value(profileVersion),
@@ -4679,6 +4967,8 @@ class Profile extends DataClass implements Insertable<Profile> {
       profileNameAccepted:
           serializer.fromJson<bool?>(json['profileNameAccepted']),
       profileText: serializer.fromJson<String?>(json['profileText']),
+      profileTextAccepted:
+          serializer.fromJson<bool?>(json['profileTextAccepted']),
       profileVersion:
           serializer.fromJson<ProfileVersion?>(json['profileVersion']),
       profileAge: serializer.fromJson<int?>(json['profileAge']),
@@ -4717,6 +5007,7 @@ class Profile extends DataClass implements Insertable<Profile> {
       'profileName': serializer.toJson<String?>(profileName),
       'profileNameAccepted': serializer.toJson<bool?>(profileNameAccepted),
       'profileText': serializer.toJson<String?>(profileText),
+      'profileTextAccepted': serializer.toJson<bool?>(profileTextAccepted),
       'profileVersion': serializer.toJson<ProfileVersion?>(profileVersion),
       'profileAge': serializer.toJson<int?>(profileAge),
       'profileLastSeenTimeValue':
@@ -4751,6 +5042,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           Value<String?> profileName = const Value.absent(),
           Value<bool?> profileNameAccepted = const Value.absent(),
           Value<String?> profileText = const Value.absent(),
+          Value<bool?> profileTextAccepted = const Value.absent(),
           Value<ProfileVersion?> profileVersion = const Value.absent(),
           Value<int?> profileAge = const Value.absent(),
           Value<int?> profileLastSeenTimeValue = const Value.absent(),
@@ -4785,6 +5077,9 @@ class Profile extends DataClass implements Insertable<Profile> {
             ? profileNameAccepted.value
             : this.profileNameAccepted,
         profileText: profileText.present ? profileText.value : this.profileText,
+        profileTextAccepted: profileTextAccepted.present
+            ? profileTextAccepted.value
+            : this.profileTextAccepted,
         profileVersion:
             profileVersion.present ? profileVersion.value : this.profileVersion,
         profileAge: profileAge.present ? profileAge.value : this.profileAge,
@@ -4847,6 +5142,9 @@ class Profile extends DataClass implements Insertable<Profile> {
           : this.profileNameAccepted,
       profileText:
           data.profileText.present ? data.profileText.value : this.profileText,
+      profileTextAccepted: data.profileTextAccepted.present
+          ? data.profileTextAccepted.value
+          : this.profileTextAccepted,
       profileVersion: data.profileVersion.present
           ? data.profileVersion.value
           : this.profileVersion,
@@ -4894,6 +5192,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           ..write('profileName: $profileName, ')
           ..write('profileNameAccepted: $profileNameAccepted, ')
           ..write('profileText: $profileText, ')
+          ..write('profileTextAccepted: $profileTextAccepted, ')
           ..write('profileVersion: $profileVersion, ')
           ..write('profileAge: $profileAge, ')
           ..write('profileLastSeenTimeValue: $profileLastSeenTimeValue, ')
@@ -4922,6 +5221,7 @@ class Profile extends DataClass implements Insertable<Profile> {
         profileName,
         profileNameAccepted,
         profileText,
+        profileTextAccepted,
         profileVersion,
         profileAge,
         profileLastSeenTimeValue,
@@ -4949,6 +5249,7 @@ class Profile extends DataClass implements Insertable<Profile> {
           other.profileName == this.profileName &&
           other.profileNameAccepted == this.profileNameAccepted &&
           other.profileText == this.profileText &&
+          other.profileTextAccepted == this.profileTextAccepted &&
           other.profileVersion == this.profileVersion &&
           other.profileAge == this.profileAge &&
           other.profileLastSeenTimeValue == this.profileLastSeenTimeValue &&
@@ -4974,6 +5275,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<String?> profileName;
   final Value<bool?> profileNameAccepted;
   final Value<String?> profileText;
+  final Value<bool?> profileTextAccepted;
   final Value<ProfileVersion?> profileVersion;
   final Value<int?> profileAge;
   final Value<int?> profileLastSeenTimeValue;
@@ -4997,6 +5299,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.profileName = const Value.absent(),
     this.profileNameAccepted = const Value.absent(),
     this.profileText = const Value.absent(),
+    this.profileTextAccepted = const Value.absent(),
     this.profileVersion = const Value.absent(),
     this.profileAge = const Value.absent(),
     this.profileLastSeenTimeValue = const Value.absent(),
@@ -5021,6 +5324,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.profileName = const Value.absent(),
     this.profileNameAccepted = const Value.absent(),
     this.profileText = const Value.absent(),
+    this.profileTextAccepted = const Value.absent(),
     this.profileVersion = const Value.absent(),
     this.profileAge = const Value.absent(),
     this.profileLastSeenTimeValue = const Value.absent(),
@@ -5045,6 +5349,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     Expression<String>? profileName,
     Expression<bool>? profileNameAccepted,
     Expression<String>? profileText,
+    Expression<bool>? profileTextAccepted,
     Expression<String>? profileVersion,
     Expression<int>? profileAge,
     Expression<int>? profileLastSeenTimeValue,
@@ -5071,6 +5376,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       if (profileNameAccepted != null)
         'profile_name_accepted': profileNameAccepted,
       if (profileText != null) 'profile_text': profileText,
+      if (profileTextAccepted != null)
+        'profile_text_accepted': profileTextAccepted,
       if (profileVersion != null) 'profile_version': profileVersion,
       if (profileAge != null) 'profile_age': profileAge,
       if (profileLastSeenTimeValue != null)
@@ -5105,6 +5412,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       Value<String?>? profileName,
       Value<bool?>? profileNameAccepted,
       Value<String?>? profileText,
+      Value<bool?>? profileTextAccepted,
       Value<ProfileVersion?>? profileVersion,
       Value<int?>? profileAge,
       Value<int?>? profileLastSeenTimeValue,
@@ -5129,6 +5437,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       profileName: profileName ?? this.profileName,
       profileNameAccepted: profileNameAccepted ?? this.profileNameAccepted,
       profileText: profileText ?? this.profileText,
+      profileTextAccepted: profileTextAccepted ?? this.profileTextAccepted,
       profileVersion: profileVersion ?? this.profileVersion,
       profileAge: profileAge ?? this.profileAge,
       profileLastSeenTimeValue:
@@ -5198,6 +5507,9 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     if (profileText.present) {
       map['profile_text'] = Variable<String>(profileText.value);
     }
+    if (profileTextAccepted.present) {
+      map['profile_text_accepted'] = Variable<bool>(profileTextAccepted.value);
+    }
     if (profileVersion.present) {
       map['profile_version'] = Variable<String>(
           $ProfilesTable.$converterprofileVersion.toSql(profileVersion.value));
@@ -5258,6 +5570,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           ..write('profileName: $profileName, ')
           ..write('profileNameAccepted: $profileNameAccepted, ')
           ..write('profileText: $profileText, ')
+          ..write('profileTextAccepted: $profileTextAccepted, ')
           ..write('profileVersion: $profileVersion, ')
           ..write('profileAge: $profileAge, ')
           ..write('profileLastSeenTimeValue: $profileLastSeenTimeValue, ')

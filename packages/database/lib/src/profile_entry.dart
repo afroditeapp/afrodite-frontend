@@ -13,6 +13,7 @@ class ProfileEntry {
   final String name;
   final bool nameAccepted;
   final String profileText;
+  final bool profileTextAccepted;
   final int age;
   final bool unlimitedLikes;
   /// Possible values:
@@ -40,6 +41,7 @@ class ProfileEntry {
       required this.name,
       required this.nameAccepted,
       required this.profileText,
+      required this.profileTextAccepted,
       required this.age,
       required this.unlimitedLikes,
       required this.attributes,
@@ -92,13 +94,35 @@ class ProfileEntry {
   String profileTitleWithAge(bool showNonAcceptedProfileNames) {
     return "${profileTitle(showNonAcceptedProfileNames)}, $age";
   }
+
+  String profileTextOrFirstCharacterProfileText(bool showNonAcceptedProfileTexts) {
+    if (showNonAcceptedProfileTexts || profileTextAccepted) {
+      return profileText;
+    } else {
+      final iterator = profileText.runes.iterator;
+      iterator.moveNext();
+      final onlyFirstCharacterVisible = "${iterator.currentAsString}…";
+      if (iterator.moveNext()) {
+        // String contains more than one character
+        return onlyFirstCharacterVisible;
+      } else {
+        return name;
+      }
+    }
+  }
 }
 
 class MyProfileEntry extends ProfileEntry {
   final ProfileNameModerationState profileNameModerationState;
+  final ProfileTextModerationState profileTextModerationState;
+  final ProfileTextModerationRejectedReasonCategory? profileTextModerationRejectedCategory;
+  final ProfileTextModerationRejectedReasonDetails? profileTextModerationRejectedDetails;
 
   MyProfileEntry({
     required this.profileNameModerationState,
+    required this.profileTextModerationState,
+    this.profileTextModerationRejectedCategory,
+    this.profileTextModerationRejectedDetails,
     required super.uuid,
     required super.imageUuid,
     required super.primaryContentGridCropSize,
@@ -107,6 +131,7 @@ class MyProfileEntry extends ProfileEntry {
     required super.name,
     required super.nameAccepted,
     required super.profileText,
+    required super.profileTextAccepted,
     required super.age,
     required super.unlimitedLikes,
     required super.attributes,

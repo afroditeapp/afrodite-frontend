@@ -790,6 +790,24 @@
   "@moderate_profile_names_screen_title": {
     "description": "Title for moderate profile names screen"
   },
+  "moderation_rejected_category": "Rejected reason category: {p0}",
+  "@moderation_rejected_category": {
+    "description": "Beginning of moderation rejected reason category text",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "moderation_rejected_details": "Rejected reason details: {p0}",
+  "@moderation_rejected_details": {
+    "description": "Beginning of moderation rejected reason details text",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "moderation_state": "Moderation state: {p0}",
   "@moderation_state": {
     "description": "Beginning of moderation state text",
@@ -1323,6 +1341,10 @@
   "view_profile_screen_non_accepted_profile_name_info_dialog_text": "Profile name is not yet moderated or it is moderated as denied. Only the first letter is visible to users.",
   "@view_profile_screen_non_accepted_profile_name_info_dialog_text": {
     "description": "View profile screen info dialog text about non-accepted profile name"
+  },
+  "view_profile_screen_non_accepted_profile_text_info_dialog_text": "Profile text is not yet moderated or it is moderated as denied. Only the first letter is visible to users.",
+  "@view_profile_screen_non_accepted_profile_text_info_dialog_text": {
+    "description": "View profile screen info dialog text about non-accepted profile text"
   },
   "view_profile_screen_profile_currently_online": "Online",
   "@view_profile_screen_profile_currently_online": {

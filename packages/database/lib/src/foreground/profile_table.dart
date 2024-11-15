@@ -28,6 +28,7 @@ class Profiles extends Table {
   TextColumn get profileName => text().nullable()();
   BoolColumn get profileNameAccepted => boolean().nullable()();
   TextColumn get profileText => text().nullable()();
+  BoolColumn get profileTextAccepted => boolean().nullable()();
   TextColumn get profileVersion => text().map(const NullAwareTypeConverter.wrap(ProfileVersionConverter())).nullable()();
   IntColumn get profileAge => integer().nullable()();
   IntColumn get profileLastSeenTimeValue => integer().nullable()();
@@ -59,6 +60,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         profileName: Value(null),
         profileNameAccepted: Value(null),
         profileText: Value(null),
+        profileTextAccepted: Value(null),
         profileAge: Value(null),
         profileVersion: Value(null),
         profileLastSeenTimeValue: Value(null),
@@ -81,6 +83,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         profileName: Value(profile.name),
         profileNameAccepted: Value(profile.nameAccepted),
         profileText: Value(profile.ptext),
+        profileTextAccepted: Value(profile.ptextAccepted),
         profileAge: Value(profile.age),
         profileVersion: Value(profileVersion),
         profileLastSeenTimeValue: Value(profileLastSeenTime),
@@ -91,6 +94,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         profileName: Value(profile.name),
         profileNameAccepted: Value(profile.nameAccepted),
         profileText: Value(profile.ptext),
+        profileTextAccepted: Value(profile.ptextAccepted),
         profileAge: Value(profile.age),
         profileVersion: Value(profileVersion),
         profileLastSeenTimeValue: Value(profileLastSeenTime),
@@ -195,6 +199,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     final gridCropY = r.primaryContentGridCropY ?? 0.0;
     final profileName = r.profileName;
     final profileNameAccepted = r.profileNameAccepted;
+    final profileTextAccepted = r.profileTextAccepted;
     final profileText = r.profileText;
     final profileAge = r.profileAge;
     final profileVersion = r.profileVersion;
@@ -207,6 +212,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
       profileName != null &&
       profileNameAccepted != null &&
       profileText != null &&
+      profileTextAccepted != null &&
       profileAge != null &&
       profileVersion != null &&
       profileAttributes != null &&
@@ -222,6 +228,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         name: profileName,
         nameAccepted: profileNameAccepted,
         profileText: profileText,
+        profileTextAccepted: profileTextAccepted,
         version: profileVersion,
         age: profileAge,
         attributes: profileAttributes,
