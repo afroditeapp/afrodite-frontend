@@ -54,7 +54,15 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
       }
     });
     on<DoDemoAccountLogout>((_, emit) async {
-      await login.demoAccountLogout();
+      await runOnce(() async {
+        emit(state.copyWith(
+          logoutInProgress: true,
+        ));
+        await login.demoAccountLogout();
+        emit(state.copyWith(
+          logoutInProgress: false,
+        ));
+      });
     });
     on<DoDemoAccountRefreshAccountList>((_, emit) async {
       log.info("Refreshing demo account list");

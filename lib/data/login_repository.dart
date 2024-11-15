@@ -529,6 +529,14 @@ class LoginRepository extends DataRepository {
   Future<void> demoAccountLogout() async {
     log.info("demo account logout");
 
+    final token = await demoAccountToken.first;
+    if (token != null) {
+      final r = await _apiNoConnection.accountAction((api) => api.postDemoModeLogout(DemoModeToken(token: token)));
+      if (r.isErr()) {
+        showSnackBar(R.strings.generic_logout_failed);
+      }
+    }
+
     // TODO(prod): Uncomment
     // await KvStringManager.getInstance().setValue(KvString.demoAccountPassword, null);
     // await KvStringManager.getInstance().setValue(KvString.demoAccountUserId, null);

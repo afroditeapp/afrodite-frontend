@@ -11,6 +11,7 @@ class DemoAccountBlocData with _$DemoAccountBlocData {
     String? userId,
     String? password,
     @Default(false) bool loginProgressVisible,
+    @Default(false) bool logoutInProgress,
     @Default(UnmodifiableList<AccessibleAccount>.empty()) UnmodifiableList<AccessibleAccount> accounts,
   }) = _DemoAccountBlocData;
 }

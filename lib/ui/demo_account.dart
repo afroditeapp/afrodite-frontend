@@ -1,4 +1,5 @@
 
+import "package:app/ui_utils/snack_bar.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
@@ -47,13 +48,18 @@ class _DemoAccountScreenContentState extends State<DemoAccountScreenContent> {
             MenuItemButton(
               child: Text(context.strings.generic_logout),
               onPressed: () {
-                showConfirmDialogAdvanced(
-                  context: context,
-                  title: context.strings.demo_account_screen_confirm_logout_dialog_title,
-                  onSuccess: () => context
-                    .read<DemoAccountBloc>()
-                    .add(DoDemoAccountLogout()),
-                );
+                final inProgress = context.read<DemoAccountBloc>().state.logoutInProgress;
+                if (inProgress) {
+                  showSnackBar(context.strings.generic_previous_action_in_progress);
+                } else {
+                  showConfirmDialogAdvanced(
+                    context: context,
+                    title: context.strings.demo_account_screen_confirm_logout_dialog_title,
+                    onSuccess: () => context
+                      .read<DemoAccountBloc>()
+                      .add(DoDemoAccountLogout()),
+                  );
+                }
               }
             ),
             MenuItemButton(

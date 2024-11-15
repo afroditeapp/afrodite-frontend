@@ -24,12 +24,14 @@ mixin _$DemoAccountBlocData {
   String? get userId => throw _privateConstructorErrorDemoAccountBlocData;
   String? get password => throw _privateConstructorErrorDemoAccountBlocData;
   bool get loginProgressVisible => throw _privateConstructorErrorDemoAccountBlocData;
+  bool get logoutInProgress => throw _privateConstructorErrorDemoAccountBlocData;
   UnmodifiableList<AccessibleAccount> get accounts => throw _privateConstructorErrorDemoAccountBlocData;
 
   DemoAccountBlocData copyWith({
     String? userId,
     String? password,
     bool? loginProgressVisible,
+    bool? logoutInProgress,
     UnmodifiableList<AccessibleAccount>? accounts,
   }) => throw _privateConstructorErrorDemoAccountBlocData;
 }
@@ -40,6 +42,7 @@ abstract class _DemoAccountBlocData implements DemoAccountBlocData {
     String? userId,
     String? password,
     bool loginProgressVisible,
+    bool logoutInProgress,
     UnmodifiableList<AccessibleAccount> accounts,
   }) = _$DemoAccountBlocDataImpl;
 }
@@ -47,12 +50,14 @@ abstract class _DemoAccountBlocData implements DemoAccountBlocData {
 /// @nodoc
 class _$DemoAccountBlocDataImpl with DiagnosticableTreeMixin implements _DemoAccountBlocData {
   static const bool _loginProgressVisibleDefaultValue = false;
+  static const bool _logoutInProgressDefaultValue = false;
   static const UnmodifiableList<AccessibleAccount> _accountsDefaultValue = UnmodifiableList<AccessibleAccount>.empty();
   
   _$DemoAccountBlocDataImpl({
     this.userId,
     this.password,
     this.loginProgressVisible = _loginProgressVisibleDefaultValue,
+    this.logoutInProgress = _logoutInProgressDefaultValue,
     this.accounts = _accountsDefaultValue,
   });
 
@@ -63,11 +68,13 @@ class _$DemoAccountBlocDataImpl with DiagnosticableTreeMixin implements _DemoAcc
   @override
   final bool loginProgressVisible;
   @override
+  final bool logoutInProgress;
+  @override
   final UnmodifiableList<AccessibleAccount> accounts;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'DemoAccountBlocData(userId: $userId, password: $password, loginProgressVisible: $loginProgressVisible, accounts: $accounts)';
+    return 'DemoAccountBlocData(userId: $userId, password: $password, loginProgressVisible: $loginProgressVisible, logoutInProgress: $logoutInProgress, accounts: $accounts)';
   }
 
   @override
@@ -78,6 +85,7 @@ class _$DemoAccountBlocDataImpl with DiagnosticableTreeMixin implements _DemoAcc
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('password', password))
       ..add(DiagnosticsProperty('loginProgressVisible', loginProgressVisible))
+      ..add(DiagnosticsProperty('logoutInProgress', logoutInProgress))
       ..add(DiagnosticsProperty('accounts', accounts));
   }
 
@@ -92,6 +100,8 @@ class _$DemoAccountBlocDataImpl with DiagnosticableTreeMixin implements _DemoAcc
           other.password == password) &&
         (identical(other.loginProgressVisible, loginProgressVisible) ||
           other.loginProgressVisible == loginProgressVisible) &&
+        (identical(other.logoutInProgress, logoutInProgress) ||
+          other.logoutInProgress == logoutInProgress) &&
         (identical(other.accounts, accounts) ||
           other.accounts == accounts)
     );
@@ -103,6 +113,7 @@ class _$DemoAccountBlocDataImpl with DiagnosticableTreeMixin implements _DemoAcc
     userId,
     password,
     loginProgressVisible,
+    logoutInProgress,
     accounts,
   );
 
@@ -111,11 +122,13 @@ class _$DemoAccountBlocDataImpl with DiagnosticableTreeMixin implements _DemoAcc
     Object? userId = _detectDefaultValueInCopyWith,
     Object? password = _detectDefaultValueInCopyWith,
     Object? loginProgressVisible,
+    Object? logoutInProgress,
     Object? accounts,
   }) => _$DemoAccountBlocDataImpl(
     userId: (userId == _detectDefaultValueInCopyWith ? this.userId : userId) as String?,
     password: (password == _detectDefaultValueInCopyWith ? this.password : password) as String?,
     loginProgressVisible: (loginProgressVisible ?? this.loginProgressVisible) as bool,
+    logoutInProgress: (logoutInProgress ?? this.logoutInProgress) as bool,
     accounts: (accounts ?? this.accounts) as UnmodifiableList<AccessibleAccount>,
   );
 }

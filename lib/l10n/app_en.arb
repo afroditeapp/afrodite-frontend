@@ -431,6 +431,10 @@
   "@generic_logout_confirmation_title": {
     "description": "Generic logout confirmation title text"
   },
+  "generic_logout_failed": "Logout failed",
+  "@generic_logout_failed": {
+    "description": "Generic logout failed text"
+  },
   "generic_message": "Message",
   "@generic_message": {
     "description": "Generic message text"
