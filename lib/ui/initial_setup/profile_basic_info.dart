@@ -10,7 +10,7 @@ import "package:app/ui_utils/initial_setup_common.dart";
 import "package:app/ui_utils/text_field.dart";
 import "package:app/utils/age.dart";
 
-final profileNameRegexp = RegExp("[a-zA-ZåäöÅÄÖ-]");
+final profileNameRegexp = RegExp("[-'.AÁÅÄBCÇDEÉFGHIÍJKLMNOÖPQRSTUÜVWXYZÞaáàâåäãbcçdeéèêëfghiíïjklmnoóòôöõøpqrstuúùüvwxyz]");
 
 class AskProfileBasicInfoScreen extends StatelessWidget {
   const AskProfileBasicInfoScreen({Key? key}) : super(key: key);
@@ -113,7 +113,7 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
       textCapitalization: TextCapitalization.sentences,
       enableSuggestions: false,
       autocorrect: false,
-      maxLength: 100,
+      maxLength: 25,
       onChanged: (value) {
         widget.setterProfileName(value);
       },
