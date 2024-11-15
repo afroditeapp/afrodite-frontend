@@ -1,5 +1,6 @@
 
 
+import 'package:app/ui/normal/settings/admin/moderate_profile_texts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -72,6 +73,14 @@ class AdminSettingsPage extends StatelessWidget {
         if (state.permissions.adminModerateProfileNames) {
           settings.add(Setting.createSetting(Icons.text_fields, context.strings.moderate_profile_names_screen_title, () =>
             openProfileNameModerationScreen(context),
+          ));
+        }
+        if (state.permissions.adminModerateProfileTexts) {
+          settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile texts (bot and human)", () =>
+            MyNavigator.push(context, const MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: true)),)
+          ));
+          settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile texts (human)", () =>
+            MyNavigator.push(context, const MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: false)),)
           ));
         }
 

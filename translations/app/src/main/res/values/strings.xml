@@ -45,6 +45,7 @@
     <string name="generic_show_only_selected" description="Generic show only selected text">Show only selected</string>
     <string name="generic_not_supported_on_web" description="Generic not supported on web text">Not supported on Web</string>
     <string name="generic_data_sync_failed" description="Generic data sync failed">Data sync failed</string>
+    <string name="generic_reject_question" description="Generic reject question">Reject?</string>
 
     <string name="generic_text_field_age_hint_text" description="Input field hint text for age">Insert an age between 18–99</string>
     <string name="generic_search_settings_looking_for_all_genders_text" desctiption="Search settings radio button option for men and women who are looking all genders">All</string>
@@ -430,7 +431,6 @@
 
     <!-- Moderate images screen -->
     <string name="moderate_images_screen_title" description="Title for moderate images page">Moderate images</string>
-    <string name="moderate_images_screen_reject_image_dialog_title" description="Dialog title for confirming image rejection">Reject?</string>
 
     <!-- Profile statistics history screen -->
     <string name="profile_statistics_history_screen_title" description="Title for profile statistics history screen">Profile statistics history</string>

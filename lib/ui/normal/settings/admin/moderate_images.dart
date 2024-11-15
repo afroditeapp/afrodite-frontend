@@ -204,7 +204,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
         MyNavigator.removePage(context, pageKey);
         showConfirmDialog(
           context,
-          context.strings.moderate_images_screen_reject_image_dialog_title,
+          context.strings.generic_reject_question,
         )
         .then(
             (value) {

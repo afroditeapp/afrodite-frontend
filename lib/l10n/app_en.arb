@@ -459,6 +459,10 @@
   "@generic_refresh": {
     "description": "Generic refresh text"
   },
+  "generic_reject_question": "Reject?",
+  "@generic_reject_question": {
+    "description": "Generic reject question"
+  },
   "generic_resend": "Resend",
   "@generic_resend": {
     "description": "Generic resend text"
@@ -777,10 +781,6 @@
   "map_select_location_help_text": "Tap or long press the map to select a location.",
   "@map_select_location_help_text": {
     "description": "Help text for selecting map location"
-  },
-  "moderate_images_screen_reject_image_dialog_title": "Reject?",
-  "@moderate_images_screen_reject_image_dialog_title": {
-    "description": "Dialog title for confirming image rejection"
   },
   "moderate_images_screen_title": "Moderate images",
   "@moderate_images_screen_title": {
