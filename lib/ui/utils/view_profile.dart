@@ -86,45 +86,53 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   }
 
   Widget title(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
-        child: Row(
-          children: [
-            Text(
-              widget.profile.profileTitleWithAge(
-                context.read<UserInterfaceSettingsBloc>().state.showNonAcceptedProfileNames ||
-                isMyProfile(),
-              ),
-              style: Theme.of(context).textTheme.titleLarge,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
+      child: Row(
+        children: [
+          Expanded(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(
+                  child: Text(
+                    widget.profile.profileTitleWithAge(
+                      context.read<UserInterfaceSettingsBloc>().state.showNonAcceptedProfileNames ||
+                      isMyProfile(),
+                    ),
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ),
+                if (!widget.profile.nameAccepted) IconButton(
+                  onPressed: () {
+                    var infoText = context.strings.view_profile_screen_non_accepted_profile_name_info_dialog_text;
+                    final profile = widget.profile;
+                    if (profile is MyProfileEntry) {
+                      final stateText = switch (profile.profileNameModerationState) {
+                        ProfileNameModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
+                        ProfileNameModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
+                        ProfileNameModerationState.waitingBotOrHumanModeration => context.strings.moderation_state_waiting_bot_or_human_moderation,
+                        ProfileNameModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
+                        _ => null,
+                      };
+                      if (stateText != null) {
+                        infoText = "$infoText\n\n${context.strings.moderation_state(stateText)}";
+                      }
+                    }
+                    showInfoDialog(context, infoText);
+                  },
+                  icon: const Icon(Icons.info),
+                )
+              ],
             ),
-            if (!widget.profile.nameAccepted) IconButton(
-              onPressed: () {
-                var infoText = context.strings.view_profile_screen_non_accepted_profile_name_info_dialog_text;
-                final profile = widget.profile;
-                if (profile is MyProfileEntry) {
-                  final stateText = switch (profile.profileNameModerationState) {
-                    ProfileNameModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
-                    ProfileNameModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
-                    ProfileNameModerationState.waitingBotOrHumanModeration => context.strings.moderation_state_waiting_bot_or_human_moderation,
-                    ProfileNameModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
-                    _ => null,
-                  };
-                  if (stateText != null) {
-                    infoText = "$infoText\n\n${context.strings.moderation_state(stateText)}";
-                  }
-                }
-                showInfoDialog(context, infoText);
-              },
-              icon: const Icon(Icons.info),
-            ),
-            const Spacer(),
-            (context.read<MyProfileBloc>().state.profile?.unlimitedLikes ?? false) && widget.profile.unlimitedLikes ?
-              const Icon(Icons.all_inclusive) :
-              const SizedBox.shrink(),
-          ],
-        ),
+          ),
+          (context.read<MyProfileBloc>().state.profile?.unlimitedLikes ?? false) && widget.profile.unlimitedLikes ?
+            const Padding(
+              padding: EdgeInsets.only(left: 8.0),
+              child: Icon(Icons.all_inclusive),
+            ) :
+            const SizedBox.shrink(),
+        ],
       ),
     );
   }

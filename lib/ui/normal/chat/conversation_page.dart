@@ -82,17 +82,21 @@ class ConversationPageState extends State<ConversationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            InkWell(
-              onTap: () {
-                openProfileView(context, widget.profileEntry, ProfileRefreshPriority.high, noAction: true);
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                child: SizedBox(
-                  height: AppBar().preferredSize.height,
+        title: LayoutBuilder(
+          builder: (context, constraints) {
+            return ConstrainedBox(
+              constraints: constraints.copyWith(
+                minHeight: AppBar().preferredSize.height,
+                maxHeight: AppBar().preferredSize.height,
+              ),
+              child: InkWell(
+                onTap: () {
+                  openProfileView(context, widget.profileEntry, ProfileRefreshPriority.high, noAction: true);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                   child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       ProfileThumbnailImage.fromProfileEntry(
                         entry: widget.profileEntry,
@@ -101,15 +105,20 @@ class ConversationPageState extends State<ConversationPage> {
                         cacheSize: ImageCacheSize.sizeForAppBarThumbnail(),
                       ),
                       const Padding(padding: EdgeInsets.all(8.0)),
-                      Text(widget.profileEntry.profileTitle(
-                        context.read<UserInterfaceSettingsBloc>().state.showNonAcceptedProfileNames,
-                      )),
+                      Flexible(
+                        child: Text(
+                          widget.profileEntry.profileTitle(
+                            context.read<UserInterfaceSettingsBloc>().state.showNonAcceptedProfileNames,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-            ),
-          ],
+            );
+          }
         ),
         actions: [
           menuActions([

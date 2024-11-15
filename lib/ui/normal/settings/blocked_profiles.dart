@@ -133,6 +133,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
             child: Text(
               name,
               style: Theme.of(context).textTheme.titleMedium,
+              overflow: TextOverflow.ellipsis,
             ),
           );
           final Widget rowWidget = Row(
@@ -142,17 +143,15 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
             key: GlobalKey(),
             children: [
               imageWidget,
-              textWidget,
-              const Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
-                    child: Icon(
-                      Icons.undo_rounded,
-                    ),
+              Expanded(child: textWidget),
+              const Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
+                  child: Icon(
+                    Icons.undo_rounded,
                   ),
-                )
+                ),
               )
             ],
           );
