@@ -24,7 +24,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginBlocData> with ActionRunner {
     super(LoginBlocData()) {
     on<DoLogout>((_, emit) async {
       await runOnce(() async {
+        emit(state.copyWith(logoutInProgress: true));
         await login.logout();
+        emit(state.copyWith(logoutInProgress: false));
       });
     });
     on<NewAccountIdValue>((id, emit) {

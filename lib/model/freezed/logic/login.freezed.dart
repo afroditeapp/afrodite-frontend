@@ -22,9 +22,11 @@ final _privateConstructorErrorLoginBlocData = UnsupportedError(
 /// @nodoc
 mixin _$LoginBlocData {
   AccountId? get accountId => throw _privateConstructorErrorLoginBlocData;
+  bool get logoutInProgress => throw _privateConstructorErrorLoginBlocData;
 
   LoginBlocData copyWith({
     AccountId? accountId,
+    bool? logoutInProgress,
   }) => throw _privateConstructorErrorLoginBlocData;
 }
 
@@ -32,22 +34,28 @@ mixin _$LoginBlocData {
 abstract class _LoginBlocData extends LoginBlocData {
   factory _LoginBlocData({
     AccountId? accountId,
+    bool logoutInProgress,
   }) = _$LoginBlocDataImpl;
   _LoginBlocData._() : super._();
 }
 
 /// @nodoc
 class _$LoginBlocDataImpl extends _LoginBlocData with DiagnosticableTreeMixin {
+  static const bool _logoutInProgressDefaultValue = false;
+  
   _$LoginBlocDataImpl({
     this.accountId,
+    this.logoutInProgress = _logoutInProgressDefaultValue,
   }) : super._();
 
   @override
   final AccountId? accountId;
+  @override
+  final bool logoutInProgress;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'LoginBlocData(accountId: $accountId)';
+    return 'LoginBlocData(accountId: $accountId, logoutInProgress: $logoutInProgress)';
   }
 
   @override
@@ -55,7 +63,8 @@ class _$LoginBlocDataImpl extends _LoginBlocData with DiagnosticableTreeMixin {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'LoginBlocData'))
-      ..add(DiagnosticsProperty('accountId', accountId));
+      ..add(DiagnosticsProperty('accountId', accountId))
+      ..add(DiagnosticsProperty('logoutInProgress', logoutInProgress));
   }
 
   @override
@@ -64,7 +73,9 @@ class _$LoginBlocDataImpl extends _LoginBlocData with DiagnosticableTreeMixin {
       (other.runtimeType == runtimeType &&
         other is _$LoginBlocDataImpl &&
         (identical(other.accountId, accountId) ||
-          other.accountId == accountId)
+          other.accountId == accountId) &&
+        (identical(other.logoutInProgress, logoutInProgress) ||
+          other.logoutInProgress == logoutInProgress)
     );
   }
 
@@ -72,12 +83,15 @@ class _$LoginBlocDataImpl extends _LoginBlocData with DiagnosticableTreeMixin {
   int get hashCode => Object.hash(
     runtimeType,
     accountId,
+    logoutInProgress,
   );
 
   @override
   LoginBlocData copyWith({
     Object? accountId = _detectDefaultValueInCopyWith,
+    Object? logoutInProgress,
   }) => _$LoginBlocDataImpl(
     accountId: (accountId == _detectDefaultValueInCopyWith ? this.accountId : accountId) as AccountId?,
+    logoutInProgress: (logoutInProgress ?? this.logoutInProgress) as bool,
   );
 }

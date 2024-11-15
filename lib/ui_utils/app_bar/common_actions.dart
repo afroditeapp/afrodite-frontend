@@ -2,6 +2,7 @@
 
 
 
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
@@ -36,11 +37,18 @@ MenuItemButton commonActionOpenAboutDialog(BuildContext context) {
 MenuItemButton commonActionLogout(BuildContext context) {
   return MenuItemButton(
     child: Text(context.strings.generic_logout),
-    onPressed: () => showConfirmDialogAdvanced(
-      context: context,
-      title: context.strings.generic_logout_confirmation_title,
-      onSuccess: () => context.read<LoginBloc>().add(DoLogout()),
-    ),
+    onPressed: () {
+      final inProgress = context.read<LoginBloc>().state.logoutInProgress;
+      if (inProgress) {
+        showSnackBar(context.strings.generic_previous_action_in_progress);
+      } else {
+        showConfirmDialogAdvanced(
+          context: context,
+          title: context.strings.generic_logout_confirmation_title,
+          onSuccess: () => context.read<LoginBloc>().add(DoLogout()),
+        );
+      }
+    },
   );
 }
 

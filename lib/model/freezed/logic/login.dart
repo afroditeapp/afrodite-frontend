@@ -10,5 +10,6 @@ class LoginBlocData with _$LoginBlocData {
   LoginBlocData._();
   factory LoginBlocData({
     AccountId? accountId,
+    @Default(false) bool logoutInProgress,
   }) = _LoginBlocData;
 }

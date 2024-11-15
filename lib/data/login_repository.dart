@@ -447,8 +447,15 @@ class LoginRepository extends DataRepository {
   /// Logout back to login or demo account screen
   Future<void> logout() async {
     final repository = _repositories;
+
     if (repository != null && !repository.logoutStarted) {
       repository.logoutStarted = true;
+
+      final r = await repository.api.accountAction((api) => api.postLogout());
+      if (r.isErr()) {
+        showSnackBar(R.strings.generic_logout_failed);
+      }
+
       await _logoutWithRepository(repository);
     }
   }
