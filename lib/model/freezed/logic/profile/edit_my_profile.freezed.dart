@@ -23,43 +23,50 @@ final _privateConstructorErrorEditMyProfileData = UnsupportedError(
 mixin _$EditMyProfileData {
   int? get age => throw _privateConstructorErrorEditMyProfileData;
   String? get name => throw _privateConstructorErrorEditMyProfileData;
+  String? get profileText => throw _privateConstructorErrorEditMyProfileData;
   UnmodifiableList<ProfileAttributeValueUpdate> get attributes => throw _privateConstructorErrorEditMyProfileData;
   bool get unlimitedLikes => throw _privateConstructorErrorEditMyProfileData;
 
   EditMyProfileData copyWith({
     int? age,
     String? name,
+    String? profileText,
     UnmodifiableList<ProfileAttributeValueUpdate>? attributes,
     bool? unlimitedLikes,
   }) => throw _privateConstructorErrorEditMyProfileData;
 }
 
 /// @nodoc
-abstract class _EditMyProfileData implements EditMyProfileData {
+abstract class _EditMyProfileData extends EditMyProfileData {
   factory _EditMyProfileData({
     int? age,
     String? name,
+    String? profileText,
     UnmodifiableList<ProfileAttributeValueUpdate> attributes,
     bool unlimitedLikes,
   }) = _$EditMyProfileDataImpl;
+  const _EditMyProfileData._() : super._();
 }
 
 /// @nodoc
-class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyProfileData {
+class _$EditMyProfileDataImpl extends _EditMyProfileData with DiagnosticableTreeMixin {
   static const UnmodifiableList<ProfileAttributeValueUpdate> _attributesDefaultValue = UnmodifiableList<ProfileAttributeValueUpdate>.empty();
   static const bool _unlimitedLikesDefaultValue = false;
   
   _$EditMyProfileDataImpl({
     this.age,
     this.name,
+    this.profileText,
     this.attributes = _attributesDefaultValue,
     this.unlimitedLikes = _unlimitedLikesDefaultValue,
-  });
+  }) : super._();
 
   @override
   final int? age;
   @override
   final String? name;
+  @override
+  final String? profileText;
   @override
   final UnmodifiableList<ProfileAttributeValueUpdate> attributes;
   @override
@@ -67,7 +74,7 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditMyProfileData(age: $age, name: $name, attributes: $attributes, unlimitedLikes: $unlimitedLikes)';
+    return 'EditMyProfileData(age: $age, name: $name, profileText: $profileText, attributes: $attributes, unlimitedLikes: $unlimitedLikes)';
   }
 
   @override
@@ -77,6 +84,7 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
       ..add(DiagnosticsProperty('type', 'EditMyProfileData'))
       ..add(DiagnosticsProperty('age', age))
       ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('profileText', profileText))
       ..add(DiagnosticsProperty('attributes', attributes))
       ..add(DiagnosticsProperty('unlimitedLikes', unlimitedLikes));
   }
@@ -90,6 +98,8 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
           other.age == age) &&
         (identical(other.name, name) ||
           other.name == name) &&
+        (identical(other.profileText, profileText) ||
+          other.profileText == profileText) &&
         (identical(other.attributes, attributes) ||
           other.attributes == attributes) &&
         (identical(other.unlimitedLikes, unlimitedLikes) ||
@@ -102,6 +112,7 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
     runtimeType,
     age,
     name,
+    profileText,
     attributes,
     unlimitedLikes,
   );
@@ -110,11 +121,13 @@ class _$EditMyProfileDataImpl with DiagnosticableTreeMixin implements _EditMyPro
   EditMyProfileData copyWith({
     Object? age = _detectDefaultValueInCopyWith,
     Object? name = _detectDefaultValueInCopyWith,
+    Object? profileText = _detectDefaultValueInCopyWith,
     Object? attributes,
     Object? unlimitedLikes,
   }) => _$EditMyProfileDataImpl(
     age: (age == _detectDefaultValueInCopyWith ? this.age : age) as int?,
     name: (name == _detectDefaultValueInCopyWith ? this.name : name) as String?,
+    profileText: (profileText == _detectDefaultValueInCopyWith ? this.profileText : profileText) as String?,
     attributes: (attributes ?? this.attributes) as UnmodifiableList<ProfileAttributeValueUpdate>,
     unlimitedLikes: (unlimitedLikes ?? this.unlimitedLikes) as bool,
   );

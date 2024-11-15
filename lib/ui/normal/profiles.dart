@@ -24,9 +24,6 @@ import 'package:app/ui_utils/snack_bar.dart';
 
 var log = Logger("ProfileView");
 
-// TODO(prod): Make sure that after initial moderation the profile grid
-// is refreshed automatically.
-
 class ProfileView extends BottomNavigationScreen {
   const ProfileView({Key? key}) : super(key: key);
 

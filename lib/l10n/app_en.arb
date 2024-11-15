@@ -322,6 +322,10 @@
   "@edit_profile_screen_one_profile_image_required": {
     "description": "Snackbar text for notifying about that one profile image is required"
   },
+  "edit_profile_screen_profile_text": "Profile text",
+  "@edit_profile_screen_profile_text": {
+    "description": "Title for profile text field"
+  },
   "edit_profile_screen_title": "Edit profile",
   "@edit_profile_screen_title": {
     "description": "Title for edit profile screen"
@@ -337,6 +341,10 @@
   "edit_profile_screen_unlimited_likes_description_enabled": "Send unlimited likes to profiles which have enabled unlimited likes",
   "@edit_profile_screen_unlimited_likes_description_enabled": {
     "description": "Description for unlimited likes setting when it is enabled"
+  },
+  "edit_profile_text_screen_text_lenght_too_long": "Profile text byte count is more than 2000 bytes",
+  "@edit_profile_text_screen_text_lenght_too_long": {
+    "description": "Dialog text for notifying user when profile text is too long"
   },
   "general_settings_screen_title": "General",
   "@general_settings_screen_title": {

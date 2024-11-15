@@ -225,6 +225,7 @@
 
     <!-- Edit profile screen -->
     <string name="edit_profile_screen_title" description="Title for edit profile screen">Edit profile</string>
+    <string name="edit_profile_screen_profile_text" description="Title for profile text field">Profile text</string>
     <string name="edit_profile_screen_unlimited_likes" description="Title for unlimited likes setting">Unlimited likes</string>
     <string name="edit_profile_screen_unlimited_likes_description_enabled" description="Description for unlimited likes setting when it is enabled">Send unlimited likes to profiles which have enabled unlimited likes</string>
     <string name="edit_profile_screen_unlimited_likes_description_disabled" description="Description for unlimited likes setting when it is disabled">Send one like per day</string>
@@ -232,6 +233,9 @@
     <string name="edit_profile_screen_invalid_age" description="Snackbar text for notifying about invalid age">Invalid age</string>
     <string name="edit_profile_screen_one_profile_image_required" description="Snackbar text for notifying about that one profile image is required">One profile image is required</string>
     <string name="edit_profile_screen_automatic_min_age_incrementing_info_dialog_text" description="Dialog text for notifying user when profile age min value is incremented">Min age will be increased to %s in %s</string>
+
+    <!-- Edit profile text screen -->
+    <string name="edit_profile_text_screen_text_lenght_too_long" description="Dialog text for notifying user when profile text is too long">Profile text byte count is more than 2000 bytes</string>
 
     <!-- Edit attribute value screen -->
     <string name="edit_attribute_value_screen_one_value_must_be_selected" description="Snackbar text for notifying that one at least one option must be selected">At least one selection is required</string>

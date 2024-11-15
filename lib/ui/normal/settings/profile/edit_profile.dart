@@ -1,5 +1,6 @@
 
 
+import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,14 +34,6 @@ import 'package:app/utils/api.dart';
 import 'package:app/utils/age.dart';
 import 'package:app/utils/profile_entry.dart';
 
-// TODO(prod): If profile age is not needed in background database
-//             consider removing it.
-
-// TODO: Logout leaves some profile images to Bloc, so previous account's
-// profile images are visible in the new account's edit profile screen.
-// Update: there is now RemoveImage event which should reset the data but
-// other blocs should also be checked.
-
 class EditProfilePage extends StatefulWidget {
   final PageKey pageKey;
   final ProfileEntry initialProfile;
@@ -53,8 +46,8 @@ class EditProfilePage extends StatefulWidget {
     required this.profilePicturesBloc,
     required this.editMyProfileBloc,
     required this.profileAttributesBloc,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -105,6 +98,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
       return;
     }
 
+    final profileText = s.profileText ?? "";
+
     final imgUpdate = widget.profilePicturesBloc.state.toSetProfileContent();
     if (imgUpdate == null) {
       showSnackBar(context.strings.edit_profile_screen_one_profile_image_required);
@@ -117,7 +112,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ProfileUpdate(
         age: age,
         name: name,
-        ptext: widget.initialProfile.profileText,
+        ptext: profileText,
         attributes: s.attributes.toList(),
       ),
       imgUpdate,
@@ -134,6 +129,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     if (
       currentState.age != editedData.age ||
       currentState.name != editedData.name ||
+      currentState.profileText != editedData.profileText ||
       currentState.unlimitedLikes != editedData.unlimitedLikes
     ) {
       return true;
@@ -242,6 +238,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           const Padding(padding: EdgeInsets.all(8)),
           const Divider(),
+          const EditProfileText(),
+          const Divider(),
           const EditAttributes(),
           const Divider(),
           unlimitedLikesSetting(context),
@@ -253,23 +251,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
     );
   }
-
-  // Profile text is disabled for now
-
-  // final TextEditingController _profileTextController = TextEditingController();
-  // Widget editProfileText() {
-  //   Padding(
-  //     padding: const EdgeInsets.all(8.0),
-  //     child: TextField(
-  //       controller: _profileTextController,
-  //       maxLines: 10,
-  //       decoration: const InputDecoration(
-  //         border: OutlineInputBorder(),
-  //         labelText: "Profile text",
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget unlimitedLikesSetting(BuildContext context) {
     return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(builder: (context, myProfileData) {
@@ -564,6 +545,75 @@ class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
           widget.setterProfileAge(value);
         }
       },
+    );
+  }
+}
+
+class EditProfileText extends StatefulWidget {
+  const EditProfileText({
+    super.key,
+  });
+
+  @override
+  State<EditProfileText> createState() => _EditProfileTextState();
+}
+
+class _EditProfileTextState extends State<EditProfileText> {
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
+      builder: (context, state) {
+        return content(context, state.profileText);
+      },
+    );
+  }
+
+  Widget content(BuildContext context, String? currentText) {
+    final currentText = context.read<EditMyProfileBloc>().state.profileText;
+    final String displayedText;
+    if (currentText == null || currentText.isEmpty) {
+      displayedText = context.strings.generic_empty;
+    } else {
+      displayedText = currentText;
+    }
+
+    final r = Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(padding: EdgeInsets.all(4)),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
+                child: Text(
+                  context.strings.edit_profile_screen_profile_text,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+              const Padding(padding: EdgeInsets.all(4)),
+              Row(
+                children: [
+                  const SizedBox(height: 44),
+                  const Padding(padding: EdgeInsets.only(right: 16)),
+                  Expanded(child: Text(displayedText)),
+                ],
+              ),
+              const Padding(padding: EdgeInsets.all(4)),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 4.0),
+          child: IconWithIconButtonPadding(Icons.edit_rounded, iconColor: getIconButtonEnabledColor(context)),
+        ),
+      ],
+    );
+
+    return InkWell(
+      onTap: () => openEditProfileText(context, context.read<EditMyProfileBloc>()),
+      child: r,
     );
   }
 }
