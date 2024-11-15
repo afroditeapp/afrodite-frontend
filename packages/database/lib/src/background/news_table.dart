@@ -34,6 +34,15 @@ class DaoNews extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoNews
     });
   }
 
+  Future<void> resetSyncVersion() async {
+    await into(news).insertOnConflictUpdate(
+      NewsCompanion.insert(
+        id: ACCOUNT_DB_DATA_ID,
+        syncVersionNews: Value(null)
+      ),
+    );
+  }
+
   Stream<api.UnreadNewsCount?> watchUnreadNewsCount() {
     return (select(news)
       ..where((t) => t.id.equals(ACCOUNT_DB_DATA_ID.value))

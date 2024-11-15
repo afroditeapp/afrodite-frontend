@@ -46,6 +46,15 @@ class DaoNewReceivedLikesAvailable extends DatabaseAccessor<AccountBackgroundDat
     );
   }
 
+  Future<void> resetSyncVersion() async {
+    await into(newReceivedLikesAvailable).insertOnConflictUpdate(
+      NewReceivedLikesAvailableCompanion.insert(
+        id: ACCOUNT_DB_DATA_ID,
+        syncVersionReceivedLikes: Value(null),
+      ),
+    );
+  }
+
   Stream<int?> watchSyncVersionReceivedLikes() {
     return (select(newReceivedLikesAvailable)
         ..where((t) => t.id.equals(ACCOUNT_DB_DATA_ID.value))

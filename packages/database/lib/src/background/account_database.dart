@@ -85,6 +85,13 @@ class AccountBackgroundDatabase extends _$AccountBackgroundDatabase {
   Stream<AccountId?> watchAccountId() =>
     watchColumn((r) => r.uuidAccountId);
 
+  Future<void> resetSyncVersions() async {
+    await transaction(() async {
+      await daoNewReceivedLikesAvailable.resetSyncVersion();
+      await daoNews.resetSyncVersion();
+    });
+  }
+
   SimpleSelectStatement<$AccountBackgroundTable, AccountBackgroundData> _selectFromDataId() {
     return select(accountBackground)
       ..where((t) => t.id.equals(ACCOUNT_DB_DATA_ID.value));

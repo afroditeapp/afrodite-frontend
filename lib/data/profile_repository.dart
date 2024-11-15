@@ -64,8 +64,6 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<void> onLogin() async {
-    // TODO(prod): reset sync versions to "force sync"
-
     await db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(false));
   }
 

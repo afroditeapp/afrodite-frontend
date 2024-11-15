@@ -41,6 +41,17 @@ class DaoSyncVersions extends DatabaseAccessor<AccountDatabase> with _$DaoSyncVe
     );
   }
 
+  Future<void> resetSyncVersions() async {
+    await into(account).insertOnConflictUpdate(
+      AccountCompanion.insert(
+        id: ACCOUNT_DB_DATA_ID,
+        syncVersionAccount: Value(null),
+        syncVersionProfile: Value(null),
+        syncVersionAvailableProfileAttributes: Value(null),
+      ),
+    );
+  }
+
   Stream<int?> watchSyncVersionAccount() =>
     watchColumn((r) => r.syncVersionAccount);
   Stream<int?> watchSyncVersionProfile() =>

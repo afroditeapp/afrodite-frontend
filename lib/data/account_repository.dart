@@ -29,10 +29,6 @@ enum AccountRepositoryState {
 const ProfileVisibility PROFILE_VISIBILITY_DEFAULT =
   ProfileVisibility.pendingPrivate;
 
-// TODO: Add automatic sync version incrementing to
-// sentBlocksChanged as only client
-// makes operations to those lists.
-
 class AccountRepository extends DataRepositoryWithLifecycle {
   final ConnectedActionScheduler _syncHandler;
   final ClientIdManager clientIdManager;
@@ -106,6 +102,12 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   }
 
   // TODO(prod): Run onLogout when server connection has authentication failure
+
+  @override
+  Future<void> onLogin() async {
+    await db.accountAction((db) => db.daoSyncVersions.resetSyncVersions());
+    await accountBackgroundDb.accountAction((db) => db.resetSyncVersions());
+  }
 
   @override
   Future<Result<void, void>> onLoginDataSync() async {
