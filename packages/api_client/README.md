@@ -76,10 +76,12 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postDemoModeConfirmLogin**](doc//AccountApi.md#postdemomodeconfirmlogin) | **POST** /3KlEajKOIo1Drd3uW-IzQ1L3qlE | 
 *AccountApi* | [**postDemoModeLogin**](doc//AccountApi.md#postdemomodelogin) | **POST** /TYbxniP-G9ibgdoAkpvVWTKkxaU | Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
 *AccountApi* | [**postDemoModeLoginToAccount**](doc//AccountApi.md#postdemomodelogintoaccount) | **POST** /sBH-LyNGOOFXivrv5clCpNrkwcA | 
+*AccountApi* | [**postDemoModeLogout**](doc//AccountApi.md#postdemomodelogout) | **POST** /C4cOpRmlYJh2YBXbEHQGkcz3iMY | 
 *AccountApi* | [**postDemoModeRegisterAccount**](doc//AccountApi.md#postdemomoderegisteraccount) | **POST** /oDv1gK4Y6nMrPgEo5nArQAckh6Q | 
 *AccountApi* | [**postGetNextClientId**](doc//AccountApi.md#postgetnextclientid) | **POST** /b5kd4x8_ybr1Rj_tprU5BxF_xGo | 
 *AccountApi* | [**postGetNextNewsPage**](doc//AccountApi.md#postgetnextnewspage) | **POST** /i9QOC8N-Nx9PdWvjKyAz8tXD2Q0 | 
 *AccountApi* | [**postGetUnreadNewsCount**](doc//AccountApi.md#postgetunreadnewscount) | **POST** /ljfyAP7CbP0864cA6nZX7ESufjY | The unread news count for public news.
+*AccountApi* | [**postLogout**](doc//AccountApi.md#postlogout) | **POST** /g2UxTGqbCXXzUsALaE6udVrIh2U | 
 *AccountApi* | [**postResetNewsPaging**](doc//AccountApi.md#postresetnewspaging) | **POST** /BQwxuLNWbM8vN0-p-Wu-QCRy3x0 | 
 *AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /ijts6B4AAg_6Dyjhaw85iBnw5Bo | Start new session with sign in with Apple or Google. Creates new account if it does not exists.
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /yG0OQXcMed-EGdvhSoq3qlXTYQc | Update current or pending profile visiblity value.

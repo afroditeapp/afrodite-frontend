@@ -720,6 +720,45 @@ class AccountApi {
     return null;
   }
 
+  /// Performs an HTTP 'POST /C4cOpRmlYJh2YBXbEHQGkcz3iMY' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [DemoModeToken] demoModeToken (required):
+  Future<Response> postDemoModeLogoutWithHttpInfo(DemoModeToken demoModeToken,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/C4cOpRmlYJh2YBXbEHQGkcz3iMY';
+
+    // ignore: prefer_final_locals
+    Object? postBody = demoModeToken;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [DemoModeToken] demoModeToken (required):
+  Future<void> postDemoModeLogout(DemoModeToken demoModeToken,) async {
+    final response = await postDemoModeLogoutWithHttpInfo(demoModeToken,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Performs an HTTP 'POST /oDv1gK4Y6nMrPgEo5nArQAckh6Q' operation and returns the [Response].
   /// Parameters:
   ///
@@ -903,6 +942,39 @@ class AccountApi {
     
     }
     return null;
+  }
+
+  /// Performs an HTTP 'POST /g2UxTGqbCXXzUsALaE6udVrIh2U' operation and returns the [Response].
+  Future<Response> postLogoutWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/g2UxTGqbCXXzUsALaE6udVrIh2U';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<void> postLogout() async {
+    final response = await postLogoutWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Performs an HTTP 'POST /BQwxuLNWbM8vN0-p-Wu-QCRy3x0' operation and returns the [Response].
