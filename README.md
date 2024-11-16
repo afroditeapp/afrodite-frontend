@@ -208,8 +208,16 @@ String signInWithGoogleBackendClientId() {
 
 ## Add iOS support
 
-The file ios/Runner.xcodeproj is removed to hide development team ID, so it
-should be added back somehow.
+The file ios/Runner.xcodeproj is not included in the repository as it contains
+development team ID. It can be created with following commands
+
+```
+cd afrodite-frontend
+flutter create --platforms ios --project-name app .
+```
+
+Other new files or changes which `flutter create` command creates can be
+removed.
 
 ## License
 
