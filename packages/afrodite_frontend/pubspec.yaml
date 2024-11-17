@@ -1,0 +1,8 @@
+name: afrodite_frontend
+description: "Add project license info to Licenses screen"
+version: 0.0.1
+
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.3.2 <4.0.0'

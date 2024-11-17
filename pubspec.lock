@@ -22,6 +22,13 @@ packages:
     description: dart
     source: sdk
     version: "0.3.2"
+  afrodite_frontend:
+    dependency: "direct main"
+    description:
+      path: "packages/afrodite_frontend"
+      relative: true
+    source: path
+    version: "0.0.1"
   analyzer:
     dependency: transitive
     description:
