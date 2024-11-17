@@ -101,7 +101,7 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
       final womanCount = item.ageCounts.woman.getAtOrNull(i) ?? 0;
       profileCountWoman += womanCount;
       final nonBinaryCount = item.ageCounts.nonBinary.getAtOrNull(i) ?? 0;
-      profileCountNonBinary += profileCountNonBinary;
+      profileCountNonBinary += nonBinaryCount;
       final count = age + womanCount + nonBinaryCount;
       profileCount += count;
       totalAgeCounts.add(count);
