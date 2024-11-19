@@ -185,7 +185,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
                 if (rejectedCategory != null) {
                   infoText = "$infoText\n\n${context.strings.moderation_rejected_category(rejectedCategory.value.toString())}";
                 }
-                final rejectedDetails = profile.profileTextModerationRejectedCategory;
+                final rejectedDetails = profile.profileTextModerationRejectedDetails;
                 if (rejectedDetails != null) {
                   infoText = "$infoText\n\n${context.strings.moderation_rejected_details(rejectedDetails.value.toString())}";
                 }
