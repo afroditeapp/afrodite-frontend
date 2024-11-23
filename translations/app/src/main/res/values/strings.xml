@@ -269,6 +269,7 @@
     <string name="new_moderation_request_screen_title" description="Title for new moderation request screen">New moderation request</string>
     <string name="new_moderation_request_screen_send_content_button" description="Text for send images to be moderated button">Send to be moderated</string>
     <string name="new_moderation_request_screen_send_content_confirm_dialog_title" description="Dialog title for confirming send images to be moderated action">Send to be moderated?</string>
+    <string name="new_moderation_request_screen_face_detected" description="Text for face detected images">Face detected</string>
 
     <!-- Profile filtering settings screen -->
     <string name="profile_filtering_settings_screen_title" description="Title for profile filtering settings screen">Filtering settings</string>

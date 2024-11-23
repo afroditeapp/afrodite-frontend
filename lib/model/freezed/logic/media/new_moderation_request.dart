@@ -13,11 +13,13 @@ class NewModerationRequestData with _$NewModerationRequestData {
   }) = _NewModerationRequestData;
 }
 
+typedef AddedImageInfo = ({int slot, ContentId content, bool faceDetected});
+
 class AddedImages {
-  final UnmodifiableList<({int slot, ContentId content})> addedImgs;
+  final UnmodifiableList<AddedImageInfo> addedImgs;
 
   const AddedImages() :
-    addedImgs = const UnmodifiableList<({int slot, ContentId content})>.empty();
+    addedImgs = const UnmodifiableList<AddedImageInfo>.empty();
 
   AddedImages._fromList(this.addedImgs);
 
@@ -30,15 +32,11 @@ class AddedImages {
     return availableSlots.firstOrNull;
   }
 
-  Iterable<ContentId> contentList() {
-    return addedImgs.map((e) => e.content);
-  }
-
   AddedImages removeAt(int index) {
     return AddedImages._fromList(addedImgs.removeAt(index));
   }
 
-  AddedImages add(int slot, ContentId content) {
-    return AddedImages._fromList(addedImgs.add((slot: slot, content: content)));
+  AddedImages add(int slot, ContentId content, bool faceDetected) {
+    return AddedImages._fromList(addedImgs.add((slot: slot, content: content, faceDetected: faceDetected)));
   }
 }

@@ -37,7 +37,7 @@ class _NewModerationRequestScreenState extends State<NewModerationRequestScreen>
   }
 
   void closeScreen(BuildContext context, {bool popOnCancel = true}) async {
-    final imgs = context.read<NewModerationRequestBloc>().state.selectedImgs.contentList().toList();
+    final imgs = context.read<NewModerationRequestBloc>().state.selectedImgs.addedImgs.toList();
     if (imgs.isNotEmpty) {
       final accepted = await showConfirmDialog(context, context.strings.new_moderation_request_screen_send_content_confirm_dialog_title, yesNoActions: true);
       if (!context.mounted) {
@@ -56,7 +56,7 @@ class _NewModerationRequestScreenState extends State<NewModerationRequestScreen>
   }
 
   bool unsavedData(NewModerationRequestData data) {
-    return data.selectedImgs.contentList().toList().isNotEmpty;
+    return data.selectedImgs.addedImgs.toList().isNotEmpty;
   }
 
   @override
@@ -102,7 +102,7 @@ class _NewModerationRequestScreenState extends State<NewModerationRequestScreen>
         // Zero sized widgets
         ...imageProcessingUiWidgets<ProfilePicturesImageProcessingBloc>(
           onComplete: (context, processedImg) {
-            context.read<NewModerationRequestBloc>().add(AddImg(processedImg.slot, processedImg.contentId));
+            context.read<NewModerationRequestBloc>().add(AddImg(processedImg.slot, processedImg.contentId, processedImg.faceDetected));
           },
         ),
       ],
@@ -118,14 +118,22 @@ class _NewModerationRequestScreenState extends State<NewModerationRequestScreen>
     final iconSize = IconTheme.of(context).size ?? 24.0;
 
     gridWidgets.addAll(
-      currentContent.contentList().indexed.map((e) =>
-        Center(
-          child: ImgWithCloseButton(
-            onCloseButtonPressed: () => context.read<NewModerationRequestBloc>().add(RemoveImg(e.$1)),
-            imgWidgetBuilder: (c, width, height) => ImgWithCloseButton.defaultImgWidgetBuilder(context, width, height, accountId, e.$2),
-            maxWidth: SELECT_CONTENT_IMAGE_WIDTH + iconSize,
-            maxHeight: SELECT_CONTENT_IMAGE_HEIGHT
-          ),
+      currentContent.addedImgs.indexed.map((e) =>
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ImgWithCloseButton(
+              onCloseButtonPressed: () => context.read<NewModerationRequestBloc>().add(RemoveImg(e.$1)),
+              imgWidgetBuilder: (c, width, height) => ImgWithCloseButton.defaultImgWidgetBuilder(context, width, height, accountId, e.$2.content),
+              maxWidth: SELECT_CONTENT_IMAGE_WIDTH + iconSize,
+              maxHeight: SELECT_CONTENT_IMAGE_HEIGHT - 30,
+            ),
+            if (e.$2.faceDetected) Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(context.strings.new_moderation_request_screen_face_detected),
+            ),
+          ],
         )
       )
     );
@@ -148,7 +156,7 @@ class _NewModerationRequestScreenState extends State<NewModerationRequestScreen>
 
     final List<Widget> widgets = [grid];
 
-    if (currentContent.contentList().isNotEmpty) {
+    if (currentContent.addedImgs.isNotEmpty) {
       widgets.add(
         Padding(
           padding: const EdgeInsets.only(

@@ -845,6 +845,10 @@
   "@moderation_state_waiting_human_moderation": {
     "description": "Moderation state waiting human moderation"
   },
+  "new_moderation_request_screen_face_detected": "Face detected",
+  "@new_moderation_request_screen_face_detected": {
+    "description": "Text for face detected images"
+  },
   "new_moderation_request_screen_send_content_button": "Send to be moderated",
   "@new_moderation_request_screen_send_content_button": {
     "description": "Text for send images to be moderated button"

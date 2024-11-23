@@ -16,7 +16,8 @@ class RemoveImg extends NewModerationRequestEvent {
 class AddImg extends NewModerationRequestEvent {
   final int slot;
   final ContentId img;
-  AddImg(this.slot, this.img);
+  final bool faceDetected;
+  AddImg(this.slot, this.img, this.faceDetected);
 }
 class Reset extends NewModerationRequestEvent {}
 
@@ -29,7 +30,7 @@ class NewModerationRequestBloc extends Bloc<NewModerationRequestEvent, NewModera
       emit(state.copyWith(selectedImgs: state.selectedImgs.removeAt(data.index)));
     });
     on<AddImg>((data, emit) async {
-      emit(state.copyWith(selectedImgs: state.selectedImgs.add(data.slot, data.img)));
+      emit(state.copyWith(selectedImgs: state.selectedImgs.add(data.slot, data.img, data.faceDetected)));
     });
   }
 }
