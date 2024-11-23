@@ -646,7 +646,11 @@
   "@initial_setup_screen_profile_basic_info_title": {
     "description": "Title text for asking profile information"
   },
-  "initial_setup_screen_profile_pictures_primary_image_info_dialog_description": "Adding at least of one profile image is required. The square shaped crop of the first profile image is displayed in profile grid and some other places in the app.",
+  "initial_setup_screen_profile_pictures_primary_image_face_not_detected": "Face is not detected. Please select another picture.",
+  "@initial_setup_screen_profile_pictures_primary_image_face_not_detected": {
+    "description": "Error text that face is not detected for primary profile image"
+  },
+  "initial_setup_screen_profile_pictures_primary_image_info_dialog_description": "Adding at least of one profile image is required. The first profile image must be a face picture. The square shaped crop of the first profile image is displayed in profile grid and some other places in the app.",
   "@initial_setup_screen_profile_pictures_primary_image_info_dialog_description": {
     "description": "Dialog description text about profile primary image"
   },

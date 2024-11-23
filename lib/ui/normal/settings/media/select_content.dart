@@ -71,8 +71,8 @@ class _SelectContentPageState extends State<SelectContentPage> {
   Widget selectContentPage(
     BuildContext context,
     AccountId accountId,
-    Iterable<ContentId> content,
-    Iterable<ContentId> pendingContent,
+    Iterable<ContentIdAndFaceDetected> content,
+    Iterable<ContentIdAndFaceDetected> pendingContent,
     bool initialModerationOngoing,
     bool showAddNewModerationRequest,
   ) {
@@ -82,7 +82,7 @@ class _SelectContentPageState extends State<SelectContentPage> {
       pendingContent.map((e) => buildPendingImg(
         context,
         accountId,
-        e,
+        e.contentId,
         onTap: () => showSnackBar(context.strings.select_content_screen_info_waiting_moderation),
       ))
     );
@@ -91,8 +91,8 @@ class _SelectContentPageState extends State<SelectContentPage> {
       content.map((e) => buildAvailableImg(
         context,
         accountId,
-        e,
-        onTap: () => MyNavigator.pop(context, AccountImageId(accountId, e))
+        e.contentId,
+        onTap: () => MyNavigator.pop(context, AccountImageId(accountId, e.contentId, e.faceDetected))
       ))
     );
 

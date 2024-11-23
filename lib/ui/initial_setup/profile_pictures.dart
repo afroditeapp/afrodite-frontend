@@ -42,7 +42,8 @@ class AskProfilePicturesScreen extends StatelessWidget {
             builder: (context, state) {
               void Function()? onPressed;
               final pictures = state.pictures();
-              if (pictures[0] is ImageSelected) {
+              final primaryPicture = pictures[0];
+              if (primaryPicture is ImageSelected && primaryPicture.img.isFaceDetected()) {
                 onPressed = () {
                   context.read<InitialSetupBloc>().add(SetProfileImages(pictures));
                   MyNavigator.push(context, const MaterialPage<void>(child: AskProfileBasicInfoScreen()));
@@ -121,7 +122,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     if (widget.mode is InitialSetupProfilePictures) {
       zeroSizedWidgets = imageProcessingUiWidgets<ProfilePicturesImageProcessingBloc>(
         onComplete: (context, processedImg) {
-          final id = AccountImageId(processedImg.accountId, processedImg.contentId);
+          final id = AccountImageId(processedImg.accountId, processedImg.contentId, processedImg.faceDetected);
           final nextAddImgState = widget.profilePicturesBloc.state.pictures().indexed.where((element) => element.$2 is Add).firstOrNull;
           final int index;
           if (nextAddImgState != null) {
@@ -129,7 +130,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
           } else {
             return;
           }
-          widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(id, processedImg.slot), index));
+          widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(id, processedImg.slot, processedImg.faceDetected), index));
         },
       );
     } else {
@@ -139,6 +140,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     return Column(
       children: [
         topRow(context),
+        primaryImageIsNotFaceImageError(),
         const Divider(
           height: 50,
         ),
@@ -254,7 +256,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
         case InitialSetupSecuritySelfie():
           final securitySelfie = context.read<InitialSetupBloc>().state.securitySelfie;
           if (securitySelfie != null) {
-            return AccountImageId(securitySelfie.accountId, securitySelfie.contentId);
+            return AccountImageId(securitySelfie.accountId, securitySelfie.contentId, securitySelfie.faceDetected);
           } else {
             return null;
           }
@@ -305,6 +307,32 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
             }
           }
         }
+      }
+    );
+  }
+
+  Widget primaryImageIsNotFaceImageError() {
+    return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
+      buildWhen: (previous, current) => previous.pictures()[0] != current.pictures()[0],
+      builder: (context, state) {
+        final imgState = state.pictures()[0];
+        if (imgState is ImageSelected && !imgState.img.isFaceDetected()) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.close,
+                  color: Colors.red,
+                  size: 32,
+                ),
+                Text(context.strings.initial_setup_screen_profile_pictures_primary_image_face_not_detected),
+              ],
+            ),
+          );
+        }
+        return const SizedBox.shrink();
       }
     );
   }
@@ -454,7 +482,7 @@ class AddPicture extends StatelessWidget {
       selectContentBloc: selectContentBloc,
     )));
     if (selectedImg != null) {
-      bloc.add(AddProcessedImage(ProfileImage(selectedImg, null), imgIndex));
+      bloc.add(AddProcessedImage(ProfileImage(selectedImg, null, selectedImg.faceDetected), imgIndex));
     }
   }
 }

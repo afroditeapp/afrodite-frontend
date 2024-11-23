@@ -64,6 +64,11 @@ class ProfilePicturesData with _$ProfilePicturesData {
       c3: imgStateToContentId(picture3),
     );
   }
+
+  bool faceDetectedFromPrimaryImage() {
+    final img0 = picture0;
+    return img0 is ImageSelected && img0.img.isFaceDetected();
+  }
 }
 
 ContentId? imgStateToContentId(ImgState state) {
@@ -102,17 +107,24 @@ class ImageSelected extends ImgState {
   const ImageSelected(this.img, {this.cropResults = CropResults.full});
 }
 
-sealed class SelectedImageInfo {}
+sealed class SelectedImageInfo {
+  bool isFaceDetected() {
+    final img = this;
+    return img is InitialSetupSecuritySelfie || (img is ProfileImage && img.faceDetected);
+  }
+}
 class InitialSetupSecuritySelfie extends SelectedImageInfo {}
 class ProfileImage extends SelectedImageInfo {
   final AccountImageId id;
   /// Slot where image is uploaded to.
   final int? slot;
-  ProfileImage(this.id, this.slot);
+  final bool faceDetected;
+  ProfileImage(this.id, this.slot, this.faceDetected);
 }
 
 class AccountImageId {
   final AccountId accountId;
   final ContentId contentId;
-  AccountImageId(this.accountId, this.contentId);
+  final bool faceDetected;
+  AccountImageId(this.accountId, this.contentId, this.faceDetected);
 }

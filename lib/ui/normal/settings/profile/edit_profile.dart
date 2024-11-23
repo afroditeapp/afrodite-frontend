@@ -36,7 +36,7 @@ import 'package:app/utils/profile_entry.dart';
 
 class EditProfilePage extends StatefulWidget {
   final PageKey pageKey;
-  final ProfileEntry initialProfile;
+  final MyProfileEntry initialProfile;
   final ProfilePicturesBloc profilePicturesBloc;
   final EditMyProfileBloc editMyProfileBloc;
   final ProfileAttributesBloc profileAttributesBloc;
@@ -59,29 +59,30 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void initState() {
     super.initState();
 
+    final p = widget.initialProfile;
+
     // Profile data
-    widget.editMyProfileBloc.add(SetInitialValues(widget.initialProfile));
+    widget.editMyProfileBloc.add(SetInitialValues(p));
 
     // Profile pictures
 
     widget.profilePicturesBloc.add(ResetIfModeChanges(const NormalProfilePictures()));
 
-    setImgToBloc(widget.initialProfile.imageUuid, 0);
-    final cropInfo = widget.initialProfile.primaryImageCropInfo();
-    widget.profilePicturesBloc.add(UpdateCropResults(cropInfo, 0));
+    setImgToBloc(p.imageUuid, p.faceDetectedContent0, 0);
+    widget.profilePicturesBloc.add(UpdateCropResults(p.primaryImageCropInfo(), 0));
 
-    setImgToBloc(widget.initialProfile.content1, 1);
-    setImgToBloc(widget.initialProfile.content2, 2);
-    setImgToBloc(widget.initialProfile.content3, 3);
+    setImgToBloc(p.content1, p.faceDetectedContent1, 1);
+    setImgToBloc(p.content2, p.faceDetectedContent2, 2);
+    setImgToBloc(p.content3, p.faceDetectedContent3, 3);
   }
 
-  void setImgToBloc(ContentId? contentId, int index) {
-    if (contentId == null) {
+  void setImgToBloc(ContentId? contentId, bool? faceDetected, int index) {
+    if (contentId == null || faceDetected == null) {
       widget.profilePicturesBloc.add(RemoveImage(index));
       return;
     }
-    final imgId = AccountImageId(widget.initialProfile.uuid, contentId);
-    widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(imgId, null), index));
+    final imgId = AccountImageId(widget.initialProfile.uuid, contentId, faceDetected);
+    widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(imgId, null, faceDetected), index));
   }
 
   void validateAndSaveData(BuildContext context) {
@@ -100,9 +101,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     final profileText = s.profileText ?? "";
 
-    final imgUpdate = widget.profilePicturesBloc.state.toSetProfileContent();
+    final imgUpdateState = widget.profilePicturesBloc.state;
+    final imgUpdate = imgUpdateState.toSetProfileContent();
     if (imgUpdate == null) {
       showSnackBar(context.strings.edit_profile_screen_one_profile_image_required);
+      return;
+    }
+
+    if (!imgUpdateState.faceDetectedFromPrimaryImage()) {
+      showSnackBar(context.strings.initial_setup_screen_profile_pictures_primary_image_face_not_detected);
       return;
     }
 

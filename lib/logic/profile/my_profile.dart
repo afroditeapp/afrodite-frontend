@@ -43,7 +43,7 @@ class SetProfile extends MyProfileEvent {
   );
 }
 class NewMyProfile extends MyProfileEvent {
-  final ProfileEntry? profile;
+  final MyProfileEntry? profile;
   NewMyProfile(this.profile);
 }
 class NewInitialAgeInfo extends MyProfileEvent {

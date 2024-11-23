@@ -222,6 +222,66 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<ContentId?>(
               $AccountTable.$converteruuidPendingContentId5);
+  static const VerificationMeta _faceDetectedPendingContentId0Meta =
+      const VerificationMeta('faceDetectedPendingContentId0');
+  @override
+  late final GeneratedColumn<bool> faceDetectedPendingContentId0 =
+      GeneratedColumn<bool>(
+          'face_detected_pending_content_id0', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("face_detected_pending_content_id0" IN (0, 1))'));
+  static const VerificationMeta _faceDetectedPendingContentId1Meta =
+      const VerificationMeta('faceDetectedPendingContentId1');
+  @override
+  late final GeneratedColumn<bool> faceDetectedPendingContentId1 =
+      GeneratedColumn<bool>(
+          'face_detected_pending_content_id1', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("face_detected_pending_content_id1" IN (0, 1))'));
+  static const VerificationMeta _faceDetectedPendingContentId2Meta =
+      const VerificationMeta('faceDetectedPendingContentId2');
+  @override
+  late final GeneratedColumn<bool> faceDetectedPendingContentId2 =
+      GeneratedColumn<bool>(
+          'face_detected_pending_content_id2', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("face_detected_pending_content_id2" IN (0, 1))'));
+  static const VerificationMeta _faceDetectedPendingContentId3Meta =
+      const VerificationMeta('faceDetectedPendingContentId3');
+  @override
+  late final GeneratedColumn<bool> faceDetectedPendingContentId3 =
+      GeneratedColumn<bool>(
+          'face_detected_pending_content_id3', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("face_detected_pending_content_id3" IN (0, 1))'));
+  static const VerificationMeta _faceDetectedPendingContentId4Meta =
+      const VerificationMeta('faceDetectedPendingContentId4');
+  @override
+  late final GeneratedColumn<bool> faceDetectedPendingContentId4 =
+      GeneratedColumn<bool>(
+          'face_detected_pending_content_id4', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("face_detected_pending_content_id4" IN (0, 1))'));
+  static const VerificationMeta _faceDetectedPendingContentId5Meta =
+      const VerificationMeta('faceDetectedPendingContentId5');
+  @override
+  late final GeneratedColumn<bool> faceDetectedPendingContentId5 =
+      GeneratedColumn<bool>(
+          'face_detected_pending_content_id5', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("face_detected_pending_content_id5" IN (0, 1))'));
   static const VerificationMeta _uuidPendingSecurityContentIdMeta =
       const VerificationMeta('uuidPendingSecurityContentId');
   @override
@@ -300,6 +360,60 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               'uuid_content_id5', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<ContentId?>($AccountTable.$converteruuidContentId5);
+  static const VerificationMeta _faceDetectedContentId0Meta =
+      const VerificationMeta('faceDetectedContentId0');
+  @override
+  late final GeneratedColumn<bool> faceDetectedContentId0 =
+      GeneratedColumn<bool>('face_detected_content_id0', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("face_detected_content_id0" IN (0, 1))'));
+  static const VerificationMeta _faceDetectedContentId1Meta =
+      const VerificationMeta('faceDetectedContentId1');
+  @override
+  late final GeneratedColumn<bool> faceDetectedContentId1 =
+      GeneratedColumn<bool>('face_detected_content_id1', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("face_detected_content_id1" IN (0, 1))'));
+  static const VerificationMeta _faceDetectedContentId2Meta =
+      const VerificationMeta('faceDetectedContentId2');
+  @override
+  late final GeneratedColumn<bool> faceDetectedContentId2 =
+      GeneratedColumn<bool>('face_detected_content_id2', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("face_detected_content_id2" IN (0, 1))'));
+  static const VerificationMeta _faceDetectedContentId3Meta =
+      const VerificationMeta('faceDetectedContentId3');
+  @override
+  late final GeneratedColumn<bool> faceDetectedContentId3 =
+      GeneratedColumn<bool>('face_detected_content_id3', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("face_detected_content_id3" IN (0, 1))'));
+  static const VerificationMeta _faceDetectedContentId4Meta =
+      const VerificationMeta('faceDetectedContentId4');
+  @override
+  late final GeneratedColumn<bool> faceDetectedContentId4 =
+      GeneratedColumn<bool>('face_detected_content_id4', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("face_detected_content_id4" IN (0, 1))'));
+  static const VerificationMeta _faceDetectedContentId5Meta =
+      const VerificationMeta('faceDetectedContentId5');
+  @override
+  late final GeneratedColumn<bool> faceDetectedContentId5 =
+      GeneratedColumn<bool>('face_detected_content_id5', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("face_detected_content_id5" IN (0, 1))'));
   static const VerificationMeta _uuidSecurityContentIdMeta =
       const VerificationMeta('uuidSecurityContentId');
   @override
@@ -660,6 +774,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         uuidPendingContentId3,
         uuidPendingContentId4,
         uuidPendingContentId5,
+        faceDetectedPendingContentId0,
+        faceDetectedPendingContentId1,
+        faceDetectedPendingContentId2,
+        faceDetectedPendingContentId3,
+        faceDetectedPendingContentId4,
+        faceDetectedPendingContentId5,
         uuidPendingSecurityContentId,
         pendingPrimaryContentGridCropSize,
         pendingPrimaryContentGridCropX,
@@ -670,6 +790,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         uuidContentId3,
         uuidContentId4,
         uuidContentId5,
+        faceDetectedContentId0,
+        faceDetectedContentId1,
+        faceDetectedContentId2,
+        faceDetectedContentId3,
+        faceDetectedContentId4,
+        faceDetectedContentId5,
         uuidSecurityContentId,
         primaryContentGridCropSize,
         primaryContentGridCropX,
@@ -812,6 +938,48 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         _uuidPendingContentId4Meta, const VerificationResult.success());
     context.handle(
         _uuidPendingContentId5Meta, const VerificationResult.success());
+    if (data.containsKey('face_detected_pending_content_id0')) {
+      context.handle(
+          _faceDetectedPendingContentId0Meta,
+          faceDetectedPendingContentId0.isAcceptableOrUnknown(
+              data['face_detected_pending_content_id0']!,
+              _faceDetectedPendingContentId0Meta));
+    }
+    if (data.containsKey('face_detected_pending_content_id1')) {
+      context.handle(
+          _faceDetectedPendingContentId1Meta,
+          faceDetectedPendingContentId1.isAcceptableOrUnknown(
+              data['face_detected_pending_content_id1']!,
+              _faceDetectedPendingContentId1Meta));
+    }
+    if (data.containsKey('face_detected_pending_content_id2')) {
+      context.handle(
+          _faceDetectedPendingContentId2Meta,
+          faceDetectedPendingContentId2.isAcceptableOrUnknown(
+              data['face_detected_pending_content_id2']!,
+              _faceDetectedPendingContentId2Meta));
+    }
+    if (data.containsKey('face_detected_pending_content_id3')) {
+      context.handle(
+          _faceDetectedPendingContentId3Meta,
+          faceDetectedPendingContentId3.isAcceptableOrUnknown(
+              data['face_detected_pending_content_id3']!,
+              _faceDetectedPendingContentId3Meta));
+    }
+    if (data.containsKey('face_detected_pending_content_id4')) {
+      context.handle(
+          _faceDetectedPendingContentId4Meta,
+          faceDetectedPendingContentId4.isAcceptableOrUnknown(
+              data['face_detected_pending_content_id4']!,
+              _faceDetectedPendingContentId4Meta));
+    }
+    if (data.containsKey('face_detected_pending_content_id5')) {
+      context.handle(
+          _faceDetectedPendingContentId5Meta,
+          faceDetectedPendingContentId5.isAcceptableOrUnknown(
+              data['face_detected_pending_content_id5']!,
+              _faceDetectedPendingContentId5Meta));
+    }
     context.handle(
         _uuidPendingSecurityContentIdMeta, const VerificationResult.success());
     if (data.containsKey('pending_primary_content_grid_crop_size')) {
@@ -841,6 +1009,42 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     context.handle(_uuidContentId3Meta, const VerificationResult.success());
     context.handle(_uuidContentId4Meta, const VerificationResult.success());
     context.handle(_uuidContentId5Meta, const VerificationResult.success());
+    if (data.containsKey('face_detected_content_id0')) {
+      context.handle(
+          _faceDetectedContentId0Meta,
+          faceDetectedContentId0.isAcceptableOrUnknown(
+              data['face_detected_content_id0']!, _faceDetectedContentId0Meta));
+    }
+    if (data.containsKey('face_detected_content_id1')) {
+      context.handle(
+          _faceDetectedContentId1Meta,
+          faceDetectedContentId1.isAcceptableOrUnknown(
+              data['face_detected_content_id1']!, _faceDetectedContentId1Meta));
+    }
+    if (data.containsKey('face_detected_content_id2')) {
+      context.handle(
+          _faceDetectedContentId2Meta,
+          faceDetectedContentId2.isAcceptableOrUnknown(
+              data['face_detected_content_id2']!, _faceDetectedContentId2Meta));
+    }
+    if (data.containsKey('face_detected_content_id3')) {
+      context.handle(
+          _faceDetectedContentId3Meta,
+          faceDetectedContentId3.isAcceptableOrUnknown(
+              data['face_detected_content_id3']!, _faceDetectedContentId3Meta));
+    }
+    if (data.containsKey('face_detected_content_id4')) {
+      context.handle(
+          _faceDetectedContentId4Meta,
+          faceDetectedContentId4.isAcceptableOrUnknown(
+              data['face_detected_content_id4']!, _faceDetectedContentId4Meta));
+    }
+    if (data.containsKey('face_detected_content_id5')) {
+      context.handle(
+          _faceDetectedContentId5Meta,
+          faceDetectedContentId5.isAcceptableOrUnknown(
+              data['face_detected_content_id5']!, _faceDetectedContentId5Meta));
+    }
     context.handle(
         _uuidSecurityContentIdMeta, const VerificationResult.success());
     if (data.containsKey('primary_content_grid_crop_size')) {
@@ -1122,6 +1326,24 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       uuidPendingContentId5: $AccountTable.$converteruuidPendingContentId5
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}uuid_pending_content_id5'])),
+      faceDetectedPendingContentId0: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}face_detected_pending_content_id0']),
+      faceDetectedPendingContentId1: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}face_detected_pending_content_id1']),
+      faceDetectedPendingContentId2: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}face_detected_pending_content_id2']),
+      faceDetectedPendingContentId3: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}face_detected_pending_content_id3']),
+      faceDetectedPendingContentId4: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}face_detected_pending_content_id4']),
+      faceDetectedPendingContentId5: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}face_detected_pending_content_id5']),
       uuidPendingSecurityContentId: $AccountTable
           .$converteruuidPendingSecurityContentId
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
@@ -1153,6 +1375,24 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       uuidContentId5: $AccountTable.$converteruuidContentId5.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}uuid_content_id5'])),
+      faceDetectedContentId0: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}face_detected_content_id0']),
+      faceDetectedContentId1: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}face_detected_content_id1']),
+      faceDetectedContentId2: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}face_detected_content_id2']),
+      faceDetectedContentId3: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}face_detected_content_id3']),
+      faceDetectedContentId4: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}face_detected_content_id4']),
+      faceDetectedContentId5: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}face_detected_content_id5']),
       uuidSecurityContentId: $AccountTable.$converteruuidSecurityContentId
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}uuid_security_content_id'])),
@@ -1411,6 +1651,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final ContentId? uuidPendingContentId3;
   final ContentId? uuidPendingContentId4;
   final ContentId? uuidPendingContentId5;
+  final bool? faceDetectedPendingContentId0;
+  final bool? faceDetectedPendingContentId1;
+  final bool? faceDetectedPendingContentId2;
+  final bool? faceDetectedPendingContentId3;
+  final bool? faceDetectedPendingContentId4;
+  final bool? faceDetectedPendingContentId5;
   final ContentId? uuidPendingSecurityContentId;
   final double? pendingPrimaryContentGridCropSize;
   final double? pendingPrimaryContentGridCropX;
@@ -1421,6 +1667,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final ContentId? uuidContentId3;
   final ContentId? uuidContentId4;
   final ContentId? uuidContentId5;
+  final bool? faceDetectedContentId0;
+  final bool? faceDetectedContentId1;
+  final bool? faceDetectedContentId2;
+  final bool? faceDetectedContentId3;
+  final bool? faceDetectedContentId4;
+  final bool? faceDetectedContentId5;
   final ContentId? uuidSecurityContentId;
   final double? primaryContentGridCropSize;
   final double? primaryContentGridCropX;
@@ -1492,6 +1744,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.uuidPendingContentId3,
       this.uuidPendingContentId4,
       this.uuidPendingContentId5,
+      this.faceDetectedPendingContentId0,
+      this.faceDetectedPendingContentId1,
+      this.faceDetectedPendingContentId2,
+      this.faceDetectedPendingContentId3,
+      this.faceDetectedPendingContentId4,
+      this.faceDetectedPendingContentId5,
       this.uuidPendingSecurityContentId,
       this.pendingPrimaryContentGridCropSize,
       this.pendingPrimaryContentGridCropX,
@@ -1502,6 +1760,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.uuidContentId3,
       this.uuidContentId4,
       this.uuidContentId5,
+      this.faceDetectedContentId0,
+      this.faceDetectedContentId1,
+      this.faceDetectedContentId2,
+      this.faceDetectedContentId3,
+      this.faceDetectedContentId4,
+      this.faceDetectedContentId5,
       this.uuidSecurityContentId,
       this.primaryContentGridCropSize,
       this.primaryContentGridCropX,
@@ -1637,6 +1901,30 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .$converteruuidPendingContentId5
           .toSql(uuidPendingContentId5));
     }
+    if (!nullToAbsent || faceDetectedPendingContentId0 != null) {
+      map['face_detected_pending_content_id0'] =
+          Variable<bool>(faceDetectedPendingContentId0);
+    }
+    if (!nullToAbsent || faceDetectedPendingContentId1 != null) {
+      map['face_detected_pending_content_id1'] =
+          Variable<bool>(faceDetectedPendingContentId1);
+    }
+    if (!nullToAbsent || faceDetectedPendingContentId2 != null) {
+      map['face_detected_pending_content_id2'] =
+          Variable<bool>(faceDetectedPendingContentId2);
+    }
+    if (!nullToAbsent || faceDetectedPendingContentId3 != null) {
+      map['face_detected_pending_content_id3'] =
+          Variable<bool>(faceDetectedPendingContentId3);
+    }
+    if (!nullToAbsent || faceDetectedPendingContentId4 != null) {
+      map['face_detected_pending_content_id4'] =
+          Variable<bool>(faceDetectedPendingContentId4);
+    }
+    if (!nullToAbsent || faceDetectedPendingContentId5 != null) {
+      map['face_detected_pending_content_id5'] =
+          Variable<bool>(faceDetectedPendingContentId5);
+    }
     if (!nullToAbsent || uuidPendingSecurityContentId != null) {
       map['uuid_pending_security_content_id'] = Variable<String>($AccountTable
           .$converteruuidPendingSecurityContentId
@@ -1677,6 +1965,24 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     if (!nullToAbsent || uuidContentId5 != null) {
       map['uuid_content_id5'] = Variable<String>(
           $AccountTable.$converteruuidContentId5.toSql(uuidContentId5));
+    }
+    if (!nullToAbsent || faceDetectedContentId0 != null) {
+      map['face_detected_content_id0'] = Variable<bool>(faceDetectedContentId0);
+    }
+    if (!nullToAbsent || faceDetectedContentId1 != null) {
+      map['face_detected_content_id1'] = Variable<bool>(faceDetectedContentId1);
+    }
+    if (!nullToAbsent || faceDetectedContentId2 != null) {
+      map['face_detected_content_id2'] = Variable<bool>(faceDetectedContentId2);
+    }
+    if (!nullToAbsent || faceDetectedContentId3 != null) {
+      map['face_detected_content_id3'] = Variable<bool>(faceDetectedContentId3);
+    }
+    if (!nullToAbsent || faceDetectedContentId4 != null) {
+      map['face_detected_content_id4'] = Variable<bool>(faceDetectedContentId4);
+    }
+    if (!nullToAbsent || faceDetectedContentId5 != null) {
+      map['face_detected_content_id5'] = Variable<bool>(faceDetectedContentId5);
     }
     if (!nullToAbsent || uuidSecurityContentId != null) {
       map['uuid_security_content_id'] = Variable<String>($AccountTable
@@ -1915,6 +2221,30 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       uuidPendingContentId5: uuidPendingContentId5 == null && nullToAbsent
           ? const Value.absent()
           : Value(uuidPendingContentId5),
+      faceDetectedPendingContentId0:
+          faceDetectedPendingContentId0 == null && nullToAbsent
+              ? const Value.absent()
+              : Value(faceDetectedPendingContentId0),
+      faceDetectedPendingContentId1:
+          faceDetectedPendingContentId1 == null && nullToAbsent
+              ? const Value.absent()
+              : Value(faceDetectedPendingContentId1),
+      faceDetectedPendingContentId2:
+          faceDetectedPendingContentId2 == null && nullToAbsent
+              ? const Value.absent()
+              : Value(faceDetectedPendingContentId2),
+      faceDetectedPendingContentId3:
+          faceDetectedPendingContentId3 == null && nullToAbsent
+              ? const Value.absent()
+              : Value(faceDetectedPendingContentId3),
+      faceDetectedPendingContentId4:
+          faceDetectedPendingContentId4 == null && nullToAbsent
+              ? const Value.absent()
+              : Value(faceDetectedPendingContentId4),
+      faceDetectedPendingContentId5:
+          faceDetectedPendingContentId5 == null && nullToAbsent
+              ? const Value.absent()
+              : Value(faceDetectedPendingContentId5),
       uuidPendingSecurityContentId:
           uuidPendingSecurityContentId == null && nullToAbsent
               ? const Value.absent()
@@ -1949,6 +2279,24 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       uuidContentId5: uuidContentId5 == null && nullToAbsent
           ? const Value.absent()
           : Value(uuidContentId5),
+      faceDetectedContentId0: faceDetectedContentId0 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(faceDetectedContentId0),
+      faceDetectedContentId1: faceDetectedContentId1 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(faceDetectedContentId1),
+      faceDetectedContentId2: faceDetectedContentId2 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(faceDetectedContentId2),
+      faceDetectedContentId3: faceDetectedContentId3 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(faceDetectedContentId3),
+      faceDetectedContentId4: faceDetectedContentId4 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(faceDetectedContentId4),
+      faceDetectedContentId5: faceDetectedContentId5 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(faceDetectedContentId5),
       uuidSecurityContentId: uuidSecurityContentId == null && nullToAbsent
           ? const Value.absent()
           : Value(uuidSecurityContentId),
@@ -2144,6 +2492,18 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<ContentId?>(json['uuidPendingContentId4']),
       uuidPendingContentId5:
           serializer.fromJson<ContentId?>(json['uuidPendingContentId5']),
+      faceDetectedPendingContentId0:
+          serializer.fromJson<bool?>(json['faceDetectedPendingContentId0']),
+      faceDetectedPendingContentId1:
+          serializer.fromJson<bool?>(json['faceDetectedPendingContentId1']),
+      faceDetectedPendingContentId2:
+          serializer.fromJson<bool?>(json['faceDetectedPendingContentId2']),
+      faceDetectedPendingContentId3:
+          serializer.fromJson<bool?>(json['faceDetectedPendingContentId3']),
+      faceDetectedPendingContentId4:
+          serializer.fromJson<bool?>(json['faceDetectedPendingContentId4']),
+      faceDetectedPendingContentId5:
+          serializer.fromJson<bool?>(json['faceDetectedPendingContentId5']),
       uuidPendingSecurityContentId:
           serializer.fromJson<ContentId?>(json['uuidPendingSecurityContentId']),
       pendingPrimaryContentGridCropSize: serializer
@@ -2158,6 +2518,18 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       uuidContentId3: serializer.fromJson<ContentId?>(json['uuidContentId3']),
       uuidContentId4: serializer.fromJson<ContentId?>(json['uuidContentId4']),
       uuidContentId5: serializer.fromJson<ContentId?>(json['uuidContentId5']),
+      faceDetectedContentId0:
+          serializer.fromJson<bool?>(json['faceDetectedContentId0']),
+      faceDetectedContentId1:
+          serializer.fromJson<bool?>(json['faceDetectedContentId1']),
+      faceDetectedContentId2:
+          serializer.fromJson<bool?>(json['faceDetectedContentId2']),
+      faceDetectedContentId3:
+          serializer.fromJson<bool?>(json['faceDetectedContentId3']),
+      faceDetectedContentId4:
+          serializer.fromJson<bool?>(json['faceDetectedContentId4']),
+      faceDetectedContentId5:
+          serializer.fromJson<bool?>(json['faceDetectedContentId5']),
       uuidSecurityContentId:
           serializer.fromJson<ContentId?>(json['uuidSecurityContentId']),
       primaryContentGridCropSize:
@@ -2286,6 +2658,18 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.toJson<ContentId?>(uuidPendingContentId4),
       'uuidPendingContentId5':
           serializer.toJson<ContentId?>(uuidPendingContentId5),
+      'faceDetectedPendingContentId0':
+          serializer.toJson<bool?>(faceDetectedPendingContentId0),
+      'faceDetectedPendingContentId1':
+          serializer.toJson<bool?>(faceDetectedPendingContentId1),
+      'faceDetectedPendingContentId2':
+          serializer.toJson<bool?>(faceDetectedPendingContentId2),
+      'faceDetectedPendingContentId3':
+          serializer.toJson<bool?>(faceDetectedPendingContentId3),
+      'faceDetectedPendingContentId4':
+          serializer.toJson<bool?>(faceDetectedPendingContentId4),
+      'faceDetectedPendingContentId5':
+          serializer.toJson<bool?>(faceDetectedPendingContentId5),
       'uuidPendingSecurityContentId':
           serializer.toJson<ContentId?>(uuidPendingSecurityContentId),
       'pendingPrimaryContentGridCropSize':
@@ -2300,6 +2684,18 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'uuidContentId3': serializer.toJson<ContentId?>(uuidContentId3),
       'uuidContentId4': serializer.toJson<ContentId?>(uuidContentId4),
       'uuidContentId5': serializer.toJson<ContentId?>(uuidContentId5),
+      'faceDetectedContentId0':
+          serializer.toJson<bool?>(faceDetectedContentId0),
+      'faceDetectedContentId1':
+          serializer.toJson<bool?>(faceDetectedContentId1),
+      'faceDetectedContentId2':
+          serializer.toJson<bool?>(faceDetectedContentId2),
+      'faceDetectedContentId3':
+          serializer.toJson<bool?>(faceDetectedContentId3),
+      'faceDetectedContentId4':
+          serializer.toJson<bool?>(faceDetectedContentId4),
+      'faceDetectedContentId5':
+          serializer.toJson<bool?>(faceDetectedContentId5),
       'uuidSecurityContentId':
           serializer.toJson<ContentId?>(uuidSecurityContentId),
       'primaryContentGridCropSize':
@@ -2402,6 +2798,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<ContentId?> uuidPendingContentId3 = const Value.absent(),
           Value<ContentId?> uuidPendingContentId4 = const Value.absent(),
           Value<ContentId?> uuidPendingContentId5 = const Value.absent(),
+          Value<bool?> faceDetectedPendingContentId0 = const Value.absent(),
+          Value<bool?> faceDetectedPendingContentId1 = const Value.absent(),
+          Value<bool?> faceDetectedPendingContentId2 = const Value.absent(),
+          Value<bool?> faceDetectedPendingContentId3 = const Value.absent(),
+          Value<bool?> faceDetectedPendingContentId4 = const Value.absent(),
+          Value<bool?> faceDetectedPendingContentId5 = const Value.absent(),
           Value<ContentId?> uuidPendingSecurityContentId = const Value.absent(),
           Value<double?> pendingPrimaryContentGridCropSize =
               const Value.absent(),
@@ -2413,6 +2815,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<ContentId?> uuidContentId3 = const Value.absent(),
           Value<ContentId?> uuidContentId4 = const Value.absent(),
           Value<ContentId?> uuidContentId5 = const Value.absent(),
+          Value<bool?> faceDetectedContentId0 = const Value.absent(),
+          Value<bool?> faceDetectedContentId1 = const Value.absent(),
+          Value<bool?> faceDetectedContentId2 = const Value.absent(),
+          Value<bool?> faceDetectedContentId3 = const Value.absent(),
+          Value<bool?> faceDetectedContentId4 = const Value.absent(),
+          Value<bool?> faceDetectedContentId5 = const Value.absent(),
           Value<ContentId?> uuidSecurityContentId = const Value.absent(),
           Value<double?> primaryContentGridCropSize = const Value.absent(),
           Value<double?> primaryContentGridCropX = const Value.absent(),
@@ -2528,6 +2936,24 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         uuidPendingContentId5: uuidPendingContentId5.present
             ? uuidPendingContentId5.value
             : this.uuidPendingContentId5,
+        faceDetectedPendingContentId0: faceDetectedPendingContentId0.present
+            ? faceDetectedPendingContentId0.value
+            : this.faceDetectedPendingContentId0,
+        faceDetectedPendingContentId1: faceDetectedPendingContentId1.present
+            ? faceDetectedPendingContentId1.value
+            : this.faceDetectedPendingContentId1,
+        faceDetectedPendingContentId2: faceDetectedPendingContentId2.present
+            ? faceDetectedPendingContentId2.value
+            : this.faceDetectedPendingContentId2,
+        faceDetectedPendingContentId3: faceDetectedPendingContentId3.present
+            ? faceDetectedPendingContentId3.value
+            : this.faceDetectedPendingContentId3,
+        faceDetectedPendingContentId4: faceDetectedPendingContentId4.present
+            ? faceDetectedPendingContentId4.value
+            : this.faceDetectedPendingContentId4,
+        faceDetectedPendingContentId5: faceDetectedPendingContentId5.present
+            ? faceDetectedPendingContentId5.value
+            : this.faceDetectedPendingContentId5,
         uuidPendingSecurityContentId: uuidPendingSecurityContentId.present
             ? uuidPendingSecurityContentId.value
             : this.uuidPendingSecurityContentId,
@@ -2553,6 +2979,24 @@ class AccountData extends DataClass implements Insertable<AccountData> {
             uuidContentId4.present ? uuidContentId4.value : this.uuidContentId4,
         uuidContentId5:
             uuidContentId5.present ? uuidContentId5.value : this.uuidContentId5,
+        faceDetectedContentId0: faceDetectedContentId0.present
+            ? faceDetectedContentId0.value
+            : this.faceDetectedContentId0,
+        faceDetectedContentId1: faceDetectedContentId1.present
+            ? faceDetectedContentId1.value
+            : this.faceDetectedContentId1,
+        faceDetectedContentId2: faceDetectedContentId2.present
+            ? faceDetectedContentId2.value
+            : this.faceDetectedContentId2,
+        faceDetectedContentId3: faceDetectedContentId3.present
+            ? faceDetectedContentId3.value
+            : this.faceDetectedContentId3,
+        faceDetectedContentId4: faceDetectedContentId4.present
+            ? faceDetectedContentId4.value
+            : this.faceDetectedContentId4,
+        faceDetectedContentId5: faceDetectedContentId5.present
+            ? faceDetectedContentId5.value
+            : this.faceDetectedContentId5,
         uuidSecurityContentId: uuidSecurityContentId.present
             ? uuidSecurityContentId.value
             : this.uuidSecurityContentId,
@@ -2757,6 +3201,24 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       uuidPendingContentId5: data.uuidPendingContentId5.present
           ? data.uuidPendingContentId5.value
           : this.uuidPendingContentId5,
+      faceDetectedPendingContentId0: data.faceDetectedPendingContentId0.present
+          ? data.faceDetectedPendingContentId0.value
+          : this.faceDetectedPendingContentId0,
+      faceDetectedPendingContentId1: data.faceDetectedPendingContentId1.present
+          ? data.faceDetectedPendingContentId1.value
+          : this.faceDetectedPendingContentId1,
+      faceDetectedPendingContentId2: data.faceDetectedPendingContentId2.present
+          ? data.faceDetectedPendingContentId2.value
+          : this.faceDetectedPendingContentId2,
+      faceDetectedPendingContentId3: data.faceDetectedPendingContentId3.present
+          ? data.faceDetectedPendingContentId3.value
+          : this.faceDetectedPendingContentId3,
+      faceDetectedPendingContentId4: data.faceDetectedPendingContentId4.present
+          ? data.faceDetectedPendingContentId4.value
+          : this.faceDetectedPendingContentId4,
+      faceDetectedPendingContentId5: data.faceDetectedPendingContentId5.present
+          ? data.faceDetectedPendingContentId5.value
+          : this.faceDetectedPendingContentId5,
       uuidPendingSecurityContentId: data.uuidPendingSecurityContentId.present
           ? data.uuidPendingSecurityContentId.value
           : this.uuidPendingSecurityContentId,
@@ -2790,6 +3252,24 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       uuidContentId5: data.uuidContentId5.present
           ? data.uuidContentId5.value
           : this.uuidContentId5,
+      faceDetectedContentId0: data.faceDetectedContentId0.present
+          ? data.faceDetectedContentId0.value
+          : this.faceDetectedContentId0,
+      faceDetectedContentId1: data.faceDetectedContentId1.present
+          ? data.faceDetectedContentId1.value
+          : this.faceDetectedContentId1,
+      faceDetectedContentId2: data.faceDetectedContentId2.present
+          ? data.faceDetectedContentId2.value
+          : this.faceDetectedContentId2,
+      faceDetectedContentId3: data.faceDetectedContentId3.present
+          ? data.faceDetectedContentId3.value
+          : this.faceDetectedContentId3,
+      faceDetectedContentId4: data.faceDetectedContentId4.present
+          ? data.faceDetectedContentId4.value
+          : this.faceDetectedContentId4,
+      faceDetectedContentId5: data.faceDetectedContentId5.present
+          ? data.faceDetectedContentId5.value
+          : this.faceDetectedContentId5,
       uuidSecurityContentId: data.uuidSecurityContentId.present
           ? data.uuidSecurityContentId.value
           : this.uuidSecurityContentId,
@@ -2962,6 +3442,18 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('uuidPendingContentId4: $uuidPendingContentId4, ')
           ..write('uuidPendingContentId5: $uuidPendingContentId5, ')
           ..write(
+              'faceDetectedPendingContentId0: $faceDetectedPendingContentId0, ')
+          ..write(
+              'faceDetectedPendingContentId1: $faceDetectedPendingContentId1, ')
+          ..write(
+              'faceDetectedPendingContentId2: $faceDetectedPendingContentId2, ')
+          ..write(
+              'faceDetectedPendingContentId3: $faceDetectedPendingContentId3, ')
+          ..write(
+              'faceDetectedPendingContentId4: $faceDetectedPendingContentId4, ')
+          ..write(
+              'faceDetectedPendingContentId5: $faceDetectedPendingContentId5, ')
+          ..write(
               'uuidPendingSecurityContentId: $uuidPendingSecurityContentId, ')
           ..write(
               'pendingPrimaryContentGridCropSize: $pendingPrimaryContentGridCropSize, ')
@@ -2975,6 +3467,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('uuidContentId3: $uuidContentId3, ')
           ..write('uuidContentId4: $uuidContentId4, ')
           ..write('uuidContentId5: $uuidContentId5, ')
+          ..write('faceDetectedContentId0: $faceDetectedContentId0, ')
+          ..write('faceDetectedContentId1: $faceDetectedContentId1, ')
+          ..write('faceDetectedContentId2: $faceDetectedContentId2, ')
+          ..write('faceDetectedContentId3: $faceDetectedContentId3, ')
+          ..write('faceDetectedContentId4: $faceDetectedContentId4, ')
+          ..write('faceDetectedContentId5: $faceDetectedContentId5, ')
           ..write('uuidSecurityContentId: $uuidSecurityContentId, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
@@ -3055,6 +3553,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         uuidPendingContentId3,
         uuidPendingContentId4,
         uuidPendingContentId5,
+        faceDetectedPendingContentId0,
+        faceDetectedPendingContentId1,
+        faceDetectedPendingContentId2,
+        faceDetectedPendingContentId3,
+        faceDetectedPendingContentId4,
+        faceDetectedPendingContentId5,
         uuidPendingSecurityContentId,
         pendingPrimaryContentGridCropSize,
         pendingPrimaryContentGridCropX,
@@ -3065,6 +3569,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         uuidContentId3,
         uuidContentId4,
         uuidContentId5,
+        faceDetectedContentId0,
+        faceDetectedContentId1,
+        faceDetectedContentId2,
+        faceDetectedContentId3,
+        faceDetectedContentId4,
+        faceDetectedContentId5,
         uuidSecurityContentId,
         primaryContentGridCropSize,
         primaryContentGridCropX,
@@ -3146,6 +3656,18 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.uuidPendingContentId3 == this.uuidPendingContentId3 &&
           other.uuidPendingContentId4 == this.uuidPendingContentId4 &&
           other.uuidPendingContentId5 == this.uuidPendingContentId5 &&
+          other.faceDetectedPendingContentId0 ==
+              this.faceDetectedPendingContentId0 &&
+          other.faceDetectedPendingContentId1 ==
+              this.faceDetectedPendingContentId1 &&
+          other.faceDetectedPendingContentId2 ==
+              this.faceDetectedPendingContentId2 &&
+          other.faceDetectedPendingContentId3 ==
+              this.faceDetectedPendingContentId3 &&
+          other.faceDetectedPendingContentId4 ==
+              this.faceDetectedPendingContentId4 &&
+          other.faceDetectedPendingContentId5 ==
+              this.faceDetectedPendingContentId5 &&
           other.uuidPendingSecurityContentId ==
               this.uuidPendingSecurityContentId &&
           other.pendingPrimaryContentGridCropSize ==
@@ -3160,6 +3682,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.uuidContentId3 == this.uuidContentId3 &&
           other.uuidContentId4 == this.uuidContentId4 &&
           other.uuidContentId5 == this.uuidContentId5 &&
+          other.faceDetectedContentId0 == this.faceDetectedContentId0 &&
+          other.faceDetectedContentId1 == this.faceDetectedContentId1 &&
+          other.faceDetectedContentId2 == this.faceDetectedContentId2 &&
+          other.faceDetectedContentId3 == this.faceDetectedContentId3 &&
+          other.faceDetectedContentId4 == this.faceDetectedContentId4 &&
+          other.faceDetectedContentId5 == this.faceDetectedContentId5 &&
           other.uuidSecurityContentId == this.uuidSecurityContentId &&
           other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
           other.primaryContentGridCropX == this.primaryContentGridCropX &&
@@ -3239,6 +3767,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<ContentId?> uuidPendingContentId3;
   final Value<ContentId?> uuidPendingContentId4;
   final Value<ContentId?> uuidPendingContentId5;
+  final Value<bool?> faceDetectedPendingContentId0;
+  final Value<bool?> faceDetectedPendingContentId1;
+  final Value<bool?> faceDetectedPendingContentId2;
+  final Value<bool?> faceDetectedPendingContentId3;
+  final Value<bool?> faceDetectedPendingContentId4;
+  final Value<bool?> faceDetectedPendingContentId5;
   final Value<ContentId?> uuidPendingSecurityContentId;
   final Value<double?> pendingPrimaryContentGridCropSize;
   final Value<double?> pendingPrimaryContentGridCropX;
@@ -3249,6 +3783,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<ContentId?> uuidContentId3;
   final Value<ContentId?> uuidContentId4;
   final Value<ContentId?> uuidContentId5;
+  final Value<bool?> faceDetectedContentId0;
+  final Value<bool?> faceDetectedContentId1;
+  final Value<bool?> faceDetectedContentId2;
+  final Value<bool?> faceDetectedContentId3;
+  final Value<bool?> faceDetectedContentId4;
+  final Value<bool?> faceDetectedContentId5;
   final Value<ContentId?> uuidSecurityContentId;
   final Value<double?> primaryContentGridCropSize;
   final Value<double?> primaryContentGridCropX;
@@ -3320,6 +3860,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.uuidPendingContentId3 = const Value.absent(),
     this.uuidPendingContentId4 = const Value.absent(),
     this.uuidPendingContentId5 = const Value.absent(),
+    this.faceDetectedPendingContentId0 = const Value.absent(),
+    this.faceDetectedPendingContentId1 = const Value.absent(),
+    this.faceDetectedPendingContentId2 = const Value.absent(),
+    this.faceDetectedPendingContentId3 = const Value.absent(),
+    this.faceDetectedPendingContentId4 = const Value.absent(),
+    this.faceDetectedPendingContentId5 = const Value.absent(),
     this.uuidPendingSecurityContentId = const Value.absent(),
     this.pendingPrimaryContentGridCropSize = const Value.absent(),
     this.pendingPrimaryContentGridCropX = const Value.absent(),
@@ -3330,6 +3876,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.uuidContentId3 = const Value.absent(),
     this.uuidContentId4 = const Value.absent(),
     this.uuidContentId5 = const Value.absent(),
+    this.faceDetectedContentId0 = const Value.absent(),
+    this.faceDetectedContentId1 = const Value.absent(),
+    this.faceDetectedContentId2 = const Value.absent(),
+    this.faceDetectedContentId3 = const Value.absent(),
+    this.faceDetectedContentId4 = const Value.absent(),
+    this.faceDetectedContentId5 = const Value.absent(),
     this.uuidSecurityContentId = const Value.absent(),
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
@@ -3400,6 +3952,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.uuidPendingContentId3 = const Value.absent(),
     this.uuidPendingContentId4 = const Value.absent(),
     this.uuidPendingContentId5 = const Value.absent(),
+    this.faceDetectedPendingContentId0 = const Value.absent(),
+    this.faceDetectedPendingContentId1 = const Value.absent(),
+    this.faceDetectedPendingContentId2 = const Value.absent(),
+    this.faceDetectedPendingContentId3 = const Value.absent(),
+    this.faceDetectedPendingContentId4 = const Value.absent(),
+    this.faceDetectedPendingContentId5 = const Value.absent(),
     this.uuidPendingSecurityContentId = const Value.absent(),
     this.pendingPrimaryContentGridCropSize = const Value.absent(),
     this.pendingPrimaryContentGridCropX = const Value.absent(),
@@ -3410,6 +3968,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.uuidContentId3 = const Value.absent(),
     this.uuidContentId4 = const Value.absent(),
     this.uuidContentId5 = const Value.absent(),
+    this.faceDetectedContentId0 = const Value.absent(),
+    this.faceDetectedContentId1 = const Value.absent(),
+    this.faceDetectedContentId2 = const Value.absent(),
+    this.faceDetectedContentId3 = const Value.absent(),
+    this.faceDetectedContentId4 = const Value.absent(),
+    this.faceDetectedContentId5 = const Value.absent(),
     this.uuidSecurityContentId = const Value.absent(),
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
@@ -3480,6 +4044,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<String>? uuidPendingContentId3,
     Expression<String>? uuidPendingContentId4,
     Expression<String>? uuidPendingContentId5,
+    Expression<bool>? faceDetectedPendingContentId0,
+    Expression<bool>? faceDetectedPendingContentId1,
+    Expression<bool>? faceDetectedPendingContentId2,
+    Expression<bool>? faceDetectedPendingContentId3,
+    Expression<bool>? faceDetectedPendingContentId4,
+    Expression<bool>? faceDetectedPendingContentId5,
     Expression<String>? uuidPendingSecurityContentId,
     Expression<double>? pendingPrimaryContentGridCropSize,
     Expression<double>? pendingPrimaryContentGridCropX,
@@ -3490,6 +4060,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<String>? uuidContentId3,
     Expression<String>? uuidContentId4,
     Expression<String>? uuidContentId5,
+    Expression<bool>? faceDetectedContentId0,
+    Expression<bool>? faceDetectedContentId1,
+    Expression<bool>? faceDetectedContentId2,
+    Expression<bool>? faceDetectedContentId3,
+    Expression<bool>? faceDetectedContentId4,
+    Expression<bool>? faceDetectedContentId5,
     Expression<String>? uuidSecurityContentId,
     Expression<double>? primaryContentGridCropSize,
     Expression<double>? primaryContentGridCropX,
@@ -3582,6 +4158,18 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'uuid_pending_content_id4': uuidPendingContentId4,
       if (uuidPendingContentId5 != null)
         'uuid_pending_content_id5': uuidPendingContentId5,
+      if (faceDetectedPendingContentId0 != null)
+        'face_detected_pending_content_id0': faceDetectedPendingContentId0,
+      if (faceDetectedPendingContentId1 != null)
+        'face_detected_pending_content_id1': faceDetectedPendingContentId1,
+      if (faceDetectedPendingContentId2 != null)
+        'face_detected_pending_content_id2': faceDetectedPendingContentId2,
+      if (faceDetectedPendingContentId3 != null)
+        'face_detected_pending_content_id3': faceDetectedPendingContentId3,
+      if (faceDetectedPendingContentId4 != null)
+        'face_detected_pending_content_id4': faceDetectedPendingContentId4,
+      if (faceDetectedPendingContentId5 != null)
+        'face_detected_pending_content_id5': faceDetectedPendingContentId5,
       if (uuidPendingSecurityContentId != null)
         'uuid_pending_security_content_id': uuidPendingSecurityContentId,
       if (pendingPrimaryContentGridCropSize != null)
@@ -3597,6 +4185,18 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (uuidContentId3 != null) 'uuid_content_id3': uuidContentId3,
       if (uuidContentId4 != null) 'uuid_content_id4': uuidContentId4,
       if (uuidContentId5 != null) 'uuid_content_id5': uuidContentId5,
+      if (faceDetectedContentId0 != null)
+        'face_detected_content_id0': faceDetectedContentId0,
+      if (faceDetectedContentId1 != null)
+        'face_detected_content_id1': faceDetectedContentId1,
+      if (faceDetectedContentId2 != null)
+        'face_detected_content_id2': faceDetectedContentId2,
+      if (faceDetectedContentId3 != null)
+        'face_detected_content_id3': faceDetectedContentId3,
+      if (faceDetectedContentId4 != null)
+        'face_detected_content_id4': faceDetectedContentId4,
+      if (faceDetectedContentId5 != null)
+        'face_detected_content_id5': faceDetectedContentId5,
       if (uuidSecurityContentId != null)
         'uuid_security_content_id': uuidSecurityContentId,
       if (primaryContentGridCropSize != null)
@@ -3704,6 +4304,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<ContentId?>? uuidPendingContentId3,
       Value<ContentId?>? uuidPendingContentId4,
       Value<ContentId?>? uuidPendingContentId5,
+      Value<bool?>? faceDetectedPendingContentId0,
+      Value<bool?>? faceDetectedPendingContentId1,
+      Value<bool?>? faceDetectedPendingContentId2,
+      Value<bool?>? faceDetectedPendingContentId3,
+      Value<bool?>? faceDetectedPendingContentId4,
+      Value<bool?>? faceDetectedPendingContentId5,
       Value<ContentId?>? uuidPendingSecurityContentId,
       Value<double?>? pendingPrimaryContentGridCropSize,
       Value<double?>? pendingPrimaryContentGridCropX,
@@ -3714,6 +4320,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<ContentId?>? uuidContentId3,
       Value<ContentId?>? uuidContentId4,
       Value<ContentId?>? uuidContentId5,
+      Value<bool?>? faceDetectedContentId0,
+      Value<bool?>? faceDetectedContentId1,
+      Value<bool?>? faceDetectedContentId2,
+      Value<bool?>? faceDetectedContentId3,
+      Value<bool?>? faceDetectedContentId4,
+      Value<bool?>? faceDetectedContentId5,
       Value<ContentId?>? uuidSecurityContentId,
       Value<double?>? primaryContentGridCropSize,
       Value<double?>? primaryContentGridCropX,
@@ -3803,6 +4415,18 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           uuidPendingContentId4 ?? this.uuidPendingContentId4,
       uuidPendingContentId5:
           uuidPendingContentId5 ?? this.uuidPendingContentId5,
+      faceDetectedPendingContentId0:
+          faceDetectedPendingContentId0 ?? this.faceDetectedPendingContentId0,
+      faceDetectedPendingContentId1:
+          faceDetectedPendingContentId1 ?? this.faceDetectedPendingContentId1,
+      faceDetectedPendingContentId2:
+          faceDetectedPendingContentId2 ?? this.faceDetectedPendingContentId2,
+      faceDetectedPendingContentId3:
+          faceDetectedPendingContentId3 ?? this.faceDetectedPendingContentId3,
+      faceDetectedPendingContentId4:
+          faceDetectedPendingContentId4 ?? this.faceDetectedPendingContentId4,
+      faceDetectedPendingContentId5:
+          faceDetectedPendingContentId5 ?? this.faceDetectedPendingContentId5,
       uuidPendingSecurityContentId:
           uuidPendingSecurityContentId ?? this.uuidPendingSecurityContentId,
       pendingPrimaryContentGridCropSize: pendingPrimaryContentGridCropSize ??
@@ -3817,6 +4441,18 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       uuidContentId3: uuidContentId3 ?? this.uuidContentId3,
       uuidContentId4: uuidContentId4 ?? this.uuidContentId4,
       uuidContentId5: uuidContentId5 ?? this.uuidContentId5,
+      faceDetectedContentId0:
+          faceDetectedContentId0 ?? this.faceDetectedContentId0,
+      faceDetectedContentId1:
+          faceDetectedContentId1 ?? this.faceDetectedContentId1,
+      faceDetectedContentId2:
+          faceDetectedContentId2 ?? this.faceDetectedContentId2,
+      faceDetectedContentId3:
+          faceDetectedContentId3 ?? this.faceDetectedContentId3,
+      faceDetectedContentId4:
+          faceDetectedContentId4 ?? this.faceDetectedContentId4,
+      faceDetectedContentId5:
+          faceDetectedContentId5 ?? this.faceDetectedContentId5,
       uuidSecurityContentId:
           uuidSecurityContentId ?? this.uuidSecurityContentId,
       primaryContentGridCropSize:
@@ -3999,6 +4635,30 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           .$converteruuidPendingContentId5
           .toSql(uuidPendingContentId5.value));
     }
+    if (faceDetectedPendingContentId0.present) {
+      map['face_detected_pending_content_id0'] =
+          Variable<bool>(faceDetectedPendingContentId0.value);
+    }
+    if (faceDetectedPendingContentId1.present) {
+      map['face_detected_pending_content_id1'] =
+          Variable<bool>(faceDetectedPendingContentId1.value);
+    }
+    if (faceDetectedPendingContentId2.present) {
+      map['face_detected_pending_content_id2'] =
+          Variable<bool>(faceDetectedPendingContentId2.value);
+    }
+    if (faceDetectedPendingContentId3.present) {
+      map['face_detected_pending_content_id3'] =
+          Variable<bool>(faceDetectedPendingContentId3.value);
+    }
+    if (faceDetectedPendingContentId4.present) {
+      map['face_detected_pending_content_id4'] =
+          Variable<bool>(faceDetectedPendingContentId4.value);
+    }
+    if (faceDetectedPendingContentId5.present) {
+      map['face_detected_pending_content_id5'] =
+          Variable<bool>(faceDetectedPendingContentId5.value);
+    }
     if (uuidPendingSecurityContentId.present) {
       map['uuid_pending_security_content_id'] = Variable<String>($AccountTable
           .$converteruuidPendingSecurityContentId
@@ -4039,6 +4699,30 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (uuidContentId5.present) {
       map['uuid_content_id5'] = Variable<String>(
           $AccountTable.$converteruuidContentId5.toSql(uuidContentId5.value));
+    }
+    if (faceDetectedContentId0.present) {
+      map['face_detected_content_id0'] =
+          Variable<bool>(faceDetectedContentId0.value);
+    }
+    if (faceDetectedContentId1.present) {
+      map['face_detected_content_id1'] =
+          Variable<bool>(faceDetectedContentId1.value);
+    }
+    if (faceDetectedContentId2.present) {
+      map['face_detected_content_id2'] =
+          Variable<bool>(faceDetectedContentId2.value);
+    }
+    if (faceDetectedContentId3.present) {
+      map['face_detected_content_id3'] =
+          Variable<bool>(faceDetectedContentId3.value);
+    }
+    if (faceDetectedContentId4.present) {
+      map['face_detected_content_id4'] =
+          Variable<bool>(faceDetectedContentId4.value);
+    }
+    if (faceDetectedContentId5.present) {
+      map['face_detected_content_id5'] =
+          Variable<bool>(faceDetectedContentId5.value);
     }
     if (uuidSecurityContentId.present) {
       map['uuid_security_content_id'] = Variable<String>($AccountTable
@@ -4256,6 +4940,18 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('uuidPendingContentId4: $uuidPendingContentId4, ')
           ..write('uuidPendingContentId5: $uuidPendingContentId5, ')
           ..write(
+              'faceDetectedPendingContentId0: $faceDetectedPendingContentId0, ')
+          ..write(
+              'faceDetectedPendingContentId1: $faceDetectedPendingContentId1, ')
+          ..write(
+              'faceDetectedPendingContentId2: $faceDetectedPendingContentId2, ')
+          ..write(
+              'faceDetectedPendingContentId3: $faceDetectedPendingContentId3, ')
+          ..write(
+              'faceDetectedPendingContentId4: $faceDetectedPendingContentId4, ')
+          ..write(
+              'faceDetectedPendingContentId5: $faceDetectedPendingContentId5, ')
+          ..write(
               'uuidPendingSecurityContentId: $uuidPendingSecurityContentId, ')
           ..write(
               'pendingPrimaryContentGridCropSize: $pendingPrimaryContentGridCropSize, ')
@@ -4269,6 +4965,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('uuidContentId3: $uuidContentId3, ')
           ..write('uuidContentId4: $uuidContentId4, ')
           ..write('uuidContentId5: $uuidContentId5, ')
+          ..write('faceDetectedContentId0: $faceDetectedContentId0, ')
+          ..write('faceDetectedContentId1: $faceDetectedContentId1, ')
+          ..write('faceDetectedContentId2: $faceDetectedContentId2, ')
+          ..write('faceDetectedContentId3: $faceDetectedContentId3, ')
+          ..write('faceDetectedContentId4: $faceDetectedContentId4, ')
+          ..write('faceDetectedContentId5: $faceDetectedContentId5, ')
           ..write('uuidSecurityContentId: $uuidSecurityContentId, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')

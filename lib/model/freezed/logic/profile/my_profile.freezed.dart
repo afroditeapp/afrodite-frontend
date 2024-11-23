@@ -22,13 +22,13 @@ final _privateConstructorErrorMyProfileData = UnsupportedError(
 /// @nodoc
 mixin _$MyProfileData {
   UpdateState get updateState => throw _privateConstructorErrorMyProfileData;
-  ProfileEntry? get profile => throw _privateConstructorErrorMyProfileData;
+  MyProfileEntry? get profile => throw _privateConstructorErrorMyProfileData;
   bool get loadingMyProfile => throw _privateConstructorErrorMyProfileData;
   InitialAgeInfo? get initialAgeInfo => throw _privateConstructorErrorMyProfileData;
 
   MyProfileData copyWith({
     UpdateState? updateState,
-    ProfileEntry? profile,
+    MyProfileEntry? profile,
     bool? loadingMyProfile,
     InitialAgeInfo? initialAgeInfo,
   }) => throw _privateConstructorErrorMyProfileData;
@@ -38,7 +38,7 @@ mixin _$MyProfileData {
 abstract class _MyProfileData extends MyProfileData {
   factory _MyProfileData({
     UpdateState updateState,
-    ProfileEntry? profile,
+    MyProfileEntry? profile,
     bool loadingMyProfile,
     InitialAgeInfo? initialAgeInfo,
   }) = _$MyProfileDataImpl;
@@ -60,7 +60,7 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
   @override
   final UpdateState updateState;
   @override
-  final ProfileEntry? profile;
+  final MyProfileEntry? profile;
   @override
   final bool loadingMyProfile;
   @override
@@ -115,7 +115,7 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
     Object? initialAgeInfo = _detectDefaultValueInCopyWith,
   }) => _$MyProfileDataImpl(
     updateState: (updateState ?? this.updateState) as UpdateState,
-    profile: (profile == _detectDefaultValueInCopyWith ? this.profile : profile) as ProfileEntry?,
+    profile: (profile == _detectDefaultValueInCopyWith ? this.profile : profile) as MyProfileEntry?,
     loadingMyProfile: (loadingMyProfile ?? this.loadingMyProfile) as bool,
     initialAgeInfo: (initialAgeInfo == _detectDefaultValueInCopyWith ? this.initialAgeInfo : initialAgeInfo) as InitialAgeInfo?,
   );

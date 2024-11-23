@@ -13,16 +13,16 @@ final _privateConstructorErrorSelectContentData = UnsupportedError(
 
 /// @nodoc
 mixin _$SelectContentData {
-  UnmodifiableList<ContentId> get availableContent => throw _privateConstructorErrorSelectContentData;
-  UnmodifiableList<ContentId> get pendingModeration => throw _privateConstructorErrorSelectContentData;
+  UnmodifiableList<ContentIdAndFaceDetected> get availableContent => throw _privateConstructorErrorSelectContentData;
+  UnmodifiableList<ContentIdAndFaceDetected> get pendingModeration => throw _privateConstructorErrorSelectContentData;
   bool get initialModerationOngoing => throw _privateConstructorErrorSelectContentData;
   bool get showMakeNewModerationRequest => throw _privateConstructorErrorSelectContentData;
   bool get isLoading => throw _privateConstructorErrorSelectContentData;
   bool get isError => throw _privateConstructorErrorSelectContentData;
 
   SelectContentData copyWith({
-    UnmodifiableList<ContentId>? availableContent,
-    UnmodifiableList<ContentId>? pendingModeration,
+    UnmodifiableList<ContentIdAndFaceDetected>? availableContent,
+    UnmodifiableList<ContentIdAndFaceDetected>? pendingModeration,
     bool? initialModerationOngoing,
     bool? showMakeNewModerationRequest,
     bool? isLoading,
@@ -33,8 +33,8 @@ mixin _$SelectContentData {
 /// @nodoc
 abstract class _SelectContentData implements SelectContentData {
   factory _SelectContentData({
-    UnmodifiableList<ContentId> availableContent,
-    UnmodifiableList<ContentId> pendingModeration,
+    UnmodifiableList<ContentIdAndFaceDetected> availableContent,
+    UnmodifiableList<ContentIdAndFaceDetected> pendingModeration,
     bool initialModerationOngoing,
     bool showMakeNewModerationRequest,
     bool isLoading,
@@ -44,8 +44,8 @@ abstract class _SelectContentData implements SelectContentData {
 
 /// @nodoc
 class _$SelectContentDataImpl implements _SelectContentData {
-  static const UnmodifiableList<ContentId> _availableContentDefaultValue = UnmodifiableList<ContentId>.empty();
-  static const UnmodifiableList<ContentId> _pendingModerationDefaultValue = UnmodifiableList<ContentId>.empty();
+  static const UnmodifiableList<ContentIdAndFaceDetected> _availableContentDefaultValue = UnmodifiableList<ContentIdAndFaceDetected>.empty();
+  static const UnmodifiableList<ContentIdAndFaceDetected> _pendingModerationDefaultValue = UnmodifiableList<ContentIdAndFaceDetected>.empty();
   static const bool _initialModerationOngoingDefaultValue = false;
   static const bool _showMakeNewModerationRequestDefaultValue = false;
   static const bool _isLoadingDefaultValue = false;
@@ -61,9 +61,9 @@ class _$SelectContentDataImpl implements _SelectContentData {
   });
 
   @override
-  final UnmodifiableList<ContentId> availableContent;
+  final UnmodifiableList<ContentIdAndFaceDetected> availableContent;
   @override
-  final UnmodifiableList<ContentId> pendingModeration;
+  final UnmodifiableList<ContentIdAndFaceDetected> pendingModeration;
   @override
   final bool initialModerationOngoing;
   @override
@@ -118,8 +118,8 @@ class _$SelectContentDataImpl implements _SelectContentData {
     Object? isLoading,
     Object? isError,
   }) => _$SelectContentDataImpl(
-    availableContent: (availableContent ?? this.availableContent) as UnmodifiableList<ContentId>,
-    pendingModeration: (pendingModeration ?? this.pendingModeration) as UnmodifiableList<ContentId>,
+    availableContent: (availableContent ?? this.availableContent) as UnmodifiableList<ContentIdAndFaceDetected>,
+    pendingModeration: (pendingModeration ?? this.pendingModeration) as UnmodifiableList<ContentIdAndFaceDetected>,
     initialModerationOngoing: (initialModerationOngoing ?? this.initialModerationOngoing) as bool,
     showMakeNewModerationRequest: (showMakeNewModerationRequest ?? this.showMakeNewModerationRequest) as bool,
     isLoading: (isLoading ?? this.isLoading) as bool,

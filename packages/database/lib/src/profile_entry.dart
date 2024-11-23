@@ -115,14 +115,28 @@ class ProfileEntry {
 class MyProfileEntry extends ProfileEntry {
   final ProfileNameModerationState profileNameModerationState;
   final ProfileTextModerationState profileTextModerationState;
+  final bool faceDetectedContent0;
   final ProfileTextModerationRejectedReasonCategory? profileTextModerationRejectedCategory;
   final ProfileTextModerationRejectedReasonDetails? profileTextModerationRejectedDetails;
+  final bool? faceDetectedContent1;
+  final bool? faceDetectedContent2;
+  final bool? faceDetectedContent3;
+  final bool? faceDetectedContent4;
+  final bool? faceDetectedContent5;
+  final bool? faceDetectedContent6;
 
   MyProfileEntry({
     required this.profileNameModerationState,
     required this.profileTextModerationState,
+    required this.faceDetectedContent0,
     this.profileTextModerationRejectedCategory,
     this.profileTextModerationRejectedDetails,
+    this.faceDetectedContent1,
+    this.faceDetectedContent2,
+    this.faceDetectedContent3,
+    this.faceDetectedContent4,
+    this.faceDetectedContent5,
+    this.faceDetectedContent6,
     required super.uuid,
     required super.imageUuid,
     required super.primaryContentGridCropSize,

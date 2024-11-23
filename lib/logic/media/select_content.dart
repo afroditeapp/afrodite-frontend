@@ -66,21 +66,21 @@ class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with
     }
 
     final value = await media.loadAllContent().ok();
-    final List<ContentId> allContent = [];
-    final List<ContentId> pendingModeration = [];
+    final List<ContentIdAndFaceDetected> allContent = [];
+    final List<ContentIdAndFaceDetected> pendingModeration = [];
     if (value != null) {
       for (final content in value.data) {
         if (content.state == ContentState.moderatedAsAccepted ||
           // When initial moderation is ongoing the pending content can be edited
           (isInitialModerationOngoing && (content.state == ContentState.inSlot || content.state == ContentState.inModeration))) {
-          allContent.add(content.cid);
+          allContent.add(ContentIdAndFaceDetected(content.cid, content.fd));
         }
 
         if (!isInitialModerationOngoing &&
           isModerationRequestOngoing &&
           imgsInCurrentModerationRequest.contains(content.cid) &&
           (content.state == ContentState.inSlot || content.state == ContentState.inModeration)) {
-          pendingModeration.add(content.cid);
+          pendingModeration.add(ContentIdAndFaceDetected(content.cid, content.fd));
         }
       }
     }

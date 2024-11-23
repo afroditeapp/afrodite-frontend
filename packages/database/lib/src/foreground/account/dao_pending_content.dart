@@ -25,36 +25,15 @@ class DaoPendingContent extends DatabaseAccessor<AccountDatabase> with _$DaoPend
         uuidPendingContentId3: Value(pendingContent.c3?.cid),
         uuidPendingContentId4: Value(pendingContent.c4?.cid),
         uuidPendingContentId5: Value(pendingContent.c5?.cid),
+        faceDetectedPendingContentId0: Value(pendingContent.c0?.fd),
+        faceDetectedPendingContentId1: Value(pendingContent.c1?.fd),
+        faceDetectedPendingContentId2: Value(pendingContent.c2?.fd),
+        faceDetectedPendingContentId3: Value(pendingContent.c3?.fd),
+        faceDetectedPendingContentId4: Value(pendingContent.c4?.fd),
+        faceDetectedPendingContentId5: Value(pendingContent.c5?.fd),
         pendingPrimaryContentGridCropSize: Value(pendingContent.gridCropSize),
         pendingPrimaryContentGridCropX: Value(pendingContent.gridCropX),
         pendingPrimaryContentGridCropY: Value(pendingContent.gridCropY),
-      ),
-    );
-  }
-
-  Future<void> setPendingProfileContent({
-    Value<ContentId?> pendingContentId0 = const Value.absent(),
-    Value<ContentId?> pendingContentId1 = const Value.absent(),
-    Value<ContentId?> pendingContentId2 = const Value.absent(),
-    Value<ContentId?> pendingContentId3 = const Value.absent(),
-    Value<ContentId?> pendingContentId4 = const Value.absent(),
-    Value<ContentId?> pendingContentId5 = const Value.absent(),
-    Value<double?> pendingGridCropSize = const Value.absent(),
-    Value<double?> pendingGridCropX = const Value.absent(),
-    Value<double?> pendingGridCropY = const Value.absent(),
-  }) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        uuidPendingContentId0: pendingContentId0,
-        uuidPendingContentId1: pendingContentId1,
-        uuidPendingContentId2: pendingContentId2,
-        uuidPendingContentId3: pendingContentId3,
-        uuidPendingContentId4: pendingContentId4,
-        uuidPendingContentId5: pendingContentId5,
-        pendingPrimaryContentGridCropSize: pendingGridCropSize,
-        pendingPrimaryContentGridCropX: pendingGridCropX,
-        pendingPrimaryContentGridCropY: pendingGridCropY,
       ),
     );
   }

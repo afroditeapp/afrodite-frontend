@@ -11,7 +11,7 @@ class MyProfileData with _$MyProfileData, UpdateStateProvider {
   MyProfileData._();
   factory MyProfileData({
     @Default(UpdateIdle()) UpdateState updateState,
-    ProfileEntry? profile,
+    MyProfileEntry? profile,
     @Default(false) bool loadingMyProfile,
     InitialAgeInfo? initialAgeInfo,
   }) = _MyProfileData;

@@ -77,6 +77,12 @@ class Account extends Table {
   TextColumn get uuidPendingContentId3 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   TextColumn get uuidPendingContentId4 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   TextColumn get uuidPendingContentId5 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  BoolColumn get faceDetectedPendingContentId0 => boolean().nullable()();
+  BoolColumn get faceDetectedPendingContentId1 => boolean().nullable()();
+  BoolColumn get faceDetectedPendingContentId2 => boolean().nullable()();
+  BoolColumn get faceDetectedPendingContentId3 => boolean().nullable()();
+  BoolColumn get faceDetectedPendingContentId4 => boolean().nullable()();
+  BoolColumn get faceDetectedPendingContentId5 => boolean().nullable()();
   TextColumn get uuidPendingSecurityContentId => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   RealColumn get pendingPrimaryContentGridCropSize => real().nullable()();
   RealColumn get pendingPrimaryContentGridCropX => real().nullable()();
@@ -90,6 +96,12 @@ class Account extends Table {
   TextColumn get uuidContentId3 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   TextColumn get uuidContentId4 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   TextColumn get uuidContentId5 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
+  BoolColumn get faceDetectedContentId0 => boolean().nullable()();
+  BoolColumn get faceDetectedContentId1 => boolean().nullable()();
+  BoolColumn get faceDetectedContentId2 => boolean().nullable()();
+  BoolColumn get faceDetectedContentId3 => boolean().nullable()();
+  BoolColumn get faceDetectedContentId4 => boolean().nullable()();
+  BoolColumn get faceDetectedContentId5 => boolean().nullable()();
   TextColumn get uuidSecurityContentId => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   RealColumn get primaryContentGridCropSize => real().nullable()();
   RealColumn get primaryContentGridCropX => real().nullable()();
@@ -350,6 +362,12 @@ class AccountDatabase extends _$AccountDatabase {
       var content3 = r.uuidContentId3;
       var content4 = r.uuidContentId4;
       var content5 = r.uuidContentId5;
+      var faceDetectedContent0 = r.faceDetectedContentId0;
+      var faceDetectedContent1 = r.faceDetectedContentId1;
+      var faceDetectedContent2 = r.faceDetectedContentId2;
+      var faceDetectedContent3 = r.faceDetectedContentId3;
+      var faceDetectedContent4 = r.faceDetectedContentId4;
+      var faceDetectedContent5 = r.faceDetectedContentId5;
       var gridCropSize = r.primaryContentGridCropSize ?? 1.0;
       var gridCropX = r.primaryContentGridCropX ?? 0.0;
       var gridCropY = r.primaryContentGridCropY ?? 0.0;
@@ -361,6 +379,12 @@ class AccountDatabase extends _$AccountDatabase {
         content3 = r.uuidPendingContentId3;
         content4 = r.uuidPendingContentId4;
         content5 = r.uuidPendingContentId5;
+        faceDetectedContent0 = r.faceDetectedPendingContentId0;
+        faceDetectedContent1 = r.faceDetectedPendingContentId1;
+        faceDetectedContent2 = r.faceDetectedPendingContentId2;
+        faceDetectedContent3 = r.faceDetectedPendingContentId3;
+        faceDetectedContent4 = r.faceDetectedPendingContentId4;
+        faceDetectedContent5 = r.faceDetectedPendingContentId5;
         gridCropSize = r.pendingPrimaryContentGridCropSize ?? 1.0;
         gridCropX = r.pendingPrimaryContentGridCropX ?? 0.0;
         gridCropY = r.pendingPrimaryContentGridCropY ?? 0.0;
@@ -369,6 +393,7 @@ class AccountDatabase extends _$AccountDatabase {
       if (
         id != null &&
         content0 != null &&
+        faceDetectedContent0 != null &&
         profileName != null &&
         profileNameAccepted != null &&
         profileNameModerationState != null &&
@@ -384,6 +409,7 @@ class AccountDatabase extends _$AccountDatabase {
         return MyProfileEntry(
           uuid: id,
           imageUuid: content0,
+          faceDetectedContent0: faceDetectedContent0,
           primaryContentGridCropSize: gridCropSize,
           primaryContentGridCropX: gridCropX,
           primaryContentGridCropY: gridCropY,
@@ -405,6 +431,11 @@ class AccountDatabase extends _$AccountDatabase {
           content3: content3,
           content4: content4,
           content5: content5,
+          faceDetectedContent1: faceDetectedContent1,
+          faceDetectedContent2: faceDetectedContent2,
+          faceDetectedContent3: faceDetectedContent3,
+          faceDetectedContent4: faceDetectedContent4,
+          faceDetectedContent5: faceDetectedContent5,
         );
       } else {
         return null;

@@ -23,39 +23,16 @@ class DaoCurrentContent extends DatabaseAccessor<AccountDatabase> with _$DaoCurr
         uuidContentId3: Value(content.c3?.cid),
         uuidContentId4: Value(content.c4?.cid),
         uuidContentId5: Value(content.c5?.cid),
+        faceDetectedContentId0: Value(content.c0?.fd),
+        faceDetectedContentId1: Value(content.c1?.fd),
+        faceDetectedContentId2: Value(content.c2?.fd),
+        faceDetectedContentId3: Value(content.c3?.fd),
+        faceDetectedContentId4: Value(content.c4?.fd),
+        faceDetectedContentId5: Value(content.c5?.fd),
         primaryContentGridCropSize: Value(content.gridCropSize),
         primaryContentGridCropX: Value(content.gridCropX),
         primaryContentGridCropY: Value(content.gridCropY),
         profileContentVersion: Value(version),
-      ),
-    );
-  }
-
-  Future<void> setProfileContent({
-    Value<ContentId?> uuidContentId0 = const Value.absent(),
-    Value<ContentId?> uuidContentId1 = const Value.absent(),
-    Value<ContentId?> uuidContentId2 = const Value.absent(),
-    Value<ContentId?> uuidContentId3 = const Value.absent(),
-    Value<ContentId?> uuidContentId4 = const Value.absent(),
-    Value<ContentId?> uuidContentId5 = const Value.absent(),
-    Value<double?> primaryContentGridCropSize = const Value.absent(),
-    Value<double?> primaryContentGridCropX = const Value.absent(),
-    Value<double?> primaryContentGridCropY = const Value.absent(),
-    Value<ProfileContentVersion?> profileContentVersion = const Value.absent(),
-  }) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        uuidContentId0: uuidContentId0,
-        uuidContentId1: uuidContentId1,
-        uuidContentId2: uuidContentId2,
-        uuidContentId3: uuidContentId3,
-        uuidContentId4: uuidContentId4,
-        uuidContentId5: uuidContentId5,
-        primaryContentGridCropSize: primaryContentGridCropSize,
-        primaryContentGridCropX: primaryContentGridCropX,
-        primaryContentGridCropY: primaryContentGridCropY,
-        profileContentVersion: profileContentVersion,
       ),
     );
   }
