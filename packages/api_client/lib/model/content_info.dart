@@ -15,30 +15,37 @@ class ContentInfo {
   ContentInfo({
     required this.cid,
     required this.ctype,
+    required this.fd,
   });
 
   ContentId cid;
 
   MediaContentType ctype;
 
+  /// Face detected
+  bool fd;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentInfo &&
     other.cid == cid &&
-    other.ctype == ctype;
+    other.ctype == ctype &&
+    other.fd == fd;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (cid.hashCode) +
-    (ctype.hashCode);
+    (ctype.hashCode) +
+    (fd.hashCode);
 
   @override
-  String toString() => 'ContentInfo[cid=$cid, ctype=$ctype]';
+  String toString() => 'ContentInfo[cid=$cid, ctype=$ctype, fd=$fd]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'cid'] = this.cid;
       json[r'ctype'] = this.ctype;
+      json[r'fd'] = this.fd;
     return json;
   }
 
@@ -63,6 +70,7 @@ class ContentInfo {
       return ContentInfo(
         cid: ContentId.fromJson(json[r'cid'])!,
         ctype: MediaContentType.fromJson(json[r'ctype'])!,
+        fd: mapValueOfType<bool>(json, r'fd')!,
       );
     }
     return null;
@@ -112,6 +120,7 @@ class ContentInfo {
   static const requiredKeys = <String>{
     'cid',
     'ctype',
+    'fd',
   };
 }
 

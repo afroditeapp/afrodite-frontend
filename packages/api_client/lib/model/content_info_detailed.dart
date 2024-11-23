@@ -15,6 +15,7 @@ class ContentInfoDetailed {
   ContentInfoDetailed({
     required this.cid,
     required this.ctype,
+    required this.fd,
     required this.secureCapture,
     this.slot,
     required this.state,
@@ -23,6 +24,9 @@ class ContentInfoDetailed {
   ContentId cid;
 
   MediaContentType ctype;
+
+  /// Face detected
+  bool fd;
 
   bool secureCapture;
 
@@ -34,6 +38,7 @@ class ContentInfoDetailed {
   bool operator ==(Object other) => identical(this, other) || other is ContentInfoDetailed &&
     other.cid == cid &&
     other.ctype == ctype &&
+    other.fd == fd &&
     other.secureCapture == secureCapture &&
     other.slot == slot &&
     other.state == state;
@@ -43,17 +48,19 @@ class ContentInfoDetailed {
     // ignore: unnecessary_parenthesis
     (cid.hashCode) +
     (ctype.hashCode) +
+    (fd.hashCode) +
     (secureCapture.hashCode) +
     (slot == null ? 0 : slot!.hashCode) +
     (state.hashCode);
 
   @override
-  String toString() => 'ContentInfoDetailed[cid=$cid, ctype=$ctype, secureCapture=$secureCapture, slot=$slot, state=$state]';
+  String toString() => 'ContentInfoDetailed[cid=$cid, ctype=$ctype, fd=$fd, secureCapture=$secureCapture, slot=$slot, state=$state]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'cid'] = this.cid;
       json[r'ctype'] = this.ctype;
+      json[r'fd'] = this.fd;
       json[r'secure_capture'] = this.secureCapture;
     if (this.slot != null) {
       json[r'slot'] = this.slot;
@@ -85,6 +92,7 @@ class ContentInfoDetailed {
       return ContentInfoDetailed(
         cid: ContentId.fromJson(json[r'cid'])!,
         ctype: MediaContentType.fromJson(json[r'ctype'])!,
+        fd: mapValueOfType<bool>(json, r'fd')!,
         secureCapture: mapValueOfType<bool>(json, r'secure_capture')!,
         slot: ContentSlot.fromJson(json[r'slot']),
         state: ContentState.fromJson(json[r'state'])!,
@@ -137,6 +145,7 @@ class ContentInfoDetailed {
   static const requiredKeys = <String>{
     'cid',
     'ctype',
+    'fd',
     'secure_capture',
     'state',
   };

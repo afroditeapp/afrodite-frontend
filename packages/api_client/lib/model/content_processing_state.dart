@@ -14,12 +14,16 @@ class ContentProcessingState {
   /// Returns a new [ContentProcessingState] instance.
   ContentProcessingState({
     this.cid,
+    this.fd,
     required this.state,
     this.waitQueuePosition,
   });
 
   /// Content ID of the processed content.
   ContentId? cid;
+
+  /// Face detected info of the processed content.
+  bool? fd;
 
   ContentProcessingStateType state;
 
@@ -31,6 +35,7 @@ class ContentProcessingState {
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentProcessingState &&
     other.cid == cid &&
+    other.fd == fd &&
     other.state == state &&
     other.waitQueuePosition == waitQueuePosition;
 
@@ -38,11 +43,12 @@ class ContentProcessingState {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (cid == null ? 0 : cid!.hashCode) +
+    (fd == null ? 0 : fd!.hashCode) +
     (state.hashCode) +
     (waitQueuePosition == null ? 0 : waitQueuePosition!.hashCode);
 
   @override
-  String toString() => 'ContentProcessingState[cid=$cid, state=$state, waitQueuePosition=$waitQueuePosition]';
+  String toString() => 'ContentProcessingState[cid=$cid, fd=$fd, state=$state, waitQueuePosition=$waitQueuePosition]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -50,6 +56,11 @@ class ContentProcessingState {
       json[r'cid'] = this.cid;
     } else {
       json[r'cid'] = null;
+    }
+    if (this.fd != null) {
+      json[r'fd'] = this.fd;
+    } else {
+      json[r'fd'] = null;
     }
       json[r'state'] = this.state;
     if (this.waitQueuePosition != null) {
@@ -80,6 +91,7 @@ class ContentProcessingState {
 
       return ContentProcessingState(
         cid: ContentId.fromJson(json[r'cid']),
+        fd: mapValueOfType<bool>(json, r'fd'),
         state: ContentProcessingStateType.fromJson(json[r'state'])!,
         waitQueuePosition: mapValueOfType<int>(json, r'wait_queue_position'),
       );

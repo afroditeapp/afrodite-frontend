@@ -1,5 +1,6 @@
 
 
+import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -26,9 +27,8 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
 
   final Server _selectedServer = Server.account;
   int _userBots = 0;
-  int _adminBots = 0;
+  bool _adminBotEnabled = false;
   TextEditingController _userBotsController = TextEditingController(text: "0");
-  TextEditingController _adminBotsController = TextEditingController(text: "0");
   var _configFormKey = GlobalKey<FormState>();
   CurrentConfig? _currentConfig;
   final api = LoginRepository.getInstance().repositories.api;
@@ -39,8 +39,7 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
   }
 
   void updateStateWithData(CurrentConfig? data) {
-    _adminBots = data?.config.bots?.admins ?? 0;
-    _adminBotsController.text = _adminBots.toString();
+    _adminBotEnabled = data?.config.bots?.admin ?? false;
     _userBots = data?.config.bots?.users ?? 0;
     _userBotsController.text = _userBots.toString();
     _currentConfig = data;
@@ -130,25 +129,20 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
         }
 
         final widgets = [
-          currentConfig,
+          hPad(currentConfig),
+          const Padding(padding: EdgeInsets.all(8.0)),
           configureBackend,
-          rebootAction,
-          resetAction,
+          const Padding(padding: EdgeInsets.all(8.0)),
+          hPad(rebootAction),
+          const Padding(padding: EdgeInsets.all(8.0)),
+          hPad(resetAction),
         ];
-
-        final paddedWidgets = <Widget>[];
-        for (final widget in widgets) {
-          paddedWidgets.add(Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: widget,
-          ));
-        }
 
         return SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: paddedWidgets,
+            children: widgets,
           ),
         );
       }
@@ -222,27 +216,13 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
   Widget displaySaveConfig(BuildContext context) {
     const text = Text("Bots");
 
-    final adminBots = TextFormField(
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Admin bots',
-      ),
-      validator: (value) {
-        final number = int.tryParse(value ?? "");
-        if (number == null) {
-          return "Not a number";
-        }
-        return null;
-      },
-      onChanged: (value) {
-        final number = int.tryParse(value);
-        if (number != null) {
-          setState(() {
-            _adminBots = number;
-          });
-        }
-      },
-      controller: _adminBotsController,
+    final adminBotEnabled = SwitchListTile(
+      title: const Text("Admin bot"),
+      value: _adminBotEnabled,
+      onChanged: (bool value) =>
+        setState(() {
+          _adminBotEnabled = value;
+        })
     );
 
     final userBots = TextFormField(
@@ -270,13 +250,7 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
 
     final form = Form(
       key: _configFormKey,
-      child: Column(
-        children: [
-          adminBots,
-          const Padding(padding: EdgeInsets.all(8.0)),
-          userBots,
-        ],
-      ),
+      child: userBots,
     );
 
     final button = ElevatedButton(
@@ -287,7 +261,7 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
 
         FocusScope.of(context).unfocus();
 
-        final bots = BotConfig(admins: _adminBots, users: _userBots);
+        final bots = BotConfig(admin: _adminBotEnabled, users: _userBots);
         final config = BackendConfig(bots: bots);
         showConfirmDialog(context, "Save backend config?", details: "New config: ${config.toString()}")
           .then((value) async {
@@ -310,21 +284,16 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
 
     final widgets = [
       text,
-      form,
+      const Padding(padding: EdgeInsets.all(8.0)),
+      adminBotEnabled,
+      const Padding(padding: EdgeInsets.all(8.0)),
+      hPad(form),
+      const Padding(padding: EdgeInsets.all(8.0)),
       button,
     ];
 
-    final paddedWidgets = <Widget>[];
-    for (final widget in widgets) {
-      paddedWidgets.add(Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: widget,
-      ));
-    }
-
-
     return Column(
-      children: paddedWidgets,
+      children: widgets,
     );
   }
 }

@@ -175,7 +175,7 @@ Class | Method | HTTP request | Description
 *ProfileAdminApi* | [**getProfileStatisticsHistory**](doc//ProfileAdminApi.md#getprofilestatisticshistory) | **GET** /6CGbSNdoURdJRTBxb3Hb_OGw9ME | 
 *ProfileAdminApi* | [**getProfileTextPendingModerationList**](doc//ProfileAdminApi.md#getprofiletextpendingmoderationlist) | **GET** /pdEU3ussEDsELfe6TOtjqrDojOc | Get first page of pending profile text moderations. Oldest item is first and count 25.
 *ProfileAdminApi* | [**postModerateProfileName**](doc//ProfileAdminApi.md#postmoderateprofilename) | **POST** /bnrAbC2DpwIftQouXUAVR1W6g8Y | 
-*ProfileAdminApi* | [**postModerateProfileText**](doc//ProfileAdminApi.md#postmoderateprofiletext) | **POST** /53BBFzgF9dZhb7_HvZSqLidsqbg | 
+*ProfileAdminApi* | [**postModerateProfileText**](doc//ProfileAdminApi.md#postmoderateprofiletext) | **POST** /53BBFzgF9dZhb7_HvZSqLidsqbg | Rejected category and details can be set only when the text is rejected.
 
 
 ## Documentation For Models

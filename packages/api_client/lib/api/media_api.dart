@@ -824,7 +824,7 @@ class MediaApi {
 
   /// Set new pending profile content for current account. Server will switch to pending content when next moderation request is accepted.
   ///
-  /// # Restrictions - All content must not be moderated as rejected. - All content must be owned by the account. - All content must be images.
+  /// # Restrictions - All content must not be moderated as rejected. - All content must be owned by the account. - All content must be images. - First content must have face detected.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -858,7 +858,7 @@ class MediaApi {
 
   /// Set new pending profile content for current account. Server will switch to pending content when next moderation request is accepted.
   ///
-  /// # Restrictions - All content must not be moderated as rejected. - All content must be owned by the account. - All content must be images.
+  /// # Restrictions - All content must not be moderated as rejected. - All content must be owned by the account. - All content must be images. - First content must have face detected.
   ///
   /// Parameters:
   ///
@@ -871,6 +871,8 @@ class MediaApi {
   }
 
   /// Set pending security content for current account.
+  ///
+  /// Requires that the content has face detected.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -904,6 +906,8 @@ class MediaApi {
 
   /// Set pending security content for current account.
   ///
+  /// Requires that the content has face detected.
+  ///
   /// Parameters:
   ///
   /// * [ContentId] contentId (required):
@@ -916,7 +920,7 @@ class MediaApi {
 
   /// Set new profile content for current account.
   ///
-  /// # Restrictions - All content must be moderated as accepted. - All content must be owned by the account. - All content must be images.
+  /// # Restrictions - All content must be moderated as accepted. - All content must be owned by the account. - All content must be images. - First content must have face detected.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -950,7 +954,7 @@ class MediaApi {
 
   /// Set new profile content for current account.
   ///
-  /// # Restrictions - All content must be moderated as accepted. - All content must be owned by the account. - All content must be images.
+  /// # Restrictions - All content must be moderated as accepted. - All content must be owned by the account. - All content must be images. - First content must have face detected.
   ///
   /// Parameters:
   ///
@@ -964,7 +968,7 @@ class MediaApi {
 
   /// Set current security content content for current account.
   ///
-  /// # Restrictions - The content must be moderated as accepted. - The content must be owned by the account. - The content must be an image. - The content must be captured by client.
+  /// # Restrictions - The content must be moderated as accepted. - The content must be owned by the account. - The content must be an image. - The content must be captured by client. - The content must have face detected.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -998,7 +1002,7 @@ class MediaApi {
 
   /// Set current security content content for current account.
   ///
-  /// # Restrictions - The content must be moderated as accepted. - The content must be owned by the account. - The content must be an image. - The content must be captured by client.
+  /// # Restrictions - The content must be moderated as accepted. - The content must be owned by the account. - The content must be an image. - The content must be captured by client. - The content must have face detected.
   ///
   /// Parameters:
   ///

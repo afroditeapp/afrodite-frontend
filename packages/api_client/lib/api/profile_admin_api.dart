@@ -208,7 +208,12 @@ class ProfileAdminApi {
     }
   }
 
-  /// Performs an HTTP 'POST /53BBFzgF9dZhb7_HvZSqLidsqbg' operation and returns the [Response].
+  /// Rejected category and details can be set only when the text is rejected.
+  ///
+  /// This route will fail if the text is already moderated or the users's profile text is not the same text that was moderated.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
   /// Parameters:
   ///
   /// * [PostModerateProfileText] postModerateProfileText (required):
@@ -237,6 +242,10 @@ class ProfileAdminApi {
     );
   }
 
+  /// Rejected category and details can be set only when the text is rejected.
+  ///
+  /// This route will fail if the text is already moderated or the users's profile text is not the same text that was moderated.
+  ///
   /// Parameters:
   ///
   /// * [PostModerateProfileText] postModerateProfileText (required):

@@ -13,14 +13,12 @@ part of openapi.api;
 class BotConfig {
   /// Returns a new [BotConfig] instance.
   BotConfig({
-    required this.admins,
+    required this.admin,
     required this.users,
   });
 
-  /// Admin bot count
-  ///
-  /// Minimum value: 0
-  int admins;
+  /// Admin bot
+  bool admin;
 
   /// User bot count
   ///
@@ -29,21 +27,21 @@ class BotConfig {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is BotConfig &&
-    other.admins == admins &&
+    other.admin == admin &&
     other.users == users;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (admins.hashCode) +
+    (admin.hashCode) +
     (users.hashCode);
 
   @override
-  String toString() => 'BotConfig[admins=$admins, users=$users]';
+  String toString() => 'BotConfig[admin=$admin, users=$users]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'admins'] = this.admins;
+      json[r'admin'] = this.admin;
       json[r'users'] = this.users;
     return json;
   }
@@ -67,7 +65,7 @@ class BotConfig {
       }());
 
       return BotConfig(
-        admins: mapValueOfType<int>(json, r'admins')!,
+        admin: mapValueOfType<bool>(json, r'admin')!,
         users: mapValueOfType<int>(json, r'users')!,
       );
     }
@@ -116,7 +114,7 @@ class BotConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'admins',
+    'admin',
     'users',
   };
 }
