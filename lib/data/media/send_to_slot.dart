@@ -24,7 +24,8 @@ class InProcessingQueue extends SendToSlotEvent {
 class Processing extends SendToSlotEvent {}
 class ProcessingCompleted extends SendToSlotEvent {
   final ContentId contentId;
-  ProcessingCompleted(this.contentId);
+  final bool faceDetected;
+  ProcessingCompleted(this.contentId, this.faceDetected);
 }
 class SendToSlotError extends SendToSlotEvent {}
 
@@ -168,10 +169,11 @@ class SendImageToSlotTask {
         return SendToSlotError();
       case ContentProcessingStateType.completed: {
         final contentId = state.cid;
-        if (contentId == null) {
+        final faceDetected = state.fd;
+        if (contentId == null || faceDetected == null) {
           return SendToSlotError();
         } else {
-          return ProcessingCompleted(contentId);
+          return ProcessingCompleted(contentId, faceDetected);
         }
       }
     }

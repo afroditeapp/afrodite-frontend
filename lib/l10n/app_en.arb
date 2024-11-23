@@ -686,6 +686,10 @@
   "@initial_setup_screen_security_selfie_description": {
     "description": "Description for initial setup security selfie step"
   },
+  "initial_setup_screen_security_selfie_face_not_detected": "Face is not detected. Please try again.",
+  "@initial_setup_screen_security_selfie_face_not_detected": {
+    "description": "Error text that face is not detected for initial setup security selfie screen"
+  },
   "initial_setup_screen_security_selfie_title": "My security selfie is…",
   "@initial_setup_screen_security_selfie_title": {
     "description": "Title for initial setup security selfie screen"

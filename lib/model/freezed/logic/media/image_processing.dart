@@ -39,11 +39,12 @@ class SendingFailed extends ProcessingState {}
 
 /// Image which server has processed.
 class ProcessedAccountImage {
-  const ProcessedAccountImage(this.accountId, this.contentId, this.slot);
+  const ProcessedAccountImage(this.accountId, this.contentId, this.slot, this.faceDetected);
   final AccountId accountId;
   final ContentId contentId;
   /// Slot where the image was uploaded.
   final int slot;
+  final bool faceDetected;
 }
 
 sealed class ContentUploadState {}

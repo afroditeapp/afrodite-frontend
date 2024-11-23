@@ -67,7 +67,7 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
               processingState: selfieState,
             ));
           }
-          case ProcessingCompleted(:final contentId): {
+          case ProcessingCompleted(:final contentId, :final faceDetected): {
             final imgFile = await imageCache.getImage(currentUser, contentId, media: media);
             if (imgFile == null) {
               emit(state.copyWith(
@@ -76,7 +76,7 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
             } else {
               emit(state.copyWith(
                 processingState: null,
-                processedImage: ProcessedAccountImage(currentUser, contentId, data.slot),
+                processedImage: ProcessedAccountImage(currentUser, contentId, data.slot, faceDetected),
               ));
             }
           }

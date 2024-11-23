@@ -3,7 +3,6 @@ import "dart:typed_data";
 
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:image_picker/image_picker.dart";
 import "package:logging/logging.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
@@ -39,7 +38,7 @@ class AskSecuritySelfieScreen extends StatelessWidget {
       child: QuestionAsker(
         getContinueButtonCallback: (context, state) {
           final selfie = state.securitySelfie;
-          if (selfie != null) {
+          if (selfie != null && selfie.faceDetected) {
             return () {
               CameraManager.getInstance().sendCmd(CloseCmd());
               MyNavigator.push(context, MaterialPage<void>(child: const AskProfilePicturesScreen()));
@@ -84,6 +83,8 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
           padding: const EdgeInsets.symmetric(horizontal: INITIAL_SETUP_PADDING),
           child: Text(context.strings.initial_setup_screen_security_selfie_description),
         ),
+        const Padding(padding: EdgeInsets.all(8.0)),
+        noFaceDetectedError(context),
 
         // Zero sized widgets
         ...imageProcessingUiWidgets<SecuritySelfieImageProcessingBloc>(
@@ -119,18 +120,18 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
   }
 
   Widget normalCameraButton() {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: ElevatedButton.icon(
-        label: Text(context.strings.generic_take_photo),
-        icon: const Icon(Icons.camera_alt),
-        onPressed: () => openCameraScreenAction(context),
-      ),
+    return ElevatedButton.icon(
+      label: Text(context.strings.generic_take_photo),
+      icon: const Icon(Icons.camera_alt),
+      onPressed: () => openCameraScreenAction(context),
     );
   }
 
   Widget imageAndCameraButton(BuildContext context) {
-    Widget cameraButton = normalCameraButton();
+    Widget cameraButton = Align(
+      alignment: Alignment.centerLeft,
+      child: normalCameraButton(),
+    );
 
     return BlocBuilder<InitialSetupBloc, InitialSetupData>(
       builder: (context, state) {
@@ -207,5 +208,36 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
     }
 
     cameraOpeningInProgress = false;
+  }
+
+  Widget noFaceDetectedError(BuildContext context) {
+    return BlocBuilder<InitialSetupBloc, InitialSetupData>(
+      builder: (context, state) {
+        final image = state.securitySelfie;
+        if (image != null && !image.faceDetected) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.close,
+                    color: Colors.red,
+                    size: 32,
+                  ),
+                  Text(context.strings.initial_setup_screen_security_selfie_face_not_detected),
+                ],
+              ),
+              const Padding(padding: EdgeInsets.all(8.0)),
+              normalCameraButton(),
+            ],
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      }
+    );
   }
 }
