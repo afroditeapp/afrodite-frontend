@@ -10,42 +10,49 @@
 
 part of openapi.api;
 
-class ContentInfo {
-  /// Returns a new [ContentInfo] instance.
-  ContentInfo({
+class ContentInfoWithFd {
+  /// Returns a new [ContentInfoWithFd] instance.
+  ContentInfoWithFd({
     required this.cid,
     required this.ctype,
+    required this.fd,
   });
 
   ContentId cid;
 
   MediaContentType ctype;
 
+  /// Face detected
+  bool fd;
+
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ContentInfo &&
+  bool operator ==(Object other) => identical(this, other) || other is ContentInfoWithFd &&
     other.cid == cid &&
-    other.ctype == ctype;
+    other.ctype == ctype &&
+    other.fd == fd;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (cid.hashCode) +
-    (ctype.hashCode);
+    (ctype.hashCode) +
+    (fd.hashCode);
 
   @override
-  String toString() => 'ContentInfo[cid=$cid, ctype=$ctype]';
+  String toString() => 'ContentInfoWithFd[cid=$cid, ctype=$ctype, fd=$fd]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'cid'] = this.cid;
       json[r'ctype'] = this.ctype;
+      json[r'fd'] = this.fd;
     return json;
   }
 
-  /// Returns a new [ContentInfo] instance and imports its values from
+  /// Returns a new [ContentInfoWithFd] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ContentInfo? fromJson(dynamic value) {
+  static ContentInfoWithFd? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,25 +61,26 @@ class ContentInfo {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ContentInfo[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ContentInfo[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ContentInfoWithFd[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ContentInfoWithFd[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ContentInfo(
+      return ContentInfoWithFd(
         cid: ContentId.fromJson(json[r'cid'])!,
         ctype: MediaContentType.fromJson(json[r'ctype'])!,
+        fd: mapValueOfType<bool>(json, r'fd')!,
       );
     }
     return null;
   }
 
-  static List<ContentInfo> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ContentInfo>[];
+  static List<ContentInfoWithFd> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ContentInfoWithFd>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ContentInfo.fromJson(row);
+        final value = ContentInfoWithFd.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +89,12 @@ class ContentInfo {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ContentInfo> mapFromJson(dynamic json) {
-    final map = <String, ContentInfo>{};
+  static Map<String, ContentInfoWithFd> mapFromJson(dynamic json) {
+    final map = <String, ContentInfoWithFd>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ContentInfo.fromJson(entry.value);
+        final value = ContentInfoWithFd.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,14 +103,14 @@ class ContentInfo {
     return map;
   }
 
-  // maps a json object with a list of ContentInfo-objects as value to a dart map
-  static Map<String, List<ContentInfo>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ContentInfo>>{};
+  // maps a json object with a list of ContentInfoWithFd-objects as value to a dart map
+  static Map<String, List<ContentInfoWithFd>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ContentInfoWithFd>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ContentInfo.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ContentInfoWithFd.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -112,6 +120,7 @@ class ContentInfo {
   static const requiredKeys = <String>{
     'cid',
     'ctype',
+    'fd',
   };
 }
 

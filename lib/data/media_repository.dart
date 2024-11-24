@@ -134,7 +134,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   /// Reload current and pending profile content.
   Future<Result<void, void>> reloadMyProfileContent() async {
-    final infoResult = await api.media((api) => api.getProfileContentInfo(currentUser.aid, isMatch: false)).ok();
+    final infoResult = await api.media((api) => api.getMyProfileContentInfo()).ok();
     final info = infoResult?.c;
     final version = infoResult?.v;
     if (info == null || version == null) {

@@ -244,6 +244,8 @@ class ApiClient {
           return ContentInfo.fromJson(value);
         case 'ContentInfoDetailed':
           return ContentInfoDetailed.fromJson(value);
+        case 'ContentInfoWithFd':
+          return ContentInfoWithFd.fromJson(value);
         case 'ContentProcessingId':
           return ContentProcessingId.fromJson(value);
         case 'ContentProcessingState':
@@ -288,6 +290,8 @@ class ApiClient {
           return FcmDeviceToken.fromJson(value);
         case 'GetInitialProfileAgeInfoResult':
           return GetInitialProfileAgeInfoResult.fromJson(value);
+        case 'GetMyProfileContentResult':
+          return GetMyProfileContentResult.fromJson(value);
         case 'GetMyProfileResult':
           return GetMyProfileResult.fromJson(value);
         case 'GetNewsItemResult':
@@ -348,6 +352,8 @@ class ApiClient {
           return ModerationRequestId.fromJson(value);
         case 'ModerationRequestState':
           return ModerationRequestStateTypeTransformer().decode(value);
+        case 'MyProfileContent':
+          return MyProfileContent.fromJson(value);
         case 'NewReceivedLikesCount':
           return NewReceivedLikesCount.fromJson(value);
         case 'NewReceivedLikesCountResult':

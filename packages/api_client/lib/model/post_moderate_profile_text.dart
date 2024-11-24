@@ -15,6 +15,7 @@ class PostModerateProfileText {
   PostModerateProfileText({
     required this.accept,
     required this.id,
+    this.moveToHuman,
     this.rejectedCategory,
     this.rejectedDetails,
     required this.text,
@@ -23,6 +24,9 @@ class PostModerateProfileText {
   bool accept;
 
   AccountId id;
+
+  /// If true, ignore accept, rejected_category, rejected_details and move the text to waiting for human moderation state.
+  bool? moveToHuman;
 
   ProfileTextModerationRejectedReasonCategory? rejectedCategory;
 
@@ -34,6 +38,7 @@ class PostModerateProfileText {
   bool operator ==(Object other) => identical(this, other) || other is PostModerateProfileText &&
     other.accept == accept &&
     other.id == id &&
+    other.moveToHuman == moveToHuman &&
     other.rejectedCategory == rejectedCategory &&
     other.rejectedDetails == rejectedDetails &&
     other.text == text;
@@ -43,17 +48,23 @@ class PostModerateProfileText {
     // ignore: unnecessary_parenthesis
     (accept.hashCode) +
     (id.hashCode) +
+    (moveToHuman == null ? 0 : moveToHuman!.hashCode) +
     (rejectedCategory == null ? 0 : rejectedCategory!.hashCode) +
     (rejectedDetails == null ? 0 : rejectedDetails!.hashCode) +
     (text.hashCode);
 
   @override
-  String toString() => 'PostModerateProfileText[accept=$accept, id=$id, rejectedCategory=$rejectedCategory, rejectedDetails=$rejectedDetails, text=$text]';
+  String toString() => 'PostModerateProfileText[accept=$accept, id=$id, moveToHuman=$moveToHuman, rejectedCategory=$rejectedCategory, rejectedDetails=$rejectedDetails, text=$text]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'accept'] = this.accept;
       json[r'id'] = this.id;
+    if (this.moveToHuman != null) {
+      json[r'move_to_human'] = this.moveToHuman;
+    } else {
+      json[r'move_to_human'] = null;
+    }
     if (this.rejectedCategory != null) {
       json[r'rejected_category'] = this.rejectedCategory;
     } else {
@@ -89,6 +100,7 @@ class PostModerateProfileText {
       return PostModerateProfileText(
         accept: mapValueOfType<bool>(json, r'accept')!,
         id: AccountId.fromJson(json[r'id'])!,
+        moveToHuman: mapValueOfType<bool>(json, r'move_to_human'),
         rejectedCategory: ProfileTextModerationRejectedReasonCategory.fromJson(json[r'rejected_category']),
         rejectedDetails: ProfileTextModerationRejectedReasonDetails.fromJson(json[r'rejected_details']),
         text: mapValueOfType<String>(json, r'text')!,

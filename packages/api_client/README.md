@@ -137,6 +137,7 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**getContentSlotState**](doc//MediaApi.md#getcontentslotstate) | **GET** /y5DgJJAaDZF89y6X4ge84klpBq0/{slot_id} | Get state of content slot.
 *MediaApi* | [**getMapTile**](doc//MediaApi.md#getmaptile) | **GET** /BoFh54UgWwlQvwJfb0TpJqd4gaM/{z}/{x}/{y} | Get map tile PNG file.
 *MediaApi* | [**getModerationRequest**](doc//MediaApi.md#getmoderationrequest) | **GET** /O6uTeSLARVqY1bvDxmX96ITtBCM | Get current moderation request.
+*MediaApi* | [**getMyProfileContentInfo**](doc//MediaApi.md#getmyprofilecontentinfo) | **GET** /mEuodskjl_W4fjyo8iEkge7OTTU | Get my profile content
 *MediaApi* | [**getPendingProfileContentInfo**](doc//MediaApi.md#getpendingprofilecontentinfo) | **GET** /-NOw5oduzs2zI-cDLwFQKJkiO2U/{aid} | Get pending profile content for selected profile
 *MediaApi* | [**getPendingSecurityContentInfo**](doc//MediaApi.md#getpendingsecuritycontentinfo) | **GET** /sO2QJPZs98Emtu1vW1k4iHD-gz8/{aid} | Get pending security content for selected profile.
 *MediaApi* | [**getProfileContentInfo**](doc//MediaApi.md#getprofilecontentinfo) | **GET** /ZYlzEPvPMBx2V1S6Ee-kIhp2_rg/{aid} | Get current profile content for selected profile.
@@ -211,6 +212,7 @@ Class | Method | HTTP request | Description
  - [ContentId](doc//ContentId.md)
  - [ContentInfo](doc//ContentInfo.md)
  - [ContentInfoDetailed](doc//ContentInfoDetailed.md)
+ - [ContentInfoWithFd](doc//ContentInfoWithFd.md)
  - [ContentProcessingId](doc//ContentProcessingId.md)
  - [ContentProcessingState](doc//ContentProcessingState.md)
  - [ContentProcessingStateChanged](doc//ContentProcessingStateChanged.md)
@@ -233,6 +235,7 @@ Class | Method | HTTP request | Description
  - [FavoriteProfilesPage](doc//FavoriteProfilesPage.md)
  - [FcmDeviceToken](doc//FcmDeviceToken.md)
  - [GetInitialProfileAgeInfoResult](doc//GetInitialProfileAgeInfoResult.md)
+ - [GetMyProfileContentResult](doc//GetMyProfileContentResult.md)
  - [GetMyProfileResult](doc//GetMyProfileResult.md)
  - [GetNewsItemResult](doc//GetNewsItemResult.md)
  - [GetProfileContentResult](doc//GetProfileContentResult.md)
@@ -263,6 +266,7 @@ Class | Method | HTTP request | Description
  - [ModerationRequestContent](doc//ModerationRequestContent.md)
  - [ModerationRequestId](doc//ModerationRequestId.md)
  - [ModerationRequestState](doc//ModerationRequestState.md)
+ - [MyProfileContent](doc//MyProfileContent.md)
  - [NewReceivedLikesCount](doc//NewReceivedLikesCount.md)
  - [NewReceivedLikesCountResult](doc//NewReceivedLikesCountResult.md)
  - [NewsId](doc//NewsId.md)

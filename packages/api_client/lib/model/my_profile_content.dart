@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class PendingProfileContent {
-  /// Returns a new [PendingProfileContent] instance.
-  PendingProfileContent({
+class MyProfileContent {
+  /// Returns a new [MyProfileContent] instance.
+  MyProfileContent({
     this.c0,
     this.c1,
     this.c2,
@@ -24,7 +24,7 @@ class PendingProfileContent {
     this.gridCropY,
   });
 
-  /// Primary profile image which is shown in grid view.  If this is None, then server will not change the current profile content when moderation is accepted.
+  /// Primary profile image which is shown in grid view.
   ContentInfoWithFd? c0;
 
   ContentInfoWithFd? c1;
@@ -44,7 +44,7 @@ class PendingProfileContent {
   double? gridCropY;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is PendingProfileContent &&
+  bool operator ==(Object other) => identical(this, other) || other is MyProfileContent &&
     other.c0 == c0 &&
     other.c1 == c1 &&
     other.c2 == c2 &&
@@ -69,7 +69,7 @@ class PendingProfileContent {
     (gridCropY == null ? 0 : gridCropY!.hashCode);
 
   @override
-  String toString() => 'PendingProfileContent[c0=$c0, c1=$c1, c2=$c2, c3=$c3, c4=$c4, c5=$c5, gridCropSize=$gridCropSize, gridCropX=$gridCropX, gridCropY=$gridCropY]';
+  String toString() => 'MyProfileContent[c0=$c0, c1=$c1, c2=$c2, c3=$c3, c4=$c4, c5=$c5, gridCropSize=$gridCropSize, gridCropX=$gridCropX, gridCropY=$gridCropY]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -121,10 +121,10 @@ class PendingProfileContent {
     return json;
   }
 
-  /// Returns a new [PendingProfileContent] instance and imports its values from
+  /// Returns a new [MyProfileContent] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static PendingProfileContent? fromJson(dynamic value) {
+  static MyProfileContent? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -133,13 +133,13 @@ class PendingProfileContent {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PendingProfileContent[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PendingProfileContent[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "MyProfileContent[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "MyProfileContent[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return PendingProfileContent(
+      return MyProfileContent(
         c0: ContentInfoWithFd.fromJson(json[r'c0']),
         c1: ContentInfoWithFd.fromJson(json[r'c1']),
         c2: ContentInfoWithFd.fromJson(json[r'c2']),
@@ -154,11 +154,11 @@ class PendingProfileContent {
     return null;
   }
 
-  static List<PendingProfileContent> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <PendingProfileContent>[];
+  static List<MyProfileContent> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <MyProfileContent>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = PendingProfileContent.fromJson(row);
+        final value = MyProfileContent.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -167,12 +167,12 @@ class PendingProfileContent {
     return result.toList(growable: growable);
   }
 
-  static Map<String, PendingProfileContent> mapFromJson(dynamic json) {
-    final map = <String, PendingProfileContent>{};
+  static Map<String, MyProfileContent> mapFromJson(dynamic json) {
+    final map = <String, MyProfileContent>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = PendingProfileContent.fromJson(entry.value);
+        final value = MyProfileContent.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -181,14 +181,14 @@ class PendingProfileContent {
     return map;
   }
 
-  // maps a json object with a list of PendingProfileContent-objects as value to a dart map
-  static Map<String, List<PendingProfileContent>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<PendingProfileContent>>{};
+  // maps a json object with a list of MyProfileContent-objects as value to a dart map
+  static Map<String, List<MyProfileContent>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<MyProfileContent>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = PendingProfileContent.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = MyProfileContent.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

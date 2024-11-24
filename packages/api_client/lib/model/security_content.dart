@@ -16,7 +16,7 @@ class SecurityContent {
     this.c0,
   });
 
-  ContentInfo? c0;
+  ContentInfoWithFd? c0;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SecurityContent &&
@@ -59,7 +59,7 @@ class SecurityContent {
       }());
 
       return SecurityContent(
-        c0: ContentInfo.fromJson(json[r'c0']),
+        c0: ContentInfoWithFd.fromJson(json[r'c0']),
       );
     }
     return null;

@@ -1,5 +1,5 @@
 
-import 'package:openapi/api.dart' show ContentId, ProfileContent, ProfileContentVersion;
+import 'package:openapi/api.dart' show ContentId, MyProfileContent, ProfileContentVersion;
 import '../account_database.dart';
 
 import 'package:drift/drift.dart';
@@ -11,7 +11,7 @@ class DaoCurrentContent extends DatabaseAccessor<AccountDatabase> with _$DaoCurr
   DaoCurrentContent(AccountDatabase db) : super(db);
 
   Future<void> setApiProfileContent({
-    required ProfileContent content,
+    required MyProfileContent content,
     required ProfileContentVersion version,
   }) async {
     await into(account).insertOnConflictUpdate(
