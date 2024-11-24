@@ -4,6 +4,8 @@ repository contains the frontend part.
 
 The app is under development and it is not ready for production.
 
+<img src="/../images/profiles-view.jpg?raw=true" alt="Profiles view screenshot" width="30%">
+
 ## Update server API bindings
 
 1. Install node version manager (nvm) <https://github.com/nvm-sh/nvm>
