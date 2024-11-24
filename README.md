@@ -219,6 +219,13 @@ flutter create --platforms ios --project-name app .
 Other new files or changes which `flutter create` command creates can be
 removed.
 
+## Contributions
+
+Only bug fixes or documentation improvements are accepted at the moment.
+
+Contributions must have the same license as the project (dual-licensed with
+MIT and Apache 2.0).
+
 ## License
 
 MIT License or Apache License 2.0
