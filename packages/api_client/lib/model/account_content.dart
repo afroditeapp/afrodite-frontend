@@ -14,25 +14,41 @@ class AccountContent {
   /// Returns a new [AccountContent] instance.
   AccountContent({
     this.data = const [],
+    required this.maxContentCount,
+    required this.unusedContentWaitSeconds,
   });
 
   List<ContentInfoDetailed> data;
 
+  /// Minimum value: 0
+  int maxContentCount;
+
+  /// Content can be removed when - [ContentInfoDetailed::usage_end_time] and   [ContentInfoDetailed::usage_start_time] are empty - [ContentInfoDetailed::usage_end_time] is not empty   and [Self::unused_content_wait_seconds] has elapsed from the   [ContentInfoDetailed::usage_end_time]
+  ///
+  /// Minimum value: 0
+  int unusedContentWaitSeconds;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is AccountContent &&
-    _deepEquality.equals(other.data, data);
+    _deepEquality.equals(other.data, data) &&
+    other.maxContentCount == maxContentCount &&
+    other.unusedContentWaitSeconds == unusedContentWaitSeconds;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (data.hashCode);
+    (data.hashCode) +
+    (maxContentCount.hashCode) +
+    (unusedContentWaitSeconds.hashCode);
 
   @override
-  String toString() => 'AccountContent[data=$data]';
+  String toString() => 'AccountContent[data=$data, maxContentCount=$maxContentCount, unusedContentWaitSeconds=$unusedContentWaitSeconds]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'data'] = this.data;
+      json[r'max_content_count'] = this.maxContentCount;
+      json[r'unused_content_wait_seconds'] = this.unusedContentWaitSeconds;
     return json;
   }
 
@@ -56,6 +72,8 @@ class AccountContent {
 
       return AccountContent(
         data: ContentInfoDetailed.listFromJson(json[r'data']),
+        maxContentCount: mapValueOfType<int>(json, r'max_content_count')!,
+        unusedContentWaitSeconds: mapValueOfType<int>(json, r'unused_content_wait_seconds')!,
       );
     }
     return null;
@@ -104,6 +122,8 @@ class AccountContent {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'data',
+    'max_content_count',
+    'unused_content_wait_seconds',
   };
 }
 

@@ -10,7 +10,7 @@
 
 part of openapi.api;
 
-/// Subset of NextQueueNumberType containing only moderation queue types.
+
 class ModerationQueueType {
   /// Instantiate a new enum with the provided [value].
   const ModerationQueueType._(this.value);

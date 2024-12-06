@@ -1053,15 +1053,6 @@
   "@profile_grid_screen_initial_moderation_rejected": {
     "description": "Info text that initial moderation was rejected"
   },
-  "profile_grid_screen_initial_moderation_waiting": "Your position in moderation queue: {p0}",
-  "@profile_grid_screen_initial_moderation_waiting": {
-    "description": "Info text that shows initial moderation queue number",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      }
-    }
-  },
   "profile_grid_screen_no_profiles_found_description_filters_disabled": "Spread the word about the app in social media",
   "@profile_grid_screen_no_profiles_found_description_filters_disabled": {
     "description": "Description displayed when there is no profiles and there is no filters enabled"

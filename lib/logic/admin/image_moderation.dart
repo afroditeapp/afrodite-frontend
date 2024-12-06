@@ -1,12 +1,12 @@
 import "dart:collection";
 
+import "package:app/api/api_manager.dart";
+import "package:app/utils/result.dart";
 import "package:async/async.dart";
 import "package:openapi/api.dart";
 import "package:app/data/login_repository.dart";
 import "package:app/data/media_repository.dart";
-import "package:app/utils/api.dart";
 import "package:rxdart/rxdart.dart";
-
 
 enum ImageModerationStatus {
   loading,
@@ -23,7 +23,7 @@ class Denied implements ContentStatus {}
 
 class ModerationRequestState {
     final List<ContentStatus> list;
-    final Moderation m;
+    final ProfileContentPendingModeration m;
     bool sentToServer = false;
 
     ModerationRequestState(this.m, this.list);
@@ -38,8 +38,16 @@ class ModerationRequestState {
       }
       sentToServer = true;
 
-      final accpeted = !list.any((element) => element is Denied);
-      await LoginRepository.getInstance().repositories.media.handleModerationRequest(m.requestCreatorId, accpeted);
+      final accepted = !list.any((element) => element is Denied);
+      final api = LoginRepository.getInstance().repositories.api;
+      await api.mediaAdminAction((api) => api.postModerateProfileContent(
+        PostModerateProfileContent(
+          accept: accepted,
+          accountId: m.accountId,
+          contentId: m.contentId,
+        )
+      ));
+
     }
 }
 
@@ -90,16 +98,18 @@ class ImageModerationLogic {
 
   var cacher = ModerationCacher();
   var qType = ModerationQueueType.initialMediaModeration;
+  var showContentWhichBotsCanModerate = false;
   var loadManager = LoadMoreManager();
 
   Stream<ImageModerationStatus> get imageModerationStatus => _imageModerationStatus.stream;
 
-  void reset(ModerationQueueType queueType) {
+  void reset(ModerationQueueType queueType, bool showContentWhichBotsCanModerate) {
     qType = queueType;
+    this.showContentWhichBotsCanModerate = showContentWhichBotsCanModerate;
     _imageModerationStatus.add(ImageModerationStatus.loading);
     loadManager = LoadMoreManager();
     cacher = ModerationCacher();
-    cacher.getMoreModerationRequests(queueType).then((value) {
+    cacher.getMoreModerationRequests(queueType, showContentWhichBotsCanModerate).then((value) {
       final firstState = value.firstOrNull;
       if (firstState == null || firstState is AllModerated) {
         _imageModerationStatus.add(ImageModerationStatus.allModerated);
@@ -115,7 +125,7 @@ class ImageModerationLogic {
       return;
     }
 
-    yield* loadManager.getImageRow(index, qType, cacher);
+    yield* loadManager.getImageRow(index, qType, showContentWhichBotsCanModerate, cacher);
   }
 
   void moderateImageRow(int index, bool accept) {
@@ -157,6 +167,7 @@ class LoadMoreManager {
   Stream<ImageRowState> getImageRow(
     int i,
     ModerationQueueType queueType,
+    bool showContentWhichBotsCanModerate,
     ModerationCacher cacher,
   ) async* {
 
@@ -174,7 +185,7 @@ class LoadMoreManager {
         case Idle():
           final newState = AlreadyLoading();
           state = newState;
-          final imgStates = await cacher.getMoreModerationRequests(queueType);
+          final imgStates = await cacher.getMoreModerationRequests(queueType, showContentWhichBotsCanModerate);
           handleNewStates(imgStates);
           newState.completed.add(true);
           state = Idle();
@@ -193,28 +204,39 @@ class LoadMoreManager {
 }
 
 class ModerationCacher {
-  final HashSet<Moderation> alreadyStoredModerations = HashSet();
+  final HashSet<ProfileContentPendingModeration> alreadyStoredModerations = HashSet();
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
+  final ApiManager api = LoginRepository.getInstance().repositories.api;
 
   /// Return only new ImageRowStates
-  Future<List<ImageRowState>> getMoreModerationRequests(ModerationQueueType queueType) async {
-    ModerationList requests = await media.nextModerationListFromServer(queueType);
+  Future<List<ImageRowState>> getMoreModerationRequests(
+    ModerationQueueType queueType,
+    bool showContentWhichBotsCanModerate,
+  ) async {
+    final contentList = await api.mediaAdmin(
+      (api) => api.getProfileContentPendingModerationList(
+        MediaContentType.jpegImage,
+        queueType,
+        showContentWhichBotsCanModerate
+      )
+    ).ok() ?? GetProfileContentPendingModerationList();
 
-    if (requests.list.isEmpty) {
+    if (contentList.values.isEmpty) {
       return List.generate(10, (index) => AllModerated());
     }
 
     final newStates = <ImageRowState>[];
 
-    for (Moderation m in requests.list) {
+    for (ProfileContentPendingModeration m in contentList.values) {
       if (alreadyStoredModerations.contains(m)) {
         continue;
       }
 
-      var securitySelfie = await media.getSecuritySelfie(m.requestCreatorId);
-      securitySelfie ??= await media.getPendingSecuritySelfie(m.requestCreatorId);
+      var securitySelfie = await media.getSecuritySelfie(m.accountId);
 
-      final cList = m.contentList();
+      // TODO(refactor): This code can possibly be simplified as there is only
+      // one content in ProfileContentPendingModeration.
+      final cList = [m.contentId];
       final List<ContentStatus> cStates = cList.map((e) => const ModerationDecicionNeeded() as ContentStatus).toList();
       final ModerationRequestState requestEntry = ModerationRequestState(
         m,

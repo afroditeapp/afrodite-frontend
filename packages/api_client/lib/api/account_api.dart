@@ -437,7 +437,7 @@ class AccountApi {
 
   /// Complete initial setup.
   ///
-  /// Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.  - Account must have a moderation request.  - The current or pending security image of the account is in the request.  - The current or pending first profile image of the account is in the    request.  
+  /// Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.  
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> postCompleteSetupWithHttpInfo() async {
@@ -467,7 +467,7 @@ class AccountApi {
 
   /// Complete initial setup.
   ///
-  /// Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.  - Account must have a moderation request.  - The current or pending security image of the account is in the request.  - The current or pending first profile image of the account is in the    request.  
+  /// Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.  
   Future<void> postCompleteSetup() async {
     final response = await postCompleteSetupWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {

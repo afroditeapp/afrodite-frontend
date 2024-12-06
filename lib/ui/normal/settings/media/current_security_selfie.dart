@@ -41,7 +41,7 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
 
           return BlocBuilder<ContentBloc, ContentData>(
             builder: (context, contentState) {
-              final securitySelfie = contentState.currentOrPendingSecurityContent;
+              final securitySelfie = contentState.currentSecurityContent;
               if (securitySelfie == null) {
                 return Center(child: Text(context.strings.generic_error));
               }

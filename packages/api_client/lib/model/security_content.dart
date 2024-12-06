@@ -13,30 +13,36 @@ part of openapi.api;
 class SecurityContent {
   /// Returns a new [SecurityContent] instance.
   SecurityContent({
-    this.c0,
+    this.c,
+    required this.sv,
   });
 
-  ContentInfoWithFd? c0;
+  ContentInfoWithFd? c;
+
+  MediaContentSyncVersion sv;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SecurityContent &&
-    other.c0 == c0;
+    other.c == c &&
+    other.sv == sv;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (c0 == null ? 0 : c0!.hashCode);
+    (c == null ? 0 : c!.hashCode) +
+    (sv.hashCode);
 
   @override
-  String toString() => 'SecurityContent[c0=$c0]';
+  String toString() => 'SecurityContent[c=$c, sv=$sv]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.c0 != null) {
-      json[r'c0'] = this.c0;
+    if (this.c != null) {
+      json[r'c'] = this.c;
     } else {
-      json[r'c0'] = null;
+      json[r'c'] = null;
     }
+      json[r'sv'] = this.sv;
     return json;
   }
 
@@ -59,7 +65,8 @@ class SecurityContent {
       }());
 
       return SecurityContent(
-        c0: ContentInfoWithFd.fromJson(json[r'c0']),
+        c: ContentInfoWithFd.fromJson(json[r'c']),
+        sv: MediaContentSyncVersion.fromJson(json[r'sv'])!,
       );
     }
     return null;
@@ -107,6 +114,7 @@ class SecurityContent {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'sv',
   };
 }
 

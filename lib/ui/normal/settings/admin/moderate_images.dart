@@ -31,7 +31,12 @@ const ROW_HEIGHT = 300.0;
 
 class ModerateImagesPage extends StatefulWidget {
   final ModerationQueueType queueType;
-  const ModerateImagesPage({required this.queueType, Key? key}) : super(key: key);
+  final bool showContentWhichBotsCanModerate;
+  const ModerateImagesPage({
+    required this.queueType,
+    required this.showContentWhichBotsCanModerate,
+    super.key,
+  });
 
   @override
   State<ModerateImagesPage> createState() => _ModerateImagesPageState();
@@ -45,7 +50,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
   @override
   void initState() {
     super.initState();
-    logic.reset(widget.queueType);
+    logic.reset(widget.queueType, widget.showContentWhichBotsCanModerate);
     _controller.addListener(() {
       final offset = _controller.offset - ROW_HEIGHT;
       final position = offset ~/ ROW_HEIGHT;
@@ -119,7 +124,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
     final Widget securitySelfieWidget;
     if (securitySelfie != null) {
       securitySelfieWidget =
-        buildImage(contex, r.state.m.requestCreatorId, securitySelfie, null, maxWidth/2, height);
+        buildImage(contex, r.state.m.accountId, securitySelfie, null, maxWidth/2, height);
     } else {
       securitySelfieWidget =
         SizedBox(width: maxWidth/2, height: height, child: Row(
@@ -144,7 +149,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           securitySelfieWidget,
-          buildImage(contex, r.state.m.requestCreatorId, r.target, index, maxWidth/2, height),
+          buildImage(contex, r.state.m.accountId, r.target, index, maxWidth/2, height),
         ],
       ),
     );

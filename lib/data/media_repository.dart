@@ -6,7 +6,6 @@ import 'dart:async';
 import 'package:app/data/general/notification/state/moderation_request_status.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:async/async.dart' show StreamExtensions;
-import 'package:camera/camera.dart';
 import 'package:drift/drift.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -19,8 +18,6 @@ import 'package:app/data/media/send_to_slot.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/ui/normal/settings/media/retry_initial_setup_images.dart';
-import 'package:app/utils/api.dart';
-import 'package:app/utils/app_error.dart';
 import 'package:app/utils/option.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
@@ -113,26 +110,14 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     }
   }
 
-  Future<ModerationList> nextModerationListFromServer(ModerationQueueType queue) async =>
-    await api.mediaAdmin((api) => api.patchModerationRequestList(queue)).ok() ?? ModerationList();
-
-  Future<void> handleModerationRequest(AccountId accountId, bool accept) =>
-    api.mediaAdminAction((api) => api.postHandleModerationRequest(
-      accountId.aid,
-      HandleModerationRequest(accept: accept))
-    );
-
   Future<ContentId?> getSecuritySelfie(AccountId account) =>
     api.media((api) => api.getSecurityContentInfo(account.aid))
       .ok()
-      .map((img) => img.c0?.cid);
+      .map((img) => img.c?.cid);
 
-  Future<ContentId?> getPendingSecuritySelfie(AccountId account) =>
-    api.media((api) => api.getPendingSecurityContentInfo(account.aid))
-      .ok()
-      .map((img) => img.c0?.cid);
+  // TODO(prod): Merge my profile and security content APIs
 
-  /// Reload current and pending profile content.
+  /// Reload current profile content.
   Future<Result<void, void>> reloadMyProfileContent() async {
     final infoResult = await api.media((api) => api.getMyProfileContentInfo()).ok();
     final info = infoResult?.c;
@@ -141,37 +126,17 @@ class MediaRepository extends DataRepositoryWithLifecycle {
       return const Err(null);
     }
 
-    final r1 = await db.accountAction((db) => db.daoCurrentContent.setApiProfileContent(content: info, version: version));
-    if (r1.isErr()) {
-      return const Err(null);
-    }
-
-    final pendingInfo = await api.media((api) => api.getPendingProfileContentInfo(currentUser.aid)).ok();
-    if (pendingInfo == null) {
-      return const Err(null);
-    }
-
-    return await db.accountAction((db) => db.daoPendingContent.setApiPendingProfileContent(pendingContent: pendingInfo));
+    return await db.accountAction((db) => db.daoCurrentContent.setApiProfileContent(content: info, version: version));
   }
 
-  /// Reload current and pending security content.
+  /// Reload current security content.
   Future<Result<void, void>> reloadMySecurityContent() async {
     final info = await api.media((api) => api.getSecurityContentInfo(currentUser.aid)).ok();
     if (info == null) {
       return const Err(null);
     }
 
-    final r = await db.accountAction((db) => db.daoCurrentContent.setSecurityContent(securityContent: Value(info.c0?.cid)));
-    if (r.isErr()) {
-      return const Err(null);
-    }
-
-    final pendingInfo = await api.media((api) => api.getPendingSecurityContentInfo(currentUser.aid)).ok();
-    if (pendingInfo == null) {
-      return const Err(null);
-    }
-
-    return await db.accountAction((db) => db.daoPendingContent.setPendingSecurityContent(pendingSecurityContent: Value(pendingInfo.c0?.cid)));
+    return await db.accountAction((db) => db.daoCurrentContent.setSecurityContent(securityContent: Value(info.c?.cid)));
   }
 
   /// Last event from stream is ProcessingCompleted or SendToSlotError.
@@ -183,47 +148,25 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   // TODO(prod): Consider sync version for moderation request state
   // as notification does not show if the event is lost
 
-  Future<void> handleModerationRequestCompletedEvent() async {
-    final r = await api.media((api) => api.getModerationRequest()).ok();
-    final s = r?.request?.state;
+  Future<void> handleInitialModerationCompletedEvent() async {
+    final r = await api.media((api) => api.postGetInitialContentModerationCompleted()).ok();
+    final s = r?.accepted;
     if (s != null) {
       final simpleStatus = switch (s) {
-        ModerationRequestState.accepted => ModerationRequestStateSimple.accepted,
-        ModerationRequestState.rejected => ModerationRequestStateSimple.rejected,
-        _ => null,
+        true => ModerationRequestStateSimple.accepted,
+        false => ModerationRequestStateSimple.rejected,
       };
-
-      if (simpleStatus == null) {
-        return;
-      }
 
       await NotificationModerationRequestStatus.getInstance().show(simpleStatus, accountBackgroundDb);
     }
   }
 
-  Future<Result<ModerationRequest?, void>> currentModerationRequestState() =>
-    api.media((api) => api.getModerationRequest())
-      .mapOk((v) => v.request);
-
   Future<Result<void, void>> setProfileContent(SetProfileContent imgInfo) =>
     api.mediaAction((api) => api.putProfileContent(imgInfo))
       .onOk(() => reloadMyProfileContent());
 
-  Future<Result<void, void>> setPendingProfileContent(SetProfileContent imgInfo) =>
-    api.mediaAction((api) => api.putPendingProfileContent(imgInfo))
-      .onOk(() => reloadMyProfileContent());
-
   Future<Result<AccountContent, void>> loadAllContent() =>
     api.media((api) => api.getAllAccountMediaContent(currentUser.aid));
-
-  Future<Result<void, void>> createNewModerationRequest(List<ContentId> content) =>
-    Future.value(ModerationRequestContentExtensions.fromList(content))
-      .okOr(const MissingValue())
-      .inspectErr((e) => e.logError(log))
-      .andThen((r) => api.mediaAction((api) => api.putModerationRequest(r)));
-
-  Future<Result<void, void>> deleteCurrentModerationRequest() =>
-    api.mediaAction((api) => api.deleteModerationRequest());
 
   Future<Result<void, void>> retryInitialSetupImages(RetryInitialSetupImages content) async {
     final result = await InitialSetupUtils(api).handleInitialSetupImages(content.securitySelfie, content.profileImgs);

@@ -16,18 +16,20 @@ class MediaAdminApi {
 
   final ApiClient apiClient;
 
-  /// Get current list of moderation requests in my moderation queue. Additional requests will be added to my queue if necessary.
-  ///
-  /// ## Access  Account with `admin_moderate_images` permission is required to access this route.  
+  /// Get first page of pending profile content moderations. Oldest item is first and count 25.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
+  /// * [MediaContentType] contentType (required):
+  ///
   /// * [ModerationQueueType] queue (required):
-  Future<Response> patchModerationRequestListWithHttpInfo(ModerationQueueType queue,) async {
+  ///
+  /// * [bool] showContentWhichBotsCanModerate (required):
+  Future<Response> getProfileContentPendingModerationListWithHttpInfo(MediaContentType contentType, ModerationQueueType queue, bool showContentWhichBotsCanModerate,) async {
     // ignore: prefer_const_declarations
-    final path = r'/6GF9AybnmCb3J1d4ZfTT95UoiSg';
+    final path = r'/Kfz_n_yfrXnIcEOjh0nDBdGEXTg';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -36,14 +38,16 @@ class MediaAdminApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
+      queryParams.addAll(_queryParams('', 'content_type', contentType));
       queryParams.addAll(_queryParams('', 'queue', queue));
+      queryParams.addAll(_queryParams('', 'show_content_which_bots_can_moderate', showContentWhichBotsCanModerate));
 
     const contentTypes = <String>[];
 
 
     return apiClient.invokeAPI(
       path,
-      'PATCH',
+      'GET',
       queryParams,
       postBody,
       headerParams,
@@ -52,15 +56,17 @@ class MediaAdminApi {
     );
   }
 
-  /// Get current list of moderation requests in my moderation queue. Additional requests will be added to my queue if necessary.
-  ///
-  /// ## Access  Account with `admin_moderate_images` permission is required to access this route.  
+  /// Get first page of pending profile content moderations. Oldest item is first and count 25.
   ///
   /// Parameters:
   ///
+  /// * [MediaContentType] contentType (required):
+  ///
   /// * [ModerationQueueType] queue (required):
-  Future<ModerationList?> patchModerationRequestList(ModerationQueueType queue,) async {
-    final response = await patchModerationRequestListWithHttpInfo(queue,);
+  ///
+  /// * [bool] showContentWhichBotsCanModerate (required):
+  Future<GetProfileContentPendingModerationList?> getProfileContentPendingModerationList(MediaContentType contentType, ModerationQueueType queue, bool showContentWhichBotsCanModerate,) async {
+    final response = await getProfileContentPendingModerationListWithHttpInfo(contentType, queue, showContentWhichBotsCanModerate,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -68,30 +74,27 @@ class MediaAdminApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ModerationList',) as ModerationList;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileContentPendingModerationList',) as GetProfileContentPendingModerationList;
     
     }
     return null;
   }
 
-  /// Handle moderation request of some account.
+  /// Rejected category and details can be set only when the content is rejected.
   ///
-  /// ## Access  Account with `admin_moderate_images` permission is required to access this route.  
+  /// This route will fail if the content is in slot.  Also profile visibility moves from pending to normal when all profile content is moderated as accepted.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [String] aid (required):
-  ///
-  /// * [HandleModerationRequest] handleModerationRequest (required):
-  Future<Response> postHandleModerationRequestWithHttpInfo(String aid, HandleModerationRequest handleModerationRequest,) async {
+  /// * [PostModerateProfileContent] postModerateProfileContent (required):
+  Future<Response> postModerateProfileContentWithHttpInfo(PostModerateProfileContent postModerateProfileContent,) async {
     // ignore: prefer_const_declarations
-    final path = r'/SiEktmT-jyNLA69x7qffV8c0YUk/{aid}'
-      .replaceAll('{aid}', aid);
+    final path = r'/_pTQ1YLcXEWy_Zfv5Fybbm-E0UE';
 
     // ignore: prefer_final_locals
-    Object? postBody = handleModerationRequest;
+    Object? postBody = postModerateProfileContent;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -111,17 +114,15 @@ class MediaAdminApi {
     );
   }
 
-  /// Handle moderation request of some account.
+  /// Rejected category and details can be set only when the content is rejected.
   ///
-  /// ## Access  Account with `admin_moderate_images` permission is required to access this route.  
+  /// This route will fail if the content is in slot.  Also profile visibility moves from pending to normal when all profile content is moderated as accepted.
   ///
   /// Parameters:
   ///
-  /// * [String] aid (required):
-  ///
-  /// * [HandleModerationRequest] handleModerationRequest (required):
-  Future<void> postHandleModerationRequest(String aid, HandleModerationRequest handleModerationRequest,) async {
-    final response = await postHandleModerationRequestWithHttpInfo(aid, handleModerationRequest,);
+  /// * [PostModerateProfileContent] postModerateProfileContent (required):
+  Future<void> postModerateProfileContent(PostModerateProfileContent postModerateProfileContent,) async {
+    final response = await postModerateProfileContentWithHttpInfo(postModerateProfileContent,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

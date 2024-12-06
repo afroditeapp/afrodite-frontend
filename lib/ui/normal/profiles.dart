@@ -1,16 +1,18 @@
 
+import 'package:app/logic/media/content.dart';
+import 'package:app/model/freezed/logic/media/content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/media/current_moderation_request.dart';
+import 'package:app/logic/media/initial_content_moderation.dart';
 import 'package:app/logic/profile/edit_profile_filtering_settings.dart';
 import 'package:app/logic/profile/profile_filtering_settings.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/model/freezed/logic/media/current_moderation_request.dart';
+import 'package:app/model/freezed/logic/media/initial_content_moderation.dart';
 import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:app/ui/normal/profiles/filter_profiles.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
@@ -85,14 +87,8 @@ class _ProfileViewState extends State<ProfileView> {
         } else if (data.visibility == ProfileVisibility.pendingPublic) {
           return LayoutBuilder(
             builder: (context, constraints) {
-              return RefreshIndicator(
-                onRefresh: () async {
-                  context.read<CurrentModerationRequestBloc>().add(Reload());
-                },
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: profileIsInModerationInfo(context),
-                ),
+              return SingleChildScrollView(
+                child: profileIsInModerationInfo(context),
               );
             }
           );
@@ -127,7 +123,7 @@ class _ProfileViewState extends State<ProfileView> {
           const Padding(padding: EdgeInsets.all(16)),
           Text(context.strings.profile_grid_screen_initial_moderation_ongoing),
           const Padding(padding: EdgeInsets.all(16)),
-          ShowModerationQueueProgress(bloc: context.read<CurrentModerationRequestBloc>()),
+          const ShowModerationQueueProgress(),
         ],
       ),
     );
@@ -136,8 +132,7 @@ class _ProfileViewState extends State<ProfileView> {
 
 
 class ShowModerationQueueProgress extends StatefulWidget {
-  final CurrentModerationRequestBloc bloc;
-  const ShowModerationQueueProgress({required this.bloc, super.key});
+  const ShowModerationQueueProgress({super.key});
 
   @override
   State<ShowModerationQueueProgress> createState() => _ShowModerationQueueProgressState();
@@ -145,56 +140,38 @@ class ShowModerationQueueProgress extends StatefulWidget {
 
 class _ShowModerationQueueProgressState extends State<ShowModerationQueueProgress> {
 
-  ModerationRequest? cachedCurrentRequest;
-
-  @override
-  void initState() {
-    super.initState();
-    widget.bloc.add(ReloadOnceConnected());
-  }
-
   @override
   Widget build(BuildContext context) {
     return blocWidgetForProcessingState();
   }
 
   Widget blocWidgetForProcessingState() {
-    return BlocBuilder<CurrentModerationRequestBloc, CurrentModerationRequestData>(
+    return BlocBuilder<ContentBloc, ContentData>(
       builder: (context, state) {
-        final newRequest = state.moderationRequest;
-        final previousRequest = cachedCurrentRequest;
-        if (newRequest == null) {
-          if (state.isError) {
-            return Text(context.strings.generic_error);
-          } else if (state.isLoading && previousRequest != null) {
-            return widgetForProcessingState(context, previousRequest);
-          } else {
-            return const Text("");
-          }
-        } else {
-          cachedCurrentRequest = newRequest;
-          return widgetForProcessingState(context, newRequest);
-        }
+        // TODO(prod): List all rejected images
+        // TODO(prod): Show button to take new security selfie if needed
+        // TODO(prod): Show button to edit profile pictures if needed
+        return const Text("");
       },
     );
   }
 
-  Widget widgetForProcessingState(BuildContext context, ModerationRequest request) {
-    if (request.state == ModerationRequestState.waiting) {
-      final number = request.waitingPosition ?? 0;
-      return Text(context.strings.profile_grid_screen_initial_moderation_waiting(number.toString()));
-    } else if (request.state == ModerationRequestState.inProgress) {
+  Widget widgetForAcceptedValue(BuildContext context, bool accepted) {
+    if (accepted) {
       return Text(context.strings.profile_grid_screen_initial_moderation_in_progress);
-    } else if (request.state == ModerationRequestState.rejected) {
-      return Column(
-        children: [
-          Text(context.strings.profile_grid_screen_initial_moderation_rejected),
-          const Padding(padding: EdgeInsets.all(8)),
-          retryModerationRequestButton(context),
-        ],
-      );
     } else {
       return const SizedBox.shrink();
     }
+
+    // TODO: Remove?
+    // } else if (request.state == ModerationRequestState.rejected) {
+    //   return Column(
+    //     children: [
+    //       Text(context.strings.profile_grid_screen_initial_moderation_rejected),
+    //       const Padding(padding: EdgeInsets.all(8)),
+    //       retryModerationRequestButton(context),
+    //     ],
+    //   );
+    // } else {
   }
 }

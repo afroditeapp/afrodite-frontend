@@ -70,14 +70,14 @@ String parameterToString(dynamic value) {
   if (value is ClientType) {
     return ClientTypeTypeTransformer().encode(value).toString();
   }
+  if (value is ContentModerationState) {
+    return ContentModerationStateTypeTransformer().encode(value).toString();
+  }
   if (value is ContentProcessingStateType) {
     return ContentProcessingStateTypeTypeTransformer().encode(value).toString();
   }
   if (value is ContentSlot) {
     return ContentSlotTypeTransformer().encode(value).toString();
-  }
-  if (value is ContentState) {
-    return ContentStateTypeTransformer().encode(value).toString();
   }
   if (value is CurrentAccountInteractionState) {
     return CurrentAccountInteractionStateTypeTransformer().encode(value).toString();
@@ -93,9 +93,6 @@ String parameterToString(dynamic value) {
   }
   if (value is ModerationQueueType) {
     return ModerationQueueTypeTypeTransformer().encode(value).toString();
-  }
-  if (value is ModerationRequestState) {
-    return ModerationRequestStateTypeTransformer().encode(value).toString();
   }
   if (value is ProfileNameModerationState) {
     return ProfileNameModerationStateTypeTransformer().encode(value).toString();

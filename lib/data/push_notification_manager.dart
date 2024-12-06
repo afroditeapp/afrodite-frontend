@@ -213,7 +213,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         await _handlePushNotificationReceivedLikesChanged(v.receivedLikesChanged, accountBackgroundDb);
       }
       if ((v.value & 0x4) == 0x4) {
-        await _handlePushNotificationContentModerationRequestCompleted(v.contentModerationRequestCompleted, accountBackgroundDb);
+        await _handlePushNotificationInitialContentModerationCompleted(v.initialContentModerationCompleted, accountBackgroundDb);
       }
       if ((v.value & 0x8) == 0x8) {
         await _handlePushNotificationNewsChanged(v.newsChanged, accountBackgroundDb);
@@ -242,20 +242,15 @@ Future<void> _handlePushNotificationReceivedLikesChanged(NewReceivedLikesCountRe
   await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(r.v, r.c));
 }
 
-Future<void> _handlePushNotificationContentModerationRequestCompleted(ModerationRequestState? s, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+Future<void> _handlePushNotificationInitialContentModerationCompleted(InitialContentModerationCompletedResult? s, AccountBackgroundDatabaseManager accountBackgroundDb) async {
   if (s == null) {
     return;
   }
 
-  final simpleStatus = switch (s) {
-    ModerationRequestState.accepted => ModerationRequestStateSimple.accepted,
-    ModerationRequestState.rejected => ModerationRequestStateSimple.rejected,
-    _ => null,
+  final simpleStatus = switch (s.accepted) {
+    true => ModerationRequestStateSimple.accepted,
+    false => ModerationRequestStateSimple.rejected,
   };
-
-  if (simpleStatus == null) {
-    return;
-  }
 
   await NotificationModerationRequestStatus.getInstance().show(simpleStatus, accountBackgroundDb);
 }

@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class ModerationRequestId {
-  /// Returns a new [ModerationRequestId] instance.
-  ModerationRequestId({
-    required this.requestRowId,
+class MediaContentSyncVersion {
+  /// Returns a new [MediaContentSyncVersion] instance.
+  MediaContentSyncVersion({
+    required this.version,
   });
 
-  int requestRowId;
+  int version;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ModerationRequestId &&
-    other.requestRowId == requestRowId;
+  bool operator ==(Object other) => identical(this, other) || other is MediaContentSyncVersion &&
+    other.version == version;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (requestRowId.hashCode);
+    (version.hashCode);
 
   @override
-  String toString() => 'ModerationRequestId[requestRowId=$requestRowId]';
+  String toString() => 'MediaContentSyncVersion[version=$version]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'request_row_id'] = this.requestRowId;
+      json[r'version'] = this.version;
     return json;
   }
 
-  /// Returns a new [ModerationRequestId] instance and imports its values from
+  /// Returns a new [MediaContentSyncVersion] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ModerationRequestId? fromJson(dynamic value) {
+  static MediaContentSyncVersion? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class ModerationRequestId {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ModerationRequestId[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ModerationRequestId[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "MediaContentSyncVersion[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "MediaContentSyncVersion[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ModerationRequestId(
-        requestRowId: mapValueOfType<int>(json, r'request_row_id')!,
+      return MediaContentSyncVersion(
+        version: mapValueOfType<int>(json, r'version')!,
       );
     }
     return null;
   }
 
-  static List<ModerationRequestId> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ModerationRequestId>[];
+  static List<MediaContentSyncVersion> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <MediaContentSyncVersion>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ModerationRequestId.fromJson(row);
+        final value = MediaContentSyncVersion.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class ModerationRequestId {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ModerationRequestId> mapFromJson(dynamic json) {
-    final map = <String, ModerationRequestId>{};
+  static Map<String, MediaContentSyncVersion> mapFromJson(dynamic json) {
+    final map = <String, MediaContentSyncVersion>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ModerationRequestId.fromJson(entry.value);
+        final value = MediaContentSyncVersion.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class ModerationRequestId {
     return map;
   }
 
-  // maps a json object with a list of ModerationRequestId-objects as value to a dart map
-  static Map<String, List<ModerationRequestId>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ModerationRequestId>>{};
+  // maps a json object with a list of MediaContentSyncVersion-objects as value to a dart map
+  static Map<String, List<MediaContentSyncVersion>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<MediaContentSyncVersion>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ModerationRequestId.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = MediaContentSyncVersion.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +103,7 @@ class ModerationRequestId {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'request_row_id',
+    'version',
   };
 }
 

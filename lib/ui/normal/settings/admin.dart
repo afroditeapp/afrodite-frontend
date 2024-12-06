@@ -34,12 +34,18 @@ class AdminSettingsPage extends StatelessWidget {
       builder: (context, state) {
         List<Setting> settings = [];
 
-        if (state.permissions.adminModerateImages) {
-          settings.add(Setting.createSetting(Icons.image, "Moderate images (initial moderation)", () =>
-            MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.initialMediaModeration)),)
+        if (state.permissions.adminModerateProfileContent) {
+          settings.add(Setting.createSetting(Icons.image, "Moderate images (initial moderation, bot and human)", () =>
+            MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.initialMediaModeration, showContentWhichBotsCanModerate: true)),)
           ));
-          settings.add(Setting.createSetting(Icons.image, "Moderate images (normal)", () =>
-            MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.mediaModeration)),)
+          settings.add(Setting.createSetting(Icons.image, "Moderate images (initial moderation, human)", () =>
+            MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.initialMediaModeration, showContentWhichBotsCanModerate: false)),)
+          ));
+          settings.add(Setting.createSetting(Icons.image, "Moderate images (normal, bot and human)", () =>
+            MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: true)),)
+          ));
+          settings.add(Setting.createSetting(Icons.image, "Moderate images (normal, human)", () =>
+            MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: false)),)
           ));
         }
         if (state.permissions.adminServerMaintenanceRebootBackend ||

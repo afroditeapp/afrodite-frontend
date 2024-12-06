@@ -13,26 +13,39 @@ part of openapi.api;
 class ContentProcessingId {
   /// Returns a new [ContentProcessingId] instance.
   ContentProcessingId({
+    required this.aid,
     required this.id,
+    required this.slot,
   });
 
-  String id;
+  AccountId aid;
+
+  /// Server process specific unique ID
+  int id;
+
+  ContentSlot slot;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentProcessingId &&
-    other.id == id;
+    other.aid == aid &&
+    other.id == id &&
+    other.slot == slot;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (id.hashCode);
+    (aid.hashCode) +
+    (id.hashCode) +
+    (slot.hashCode);
 
   @override
-  String toString() => 'ContentProcessingId[id=$id]';
+  String toString() => 'ContentProcessingId[aid=$aid, id=$id, slot=$slot]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'aid'] = this.aid;
       json[r'id'] = this.id;
+      json[r'slot'] = this.slot;
     return json;
   }
 
@@ -55,7 +68,9 @@ class ContentProcessingId {
       }());
 
       return ContentProcessingId(
-        id: mapValueOfType<String>(json, r'id')!,
+        aid: AccountId.fromJson(json[r'aid'])!,
+        id: mapValueOfType<int>(json, r'id')!,
+        slot: ContentSlot.fromJson(json[r'slot'])!,
       );
     }
     return null;
@@ -103,7 +118,9 @@ class ContentProcessingId {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'aid',
     'id',
+    'slot',
   };
 }
 

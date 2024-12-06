@@ -13,10 +13,10 @@ part of openapi.api;
 class Permissions {
   /// Returns a new [Permissions] instance.
   Permissions({
-    this.adminModerateImages = false,
+    this.adminDeleteMediaContent = false,
+    this.adminModerateProfileContent = false,
     this.adminModerateProfileNames = false,
     this.adminModerateProfileTexts = false,
-    this.adminModerateProfiles = false,
     this.adminModifyPermissions = false,
     this.adminNewsCreate = false,
     this.adminNewsEditAll = false,
@@ -32,13 +32,13 @@ class Permissions {
     this.adminViewProfileHistory = false,
   });
 
-  bool adminModerateImages;
+  bool adminDeleteMediaContent;
+
+  bool adminModerateProfileContent;
 
   bool adminModerateProfileNames;
 
   bool adminModerateProfileTexts;
-
-  bool adminModerateProfiles;
 
   bool adminModifyPermissions;
 
@@ -70,10 +70,10 @@ class Permissions {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Permissions &&
-    other.adminModerateImages == adminModerateImages &&
+    other.adminDeleteMediaContent == adminDeleteMediaContent &&
+    other.adminModerateProfileContent == adminModerateProfileContent &&
     other.adminModerateProfileNames == adminModerateProfileNames &&
     other.adminModerateProfileTexts == adminModerateProfileTexts &&
-    other.adminModerateProfiles == adminModerateProfiles &&
     other.adminModifyPermissions == adminModifyPermissions &&
     other.adminNewsCreate == adminNewsCreate &&
     other.adminNewsEditAll == adminNewsEditAll &&
@@ -91,10 +91,10 @@ class Permissions {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (adminModerateImages.hashCode) +
+    (adminDeleteMediaContent.hashCode) +
+    (adminModerateProfileContent.hashCode) +
     (adminModerateProfileNames.hashCode) +
     (adminModerateProfileTexts.hashCode) +
-    (adminModerateProfiles.hashCode) +
     (adminModifyPermissions.hashCode) +
     (adminNewsCreate.hashCode) +
     (adminNewsEditAll.hashCode) +
@@ -110,14 +110,14 @@ class Permissions {
     (adminViewProfileHistory.hashCode);
 
   @override
-  String toString() => 'Permissions[adminModerateImages=$adminModerateImages, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminModerateProfiles=$adminModerateProfiles, adminModifyPermissions=$adminModifyPermissions, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProfileStatistics=$adminProfileStatistics, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
+  String toString() => 'Permissions[adminDeleteMediaContent=$adminDeleteMediaContent, adminModerateProfileContent=$adminModerateProfileContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminModifyPermissions=$adminModifyPermissions, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProfileStatistics=$adminProfileStatistics, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'admin_moderate_images'] = this.adminModerateImages;
+      json[r'admin_delete_media_content'] = this.adminDeleteMediaContent;
+      json[r'admin_moderate_profile_content'] = this.adminModerateProfileContent;
       json[r'admin_moderate_profile_names'] = this.adminModerateProfileNames;
       json[r'admin_moderate_profile_texts'] = this.adminModerateProfileTexts;
-      json[r'admin_moderate_profiles'] = this.adminModerateProfiles;
       json[r'admin_modify_permissions'] = this.adminModifyPermissions;
       json[r'admin_news_create'] = this.adminNewsCreate;
       json[r'admin_news_edit_all'] = this.adminNewsEditAll;
@@ -153,10 +153,10 @@ class Permissions {
       }());
 
       return Permissions(
-        adminModerateImages: mapValueOfType<bool>(json, r'admin_moderate_images') ?? false,
+        adminDeleteMediaContent: mapValueOfType<bool>(json, r'admin_delete_media_content') ?? false,
+        adminModerateProfileContent: mapValueOfType<bool>(json, r'admin_moderate_profile_content') ?? false,
         adminModerateProfileNames: mapValueOfType<bool>(json, r'admin_moderate_profile_names') ?? false,
         adminModerateProfileTexts: mapValueOfType<bool>(json, r'admin_moderate_profile_texts') ?? false,
-        adminModerateProfiles: mapValueOfType<bool>(json, r'admin_moderate_profiles') ?? false,
         adminModifyPermissions: mapValueOfType<bool>(json, r'admin_modify_permissions') ?? false,
         adminNewsCreate: mapValueOfType<bool>(json, r'admin_news_create') ?? false,
         adminNewsEditAll: mapValueOfType<bool>(json, r'admin_news_edit_all') ?? false,

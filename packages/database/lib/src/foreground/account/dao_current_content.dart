@@ -1,4 +1,5 @@
 
+import 'package:database/src/utils.dart';
 import 'package:openapi/api.dart' show ContentId, MyProfileContent, ProfileContentVersion;
 import '../account_database.dart';
 
@@ -17,18 +18,18 @@ class DaoCurrentContent extends DatabaseAccessor<AccountDatabase> with _$DaoCurr
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
-        uuidContentId0: Value(content.c0?.cid),
-        uuidContentId1: Value(content.c1?.cid),
-        uuidContentId2: Value(content.c2?.cid),
-        uuidContentId3: Value(content.c3?.cid),
-        uuidContentId4: Value(content.c4?.cid),
-        uuidContentId5: Value(content.c5?.cid),
-        faceDetectedContentId0: Value(content.c0?.fd),
-        faceDetectedContentId1: Value(content.c1?.fd),
-        faceDetectedContentId2: Value(content.c2?.fd),
-        faceDetectedContentId3: Value(content.c3?.fd),
-        faceDetectedContentId4: Value(content.c4?.fd),
-        faceDetectedContentId5: Value(content.c5?.fd),
+        uuidContentId0: Value(content.c.getAtOrNull(0)?.cid),
+        uuidContentId1: Value(content.c.getAtOrNull(1)?.cid),
+        uuidContentId2: Value(content.c.getAtOrNull(2)?.cid),
+        uuidContentId3: Value(content.c.getAtOrNull(3)?.cid),
+        uuidContentId4: Value(content.c.getAtOrNull(4)?.cid),
+        uuidContentId5: Value(content.c.getAtOrNull(5)?.cid),
+        faceDetectedContentId0: Value(content.c.getAtOrNull(0)?.fd),
+        faceDetectedContentId1: Value(content.c.getAtOrNull(1)?.fd),
+        faceDetectedContentId2: Value(content.c.getAtOrNull(2)?.fd),
+        faceDetectedContentId3: Value(content.c.getAtOrNull(3)?.fd),
+        faceDetectedContentId4: Value(content.c.getAtOrNull(4)?.fd),
+        faceDetectedContentId5: Value(content.c.getAtOrNull(5)?.fd),
         primaryContentGridCropSize: Value(content.gridCropSize),
         primaryContentGridCropX: Value(content.gridCropX),
         primaryContentGridCropY: Value(content.gridCropY),

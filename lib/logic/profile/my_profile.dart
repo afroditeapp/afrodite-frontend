@@ -22,7 +22,6 @@ class SetProfile extends MyProfileEvent {
   final ProfileUpdate profile;
   final SetProfileContent pictures;
   final bool unlimitedLikes;
-  final bool initialModerationOngoing;
 
   // Filters (when unlimited likes is disabled, the unlimited likes
   // filter must be also disabled)
@@ -35,7 +34,6 @@ class SetProfile extends MyProfileEvent {
     this.pictures,
     {
       required this.unlimitedLikes,
-      required this.initialModerationOngoing,
       required this.currentAttributeFilters,
       required this.currentLastSeenTimeFilter,
       required this.currentUnlimitedLikesFilter,
@@ -114,14 +112,8 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
           failureDetected = true;
         }
 
-        if (data.initialModerationOngoing) {
-          if (await media.setPendingProfileContent(data.pictures).isErr()) {
-            failureDetected = true;
-          }
-        } else {
-          if (await media.setProfileContent(data.pictures).isErr()) {
-            failureDetected = true;
-          }
+        if (await media.setProfileContent(data.pictures).isErr()) {
+          failureDetected = true;
         }
 
         if (failureDetected) {

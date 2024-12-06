@@ -38,7 +38,7 @@ class ProfileEntryDownloader {
         if (contentInfo != null) {
           await db.profileAction((db) => db.updateProfileContent(accountId, contentInfo, contentVersion));
 
-          final primaryContentId = contentInfo.c0?.cid;
+          final primaryContentId = contentInfo.c.firstOrNull?.cid;
           if (primaryContentId == null) {
             log.warning("Profile content info is missing");
             return Err(OtherProfileDownloadError());

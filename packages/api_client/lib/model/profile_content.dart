@@ -13,29 +13,14 @@ part of openapi.api;
 class ProfileContent {
   /// Returns a new [ProfileContent] instance.
   ProfileContent({
-    this.c0,
-    this.c1,
-    this.c2,
-    this.c3,
-    this.c4,
-    this.c5,
+    this.c = const [],
     this.gridCropSize,
     this.gridCropX,
     this.gridCropY,
   });
 
   /// Primary profile image which is shown in grid view.
-  ContentInfo? c0;
-
-  ContentInfo? c1;
-
-  ContentInfo? c2;
-
-  ContentInfo? c3;
-
-  ContentInfo? c4;
-
-  ContentInfo? c5;
+  List<ContentInfo> c;
 
   double? gridCropSize;
 
@@ -45,12 +30,7 @@ class ProfileContent {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileContent &&
-    other.c0 == c0 &&
-    other.c1 == c1 &&
-    other.c2 == c2 &&
-    other.c3 == c3 &&
-    other.c4 == c4 &&
-    other.c5 == c5 &&
+    _deepEquality.equals(other.c, c) &&
     other.gridCropSize == gridCropSize &&
     other.gridCropX == gridCropX &&
     other.gridCropY == gridCropY;
@@ -58,51 +38,17 @@ class ProfileContent {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (c0 == null ? 0 : c0!.hashCode) +
-    (c1 == null ? 0 : c1!.hashCode) +
-    (c2 == null ? 0 : c2!.hashCode) +
-    (c3 == null ? 0 : c3!.hashCode) +
-    (c4 == null ? 0 : c4!.hashCode) +
-    (c5 == null ? 0 : c5!.hashCode) +
+    (c.hashCode) +
     (gridCropSize == null ? 0 : gridCropSize!.hashCode) +
     (gridCropX == null ? 0 : gridCropX!.hashCode) +
     (gridCropY == null ? 0 : gridCropY!.hashCode);
 
   @override
-  String toString() => 'ProfileContent[c0=$c0, c1=$c1, c2=$c2, c3=$c3, c4=$c4, c5=$c5, gridCropSize=$gridCropSize, gridCropX=$gridCropX, gridCropY=$gridCropY]';
+  String toString() => 'ProfileContent[c=$c, gridCropSize=$gridCropSize, gridCropX=$gridCropX, gridCropY=$gridCropY]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.c0 != null) {
-      json[r'c0'] = this.c0;
-    } else {
-      json[r'c0'] = null;
-    }
-    if (this.c1 != null) {
-      json[r'c1'] = this.c1;
-    } else {
-      json[r'c1'] = null;
-    }
-    if (this.c2 != null) {
-      json[r'c2'] = this.c2;
-    } else {
-      json[r'c2'] = null;
-    }
-    if (this.c3 != null) {
-      json[r'c3'] = this.c3;
-    } else {
-      json[r'c3'] = null;
-    }
-    if (this.c4 != null) {
-      json[r'c4'] = this.c4;
-    } else {
-      json[r'c4'] = null;
-    }
-    if (this.c5 != null) {
-      json[r'c5'] = this.c5;
-    } else {
-      json[r'c5'] = null;
-    }
+      json[r'c'] = this.c;
     if (this.gridCropSize != null) {
       json[r'grid_crop_size'] = this.gridCropSize;
     } else {
@@ -140,12 +86,7 @@ class ProfileContent {
       }());
 
       return ProfileContent(
-        c0: ContentInfo.fromJson(json[r'c0']),
-        c1: ContentInfo.fromJson(json[r'c1']),
-        c2: ContentInfo.fromJson(json[r'c2']),
-        c3: ContentInfo.fromJson(json[r'c3']),
-        c4: ContentInfo.fromJson(json[r'c4']),
-        c5: ContentInfo.fromJson(json[r'c5']),
+        c: ContentInfo.listFromJson(json[r'c']),
         gridCropSize: mapValueOfType<double>(json, r'grid_crop_size'),
         gridCropX: mapValueOfType<double>(json, r'grid_crop_x'),
         gridCropY: mapValueOfType<double>(json, r'grid_crop_y'),
@@ -196,6 +137,7 @@ class ProfileContent {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'c',
   };
 }
 

@@ -6,25 +6,6 @@ import 'package:app/model/freezed/logic/account/initial_setup.dart';
 import 'package:app/utils/list.dart';
 import 'package:utils/utils.dart';
 
-extension ModerationExtensions on Moderation {
-  List<ContentId> contentList() {
-    final l = [
-      content.c0,
-    ];
-    _addNotNull(l, content.c1);
-    _addNotNull(l, content.c2);
-    _addNotNull(l, content.c3);
-    _addNotNull(l, content.c4);
-    _addNotNull(l, content.c5);
-    _addNotNull(l, content.c6);
-    return l;
-  }
-}
-
-void _addNotNull<T>(List<T> l, T? e) {
-  if (e != null) l.add(e);
-}
-
 extension ProfileVisibilityExtensions on ProfileVisibility {
   bool isInitialModerationOngoing() {
     return this == ProfileVisibility.pendingPrivate ||
@@ -35,43 +16,6 @@ extension ProfileVisibilityExtensions on ProfileVisibility {
   bool isPublic() {
     return this == ProfileVisibility.public ||
       this == ProfileVisibility.pendingPublic;
-  }
-}
-
-extension ModerationRequestStateExtensions on ModerationRequest {
-  bool isOngoing() {
-    return state == ModerationRequestState.waiting ||
-      state == ModerationRequestState.inProgress;
-  }
-
-  List<ContentId> contentList() {
-    final l = [
-      content.c0,
-    ];
-    _addNotNull(l, content.c1);
-    _addNotNull(l, content.c2);
-    _addNotNull(l, content.c3);
-    _addNotNull(l, content.c4);
-    _addNotNull(l, content.c5);
-    _addNotNull(l, content.c6);
-    return l;
-  }
-}
-
-extension ModerationRequestContentExtensions on ModerationRequestContent {
-  static ModerationRequestContent? fromList(List<ContentId> content) {
-    if (content.isEmpty) {
-      return null;
-    }
-    return ModerationRequestContent(
-      c0: content[0],
-      c1: content.getAtOrNull(1),
-      c2: content.getAtOrNull(2),
-      c3: content.getAtOrNull(3),
-      c4: content.getAtOrNull(4),
-      c5: content.getAtOrNull(5),
-      c6: content.getAtOrNull(6),
-    );
   }
 }
 
@@ -133,7 +77,7 @@ extension PermissionsExtensions on Permissions {
   bool adminSettingsVisible() {
     // TODO(prod): Add missing permissions once
     // capability properies are non-nullable
-    return adminModerateImages;
+    return adminModerateProfileContent;
   }
 }
 

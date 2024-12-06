@@ -6,7 +6,7 @@ import 'package:app/logic/account/account_details.dart';
 import 'package:app/logic/account/news/news_count.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/media/current_moderation_request.dart';
+import 'package:app/logic/media/initial_content_moderation.dart';
 import 'package:app/logic/settings/edit_search_settings.dart';
 import 'package:app/logic/settings/privacy_settings.dart';
 import 'package:app/logic/settings/search_settings.dart';
@@ -141,13 +141,14 @@ class _SettingsViewState extends State<SettingsView> {
               pageKey,
             );
           }),
-          Setting.createSetting(Icons.image_rounded, context.strings.current_moderation_request_screen_title, () {
-              final currentModerationRequestBloc = context.read<CurrentModerationRequestBloc>();
-              MyNavigator.push(context, MaterialPage<void>(child:
-                CurrentModerationRequestScreen(currentModerationRequestBloc: currentModerationRequestBloc)
-              ));
-            }
-          ),
+          // TODO(prod): Change to content management
+          // Setting.createSetting(Icons.image_rounded, context.strings.current_moderation_request_screen_title, () {
+          //     final currentModerationRequestBloc = context.read<CurrentModerationRequestBloc>();
+          //     MyNavigator.push(context, MaterialPage<void>(child:
+          //       CurrentModerationRequestScreen(currentModerationRequestBloc: currentModerationRequestBloc)
+          //     ));
+          //   }
+          // ),
           Setting.createSetting(Icons.person, context.strings.account_settings_screen_title, () {
               final accountDetailsBloc = context.read<AccountDetailsBloc>();
               MyNavigator.push(context, MaterialPage<void>(child:

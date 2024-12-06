@@ -6,6 +6,14 @@ import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
+extension ListExtensions<T> on List<T> {
+  T? getAtOrNull(int index) {
+    if (index < length) {
+      return this[index];
+    }
+    return null;
+  }
+}
 
 abstract class QueryExcecutorProvider {
   QueryExecutor getQueryExcecutor();

@@ -2,6 +2,7 @@
 import "package:freezed_annotation/freezed_annotation.dart";
 import "package:openapi/api.dart";
 import "package:app/ui_utils/crop_image_screen.dart";
+import 'package:collection/collection.dart';
 
 part 'profile_pictures.freezed.dart';
 
@@ -53,15 +54,18 @@ class ProfilePicturesData with _$ProfilePicturesData {
       return null;
     }
 
+    final c = [
+      img0Info.id.contentId,
+      imgStateToContentId(picture1),
+      imgStateToContentId(picture2),
+      imgStateToContentId(picture3),
+    ];
+
     return SetProfileContent(
-      c0: img0Info.id.contentId,
+      c: c.whereNotNull().toList(),
       gridCropSize: img0.cropResults.gridCropSize,
       gridCropX: img0.cropResults.gridCropX,
       gridCropY: img0.cropResults.gridCropY,
-
-      c1: imgStateToContentId(picture1),
-      c2: imgStateToContentId(picture2),
-      c3: imgStateToContentId(picture3),
     );
   }
 

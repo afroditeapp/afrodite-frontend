@@ -246,6 +246,8 @@ class ApiClient {
           return ContentInfoDetailed.fromJson(value);
         case 'ContentInfoWithFd':
           return ContentInfoWithFd.fromJson(value);
+        case 'ContentModerationState':
+          return ContentModerationStateTypeTransformer().decode(value);
         case 'ContentProcessingId':
           return ContentProcessingId.fromJson(value);
         case 'ContentProcessingState':
@@ -256,12 +258,8 @@ class ApiClient {
           return ContentProcessingStateTypeTypeTransformer().decode(value);
         case 'ContentSlot':
           return ContentSlotTypeTransformer().decode(value);
-        case 'ContentState':
-          return ContentStateTypeTransformer().decode(value);
         case 'CurrentAccountInteractionState':
           return CurrentAccountInteractionStateTypeTransformer().decode(value);
-        case 'CurrentModerationRequest':
-          return CurrentModerationRequest.fromJson(value);
         case 'DeleteLikeResult':
           return DeleteLikeResult.fromJson(value);
         case 'DeleteStatus':
@@ -296,6 +294,8 @@ class ApiClient {
           return GetMyProfileResult.fromJson(value);
         case 'GetNewsItemResult':
           return GetNewsItemResult.fromJson(value);
+        case 'GetProfileContentPendingModerationList':
+          return GetProfileContentPendingModerationList.fromJson(value);
         case 'GetProfileContentResult':
           return GetProfileContentResult.fromJson(value);
         case 'GetProfileNamePendingModerationList':
@@ -312,8 +312,8 @@ class ApiClient {
           return GetPublicKey.fromJson(value);
         case 'GroupValues':
           return GroupValues.fromJson(value);
-        case 'HandleModerationRequest':
-          return HandleModerationRequest.fromJson(value);
+        case 'InitialContentModerationCompletedResult':
+          return InitialContentModerationCompletedResult.fromJson(value);
         case 'Language':
           return Language.fromJson(value);
         case 'LastSeenTimeFilter':
@@ -334,24 +334,14 @@ class ApiClient {
           return MatchesPage.fromJson(value);
         case 'MatchesSyncVersion':
           return MatchesSyncVersion.fromJson(value);
+        case 'MediaContentSyncVersion':
+          return MediaContentSyncVersion.fromJson(value);
         case 'MediaContentType':
           return MediaContentTypeTypeTransformer().decode(value);
         case 'MessageNumber':
           return MessageNumber.fromJson(value);
-        case 'Moderation':
-          return Moderation.fromJson(value);
-        case 'ModerationList':
-          return ModerationList.fromJson(value);
         case 'ModerationQueueType':
           return ModerationQueueTypeTypeTransformer().decode(value);
-        case 'ModerationRequest':
-          return ModerationRequest.fromJson(value);
-        case 'ModerationRequestContent':
-          return ModerationRequestContent.fromJson(value);
-        case 'ModerationRequestId':
-          return ModerationRequestId.fromJson(value);
-        case 'ModerationRequestState':
-          return ModerationRequestStateTypeTransformer().decode(value);
         case 'MyProfileContent':
           return MyProfileContent.fromJson(value);
         case 'NewReceivedLikesCount':
@@ -386,10 +376,6 @@ class ApiClient {
           return PendingNotificationToken.fromJson(value);
         case 'PendingNotificationWithData':
           return PendingNotificationWithData.fromJson(value);
-        case 'PendingProfileContent':
-          return PendingProfileContent.fromJson(value);
-        case 'PendingSecurityContent':
-          return PendingSecurityContent.fromJson(value);
         case 'PerfHistoryQueryResult':
           return PerfHistoryQueryResult.fromJson(value);
         case 'PerfHistoryValue':
@@ -398,6 +384,8 @@ class ApiClient {
           return PerfValueArea.fromJson(value);
         case 'Permissions':
           return Permissions.fromJson(value);
+        case 'PostModerateProfileContent':
+          return PostModerateProfileContent.fromJson(value);
         case 'PostModerateProfileName':
           return PostModerateProfileName.fromJson(value);
         case 'PostModerateProfileText':
@@ -424,6 +412,12 @@ class ApiClient {
           return ProfileAttributesSyncVersion.fromJson(value);
         case 'ProfileContent':
           return ProfileContent.fromJson(value);
+        case 'ProfileContentModerationRejectedReasonCategory':
+          return ProfileContentModerationRejectedReasonCategory.fromJson(value);
+        case 'ProfileContentModerationRejectedReasonDetails':
+          return ProfileContentModerationRejectedReasonDetails.fromJson(value);
+        case 'ProfileContentPendingModeration':
+          return ProfileContentPendingModeration.fromJson(value);
         case 'ProfileContentVersion':
           return ProfileContentVersion.fromJson(value);
         case 'ProfileIteratorSessionId':

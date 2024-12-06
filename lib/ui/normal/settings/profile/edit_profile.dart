@@ -1,13 +1,13 @@
 
 
 import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
+import 'package:app/utils/list.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
 import 'package:app/localizations.dart';
-import 'package:app/logic/account/account.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/media/profile_pictures.dart';
 import 'package:app/logic/profile/attributes.dart';
@@ -124,7 +124,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
       imgUpdate,
       unlimitedLikes: s.unlimitedLikes,
-      initialModerationOngoing: context.read<AccountBloc>().state.isInitialModerationOngoing(),
       currentAttributeFilters: filteringState.currentFiltersCopy(),
       currentLastSeenTimeFilter: filteringState.attributeFilters?.lastSeenTimeFilter,
       currentUnlimitedLikesFilter: filteringState.attributeFilters?.unlimitedLikesFilter,
@@ -145,12 +144,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final editedImgs = editedImgData.toSetProfileContent();
     if (
       editedImgs == null ||
-      currentState.imageUuid != editedImgs.c0 ||
-      currentState.content1 != editedImgs.c1 ||
-      currentState.content2 != editedImgs.c2 ||
-      currentState.content3 != editedImgs.c3 ||
-      currentState.content4 != editedImgs.c4 ||
-      currentState.content5 != editedImgs.c5 ||
+      currentState.imageUuid != editedImgs.c.firstOrNull ||
+      currentState.content1 != editedImgs.c.getAtOrNull(1)||
+      currentState.content2 != editedImgs.c.getAtOrNull(2) ||
+      currentState.content3 != editedImgs.c.getAtOrNull(3) ||
+      currentState.content4 != editedImgs.c.getAtOrNull(4) ||
+      currentState.content5 != editedImgs.c.getAtOrNull(5) ||
       currentState.primaryContentGridCropSize != editedImgs.gridCropSize ||
       currentState.primaryContentGridCropX != editedImgs.gridCropX ||
       currentState.primaryContentGridCropY != editedImgs.gridCropY

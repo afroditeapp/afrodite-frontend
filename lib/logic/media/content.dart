@@ -26,14 +26,6 @@ class NewSecurityContent extends ContentEvent {
   final ContentId? content;
   NewSecurityContent(this.content);
 }
-class NewPendingContent extends ContentEvent {
-  final PendingProfileContentInternal? content;
-  NewPendingContent(this.content);
-}
-class NewPendingSecurityContent extends ContentEvent {
-  final ContentId? content;
-  NewPendingSecurityContent(this.content);
-}
 class NewPrimaryImageDataAvailable extends ContentEvent {
   final bool value;
   NewPrimaryImageDataAvailable(this.value);
@@ -48,8 +40,6 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> {
 
   StreamSubscription<CurrentProfileContent?>? _publicContentSubscription;
   StreamSubscription<ContentId?>? _securityContentSubscription;
-  StreamSubscription<PendingProfileContentInternal?>? _pendingContentSubscription;
-  StreamSubscription<ContentId?>? _pendingSecurityContentSubscription;
   StreamSubscription<void>? _primaryImageDataAvailable;
 
   ContentBloc() : super(ContentData()) {
@@ -63,16 +53,6 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> {
         securityContent: data.content,
       ));
     });
-    on<NewPendingContent>((data, emit) {
-      emit(state.copyWith(
-        pendingContent: data.content,
-      ));
-    });
-    on<NewPendingSecurityContent>((data, emit) {
-      emit(state.copyWith(
-        pendingSecurityContent: data.content,
-      ));
-    });
     on<NewPrimaryImageDataAvailable>((data, emit) {
       emit(state.copyWith(
         primaryImageDataAvailable: data.value,
@@ -84,12 +64,6 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> {
     });
     _securityContentSubscription = db.accountStream((db) => db.daoCurrentContent.watchCurrentSecurityContent()).listen((event) {
       add(NewSecurityContent(event));
-    });
-    _pendingContentSubscription = db.accountStream((db) => db.daoPendingContent.watchPendingProfileContent()).listen((event) {
-      add(NewPendingContent(event));
-    });
-    _pendingSecurityContentSubscription = db.accountStream((db) => db.daoPendingContent.watchPendingSecurityContent()).listen((event) {
-      add(NewPendingSecurityContent(event));
     });
 
     // Retry main screen my profile primary image thumbnail loading
@@ -126,8 +100,6 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> {
   Future<void> close() async {
     await _publicContentSubscription?.cancel();
     await _securityContentSubscription?.cancel();
-    await _pendingContentSubscription?.cancel();
-    await _pendingSecurityContentSubscription?.cancel();
     await _primaryImageDataAvailable?.cancel();
     await super.close();
   }

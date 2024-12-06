@@ -16,7 +16,9 @@ class MediaApi {
 
   final ApiClient apiClient;
 
-  /// Delete content data. Content can be removed after specific time has passed since removing all usage from it (content is not a security image or profile content).
+  /// Delete content data.
+  ///
+  /// # Own account Content can be deleted after specific time has passed since removing all usage of it (content is not assigned as security or profile content).  # Admin Admin can remove content without restrictions with permission `admin_delete_media_content`.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -52,7 +54,9 @@ class MediaApi {
     );
   }
 
-  /// Delete content data. Content can be removed after specific time has passed since removing all usage from it (content is not a security image or profile content).
+  /// Delete content data.
+  ///
+  /// # Own account Content can be deleted after specific time has passed since removing all usage of it (content is not assigned as security or profile content).  # Admin Admin can remove content without restrictions with permission `admin_delete_media_content`.
   ///
   /// Parameters:
   ///
@@ -66,115 +70,9 @@ class MediaApi {
     }
   }
 
-  /// Delete current moderation request which is not yet in moderation.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  Future<Response> deleteModerationRequestWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/O6uTeSLARVqY1bvDxmX96ITtBCM';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'DELETE',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Delete current moderation request which is not yet in moderation.
-  Future<void> deleteModerationRequest() async {
-    final response = await deleteModerationRequestWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
-  /// Delete new pending profile content for current account. Server will not switch to pending content when next moderation request is accepted.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  Future<Response> deletePendingProfileContentWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/6LYLKEUqrhj86bf2PXWOjUYHbls';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'DELETE',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Delete new pending profile content for current account. Server will not switch to pending content when next moderation request is accepted.
-  Future<void> deletePendingProfileContent() async {
-    final response = await deletePendingProfileContentWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
-  /// Delete pending security content for current account. Server will not change the security content when next moderation request is moderated as accepted.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  Future<Response> deletePendingSecurityContentInfoWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/sO2QJPZs98Emtu1vW1k4iHD-gz8';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'DELETE',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Delete pending security content for current account. Server will not change the security content when next moderation request is moderated as accepted.
-  Future<void> deletePendingSecurityContentInfo() async {
-    final response = await deletePendingSecurityContentInfoWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
   /// Get list of all media content on the server for one account.
+  ///
+  /// # Access  - Own account
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -209,6 +107,8 @@ class MediaApi {
 
   /// Get list of all media content on the server for one account.
   ///
+  /// # Access  - Own account
+  ///
   /// Parameters:
   ///
   /// * [String] aid (required):
@@ -229,7 +129,7 @@ class MediaApi {
 
   /// Get content data
   ///
-  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  If the previous is not true, then permission `admin_view_all_profiles` or `admin_moderate_images` is required.  
+  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  If the previous is not true, then permission `admin_view_all_profiles` or `admin_moderate_profile_content` is required.  
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -274,7 +174,7 @@ class MediaApi {
 
   /// Get content data
   ///
-  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  If the previous is not true, then permission `admin_view_all_profiles` or `admin_moderate_images` is required.  
+  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  If the previous is not true, then permission `admin_view_all_profiles` or `admin_moderate_profile_content` is required.  
   ///
   /// Parameters:
   ///
@@ -423,50 +323,6 @@ class MediaApi {
     return null;
   }
 
-  /// Get current moderation request.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  Future<Response> getModerationRequestWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/O6uTeSLARVqY1bvDxmX96ITtBCM';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get current moderation request.
-  Future<CurrentModerationRequest?> getModerationRequest() async {
-    final response = await getModerationRequestWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'CurrentModerationRequest',) as CurrentModerationRequest;
-    
-    }
-    return null;
-  }
-
   /// Get my profile content
   ///
   /// Note: This method returns the HTTP [Response].
@@ -506,112 +362,6 @@ class MediaApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetMyProfileContentResult',) as GetMyProfileContentResult;
-    
-    }
-    return null;
-  }
-
-  /// Get pending profile content for selected profile
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [String] aid (required):
-  Future<Response> getPendingProfileContentInfoWithHttpInfo(String aid,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/-NOw5oduzs2zI-cDLwFQKJkiO2U/{aid}'
-      .replaceAll('{aid}', aid);
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get pending profile content for selected profile
-  ///
-  /// Parameters:
-  ///
-  /// * [String] aid (required):
-  Future<PendingProfileContent?> getPendingProfileContentInfo(String aid,) async {
-    final response = await getPendingProfileContentInfoWithHttpInfo(aid,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingProfileContent',) as PendingProfileContent;
-    
-    }
-    return null;
-  }
-
-  /// Get pending security content for selected profile.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [String] aid (required):
-  Future<Response> getPendingSecurityContentInfoWithHttpInfo(String aid,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/sO2QJPZs98Emtu1vW1k4iHD-gz8/{aid}'
-      .replaceAll('{aid}', aid);
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get pending security content for selected profile.
-  ///
-  /// Parameters:
-  ///
-  /// * [String] aid (required):
-  Future<PendingSecurityContent?> getPendingSecurityContentInfo(String aid,) async {
-    final response = await getPendingSecurityContentInfoWithHttpInfo(aid,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingSecurityContent',) as PendingSecurityContent;
     
     }
     return null;
@@ -693,6 +443,8 @@ class MediaApi {
 
   /// Get current security content for selected profile.
   ///
+  /// # Access  - Own account - With permission `admin_moderate_profile_content`
+  ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
@@ -726,6 +478,8 @@ class MediaApi {
 
   /// Get current security content for selected profile.
   ///
+  /// # Access  - Own account - With permission `admin_moderate_profile_content`
+  ///
   /// Parameters:
   ///
   /// * [String] aid (required):
@@ -739,6 +493,50 @@ class MediaApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SecurityContent',) as SecurityContent;
+    
+    }
+    return null;
+  }
+
+  /// Get initial content moderation completed result.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> postGetInitialContentModerationCompletedWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/F6vxr3u-OBwaCkVm_bzTaM4NmRc';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get initial content moderation completed result.
+  Future<InitialContentModerationCompletedResult?> postGetInitialContentModerationCompleted() async {
+    final response = await postGetInitialContentModerationCompletedWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'InitialContentModerationCompletedResult',) as InitialContentModerationCompletedResult;
     
     }
     return null;
@@ -818,153 +616,9 @@ class MediaApi {
     return null;
   }
 
-  /// Create new or override old moderation request.
-  ///
-  /// Make sure that moderation request has content IDs which points to your own image slots.  
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [ModerationRequestContent] moderationRequestContent (required):
-  Future<Response> putModerationRequestWithHttpInfo(ModerationRequestContent moderationRequestContent,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/O6uTeSLARVqY1bvDxmX96ITtBCM';
-
-    // ignore: prefer_final_locals
-    Object? postBody = moderationRequestContent;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'PUT',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Create new or override old moderation request.
-  ///
-  /// Make sure that moderation request has content IDs which points to your own image slots.  
-  ///
-  /// Parameters:
-  ///
-  /// * [ModerationRequestContent] moderationRequestContent (required):
-  Future<void> putModerationRequest(ModerationRequestContent moderationRequestContent,) async {
-    final response = await putModerationRequestWithHttpInfo(moderationRequestContent,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
-  /// Set new pending profile content for current account. Server will switch to pending content when next moderation request is accepted.
-  ///
-  /// # Restrictions - All content must not be moderated as rejected. - All content must be owned by the account. - All content must be images. - First content must have face detected.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [SetProfileContent] setProfileContent (required):
-  Future<Response> putPendingProfileContentWithHttpInfo(SetProfileContent setProfileContent,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/6LYLKEUqrhj86bf2PXWOjUYHbls';
-
-    // ignore: prefer_final_locals
-    Object? postBody = setProfileContent;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'PUT',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Set new pending profile content for current account. Server will switch to pending content when next moderation request is accepted.
-  ///
-  /// # Restrictions - All content must not be moderated as rejected. - All content must be owned by the account. - All content must be images. - First content must have face detected.
-  ///
-  /// Parameters:
-  ///
-  /// * [SetProfileContent] setProfileContent (required):
-  Future<void> putPendingProfileContent(SetProfileContent setProfileContent,) async {
-    final response = await putPendingProfileContentWithHttpInfo(setProfileContent,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
-  /// Set pending security content for current account.
-  ///
-  /// Requires that the content has face detected.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [ContentId] contentId (required):
-  Future<Response> putPendingSecurityContentInfoWithHttpInfo(ContentId contentId,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/sO2QJPZs98Emtu1vW1k4iHD-gz8';
-
-    // ignore: prefer_final_locals
-    Object? postBody = contentId;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'PUT',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Set pending security content for current account.
-  ///
-  /// Requires that the content has face detected.
-  ///
-  /// Parameters:
-  ///
-  /// * [ContentId] contentId (required):
-  Future<void> putPendingSecurityContentInfo(ContentId contentId,) async {
-    final response = await putPendingSecurityContentInfoWithHttpInfo(contentId,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
   /// Set new profile content for current account.
   ///
-  /// # Restrictions - All content must be moderated as accepted. - All content must be owned by the account. - All content must be images. - First content must have face detected.
+  /// This also moves the content to moderation if it is not already in moderation or moderated.  Also profile visibility moves from pending to normal when all profile content is moderated as accepted.  # Restrictions - All content must be owned by the account. - All content must be images. - First content must have face detected.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -998,7 +652,7 @@ class MediaApi {
 
   /// Set new profile content for current account.
   ///
-  /// # Restrictions - All content must be moderated as accepted. - All content must be owned by the account. - All content must be images. - First content must have face detected.
+  /// This also moves the content to moderation if it is not already in moderation or moderated.  Also profile visibility moves from pending to normal when all profile content is moderated as accepted.  # Restrictions - All content must be owned by the account. - All content must be images. - First content must have face detected.
   ///
   /// Parameters:
   ///
@@ -1010,9 +664,9 @@ class MediaApi {
     }
   }
 
-  /// Set current security content content for current account.
+  /// Set current security content for current account.
   ///
-  /// # Restrictions - The content must be moderated as accepted. - The content must be owned by the account. - The content must be an image. - The content must be captured by client. - The content must have face detected.
+  /// This also moves the content to moderation if it is not already in moderation or moderated.  # Restrictions - The content must be owned by the account. - The content must be an image. - The content must be captured by client. - The content must have face detected.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1044,9 +698,9 @@ class MediaApi {
     );
   }
 
-  /// Set current security content content for current account.
+  /// Set current security content for current account.
   ///
-  /// # Restrictions - The content must be moderated as accepted. - The content must be owned by the account. - The content must be an image. - The content must be captured by client. - The content must have face detected.
+  /// This also moves the content to moderation if it is not already in moderation or moderated.  # Restrictions - The content must be owned by the account. - The content must be an image. - The content must be captured by client. - The content must have face detected.
   ///
   /// Parameters:
   ///

@@ -20,7 +20,7 @@ import 'package:app/logic/chat/conversation_list_bloc.dart';
 import 'package:app/logic/chat/new_received_likes_available_bloc.dart';
 import 'package:app/logic/chat/unread_conversations_bloc.dart';
 import 'package:app/logic/media/content.dart';
-import 'package:app/logic/media/current_moderation_request.dart';
+import 'package:app/logic/media/initial_content_moderation.dart';
 import 'package:app/logic/media/image_processing.dart';
 import 'package:app/logic/media/new_moderation_request.dart';
 import 'package:app/logic/media/profile_pictures.dart';
@@ -162,7 +162,7 @@ class MainStateUiLogic extends StatelessWidget {
               // Settings
               BlocProvider(create: (_) => EditMyProfileBloc()),
               BlocProvider(create: (_) => EditProfileFilteringSettingsBloc()),
-              BlocProvider(create: (_) => CurrentModerationRequestBloc()),
+              BlocProvider(create: (_) => InitialContentModerationBloc()),
               BlocProvider(create: (_) => SelectContentBloc()),
               BlocProvider(create: (_) => NewModerationRequestBloc()),
               BlocProvider(create: (_) => ProfilePicturesBloc()),

@@ -3,7 +3,6 @@
 
 import 'dart:typed_data';
 
-import 'package:camera/camera.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -11,9 +10,9 @@ import 'package:app/api/api_manager.dart';
 import 'package:app/model/freezed/logic/account/initial_setup.dart';
 import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/utils/api.dart';
-import 'package:app/utils/list.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
+import 'package:collection/collection.dart';
 
 var log = Logger("InitialSetupUtils");
 
@@ -71,7 +70,7 @@ class InitialSetupUtils {
       case ProcessingError(): return result.message;
       case ProcessingSuccess(): contentId0 = result.contentId;
     }
-    await _api.mediaAction((api) => api.putPendingSecurityContentInfo(contentId0));
+    await _api.mediaAction((api) => api.putSecurityContentInfo(contentId0));
 
     final profileImage = MultipartFile.fromBytes("", profileImageBytes);
     final processingId2 = await _api.media((api) => api.putContentToContentSlot(1, false, MediaContentType.jpegImage, profileImage));
@@ -84,8 +83,7 @@ class InitialSetupUtils {
       case ProcessingError(): return result2.message;
       case ProcessingSuccess(): contentId1 = result2.contentId;
     }
-    await _api.mediaAction((api) => api.putPendingProfileContent(SetProfileContent(c0: contentId1)));
-    await _api.mediaAction((api) => api.putModerationRequest(ModerationRequestContent(c0: contentId0, c1: contentId1)));
+    await _api.mediaAction((api) => api.putProfileContent(SetProfileContent(c: [contentId1])));
 
     // Other setup
 
@@ -199,58 +197,22 @@ class InitialSetupUtils {
       if (r.isErr()) return errAndLog("Completing setup failed");
     }
 
-    return Ok(null);
+    return const Ok(null);
   }
 
   Future<Result<void, void>> handleInitialSetupImages(ContentId? securitySelfie, Iterable<ImgState>? profileImages) async {
     if (securitySelfie == null) return errAndLog("Security selfie is null");
-    final r1 = await _api.mediaAction((api) => api.putPendingSecurityContentInfo(securitySelfie));
+    final r1 = await _api.mediaAction((api) => api.putSecurityContentInfo(securitySelfie));
     if (r1.isErr()) return errAndLog("Setting security selfie failed");
 
     if (profileImages == null) return errAndLog("Profile images is null");
     final newProfileContent = createProfileContent(securitySelfie, profileImages).ok();
     if (newProfileContent == null) return errAndLog("Creating profile content failed");
-    final r2 = await _api.mediaAction((api) => api.putPendingProfileContent(newProfileContent));
+    final r2 = await _api.mediaAction((api) => api.putProfileContent(newProfileContent));
     if (r2.isErr()) return errAndLog("Setting profile images failed");
 
-    final moderationRequest = createModerationRequest(securitySelfie, newProfileContent);
-
-    final r3 = await _api.mediaAction((api) => api.putModerationRequest(moderationRequest));
-    if (r3.isErr()) return errAndLog("Moderation request sending failed");
-
-    return Ok(null);
+    return const Ok(null);
   }
-}
-
-void _addNotEqualOrNull(ContentId securitySelfie, ContentId? c, List<ContentId> list) {
-  if (c != securitySelfie && c != null) {
-    list.add(c);
-  }
-}
-
-/// Prevent adding security selfie to request more than once.
-ModerationRequestContent createModerationRequest(
-  ContentId securitySelfie,
-  SetProfileContent profileContent,
-) {
-  final List<ContentId> l = [];
-
-  _addNotEqualOrNull(securitySelfie, profileContent.c0, l);
-  _addNotEqualOrNull(securitySelfie, profileContent.c1, l);
-  _addNotEqualOrNull(securitySelfie, profileContent.c2, l);
-  _addNotEqualOrNull(securitySelfie, profileContent.c3, l);
-  _addNotEqualOrNull(securitySelfie, profileContent.c4, l);
-  _addNotEqualOrNull(securitySelfie, profileContent.c5, l);
-
-  return ModerationRequestContent(
-    c0: securitySelfie,
-    c1: l.getAtOrNull(0),
-    c2: l.getAtOrNull(1),
-    c3: l.getAtOrNull(2),
-    c4: l.getAtOrNull(3),
-    c5: l.getAtOrNull(4),
-    c6: l.getAtOrNull(5),
-  );
 }
 
 Result<SetProfileContent, void> createProfileContent(
@@ -292,11 +254,10 @@ Result<SetProfileContent, void> createProfileContent(
 
   if (contentId0 == null) return errAndLog("First profile image is not selected");
 
+  final c = List<ContentId>.from([contentId0, contentId1, contentId2, contentId3].whereNotNull());
+
   return Ok(SetProfileContent(
-    c0: contentId0,
-    c1: contentId1,
-    c2: contentId2,
-    c3: contentId3,
+    c: c,
     gridCropSize: gridCropSize,
     gridCropX: gridCropX,
     gridCropY: gridCropY,

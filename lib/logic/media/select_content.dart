@@ -27,70 +27,70 @@ class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with
   SelectContentBloc() : super(SelectContentData()) {
     on<ReloadAvailableContent>((data, emit) async {
       await runOnce(() async {
-        await reload(emit);
+        // await reload(emit);
       });
     });
-    on<NewModerationRequest>((data, emit) async {
-      await runOnce(() async {
-        emit(SelectContentData().copyWith(isLoading: true));
-        final result = await media.createNewModerationRequest(data.content);
-        switch (result) {
-          case Ok():
-            await reload(emit);
-          case Err():
-            emit(SelectContentData().copyWith(isLoading: false, isError: true));
-        }
-      });
-    });
+    // on<NewModerationRequest>((data, emit) async {
+    //   await runOnce(() async {
+    //     emit(SelectContentData().copyWith(isLoading: true));
+    //     final result = await media.createNewModerationRequest(data.content);
+    //     switch (result) {
+    //       case Ok():
+    //         await reload(emit);
+    //       case Err():
+    //         emit(SelectContentData().copyWith(isLoading: false, isError: true));
+    //     }
+    //   });
+    // });
   }
 
-  Future<void> reload(Emitter<SelectContentData> emit) async {
-    // Reset to loading state
-    emit(SelectContentData().copyWith(isLoading: true));
+//   Future<void> reload(Emitter<SelectContentData> emit) async {
+//     // Reset to loading state
+//     emit(SelectContentData().copyWith(isLoading: true));
 
-    final isInitialModerationOngoing = await account.isInitialModerationOngoing();
-    final bool isModerationRequestOngoing;
-    final List<ContentId> imgsInCurrentModerationRequest;
-    switch (await media.currentModerationRequestState()) {
-      case Ok(:final v):
-        if (v == null) {
-          isModerationRequestOngoing = false;
-          imgsInCurrentModerationRequest = [];
-        } else {
-          isModerationRequestOngoing = v.isOngoing();
-          imgsInCurrentModerationRequest = v.contentList();
-        }
-      case Err():
-        emit(state.copyWith(isLoading: false, isError: true));
-        return;
-    }
+//     final isInitialModerationOngoing = await account.isInitialModerationOngoing();
+//     final bool isModerationRequestOngoing;
+//     final List<ContentId> imgsInCurrentModerationRequest;
+//     switch (await media.currentModerationRequestState()) {
+//       case Ok(:final v):
+//         if (v == null) {
+//           isModerationRequestOngoing = false;
+//           imgsInCurrentModerationRequest = [];
+//         } else {
+//           isModerationRequestOngoing = v.isOngoing();
+//           imgsInCurrentModerationRequest = v.contentList();
+//         }
+//       case Err():
+//         emit(state.copyWith(isLoading: false, isError: true));
+//         return;
+//     }
 
-    final value = await media.loadAllContent().ok();
-    final List<ContentIdAndFaceDetected> allContent = [];
-    final List<ContentIdAndFaceDetected> pendingModeration = [];
-    if (value != null) {
-      for (final content in value.data) {
-        if (content.state == ContentState.moderatedAsAccepted ||
-          // When initial moderation is ongoing the pending content can be edited
-          (isInitialModerationOngoing && (content.state == ContentState.inSlot || content.state == ContentState.inModeration))) {
-          allContent.add(ContentIdAndFaceDetected(content.cid, content.fd));
-        }
+//     final value = await media.loadAllContent().ok();
+//     final List<ContentIdAndFaceDetected> allContent = [];
+//     final List<ContentIdAndFaceDetected> pendingModeration = [];
+//     if (value != null) {
+//       for (final content in value.data) {
+//         if (content.state == ContentState.moderatedAsAccepted ||
+//           // When initial moderation is ongoing the pending content can be edited
+//           (isInitialModerationOngoing && (content.state == ContentState.inSlot || content.state == ContentState.inModeration))) {
+//           allContent.add(ContentIdAndFaceDetected(content.cid, content.fd));
+//         }
 
-        if (!isInitialModerationOngoing &&
-          isModerationRequestOngoing &&
-          imgsInCurrentModerationRequest.contains(content.cid) &&
-          (content.state == ContentState.inSlot || content.state == ContentState.inModeration)) {
-          pendingModeration.add(ContentIdAndFaceDetected(content.cid, content.fd));
-        }
-      }
-    }
+//         if (!isInitialModerationOngoing &&
+//           isModerationRequestOngoing &&
+//           imgsInCurrentModerationRequest.contains(content.cid) &&
+//           (content.state == ContentState.inSlot || content.state == ContentState.inModeration)) {
+//           pendingModeration.add(ContentIdAndFaceDetected(content.cid, content.fd));
+//         }
+//       }
+//     }
 
-    emit(state.copyWith(
-      isLoading: false,
-      initialModerationOngoing: isInitialModerationOngoing,
-      showMakeNewModerationRequest: !isModerationRequestOngoing,
-      availableContent: UnmodifiableList(allContent),
-      pendingModeration: UnmodifiableList(pendingModeration),
-    ));
-  }
+//     emit(state.copyWith(
+//       isLoading: false,
+//       initialModerationOngoing: isInitialModerationOngoing,
+//       showMakeNewModerationRequest: !isModerationRequestOngoing,
+//       availableContent: UnmodifiableList(allContent),
+//       pendingModeration: UnmodifiableList(pendingModeration),
+//     ));
+//   }
 }

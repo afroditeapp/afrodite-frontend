@@ -13,9 +13,13 @@ part of openapi.api;
 class ContentInfo {
   /// Returns a new [ContentInfo] instance.
   ContentInfo({
+    required this.a,
     required this.cid,
     required this.ctype,
   });
+
+  /// Accepted
+  bool a;
 
   ContentId cid;
 
@@ -23,20 +27,23 @@ class ContentInfo {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentInfo &&
+    other.a == a &&
     other.cid == cid &&
     other.ctype == ctype;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (a.hashCode) +
     (cid.hashCode) +
     (ctype.hashCode);
 
   @override
-  String toString() => 'ContentInfo[cid=$cid, ctype=$ctype]';
+  String toString() => 'ContentInfo[a=$a, cid=$cid, ctype=$ctype]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'a'] = this.a;
       json[r'cid'] = this.cid;
       json[r'ctype'] = this.ctype;
     return json;
@@ -61,6 +68,7 @@ class ContentInfo {
       }());
 
       return ContentInfo(
+        a: mapValueOfType<bool>(json, r'a')!,
         cid: ContentId.fromJson(json[r'cid'])!,
         ctype: MediaContentType.fromJson(json[r'ctype'])!,
       );
@@ -110,6 +118,7 @@ class ContentInfo {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'a',
     'cid',
     'ctype',
   };

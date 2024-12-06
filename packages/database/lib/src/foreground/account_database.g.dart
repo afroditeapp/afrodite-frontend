@@ -168,150 +168,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       GeneratedColumn<int>(
           'sync_version_available_profile_attributes', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _uuidPendingContentId0Meta =
-      const VerificationMeta('uuidPendingContentId0');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidPendingContentId0 = GeneratedColumn<String>(
-              'uuid_pending_content_id0', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>(
-              $AccountTable.$converteruuidPendingContentId0);
-  static const VerificationMeta _uuidPendingContentId1Meta =
-      const VerificationMeta('uuidPendingContentId1');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidPendingContentId1 = GeneratedColumn<String>(
-              'uuid_pending_content_id1', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>(
-              $AccountTable.$converteruuidPendingContentId1);
-  static const VerificationMeta _uuidPendingContentId2Meta =
-      const VerificationMeta('uuidPendingContentId2');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidPendingContentId2 = GeneratedColumn<String>(
-              'uuid_pending_content_id2', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>(
-              $AccountTable.$converteruuidPendingContentId2);
-  static const VerificationMeta _uuidPendingContentId3Meta =
-      const VerificationMeta('uuidPendingContentId3');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidPendingContentId3 = GeneratedColumn<String>(
-              'uuid_pending_content_id3', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>(
-              $AccountTable.$converteruuidPendingContentId3);
-  static const VerificationMeta _uuidPendingContentId4Meta =
-      const VerificationMeta('uuidPendingContentId4');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidPendingContentId4 = GeneratedColumn<String>(
-              'uuid_pending_content_id4', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>(
-              $AccountTable.$converteruuidPendingContentId4);
-  static const VerificationMeta _uuidPendingContentId5Meta =
-      const VerificationMeta('uuidPendingContentId5');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidPendingContentId5 = GeneratedColumn<String>(
-              'uuid_pending_content_id5', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>(
-              $AccountTable.$converteruuidPendingContentId5);
-  static const VerificationMeta _faceDetectedPendingContentId0Meta =
-      const VerificationMeta('faceDetectedPendingContentId0');
-  @override
-  late final GeneratedColumn<bool> faceDetectedPendingContentId0 =
-      GeneratedColumn<bool>(
-          'face_detected_pending_content_id0', aliasedName, true,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("face_detected_pending_content_id0" IN (0, 1))'));
-  static const VerificationMeta _faceDetectedPendingContentId1Meta =
-      const VerificationMeta('faceDetectedPendingContentId1');
-  @override
-  late final GeneratedColumn<bool> faceDetectedPendingContentId1 =
-      GeneratedColumn<bool>(
-          'face_detected_pending_content_id1', aliasedName, true,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("face_detected_pending_content_id1" IN (0, 1))'));
-  static const VerificationMeta _faceDetectedPendingContentId2Meta =
-      const VerificationMeta('faceDetectedPendingContentId2');
-  @override
-  late final GeneratedColumn<bool> faceDetectedPendingContentId2 =
-      GeneratedColumn<bool>(
-          'face_detected_pending_content_id2', aliasedName, true,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("face_detected_pending_content_id2" IN (0, 1))'));
-  static const VerificationMeta _faceDetectedPendingContentId3Meta =
-      const VerificationMeta('faceDetectedPendingContentId3');
-  @override
-  late final GeneratedColumn<bool> faceDetectedPendingContentId3 =
-      GeneratedColumn<bool>(
-          'face_detected_pending_content_id3', aliasedName, true,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("face_detected_pending_content_id3" IN (0, 1))'));
-  static const VerificationMeta _faceDetectedPendingContentId4Meta =
-      const VerificationMeta('faceDetectedPendingContentId4');
-  @override
-  late final GeneratedColumn<bool> faceDetectedPendingContentId4 =
-      GeneratedColumn<bool>(
-          'face_detected_pending_content_id4', aliasedName, true,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("face_detected_pending_content_id4" IN (0, 1))'));
-  static const VerificationMeta _faceDetectedPendingContentId5Meta =
-      const VerificationMeta('faceDetectedPendingContentId5');
-  @override
-  late final GeneratedColumn<bool> faceDetectedPendingContentId5 =
-      GeneratedColumn<bool>(
-          'face_detected_pending_content_id5', aliasedName, true,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("face_detected_pending_content_id5" IN (0, 1))'));
-  static const VerificationMeta _uuidPendingSecurityContentIdMeta =
-      const VerificationMeta('uuidPendingSecurityContentId');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidPendingSecurityContentId = GeneratedColumn<String>(
-              'uuid_pending_security_content_id', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>(
-              $AccountTable.$converteruuidPendingSecurityContentId);
-  static const VerificationMeta _pendingPrimaryContentGridCropSizeMeta =
-      const VerificationMeta('pendingPrimaryContentGridCropSize');
-  @override
-  late final GeneratedColumn<double> pendingPrimaryContentGridCropSize =
-      GeneratedColumn<double>(
-          'pending_primary_content_grid_crop_size', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
-  static const VerificationMeta _pendingPrimaryContentGridCropXMeta =
-      const VerificationMeta('pendingPrimaryContentGridCropX');
-  @override
-  late final GeneratedColumn<double> pendingPrimaryContentGridCropX =
-      GeneratedColumn<double>(
-          'pending_primary_content_grid_crop_x', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
-  static const VerificationMeta _pendingPrimaryContentGridCropYMeta =
-      const VerificationMeta('pendingPrimaryContentGridCropY');
-  @override
-  late final GeneratedColumn<double> pendingPrimaryContentGridCropY =
-      GeneratedColumn<double>(
-          'pending_primary_content_grid_crop_y', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
   static const VerificationMeta _uuidContentId0Meta =
       const VerificationMeta('uuidContentId0');
   @override
@@ -768,22 +624,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         syncVersionAccount,
         syncVersionProfile,
         syncVersionAvailableProfileAttributes,
-        uuidPendingContentId0,
-        uuidPendingContentId1,
-        uuidPendingContentId2,
-        uuidPendingContentId3,
-        uuidPendingContentId4,
-        uuidPendingContentId5,
-        faceDetectedPendingContentId0,
-        faceDetectedPendingContentId1,
-        faceDetectedPendingContentId2,
-        faceDetectedPendingContentId3,
-        faceDetectedPendingContentId4,
-        faceDetectedPendingContentId5,
-        uuidPendingSecurityContentId,
-        pendingPrimaryContentGridCropSize,
-        pendingPrimaryContentGridCropX,
-        pendingPrimaryContentGridCropY,
         uuidContentId0,
         uuidContentId1,
         uuidContentId2,
@@ -925,83 +765,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           syncVersionAvailableProfileAttributes.isAcceptableOrUnknown(
               data['sync_version_available_profile_attributes']!,
               _syncVersionAvailableProfileAttributesMeta));
-    }
-    context.handle(
-        _uuidPendingContentId0Meta, const VerificationResult.success());
-    context.handle(
-        _uuidPendingContentId1Meta, const VerificationResult.success());
-    context.handle(
-        _uuidPendingContentId2Meta, const VerificationResult.success());
-    context.handle(
-        _uuidPendingContentId3Meta, const VerificationResult.success());
-    context.handle(
-        _uuidPendingContentId4Meta, const VerificationResult.success());
-    context.handle(
-        _uuidPendingContentId5Meta, const VerificationResult.success());
-    if (data.containsKey('face_detected_pending_content_id0')) {
-      context.handle(
-          _faceDetectedPendingContentId0Meta,
-          faceDetectedPendingContentId0.isAcceptableOrUnknown(
-              data['face_detected_pending_content_id0']!,
-              _faceDetectedPendingContentId0Meta));
-    }
-    if (data.containsKey('face_detected_pending_content_id1')) {
-      context.handle(
-          _faceDetectedPendingContentId1Meta,
-          faceDetectedPendingContentId1.isAcceptableOrUnknown(
-              data['face_detected_pending_content_id1']!,
-              _faceDetectedPendingContentId1Meta));
-    }
-    if (data.containsKey('face_detected_pending_content_id2')) {
-      context.handle(
-          _faceDetectedPendingContentId2Meta,
-          faceDetectedPendingContentId2.isAcceptableOrUnknown(
-              data['face_detected_pending_content_id2']!,
-              _faceDetectedPendingContentId2Meta));
-    }
-    if (data.containsKey('face_detected_pending_content_id3')) {
-      context.handle(
-          _faceDetectedPendingContentId3Meta,
-          faceDetectedPendingContentId3.isAcceptableOrUnknown(
-              data['face_detected_pending_content_id3']!,
-              _faceDetectedPendingContentId3Meta));
-    }
-    if (data.containsKey('face_detected_pending_content_id4')) {
-      context.handle(
-          _faceDetectedPendingContentId4Meta,
-          faceDetectedPendingContentId4.isAcceptableOrUnknown(
-              data['face_detected_pending_content_id4']!,
-              _faceDetectedPendingContentId4Meta));
-    }
-    if (data.containsKey('face_detected_pending_content_id5')) {
-      context.handle(
-          _faceDetectedPendingContentId5Meta,
-          faceDetectedPendingContentId5.isAcceptableOrUnknown(
-              data['face_detected_pending_content_id5']!,
-              _faceDetectedPendingContentId5Meta));
-    }
-    context.handle(
-        _uuidPendingSecurityContentIdMeta, const VerificationResult.success());
-    if (data.containsKey('pending_primary_content_grid_crop_size')) {
-      context.handle(
-          _pendingPrimaryContentGridCropSizeMeta,
-          pendingPrimaryContentGridCropSize.isAcceptableOrUnknown(
-              data['pending_primary_content_grid_crop_size']!,
-              _pendingPrimaryContentGridCropSizeMeta));
-    }
-    if (data.containsKey('pending_primary_content_grid_crop_x')) {
-      context.handle(
-          _pendingPrimaryContentGridCropXMeta,
-          pendingPrimaryContentGridCropX.isAcceptableOrUnknown(
-              data['pending_primary_content_grid_crop_x']!,
-              _pendingPrimaryContentGridCropXMeta));
-    }
-    if (data.containsKey('pending_primary_content_grid_crop_y')) {
-      context.handle(
-          _pendingPrimaryContentGridCropYMeta,
-          pendingPrimaryContentGridCropY.isAcceptableOrUnknown(
-              data['pending_primary_content_grid_crop_y']!,
-              _pendingPrimaryContentGridCropYMeta));
     }
     context.handle(_uuidContentId0Meta, const VerificationResult.success());
     context.handle(_uuidContentId1Meta, const VerificationResult.success());
@@ -1308,55 +1071,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       syncVersionAvailableProfileAttributes: attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}sync_version_available_profile_attributes']),
-      uuidPendingContentId0: $AccountTable.$converteruuidPendingContentId0
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}uuid_pending_content_id0'])),
-      uuidPendingContentId1: $AccountTable.$converteruuidPendingContentId1
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}uuid_pending_content_id1'])),
-      uuidPendingContentId2: $AccountTable.$converteruuidPendingContentId2
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}uuid_pending_content_id2'])),
-      uuidPendingContentId3: $AccountTable.$converteruuidPendingContentId3
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}uuid_pending_content_id3'])),
-      uuidPendingContentId4: $AccountTable.$converteruuidPendingContentId4
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}uuid_pending_content_id4'])),
-      uuidPendingContentId5: $AccountTable.$converteruuidPendingContentId5
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}uuid_pending_content_id5'])),
-      faceDetectedPendingContentId0: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}face_detected_pending_content_id0']),
-      faceDetectedPendingContentId1: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}face_detected_pending_content_id1']),
-      faceDetectedPendingContentId2: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}face_detected_pending_content_id2']),
-      faceDetectedPendingContentId3: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}face_detected_pending_content_id3']),
-      faceDetectedPendingContentId4: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}face_detected_pending_content_id4']),
-      faceDetectedPendingContentId5: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}face_detected_pending_content_id5']),
-      uuidPendingSecurityContentId: $AccountTable
-          .$converteruuidPendingSecurityContentId
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}uuid_pending_security_content_id'])),
-      pendingPrimaryContentGridCropSize: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}pending_primary_content_grid_crop_size']),
-      pendingPrimaryContentGridCropX: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}pending_primary_content_grid_crop_x']),
-      pendingPrimaryContentGridCropY: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}pending_primary_content_grid_crop_y']),
       uuidContentId0: $AccountTable.$converteruuidContentId0.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}uuid_content_id0'])),
@@ -1551,21 +1265,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       const NullAwareTypeConverter.wrap(MatchesIteratorSessionIdConverter());
   static TypeConverter<ClientId?, int?> $converterclientId =
       const NullAwareTypeConverter.wrap(ClientIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidPendingContentId0 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidPendingContentId1 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidPendingContentId2 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidPendingContentId3 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidPendingContentId4 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidPendingContentId5 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?>
-      $converteruuidPendingSecurityContentId =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
   static TypeConverter<ContentId?, String?> $converteruuidContentId0 =
       const NullAwareTypeConverter.wrap(ContentIdConverter());
   static TypeConverter<ContentId?, String?> $converteruuidContentId1 =
@@ -1645,22 +1344,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final int? syncVersionAccount;
   final int? syncVersionProfile;
   final int? syncVersionAvailableProfileAttributes;
-  final ContentId? uuidPendingContentId0;
-  final ContentId? uuidPendingContentId1;
-  final ContentId? uuidPendingContentId2;
-  final ContentId? uuidPendingContentId3;
-  final ContentId? uuidPendingContentId4;
-  final ContentId? uuidPendingContentId5;
-  final bool? faceDetectedPendingContentId0;
-  final bool? faceDetectedPendingContentId1;
-  final bool? faceDetectedPendingContentId2;
-  final bool? faceDetectedPendingContentId3;
-  final bool? faceDetectedPendingContentId4;
-  final bool? faceDetectedPendingContentId5;
-  final ContentId? uuidPendingSecurityContentId;
-  final double? pendingPrimaryContentGridCropSize;
-  final double? pendingPrimaryContentGridCropX;
-  final double? pendingPrimaryContentGridCropY;
   final ContentId? uuidContentId0;
   final ContentId? uuidContentId1;
   final ContentId? uuidContentId2;
@@ -1738,22 +1421,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.syncVersionAccount,
       this.syncVersionProfile,
       this.syncVersionAvailableProfileAttributes,
-      this.uuidPendingContentId0,
-      this.uuidPendingContentId1,
-      this.uuidPendingContentId2,
-      this.uuidPendingContentId3,
-      this.uuidPendingContentId4,
-      this.uuidPendingContentId5,
-      this.faceDetectedPendingContentId0,
-      this.faceDetectedPendingContentId1,
-      this.faceDetectedPendingContentId2,
-      this.faceDetectedPendingContentId3,
-      this.faceDetectedPendingContentId4,
-      this.faceDetectedPendingContentId5,
-      this.uuidPendingSecurityContentId,
-      this.pendingPrimaryContentGridCropSize,
-      this.pendingPrimaryContentGridCropX,
-      this.pendingPrimaryContentGridCropY,
       this.uuidContentId0,
       this.uuidContentId1,
       this.uuidContentId2,
@@ -1870,77 +1537,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     if (!nullToAbsent || syncVersionAvailableProfileAttributes != null) {
       map['sync_version_available_profile_attributes'] =
           Variable<int>(syncVersionAvailableProfileAttributes);
-    }
-    if (!nullToAbsent || uuidPendingContentId0 != null) {
-      map['uuid_pending_content_id0'] = Variable<String>($AccountTable
-          .$converteruuidPendingContentId0
-          .toSql(uuidPendingContentId0));
-    }
-    if (!nullToAbsent || uuidPendingContentId1 != null) {
-      map['uuid_pending_content_id1'] = Variable<String>($AccountTable
-          .$converteruuidPendingContentId1
-          .toSql(uuidPendingContentId1));
-    }
-    if (!nullToAbsent || uuidPendingContentId2 != null) {
-      map['uuid_pending_content_id2'] = Variable<String>($AccountTable
-          .$converteruuidPendingContentId2
-          .toSql(uuidPendingContentId2));
-    }
-    if (!nullToAbsent || uuidPendingContentId3 != null) {
-      map['uuid_pending_content_id3'] = Variable<String>($AccountTable
-          .$converteruuidPendingContentId3
-          .toSql(uuidPendingContentId3));
-    }
-    if (!nullToAbsent || uuidPendingContentId4 != null) {
-      map['uuid_pending_content_id4'] = Variable<String>($AccountTable
-          .$converteruuidPendingContentId4
-          .toSql(uuidPendingContentId4));
-    }
-    if (!nullToAbsent || uuidPendingContentId5 != null) {
-      map['uuid_pending_content_id5'] = Variable<String>($AccountTable
-          .$converteruuidPendingContentId5
-          .toSql(uuidPendingContentId5));
-    }
-    if (!nullToAbsent || faceDetectedPendingContentId0 != null) {
-      map['face_detected_pending_content_id0'] =
-          Variable<bool>(faceDetectedPendingContentId0);
-    }
-    if (!nullToAbsent || faceDetectedPendingContentId1 != null) {
-      map['face_detected_pending_content_id1'] =
-          Variable<bool>(faceDetectedPendingContentId1);
-    }
-    if (!nullToAbsent || faceDetectedPendingContentId2 != null) {
-      map['face_detected_pending_content_id2'] =
-          Variable<bool>(faceDetectedPendingContentId2);
-    }
-    if (!nullToAbsent || faceDetectedPendingContentId3 != null) {
-      map['face_detected_pending_content_id3'] =
-          Variable<bool>(faceDetectedPendingContentId3);
-    }
-    if (!nullToAbsent || faceDetectedPendingContentId4 != null) {
-      map['face_detected_pending_content_id4'] =
-          Variable<bool>(faceDetectedPendingContentId4);
-    }
-    if (!nullToAbsent || faceDetectedPendingContentId5 != null) {
-      map['face_detected_pending_content_id5'] =
-          Variable<bool>(faceDetectedPendingContentId5);
-    }
-    if (!nullToAbsent || uuidPendingSecurityContentId != null) {
-      map['uuid_pending_security_content_id'] = Variable<String>($AccountTable
-          .$converteruuidPendingSecurityContentId
-          .toSql(uuidPendingSecurityContentId));
-    }
-    if (!nullToAbsent || pendingPrimaryContentGridCropSize != null) {
-      map['pending_primary_content_grid_crop_size'] =
-          Variable<double>(pendingPrimaryContentGridCropSize);
-    }
-    if (!nullToAbsent || pendingPrimaryContentGridCropX != null) {
-      map['pending_primary_content_grid_crop_x'] =
-          Variable<double>(pendingPrimaryContentGridCropX);
-    }
-    if (!nullToAbsent || pendingPrimaryContentGridCropY != null) {
-      map['pending_primary_content_grid_crop_y'] =
-          Variable<double>(pendingPrimaryContentGridCropY);
     }
     if (!nullToAbsent || uuidContentId0 != null) {
       map['uuid_content_id0'] = Variable<String>(
@@ -2203,64 +1799,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           syncVersionAvailableProfileAttributes == null && nullToAbsent
               ? const Value.absent()
               : Value(syncVersionAvailableProfileAttributes),
-      uuidPendingContentId0: uuidPendingContentId0 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidPendingContentId0),
-      uuidPendingContentId1: uuidPendingContentId1 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidPendingContentId1),
-      uuidPendingContentId2: uuidPendingContentId2 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidPendingContentId2),
-      uuidPendingContentId3: uuidPendingContentId3 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidPendingContentId3),
-      uuidPendingContentId4: uuidPendingContentId4 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidPendingContentId4),
-      uuidPendingContentId5: uuidPendingContentId5 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidPendingContentId5),
-      faceDetectedPendingContentId0:
-          faceDetectedPendingContentId0 == null && nullToAbsent
-              ? const Value.absent()
-              : Value(faceDetectedPendingContentId0),
-      faceDetectedPendingContentId1:
-          faceDetectedPendingContentId1 == null && nullToAbsent
-              ? const Value.absent()
-              : Value(faceDetectedPendingContentId1),
-      faceDetectedPendingContentId2:
-          faceDetectedPendingContentId2 == null && nullToAbsent
-              ? const Value.absent()
-              : Value(faceDetectedPendingContentId2),
-      faceDetectedPendingContentId3:
-          faceDetectedPendingContentId3 == null && nullToAbsent
-              ? const Value.absent()
-              : Value(faceDetectedPendingContentId3),
-      faceDetectedPendingContentId4:
-          faceDetectedPendingContentId4 == null && nullToAbsent
-              ? const Value.absent()
-              : Value(faceDetectedPendingContentId4),
-      faceDetectedPendingContentId5:
-          faceDetectedPendingContentId5 == null && nullToAbsent
-              ? const Value.absent()
-              : Value(faceDetectedPendingContentId5),
-      uuidPendingSecurityContentId:
-          uuidPendingSecurityContentId == null && nullToAbsent
-              ? const Value.absent()
-              : Value(uuidPendingSecurityContentId),
-      pendingPrimaryContentGridCropSize:
-          pendingPrimaryContentGridCropSize == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pendingPrimaryContentGridCropSize),
-      pendingPrimaryContentGridCropX:
-          pendingPrimaryContentGridCropX == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pendingPrimaryContentGridCropX),
-      pendingPrimaryContentGridCropY:
-          pendingPrimaryContentGridCropY == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pendingPrimaryContentGridCropY),
       uuidContentId0: uuidContentId0 == null && nullToAbsent
           ? const Value.absent()
           : Value(uuidContentId0),
@@ -2480,38 +2018,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       syncVersionProfile: serializer.fromJson<int?>(json['syncVersionProfile']),
       syncVersionAvailableProfileAttributes: serializer
           .fromJson<int?>(json['syncVersionAvailableProfileAttributes']),
-      uuidPendingContentId0:
-          serializer.fromJson<ContentId?>(json['uuidPendingContentId0']),
-      uuidPendingContentId1:
-          serializer.fromJson<ContentId?>(json['uuidPendingContentId1']),
-      uuidPendingContentId2:
-          serializer.fromJson<ContentId?>(json['uuidPendingContentId2']),
-      uuidPendingContentId3:
-          serializer.fromJson<ContentId?>(json['uuidPendingContentId3']),
-      uuidPendingContentId4:
-          serializer.fromJson<ContentId?>(json['uuidPendingContentId4']),
-      uuidPendingContentId5:
-          serializer.fromJson<ContentId?>(json['uuidPendingContentId5']),
-      faceDetectedPendingContentId0:
-          serializer.fromJson<bool?>(json['faceDetectedPendingContentId0']),
-      faceDetectedPendingContentId1:
-          serializer.fromJson<bool?>(json['faceDetectedPendingContentId1']),
-      faceDetectedPendingContentId2:
-          serializer.fromJson<bool?>(json['faceDetectedPendingContentId2']),
-      faceDetectedPendingContentId3:
-          serializer.fromJson<bool?>(json['faceDetectedPendingContentId3']),
-      faceDetectedPendingContentId4:
-          serializer.fromJson<bool?>(json['faceDetectedPendingContentId4']),
-      faceDetectedPendingContentId5:
-          serializer.fromJson<bool?>(json['faceDetectedPendingContentId5']),
-      uuidPendingSecurityContentId:
-          serializer.fromJson<ContentId?>(json['uuidPendingSecurityContentId']),
-      pendingPrimaryContentGridCropSize: serializer
-          .fromJson<double?>(json['pendingPrimaryContentGridCropSize']),
-      pendingPrimaryContentGridCropX:
-          serializer.fromJson<double?>(json['pendingPrimaryContentGridCropX']),
-      pendingPrimaryContentGridCropY:
-          serializer.fromJson<double?>(json['pendingPrimaryContentGridCropY']),
       uuidContentId0: serializer.fromJson<ContentId?>(json['uuidContentId0']),
       uuidContentId1: serializer.fromJson<ContentId?>(json['uuidContentId1']),
       uuidContentId2: serializer.fromJson<ContentId?>(json['uuidContentId2']),
@@ -2646,38 +2152,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'syncVersionProfile': serializer.toJson<int?>(syncVersionProfile),
       'syncVersionAvailableProfileAttributes':
           serializer.toJson<int?>(syncVersionAvailableProfileAttributes),
-      'uuidPendingContentId0':
-          serializer.toJson<ContentId?>(uuidPendingContentId0),
-      'uuidPendingContentId1':
-          serializer.toJson<ContentId?>(uuidPendingContentId1),
-      'uuidPendingContentId2':
-          serializer.toJson<ContentId?>(uuidPendingContentId2),
-      'uuidPendingContentId3':
-          serializer.toJson<ContentId?>(uuidPendingContentId3),
-      'uuidPendingContentId4':
-          serializer.toJson<ContentId?>(uuidPendingContentId4),
-      'uuidPendingContentId5':
-          serializer.toJson<ContentId?>(uuidPendingContentId5),
-      'faceDetectedPendingContentId0':
-          serializer.toJson<bool?>(faceDetectedPendingContentId0),
-      'faceDetectedPendingContentId1':
-          serializer.toJson<bool?>(faceDetectedPendingContentId1),
-      'faceDetectedPendingContentId2':
-          serializer.toJson<bool?>(faceDetectedPendingContentId2),
-      'faceDetectedPendingContentId3':
-          serializer.toJson<bool?>(faceDetectedPendingContentId3),
-      'faceDetectedPendingContentId4':
-          serializer.toJson<bool?>(faceDetectedPendingContentId4),
-      'faceDetectedPendingContentId5':
-          serializer.toJson<bool?>(faceDetectedPendingContentId5),
-      'uuidPendingSecurityContentId':
-          serializer.toJson<ContentId?>(uuidPendingSecurityContentId),
-      'pendingPrimaryContentGridCropSize':
-          serializer.toJson<double?>(pendingPrimaryContentGridCropSize),
-      'pendingPrimaryContentGridCropX':
-          serializer.toJson<double?>(pendingPrimaryContentGridCropX),
-      'pendingPrimaryContentGridCropY':
-          serializer.toJson<double?>(pendingPrimaryContentGridCropY),
       'uuidContentId0': serializer.toJson<ContentId?>(uuidContentId0),
       'uuidContentId1': serializer.toJson<ContentId?>(uuidContentId1),
       'uuidContentId2': serializer.toJson<ContentId?>(uuidContentId2),
@@ -2792,23 +2266,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<int?> syncVersionProfile = const Value.absent(),
           Value<int?> syncVersionAvailableProfileAttributes =
               const Value.absent(),
-          Value<ContentId?> uuidPendingContentId0 = const Value.absent(),
-          Value<ContentId?> uuidPendingContentId1 = const Value.absent(),
-          Value<ContentId?> uuidPendingContentId2 = const Value.absent(),
-          Value<ContentId?> uuidPendingContentId3 = const Value.absent(),
-          Value<ContentId?> uuidPendingContentId4 = const Value.absent(),
-          Value<ContentId?> uuidPendingContentId5 = const Value.absent(),
-          Value<bool?> faceDetectedPendingContentId0 = const Value.absent(),
-          Value<bool?> faceDetectedPendingContentId1 = const Value.absent(),
-          Value<bool?> faceDetectedPendingContentId2 = const Value.absent(),
-          Value<bool?> faceDetectedPendingContentId3 = const Value.absent(),
-          Value<bool?> faceDetectedPendingContentId4 = const Value.absent(),
-          Value<bool?> faceDetectedPendingContentId5 = const Value.absent(),
-          Value<ContentId?> uuidPendingSecurityContentId = const Value.absent(),
-          Value<double?> pendingPrimaryContentGridCropSize =
-              const Value.absent(),
-          Value<double?> pendingPrimaryContentGridCropX = const Value.absent(),
-          Value<double?> pendingPrimaryContentGridCropY = const Value.absent(),
           Value<ContentId?> uuidContentId0 = const Value.absent(),
           Value<ContentId?> uuidContentId1 = const Value.absent(),
           Value<ContentId?> uuidContentId2 = const Value.absent(),
@@ -2918,55 +2375,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
             syncVersionAvailableProfileAttributes.present
                 ? syncVersionAvailableProfileAttributes.value
                 : this.syncVersionAvailableProfileAttributes,
-        uuidPendingContentId0: uuidPendingContentId0.present
-            ? uuidPendingContentId0.value
-            : this.uuidPendingContentId0,
-        uuidPendingContentId1: uuidPendingContentId1.present
-            ? uuidPendingContentId1.value
-            : this.uuidPendingContentId1,
-        uuidPendingContentId2: uuidPendingContentId2.present
-            ? uuidPendingContentId2.value
-            : this.uuidPendingContentId2,
-        uuidPendingContentId3: uuidPendingContentId3.present
-            ? uuidPendingContentId3.value
-            : this.uuidPendingContentId3,
-        uuidPendingContentId4: uuidPendingContentId4.present
-            ? uuidPendingContentId4.value
-            : this.uuidPendingContentId4,
-        uuidPendingContentId5: uuidPendingContentId5.present
-            ? uuidPendingContentId5.value
-            : this.uuidPendingContentId5,
-        faceDetectedPendingContentId0: faceDetectedPendingContentId0.present
-            ? faceDetectedPendingContentId0.value
-            : this.faceDetectedPendingContentId0,
-        faceDetectedPendingContentId1: faceDetectedPendingContentId1.present
-            ? faceDetectedPendingContentId1.value
-            : this.faceDetectedPendingContentId1,
-        faceDetectedPendingContentId2: faceDetectedPendingContentId2.present
-            ? faceDetectedPendingContentId2.value
-            : this.faceDetectedPendingContentId2,
-        faceDetectedPendingContentId3: faceDetectedPendingContentId3.present
-            ? faceDetectedPendingContentId3.value
-            : this.faceDetectedPendingContentId3,
-        faceDetectedPendingContentId4: faceDetectedPendingContentId4.present
-            ? faceDetectedPendingContentId4.value
-            : this.faceDetectedPendingContentId4,
-        faceDetectedPendingContentId5: faceDetectedPendingContentId5.present
-            ? faceDetectedPendingContentId5.value
-            : this.faceDetectedPendingContentId5,
-        uuidPendingSecurityContentId: uuidPendingSecurityContentId.present
-            ? uuidPendingSecurityContentId.value
-            : this.uuidPendingSecurityContentId,
-        pendingPrimaryContentGridCropSize:
-            pendingPrimaryContentGridCropSize.present
-                ? pendingPrimaryContentGridCropSize.value
-                : this.pendingPrimaryContentGridCropSize,
-        pendingPrimaryContentGridCropX: pendingPrimaryContentGridCropX.present
-            ? pendingPrimaryContentGridCropX.value
-            : this.pendingPrimaryContentGridCropX,
-        pendingPrimaryContentGridCropY: pendingPrimaryContentGridCropY.present
-            ? pendingPrimaryContentGridCropY.value
-            : this.pendingPrimaryContentGridCropY,
         uuidContentId0:
             uuidContentId0.present ? uuidContentId0.value : this.uuidContentId0,
         uuidContentId1:
@@ -3183,57 +2591,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           data.syncVersionAvailableProfileAttributes.present
               ? data.syncVersionAvailableProfileAttributes.value
               : this.syncVersionAvailableProfileAttributes,
-      uuidPendingContentId0: data.uuidPendingContentId0.present
-          ? data.uuidPendingContentId0.value
-          : this.uuidPendingContentId0,
-      uuidPendingContentId1: data.uuidPendingContentId1.present
-          ? data.uuidPendingContentId1.value
-          : this.uuidPendingContentId1,
-      uuidPendingContentId2: data.uuidPendingContentId2.present
-          ? data.uuidPendingContentId2.value
-          : this.uuidPendingContentId2,
-      uuidPendingContentId3: data.uuidPendingContentId3.present
-          ? data.uuidPendingContentId3.value
-          : this.uuidPendingContentId3,
-      uuidPendingContentId4: data.uuidPendingContentId4.present
-          ? data.uuidPendingContentId4.value
-          : this.uuidPendingContentId4,
-      uuidPendingContentId5: data.uuidPendingContentId5.present
-          ? data.uuidPendingContentId5.value
-          : this.uuidPendingContentId5,
-      faceDetectedPendingContentId0: data.faceDetectedPendingContentId0.present
-          ? data.faceDetectedPendingContentId0.value
-          : this.faceDetectedPendingContentId0,
-      faceDetectedPendingContentId1: data.faceDetectedPendingContentId1.present
-          ? data.faceDetectedPendingContentId1.value
-          : this.faceDetectedPendingContentId1,
-      faceDetectedPendingContentId2: data.faceDetectedPendingContentId2.present
-          ? data.faceDetectedPendingContentId2.value
-          : this.faceDetectedPendingContentId2,
-      faceDetectedPendingContentId3: data.faceDetectedPendingContentId3.present
-          ? data.faceDetectedPendingContentId3.value
-          : this.faceDetectedPendingContentId3,
-      faceDetectedPendingContentId4: data.faceDetectedPendingContentId4.present
-          ? data.faceDetectedPendingContentId4.value
-          : this.faceDetectedPendingContentId4,
-      faceDetectedPendingContentId5: data.faceDetectedPendingContentId5.present
-          ? data.faceDetectedPendingContentId5.value
-          : this.faceDetectedPendingContentId5,
-      uuidPendingSecurityContentId: data.uuidPendingSecurityContentId.present
-          ? data.uuidPendingSecurityContentId.value
-          : this.uuidPendingSecurityContentId,
-      pendingPrimaryContentGridCropSize:
-          data.pendingPrimaryContentGridCropSize.present
-              ? data.pendingPrimaryContentGridCropSize.value
-              : this.pendingPrimaryContentGridCropSize,
-      pendingPrimaryContentGridCropX:
-          data.pendingPrimaryContentGridCropX.present
-              ? data.pendingPrimaryContentGridCropX.value
-              : this.pendingPrimaryContentGridCropX,
-      pendingPrimaryContentGridCropY:
-          data.pendingPrimaryContentGridCropY.present
-              ? data.pendingPrimaryContentGridCropY.value
-              : this.pendingPrimaryContentGridCropY,
       uuidContentId0: data.uuidContentId0.present
           ? data.uuidContentId0.value
           : this.uuidContentId0,
@@ -3435,32 +2792,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('syncVersionProfile: $syncVersionProfile, ')
           ..write(
               'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
-          ..write('uuidPendingContentId0: $uuidPendingContentId0, ')
-          ..write('uuidPendingContentId1: $uuidPendingContentId1, ')
-          ..write('uuidPendingContentId2: $uuidPendingContentId2, ')
-          ..write('uuidPendingContentId3: $uuidPendingContentId3, ')
-          ..write('uuidPendingContentId4: $uuidPendingContentId4, ')
-          ..write('uuidPendingContentId5: $uuidPendingContentId5, ')
-          ..write(
-              'faceDetectedPendingContentId0: $faceDetectedPendingContentId0, ')
-          ..write(
-              'faceDetectedPendingContentId1: $faceDetectedPendingContentId1, ')
-          ..write(
-              'faceDetectedPendingContentId2: $faceDetectedPendingContentId2, ')
-          ..write(
-              'faceDetectedPendingContentId3: $faceDetectedPendingContentId3, ')
-          ..write(
-              'faceDetectedPendingContentId4: $faceDetectedPendingContentId4, ')
-          ..write(
-              'faceDetectedPendingContentId5: $faceDetectedPendingContentId5, ')
-          ..write(
-              'uuidPendingSecurityContentId: $uuidPendingSecurityContentId, ')
-          ..write(
-              'pendingPrimaryContentGridCropSize: $pendingPrimaryContentGridCropSize, ')
-          ..write(
-              'pendingPrimaryContentGridCropX: $pendingPrimaryContentGridCropX, ')
-          ..write(
-              'pendingPrimaryContentGridCropY: $pendingPrimaryContentGridCropY, ')
           ..write('uuidContentId0: $uuidContentId0, ')
           ..write('uuidContentId1: $uuidContentId1, ')
           ..write('uuidContentId2: $uuidContentId2, ')
@@ -3547,22 +2878,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         syncVersionAccount,
         syncVersionProfile,
         syncVersionAvailableProfileAttributes,
-        uuidPendingContentId0,
-        uuidPendingContentId1,
-        uuidPendingContentId2,
-        uuidPendingContentId3,
-        uuidPendingContentId4,
-        uuidPendingContentId5,
-        faceDetectedPendingContentId0,
-        faceDetectedPendingContentId1,
-        faceDetectedPendingContentId2,
-        faceDetectedPendingContentId3,
-        faceDetectedPendingContentId4,
-        faceDetectedPendingContentId5,
-        uuidPendingSecurityContentId,
-        pendingPrimaryContentGridCropSize,
-        pendingPrimaryContentGridCropX,
-        pendingPrimaryContentGridCropY,
         uuidContentId0,
         uuidContentId1,
         uuidContentId2,
@@ -3650,32 +2965,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.syncVersionProfile == this.syncVersionProfile &&
           other.syncVersionAvailableProfileAttributes ==
               this.syncVersionAvailableProfileAttributes &&
-          other.uuidPendingContentId0 == this.uuidPendingContentId0 &&
-          other.uuidPendingContentId1 == this.uuidPendingContentId1 &&
-          other.uuidPendingContentId2 == this.uuidPendingContentId2 &&
-          other.uuidPendingContentId3 == this.uuidPendingContentId3 &&
-          other.uuidPendingContentId4 == this.uuidPendingContentId4 &&
-          other.uuidPendingContentId5 == this.uuidPendingContentId5 &&
-          other.faceDetectedPendingContentId0 ==
-              this.faceDetectedPendingContentId0 &&
-          other.faceDetectedPendingContentId1 ==
-              this.faceDetectedPendingContentId1 &&
-          other.faceDetectedPendingContentId2 ==
-              this.faceDetectedPendingContentId2 &&
-          other.faceDetectedPendingContentId3 ==
-              this.faceDetectedPendingContentId3 &&
-          other.faceDetectedPendingContentId4 ==
-              this.faceDetectedPendingContentId4 &&
-          other.faceDetectedPendingContentId5 ==
-              this.faceDetectedPendingContentId5 &&
-          other.uuidPendingSecurityContentId ==
-              this.uuidPendingSecurityContentId &&
-          other.pendingPrimaryContentGridCropSize ==
-              this.pendingPrimaryContentGridCropSize &&
-          other.pendingPrimaryContentGridCropX ==
-              this.pendingPrimaryContentGridCropX &&
-          other.pendingPrimaryContentGridCropY ==
-              this.pendingPrimaryContentGridCropY &&
           other.uuidContentId0 == this.uuidContentId0 &&
           other.uuidContentId1 == this.uuidContentId1 &&
           other.uuidContentId2 == this.uuidContentId2 &&
@@ -3761,22 +3050,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<int?> syncVersionAccount;
   final Value<int?> syncVersionProfile;
   final Value<int?> syncVersionAvailableProfileAttributes;
-  final Value<ContentId?> uuidPendingContentId0;
-  final Value<ContentId?> uuidPendingContentId1;
-  final Value<ContentId?> uuidPendingContentId2;
-  final Value<ContentId?> uuidPendingContentId3;
-  final Value<ContentId?> uuidPendingContentId4;
-  final Value<ContentId?> uuidPendingContentId5;
-  final Value<bool?> faceDetectedPendingContentId0;
-  final Value<bool?> faceDetectedPendingContentId1;
-  final Value<bool?> faceDetectedPendingContentId2;
-  final Value<bool?> faceDetectedPendingContentId3;
-  final Value<bool?> faceDetectedPendingContentId4;
-  final Value<bool?> faceDetectedPendingContentId5;
-  final Value<ContentId?> uuidPendingSecurityContentId;
-  final Value<double?> pendingPrimaryContentGridCropSize;
-  final Value<double?> pendingPrimaryContentGridCropX;
-  final Value<double?> pendingPrimaryContentGridCropY;
   final Value<ContentId?> uuidContentId0;
   final Value<ContentId?> uuidContentId1;
   final Value<ContentId?> uuidContentId2;
@@ -3854,22 +3127,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.syncVersionAccount = const Value.absent(),
     this.syncVersionProfile = const Value.absent(),
     this.syncVersionAvailableProfileAttributes = const Value.absent(),
-    this.uuidPendingContentId0 = const Value.absent(),
-    this.uuidPendingContentId1 = const Value.absent(),
-    this.uuidPendingContentId2 = const Value.absent(),
-    this.uuidPendingContentId3 = const Value.absent(),
-    this.uuidPendingContentId4 = const Value.absent(),
-    this.uuidPendingContentId5 = const Value.absent(),
-    this.faceDetectedPendingContentId0 = const Value.absent(),
-    this.faceDetectedPendingContentId1 = const Value.absent(),
-    this.faceDetectedPendingContentId2 = const Value.absent(),
-    this.faceDetectedPendingContentId3 = const Value.absent(),
-    this.faceDetectedPendingContentId4 = const Value.absent(),
-    this.faceDetectedPendingContentId5 = const Value.absent(),
-    this.uuidPendingSecurityContentId = const Value.absent(),
-    this.pendingPrimaryContentGridCropSize = const Value.absent(),
-    this.pendingPrimaryContentGridCropX = const Value.absent(),
-    this.pendingPrimaryContentGridCropY = const Value.absent(),
     this.uuidContentId0 = const Value.absent(),
     this.uuidContentId1 = const Value.absent(),
     this.uuidContentId2 = const Value.absent(),
@@ -3946,22 +3203,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.syncVersionAccount = const Value.absent(),
     this.syncVersionProfile = const Value.absent(),
     this.syncVersionAvailableProfileAttributes = const Value.absent(),
-    this.uuidPendingContentId0 = const Value.absent(),
-    this.uuidPendingContentId1 = const Value.absent(),
-    this.uuidPendingContentId2 = const Value.absent(),
-    this.uuidPendingContentId3 = const Value.absent(),
-    this.uuidPendingContentId4 = const Value.absent(),
-    this.uuidPendingContentId5 = const Value.absent(),
-    this.faceDetectedPendingContentId0 = const Value.absent(),
-    this.faceDetectedPendingContentId1 = const Value.absent(),
-    this.faceDetectedPendingContentId2 = const Value.absent(),
-    this.faceDetectedPendingContentId3 = const Value.absent(),
-    this.faceDetectedPendingContentId4 = const Value.absent(),
-    this.faceDetectedPendingContentId5 = const Value.absent(),
-    this.uuidPendingSecurityContentId = const Value.absent(),
-    this.pendingPrimaryContentGridCropSize = const Value.absent(),
-    this.pendingPrimaryContentGridCropX = const Value.absent(),
-    this.pendingPrimaryContentGridCropY = const Value.absent(),
     this.uuidContentId0 = const Value.absent(),
     this.uuidContentId1 = const Value.absent(),
     this.uuidContentId2 = const Value.absent(),
@@ -4038,22 +3279,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<int>? syncVersionAccount,
     Expression<int>? syncVersionProfile,
     Expression<int>? syncVersionAvailableProfileAttributes,
-    Expression<String>? uuidPendingContentId0,
-    Expression<String>? uuidPendingContentId1,
-    Expression<String>? uuidPendingContentId2,
-    Expression<String>? uuidPendingContentId3,
-    Expression<String>? uuidPendingContentId4,
-    Expression<String>? uuidPendingContentId5,
-    Expression<bool>? faceDetectedPendingContentId0,
-    Expression<bool>? faceDetectedPendingContentId1,
-    Expression<bool>? faceDetectedPendingContentId2,
-    Expression<bool>? faceDetectedPendingContentId3,
-    Expression<bool>? faceDetectedPendingContentId4,
-    Expression<bool>? faceDetectedPendingContentId5,
-    Expression<String>? uuidPendingSecurityContentId,
-    Expression<double>? pendingPrimaryContentGridCropSize,
-    Expression<double>? pendingPrimaryContentGridCropX,
-    Expression<double>? pendingPrimaryContentGridCropY,
     Expression<String>? uuidContentId0,
     Expression<String>? uuidContentId1,
     Expression<String>? uuidContentId2,
@@ -4146,39 +3371,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (syncVersionAvailableProfileAttributes != null)
         'sync_version_available_profile_attributes':
             syncVersionAvailableProfileAttributes,
-      if (uuidPendingContentId0 != null)
-        'uuid_pending_content_id0': uuidPendingContentId0,
-      if (uuidPendingContentId1 != null)
-        'uuid_pending_content_id1': uuidPendingContentId1,
-      if (uuidPendingContentId2 != null)
-        'uuid_pending_content_id2': uuidPendingContentId2,
-      if (uuidPendingContentId3 != null)
-        'uuid_pending_content_id3': uuidPendingContentId3,
-      if (uuidPendingContentId4 != null)
-        'uuid_pending_content_id4': uuidPendingContentId4,
-      if (uuidPendingContentId5 != null)
-        'uuid_pending_content_id5': uuidPendingContentId5,
-      if (faceDetectedPendingContentId0 != null)
-        'face_detected_pending_content_id0': faceDetectedPendingContentId0,
-      if (faceDetectedPendingContentId1 != null)
-        'face_detected_pending_content_id1': faceDetectedPendingContentId1,
-      if (faceDetectedPendingContentId2 != null)
-        'face_detected_pending_content_id2': faceDetectedPendingContentId2,
-      if (faceDetectedPendingContentId3 != null)
-        'face_detected_pending_content_id3': faceDetectedPendingContentId3,
-      if (faceDetectedPendingContentId4 != null)
-        'face_detected_pending_content_id4': faceDetectedPendingContentId4,
-      if (faceDetectedPendingContentId5 != null)
-        'face_detected_pending_content_id5': faceDetectedPendingContentId5,
-      if (uuidPendingSecurityContentId != null)
-        'uuid_pending_security_content_id': uuidPendingSecurityContentId,
-      if (pendingPrimaryContentGridCropSize != null)
-        'pending_primary_content_grid_crop_size':
-            pendingPrimaryContentGridCropSize,
-      if (pendingPrimaryContentGridCropX != null)
-        'pending_primary_content_grid_crop_x': pendingPrimaryContentGridCropX,
-      if (pendingPrimaryContentGridCropY != null)
-        'pending_primary_content_grid_crop_y': pendingPrimaryContentGridCropY,
       if (uuidContentId0 != null) 'uuid_content_id0': uuidContentId0,
       if (uuidContentId1 != null) 'uuid_content_id1': uuidContentId1,
       if (uuidContentId2 != null) 'uuid_content_id2': uuidContentId2,
@@ -4298,22 +3490,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<int?>? syncVersionAccount,
       Value<int?>? syncVersionProfile,
       Value<int?>? syncVersionAvailableProfileAttributes,
-      Value<ContentId?>? uuidPendingContentId0,
-      Value<ContentId?>? uuidPendingContentId1,
-      Value<ContentId?>? uuidPendingContentId2,
-      Value<ContentId?>? uuidPendingContentId3,
-      Value<ContentId?>? uuidPendingContentId4,
-      Value<ContentId?>? uuidPendingContentId5,
-      Value<bool?>? faceDetectedPendingContentId0,
-      Value<bool?>? faceDetectedPendingContentId1,
-      Value<bool?>? faceDetectedPendingContentId2,
-      Value<bool?>? faceDetectedPendingContentId3,
-      Value<bool?>? faceDetectedPendingContentId4,
-      Value<bool?>? faceDetectedPendingContentId5,
-      Value<ContentId?>? uuidPendingSecurityContentId,
-      Value<double?>? pendingPrimaryContentGridCropSize,
-      Value<double?>? pendingPrimaryContentGridCropX,
-      Value<double?>? pendingPrimaryContentGridCropY,
       Value<ContentId?>? uuidContentId0,
       Value<ContentId?>? uuidContentId1,
       Value<ContentId?>? uuidContentId2,
@@ -4403,38 +3579,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       syncVersionAvailableProfileAttributes:
           syncVersionAvailableProfileAttributes ??
               this.syncVersionAvailableProfileAttributes,
-      uuidPendingContentId0:
-          uuidPendingContentId0 ?? this.uuidPendingContentId0,
-      uuidPendingContentId1:
-          uuidPendingContentId1 ?? this.uuidPendingContentId1,
-      uuidPendingContentId2:
-          uuidPendingContentId2 ?? this.uuidPendingContentId2,
-      uuidPendingContentId3:
-          uuidPendingContentId3 ?? this.uuidPendingContentId3,
-      uuidPendingContentId4:
-          uuidPendingContentId4 ?? this.uuidPendingContentId4,
-      uuidPendingContentId5:
-          uuidPendingContentId5 ?? this.uuidPendingContentId5,
-      faceDetectedPendingContentId0:
-          faceDetectedPendingContentId0 ?? this.faceDetectedPendingContentId0,
-      faceDetectedPendingContentId1:
-          faceDetectedPendingContentId1 ?? this.faceDetectedPendingContentId1,
-      faceDetectedPendingContentId2:
-          faceDetectedPendingContentId2 ?? this.faceDetectedPendingContentId2,
-      faceDetectedPendingContentId3:
-          faceDetectedPendingContentId3 ?? this.faceDetectedPendingContentId3,
-      faceDetectedPendingContentId4:
-          faceDetectedPendingContentId4 ?? this.faceDetectedPendingContentId4,
-      faceDetectedPendingContentId5:
-          faceDetectedPendingContentId5 ?? this.faceDetectedPendingContentId5,
-      uuidPendingSecurityContentId:
-          uuidPendingSecurityContentId ?? this.uuidPendingSecurityContentId,
-      pendingPrimaryContentGridCropSize: pendingPrimaryContentGridCropSize ??
-          this.pendingPrimaryContentGridCropSize,
-      pendingPrimaryContentGridCropX:
-          pendingPrimaryContentGridCropX ?? this.pendingPrimaryContentGridCropX,
-      pendingPrimaryContentGridCropY:
-          pendingPrimaryContentGridCropY ?? this.pendingPrimaryContentGridCropY,
       uuidContentId0: uuidContentId0 ?? this.uuidContentId0,
       uuidContentId1: uuidContentId1 ?? this.uuidContentId1,
       uuidContentId2: uuidContentId2 ?? this.uuidContentId2,
@@ -4604,77 +3748,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (syncVersionAvailableProfileAttributes.present) {
       map['sync_version_available_profile_attributes'] =
           Variable<int>(syncVersionAvailableProfileAttributes.value);
-    }
-    if (uuidPendingContentId0.present) {
-      map['uuid_pending_content_id0'] = Variable<String>($AccountTable
-          .$converteruuidPendingContentId0
-          .toSql(uuidPendingContentId0.value));
-    }
-    if (uuidPendingContentId1.present) {
-      map['uuid_pending_content_id1'] = Variable<String>($AccountTable
-          .$converteruuidPendingContentId1
-          .toSql(uuidPendingContentId1.value));
-    }
-    if (uuidPendingContentId2.present) {
-      map['uuid_pending_content_id2'] = Variable<String>($AccountTable
-          .$converteruuidPendingContentId2
-          .toSql(uuidPendingContentId2.value));
-    }
-    if (uuidPendingContentId3.present) {
-      map['uuid_pending_content_id3'] = Variable<String>($AccountTable
-          .$converteruuidPendingContentId3
-          .toSql(uuidPendingContentId3.value));
-    }
-    if (uuidPendingContentId4.present) {
-      map['uuid_pending_content_id4'] = Variable<String>($AccountTable
-          .$converteruuidPendingContentId4
-          .toSql(uuidPendingContentId4.value));
-    }
-    if (uuidPendingContentId5.present) {
-      map['uuid_pending_content_id5'] = Variable<String>($AccountTable
-          .$converteruuidPendingContentId5
-          .toSql(uuidPendingContentId5.value));
-    }
-    if (faceDetectedPendingContentId0.present) {
-      map['face_detected_pending_content_id0'] =
-          Variable<bool>(faceDetectedPendingContentId0.value);
-    }
-    if (faceDetectedPendingContentId1.present) {
-      map['face_detected_pending_content_id1'] =
-          Variable<bool>(faceDetectedPendingContentId1.value);
-    }
-    if (faceDetectedPendingContentId2.present) {
-      map['face_detected_pending_content_id2'] =
-          Variable<bool>(faceDetectedPendingContentId2.value);
-    }
-    if (faceDetectedPendingContentId3.present) {
-      map['face_detected_pending_content_id3'] =
-          Variable<bool>(faceDetectedPendingContentId3.value);
-    }
-    if (faceDetectedPendingContentId4.present) {
-      map['face_detected_pending_content_id4'] =
-          Variable<bool>(faceDetectedPendingContentId4.value);
-    }
-    if (faceDetectedPendingContentId5.present) {
-      map['face_detected_pending_content_id5'] =
-          Variable<bool>(faceDetectedPendingContentId5.value);
-    }
-    if (uuidPendingSecurityContentId.present) {
-      map['uuid_pending_security_content_id'] = Variable<String>($AccountTable
-          .$converteruuidPendingSecurityContentId
-          .toSql(uuidPendingSecurityContentId.value));
-    }
-    if (pendingPrimaryContentGridCropSize.present) {
-      map['pending_primary_content_grid_crop_size'] =
-          Variable<double>(pendingPrimaryContentGridCropSize.value);
-    }
-    if (pendingPrimaryContentGridCropX.present) {
-      map['pending_primary_content_grid_crop_x'] =
-          Variable<double>(pendingPrimaryContentGridCropX.value);
-    }
-    if (pendingPrimaryContentGridCropY.present) {
-      map['pending_primary_content_grid_crop_y'] =
-          Variable<double>(pendingPrimaryContentGridCropY.value);
     }
     if (uuidContentId0.present) {
       map['uuid_content_id0'] = Variable<String>(
@@ -4933,32 +4006,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('syncVersionProfile: $syncVersionProfile, ')
           ..write(
               'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
-          ..write('uuidPendingContentId0: $uuidPendingContentId0, ')
-          ..write('uuidPendingContentId1: $uuidPendingContentId1, ')
-          ..write('uuidPendingContentId2: $uuidPendingContentId2, ')
-          ..write('uuidPendingContentId3: $uuidPendingContentId3, ')
-          ..write('uuidPendingContentId4: $uuidPendingContentId4, ')
-          ..write('uuidPendingContentId5: $uuidPendingContentId5, ')
-          ..write(
-              'faceDetectedPendingContentId0: $faceDetectedPendingContentId0, ')
-          ..write(
-              'faceDetectedPendingContentId1: $faceDetectedPendingContentId1, ')
-          ..write(
-              'faceDetectedPendingContentId2: $faceDetectedPendingContentId2, ')
-          ..write(
-              'faceDetectedPendingContentId3: $faceDetectedPendingContentId3, ')
-          ..write(
-              'faceDetectedPendingContentId4: $faceDetectedPendingContentId4, ')
-          ..write(
-              'faceDetectedPendingContentId5: $faceDetectedPendingContentId5, ')
-          ..write(
-              'uuidPendingSecurityContentId: $uuidPendingSecurityContentId, ')
-          ..write(
-              'pendingPrimaryContentGridCropSize: $pendingPrimaryContentGridCropSize, ')
-          ..write(
-              'pendingPrimaryContentGridCropX: $pendingPrimaryContentGridCropX, ')
-          ..write(
-              'pendingPrimaryContentGridCropY: $pendingPrimaryContentGridCropY, ')
           ..write('uuidContentId0: $uuidContentId0, ')
           ..write('uuidContentId1: $uuidContentId1, ')
           ..write('uuidContentId2: $uuidContentId2, ')
@@ -8025,8 +7072,6 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $ConversationsTable conversations = $ConversationsTable(this);
   late final DaoCurrentContent daoCurrentContent =
       DaoCurrentContent(this as AccountDatabase);
-  late final DaoPendingContent daoPendingContent =
-      DaoPendingContent(this as AccountDatabase);
   late final DaoMyProfile daoMyProfile = DaoMyProfile(this as AccountDatabase);
   late final DaoProfileSettings daoProfileSettings =
       DaoProfileSettings(this as AccountDatabase);

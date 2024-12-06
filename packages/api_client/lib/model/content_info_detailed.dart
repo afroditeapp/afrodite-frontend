@@ -19,6 +19,8 @@ class ContentInfoDetailed {
     required this.secureCapture,
     this.slot,
     required this.state,
+    this.usageEndTime,
+    this.usageStartTime,
   });
 
   ContentId cid;
@@ -32,7 +34,11 @@ class ContentInfoDetailed {
 
   ContentSlot? slot;
 
-  ContentState state;
+  ContentModerationState state;
+
+  UnixTime? usageEndTime;
+
+  UnixTime? usageStartTime;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentInfoDetailed &&
@@ -41,7 +47,9 @@ class ContentInfoDetailed {
     other.fd == fd &&
     other.secureCapture == secureCapture &&
     other.slot == slot &&
-    other.state == state;
+    other.state == state &&
+    other.usageEndTime == usageEndTime &&
+    other.usageStartTime == usageStartTime;
 
   @override
   int get hashCode =>
@@ -51,10 +59,12 @@ class ContentInfoDetailed {
     (fd.hashCode) +
     (secureCapture.hashCode) +
     (slot == null ? 0 : slot!.hashCode) +
-    (state.hashCode);
+    (state.hashCode) +
+    (usageEndTime == null ? 0 : usageEndTime!.hashCode) +
+    (usageStartTime == null ? 0 : usageStartTime!.hashCode);
 
   @override
-  String toString() => 'ContentInfoDetailed[cid=$cid, ctype=$ctype, fd=$fd, secureCapture=$secureCapture, slot=$slot, state=$state]';
+  String toString() => 'ContentInfoDetailed[cid=$cid, ctype=$ctype, fd=$fd, secureCapture=$secureCapture, slot=$slot, state=$state, usageEndTime=$usageEndTime, usageStartTime=$usageStartTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -68,6 +78,16 @@ class ContentInfoDetailed {
       json[r'slot'] = null;
     }
       json[r'state'] = this.state;
+    if (this.usageEndTime != null) {
+      json[r'usage_end_time'] = this.usageEndTime;
+    } else {
+      json[r'usage_end_time'] = null;
+    }
+    if (this.usageStartTime != null) {
+      json[r'usage_start_time'] = this.usageStartTime;
+    } else {
+      json[r'usage_start_time'] = null;
+    }
     return json;
   }
 
@@ -95,7 +115,9 @@ class ContentInfoDetailed {
         fd: mapValueOfType<bool>(json, r'fd')!,
         secureCapture: mapValueOfType<bool>(json, r'secure_capture')!,
         slot: ContentSlot.fromJson(json[r'slot']),
-        state: ContentState.fromJson(json[r'state'])!,
+        state: ContentModerationState.fromJson(json[r'state'])!,
+        usageEndTime: UnixTime.fromJson(json[r'usage_end_time']),
+        usageStartTime: UnixTime.fromJson(json[r'usage_start_time']),
       );
     }
     return null;

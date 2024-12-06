@@ -14,30 +14,36 @@ class GetMyProfileContentResult {
   /// Returns a new [GetMyProfileContentResult] instance.
   GetMyProfileContentResult({
     required this.c,
+    required this.sv,
     required this.v,
   });
 
   MyProfileContent c;
+
+  MediaContentSyncVersion sv;
 
   ProfileContentVersion v;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetMyProfileContentResult &&
     other.c == c &&
+    other.sv == sv &&
     other.v == v;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (c.hashCode) +
+    (sv.hashCode) +
     (v.hashCode);
 
   @override
-  String toString() => 'GetMyProfileContentResult[c=$c, v=$v]';
+  String toString() => 'GetMyProfileContentResult[c=$c, sv=$sv, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'c'] = this.c;
+      json[r'sv'] = this.sv;
       json[r'v'] = this.v;
     return json;
   }
@@ -62,6 +68,7 @@ class GetMyProfileContentResult {
 
       return GetMyProfileContentResult(
         c: MyProfileContent.fromJson(json[r'c'])!,
+        sv: MediaContentSyncVersion.fromJson(json[r'sv'])!,
         v: ProfileContentVersion.fromJson(json[r'v'])!,
       );
     }
@@ -111,6 +118,7 @@ class GetMyProfileContentResult {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'c',
+    'sv',
     'v',
   };
 }

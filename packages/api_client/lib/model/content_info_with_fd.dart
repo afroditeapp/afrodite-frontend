@@ -16,6 +16,9 @@ class ContentInfoWithFd {
     required this.cid,
     required this.ctype,
     required this.fd,
+    this.rejectedReasonCategory,
+    this.rejectedReasonDetails,
+    required this.state,
   });
 
   ContentId cid;
@@ -25,27 +28,50 @@ class ContentInfoWithFd {
   /// Face detected
   bool fd;
 
+  ProfileContentModerationRejectedReasonCategory? rejectedReasonCategory;
+
+  ProfileContentModerationRejectedReasonDetails? rejectedReasonDetails;
+
+  ContentModerationState state;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentInfoWithFd &&
     other.cid == cid &&
     other.ctype == ctype &&
-    other.fd == fd;
+    other.fd == fd &&
+    other.rejectedReasonCategory == rejectedReasonCategory &&
+    other.rejectedReasonDetails == rejectedReasonDetails &&
+    other.state == state;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (cid.hashCode) +
     (ctype.hashCode) +
-    (fd.hashCode);
+    (fd.hashCode) +
+    (rejectedReasonCategory == null ? 0 : rejectedReasonCategory!.hashCode) +
+    (rejectedReasonDetails == null ? 0 : rejectedReasonDetails!.hashCode) +
+    (state.hashCode);
 
   @override
-  String toString() => 'ContentInfoWithFd[cid=$cid, ctype=$ctype, fd=$fd]';
+  String toString() => 'ContentInfoWithFd[cid=$cid, ctype=$ctype, fd=$fd, rejectedReasonCategory=$rejectedReasonCategory, rejectedReasonDetails=$rejectedReasonDetails, state=$state]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'cid'] = this.cid;
       json[r'ctype'] = this.ctype;
       json[r'fd'] = this.fd;
+    if (this.rejectedReasonCategory != null) {
+      json[r'rejected_reason_category'] = this.rejectedReasonCategory;
+    } else {
+      json[r'rejected_reason_category'] = null;
+    }
+    if (this.rejectedReasonDetails != null) {
+      json[r'rejected_reason_details'] = this.rejectedReasonDetails;
+    } else {
+      json[r'rejected_reason_details'] = null;
+    }
+      json[r'state'] = this.state;
     return json;
   }
 
@@ -71,6 +97,9 @@ class ContentInfoWithFd {
         cid: ContentId.fromJson(json[r'cid'])!,
         ctype: MediaContentType.fromJson(json[r'ctype'])!,
         fd: mapValueOfType<bool>(json, r'fd')!,
+        rejectedReasonCategory: ProfileContentModerationRejectedReasonCategory.fromJson(json[r'rejected_reason_category']),
+        rejectedReasonDetails: ProfileContentModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details']),
+        state: ContentModerationState.fromJson(json[r'state'])!,
       );
     }
     return null;
@@ -121,6 +150,7 @@ class ContentInfoWithFd {
     'cid',
     'ctype',
     'fd',
+    'state',
   };
 }
 
