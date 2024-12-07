@@ -144,7 +144,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
           failureDetected = true;
         }
 
-        if (await media.reloadMyProfileContent().isErr()) {
+        if (await media.reloadMyMediaContent().isErr()) {
           failureDetected = true;
         }
 

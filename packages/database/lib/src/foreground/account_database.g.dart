@@ -161,6 +161,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<int> syncVersionProfile = GeneratedColumn<int>(
       'sync_version_profile', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _syncVersionMediaContentMeta =
+      const VerificationMeta('syncVersionMediaContent');
+  @override
+  late final GeneratedColumn<int> syncVersionMediaContent =
+      GeneratedColumn<int>('sync_version_media_content', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _syncVersionAvailableProfileAttributesMeta =
       const VerificationMeta('syncVersionAvailableProfileAttributes');
   @override
@@ -623,6 +629,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         initialSyncDoneChatRepository,
         syncVersionAccount,
         syncVersionProfile,
+        syncVersionMediaContent,
         syncVersionAvailableProfileAttributes,
         uuidContentId0,
         uuidContentId1,
@@ -758,6 +765,13 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           _syncVersionProfileMeta,
           syncVersionProfile.isAcceptableOrUnknown(
               data['sync_version_profile']!, _syncVersionProfileMeta));
+    }
+    if (data.containsKey('sync_version_media_content')) {
+      context.handle(
+          _syncVersionMediaContentMeta,
+          syncVersionMediaContent.isAcceptableOrUnknown(
+              data['sync_version_media_content']!,
+              _syncVersionMediaContentMeta));
     }
     if (data.containsKey('sync_version_available_profile_attributes')) {
       context.handle(
@@ -1068,6 +1082,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           DriftSqlType.int, data['${effectivePrefix}sync_version_account']),
       syncVersionProfile: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}sync_version_profile']),
+      syncVersionMediaContent: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}sync_version_media_content']),
       syncVersionAvailableProfileAttributes: attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}sync_version_available_profile_attributes']),
@@ -1343,6 +1360,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final bool initialSyncDoneChatRepository;
   final int? syncVersionAccount;
   final int? syncVersionProfile;
+  final int? syncVersionMediaContent;
   final int? syncVersionAvailableProfileAttributes;
   final ContentId? uuidContentId0;
   final ContentId? uuidContentId1;
@@ -1420,6 +1438,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       required this.initialSyncDoneChatRepository,
       this.syncVersionAccount,
       this.syncVersionProfile,
+      this.syncVersionMediaContent,
       this.syncVersionAvailableProfileAttributes,
       this.uuidContentId0,
       this.uuidContentId1,
@@ -1533,6 +1552,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     }
     if (!nullToAbsent || syncVersionProfile != null) {
       map['sync_version_profile'] = Variable<int>(syncVersionProfile);
+    }
+    if (!nullToAbsent || syncVersionMediaContent != null) {
+      map['sync_version_media_content'] =
+          Variable<int>(syncVersionMediaContent);
     }
     if (!nullToAbsent || syncVersionAvailableProfileAttributes != null) {
       map['sync_version_available_profile_attributes'] =
@@ -1795,6 +1818,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       syncVersionProfile: syncVersionProfile == null && nullToAbsent
           ? const Value.absent()
           : Value(syncVersionProfile),
+      syncVersionMediaContent: syncVersionMediaContent == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncVersionMediaContent),
       syncVersionAvailableProfileAttributes:
           syncVersionAvailableProfileAttributes == null && nullToAbsent
               ? const Value.absent()
@@ -2016,6 +2042,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<bool>(json['initialSyncDoneChatRepository']),
       syncVersionAccount: serializer.fromJson<int?>(json['syncVersionAccount']),
       syncVersionProfile: serializer.fromJson<int?>(json['syncVersionProfile']),
+      syncVersionMediaContent:
+          serializer.fromJson<int?>(json['syncVersionMediaContent']),
       syncVersionAvailableProfileAttributes: serializer
           .fromJson<int?>(json['syncVersionAvailableProfileAttributes']),
       uuidContentId0: serializer.fromJson<ContentId?>(json['uuidContentId0']),
@@ -2150,6 +2178,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.toJson<bool>(initialSyncDoneChatRepository),
       'syncVersionAccount': serializer.toJson<int?>(syncVersionAccount),
       'syncVersionProfile': serializer.toJson<int?>(syncVersionProfile),
+      'syncVersionMediaContent':
+          serializer.toJson<int?>(syncVersionMediaContent),
       'syncVersionAvailableProfileAttributes':
           serializer.toJson<int?>(syncVersionAvailableProfileAttributes),
       'uuidContentId0': serializer.toJson<ContentId?>(uuidContentId0),
@@ -2264,6 +2294,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           bool? initialSyncDoneChatRepository,
           Value<int?> syncVersionAccount = const Value.absent(),
           Value<int?> syncVersionProfile = const Value.absent(),
+          Value<int?> syncVersionMediaContent = const Value.absent(),
           Value<int?> syncVersionAvailableProfileAttributes =
               const Value.absent(),
           Value<ContentId?> uuidContentId0 = const Value.absent(),
@@ -2371,6 +2402,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         syncVersionProfile: syncVersionProfile.present
             ? syncVersionProfile.value
             : this.syncVersionProfile,
+        syncVersionMediaContent: syncVersionMediaContent.present
+            ? syncVersionMediaContent.value
+            : this.syncVersionMediaContent,
         syncVersionAvailableProfileAttributes:
             syncVersionAvailableProfileAttributes.present
                 ? syncVersionAvailableProfileAttributes.value
@@ -2587,6 +2621,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       syncVersionProfile: data.syncVersionProfile.present
           ? data.syncVersionProfile.value
           : this.syncVersionProfile,
+      syncVersionMediaContent: data.syncVersionMediaContent.present
+          ? data.syncVersionMediaContent.value
+          : this.syncVersionMediaContent,
       syncVersionAvailableProfileAttributes:
           data.syncVersionAvailableProfileAttributes.present
               ? data.syncVersionAvailableProfileAttributes.value
@@ -2790,6 +2827,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
               'initialSyncDoneChatRepository: $initialSyncDoneChatRepository, ')
           ..write('syncVersionAccount: $syncVersionAccount, ')
           ..write('syncVersionProfile: $syncVersionProfile, ')
+          ..write('syncVersionMediaContent: $syncVersionMediaContent, ')
           ..write(
               'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
           ..write('uuidContentId0: $uuidContentId0, ')
@@ -2877,6 +2915,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         initialSyncDoneChatRepository,
         syncVersionAccount,
         syncVersionProfile,
+        syncVersionMediaContent,
         syncVersionAvailableProfileAttributes,
         uuidContentId0,
         uuidContentId1,
@@ -2963,6 +3002,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
               this.initialSyncDoneChatRepository &&
           other.syncVersionAccount == this.syncVersionAccount &&
           other.syncVersionProfile == this.syncVersionProfile &&
+          other.syncVersionMediaContent == this.syncVersionMediaContent &&
           other.syncVersionAvailableProfileAttributes ==
               this.syncVersionAvailableProfileAttributes &&
           other.uuidContentId0 == this.uuidContentId0 &&
@@ -3049,6 +3089,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<bool> initialSyncDoneChatRepository;
   final Value<int?> syncVersionAccount;
   final Value<int?> syncVersionProfile;
+  final Value<int?> syncVersionMediaContent;
   final Value<int?> syncVersionAvailableProfileAttributes;
   final Value<ContentId?> uuidContentId0;
   final Value<ContentId?> uuidContentId1;
@@ -3126,6 +3167,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.initialSyncDoneChatRepository = const Value.absent(),
     this.syncVersionAccount = const Value.absent(),
     this.syncVersionProfile = const Value.absent(),
+    this.syncVersionMediaContent = const Value.absent(),
     this.syncVersionAvailableProfileAttributes = const Value.absent(),
     this.uuidContentId0 = const Value.absent(),
     this.uuidContentId1 = const Value.absent(),
@@ -3202,6 +3244,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.initialSyncDoneChatRepository = const Value.absent(),
     this.syncVersionAccount = const Value.absent(),
     this.syncVersionProfile = const Value.absent(),
+    this.syncVersionMediaContent = const Value.absent(),
     this.syncVersionAvailableProfileAttributes = const Value.absent(),
     this.uuidContentId0 = const Value.absent(),
     this.uuidContentId1 = const Value.absent(),
@@ -3278,6 +3321,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<bool>? initialSyncDoneChatRepository,
     Expression<int>? syncVersionAccount,
     Expression<int>? syncVersionProfile,
+    Expression<int>? syncVersionMediaContent,
     Expression<int>? syncVersionAvailableProfileAttributes,
     Expression<String>? uuidContentId0,
     Expression<String>? uuidContentId1,
@@ -3368,6 +3412,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'sync_version_account': syncVersionAccount,
       if (syncVersionProfile != null)
         'sync_version_profile': syncVersionProfile,
+      if (syncVersionMediaContent != null)
+        'sync_version_media_content': syncVersionMediaContent,
       if (syncVersionAvailableProfileAttributes != null)
         'sync_version_available_profile_attributes':
             syncVersionAvailableProfileAttributes,
@@ -3489,6 +3535,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<bool>? initialSyncDoneChatRepository,
       Value<int?>? syncVersionAccount,
       Value<int?>? syncVersionProfile,
+      Value<int?>? syncVersionMediaContent,
       Value<int?>? syncVersionAvailableProfileAttributes,
       Value<ContentId?>? uuidContentId0,
       Value<ContentId?>? uuidContentId1,
@@ -3576,6 +3623,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           initialSyncDoneChatRepository ?? this.initialSyncDoneChatRepository,
       syncVersionAccount: syncVersionAccount ?? this.syncVersionAccount,
       syncVersionProfile: syncVersionProfile ?? this.syncVersionProfile,
+      syncVersionMediaContent:
+          syncVersionMediaContent ?? this.syncVersionMediaContent,
       syncVersionAvailableProfileAttributes:
           syncVersionAvailableProfileAttributes ??
               this.syncVersionAvailableProfileAttributes,
@@ -3744,6 +3793,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     }
     if (syncVersionProfile.present) {
       map['sync_version_profile'] = Variable<int>(syncVersionProfile.value);
+    }
+    if (syncVersionMediaContent.present) {
+      map['sync_version_media_content'] =
+          Variable<int>(syncVersionMediaContent.value);
     }
     if (syncVersionAvailableProfileAttributes.present) {
       map['sync_version_available_profile_attributes'] =
@@ -4004,6 +4057,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
               'initialSyncDoneChatRepository: $initialSyncDoneChatRepository, ')
           ..write('syncVersionAccount: $syncVersionAccount, ')
           ..write('syncVersionProfile: $syncVersionProfile, ')
+          ..write('syncVersionMediaContent: $syncVersionMediaContent, ')
           ..write(
               'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
           ..write('uuidContentId0: $uuidContentId0, ')

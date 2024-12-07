@@ -56,6 +56,8 @@ class DaoSyncVersions extends DatabaseAccessor<AccountDatabase> with _$DaoSyncVe
     watchColumn((r) => r.syncVersionAccount);
   Stream<int?> watchSyncVersionProfile() =>
     watchColumn((r) => r.syncVersionProfile);
+  Stream<int?> watchSyncVersionMediaContent() =>
+    watchColumn((r) => r.syncVersionMediaContent);
   Stream<int?> watchSyncVersionAvailableProfileAttributes() =>
     watchColumn((r) => r.syncVersionAvailableProfileAttributes);
 }

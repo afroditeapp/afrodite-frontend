@@ -55,8 +55,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<Result<void, void>> onLoginDataSync() async {
-    return await reloadMyProfileContent()
-      .andThen((_) => reloadMySecurityContent())
+    return await reloadMyMediaContent()
       .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateMediaSyncDone(true)));
   }
 
@@ -65,9 +64,8 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     syncHandler.onResumeAppUsageSync(() async {
       final syncDone = await db.accountStreamSingle((db) => db.daoInitialSync.watchMediaSyncDone()).ok() ?? false;
       if (!syncDone) {
-        final r1 = await reloadMyProfileContent();
-        final r2 = await reloadMySecurityContent();
-        if (r1.isOk() && r2.isOk()) {
+        final r1 = await reloadMyMediaContent();
+        if (r1.isOk()) {
           await db.accountAction((db) => db.daoInitialSync.updateMediaSyncDone(true));
         }
       }
@@ -76,8 +74,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<void> onInitialSetupComplete() async {
-    await reloadMyProfileContent();
-    await reloadMySecurityContent();
+    await reloadMyMediaContent();
   }
 
   Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) =>
@@ -115,28 +112,14 @@ class MediaRepository extends DataRepositoryWithLifecycle {
       .ok()
       .map((img) => img.c?.cid);
 
-  // TODO(prod): Merge my profile and security content APIs
-
-  /// Reload current profile content.
-  Future<Result<void, void>> reloadMyProfileContent() async {
-    final infoResult = await api.media((api) => api.getMyProfileContentInfo()).ok();
-    final info = infoResult?.c;
-    final version = infoResult?.v;
-    if (info == null || version == null) {
+  /// Reload current profile and security content.
+  Future<Result<void, void>> reloadMyMediaContent() async {
+    final infoResult = await api.media((api) => api.getMediaContentInfo()).ok();
+    if (infoResult == null) {
       return const Err(null);
     }
 
-    return await db.accountAction((db) => db.daoCurrentContent.setApiProfileContent(content: info, version: version));
-  }
-
-  /// Reload current security content.
-  Future<Result<void, void>> reloadMySecurityContent() async {
-    final info = await api.media((api) => api.getSecurityContentInfo(currentUser.aid)).ok();
-    if (info == null) {
-      return const Err(null);
-    }
-
-    return await db.accountAction((db) => db.daoCurrentContent.setSecurityContent(securityContent: Value(info.c?.cid)));
+    return await db.accountAction((db) => db.daoCurrentContent.setMediaContent(info: infoResult));
   }
 
   /// Last event from stream is ProcessingCompleted or SendToSlotError.
@@ -163,15 +146,14 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   Future<Result<void, void>> setProfileContent(SetProfileContent imgInfo) =>
     api.mediaAction((api) => api.putProfileContent(imgInfo))
-      .onOk(() => reloadMyProfileContent());
+      .onOk(() => reloadMyMediaContent());
 
   Future<Result<AccountContent, void>> loadAllContent() =>
     api.media((api) => api.getAllAccountMediaContent(currentUser.aid));
 
   Future<Result<void, void>> retryInitialSetupImages(RetryInitialSetupImages content) async {
     final result = await InitialSetupUtils(api).handleInitialSetupImages(content.securitySelfie, content.profileImgs);
-    await reloadMyProfileContent();
-    await reloadMySecurityContent();
+    await reloadMyMediaContent();
     return result;
   }
 }

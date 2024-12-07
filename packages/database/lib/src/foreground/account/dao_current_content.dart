@@ -1,6 +1,6 @@
 
 import 'package:database/src/utils.dart';
-import 'package:openapi/api.dart' show ContentId, MyProfileContent, ProfileContentVersion;
+import 'package:openapi/api.dart' show ContentId, GetMediaContentResult;
 import '../account_database.dart';
 
 import 'package:drift/drift.dart';
@@ -11,10 +11,10 @@ part 'dao_current_content.g.dart';
 class DaoCurrentContent extends DatabaseAccessor<AccountDatabase> with _$DaoCurrentContentMixin, AccountTools {
   DaoCurrentContent(AccountDatabase db) : super(db);
 
-  Future<void> setApiProfileContent({
-    required MyProfileContent content,
-    required ProfileContentVersion version,
+  Future<void> setMediaContent({
+    required GetMediaContentResult info,
   }) async {
+    final content = info.profileContent;
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
@@ -33,18 +33,9 @@ class DaoCurrentContent extends DatabaseAccessor<AccountDatabase> with _$DaoCurr
         primaryContentGridCropSize: Value(content.gridCropSize),
         primaryContentGridCropX: Value(content.gridCropX),
         primaryContentGridCropY: Value(content.gridCropY),
-        profileContentVersion: Value(version),
-      ),
-    );
-  }
-
-  Future<void> setSecurityContent({
-    Value<ContentId?> securityContent = const Value.absent(),
-  }) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        uuidSecurityContentId: securityContent,
+        profileContentVersion: Value(info.profileContentVersion),
+        uuidSecurityContentId: Value(info.securityContent?.cid),
+        syncVersionMediaContent: Value(info.syncVersion.version),
       ),
     );
   }

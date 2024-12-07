@@ -133,7 +133,7 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**getContent**](doc//MediaApi.md#getcontent) | **GET** /9ztWJZUmcnzICLL2gJ8qV8gVoR8/{aid}/{cid} | Get content data
 *MediaApi* | [**getContentSlotState**](doc//MediaApi.md#getcontentslotstate) | **GET** /y5DgJJAaDZF89y6X4ge84klpBq0/{slot_id} | Get state of content slot.
 *MediaApi* | [**getMapTile**](doc//MediaApi.md#getmaptile) | **GET** /BoFh54UgWwlQvwJfb0TpJqd4gaM/{z}/{x}/{y} | Get map tile PNG file.
-*MediaApi* | [**getMyProfileContentInfo**](doc//MediaApi.md#getmyprofilecontentinfo) | **GET** /mEuodskjl_W4fjyo8iEkge7OTTU | Get my profile content
+*MediaApi* | [**getMediaContentInfo**](doc//MediaApi.md#getmediacontentinfo) | **GET** /IVQB_zKtVtalr-77q1-670RgOpg | Get my profile and security content
 *MediaApi* | [**getProfileContentInfo**](doc//MediaApi.md#getprofilecontentinfo) | **GET** /ZYlzEPvPMBx2V1S6Ee-kIhp2_rg/{aid} | Get current profile content for selected profile.
 *MediaApi* | [**getSecurityContentInfo**](doc//MediaApi.md#getsecuritycontentinfo) | **GET** /6lWoyl4YuurCAEnkJbnSy1wP22M/{aid} | Get current security content for selected profile.
 *MediaApi* | [**postGetInitialContentModerationCompleted**](doc//MediaApi.md#postgetinitialcontentmoderationcompleted) | **POST** /F6vxr3u-OBwaCkVm_bzTaM4NmRc | Get initial content moderation completed result.
@@ -225,7 +225,7 @@ Class | Method | HTTP request | Description
  - [FavoriteProfilesPage](doc//FavoriteProfilesPage.md)
  - [FcmDeviceToken](doc//FcmDeviceToken.md)
  - [GetInitialProfileAgeInfoResult](doc//GetInitialProfileAgeInfoResult.md)
- - [GetMyProfileContentResult](doc//GetMyProfileContentResult.md)
+ - [GetMediaContentResult](doc//GetMediaContentResult.md)
  - [GetMyProfileResult](doc//GetMyProfileResult.md)
  - [GetNewsItemResult](doc//GetNewsItemResult.md)
  - [GetProfileContentPendingModerationList](doc//GetProfileContentPendingModerationList.md)

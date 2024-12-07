@@ -92,7 +92,7 @@ part 'model/event_type.dart';
 part 'model/favorite_profiles_page.dart';
 part 'model/fcm_device_token.dart';
 part 'model/get_initial_profile_age_info_result.dart';
-part 'model/get_my_profile_content_result.dart';
+part 'model/get_media_content_result.dart';
 part 'model/get_my_profile_result.dart';
 part 'model/get_news_item_result.dart';
 part 'model/get_profile_content_pending_moderation_list.dart';

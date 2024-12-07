@@ -14,26 +14,21 @@ class SecurityContent {
   /// Returns a new [SecurityContent] instance.
   SecurityContent({
     this.c,
-    required this.sv,
   });
 
   ContentInfoWithFd? c;
 
-  MediaContentSyncVersion sv;
-
   @override
   bool operator ==(Object other) => identical(this, other) || other is SecurityContent &&
-    other.c == c &&
-    other.sv == sv;
+    other.c == c;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (c == null ? 0 : c!.hashCode) +
-    (sv.hashCode);
+    (c == null ? 0 : c!.hashCode);
 
   @override
-  String toString() => 'SecurityContent[c=$c, sv=$sv]';
+  String toString() => 'SecurityContent[c=$c]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -42,7 +37,6 @@ class SecurityContent {
     } else {
       json[r'c'] = null;
     }
-      json[r'sv'] = this.sv;
     return json;
   }
 
@@ -66,7 +60,6 @@ class SecurityContent {
 
       return SecurityContent(
         c: ContentInfoWithFd.fromJson(json[r'c']),
-        sv: MediaContentSyncVersion.fromJson(json[r'sv'])!,
       );
     }
     return null;
@@ -114,7 +107,6 @@ class SecurityContent {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'sv',
   };
 }
 

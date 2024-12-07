@@ -323,12 +323,12 @@ class MediaApi {
     return null;
   }
 
-  /// Get my profile content
+  /// Get my profile and security content
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getMyProfileContentInfoWithHttpInfo() async {
+  Future<Response> getMediaContentInfoWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/mEuodskjl_W4fjyo8iEkge7OTTU';
+    final path = r'/IVQB_zKtVtalr-77q1-670RgOpg';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -351,9 +351,9 @@ class MediaApi {
     );
   }
 
-  /// Get my profile content
-  Future<GetMyProfileContentResult?> getMyProfileContentInfo() async {
-    final response = await getMyProfileContentInfoWithHttpInfo();
+  /// Get my profile and security content
+  Future<GetMediaContentResult?> getMediaContentInfo() async {
+    final response = await getMediaContentInfoWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -361,7 +361,7 @@ class MediaApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetMyProfileContentResult',) as GetMyProfileContentResult;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetMediaContentResult',) as GetMediaContentResult;
     
     }
     return null;

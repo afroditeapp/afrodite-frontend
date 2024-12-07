@@ -288,8 +288,8 @@ class ApiClient {
           return FcmDeviceToken.fromJson(value);
         case 'GetInitialProfileAgeInfoResult':
           return GetInitialProfileAgeInfoResult.fromJson(value);
-        case 'GetMyProfileContentResult':
-          return GetMyProfileContentResult.fromJson(value);
+        case 'GetMediaContentResult':
+          return GetMediaContentResult.fromJson(value);
         case 'GetMyProfileResult':
           return GetMyProfileResult.fromJson(value);
         case 'GetNewsItemResult':
