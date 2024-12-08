@@ -13,18 +13,16 @@ final _privateConstructorErrorSelectContentData = UnsupportedError(
 
 /// @nodoc
 mixin _$SelectContentData {
-  UnmodifiableList<ContentIdAndFaceDetected> get availableContent => throw _privateConstructorErrorSelectContentData;
-  UnmodifiableList<ContentIdAndFaceDetected> get pendingModeration => throw _privateConstructorErrorSelectContentData;
-  bool get initialModerationOngoing => throw _privateConstructorErrorSelectContentData;
-  bool get showMakeNewModerationRequest => throw _privateConstructorErrorSelectContentData;
+  UnmodifiableList<MyContent> get availableContent => throw _privateConstructorErrorSelectContentData;
+  int get maxContent => throw _privateConstructorErrorSelectContentData;
+  bool get showAddNewContent => throw _privateConstructorErrorSelectContentData;
   bool get isLoading => throw _privateConstructorErrorSelectContentData;
   bool get isError => throw _privateConstructorErrorSelectContentData;
 
   SelectContentData copyWith({
-    UnmodifiableList<ContentIdAndFaceDetected>? availableContent,
-    UnmodifiableList<ContentIdAndFaceDetected>? pendingModeration,
-    bool? initialModerationOngoing,
-    bool? showMakeNewModerationRequest,
+    UnmodifiableList<MyContent>? availableContent,
+    int? maxContent,
+    bool? showAddNewContent,
     bool? isLoading,
     bool? isError,
   }) => throw _privateConstructorErrorSelectContentData;
@@ -33,10 +31,9 @@ mixin _$SelectContentData {
 /// @nodoc
 abstract class _SelectContentData implements SelectContentData {
   factory _SelectContentData({
-    UnmodifiableList<ContentIdAndFaceDetected> availableContent,
-    UnmodifiableList<ContentIdAndFaceDetected> pendingModeration,
-    bool initialModerationOngoing,
-    bool showMakeNewModerationRequest,
+    UnmodifiableList<MyContent> availableContent,
+    int maxContent,
+    bool showAddNewContent,
     bool isLoading,
     bool isError,
   }) = _$SelectContentDataImpl;
@@ -44,30 +41,26 @@ abstract class _SelectContentData implements SelectContentData {
 
 /// @nodoc
 class _$SelectContentDataImpl implements _SelectContentData {
-  static const UnmodifiableList<ContentIdAndFaceDetected> _availableContentDefaultValue = UnmodifiableList<ContentIdAndFaceDetected>.empty();
-  static const UnmodifiableList<ContentIdAndFaceDetected> _pendingModerationDefaultValue = UnmodifiableList<ContentIdAndFaceDetected>.empty();
-  static const bool _initialModerationOngoingDefaultValue = false;
-  static const bool _showMakeNewModerationRequestDefaultValue = false;
+  static const UnmodifiableList<MyContent> _availableContentDefaultValue = UnmodifiableList<MyContent>.empty();
+  static const int _maxContentDefaultValue = 0;
+  static const bool _showAddNewContentDefaultValue = false;
   static const bool _isLoadingDefaultValue = false;
   static const bool _isErrorDefaultValue = false;
   
   _$SelectContentDataImpl({
     this.availableContent = _availableContentDefaultValue,
-    this.pendingModeration = _pendingModerationDefaultValue,
-    this.initialModerationOngoing = _initialModerationOngoingDefaultValue,
-    this.showMakeNewModerationRequest = _showMakeNewModerationRequestDefaultValue,
+    this.maxContent = _maxContentDefaultValue,
+    this.showAddNewContent = _showAddNewContentDefaultValue,
     this.isLoading = _isLoadingDefaultValue,
     this.isError = _isErrorDefaultValue,
   });
 
   @override
-  final UnmodifiableList<ContentIdAndFaceDetected> availableContent;
+  final UnmodifiableList<MyContent> availableContent;
   @override
-  final UnmodifiableList<ContentIdAndFaceDetected> pendingModeration;
+  final int maxContent;
   @override
-  final bool initialModerationOngoing;
-  @override
-  final bool showMakeNewModerationRequest;
+  final bool showAddNewContent;
   @override
   final bool isLoading;
   @override
@@ -75,7 +68,7 @@ class _$SelectContentDataImpl implements _SelectContentData {
 
   @override
   String toString() {
-    return 'SelectContentData(availableContent: $availableContent, pendingModeration: $pendingModeration, initialModerationOngoing: $initialModerationOngoing, showMakeNewModerationRequest: $showMakeNewModerationRequest, isLoading: $isLoading, isError: $isError)';
+    return 'SelectContentData(availableContent: $availableContent, maxContent: $maxContent, showAddNewContent: $showAddNewContent, isLoading: $isLoading, isError: $isError)';
   }
 
   @override
@@ -85,12 +78,10 @@ class _$SelectContentDataImpl implements _SelectContentData {
         other is _$SelectContentDataImpl &&
         (identical(other.availableContent, availableContent) ||
           other.availableContent == availableContent) &&
-        (identical(other.pendingModeration, pendingModeration) ||
-          other.pendingModeration == pendingModeration) &&
-        (identical(other.initialModerationOngoing, initialModerationOngoing) ||
-          other.initialModerationOngoing == initialModerationOngoing) &&
-        (identical(other.showMakeNewModerationRequest, showMakeNewModerationRequest) ||
-          other.showMakeNewModerationRequest == showMakeNewModerationRequest) &&
+        (identical(other.maxContent, maxContent) ||
+          other.maxContent == maxContent) &&
+        (identical(other.showAddNewContent, showAddNewContent) ||
+          other.showAddNewContent == showAddNewContent) &&
         (identical(other.isLoading, isLoading) ||
           other.isLoading == isLoading) &&
         (identical(other.isError, isError) ||
@@ -102,9 +93,8 @@ class _$SelectContentDataImpl implements _SelectContentData {
   int get hashCode => Object.hash(
     runtimeType,
     availableContent,
-    pendingModeration,
-    initialModerationOngoing,
-    showMakeNewModerationRequest,
+    maxContent,
+    showAddNewContent,
     isLoading,
     isError,
   );
@@ -112,16 +102,14 @@ class _$SelectContentDataImpl implements _SelectContentData {
   @override
   SelectContentData copyWith({
     Object? availableContent,
-    Object? pendingModeration,
-    Object? initialModerationOngoing,
-    Object? showMakeNewModerationRequest,
+    Object? maxContent,
+    Object? showAddNewContent,
     Object? isLoading,
     Object? isError,
   }) => _$SelectContentDataImpl(
-    availableContent: (availableContent ?? this.availableContent) as UnmodifiableList<ContentIdAndFaceDetected>,
-    pendingModeration: (pendingModeration ?? this.pendingModeration) as UnmodifiableList<ContentIdAndFaceDetected>,
-    initialModerationOngoing: (initialModerationOngoing ?? this.initialModerationOngoing) as bool,
-    showMakeNewModerationRequest: (showMakeNewModerationRequest ?? this.showMakeNewModerationRequest) as bool,
+    availableContent: (availableContent ?? this.availableContent) as UnmodifiableList<MyContent>,
+    maxContent: (maxContent ?? this.maxContent) as int,
+    showAddNewContent: (showAddNewContent ?? this.showAddNewContent) as bool,
     isLoading: (isLoading ?? this.isLoading) as bool,
     isError: (isError ?? this.isError) as bool,
   );

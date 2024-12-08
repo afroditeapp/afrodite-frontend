@@ -1,5 +1,7 @@
 
 
+import 'package:app/utils/immutable_list.dart';
+import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -56,9 +58,8 @@ class _SelectContentPageState extends State<SelectContentPage> {
                   context,
                   accountId,
                   state.availableContent,
-                  state.pendingModeration,
-                  state.initialModerationOngoing,
-                  state.showMakeNewModerationRequest,
+                  state.maxContent,
+                  state.showAddNewContent,
                 );
               }
             }
@@ -71,32 +72,22 @@ class _SelectContentPageState extends State<SelectContentPage> {
   Widget selectContentPage(
     BuildContext context,
     AccountId accountId,
-    Iterable<ContentIdAndFaceDetected> content,
-    Iterable<ContentIdAndFaceDetected> pendingContent,
-    bool initialModerationOngoing,
-    bool showAddNewModerationRequest,
+    UnmodifiableList<MyContent> content,
+    int maxContent,
+    bool showAddNewContent,
   ) {
     final List<Widget> gridWidgets = [];
-
-    gridWidgets.addAll(
-      pendingContent.map((e) => buildPendingImg(
-        context,
-        accountId,
-        e.contentId,
-        onTap: () => showSnackBar(context.strings.select_content_screen_info_waiting_moderation),
-      ))
-    );
 
     gridWidgets.addAll(
       content.map((e) => buildAvailableImg(
         context,
         accountId,
-        e.contentId,
-        onTap: () => MyNavigator.pop(context, AccountImageId(accountId, e.contentId, e.faceDetected))
+        e.id,
+        onTap: () => MyNavigator.pop(context, AccountImageId(accountId, e.id, e.faceDetected))
       ))
     );
 
-    if (showAddNewModerationRequest) {
+    if (showAddNewContent) {
       gridWidgets.add(
         Center(
           child: buildAddNewButton(
@@ -121,12 +112,10 @@ class _SelectContentPageState extends State<SelectContentPage> {
 
     final List<Widget> widgets = [];
 
-    if (initialModerationOngoing) {
-      widgets.add(Padding(
-        padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
-        child: Text(context.strings.select_content_screen_initial_moderation_ongoing_info),
-      ));
-    }
+    widgets.add(Padding(
+      padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
+      child: Text(context.strings.select_content_content_count(content.length.toString(), maxContent.toString())),
+    ));
 
     widgets.add(grid);
 
@@ -186,42 +175,6 @@ Widget buildAvailableImg(
         child: InkWell(
           onTap: onTap,
           child: accountImgWidgetInk(accountId, contentId),
-        ),
-      ),
-    ),
-  );
-}
-
-Widget buildPendingImg(
-  BuildContext context,
-  AccountId accountId,
-  ContentId contentId,
-  {
-    required void Function() onTap
-  }
-) {
-    return Center(
-    child: SizedBox(
-      width: SELECT_CONTENT_IMAGE_WIDTH,
-      height: SELECT_CONTENT_IMAGE_HEIGHT,
-      child: Material(
-        child: InkWell(
-          onTap: onTap,
-          child: Stack(
-            children: [
-              accountImgWidgetInk(accountId, contentId),
-              Container(
-                color: Colors.black54,
-                child: const Center(
-                  child: Icon(
-                    Icons.hourglass_top_rounded,
-                    size: 40,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     ),
