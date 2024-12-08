@@ -12,7 +12,6 @@ import 'package:app/logic/media/new_moderation_request.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/login.dart';
 import 'package:app/model/freezed/logic/media/initial_content_moderation.dart';
-import 'package:app/ui/normal/settings/media/new_moderation_request.dart';
 import 'package:app/ui/normal/settings/media/retry_initial_setup_images.dart';
 import 'package:app/ui/normal/settings/media/select_content.dart';
 import 'package:app/ui_utils/consts/padding.dart';
@@ -265,14 +264,14 @@ void _openNewModerationRequestInitialOrAfter(BuildContext context) async {
   // }
 }
 
-Future<List<ContentId>?> openNewModerationRequest(BuildContext context) async {
-  final bloc = context.read<NewModerationRequestBloc>();
-  final list = await MyNavigator.push(
-    context,
-    MaterialPage<List<ContentId>?>(
-      child: NewModerationRequestScreen(newModerationRequestBloc: bloc)
-    )
-  );
+// Future<List<ContentId>?> openNewModerationRequest(BuildContext context) async {
+//   final bloc = context.read<NewModerationRequestBloc>();
+//   final list = await MyNavigator.push(
+//     context,
+//     MaterialPage<List<ContentId>?>(
+//       child: NewModerationRequestScreen(newModerationRequestBloc: bloc)
+//     )
+//   );
 
-  return list;
-}
+//   return list;
+// }

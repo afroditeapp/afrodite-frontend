@@ -69,6 +69,8 @@ class UnmodifiableList<T> extends Iterable<T> {
     return null;
   }
 
+  Iterable<T> get reversed => _list.reversed;
+
   @override
   Iterator<T> get iterator => _list.iterator;
 }

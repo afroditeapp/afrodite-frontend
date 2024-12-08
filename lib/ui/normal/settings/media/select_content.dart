@@ -1,5 +1,9 @@
 
 
+import 'package:app/logic/media/image_processing.dart';
+import 'package:app/logic/media/new_moderation_request.dart';
+import 'package:app/ui/initial_setup/profile_pictures.dart';
+import 'package:app/ui_utils/image_processing.dart';
 import 'package:app/utils/immutable_list.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +16,8 @@ import 'package:app/logic/media/select_content.dart';
 import 'package:app/model/freezed/logic/login.dart';
 import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/model/freezed/logic/media/select_content.dart';
-import 'package:app/ui/normal/settings/media/current_moderation_request.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/image.dart';
-import 'package:app/ui_utils/snack_bar.dart';
 
 const SELECT_CONTENT_IMAGE_HEIGHT = 200.0;
 const SELECT_CONTENT_IMAGE_WIDTH = 150.0;
@@ -23,8 +25,10 @@ const SELECT_CONTENT_IMAGE_WIDTH = 150.0;
 /// Returns [AccountImageId?]
 class SelectContentPage extends StatefulWidget {
   final SelectContentBloc selectContentBloc;
+  final NewModerationRequestBloc newModerationRequestBloc;
   const SelectContentPage({
     required this.selectContentBloc,
+    required this.newModerationRequestBloc,
     Key? key,
   }) : super(key: key);
 
@@ -38,33 +42,47 @@ class _SelectContentPageState extends State<SelectContentPage> {
   void initState() {
     super.initState();
     widget.selectContentBloc.add(ReloadAvailableContent());
+    widget.newModerationRequestBloc.add(Reset());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(context.strings.select_content_screen_title)),
-      body: BlocBuilder<LoginBloc, LoginBlocData>(
-        builder: (context, lState) {
-          return BlocBuilder<SelectContentBloc, SelectContentData>(
-            builder: (context, state) {
-              final accountId = lState.accountId;
-              if (state.isLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (accountId == null) {
-                return Center(child: Text(context.strings.generic_error));
-              } else {
-                return selectContentPage(
-                  context,
-                  accountId,
-                  state.availableContent,
-                  state.maxContent,
-                  state.showAddNewContent,
+      body: Column(
+        children: [
+          Expanded(
+            child: BlocBuilder<LoginBloc, LoginBlocData>(
+              builder: (context, lState) {
+                return BlocBuilder<SelectContentBloc, SelectContentData>(
+                  builder: (context, state) {
+                    final accountId = lState.accountId;
+                    if (state.isLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (accountId == null) {
+                      return Center(child: Text(context.strings.generic_error));
+                    } else {
+                      return selectContentPage(
+                        context,
+                        accountId,
+                        state.availableContent,
+                        state.maxContent,
+                        state.showAddNewContent,
+                      );
+                    }
+                  }
                 );
               }
-            }
-          );
-        }
+            ),
+          ),
+
+          // Zero sized widgets
+          ...imageProcessingUiWidgets<ProfilePicturesImageProcessingBloc>(
+            onComplete: (context, processedImg) {
+              context.read<SelectContentBloc>().add(ReloadAvailableContent());
+            },
+          ),
+        ],
       )
     );
   }
@@ -78,30 +96,27 @@ class _SelectContentPageState extends State<SelectContentPage> {
   ) {
     final List<Widget> gridWidgets = [];
 
-    gridWidgets.addAll(
-      content.map((e) => buildAvailableImg(
-        context,
-        accountId,
-        e.id,
-        onTap: () => MyNavigator.pop(context, AccountImageId(accountId, e.id, e.faceDetected))
-      ))
-    );
-
     if (showAddNewContent) {
       gridWidgets.add(
         Center(
           child: buildAddNewButton(
             context,
             onTap: () async {
-              final list = await openNewModerationRequest(context);
-              if (list != null && list.isNotEmpty) {
-                widget.selectContentBloc.add(NewModerationRequest(list));
-              }
+              openSelectPictureDialog(context, serverSlotIndex: 0);
             }
           )
         )
       );
     }
+
+    gridWidgets.addAll(
+      content.reversed.map((e) => buildAvailableImg(
+        context,
+        accountId,
+        e.id,
+        onTap: () => MyNavigator.pop(context, AccountImageId(accountId, e.id, e.faceDetected))
+      ))
+    );
 
     final grid = GridView.count(
       physics: const NeverScrollableScrollPhysics(),

@@ -1,3 +1,4 @@
+import "package:app/logic/media/new_moderation_request.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -478,8 +479,10 @@ class AddPicture extends StatelessWidget {
   void openActionDialog(BuildContext context) async {
     final bloc = context.read<ProfilePicturesBloc>();
     final selectContentBloc = context.read<SelectContentBloc>();
+    final newModerationRequestBloc = context.read<NewModerationRequestBloc>();
     final selectedImg = await MyNavigator.push(context, MaterialPage<AccountImageId?>(child: SelectContentPage(
       selectContentBloc: selectContentBloc,
+      newModerationRequestBloc: newModerationRequestBloc,
     )));
     if (selectedImg != null) {
       bloc.add(AddProcessedImage(ProfileImage(selectedImg, null, selectedImg.faceDetected), imgIndex));
