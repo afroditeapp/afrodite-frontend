@@ -68,21 +68,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     widget.profilePicturesBloc.add(ResetIfModeChanges(const NormalProfilePictures()));
 
-    setImgToBloc(p.imageUuid, p.faceDetectedContent0, 0);
+    setImgToBloc(p.myContent.getAtOrNull(0), 0);
     widget.profilePicturesBloc.add(UpdateCropResults(p.primaryImageCropInfo(), 0));
 
-    setImgToBloc(p.content1, p.faceDetectedContent1, 1);
-    setImgToBloc(p.content2, p.faceDetectedContent2, 2);
-    setImgToBloc(p.content3, p.faceDetectedContent3, 3);
+    setImgToBloc(p.myContent.getAtOrNull(1), 1);
+    setImgToBloc(p.myContent.getAtOrNull(2), 2);
+    setImgToBloc(p.myContent.getAtOrNull(3), 3);
   }
 
-  void setImgToBloc(ContentId? contentId, bool? faceDetected, int index) {
-    if (contentId == null || faceDetected == null) {
+  void setImgToBloc(MyContent? c, int index) {
+    if (c == null) {
       widget.profilePicturesBloc.add(RemoveImage(index));
       return;
     }
-    final imgId = AccountImageId(widget.initialProfile.uuid, contentId, faceDetected);
-    widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(imgId, null, faceDetected), index));
+    final imgId = AccountImageId(widget.initialProfile.uuid, c.id, c.faceDetected);
+    widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(imgId, null, c.faceDetected), index));
   }
 
   void validateAndSaveData(BuildContext context) {
@@ -144,12 +144,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final editedImgs = editedImgData.toSetProfileContent();
     if (
       editedImgs == null ||
-      currentState.imageUuid != editedImgs.c.firstOrNull ||
-      currentState.content1 != editedImgs.c.getAtOrNull(1)||
-      currentState.content2 != editedImgs.c.getAtOrNull(2) ||
-      currentState.content3 != editedImgs.c.getAtOrNull(3) ||
-      currentState.content4 != editedImgs.c.getAtOrNull(4) ||
-      currentState.content5 != editedImgs.c.getAtOrNull(5) ||
+      currentState.content.firstOrNull?.id != editedImgs.c.firstOrNull ||
+      currentState.content.getAtOrNull(1)?.id != editedImgs.c.getAtOrNull(1)||
+      currentState.content.getAtOrNull(2)?.id != editedImgs.c.getAtOrNull(2) ||
+      currentState.content.getAtOrNull(3)?.id != editedImgs.c.getAtOrNull(3) ||
+      currentState.content.getAtOrNull(4)?.id != editedImgs.c.getAtOrNull(4) ||
+      currentState.content.getAtOrNull(5)?.id != editedImgs.c.getAtOrNull(5) ||
       currentState.primaryContentGridCropSize != editedImgs.gridCropSize ||
       currentState.primaryContentGridCropX != editedImgs.gridCropX ||
       currentState.primaryContentGridCropY != editedImgs.gridCropY

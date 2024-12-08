@@ -1,4 +1,5 @@
 
+import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +22,6 @@ import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/list.dart';
-import 'package:app/ui_utils/profile_thumbnail_image.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
 import 'package:app/utils/cache.dart';
 import 'package:app/utils/immutable_list.dart';
@@ -294,7 +294,7 @@ class _ChatViewState extends State<ChatView> {
     ConversationData data,
     {required bool allowOpenConversation}
   ) {
-    final Widget imageWidget = ProfileThumbnailImage.fromProfileEntry(
+    final Widget imageWidget = ProfileThumbnailImageOrError.fromProfileEntry(
       entry: data.entry,
       width: _IMG_SIZE,
       height: _IMG_SIZE,

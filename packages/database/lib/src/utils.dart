@@ -174,6 +174,10 @@ class EnumString {
     return ProfileTextModerationState.fromJson(enumString);
   }
 
+  ContentModerationState? toContentModerationState() {
+    return ContentModerationState.fromJson(enumString);
+  }
+
   static TypeConverter<EnumString, String> driftConverter = const EnumStringConverter();
 }
 
@@ -196,6 +200,12 @@ extension ProfileNameModerationStateConverter on ProfileNameModerationState {
 }
 
 extension ProfileTextModerationStateConverter on ProfileTextModerationState {
+  EnumString toEnumString() {
+    return EnumString(toJson());
+  }
+}
+
+extension ContentModerationStateConverter on ContentModerationState {
   EnumString toEnumString() {
     return EnumString(toJson());
   }
@@ -479,6 +489,34 @@ class ProfileTextModerationRejectedReasonDetailsConverter extends TypeConverter<
   @override
   ProfileTextModerationRejectedReasonDetails fromSql(fromDb) {
     return ProfileTextModerationRejectedReasonDetails(value: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.value;
+  }
+}
+
+class ProfileContentModerationRejectedReasonCategoryConverter extends TypeConverter<ProfileContentModerationRejectedReasonCategory, int> {
+  const ProfileContentModerationRejectedReasonCategoryConverter();
+
+  @override
+  ProfileContentModerationRejectedReasonCategory fromSql(fromDb) {
+    return ProfileContentModerationRejectedReasonCategory(value: fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.value;
+  }
+}
+
+class ProfileContentModerationRejectedReasonDetailsConverter extends TypeConverter<ProfileContentModerationRejectedReasonDetails, String> {
+  const ProfileContentModerationRejectedReasonDetailsConverter();
+
+  @override
+  ProfileContentModerationRejectedReasonDetails fromSql(fromDb) {
+    return ProfileContentModerationRejectedReasonDetails(value: fromDb);
   }
 
   @override

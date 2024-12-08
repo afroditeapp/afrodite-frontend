@@ -1,6 +1,6 @@
 
 
-import 'package:async/async.dart';
+import 'package:async/async.dart' show StreamExtensions;
 import 'package:database/src/background/account/dao_local_notification_settings.dart';
 import 'package:database/src/background/account/dao_user_interface_settings.dart';
 import 'package:database/src/background/conversations_table.dart';

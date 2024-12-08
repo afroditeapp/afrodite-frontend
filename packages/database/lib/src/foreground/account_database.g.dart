@@ -174,117 +174,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       GeneratedColumn<int>(
           'sync_version_available_profile_attributes', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _uuidContentId0Meta =
-      const VerificationMeta('uuidContentId0');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidContentId0 = GeneratedColumn<String>(
-              'uuid_content_id0', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>($AccountTable.$converteruuidContentId0);
-  static const VerificationMeta _uuidContentId1Meta =
-      const VerificationMeta('uuidContentId1');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidContentId1 = GeneratedColumn<String>(
-              'uuid_content_id1', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>($AccountTable.$converteruuidContentId1);
-  static const VerificationMeta _uuidContentId2Meta =
-      const VerificationMeta('uuidContentId2');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidContentId2 = GeneratedColumn<String>(
-              'uuid_content_id2', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>($AccountTable.$converteruuidContentId2);
-  static const VerificationMeta _uuidContentId3Meta =
-      const VerificationMeta('uuidContentId3');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidContentId3 = GeneratedColumn<String>(
-              'uuid_content_id3', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>($AccountTable.$converteruuidContentId3);
-  static const VerificationMeta _uuidContentId4Meta =
-      const VerificationMeta('uuidContentId4');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidContentId4 = GeneratedColumn<String>(
-              'uuid_content_id4', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>($AccountTable.$converteruuidContentId4);
-  static const VerificationMeta _uuidContentId5Meta =
-      const VerificationMeta('uuidContentId5');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidContentId5 = GeneratedColumn<String>(
-              'uuid_content_id5', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>($AccountTable.$converteruuidContentId5);
-  static const VerificationMeta _faceDetectedContentId0Meta =
-      const VerificationMeta('faceDetectedContentId0');
-  @override
-  late final GeneratedColumn<bool> faceDetectedContentId0 =
-      GeneratedColumn<bool>('face_detected_content_id0', aliasedName, true,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("face_detected_content_id0" IN (0, 1))'));
-  static const VerificationMeta _faceDetectedContentId1Meta =
-      const VerificationMeta('faceDetectedContentId1');
-  @override
-  late final GeneratedColumn<bool> faceDetectedContentId1 =
-      GeneratedColumn<bool>('face_detected_content_id1', aliasedName, true,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("face_detected_content_id1" IN (0, 1))'));
-  static const VerificationMeta _faceDetectedContentId2Meta =
-      const VerificationMeta('faceDetectedContentId2');
-  @override
-  late final GeneratedColumn<bool> faceDetectedContentId2 =
-      GeneratedColumn<bool>('face_detected_content_id2', aliasedName, true,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("face_detected_content_id2" IN (0, 1))'));
-  static const VerificationMeta _faceDetectedContentId3Meta =
-      const VerificationMeta('faceDetectedContentId3');
-  @override
-  late final GeneratedColumn<bool> faceDetectedContentId3 =
-      GeneratedColumn<bool>('face_detected_content_id3', aliasedName, true,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("face_detected_content_id3" IN (0, 1))'));
-  static const VerificationMeta _faceDetectedContentId4Meta =
-      const VerificationMeta('faceDetectedContentId4');
-  @override
-  late final GeneratedColumn<bool> faceDetectedContentId4 =
-      GeneratedColumn<bool>('face_detected_content_id4', aliasedName, true,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("face_detected_content_id4" IN (0, 1))'));
-  static const VerificationMeta _faceDetectedContentId5Meta =
-      const VerificationMeta('faceDetectedContentId5');
-  @override
-  late final GeneratedColumn<bool> faceDetectedContentId5 =
-      GeneratedColumn<bool>('face_detected_content_id5', aliasedName, true,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("face_detected_content_id5" IN (0, 1))'));
-  static const VerificationMeta _uuidSecurityContentIdMeta =
-      const VerificationMeta('uuidSecurityContentId');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidSecurityContentId = GeneratedColumn<String>(
-              'uuid_security_content_id', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>(
-              $AccountTable.$converteruuidSecurityContentId);
   static const VerificationMeta _primaryContentGridCropSizeMeta =
       const VerificationMeta('primaryContentGridCropSize');
   @override
@@ -631,19 +520,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         syncVersionProfile,
         syncVersionMediaContent,
         syncVersionAvailableProfileAttributes,
-        uuidContentId0,
-        uuidContentId1,
-        uuidContentId2,
-        uuidContentId3,
-        uuidContentId4,
-        uuidContentId5,
-        faceDetectedContentId0,
-        faceDetectedContentId1,
-        faceDetectedContentId2,
-        faceDetectedContentId3,
-        faceDetectedContentId4,
-        faceDetectedContentId5,
-        uuidSecurityContentId,
         primaryContentGridCropSize,
         primaryContentGridCropX,
         primaryContentGridCropY,
@@ -780,50 +656,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['sync_version_available_profile_attributes']!,
               _syncVersionAvailableProfileAttributesMeta));
     }
-    context.handle(_uuidContentId0Meta, const VerificationResult.success());
-    context.handle(_uuidContentId1Meta, const VerificationResult.success());
-    context.handle(_uuidContentId2Meta, const VerificationResult.success());
-    context.handle(_uuidContentId3Meta, const VerificationResult.success());
-    context.handle(_uuidContentId4Meta, const VerificationResult.success());
-    context.handle(_uuidContentId5Meta, const VerificationResult.success());
-    if (data.containsKey('face_detected_content_id0')) {
-      context.handle(
-          _faceDetectedContentId0Meta,
-          faceDetectedContentId0.isAcceptableOrUnknown(
-              data['face_detected_content_id0']!, _faceDetectedContentId0Meta));
-    }
-    if (data.containsKey('face_detected_content_id1')) {
-      context.handle(
-          _faceDetectedContentId1Meta,
-          faceDetectedContentId1.isAcceptableOrUnknown(
-              data['face_detected_content_id1']!, _faceDetectedContentId1Meta));
-    }
-    if (data.containsKey('face_detected_content_id2')) {
-      context.handle(
-          _faceDetectedContentId2Meta,
-          faceDetectedContentId2.isAcceptableOrUnknown(
-              data['face_detected_content_id2']!, _faceDetectedContentId2Meta));
-    }
-    if (data.containsKey('face_detected_content_id3')) {
-      context.handle(
-          _faceDetectedContentId3Meta,
-          faceDetectedContentId3.isAcceptableOrUnknown(
-              data['face_detected_content_id3']!, _faceDetectedContentId3Meta));
-    }
-    if (data.containsKey('face_detected_content_id4')) {
-      context.handle(
-          _faceDetectedContentId4Meta,
-          faceDetectedContentId4.isAcceptableOrUnknown(
-              data['face_detected_content_id4']!, _faceDetectedContentId4Meta));
-    }
-    if (data.containsKey('face_detected_content_id5')) {
-      context.handle(
-          _faceDetectedContentId5Meta,
-          faceDetectedContentId5.isAcceptableOrUnknown(
-              data['face_detected_content_id5']!, _faceDetectedContentId5Meta));
-    }
-    context.handle(
-        _uuidSecurityContentIdMeta, const VerificationResult.success());
     if (data.containsKey('primary_content_grid_crop_size')) {
       context.handle(
           _primaryContentGridCropSizeMeta,
@@ -1088,45 +920,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       syncVersionAvailableProfileAttributes: attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}sync_version_available_profile_attributes']),
-      uuidContentId0: $AccountTable.$converteruuidContentId0.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_content_id0'])),
-      uuidContentId1: $AccountTable.$converteruuidContentId1.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_content_id1'])),
-      uuidContentId2: $AccountTable.$converteruuidContentId2.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_content_id2'])),
-      uuidContentId3: $AccountTable.$converteruuidContentId3.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_content_id3'])),
-      uuidContentId4: $AccountTable.$converteruuidContentId4.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_content_id4'])),
-      uuidContentId5: $AccountTable.$converteruuidContentId5.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_content_id5'])),
-      faceDetectedContentId0: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}face_detected_content_id0']),
-      faceDetectedContentId1: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}face_detected_content_id1']),
-      faceDetectedContentId2: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}face_detected_content_id2']),
-      faceDetectedContentId3: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}face_detected_content_id3']),
-      faceDetectedContentId4: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}face_detected_content_id4']),
-      faceDetectedContentId5: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}face_detected_content_id5']),
-      uuidSecurityContentId: $AccountTable.$converteruuidSecurityContentId
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}uuid_security_content_id'])),
       primaryContentGridCropSize: attachedDatabase.typeMapping.read(
           DriftSqlType.double,
           data['${effectivePrefix}primary_content_grid_crop_size']),
@@ -1282,20 +1075,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       const NullAwareTypeConverter.wrap(MatchesIteratorSessionIdConverter());
   static TypeConverter<ClientId?, int?> $converterclientId =
       const NullAwareTypeConverter.wrap(ClientIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidContentId0 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidContentId1 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidContentId2 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidContentId3 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidContentId4 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidContentId5 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidSecurityContentId =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
   static TypeConverter<ProfileContentVersion?, String?>
       $converterprofileContentVersion =
       const NullAwareTypeConverter.wrap(ProfileContentVersionConverter());
@@ -1362,19 +1141,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final int? syncVersionProfile;
   final int? syncVersionMediaContent;
   final int? syncVersionAvailableProfileAttributes;
-  final ContentId? uuidContentId0;
-  final ContentId? uuidContentId1;
-  final ContentId? uuidContentId2;
-  final ContentId? uuidContentId3;
-  final ContentId? uuidContentId4;
-  final ContentId? uuidContentId5;
-  final bool? faceDetectedContentId0;
-  final bool? faceDetectedContentId1;
-  final bool? faceDetectedContentId2;
-  final bool? faceDetectedContentId3;
-  final bool? faceDetectedContentId4;
-  final bool? faceDetectedContentId5;
-  final ContentId? uuidSecurityContentId;
   final double? primaryContentGridCropSize;
   final double? primaryContentGridCropX;
   final double? primaryContentGridCropY;
@@ -1440,19 +1206,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.syncVersionProfile,
       this.syncVersionMediaContent,
       this.syncVersionAvailableProfileAttributes,
-      this.uuidContentId0,
-      this.uuidContentId1,
-      this.uuidContentId2,
-      this.uuidContentId3,
-      this.uuidContentId4,
-      this.uuidContentId5,
-      this.faceDetectedContentId0,
-      this.faceDetectedContentId1,
-      this.faceDetectedContentId2,
-      this.faceDetectedContentId3,
-      this.faceDetectedContentId4,
-      this.faceDetectedContentId5,
-      this.uuidSecurityContentId,
       this.primaryContentGridCropSize,
       this.primaryContentGridCropX,
       this.primaryContentGridCropY,
@@ -1560,53 +1313,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     if (!nullToAbsent || syncVersionAvailableProfileAttributes != null) {
       map['sync_version_available_profile_attributes'] =
           Variable<int>(syncVersionAvailableProfileAttributes);
-    }
-    if (!nullToAbsent || uuidContentId0 != null) {
-      map['uuid_content_id0'] = Variable<String>(
-          $AccountTable.$converteruuidContentId0.toSql(uuidContentId0));
-    }
-    if (!nullToAbsent || uuidContentId1 != null) {
-      map['uuid_content_id1'] = Variable<String>(
-          $AccountTable.$converteruuidContentId1.toSql(uuidContentId1));
-    }
-    if (!nullToAbsent || uuidContentId2 != null) {
-      map['uuid_content_id2'] = Variable<String>(
-          $AccountTable.$converteruuidContentId2.toSql(uuidContentId2));
-    }
-    if (!nullToAbsent || uuidContentId3 != null) {
-      map['uuid_content_id3'] = Variable<String>(
-          $AccountTable.$converteruuidContentId3.toSql(uuidContentId3));
-    }
-    if (!nullToAbsent || uuidContentId4 != null) {
-      map['uuid_content_id4'] = Variable<String>(
-          $AccountTable.$converteruuidContentId4.toSql(uuidContentId4));
-    }
-    if (!nullToAbsent || uuidContentId5 != null) {
-      map['uuid_content_id5'] = Variable<String>(
-          $AccountTable.$converteruuidContentId5.toSql(uuidContentId5));
-    }
-    if (!nullToAbsent || faceDetectedContentId0 != null) {
-      map['face_detected_content_id0'] = Variable<bool>(faceDetectedContentId0);
-    }
-    if (!nullToAbsent || faceDetectedContentId1 != null) {
-      map['face_detected_content_id1'] = Variable<bool>(faceDetectedContentId1);
-    }
-    if (!nullToAbsent || faceDetectedContentId2 != null) {
-      map['face_detected_content_id2'] = Variable<bool>(faceDetectedContentId2);
-    }
-    if (!nullToAbsent || faceDetectedContentId3 != null) {
-      map['face_detected_content_id3'] = Variable<bool>(faceDetectedContentId3);
-    }
-    if (!nullToAbsent || faceDetectedContentId4 != null) {
-      map['face_detected_content_id4'] = Variable<bool>(faceDetectedContentId4);
-    }
-    if (!nullToAbsent || faceDetectedContentId5 != null) {
-      map['face_detected_content_id5'] = Variable<bool>(faceDetectedContentId5);
-    }
-    if (!nullToAbsent || uuidSecurityContentId != null) {
-      map['uuid_security_content_id'] = Variable<String>($AccountTable
-          .$converteruuidSecurityContentId
-          .toSql(uuidSecurityContentId));
     }
     if (!nullToAbsent || primaryContentGridCropSize != null) {
       map['primary_content_grid_crop_size'] =
@@ -1825,45 +1531,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           syncVersionAvailableProfileAttributes == null && nullToAbsent
               ? const Value.absent()
               : Value(syncVersionAvailableProfileAttributes),
-      uuidContentId0: uuidContentId0 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId0),
-      uuidContentId1: uuidContentId1 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId1),
-      uuidContentId2: uuidContentId2 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId2),
-      uuidContentId3: uuidContentId3 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId3),
-      uuidContentId4: uuidContentId4 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId4),
-      uuidContentId5: uuidContentId5 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId5),
-      faceDetectedContentId0: faceDetectedContentId0 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(faceDetectedContentId0),
-      faceDetectedContentId1: faceDetectedContentId1 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(faceDetectedContentId1),
-      faceDetectedContentId2: faceDetectedContentId2 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(faceDetectedContentId2),
-      faceDetectedContentId3: faceDetectedContentId3 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(faceDetectedContentId3),
-      faceDetectedContentId4: faceDetectedContentId4 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(faceDetectedContentId4),
-      faceDetectedContentId5: faceDetectedContentId5 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(faceDetectedContentId5),
-      uuidSecurityContentId: uuidSecurityContentId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidSecurityContentId),
       primaryContentGridCropSize:
           primaryContentGridCropSize == null && nullToAbsent
               ? const Value.absent()
@@ -2046,26 +1713,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<int?>(json['syncVersionMediaContent']),
       syncVersionAvailableProfileAttributes: serializer
           .fromJson<int?>(json['syncVersionAvailableProfileAttributes']),
-      uuidContentId0: serializer.fromJson<ContentId?>(json['uuidContentId0']),
-      uuidContentId1: serializer.fromJson<ContentId?>(json['uuidContentId1']),
-      uuidContentId2: serializer.fromJson<ContentId?>(json['uuidContentId2']),
-      uuidContentId3: serializer.fromJson<ContentId?>(json['uuidContentId3']),
-      uuidContentId4: serializer.fromJson<ContentId?>(json['uuidContentId4']),
-      uuidContentId5: serializer.fromJson<ContentId?>(json['uuidContentId5']),
-      faceDetectedContentId0:
-          serializer.fromJson<bool?>(json['faceDetectedContentId0']),
-      faceDetectedContentId1:
-          serializer.fromJson<bool?>(json['faceDetectedContentId1']),
-      faceDetectedContentId2:
-          serializer.fromJson<bool?>(json['faceDetectedContentId2']),
-      faceDetectedContentId3:
-          serializer.fromJson<bool?>(json['faceDetectedContentId3']),
-      faceDetectedContentId4:
-          serializer.fromJson<bool?>(json['faceDetectedContentId4']),
-      faceDetectedContentId5:
-          serializer.fromJson<bool?>(json['faceDetectedContentId5']),
-      uuidSecurityContentId:
-          serializer.fromJson<ContentId?>(json['uuidSecurityContentId']),
       primaryContentGridCropSize:
           serializer.fromJson<double?>(json['primaryContentGridCropSize']),
       primaryContentGridCropX:
@@ -2182,26 +1829,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.toJson<int?>(syncVersionMediaContent),
       'syncVersionAvailableProfileAttributes':
           serializer.toJson<int?>(syncVersionAvailableProfileAttributes),
-      'uuidContentId0': serializer.toJson<ContentId?>(uuidContentId0),
-      'uuidContentId1': serializer.toJson<ContentId?>(uuidContentId1),
-      'uuidContentId2': serializer.toJson<ContentId?>(uuidContentId2),
-      'uuidContentId3': serializer.toJson<ContentId?>(uuidContentId3),
-      'uuidContentId4': serializer.toJson<ContentId?>(uuidContentId4),
-      'uuidContentId5': serializer.toJson<ContentId?>(uuidContentId5),
-      'faceDetectedContentId0':
-          serializer.toJson<bool?>(faceDetectedContentId0),
-      'faceDetectedContentId1':
-          serializer.toJson<bool?>(faceDetectedContentId1),
-      'faceDetectedContentId2':
-          serializer.toJson<bool?>(faceDetectedContentId2),
-      'faceDetectedContentId3':
-          serializer.toJson<bool?>(faceDetectedContentId3),
-      'faceDetectedContentId4':
-          serializer.toJson<bool?>(faceDetectedContentId4),
-      'faceDetectedContentId5':
-          serializer.toJson<bool?>(faceDetectedContentId5),
-      'uuidSecurityContentId':
-          serializer.toJson<ContentId?>(uuidSecurityContentId),
       'primaryContentGridCropSize':
           serializer.toJson<double?>(primaryContentGridCropSize),
       'primaryContentGridCropX':
@@ -2297,19 +1924,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<int?> syncVersionMediaContent = const Value.absent(),
           Value<int?> syncVersionAvailableProfileAttributes =
               const Value.absent(),
-          Value<ContentId?> uuidContentId0 = const Value.absent(),
-          Value<ContentId?> uuidContentId1 = const Value.absent(),
-          Value<ContentId?> uuidContentId2 = const Value.absent(),
-          Value<ContentId?> uuidContentId3 = const Value.absent(),
-          Value<ContentId?> uuidContentId4 = const Value.absent(),
-          Value<ContentId?> uuidContentId5 = const Value.absent(),
-          Value<bool?> faceDetectedContentId0 = const Value.absent(),
-          Value<bool?> faceDetectedContentId1 = const Value.absent(),
-          Value<bool?> faceDetectedContentId2 = const Value.absent(),
-          Value<bool?> faceDetectedContentId3 = const Value.absent(),
-          Value<bool?> faceDetectedContentId4 = const Value.absent(),
-          Value<bool?> faceDetectedContentId5 = const Value.absent(),
-          Value<ContentId?> uuidSecurityContentId = const Value.absent(),
           Value<double?> primaryContentGridCropSize = const Value.absent(),
           Value<double?> primaryContentGridCropX = const Value.absent(),
           Value<double?> primaryContentGridCropY = const Value.absent(),
@@ -2409,39 +2023,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
             syncVersionAvailableProfileAttributes.present
                 ? syncVersionAvailableProfileAttributes.value
                 : this.syncVersionAvailableProfileAttributes,
-        uuidContentId0:
-            uuidContentId0.present ? uuidContentId0.value : this.uuidContentId0,
-        uuidContentId1:
-            uuidContentId1.present ? uuidContentId1.value : this.uuidContentId1,
-        uuidContentId2:
-            uuidContentId2.present ? uuidContentId2.value : this.uuidContentId2,
-        uuidContentId3:
-            uuidContentId3.present ? uuidContentId3.value : this.uuidContentId3,
-        uuidContentId4:
-            uuidContentId4.present ? uuidContentId4.value : this.uuidContentId4,
-        uuidContentId5:
-            uuidContentId5.present ? uuidContentId5.value : this.uuidContentId5,
-        faceDetectedContentId0: faceDetectedContentId0.present
-            ? faceDetectedContentId0.value
-            : this.faceDetectedContentId0,
-        faceDetectedContentId1: faceDetectedContentId1.present
-            ? faceDetectedContentId1.value
-            : this.faceDetectedContentId1,
-        faceDetectedContentId2: faceDetectedContentId2.present
-            ? faceDetectedContentId2.value
-            : this.faceDetectedContentId2,
-        faceDetectedContentId3: faceDetectedContentId3.present
-            ? faceDetectedContentId3.value
-            : this.faceDetectedContentId3,
-        faceDetectedContentId4: faceDetectedContentId4.present
-            ? faceDetectedContentId4.value
-            : this.faceDetectedContentId4,
-        faceDetectedContentId5: faceDetectedContentId5.present
-            ? faceDetectedContentId5.value
-            : this.faceDetectedContentId5,
-        uuidSecurityContentId: uuidSecurityContentId.present
-            ? uuidSecurityContentId.value
-            : this.uuidSecurityContentId,
         primaryContentGridCropSize: primaryContentGridCropSize.present
             ? primaryContentGridCropSize.value
             : this.primaryContentGridCropSize,
@@ -2628,45 +2209,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           data.syncVersionAvailableProfileAttributes.present
               ? data.syncVersionAvailableProfileAttributes.value
               : this.syncVersionAvailableProfileAttributes,
-      uuidContentId0: data.uuidContentId0.present
-          ? data.uuidContentId0.value
-          : this.uuidContentId0,
-      uuidContentId1: data.uuidContentId1.present
-          ? data.uuidContentId1.value
-          : this.uuidContentId1,
-      uuidContentId2: data.uuidContentId2.present
-          ? data.uuidContentId2.value
-          : this.uuidContentId2,
-      uuidContentId3: data.uuidContentId3.present
-          ? data.uuidContentId3.value
-          : this.uuidContentId3,
-      uuidContentId4: data.uuidContentId4.present
-          ? data.uuidContentId4.value
-          : this.uuidContentId4,
-      uuidContentId5: data.uuidContentId5.present
-          ? data.uuidContentId5.value
-          : this.uuidContentId5,
-      faceDetectedContentId0: data.faceDetectedContentId0.present
-          ? data.faceDetectedContentId0.value
-          : this.faceDetectedContentId0,
-      faceDetectedContentId1: data.faceDetectedContentId1.present
-          ? data.faceDetectedContentId1.value
-          : this.faceDetectedContentId1,
-      faceDetectedContentId2: data.faceDetectedContentId2.present
-          ? data.faceDetectedContentId2.value
-          : this.faceDetectedContentId2,
-      faceDetectedContentId3: data.faceDetectedContentId3.present
-          ? data.faceDetectedContentId3.value
-          : this.faceDetectedContentId3,
-      faceDetectedContentId4: data.faceDetectedContentId4.present
-          ? data.faceDetectedContentId4.value
-          : this.faceDetectedContentId4,
-      faceDetectedContentId5: data.faceDetectedContentId5.present
-          ? data.faceDetectedContentId5.value
-          : this.faceDetectedContentId5,
-      uuidSecurityContentId: data.uuidSecurityContentId.present
-          ? data.uuidSecurityContentId.value
-          : this.uuidSecurityContentId,
       primaryContentGridCropSize: data.primaryContentGridCropSize.present
           ? data.primaryContentGridCropSize.value
           : this.primaryContentGridCropSize,
@@ -2830,19 +2372,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('syncVersionMediaContent: $syncVersionMediaContent, ')
           ..write(
               'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
-          ..write('uuidContentId0: $uuidContentId0, ')
-          ..write('uuidContentId1: $uuidContentId1, ')
-          ..write('uuidContentId2: $uuidContentId2, ')
-          ..write('uuidContentId3: $uuidContentId3, ')
-          ..write('uuidContentId4: $uuidContentId4, ')
-          ..write('uuidContentId5: $uuidContentId5, ')
-          ..write('faceDetectedContentId0: $faceDetectedContentId0, ')
-          ..write('faceDetectedContentId1: $faceDetectedContentId1, ')
-          ..write('faceDetectedContentId2: $faceDetectedContentId2, ')
-          ..write('faceDetectedContentId3: $faceDetectedContentId3, ')
-          ..write('faceDetectedContentId4: $faceDetectedContentId4, ')
-          ..write('faceDetectedContentId5: $faceDetectedContentId5, ')
-          ..write('uuidSecurityContentId: $uuidSecurityContentId, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
           ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
@@ -2917,19 +2446,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         syncVersionProfile,
         syncVersionMediaContent,
         syncVersionAvailableProfileAttributes,
-        uuidContentId0,
-        uuidContentId1,
-        uuidContentId2,
-        uuidContentId3,
-        uuidContentId4,
-        uuidContentId5,
-        faceDetectedContentId0,
-        faceDetectedContentId1,
-        faceDetectedContentId2,
-        faceDetectedContentId3,
-        faceDetectedContentId4,
-        faceDetectedContentId5,
-        uuidSecurityContentId,
         primaryContentGridCropSize,
         primaryContentGridCropX,
         primaryContentGridCropY,
@@ -3005,19 +2521,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.syncVersionMediaContent == this.syncVersionMediaContent &&
           other.syncVersionAvailableProfileAttributes ==
               this.syncVersionAvailableProfileAttributes &&
-          other.uuidContentId0 == this.uuidContentId0 &&
-          other.uuidContentId1 == this.uuidContentId1 &&
-          other.uuidContentId2 == this.uuidContentId2 &&
-          other.uuidContentId3 == this.uuidContentId3 &&
-          other.uuidContentId4 == this.uuidContentId4 &&
-          other.uuidContentId5 == this.uuidContentId5 &&
-          other.faceDetectedContentId0 == this.faceDetectedContentId0 &&
-          other.faceDetectedContentId1 == this.faceDetectedContentId1 &&
-          other.faceDetectedContentId2 == this.faceDetectedContentId2 &&
-          other.faceDetectedContentId3 == this.faceDetectedContentId3 &&
-          other.faceDetectedContentId4 == this.faceDetectedContentId4 &&
-          other.faceDetectedContentId5 == this.faceDetectedContentId5 &&
-          other.uuidSecurityContentId == this.uuidSecurityContentId &&
           other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
           other.primaryContentGridCropX == this.primaryContentGridCropX &&
           other.primaryContentGridCropY == this.primaryContentGridCropY &&
@@ -3091,19 +2594,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<int?> syncVersionProfile;
   final Value<int?> syncVersionMediaContent;
   final Value<int?> syncVersionAvailableProfileAttributes;
-  final Value<ContentId?> uuidContentId0;
-  final Value<ContentId?> uuidContentId1;
-  final Value<ContentId?> uuidContentId2;
-  final Value<ContentId?> uuidContentId3;
-  final Value<ContentId?> uuidContentId4;
-  final Value<ContentId?> uuidContentId5;
-  final Value<bool?> faceDetectedContentId0;
-  final Value<bool?> faceDetectedContentId1;
-  final Value<bool?> faceDetectedContentId2;
-  final Value<bool?> faceDetectedContentId3;
-  final Value<bool?> faceDetectedContentId4;
-  final Value<bool?> faceDetectedContentId5;
-  final Value<ContentId?> uuidSecurityContentId;
   final Value<double?> primaryContentGridCropSize;
   final Value<double?> primaryContentGridCropX;
   final Value<double?> primaryContentGridCropY;
@@ -3169,19 +2659,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.syncVersionProfile = const Value.absent(),
     this.syncVersionMediaContent = const Value.absent(),
     this.syncVersionAvailableProfileAttributes = const Value.absent(),
-    this.uuidContentId0 = const Value.absent(),
-    this.uuidContentId1 = const Value.absent(),
-    this.uuidContentId2 = const Value.absent(),
-    this.uuidContentId3 = const Value.absent(),
-    this.uuidContentId4 = const Value.absent(),
-    this.uuidContentId5 = const Value.absent(),
-    this.faceDetectedContentId0 = const Value.absent(),
-    this.faceDetectedContentId1 = const Value.absent(),
-    this.faceDetectedContentId2 = const Value.absent(),
-    this.faceDetectedContentId3 = const Value.absent(),
-    this.faceDetectedContentId4 = const Value.absent(),
-    this.faceDetectedContentId5 = const Value.absent(),
-    this.uuidSecurityContentId = const Value.absent(),
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
     this.primaryContentGridCropY = const Value.absent(),
@@ -3246,19 +2723,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.syncVersionProfile = const Value.absent(),
     this.syncVersionMediaContent = const Value.absent(),
     this.syncVersionAvailableProfileAttributes = const Value.absent(),
-    this.uuidContentId0 = const Value.absent(),
-    this.uuidContentId1 = const Value.absent(),
-    this.uuidContentId2 = const Value.absent(),
-    this.uuidContentId3 = const Value.absent(),
-    this.uuidContentId4 = const Value.absent(),
-    this.uuidContentId5 = const Value.absent(),
-    this.faceDetectedContentId0 = const Value.absent(),
-    this.faceDetectedContentId1 = const Value.absent(),
-    this.faceDetectedContentId2 = const Value.absent(),
-    this.faceDetectedContentId3 = const Value.absent(),
-    this.faceDetectedContentId4 = const Value.absent(),
-    this.faceDetectedContentId5 = const Value.absent(),
-    this.uuidSecurityContentId = const Value.absent(),
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
     this.primaryContentGridCropY = const Value.absent(),
@@ -3323,19 +2787,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<int>? syncVersionProfile,
     Expression<int>? syncVersionMediaContent,
     Expression<int>? syncVersionAvailableProfileAttributes,
-    Expression<String>? uuidContentId0,
-    Expression<String>? uuidContentId1,
-    Expression<String>? uuidContentId2,
-    Expression<String>? uuidContentId3,
-    Expression<String>? uuidContentId4,
-    Expression<String>? uuidContentId5,
-    Expression<bool>? faceDetectedContentId0,
-    Expression<bool>? faceDetectedContentId1,
-    Expression<bool>? faceDetectedContentId2,
-    Expression<bool>? faceDetectedContentId3,
-    Expression<bool>? faceDetectedContentId4,
-    Expression<bool>? faceDetectedContentId5,
-    Expression<String>? uuidSecurityContentId,
     Expression<double>? primaryContentGridCropSize,
     Expression<double>? primaryContentGridCropX,
     Expression<double>? primaryContentGridCropY,
@@ -3417,26 +2868,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (syncVersionAvailableProfileAttributes != null)
         'sync_version_available_profile_attributes':
             syncVersionAvailableProfileAttributes,
-      if (uuidContentId0 != null) 'uuid_content_id0': uuidContentId0,
-      if (uuidContentId1 != null) 'uuid_content_id1': uuidContentId1,
-      if (uuidContentId2 != null) 'uuid_content_id2': uuidContentId2,
-      if (uuidContentId3 != null) 'uuid_content_id3': uuidContentId3,
-      if (uuidContentId4 != null) 'uuid_content_id4': uuidContentId4,
-      if (uuidContentId5 != null) 'uuid_content_id5': uuidContentId5,
-      if (faceDetectedContentId0 != null)
-        'face_detected_content_id0': faceDetectedContentId0,
-      if (faceDetectedContentId1 != null)
-        'face_detected_content_id1': faceDetectedContentId1,
-      if (faceDetectedContentId2 != null)
-        'face_detected_content_id2': faceDetectedContentId2,
-      if (faceDetectedContentId3 != null)
-        'face_detected_content_id3': faceDetectedContentId3,
-      if (faceDetectedContentId4 != null)
-        'face_detected_content_id4': faceDetectedContentId4,
-      if (faceDetectedContentId5 != null)
-        'face_detected_content_id5': faceDetectedContentId5,
-      if (uuidSecurityContentId != null)
-        'uuid_security_content_id': uuidSecurityContentId,
       if (primaryContentGridCropSize != null)
         'primary_content_grid_crop_size': primaryContentGridCropSize,
       if (primaryContentGridCropX != null)
@@ -3537,19 +2968,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<int?>? syncVersionProfile,
       Value<int?>? syncVersionMediaContent,
       Value<int?>? syncVersionAvailableProfileAttributes,
-      Value<ContentId?>? uuidContentId0,
-      Value<ContentId?>? uuidContentId1,
-      Value<ContentId?>? uuidContentId2,
-      Value<ContentId?>? uuidContentId3,
-      Value<ContentId?>? uuidContentId4,
-      Value<ContentId?>? uuidContentId5,
-      Value<bool?>? faceDetectedContentId0,
-      Value<bool?>? faceDetectedContentId1,
-      Value<bool?>? faceDetectedContentId2,
-      Value<bool?>? faceDetectedContentId3,
-      Value<bool?>? faceDetectedContentId4,
-      Value<bool?>? faceDetectedContentId5,
-      Value<ContentId?>? uuidSecurityContentId,
       Value<double?>? primaryContentGridCropSize,
       Value<double?>? primaryContentGridCropX,
       Value<double?>? primaryContentGridCropY,
@@ -3628,26 +3046,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       syncVersionAvailableProfileAttributes:
           syncVersionAvailableProfileAttributes ??
               this.syncVersionAvailableProfileAttributes,
-      uuidContentId0: uuidContentId0 ?? this.uuidContentId0,
-      uuidContentId1: uuidContentId1 ?? this.uuidContentId1,
-      uuidContentId2: uuidContentId2 ?? this.uuidContentId2,
-      uuidContentId3: uuidContentId3 ?? this.uuidContentId3,
-      uuidContentId4: uuidContentId4 ?? this.uuidContentId4,
-      uuidContentId5: uuidContentId5 ?? this.uuidContentId5,
-      faceDetectedContentId0:
-          faceDetectedContentId0 ?? this.faceDetectedContentId0,
-      faceDetectedContentId1:
-          faceDetectedContentId1 ?? this.faceDetectedContentId1,
-      faceDetectedContentId2:
-          faceDetectedContentId2 ?? this.faceDetectedContentId2,
-      faceDetectedContentId3:
-          faceDetectedContentId3 ?? this.faceDetectedContentId3,
-      faceDetectedContentId4:
-          faceDetectedContentId4 ?? this.faceDetectedContentId4,
-      faceDetectedContentId5:
-          faceDetectedContentId5 ?? this.faceDetectedContentId5,
-      uuidSecurityContentId:
-          uuidSecurityContentId ?? this.uuidSecurityContentId,
       primaryContentGridCropSize:
           primaryContentGridCropSize ?? this.primaryContentGridCropSize,
       primaryContentGridCropX:
@@ -3801,59 +3199,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (syncVersionAvailableProfileAttributes.present) {
       map['sync_version_available_profile_attributes'] =
           Variable<int>(syncVersionAvailableProfileAttributes.value);
-    }
-    if (uuidContentId0.present) {
-      map['uuid_content_id0'] = Variable<String>(
-          $AccountTable.$converteruuidContentId0.toSql(uuidContentId0.value));
-    }
-    if (uuidContentId1.present) {
-      map['uuid_content_id1'] = Variable<String>(
-          $AccountTable.$converteruuidContentId1.toSql(uuidContentId1.value));
-    }
-    if (uuidContentId2.present) {
-      map['uuid_content_id2'] = Variable<String>(
-          $AccountTable.$converteruuidContentId2.toSql(uuidContentId2.value));
-    }
-    if (uuidContentId3.present) {
-      map['uuid_content_id3'] = Variable<String>(
-          $AccountTable.$converteruuidContentId3.toSql(uuidContentId3.value));
-    }
-    if (uuidContentId4.present) {
-      map['uuid_content_id4'] = Variable<String>(
-          $AccountTable.$converteruuidContentId4.toSql(uuidContentId4.value));
-    }
-    if (uuidContentId5.present) {
-      map['uuid_content_id5'] = Variable<String>(
-          $AccountTable.$converteruuidContentId5.toSql(uuidContentId5.value));
-    }
-    if (faceDetectedContentId0.present) {
-      map['face_detected_content_id0'] =
-          Variable<bool>(faceDetectedContentId0.value);
-    }
-    if (faceDetectedContentId1.present) {
-      map['face_detected_content_id1'] =
-          Variable<bool>(faceDetectedContentId1.value);
-    }
-    if (faceDetectedContentId2.present) {
-      map['face_detected_content_id2'] =
-          Variable<bool>(faceDetectedContentId2.value);
-    }
-    if (faceDetectedContentId3.present) {
-      map['face_detected_content_id3'] =
-          Variable<bool>(faceDetectedContentId3.value);
-    }
-    if (faceDetectedContentId4.present) {
-      map['face_detected_content_id4'] =
-          Variable<bool>(faceDetectedContentId4.value);
-    }
-    if (faceDetectedContentId5.present) {
-      map['face_detected_content_id5'] =
-          Variable<bool>(faceDetectedContentId5.value);
-    }
-    if (uuidSecurityContentId.present) {
-      map['uuid_security_content_id'] = Variable<String>($AccountTable
-          .$converteruuidSecurityContentId
-          .toSql(uuidSecurityContentId.value));
     }
     if (primaryContentGridCropSize.present) {
       map['primary_content_grid_crop_size'] =
@@ -4060,19 +3405,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('syncVersionMediaContent: $syncVersionMediaContent, ')
           ..write(
               'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
-          ..write('uuidContentId0: $uuidContentId0, ')
-          ..write('uuidContentId1: $uuidContentId1, ')
-          ..write('uuidContentId2: $uuidContentId2, ')
-          ..write('uuidContentId3: $uuidContentId3, ')
-          ..write('uuidContentId4: $uuidContentId4, ')
-          ..write('uuidContentId5: $uuidContentId5, ')
-          ..write('faceDetectedContentId0: $faceDetectedContentId0, ')
-          ..write('faceDetectedContentId1: $faceDetectedContentId1, ')
-          ..write('faceDetectedContentId2: $faceDetectedContentId2, ')
-          ..write('faceDetectedContentId3: $faceDetectedContentId3, ')
-          ..write('faceDetectedContentId4: $faceDetectedContentId4, ')
-          ..write('faceDetectedContentId5: $faceDetectedContentId5, ')
-          ..write('uuidSecurityContentId: $uuidSecurityContentId, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
           ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
@@ -4150,54 +3482,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
               requiredDuringInsert: true,
               defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
           .withConverter<AccountId>($ProfilesTable.$converteruuidAccountId);
-  static const VerificationMeta _uuidContentId0Meta =
-      const VerificationMeta('uuidContentId0');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidContentId0 = GeneratedColumn<String>(
-              'uuid_content_id0', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>($ProfilesTable.$converteruuidContentId0);
-  static const VerificationMeta _uuidContentId1Meta =
-      const VerificationMeta('uuidContentId1');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidContentId1 = GeneratedColumn<String>(
-              'uuid_content_id1', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>($ProfilesTable.$converteruuidContentId1);
-  static const VerificationMeta _uuidContentId2Meta =
-      const VerificationMeta('uuidContentId2');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidContentId2 = GeneratedColumn<String>(
-              'uuid_content_id2', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>($ProfilesTable.$converteruuidContentId2);
-  static const VerificationMeta _uuidContentId3Meta =
-      const VerificationMeta('uuidContentId3');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidContentId3 = GeneratedColumn<String>(
-              'uuid_content_id3', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>($ProfilesTable.$converteruuidContentId3);
-  static const VerificationMeta _uuidContentId4Meta =
-      const VerificationMeta('uuidContentId4');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidContentId4 = GeneratedColumn<String>(
-              'uuid_content_id4', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>($ProfilesTable.$converteruuidContentId4);
-  static const VerificationMeta _uuidContentId5Meta =
-      const VerificationMeta('uuidContentId5');
-  @override
-  late final GeneratedColumnWithTypeConverter<ContentId?, String>
-      uuidContentId5 = GeneratedColumn<String>(
-              'uuid_content_id5', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ContentId?>($ProfilesTable.$converteruuidContentId5);
   static const VerificationMeta _profileContentVersionMeta =
       const VerificationMeta('profileContentVersion');
   @override
@@ -4317,12 +3601,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   List<GeneratedColumn> get $columns => [
         id,
         uuidAccountId,
-        uuidContentId0,
-        uuidContentId1,
-        uuidContentId2,
-        uuidContentId3,
-        uuidContentId4,
-        uuidContentId5,
         profileContentVersion,
         profileName,
         profileNameAccepted,
@@ -4353,12 +3631,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     context.handle(_uuidAccountIdMeta, const VerificationResult.success());
-    context.handle(_uuidContentId0Meta, const VerificationResult.success());
-    context.handle(_uuidContentId1Meta, const VerificationResult.success());
-    context.handle(_uuidContentId2Meta, const VerificationResult.success());
-    context.handle(_uuidContentId3Meta, const VerificationResult.success());
-    context.handle(_uuidContentId4Meta, const VerificationResult.success());
-    context.handle(_uuidContentId5Meta, const VerificationResult.success());
     context.handle(
         _profileContentVersionMeta, const VerificationResult.success());
     if (data.containsKey('profile_name')) {
@@ -4446,24 +3718,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       uuidAccountId: $ProfilesTable.$converteruuidAccountId.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
-      uuidContentId0: $ProfilesTable.$converteruuidContentId0.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_content_id0'])),
-      uuidContentId1: $ProfilesTable.$converteruuidContentId1.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_content_id1'])),
-      uuidContentId2: $ProfilesTable.$converteruuidContentId2.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_content_id2'])),
-      uuidContentId3: $ProfilesTable.$converteruuidContentId3.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_content_id3'])),
-      uuidContentId4: $ProfilesTable.$converteruuidContentId4.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_content_id4'])),
-      uuidContentId5: $ProfilesTable.$converteruuidContentId5.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_content_id5'])),
       profileContentVersion: $ProfilesTable.$converterprofileContentVersion
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}profile_content_version'])),
@@ -4513,18 +3767,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
 
   static TypeConverter<AccountId, String> $converteruuidAccountId =
       const AccountIdConverter();
-  static TypeConverter<ContentId?, String?> $converteruuidContentId0 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidContentId1 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidContentId2 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidContentId3 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidContentId4 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
-  static TypeConverter<ContentId?, String?> $converteruuidContentId5 =
-      const NullAwareTypeConverter.wrap(ContentIdConverter());
   static TypeConverter<ProfileContentVersion?, String?>
       $converterprofileContentVersion =
       const NullAwareTypeConverter.wrap(ProfileContentVersionConverter());
@@ -4541,14 +3783,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
 class Profile extends DataClass implements Insertable<Profile> {
   final int id;
   final AccountId uuidAccountId;
-
-  /// Primary content ID for the profile.
-  final ContentId? uuidContentId0;
-  final ContentId? uuidContentId1;
-  final ContentId? uuidContentId2;
-  final ContentId? uuidContentId3;
-  final ContentId? uuidContentId4;
-  final ContentId? uuidContentId5;
   final ProfileContentVersion? profileContentVersion;
   final String? profileName;
   final bool? profileNameAccepted;
@@ -4567,12 +3801,6 @@ class Profile extends DataClass implements Insertable<Profile> {
   const Profile(
       {required this.id,
       required this.uuidAccountId,
-      this.uuidContentId0,
-      this.uuidContentId1,
-      this.uuidContentId2,
-      this.uuidContentId3,
-      this.uuidContentId4,
-      this.uuidContentId5,
       this.profileContentVersion,
       this.profileName,
       this.profileNameAccepted,
@@ -4595,30 +3823,6 @@ class Profile extends DataClass implements Insertable<Profile> {
     {
       map['uuid_account_id'] = Variable<String>(
           $ProfilesTable.$converteruuidAccountId.toSql(uuidAccountId));
-    }
-    if (!nullToAbsent || uuidContentId0 != null) {
-      map['uuid_content_id0'] = Variable<String>(
-          $ProfilesTable.$converteruuidContentId0.toSql(uuidContentId0));
-    }
-    if (!nullToAbsent || uuidContentId1 != null) {
-      map['uuid_content_id1'] = Variable<String>(
-          $ProfilesTable.$converteruuidContentId1.toSql(uuidContentId1));
-    }
-    if (!nullToAbsent || uuidContentId2 != null) {
-      map['uuid_content_id2'] = Variable<String>(
-          $ProfilesTable.$converteruuidContentId2.toSql(uuidContentId2));
-    }
-    if (!nullToAbsent || uuidContentId3 != null) {
-      map['uuid_content_id3'] = Variable<String>(
-          $ProfilesTable.$converteruuidContentId3.toSql(uuidContentId3));
-    }
-    if (!nullToAbsent || uuidContentId4 != null) {
-      map['uuid_content_id4'] = Variable<String>(
-          $ProfilesTable.$converteruuidContentId4.toSql(uuidContentId4));
-    }
-    if (!nullToAbsent || uuidContentId5 != null) {
-      map['uuid_content_id5'] = Variable<String>(
-          $ProfilesTable.$converteruuidContentId5.toSql(uuidContentId5));
     }
     if (!nullToAbsent || profileContentVersion != null) {
       map['profile_content_version'] = Variable<String>($ProfilesTable
@@ -4685,24 +3889,6 @@ class Profile extends DataClass implements Insertable<Profile> {
     return ProfilesCompanion(
       id: Value(id),
       uuidAccountId: Value(uuidAccountId),
-      uuidContentId0: uuidContentId0 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId0),
-      uuidContentId1: uuidContentId1 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId1),
-      uuidContentId2: uuidContentId2 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId2),
-      uuidContentId3: uuidContentId3 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId3),
-      uuidContentId4: uuidContentId4 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId4),
-      uuidContentId5: uuidContentId5 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(uuidContentId5),
       profileContentVersion: profileContentVersion == null && nullToAbsent
           ? const Value.absent()
           : Value(profileContentVersion),
@@ -4758,12 +3944,6 @@ class Profile extends DataClass implements Insertable<Profile> {
     return Profile(
       id: serializer.fromJson<int>(json['id']),
       uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
-      uuidContentId0: serializer.fromJson<ContentId?>(json['uuidContentId0']),
-      uuidContentId1: serializer.fromJson<ContentId?>(json['uuidContentId1']),
-      uuidContentId2: serializer.fromJson<ContentId?>(json['uuidContentId2']),
-      uuidContentId3: serializer.fromJson<ContentId?>(json['uuidContentId3']),
-      uuidContentId4: serializer.fromJson<ContentId?>(json['uuidContentId4']),
-      uuidContentId5: serializer.fromJson<ContentId?>(json['uuidContentId5']),
       profileContentVersion: serializer
           .fromJson<ProfileContentVersion?>(json['profileContentVersion']),
       profileName: serializer.fromJson<String?>(json['profileName']),
@@ -4799,12 +3979,6 @@ class Profile extends DataClass implements Insertable<Profile> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
-      'uuidContentId0': serializer.toJson<ContentId?>(uuidContentId0),
-      'uuidContentId1': serializer.toJson<ContentId?>(uuidContentId1),
-      'uuidContentId2': serializer.toJson<ContentId?>(uuidContentId2),
-      'uuidContentId3': serializer.toJson<ContentId?>(uuidContentId3),
-      'uuidContentId4': serializer.toJson<ContentId?>(uuidContentId4),
-      'uuidContentId5': serializer.toJson<ContentId?>(uuidContentId5),
       'profileContentVersion':
           serializer.toJson<ProfileContentVersion?>(profileContentVersion),
       'profileName': serializer.toJson<String?>(profileName),
@@ -4834,12 +4008,6 @@ class Profile extends DataClass implements Insertable<Profile> {
   Profile copyWith(
           {int? id,
           AccountId? uuidAccountId,
-          Value<ContentId?> uuidContentId0 = const Value.absent(),
-          Value<ContentId?> uuidContentId1 = const Value.absent(),
-          Value<ContentId?> uuidContentId2 = const Value.absent(),
-          Value<ContentId?> uuidContentId3 = const Value.absent(),
-          Value<ContentId?> uuidContentId4 = const Value.absent(),
-          Value<ContentId?> uuidContentId5 = const Value.absent(),
           Value<ProfileContentVersion?> profileContentVersion =
               const Value.absent(),
           Value<String?> profileName = const Value.absent(),
@@ -4860,18 +4028,6 @@ class Profile extends DataClass implements Insertable<Profile> {
       Profile(
         id: id ?? this.id,
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
-        uuidContentId0:
-            uuidContentId0.present ? uuidContentId0.value : this.uuidContentId0,
-        uuidContentId1:
-            uuidContentId1.present ? uuidContentId1.value : this.uuidContentId1,
-        uuidContentId2:
-            uuidContentId2.present ? uuidContentId2.value : this.uuidContentId2,
-        uuidContentId3:
-            uuidContentId3.present ? uuidContentId3.value : this.uuidContentId3,
-        uuidContentId4:
-            uuidContentId4.present ? uuidContentId4.value : this.uuidContentId4,
-        uuidContentId5:
-            uuidContentId5.present ? uuidContentId5.value : this.uuidContentId5,
         profileContentVersion: profileContentVersion.present
             ? profileContentVersion.value
             : this.profileContentVersion,
@@ -4917,24 +4073,6 @@ class Profile extends DataClass implements Insertable<Profile> {
       uuidAccountId: data.uuidAccountId.present
           ? data.uuidAccountId.value
           : this.uuidAccountId,
-      uuidContentId0: data.uuidContentId0.present
-          ? data.uuidContentId0.value
-          : this.uuidContentId0,
-      uuidContentId1: data.uuidContentId1.present
-          ? data.uuidContentId1.value
-          : this.uuidContentId1,
-      uuidContentId2: data.uuidContentId2.present
-          ? data.uuidContentId2.value
-          : this.uuidContentId2,
-      uuidContentId3: data.uuidContentId3.present
-          ? data.uuidContentId3.value
-          : this.uuidContentId3,
-      uuidContentId4: data.uuidContentId4.present
-          ? data.uuidContentId4.value
-          : this.uuidContentId4,
-      uuidContentId5: data.uuidContentId5.present
-          ? data.uuidContentId5.value
-          : this.uuidContentId5,
       profileContentVersion: data.profileContentVersion.present
           ? data.profileContentVersion.value
           : this.profileContentVersion,
@@ -4985,12 +4123,6 @@ class Profile extends DataClass implements Insertable<Profile> {
     return (StringBuffer('Profile(')
           ..write('id: $id, ')
           ..write('uuidAccountId: $uuidAccountId, ')
-          ..write('uuidContentId0: $uuidContentId0, ')
-          ..write('uuidContentId1: $uuidContentId1, ')
-          ..write('uuidContentId2: $uuidContentId2, ')
-          ..write('uuidContentId3: $uuidContentId3, ')
-          ..write('uuidContentId4: $uuidContentId4, ')
-          ..write('uuidContentId5: $uuidContentId5, ')
           ..write('profileContentVersion: $profileContentVersion, ')
           ..write('profileName: $profileName, ')
           ..write('profileNameAccepted: $profileNameAccepted, ')
@@ -5011,43 +4143,30 @@ class Profile extends DataClass implements Insertable<Profile> {
   }
 
   @override
-  int get hashCode => Object.hashAll([
-        id,
-        uuidAccountId,
-        uuidContentId0,
-        uuidContentId1,
-        uuidContentId2,
-        uuidContentId3,
-        uuidContentId4,
-        uuidContentId5,
-        profileContentVersion,
-        profileName,
-        profileNameAccepted,
-        profileText,
-        profileTextAccepted,
-        profileVersion,
-        profileAge,
-        profileLastSeenTimeValue,
-        profileUnlimitedLikes,
-        jsonProfileAttributes,
-        primaryContentGridCropSize,
-        primaryContentGridCropX,
-        primaryContentGridCropY,
-        profileDataRefreshTime,
-        newLikeInfoReceivedTime
-      ]);
+  int get hashCode => Object.hash(
+      id,
+      uuidAccountId,
+      profileContentVersion,
+      profileName,
+      profileNameAccepted,
+      profileText,
+      profileTextAccepted,
+      profileVersion,
+      profileAge,
+      profileLastSeenTimeValue,
+      profileUnlimitedLikes,
+      jsonProfileAttributes,
+      primaryContentGridCropSize,
+      primaryContentGridCropX,
+      primaryContentGridCropY,
+      profileDataRefreshTime,
+      newLikeInfoReceivedTime);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Profile &&
           other.id == this.id &&
           other.uuidAccountId == this.uuidAccountId &&
-          other.uuidContentId0 == this.uuidContentId0 &&
-          other.uuidContentId1 == this.uuidContentId1 &&
-          other.uuidContentId2 == this.uuidContentId2 &&
-          other.uuidContentId3 == this.uuidContentId3 &&
-          other.uuidContentId4 == this.uuidContentId4 &&
-          other.uuidContentId5 == this.uuidContentId5 &&
           other.profileContentVersion == this.profileContentVersion &&
           other.profileName == this.profileName &&
           other.profileNameAccepted == this.profileNameAccepted &&
@@ -5068,12 +4187,6 @@ class Profile extends DataClass implements Insertable<Profile> {
 class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<int> id;
   final Value<AccountId> uuidAccountId;
-  final Value<ContentId?> uuidContentId0;
-  final Value<ContentId?> uuidContentId1;
-  final Value<ContentId?> uuidContentId2;
-  final Value<ContentId?> uuidContentId3;
-  final Value<ContentId?> uuidContentId4;
-  final Value<ContentId?> uuidContentId5;
   final Value<ProfileContentVersion?> profileContentVersion;
   final Value<String?> profileName;
   final Value<bool?> profileNameAccepted;
@@ -5092,12 +4205,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   const ProfilesCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
-    this.uuidContentId0 = const Value.absent(),
-    this.uuidContentId1 = const Value.absent(),
-    this.uuidContentId2 = const Value.absent(),
-    this.uuidContentId3 = const Value.absent(),
-    this.uuidContentId4 = const Value.absent(),
-    this.uuidContentId5 = const Value.absent(),
     this.profileContentVersion = const Value.absent(),
     this.profileName = const Value.absent(),
     this.profileNameAccepted = const Value.absent(),
@@ -5117,12 +4224,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   ProfilesCompanion.insert({
     this.id = const Value.absent(),
     required AccountId uuidAccountId,
-    this.uuidContentId0 = const Value.absent(),
-    this.uuidContentId1 = const Value.absent(),
-    this.uuidContentId2 = const Value.absent(),
-    this.uuidContentId3 = const Value.absent(),
-    this.uuidContentId4 = const Value.absent(),
-    this.uuidContentId5 = const Value.absent(),
     this.profileContentVersion = const Value.absent(),
     this.profileName = const Value.absent(),
     this.profileNameAccepted = const Value.absent(),
@@ -5142,12 +4243,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   static Insertable<Profile> custom({
     Expression<int>? id,
     Expression<String>? uuidAccountId,
-    Expression<String>? uuidContentId0,
-    Expression<String>? uuidContentId1,
-    Expression<String>? uuidContentId2,
-    Expression<String>? uuidContentId3,
-    Expression<String>? uuidContentId4,
-    Expression<String>? uuidContentId5,
     Expression<String>? profileContentVersion,
     Expression<String>? profileName,
     Expression<bool>? profileNameAccepted,
@@ -5167,12 +4262,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
-      if (uuidContentId0 != null) 'uuid_content_id0': uuidContentId0,
-      if (uuidContentId1 != null) 'uuid_content_id1': uuidContentId1,
-      if (uuidContentId2 != null) 'uuid_content_id2': uuidContentId2,
-      if (uuidContentId3 != null) 'uuid_content_id3': uuidContentId3,
-      if (uuidContentId4 != null) 'uuid_content_id4': uuidContentId4,
-      if (uuidContentId5 != null) 'uuid_content_id5': uuidContentId5,
       if (profileContentVersion != null)
         'profile_content_version': profileContentVersion,
       if (profileName != null) 'profile_name': profileName,
@@ -5205,12 +4294,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   ProfilesCompanion copyWith(
       {Value<int>? id,
       Value<AccountId>? uuidAccountId,
-      Value<ContentId?>? uuidContentId0,
-      Value<ContentId?>? uuidContentId1,
-      Value<ContentId?>? uuidContentId2,
-      Value<ContentId?>? uuidContentId3,
-      Value<ContentId?>? uuidContentId4,
-      Value<ContentId?>? uuidContentId5,
       Value<ProfileContentVersion?>? profileContentVersion,
       Value<String?>? profileName,
       Value<bool?>? profileNameAccepted,
@@ -5229,12 +4312,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     return ProfilesCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
-      uuidContentId0: uuidContentId0 ?? this.uuidContentId0,
-      uuidContentId1: uuidContentId1 ?? this.uuidContentId1,
-      uuidContentId2: uuidContentId2 ?? this.uuidContentId2,
-      uuidContentId3: uuidContentId3 ?? this.uuidContentId3,
-      uuidContentId4: uuidContentId4 ?? this.uuidContentId4,
-      uuidContentId5: uuidContentId5 ?? this.uuidContentId5,
       profileContentVersion:
           profileContentVersion ?? this.profileContentVersion,
       profileName: profileName ?? this.profileName,
@@ -5271,30 +4348,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     if (uuidAccountId.present) {
       map['uuid_account_id'] = Variable<String>(
           $ProfilesTable.$converteruuidAccountId.toSql(uuidAccountId.value));
-    }
-    if (uuidContentId0.present) {
-      map['uuid_content_id0'] = Variable<String>(
-          $ProfilesTable.$converteruuidContentId0.toSql(uuidContentId0.value));
-    }
-    if (uuidContentId1.present) {
-      map['uuid_content_id1'] = Variable<String>(
-          $ProfilesTable.$converteruuidContentId1.toSql(uuidContentId1.value));
-    }
-    if (uuidContentId2.present) {
-      map['uuid_content_id2'] = Variable<String>(
-          $ProfilesTable.$converteruuidContentId2.toSql(uuidContentId2.value));
-    }
-    if (uuidContentId3.present) {
-      map['uuid_content_id3'] = Variable<String>(
-          $ProfilesTable.$converteruuidContentId3.toSql(uuidContentId3.value));
-    }
-    if (uuidContentId4.present) {
-      map['uuid_content_id4'] = Variable<String>(
-          $ProfilesTable.$converteruuidContentId4.toSql(uuidContentId4.value));
-    }
-    if (uuidContentId5.present) {
-      map['uuid_content_id5'] = Variable<String>(
-          $ProfilesTable.$converteruuidContentId5.toSql(uuidContentId5.value));
     }
     if (profileContentVersion.present) {
       map['profile_content_version'] = Variable<String>($ProfilesTable
@@ -5363,12 +4416,6 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     return (StringBuffer('ProfilesCompanion(')
           ..write('id: $id, ')
           ..write('uuidAccountId: $uuidAccountId, ')
-          ..write('uuidContentId0: $uuidContentId0, ')
-          ..write('uuidContentId1: $uuidContentId1, ')
-          ..write('uuidContentId2: $uuidContentId2, ')
-          ..write('uuidContentId3: $uuidContentId3, ')
-          ..write('uuidContentId4: $uuidContentId4, ')
-          ..write('uuidContentId5: $uuidContentId5, ')
           ..write('profileContentVersion: $profileContentVersion, ')
           ..write('profileName: $profileName, ')
           ..write('profileNameAccepted: $profileNameAccepted, ')
@@ -5384,6 +4431,761 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
           ..write('profileDataRefreshTime: $profileDataRefreshTime, ')
           ..write('newLikeInfoReceivedTime: $newLikeInfoReceivedTime')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PublicProfileContentTable extends PublicProfileContent
+    with TableInfo<$PublicProfileContentTable, PublicProfileContentData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PublicProfileContentTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _uuidAccountIdMeta =
+      const VerificationMeta('uuidAccountId');
+  @override
+  late final GeneratedColumnWithTypeConverter<AccountId, String> uuidAccountId =
+      GeneratedColumn<String>('uuid_account_id', aliasedName, false,
+              type: DriftSqlType.string, requiredDuringInsert: true)
+          .withConverter<AccountId>(
+              $PublicProfileContentTable.$converteruuidAccountId);
+  static const VerificationMeta _contentIndexMeta =
+      const VerificationMeta('contentIndex');
+  @override
+  late final GeneratedColumn<int> contentIndex = GeneratedColumn<int>(
+      'content_index', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _uuidContentIdMeta =
+      const VerificationMeta('uuidContentId');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId, String> uuidContentId =
+      GeneratedColumn<String>('uuid_content_id', aliasedName, false,
+              type: DriftSqlType.string, requiredDuringInsert: true)
+          .withConverter<ContentId>(
+              $PublicProfileContentTable.$converteruuidContentId);
+  static const VerificationMeta _contentAcceptedMeta =
+      const VerificationMeta('contentAccepted');
+  @override
+  late final GeneratedColumn<bool> contentAccepted = GeneratedColumn<bool>(
+      'content_accepted', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("content_accepted" IN (0, 1))'));
+  @override
+  List<GeneratedColumn> get $columns =>
+      [uuidAccountId, contentIndex, uuidContentId, contentAccepted];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'public_profile_content';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<PublicProfileContentData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
+    if (data.containsKey('content_index')) {
+      context.handle(
+          _contentIndexMeta,
+          contentIndex.isAcceptableOrUnknown(
+              data['content_index']!, _contentIndexMeta));
+    } else if (isInserting) {
+      context.missing(_contentIndexMeta);
+    }
+    context.handle(_uuidContentIdMeta, const VerificationResult.success());
+    if (data.containsKey('content_accepted')) {
+      context.handle(
+          _contentAcceptedMeta,
+          contentAccepted.isAcceptableOrUnknown(
+              data['content_accepted']!, _contentAcceptedMeta));
+    } else if (isInserting) {
+      context.missing(_contentAcceptedMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {uuidAccountId, contentIndex};
+  @override
+  PublicProfileContentData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PublicProfileContentData(
+      uuidAccountId: $PublicProfileContentTable.$converteruuidAccountId.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
+      contentIndex: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}content_index'])!,
+      uuidContentId: $PublicProfileContentTable.$converteruuidContentId.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_content_id'])!),
+      contentAccepted: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}content_accepted'])!,
+    );
+  }
+
+  @override
+  $PublicProfileContentTable createAlias(String alias) {
+    return $PublicProfileContentTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<AccountId, String> $converteruuidAccountId =
+      const AccountIdConverter();
+  static TypeConverter<ContentId, String> $converteruuidContentId =
+      const ContentIdConverter();
+}
+
+class PublicProfileContentData extends DataClass
+    implements Insertable<PublicProfileContentData> {
+  final AccountId uuidAccountId;
+  final int contentIndex;
+  final ContentId uuidContentId;
+  final bool contentAccepted;
+  const PublicProfileContentData(
+      {required this.uuidAccountId,
+      required this.contentIndex,
+      required this.uuidContentId,
+      required this.contentAccepted});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    {
+      map['uuid_account_id'] = Variable<String>($PublicProfileContentTable
+          .$converteruuidAccountId
+          .toSql(uuidAccountId));
+    }
+    map['content_index'] = Variable<int>(contentIndex);
+    {
+      map['uuid_content_id'] = Variable<String>($PublicProfileContentTable
+          .$converteruuidContentId
+          .toSql(uuidContentId));
+    }
+    map['content_accepted'] = Variable<bool>(contentAccepted);
+    return map;
+  }
+
+  PublicProfileContentCompanion toCompanion(bool nullToAbsent) {
+    return PublicProfileContentCompanion(
+      uuidAccountId: Value(uuidAccountId),
+      contentIndex: Value(contentIndex),
+      uuidContentId: Value(uuidContentId),
+      contentAccepted: Value(contentAccepted),
+    );
+  }
+
+  factory PublicProfileContentData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PublicProfileContentData(
+      uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
+      contentIndex: serializer.fromJson<int>(json['contentIndex']),
+      uuidContentId: serializer.fromJson<ContentId>(json['uuidContentId']),
+      contentAccepted: serializer.fromJson<bool>(json['contentAccepted']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
+      'contentIndex': serializer.toJson<int>(contentIndex),
+      'uuidContentId': serializer.toJson<ContentId>(uuidContentId),
+      'contentAccepted': serializer.toJson<bool>(contentAccepted),
+    };
+  }
+
+  PublicProfileContentData copyWith(
+          {AccountId? uuidAccountId,
+          int? contentIndex,
+          ContentId? uuidContentId,
+          bool? contentAccepted}) =>
+      PublicProfileContentData(
+        uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+        contentIndex: contentIndex ?? this.contentIndex,
+        uuidContentId: uuidContentId ?? this.uuidContentId,
+        contentAccepted: contentAccepted ?? this.contentAccepted,
+      );
+  PublicProfileContentData copyWithCompanion(
+      PublicProfileContentCompanion data) {
+    return PublicProfileContentData(
+      uuidAccountId: data.uuidAccountId.present
+          ? data.uuidAccountId.value
+          : this.uuidAccountId,
+      contentIndex: data.contentIndex.present
+          ? data.contentIndex.value
+          : this.contentIndex,
+      uuidContentId: data.uuidContentId.present
+          ? data.uuidContentId.value
+          : this.uuidContentId,
+      contentAccepted: data.contentAccepted.present
+          ? data.contentAccepted.value
+          : this.contentAccepted,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PublicProfileContentData(')
+          ..write('uuidAccountId: $uuidAccountId, ')
+          ..write('contentIndex: $contentIndex, ')
+          ..write('uuidContentId: $uuidContentId, ')
+          ..write('contentAccepted: $contentAccepted')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(uuidAccountId, contentIndex, uuidContentId, contentAccepted);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PublicProfileContentData &&
+          other.uuidAccountId == this.uuidAccountId &&
+          other.contentIndex == this.contentIndex &&
+          other.uuidContentId == this.uuidContentId &&
+          other.contentAccepted == this.contentAccepted);
+}
+
+class PublicProfileContentCompanion
+    extends UpdateCompanion<PublicProfileContentData> {
+  final Value<AccountId> uuidAccountId;
+  final Value<int> contentIndex;
+  final Value<ContentId> uuidContentId;
+  final Value<bool> contentAccepted;
+  final Value<int> rowid;
+  const PublicProfileContentCompanion({
+    this.uuidAccountId = const Value.absent(),
+    this.contentIndex = const Value.absent(),
+    this.uuidContentId = const Value.absent(),
+    this.contentAccepted = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PublicProfileContentCompanion.insert({
+    required AccountId uuidAccountId,
+    required int contentIndex,
+    required ContentId uuidContentId,
+    required bool contentAccepted,
+    this.rowid = const Value.absent(),
+  })  : uuidAccountId = Value(uuidAccountId),
+        contentIndex = Value(contentIndex),
+        uuidContentId = Value(uuidContentId),
+        contentAccepted = Value(contentAccepted);
+  static Insertable<PublicProfileContentData> custom({
+    Expression<String>? uuidAccountId,
+    Expression<int>? contentIndex,
+    Expression<String>? uuidContentId,
+    Expression<bool>? contentAccepted,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
+      if (contentIndex != null) 'content_index': contentIndex,
+      if (uuidContentId != null) 'uuid_content_id': uuidContentId,
+      if (contentAccepted != null) 'content_accepted': contentAccepted,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PublicProfileContentCompanion copyWith(
+      {Value<AccountId>? uuidAccountId,
+      Value<int>? contentIndex,
+      Value<ContentId>? uuidContentId,
+      Value<bool>? contentAccepted,
+      Value<int>? rowid}) {
+    return PublicProfileContentCompanion(
+      uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+      contentIndex: contentIndex ?? this.contentIndex,
+      uuidContentId: uuidContentId ?? this.uuidContentId,
+      contentAccepted: contentAccepted ?? this.contentAccepted,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (uuidAccountId.present) {
+      map['uuid_account_id'] = Variable<String>($PublicProfileContentTable
+          .$converteruuidAccountId
+          .toSql(uuidAccountId.value));
+    }
+    if (contentIndex.present) {
+      map['content_index'] = Variable<int>(contentIndex.value);
+    }
+    if (uuidContentId.present) {
+      map['uuid_content_id'] = Variable<String>($PublicProfileContentTable
+          .$converteruuidContentId
+          .toSql(uuidContentId.value));
+    }
+    if (contentAccepted.present) {
+      map['content_accepted'] = Variable<bool>(contentAccepted.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PublicProfileContentCompanion(')
+          ..write('uuidAccountId: $uuidAccountId, ')
+          ..write('contentIndex: $contentIndex, ')
+          ..write('uuidContentId: $uuidContentId, ')
+          ..write('contentAccepted: $contentAccepted, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MyMediaContentTable extends MyMediaContent
+    with TableInfo<$MyMediaContentTable, MyMediaContentData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MyMediaContentTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _contentIndexMeta =
+      const VerificationMeta('contentIndex');
+  @override
+  late final GeneratedColumn<int> contentIndex = GeneratedColumn<int>(
+      'content_index', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _uuidContentIdMeta =
+      const VerificationMeta('uuidContentId');
+  @override
+  late final GeneratedColumnWithTypeConverter<ContentId, String> uuidContentId =
+      GeneratedColumn<String>('uuid_content_id', aliasedName, false,
+              type: DriftSqlType.string, requiredDuringInsert: true)
+          .withConverter<ContentId>(
+              $MyMediaContentTable.$converteruuidContentId);
+  static const VerificationMeta _faceDetectedMeta =
+      const VerificationMeta('faceDetected');
+  @override
+  late final GeneratedColumn<bool> faceDetected = GeneratedColumn<bool>(
+      'face_detected', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("face_detected" IN (0, 1))'));
+  static const VerificationMeta _moderationStateMeta =
+      const VerificationMeta('moderationState');
+  @override
+  late final GeneratedColumnWithTypeConverter<EnumString?, String>
+      moderationState = GeneratedColumn<String>(
+              'moderation_state', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<EnumString?>(
+              $MyMediaContentTable.$convertermoderationState);
+  static const VerificationMeta _contentModerationRejectedCategoryMeta =
+      const VerificationMeta('contentModerationRejectedCategory');
+  @override
+  late final GeneratedColumnWithTypeConverter<
+      ProfileContentModerationRejectedReasonCategory?,
+      int> contentModerationRejectedCategory = GeneratedColumn<int>(
+          'content_moderation_rejected_category', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false)
+      .withConverter<ProfileContentModerationRejectedReasonCategory?>(
+          $MyMediaContentTable.$convertercontentModerationRejectedCategory);
+  static const VerificationMeta _contentModerationRejectedDetailsMeta =
+      const VerificationMeta('contentModerationRejectedDetails');
+  @override
+  late final GeneratedColumnWithTypeConverter<
+      ProfileContentModerationRejectedReasonDetails?,
+      String> contentModerationRejectedDetails = GeneratedColumn<String>(
+          'content_moderation_rejected_details', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false)
+      .withConverter<ProfileContentModerationRejectedReasonDetails?>(
+          $MyMediaContentTable.$convertercontentModerationRejectedDetails);
+  @override
+  List<GeneratedColumn> get $columns => [
+        contentIndex,
+        uuidContentId,
+        faceDetected,
+        moderationState,
+        contentModerationRejectedCategory,
+        contentModerationRejectedDetails
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'my_media_content';
+  @override
+  VerificationContext validateIntegrity(Insertable<MyMediaContentData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('content_index')) {
+      context.handle(
+          _contentIndexMeta,
+          contentIndex.isAcceptableOrUnknown(
+              data['content_index']!, _contentIndexMeta));
+    }
+    context.handle(_uuidContentIdMeta, const VerificationResult.success());
+    if (data.containsKey('face_detected')) {
+      context.handle(
+          _faceDetectedMeta,
+          faceDetected.isAcceptableOrUnknown(
+              data['face_detected']!, _faceDetectedMeta));
+    } else if (isInserting) {
+      context.missing(_faceDetectedMeta);
+    }
+    context.handle(_moderationStateMeta, const VerificationResult.success());
+    context.handle(_contentModerationRejectedCategoryMeta,
+        const VerificationResult.success());
+    context.handle(_contentModerationRejectedDetailsMeta,
+        const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {contentIndex};
+  @override
+  MyMediaContentData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MyMediaContentData(
+      contentIndex: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}content_index'])!,
+      uuidContentId: $MyMediaContentTable.$converteruuidContentId.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}uuid_content_id'])!),
+      faceDetected: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}face_detected'])!,
+      moderationState: $MyMediaContentTable.$convertermoderationState.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}moderation_state'])),
+      contentModerationRejectedCategory: $MyMediaContentTable
+          .$convertercontentModerationRejectedCategory
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}content_moderation_rejected_category'])),
+      contentModerationRejectedDetails: $MyMediaContentTable
+          .$convertercontentModerationRejectedDetails
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}content_moderation_rejected_details'])),
+    );
+  }
+
+  @override
+  $MyMediaContentTable createAlias(String alias) {
+    return $MyMediaContentTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<ContentId, String> $converteruuidContentId =
+      const ContentIdConverter();
+  static TypeConverter<EnumString?, String?> $convertermoderationState =
+      NullAwareTypeConverter.wrap(EnumString.driftConverter);
+  static TypeConverter<ProfileContentModerationRejectedReasonCategory?, int?>
+      $convertercontentModerationRejectedCategory =
+      const NullAwareTypeConverter.wrap(
+          ProfileContentModerationRejectedReasonCategoryConverter());
+  static TypeConverter<ProfileContentModerationRejectedReasonDetails?, String?>
+      $convertercontentModerationRejectedDetails =
+      const NullAwareTypeConverter.wrap(
+          ProfileContentModerationRejectedReasonDetailsConverter());
+}
+
+class MyMediaContentData extends DataClass
+    implements Insertable<MyMediaContentData> {
+  /// Security content has index -1. Profile content indexes start from 0.
+  final int contentIndex;
+  final ContentId uuidContentId;
+  final bool faceDetected;
+  final EnumString? moderationState;
+  final ProfileContentModerationRejectedReasonCategory?
+      contentModerationRejectedCategory;
+  final ProfileContentModerationRejectedReasonDetails?
+      contentModerationRejectedDetails;
+  const MyMediaContentData(
+      {required this.contentIndex,
+      required this.uuidContentId,
+      required this.faceDetected,
+      this.moderationState,
+      this.contentModerationRejectedCategory,
+      this.contentModerationRejectedDetails});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['content_index'] = Variable<int>(contentIndex);
+    {
+      map['uuid_content_id'] = Variable<String>(
+          $MyMediaContentTable.$converteruuidContentId.toSql(uuidContentId));
+    }
+    map['face_detected'] = Variable<bool>(faceDetected);
+    if (!nullToAbsent || moderationState != null) {
+      map['moderation_state'] = Variable<String>($MyMediaContentTable
+          .$convertermoderationState
+          .toSql(moderationState));
+    }
+    if (!nullToAbsent || contentModerationRejectedCategory != null) {
+      map['content_moderation_rejected_category'] = Variable<int>(
+          $MyMediaContentTable.$convertercontentModerationRejectedCategory
+              .toSql(contentModerationRejectedCategory));
+    }
+    if (!nullToAbsent || contentModerationRejectedDetails != null) {
+      map['content_moderation_rejected_details'] = Variable<String>(
+          $MyMediaContentTable.$convertercontentModerationRejectedDetails
+              .toSql(contentModerationRejectedDetails));
+    }
+    return map;
+  }
+
+  MyMediaContentCompanion toCompanion(bool nullToAbsent) {
+    return MyMediaContentCompanion(
+      contentIndex: Value(contentIndex),
+      uuidContentId: Value(uuidContentId),
+      faceDetected: Value(faceDetected),
+      moderationState: moderationState == null && nullToAbsent
+          ? const Value.absent()
+          : Value(moderationState),
+      contentModerationRejectedCategory:
+          contentModerationRejectedCategory == null && nullToAbsent
+              ? const Value.absent()
+              : Value(contentModerationRejectedCategory),
+      contentModerationRejectedDetails:
+          contentModerationRejectedDetails == null && nullToAbsent
+              ? const Value.absent()
+              : Value(contentModerationRejectedDetails),
+    );
+  }
+
+  factory MyMediaContentData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MyMediaContentData(
+      contentIndex: serializer.fromJson<int>(json['contentIndex']),
+      uuidContentId: serializer.fromJson<ContentId>(json['uuidContentId']),
+      faceDetected: serializer.fromJson<bool>(json['faceDetected']),
+      moderationState:
+          serializer.fromJson<EnumString?>(json['moderationState']),
+      contentModerationRejectedCategory:
+          serializer.fromJson<ProfileContentModerationRejectedReasonCategory?>(
+              json['contentModerationRejectedCategory']),
+      contentModerationRejectedDetails:
+          serializer.fromJson<ProfileContentModerationRejectedReasonDetails?>(
+              json['contentModerationRejectedDetails']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'contentIndex': serializer.toJson<int>(contentIndex),
+      'uuidContentId': serializer.toJson<ContentId>(uuidContentId),
+      'faceDetected': serializer.toJson<bool>(faceDetected),
+      'moderationState': serializer.toJson<EnumString?>(moderationState),
+      'contentModerationRejectedCategory':
+          serializer.toJson<ProfileContentModerationRejectedReasonCategory?>(
+              contentModerationRejectedCategory),
+      'contentModerationRejectedDetails':
+          serializer.toJson<ProfileContentModerationRejectedReasonDetails?>(
+              contentModerationRejectedDetails),
+    };
+  }
+
+  MyMediaContentData copyWith(
+          {int? contentIndex,
+          ContentId? uuidContentId,
+          bool? faceDetected,
+          Value<EnumString?> moderationState = const Value.absent(),
+          Value<ProfileContentModerationRejectedReasonCategory?>
+              contentModerationRejectedCategory = const Value.absent(),
+          Value<ProfileContentModerationRejectedReasonDetails?>
+              contentModerationRejectedDetails = const Value.absent()}) =>
+      MyMediaContentData(
+        contentIndex: contentIndex ?? this.contentIndex,
+        uuidContentId: uuidContentId ?? this.uuidContentId,
+        faceDetected: faceDetected ?? this.faceDetected,
+        moderationState: moderationState.present
+            ? moderationState.value
+            : this.moderationState,
+        contentModerationRejectedCategory:
+            contentModerationRejectedCategory.present
+                ? contentModerationRejectedCategory.value
+                : this.contentModerationRejectedCategory,
+        contentModerationRejectedDetails:
+            contentModerationRejectedDetails.present
+                ? contentModerationRejectedDetails.value
+                : this.contentModerationRejectedDetails,
+      );
+  MyMediaContentData copyWithCompanion(MyMediaContentCompanion data) {
+    return MyMediaContentData(
+      contentIndex: data.contentIndex.present
+          ? data.contentIndex.value
+          : this.contentIndex,
+      uuidContentId: data.uuidContentId.present
+          ? data.uuidContentId.value
+          : this.uuidContentId,
+      faceDetected: data.faceDetected.present
+          ? data.faceDetected.value
+          : this.faceDetected,
+      moderationState: data.moderationState.present
+          ? data.moderationState.value
+          : this.moderationState,
+      contentModerationRejectedCategory:
+          data.contentModerationRejectedCategory.present
+              ? data.contentModerationRejectedCategory.value
+              : this.contentModerationRejectedCategory,
+      contentModerationRejectedDetails:
+          data.contentModerationRejectedDetails.present
+              ? data.contentModerationRejectedDetails.value
+              : this.contentModerationRejectedDetails,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MyMediaContentData(')
+          ..write('contentIndex: $contentIndex, ')
+          ..write('uuidContentId: $uuidContentId, ')
+          ..write('faceDetected: $faceDetected, ')
+          ..write('moderationState: $moderationState, ')
+          ..write(
+              'contentModerationRejectedCategory: $contentModerationRejectedCategory, ')
+          ..write(
+              'contentModerationRejectedDetails: $contentModerationRejectedDetails')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      contentIndex,
+      uuidContentId,
+      faceDetected,
+      moderationState,
+      contentModerationRejectedCategory,
+      contentModerationRejectedDetails);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MyMediaContentData &&
+          other.contentIndex == this.contentIndex &&
+          other.uuidContentId == this.uuidContentId &&
+          other.faceDetected == this.faceDetected &&
+          other.moderationState == this.moderationState &&
+          other.contentModerationRejectedCategory ==
+              this.contentModerationRejectedCategory &&
+          other.contentModerationRejectedDetails ==
+              this.contentModerationRejectedDetails);
+}
+
+class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
+  final Value<int> contentIndex;
+  final Value<ContentId> uuidContentId;
+  final Value<bool> faceDetected;
+  final Value<EnumString?> moderationState;
+  final Value<ProfileContentModerationRejectedReasonCategory?>
+      contentModerationRejectedCategory;
+  final Value<ProfileContentModerationRejectedReasonDetails?>
+      contentModerationRejectedDetails;
+  const MyMediaContentCompanion({
+    this.contentIndex = const Value.absent(),
+    this.uuidContentId = const Value.absent(),
+    this.faceDetected = const Value.absent(),
+    this.moderationState = const Value.absent(),
+    this.contentModerationRejectedCategory = const Value.absent(),
+    this.contentModerationRejectedDetails = const Value.absent(),
+  });
+  MyMediaContentCompanion.insert({
+    this.contentIndex = const Value.absent(),
+    required ContentId uuidContentId,
+    required bool faceDetected,
+    this.moderationState = const Value.absent(),
+    this.contentModerationRejectedCategory = const Value.absent(),
+    this.contentModerationRejectedDetails = const Value.absent(),
+  })  : uuidContentId = Value(uuidContentId),
+        faceDetected = Value(faceDetected);
+  static Insertable<MyMediaContentData> custom({
+    Expression<int>? contentIndex,
+    Expression<String>? uuidContentId,
+    Expression<bool>? faceDetected,
+    Expression<String>? moderationState,
+    Expression<int>? contentModerationRejectedCategory,
+    Expression<String>? contentModerationRejectedDetails,
+  }) {
+    return RawValuesInsertable({
+      if (contentIndex != null) 'content_index': contentIndex,
+      if (uuidContentId != null) 'uuid_content_id': uuidContentId,
+      if (faceDetected != null) 'face_detected': faceDetected,
+      if (moderationState != null) 'moderation_state': moderationState,
+      if (contentModerationRejectedCategory != null)
+        'content_moderation_rejected_category':
+            contentModerationRejectedCategory,
+      if (contentModerationRejectedDetails != null)
+        'content_moderation_rejected_details': contentModerationRejectedDetails,
+    });
+  }
+
+  MyMediaContentCompanion copyWith(
+      {Value<int>? contentIndex,
+      Value<ContentId>? uuidContentId,
+      Value<bool>? faceDetected,
+      Value<EnumString?>? moderationState,
+      Value<ProfileContentModerationRejectedReasonCategory?>?
+          contentModerationRejectedCategory,
+      Value<ProfileContentModerationRejectedReasonDetails?>?
+          contentModerationRejectedDetails}) {
+    return MyMediaContentCompanion(
+      contentIndex: contentIndex ?? this.contentIndex,
+      uuidContentId: uuidContentId ?? this.uuidContentId,
+      faceDetected: faceDetected ?? this.faceDetected,
+      moderationState: moderationState ?? this.moderationState,
+      contentModerationRejectedCategory: contentModerationRejectedCategory ??
+          this.contentModerationRejectedCategory,
+      contentModerationRejectedDetails: contentModerationRejectedDetails ??
+          this.contentModerationRejectedDetails,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (contentIndex.present) {
+      map['content_index'] = Variable<int>(contentIndex.value);
+    }
+    if (uuidContentId.present) {
+      map['uuid_content_id'] = Variable<String>($MyMediaContentTable
+          .$converteruuidContentId
+          .toSql(uuidContentId.value));
+    }
+    if (faceDetected.present) {
+      map['face_detected'] = Variable<bool>(faceDetected.value);
+    }
+    if (moderationState.present) {
+      map['moderation_state'] = Variable<String>($MyMediaContentTable
+          .$convertermoderationState
+          .toSql(moderationState.value));
+    }
+    if (contentModerationRejectedCategory.present) {
+      map['content_moderation_rejected_category'] = Variable<int>(
+          $MyMediaContentTable.$convertercontentModerationRejectedCategory
+              .toSql(contentModerationRejectedCategory.value));
+    }
+    if (contentModerationRejectedDetails.present) {
+      map['content_moderation_rejected_details'] = Variable<String>(
+          $MyMediaContentTable.$convertercontentModerationRejectedDetails
+              .toSql(contentModerationRejectedDetails.value));
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MyMediaContentCompanion(')
+          ..write('contentIndex: $contentIndex, ')
+          ..write('uuidContentId: $uuidContentId, ')
+          ..write('faceDetected: $faceDetected, ')
+          ..write('moderationState: $moderationState, ')
+          ..write(
+              'contentModerationRejectedCategory: $contentModerationRejectedCategory, ')
+          ..write(
+              'contentModerationRejectedDetails: $contentModerationRejectedDetails')
           ..write(')'))
         .toString();
   }
@@ -7119,6 +6921,9 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   _$AccountDatabase(QueryExecutor e) : super(e);
   late final $AccountTable account = $AccountTable(this);
   late final $ProfilesTable profiles = $ProfilesTable(this);
+  late final $PublicProfileContentTable publicProfileContent =
+      $PublicProfileContentTable(this);
+  late final $MyMediaContentTable myMediaContent = $MyMediaContentTable(this);
   late final $ProfileStatesTable profileStates = $ProfileStatesTable(this);
   late final $ConversationListTable conversationList =
       $ConversationListTable(this);
@@ -7146,6 +6951,10 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final DaoConversationList daoConversationList =
       DaoConversationList(this as AccountDatabase);
   late final DaoProfiles daoProfiles = DaoProfiles(this as AccountDatabase);
+  late final DaoPublicProfileContent daoPublicProfileContent =
+      DaoPublicProfileContent(this as AccountDatabase);
+  late final DaoMyMediaContent daoMyMediaContent =
+      DaoMyMediaContent(this as AccountDatabase);
   late final DaoProfileStates daoProfileStates =
       DaoProfileStates(this as AccountDatabase);
   late final DaoConversations daoConversations =
@@ -7157,6 +6966,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
         account,
         profiles,
+        publicProfileContent,
+        myMediaContent,
         profileStates,
         conversationList,
         messages,

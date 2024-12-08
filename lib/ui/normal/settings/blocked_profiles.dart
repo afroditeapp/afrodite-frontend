@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -15,7 +16,6 @@ import 'package:app/logic/settings/user_interface.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/list.dart';
-import 'package:app/ui_utils/profile_thumbnail_image.dart';
 
 var log = Logger("BlockedProfilesScreen");
 
@@ -111,7 +111,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
             name = profileEntry.profileTitle(
               context.read<UserInterfaceSettingsBloc>().state.showNonAcceptedProfileNames,
             );
-            imageWidget = ProfileThumbnailImage.fromProfileEntry(
+            imageWidget = ProfileThumbnailImageOrError.fromProfileEntry(
               entry: profileEntry,
               width: _IMG_SIZE,
               height: _IMG_SIZE,

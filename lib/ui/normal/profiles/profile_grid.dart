@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -25,7 +26,6 @@ import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/consts/size.dart';
 import 'package:app/ui_utils/list.dart';
-import 'package:app/ui_utils/profile_thumbnail_image.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -248,7 +248,7 @@ class _ProfileGridState extends State<ProfileGrid> {
                   builder: (context, child) {
                     final squareFactor = lerpDouble(1.0, 0.0, animation.value) ?? 0.0;
                     final radius = lerpDouble(PROFILE_PICTURE_BORDER_RADIUS, 0.0, animation.value) ?? 0.0;
-                    return ProfileThumbnailImage.fromProfileEntry(
+                    return ProfileThumbnailImageOrError.fromProfileEntry(
                       entry: item.profile,
                       squareFactor: squareFactor,
                       borderRadius: BorderRadius.all(Radius.circular(radius)),
@@ -367,7 +367,7 @@ Widget profileEntryWidgetStream(
     builder: (context, data) {
       final e = data.data ?? entry;
       final newLikeInfoReceivedTime = e.newLikeInfoReceivedTime;
-      return ProfileThumbnailImage.fromProfileEntry(
+      return ProfileThumbnailImageOrError.fromProfileEntry(
         entry: e,
         cacheSize: ImageCacheSize.sizeForGrid(),
         child: Stack(

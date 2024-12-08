@@ -4,9 +4,10 @@ import 'dart:math';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
-class ProfileEntry {
+class ProfileEntry implements PublicContentProvider {
   final AccountId uuid;
-  final ContentId imageUuid;
+  @override
+  final List<ContentIdAndAccepted> content;
   final double primaryContentGridCropSize;
   final double primaryContentGridCropX;
   final double primaryContentGridCropY;
@@ -24,17 +25,11 @@ class ProfileEntry {
   final List<ProfileAttributeValue> attributes;
   final ProfileVersion version;
   final ProfileContentVersion contentVersion;
-  final ContentId? content1;
-  final ContentId? content2;
-  final ContentId? content3;
-  final ContentId? content4;
-  final ContentId? content5;
-  final ContentId? content6;
   final UtcDateTime? newLikeInfoReceivedTime;
   ProfileEntry(
     {
       required this.uuid,
-      required this.imageUuid,
+      required this.content,
       required this.primaryContentGridCropSize,
       required this.primaryContentGridCropX,
       required this.primaryContentGridCropY,
@@ -48,39 +43,16 @@ class ProfileEntry {
       required this.version,
       required this.contentVersion,
       this.lastSeenTimeValue,
-      this.content1,
-      this.content2,
-      this.content3,
-      this.content4,
-      this.content5,
-      this.content6,
       this.newLikeInfoReceivedTime,
     }
   );
 
   List<ContentId> primaryImgAndPossibleOtherImgs() {
-    final List<ContentId> contentList = [imageUuid];
-    final c1 = content1;
-    if (c1 != null) {
-      contentList.add(c1);
-    }
-    final c2 = content2;
-    if (c2 != null) {
-      contentList.add(c2);
-    }
-    final c3 = content3;
-    if (c3 != null) {
-      contentList.add(c3);
-    }
-    final c4 = content4;
-    if (c4 != null) {
-      contentList.add(c4);
-    }
-    final c5 = content5;
-    if (c5 != null) {
-      contentList.add(c5);
-    }
-    return contentList;
+    return content.map((v) => v.id).toList();
+  }
+
+  ContentId? primaryImg() {
+    return content.firstOrNull?.id;
   }
 
   String profileTitle(bool showNonAcceptedProfileNames) {
@@ -112,33 +84,22 @@ class ProfileEntry {
   }
 }
 
-class MyProfileEntry extends ProfileEntry {
+class MyProfileEntry extends ProfileEntry implements MyContentProvider {
   final ProfileNameModerationState profileNameModerationState;
   final ProfileTextModerationState profileTextModerationState;
-  final bool faceDetectedContent0;
   final ProfileTextModerationRejectedReasonCategory? profileTextModerationRejectedCategory;
   final ProfileTextModerationRejectedReasonDetails? profileTextModerationRejectedDetails;
-  final bool? faceDetectedContent1;
-  final bool? faceDetectedContent2;
-  final bool? faceDetectedContent3;
-  final bool? faceDetectedContent4;
-  final bool? faceDetectedContent5;
-  final bool? faceDetectedContent6;
+
+  @override
+  final List<MyContent> myContent;
 
   MyProfileEntry({
     required this.profileNameModerationState,
     required this.profileTextModerationState,
-    required this.faceDetectedContent0,
+    required this.myContent,
     this.profileTextModerationRejectedCategory,
     this.profileTextModerationRejectedDetails,
-    this.faceDetectedContent1,
-    this.faceDetectedContent2,
-    this.faceDetectedContent3,
-    this.faceDetectedContent4,
-    this.faceDetectedContent5,
-    this.faceDetectedContent6,
     required super.uuid,
-    required super.imageUuid,
     required super.primaryContentGridCropSize,
     required super.primaryContentGridCropX,
     required super.primaryContentGridCropY,
@@ -152,14 +113,8 @@ class MyProfileEntry extends ProfileEntry {
     required super.version,
     required super.contentVersion,
     super.lastSeenTimeValue,
-    super.content1,
-    super.content2,
-    super.content3,
-    super.content4,
-    super.content5,
-    super.content6,
     super.newLikeInfoReceivedTime,
-  });
+  }) : super(content: myContent);
 }
 
 /// Local unique identifier for a profile entry.
@@ -192,6 +147,70 @@ class ProfileTitle {
       }
     }
   }
+}
+
+abstract class PublicContentProvider {
+  List<ContentIdAndAccepted> get content;
+}
+
+class ContentIdAndAccepted {
+  final ContentId id;
+  final bool accepted;
+  ContentIdAndAccepted(this.id, this.accepted);
+
+  @override
+  bool operator ==(Object other) {
+    return other is ContentIdAndAccepted && id == other.id && accepted == other.accepted;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    accepted,
+  );
+}
+
+abstract class MyContentProvider {
+  List<MyContent> get myContent;
+}
+
+class MyContent extends ContentIdAndAccepted {
+  final bool faceDetected;
+  final ContentModerationState state;
+  final ProfileContentModerationRejectedReasonCategory? rejectedCategory;
+  final ProfileContentModerationRejectedReasonDetails? rejectedDetails;
+  MyContent(
+    ContentId id,
+    this.faceDetected,
+    this.state,
+    this.rejectedCategory,
+    this.rejectedDetails,
+  ) : super(
+    id,
+    state == ContentModerationState.acceptedByBot || state == ContentModerationState.acceptedByHuman,
+  );
+
+  @override
+  bool operator ==(Object other) {
+    return other is MyContent &&
+      id == other.id &&
+      accepted == other.accepted &&
+      faceDetected == other.faceDetected &&
+      state == other.state &&
+      rejectedCategory == other.rejectedCategory &&
+      rejectedDetails == other.rejectedDetails;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    accepted,
+    state,
+    rejectedCategory,
+    rejectedDetails,
+  );
 }
 
 class NewMessageNotificationId {

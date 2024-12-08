@@ -48,24 +48,6 @@ class ProfileThumbnailImage extends StatefulWidget {
     accountId = img.accountId,
     contentId = img.contentId;
 
-  ProfileThumbnailImage.fromProfileEntry({
-    required ProfileEntry entry,
-    this.width,
-    this.height,
-    this.child,
-    this.squareFactor = 1.0,
-    this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
-    this.cacheSize = ImageCacheSize.maxQuality,
-    super.key,
-  }) :
-    accountId = entry.uuid,
-    contentId = entry.imageUuid,
-    cropResults = CropResults.fromValues(
-      entry.primaryContentGridCropSize,
-      entry.primaryContentGridCropX,
-      entry.primaryContentGridCropY,
-    );
-
   @override
   State<ProfileThumbnailImage> createState() => _ProfileThumbnailImageState();
 }

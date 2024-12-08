@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
@@ -8,22 +9,19 @@ import "package:app/data/image_cache.dart";
 import "package:app/data/login_repository.dart";
 
 import "package:app/data/media_repository.dart";
-import 'package:database/database.dart';
 import "package:app/database/account_database_manager.dart";
 import "package:app/model/freezed/logic/media/content.dart";
 
-
 final log = Logger("ContentBloc");
-
 
 sealed class ContentEvent {}
 
-class NewPublicContent extends ContentEvent {
-  final CurrentProfileContent? content;
-  NewPublicContent(this.content);
+class NewPrimaryContent extends ContentEvent {
+  final PrimaryProfileContent? content;
+  NewPrimaryContent(this.content);
 }
 class NewSecurityContent extends ContentEvent {
-  final ContentId? content;
+  final MyContent? content;
   NewSecurityContent(this.content);
 }
 class NewPrimaryImageDataAvailable extends ContentEvent {
@@ -38,14 +36,14 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> {
   final ImageCacheData cache = ImageCacheData.getInstance();
   final AccountId currentUser =  LoginRepository.getInstance().repositories.accountId;
 
-  StreamSubscription<CurrentProfileContent?>? _publicContentSubscription;
-  StreamSubscription<ContentId?>? _securityContentSubscription;
+  StreamSubscription<PrimaryProfileContent?>? _primaryContentSubscription;
+  StreamSubscription<MyContent?>? _securityContentSubscription;
   StreamSubscription<void>? _primaryImageDataAvailable;
 
   ContentBloc() : super(ContentData()) {
-    on<NewPublicContent>((data, emit) {
+    on<NewPrimaryContent>((data, emit) {
       emit(state.copyWith(
-        content: data.content,
+        primaryContent: data.content,
       ));
     });
     on<NewSecurityContent>((data, emit) {
@@ -59,8 +57,8 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> {
       ));
     });
 
-    _publicContentSubscription = db.accountStream((db) => db.daoCurrentContent.watchCurrentProfileContent()).listen((event) {
-      add(NewPublicContent(event));
+    _primaryContentSubscription = db.accountStream((db) => db.daoCurrentContent.watchPrimaryProfileContent()).listen((event) {
+      add(NewPrimaryContent(event));
     });
     _securityContentSubscription = db.accountStream((db) => db.daoCurrentContent.watchCurrentSecurityContent()).listen((event) {
       add(NewSecurityContent(event));
@@ -98,7 +96,7 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> {
 
   @override
   Future<void> close() async {
-    await _publicContentSubscription?.cancel();
+    await _primaryContentSubscription?.cancel();
     await _securityContentSubscription?.cancel();
     await _primaryImageDataAvailable?.cancel();
     await super.close();

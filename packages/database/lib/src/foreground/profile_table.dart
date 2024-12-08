@@ -1,8 +1,10 @@
 
 
 
+import 'package:async/async.dart' show StreamExtensions;
 import 'package:openapi/api.dart' show AccountId, ProfileContent;
 import 'package:openapi/api.dart' as api;
+import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 import 'account_database.dart';
 
@@ -16,13 +18,6 @@ class Profiles extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuidAccountId => text().map(const AccountIdConverter()).unique()();
 
-  /// Primary content ID for the profile.
-  TextColumn get uuidContentId0 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
-  TextColumn get uuidContentId1 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
-  TextColumn get uuidContentId2 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
-  TextColumn get uuidContentId3 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
-  TextColumn get uuidContentId4 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
-  TextColumn get uuidContentId5 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   TextColumn get profileContentVersion => text().map(const NullAwareTypeConverter.wrap(ProfileContentVersionConverter())).nullable()();
 
   TextColumn get profileName => text().nullable()();
@@ -50,12 +45,6 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
   Future<void> removeProfileData(AccountId accountId) async {
     await (update(profiles)..where((t) => t.uuidAccountId.equals(accountId.aid)))
       .write(const ProfilesCompanion(
-        uuidContentId0: Value(null),
-        uuidContentId1: Value(null),
-        uuidContentId2: Value(null),
-        uuidContentId3: Value(null),
-        uuidContentId4: Value(null),
-        uuidContentId5: Value(null),
         profileContentVersion: Value(null),
         profileName: Value(null),
         profileNameAccepted: Value(null),
@@ -138,37 +127,33 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
   Future<void> updateProfileContent(
     AccountId accountId,
     ProfileContent content,
-    api.ProfileContentVersion contentVersion
+    api.ProfileContentVersion contentVersion,
   ) async {
-    await into(profiles).insert(
-      ProfilesCompanion.insert(
-        uuidAccountId: accountId,
-        uuidContentId0: Value(content.c.getAtOrNull(0)?.cid),
-        uuidContentId1: Value(content.c.getAtOrNull(1)?.cid),
-        uuidContentId2: Value(content.c.getAtOrNull(2)?.cid),
-        uuidContentId3: Value(content.c.getAtOrNull(3)?.cid),
-        uuidContentId4: Value(content.c.getAtOrNull(4)?.cid),
-        uuidContentId5: Value(content.c.getAtOrNull(5)?.cid),
-        primaryContentGridCropSize: Value(content.gridCropSize),
-        primaryContentGridCropX: Value(content.gridCropX),
-        primaryContentGridCropY: Value(content.gridCropY),
-        profileContentVersion: Value(contentVersion),
-      ),
-      onConflict: DoUpdate((old) => ProfilesCompanion(
-        uuidContentId0: Value(content.c.getAtOrNull(0)?.cid),
-        uuidContentId1: Value(content.c.getAtOrNull(1)?.cid),
-        uuidContentId2: Value(content.c.getAtOrNull(2)?.cid),
-        uuidContentId3: Value(content.c.getAtOrNull(3)?.cid),
-        uuidContentId4: Value(content.c.getAtOrNull(4)?.cid),
-        uuidContentId5: Value(content.c.getAtOrNull(5)?.cid),
-        primaryContentGridCropSize: Value(content.gridCropSize),
-        primaryContentGridCropX: Value(content.gridCropX),
-        primaryContentGridCropY: Value(content.gridCropY),
-        profileContentVersion: Value(contentVersion),
-      ),
-        target: [profiles.uuidAccountId]
-      ),
-    );
+    await transaction(() async {
+      for (final (i, c) in content.c.indexed) {
+        await db.daoPublicProfileContent.updateProfileContent(accountId, i, c.cid, c.a);
+      }
+
+      await db.daoPublicProfileContent.removeContentStartingFrom(accountId, content.c.length);
+
+      await into(profiles).insert(
+        ProfilesCompanion.insert(
+          uuidAccountId: accountId,
+          primaryContentGridCropSize: Value(content.gridCropSize),
+          primaryContentGridCropX: Value(content.gridCropX),
+          primaryContentGridCropY: Value(content.gridCropY),
+          profileContentVersion: Value(contentVersion),
+        ),
+        onConflict: DoUpdate((old) => ProfilesCompanion(
+          primaryContentGridCropSize: Value(content.gridCropSize),
+          primaryContentGridCropX: Value(content.gridCropX),
+          primaryContentGridCropY: Value(content.gridCropY),
+          profileContentVersion: Value(contentVersion),
+        ),
+          target: [profiles.uuidAccountId]
+        ),
+      );
+    });
   }
 
   Future<ProfileEntry?> getProfileEntry(AccountId accountId) async {
@@ -177,23 +162,26 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     )
       .getSingleOrNull();
 
-    return _rowToProfileEntry(r);
+    final content = await db.daoPublicProfileContent.watchAllProfileContent(accountId).firstOrNull ?? [];
+
+    return _rowToProfileEntry(r, content);
   }
 
-  Stream<ProfileEntry?> watchProfileEntry(AccountId accountId) {
-    return (select(profiles)
-      ..where((t) => t.uuidAccountId.equals(accountId.aid))
-    )
-      .map((t) => _rowToProfileEntry(t))
-      .watchSingleOrNull();
-  }
+  Stream<ProfileEntry?> watchProfileEntry(AccountId accountId) =>
+    Rx.combineLatest2(
+      (select(profiles)
+        ..where((t) => t.uuidAccountId.equals(accountId.aid))
+      )
+        .watchSingleOrNull(),
+      db.daoPublicProfileContent.watchAllProfileContent(accountId),
+      (r, content) => _rowToProfileEntry(r, content),
+    );
 
-  ProfileEntry? _rowToProfileEntry(Profile? r) {
+  ProfileEntry? _rowToProfileEntry(Profile? r, List<ContentIdAndAccepted> content) {
     if (r == null) {
       return null;
     }
 
-    final content0 = r.uuidContentId0;
     final gridCropSize = r.primaryContentGridCropSize ?? 1.0;
     final gridCropX = r.primaryContentGridCropX ?? 0.0;
     final gridCropY = r.primaryContentGridCropY ?? 0.0;
@@ -208,7 +196,6 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     final contentVersion = r.profileContentVersion;
 
     if (
-      content0 != null &&
       profileName != null &&
       profileNameAccepted != null &&
       profileText != null &&
@@ -221,7 +208,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     ) {
       return ProfileEntry(
         uuid: r.uuidAccountId,
-        imageUuid: content0,
+        content: content,
         primaryContentGridCropSize: gridCropSize,
         primaryContentGridCropX: gridCropX,
         primaryContentGridCropY: gridCropY,
@@ -235,11 +222,6 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         unlimitedLikes: profileUnlimitedLikes,
         contentVersion: contentVersion,
         lastSeenTimeValue: r.profileLastSeenTimeValue,
-        content1: r.uuidContentId1,
-        content2: r.uuidContentId2,
-        content3: r.uuidContentId3,
-        content4: r.uuidContentId4,
-        content5: r.uuidContentId5,
         newLikeInfoReceivedTime: r.newLikeInfoReceivedTime,
       );
     } else {
@@ -266,7 +248,13 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     )
       .getSingleOrNull();
 
-    return _rowToProfileEntry(r);
+    if (r == null) {
+      return null;
+    }
+
+    final content = await db.daoPublicProfileContent.watchAllProfileContent(r.uuidAccountId).firstOrNull ?? [];
+
+    return _rowToProfileEntry(r, content);
   }
 
   Future<List<ProfileEntry>> convertToProfileEntries(List<AccountId> accounts) async {

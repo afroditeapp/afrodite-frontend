@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +21,6 @@ import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:app/ui_utils/app_bar/common_actions.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/list.dart';
-import 'package:app/ui_utils/profile_thumbnail_image.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 
 var log = Logger("ConversationPage");
@@ -98,7 +98,7 @@ class ConversationPageState extends State<ConversationPage> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      ProfileThumbnailImage.fromProfileEntry(
+                      ProfileThumbnailImageOrError.fromProfileEntry(
                         entry: widget.profileEntry,
                         width: 40,
                         height: 40,

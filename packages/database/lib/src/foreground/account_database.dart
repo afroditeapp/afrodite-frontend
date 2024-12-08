@@ -8,10 +8,13 @@ import 'package:database/src/foreground/account/dao_profile_initial_age_info.dar
 import 'package:database/src/foreground/account/dao_sync_versions.dart';
 import 'package:database/src/foreground/conversations_table.dart';
 import 'package:database/src/foreground/conversation_list_table.dart';
+import 'package:database/src/foreground/my_media_content_table.dart';
 import 'package:database/src/foreground/profile_states_table.dart';
 import 'package:database/src/foreground/profile_table.dart';
+import 'package:database/src/foreground/public_profile_content_table.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 import 'account/dao_current_content.dart';
 import 'account/dao_initial_sync.dart';
@@ -71,19 +74,6 @@ class Account extends Table {
 
   // DaoCurrentContent
 
-  TextColumn get uuidContentId0 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
-  TextColumn get uuidContentId1 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
-  TextColumn get uuidContentId2 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
-  TextColumn get uuidContentId3 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
-  TextColumn get uuidContentId4 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
-  TextColumn get uuidContentId5 => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
-  BoolColumn get faceDetectedContentId0 => boolean().nullable()();
-  BoolColumn get faceDetectedContentId1 => boolean().nullable()();
-  BoolColumn get faceDetectedContentId2 => boolean().nullable()();
-  BoolColumn get faceDetectedContentId3 => boolean().nullable()();
-  BoolColumn get faceDetectedContentId4 => boolean().nullable()();
-  BoolColumn get faceDetectedContentId5 => boolean().nullable()();
-  TextColumn get uuidSecurityContentId => text().map(const NullAwareTypeConverter.wrap(ContentIdConverter())).nullable()();
   RealColumn get primaryContentGridCropSize => real().nullable()();
   RealColumn get primaryContentGridCropX => real().nullable()();
   RealColumn get primaryContentGridCropY => real().nullable()();
@@ -154,6 +144,8 @@ class Account extends Table {
   tables: [
     Account,
     Profiles,
+    PublicProfileContent,
+    MyMediaContent,
     ProfileStates,
     ConversationList,
     Messages,
@@ -175,6 +167,8 @@ class Account extends Table {
     DaoMessages,
     DaoConversationList,
     DaoProfiles,
+    DaoPublicProfileContent,
+    DaoMyMediaContent,
     DaoProfileStates,
     DaoConversations,
   ],
@@ -320,89 +314,74 @@ class AccountDatabase extends _$AccountDatabase {
 
   /// Get ProileEntry for my profile
   Stream<MyProfileEntry?> getProfileEntryForMyProfile() =>
-    watchColumn((r) {
-      final id = r.uuidAccountId;
-      final profileName = r.profileName;
-      final profileNameAccepted = r.profileNameAccepted;
-      final profileNameModerationState = r.profileNameModerationState?.toProfileNameModerationState();
-      final profileText = r.profileText;
-      final profileTextAccepted = r.profileTextAccepted;
-      final profileTextModerationState = r.profileTextModerationState?.toProfileTextModerationState();
-      final profileTextModerationRejectedCategory = r.profileTextModerationRejectedCategory;
-      final profileTextModerationRejectedDetails = r.profileTextModerationRejectedDetails;
-      final profileAge = r.profileAge;
-      final profileAttributes = r.jsonProfileAttributes?.toProfileAttributes();
-      final profileVersion = r.profileVersion;
-      final profileContentVersion = r.profileContentVersion;
-      final profileUnlimitedLikes = r.profileUnlimitedLikes;
+    Rx.combineLatest2(
+      watchColumn((r) => r),
+      daoMyMediaContent.watchAllProfileContent(),
+      (r, content) => toMyProfileEntry(r, content),
+    );
 
-      var content0 = r.uuidContentId0;
-      var content1 = r.uuidContentId1;
-      var content2 = r.uuidContentId2;
-      var content3 = r.uuidContentId3;
-      var content4 = r.uuidContentId4;
-      var content5 = r.uuidContentId5;
-      var faceDetectedContent0 = r.faceDetectedContentId0;
-      var faceDetectedContent1 = r.faceDetectedContentId1;
-      var faceDetectedContent2 = r.faceDetectedContentId2;
-      var faceDetectedContent3 = r.faceDetectedContentId3;
-      var faceDetectedContent4 = r.faceDetectedContentId4;
-      var faceDetectedContent5 = r.faceDetectedContentId5;
-      var gridCropSize = r.primaryContentGridCropSize ?? 1.0;
-      var gridCropX = r.primaryContentGridCropX ?? 0.0;
-      var gridCropY = r.primaryContentGridCropY ?? 0.0;
+  MyProfileEntry? toMyProfileEntry(AccountData? r, List<MyContent> content) {
+    if (r == null) {
+      return null;
+    }
 
-      if (
-        id != null &&
-        content0 != null &&
-        faceDetectedContent0 != null &&
-        profileName != null &&
-        profileNameAccepted != null &&
-        profileNameModerationState != null &&
-        profileText != null &&
-        profileTextAccepted != null &&
-        profileTextModerationState != null &&
-        profileAge != null &&
-        profileAttributes != null &&
-        profileVersion != null &&
-        profileContentVersion != null &&
-        profileUnlimitedLikes != null
-      ) {
-        return MyProfileEntry(
-          uuid: id,
-          imageUuid: content0,
-          faceDetectedContent0: faceDetectedContent0,
-          primaryContentGridCropSize: gridCropSize,
-          primaryContentGridCropX: gridCropX,
-          primaryContentGridCropY: gridCropY,
-          name: profileName,
-          nameAccepted: profileNameAccepted,
-          profileNameModerationState: profileNameModerationState,
-          profileText: profileText,
-          profileTextAccepted: profileTextAccepted,
-          profileTextModerationState: profileTextModerationState,
-          profileTextModerationRejectedCategory: profileTextModerationRejectedCategory,
-          profileTextModerationRejectedDetails: profileTextModerationRejectedDetails,
-          age: profileAge,
-          unlimitedLikes: profileUnlimitedLikes,
-          attributes: profileAttributes,
-          version: profileVersion,
-          contentVersion: profileContentVersion,
-          content1: content1,
-          content2: content2,
-          content3: content3,
-          content4: content4,
-          content5: content5,
-          faceDetectedContent1: faceDetectedContent1,
-          faceDetectedContent2: faceDetectedContent2,
-          faceDetectedContent3: faceDetectedContent3,
-          faceDetectedContent4: faceDetectedContent4,
-          faceDetectedContent5: faceDetectedContent5,
-        );
-      } else {
-        return null;
-      }
-    });
+    final id = r.uuidAccountId;
+    final profileName = r.profileName;
+    final profileNameAccepted = r.profileNameAccepted;
+    final profileNameModerationState = r.profileNameModerationState?.toProfileNameModerationState();
+    final profileText = r.profileText;
+    final profileTextAccepted = r.profileTextAccepted;
+    final profileTextModerationState = r.profileTextModerationState?.toProfileTextModerationState();
+    final profileTextModerationRejectedCategory = r.profileTextModerationRejectedCategory;
+    final profileTextModerationRejectedDetails = r.profileTextModerationRejectedDetails;
+    final profileAge = r.profileAge;
+    final profileAttributes = r.jsonProfileAttributes?.toProfileAttributes();
+    final profileVersion = r.profileVersion;
+    final profileContentVersion = r.profileContentVersion;
+    final profileUnlimitedLikes = r.profileUnlimitedLikes;
+
+    final gridCropSize = r.primaryContentGridCropSize ?? 1.0;
+    final gridCropX = r.primaryContentGridCropX ?? 0.0;
+    final gridCropY = r.primaryContentGridCropY ?? 0.0;
+
+    if (
+      id != null &&
+      profileName != null &&
+      profileNameAccepted != null &&
+      profileNameModerationState != null &&
+      profileText != null &&
+      profileTextAccepted != null &&
+      profileTextModerationState != null &&
+      profileAge != null &&
+      profileAttributes != null &&
+      profileVersion != null &&
+      profileContentVersion != null &&
+      profileUnlimitedLikes != null
+    ) {
+      return MyProfileEntry(
+        uuid: id,
+        myContent: content,
+        primaryContentGridCropSize: gridCropSize,
+        primaryContentGridCropX: gridCropX,
+        primaryContentGridCropY: gridCropY,
+        name: profileName,
+        nameAccepted: profileNameAccepted,
+        profileNameModerationState: profileNameModerationState,
+        profileText: profileText,
+        profileTextAccepted: profileTextAccepted,
+        profileTextModerationState: profileTextModerationState,
+        profileTextModerationRejectedCategory: profileTextModerationRejectedCategory,
+        profileTextModerationRejectedDetails: profileTextModerationRejectedDetails,
+        age: profileAge,
+        unlimitedLikes: profileUnlimitedLikes,
+        attributes: profileAttributes,
+        version: profileVersion,
+        contentVersion: profileContentVersion,
+      );
+    } else {
+      return null;
+    }
+  }
 }
 
 

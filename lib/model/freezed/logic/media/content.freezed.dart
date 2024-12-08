@@ -21,23 +21,23 @@ final _privateConstructorErrorContentData = UnsupportedError(
 
 /// @nodoc
 mixin _$ContentData {
-  CurrentProfileContent? get content => throw _privateConstructorErrorContentData;
-  ContentId? get securityContent => throw _privateConstructorErrorContentData;
+  PrimaryProfileContent? get primaryContent => throw _privateConstructorErrorContentData;
   bool get primaryImageDataAvailable => throw _privateConstructorErrorContentData;
+  MyContent? get securityContent => throw _privateConstructorErrorContentData;
 
   ContentData copyWith({
-    CurrentProfileContent? content,
-    ContentId? securityContent,
+    PrimaryProfileContent? primaryContent,
     bool? primaryImageDataAvailable,
+    MyContent? securityContent,
   }) => throw _privateConstructorErrorContentData;
 }
 
 /// @nodoc
 abstract class _ContentData extends ContentData {
   factory _ContentData({
-    CurrentProfileContent? content,
-    ContentId? securityContent,
+    PrimaryProfileContent? primaryContent,
     bool primaryImageDataAvailable,
+    MyContent? securityContent,
   }) = _$ContentDataImpl;
   const _ContentData._() : super._();
 }
@@ -47,21 +47,21 @@ class _$ContentDataImpl extends _ContentData {
   static const bool _primaryImageDataAvailableDefaultValue = false;
   
   _$ContentDataImpl({
-    this.content,
-    this.securityContent,
+    this.primaryContent,
     this.primaryImageDataAvailable = _primaryImageDataAvailableDefaultValue,
+    this.securityContent,
   }) : super._();
 
   @override
-  final CurrentProfileContent? content;
-  @override
-  final ContentId? securityContent;
+  final PrimaryProfileContent? primaryContent;
   @override
   final bool primaryImageDataAvailable;
+  @override
+  final MyContent? securityContent;
 
   @override
   String toString() {
-    return 'ContentData(content: $content, securityContent: $securityContent, primaryImageDataAvailable: $primaryImageDataAvailable)';
+    return 'ContentData(primaryContent: $primaryContent, primaryImageDataAvailable: $primaryImageDataAvailable, securityContent: $securityContent)';
   }
 
   @override
@@ -69,31 +69,31 @@ class _$ContentDataImpl extends _ContentData {
     return identical(this, other) ||
       (other.runtimeType == runtimeType &&
         other is _$ContentDataImpl &&
-        (identical(other.content, content) ||
-          other.content == content) &&
-        (identical(other.securityContent, securityContent) ||
-          other.securityContent == securityContent) &&
+        (identical(other.primaryContent, primaryContent) ||
+          other.primaryContent == primaryContent) &&
         (identical(other.primaryImageDataAvailable, primaryImageDataAvailable) ||
-          other.primaryImageDataAvailable == primaryImageDataAvailable)
+          other.primaryImageDataAvailable == primaryImageDataAvailable) &&
+        (identical(other.securityContent, securityContent) ||
+          other.securityContent == securityContent)
     );
   }
 
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    content,
-    securityContent,
+    primaryContent,
     primaryImageDataAvailable,
+    securityContent,
   );
 
   @override
   ContentData copyWith({
-    Object? content = _detectDefaultValueInCopyWith,
-    Object? securityContent = _detectDefaultValueInCopyWith,
+    Object? primaryContent = _detectDefaultValueInCopyWith,
     Object? primaryImageDataAvailable,
+    Object? securityContent = _detectDefaultValueInCopyWith,
   }) => _$ContentDataImpl(
-    content: (content == _detectDefaultValueInCopyWith ? this.content : content) as CurrentProfileContent?,
-    securityContent: (securityContent == _detectDefaultValueInCopyWith ? this.securityContent : securityContent) as ContentId?,
+    primaryContent: (primaryContent == _detectDefaultValueInCopyWith ? this.primaryContent : primaryContent) as PrimaryProfileContent?,
     primaryImageDataAvailable: (primaryImageDataAvailable ?? this.primaryImageDataAvailable) as bool,
+    securityContent: (securityContent == _detectDefaultValueInCopyWith ? this.securityContent : securityContent) as MyContent?,
   );
 }
