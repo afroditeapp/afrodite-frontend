@@ -48,17 +48,18 @@ class $AccountBackgroundTable extends AccountBackground
           defaultConstraints: GeneratedColumn.constraintIsAlways(
               'CHECK ("local_notification_setting_likes" IN (0, 1))'));
   static const VerificationMeta
-      _localNotificationSettingModerationRequestStatusMeta =
-      const VerificationMeta('localNotificationSettingModerationRequestStatus');
+      _localNotificationSettingInitialContentModerationMeta =
+      const VerificationMeta(
+          'localNotificationSettingInitialContentModeration');
   @override
   late final GeneratedColumn<
-      bool> localNotificationSettingModerationRequestStatus = GeneratedColumn<
-          bool>(
-      'local_notification_setting_moderation_request_status', aliasedName, true,
+      bool> localNotificationSettingInitialContentModeration = GeneratedColumn<
+          bool>('local_notification_setting_initial_content_moderation',
+      aliasedName, true,
       type: DriftSqlType.bool,
       requiredDuringInsert: false,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("local_notification_setting_moderation_request_status" IN (0, 1))'));
+          'CHECK ("local_notification_setting_initial_content_moderation" IN (0, 1))'));
   static const VerificationMeta _localNotificationSettingNewsItemAvailableMeta =
       const VerificationMeta('localNotificationSettingNewsItemAvailable');
   @override
@@ -88,7 +89,7 @@ class $AccountBackgroundTable extends AccountBackground
         uuidAccountId,
         localNotificationSettingMessages,
         localNotificationSettingLikes,
-        localNotificationSettingModerationRequestStatus,
+        localNotificationSettingInitialContentModeration,
         localNotificationSettingNewsItemAvailable,
         userInterfaceSettingShowNonAcceptedProfileNames
       ];
@@ -122,12 +123,14 @@ class $AccountBackgroundTable extends AccountBackground
               _localNotificationSettingLikesMeta));
     }
     if (data
-        .containsKey('local_notification_setting_moderation_request_status')) {
+        .containsKey('local_notification_setting_initial_content_moderation')) {
       context.handle(
-          _localNotificationSettingModerationRequestStatusMeta,
-          localNotificationSettingModerationRequestStatus.isAcceptableOrUnknown(
-              data['local_notification_setting_moderation_request_status']!,
-              _localNotificationSettingModerationRequestStatusMeta));
+          _localNotificationSettingInitialContentModerationMeta,
+          localNotificationSettingInitialContentModeration
+              .isAcceptableOrUnknown(
+                  data[
+                      'local_notification_setting_initial_content_moderation']!,
+                  _localNotificationSettingInitialContentModerationMeta));
     }
     if (data.containsKey('local_notification_setting_news_item_available')) {
       context.handle(
@@ -164,11 +167,11 @@ class $AccountBackgroundTable extends AccountBackground
       localNotificationSettingLikes: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
           data['${effectivePrefix}local_notification_setting_likes']),
-      localNotificationSettingModerationRequestStatus:
+      localNotificationSettingInitialContentModeration:
           attachedDatabase.typeMapping.read(
               DriftSqlType.bool,
               data[
-                  '${effectivePrefix}local_notification_setting_moderation_request_status']),
+                  '${effectivePrefix}local_notification_setting_initial_content_moderation']),
       localNotificationSettingNewsItemAvailable: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
           data[
@@ -196,7 +199,7 @@ class AccountBackgroundData extends DataClass
   final AccountId? uuidAccountId;
   final bool? localNotificationSettingMessages;
   final bool? localNotificationSettingLikes;
-  final bool? localNotificationSettingModerationRequestStatus;
+  final bool? localNotificationSettingInitialContentModeration;
   final bool? localNotificationSettingNewsItemAvailable;
   final bool? userInterfaceSettingShowNonAcceptedProfileNames;
   const AccountBackgroundData(
@@ -204,7 +207,7 @@ class AccountBackgroundData extends DataClass
       this.uuidAccountId,
       this.localNotificationSettingMessages,
       this.localNotificationSettingLikes,
-      this.localNotificationSettingModerationRequestStatus,
+      this.localNotificationSettingInitialContentModeration,
       this.localNotificationSettingNewsItemAvailable,
       this.userInterfaceSettingShowNonAcceptedProfileNames});
   @override
@@ -224,9 +227,9 @@ class AccountBackgroundData extends DataClass
           Variable<bool>(localNotificationSettingLikes);
     }
     if (!nullToAbsent ||
-        localNotificationSettingModerationRequestStatus != null) {
-      map['local_notification_setting_moderation_request_status'] =
-          Variable<bool>(localNotificationSettingModerationRequestStatus);
+        localNotificationSettingInitialContentModeration != null) {
+      map['local_notification_setting_initial_content_moderation'] =
+          Variable<bool>(localNotificationSettingInitialContentModeration);
     }
     if (!nullToAbsent || localNotificationSettingNewsItemAvailable != null) {
       map['local_notification_setting_news_item_available'] =
@@ -254,11 +257,11 @@ class AccountBackgroundData extends DataClass
           localNotificationSettingLikes == null && nullToAbsent
               ? const Value.absent()
               : Value(localNotificationSettingLikes),
-      localNotificationSettingModerationRequestStatus:
-          localNotificationSettingModerationRequestStatus == null &&
+      localNotificationSettingInitialContentModeration:
+          localNotificationSettingInitialContentModeration == null &&
                   nullToAbsent
               ? const Value.absent()
-              : Value(localNotificationSettingModerationRequestStatus),
+              : Value(localNotificationSettingInitialContentModeration),
       localNotificationSettingNewsItemAvailable:
           localNotificationSettingNewsItemAvailable == null && nullToAbsent
               ? const Value.absent()
@@ -281,9 +284,9 @@ class AccountBackgroundData extends DataClass
           serializer.fromJson<bool?>(json['localNotificationSettingMessages']),
       localNotificationSettingLikes:
           serializer.fromJson<bool?>(json['localNotificationSettingLikes']),
-      localNotificationSettingModerationRequestStatus:
+      localNotificationSettingInitialContentModeration:
           serializer.fromJson<bool?>(
-              json['localNotificationSettingModerationRequestStatus']),
+              json['localNotificationSettingInitialContentModeration']),
       localNotificationSettingNewsItemAvailable: serializer
           .fromJson<bool?>(json['localNotificationSettingNewsItemAvailable']),
       userInterfaceSettingShowNonAcceptedProfileNames:
@@ -301,8 +304,8 @@ class AccountBackgroundData extends DataClass
           serializer.toJson<bool?>(localNotificationSettingMessages),
       'localNotificationSettingLikes':
           serializer.toJson<bool?>(localNotificationSettingLikes),
-      'localNotificationSettingModerationRequestStatus': serializer
-          .toJson<bool?>(localNotificationSettingModerationRequestStatus),
+      'localNotificationSettingInitialContentModeration': serializer
+          .toJson<bool?>(localNotificationSettingInitialContentModeration),
       'localNotificationSettingNewsItemAvailable':
           serializer.toJson<bool?>(localNotificationSettingNewsItemAvailable),
       'userInterfaceSettingShowNonAcceptedProfileNames': serializer
@@ -315,7 +318,7 @@ class AccountBackgroundData extends DataClass
           Value<AccountId?> uuidAccountId = const Value.absent(),
           Value<bool?> localNotificationSettingMessages = const Value.absent(),
           Value<bool?> localNotificationSettingLikes = const Value.absent(),
-          Value<bool?> localNotificationSettingModerationRequestStatus =
+          Value<bool?> localNotificationSettingInitialContentModeration =
               const Value.absent(),
           Value<bool?> localNotificationSettingNewsItemAvailable =
               const Value.absent(),
@@ -332,10 +335,10 @@ class AccountBackgroundData extends DataClass
         localNotificationSettingLikes: localNotificationSettingLikes.present
             ? localNotificationSettingLikes.value
             : this.localNotificationSettingLikes,
-        localNotificationSettingModerationRequestStatus:
-            localNotificationSettingModerationRequestStatus.present
-                ? localNotificationSettingModerationRequestStatus.value
-                : this.localNotificationSettingModerationRequestStatus,
+        localNotificationSettingInitialContentModeration:
+            localNotificationSettingInitialContentModeration.present
+                ? localNotificationSettingInitialContentModeration.value
+                : this.localNotificationSettingInitialContentModeration,
         localNotificationSettingNewsItemAvailable:
             localNotificationSettingNewsItemAvailable.present
                 ? localNotificationSettingNewsItemAvailable.value
@@ -358,10 +361,10 @@ class AccountBackgroundData extends DataClass
       localNotificationSettingLikes: data.localNotificationSettingLikes.present
           ? data.localNotificationSettingLikes.value
           : this.localNotificationSettingLikes,
-      localNotificationSettingModerationRequestStatus:
-          data.localNotificationSettingModerationRequestStatus.present
-              ? data.localNotificationSettingModerationRequestStatus.value
-              : this.localNotificationSettingModerationRequestStatus,
+      localNotificationSettingInitialContentModeration:
+          data.localNotificationSettingInitialContentModeration.present
+              ? data.localNotificationSettingInitialContentModeration.value
+              : this.localNotificationSettingInitialContentModeration,
       localNotificationSettingNewsItemAvailable:
           data.localNotificationSettingNewsItemAvailable.present
               ? data.localNotificationSettingNewsItemAvailable.value
@@ -383,7 +386,7 @@ class AccountBackgroundData extends DataClass
           ..write(
               'localNotificationSettingLikes: $localNotificationSettingLikes, ')
           ..write(
-              'localNotificationSettingModerationRequestStatus: $localNotificationSettingModerationRequestStatus, ')
+              'localNotificationSettingInitialContentModeration: $localNotificationSettingInitialContentModeration, ')
           ..write(
               'localNotificationSettingNewsItemAvailable: $localNotificationSettingNewsItemAvailable, ')
           ..write(
@@ -398,7 +401,7 @@ class AccountBackgroundData extends DataClass
       uuidAccountId,
       localNotificationSettingMessages,
       localNotificationSettingLikes,
-      localNotificationSettingModerationRequestStatus,
+      localNotificationSettingInitialContentModeration,
       localNotificationSettingNewsItemAvailable,
       userInterfaceSettingShowNonAcceptedProfileNames);
   @override
@@ -411,8 +414,8 @@ class AccountBackgroundData extends DataClass
               this.localNotificationSettingMessages &&
           other.localNotificationSettingLikes ==
               this.localNotificationSettingLikes &&
-          other.localNotificationSettingModerationRequestStatus ==
-              this.localNotificationSettingModerationRequestStatus &&
+          other.localNotificationSettingInitialContentModeration ==
+              this.localNotificationSettingInitialContentModeration &&
           other.localNotificationSettingNewsItemAvailable ==
               this.localNotificationSettingNewsItemAvailable &&
           other.userInterfaceSettingShowNonAcceptedProfileNames ==
@@ -425,7 +428,7 @@ class AccountBackgroundCompanion
   final Value<AccountId?> uuidAccountId;
   final Value<bool?> localNotificationSettingMessages;
   final Value<bool?> localNotificationSettingLikes;
-  final Value<bool?> localNotificationSettingModerationRequestStatus;
+  final Value<bool?> localNotificationSettingInitialContentModeration;
   final Value<bool?> localNotificationSettingNewsItemAvailable;
   final Value<bool?> userInterfaceSettingShowNonAcceptedProfileNames;
   const AccountBackgroundCompanion({
@@ -433,7 +436,8 @@ class AccountBackgroundCompanion
     this.uuidAccountId = const Value.absent(),
     this.localNotificationSettingMessages = const Value.absent(),
     this.localNotificationSettingLikes = const Value.absent(),
-    this.localNotificationSettingModerationRequestStatus = const Value.absent(),
+    this.localNotificationSettingInitialContentModeration =
+        const Value.absent(),
     this.localNotificationSettingNewsItemAvailable = const Value.absent(),
     this.userInterfaceSettingShowNonAcceptedProfileNames = const Value.absent(),
   });
@@ -442,7 +446,8 @@ class AccountBackgroundCompanion
     this.uuidAccountId = const Value.absent(),
     this.localNotificationSettingMessages = const Value.absent(),
     this.localNotificationSettingLikes = const Value.absent(),
-    this.localNotificationSettingModerationRequestStatus = const Value.absent(),
+    this.localNotificationSettingInitialContentModeration =
+        const Value.absent(),
     this.localNotificationSettingNewsItemAvailable = const Value.absent(),
     this.userInterfaceSettingShowNonAcceptedProfileNames = const Value.absent(),
   });
@@ -451,7 +456,7 @@ class AccountBackgroundCompanion
     Expression<String>? uuidAccountId,
     Expression<bool>? localNotificationSettingMessages,
     Expression<bool>? localNotificationSettingLikes,
-    Expression<bool>? localNotificationSettingModerationRequestStatus,
+    Expression<bool>? localNotificationSettingInitialContentModeration,
     Expression<bool>? localNotificationSettingNewsItemAvailable,
     Expression<bool>? userInterfaceSettingShowNonAcceptedProfileNames,
   }) {
@@ -462,9 +467,9 @@ class AccountBackgroundCompanion
         'local_notification_setting_messages': localNotificationSettingMessages,
       if (localNotificationSettingLikes != null)
         'local_notification_setting_likes': localNotificationSettingLikes,
-      if (localNotificationSettingModerationRequestStatus != null)
-        'local_notification_setting_moderation_request_status':
-            localNotificationSettingModerationRequestStatus,
+      if (localNotificationSettingInitialContentModeration != null)
+        'local_notification_setting_initial_content_moderation':
+            localNotificationSettingInitialContentModeration,
       if (localNotificationSettingNewsItemAvailable != null)
         'local_notification_setting_news_item_available':
             localNotificationSettingNewsItemAvailable,
@@ -479,7 +484,7 @@ class AccountBackgroundCompanion
       Value<AccountId?>? uuidAccountId,
       Value<bool?>? localNotificationSettingMessages,
       Value<bool?>? localNotificationSettingLikes,
-      Value<bool?>? localNotificationSettingModerationRequestStatus,
+      Value<bool?>? localNotificationSettingInitialContentModeration,
       Value<bool?>? localNotificationSettingNewsItemAvailable,
       Value<bool?>? userInterfaceSettingShowNonAcceptedProfileNames}) {
     return AccountBackgroundCompanion(
@@ -489,9 +494,9 @@ class AccountBackgroundCompanion
           this.localNotificationSettingMessages,
       localNotificationSettingLikes:
           localNotificationSettingLikes ?? this.localNotificationSettingLikes,
-      localNotificationSettingModerationRequestStatus:
-          localNotificationSettingModerationRequestStatus ??
-              this.localNotificationSettingModerationRequestStatus,
+      localNotificationSettingInitialContentModeration:
+          localNotificationSettingInitialContentModeration ??
+              this.localNotificationSettingInitialContentModeration,
       localNotificationSettingNewsItemAvailable:
           localNotificationSettingNewsItemAvailable ??
               this.localNotificationSettingNewsItemAvailable,
@@ -520,9 +525,10 @@ class AccountBackgroundCompanion
       map['local_notification_setting_likes'] =
           Variable<bool>(localNotificationSettingLikes.value);
     }
-    if (localNotificationSettingModerationRequestStatus.present) {
-      map['local_notification_setting_moderation_request_status'] =
-          Variable<bool>(localNotificationSettingModerationRequestStatus.value);
+    if (localNotificationSettingInitialContentModeration.present) {
+      map['local_notification_setting_initial_content_moderation'] =
+          Variable<bool>(
+              localNotificationSettingInitialContentModeration.value);
     }
     if (localNotificationSettingNewsItemAvailable.present) {
       map['local_notification_setting_news_item_available'] =
@@ -545,7 +551,7 @@ class AccountBackgroundCompanion
           ..write(
               'localNotificationSettingLikes: $localNotificationSettingLikes, ')
           ..write(
-              'localNotificationSettingModerationRequestStatus: $localNotificationSettingModerationRequestStatus, ')
+              'localNotificationSettingInitialContentModeration: $localNotificationSettingInitialContentModeration, ')
           ..write(
               'localNotificationSettingNewsItemAvailable: $localNotificationSettingNewsItemAvailable, ')
           ..write(

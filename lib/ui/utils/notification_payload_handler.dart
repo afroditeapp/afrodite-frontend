@@ -20,7 +20,7 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/notification_payload_handler.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/likes.dart';
-import 'package:app/ui/normal/settings/media/current_moderation_request.dart';
+import 'package:app/ui/normal/settings/media/content_management.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 
@@ -150,10 +150,10 @@ Future<NewPageDetails?> handlePayload(
           child: NewsListScreenOpener(),
         ),
       );
-    case NavigateToModerationRequestStatus():
+    case NavigateToContentManagement():
       return NewPageDetails(
         const MaterialPage<void>(
-          child: CurrentModerationRequestScreenOpener(),
+          child: ContentManagementScreenOpener(),
         ),
       );
   }

@@ -41,15 +41,15 @@ class NotificationModerationRequestStatus extends AppSingletonNoInit {
     }
 
     final String title = switch (state) {
-      ModerationRequestStateSimple.accepted => R.strings.notification_moderation_request_status_accepted,
-      ModerationRequestStateSimple.rejected => R.strings.notification_moderation_request_status_rejected,
+      ModerationRequestStateSimple.accepted => R.strings.notification_initial_content_moderation_accepted,
+      ModerationRequestStateSimple.rejected => R.strings.notification_initial_content_moderation_rejected,
     };
 
     await notifications.sendNotification(
       id: notificationId,
       title: title,
-      category: const NotificationCategoryModerationRequestStatus(),
-      notificationPayload: NavigateToModerationRequestStatus(sessionId: await notifications.getSessionId()),
+      category: const NotificationCategoryInitialContentModeration(),
+      notificationPayload: NavigateToContentManagement(sessionId: await notifications.getSessionId()),
       accountBackgroundDb: accountBackgroundDb,
     );
   }

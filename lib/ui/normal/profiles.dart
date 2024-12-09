@@ -16,7 +16,6 @@ import 'package:app/model/freezed/logic/media/initial_content_moderation.dart';
 import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:app/ui/normal/profiles/filter_profiles.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
-import 'package:app/ui/normal/settings/media/current_moderation_request.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 
 import 'package:app/localizations.dart';

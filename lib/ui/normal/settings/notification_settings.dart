@@ -65,7 +65,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
           settingsList = [
             messagesSlider(context, state),
             likesSlider(context, state),
-            moderationRequestStateSlider(context, state),
+            initialContentModerationSlider(context, state),
           ];
         } else {
           settingsList = [
@@ -107,13 +107,13 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     );
   }
 
-  Widget moderationRequestStateSlider(BuildContext context, NotificationSettingsData state) {
+  Widget initialContentModerationSlider(BuildContext context, NotificationSettingsData state) {
     return categorySwitch(
-      title: context.strings.notification_category_moderation_request_status,
-      isEnabled: state.categoryEnabledModerationRequestStatus,
-      isEnabledFromSystemSettings: state.categorySystemEnabledModerationRequestStatus,
+      title: context.strings.notification_category_initial_content_moderation,
+      isEnabled: state.categoryEnabledInitialContentModeration,
+      isEnabledFromSystemSettings: state.categorySystemEnabledInitialContentModeration,
       onChanged: (value) {
-        context.read<NotificationSettingsBloc>().add(ToggleModerationRequestStatus());
+        context.read<NotificationSettingsBloc>().add(ToggleInitialContentModeration());
       },
     );
   }

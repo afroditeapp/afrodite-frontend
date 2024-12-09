@@ -28,7 +28,7 @@ class AccountBackground extends Table {
 
   BoolColumn get localNotificationSettingMessages => boolean().nullable()();
   BoolColumn get localNotificationSettingLikes => boolean().nullable()();
-  BoolColumn get localNotificationSettingModerationRequestStatus => boolean().nullable()();
+  BoolColumn get localNotificationSettingInitialContentModeration => boolean().nullable()();
   BoolColumn get localNotificationSettingNewsItemAvailable => boolean().nullable()();
 
   // DaoUserInterfaceSettings

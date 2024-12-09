@@ -1,3 +1,4 @@
+import 'package:app/logic/media/select_content.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +20,7 @@ import 'package:app/ui/normal/settings/admin.dart';
 import 'package:app/ui/normal/settings/data_settings.dart';
 import 'package:app/ui/normal/settings/debug.dart';
 import 'package:app/ui/normal/settings/general_settings.dart';
-import 'package:app/ui/normal/settings/media/current_moderation_request.dart';
+import 'package:app/ui/normal/settings/media/content_management.dart';
 import 'package:app/ui/normal/settings/my_profile.dart';
 import 'package:app/ui/normal/settings/news/news_list.dart';
 import 'package:app/ui/normal/settings/notification_settings.dart';
@@ -141,14 +142,13 @@ class _SettingsViewState extends State<SettingsView> {
               pageKey,
             );
           }),
-          // TODO(prod): Change to content management
-          // Setting.createSetting(Icons.image_rounded, context.strings.current_moderation_request_screen_title, () {
-          //     final currentModerationRequestBloc = context.read<CurrentModerationRequestBloc>();
-          //     MyNavigator.push(context, MaterialPage<void>(child:
-          //       CurrentModerationRequestScreen(currentModerationRequestBloc: currentModerationRequestBloc)
-          //     ));
-          //   }
-          // ),
+          Setting.createSetting(Icons.image_rounded, context.strings.content_management_screen_title, () {
+              final bloc = context.read<SelectContentBloc>();
+              MyNavigator.push(context, MaterialPage<void>(child:
+                ContentManagementScreen(selectContentBloc: bloc)
+              ));
+            }
+          ),
           Setting.createSetting(Icons.person, context.strings.account_settings_screen_title, () {
               final accountDetailsBloc = context.read<AccountDetailsBloc>();
               MyNavigator.push(context, MaterialPage<void>(child:

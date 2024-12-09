@@ -8,12 +8,21 @@ part of 'select_content.dart';
 // **************************************************************************
 
 /// @nodoc
+class _DetectDefaultValueInCopyWith {
+  const _DetectDefaultValueInCopyWith();
+}
+
+/// @nodoc
+const _detectDefaultValueInCopyWith = _DetectDefaultValueInCopyWith();
+
+/// @nodoc
 final _privateConstructorErrorSelectContentData = UnsupportedError(
     'Private constructor SelectContentData._() was called. Please call factory constructor instead.');
 
 /// @nodoc
 mixin _$SelectContentData {
   UnmodifiableList<MyContent> get availableContent => throw _privateConstructorErrorSelectContentData;
+  AccountContent? get accountContent => throw _privateConstructorErrorSelectContentData;
   int get maxContent => throw _privateConstructorErrorSelectContentData;
   bool get showAddNewContent => throw _privateConstructorErrorSelectContentData;
   bool get isLoading => throw _privateConstructorErrorSelectContentData;
@@ -21,6 +30,7 @@ mixin _$SelectContentData {
 
   SelectContentData copyWith({
     UnmodifiableList<MyContent>? availableContent,
+    AccountContent? accountContent,
     int? maxContent,
     bool? showAddNewContent,
     bool? isLoading,
@@ -32,6 +42,7 @@ mixin _$SelectContentData {
 abstract class _SelectContentData implements SelectContentData {
   factory _SelectContentData({
     UnmodifiableList<MyContent> availableContent,
+    AccountContent? accountContent,
     int maxContent,
     bool showAddNewContent,
     bool isLoading,
@@ -49,6 +60,7 @@ class _$SelectContentDataImpl implements _SelectContentData {
   
   _$SelectContentDataImpl({
     this.availableContent = _availableContentDefaultValue,
+    this.accountContent,
     this.maxContent = _maxContentDefaultValue,
     this.showAddNewContent = _showAddNewContentDefaultValue,
     this.isLoading = _isLoadingDefaultValue,
@@ -57,6 +69,8 @@ class _$SelectContentDataImpl implements _SelectContentData {
 
   @override
   final UnmodifiableList<MyContent> availableContent;
+  @override
+  final AccountContent? accountContent;
   @override
   final int maxContent;
   @override
@@ -68,7 +82,7 @@ class _$SelectContentDataImpl implements _SelectContentData {
 
   @override
   String toString() {
-    return 'SelectContentData(availableContent: $availableContent, maxContent: $maxContent, showAddNewContent: $showAddNewContent, isLoading: $isLoading, isError: $isError)';
+    return 'SelectContentData(availableContent: $availableContent, accountContent: $accountContent, maxContent: $maxContent, showAddNewContent: $showAddNewContent, isLoading: $isLoading, isError: $isError)';
   }
 
   @override
@@ -78,6 +92,8 @@ class _$SelectContentDataImpl implements _SelectContentData {
         other is _$SelectContentDataImpl &&
         (identical(other.availableContent, availableContent) ||
           other.availableContent == availableContent) &&
+        (identical(other.accountContent, accountContent) ||
+          other.accountContent == accountContent) &&
         (identical(other.maxContent, maxContent) ||
           other.maxContent == maxContent) &&
         (identical(other.showAddNewContent, showAddNewContent) ||
@@ -93,6 +109,7 @@ class _$SelectContentDataImpl implements _SelectContentData {
   int get hashCode => Object.hash(
     runtimeType,
     availableContent,
+    accountContent,
     maxContent,
     showAddNewContent,
     isLoading,
@@ -102,12 +119,14 @@ class _$SelectContentDataImpl implements _SelectContentData {
   @override
   SelectContentData copyWith({
     Object? availableContent,
+    Object? accountContent = _detectDefaultValueInCopyWith,
     Object? maxContent,
     Object? showAddNewContent,
     Object? isLoading,
     Object? isError,
   }) => _$SelectContentDataImpl(
     availableContent: (availableContent ?? this.availableContent) as UnmodifiableList<MyContent>,
+    accountContent: (accountContent == _detectDefaultValueInCopyWith ? this.accountContent : accountContent) as AccountContent?,
     maxContent: (maxContent ?? this.maxContent) as int,
     showAddNewContent: (showAddNewContent ?? this.showAddNewContent) as bool,
     isLoading: (isLoading ?? this.isLoading) as bool,

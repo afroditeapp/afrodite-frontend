@@ -2,6 +2,7 @@
 import "package:database/database.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
 import "package:app/utils/immutable_list.dart";
+import "package:openapi/api.dart";
 
 part 'select_content.freezed.dart';
 
@@ -9,6 +10,7 @@ part 'select_content.freezed.dart';
 class SelectContentData with _$SelectContentData {
   factory SelectContentData({
     @Default(UnmodifiableList<MyContent>.empty()) UnmodifiableList<MyContent> availableContent,
+    AccountContent? accountContent,
     @Default(0) int maxContent,
     @Default(false) bool showAddNewContent,
     @Default(false) bool isLoading,

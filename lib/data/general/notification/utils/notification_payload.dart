@@ -74,8 +74,8 @@ sealed class NotificationPayload extends Immutable {
         return NavigateToConversationList(sessionId: sessionId);
       case NotificationPayloadTypeString.stringNavigateToConversation:
         return NavigateToConversation.parseFromJsonObject(jsonObject, sessionId);
-      case NotificationPayloadTypeString.stringNavigateToModerationRequestStatus:
-        return NavigateToModerationRequestStatus(sessionId: sessionId);
+      case NotificationPayloadTypeString.stringNavigateToContentManagement:
+        return NavigateToContentManagement(sessionId: sessionId);
       default:
         log.error("Payload type is unknown");
         return null;
@@ -144,11 +144,11 @@ class NavigateToConversation extends NotificationPayload {
   };
 }
 
-class NavigateToModerationRequestStatus extends NotificationPayload {
-  const NavigateToModerationRequestStatus({
+class NavigateToContentManagement extends NotificationPayload {
+  const NavigateToContentManagement({
     required NotificationSessionId sessionId,
   }) : super(
-    payloadType: NotificationPayloadTypeString.navigateToModerationRequestStatus,
+    payloadType: NotificationPayloadTypeString.navigateToContentManagement,
     sessionId: sessionId,
   );
 }
@@ -158,7 +158,7 @@ enum NotificationPayloadTypeString {
   navigateToNews(value: stringNavigateToNews),
   navigateToConversation(value: stringNavigateToConversation),
   navigateToConversationList(value: stringNavigateToConversationList),
-  navigateToModerationRequestStatus(value: stringNavigateToModerationRequestStatus);
+  navigateToContentManagement(value: stringNavigateToContentManagement);
 
   final String value;
   const NotificationPayloadTypeString({
@@ -169,5 +169,5 @@ enum NotificationPayloadTypeString {
   static const String stringNavigateToNews = "navigate_to_news";
   static const String stringNavigateToConversation = "navigate_to_conversation";
   static const String stringNavigateToConversationList = "navigate_to_conversation_list";
-  static const String stringNavigateToModerationRequestStatus = "navigate_to_moderation_request_status";
+  static const String stringNavigateToContentManagement = "navigate_to_content_management";
 }

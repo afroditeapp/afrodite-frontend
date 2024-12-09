@@ -9,9 +9,9 @@ class NotificationSettingsData with _$NotificationSettingsData {
     @Default(false) bool areNotificationsEnabled,
     @Default(true) bool categoryEnabledMessages,
     @Default(true) bool categoryEnabledLikes,
-    @Default(true) bool categoryEnabledModerationRequestStatus,
+    @Default(true) bool categoryEnabledInitialContentModeration,
     @Default(true) bool categorySystemEnabledMessages,
     @Default(true) bool categorySystemEnabledLikes,
-    @Default(true) bool categorySystemEnabledModerationRequestStatus,
+    @Default(true) bool categorySystemEnabledInitialContentModeration,
   }) = _NotificationSettingsData;
 }

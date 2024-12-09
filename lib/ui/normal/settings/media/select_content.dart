@@ -1,5 +1,6 @@
 
 
+import 'package:app/data/login_repository.dart';
 import 'package:app/logic/media/image_processing.dart';
 import 'package:app/logic/media/new_moderation_request.dart';
 import 'package:app/ui/initial_setup/profile_pictures.dart';
@@ -52,26 +53,19 @@ class _SelectContentPageState extends State<SelectContentPage> {
       body: Column(
         children: [
           Expanded(
-            child: BlocBuilder<LoginBloc, LoginBlocData>(
-              builder: (context, lState) {
-                return BlocBuilder<SelectContentBloc, SelectContentData>(
-                  builder: (context, state) {
-                    final accountId = lState.accountId;
-                    if (state.isLoading) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (accountId == null) {
-                      return Center(child: Text(context.strings.generic_error));
-                    } else {
-                      return selectContentPage(
-                        context,
-                        accountId,
-                        state.availableContent,
-                        state.maxContent,
-                        state.showAddNewContent,
-                      );
-                    }
-                  }
-                );
+            child: BlocBuilder<SelectContentBloc, SelectContentData>(
+              builder: (context, state) {
+                if (state.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  return selectContentPage(
+                    context,
+                    LoginRepository.getInstance().repositories.accountId,
+                    state.availableContent,
+                    state.maxContent,
+                    state.showAddNewContent,
+                  );
+                }
               }
             ),
           ),

@@ -129,6 +129,56 @@
   "@chat_list_screen_unread_message": {
     "description": "Conversation status text for unread message"
   },
+  "content_management_screen_content_accepted": "Accepted",
+  "@content_management_screen_content_accepted": {
+    "description": "Text for accepted content"
+  },
+  "content_management_screen_content_bot_rejected": "Rejected by bot",
+  "@content_management_screen_content_bot_rejected": {
+    "description": "Text for bot rejected content"
+  },
+  "content_management_screen_content_deletion_allowed_wait_time": "Deletion possible starting at {p0}",
+  "@content_management_screen_content_deletion_allowed_wait_time": {
+    "description": "Text for content deletion allowed wait time",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "content_management_screen_content_human_rejected": "Rejected by human",
+  "@content_management_screen_content_human_rejected": {
+    "description": "Text for human rejected content"
+  },
+  "content_management_screen_content_profile_content": "Profile image {p0}",
+  "@content_management_screen_content_profile_content": {
+    "description": "Text for profile content",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "content_management_screen_content_security_content": "Security selfie",
+  "@content_management_screen_content_security_content": {
+    "description": "Text for security content"
+  },
+  "content_management_screen_content_waiting_bot_human_moderation": "Waiting bot or human moderation",
+  "@content_management_screen_content_waiting_bot_human_moderation": {
+    "description": "Text for content waiting bot or human moderation"
+  },
+  "content_management_screen_content_waiting_human_moderation": "Waiting human moderation",
+  "@content_management_screen_content_waiting_human_moderation": {
+    "description": "Text for content waiting human moderation"
+  },
+  "content_management_screen_no_request": "No images in moderation",
+  "@content_management_screen_no_request": {
+    "description": "Text displayed when no moderation request is found"
+  },
+  "content_management_screen_title": "Image management",
+  "@content_management_screen_title": {
+    "description": "Title for content management screen"
+  },
   "conversation_screen_chat_box_placeholder_text": "Type a message…",
   "@conversation_screen_chat_box_placeholder_text": {
     "description": "Message input text field placeholder text"
@@ -200,51 +250,6 @@
   "crop_image_screen_title": "Crop image",
   "@crop_image_screen_title": {
     "description": "Title for crop image screen"
-  },
-  "current_moderation_request_screen_delete_request_action": "Delete moderation request",
-  "@current_moderation_request_screen_delete_request_action": {
-    "description": "Text for delete moderation request action"
-  },
-  "current_moderation_request_screen_delete_request_dialog_title": "Delete moderation request?",
-  "@current_moderation_request_screen_delete_request_dialog_title": {
-    "description": "Dialog title for confirming current moderation request deleting"
-  },
-  "current_moderation_request_screen_moderation_queue_position": "Your position in moderation queue: {p0}",
-  "@current_moderation_request_screen_moderation_queue_position": {
-    "description": "Text for current moderation queue position",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      }
-    }
-  },
-  "current_moderation_request_screen_new_request_action": "Add new images",
-  "@current_moderation_request_screen_new_request_action": {
-    "description": "Text for new moderation request action when current request is moderated"
-  },
-  "current_moderation_request_screen_new_request_action_when_current_request_rejected": "Try again",
-  "@current_moderation_request_screen_new_request_action_when_current_request_rejected": {
-    "description": "Text for new moderation request action when current request is rejected"
-  },
-  "current_moderation_request_screen_no_request": "No images in moderation",
-  "@current_moderation_request_screen_no_request": {
-    "description": "Text displayed when no moderation request is found"
-  },
-  "current_moderation_request_screen_request_accepted": "All images accepted",
-  "@current_moderation_request_screen_request_accepted": {
-    "description": "Text for accepted moderation request"
-  },
-  "current_moderation_request_screen_request_rejected": "Some image was rejected",
-  "@current_moderation_request_screen_request_rejected": {
-    "description": "Text for rejected moderation request"
-  },
-  "current_moderation_request_screen_request_waiting": "Images are waiting moderation",
-  "@current_moderation_request_screen_request_waiting": {
-    "description": "Text for waiting moderation request"
-  },
-  "current_moderation_request_screen_title": "Image moderation status",
-  "@current_moderation_request_screen_title": {
-    "description": "Title for current moderation request screen"
   },
   "current_security_selfie_screen_title": "Security selfie",
   "@current_security_selfie_screen_title": {
@@ -373,6 +378,10 @@
   "generic_delete": "Delete",
   "@generic_delete": {
     "description": "Generic delete text"
+  },
+  "generic_delete_question": "Delete?",
+  "@generic_delete_question": {
+    "description": "Generic delete question"
   },
   "generic_details": "Details",
   "@generic_details": {
@@ -845,22 +854,6 @@
   "@moderation_state_waiting_human_moderation": {
     "description": "Moderation state waiting human moderation"
   },
-  "new_moderation_request_screen_face_detected": "Face detected",
-  "@new_moderation_request_screen_face_detected": {
-    "description": "Text for face detected images"
-  },
-  "new_moderation_request_screen_send_content_button": "Send to be moderated",
-  "@new_moderation_request_screen_send_content_button": {
-    "description": "Text for send images to be moderated button"
-  },
-  "new_moderation_request_screen_send_content_confirm_dialog_title": "Send to be moderated?",
-  "@new_moderation_request_screen_send_content_confirm_dialog_title": {
-    "description": "Dialog title for confirming send images to be moderated action"
-  },
-  "new_moderation_request_screen_title": "New moderation request",
-  "@new_moderation_request_screen_title": {
-    "description": "Title for new moderation request screen"
-  },
   "news_list_screen_create_new": "Create new?",
   "@news_list_screen_create_new": {
     "description": "Dialog title for create new news item confirmation dialog"
@@ -881,6 +874,10 @@
   "@news_list_screen_title": {
     "description": "Title for news list screen title"
   },
+  "notification_category_initial_content_moderation": "Initial image moderation status",
+  "@notification_category_initial_content_moderation": {
+    "description": "Title for notification category initial content moderation"
+  },
   "notification_category_likes": "Likes",
   "@notification_category_likes": {
     "description": "Title for notification category likes"
@@ -889,13 +886,17 @@
   "@notification_category_messages": {
     "description": "Title for notification category messages"
   },
-  "notification_category_moderation_request_status": "Image moderation status",
-  "@notification_category_moderation_request_status": {
-    "description": "Title for notification category image moderation status"
-  },
   "notification_category_news_item_available": "News",
   "@notification_category_news_item_available": {
     "description": "Title for notification category news item available"
+  },
+  "notification_initial_content_moderation_accepted": "Profile images accepted",
+  "@notification_initial_content_moderation_accepted": {
+    "description": "Title for initial content moderation notification when some content is accepted"
+  },
+  "notification_initial_content_moderation_rejected": "Some profile image was rejected",
+  "@notification_initial_content_moderation_rejected": {
+    "description": "Title for initial content moderation notification when some content is rejected"
   },
   "notification_like_received_multiple": "Likes received",
   "@notification_like_received_multiple": {
@@ -926,14 +927,6 @@
   "notification_message_received_single_generic": "New message received",
   "@notification_message_received_single_generic": {
     "description": "Title for message received when single message is received but there is no info who sent it"
-  },
-  "notification_moderation_request_status_accepted": "Image moderation accepted",
-  "@notification_moderation_request_status_accepted": {
-    "description": "Title for moderation request status notification when status is accepted"
-  },
-  "notification_moderation_request_status_rejected": "Image moderation rejected",
-  "@notification_moderation_request_status_rejected": {
-    "description": "Title for moderation request status notification when status is rejected"
   },
   "notification_news_item_available": "News available",
   "@notification_news_item_available": {
