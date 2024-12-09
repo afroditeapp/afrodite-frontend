@@ -36,6 +36,15 @@ class DaoLocalNotificationSettings extends DatabaseAccessor<AccountBackgroundDat
     );
   }
 
+  Future<void> updateNews(bool value) async {
+    await into(accountBackground).insertOnConflictUpdate(
+      AccountBackgroundCompanion.insert(
+        id: ACCOUNT_DB_DATA_ID,
+        localNotificationSettingNewsItemAvailable: Value(value),
+      ),
+    );
+  }
+
   Stream<bool?> watchMessages() =>
     watchColumn((r) => r.localNotificationSettingMessages);
   Stream<bool?> watchLikes() =>

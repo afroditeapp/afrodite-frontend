@@ -12,6 +12,7 @@ class ReloadNotificationsEnabledStatus extends NotificationSettingsEvent {}
 class ToggleMessages extends NotificationSettingsEvent {}
 class ToggleLikes extends NotificationSettingsEvent {}
 class ToggleInitialContentModeration extends NotificationSettingsEvent {}
+class ToggleNews extends NotificationSettingsEvent {}
 class NewValueMessages extends NotificationSettingsEvent {
   final bool value;
   NewValueMessages(this.value);
@@ -24,6 +25,10 @@ class NewValueInitialContentModeration extends NotificationSettingsEvent {
   final bool value;
   NewValueInitialContentModeration(this.value);
 }
+class NewValueNews extends NotificationSettingsEvent {
+  final bool value;
+  NewValueNews(this.value);
+}
 
 class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, NotificationSettingsData> {
   final db = LoginRepository.getInstance().repositories.accountBackgroundDb;
@@ -32,6 +37,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
   StreamSubscription<bool?>? _messagesSubscription;
   StreamSubscription<bool?>? _likesSubscription;
   StreamSubscription<bool?>? _initialContentModerationSubscription;
+  StreamSubscription<bool?>? _newsSubscription;
 
   NotificationSettingsBloc() : super(NotificationSettingsData()) {
     on<ReloadNotificationsEnabledStatus>((data, emit) async {
@@ -41,6 +47,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
         categorySystemEnabledLikes: !disabledChannelIds.contains(const NotificationCategoryLikes().id),
         categorySystemEnabledMessages: !disabledChannelIds.contains(const NotificationCategoryMessages().id),
         categorySystemEnabledInitialContentModeration: !disabledChannelIds.contains(const NotificationCategoryInitialContentModeration().id),
+        categorySystemEnabledNews: !disabledChannelIds.contains(const NotificationCategoryNewsItemAvailable().id),
       ));
     });
     on<ToggleMessages>((data, emit) async {
@@ -52,6 +59,9 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     on<ToggleInitialContentModeration>((data, emit) async {
       await db.accountAction((db) => db.daoLocalNotificationSettings.updateInitialContentModeration(!state.categoryEnabledInitialContentModeration));
     });
+    on<ToggleNews>((data, emit) async {
+      await db.accountAction((db) => db.daoLocalNotificationSettings.updateNews(!state.categoryEnabledNews));
+    });
     on<NewValueLikes>((data, emit) =>
       emit(state.copyWith(categoryEnabledLikes: data.value))
     );
@@ -60,6 +70,9 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     );
     on<NewValueInitialContentModeration>((data, emit) =>
       emit(state.copyWith(categoryEnabledInitialContentModeration: data.value))
+    );
+    on<NewValueNews>((data, emit) =>
+      emit(state.copyWith(categoryEnabledNews: data.value))
     );
 
     _messagesSubscription = db
@@ -77,6 +90,11 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
       .listen((state) {
         add(NewValueInitialContentModeration(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });
+    _newsSubscription = db
+      .accountStream((db) => db.daoLocalNotificationSettings.watchNewsItemAvailable())
+      .listen((state) {
+        add(NewValueNews(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
+      });
   }
 
   @override
@@ -84,6 +102,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     await _messagesSubscription?.cancel();
     await _likesSubscription?.cancel();
     await _initialContentModerationSubscription?.cancel();
+    await _newsSubscription?.cancel();
     await super.close();
   }
 }

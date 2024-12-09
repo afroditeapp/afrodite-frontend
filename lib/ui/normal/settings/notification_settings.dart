@@ -66,6 +66,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
             messagesSlider(context, state),
             likesSlider(context, state),
             initialContentModerationSlider(context, state),
+            newsSlider(context, state),
           ];
         } else {
           settingsList = [
@@ -114,6 +115,17 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
       isEnabledFromSystemSettings: state.categorySystemEnabledInitialContentModeration,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleInitialContentModeration());
+      },
+    );
+  }
+
+  Widget newsSlider(BuildContext context, NotificationSettingsData state) {
+    return categorySwitch(
+      title: context.strings.notification_category_news_item_available,
+      isEnabled: state.categoryEnabledNews,
+      isEnabledFromSystemSettings: state.categorySystemEnabledNews,
+      onChanged: (value) {
+        context.read<NotificationSettingsBloc>().add(ToggleNews());
       },
     );
   }
