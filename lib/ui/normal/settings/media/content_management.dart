@@ -8,7 +8,9 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/media/content.dart';
 import 'package:app/model/freezed/logic/media/select_content.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
+import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/image.dart';
+import 'package:app/ui_utils/moderation.dart';
 import 'package:app/utils/time.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
@@ -179,7 +181,8 @@ Widget buildAvailableImg(
               myProfile,
             ),
           )
-        )
+        ),
+        _rejectionDetailsInfo(context, content),
       ],
     ),
   );
@@ -210,7 +213,7 @@ Widget _statusInfo(
     stateTexts.add(moderationState);
   }
 
-  Widget deleteButton;
+  final Widget? deleteButton;
   final usageStart = content.usageStartTime;
   final usageEnd = content.usageEndTime;
   if (usageStart != null) {
@@ -223,7 +226,7 @@ Widget _statusInfo(
         stateTexts.add(context.strings.content_management_screen_content_profile_content(contentNumber.toString()));
       }
     }
-    deleteButton = const SizedBox.shrink();
+    deleteButton = null;
   } else if (usageEnd != null) {
     final currentTime = UtcDateTime.now();
     final deletionAllowed = UnixTime(ut: usageEnd.ut + unusedContentWaitSeconds).toUtcDateTime();
@@ -232,24 +235,41 @@ Widget _statusInfo(
     } else {
       final timeString = fullTimeString(deletionAllowed);
       stateTexts.add(context.strings.content_management_screen_content_deletion_allowed_wait_time(timeString));
-      deleteButton = const SizedBox.shrink();
+      deleteButton = null;
     }
   } else {
     deleteButton = _createDeleteButton(context, accountId, content.cid);
   }
 
   final String totalText = stateTexts.join(", ");
-
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
     mainAxisSize: MainAxisSize.min,
     children: [
       if (totalText.isNotEmpty) Text(totalText, textAlign: TextAlign.center),
-      if (totalText.isNotEmpty) const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-      deleteButton,
+      if (totalText.isNotEmpty && deleteButton != null) const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+      if (deleteButton != null) deleteButton,
     ],
   );
+}
+
+Widget _rejectionDetailsInfo(BuildContext context, ContentInfoDetailed content) {
+  String infoText = "";
+  infoText = addRejectedCategoryRow(context, infoText, content.rejectedReasonCategory?.value);
+  infoText = addRejectedDeteailsRow(context, infoText, content.rejectedReasonDetails?.value);
+  infoText = infoText.trim();
+
+  if (infoText.isNotEmpty) {
+    return IconButton(
+      onPressed: () {
+        showInfoDialog(context, infoText);
+      },
+      icon: const Icon(Icons.info),
+    );
+  } else {
+    return const SizedBox.shrink();
+  }
 }
 
 Widget _createDeleteButton(BuildContext context, AccountId accountId, ContentId content) {

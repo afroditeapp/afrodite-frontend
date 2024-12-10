@@ -1,6 +1,7 @@
 
 
 
+import 'package:app/ui_utils/moderation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -181,14 +182,8 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
                 if (stateText != null) {
                   infoText = "$infoText\n\n${context.strings.moderation_state(stateText)}";
                 }
-                final rejectedCategory = profile.profileTextModerationRejectedCategory;
-                if (rejectedCategory != null) {
-                  infoText = "$infoText\n\n${context.strings.moderation_rejected_category(rejectedCategory.value.toString())}";
-                }
-                final rejectedDetails = profile.profileTextModerationRejectedDetails;
-                if (rejectedDetails != null) {
-                  infoText = "$infoText\n\n${context.strings.moderation_rejected_details(rejectedDetails.value.toString())}";
-                }
+                infoText = addRejectedCategoryRow(context, infoText, profile.profileTextModerationRejectedCategory?.value);
+                infoText = addRejectedDeteailsRow(context, infoText, profile.profileTextModerationRejectedDetails?.value);
               }
               showInfoDialog(context, infoText);
             },
