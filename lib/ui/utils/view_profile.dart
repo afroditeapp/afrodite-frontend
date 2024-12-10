@@ -179,9 +179,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
                   ProfileTextModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
                   _ => null,
                 };
-                if (stateText != null) {
-                  infoText = "$infoText\n\n${context.strings.moderation_state(stateText)}";
-                }
+                infoText = addModerationStateRow(context, infoText, stateText);
                 infoText = addRejectedCategoryRow(context, infoText, profile.profileTextModerationRejectedCategory?.value);
                 infoText = addRejectedDeteailsRow(context, infoText, profile.profileTextModerationRejectedDetails?.value);
               }

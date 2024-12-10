@@ -8,6 +8,7 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/media/content.dart';
 import 'package:app/model/freezed/logic/media/select_content.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
+import 'package:app/ui_utils/api.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/moderation.dart';
@@ -197,19 +198,10 @@ Widget _statusInfo(
   ContentId securityContent,
   MyProfileEntry myProfile,
 ) {
-  final String moderationState = switch (content.state) {
-    ContentModerationState.inSlot => "",
-    ContentModerationState.waitingBotOrHumanModeration => context.strings.moderation_state_waiting_bot_or_human_moderation,
-    ContentModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
-    ContentModerationState.acceptedByBot ||
-    ContentModerationState.acceptedByHuman => context.strings.moderation_state_accepted,
-    ContentModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
-    ContentModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
-    _ => "",
-  };
+  final String? moderationState = content.state.toUiString(context);
 
   final List<String> stateTexts = [];
-  if (moderationState.isNotEmpty) {
+  if (moderationState != null) {
     stateTexts.add(moderationState);
   }
 

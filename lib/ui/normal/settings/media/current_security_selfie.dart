@@ -1,19 +1,18 @@
 
 
+import 'package:app/data/login_repository.dart';
+import 'package:app/ui_utils/api.dart';
+import 'package:app/ui_utils/moderation.dart';
+import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/login.dart';
 import 'package:app/logic/media/content.dart';
-import 'package:app/model/freezed/logic/login.dart';
 import 'package:app/model/freezed/logic/media/content.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/view_image_screen.dart';
-
-// TODO(prod): Security selfie screen says "Error" when initial modreation
-// is not done yet.
 
 class CurrentSecuritySelfie extends StatefulWidget {
   const CurrentSecuritySelfie({
@@ -26,42 +25,48 @@ class CurrentSecuritySelfie extends StatefulWidget {
 
 class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
 
+  final currentUser = LoginRepository.getInstance().repositories.accountId;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.strings.current_security_selfie_screen_title),
       ),
-      body: BlocBuilder<LoginBloc, LoginBlocData>(
-        builder: (context, lState) {
-          final accountId = lState.accountId;
-          if (accountId == null) {
-            return Center(child: Text(context.strings.generic_error));
-          }
-
-          return BlocBuilder<ContentBloc, ContentData>(
-            builder: (context, contentState) {
-              final securitySelfie = contentState.currentSecurityContent;
-              if (securitySelfie == null) {
-                return Center(child: Text(context.strings.generic_error));
-              }
-
-              return Column(
-                children: [
-                  const Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      securitySelfieWidget(accountId, securitySelfie),
-                    ],
-                  ),
-                  const Spacer(flex: 3),
-                ],
-              );
-            }
-          );
+      body: BlocBuilder<ContentBloc, ContentData>(
+        builder: (context, contentState) {
+          return content(context, contentState);
         }
-      )
+      ),
+    );
+  }
+
+  Widget content(BuildContext context, ContentData data) {
+    final securitySelfie = data.securityContent;
+    String infoText = "";
+    infoText = addModerationStateRow(context, infoText, securitySelfie?.state.toUiString(context));
+    infoText = addRejectedCategoryRow(context, infoText, securitySelfie?.rejectedCategory?.value);
+    infoText = addRejectedDeteailsRow(context, infoText, securitySelfie?.rejectedDetails?.value);
+    infoText = infoText.trim();
+
+    return SingleChildScrollView(
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Padding(padding: EdgeInsets.only(top: 8)),
+                if (securitySelfie == null) Text(context.strings.generic_empty),
+                if (securitySelfie != null) securitySelfieWidget(currentUser, securitySelfie.id),
+                const Padding(padding: EdgeInsets.only(top: 8)),
+                if (infoText.isNotEmpty) hPad(Text(infoText)),
+                const Padding(padding: EdgeInsets.only(top: 8)),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
