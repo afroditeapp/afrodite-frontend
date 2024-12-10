@@ -483,6 +483,7 @@ class AddPicture extends StatelessWidget {
     final selectedImg = await MyNavigator.push(context, MaterialPage<AccountImageId?>(child: SelectContentPage(
       selectContentBloc: selectContentBloc,
       newModerationRequestBloc: newModerationRequestBloc,
+      identifyFaceImages: imgIndex == 0,
     )));
     if (selectedImg != null) {
       bloc.add(AddProcessedImage(ProfileImage(selectedImg, null, selectedImg.faceDetected), imgIndex));

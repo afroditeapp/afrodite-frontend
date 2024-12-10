@@ -9,7 +9,7 @@ part 'select_content.freezed.dart';
 @freezed
 class SelectContentData with _$SelectContentData {
   factory SelectContentData({
-    @Default(UnmodifiableList<MyContent>.empty()) UnmodifiableList<MyContent> availableContent,
+    @Default(UnmodifiableList<ContentInfoDetailed>.empty()) UnmodifiableList<ContentInfoDetailed> availableContent,
     AccountContent? accountContent,
     @Default(0) int maxContent,
     @Default(false) bool showAddNewContent,

@@ -138,12 +138,9 @@ class MainStateUiLogic extends StatelessWidget {
           ),
           MainState.initialSetupComplete => MultiBlocProvider(
             providers: [
-              // Retry initial setup images
-              BlocProvider(create: (_) => InitialSetupBloc()),
-              BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
-
               // General
               BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
+              BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
               BlocProvider(create: (_) => NotificationPermissionBloc()),
               BlocProvider(create: (_) => NotificationPayloadHandlerBloc()),
               BlocProvider(create: (_) => ProfileAttributesBloc()),

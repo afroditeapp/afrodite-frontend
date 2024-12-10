@@ -227,6 +227,10 @@
   "@crop_image_screen_title": {
     "description": "Title for crop image screen"
   },
+  "current_security_selfie_screen_security_selfie_changed": "Security selfie changed",
+  "@current_security_selfie_screen_security_selfie_changed": {
+    "description": "Snackbar text displayed when security selfie is changed"
+  },
   "current_security_selfie_screen_title": "Security selfie",
   "@current_security_selfie_screen_title": {
     "description": "Current security selfie screen title"
@@ -366,6 +370,10 @@
   "generic_disabled": "Disabled",
   "@generic_disabled": {
     "description": "Generic disabled text"
+  },
+  "generic_edit": "Edit",
+  "@generic_edit": {
+    "description": "Generic edit text"
   },
   "generic_empty": "Empty",
   "@generic_empty": {
@@ -1202,8 +1210,8 @@
   "@search_settings_screen_title": {
     "description": "Title for search settings"
   },
-  "select_content_content_count": "Images {p0}/{p1}",
-  "@select_content_content_count": {
+  "select_content_screen_count": "Images {p0}/{p1}",
+  "@select_content_screen_count": {
     "description": "Content count text",
     "placeholders": {
       "p0": {
@@ -1213,6 +1221,10 @@
         "type": "String"
       }
     }
+  },
+  "select_content_screen_face_detected": "Face detected",
+  "@select_content_screen_face_detected": {
+    "description": "Face detected text"
   },
   "select_content_screen_title": "Select image",
   "@select_content_screen_title": {

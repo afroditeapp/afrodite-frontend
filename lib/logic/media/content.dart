@@ -1,5 +1,8 @@
 import "dart:async";
 
+import "package:app/localizations.dart";
+import "package:app/ui_utils/snack_bar.dart";
+import "package:app/utils.dart";
 import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
@@ -28,13 +31,18 @@ class NewPrimaryImageDataAvailable extends ContentEvent {
   final bool value;
   NewPrimaryImageDataAvailable(this.value);
 }
+class ChangeSecurityContent extends ContentEvent {
+  final ContentId content;
+  ChangeSecurityContent(this.content);
+}
 
-class ContentBloc extends Bloc<ContentEvent, ContentData> {
+class ContentBloc extends Bloc<ContentEvent, ContentData> with ActionRunner {
   final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
   final ServerConnectionManager connection = LoginRepository.getInstance().repositories.connectionManager;
   final ImageCacheData cache = ImageCacheData.getInstance();
   final AccountId currentUser =  LoginRepository.getInstance().repositories.accountId;
+  final ApiManager api = LoginRepository.getInstance().repositories.api;
 
   StreamSubscription<PrimaryProfileContent?>? _primaryContentSubscription;
   StreamSubscription<MyContent?>? _securityContentSubscription;
@@ -55,6 +63,17 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> {
       emit(state.copyWith(
         primaryImageDataAvailable: data.value,
       ));
+    });
+    on<ChangeSecurityContent>((data, emit) async {
+      await runOnce(() async {
+        final changeResult = await api.mediaAction((api) => api.putSecurityContentInfo(data.content));
+        final updateResult = await media.reloadMyMediaContent();
+        if (changeResult.isErr() || updateResult.isErr()) {
+          showSnackBar(R.strings.generic_error_occurred);
+        } else {
+          showSnackBar(R.strings.current_security_selfie_screen_security_selfie_changed);
+        }
+      });
     });
 
     _primaryContentSubscription = db.accountStream((db) => db.daoCurrentContent.watchPrimaryProfileContent()).listen((event) {

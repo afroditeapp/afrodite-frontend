@@ -2,7 +2,6 @@
 import "package:app/api/api_manager.dart";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/snack_bar.dart";
-import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:app/data/login_repository.dart";
@@ -58,16 +57,7 @@ class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with
       return;
     }
 
-    final allContentIterator = value.data.map((v) {
-      return MyContent(
-        v.cid,
-        v.fd,
-        v.state,
-        null,
-        null,
-      );
-    });
-    final allContentList = UnmodifiableList(allContentIterator);
+    final allContentList = UnmodifiableList(value.data);
 
     emit(state.copyWith(
       isLoading: false,

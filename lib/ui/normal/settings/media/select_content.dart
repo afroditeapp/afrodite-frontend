@@ -4,17 +4,16 @@ import 'package:app/data/login_repository.dart';
 import 'package:app/logic/media/image_processing.dart';
 import 'package:app/logic/media/new_moderation_request.dart';
 import 'package:app/ui/initial_setup/profile_pictures.dart';
+import 'package:app/ui/initial_setup/security_selfie.dart';
 import 'package:app/ui_utils/image_processing.dart';
+import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/immutable_list.dart';
-import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/login.dart';
 import 'package:app/logic/media/select_content.dart';
-import 'package:app/model/freezed/logic/login.dart';
 import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/model/freezed/logic/media/select_content.dart';
 import 'package:app/ui_utils/consts/padding.dart';
@@ -27,9 +26,13 @@ const SELECT_CONTENT_IMAGE_WIDTH = 150.0;
 class SelectContentPage extends StatefulWidget {
   final SelectContentBloc selectContentBloc;
   final NewModerationRequestBloc newModerationRequestBloc;
+  final bool identifyFaceImages;
+  final bool securitySelfieMode;
   const SelectContentPage({
     required this.selectContentBloc,
     required this.newModerationRequestBloc,
+    this.identifyFaceImages = false,
+    this.securitySelfieMode = false,
     Key? key,
   }) : super(key: key);
 
@@ -38,6 +41,8 @@ class SelectContentPage extends StatefulWidget {
 }
 
 class _SelectContentPageState extends State<SelectContentPage> {
+
+  final cameraScreenOpener = CameraScreenOpener();
 
   @override
   void initState() {
@@ -76,6 +81,11 @@ class _SelectContentPageState extends State<SelectContentPage> {
               context.read<SelectContentBloc>().add(ReloadAvailableContent());
             },
           ),
+          ...imageProcessingUiWidgets<SecuritySelfieImageProcessingBloc>(
+            onComplete: (context, processedImg) {
+              context.read<SelectContentBloc>().add(ReloadAvailableContent());
+            },
+          ),
         ],
       )
     );
@@ -84,7 +94,7 @@ class _SelectContentPageState extends State<SelectContentPage> {
   Widget selectContentPage(
     BuildContext context,
     AccountId accountId,
-    UnmodifiableList<MyContent> content,
+    UnmodifiableList<ContentInfoDetailed> content,
     int maxContent,
     bool showAddNewContent,
   ) {
@@ -95,20 +105,33 @@ class _SelectContentPageState extends State<SelectContentPage> {
         Center(
           child: buildAddNewButton(
             context,
-            onTap: () async {
-              openSelectPictureDialog(context, serverSlotIndex: 0);
+            onTap: () {
+              if (widget.securitySelfieMode) {
+                cameraScreenOpener.openCameraScreenAction(context);
+              } else {
+                openSelectPictureDialog(context, serverSlotIndex: 0);
+              }
             }
           )
         )
       );
     }
 
+    final Iterable<ContentInfoDetailed> iterContent;
+    if (widget.securitySelfieMode) {
+      iterContent = content.reversed.where((v) => v.secureCapture);
+    } else {
+      iterContent = content.reversed;
+    }
+
     gridWidgets.addAll(
-      content.reversed.map((e) => buildAvailableImg(
+      iterContent.map((e) => buildAvailableImg(
         context,
         accountId,
-        e.id,
-        onTap: () => MyNavigator.pop(context, AccountImageId(accountId, e.id, e.faceDetected))
+        e.cid,
+        e.fd,
+        onTap: () => MyNavigator.pop(context, AccountImageId(accountId, e.cid, e.fd)),
+        identifyFaceImages: widget.identifyFaceImages,
       ))
     );
 
@@ -119,14 +142,24 @@ class _SelectContentPageState extends State<SelectContentPage> {
       children: gridWidgets,
     );
 
+    final int visibleMaxContent;
+    final int visibleContentCount;
+    if (widget.securitySelfieMode) {
+      final normalImgCount = content.reversed.where((v) => !v.secureCapture).length;
+      visibleMaxContent = maxContent - normalImgCount;
+      visibleContentCount = content.length - normalImgCount;
+    } else {
+      visibleMaxContent = maxContent;
+      visibleContentCount = content.length;
+    }
+
     final List<Widget> widgets = [];
 
-    widgets.add(Padding(
-      padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
-      child: Text(context.strings.select_content_content_count(content.length.toString(), maxContent.toString())),
-    ));
-
+    widgets.add(const Padding(padding: EdgeInsets.only(top: COMMON_SCREEN_EDGE_PADDING)));
+    widgets.add(hPad(Text(context.strings.select_content_screen_count(visibleContentCount.toString(), visibleMaxContent.toString()))));
+    widgets.add(const Padding(padding: EdgeInsets.only(top: COMMON_SCREEN_EDGE_PADDING)));
     widgets.add(grid);
+    widgets.add(const Padding(padding: EdgeInsets.only(top: COMMON_SCREEN_EDGE_PADDING)));
 
     return SingleChildScrollView(
       child: Column(
@@ -172,20 +205,39 @@ Widget buildAvailableImg(
   BuildContext context,
   AccountId accountId,
   ContentId contentId,
+  bool faceImage,
   {
-    required void Function() onTap
+    required void Function() onTap,
+    required bool identifyFaceImages,
   }
 ) {
-  return Center(
-    child: SizedBox(
-      width: SELECT_CONTENT_IMAGE_WIDTH,
-      height: SELECT_CONTENT_IMAGE_HEIGHT,
-      child: Material(
-        child: InkWell(
-          onTap: onTap,
-          child: accountImgWidgetInk(accountId, contentId),
-        ),
-      ),
+  final img = Material(
+    child: InkWell(
+      onTap: onTap,
+      child: accountImgWidgetInk(accountId, contentId),
     ),
   );
+
+  if (identifyFaceImages && faceImage) {
+    return Center(
+      child: SizedBox(
+        width: SELECT_CONTENT_IMAGE_WIDTH,
+        height: SELECT_CONTENT_IMAGE_HEIGHT,
+        child: Column(
+          children: [
+            Expanded(child: img),
+            Text(context.strings.select_content_screen_face_detected),
+          ],
+        ),
+      ),
+    );
+  } else {
+    return Center(
+      child: SizedBox(
+        width: SELECT_CONTENT_IMAGE_WIDTH,
+        height: SELECT_CONTENT_IMAGE_HEIGHT,
+        child: img,
+      ),
+    );
+  }
 }

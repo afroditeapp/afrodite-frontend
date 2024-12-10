@@ -122,7 +122,7 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
 
     widgets.add(Padding(
       padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
-      child: Text(context.strings.select_content_content_count(content.data.length.toString(), content.maxContentCount.toString())),
+      child: Text(context.strings.select_content_screen_count(content.data.length.toString(), content.maxContentCount.toString())),
     ));
 
     widgets.add(listView);

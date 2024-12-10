@@ -48,6 +48,7 @@
     <string name="generic_reject_question" description="Generic reject question">Reject?</string>
     <string name="generic_delete_question" description="Generic delete question">Delete?</string>
     <string name="generic_logout_failed" description="Generic logout failed text">Logout failed</string>
+    <string name="generic_edit" description="Generic edit text">Edit</string>
 
     <string name="generic_text_field_age_hint_text" description="Input field hint text for age">Insert an age between 18–99</string>
     <string name="generic_search_settings_looking_for_all_genders_text" desctiption="Search settings radio button option for men and women who are looking all genders">All</string>
@@ -249,9 +250,10 @@
     <string name="edit_attribute_value_screen_one_value_must_be_selected" description="Snackbar text for notifying that one at least one option must be selected">At least one selection is required</string>
     <string name="edit_attribute_value_screen_search_placeholder_text" description="Attribute value search box placeholder text">Search…</string>
 
-    <!-- Select picture screen -->
+    <!-- Select content screen -->
     <string name="select_content_screen_title" description="Title for select content screen">Select image</string>
-    <string name="select_content_content_count" description="Content count text">Images %s/%s</string>
+    <string name="select_content_screen_count" description="Content count text">Images %s/%s</string>
+    <string name="select_content_screen_face_detected" description="Face detected text">Face detected</string>
 
     <!-- Content management screen -->
     <string name="content_management_screen_title" description="Title for content management screen">Image management</string>
@@ -349,6 +351,7 @@
 
     <!-- Current security selfie -->
     <string name="current_security_selfie_screen_title" description="Current security selfie screen title">Security selfie</string>
+    <string name="current_security_selfie_screen_security_selfie_changed" description="Snackbar text displayed when security selfie is changed">Security selfie changed</string>
 
     <!-- Profile location screen -->
     <string name="profile_location_screen_title" description="Title for profile location screen">My profile\'s location</string>

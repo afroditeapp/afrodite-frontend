@@ -1,5 +1,6 @@
 
 
+import 'package:app/logic/media/content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -98,8 +99,8 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
               return profileVisibilitySetting(context, state.currentVisibility);
             }
           ),
-          blockedProfiles(),
-          securitySelfie(),
+          blockedProfiles(context),
+          securitySelfie(context),
           if (settingsChanged) const Padding(
             padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA),
             child: null,
@@ -109,15 +110,21 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
     );
   }
 
-  Widget blockedProfiles() {
+  Widget blockedProfiles(BuildContext context) {
     return Setting.createSetting(Icons.block, context.strings.blocked_profiles_screen_title, () =>
       MyNavigator.push(context, const MaterialPage<void>(child: BlockedProfilesScreen()))
     ).toListTile();
   }
 
-  Widget securitySelfie() {
-    return Setting.createSetting(Icons.image_rounded, context.strings.current_security_selfie_screen_title, () =>
-      MyNavigator.push(context, const MaterialPage<void>(child: CurrentSecuritySelfie()))
+  Widget securitySelfie(BuildContext context) {
+    return Setting.createSetting(Icons.image_rounded, context.strings.current_security_selfie_screen_title, () {
+      final pageKey = PageKey();
+      MyNavigator.pushWithKey(
+        context,
+        MaterialPage<void>(child: CurrentSecuritySelfie(pageKey: pageKey)),
+        pageKey,
+      );
+    }
     ).toListTile();
   }
 

@@ -21,7 +21,7 @@ final _privateConstructorErrorSelectContentData = UnsupportedError(
 
 /// @nodoc
 mixin _$SelectContentData {
-  UnmodifiableList<MyContent> get availableContent => throw _privateConstructorErrorSelectContentData;
+  UnmodifiableList<ContentInfoDetailed> get availableContent => throw _privateConstructorErrorSelectContentData;
   AccountContent? get accountContent => throw _privateConstructorErrorSelectContentData;
   int get maxContent => throw _privateConstructorErrorSelectContentData;
   bool get showAddNewContent => throw _privateConstructorErrorSelectContentData;
@@ -29,7 +29,7 @@ mixin _$SelectContentData {
   bool get isError => throw _privateConstructorErrorSelectContentData;
 
   SelectContentData copyWith({
-    UnmodifiableList<MyContent>? availableContent,
+    UnmodifiableList<ContentInfoDetailed>? availableContent,
     AccountContent? accountContent,
     int? maxContent,
     bool? showAddNewContent,
@@ -41,7 +41,7 @@ mixin _$SelectContentData {
 /// @nodoc
 abstract class _SelectContentData implements SelectContentData {
   factory _SelectContentData({
-    UnmodifiableList<MyContent> availableContent,
+    UnmodifiableList<ContentInfoDetailed> availableContent,
     AccountContent? accountContent,
     int maxContent,
     bool showAddNewContent,
@@ -52,7 +52,7 @@ abstract class _SelectContentData implements SelectContentData {
 
 /// @nodoc
 class _$SelectContentDataImpl implements _SelectContentData {
-  static const UnmodifiableList<MyContent> _availableContentDefaultValue = UnmodifiableList<MyContent>.empty();
+  static const UnmodifiableList<ContentInfoDetailed> _availableContentDefaultValue = UnmodifiableList<ContentInfoDetailed>.empty();
   static const int _maxContentDefaultValue = 0;
   static const bool _showAddNewContentDefaultValue = false;
   static const bool _isLoadingDefaultValue = false;
@@ -68,7 +68,7 @@ class _$SelectContentDataImpl implements _SelectContentData {
   });
 
   @override
-  final UnmodifiableList<MyContent> availableContent;
+  final UnmodifiableList<ContentInfoDetailed> availableContent;
   @override
   final AccountContent? accountContent;
   @override
@@ -125,7 +125,7 @@ class _$SelectContentDataImpl implements _SelectContentData {
     Object? isLoading,
     Object? isError,
   }) => _$SelectContentDataImpl(
-    availableContent: (availableContent ?? this.availableContent) as UnmodifiableList<MyContent>,
+    availableContent: (availableContent ?? this.availableContent) as UnmodifiableList<ContentInfoDetailed>,
     accountContent: (accountContent == _detectDefaultValueInCopyWith ? this.accountContent : accountContent) as AccountContent?,
     maxContent: (maxContent ?? this.maxContent) as int,
     showAddNewContent: (showAddNewContent ?? this.showAddNewContent) as bool,
