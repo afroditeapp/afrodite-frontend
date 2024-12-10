@@ -61,6 +61,7 @@
     <string name="moderation_state_waiting_human_moderation" description="Moderation state waiting human moderation">Waiting human moderation</string>
     <string name="moderation_state_rejected_by_bot" description="Moderation state rejected by bot">Rejected by bot</string>
     <string name="moderation_state_rejected_by_human" description="Moderation state rejected by human">Rejected by human</string>
+    <string name="moderation_state_accepted" description="Moderation state for accepted content">Accepted</string>
 
     <!-- Notification categories -->
     <string name="notification_category_messages" description="Title for notification category messages">Messages</string>
@@ -257,13 +258,6 @@
     <string name="content_management_screen_content_security_content" description="Text for security content">Security selfie</string>
     <string name="content_management_screen_content_profile_content" description="Text for profile content">Profile image %s</string>
     <string name="content_management_screen_content_deletion_allowed_wait_time" description="Text for content deletion allowed wait time">Deletion possible starting at %s</string>
-    <string name="content_management_screen_content_accepted" description="Text for accepted content">Accepted</string>
-    <string name="content_management_screen_content_human_rejected" description="Text for human rejected content">Rejected by human</string>
-    <string name="content_management_screen_content_bot_rejected" description="Text for bot rejected content">Rejected by bot</string>
-    <string name="content_management_screen_content_waiting_bot_human_moderation" description="Text for content waiting bot or human moderation">Waiting bot or human moderation</string>
-    <string name="content_management_screen_content_waiting_human_moderation" description="Text for content waiting human moderation">Waiting human moderation</string>
-
-    <string name="content_management_screen_no_request" description="Text displayed when no moderation request is found">No images in moderation</string>
 
     <!-- Profile filtering settings screen -->
     <string name="profile_filtering_settings_screen_title" description="Title for profile filtering settings screen">Filtering settings</string>

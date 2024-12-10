@@ -196,12 +196,12 @@ Widget _statusInfo(
 ) {
   final String moderationState = switch (content.state) {
     ContentModerationState.inSlot => "",
-    ContentModerationState.waitingBotOrHumanModeration => context.strings.content_management_screen_content_waiting_bot_human_moderation,
-    ContentModerationState.waitingHumanModeration => context.strings.content_management_screen_content_waiting_human_moderation,
+    ContentModerationState.waitingBotOrHumanModeration => context.strings.moderation_state_waiting_bot_or_human_moderation,
+    ContentModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
     ContentModerationState.acceptedByBot ||
-    ContentModerationState.acceptedByHuman => context.strings.content_management_screen_content_accepted,
-    ContentModerationState.rejectedByBot => context.strings.content_management_screen_content_bot_rejected,
-    ContentModerationState.rejectedByHuman => context.strings.content_management_screen_content_human_rejected,
+    ContentModerationState.acceptedByHuman => context.strings.moderation_state_accepted,
+    ContentModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
+    ContentModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
     _ => "",
   };
 
