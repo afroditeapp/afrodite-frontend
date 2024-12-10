@@ -16,6 +16,8 @@ class ContentInfoDetailed {
     required this.cid,
     required this.ctype,
     required this.fd,
+    this.rejectedReasonCategory,
+    this.rejectedReasonDetails,
     required this.secureCapture,
     this.slot,
     required this.state,
@@ -29,6 +31,10 @@ class ContentInfoDetailed {
 
   /// Face detected
   bool fd;
+
+  ProfileContentModerationRejectedReasonCategory? rejectedReasonCategory;
+
+  ProfileContentModerationRejectedReasonDetails? rejectedReasonDetails;
 
   bool secureCapture;
 
@@ -45,6 +51,8 @@ class ContentInfoDetailed {
     other.cid == cid &&
     other.ctype == ctype &&
     other.fd == fd &&
+    other.rejectedReasonCategory == rejectedReasonCategory &&
+    other.rejectedReasonDetails == rejectedReasonDetails &&
     other.secureCapture == secureCapture &&
     other.slot == slot &&
     other.state == state &&
@@ -57,6 +65,8 @@ class ContentInfoDetailed {
     (cid.hashCode) +
     (ctype.hashCode) +
     (fd.hashCode) +
+    (rejectedReasonCategory == null ? 0 : rejectedReasonCategory!.hashCode) +
+    (rejectedReasonDetails == null ? 0 : rejectedReasonDetails!.hashCode) +
     (secureCapture.hashCode) +
     (slot == null ? 0 : slot!.hashCode) +
     (state.hashCode) +
@@ -64,13 +74,23 @@ class ContentInfoDetailed {
     (usageStartTime == null ? 0 : usageStartTime!.hashCode);
 
   @override
-  String toString() => 'ContentInfoDetailed[cid=$cid, ctype=$ctype, fd=$fd, secureCapture=$secureCapture, slot=$slot, state=$state, usageEndTime=$usageEndTime, usageStartTime=$usageStartTime]';
+  String toString() => 'ContentInfoDetailed[cid=$cid, ctype=$ctype, fd=$fd, rejectedReasonCategory=$rejectedReasonCategory, rejectedReasonDetails=$rejectedReasonDetails, secureCapture=$secureCapture, slot=$slot, state=$state, usageEndTime=$usageEndTime, usageStartTime=$usageStartTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'cid'] = this.cid;
       json[r'ctype'] = this.ctype;
       json[r'fd'] = this.fd;
+    if (this.rejectedReasonCategory != null) {
+      json[r'rejected_reason_category'] = this.rejectedReasonCategory;
+    } else {
+      json[r'rejected_reason_category'] = null;
+    }
+    if (this.rejectedReasonDetails != null) {
+      json[r'rejected_reason_details'] = this.rejectedReasonDetails;
+    } else {
+      json[r'rejected_reason_details'] = null;
+    }
       json[r'secure_capture'] = this.secureCapture;
     if (this.slot != null) {
       json[r'slot'] = this.slot;
@@ -113,6 +133,8 @@ class ContentInfoDetailed {
         cid: ContentId.fromJson(json[r'cid'])!,
         ctype: MediaContentType.fromJson(json[r'ctype'])!,
         fd: mapValueOfType<bool>(json, r'fd')!,
+        rejectedReasonCategory: ProfileContentModerationRejectedReasonCategory.fromJson(json[r'rejected_reason_category']),
+        rejectedReasonDetails: ProfileContentModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details']),
         secureCapture: mapValueOfType<bool>(json, r'secure_capture')!,
         slot: ContentSlot.fromJson(json[r'slot']),
         state: ContentModerationState.fromJson(json[r'state'])!,
