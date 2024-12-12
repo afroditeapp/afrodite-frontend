@@ -166,3 +166,10 @@ extension UnixTimeExtensions on UnixTime {
     return UtcDateTime.fromUnixEpochMilliseconds(ut * 1000);
   }
 }
+
+extension ContentInfoDetailedExtensions on ContentInfoDetailed {
+  bool accepted() {
+    return state == ContentModerationState.acceptedByBot ||
+      state == ContentModerationState.acceptedByHuman;
+  }
+}

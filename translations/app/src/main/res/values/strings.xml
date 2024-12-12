@@ -192,6 +192,11 @@
     <string name="profile_grid_screen_no_profiles_found_description_filters_disabled" description="Description displayed when there is no profiles and there is no filters enabled">Spread the word about the app in social media</string>
     <string name="profile_grid_screen_profile_filter_settings_update_ongoing" description="Snackbar text that profile filter settings update is ongoing">Profile filter settings update is ongoing</string>
     <string name="profile_grid_screen_profile_loading_failed" description="Text displayed profile loading fails">Profile loading failed</string>
+    <string name="profile_grid_screen_security_content_is_not_accepted" description="Text displayed when security selfie is not accepted">Security selfie is not accepted</string>
+    <string name="profile_grid_screen_security_content_does_not_exist" description="Text displayed when security selfie does not exist">Security selfie does not exist</string>
+    <string name="profile_grid_screen_primary_profile_content_is_not_accepted" description="Text displayed when primary profile content is not accepted">First profile picture is not accepted</string>
+    <string name="profile_grid_screen_primary_profile_content_face_not_detected" description="Text displayed when face is not detected from primary profile content">Face is not detected from first profile picture</string>
+    <string name="profile_grid_screen_primary_profile_content_does_not_exist" description="Text displayed when primary profile content does not exist">First profile picture does not exist</string>
 
     <!-- View profile screen -->
     <string name="view_profile_screen_my_profile_title" description="Title for view profile screen when my profile is viewed">My profile</string>
@@ -242,6 +247,7 @@
     <string name="edit_profile_screen_invalid_age" description="Snackbar text for notifying about invalid age">Invalid age</string>
     <string name="edit_profile_screen_one_profile_image_required" description="Snackbar text for notifying about that one profile image is required">One profile image is required</string>
     <string name="edit_profile_screen_automatic_min_age_incrementing_info_dialog_text" description="Dialog text for notifying user when profile age min value is incremented">Min age will be increased to %s in %s</string>
+    <string name="edit_profile_screen_primary_profile_content_not_accepted" description="Info text that primary profile image is not accepted">Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.</string>
 
     <!-- Edit profile text screen -->
     <string name="edit_profile_text_screen_text_lenght_too_long" description="Dialog text for notifying user when profile text is too long">Profile text byte count is more than 2000 bytes</string>

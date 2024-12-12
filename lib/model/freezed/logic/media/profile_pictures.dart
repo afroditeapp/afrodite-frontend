@@ -114,7 +114,12 @@ class ImageSelected extends ImgState {
 sealed class SelectedImageInfo {
   bool isFaceDetected() {
     final img = this;
-    return img is InitialSetupSecuritySelfie || (img is ProfileImage && img.faceDetected);
+    return img is InitialSetupSecuritySelfie || (img is ProfileImage && img.id.faceDetected);
+  }
+
+  bool isAccepted() {
+    final img = this;
+    return img is InitialSetupSecuritySelfie || (img is ProfileImage && img.id.accepted);
   }
 }
 class InitialSetupSecuritySelfie extends SelectedImageInfo {}
@@ -122,13 +127,13 @@ class ProfileImage extends SelectedImageInfo {
   final AccountImageId id;
   /// Slot where image is uploaded to.
   final int? slot;
-  final bool faceDetected;
-  ProfileImage(this.id, this.slot, this.faceDetected);
+  ProfileImage(this.id, this.slot);
 }
 
 class AccountImageId {
   final AccountId accountId;
   final ContentId contentId;
   final bool faceDetected;
-  AccountImageId(this.accountId, this.contentId, this.faceDetected);
+  final bool accepted;
+  AccountImageId(this.accountId, this.contentId, this.faceDetected, this.accepted);
 }

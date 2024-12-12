@@ -1,4 +1,5 @@
 import "package:app/logic/media/new_moderation_request.dart";
+import "package:app/ui_utils/consts/padding.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -123,7 +124,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     if (widget.mode is InitialSetupProfilePictures) {
       zeroSizedWidgets = imageProcessingUiWidgets<ProfilePicturesImageProcessingBloc>(
         onComplete: (context, processedImg) {
-          final id = AccountImageId(processedImg.accountId, processedImg.contentId, processedImg.faceDetected);
+          final id = AccountImageId(processedImg.accountId, processedImg.contentId, processedImg.faceDetected, false);
           final nextAddImgState = widget.profilePicturesBloc.state.pictures().indexed.where((element) => element.$2 is Add).firstOrNull;
           final int index;
           if (nextAddImgState != null) {
@@ -131,7 +132,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
           } else {
             return;
           }
-          widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(id, processedImg.slot, processedImg.faceDetected), index));
+          widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(id, processedImg.slot), index));
         },
       );
     } else {
@@ -142,6 +143,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
       children: [
         topRow(context),
         primaryImageIsNotFaceImageError(),
+        if (widget.profilePicturesBloc.state.mode is NormalProfilePictures) primaryImageIsNotAcceptedError(),
         const Divider(
           height: 50,
         ),
@@ -257,7 +259,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
         case InitialSetupSecuritySelfie():
           final securitySelfie = context.read<InitialSetupBloc>().state.securitySelfie;
           if (securitySelfie != null) {
-            return AccountImageId(securitySelfie.accountId, securitySelfie.contentId, securitySelfie.faceDetected);
+            return AccountImageId(securitySelfie.accountId, securitySelfie.contentId, securitySelfie.faceDetected, false);
           } else {
             return null;
           }
@@ -329,6 +331,39 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
                   size: 32,
                 ),
                 Text(context.strings.initial_setup_screen_profile_pictures_primary_image_face_not_detected),
+              ],
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      }
+    );
+  }
+
+  Widget primaryImageIsNotAcceptedError() {
+    return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
+      buildWhen: (previous, current) => previous.pictures()[0] != current.pictures()[0],
+      builder: (context, state) {
+        final imgState = state.pictures()[0];
+        if (imgState is ImageSelected && !imgState.img.isAccepted()) {
+          return Padding(
+            padding: const EdgeInsets.only(
+              top: 8.0,
+              left: COMMON_SCREEN_EDGE_PADDING,
+              right: COMMON_SCREEN_EDGE_PADDING,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.warning,
+                  size: 32,
+                  color: Theme.of(context).primaryColor,
+                ),
+                const Padding(padding: EdgeInsets.only(left: 8.0)),
+                Flexible(child: Text(context.strings.edit_profile_screen_primary_profile_content_not_accepted)),
               ],
             ),
           );
@@ -486,7 +521,7 @@ class AddPicture extends StatelessWidget {
       identifyFaceImages: imgIndex == 0,
     )));
     if (selectedImg != null) {
-      bloc.add(AddProcessedImage(ProfileImage(selectedImg, null, selectedImg.faceDetected), imgIndex));
+      bloc.add(AddProcessedImage(ProfileImage(selectedImg, null), imgIndex));
     }
   }
 }

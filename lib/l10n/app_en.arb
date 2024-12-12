@@ -307,6 +307,10 @@
   "@edit_profile_screen_one_profile_image_required": {
     "description": "Snackbar text for notifying about that one profile image is required"
   },
+  "edit_profile_screen_primary_profile_content_not_accepted": "Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.",
+  "@edit_profile_screen_primary_profile_content_not_accepted": {
+    "description": "Info text that primary profile image is not accepted"
+  },
   "edit_profile_screen_profile_text": "Profile text",
   "@edit_profile_screen_profile_text": {
     "description": "Title for profile text field"
@@ -1046,6 +1050,18 @@
   "@profile_grid_screen_no_profiles_found_title": {
     "description": "Title that no profiles were found"
   },
+  "profile_grid_screen_primary_profile_content_does_not_exist": "First profile picture does not exist",
+  "@profile_grid_screen_primary_profile_content_does_not_exist": {
+    "description": "Text displayed when primary profile content does not exist"
+  },
+  "profile_grid_screen_primary_profile_content_face_not_detected": "Face is not detected from first profile picture",
+  "@profile_grid_screen_primary_profile_content_face_not_detected": {
+    "description": "Text displayed when face is not detected from primary profile content"
+  },
+  "profile_grid_screen_primary_profile_content_is_not_accepted": "First profile picture is not accepted",
+  "@profile_grid_screen_primary_profile_content_is_not_accepted": {
+    "description": "Text displayed when primary profile content is not accepted"
+  },
   "profile_grid_screen_profile_filter_settings_update_ongoing": "Profile filter settings update is ongoing",
   "@profile_grid_screen_profile_filter_settings_update_ongoing": {
     "description": "Snackbar text that profile filter settings update is ongoing"
@@ -1057,6 +1073,14 @@
   "profile_grid_screen_profile_loading_failed": "Profile loading failed",
   "@profile_grid_screen_profile_loading_failed": {
     "description": "Text displayed profile loading fails"
+  },
+  "profile_grid_screen_security_content_does_not_exist": "Security selfie does not exist",
+  "@profile_grid_screen_security_content_does_not_exist": {
+    "description": "Text displayed when security selfie does not exist"
+  },
+  "profile_grid_screen_security_content_is_not_accepted": "Security selfie is not accepted",
+  "@profile_grid_screen_security_content_is_not_accepted": {
+    "description": "Text displayed when security selfie is not accepted"
   },
   "profile_grid_screen_title": "Profiles",
   "@profile_grid_screen_title": {

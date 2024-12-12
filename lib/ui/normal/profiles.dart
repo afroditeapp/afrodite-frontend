@@ -1,18 +1,22 @@
 
 import 'package:app/logic/media/content.dart';
+import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/media/content.dart';
+import 'package:app/model/freezed/logic/profile/my_profile.dart';
+import 'package:app/ui_utils/moderation.dart';
+import 'package:app/ui_utils/api.dart';
+import 'package:app/utils/list.dart';
+import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/media/initial_content_moderation.dart';
 import 'package:app/logic/profile/edit_profile_filtering_settings.dart';
 import 'package:app/logic/profile/profile_filtering_settings.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/model/freezed/logic/media/initial_content_moderation.dart';
 import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:app/ui/normal/profiles/filter_profiles.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
@@ -80,8 +84,26 @@ class _ProfileViewState extends State<ProfileView> {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, data) {
         if (data.visibility == ProfileVisibility.public) {
-          return ProfileGrid(
-            filteringSettingsBloc: context.read<ProfileFilteringSettingsBloc>(),
+          return BlocBuilder<ContentBloc, ContentData>(
+            builder: (context, contentState) {
+              final securityContent = contentState.securityContent;
+              if (securityContent?.accepted == true && securityContent?.faceDetected == true) {
+                return BlocBuilder<MyProfileBloc, MyProfileData>(
+                  builder: (context, myProfileState) {
+                    final primaryContent = myProfileState.profile?.myContent.getAtOrNull(0);
+                    if (primaryContent?.accepted == true) {
+                      return ProfileGrid(
+                        filteringSettingsBloc: context.read<ProfileFilteringSettingsBloc>(),
+                      );
+                    } else {
+                      return primaryProfileContentIsNotAccepted(context, primaryContent);
+                    }
+                  },
+                );
+              } else {
+                return securityContentIsNotAccepted(context, securityContent);
+              }
+            },
           );
         } else if (data.visibility == ProfileVisibility.pendingPublic) {
           return LayoutBuilder(
@@ -127,8 +149,43 @@ class _ProfileViewState extends State<ProfileView> {
       ),
     );
   }
-}
 
+  Widget primaryProfileContentIsNotAccepted(BuildContext context, MyContent? content) {
+    String message;
+    if (content == null) {
+      message = context.strings.profile_grid_screen_primary_profile_content_does_not_exist;
+    } else if (!content.faceDetected) {
+      message = context.strings.profile_grid_screen_primary_profile_content_face_not_detected;
+    } else if (!content.accepted) {
+      String infoText = context.strings.profile_grid_screen_primary_profile_content_is_not_accepted;
+      infoText = addModerationStateRow(context, infoText, content.state.toUiString(context));
+      infoText = addRejectedCategoryRow(context, infoText, content.rejectedCategory?.value);
+      infoText = addRejectedDeteailsRow(context, infoText, content.rejectedDetails?.value);
+      message = infoText;
+    } else {
+      message = context.strings.generic_error;
+    }
+
+    return buildListReplacementMessageSimple(context, message);
+  }
+
+  Widget securityContentIsNotAccepted(BuildContext context, MyContent? content) {
+    String message;
+    if (content == null) {
+      message = context.strings.profile_grid_screen_security_content_does_not_exist;
+    } else if (!content.accepted) {
+      String infoText = context.strings.profile_grid_screen_security_content_is_not_accepted;
+      infoText = addModerationStateRow(context, infoText, content.state.toUiString(context));
+      infoText = addRejectedCategoryRow(context, infoText, content.rejectedCategory?.value);
+      infoText = addRejectedDeteailsRow(context, infoText, content.rejectedDetails?.value);
+      message = infoText;
+    } else {
+      message = context.strings.generic_error;
+    }
+
+    return buildListReplacementMessageSimple(context, message);
+  }
+}
 
 class ShowModerationQueueProgress extends StatefulWidget {
   const ShowModerationQueueProgress({super.key});

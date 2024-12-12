@@ -7,6 +7,7 @@ import 'package:app/ui/initial_setup/profile_pictures.dart';
 import 'package:app/ui/initial_setup/security_selfie.dart';
 import 'package:app/ui_utils/image_processing.dart';
 import 'package:app/ui_utils/padding.dart';
+import 'package:app/utils/api.dart';
 import 'package:app/utils/immutable_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -130,7 +131,7 @@ class _SelectContentPageState extends State<SelectContentPage> {
         accountId,
         e.cid,
         e.fd,
-        onTap: () => MyNavigator.pop(context, AccountImageId(accountId, e.cid, e.fd)),
+        onTap: () => MyNavigator.pop(context, AccountImageId(accountId, e.cid, e.fd, e.accepted())),
         identifyFaceImages: widget.identifyFaceImages,
       ))
     );
