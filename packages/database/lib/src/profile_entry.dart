@@ -156,11 +156,15 @@ abstract class PublicContentProvider {
 class ContentIdAndAccepted {
   final ContentId id;
   final bool accepted;
-  ContentIdAndAccepted(this.id, this.accepted);
+  final bool primary;
+  ContentIdAndAccepted(this.id, this.accepted, this.primary);
 
   @override
   bool operator ==(Object other) {
-    return other is ContentIdAndAccepted && id == other.id && accepted == other.accepted;
+    return other is ContentIdAndAccepted &&
+      id == other.id &&
+      accepted == other.accepted &&
+      primary == other.primary;
   }
 
   @override
@@ -168,6 +172,7 @@ class ContentIdAndAccepted {
     runtimeType,
     id,
     accepted,
+    primary,
   );
 }
 
@@ -186,9 +191,13 @@ class MyContent extends ContentIdAndAccepted {
     this.state,
     this.rejectedCategory,
     this.rejectedDetails,
+    {
+      required bool primaryContent,
+    }
   ) : super(
     id,
     state == ContentModerationState.acceptedByBot || state == ContentModerationState.acceptedByHuman,
+    primaryContent,
   );
 
   @override

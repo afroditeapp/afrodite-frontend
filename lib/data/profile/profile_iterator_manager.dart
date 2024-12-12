@@ -138,8 +138,9 @@ class ProfileIteratorManager {
       for (final p in list) {
         final isBlocked = await chat.isInSentBlocks(p.uuid);
         final alreadyReturned = _duplicateAccountsPreventer.contains(p.uuid);
+        final invalidPrimaryContent = p.content.firstOrNull?.primary != true;
 
-        if (isBlocked || alreadyReturned || p.uuid == currentUser) {
+        if (isBlocked || alreadyReturned || p.uuid == currentUser || invalidPrimaryContent) {
           toBeRemoved.add(p);
         } else {
           _duplicateAccountsPreventer.add(p.uuid);

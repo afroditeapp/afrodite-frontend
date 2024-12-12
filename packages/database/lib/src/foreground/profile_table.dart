@@ -131,7 +131,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
   ) async {
     await transaction(() async {
       for (final (i, c) in content.c.indexed) {
-        await db.daoPublicProfileContent.updateProfileContent(accountId, i, c.cid, c.a);
+        await db.daoPublicProfileContent.updateProfileContent(accountId, i, c.cid, c.a, c.p);
       }
 
       await db.daoPublicProfileContent.removeContentStartingFrom(accountId, content.c.length);

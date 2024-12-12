@@ -107,6 +107,7 @@ class DaoMyMediaContent extends DatabaseAccessor<AccountDatabase> with _$DaoMyMe
       state,
       r.contentModerationRejectedCategory,
       r.contentModerationRejectedDetails,
+      primaryContent: r.contentIndex == 0 && r.faceDetected,
     );
   }
 }

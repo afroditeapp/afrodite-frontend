@@ -16,6 +16,7 @@ class PublicProfileContent extends Table {
 
   TextColumn get uuidContentId => text().map(const ContentIdConverter())();
   BoolColumn get contentAccepted => boolean()();
+  BoolColumn get primaryContent => boolean()();
 
   @override
   Set<Column<Object>> get primaryKey => {uuidAccountId, contentIndex};
@@ -40,6 +41,7 @@ class DaoPublicProfileContent extends DatabaseAccessor<AccountDatabase> with _$D
     int index,
     ContentId contentId,
     bool accepted,
+    bool primary,
   ) async {
     await into(publicProfileContent).insert(
       PublicProfileContentCompanion.insert(
@@ -47,10 +49,12 @@ class DaoPublicProfileContent extends DatabaseAccessor<AccountDatabase> with _$D
         contentIndex: index,
         uuidContentId: contentId,
         contentAccepted: accepted,
+        primaryContent: primary,
       ),
       onConflict: DoUpdate((old) => PublicProfileContentCompanion(
         uuidContentId: Value(contentId),
         contentAccepted: Value(accepted),
+        primaryContent: Value(primary),
       ),
         target: [publicProfileContent.uuidAccountId, publicProfileContent.contentIndex]
       ),
@@ -94,6 +98,6 @@ class DaoPublicProfileContent extends DatabaseAccessor<AccountDatabase> with _$D
       return null;
     }
 
-    return ContentIdAndAccepted(r.uuidContentId, r.contentAccepted);
+    return ContentIdAndAccepted(r.uuidContentId, r.contentAccepted, r.primaryContent);
   }
 }

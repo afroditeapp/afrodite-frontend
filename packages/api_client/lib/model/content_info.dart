@@ -13,9 +13,10 @@ part of openapi.api;
 class ContentInfo {
   /// Returns a new [ContentInfo] instance.
   ContentInfo({
-    required this.a,
+    this.a = true,
     required this.cid,
-    required this.ctype,
+    this.ctype,
+    this.p = false,
   });
 
   /// Accepted
@@ -23,29 +24,40 @@ class ContentInfo {
 
   ContentId cid;
 
-  MediaContentType ctype;
+  /// Default value is not set to API doc as the API doc will then have \"oneOf\" property and Dart code generator does not support it.  Default value is [MediaContentType::JpegImage].
+  MediaContentType? ctype;
+
+  /// Primary content  The first profile content is not primary content when admin deletes the first profile content and the second content does not have face detected.
+  bool p;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentInfo &&
     other.a == a &&
     other.cid == cid &&
-    other.ctype == ctype;
+    other.ctype == ctype &&
+    other.p == p;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (a.hashCode) +
     (cid.hashCode) +
-    (ctype.hashCode);
+    (ctype == null ? 0 : ctype!.hashCode) +
+    (p.hashCode);
 
   @override
-  String toString() => 'ContentInfo[a=$a, cid=$cid, ctype=$ctype]';
+  String toString() => 'ContentInfo[a=$a, cid=$cid, ctype=$ctype, p=$p]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'a'] = this.a;
       json[r'cid'] = this.cid;
+    if (this.ctype != null) {
       json[r'ctype'] = this.ctype;
+    } else {
+      json[r'ctype'] = null;
+    }
+      json[r'p'] = this.p;
     return json;
   }
 
@@ -68,9 +80,10 @@ class ContentInfo {
       }());
 
       return ContentInfo(
-        a: mapValueOfType<bool>(json, r'a')!,
+        a: mapValueOfType<bool>(json, r'a') ?? true,
         cid: ContentId.fromJson(json[r'cid'])!,
-        ctype: MediaContentType.fromJson(json[r'ctype'])!,
+        ctype: MediaContentType.fromJson(json[r'ctype']),
+        p: mapValueOfType<bool>(json, r'p') ?? false,
       );
     }
     return null;
@@ -118,9 +131,7 @@ class ContentInfo {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'a',
     'cid',
-    'ctype',
   };
 }
 

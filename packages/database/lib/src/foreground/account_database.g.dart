@@ -4473,9 +4473,23 @@ class $PublicProfileContentTable extends PublicProfileContent
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("content_accepted" IN (0, 1))'));
+  static const VerificationMeta _primaryContentMeta =
+      const VerificationMeta('primaryContent');
   @override
-  List<GeneratedColumn> get $columns =>
-      [uuidAccountId, contentIndex, uuidContentId, contentAccepted];
+  late final GeneratedColumn<bool> primaryContent = GeneratedColumn<bool>(
+      'primary_content', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("primary_content" IN (0, 1))'));
+  @override
+  List<GeneratedColumn> get $columns => [
+        uuidAccountId,
+        contentIndex,
+        uuidContentId,
+        contentAccepted,
+        primaryContent
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -4505,6 +4519,14 @@ class $PublicProfileContentTable extends PublicProfileContent
     } else if (isInserting) {
       context.missing(_contentAcceptedMeta);
     }
+    if (data.containsKey('primary_content')) {
+      context.handle(
+          _primaryContentMeta,
+          primaryContent.isAcceptableOrUnknown(
+              data['primary_content']!, _primaryContentMeta));
+    } else if (isInserting) {
+      context.missing(_primaryContentMeta);
+    }
     return context;
   }
 
@@ -4525,6 +4547,8 @@ class $PublicProfileContentTable extends PublicProfileContent
               DriftSqlType.string, data['${effectivePrefix}uuid_content_id'])!),
       contentAccepted: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}content_accepted'])!,
+      primaryContent: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}primary_content'])!,
     );
   }
 
@@ -4545,11 +4569,13 @@ class PublicProfileContentData extends DataClass
   final int contentIndex;
   final ContentId uuidContentId;
   final bool contentAccepted;
+  final bool primaryContent;
   const PublicProfileContentData(
       {required this.uuidAccountId,
       required this.contentIndex,
       required this.uuidContentId,
-      required this.contentAccepted});
+      required this.contentAccepted,
+      required this.primaryContent});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4565,6 +4591,7 @@ class PublicProfileContentData extends DataClass
           .toSql(uuidContentId));
     }
     map['content_accepted'] = Variable<bool>(contentAccepted);
+    map['primary_content'] = Variable<bool>(primaryContent);
     return map;
   }
 
@@ -4574,6 +4601,7 @@ class PublicProfileContentData extends DataClass
       contentIndex: Value(contentIndex),
       uuidContentId: Value(uuidContentId),
       contentAccepted: Value(contentAccepted),
+      primaryContent: Value(primaryContent),
     );
   }
 
@@ -4585,6 +4613,7 @@ class PublicProfileContentData extends DataClass
       contentIndex: serializer.fromJson<int>(json['contentIndex']),
       uuidContentId: serializer.fromJson<ContentId>(json['uuidContentId']),
       contentAccepted: serializer.fromJson<bool>(json['contentAccepted']),
+      primaryContent: serializer.fromJson<bool>(json['primaryContent']),
     );
   }
   @override
@@ -4595,6 +4624,7 @@ class PublicProfileContentData extends DataClass
       'contentIndex': serializer.toJson<int>(contentIndex),
       'uuidContentId': serializer.toJson<ContentId>(uuidContentId),
       'contentAccepted': serializer.toJson<bool>(contentAccepted),
+      'primaryContent': serializer.toJson<bool>(primaryContent),
     };
   }
 
@@ -4602,12 +4632,14 @@ class PublicProfileContentData extends DataClass
           {AccountId? uuidAccountId,
           int? contentIndex,
           ContentId? uuidContentId,
-          bool? contentAccepted}) =>
+          bool? contentAccepted,
+          bool? primaryContent}) =>
       PublicProfileContentData(
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
         contentIndex: contentIndex ?? this.contentIndex,
         uuidContentId: uuidContentId ?? this.uuidContentId,
         contentAccepted: contentAccepted ?? this.contentAccepted,
+        primaryContent: primaryContent ?? this.primaryContent,
       );
   PublicProfileContentData copyWithCompanion(
       PublicProfileContentCompanion data) {
@@ -4624,6 +4656,9 @@ class PublicProfileContentData extends DataClass
       contentAccepted: data.contentAccepted.present
           ? data.contentAccepted.value
           : this.contentAccepted,
+      primaryContent: data.primaryContent.present
+          ? data.primaryContent.value
+          : this.primaryContent,
     );
   }
 
@@ -4633,14 +4668,15 @@ class PublicProfileContentData extends DataClass
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('contentIndex: $contentIndex, ')
           ..write('uuidContentId: $uuidContentId, ')
-          ..write('contentAccepted: $contentAccepted')
+          ..write('contentAccepted: $contentAccepted, ')
+          ..write('primaryContent: $primaryContent')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(uuidAccountId, contentIndex, uuidContentId, contentAccepted);
+  int get hashCode => Object.hash(uuidAccountId, contentIndex, uuidContentId,
+      contentAccepted, primaryContent);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4648,7 +4684,8 @@ class PublicProfileContentData extends DataClass
           other.uuidAccountId == this.uuidAccountId &&
           other.contentIndex == this.contentIndex &&
           other.uuidContentId == this.uuidContentId &&
-          other.contentAccepted == this.contentAccepted);
+          other.contentAccepted == this.contentAccepted &&
+          other.primaryContent == this.primaryContent);
 }
 
 class PublicProfileContentCompanion
@@ -4657,12 +4694,14 @@ class PublicProfileContentCompanion
   final Value<int> contentIndex;
   final Value<ContentId> uuidContentId;
   final Value<bool> contentAccepted;
+  final Value<bool> primaryContent;
   final Value<int> rowid;
   const PublicProfileContentCompanion({
     this.uuidAccountId = const Value.absent(),
     this.contentIndex = const Value.absent(),
     this.uuidContentId = const Value.absent(),
     this.contentAccepted = const Value.absent(),
+    this.primaryContent = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   PublicProfileContentCompanion.insert({
@@ -4670,16 +4709,19 @@ class PublicProfileContentCompanion
     required int contentIndex,
     required ContentId uuidContentId,
     required bool contentAccepted,
+    required bool primaryContent,
     this.rowid = const Value.absent(),
   })  : uuidAccountId = Value(uuidAccountId),
         contentIndex = Value(contentIndex),
         uuidContentId = Value(uuidContentId),
-        contentAccepted = Value(contentAccepted);
+        contentAccepted = Value(contentAccepted),
+        primaryContent = Value(primaryContent);
   static Insertable<PublicProfileContentData> custom({
     Expression<String>? uuidAccountId,
     Expression<int>? contentIndex,
     Expression<String>? uuidContentId,
     Expression<bool>? contentAccepted,
+    Expression<bool>? primaryContent,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -4687,6 +4729,7 @@ class PublicProfileContentCompanion
       if (contentIndex != null) 'content_index': contentIndex,
       if (uuidContentId != null) 'uuid_content_id': uuidContentId,
       if (contentAccepted != null) 'content_accepted': contentAccepted,
+      if (primaryContent != null) 'primary_content': primaryContent,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -4696,12 +4739,14 @@ class PublicProfileContentCompanion
       Value<int>? contentIndex,
       Value<ContentId>? uuidContentId,
       Value<bool>? contentAccepted,
+      Value<bool>? primaryContent,
       Value<int>? rowid}) {
     return PublicProfileContentCompanion(
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
       contentIndex: contentIndex ?? this.contentIndex,
       uuidContentId: uuidContentId ?? this.uuidContentId,
       contentAccepted: contentAccepted ?? this.contentAccepted,
+      primaryContent: primaryContent ?? this.primaryContent,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -4725,6 +4770,9 @@ class PublicProfileContentCompanion
     if (contentAccepted.present) {
       map['content_accepted'] = Variable<bool>(contentAccepted.value);
     }
+    if (primaryContent.present) {
+      map['primary_content'] = Variable<bool>(primaryContent.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -4738,6 +4786,7 @@ class PublicProfileContentCompanion
           ..write('contentIndex: $contentIndex, ')
           ..write('uuidContentId: $uuidContentId, ')
           ..write('contentAccepted: $contentAccepted, ')
+          ..write('primaryContent: $primaryContent, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
