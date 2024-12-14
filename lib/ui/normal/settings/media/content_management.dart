@@ -249,7 +249,7 @@ Widget _statusInfo(
 Widget _rejectionDetailsInfo(BuildContext context, ContentInfoDetailed content) {
   String infoText = "";
   infoText = addRejectedCategoryRow(context, infoText, content.rejectedReasonCategory?.value);
-  infoText = addRejectedDeteailsRow(context, infoText, content.rejectedReasonDetails?.value);
+  infoText = addRejectedDetailsRow(context, infoText, content.rejectedReasonDetails?.value);
   infoText = infoText.trim();
 
   if (infoText.isNotEmpty) {

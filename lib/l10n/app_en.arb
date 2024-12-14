@@ -1387,11 +1387,24 @@
   "@view_profile_screen_my_profile_title": {
     "description": "Title for view profile screen when my profile is viewed"
   },
-  "view_profile_screen_non_accepted_profile_name_info_dialog_text": "Profile name is not yet moderated or it is moderated as denied. Only the first letter is visible to users.",
+  "view_profile_screen_non_accepted_profile_content_info_dialog_text": "All profile pictures are not yet moderated or some picture is moderated as rejected. Only accepted pictures are visible to users.",
+  "@view_profile_screen_non_accepted_profile_content_info_dialog_text": {
+    "description": "View profile screen info dialog text about non-accepted profile content"
+  },
+  "view_profile_screen_non_accepted_profile_content_info_dialog_text_picture_title": "Picture {p0}",
+  "@view_profile_screen_non_accepted_profile_content_info_dialog_text_picture_title": {
+    "description": "Picture title text for dialog about non-accepted profile content",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "view_profile_screen_non_accepted_profile_name_info_dialog_text": "Profile name is not yet moderated or it is moderated as rejected. Only the first letter is visible to users.",
   "@view_profile_screen_non_accepted_profile_name_info_dialog_text": {
     "description": "View profile screen info dialog text about non-accepted profile name"
   },
-  "view_profile_screen_non_accepted_profile_text_info_dialog_text": "Profile text is not yet moderated or it is moderated as denied. Only the first letter is visible to users.",
+  "view_profile_screen_non_accepted_profile_text_info_dialog_text": "Profile text is not yet moderated or it is moderated as rejected. Only the first letter is visible to users.",
   "@view_profile_screen_non_accepted_profile_text_info_dialog_text": {
     "description": "View profile screen info dialog text about non-accepted profile text"
   },

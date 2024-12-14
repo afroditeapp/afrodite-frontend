@@ -1,6 +1,7 @@
 
 
 
+import 'package:app/ui_utils/api.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,7 +61,11 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               SizedBox(
                 height: PROFILE_IMG_HEIGHT,
                 width: constraints.maxWidth,
-                child: ViewProfileImgViewer(profile: widget.profile, heroTag: widget.heroTag),
+                child: ViewProfileImgViewer(
+                  profile: widget.profile,
+                  heroTag: widget.heroTag,
+                  showNonAcceptedImages: widget.profile is MyProfileEntry,
+                ),
               ),
               const Padding(padding: EdgeInsets.all(8)),
               title(context),
@@ -87,6 +92,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   }
 
   Widget title(BuildContext context) {
+    final myProfile = context.read<MyProfileBloc>().state.profile;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
       child: Row(
@@ -104,37 +110,61 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
-                if (!widget.profile.nameAccepted) IconButton(
-                  onPressed: () {
-                    var infoText = context.strings.view_profile_screen_non_accepted_profile_name_info_dialog_text;
-                    final profile = widget.profile;
-                    if (profile is MyProfileEntry) {
-                      final stateText = switch (profile.profileNameModerationState) {
-                        ProfileNameModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
-                        ProfileNameModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
-                        ProfileNameModerationState.waitingBotOrHumanModeration => context.strings.moderation_state_waiting_bot_or_human_moderation,
-                        ProfileNameModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
-                        _ => null,
-                      };
-                      if (stateText != null) {
-                        infoText = "$infoText\n\n${context.strings.moderation_state(stateText)}";
-                      }
-                    }
-                    showInfoDialog(context, infoText);
-                  },
-                  icon: const Icon(Icons.info),
-                )
+                if (!widget.profile.nameAccepted) nameNotAcceptedInfoButton(context),
               ],
             ),
           ),
-          (context.read<MyProfileBloc>().state.profile?.unlimitedLikes ?? false) && widget.profile.unlimitedLikes ?
+          if ((myProfile?.unlimitedLikes ?? false) && widget.profile.unlimitedLikes)
             const Padding(
               padding: EdgeInsets.only(left: 8.0),
               child: Icon(Icons.all_inclusive),
-            ) :
-            const SizedBox.shrink(),
+            ),
+          if (widget.profile.containsNonAcceptedContent()) profileContentNotAcceptedInfoButton(context),
         ],
       ),
+    );
+  }
+
+  Widget nameNotAcceptedInfoButton(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        var infoText = context.strings.view_profile_screen_non_accepted_profile_name_info_dialog_text;
+        final profile = widget.profile;
+        if (profile is MyProfileEntry) {
+          final stateText = switch (profile.profileNameModerationState) {
+            ProfileNameModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
+            ProfileNameModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
+            ProfileNameModerationState.waitingBotOrHumanModeration => context.strings.moderation_state_waiting_bot_or_human_moderation,
+            ProfileNameModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
+            _ => null,
+          };
+          infoText = addModerationStateRow(context, infoText, stateText);
+        }
+        showInfoDialog(context, infoText);
+      },
+      icon: const Icon(Icons.info),
+    );
+  }
+
+  Widget profileContentNotAcceptedInfoButton(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        var infoText = context.strings.view_profile_screen_non_accepted_profile_content_info_dialog_text;
+        final profile = widget.profile;
+        if (profile is MyProfileEntry) {
+          for (final (i, c) in profile.myContent.indexed) {
+            if (c.accepted) {
+              continue;
+            }
+            infoText = "$infoText\n\n${context.strings.view_profile_screen_non_accepted_profile_content_info_dialog_text_picture_title((i + 1).toString())}";
+            infoText = addModerationStateRow(context, infoText, c.state.toUiString(context).toString());
+            infoText = addRejectedCategoryRow(context, infoText, c.rejectedCategory?.value);
+            infoText = addRejectedDetailsRow(context, infoText, c.rejectedDetails?.value);
+          }
+        }
+        showInfoDialog(context, infoText, scrollable: true);
+      },
+      icon: const Icon(Icons.info),
     );
   }
 
@@ -181,7 +211,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
                 };
                 infoText = addModerationStateRow(context, infoText, stateText);
                 infoText = addRejectedCategoryRow(context, infoText, profile.profileTextModerationRejectedCategory?.value);
-                infoText = addRejectedDeteailsRow(context, infoText, profile.profileTextModerationRejectedDetails?.value);
+                infoText = addRejectedDetailsRow(context, infoText, profile.profileTextModerationRejectedDetails?.value);
               }
               showInfoDialog(context, infoText);
             },
@@ -275,9 +305,11 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
 class ViewProfileImgViewer extends StatefulWidget {
   final ProfileEntry profile;
   final ProfileHeroTag? heroTag;
+  final bool showNonAcceptedImages;
   const ViewProfileImgViewer({
     required this.profile,
     this.heroTag,
+    required this.showNonAcceptedImages,
     super.key
   });
 
@@ -288,7 +320,7 @@ class ViewProfileImgViewer extends StatefulWidget {
 class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
   int selectedImg = 0;
 
-  List<ContentId> contentList = [];
+  List<ContentIdAndAccepted> contentList = [];
 
   final PageController pageController = PageController(
     keepPage: false,
@@ -298,7 +330,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
   void initState() {
     super.initState();
 
-    contentList = widget.profile.primaryImgAndPossibleOtherImgs();
+    contentList = widget.profile.content;
   }
 
   @override
@@ -306,7 +338,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.profile != widget.profile) {
-      contentList = widget.profile.primaryImgAndPossibleOtherImgs();
+      contentList = widget.profile.content;
       selectedImg = 0;
     }
   }
@@ -321,9 +353,17 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
   Widget build(BuildContext context) {
     final List<Widget> imgs = [];
     for (int i = 0; i < contentList.length; i++) {
+      if (!widget.showNonAcceptedImages && !contentList[i].accepted) {
+        continue;
+      }
+
       final firstImgHeroTag = 0 == i ? widget.heroTag : null;
-      final img = viewProifleImage(context, widget.profile.uuid, contentList[i], firstImgHeroTag);
+      final img = viewProifleImage(context, widget.profile.uuid, contentList[i].id, firstImgHeroTag);
       imgs.add(img);
+    }
+
+    if (imgs.isEmpty) {
+      return Center(child: Text(context.strings.generic_empty));
     }
 
     return Stack(
@@ -340,7 +380,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: SelectedImgIndicator(selectedImg: selectedImg, imgCount: contentList.length),
+          child: SelectedImgIndicator(selectedImg: selectedImg, imgCount: imgs.length),
         ),
         touchArea(),
       ]

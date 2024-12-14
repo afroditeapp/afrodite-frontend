@@ -66,7 +66,7 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
           } else if (currentSecuritySelfie != null) {
             infoText = addModerationStateRow(context, infoText, currentSecuritySelfie.state.toUiString(context));
             infoText = addRejectedCategoryRow(context, infoText, currentSecuritySelfie.rejectedCategory?.value);
-            infoText = addRejectedDeteailsRow(context, infoText, currentSecuritySelfie.rejectedDetails?.value);
+            infoText = addRejectedDetailsRow(context, infoText, currentSecuritySelfie.rejectedDetails?.value);
             infoText = infoText.trim();
             contentId = currentSecuritySelfie.id;
             saveRequired = false;

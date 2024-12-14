@@ -101,7 +101,7 @@ Future<void> showConfirmDialogAdvanced(
   );
 }
 
-Future<bool?> showInfoDialog(BuildContext context, String text, {PageKey? existingPageToBeRemoved}) {
+Future<bool?> showInfoDialog(BuildContext context, String text, {PageKey? existingPageToBeRemoved, bool scrollable = false}) {
   final pageKey = PageKey();
 
   dialogBuilder(BuildContext context) => AlertDialog(
@@ -114,6 +114,7 @@ Future<bool?> showInfoDialog(BuildContext context, String text, {PageKey? existi
           child: Text(context.strings.generic_close)
         ),
       ],
+      scrollable: scrollable,
     );
 
   if (existingPageToBeRemoved == null) {

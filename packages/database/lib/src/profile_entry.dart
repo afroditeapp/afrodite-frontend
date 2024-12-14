@@ -47,8 +47,8 @@ class ProfileEntry implements PublicContentProvider {
     }
   );
 
-  List<ContentId> primaryImgAndPossibleOtherImgs() {
-    return content.map((v) => v.id).toList();
+  bool containsNonAcceptedContent() {
+    return content.any((v) => !v.accepted);
   }
 
   ContentId? primaryImg() {

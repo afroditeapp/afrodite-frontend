@@ -160,7 +160,7 @@ class _ProfileViewState extends State<ProfileView> {
       String infoText = context.strings.profile_grid_screen_primary_profile_content_is_not_accepted;
       infoText = addModerationStateRow(context, infoText, content.state.toUiString(context));
       infoText = addRejectedCategoryRow(context, infoText, content.rejectedCategory?.value);
-      infoText = addRejectedDeteailsRow(context, infoText, content.rejectedDetails?.value);
+      infoText = addRejectedDetailsRow(context, infoText, content.rejectedDetails?.value);
       message = infoText;
     } else {
       message = context.strings.generic_error;
@@ -177,7 +177,7 @@ class _ProfileViewState extends State<ProfileView> {
       String infoText = context.strings.profile_grid_screen_security_content_is_not_accepted;
       infoText = addModerationStateRow(context, infoText, content.state.toUiString(context));
       infoText = addRejectedCategoryRow(context, infoText, content.rejectedCategory?.value);
-      infoText = addRejectedDeteailsRow(context, infoText, content.rejectedDetails?.value);
+      infoText = addRejectedDetailsRow(context, infoText, content.rejectedDetails?.value);
       message = infoText;
     } else {
       message = context.strings.generic_error;
