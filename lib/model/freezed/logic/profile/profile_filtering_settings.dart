@@ -18,6 +18,10 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
   }) = _ProfileFilteringSettingsData;
 
   bool isSomeFilterEnabled() {
-    return showOnlyFavorites || filteringSettings?.filters.isNotEmpty == true;
+    return showOnlyFavorites ||
+      filteringSettings?.filters.isNotEmpty == true ||
+      filteringSettings?.lastSeenTimeFilter != null ||
+      filteringSettings?.unlimitedLikesFilter != null ||
+      filteringSettings?.maxDistanceKm != null;
   }
 }
