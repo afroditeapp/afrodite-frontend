@@ -139,7 +139,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   // for example if logout is made while in background.
   // (account specific databases solves this?)
 
-  void handleEventToClient(EventToClient event) {
+  Future<void> handleEventToClient(EventToClient event) async {
     log.finer("Event from server: $event");
 
     final chat = repositories.chat;
@@ -153,19 +153,19 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     final latestViewedMessageChanged = event.latestViewedMessageChanged;
     final contentProcessingEvent = event.contentProcessingStateChanged;
     if (event.event == EventType.accountStateChanged && accountState != null) {
-      _saveAccountState(accountState);
+      await _saveAccountState(accountState);
     } else if (event.event == EventType.accountPermissionsChanged && permissions != null) {
-      _savePermissions(permissions);
+      await _savePermissions(permissions);
     } else if (event.event == EventType.profileVisibilityChanged && visibility != null) {
-      _saveProfileVisibility(visibility);
+      await _saveProfileVisibility(visibility);
     } else if (event.event == EventType.accountSyncVersionChanged && accountSyncVersion != null) {
-      _saveAccountSyncVersion(accountSyncVersion);
+      await _saveAccountSyncVersion(accountSyncVersion);
     } else if (event.event == EventType.latestViewedMessageChanged && latestViewedMessageChanged != null) {
       log.finest("Ignoring latest viewed message changed event");
     } else if (event.event == EventType.contentProcessingStateChanged && contentProcessingEvent != null) {
       _contentProcessingStateChanges.add(contentProcessingEvent);
     } else if (event.event == EventType.receivedLikesChanged) {
-      chat.receivedLikesCountRefresh();
+      await chat.receivedLikesCountRefresh();
     } else if (event.event == EventType.receivedBlocksChanged) {
       log.finest("Ignoring received blocks changed event");
     } else if (event.event == EventType.sentLikesChanged) {
@@ -175,17 +175,17 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     } else if (event.event == EventType.matchesChanged) {
       log.finest("Ignoring matches changed event");
     } else if (event.event == EventType.newMessageReceived) {
-      chat.receiveNewMessages();
+      await chat.receiveNewMessages();
     } else if (event.event == EventType.availableProfileAttributesChanged) {
-      profile.receiveProfileAttributes();
+      await profile.receiveProfileAttributes();
     } else if (event.event == EventType.profileChanged) {
-      profile.reloadMyProfile();
+      await profile.reloadMyProfile();
     } else if (event.event == EventType.newsCountChanged) {
-      receiveNewsCount();
+      await receiveNewsCount();
     } else if (event.event == EventType.initialContentModerationCompleted) {
-      media.handleInitialModerationCompletedEvent();
+      await media.handleInitialModerationCompletedEvent();
     } else if (event.event == EventType.mediaContentChanged) {
-      media.reloadMyMediaContent();
+      await media.reloadMyMediaContent();
     } else {
       log.error("Unknown EventToClient");
     }

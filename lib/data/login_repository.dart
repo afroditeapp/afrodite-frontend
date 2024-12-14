@@ -194,13 +194,16 @@ class LoginRepository extends DataRepository {
       _serverConnectionManagerStateEvents.add(ApiManagerState.waitingRefreshToken);
     }
 
-    _serverEvents.listen((event) {
-      switch (event) {
-        case EventToClientContainer e: {
-          repositories.account.handleEventToClient(e.event);
+    _serverEvents
+      .asyncMap((event) async {
+        switch (event) {
+          case EventToClientContainer e: {
+            await repositories.account.handleEventToClient(e.event);
+          }
         }
-      }
-    });
+        return;
+      })
+      .listen((_) {});
 
     // Automatic connect based on app visibility
     AppVisibilityProvider.getInstance()
