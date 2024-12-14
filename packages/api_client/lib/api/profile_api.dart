@@ -356,12 +356,12 @@ class ProfileApi {
     return null;
   }
 
-  /// Get current profile attribute filter values.
+  /// Get current profile filtering settings.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getProfileAttributeFiltersWithHttpInfo() async {
+  Future<Response> getProfileFilteringSettingsWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/AL531AoIDRcTSWC-pdxcexf6tOM';
+    final path = r'/Hyav-PRHLoEreB67cVG_WbASOFI';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -384,9 +384,9 @@ class ProfileApi {
     );
   }
 
-  /// Get current profile attribute filter values.
-  Future<ProfileAttributeFilterList?> getProfileAttributeFilters() async {
-    final response = await getProfileAttributeFiltersWithHttpInfo();
+  /// Get current profile filtering settings.
+  Future<GetProfileFilteringSettings?> getProfileFilteringSettings() async {
+    final response = await getProfileFilteringSettingsWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -394,7 +394,7 @@ class ProfileApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileAttributeFilterList',) as ProfileAttributeFilterList;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileFilteringSettings',) as GetProfileFilteringSettings;
     
     }
     return null;
@@ -752,19 +752,19 @@ class ProfileApi {
     }
   }
 
-  /// Set profile attribute filter values.
+  /// Set profile filtering settings.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [ProfileAttributeFilterListUpdate] profileAttributeFilterListUpdate (required):
-  Future<Response> postProfileAttributeFiltersWithHttpInfo(ProfileAttributeFilterListUpdate profileAttributeFilterListUpdate,) async {
+  /// * [ProfileFilteringSettingsUpdate] profileFilteringSettingsUpdate (required):
+  Future<Response> postProfileFilteringSettingsWithHttpInfo(ProfileFilteringSettingsUpdate profileFilteringSettingsUpdate,) async {
     // ignore: prefer_const_declarations
-    final path = r'/AL531AoIDRcTSWC-pdxcexf6tOM';
+    final path = r'/Hyav-PRHLoEreB67cVG_WbASOFI';
 
     // ignore: prefer_final_locals
-    Object? postBody = profileAttributeFilterListUpdate;
+    Object? postBody = profileFilteringSettingsUpdate;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -784,13 +784,13 @@ class ProfileApi {
     );
   }
 
-  /// Set profile attribute filter values.
+  /// Set profile filtering settings.
   ///
   /// Parameters:
   ///
-  /// * [ProfileAttributeFilterListUpdate] profileAttributeFilterListUpdate (required):
-  Future<void> postProfileAttributeFilters(ProfileAttributeFilterListUpdate profileAttributeFilterListUpdate,) async {
-    final response = await postProfileAttributeFiltersWithHttpInfo(profileAttributeFilterListUpdate,);
+  /// * [ProfileFilteringSettingsUpdate] profileFilteringSettingsUpdate (required):
+  Future<void> postProfileFilteringSettings(ProfileFilteringSettingsUpdate profileFilteringSettingsUpdate,) async {
+    final response = await postProfileFilteringSettingsWithHttpInfo(profileFilteringSettingsUpdate,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

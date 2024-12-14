@@ -1,5 +1,5 @@
 
-import 'package:openapi/api.dart' show ProfileVisibility, Location, ProfileAttributeFilterList, SearchGroups, ProfileSearchAgeRange, LastSeenTimeFilter;
+import 'package:openapi/api.dart' show ProfileVisibility, Location, GetProfileFilteringSettings, SearchGroups, ProfileSearchAgeRange, LastSeenTimeFilter;
 import 'package:drift/drift.dart';
 
 import 'package:database/src/utils.dart';
@@ -31,7 +31,7 @@ class DaoProfileSettings extends DatabaseAccessor<AccountDatabase> with _$DaoPro
     );
   }
 
-  Future<void> updateProfileAttributeFilters(ProfileAttributeFilterList? value) async {
+  Future<void> updateProfileFilteringSettings(GetProfileFilteringSettings? value) async {
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
@@ -77,7 +77,7 @@ class DaoProfileSettings extends DatabaseAccessor<AccountDatabase> with _$DaoPro
       })
       .watchSingleOrNull();
 
-  Stream<ProfileAttributeFilterList?> watchProfileAttributeFilters() =>
+  Stream<GetProfileFilteringSettings?> watchProfileFilteringSettings() =>
     watchColumn((r) => r.jsonProfileAttributeFilters?.toProfileAttributeFilterList());
 
   Stream<int?> watchProfileSearchAgeRangeMin() =>

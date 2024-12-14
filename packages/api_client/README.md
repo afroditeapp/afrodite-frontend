@@ -149,7 +149,7 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**getLocation**](doc//ProfileApi.md#getlocation) | **GET** /lf5KMD9dBSVuaVcwjm4TB0d7bfY | Get location for account which makes this request.
 *ProfileApi* | [**getMyProfile**](doc//ProfileApi.md#getmyprofile) | **GET** /iu25rmmvUzADXhW5SsP_DBGY2_w | Get my profile
 *ProfileApi* | [**getProfile**](doc//ProfileApi.md#getprofile) | **GET** /5i55ZcY0jIPD7B6pyyridKY0j0Q/{aid} | Get account's current profile.
-*ProfileApi* | [**getProfileAttributeFilters**](doc//ProfileApi.md#getprofileattributefilters) | **GET** /AL531AoIDRcTSWC-pdxcexf6tOM | Get current profile attribute filter values.
+*ProfileApi* | [**getProfileFilteringSettings**](doc//ProfileApi.md#getprofilefilteringsettings) | **GET** /Hyav-PRHLoEreB67cVG_WbASOFI | Get current profile filtering settings.
 *ProfileApi* | [**getProfileFromDatabaseDebugModeBenchmark**](doc//ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /XDTSz35S_5tOKIsSpDITOc46MR4/{aid} | Get account's current profile from database. Debug mode must be enabled that route can be used.
 *ProfileApi* | [**getProfileStatistics**](doc//ProfileApi.md#getprofilestatistics) | **GET** /WJCHYdLNpydn1OkJNyZKKksc4Yw | Non default values for [model::GetProfileStatisticsParams] requires [model::Permissions::admin_profile_statistics].
 *ProfileApi* | [**getSearchAgeRange**](doc//ProfileApi.md#getsearchagerange) | **GET** /xTy-zcnl0LQlfPKQalAEnWQQ-rw | Get account's current search age range
@@ -157,7 +157,7 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**postFavoriteProfile**](doc//ProfileApi.md#postfavoriteprofile) | **POST** /yD1PtVhVvdk-usEran42JmCTFVQ | Add new favorite profile
 *ProfileApi* | [**postGetNextProfilePage**](doc//ProfileApi.md#postgetnextprofilepage) | **POST** /_XRgLHtmWtbgW3ZAlgfTH5bs6bE | Post (updates iterator) to get next page of profile list.
 *ProfileApi* | [**postProfile**](doc//ProfileApi.md#postprofile) | **POST** /5i55ZcY0jIPD7B6pyyridKY0j0Q | Update profile information.
-*ProfileApi* | [**postProfileAttributeFilters**](doc//ProfileApi.md#postprofileattributefilters) | **POST** /AL531AoIDRcTSWC-pdxcexf6tOM | Set profile attribute filter values.
+*ProfileApi* | [**postProfileFilteringSettings**](doc//ProfileApi.md#postprofilefilteringsettings) | **POST** /Hyav-PRHLoEreB67cVG_WbASOFI | Set profile filtering settings.
 *ProfileApi* | [**postProfileToDatabaseDebugModeBenchmark**](doc//ProfileApi.md#postprofiletodatabasedebugmodebenchmark) | **POST** /XDTSz35S_5tOKIsSpDITOc46MR4 | Post account's current profile directly to database. Debug mode must be enabled that route can be used.
 *ProfileApi* | [**postResetProfilePaging**](doc//ProfileApi.md#postresetprofilepaging) | **POST** /uUYIl9C8DoXwTj1icArj0S4RTFI | Reset profile paging.
 *ProfileApi* | [**postSearchAgeRange**](doc//ProfileApi.md#postsearchagerange) | **POST** /xTy-zcnl0LQlfPKQalAEnWQQ-rw | Set account's current search age range
@@ -230,6 +230,7 @@ Class | Method | HTTP request | Description
  - [GetNewsItemResult](doc//GetNewsItemResult.md)
  - [GetProfileContentPendingModerationList](doc//GetProfileContentPendingModerationList.md)
  - [GetProfileContentResult](doc//GetProfileContentResult.md)
+ - [GetProfileFilteringSettings](doc//GetProfileFilteringSettings.md)
  - [GetProfileNamePendingModerationList](doc//GetProfileNamePendingModerationList.md)
  - [GetProfileResult](doc//GetProfileResult.md)
  - [GetProfileStatisticsHistoryResult](doc//GetProfileStatisticsHistoryResult.md)
@@ -248,6 +249,7 @@ Class | Method | HTTP request | Description
  - [MatchesIteratorSessionId](doc//MatchesIteratorSessionId.md)
  - [MatchesPage](doc//MatchesPage.md)
  - [MatchesSyncVersion](doc//MatchesSyncVersion.md)
+ - [MaxDistanceKm](doc//MaxDistanceKm.md)
  - [MediaContentSyncVersion](doc//MediaContentSyncVersion.md)
  - [MediaContentType](doc//MediaContentType.md)
  - [MessageNumber](doc//MessageNumber.md)
@@ -278,8 +280,6 @@ Class | Method | HTTP request | Description
  - [PostModerateProfileText](doc//PostModerateProfileText.md)
  - [Profile](doc//Profile.md)
  - [ProfileAgeCounts](doc//ProfileAgeCounts.md)
- - [ProfileAttributeFilterList](doc//ProfileAttributeFilterList.md)
- - [ProfileAttributeFilterListUpdate](doc//ProfileAttributeFilterListUpdate.md)
  - [ProfileAttributeFilterValue](doc//ProfileAttributeFilterValue.md)
  - [ProfileAttributeFilterValueUpdate](doc//ProfileAttributeFilterValueUpdate.md)
  - [ProfileAttributeValue](doc//ProfileAttributeValue.md)
@@ -291,6 +291,7 @@ Class | Method | HTTP request | Description
  - [ProfileContentModerationRejectedReasonDetails](doc//ProfileContentModerationRejectedReasonDetails.md)
  - [ProfileContentPendingModeration](doc//ProfileContentPendingModeration.md)
  - [ProfileContentVersion](doc//ProfileContentVersion.md)
+ - [ProfileFilteringSettingsUpdate](doc//ProfileFilteringSettingsUpdate.md)
  - [ProfileIteratorSessionId](doc//ProfileIteratorSessionId.md)
  - [ProfileLink](doc//ProfileLink.md)
  - [ProfileNameModerationState](doc//ProfileNameModerationState.md)

@@ -14,15 +14,15 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
   factory ProfileFilteringSettingsData({
     @Default(UpdateIdle()) UpdateState updateState,
     @Default(false) bool showOnlyFavorites,
-    ProfileAttributeFilterList? attributeFilters,
+    GetProfileFilteringSettings? filteringSettings,
   }) = _ProfileFilteringSettingsData;
 
   bool isSomeFilterEnabled() {
-    return showOnlyFavorites || attributeFilters?.filters.isNotEmpty == true;
+    return showOnlyFavorites || filteringSettings?.filters.isNotEmpty == true;
   }
 
   List<ProfileAttributeFilterValueUpdate> currentFiltersCopy() {
-    return attributeFilters?.filters.map((e) => ProfileAttributeFilterValueUpdate(
+    return filteringSettings?.filters.map((e) => ProfileAttributeFilterValueUpdate(
       acceptMissingAttribute: e.acceptMissingAttribute,
       filterValues: [...e.filterValues],
       id: e.id,

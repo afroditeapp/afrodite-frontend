@@ -33,9 +33,9 @@ class NewFilterFavoriteProfilesValue extends ProfileFilteringSettingsEvent {
   NewFilterFavoriteProfilesValue(this.filterFavorites);
 }
 
-class NewProfileAttributeFilters extends ProfileFilteringSettingsEvent {
-  final ProfileAttributeFilterList? value;
-  NewProfileAttributeFilters(this.value);
+class NewProfileFilteringSettings extends ProfileFilteringSettingsEvent {
+  final GetProfileFilteringSettings? value;
+  NewProfileFilteringSettings(this.value);
 }
 
 class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, ProfileFilteringSettingsData> with ActionRunner {
@@ -43,7 +43,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
   final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
 
   StreamSubscription<bool?>? _filterFavoritesSubscription;
-  StreamSubscription<ProfileAttributeFilterList?>? _attributeFiltersSubscription;
+  StreamSubscription<GetProfileFilteringSettings?>? _profileFilteringSettingsSubscription;
 
   ProfileFilteringSettingsBloc() : super(ProfileFilteringSettingsData()) {
     on<SaveNewFilterSettings>((data, emit) async {
@@ -63,7 +63,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
         await profile.changeProfileFilteringSettings(data.showOnlyFavorites);
 
         if (
-          await profile.updateAttributeFilters(
+          await profile.updateProfileFilteringSettings(
             data.attributeFilters,
             data.lastSeenTimeFilter,
             data.unlimitedLikesFilter,
@@ -88,22 +88,22 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
     on<NewFilterFavoriteProfilesValue>((data, emit) async {
       emit(state.copyWith(showOnlyFavorites: data.filterFavorites));
     });
-    on<NewProfileAttributeFilters>((data, emit) async {
-      emit(state.copyWith(attributeFilters: data.value));
+    on<NewProfileFilteringSettings>((data, emit) async {
+      emit(state.copyWith(filteringSettings: data.value));
     });
 
     _filterFavoritesSubscription = db.accountStream((db) => db.watchProfileFilterFavorites()).listen((event) {
       add(NewFilterFavoriteProfilesValue(event ?? false));
     });
-    _attributeFiltersSubscription = db.accountStream((db) => db.daoProfileSettings.watchProfileAttributeFilters()).listen((event) {
-      add(NewProfileAttributeFilters(event));
+    _profileFilteringSettingsSubscription = db.accountStream((db) => db.daoProfileSettings.watchProfileFilteringSettings()).listen((event) {
+      add(NewProfileFilteringSettings(event));
     });
   }
 
   @override
   Future<void> close() async {
     await _filterFavoritesSubscription?.cancel();
-    await _attributeFiltersSubscription?.cancel();
+    await _profileFilteringSettingsSubscription?.cancel();
     await super.close();
   }
 }

@@ -79,6 +79,7 @@ lib/model/get_my_profile_result.dart
 lib/model/get_news_item_result.dart
 lib/model/get_profile_content_pending_moderation_list.dart
 lib/model/get_profile_content_result.dart
+lib/model/get_profile_filtering_settings.dart
 lib/model/get_profile_name_pending_moderation_list.dart
 lib/model/get_profile_result.dart
 lib/model/get_profile_statistics_history_result.dart
@@ -97,6 +98,7 @@ lib/model/login_result.dart
 lib/model/matches_iterator_session_id.dart
 lib/model/matches_page.dart
 lib/model/matches_sync_version.dart
+lib/model/max_distance_km.dart
 lib/model/media_content_sync_version.dart
 lib/model/media_content_type.dart
 lib/model/message_number.dart
@@ -127,8 +129,6 @@ lib/model/post_moderate_profile_name.dart
 lib/model/post_moderate_profile_text.dart
 lib/model/profile.dart
 lib/model/profile_age_counts.dart
-lib/model/profile_attribute_filter_list.dart
-lib/model/profile_attribute_filter_list_update.dart
 lib/model/profile_attribute_filter_value.dart
 lib/model/profile_attribute_filter_value_update.dart
 lib/model/profile_attribute_value.dart
@@ -140,6 +140,7 @@ lib/model/profile_content_moderation_rejected_reason_category.dart
 lib/model/profile_content_moderation_rejected_reason_details.dart
 lib/model/profile_content_pending_moderation.dart
 lib/model/profile_content_version.dart
+lib/model/profile_filtering_settings_update.dart
 lib/model/profile_iterator_session_id.dart
 lib/model/profile_link.dart
 lib/model/profile_name_moderation_state.dart

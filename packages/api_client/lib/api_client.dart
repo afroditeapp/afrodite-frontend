@@ -298,6 +298,8 @@ class ApiClient {
           return GetProfileContentPendingModerationList.fromJson(value);
         case 'GetProfileContentResult':
           return GetProfileContentResult.fromJson(value);
+        case 'GetProfileFilteringSettings':
+          return GetProfileFilteringSettings.fromJson(value);
         case 'GetProfileNamePendingModerationList':
           return GetProfileNamePendingModerationList.fromJson(value);
         case 'GetProfileResult':
@@ -334,6 +336,8 @@ class ApiClient {
           return MatchesPage.fromJson(value);
         case 'MatchesSyncVersion':
           return MatchesSyncVersion.fromJson(value);
+        case 'MaxDistanceKm':
+          return MaxDistanceKm.fromJson(value);
         case 'MediaContentSyncVersion':
           return MediaContentSyncVersion.fromJson(value);
         case 'MediaContentType':
@@ -394,10 +398,6 @@ class ApiClient {
           return Profile.fromJson(value);
         case 'ProfileAgeCounts':
           return ProfileAgeCounts.fromJson(value);
-        case 'ProfileAttributeFilterList':
-          return ProfileAttributeFilterList.fromJson(value);
-        case 'ProfileAttributeFilterListUpdate':
-          return ProfileAttributeFilterListUpdate.fromJson(value);
         case 'ProfileAttributeFilterValue':
           return ProfileAttributeFilterValue.fromJson(value);
         case 'ProfileAttributeFilterValueUpdate':
@@ -420,6 +420,8 @@ class ApiClient {
           return ProfileContentPendingModeration.fromJson(value);
         case 'ProfileContentVersion':
           return ProfileContentVersion.fromJson(value);
+        case 'ProfileFilteringSettingsUpdate':
+          return ProfileFilteringSettingsUpdate.fromJson(value);
         case 'ProfileIteratorSessionId':
           return ProfileIteratorSessionId.fromJson(value);
         case 'ProfileLink':

@@ -49,8 +49,8 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
     widget.editProfileFilteringSettingsBloc.add(ResetStateWith(
       widget.profileFilteringSettingsBloc.state.showOnlyFavorites,
       initialFilters,
-      widget.profileFilteringSettingsBloc.state.attributeFilters?.lastSeenTimeFilter,
-      widget.profileFilteringSettingsBloc.state.attributeFilters?.unlimitedLikesFilter,
+      widget.profileFilteringSettingsBloc.state.filteringSettings?.lastSeenTimeFilter,
+      widget.profileFilteringSettingsBloc.state.filteringSettings?.unlimitedLikesFilter,
     ));
   }
 
@@ -67,8 +67,8 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
     final currentSettings = widget.profileFilteringSettingsBloc.state;
     if (
       currentSettings.showOnlyFavorites != editedSettings.showOnlyFavorites ||
-      currentSettings.attributeFilters?.lastSeenTimeFilter != editedSettings.lastSeenTimeFilter ||
-      currentSettings.attributeFilters?.unlimitedLikesFilter != editedSettings.unlimitedLikesFilter
+      currentSettings.filteringSettings?.lastSeenTimeFilter != editedSettings.lastSeenTimeFilter ||
+      currentSettings.filteringSettings?.unlimitedLikesFilter != editedSettings.unlimitedLikesFilter
     ) {
       return true;
     }

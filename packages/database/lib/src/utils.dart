@@ -116,8 +116,8 @@ class JsonString {
     return AvailableProfileAttributes.fromJson(jsonMap);
   }
 
-  ProfileAttributeFilterList? toProfileAttributeFilterList() {
-    return ProfileAttributeFilterList.fromJson(jsonMap);
+  GetProfileFilteringSettings? toProfileAttributeFilterList() {
+    return GetProfileFilteringSettings.fromJson(jsonMap);
   }
 
   SearchGroups? toSearchGroups() {
@@ -142,7 +142,7 @@ extension AvailableProfileAttributesJson on AvailableProfileAttributes {
   }
 }
 
-extension ProfileAttributeFilterListJson on ProfileAttributeFilterList {
+extension GetProfileFilteringSettingsJson on GetProfileFilteringSettings {
   JsonString toJsonString() {
     return JsonString(toJson());
   }

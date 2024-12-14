@@ -70,7 +70,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   @override
   Future<Result<void, void>> onLoginDataSync() async {
     return await reloadLocation()
-      .andThen((_) => reloadAttributeFilters())
+      .andThen((_) => reloadProfileFilteringSettings())
       .andThen((_) => reloadSearchAgeRange())
       .andThen((_) => reloadSearchGroups())
       .andThen((_) async {
@@ -92,9 +92,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         await reloadLocation();
       }
 
-      final attributeFilters = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileAttributeFilters()).ok();
+      final attributeFilters = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileFilteringSettings()).ok();
       if (attributeFilters == null) {
-        await reloadAttributeFilters();
+        await reloadProfileFilteringSettings();
       }
 
       final searchAgeRangeMin = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileSearchAgeRangeMin()).ok();
@@ -125,7 +125,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   Future<void> onInitialSetupComplete() async {
     await reloadLocation();
     await reloadMyProfile();
-    await reloadAttributeFilters();
+    await reloadProfileFilteringSettings();
     await reloadSearchAgeRange();
     await reloadSearchGroups();
     // The account state might still be InitialSetup as events from server
@@ -307,26 +307,26 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       ));
   }
 
-  Future<Result<void, void>> reloadAttributeFilters() async {
-    return await _api.profile((api) => api.getProfileAttributeFilters())
+  Future<Result<void, void>> reloadProfileFilteringSettings() async {
+    return await _api.profile((api) => api.getProfileFilteringSettings())
       .emptyErr()
       .andThen((f) => db.accountAction(
-        (db) => db.daoProfileSettings.updateProfileAttributeFilters(f),
+        (db) => db.daoProfileSettings.updateProfileFilteringSettings(f),
       ));
   }
 
-  Future<Result<void, void>> updateAttributeFilters(
+  Future<Result<void, void>> updateProfileFilteringSettings(
     List<ProfileAttributeFilterValueUpdate> newValues,
     LastSeenTimeFilter? lastSeenTimeFilter,
     bool? unlimitedLikesFilter,
   ) async {
-    final update = ProfileAttributeFilterListUpdate(
+    final update = ProfileFilteringSettingsUpdate(
       filters: newValues,
       lastSeenTimeFilter: lastSeenTimeFilter,
       unlimitedLikesFilter: unlimitedLikesFilter,
     );
-    return await _api.profileAction((api) => api.postProfileAttributeFilters(update))
-      .onOk(() => reloadAttributeFilters())
+    return await _api.profileAction((api) => api.postProfileFilteringSettings(update))
+      .onOk(() => reloadProfileFilteringSettings())
       .empty();
   }
 

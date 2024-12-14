@@ -125,8 +125,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
       imgUpdate,
       unlimitedLikes: s.unlimitedLikes,
       currentAttributeFilters: filteringState.currentFiltersCopy(),
-      currentLastSeenTimeFilter: filteringState.attributeFilters?.lastSeenTimeFilter,
-      currentUnlimitedLikesFilter: filteringState.attributeFilters?.unlimitedLikesFilter,
+      currentLastSeenTimeFilter: filteringState.filteringSettings?.lastSeenTimeFilter,
+      currentUnlimitedLikesFilter: filteringState.filteringSettings?.unlimitedLikesFilter,
     ));
   }
 

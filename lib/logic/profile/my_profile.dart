@@ -92,7 +92,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
           data.currentUnlimitedLikesFilter != null
         ) {
           if (
-            await profile.updateAttributeFilters(
+            await profile.updateProfileFilteringSettings(
               data.currentAttributeFilters,
               data.currentLastSeenTimeFilter,
               null,
