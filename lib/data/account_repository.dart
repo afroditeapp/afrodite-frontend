@@ -184,6 +184,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       receiveNewsCount();
     } else if (event.event == EventType.initialContentModerationCompleted) {
       media.handleInitialModerationCompletedEvent();
+    } else if (event.event == EventType.mediaContentChanged) {
+      media.reloadMyMediaContent();
     } else {
       log.error("Unknown EventToClient");
     }
