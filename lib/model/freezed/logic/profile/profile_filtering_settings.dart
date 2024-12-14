@@ -20,12 +20,4 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
   bool isSomeFilterEnabled() {
     return showOnlyFavorites || filteringSettings?.filters.isNotEmpty == true;
   }
-
-  List<ProfileAttributeFilterValueUpdate> currentFiltersCopy() {
-    return filteringSettings?.filters.map((e) => ProfileAttributeFilterValueUpdate(
-      acceptMissingAttribute: e.acceptMissingAttribute,
-      filterValues: [...e.filterValues],
-      id: e.id,
-    )).toList() ?? [];
-  }
 }

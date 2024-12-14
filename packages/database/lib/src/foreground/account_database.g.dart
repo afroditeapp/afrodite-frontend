@@ -332,15 +332,15 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               'json_search_groups', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<JsonString?>($AccountTable.$converterjsonSearchGroups);
-  static const VerificationMeta _jsonProfileAttributeFiltersMeta =
-      const VerificationMeta('jsonProfileAttributeFilters');
+  static const VerificationMeta _jsonProfileFilteringSettingsMeta =
+      const VerificationMeta('jsonProfileFilteringSettings');
   @override
   late final GeneratedColumnWithTypeConverter<JsonString?, String>
-      jsonProfileAttributeFilters = GeneratedColumn<String>(
-              'json_profile_attribute_filters', aliasedName, true,
+      jsonProfileFilteringSettings = GeneratedColumn<String>(
+              'json_profile_filtering_settings', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<JsonString?>(
-              $AccountTable.$converterjsonProfileAttributeFilters);
+              $AccountTable.$converterjsonProfileFilteringSettings);
   static const VerificationMeta _profileSearchAgeRangeMinMeta =
       const VerificationMeta('profileSearchAgeRangeMin');
   @override
@@ -353,24 +353,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<int> profileSearchAgeRangeMax =
       GeneratedColumn<int>('profile_search_age_range_max', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _profileLastSeenTimeFilterMeta =
-      const VerificationMeta('profileLastSeenTimeFilter');
-  @override
-  late final GeneratedColumnWithTypeConverter<LastSeenTimeFilter?, int>
-      profileLastSeenTimeFilter = GeneratedColumn<int>(
-              'profile_last_seen_time_filter', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<LastSeenTimeFilter?>(
-              $AccountTable.$converterprofileLastSeenTimeFilter);
-  static const VerificationMeta _profileUnlimitedLikesFilterMeta =
-      const VerificationMeta('profileUnlimitedLikesFilter');
-  @override
-  late final GeneratedColumn<bool> profileUnlimitedLikesFilter =
-      GeneratedColumn<bool>('profile_unlimited_likes_filter', aliasedName, true,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("profile_unlimited_likes_filter" IN (0, 1))'));
   static const VerificationMeta _accountEmailAddressMeta =
       const VerificationMeta('accountEmailAddress');
   @override
@@ -540,11 +522,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         profileLocationLongitude,
         jsonProfileVisibility,
         jsonSearchGroups,
-        jsonProfileAttributeFilters,
+        jsonProfileFilteringSettings,
         profileSearchAgeRangeMin,
         profileSearchAgeRangeMax,
-        profileLastSeenTimeFilter,
-        profileUnlimitedLikesFilter,
         accountEmailAddress,
         refreshTokenAccount,
         refreshTokenMedia,
@@ -744,7 +724,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         _jsonProfileVisibilityMeta, const VerificationResult.success());
     context.handle(_jsonSearchGroupsMeta, const VerificationResult.success());
     context.handle(
-        _jsonProfileAttributeFiltersMeta, const VerificationResult.success());
+        _jsonProfileFilteringSettingsMeta, const VerificationResult.success());
     if (data.containsKey('profile_search_age_range_min')) {
       context.handle(
           _profileSearchAgeRangeMinMeta,
@@ -758,15 +738,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           profileSearchAgeRangeMax.isAcceptableOrUnknown(
               data['profile_search_age_range_max']!,
               _profileSearchAgeRangeMaxMeta));
-    }
-    context.handle(
-        _profileLastSeenTimeFilterMeta, const VerificationResult.success());
-    if (data.containsKey('profile_unlimited_likes_filter')) {
-      context.handle(
-          _profileUnlimitedLikesFilterMeta,
-          profileUnlimitedLikesFilter.isAcceptableOrUnknown(
-              data['profile_unlimited_likes_filter']!,
-              _profileUnlimitedLikesFilterMeta));
     }
     if (data.containsKey('account_email_address')) {
       context.handle(
@@ -982,23 +953,16 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       jsonSearchGroups: $AccountTable.$converterjsonSearchGroups.fromSql(
           attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}json_search_groups'])),
-      jsonProfileAttributeFilters: $AccountTable
-          .$converterjsonProfileAttributeFilters
+      jsonProfileFilteringSettings: $AccountTable
+          .$converterjsonProfileFilteringSettings
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}json_profile_attribute_filters'])),
+              data['${effectivePrefix}json_profile_filtering_settings'])),
       profileSearchAgeRangeMin: attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}profile_search_age_range_min']),
       profileSearchAgeRangeMax: attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}profile_search_age_range_max']),
-      profileLastSeenTimeFilter: $AccountTable
-          .$converterprofileLastSeenTimeFilter
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}profile_last_seen_time_filter'])),
-      profileUnlimitedLikesFilter: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}profile_unlimited_likes_filter']),
       accountEmailAddress: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}account_email_address']),
       refreshTokenAccount: attachedDatabase.typeMapping.read(
@@ -1101,11 +1065,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<JsonString?, String?> $converterjsonSearchGroups =
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
   static TypeConverter<JsonString?, String?>
-      $converterjsonProfileAttributeFilters =
+      $converterjsonProfileFilteringSettings =
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
-  static TypeConverter<LastSeenTimeFilter?, int?>
-      $converterprofileLastSeenTimeFilter =
-      const NullAwareTypeConverter.wrap(LastSeenTimeFilterConverter());
   static TypeConverter<PrivateKeyData?, String?> $converterprivateKeyData =
       const NullAwareTypeConverter.wrap(PrivateKeyDataConverter());
   static TypeConverter<PublicKeyData?, String?> $converterpublicKeyData =
@@ -1163,11 +1124,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final double? profileLocationLongitude;
   final EnumString? jsonProfileVisibility;
   final JsonString? jsonSearchGroups;
-  final JsonString? jsonProfileAttributeFilters;
+  final JsonString? jsonProfileFilteringSettings;
   final int? profileSearchAgeRangeMin;
   final int? profileSearchAgeRangeMax;
-  final LastSeenTimeFilter? profileLastSeenTimeFilter;
-  final bool? profileUnlimitedLikesFilter;
   final String? accountEmailAddress;
   final String? refreshTokenAccount;
   final String? refreshTokenMedia;
@@ -1226,11 +1185,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.profileLocationLongitude,
       this.jsonProfileVisibility,
       this.jsonSearchGroups,
-      this.jsonProfileAttributeFilters,
+      this.jsonProfileFilteringSettings,
       this.profileSearchAgeRangeMin,
       this.profileSearchAgeRangeMax,
-      this.profileLastSeenTimeFilter,
-      this.profileUnlimitedLikesFilter,
       this.accountEmailAddress,
       this.refreshTokenAccount,
       this.refreshTokenMedia,
@@ -1395,10 +1352,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['json_search_groups'] = Variable<String>(
           $AccountTable.$converterjsonSearchGroups.toSql(jsonSearchGroups));
     }
-    if (!nullToAbsent || jsonProfileAttributeFilters != null) {
-      map['json_profile_attribute_filters'] = Variable<String>($AccountTable
-          .$converterjsonProfileAttributeFilters
-          .toSql(jsonProfileAttributeFilters));
+    if (!nullToAbsent || jsonProfileFilteringSettings != null) {
+      map['json_profile_filtering_settings'] = Variable<String>($AccountTable
+          .$converterjsonProfileFilteringSettings
+          .toSql(jsonProfileFilteringSettings));
     }
     if (!nullToAbsent || profileSearchAgeRangeMin != null) {
       map['profile_search_age_range_min'] =
@@ -1407,15 +1364,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     if (!nullToAbsent || profileSearchAgeRangeMax != null) {
       map['profile_search_age_range_max'] =
           Variable<int>(profileSearchAgeRangeMax);
-    }
-    if (!nullToAbsent || profileLastSeenTimeFilter != null) {
-      map['profile_last_seen_time_filter'] = Variable<int>($AccountTable
-          .$converterprofileLastSeenTimeFilter
-          .toSql(profileLastSeenTimeFilter));
-    }
-    if (!nullToAbsent || profileUnlimitedLikesFilter != null) {
-      map['profile_unlimited_likes_filter'] =
-          Variable<bool>(profileUnlimitedLikesFilter);
     }
     if (!nullToAbsent || accountEmailAddress != null) {
       map['account_email_address'] = Variable<String>(accountEmailAddress);
@@ -1596,24 +1544,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       jsonSearchGroups: jsonSearchGroups == null && nullToAbsent
           ? const Value.absent()
           : Value(jsonSearchGroups),
-      jsonProfileAttributeFilters:
-          jsonProfileAttributeFilters == null && nullToAbsent
+      jsonProfileFilteringSettings:
+          jsonProfileFilteringSettings == null && nullToAbsent
               ? const Value.absent()
-              : Value(jsonProfileAttributeFilters),
+              : Value(jsonProfileFilteringSettings),
       profileSearchAgeRangeMin: profileSearchAgeRangeMin == null && nullToAbsent
           ? const Value.absent()
           : Value(profileSearchAgeRangeMin),
       profileSearchAgeRangeMax: profileSearchAgeRangeMax == null && nullToAbsent
           ? const Value.absent()
           : Value(profileSearchAgeRangeMax),
-      profileLastSeenTimeFilter:
-          profileLastSeenTimeFilter == null && nullToAbsent
-              ? const Value.absent()
-              : Value(profileLastSeenTimeFilter),
-      profileUnlimitedLikesFilter:
-          profileUnlimitedLikesFilter == null && nullToAbsent
-              ? const Value.absent()
-              : Value(profileUnlimitedLikesFilter),
       accountEmailAddress: accountEmailAddress == null && nullToAbsent
           ? const Value.absent()
           : Value(accountEmailAddress),
@@ -1752,16 +1692,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<EnumString?>(json['jsonProfileVisibility']),
       jsonSearchGroups:
           serializer.fromJson<JsonString?>(json['jsonSearchGroups']),
-      jsonProfileAttributeFilters:
-          serializer.fromJson<JsonString?>(json['jsonProfileAttributeFilters']),
+      jsonProfileFilteringSettings: serializer
+          .fromJson<JsonString?>(json['jsonProfileFilteringSettings']),
       profileSearchAgeRangeMin:
           serializer.fromJson<int?>(json['profileSearchAgeRangeMin']),
       profileSearchAgeRangeMax:
           serializer.fromJson<int?>(json['profileSearchAgeRangeMax']),
-      profileLastSeenTimeFilter: serializer
-          .fromJson<LastSeenTimeFilter?>(json['profileLastSeenTimeFilter']),
-      profileUnlimitedLikesFilter:
-          serializer.fromJson<bool?>(json['profileUnlimitedLikesFilter']),
       accountEmailAddress:
           serializer.fromJson<String?>(json['accountEmailAddress']),
       refreshTokenAccount:
@@ -1863,16 +1799,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'jsonProfileVisibility':
           serializer.toJson<EnumString?>(jsonProfileVisibility),
       'jsonSearchGroups': serializer.toJson<JsonString?>(jsonSearchGroups),
-      'jsonProfileAttributeFilters':
-          serializer.toJson<JsonString?>(jsonProfileAttributeFilters),
+      'jsonProfileFilteringSettings':
+          serializer.toJson<JsonString?>(jsonProfileFilteringSettings),
       'profileSearchAgeRangeMin':
           serializer.toJson<int?>(profileSearchAgeRangeMin),
       'profileSearchAgeRangeMax':
           serializer.toJson<int?>(profileSearchAgeRangeMax),
-      'profileLastSeenTimeFilter':
-          serializer.toJson<LastSeenTimeFilter?>(profileLastSeenTimeFilter),
-      'profileUnlimitedLikesFilter':
-          serializer.toJson<bool?>(profileUnlimitedLikesFilter),
       'accountEmailAddress': serializer.toJson<String?>(accountEmailAddress),
       'refreshTokenAccount': serializer.toJson<String?>(refreshTokenAccount),
       'refreshTokenMedia': serializer.toJson<String?>(refreshTokenMedia),
@@ -1947,12 +1879,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<double?> profileLocationLongitude = const Value.absent(),
           Value<EnumString?> jsonProfileVisibility = const Value.absent(),
           Value<JsonString?> jsonSearchGroups = const Value.absent(),
-          Value<JsonString?> jsonProfileAttributeFilters = const Value.absent(),
+          Value<JsonString?> jsonProfileFilteringSettings =
+              const Value.absent(),
           Value<int?> profileSearchAgeRangeMin = const Value.absent(),
           Value<int?> profileSearchAgeRangeMax = const Value.absent(),
-          Value<LastSeenTimeFilter?> profileLastSeenTimeFilter =
-              const Value.absent(),
-          Value<bool?> profileUnlimitedLikesFilter = const Value.absent(),
           Value<String?> accountEmailAddress = const Value.absent(),
           Value<String?> refreshTokenAccount = const Value.absent(),
           Value<String?> refreshTokenMedia = const Value.absent(),
@@ -2078,21 +2008,15 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         jsonSearchGroups: jsonSearchGroups.present
             ? jsonSearchGroups.value
             : this.jsonSearchGroups,
-        jsonProfileAttributeFilters: jsonProfileAttributeFilters.present
-            ? jsonProfileAttributeFilters.value
-            : this.jsonProfileAttributeFilters,
+        jsonProfileFilteringSettings: jsonProfileFilteringSettings.present
+            ? jsonProfileFilteringSettings.value
+            : this.jsonProfileFilteringSettings,
         profileSearchAgeRangeMin: profileSearchAgeRangeMin.present
             ? profileSearchAgeRangeMin.value
             : this.profileSearchAgeRangeMin,
         profileSearchAgeRangeMax: profileSearchAgeRangeMax.present
             ? profileSearchAgeRangeMax.value
             : this.profileSearchAgeRangeMax,
-        profileLastSeenTimeFilter: profileLastSeenTimeFilter.present
-            ? profileLastSeenTimeFilter.value
-            : this.profileLastSeenTimeFilter,
-        profileUnlimitedLikesFilter: profileUnlimitedLikesFilter.present
-            ? profileUnlimitedLikesFilter.value
-            : this.profileUnlimitedLikesFilter,
         accountEmailAddress: accountEmailAddress.present
             ? accountEmailAddress.value
             : this.accountEmailAddress,
@@ -2268,21 +2192,15 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       jsonSearchGroups: data.jsonSearchGroups.present
           ? data.jsonSearchGroups.value
           : this.jsonSearchGroups,
-      jsonProfileAttributeFilters: data.jsonProfileAttributeFilters.present
-          ? data.jsonProfileAttributeFilters.value
-          : this.jsonProfileAttributeFilters,
+      jsonProfileFilteringSettings: data.jsonProfileFilteringSettings.present
+          ? data.jsonProfileFilteringSettings.value
+          : this.jsonProfileFilteringSettings,
       profileSearchAgeRangeMin: data.profileSearchAgeRangeMin.present
           ? data.profileSearchAgeRangeMin.value
           : this.profileSearchAgeRangeMin,
       profileSearchAgeRangeMax: data.profileSearchAgeRangeMax.present
           ? data.profileSearchAgeRangeMax.value
           : this.profileSearchAgeRangeMax,
-      profileLastSeenTimeFilter: data.profileLastSeenTimeFilter.present
-          ? data.profileLastSeenTimeFilter.value
-          : this.profileLastSeenTimeFilter,
-      profileUnlimitedLikesFilter: data.profileUnlimitedLikesFilter.present
-          ? data.profileUnlimitedLikesFilter.value
-          : this.profileUnlimitedLikesFilter,
       accountEmailAddress: data.accountEmailAddress.present
           ? data.accountEmailAddress.value
           : this.accountEmailAddress,
@@ -2394,11 +2312,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
           ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
           ..write('jsonSearchGroups: $jsonSearchGroups, ')
-          ..write('jsonProfileAttributeFilters: $jsonProfileAttributeFilters, ')
+          ..write(
+              'jsonProfileFilteringSettings: $jsonProfileFilteringSettings, ')
           ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
           ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
-          ..write('profileLastSeenTimeFilter: $profileLastSeenTimeFilter, ')
-          ..write('profileUnlimitedLikesFilter: $profileUnlimitedLikesFilter, ')
           ..write('accountEmailAddress: $accountEmailAddress, ')
           ..write('refreshTokenAccount: $refreshTokenAccount, ')
           ..write('refreshTokenMedia: $refreshTokenMedia, ')
@@ -2466,11 +2383,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileLocationLongitude,
         jsonProfileVisibility,
         jsonSearchGroups,
-        jsonProfileAttributeFilters,
+        jsonProfileFilteringSettings,
         profileSearchAgeRangeMin,
         profileSearchAgeRangeMax,
-        profileLastSeenTimeFilter,
-        profileUnlimitedLikesFilter,
         accountEmailAddress,
         refreshTokenAccount,
         refreshTokenMedia,
@@ -2543,13 +2458,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.profileLocationLongitude == this.profileLocationLongitude &&
           other.jsonProfileVisibility == this.jsonProfileVisibility &&
           other.jsonSearchGroups == this.jsonSearchGroups &&
-          other.jsonProfileAttributeFilters ==
-              this.jsonProfileAttributeFilters &&
+          other.jsonProfileFilteringSettings ==
+              this.jsonProfileFilteringSettings &&
           other.profileSearchAgeRangeMin == this.profileSearchAgeRangeMin &&
           other.profileSearchAgeRangeMax == this.profileSearchAgeRangeMax &&
-          other.profileLastSeenTimeFilter == this.profileLastSeenTimeFilter &&
-          other.profileUnlimitedLikesFilter ==
-              this.profileUnlimitedLikesFilter &&
           other.accountEmailAddress == this.accountEmailAddress &&
           other.refreshTokenAccount == this.refreshTokenAccount &&
           other.refreshTokenMedia == this.refreshTokenMedia &&
@@ -2616,11 +2528,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<double?> profileLocationLongitude;
   final Value<EnumString?> jsonProfileVisibility;
   final Value<JsonString?> jsonSearchGroups;
-  final Value<JsonString?> jsonProfileAttributeFilters;
+  final Value<JsonString?> jsonProfileFilteringSettings;
   final Value<int?> profileSearchAgeRangeMin;
   final Value<int?> profileSearchAgeRangeMax;
-  final Value<LastSeenTimeFilter?> profileLastSeenTimeFilter;
-  final Value<bool?> profileUnlimitedLikesFilter;
   final Value<String?> accountEmailAddress;
   final Value<String?> refreshTokenAccount;
   final Value<String?> refreshTokenMedia;
@@ -2679,11 +2589,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileLocationLongitude = const Value.absent(),
     this.jsonProfileVisibility = const Value.absent(),
     this.jsonSearchGroups = const Value.absent(),
-    this.jsonProfileAttributeFilters = const Value.absent(),
+    this.jsonProfileFilteringSettings = const Value.absent(),
     this.profileSearchAgeRangeMin = const Value.absent(),
     this.profileSearchAgeRangeMax = const Value.absent(),
-    this.profileLastSeenTimeFilter = const Value.absent(),
-    this.profileUnlimitedLikesFilter = const Value.absent(),
     this.accountEmailAddress = const Value.absent(),
     this.refreshTokenAccount = const Value.absent(),
     this.refreshTokenMedia = const Value.absent(),
@@ -2743,11 +2651,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileLocationLongitude = const Value.absent(),
     this.jsonProfileVisibility = const Value.absent(),
     this.jsonSearchGroups = const Value.absent(),
-    this.jsonProfileAttributeFilters = const Value.absent(),
+    this.jsonProfileFilteringSettings = const Value.absent(),
     this.profileSearchAgeRangeMin = const Value.absent(),
     this.profileSearchAgeRangeMax = const Value.absent(),
-    this.profileLastSeenTimeFilter = const Value.absent(),
-    this.profileUnlimitedLikesFilter = const Value.absent(),
     this.accountEmailAddress = const Value.absent(),
     this.refreshTokenAccount = const Value.absent(),
     this.refreshTokenMedia = const Value.absent(),
@@ -2807,11 +2713,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<double>? profileLocationLongitude,
     Expression<String>? jsonProfileVisibility,
     Expression<String>? jsonSearchGroups,
-    Expression<String>? jsonProfileAttributeFilters,
+    Expression<String>? jsonProfileFilteringSettings,
     Expression<int>? profileSearchAgeRangeMin,
     Expression<int>? profileSearchAgeRangeMax,
-    Expression<int>? profileLastSeenTimeFilter,
-    Expression<bool>? profileUnlimitedLikesFilter,
     Expression<String>? accountEmailAddress,
     Expression<String>? refreshTokenAccount,
     Expression<String>? refreshTokenMedia,
@@ -2905,16 +2809,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (jsonProfileVisibility != null)
         'json_profile_visibility': jsonProfileVisibility,
       if (jsonSearchGroups != null) 'json_search_groups': jsonSearchGroups,
-      if (jsonProfileAttributeFilters != null)
-        'json_profile_attribute_filters': jsonProfileAttributeFilters,
+      if (jsonProfileFilteringSettings != null)
+        'json_profile_filtering_settings': jsonProfileFilteringSettings,
       if (profileSearchAgeRangeMin != null)
         'profile_search_age_range_min': profileSearchAgeRangeMin,
       if (profileSearchAgeRangeMax != null)
         'profile_search_age_range_max': profileSearchAgeRangeMax,
-      if (profileLastSeenTimeFilter != null)
-        'profile_last_seen_time_filter': profileLastSeenTimeFilter,
-      if (profileUnlimitedLikesFilter != null)
-        'profile_unlimited_likes_filter': profileUnlimitedLikesFilter,
       if (accountEmailAddress != null)
         'account_email_address': accountEmailAddress,
       if (refreshTokenAccount != null)
@@ -2990,11 +2890,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<double?>? profileLocationLongitude,
       Value<EnumString?>? jsonProfileVisibility,
       Value<JsonString?>? jsonSearchGroups,
-      Value<JsonString?>? jsonProfileAttributeFilters,
+      Value<JsonString?>? jsonProfileFilteringSettings,
       Value<int?>? profileSearchAgeRangeMin,
       Value<int?>? profileSearchAgeRangeMax,
-      Value<LastSeenTimeFilter?>? profileLastSeenTimeFilter,
-      Value<bool?>? profileUnlimitedLikesFilter,
       Value<String?>? accountEmailAddress,
       Value<String?>? refreshTokenAccount,
       Value<String?>? refreshTokenMedia,
@@ -3081,16 +2979,12 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       jsonProfileVisibility:
           jsonProfileVisibility ?? this.jsonProfileVisibility,
       jsonSearchGroups: jsonSearchGroups ?? this.jsonSearchGroups,
-      jsonProfileAttributeFilters:
-          jsonProfileAttributeFilters ?? this.jsonProfileAttributeFilters,
+      jsonProfileFilteringSettings:
+          jsonProfileFilteringSettings ?? this.jsonProfileFilteringSettings,
       profileSearchAgeRangeMin:
           profileSearchAgeRangeMin ?? this.profileSearchAgeRangeMin,
       profileSearchAgeRangeMax:
           profileSearchAgeRangeMax ?? this.profileSearchAgeRangeMax,
-      profileLastSeenTimeFilter:
-          profileLastSeenTimeFilter ?? this.profileLastSeenTimeFilter,
-      profileUnlimitedLikesFilter:
-          profileUnlimitedLikesFilter ?? this.profileUnlimitedLikesFilter,
       accountEmailAddress: accountEmailAddress ?? this.accountEmailAddress,
       refreshTokenAccount: refreshTokenAccount ?? this.refreshTokenAccount,
       refreshTokenMedia: refreshTokenMedia ?? this.refreshTokenMedia,
@@ -3283,10 +3177,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           .$converterjsonSearchGroups
           .toSql(jsonSearchGroups.value));
     }
-    if (jsonProfileAttributeFilters.present) {
-      map['json_profile_attribute_filters'] = Variable<String>($AccountTable
-          .$converterjsonProfileAttributeFilters
-          .toSql(jsonProfileAttributeFilters.value));
+    if (jsonProfileFilteringSettings.present) {
+      map['json_profile_filtering_settings'] = Variable<String>($AccountTable
+          .$converterjsonProfileFilteringSettings
+          .toSql(jsonProfileFilteringSettings.value));
     }
     if (profileSearchAgeRangeMin.present) {
       map['profile_search_age_range_min'] =
@@ -3295,15 +3189,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (profileSearchAgeRangeMax.present) {
       map['profile_search_age_range_max'] =
           Variable<int>(profileSearchAgeRangeMax.value);
-    }
-    if (profileLastSeenTimeFilter.present) {
-      map['profile_last_seen_time_filter'] = Variable<int>($AccountTable
-          .$converterprofileLastSeenTimeFilter
-          .toSql(profileLastSeenTimeFilter.value));
-    }
-    if (profileUnlimitedLikesFilter.present) {
-      map['profile_unlimited_likes_filter'] =
-          Variable<bool>(profileUnlimitedLikesFilter.value);
     }
     if (accountEmailAddress.present) {
       map['account_email_address'] =
@@ -3427,11 +3312,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
           ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
           ..write('jsonSearchGroups: $jsonSearchGroups, ')
-          ..write('jsonProfileAttributeFilters: $jsonProfileAttributeFilters, ')
+          ..write(
+              'jsonProfileFilteringSettings: $jsonProfileFilteringSettings, ')
           ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
           ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
-          ..write('profileLastSeenTimeFilter: $profileLastSeenTimeFilter, ')
-          ..write('profileUnlimitedLikesFilter: $profileUnlimitedLikesFilter, ')
           ..write('accountEmailAddress: $accountEmailAddress, ')
           ..write('refreshTokenAccount: $refreshTokenAccount, ')
           ..write('refreshTokenMedia: $refreshTokenMedia, ')

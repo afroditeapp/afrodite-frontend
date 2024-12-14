@@ -15,5 +15,7 @@ class EditProfileFilteringSettingsData with _$EditProfileFilteringSettingsData {
       UnmodifiableList<ProfileAttributeFilterValueUpdate> attributeFilters,
     LastSeenTimeFilter? lastSeenTimeFilter,
     bool? unlimitedLikesFilter,
+    MaxDistanceKm? maxDistanceKm,
+    @Default(false) bool randomProfileOrder,
   }) = _EditProfileFilteringSettingsData;
 }

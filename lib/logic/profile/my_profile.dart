@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:app/utils/api.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/data/account_repository.dart";
@@ -23,20 +24,11 @@ class SetProfile extends MyProfileEvent {
   final SetProfileContent pictures;
   final bool unlimitedLikes;
 
-  // Filters (when unlimited likes is disabled, the unlimited likes
-  // filter must be also disabled)
-  final List<ProfileAttributeFilterValueUpdate> currentAttributeFilters;
-  final LastSeenTimeFilter? currentLastSeenTimeFilter;
-  final bool? currentUnlimitedLikesFilter;
-
   SetProfile(
     this.profile,
     this.pictures,
     {
       required this.unlimitedLikes,
-      required this.currentAttributeFilters,
-      required this.currentLastSeenTimeFilter,
-      required this.currentUnlimitedLikesFilter,
     }
   );
 }
@@ -85,22 +77,30 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
           updateState: const UpdateInProgress(),
         ));
 
-        // Disable the unlimited likes filter if needed
-        if (
-          state.profile?.unlimitedLikes == true &&
-          data.unlimitedLikes == false &&
-          data.currentUnlimitedLikesFilter != null
-        ) {
+        // When unlimited likes is disabled, the unlimited likes
+        // filter must be also disabled.
+        final filters = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileFilteringSettings()).ok();
+        if (filters != null) {
           if (
-            await profile.updateProfileFilteringSettings(
-              data.currentAttributeFilters,
-              data.currentLastSeenTimeFilter,
-              null,
-            ).isErr()
+            state.profile?.unlimitedLikes == true &&
+            data.unlimitedLikes == false &&
+            filters.unlimitedLikesFilter != null
           ) {
-            failureDetected = true;
+            if (
+              await profile.updateProfileFilteringSettings(
+                filters.currentFiltersCopy(),
+                filters.lastSeenTimeFilter,
+                null,
+                filters.maxDistanceKm,
+                filters.randomProfileOrder,
+              ).isErr()
+            ) {
+              failureDetected = true;
+            }
+            await profile.resetMainProfileIterator();
           }
-          await profile.resetMainProfileIterator();
+        } else {
+          failureDetected = true;
         }
 
         // Do this first as updateProfile reloads the profile

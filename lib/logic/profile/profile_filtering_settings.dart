@@ -20,11 +20,15 @@ class SaveNewFilterSettings extends ProfileFilteringSettingsEvent {
   final List<ProfileAttributeFilterValueUpdate> attributeFilters;
   final LastSeenTimeFilter? lastSeenTimeFilter;
   final bool? unlimitedLikesFilter;
+  final MaxDistanceKm? maxDistance;
+  final bool randomProfileOrder;
   SaveNewFilterSettings(
     this.showOnlyFavorites,
     this.attributeFilters,
     this.lastSeenTimeFilter,
     this.unlimitedLikesFilter,
+    this.maxDistance,
+    this.randomProfileOrder,
   );
 }
 
@@ -67,6 +71,8 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
             data.attributeFilters,
             data.lastSeenTimeFilter,
             data.unlimitedLikesFilter,
+            data.maxDistance,
+            data.randomProfileOrder,
           ).isErr()
         ) {
           failureDetected = true;

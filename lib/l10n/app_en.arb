@@ -980,6 +980,23 @@
   "@profile_filtering_settings_screen_favorite_profile_filter": {
     "description": "Title for favorite profile filter"
   },
+  "profile_filtering_settings_screen_max_distance": "Max distance",
+  "@profile_filtering_settings_screen_max_distance": {
+    "description": "Title text for max distance"
+  },
+  "profile_filtering_settings_screen_max_distance_kilometers": "{p0} km",
+  "@profile_filtering_settings_screen_max_distance_kilometers": {
+    "description": "Value text for kilometers",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_filtering_settings_screen_max_distance_unlimited": "Unlimited",
+  "@profile_filtering_settings_screen_max_distance_unlimited": {
+    "description": "Value text for unlimited"
+  },
   "profile_filtering_settings_screen_profile_last_seen_time_filter": "Last seen",
   "@profile_filtering_settings_screen_profile_last_seen_time_filter": {
     "description": "Title for profile last seen time filter"
@@ -1009,6 +1026,18 @@
   "profile_filtering_settings_screen_profile_last_seen_time_filter_online": "Online",
   "@profile_filtering_settings_screen_profile_last_seen_time_filter_online": {
     "description": "Value text for profile last seen time filter when only online profiles should be shown"
+  },
+  "profile_filtering_settings_screen_random_profile_order": "Random profile order",
+  "@profile_filtering_settings_screen_random_profile_order": {
+    "description": "Title for random profile order setting"
+  },
+  "profile_filtering_settings_screen_random_profile_order_description_disabled": "Start from your location",
+  "@profile_filtering_settings_screen_random_profile_order_description_disabled": {
+    "description": "Description for random profile order setting when setting is disabled"
+  },
+  "profile_filtering_settings_screen_random_profile_order_description_enabled": "Start from random location",
+  "@profile_filtering_settings_screen_random_profile_order_description_enabled": {
+    "description": "Description for random profile order setting when setting is enabled"
   },
   "profile_filtering_settings_screen_title": "Filtering settings",
   "@profile_filtering_settings_screen_title": {

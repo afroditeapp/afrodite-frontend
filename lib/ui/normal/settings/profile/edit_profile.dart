@@ -113,8 +113,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       return;
     }
 
-    final filteringState = context.read<ProfileFilteringSettingsBloc>().state;
-
     context.read<MyProfileBloc>().add(SetProfile(
       ProfileUpdate(
         age: age,
@@ -124,9 +122,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
       imgUpdate,
       unlimitedLikes: s.unlimitedLikes,
-      currentAttributeFilters: filteringState.currentFiltersCopy(),
-      currentLastSeenTimeFilter: filteringState.filteringSettings?.lastSeenTimeFilter,
-      currentUnlimitedLikesFilter: filteringState.filteringSettings?.unlimitedLikesFilter,
     ));
   }
 

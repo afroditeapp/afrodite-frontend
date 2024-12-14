@@ -14,11 +14,15 @@ class ResetStateWith extends EditProfileFilteringSettingsEvent {
   final List<ProfileAttributeFilterValueUpdate> attributeFilters;
   final LastSeenTimeFilter? lastSeenTimeFilter;
   final bool? unlimitedLikesFilter;
+  final MaxDistanceKm? maxDistance;
+  final bool randomProfileOrder;
   ResetStateWith(
     this.showOnlyFavorites,
     this.attributeFilters,
     this.lastSeenTimeFilter,
     this.unlimitedLikesFilter,
+    this.maxDistance,
+    this.randomProfileOrder,
   );
 }
 
@@ -33,6 +37,14 @@ class SetLastSeenTimeFilter extends EditProfileFilteringSettingsEvent {
 class SetUnlimitedLikesFilter extends EditProfileFilteringSettingsEvent {
   final bool? value;
   SetUnlimitedLikesFilter(this.value);
+}
+class SetMaxDistance extends EditProfileFilteringSettingsEvent {
+  final MaxDistanceKm? value;
+  SetMaxDistance(this.value);
+}
+class SetRandomProfileOrder extends EditProfileFilteringSettingsEvent {
+  final bool value;
+  SetRandomProfileOrder(this.value);
 }
 class SetAttributeFilterValue extends EditProfileFilteringSettingsEvent {
   final Attribute a;
@@ -55,6 +67,8 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
         attributeFilters: UnmodifiableList(data.attributeFilters),
         lastSeenTimeFilter: data.lastSeenTimeFilter,
         unlimitedLikesFilter: data.unlimitedLikesFilter,
+        maxDistanceKm: data.maxDistance,
+        randomProfileOrder: data.randomProfileOrder,
       ));
     });
     on<SetFavoriteProfilesFilter>((data, emit) async {
@@ -67,6 +81,12 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
     });
     on<SetUnlimitedLikesFilter>((data, emit) async {
       emit(state.copyWith(unlimitedLikesFilter: data.value));
+    });
+    on<SetMaxDistance>((data, emit) async {
+      emit(state.copyWith(maxDistanceKm: data.value));
+    });
+    on<SetRandomProfileOrder>((data, emit) async {
+      emit(state.copyWith(randomProfileOrder: data.value));
     });
     on<SetAttributeFilterValue>((data, emit) async {
       final newAttributes = updateAttributesFiltersList(

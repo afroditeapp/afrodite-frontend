@@ -173,3 +173,13 @@ extension ContentInfoDetailedExtensions on ContentInfoDetailed {
       state == ContentModerationState.acceptedByHuman;
   }
 }
+
+extension GetProfileFilteringSettingsExtension on GetProfileFilteringSettings {
+  List<ProfileAttributeFilterValueUpdate> currentFiltersCopy() {
+    return filters.map((e) => ProfileAttributeFilterValueUpdate(
+      acceptMissingAttribute: e.acceptMissingAttribute,
+      filterValues: [...e.filterValues],
+      id: e.id,
+    )).toList();
+  }
+}

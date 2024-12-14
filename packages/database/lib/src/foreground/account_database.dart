@@ -100,11 +100,9 @@ class Account extends Table {
   RealColumn get profileLocationLongitude => real().nullable()();
   TextColumn get jsonProfileVisibility => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
   TextColumn get jsonSearchGroups => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
-  TextColumn get jsonProfileAttributeFilters => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
+  TextColumn get jsonProfileFilteringSettings => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
   IntColumn get profileSearchAgeRangeMin => integer().nullable()();
   IntColumn get profileSearchAgeRangeMax => integer().nullable()();
-  IntColumn get profileLastSeenTimeFilter => integer().map(const NullAwareTypeConverter.wrap(LastSeenTimeFilterConverter())).nullable()();
-  BoolColumn get profileUnlimitedLikesFilter => boolean().nullable()();
 
   // DaoAccountSettings
 

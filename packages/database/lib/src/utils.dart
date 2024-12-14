@@ -343,20 +343,6 @@ class MatchesIteratorSessionIdConverter extends TypeConverter<MatchesIteratorSes
   }
 }
 
-class LastSeenTimeFilterConverter extends TypeConverter<LastSeenTimeFilter, int> {
-  const LastSeenTimeFilterConverter();
-
-  @override
-  LastSeenTimeFilter fromSql(fromDb) {
-    return LastSeenTimeFilter(value: fromDb);
-  }
-
-  @override
-  int toSql(value) {
-    return value.value;
-  }
-}
-
 class PublicKeyDataConverter extends TypeConverter<PublicKeyData, String> {
   const PublicKeyDataConverter();
 

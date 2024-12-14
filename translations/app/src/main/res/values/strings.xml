@@ -277,6 +277,12 @@
     <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_day" description="Value text for profile last seen time filter when day is selected">%s day</string>
     <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_days" description="Value text for profile last seen time filter when multiple days is selected">%s days</string>
     <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_all" description="Value text for profile last seen time filter when all is selected">Anytime</string>
+    <string name="profile_filtering_settings_screen_max_distance" description="Title text for max distance">Max distance</string>
+    <string name="profile_filtering_settings_screen_max_distance_kilometers" description="Value text for kilometers">%s km</string>
+    <string name="profile_filtering_settings_screen_max_distance_unlimited" description="Value text for unlimited">Unlimited</string>
+    <string name="profile_filtering_settings_screen_random_profile_order" description="Title for random profile order setting">Random profile order</string>
+    <string name="profile_filtering_settings_screen_random_profile_order_description_disabled" description="Description for random profile order setting when setting is disabled">Start from your location</string>
+    <string name="profile_filtering_settings_screen_random_profile_order_description_enabled" description="Description for random profile order setting when setting is enabled">Start from random location</string>
     <string name="profile_filtering_settings_screen_updating_filters_failed" description="Snackbar text for notifying about failed profile filters update">Updating profile filters failed</string>
 
     <!-- Edit profile attribute filter value screen -->
