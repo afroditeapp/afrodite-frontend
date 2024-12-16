@@ -1127,13 +1127,9 @@
   "@profile_statistics_history_screen_title": {
     "description": "Title for profile statistics history screen"
   },
-  "profile_statistics_screen_all_profiles_subtitle": "All profiles",
-  "@profile_statistics_screen_all_profiles_subtitle": {
-    "description": "Subtitle for all profiles info"
-  },
-  "profile_statistics_screen_count_account": "Accounts: {p0}",
-  "@profile_statistics_screen_count_account": {
-    "description": "Text for account count",
+  "profile_statistics_screen_count_all_profiles": "All profiles: {p0}",
+  "@profile_statistics_screen_count_all_profiles": {
+    "description": "Text for all profiles count",
     "placeholders": {
       "p0": {
         "type": "String"
@@ -1179,15 +1175,6 @@
       }
     }
   },
-  "profile_statistics_screen_count_profiles": "Profiles: {p0}",
-  "@profile_statistics_screen_count_profiles": {
-    "description": "Text for profile count",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      }
-    }
-  },
   "profile_statistics_screen_count_public_profiles": "Public profiles: {p0}",
   "@profile_statistics_screen_count_public_profiles": {
     "description": "Text for public profiles count",
@@ -1205,14 +1192,6 @@
         "type": "String"
       }
     }
-  },
-  "profile_statistics_screen_private_profiles_subtitle": "Private profiles",
-  "@profile_statistics_screen_private_profiles_subtitle": {
-    "description": "Subtitle for private profiles info"
-  },
-  "profile_statistics_screen_public_profiles_subtitle": "Public profiles",
-  "@profile_statistics_screen_public_profiles_subtitle": {
-    "description": "Subtitle for public profiles info"
   },
   "profile_statistics_screen_time": "Time: {p0}",
   "@profile_statistics_screen_time": {

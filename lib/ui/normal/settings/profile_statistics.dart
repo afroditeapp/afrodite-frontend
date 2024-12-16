@@ -17,6 +17,8 @@ import 'package:app/ui_utils/list.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
 
+// TODO(prod): Consider removing account count and PublicProfileCounts
+//             from profile statistics.
 
 Future<void> openProfileStatisticsScreen(
   BuildContext context,
@@ -86,10 +88,6 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
 
   Widget viewItem(BuildContext context, GetProfileStatisticsResult item) {
     final dataTime = fullTimeString(item.generationTime.toUtcDateTime());
-    final publicProfilesCount = item.publicProfileCounts.man +
-      item.publicProfileCounts.woman +
-      item.publicProfileCounts.nonBinary;
-    final privateProfilesCount = item.accountCount - publicProfilesCount;
     final adminSettingsAvailable = context.read<AccountBloc>().state.permissions.adminProfileStatistics;
     int profileCountMan = 0;
     int profileCountWoman = 0;
@@ -107,15 +105,15 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
       totalAgeCounts.add(count);
     }
 
-    final String ageCountsSubtitle;
+    final String currentCount;
     if (adminVisibilitySelection == 0) {
-      ageCountsSubtitle = context.strings.profile_statistics_screen_public_profiles_subtitle;
+      currentCount = context.strings.profile_statistics_screen_count_public_profiles(profileCount.toString());
     } else if (adminVisibilitySelection == 1) {
-      ageCountsSubtitle = context.strings.profile_statistics_screen_private_profiles_subtitle;
+      currentCount = context.strings.profile_statistics_screen_count_private_profiles(profileCount.toString());
     } else if (adminVisibilitySelection == 2) {
-      ageCountsSubtitle = context.strings.profile_statistics_screen_all_profiles_subtitle;
+      currentCount = context.strings.profile_statistics_screen_count_all_profiles(profileCount.toString());
     } else {
-      ageCountsSubtitle = context.strings.generic_error;
+      currentCount = context.strings.generic_error;
     }
     return SingleChildScrollView(
       child: Padding(
@@ -125,17 +123,7 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (adminSettingsAvailable) adminControls(context),
-            Text(context.strings.profile_statistics_screen_time(dataTime)),
-            Text(context.strings.profile_statistics_screen_count_account(item.accountCount.toString())),
-            Text(context.strings.profile_statistics_screen_count_public_profiles(publicProfilesCount.toString())),
-            Text(context.strings.profile_statistics_screen_count_private_profiles(privateProfilesCount.toString())),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-            Text(
-              ageCountsSubtitle,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-            Text(context.strings.profile_statistics_screen_count_profiles(profileCount.toString())),
+            Text(currentCount),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             getChart(context, item.ageCounts.startAge, totalAgeCounts),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
@@ -150,6 +138,8 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
             Text(context.strings.profile_statistics_screen_count_non_binary(profileCountNonBinary.toString())),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             getChart(context, item.ageCounts.startAge, item.ageCounts.nonBinary),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+            Text(context.strings.profile_statistics_screen_time(dataTime)),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
           ],
         ),
