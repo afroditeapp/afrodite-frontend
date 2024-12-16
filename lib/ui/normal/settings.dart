@@ -4,111 +4,55 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/account/account_details.dart';
-import 'package:app/logic/account/news/news_count.dart';
-import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/media/initial_content_moderation.dart';
 import 'package:app/logic/settings/edit_search_settings.dart';
 import 'package:app/logic/settings/privacy_settings.dart';
 import 'package:app/logic/settings/search_settings.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
-import 'package:app/model/freezed/logic/account/news/news_count.dart';
-import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/account_settings.dart';
-import 'package:app/ui/normal/settings/admin.dart';
 import 'package:app/ui/normal/settings/data_settings.dart';
-import 'package:app/ui/normal/settings/debug.dart';
 import 'package:app/ui/normal/settings/general_settings.dart';
 import 'package:app/ui/normal/settings/media/content_management.dart';
-import 'package:app/ui/normal/settings/my_profile.dart';
-import 'package:app/ui/normal/settings/news/news_list.dart';
 import 'package:app/ui/normal/settings/notification_settings.dart';
 import 'package:app/ui/normal/settings/privacy_settings.dart';
 import 'package:app/ui/normal/settings/profile/search_settings.dart';
-import 'package:app/ui/normal/settings/profile_statistics.dart';
-import 'package:app/ui_utils/bottom_navigation.dart';
 import 'package:app/localizations.dart';
-import 'package:app/ui_utils/app_bar/common_actions.dart';
-import 'package:app/ui_utils/app_bar/menu_actions.dart';
-import 'package:app/ui_utils/scroll_controller.dart';
-import 'package:app/utils/api.dart';
 
-class SettingsView extends BottomNavigationScreen {
-  const SettingsView({Key? key}) : super(key: key);
 
-  @override
-  State<SettingsView> createState() => _SettingsViewState();
+class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  List<Widget> actions(BuildContext context) {
-    return [
-      menuActions([
-        commonActionOpenAboutDialog(context),
-        commonActionLogout(context),
-      ]),
-    ];
-  }
-
-  @override
-  String title(BuildContext context) {
-    return context.strings.settings_screen_title;
-  }
+  State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsViewState extends State<SettingsView> {
-  final _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(scrollEventListener);
-  }
-
-  void scrollEventListener() {
-    bool isScrolled;
-    if (!_scrollController.hasClients) {
-      isScrolled = false;
-    } else {
-      isScrolled = _scrollController.position.pixels > 0;
-    }
-    updateIsScrolled(isScrolled);
-  }
-
-  void updateIsScrolled(bool isScrolled) {
-    BottomNavigationStateBlocInstance.getInstance()
-      .bloc
-      .updateIsScrolled(
-        isScrolled,
-        BottomNavigationScreenId.settings,
-        (state) => state.isScrolledSettings,
-      );
-  }
+class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(context.strings.settings_screen_title),
+      ),
+      body: buildList(context),
+    );
+  }
+
+  Widget buildList(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
         List<Setting> settings = [
-          Setting.createSettingWithCustomIcon(
-            BlocBuilder<NewsCountBloc, NewsCountData>(
-              builder: (context, state) {
-                const icon = Icon(Icons.newspaper);
-                final count = state.newsCountForUi();
-                if (count == 0) {
-                  return icon;
-                } else {
-                  return Badge.count(count: count, child: icon);
-                }
-              }
-            ),
-            context.strings.news_list_screen_title, () => openNewsList(context),
-          ),
-          Setting.createSetting(Icons.bar_chart, context.strings.profile_statistics_screen_title, () =>
-            openProfileStatisticsScreen(context)
-          ),
-          Setting.createSetting(Icons.account_box, context.strings.view_profile_screen_my_profile_title, () =>
-            MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()))
+          Setting.createSetting(Icons.person, context.strings.account_settings_screen_title, () {
+              final accountDetailsBloc = context.read<AccountDetailsBloc>();
+              MyNavigator.push(context, MaterialPage<void>(child:
+                AccountSettingsScreen(
+                  accountDetailsBloc: accountDetailsBloc,
+                )
+              ));
+            }
           ),
           Setting.createSetting(Icons.search, context.strings.search_settings_screen_title, () {
             final pageKey = PageKey();
@@ -149,15 +93,6 @@ class _SettingsViewState extends State<SettingsView> {
               ));
             }
           ),
-          Setting.createSetting(Icons.person, context.strings.account_settings_screen_title, () {
-              final accountDetailsBloc = context.read<AccountDetailsBloc>();
-              MyNavigator.push(context, MaterialPage<void>(child:
-                AccountSettingsScreen(
-                  accountDetailsBloc: accountDetailsBloc,
-                )
-              ));
-            }
-          ),
           Setting.createSetting(Icons.storage, context.strings.data_settings_screen_title, () {
               MyNavigator.push(context, const MaterialPage<void>(child:
                 DataSettingsScreen()
@@ -172,42 +107,13 @@ class _SettingsViewState extends State<SettingsView> {
           ),
         ];
 
-        // TODO(prod): Remove/hide admin settings from production build?
-        if (state.permissions.adminSettingsVisible()) {
-          settings.add(Setting.createSetting(Icons.admin_panel_settings, context.strings.admin_settings_title, () =>
-            MyNavigator.push(context, const MaterialPage<void>(child: AdminSettingsPage()))
-          ));
-        }
-
-        // TODO(prod): Remove/hide debug settings
-        settings.add(Setting.createSetting(Icons.bug_report_rounded, "Debug", () =>
-          MyNavigator.push(context, MaterialPage<void>(child: DebugSettingsPage()))
-        ));
-
-        return NotificationListener<ScrollMetricsNotification>(
-          onNotification: (notification) {
-            final isScrolled = notification.metrics.pixels > 0;
-            updateIsScrolled(isScrolled);
-            return true;
-          },
-          child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
-            listenWhen: (previous, current) => previous.isTappedAgainSettings != current.isTappedAgainSettings,
-            listener: (context, state) {
-              if (state.isTappedAgainSettings) {
-                context.read<BottomNavigationStateBloc>().add(SetIsTappedAgainValue(BottomNavigationScreenId.settings, false));
-                _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
-              }
-            },
-            child: list(settings),
-          ),
-        );
+        return list(settings);
       }
     );
   }
 
   Widget list(List<Setting> settings) {
     return SingleChildScrollView(
-      controller: _scrollController,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -215,13 +121,6 @@ class _SettingsViewState extends State<SettingsView> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(scrollEventListener);
-    _scrollController.dispose();
-    super.dispose();
   }
 }
 

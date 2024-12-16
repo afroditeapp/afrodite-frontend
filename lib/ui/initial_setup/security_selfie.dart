@@ -20,7 +20,6 @@ import "package:app/ui_utils/dialog.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils/camera.dart";
-import "package:openapi/api.dart";
 
 var log = Logger("AskSecuritySelfieScreen");
 

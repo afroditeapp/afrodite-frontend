@@ -1,5 +1,4 @@
 
-import "package:database/database.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
 import "package:app/utils/immutable_list.dart";
 import "package:openapi/api.dart";

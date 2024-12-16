@@ -1,3 +1,4 @@
+import "package:app/ui/normal/menu.dart";
 import 'package:flutter/material.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
@@ -27,7 +28,6 @@ import "package:app/model/freezed/logic/media/content.dart";
 import "package:app/ui/normal/chat.dart";
 import "package:app/ui/normal/likes.dart";
 import "package:app/ui/normal/profiles.dart";
-import "package:app/ui/normal/settings.dart";
 import "package:app/ui/normal/settings/my_profile.dart";
 import "package:app/ui/utils/notification_payload_handler.dart";
 import "package:app/ui_utils/profile_thumbnail_image.dart";
@@ -94,7 +94,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
     ProfileView(),
     LikeView(),
     ChatView(),
-    SettingsView(),
+    MenuView(),
   ];
 
   @override
@@ -206,7 +206,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
       BottomNavigationBarItem(
         icon: BlocBuilder<NewsCountBloc, NewsCountData>(
           builder: (context, state) {
-            final icon = Icon(selectedView == 3 ? Icons.settings : Icons.settings_outlined);
+            final icon = Icon(selectedView == 3 ? Icons.menu : Icons.menu_outlined);
             final count = state.newsCountForUi();
             if (count == 0) {
               return icon;

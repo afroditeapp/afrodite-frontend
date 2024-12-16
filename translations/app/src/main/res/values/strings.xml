@@ -342,6 +342,9 @@
     <string name="conversation_screen_message_info_encryption_started" description="Info text that messages in this conversation are end-to-end encrypted">Messages are end-to-end encrypted</string>
     <string name="conversation_screen_message_info_encryption_key_changed" description="Info text that encryption key changed">Encryption key changed</string>
 
+    <!-- Menu screen -->
+    <string name="menu_screen_title" description="Title for menu screen">Menu</string>
+
     <!-- Settings -->
     <string name="settings_screen_title" description="Title for settings screen">Settings</string>
 

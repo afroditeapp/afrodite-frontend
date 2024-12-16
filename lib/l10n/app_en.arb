@@ -791,6 +791,10 @@
   "@map_select_location_help_text": {
     "description": "Help text for selecting map location"
   },
+  "menu_screen_title": "Menu",
+  "@menu_screen_title": {
+    "description": "Title for menu screen"
+  },
   "moderate_images_screen_title": "Moderate images",
   "@moderate_images_screen_title": {
     "description": "Title for moderate images page"
