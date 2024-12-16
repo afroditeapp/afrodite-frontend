@@ -42,8 +42,8 @@ class ImageCacheData extends AppSingleton {
       // Web uses XMLHttpRequest for caching
       return await media.getImage(imageOwner, id, isMatch: isMatch);
     }
-
-    final fileInfo = await cacheManager.getFileFromCache(id.cid);
+    final imgKey = "img:${imageOwner.aid}${id.cid}";
+    final fileInfo = await cacheManager.getFileFromCache(imgKey);
     if (fileInfo != null) {
       // TODO: error handling?
 
@@ -58,7 +58,7 @@ class ImageCacheData extends AppSingleton {
     }
 
     final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(imageData);
-    await cacheManager.putFile("null", encryptedImgBytes, key: id.cid);
+    await cacheManager.putFile("null", encryptedImgBytes, key: imgKey);
     return imageData;
   }
 
@@ -102,7 +102,7 @@ class ImageCacheData extends AppSingleton {
 }
 
 String createMapTileKey(int z, int x, int y) {
-  return "map_tile_${z}_${x}_$y";
+  return "map_tile:${z}_${x}_$y";
 }
 
 Uint8List? emptyMapTilePngBytesWeb;
