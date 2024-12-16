@@ -105,7 +105,7 @@
   "@camera_screen_take_photo_error": {
     "description": "Snackbar error text displayed when taking photo fails"
   },
-  "chat_list_screen_match_loading_failed": "Match loading failed",
+  "chat_list_screen_match_loading_failed": "Profile loading failed",
   "@chat_list_screen_match_loading_failed": {
     "description": "Error text displayed when match loading fails"
   },
@@ -113,11 +113,11 @@
   "@chat_list_screen_no_chats_found": {
     "description": "Info text displayed when there is no chats"
   },
-  "chat_list_screen_no_matches_found": "No matches found",
+  "chat_list_screen_no_matches_found": "No accepted chat requests found",
   "@chat_list_screen_no_matches_found": {
     "description": "Info text displayed when no matches are found"
   },
-  "chat_list_screen_open_matches_screen_action": "Matches",
+  "chat_list_screen_open_matches_screen_action": "Accepted chat requests",
   "@chat_list_screen_open_matches_screen_action": {
     "description": "Title for action which opens matches screen"
   },
@@ -159,7 +159,7 @@
   "@conversation_screen_chat_box_placeholder_text": {
     "description": "Message input text field placeholder text"
   },
-  "conversation_screen_make_match_instruction": "Send a message to make a match!",
+  "conversation_screen_make_match_instruction": "Send a message to accept the chat request!",
   "@conversation_screen_make_match_instruction": {
     "description": "Instruction text how to make a match"
   },
@@ -1266,7 +1266,7 @@
   "@select_content_screen_title": {
     "description": "Title for select content screen"
   },
-  "select_match_screen_title": "Select match",
+  "select_match_screen_title": "Accepted chat requests",
   "@select_match_screen_title": {
     "description": "Title for select match screen"
   },
@@ -1314,7 +1314,7 @@
   "@view_profile_screen_add_to_favorites_action_successful": {
     "description": "Snackbar text for view profile screen add to favorites action result successful"
   },
-  "view_profile_screen_already_match": "Already match",
+  "view_profile_screen_already_match": "Chatting is already possible",
   "@view_profile_screen_already_match": {
     "description": "Snackbar text for view profile screen displayed when action failed because of the profile is already a match"
   },
@@ -1354,7 +1354,7 @@
   "@view_profile_screen_like_action_try_again_tomorrow": {
     "description": "Snackbar text for view profile screen like action failed because of like limit"
   },
-  "view_profile_screen_match_with_message_action": "Match with message",
+  "view_profile_screen_match_with_message_action": "Accept chat request by sending a message",
   "@view_profile_screen_match_with_message_action": {
     "description": "Text for view profile screen match with message action"
   },

@@ -209,7 +209,7 @@
     <string name="view_profile_screen_remove_like_action" description="Text for view profile screen remove like action">Remove chat request</string>
     <string name="view_profile_screen_remove_like_action_dialog_title" description="Title for view profile screen remove like action dialog">Remove chat request?</string>
     <string name="view_profile_screen_remove_like_action_dialog_text" description="Text for view profile screen remove like action dialog">This can be done only once per profile</string>
-    <string name="view_profile_screen_match_with_message_action" description="Text for view profile screen match with message action">Match with message</string>
+    <string name="view_profile_screen_match_with_message_action" description="Text for view profile screen match with message action">Accept chat request by sending a message</string>
     <string name="view_profile_screen_chat_action" description="Text for view profile screen chat action">Chat</string>
     <string name="view_profile_screen_add_to_favorites_action" description="Text for view profile screen add to favorites action">Add to favorites</string>
     <string name="view_profile_screen_add_to_favorites_action_successful" description="Snackbar text for view profile screen add to favorites action result successful">Added to favorites</string>
@@ -219,7 +219,7 @@
     <string name="view_profile_screen_like_action_successful" description="Snackbar text for view profile screen like action successful">Chat request sent</string>
     <string name="view_profile_screen_like_action_try_again_tomorrow" description="Snackbar text for view profile screen like action failed because of like limit">No daily chat requests left. Try again tomorrow.</string>
     <string name="view_profile_screen_like_action_like_already_sent" description="Snackbar text for view profile screen like action failed because of like is already sent">Chat request already sent</string>
-    <string name="view_profile_screen_already_match" description="Snackbar text for view profile screen displayed when action failed because of the profile is already a match">Already match</string>
+    <string name="view_profile_screen_already_match" description="Snackbar text for view profile screen displayed when action failed because of the profile is already a match">Chatting is already possible</string>
     <string name="view_profile_screen_remove_like_action_successful" description="Snackbar text for view profile screen remove like action successful">Chat request removed</string>
     <string name="view_profile_screen_remove_like_action_remove_done_previously" description="Snackbar text for view profile screen remove like action failed because it is done previously">Remove chat request failed because the previous chat request removal was detected for the profile</string>
     <string name="view_profile_screen_remove_like_action_like_not_found" description="Snackbar text for view profile screen remove like action failed because like is not found">Chat request not found</string>
@@ -316,16 +316,16 @@
     <string name="chat_list_screen_title" description="Title for chat list screen">Chats</string>
     <string name="chat_list_screen_no_chats_found" description="Info text displayed when there is no chats">No chats found</string>
     <string name="chat_list_screen_unread_message" description="Conversation status text for unread message">New message</string>
-    <string name="chat_list_screen_open_matches_screen_action" description="Title for action which opens matches screen">Matches</string>
+    <string name="chat_list_screen_open_matches_screen_action" description="Title for action which opens matches screen">Accepted chat requests</string>
 
     <!-- Select match screen -->
-    <string name="select_match_screen_title" description="Title for select match screen">Select match</string>
-    <string name="chat_list_screen_match_loading_failed" description="Error text displayed when match loading fails">Match loading failed</string>
-    <string name="chat_list_screen_no_matches_found" description="Info text displayed when no matches are found">No matches found</string>
+    <string name="select_match_screen_title" description="Title for select match screen">Accepted chat requests</string>
+    <string name="chat_list_screen_match_loading_failed" description="Error text displayed when match loading fails">Profile loading failed</string>
+    <string name="chat_list_screen_no_matches_found" description="Info text displayed when no matches are found">No accepted chat requests found</string>
 
     <!-- Conversation screen -->
     <string name="conversation_screen_profile_blocked" description="Snackbar text displayed when profile blocking is successful">Profile was blocked</string>
-    <string name="conversation_screen_make_match_instruction" description="Instruction text how to make a match">Send a message to make a match!</string>
+    <string name="conversation_screen_make_match_instruction" description="Instruction text how to make a match">Send a message to accept the chat request!</string>
     <string name="conversation_screen_chat_box_placeholder_text" description="Message input text field placeholder text">Type a message…</string>
     <string name="conversation_screen_message_too_long" description="Snackbar text that message is too long">Message is too long</string>
     <string name="conversation_screen_message_too_many_pending_messages" description="Snackbar text that server is full of pending messages">Server pending message storage is full</string>
