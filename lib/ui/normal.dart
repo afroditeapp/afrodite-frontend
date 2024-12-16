@@ -193,7 +193,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
       BottomNavigationBarItem(
         icon: BlocBuilder<UnreadConversationsCountBloc, UnreadConversationsCountData>(
           builder: (context, state) {
-            final icon = Icon(selectedView == 2 ? Icons.message : Icons.message_outlined);
+            final icon = Icon(selectedView == 2 ? Icons.chat : Icons.chat_outlined);
             if (state.unreadConversations == 0) {
               return icon;
             } else {
