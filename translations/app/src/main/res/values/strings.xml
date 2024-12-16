@@ -66,13 +66,13 @@
 
     <!-- Notification categories -->
     <string name="notification_category_messages" description="Title for notification category messages">Messages</string>
-    <string name="notification_category_likes" description="Title for notification category likes">Likes</string>
+    <string name="notification_category_likes" description="Title for notification category likes">Chat requests</string>
     <string name="notification_category_initial_content_moderation" description="Title for notification category initial content moderation">Initial image moderation status</string>
     <string name="notification_category_news_item_available" description="Title for notification category news item available">News</string>
 
     <!-- Notification like received -->
-    <string name="notification_like_received_single" description="Title for like received notification when single like is received">Like received</string>
-    <string name="notification_like_received_multiple" description="Title for like received notification when multiple likes is received">Likes received</string>
+    <string name="notification_like_received_single" description="Title for like received notification when single like is received">Chat request received</string>
+    <string name="notification_like_received_multiple" description="Title for like received notification when multiple likes is received">Chat requests received</string>
 
     <!-- Notification initial content moderation -->
     <string name="notification_initial_content_moderation_accepted" description="Title for initial content moderation notification when some content is accepted">Profile images accepted</string>
@@ -163,7 +163,7 @@
 
     <!-- Notification permission -->
     <string name="notification_permission_dialog_title" description="Title for notification permission dialog">Allow notifications?</string>
-    <string name="notification_permission_dialog_description" description="Description text for notification permission dialog">Allow notifications to receive notifications for example from new likes and messages.</string>
+    <string name="notification_permission_dialog_description" description="Description text for notification permission dialog">Allow notifications to receive notifications for example from new chat requests and messages.</string>
 
     <!-- Camera screen -->
     <string name="camera_screen_camera_opening_already_in_progress_error" description="Snackbar error text displayed when user tries to open camera but camera initialization is already in progress">Camera opening in progress</string>
@@ -204,10 +204,10 @@
     <string name="view_profile_screen_my_profile_edit_action" description="Text for view profile screen edit my profile action">Edit profile</string>
     <string name="view_profile_screen_block_action" description="Text for view profile screen block action">Block</string>
     <string name="view_profile_screen_block_action_dialog_title" description="Title for view profile screen block action dialog">Block profile?</string>
-    <string name="view_profile_screen_like_action" description="Text for view profile screen like action">Like</string>
-    <string name="view_profile_screen_like_action_dialog_title" description="Title for view profile screen like action dialog">Like profile?</string>
-    <string name="view_profile_screen_remove_like_action" description="Text for view profile screen remove like action">Remove like</string>
-    <string name="view_profile_screen_remove_like_action_dialog_title" description="Title for view profile screen remove like action dialog">Remove like?</string>
+    <string name="view_profile_screen_like_action" description="Text for view profile screen like action">Send chat request</string>
+    <string name="view_profile_screen_like_action_dialog_title" description="Title for view profile screen like action dialog">Send chat request?</string>
+    <string name="view_profile_screen_remove_like_action" description="Text for view profile screen remove like action">Remove chat request</string>
+    <string name="view_profile_screen_remove_like_action_dialog_title" description="Title for view profile screen remove like action dialog">Remove chat request?</string>
     <string name="view_profile_screen_remove_like_action_dialog_text" description="Text for view profile screen remove like action dialog">This can be done only once per profile</string>
     <string name="view_profile_screen_match_with_message_action" description="Text for view profile screen match with message action">Match with message</string>
     <string name="view_profile_screen_chat_action" description="Text for view profile screen chat action">Chat</string>
@@ -216,13 +216,13 @@
     <string name="view_profile_screen_remove_from_favorites_action" description="Text for view profile screen remove from favorites action">Remove from favorites</string>
     <string name="view_profile_screen_remove_from_favorites_action_successful" description="Snackbar text for view profile screen remove from favorites action result successful">Removed from favorites</string>
     <string name="view_profile_screen_profile_not_available_dialog_description" description="Text for view profile screen profile not available dialog">Profile not available</string>
-    <string name="view_profile_screen_like_action_successful" description="Snackbar text for view profile screen like action successful">Like sent</string>
-    <string name="view_profile_screen_like_action_try_again_tomorrow" description="Snackbar text for view profile screen like action failed because of like limit">No daily likes left. Try again tomorrow.</string>
-    <string name="view_profile_screen_like_action_like_already_sent" description="Snackbar text for view profile screen like action failed because of like is already sent">Like already sent</string>
+    <string name="view_profile_screen_like_action_successful" description="Snackbar text for view profile screen like action successful">Chat request sent</string>
+    <string name="view_profile_screen_like_action_try_again_tomorrow" description="Snackbar text for view profile screen like action failed because of like limit">No daily chat requests left. Try again tomorrow.</string>
+    <string name="view_profile_screen_like_action_like_already_sent" description="Snackbar text for view profile screen like action failed because of like is already sent">Chat request already sent</string>
     <string name="view_profile_screen_already_match" description="Snackbar text for view profile screen displayed when action failed because of the profile is already a match">Already match</string>
-    <string name="view_profile_screen_remove_like_action_successful" description="Snackbar text for view profile screen remove like action successful">Like removed</string>
-    <string name="view_profile_screen_remove_like_action_remove_done_previously" description="Snackbar text for view profile screen remove like action failed because it is done previously">Remove like failed because the previous like removal was detected for the profile</string>
-    <string name="view_profile_screen_remove_like_action_like_not_found" description="Snackbar text for view profile screen remove like action failed because like is not found">Like not found</string>
+    <string name="view_profile_screen_remove_like_action_successful" description="Snackbar text for view profile screen remove like action successful">Chat request removed</string>
+    <string name="view_profile_screen_remove_like_action_remove_done_previously" description="Snackbar text for view profile screen remove like action failed because it is done previously">Remove chat request failed because the previous chat request removal was detected for the profile</string>
+    <string name="view_profile_screen_remove_like_action_like_not_found" description="Snackbar text for view profile screen remove like action failed because like is not found">Chat request not found</string>
     <string name="view_profile_screen_block_action_successful" description="Snackbar text for view profile screen block action successful">Profile blocked</string>
     <string name="view_profile_screen_profile_edit_failed" description="Snackbar text for notifying about failed profile edit">Profile editing failed</string>
     <string name="view_profile_screen_profile_currently_online" description="View profile screen text that profile is currently online">Online</string>
@@ -242,9 +242,9 @@
     <!-- Edit profile screen -->
     <string name="edit_profile_screen_title" description="Title for edit profile screen">Edit profile</string>
     <string name="edit_profile_screen_profile_text" description="Title for profile text field">Profile text</string>
-    <string name="edit_profile_screen_unlimited_likes" description="Title for unlimited likes setting">Unlimited likes</string>
-    <string name="edit_profile_screen_unlimited_likes_description_enabled" description="Description for unlimited likes setting when it is enabled">Send unlimited likes to profiles which have enabled unlimited likes</string>
-    <string name="edit_profile_screen_unlimited_likes_description_disabled" description="Description for unlimited likes setting when it is disabled">Send one like per day</string>
+    <string name="edit_profile_screen_unlimited_likes" description="Title for unlimited likes setting">Unlimited chat requests</string>
+    <string name="edit_profile_screen_unlimited_likes_description_enabled" description="Description for unlimited likes setting when it is enabled">Send unlimited chat requests for those who have enabled unlimited chat requests</string>
+    <string name="edit_profile_screen_unlimited_likes_description_disabled" description="Description for unlimited likes setting when it is disabled">Send one chat request per day</string>
     <string name="edit_profile_screen_invalid_first_name" description="Snackbar text for notifying about invalid first name">Invalid first name</string>
     <string name="edit_profile_screen_invalid_age" description="Snackbar text for notifying about invalid age">Invalid age</string>
     <string name="edit_profile_screen_one_profile_image_required" description="Snackbar text for notifying about that one profile image is required">One profile image is required</string>
@@ -272,8 +272,8 @@
     <!-- Profile filtering settings screen -->
     <string name="profile_filtering_settings_screen_title" description="Title for profile filtering settings screen">Filtering settings</string>
     <string name="profile_filtering_settings_screen_favorite_profile_filter" description="Title for favorite profile filter">Favorite profile</string>
-    <string name="profile_filtering_settings_screen_unlimited_likes_filter" description="Title for unlimited likes filter">Unlimited likes</string>
-    <string name="profile_filtering_settings_screen_unlimited_likes_filter_not_available" description="Description for unlimited likes filter when unlimited likes are disabled">Enable unlimited likes to use this filter</string>
+    <string name="profile_filtering_settings_screen_unlimited_likes_filter" description="Title for unlimited likes filter">Unlimited chat requests</string>
+    <string name="profile_filtering_settings_screen_unlimited_likes_filter_not_available" description="Description for unlimited likes filter when unlimited likes are disabled">Enable unlimited chat requests to use this filter</string>
     <string name="profile_filtering_settings_screen_profile_last_seen_time_filter" description="Title for profile last seen time filter">Last seen</string>
     <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_online" description="Value text for profile last seen time filter when only online profiles should be shown">Online</string>
     <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_day" description="Value text for profile last seen time filter when day is selected">%s day</string>
@@ -307,9 +307,9 @@
     <string name="edit_my_gender_screen_gender_setting_title" description="Title for gender setting">My profile\'s gender</string>
 
     <!-- Likes -->
-    <string name="likes_screen_title" description="Title for likes screen">Likes</string>
-    <string name="likes_screen_no_received_likes_found" description="Info text displayed when there is no received likes">No received likes found</string>
-    <string name="likes_screen_like_loading_failed" description="Text displayed when like loading fails">Like loading failed</string>
+    <string name="likes_screen_title" description="Title for likes screen">Requests</string>
+    <string name="likes_screen_no_received_likes_found" description="Info text displayed when there is no received likes">No received chat requests found</string>
+    <string name="likes_screen_like_loading_failed" description="Text displayed when like loading fails">Chat request loading failed</string>
     <string name="likes_screen_refresh_action" description="Title for likes screen refresh action">Refresh</string>
 
     <!-- Chat list -->

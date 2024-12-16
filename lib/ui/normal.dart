@@ -179,7 +179,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
       BottomNavigationBarItem(
         icon: BlocBuilder<NewReceivedLikesAvailableBloc, NewReceivedLikesAvailableData>(
           builder: (context, state) {
-            final icon = Icon(selectedView == 1 ? Icons.favorite : Icons.favorite_outline);
+            final icon = Icon(selectedView == 1 ? Icons.waving_hand : Icons.waving_hand_outlined);
             final count = state.receivedLikesCountForUi();
             if (count == 0) {
               return icon;

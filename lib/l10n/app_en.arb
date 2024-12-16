@@ -319,15 +319,15 @@
   "@edit_profile_screen_title": {
     "description": "Title for edit profile screen"
   },
-  "edit_profile_screen_unlimited_likes": "Unlimited likes",
+  "edit_profile_screen_unlimited_likes": "Unlimited chat requests",
   "@edit_profile_screen_unlimited_likes": {
     "description": "Title for unlimited likes setting"
   },
-  "edit_profile_screen_unlimited_likes_description_disabled": "Send one like per day",
+  "edit_profile_screen_unlimited_likes_description_disabled": "Send one chat request per day",
   "@edit_profile_screen_unlimited_likes_description_disabled": {
     "description": "Description for unlimited likes setting when it is disabled"
   },
-  "edit_profile_screen_unlimited_likes_description_enabled": "Send unlimited likes to profiles which have enabled unlimited likes",
+  "edit_profile_screen_unlimited_likes_description_enabled": "Send unlimited chat requests for those who have enabled unlimited chat requests",
   "@edit_profile_screen_unlimited_likes_description_enabled": {
     "description": "Description for unlimited likes setting when it is enabled"
   },
@@ -695,11 +695,11 @@
   "@initial_setup_screen_security_selfie_title": {
     "description": "Title for initial setup security selfie screen"
   },
-  "likes_screen_like_loading_failed": "Like loading failed",
+  "likes_screen_like_loading_failed": "Chat request loading failed",
   "@likes_screen_like_loading_failed": {
     "description": "Text displayed when like loading fails"
   },
-  "likes_screen_no_received_likes_found": "No received likes found",
+  "likes_screen_no_received_likes_found": "No received chat requests found",
   "@likes_screen_no_received_likes_found": {
     "description": "Info text displayed when there is no received likes"
   },
@@ -707,7 +707,7 @@
   "@likes_screen_refresh_action": {
     "description": "Title for likes screen refresh action"
   },
-  "likes_screen_title": "Likes",
+  "likes_screen_title": "Requests",
   "@likes_screen_title": {
     "description": "Title for likes screen"
   },
@@ -874,7 +874,7 @@
   "@notification_category_initial_content_moderation": {
     "description": "Title for notification category initial content moderation"
   },
-  "notification_category_likes": "Likes",
+  "notification_category_likes": "Chat requests",
   "@notification_category_likes": {
     "description": "Title for notification category likes"
   },
@@ -894,11 +894,11 @@
   "@notification_initial_content_moderation_rejected": {
     "description": "Title for initial content moderation notification when some content is rejected"
   },
-  "notification_like_received_multiple": "Likes received",
+  "notification_like_received_multiple": "Chat requests received",
   "@notification_like_received_multiple": {
     "description": "Title for like received notification when multiple likes is received"
   },
-  "notification_like_received_single": "Like received",
+  "notification_like_received_single": "Chat request received",
   "@notification_like_received_single": {
     "description": "Title for like received notification when single like is received"
   },
@@ -928,7 +928,7 @@
   "@notification_news_item_available": {
     "description": "Title for news item available notification"
   },
-  "notification_permission_dialog_description": "Allow notifications to receive notifications for example from new likes and messages.",
+  "notification_permission_dialog_description": "Allow notifications to receive notifications for example from new chat requests and messages.",
   "@notification_permission_dialog_description": {
     "description": "Description text for notification permission dialog"
   },
@@ -1047,11 +1047,11 @@
   "@profile_filtering_settings_screen_title": {
     "description": "Title for profile filtering settings screen"
   },
-  "profile_filtering_settings_screen_unlimited_likes_filter": "Unlimited likes",
+  "profile_filtering_settings_screen_unlimited_likes_filter": "Unlimited chat requests",
   "@profile_filtering_settings_screen_unlimited_likes_filter": {
     "description": "Title for unlimited likes filter"
   },
-  "profile_filtering_settings_screen_unlimited_likes_filter_not_available": "Enable unlimited likes to use this filter",
+  "profile_filtering_settings_screen_unlimited_likes_filter_not_available": "Enable unlimited chat requests to use this filter",
   "@profile_filtering_settings_screen_unlimited_likes_filter_not_available": {
     "description": "Description for unlimited likes filter when unlimited likes are disabled"
   },
@@ -1334,23 +1334,23 @@
   "@view_profile_screen_chat_action": {
     "description": "Text for view profile screen chat action"
   },
-  "view_profile_screen_like_action": "Like",
+  "view_profile_screen_like_action": "Send chat request",
   "@view_profile_screen_like_action": {
     "description": "Text for view profile screen like action"
   },
-  "view_profile_screen_like_action_dialog_title": "Like profile?",
+  "view_profile_screen_like_action_dialog_title": "Send chat request?",
   "@view_profile_screen_like_action_dialog_title": {
     "description": "Title for view profile screen like action dialog"
   },
-  "view_profile_screen_like_action_like_already_sent": "Like already sent",
+  "view_profile_screen_like_action_like_already_sent": "Chat request already sent",
   "@view_profile_screen_like_action_like_already_sent": {
     "description": "Snackbar text for view profile screen like action failed because of like is already sent"
   },
-  "view_profile_screen_like_action_successful": "Like sent",
+  "view_profile_screen_like_action_successful": "Chat request sent",
   "@view_profile_screen_like_action_successful": {
     "description": "Snackbar text for view profile screen like action successful"
   },
-  "view_profile_screen_like_action_try_again_tomorrow": "No daily likes left. Try again tomorrow.",
+  "view_profile_screen_like_action_try_again_tomorrow": "No daily chat requests left. Try again tomorrow.",
   "@view_profile_screen_like_action_try_again_tomorrow": {
     "description": "Snackbar text for view profile screen like action failed because of like limit"
   },
@@ -1483,7 +1483,7 @@
   "@view_profile_screen_remove_from_favorites_action_successful": {
     "description": "Snackbar text for view profile screen remove from favorites action result successful"
   },
-  "view_profile_screen_remove_like_action": "Remove like",
+  "view_profile_screen_remove_like_action": "Remove chat request",
   "@view_profile_screen_remove_like_action": {
     "description": "Text for view profile screen remove like action"
   },
@@ -1491,19 +1491,19 @@
   "@view_profile_screen_remove_like_action_dialog_text": {
     "description": "Text for view profile screen remove like action dialog"
   },
-  "view_profile_screen_remove_like_action_dialog_title": "Remove like?",
+  "view_profile_screen_remove_like_action_dialog_title": "Remove chat request?",
   "@view_profile_screen_remove_like_action_dialog_title": {
     "description": "Title for view profile screen remove like action dialog"
   },
-  "view_profile_screen_remove_like_action_like_not_found": "Like not found",
+  "view_profile_screen_remove_like_action_like_not_found": "Chat request not found",
   "@view_profile_screen_remove_like_action_like_not_found": {
     "description": "Snackbar text for view profile screen remove like action failed because like is not found"
   },
-  "view_profile_screen_remove_like_action_remove_done_previously": "Remove like failed because the previous like removal was detected for the profile",
+  "view_profile_screen_remove_like_action_remove_done_previously": "Remove chat request failed because the previous chat request removal was detected for the profile",
   "@view_profile_screen_remove_like_action_remove_done_previously": {
     "description": "Snackbar text for view profile screen remove like action failed because it is done previously"
   },
-  "view_profile_screen_remove_like_action_successful": "Like removed",
+  "view_profile_screen_remove_like_action_successful": "Chat request removed",
   "@view_profile_screen_remove_like_action_successful": {
     "description": "Snackbar text for view profile screen remove like action successful"
   }
