@@ -1,9 +1,11 @@
 import 'dart:developer' as developer;
 
+import 'package:app/config.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:encryption/encryption.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -86,6 +88,8 @@ Future<void> main() async {
   setUrlStrategy(null);
 
   WidgetsFlutterBinding.ensureInitialized();
+
+  await SystemChrome.setPreferredOrientations(DEFAULT_ORIENTATIONS);
 
   Bloc.observer = DebugObserver();
 

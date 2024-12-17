@@ -1,8 +1,7 @@
 import "dart:async";
-import "dart:io";
 
+import "package:app/config.dart";
 import "package:camera/camera.dart";
-import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:logging/logging.dart";
@@ -15,7 +14,6 @@ import "package:app/utils/camera.dart";
 import "package:app/utils/image.dart";
 
 import 'package:image/image.dart' as img;
-import "package:app/utils/tmp_dir.dart";
 
 var log = Logger("CameraScreen");
 
@@ -88,15 +86,14 @@ class _CameraScreenState extends State<CameraScreen>
 
   @override
   void dispose() {
-    super.dispose();
     stateListener?.cancel();
     stateListener = null;
     controller?.dispose();
     controller = null;
     CameraManager.getInstance().sendCmd(CloseCmd());
-    // Change back to the default orientations.
-    SystemChrome.setPreferredOrientations([]);
+    SystemChrome.setPreferredOrientations(DEFAULT_ORIENTATIONS);
     WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override

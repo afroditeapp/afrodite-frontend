@@ -1,6 +1,8 @@
 
 
+import 'package:app/config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/api_manager.dart';
 
@@ -25,6 +27,8 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
   @override
   void initState() {
     super.initState();
+    // Allow landscape mode if allowed by system
+    SystemChrome.setPreferredOrientations([]);
   }
 
   @override
@@ -185,5 +189,11 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
     }
 
     return list;
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations(DEFAULT_ORIENTATIONS);
+    super.dispose();
   }
 }

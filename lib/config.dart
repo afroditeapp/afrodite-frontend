@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 const String _defaultAccountServerAddressAndroid = "http://10.0.2.2:3000"; // Android emulator host
 const String _defaultAccountServerAddressIosAndWeb = "http://localhost:3000"; // This address is for iOS simulator and web browsers
@@ -38,3 +39,8 @@ String defaultServerUrlProfile() {
 String defaultServerUrlChat() {
   return defaultServerUrlAccount();
 }
+
+const List<DeviceOrientation> DEFAULT_ORIENTATIONS = [
+  DeviceOrientation.portraitUp,
+  DeviceOrientation.portraitDown,
+];
