@@ -91,7 +91,7 @@ class ConversationPageState extends State<ConversationPage> {
               ),
               child: InkWell(
                 onTap: () {
-                  openProfileView(context, widget.profileEntry, ProfileRefreshPriority.high, noAction: true);
+                  openProfileView(context, widget.profileEntry, null, ProfileRefreshPriority.high, noAction: true);
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0, right: 8.0),

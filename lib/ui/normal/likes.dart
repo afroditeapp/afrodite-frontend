@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:app/logic/profile/view_profiles.dart';
+import 'package:app/model/freezed/logic/profile/view_profiles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -167,7 +169,7 @@ class LikeViewContent extends StatefulWidget {
   State<LikeViewContent> createState() => LikeViewContentState();
 }
 
-typedef LikeViewEntry = ({ProfileEntry profile, ProfileHeroTag heroTag});
+typedef LikeViewEntry = ({ProfileEntry profile, ProfileActionState? initalProfileAction, ProfileHeroTag heroTag});
 
 class LikeViewContentState extends State<LikeViewContent> {
   final ScrollController _scrollController = ScrollController();
@@ -267,7 +269,12 @@ class LikeViewContentState extends State<LikeViewContent> {
 
     final newList = List<LikeViewEntry>.empty(growable: true);
     for (final profile in profileList) {
-      newList.add((profile: profile, heroTag: ProfileHeroTag.from(profile.uuid, _heroUniqueIdCounter)));
+      final initialProfileAction = await resolveProfileAction(chat, profile.uuid);
+      newList.add((
+        profile: profile,
+        initalProfileAction: initialProfileAction,
+        heroTag: ProfileHeroTag.from(profile.uuid, _heroUniqueIdCounter),
+      ));
       _heroUniqueIdCounter++;
     }
 
@@ -335,6 +342,7 @@ class LikeViewContentState extends State<LikeViewContent> {
               child: profileEntryWidgetStream(
                 item.profile,
                 iHaveUnlimitedLikesEnabled,
+                item.initalProfileAction,
                 accountDb,
                 showNewLikeMarker: true,
               )

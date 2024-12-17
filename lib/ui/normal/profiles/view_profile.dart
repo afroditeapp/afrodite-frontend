@@ -33,6 +33,7 @@ extension type ProfileHeroTag(ProfileHeroTagRaw value) {
 void openProfileView(
   BuildContext context,
   ProfileEntry profile,
+  ProfileActionState? initialProfileAction,
   ProfileRefreshPriority priority,
   {
     ProfileHeroTag? heroTag,
@@ -44,7 +45,7 @@ void openProfileView(
     context,
     MaterialPage<void>(child:
       BlocProvider(
-        create: (_) => ViewProfileBloc(profile, priority),
+        create: (_) => ViewProfileBloc(profile, initialProfileAction, priority),
         lazy: false,
         child: ViewProfilePage(
           pageKey: pageKey,
@@ -73,106 +74,92 @@ class ViewProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // elevation: 0,
-        //backgroundColor: Colors.transparent,
-        // iconTheme: const IconThemeData(
-        //   color: Colors.black45,
-        // ),
-        actions: [
-          BlocBuilder<ViewProfileBloc, ViewProfilesData>(builder: (context, state) {
-            final Icon icon;
-            final String tooltip;
-            if (state.isFavorite.isFavorite) {
-              icon = const Icon(Icons.star_rounded);
-              tooltip = context.strings.view_profile_screen_remove_from_favorites_action;
-            } else {
-              icon = const Icon(Icons.star_outline_rounded);
-              tooltip = context.strings.view_profile_screen_add_to_favorites_action;
-            }
-            return IconButton(
-              onPressed: () {
-                switch (state.isFavorite) {
-                  case FavoriteStateIdle():
-                    context.read<ViewProfileBloc>().add(ToggleFavoriteStatus(state.profile.uuid));
-                  case FavoriteStateChangeInProgress():
-                    showSnackBar(context.strings.generic_previous_action_in_progress);
-                }
-              },
-              icon: icon,
-              tooltip: tooltip,
-            );
-          }),
-          menuActions([
-            commonActionBlockProfile(context, () {
-              context.read<ViewProfileBloc>().add(BlockProfile(initialProfile.uuid));
-            })
-          ]),
-        ],
-      ),
-      body: myProfilePage(context),
-      floatingActionButton: actionButton(context),
-    );
-  }
-
-  Widget? actionButton(BuildContext context) {
-    if (noAction) {
-      return null;
-    }
-
     return BlocBuilder<ViewProfileBloc, ViewProfilesData>(
       builder: (context, state) {
-        return actionButtonFromAction(context, state);
+        return Scaffold(
+          appBar: AppBar(
+            actions: [
+              favoriteButton(context, state),
+              menuActions([
+                commonActionBlockProfile(context, () {
+                  context.read<ViewProfileBloc>().add(BlockProfile(initialProfile.uuid));
+                })
+              ]),
+            ],
+          ),
+          body: myProfilePage(context),
+          floatingActionButton: actionButton(context, state),
+          floatingActionButtonAnimator: state.profileActionState == null ? FloatingActionButtonAnimator.noAnimation : FloatingActionButtonAnimator.noAnimation,
+        );
       }
     );
   }
 
-  Widget actionButtonFromAction(BuildContext context, ViewProfilesData s) {
-    switch (s.profileActionState) {
+  Widget favoriteButton(BuildContext context, ViewProfilesData state) {
+    final Icon icon;
+    final String tooltip;
+    if (state.isFavorite.isFavorite) {
+      icon = const Icon(Icons.star_rounded);
+      tooltip = context.strings.view_profile_screen_remove_from_favorites_action;
+    } else {
+      icon = const Icon(Icons.star_outline_rounded);
+      tooltip = context.strings.view_profile_screen_add_to_favorites_action;
+    }
+    return IconButton(
+      onPressed: () {
+        switch (state.isFavorite) {
+          case FavoriteStateIdle():
+            context.read<ViewProfileBloc>().add(ToggleFavoriteStatus(state.profile.uuid));
+          case FavoriteStateChangeInProgress():
+            showSnackBar(context.strings.generic_previous_action_in_progress);
+        }
+      },
+      icon: icon,
+      tooltip: tooltip,
+    );
+  }
+
+  Widget? actionButton(BuildContext context, ViewProfilesData state) {
+    if (noAction) {
+      return null;
+    }
+
+    switch (state.profileActionState) {
       case ProfileActionState.like:
         return FloatingActionButton(
           onPressed: () => confirmProfileAction(
             context,
-            s,
+            state,
             context.strings.view_profile_screen_like_action_dialog_title
           ),
           tooltip: context.strings.view_profile_screen_like_action,
           child: const Icon(Icons.waving_hand),
         );
-      case ProfileActionState.removeLike:
-        return FloatingActionButton(
-          onPressed: () => confirmProfileAction(
-            context,
-            s,
-            context.strings.view_profile_screen_remove_like_action_dialog_title,
-            details: context.strings.view_profile_screen_remove_like_action_dialog_text,
-          ),
-          tooltip: context.strings.view_profile_screen_remove_like_action,
-          child: const Icon(Icons.undo),
-        );
       case ProfileActionState.makeMatch:
         return FloatingActionButton(
-          onPressed: () => openConversationScreen(context, s.profile),
+          onPressed: () => openConversationScreen(context, state.profile),
           tooltip: context.strings.view_profile_screen_match_with_message_action,
           child: const Icon(Icons.waving_hand),
         );
       case ProfileActionState.chat:
         return FloatingActionButton(
-          onPressed: () => openConversationScreen(context, s.profile),
+          onPressed: () => openConversationScreen(context, state.profile),
           tooltip: context.strings.view_profile_screen_chat_action,
           child: const Icon(Icons.chat_rounded),
         );
+      case null:
+        return null;
     }
   }
 
   void confirmProfileAction(BuildContext context, ViewProfilesData s, String dialogTitle, {String? details}) async {
     final accepted = await showConfirmDialog(context, dialogTitle, details: details);
-    if (context.mounted && accepted == true) {
+    final action = s.profileActionState;
+    if (context.mounted && accepted == true && action != null) {
       context.read<ViewProfileBloc>()
         .add(DoProfileAction(
           s.profile.uuid,
-          s.profileActionState
+          action,
         ));
     }
   }
@@ -204,10 +191,6 @@ class ViewProfilePage extends StatelessWidget {
         state.showLikeFailedBecauseOfLimit ||
         state.showLikeFailedBecauseAlreadyLiked ||
         state.showLikeFailedBecauseAlreadyMatch ||
-        state.showRemoveLikeCompleted ||
-        state.showRemoveLikeFailedBecauseOfDoneBefore ||
-        state.showRemoveLikeFailedBecauseOfAlreadyMatch ||
-        state.showRemoveLikeFailedBecauseOfNotLiked ||
         state.showGenericError
       ) {
         if (state.showAddToFavoritesCompleted) {
@@ -225,17 +208,8 @@ class ViewProfilePage extends StatelessWidget {
         if (state.showLikeFailedBecauseAlreadyLiked) {
           showSnackBar(context.strings.view_profile_screen_like_action_like_already_sent);
         }
-        if (state.showLikeFailedBecauseAlreadyMatch || state.showRemoveLikeFailedBecauseOfAlreadyMatch) {
+        if (state.showLikeFailedBecauseAlreadyMatch) {
           showSnackBar(context.strings.view_profile_screen_already_match);
-        }
-        if (state.showRemoveLikeCompleted) {
-          showSnackBar(context.strings.view_profile_screen_remove_like_action_successful);
-        }
-        if (state.showRemoveLikeFailedBecauseOfDoneBefore) {
-          showSnackBar(context.strings.view_profile_screen_remove_like_action_remove_done_previously);
-        }
-        if (state.showRemoveLikeFailedBecauseOfNotLiked) {
-          showSnackBar(context.strings.view_profile_screen_remove_like_action_like_not_found);
         }
         if (state.showGenericError) {
           showSnackBar(context.strings.generic_error_occurred);

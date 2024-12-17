@@ -186,31 +186,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     }
   }
 
-  Future<Result<void, RemoveLikeError>> removeLikeFrom(AccountId accountId) async {
-    final result = await api.chat((api) => api.deleteLike(accountId));
-    switch (result) {
-      case Ok(:final v):
-        final newState = v.errorAccountInteractionStateMismatch;
-        if (newState != null) {
-          await _updateAccountInteractionState(accountId, newState);
-          if (newState == CurrentAccountInteractionState.empty) {
-            return const Err(RemoveLikeError.likeNotFound);
-          } else if (newState == CurrentAccountInteractionState.match) {
-            return const Err(RemoveLikeError.alreadyMatch);
-          } else {
-            return const Err(RemoveLikeError.unspecifiedError);
-          }
-        }
-        if (v.errorDeleteAlreadyDoneBefore) {
-          return const Err(RemoveLikeError.actionDoneBefore);
-        }
-        await db.accountAction((db) => db.daoProfileStates.setSentLikeStatus(accountId, false));
-        return const Ok(null);
-      case Err():
-        return const Err(RemoveLikeError.unspecifiedError);
-    }
-  }
-
   Future<bool> sendBlockTo(AccountId accountId) async {
     final result = await api.chatAction((api) => api.postBlockProfile(accountId));
     if (result.isOk()) {
@@ -404,12 +379,5 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 enum SendLikeError {
   alreadyLiked,
   alreadyMatch,
-  unspecifiedError,
-}
-
-enum RemoveLikeError {
-  actionDoneBefore,
-  alreadyMatch,
-  likeNotFound,
   unspecifiedError,
 }

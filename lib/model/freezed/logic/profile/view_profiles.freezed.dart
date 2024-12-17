@@ -8,6 +8,14 @@ part of 'view_profiles.dart';
 // **************************************************************************
 
 /// @nodoc
+class _DetectDefaultValueInCopyWith {
+  const _DetectDefaultValueInCopyWith();
+}
+
+/// @nodoc
+const _detectDefaultValueInCopyWith = _DetectDefaultValueInCopyWith();
+
+/// @nodoc
 final _privateConstructorErrorViewProfilesData = UnsupportedError(
     'Private constructor ViewProfilesData._() was called. Please call factory constructor instead.');
 
@@ -15,7 +23,7 @@ final _privateConstructorErrorViewProfilesData = UnsupportedError(
 mixin _$ViewProfilesData {
   ProfileEntry get profile => throw _privateConstructorErrorViewProfilesData;
   FavoriteState get isFavorite => throw _privateConstructorErrorViewProfilesData;
-  ProfileActionState get profileActionState => throw _privateConstructorErrorViewProfilesData;
+  ProfileActionState? get profileActionState => throw _privateConstructorErrorViewProfilesData;
   bool get isNotAvailable => throw _privateConstructorErrorViewProfilesData;
   bool get isBlocked => throw _privateConstructorErrorViewProfilesData;
   bool get showAddToFavoritesCompleted => throw _privateConstructorErrorViewProfilesData;
@@ -24,10 +32,6 @@ mixin _$ViewProfilesData {
   bool get showLikeFailedBecauseAlreadyLiked => throw _privateConstructorErrorViewProfilesData;
   bool get showLikeFailedBecauseAlreadyMatch => throw _privateConstructorErrorViewProfilesData;
   bool get showLikeFailedBecauseOfLimit => throw _privateConstructorErrorViewProfilesData;
-  bool get showRemoveLikeCompleted => throw _privateConstructorErrorViewProfilesData;
-  bool get showRemoveLikeFailedBecauseOfDoneBefore => throw _privateConstructorErrorViewProfilesData;
-  bool get showRemoveLikeFailedBecauseOfAlreadyMatch => throw _privateConstructorErrorViewProfilesData;
-  bool get showRemoveLikeFailedBecauseOfNotLiked => throw _privateConstructorErrorViewProfilesData;
   bool get showGenericError => throw _privateConstructorErrorViewProfilesData;
 
   ViewProfilesData copyWith({
@@ -42,10 +46,6 @@ mixin _$ViewProfilesData {
     bool? showLikeFailedBecauseAlreadyLiked,
     bool? showLikeFailedBecauseAlreadyMatch,
     bool? showLikeFailedBecauseOfLimit,
-    bool? showRemoveLikeCompleted,
-    bool? showRemoveLikeFailedBecauseOfDoneBefore,
-    bool? showRemoveLikeFailedBecauseOfAlreadyMatch,
-    bool? showRemoveLikeFailedBecauseOfNotLiked,
     bool? showGenericError,
   }) => throw _privateConstructorErrorViewProfilesData;
 }
@@ -55,7 +55,7 @@ abstract class _ViewProfilesData implements ViewProfilesData {
   factory _ViewProfilesData({
     required ProfileEntry profile,
     FavoriteState isFavorite,
-    ProfileActionState profileActionState,
+    ProfileActionState? profileActionState,
     bool isNotAvailable,
     bool isBlocked,
     bool showAddToFavoritesCompleted,
@@ -64,10 +64,6 @@ abstract class _ViewProfilesData implements ViewProfilesData {
     bool showLikeFailedBecauseAlreadyLiked,
     bool showLikeFailedBecauseAlreadyMatch,
     bool showLikeFailedBecauseOfLimit,
-    bool showRemoveLikeCompleted,
-    bool showRemoveLikeFailedBecauseOfDoneBefore,
-    bool showRemoveLikeFailedBecauseOfAlreadyMatch,
-    bool showRemoveLikeFailedBecauseOfNotLiked,
     bool showGenericError,
   }) = _$ViewProfilesDataImpl;
 }
@@ -75,7 +71,6 @@ abstract class _ViewProfilesData implements ViewProfilesData {
 /// @nodoc
 class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfilesData {
   static const FavoriteState _isFavoriteDefaultValue = FavoriteStateIdle(false);
-  static const ProfileActionState _profileActionStateDefaultValue = ProfileActionState.like;
   static const bool _isNotAvailableDefaultValue = false;
   static const bool _isBlockedDefaultValue = false;
   static const bool _showAddToFavoritesCompletedDefaultValue = false;
@@ -84,16 +79,12 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
   static const bool _showLikeFailedBecauseAlreadyLikedDefaultValue = false;
   static const bool _showLikeFailedBecauseAlreadyMatchDefaultValue = false;
   static const bool _showLikeFailedBecauseOfLimitDefaultValue = false;
-  static const bool _showRemoveLikeCompletedDefaultValue = false;
-  static const bool _showRemoveLikeFailedBecauseOfDoneBeforeDefaultValue = false;
-  static const bool _showRemoveLikeFailedBecauseOfAlreadyMatchDefaultValue = false;
-  static const bool _showRemoveLikeFailedBecauseOfNotLikedDefaultValue = false;
   static const bool _showGenericErrorDefaultValue = false;
   
   _$ViewProfilesDataImpl({
     required this.profile,
     this.isFavorite = _isFavoriteDefaultValue,
-    this.profileActionState = _profileActionStateDefaultValue,
+    this.profileActionState,
     this.isNotAvailable = _isNotAvailableDefaultValue,
     this.isBlocked = _isBlockedDefaultValue,
     this.showAddToFavoritesCompleted = _showAddToFavoritesCompletedDefaultValue,
@@ -102,10 +93,6 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     this.showLikeFailedBecauseAlreadyLiked = _showLikeFailedBecauseAlreadyLikedDefaultValue,
     this.showLikeFailedBecauseAlreadyMatch = _showLikeFailedBecauseAlreadyMatchDefaultValue,
     this.showLikeFailedBecauseOfLimit = _showLikeFailedBecauseOfLimitDefaultValue,
-    this.showRemoveLikeCompleted = _showRemoveLikeCompletedDefaultValue,
-    this.showRemoveLikeFailedBecauseOfDoneBefore = _showRemoveLikeFailedBecauseOfDoneBeforeDefaultValue,
-    this.showRemoveLikeFailedBecauseOfAlreadyMatch = _showRemoveLikeFailedBecauseOfAlreadyMatchDefaultValue,
-    this.showRemoveLikeFailedBecauseOfNotLiked = _showRemoveLikeFailedBecauseOfNotLikedDefaultValue,
     this.showGenericError = _showGenericErrorDefaultValue,
   });
 
@@ -114,7 +101,7 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
   @override
   final FavoriteState isFavorite;
   @override
-  final ProfileActionState profileActionState;
+  final ProfileActionState? profileActionState;
   @override
   final bool isNotAvailable;
   @override
@@ -132,19 +119,11 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
   @override
   final bool showLikeFailedBecauseOfLimit;
   @override
-  final bool showRemoveLikeCompleted;
-  @override
-  final bool showRemoveLikeFailedBecauseOfDoneBefore;
-  @override
-  final bool showRemoveLikeFailedBecauseOfAlreadyMatch;
-  @override
-  final bool showRemoveLikeFailedBecauseOfNotLiked;
-  @override
   final bool showGenericError;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ViewProfilesData(profile: $profile, isFavorite: $isFavorite, profileActionState: $profileActionState, isNotAvailable: $isNotAvailable, isBlocked: $isBlocked, showAddToFavoritesCompleted: $showAddToFavoritesCompleted, showRemoveFromFavoritesCompleted: $showRemoveFromFavoritesCompleted, showLikeCompleted: $showLikeCompleted, showLikeFailedBecauseAlreadyLiked: $showLikeFailedBecauseAlreadyLiked, showLikeFailedBecauseAlreadyMatch: $showLikeFailedBecauseAlreadyMatch, showLikeFailedBecauseOfLimit: $showLikeFailedBecauseOfLimit, showRemoveLikeCompleted: $showRemoveLikeCompleted, showRemoveLikeFailedBecauseOfDoneBefore: $showRemoveLikeFailedBecauseOfDoneBefore, showRemoveLikeFailedBecauseOfAlreadyMatch: $showRemoveLikeFailedBecauseOfAlreadyMatch, showRemoveLikeFailedBecauseOfNotLiked: $showRemoveLikeFailedBecauseOfNotLiked, showGenericError: $showGenericError)';
+    return 'ViewProfilesData(profile: $profile, isFavorite: $isFavorite, profileActionState: $profileActionState, isNotAvailable: $isNotAvailable, isBlocked: $isBlocked, showAddToFavoritesCompleted: $showAddToFavoritesCompleted, showRemoveFromFavoritesCompleted: $showRemoveFromFavoritesCompleted, showLikeCompleted: $showLikeCompleted, showLikeFailedBecauseAlreadyLiked: $showLikeFailedBecauseAlreadyLiked, showLikeFailedBecauseAlreadyMatch: $showLikeFailedBecauseAlreadyMatch, showLikeFailedBecauseOfLimit: $showLikeFailedBecauseOfLimit, showGenericError: $showGenericError)';
   }
 
   @override
@@ -163,10 +142,6 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
       ..add(DiagnosticsProperty('showLikeFailedBecauseAlreadyLiked', showLikeFailedBecauseAlreadyLiked))
       ..add(DiagnosticsProperty('showLikeFailedBecauseAlreadyMatch', showLikeFailedBecauseAlreadyMatch))
       ..add(DiagnosticsProperty('showLikeFailedBecauseOfLimit', showLikeFailedBecauseOfLimit))
-      ..add(DiagnosticsProperty('showRemoveLikeCompleted', showRemoveLikeCompleted))
-      ..add(DiagnosticsProperty('showRemoveLikeFailedBecauseOfDoneBefore', showRemoveLikeFailedBecauseOfDoneBefore))
-      ..add(DiagnosticsProperty('showRemoveLikeFailedBecauseOfAlreadyMatch', showRemoveLikeFailedBecauseOfAlreadyMatch))
-      ..add(DiagnosticsProperty('showRemoveLikeFailedBecauseOfNotLiked', showRemoveLikeFailedBecauseOfNotLiked))
       ..add(DiagnosticsProperty('showGenericError', showGenericError));
   }
 
@@ -197,14 +172,6 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
           other.showLikeFailedBecauseAlreadyMatch == showLikeFailedBecauseAlreadyMatch) &&
         (identical(other.showLikeFailedBecauseOfLimit, showLikeFailedBecauseOfLimit) ||
           other.showLikeFailedBecauseOfLimit == showLikeFailedBecauseOfLimit) &&
-        (identical(other.showRemoveLikeCompleted, showRemoveLikeCompleted) ||
-          other.showRemoveLikeCompleted == showRemoveLikeCompleted) &&
-        (identical(other.showRemoveLikeFailedBecauseOfDoneBefore, showRemoveLikeFailedBecauseOfDoneBefore) ||
-          other.showRemoveLikeFailedBecauseOfDoneBefore == showRemoveLikeFailedBecauseOfDoneBefore) &&
-        (identical(other.showRemoveLikeFailedBecauseOfAlreadyMatch, showRemoveLikeFailedBecauseOfAlreadyMatch) ||
-          other.showRemoveLikeFailedBecauseOfAlreadyMatch == showRemoveLikeFailedBecauseOfAlreadyMatch) &&
-        (identical(other.showRemoveLikeFailedBecauseOfNotLiked, showRemoveLikeFailedBecauseOfNotLiked) ||
-          other.showRemoveLikeFailedBecauseOfNotLiked == showRemoveLikeFailedBecauseOfNotLiked) &&
         (identical(other.showGenericError, showGenericError) ||
           other.showGenericError == showGenericError)
     );
@@ -224,10 +191,6 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     showLikeFailedBecauseAlreadyLiked,
     showLikeFailedBecauseAlreadyMatch,
     showLikeFailedBecauseOfLimit,
-    showRemoveLikeCompleted,
-    showRemoveLikeFailedBecauseOfDoneBefore,
-    showRemoveLikeFailedBecauseOfAlreadyMatch,
-    showRemoveLikeFailedBecauseOfNotLiked,
     showGenericError,
   );
 
@@ -235,7 +198,7 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
   ViewProfilesData copyWith({
     Object? profile,
     Object? isFavorite,
-    Object? profileActionState,
+    Object? profileActionState = _detectDefaultValueInCopyWith,
     Object? isNotAvailable,
     Object? isBlocked,
     Object? showAddToFavoritesCompleted,
@@ -244,15 +207,11 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     Object? showLikeFailedBecauseAlreadyLiked,
     Object? showLikeFailedBecauseAlreadyMatch,
     Object? showLikeFailedBecauseOfLimit,
-    Object? showRemoveLikeCompleted,
-    Object? showRemoveLikeFailedBecauseOfDoneBefore,
-    Object? showRemoveLikeFailedBecauseOfAlreadyMatch,
-    Object? showRemoveLikeFailedBecauseOfNotLiked,
     Object? showGenericError,
   }) => _$ViewProfilesDataImpl(
     profile: (profile ?? this.profile) as ProfileEntry,
     isFavorite: (isFavorite ?? this.isFavorite) as FavoriteState,
-    profileActionState: (profileActionState ?? this.profileActionState) as ProfileActionState,
+    profileActionState: (profileActionState == _detectDefaultValueInCopyWith ? this.profileActionState : profileActionState) as ProfileActionState?,
     isNotAvailable: (isNotAvailable ?? this.isNotAvailable) as bool,
     isBlocked: (isBlocked ?? this.isBlocked) as bool,
     showAddToFavoritesCompleted: (showAddToFavoritesCompleted ?? this.showAddToFavoritesCompleted) as bool,
@@ -261,10 +220,6 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     showLikeFailedBecauseAlreadyLiked: (showLikeFailedBecauseAlreadyLiked ?? this.showLikeFailedBecauseAlreadyLiked) as bool,
     showLikeFailedBecauseAlreadyMatch: (showLikeFailedBecauseAlreadyMatch ?? this.showLikeFailedBecauseAlreadyMatch) as bool,
     showLikeFailedBecauseOfLimit: (showLikeFailedBecauseOfLimit ?? this.showLikeFailedBecauseOfLimit) as bool,
-    showRemoveLikeCompleted: (showRemoveLikeCompleted ?? this.showRemoveLikeCompleted) as bool,
-    showRemoveLikeFailedBecauseOfDoneBefore: (showRemoveLikeFailedBecauseOfDoneBefore ?? this.showRemoveLikeFailedBecauseOfDoneBefore) as bool,
-    showRemoveLikeFailedBecauseOfAlreadyMatch: (showRemoveLikeFailedBecauseOfAlreadyMatch ?? this.showRemoveLikeFailedBecauseOfAlreadyMatch) as bool,
-    showRemoveLikeFailedBecauseOfNotLiked: (showRemoveLikeFailedBecauseOfNotLiked ?? this.showRemoveLikeFailedBecauseOfNotLiked) as bool,
     showGenericError: (showGenericError ?? this.showGenericError) as bool,
   );
 }

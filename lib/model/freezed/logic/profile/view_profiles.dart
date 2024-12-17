@@ -9,7 +9,6 @@ part 'view_profiles.freezed.dart';
 
 enum ProfileActionState {
   like,
-  removeLike,
   makeMatch,
   chat,
 }
@@ -19,7 +18,7 @@ class ViewProfilesData with _$ViewProfilesData {
   factory ViewProfilesData({
     required ProfileEntry profile,
     @Default(FavoriteStateIdle(false)) FavoriteState isFavorite,
-    @Default(ProfileActionState.like) ProfileActionState profileActionState,
+    ProfileActionState? profileActionState,
     @Default(false) bool isNotAvailable,
     @Default(false) bool isBlocked,
     @Default(false) bool showAddToFavoritesCompleted,
@@ -28,10 +27,6 @@ class ViewProfilesData with _$ViewProfilesData {
     @Default(false) bool showLikeFailedBecauseAlreadyLiked,
     @Default(false) bool showLikeFailedBecauseAlreadyMatch,
     @Default(false) bool showLikeFailedBecauseOfLimit,
-    @Default(false) bool showRemoveLikeCompleted,
-    @Default(false) bool showRemoveLikeFailedBecauseOfDoneBefore,
-    @Default(false) bool showRemoveLikeFailedBecauseOfAlreadyMatch,
-    @Default(false) bool showRemoveLikeFailedBecauseOfNotLiked,
     @Default(false) bool showGenericError,
   }) = _ViewProfilesData;
 }

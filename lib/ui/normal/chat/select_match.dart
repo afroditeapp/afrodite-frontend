@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:app/logic/profile/view_profiles.dart';
+import 'package:app/model/freezed/logic/profile/view_profiles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -46,7 +48,7 @@ class SelectMatchScreen extends StatefulWidget {
   State<SelectMatchScreen> createState() => SelectMatchScreenState();
 }
 
-typedef MatchViewEntry = ({ProfileEntry profile});
+typedef MatchViewEntry = ({ProfileEntry profile, ProfileActionState? initialProfileAction});
 
 class SelectMatchScreenState extends State<SelectMatchScreen> {
   final ScrollController _scrollController = ScrollController();
@@ -119,7 +121,8 @@ class SelectMatchScreenState extends State<SelectMatchScreen> {
 
     final newList = List<MatchViewEntry>.empty(growable: true);
     for (final profile in profileList) {
-      newList.add((profile: profile));
+      final initialProfileAction = await resolveProfileAction(chat, profile.uuid);
+      newList.add((profile: profile, initialProfileAction: initialProfileAction));
     }
 
     if (profileList.isEmpty) {
@@ -171,6 +174,7 @@ class SelectMatchScreenState extends State<SelectMatchScreen> {
               child: profileEntryWidgetStream(
                 item.profile,
                 iHaveUnlimitedLikesEnabled,
+                item.initialProfileAction,
                 accountDb,
                 overrideOnTap: (context) {
                   MyNavigator.removePage(context, widget.pageKey, item.profile);

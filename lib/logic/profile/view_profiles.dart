@@ -52,11 +52,15 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
 
   final ProfileRefreshPriority priority;
 
-  ViewProfileBloc(ProfileEntry currentProfile, this.priority) : super(ViewProfilesData(profile: currentProfile)) {
+  ViewProfileBloc(
+    ProfileEntry currentProfile,
+    ProfileActionState? initialProfileAction,
+    this.priority
+  ) : super(ViewProfilesData(profile: currentProfile, profileActionState: initialProfileAction)) {
     on<InitEvent>((data, emit) async {
       final isInFavorites = await profile.isInFavorites(state.profile.uuid);
       final isBlocked = await chat.isInSentBlocks(state.profile.uuid);
-      final ProfileActionState action = await resolveProfileAction(state.profile.uuid);
+      final action = await resolveProfileAction(chat, state.profile.uuid);
 
       emit(state.copyWith(
         isFavorite: FavoriteStateIdle(isInFavorites),
@@ -119,7 +123,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
           }
         }
         case ReceivedLikeRemoved(): {
-          final ProfileActionState action = await resolveProfileAction(state.profile.uuid);
+          final action = await resolveProfileAction(chat, state.profile.uuid);
           emit(state.copyWith(
             profileActionState: action,
           ));
@@ -139,10 +143,6 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
         showLikeFailedBecauseOfLimit: false,
         showLikeFailedBecauseAlreadyLiked: false,
         showLikeFailedBecauseAlreadyMatch: false,
-        showRemoveLikeCompleted: false,
-        showRemoveLikeFailedBecauseOfDoneBefore: false,
-        showRemoveLikeFailedBecauseOfAlreadyMatch: false,
-        showRemoveLikeFailedBecauseOfNotLiked: false,
         showGenericError: false
       ));
     });
@@ -160,7 +160,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
         switch (data.action) {
           case ProfileActionState.like: {
             final r = await chat.sendLikeTo(data.accountId);
-            final newAction = await resolveProfileAction(data.accountId);
+            final newAction = await resolveProfileAction(chat, data.accountId);
             switch (r) {
               case Ok(:final v):
                 if (v == LimitedActionStatus.failureLimitAlreadyReached) {
@@ -191,37 +191,6 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
                 ));
             }
           }
-          case ProfileActionState.removeLike: {
-            final r = await chat.removeLikeFrom(data.accountId);
-            final newAction = await resolveProfileAction(data.accountId);
-            switch (r) {
-              case Ok():
-                emit(state.copyWith(
-                  profileActionState: newAction,
-                  showRemoveLikeCompleted: true,
-                ));
-              case Err(e: RemoveLikeError.actionDoneBefore):
-                emit(state.copyWith(
-                  profileActionState: newAction,
-                  showRemoveLikeFailedBecauseOfDoneBefore: true,
-                ));
-              case Err(e: RemoveLikeError.alreadyMatch):
-                emit(state.copyWith(
-                  profileActionState: newAction,
-                  showRemoveLikeFailedBecauseOfAlreadyMatch: true,
-                ));
-              case Err(e: RemoveLikeError.likeNotFound):
-                emit(state.copyWith(
-                  profileActionState: newAction,
-                  showRemoveLikeFailedBecauseOfNotLiked: true,
-                ));
-              case Err(e: RemoveLikeError.unspecifiedError):
-                emit(state.copyWith(
-                  profileActionState: newAction,
-                  showGenericError: true,
-                ));
-            }
-          }
           case ProfileActionState.makeMatch: {}
           case ProfileActionState.chat: {}
         }
@@ -243,22 +212,22 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
     add(InitEvent());
   }
 
-  Future<ProfileActionState> resolveProfileAction(AccountId accountId) async {
-    if (await chat.isInMatches(accountId)) {
-      return ProfileActionState.chat;
-    } else if (await chat.isInLikedProfiles(accountId)) {
-      return ProfileActionState.removeLike;
-    } else if (await chat.isInReceivedLikes(accountId)) {
-      return ProfileActionState.makeMatch;
-    } else {
-      return ProfileActionState.like;
-    }
-  }
-
   @override
   Future<void> close() async {
     await _getProfileDataSubscription?.cancel();
     await _profileChangeSubscription?.cancel();
     return super.close();
+  }
+}
+
+Future<ProfileActionState?> resolveProfileAction(ChatRepository chat, AccountId accountId) async {
+  if (await chat.isInMatches(accountId)) {
+    return ProfileActionState.chat;
+  } else if (await chat.isInLikedProfiles(accountId)) {
+    return null;
+  } else if (await chat.isInReceivedLikes(accountId)) {
+    return ProfileActionState.makeMatch;
+  } else {
+    return ProfileActionState.like;
   }
 }

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:app/logic/profile/view_profiles.dart';
+import 'package:app/model/freezed/logic/profile/view_profiles.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +46,7 @@ class ProfileGrid extends StatefulWidget {
   State<ProfileGrid> createState() => _ProfileGridState();
 }
 
-typedef ProfileViewEntry = ({ProfileEntry profile, ProfileHeroTag heroTag});
+typedef ProfileViewEntry = ({ProfileEntry profile, ProfileActionState? initialProfileAction, ProfileHeroTag heroTag});
 
 
 class _ProfileGridState extends State<ProfileGrid> {
@@ -71,6 +73,7 @@ class _ProfileGridState extends State<ProfileGrid> {
   bool _reloadInProgress = false;
 
   final profile = LoginRepository.getInstance().repositories.profile;
+  final chat = LoginRepository.getInstance().repositories.chat;
 
   @override
   void initState() {
@@ -173,7 +176,12 @@ class _ProfileGridState extends State<ProfileGrid> {
     // reason for the initial page.
     final newList = List<ProfileViewEntry>.empty(growable: true);
     for (final profile in profileList) {
-      newList.add((profile: profile, heroTag: ProfileHeroTag.from(profile.uuid, _heroUniqueIdCounter)));
+      final initialProfileAction = await resolveProfileAction(chat, profile.uuid);
+      newList.add((
+        profile: profile,
+        initialProfileAction: initialProfileAction,
+        heroTag: ProfileHeroTag.from(profile.uuid, _heroUniqueIdCounter),
+      ));
       _heroUniqueIdCounter++;
     }
 
@@ -257,7 +265,7 @@ class _ProfileGridState extends State<ProfileGrid> {
                   }
                 );
               },
-              child: profileEntryWidgetStream(item.profile, iHaveUnlimitedLikesEnabled, accountDb),
+              child: profileEntryWidgetStream(item.profile, iHaveUnlimitedLikesEnabled, item.initialProfileAction, accountDb),
             )
           );
         },
@@ -356,6 +364,7 @@ class _ProfileGridState extends State<ProfileGrid> {
 Widget profileEntryWidgetStream(
   ProfileEntry entry,
   bool iHaveUnlimitedLikesEnabled,
+  ProfileActionState? initialProfileAction,
   AccountDatabaseManager db,
   {
     bool showNewLikeMarker = false,
@@ -388,7 +397,7 @@ Widget profileEntryWidgetStream(
                   // Hero animation is disabled currently as UI looks better
                   // without it.
                   // openProfileView(context, item.profile, heroTag: item.heroTag);
-                  openProfileView(context, e, ProfileRefreshPriority.low, heroTag: null);
+                  openProfileView(context, e, initialProfileAction, ProfileRefreshPriority.low, heroTag: null);
                 },
               ),
             ),

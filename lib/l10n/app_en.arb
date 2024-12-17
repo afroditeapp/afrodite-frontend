@@ -1502,29 +1502,5 @@
   "view_profile_screen_remove_from_favorites_action_successful": "Removed from favorites",
   "@view_profile_screen_remove_from_favorites_action_successful": {
     "description": "Snackbar text for view profile screen remove from favorites action result successful"
-  },
-  "view_profile_screen_remove_like_action": "Remove chat request",
-  "@view_profile_screen_remove_like_action": {
-    "description": "Text for view profile screen remove like action"
-  },
-  "view_profile_screen_remove_like_action_dialog_text": "This can be done only once per profile",
-  "@view_profile_screen_remove_like_action_dialog_text": {
-    "description": "Text for view profile screen remove like action dialog"
-  },
-  "view_profile_screen_remove_like_action_dialog_title": "Remove chat request?",
-  "@view_profile_screen_remove_like_action_dialog_title": {
-    "description": "Title for view profile screen remove like action dialog"
-  },
-  "view_profile_screen_remove_like_action_like_not_found": "Chat request not found",
-  "@view_profile_screen_remove_like_action_like_not_found": {
-    "description": "Snackbar text for view profile screen remove like action failed because like is not found"
-  },
-  "view_profile_screen_remove_like_action_remove_done_previously": "Remove chat request failed because the previous chat request removal was detected for the profile",
-  "@view_profile_screen_remove_like_action_remove_done_previously": {
-    "description": "Snackbar text for view profile screen remove like action failed because it is done previously"
-  },
-  "view_profile_screen_remove_like_action_successful": "Chat request removed",
-  "@view_profile_screen_remove_like_action_successful": {
-    "description": "Snackbar text for view profile screen remove like action successful"
   }
 }
