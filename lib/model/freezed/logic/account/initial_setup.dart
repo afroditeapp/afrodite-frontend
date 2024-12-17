@@ -27,6 +27,7 @@ class InitialSetupData with _$InitialSetupData {
     int? searchAgeRangeMax,
     LatLng? profileLocation,
     @Default(PartiallyAnswered([]))ProfileAttributesState profileAttributes,
+    bool? unlimitedLikes,
     @Default(false) bool sendingInProgress,
   }) = _InitialSetupData;
 }

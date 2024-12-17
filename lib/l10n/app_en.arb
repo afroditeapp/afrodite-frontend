@@ -327,7 +327,7 @@
   "@edit_profile_screen_unlimited_likes_description_disabled": {
     "description": "Description for unlimited likes setting when it is disabled"
   },
-  "edit_profile_screen_unlimited_likes_description_enabled": "Send unlimited chat requests for those who have enabled unlimited chat requests",
+  "edit_profile_screen_unlimited_likes_description_enabled": "Send chat requests without limits for those who have enabled this setting",
   "@edit_profile_screen_unlimited_likes_description_enabled": {
     "description": "Description for unlimited likes setting when it is enabled"
   },
@@ -694,6 +694,26 @@
   "initial_setup_screen_security_selfie_title": "My security selfie is…",
   "@initial_setup_screen_security_selfie_title": {
     "description": "Title for initial setup security selfie screen"
+  },
+  "initial_setup_screen_unlimited_likes_description_part_1": "Looking a date for tonight? Enable unlimited chat requests and send unlimited amount of chat requests to those with the same setting enabled.",
+  "@initial_setup_screen_unlimited_likes_description_part_1": {
+    "description": "Description part 1 for initial setup unlimited likes question"
+  },
+  "initial_setup_screen_unlimited_likes_description_part_2": "The symbol on right will be visible on your profile only for those with the same setting enabled.",
+  "@initial_setup_screen_unlimited_likes_description_part_2": {
+    "description": "Description part 2 for initial setup unlimited likes question"
+  },
+  "initial_setup_screen_unlimited_likes_disabled": "No, maybe later (1 chat request per day)",
+  "@initial_setup_screen_unlimited_likes_disabled": {
+    "description": "Title text for initial setup unlimited likes disabled option"
+  },
+  "initial_setup_screen_unlimited_likes_enabled": "Yes",
+  "@initial_setup_screen_unlimited_likes_enabled": {
+    "description": "Title text for initial setup unlimited likes enabled option"
+  },
+  "initial_setup_screen_unlimited_likes_title": "Unlimited chat requests",
+  "@initial_setup_screen_unlimited_likes_title": {
+    "description": "Title for initial setup unlimited likes question"
   },
   "likes_screen_like_loading_failed": "Chat request loading failed",
   "@likes_screen_like_loading_failed": {

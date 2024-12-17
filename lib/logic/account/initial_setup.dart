@@ -1,7 +1,6 @@
 import "dart:io";
 import "dart:typed_data";
 
-import "package:camera/camera.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:latlong2/latlong.dart";
 import "package:logging/logging.dart";
@@ -20,7 +19,6 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 import "package:app/utils/api.dart";
 import "package:app/utils/immutable_list.dart";
-import "package:app/utils/tmp_dir.dart";
 
 
 // TODO(prod): Figure out email address changing?
@@ -95,6 +93,10 @@ class ModifyProfileAttributeBitflagValue extends InitialSetupEvent {
   final AttributeValue attributeValue;
   final bool value;
   ModifyProfileAttributeBitflagValue(this.requiredAttributeCount, this.attribute, this.attributeValue, this.value);
+}
+class SetUnlimitedLikes extends InitialSetupEvent {
+  final bool value;
+  SetUnlimitedLikes(this.value);
 }
 class CompleteInitialSetup extends InitialSetupEvent {}
 class ResetState extends InitialSetupEvent {}
@@ -180,6 +182,11 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
     on<ModifyProfileAttributeBitflagValue>((data, emit) async {
       emit(state.copyWith(
         profileAttributes: modifyAttributes(data, state.profileAttributes),
+      ));
+    });
+    on<SetUnlimitedLikes>((data, emit) async {
+      emit(state.copyWith(
+        unlimitedLikes: data.value,
       ));
     });
     on<CompleteInitialSetup>((data, emit) async {

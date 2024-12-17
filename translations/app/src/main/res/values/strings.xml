@@ -160,6 +160,11 @@
     <string name="initial_setup_screen_profile_attributes_missing_error_text" description="Error text displayed when profile attributes are not yet downloaded">Profile questions are not yet downloaded.</string>
     <string name="initial_setup_screen_profile_attributes_download_button" description="Button text for downloading profile attributes">Download questions</string>
     <string name="initial_setup_screen_profile_attributes_no_questions_text" description="Info text that all required questions are already answered">All required questions already answered.</string>
+    <string name="initial_setup_screen_unlimited_likes_title" description="Title for initial setup unlimited likes question">Unlimited chat requests</string>
+    <string name="initial_setup_screen_unlimited_likes_description_part_1" description="Description part 1 for initial setup unlimited likes question">Looking a date for tonight? Enable unlimited chat requests and send unlimited amount of chat requests to those with the same setting enabled.</string>
+    <string name="initial_setup_screen_unlimited_likes_description_part_2" description="Description part 2 for initial setup unlimited likes question">The symbol on right will be visible on your profile only for those with the same setting enabled.</string>
+    <string name="initial_setup_screen_unlimited_likes_enabled" description="Title text for initial setup unlimited likes enabled option">Yes</string>
+    <string name="initial_setup_screen_unlimited_likes_disabled" description="Title text for initial setup unlimited likes disabled option">No, maybe later (1 chat request per day)</string>
 
     <!-- Notification permission -->
     <string name="notification_permission_dialog_title" description="Title for notification permission dialog">Allow notifications?</string>
@@ -243,7 +248,7 @@
     <string name="edit_profile_screen_title" description="Title for edit profile screen">Edit profile</string>
     <string name="edit_profile_screen_profile_text" description="Title for profile text field">Profile text</string>
     <string name="edit_profile_screen_unlimited_likes" description="Title for unlimited likes setting">Unlimited chat requests</string>
-    <string name="edit_profile_screen_unlimited_likes_description_enabled" description="Description for unlimited likes setting when it is enabled">Send unlimited chat requests for those who have enabled unlimited chat requests</string>
+    <string name="edit_profile_screen_unlimited_likes_description_enabled" description="Description for unlimited likes setting when it is enabled">Send chat requests without limits for those who have enabled this setting</string>
     <string name="edit_profile_screen_unlimited_likes_description_disabled" description="Description for unlimited likes setting when it is disabled">Send one chat request per day</string>
     <string name="edit_profile_screen_invalid_first_name" description="Snackbar text for notifying about invalid first name">Invalid first name</string>
     <string name="edit_profile_screen_invalid_age" description="Snackbar text for notifying about invalid age">Invalid age</string>

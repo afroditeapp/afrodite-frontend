@@ -1,3 +1,5 @@
+import "package:app/logic/app/navigator_state.dart";
+import "package:app/ui/initial_setup/unlimited_likes.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
@@ -27,7 +29,7 @@ class AskProfileAttributesScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           if (state.profileAttributes is FullyAnswered) {
             return () {
-              context.read<InitialSetupBloc>().add(CompleteInitialSetup());
+              MyNavigator.push(context, const MaterialPage<void>(child: AskUnlimitedLikesScreen()));
             };
           } else {
             return null;
@@ -68,10 +70,6 @@ class _AskProfileAttributesState extends State<AskProfileAttributes> {
         ProgressDialogOpener<ProfileAttributesBloc, AttributesData>(
           dialogVisibilityGetter: (state) =>
             state.refreshState is AttributeRefreshLoading,
-        ),
-        ProgressDialogOpener<InitialSetupBloc, InitialSetupData>(
-          dialogVisibilityGetter: (state) =>
-            state.sendingInProgress,
         ),
       ],
     );
