@@ -1374,10 +1374,6 @@
   "@view_profile_screen_like_action_try_again_tomorrow": {
     "description": "Snackbar text for view profile screen like action failed because of like limit"
   },
-  "view_profile_screen_match_with_message_action": "Accept chat request by sending a message",
-  "@view_profile_screen_match_with_message_action": {
-    "description": "Text for view profile screen match with message action"
-  },
   "view_profile_screen_my_profile_edit_action": "Edit profile",
   "@view_profile_screen_my_profile_edit_action": {
     "description": "Text for view profile screen edit my profile action"

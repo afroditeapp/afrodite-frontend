@@ -135,13 +135,7 @@ class ViewProfilePage extends StatelessWidget {
           tooltip: context.strings.view_profile_screen_like_action,
           child: const Icon(Icons.waving_hand),
         );
-      case ProfileActionState.makeMatch:
-        return FloatingActionButton(
-          onPressed: () => openConversationScreen(context, state.profile),
-          tooltip: context.strings.view_profile_screen_match_with_message_action,
-          child: const Icon(Icons.waving_hand),
-        );
-      case ProfileActionState.chat:
+      case ProfileActionState.makeMatch || ProfileActionState.chat:
         return FloatingActionButton(
           onPressed: () => openConversationScreen(context, state.profile),
           tooltip: context.strings.view_profile_screen_chat_action,

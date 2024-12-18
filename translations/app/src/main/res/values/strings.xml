@@ -211,7 +211,6 @@
     <string name="view_profile_screen_block_action_dialog_title" description="Title for view profile screen block action dialog">Block profile?</string>
     <string name="view_profile_screen_like_action" description="Text for view profile screen like action">Send chat request</string>
     <string name="view_profile_screen_like_action_dialog_title" description="Title for view profile screen like action dialog">Send chat request?</string>
-    <string name="view_profile_screen_match_with_message_action" description="Text for view profile screen match with message action">Accept chat request by sending a message</string>
     <string name="view_profile_screen_chat_action" description="Text for view profile screen chat action">Chat</string>
     <string name="view_profile_screen_add_to_favorites_action" description="Text for view profile screen add to favorites action">Add to favorites</string>
     <string name="view_profile_screen_add_to_favorites_action_successful" description="Snackbar text for view profile screen add to favorites action result successful">Added to favorites</string>
