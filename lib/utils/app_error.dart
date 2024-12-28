@@ -35,6 +35,7 @@ class ActionApiErrorException extends ActionApiError {
   @override
   void logError(Logger log) {
     log.error("Action API error, code: ${e.code}");
+    log.fine(e.toString());
     log.fine(StackTrace.current);
     ErrorManager.getInstance().show(this);
   }
@@ -108,6 +109,7 @@ class ValueApiException extends ValueApiError {
   @override
   void logError(Logger log) {
     log.error("Value API error, code: ${e.code}");
+    log.fine(e.toString());
     log.fine(StackTrace.current);
     ErrorManager.getInstance().show(this);
   }
