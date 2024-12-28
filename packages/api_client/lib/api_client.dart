@@ -190,6 +190,10 @@ class ApiClient {
           return AccessibleAccount.fromJson(value);
         case 'Account':
           return Account.fromJson(value);
+        case 'AccountBanReasonCategory':
+          return AccountBanReasonCategory.fromJson(value);
+        case 'AccountBanReasonDetails':
+          return AccountBanReasonDetails.fromJson(value);
         case 'AccountContent':
           return AccountContent.fromJson(value);
         case 'AccountData':
@@ -198,14 +202,16 @@ class ApiClient {
           return AccountId.fromJson(value);
         case 'AccountSetup':
           return AccountSetup.fromJson(value);
-        case 'AccountState':
-          return AccountStateTypeTransformer().decode(value);
+        case 'AccountStateContainer':
+          return AccountStateContainer.fromJson(value);
         case 'AccountSyncVersion':
           return AccountSyncVersion.fromJson(value);
         case 'AllMatchesPage':
           return AllMatchesPage.fromJson(value);
         case 'Attribute':
           return Attribute.fromJson(value);
+        case 'AttributeIdAndHash':
+          return AttributeIdAndHash.fromJson(value);
         case 'AttributeMode':
           return AttributeModeTypeTransformer().decode(value);
         case 'AttributeOrderMode':
@@ -262,8 +268,6 @@ class ApiClient {
           return CurrentAccountInteractionStateTypeTransformer().decode(value);
         case 'DeleteLikeResult':
           return DeleteLikeResult.fromJson(value);
-        case 'DeleteStatus':
-          return DeleteStatus.fromJson(value);
         case 'DemoModeConfirmLogin':
           return DemoModeConfirmLogin.fromJson(value);
         case 'DemoModeConfirmLoginResult':
@@ -286,6 +290,10 @@ class ApiClient {
           return FavoriteProfilesPage.fromJson(value);
         case 'FcmDeviceToken':
           return FcmDeviceToken.fromJson(value);
+        case 'GetAccountBanTimeResult':
+          return GetAccountBanTimeResult.fromJson(value);
+        case 'GetAccountDeletionRequestResult':
+          return GetAccountDeletionRequestResult.fromJson(value);
         case 'GetInitialProfileAgeInfoResult':
           return GetInitialProfileAgeInfoResult.fromJson(value);
         case 'GetMediaContentResult':
@@ -380,12 +388,12 @@ class ApiClient {
           return PendingNotificationToken.fromJson(value);
         case 'PendingNotificationWithData':
           return PendingNotificationWithData.fromJson(value);
-        case 'PerfHistoryQueryResult':
-          return PerfHistoryQueryResult.fromJson(value);
-        case 'PerfHistoryValue':
-          return PerfHistoryValue.fromJson(value);
-        case 'PerfValueArea':
-          return PerfValueArea.fromJson(value);
+        case 'PerfMetricQueryResult':
+          return PerfMetricQueryResult.fromJson(value);
+        case 'PerfMetricValueArea':
+          return PerfMetricValueArea.fromJson(value);
+        case 'PerfMetricValues':
+          return PerfMetricValues.fromJson(value);
         case 'Permissions':
           return Permissions.fromJson(value);
         case 'PostModerateProfileContent':
@@ -402,12 +410,20 @@ class ApiClient {
           return ProfileAttributeFilterValue.fromJson(value);
         case 'ProfileAttributeFilterValueUpdate':
           return ProfileAttributeFilterValueUpdate.fromJson(value);
+        case 'ProfileAttributeHash':
+          return ProfileAttributeHash.fromJson(value);
+        case 'ProfileAttributeInfo':
+          return ProfileAttributeInfo.fromJson(value);
+        case 'ProfileAttributeQuery':
+          return ProfileAttributeQuery.fromJson(value);
+        case 'ProfileAttributeQueryItem':
+          return ProfileAttributeQueryItem.fromJson(value);
+        case 'ProfileAttributeQueryResult':
+          return ProfileAttributeQueryResult.fromJson(value);
         case 'ProfileAttributeValue':
           return ProfileAttributeValue.fromJson(value);
         case 'ProfileAttributeValueUpdate':
           return ProfileAttributeValueUpdate.fromJson(value);
-        case 'ProfileAttributes':
-          return ProfileAttributes.fromJson(value);
         case 'ProfileAttributesSyncVersion':
           return ProfileAttributesSyncVersion.fromJson(value);
         case 'ProfileContent':
@@ -466,8 +482,6 @@ class ApiClient {
           return PublicKeyIdAndVersion.fromJson(value);
         case 'PublicKeyVersion':
           return PublicKeyVersion.fromJson(value);
-        case 'PublicProfileCounts':
-          return PublicProfileCounts.fromJson(value);
         case 'ReceivedBlocksPage':
           return ReceivedBlocksPage.fromJson(value);
         case 'ReceivedBlocksSyncVersion':
@@ -506,6 +520,8 @@ class ApiClient {
           return SentMessageId.fromJson(value);
         case 'SentMessageIdList':
           return SentMessageIdList.fromJson(value);
+        case 'SetAccountBanState':
+          return SetAccountBanState.fromJson(value);
         case 'SetAccountSetup':
           return SetAccountSetup.fromJson(value);
         case 'SetProfileContent':

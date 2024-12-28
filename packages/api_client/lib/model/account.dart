@@ -21,7 +21,7 @@ class Account {
 
   Permissions permissions;
 
-  AccountState state;
+  AccountStateContainer state;
 
   AccountSyncVersion syncVersion;
 
@@ -74,7 +74,7 @@ class Account {
 
       return Account(
         permissions: Permissions.fromJson(json[r'permissions'])!,
-        state: AccountState.fromJson(json[r'state'])!,
+        state: AccountStateContainer.fromJson(json[r'state'])!,
         syncVersion: AccountSyncVersion.fromJson(json[r'sync_version'])!,
         visibility: ProfileVisibility.fromJson(json[r'visibility'])!,
       );
@@ -130,4 +130,3 @@ class Account {
     'visibility',
   };
 }
-

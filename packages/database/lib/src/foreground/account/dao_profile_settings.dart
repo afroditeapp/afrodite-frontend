@@ -1,5 +1,5 @@
 
-import 'package:openapi/api.dart' show ProfileVisibility, Location, GetProfileFilteringSettings, SearchGroups, ProfileSearchAgeRange, LastSeenTimeFilter;
+import 'package:openapi/api.dart' show Location, GetProfileFilteringSettings, SearchGroups, ProfileSearchAgeRange;
 import 'package:drift/drift.dart';
 
 import 'package:database/src/utils.dart';
@@ -18,15 +18,6 @@ class DaoProfileSettings extends DatabaseAccessor<AccountDatabase> with _$DaoPro
         id: ACCOUNT_DB_DATA_ID,
         profileLocationLatitude: Value(latitude),
         profileLocationLongitude: Value(longitude),
-      ),
-    );
-  }
-
-  Future<void> updateProfileVisibility(ProfileVisibility? value) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        jsonProfileVisibility: Value(value?.toEnumString()),
       ),
     );
   }
@@ -58,9 +49,6 @@ class DaoProfileSettings extends DatabaseAccessor<AccountDatabase> with _$DaoPro
       ),
     );
   }
-
-  Stream<ProfileVisibility?> watchProfileVisibility() =>
-    watchColumn((r) => r.jsonProfileVisibility?.toProfileVisibility());
 
   Stream<Location?> watchProfileLocation() =>
     selectFromDataId()

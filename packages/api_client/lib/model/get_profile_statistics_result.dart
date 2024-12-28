@@ -13,44 +13,32 @@ part of openapi.api;
 class GetProfileStatisticsResult {
   /// Returns a new [GetProfileStatisticsResult] instance.
   GetProfileStatisticsResult({
-    required this.accountCount,
     required this.ageCounts,
     required this.generationTime,
-    required this.publicProfileCounts,
   });
-
-  int accountCount;
 
   ProfileAgeCounts ageCounts;
 
   UnixTime generationTime;
 
-  PublicProfileCounts publicProfileCounts;
-
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetProfileStatisticsResult &&
-    other.accountCount == accountCount &&
     other.ageCounts == ageCounts &&
-    other.generationTime == generationTime &&
-    other.publicProfileCounts == publicProfileCounts;
+    other.generationTime == generationTime;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (accountCount.hashCode) +
     (ageCounts.hashCode) +
-    (generationTime.hashCode) +
-    (publicProfileCounts.hashCode);
+    (generationTime.hashCode);
 
   @override
-  String toString() => 'GetProfileStatisticsResult[accountCount=$accountCount, ageCounts=$ageCounts, generationTime=$generationTime, publicProfileCounts=$publicProfileCounts]';
+  String toString() => 'GetProfileStatisticsResult[ageCounts=$ageCounts, generationTime=$generationTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'account_count'] = this.accountCount;
       json[r'age_counts'] = this.ageCounts;
       json[r'generation_time'] = this.generationTime;
-      json[r'public_profile_counts'] = this.publicProfileCounts;
     return json;
   }
 
@@ -73,10 +61,8 @@ class GetProfileStatisticsResult {
       }());
 
       return GetProfileStatisticsResult(
-        accountCount: mapValueOfType<int>(json, r'account_count')!,
         ageCounts: ProfileAgeCounts.fromJson(json[r'age_counts'])!,
         generationTime: UnixTime.fromJson(json[r'generation_time'])!,
-        publicProfileCounts: PublicProfileCounts.fromJson(json[r'public_profile_counts'])!,
       );
     }
     return null;
@@ -124,10 +110,7 @@ class GetProfileStatisticsResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'account_count',
     'age_counts',
     'generation_time',
-    'public_profile_counts',
   };
 }
-

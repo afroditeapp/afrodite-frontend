@@ -13,20 +13,10 @@ part of openapi.api;
 class EventToClient {
   /// Returns a new [EventToClient] instance.
   EventToClient({
-    this.accountState,
-    this.accountSyncVersion,
     this.contentProcessingStateChanged,
     required this.event,
     this.latestViewedMessageChanged,
-    this.permissions,
-    this.visibility,
   });
-
-  /// Data for event AccountStateChanged
-  AccountState? accountState;
-
-  /// Data for event AccountSyncVersionChanged
-  AccountSyncVersion? accountSyncVersion;
 
   /// Data for event ContentProcessingStateChanged
   ContentProcessingStateChanged? contentProcessingStateChanged;
@@ -36,48 +26,24 @@ class EventToClient {
   /// Data for event LatestViewedMessageChanged
   LatestViewedMessageChanged? latestViewedMessageChanged;
 
-  /// Data for event AccountPermissionsChanged
-  Permissions? permissions;
-
-  /// Data for event ProfileVisibilityChanged
-  ProfileVisibility? visibility;
-
   @override
   bool operator ==(Object other) => identical(this, other) || other is EventToClient &&
-    other.accountState == accountState &&
-    other.accountSyncVersion == accountSyncVersion &&
     other.contentProcessingStateChanged == contentProcessingStateChanged &&
     other.event == event &&
-    other.latestViewedMessageChanged == latestViewedMessageChanged &&
-    other.permissions == permissions &&
-    other.visibility == visibility;
+    other.latestViewedMessageChanged == latestViewedMessageChanged;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (accountState == null ? 0 : accountState!.hashCode) +
-    (accountSyncVersion == null ? 0 : accountSyncVersion!.hashCode) +
     (contentProcessingStateChanged == null ? 0 : contentProcessingStateChanged!.hashCode) +
     (event.hashCode) +
-    (latestViewedMessageChanged == null ? 0 : latestViewedMessageChanged!.hashCode) +
-    (permissions == null ? 0 : permissions!.hashCode) +
-    (visibility == null ? 0 : visibility!.hashCode);
+    (latestViewedMessageChanged == null ? 0 : latestViewedMessageChanged!.hashCode);
 
   @override
-  String toString() => 'EventToClient[accountState=$accountState, accountSyncVersion=$accountSyncVersion, contentProcessingStateChanged=$contentProcessingStateChanged, event=$event, latestViewedMessageChanged=$latestViewedMessageChanged, permissions=$permissions, visibility=$visibility]';
+  String toString() => 'EventToClient[contentProcessingStateChanged=$contentProcessingStateChanged, event=$event, latestViewedMessageChanged=$latestViewedMessageChanged]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.accountState != null) {
-      json[r'account_state'] = this.accountState;
-    } else {
-      json[r'account_state'] = null;
-    }
-    if (this.accountSyncVersion != null) {
-      json[r'account_sync_version'] = this.accountSyncVersion;
-    } else {
-      json[r'account_sync_version'] = null;
-    }
     if (this.contentProcessingStateChanged != null) {
       json[r'content_processing_state_changed'] = this.contentProcessingStateChanged;
     } else {
@@ -88,16 +54,6 @@ class EventToClient {
       json[r'latest_viewed_message_changed'] = this.latestViewedMessageChanged;
     } else {
       json[r'latest_viewed_message_changed'] = null;
-    }
-    if (this.permissions != null) {
-      json[r'permissions'] = this.permissions;
-    } else {
-      json[r'permissions'] = null;
-    }
-    if (this.visibility != null) {
-      json[r'visibility'] = this.visibility;
-    } else {
-      json[r'visibility'] = null;
     }
     return json;
   }
@@ -121,13 +77,9 @@ class EventToClient {
       }());
 
       return EventToClient(
-        accountState: AccountState.fromJson(json[r'account_state']),
-        accountSyncVersion: AccountSyncVersion.fromJson(json[r'account_sync_version']),
         contentProcessingStateChanged: ContentProcessingStateChanged.fromJson(json[r'content_processing_state_changed']),
         event: EventType.fromJson(json[r'event'])!,
         latestViewedMessageChanged: LatestViewedMessageChanged.fromJson(json[r'latest_viewed_message_changed']),
-        permissions: Permissions.fromJson(json[r'permissions']),
-        visibility: ProfileVisibility.fromJson(json[r'visibility']),
       );
     }
     return null;
@@ -178,4 +130,3 @@ class EventToClient {
     'event',
   };
 }
-

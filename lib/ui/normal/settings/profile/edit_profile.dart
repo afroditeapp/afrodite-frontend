@@ -13,7 +13,6 @@ import 'package:app/logic/media/profile_pictures.dart';
 import 'package:app/logic/profile/attributes.dart';
 import 'package:app/logic/profile/edit_my_profile.dart';
 import 'package:app/logic/profile/my_profile.dart';
-import 'package:app/logic/profile/profile_filtering_settings.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/model/freezed/logic/profile/attributes.dart';
@@ -152,7 +151,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       return true;
     }
 
-    final availableAttributes = widget.profileAttributesBloc.state.attributes?.info?.attributes ?? [];
+    final availableAttributes = widget.profileAttributesBloc.state.attributes?.attributes ?? [];
     for (final a in editedData.attributes) {
       final currentOrNull = currentState.attributes.where((e) => e.id == a.id).firstOrNull;
       final current = ProfileAttributeValueUpdate(
@@ -277,7 +276,7 @@ class EditAttributes extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileAttributesBloc, AttributesData>(
       builder: (context, data) {
-        final availableAttributes = data.attributes?.info;
+        final availableAttributes = data.attributes;
         if (availableAttributes == null) {
           return const SizedBox.shrink();
         }

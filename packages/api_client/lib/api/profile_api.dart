@@ -99,7 +99,7 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AvailableProfileAttributes',) as AvailableProfileAttributes;
-    
+
     }
     return null;
   }
@@ -143,7 +143,7 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'FavoriteProfilesPage',) as FavoriteProfilesPage;
-    
+
     }
     return null;
   }
@@ -187,7 +187,7 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetInitialProfileAgeInfoResult',) as GetInitialProfileAgeInfoResult;
-    
+
     }
     return null;
   }
@@ -231,7 +231,7 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Location',) as Location;
-    
+
     }
     return null;
   }
@@ -275,7 +275,7 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetMyProfileResult',) as GetMyProfileResult;
-    
+
     }
     return null;
   }
@@ -351,7 +351,7 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileResult',) as GetProfileResult;
-    
+
     }
     return null;
   }
@@ -395,7 +395,7 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileFilteringSettings',) as GetProfileFilteringSettings;
-    
+
     }
     return null;
   }
@@ -448,7 +448,7 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Profile',) as Profile;
-    
+
     }
     return null;
   }
@@ -515,7 +515,7 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileStatisticsResult',) as GetProfileStatisticsResult;
-    
+
     }
     return null;
   }
@@ -559,7 +559,7 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileSearchAgeRange',) as ProfileSearchAgeRange;
-    
+
     }
     return null;
   }
@@ -603,7 +603,7 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SearchGroups',) as SearchGroups;
-    
+
     }
     return null;
   }
@@ -699,7 +699,63 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfilePage',) as ProfilePage;
-    
+
+    }
+    return null;
+  }
+
+  /// Query profile attributes using attribute ID list.
+  ///
+  /// The HTTP method is POST because HTTP GET does not allow request body.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [ProfileAttributeQuery] profileAttributeQuery (required):
+  Future<Response> postGetQueryAvailableProfileAttributesWithHttpInfo(ProfileAttributeQuery profileAttributeQuery,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/CO3Oaim0dDWLcVuGqqJoVG-ybXE';
+
+    // ignore: prefer_final_locals
+    Object? postBody = profileAttributeQuery;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Query profile attributes using attribute ID list.
+  ///
+  /// The HTTP method is POST because HTTP GET does not allow request body.
+  ///
+  /// Parameters:
+  ///
+  /// * [ProfileAttributeQuery] profileAttributeQuery (required):
+  Future<ProfileAttributeQueryResult?> postGetQueryAvailableProfileAttributes(ProfileAttributeQuery profileAttributeQuery,) async {
+    final response = await postGetQueryAvailableProfileAttributesWithHttpInfo(profileAttributeQuery,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileAttributeQueryResult',) as ProfileAttributeQueryResult;
+
     }
     return null;
   }
@@ -883,7 +939,7 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileIteratorSessionId',) as ProfileIteratorSessionId;
-    
+
     }
     return null;
   }

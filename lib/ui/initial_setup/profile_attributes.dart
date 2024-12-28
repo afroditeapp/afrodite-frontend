@@ -1,5 +1,6 @@
 import "package:app/logic/app/navigator_state.dart";
 import "package:app/ui/initial_setup/unlimited_likes.dart";
+import "package:database/database.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
@@ -106,14 +107,11 @@ class _AskProfileAttributesState extends State<AskProfileAttributes> {
     );
   }
 
-  Widget attributeQuestionsUi(BuildContext context, AvailableProfileAttributes attributes) {
-    final availableAttributes = attributes.info;
-    if (availableAttributes != null) {
-      final requiredAttributes = availableAttributes.attributes.where((element) => element.required_).toList();
-      if (requiredAttributes.isNotEmpty) {
-        reorderAttributes(requiredAttributes, availableAttributes.attributeOrder);
-        return questionAnsweringUi(context, requiredAttributes);
-      }
+  Widget attributeQuestionsUi(BuildContext context, ProfileAttributes attributes) {
+    final requiredAttributes = attributes.attributes.where((element) => element.required_).toList();
+    if (requiredAttributes.isNotEmpty) {
+      reorderAttributes(requiredAttributes, attributes.attributeOrder);
+      return questionAnsweringUi(context, requiredAttributes);
     }
 
     return noQuestionsUi(context);

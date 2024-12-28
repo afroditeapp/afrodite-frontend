@@ -59,7 +59,7 @@ class CommonAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'BackendConfig',) as BackendConfig;
-    
+
     }
     return null;
   }
@@ -113,7 +113,7 @@ class CommonAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'BuildInfo',) as BuildInfo;
-    
+
     }
     return null;
   }
@@ -174,7 +174,7 @@ class CommonAdminApi {
   ///
   /// * [UnixTime] endTime:
   ///   End time for query results.
-  Future<PerfHistoryQueryResult?> getPerfData({ UnixTime? startTime, UnixTime? endTime, }) async {
+  Future<PerfMetricQueryResult?> getPerfData({ UnixTime? startTime, UnixTime? endTime, }) async {
     final response = await getPerfDataWithHttpInfo( startTime: startTime, endTime: endTime, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -183,8 +183,8 @@ class CommonAdminApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PerfHistoryQueryResult',) as PerfHistoryQueryResult;
-    
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PerfMetricQueryResult',) as PerfMetricQueryResult;
+
     }
     return null;
   }
@@ -228,7 +228,7 @@ class CommonAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SoftwareInfo',) as SoftwareInfo;
-    
+
     }
     return null;
   }
@@ -272,7 +272,7 @@ class CommonAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SystemInfoList',) as SystemInfoList;
-    
+
     }
     return null;
   }

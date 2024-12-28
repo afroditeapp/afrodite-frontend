@@ -1,14 +1,12 @@
 
 
 
-import 'package:database/src/message_entry.dart';
-import 'package:openapi/api.dart' show AccountId, ProfileContent;
+import 'package:openapi/api.dart' show AccountId;
 import 'package:openapi/api.dart' as api;
 import 'package:utils/utils.dart';
 import 'account_database.dart';
 
 import 'package:drift/drift.dart';
-import '../profile_entry.dart';
 import '../utils.dart';
 
 part 'profile_states_table.g.dart';

@@ -24,9 +24,6 @@ class EventType {
   String toJson() => value;
 
   static const accountStateChanged = EventType._(r'AccountStateChanged');
-  static const accountPermissionsChanged = EventType._(r'AccountPermissionsChanged');
-  static const profileVisibilityChanged = EventType._(r'ProfileVisibilityChanged');
-  static const accountSyncVersionChanged = EventType._(r'AccountSyncVersionChanged');
   static const newMessageReceived = EventType._(r'NewMessageReceived');
   static const receivedLikesChanged = EventType._(r'ReceivedLikesChanged');
   static const receivedBlocksChanged = EventType._(r'ReceivedBlocksChanged');
@@ -44,9 +41,6 @@ class EventType {
   /// List of all possible values in this [enum][EventType].
   static const values = <EventType>[
     accountStateChanged,
-    accountPermissionsChanged,
-    profileVisibilityChanged,
-    accountSyncVersionChanged,
     newMessageReceived,
     receivedLikesChanged,
     receivedBlocksChanged,
@@ -99,9 +93,6 @@ class EventTypeTypeTransformer {
     if (data != null) {
       switch (data) {
         case r'AccountStateChanged': return EventType.accountStateChanged;
-        case r'AccountPermissionsChanged': return EventType.accountPermissionsChanged;
-        case r'ProfileVisibilityChanged': return EventType.profileVisibilityChanged;
-        case r'AccountSyncVersionChanged': return EventType.accountSyncVersionChanged;
         case r'NewMessageReceived': return EventType.newMessageReceived;
         case r'ReceivedLikesChanged': return EventType.receivedLikesChanged;
         case r'ReceivedBlocksChanged': return EventType.receivedBlocksChanged;
@@ -127,4 +118,3 @@ class EventTypeTypeTransformer {
   /// Singleton [EventTypeTypeTransformer] instance.
   static EventTypeTypeTransformer? _instance;
 }
-

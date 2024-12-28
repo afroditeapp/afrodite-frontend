@@ -33,8 +33,6 @@ class Attribute {
   /// Icon for the attribute.
   String? icon;
 
-  /// Numeric unique identifier for the attribute.
-  ///
   /// Minimum value: 0
   int id;
 
@@ -209,4 +207,3 @@ class Attribute {
     'values',
   };
 }
-

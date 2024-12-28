@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:app/data/general/notification/state/news_item_available.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:async/async.dart' show StreamExtensions;
+import 'package:database/database.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/api_manager.dart';
@@ -35,6 +36,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   final ApiManager api;
   final AccountDatabaseManager db;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final AccountId currentUser;
 
   late final RepositoryInstances repositories;
   AccountRepository({
@@ -44,6 +46,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     required ServerConnectionManager connectionManager,
     required this.clientIdManager,
     required bool rememberToInitRepositoriesLateFinal,
+    required this.currentUser,
   }) :
     _syncHandler = ConnectedActionScheduler(connectionManager);
 
@@ -88,7 +91,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       });
 
     _cachedProfileVisibilitySubscription = db
-        .accountStreamOrDefault((db) => db.daoProfileSettings.watchProfileVisibility(), PROFILE_VISIBILITY_DEFAULT)
+        .accountStreamOrDefault((db) => db.watchProfileVisibility(), PROFILE_VISIBILITY_DEFAULT)
         .listen((v) {
           _cachedProfileVisibility.add(v);
         });
@@ -119,20 +122,13 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     });
   }
 
-  Future<void> _saveAccountState(AccountState state) async {
-    await db.accountAction((db) => db.updateAccountState(state));
-  }
-
-  Future<void> _savePermissions(Permissions permissions) async {
-    await db.accountAction((db) => db.updatePermissions(permissions));
-  }
-
-  Future<void> _saveProfileVisibility(ProfileVisibility newProfileVisibility) async {
-    await db.accountAction((db) => db.daoProfileSettings.updateProfileVisibility(newProfileVisibility));
-  }
-
-  Future<void> _saveAccountSyncVersion(AccountSyncVersion version) async {
-    await db.accountAction((db) => db.daoSyncVersions.updateSyncVersionAccount(version));
+  Future<void> _receiveAccountState() async {
+    final result = await api.account((api) =>
+      api.getAccountState()
+    ).ok();
+    if (result != null) {
+      await db.accountAction((db) => db.updateAccountState(result));
+    }
   }
 
   // TODO: Background futures might cause issues
@@ -146,20 +142,10 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     final profile = repositories.profile;
     final media = repositories.media;
 
-    final accountState = event.accountState;
-    final permissions = event.permissions;
-    final visibility = event.visibility;
-    final accountSyncVersion = event.accountSyncVersion;
     final latestViewedMessageChanged = event.latestViewedMessageChanged;
     final contentProcessingEvent = event.contentProcessingStateChanged;
-    if (event.event == EventType.accountStateChanged && accountState != null) {
-      await _saveAccountState(accountState);
-    } else if (event.event == EventType.accountPermissionsChanged && permissions != null) {
-      await _savePermissions(permissions);
-    } else if (event.event == EventType.profileVisibilityChanged && visibility != null) {
-      await _saveProfileVisibility(visibility);
-    } else if (event.event == EventType.accountSyncVersionChanged && accountSyncVersion != null) {
-      await _saveAccountSyncVersion(accountSyncVersion);
+    if (event.event == EventType.accountStateChanged) {
+      await _receiveAccountState();
     } else if (event.event == EventType.latestViewedMessageChanged && latestViewedMessageChanged != null) {
       log.finest("Ignoring latest viewed message changed event");
     } else if (event.event == EventType.contentProcessingStateChanged && contentProcessingEvent != null) {
@@ -257,7 +243,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<void, void>> moveAccountToPendingDeletionState() async {
-    return await api.accountAction((api) => api.postDelete())
+    return await api.accountAction((api) => api.postSetAccountDeletionRequestState(currentUser.aid, BooleanSetting(value: true)))
       .mapErr((_) => ())
       .mapOk((_) => ());
   }

@@ -24,8 +24,6 @@ class ProfileAttributeFilterValueUpdate {
   /// - First value is bitflags value or top level attribute value ID or first number list value. - Second value is sub level attribute value ID or second number list value. - Third and rest are number list values.
   List<int> filterValues;
 
-  /// Attribute ID
-  ///
   /// Minimum value: 0
   int id;
 
@@ -132,4 +130,3 @@ class ProfileAttributeFilterValueUpdate {
     'id',
   };
 }
-

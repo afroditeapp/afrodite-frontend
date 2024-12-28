@@ -13,6 +13,8 @@ dependencies:
 
   async: ^2.11.0
 
+  collection: ^1.18.0
+
   # API client for server API
   openapi:
     path: "../api_client"

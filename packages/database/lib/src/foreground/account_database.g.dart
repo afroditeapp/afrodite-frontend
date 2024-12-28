@@ -20,19 +20,19 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static const VerificationMeta _uuidAccountIdMeta =
       const VerificationMeta('uuidAccountId');
   @override
-  late final GeneratedColumnWithTypeConverter<AccountId?, String>
+  late final GeneratedColumnWithTypeConverter<api.AccountId?, String>
       uuidAccountId = GeneratedColumn<String>(
               'uuid_account_id', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<AccountId?>($AccountTable.$converteruuidAccountId);
+          .withConverter<api.AccountId?>($AccountTable.$converteruuidAccountId);
   static const VerificationMeta _jsonAccountStateMeta =
       const VerificationMeta('jsonAccountState');
   @override
-  late final GeneratedColumnWithTypeConverter<EnumString?, String>
+  late final GeneratedColumnWithTypeConverter<JsonString?, String>
       jsonAccountState = GeneratedColumn<String>(
               'json_account_state', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<EnumString?>($AccountTable.$converterjsonAccountState);
+          .withConverter<JsonString?>($AccountTable.$converterjsonAccountState);
   static const VerificationMeta _jsonPermissionsMeta =
       const VerificationMeta('jsonPermissions');
   @override
@@ -41,15 +41,15 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               'json_permissions', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<JsonString?>($AccountTable.$converterjsonPermissions);
-  static const VerificationMeta _jsonAvailableProfileAttributesMeta =
-      const VerificationMeta('jsonAvailableProfileAttributes');
+  static const VerificationMeta _jsonProfileVisibilityMeta =
+      const VerificationMeta('jsonProfileVisibility');
   @override
-  late final GeneratedColumnWithTypeConverter<JsonString?, String>
-      jsonAvailableProfileAttributes = GeneratedColumn<String>(
-              'json_available_profile_attributes', aliasedName, true,
+  late final GeneratedColumnWithTypeConverter<EnumString?, String>
+      jsonProfileVisibility = GeneratedColumn<String>(
+              'json_profile_visibility', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<JsonString?>(
-              $AccountTable.$converterjsonAvailableProfileAttributes);
+          .withConverter<EnumString?>(
+              $AccountTable.$converterjsonProfileVisibility);
   static const VerificationMeta _profileFilterFavoritesMeta =
       const VerificationMeta('profileFilterFavorites');
   @override
@@ -63,37 +63,47 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static const VerificationMeta _profileIteratorSessionIdMeta =
       const VerificationMeta('profileIteratorSessionId');
   @override
-  late final GeneratedColumnWithTypeConverter<ProfileIteratorSessionId?, int>
-      profileIteratorSessionId = GeneratedColumn<int>(
-              'profile_iterator_session_id', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<ProfileIteratorSessionId?>(
-              $AccountTable.$converterprofileIteratorSessionId);
+  late final GeneratedColumnWithTypeConverter<api.ProfileIteratorSessionId?,
+      int> profileIteratorSessionId = GeneratedColumn<int>(
+          'profile_iterator_session_id', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false)
+      .withConverter<api.ProfileIteratorSessionId?>(
+          $AccountTable.$converterprofileIteratorSessionId);
   static const VerificationMeta _receivedLikesIteratorSessionIdMeta =
       const VerificationMeta('receivedLikesIteratorSessionId');
   @override
-  late final GeneratedColumnWithTypeConverter<ReceivedLikesIteratorSessionId?,
+  late final GeneratedColumnWithTypeConverter<
+      api.ReceivedLikesIteratorSessionId?,
       int> receivedLikesIteratorSessionId = GeneratedColumn<int>(
           'received_likes_iterator_session_id', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false)
-      .withConverter<ReceivedLikesIteratorSessionId?>(
+      .withConverter<api.ReceivedLikesIteratorSessionId?>(
           $AccountTable.$converterreceivedLikesIteratorSessionId);
   static const VerificationMeta _matchesIteratorSessionIdMeta =
       const VerificationMeta('matchesIteratorSessionId');
   @override
-  late final GeneratedColumnWithTypeConverter<MatchesIteratorSessionId?, int>
-      matchesIteratorSessionId = GeneratedColumn<int>(
-              'matches_iterator_session_id', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<MatchesIteratorSessionId?>(
-              $AccountTable.$convertermatchesIteratorSessionId);
+  late final GeneratedColumnWithTypeConverter<api.MatchesIteratorSessionId?,
+      int> matchesIteratorSessionId = GeneratedColumn<int>(
+          'matches_iterator_session_id', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false)
+      .withConverter<api.MatchesIteratorSessionId?>(
+          $AccountTable.$convertermatchesIteratorSessionId);
   static const VerificationMeta _clientIdMeta =
       const VerificationMeta('clientId');
   @override
-  late final GeneratedColumnWithTypeConverter<ClientId?, int> clientId =
+  late final GeneratedColumnWithTypeConverter<api.ClientId?, int> clientId =
       GeneratedColumn<int>('client_id', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<ClientId?>($AccountTable.$converterclientId);
+          .withConverter<api.ClientId?>($AccountTable.$converterclientId);
+  static const VerificationMeta _jsonAvailableProfileAttributesOrderModeMeta =
+      const VerificationMeta('jsonAvailableProfileAttributesOrderMode');
+  @override
+  late final GeneratedColumnWithTypeConverter<EnumString?, String>
+      jsonAvailableProfileAttributesOrderMode = GeneratedColumn<String>(
+              'json_available_profile_attributes_order_mode', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<EnumString?>(
+              $AccountTable.$converterjsonAvailableProfileAttributesOrderMode);
   static const VerificationMeta _initialSyncDoneLoginRepositoryMeta =
       const VerificationMeta('initialSyncDoneLoginRepository');
   @override
@@ -196,12 +206,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static const VerificationMeta _profileContentVersionMeta =
       const VerificationMeta('profileContentVersion');
   @override
-  late final GeneratedColumnWithTypeConverter<ProfileContentVersion?, String>
-      profileContentVersion = GeneratedColumn<String>(
-              'profile_content_version', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ProfileContentVersion?>(
-              $AccountTable.$converterprofileContentVersion);
+  late final GeneratedColumnWithTypeConverter<api.ProfileContentVersion?,
+      String> profileContentVersion = GeneratedColumn<String>(
+          'profile_content_version', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false)
+      .withConverter<api.ProfileContentVersion?>(
+          $AccountTable.$converterprofileContentVersion);
   static const VerificationMeta _profileNameMeta =
       const VerificationMeta('profileName');
   @override
@@ -254,21 +264,21 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       const VerificationMeta('profileTextModerationRejectedCategory');
   @override
   late final GeneratedColumnWithTypeConverter<
-      ProfileTextModerationRejectedReasonCategory?,
+      api.ProfileTextModerationRejectedReasonCategory?,
       int> profileTextModerationRejectedCategory = GeneratedColumn<int>(
           'profile_text_moderation_rejected_category', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false)
-      .withConverter<ProfileTextModerationRejectedReasonCategory?>(
+      .withConverter<api.ProfileTextModerationRejectedReasonCategory?>(
           $AccountTable.$converterprofileTextModerationRejectedCategory);
   static const VerificationMeta _profileTextModerationRejectedDetailsMeta =
       const VerificationMeta('profileTextModerationRejectedDetails');
   @override
   late final GeneratedColumnWithTypeConverter<
-      ProfileTextModerationRejectedReasonDetails?,
+      api.ProfileTextModerationRejectedReasonDetails?,
       String> profileTextModerationRejectedDetails = GeneratedColumn<String>(
           'profile_text_moderation_rejected_details', aliasedName, true,
           type: DriftSqlType.string, requiredDuringInsert: false)
-      .withConverter<ProfileTextModerationRejectedReasonDetails?>(
+      .withConverter<api.ProfileTextModerationRejectedReasonDetails?>(
           $AccountTable.$converterprofileTextModerationRejectedDetails);
   static const VerificationMeta _profileAgeMeta =
       const VerificationMeta('profileAge');
@@ -288,11 +298,11 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static const VerificationMeta _profileVersionMeta =
       const VerificationMeta('profileVersion');
   @override
-  late final GeneratedColumnWithTypeConverter<ProfileVersion?, String>
+  late final GeneratedColumnWithTypeConverter<api.ProfileVersion?, String>
       profileVersion = GeneratedColumn<String>(
               'profile_version', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ProfileVersion?>(
+          .withConverter<api.ProfileVersion?>(
               $AccountTable.$converterprofileVersion);
   static const VerificationMeta _jsonProfileAttributesMeta =
       const VerificationMeta('jsonProfileAttributes');
@@ -315,15 +325,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<double> profileLocationLongitude =
       GeneratedColumn<double>('profile_location_longitude', aliasedName, true,
           type: DriftSqlType.double, requiredDuringInsert: false);
-  static const VerificationMeta _jsonProfileVisibilityMeta =
-      const VerificationMeta('jsonProfileVisibility');
-  @override
-  late final GeneratedColumnWithTypeConverter<EnumString?, String>
-      jsonProfileVisibility = GeneratedColumn<String>(
-              'json_profile_visibility', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<EnumString?>(
-              $AccountTable.$converterjsonProfileVisibility);
   static const VerificationMeta _jsonSearchGroupsMeta =
       const VerificationMeta('jsonSearchGroups');
   @override
@@ -445,26 +446,27 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static const VerificationMeta _publicKeyDataMeta =
       const VerificationMeta('publicKeyData');
   @override
-  late final GeneratedColumnWithTypeConverter<PublicKeyData?, String>
+  late final GeneratedColumnWithTypeConverter<api.PublicKeyData?, String>
       publicKeyData = GeneratedColumn<String>(
               'public_key_data', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<PublicKeyData?>($AccountTable.$converterpublicKeyData);
+          .withConverter<api.PublicKeyData?>(
+              $AccountTable.$converterpublicKeyData);
   static const VerificationMeta _publicKeyIdMeta =
       const VerificationMeta('publicKeyId');
   @override
-  late final GeneratedColumnWithTypeConverter<PublicKeyId?, int> publicKeyId =
-      GeneratedColumn<int>('public_key_id', aliasedName, true,
+  late final GeneratedColumnWithTypeConverter<api.PublicKeyId?, int>
+      publicKeyId = GeneratedColumn<int>('public_key_id', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<PublicKeyId?>($AccountTable.$converterpublicKeyId);
+          .withConverter<api.PublicKeyId?>($AccountTable.$converterpublicKeyId);
   static const VerificationMeta _publicKeyVersionMeta =
       const VerificationMeta('publicKeyVersion');
   @override
-  late final GeneratedColumnWithTypeConverter<PublicKeyVersion?, int>
+  late final GeneratedColumnWithTypeConverter<api.PublicKeyVersion?, int>
       publicKeyVersion = GeneratedColumn<int>(
               'public_key_version', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<PublicKeyVersion?>(
+          .withConverter<api.PublicKeyVersion?>(
               $AccountTable.$converterpublicKeyVersion);
   static const VerificationMeta _profileInitialAgeSetUnixTimeMeta =
       const VerificationMeta('profileInitialAgeSetUnixTime');
@@ -487,12 +489,13 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         uuidAccountId,
         jsonAccountState,
         jsonPermissions,
-        jsonAvailableProfileAttributes,
+        jsonProfileVisibility,
         profileFilterFavorites,
         profileIteratorSessionId,
         receivedLikesIteratorSessionId,
         matchesIteratorSessionId,
         clientId,
+        jsonAvailableProfileAttributesOrderMode,
         initialSyncDoneLoginRepository,
         initialSyncDoneAccountRepository,
         initialSyncDoneMediaRepository,
@@ -520,7 +523,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         jsonProfileAttributes,
         profileLocationLatitude,
         profileLocationLongitude,
-        jsonProfileVisibility,
         jsonSearchGroups,
         jsonProfileFilteringSettings,
         profileSearchAgeRangeMin,
@@ -560,8 +562,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     context.handle(_uuidAccountIdMeta, const VerificationResult.success());
     context.handle(_jsonAccountStateMeta, const VerificationResult.success());
     context.handle(_jsonPermissionsMeta, const VerificationResult.success());
-    context.handle(_jsonAvailableProfileAttributesMeta,
-        const VerificationResult.success());
+    context.handle(
+        _jsonProfileVisibilityMeta, const VerificationResult.success());
     if (data.containsKey('profile_filter_favorites')) {
       context.handle(
           _profileFilterFavoritesMeta,
@@ -575,6 +577,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     context.handle(
         _matchesIteratorSessionIdMeta, const VerificationResult.success());
     context.handle(_clientIdMeta, const VerificationResult.success());
+    context.handle(_jsonAvailableProfileAttributesOrderModeMeta,
+        const VerificationResult.success());
     if (data.containsKey('initial_sync_done_login_repository')) {
       context.handle(
           _initialSyncDoneLoginRepositoryMeta,
@@ -720,8 +724,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['profile_location_longitude']!,
               _profileLocationLongitudeMeta));
     }
-    context.handle(
-        _jsonProfileVisibilityMeta, const VerificationResult.success());
     context.handle(_jsonSearchGroupsMeta, const VerificationResult.success());
     context.handle(
         _jsonProfileFilteringSettingsMeta, const VerificationResult.success());
@@ -846,10 +848,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       jsonPermissions: $AccountTable.$converterjsonPermissions.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}json_permissions'])),
-      jsonAvailableProfileAttributes: $AccountTable
-          .$converterjsonAvailableProfileAttributes
+      jsonProfileVisibility: $AccountTable.$converterjsonProfileVisibility
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}json_available_profile_attributes'])),
+              data['${effectivePrefix}json_profile_visibility'])),
       profileFilterFavorites: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
           data['${effectivePrefix}profile_filter_favorites'])!,
@@ -866,6 +867,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       clientId: $AccountTable.$converterclientId.fromSql(attachedDatabase
           .typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}client_id'])),
+      jsonAvailableProfileAttributesOrderMode: $AccountTable
+          .$converterjsonAvailableProfileAttributesOrderMode
+          .fromSql(attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data[
+                  '${effectivePrefix}json_available_profile_attributes_order_mode'])),
       initialSyncDoneLoginRepository: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
           data['${effectivePrefix}initial_sync_done_login_repository'])!,
@@ -947,9 +954,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       profileLocationLongitude: attachedDatabase.typeMapping.read(
           DriftSqlType.double,
           data['${effectivePrefix}profile_location_longitude']),
-      jsonProfileVisibility: $AccountTable.$converterjsonProfileVisibility
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}json_profile_visibility'])),
       jsonSearchGroups: $AccountTable.$converterjsonSearchGroups.fromSql(
           attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}json_search_groups'])),
@@ -1018,28 +1022,30 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     return $AccountTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<AccountId?, String?> $converteruuidAccountId =
+  static TypeConverter<api.AccountId?, String?> $converteruuidAccountId =
       const NullAwareTypeConverter.wrap(AccountIdConverter());
-  static TypeConverter<EnumString?, String?> $converterjsonAccountState =
-      NullAwareTypeConverter.wrap(EnumString.driftConverter);
+  static TypeConverter<JsonString?, String?> $converterjsonAccountState =
+      NullAwareTypeConverter.wrap(JsonString.driftConverter);
   static TypeConverter<JsonString?, String?> $converterjsonPermissions =
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
-  static TypeConverter<JsonString?, String?>
-      $converterjsonAvailableProfileAttributes =
-      NullAwareTypeConverter.wrap(JsonString.driftConverter);
-  static TypeConverter<ProfileIteratorSessionId?, int?>
+  static TypeConverter<EnumString?, String?> $converterjsonProfileVisibility =
+      NullAwareTypeConverter.wrap(EnumString.driftConverter);
+  static TypeConverter<api.ProfileIteratorSessionId?, int?>
       $converterprofileIteratorSessionId =
       const NullAwareTypeConverter.wrap(ProfileIteratorSessionIdConverter());
-  static TypeConverter<ReceivedLikesIteratorSessionId?, int?>
+  static TypeConverter<api.ReceivedLikesIteratorSessionId?, int?>
       $converterreceivedLikesIteratorSessionId =
       const NullAwareTypeConverter.wrap(
           ReceivedLikesIteratorSessionIdConverter());
-  static TypeConverter<MatchesIteratorSessionId?, int?>
+  static TypeConverter<api.MatchesIteratorSessionId?, int?>
       $convertermatchesIteratorSessionId =
       const NullAwareTypeConverter.wrap(MatchesIteratorSessionIdConverter());
-  static TypeConverter<ClientId?, int?> $converterclientId =
+  static TypeConverter<api.ClientId?, int?> $converterclientId =
       const NullAwareTypeConverter.wrap(ClientIdConverter());
-  static TypeConverter<ProfileContentVersion?, String?>
+  static TypeConverter<EnumString?, String?>
+      $converterjsonAvailableProfileAttributesOrderMode =
+      NullAwareTypeConverter.wrap(EnumString.driftConverter);
+  static TypeConverter<api.ProfileContentVersion?, String?>
       $converterprofileContentVersion =
       const NullAwareTypeConverter.wrap(ProfileContentVersionConverter());
   static TypeConverter<EnumString?, String?>
@@ -1048,20 +1054,18 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<EnumString?, String?>
       $converterprofileTextModerationState =
       NullAwareTypeConverter.wrap(EnumString.driftConverter);
-  static TypeConverter<ProfileTextModerationRejectedReasonCategory?, int?>
+  static TypeConverter<api.ProfileTextModerationRejectedReasonCategory?, int?>
       $converterprofileTextModerationRejectedCategory =
       const NullAwareTypeConverter.wrap(
           ProfileTextModerationRejectedReasonCategoryConverter());
-  static TypeConverter<ProfileTextModerationRejectedReasonDetails?, String?>
+  static TypeConverter<api.ProfileTextModerationRejectedReasonDetails?, String?>
       $converterprofileTextModerationRejectedDetails =
       const NullAwareTypeConverter.wrap(
           ProfileTextModerationRejectedReasonDetailsConverter());
-  static TypeConverter<ProfileVersion?, String?> $converterprofileVersion =
+  static TypeConverter<api.ProfileVersion?, String?> $converterprofileVersion =
       const NullAwareTypeConverter.wrap(ProfileVersionConverter());
   static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
       NullAwareTypeConverter.wrap(JsonList.driftConverter);
-  static TypeConverter<EnumString?, String?> $converterjsonProfileVisibility =
-      NullAwareTypeConverter.wrap(EnumString.driftConverter);
   static TypeConverter<JsonString?, String?> $converterjsonSearchGroups =
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
   static TypeConverter<JsonString?, String?>
@@ -1069,11 +1073,11 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
   static TypeConverter<PrivateKeyData?, String?> $converterprivateKeyData =
       const NullAwareTypeConverter.wrap(PrivateKeyDataConverter());
-  static TypeConverter<PublicKeyData?, String?> $converterpublicKeyData =
+  static TypeConverter<api.PublicKeyData?, String?> $converterpublicKeyData =
       const NullAwareTypeConverter.wrap(PublicKeyDataConverter());
-  static TypeConverter<PublicKeyId?, int?> $converterpublicKeyId =
+  static TypeConverter<api.PublicKeyId?, int?> $converterpublicKeyId =
       const NullAwareTypeConverter.wrap(PublicKeyIdConverter());
-  static TypeConverter<PublicKeyVersion?, int?> $converterpublicKeyVersion =
+  static TypeConverter<api.PublicKeyVersion?, int?> $converterpublicKeyVersion =
       const NullAwareTypeConverter.wrap(PublicKeyVersionConverter());
   static TypeConverter<UtcDateTime?, int?>
       $converterprofileInitialAgeSetUnixTime =
@@ -1082,17 +1086,18 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
 
 class AccountData extends DataClass implements Insertable<AccountData> {
   final int id;
-  final AccountId? uuidAccountId;
-  final EnumString? jsonAccountState;
+  final api.AccountId? uuidAccountId;
+  final JsonString? jsonAccountState;
   final JsonString? jsonPermissions;
-  final JsonString? jsonAvailableProfileAttributes;
+  final EnumString? jsonProfileVisibility;
 
   /// If true show only favorite profiles
   final bool profileFilterFavorites;
-  final ProfileIteratorSessionId? profileIteratorSessionId;
-  final ReceivedLikesIteratorSessionId? receivedLikesIteratorSessionId;
-  final MatchesIteratorSessionId? matchesIteratorSessionId;
-  final ClientId? clientId;
+  final api.ProfileIteratorSessionId? profileIteratorSessionId;
+  final api.ReceivedLikesIteratorSessionId? receivedLikesIteratorSessionId;
+  final api.MatchesIteratorSessionId? matchesIteratorSessionId;
+  final api.ClientId? clientId;
+  final EnumString? jsonAvailableProfileAttributesOrderMode;
   final bool initialSyncDoneLoginRepository;
   final bool initialSyncDoneAccountRepository;
   final bool initialSyncDoneMediaRepository;
@@ -1105,24 +1110,23 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final double? primaryContentGridCropSize;
   final double? primaryContentGridCropX;
   final double? primaryContentGridCropY;
-  final ProfileContentVersion? profileContentVersion;
+  final api.ProfileContentVersion? profileContentVersion;
   final String? profileName;
   final bool? profileNameAccepted;
   final EnumString? profileNameModerationState;
   final String? profileText;
   final bool? profileTextAccepted;
   final EnumString? profileTextModerationState;
-  final ProfileTextModerationRejectedReasonCategory?
+  final api.ProfileTextModerationRejectedReasonCategory?
       profileTextModerationRejectedCategory;
-  final ProfileTextModerationRejectedReasonDetails?
+  final api.ProfileTextModerationRejectedReasonDetails?
       profileTextModerationRejectedDetails;
   final int? profileAge;
   final bool? profileUnlimitedLikes;
-  final ProfileVersion? profileVersion;
+  final api.ProfileVersion? profileVersion;
   final JsonList? jsonProfileAttributes;
   final double? profileLocationLatitude;
   final double? profileLocationLongitude;
-  final EnumString? jsonProfileVisibility;
   final JsonString? jsonSearchGroups;
   final JsonString? jsonProfileFilteringSettings;
   final int? profileSearchAgeRangeMin;
@@ -1140,9 +1144,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final bool? localImageSettingCacheFullSizedImages;
   final int? localImageSettingImageCacheDownscalingSize;
   final PrivateKeyData? privateKeyData;
-  final PublicKeyData? publicKeyData;
-  final PublicKeyId? publicKeyId;
-  final PublicKeyVersion? publicKeyVersion;
+  final api.PublicKeyData? publicKeyData;
+  final api.PublicKeyId? publicKeyId;
+  final api.PublicKeyVersion? publicKeyVersion;
   final UtcDateTime? profileInitialAgeSetUnixTime;
   final int? profileInitialAge;
   const AccountData(
@@ -1150,12 +1154,13 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.uuidAccountId,
       this.jsonAccountState,
       this.jsonPermissions,
-      this.jsonAvailableProfileAttributes,
+      this.jsonProfileVisibility,
       required this.profileFilterFavorites,
       this.profileIteratorSessionId,
       this.receivedLikesIteratorSessionId,
       this.matchesIteratorSessionId,
       this.clientId,
+      this.jsonAvailableProfileAttributesOrderMode,
       required this.initialSyncDoneLoginRepository,
       required this.initialSyncDoneAccountRepository,
       required this.initialSyncDoneMediaRepository,
@@ -1183,7 +1188,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.jsonProfileAttributes,
       this.profileLocationLatitude,
       this.profileLocationLongitude,
-      this.jsonProfileVisibility,
       this.jsonSearchGroups,
       this.jsonProfileFilteringSettings,
       this.profileSearchAgeRangeMin,
@@ -1222,10 +1226,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['json_permissions'] = Variable<String>(
           $AccountTable.$converterjsonPermissions.toSql(jsonPermissions));
     }
-    if (!nullToAbsent || jsonAvailableProfileAttributes != null) {
-      map['json_available_profile_attributes'] = Variable<String>($AccountTable
-          .$converterjsonAvailableProfileAttributes
-          .toSql(jsonAvailableProfileAttributes));
+    if (!nullToAbsent || jsonProfileVisibility != null) {
+      map['json_profile_visibility'] = Variable<String>($AccountTable
+          .$converterjsonProfileVisibility
+          .toSql(jsonProfileVisibility));
     }
     map['profile_filter_favorites'] = Variable<bool>(profileFilterFavorites);
     if (!nullToAbsent || profileIteratorSessionId != null) {
@@ -1246,6 +1250,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     if (!nullToAbsent || clientId != null) {
       map['client_id'] =
           Variable<int>($AccountTable.$converterclientId.toSql(clientId));
+    }
+    if (!nullToAbsent || jsonAvailableProfileAttributesOrderMode != null) {
+      map['json_available_profile_attributes_order_mode'] = Variable<String>(
+          $AccountTable.$converterjsonAvailableProfileAttributesOrderMode
+              .toSql(jsonAvailableProfileAttributesOrderMode));
     }
     map['initial_sync_done_login_repository'] =
         Variable<bool>(initialSyncDoneLoginRepository);
@@ -1343,11 +1352,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['profile_location_longitude'] =
           Variable<double>(profileLocationLongitude);
     }
-    if (!nullToAbsent || jsonProfileVisibility != null) {
-      map['json_profile_visibility'] = Variable<String>($AccountTable
-          .$converterjsonProfileVisibility
-          .toSql(jsonProfileVisibility));
-    }
     if (!nullToAbsent || jsonSearchGroups != null) {
       map['json_search_groups'] = Variable<String>(
           $AccountTable.$converterjsonSearchGroups.toSql(jsonSearchGroups));
@@ -1443,10 +1447,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       jsonPermissions: jsonPermissions == null && nullToAbsent
           ? const Value.absent()
           : Value(jsonPermissions),
-      jsonAvailableProfileAttributes:
-          jsonAvailableProfileAttributes == null && nullToAbsent
-              ? const Value.absent()
-              : Value(jsonAvailableProfileAttributes),
+      jsonProfileVisibility: jsonProfileVisibility == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jsonProfileVisibility),
       profileFilterFavorites: Value(profileFilterFavorites),
       profileIteratorSessionId: profileIteratorSessionId == null && nullToAbsent
           ? const Value.absent()
@@ -1461,6 +1464,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       clientId: clientId == null && nullToAbsent
           ? const Value.absent()
           : Value(clientId),
+      jsonAvailableProfileAttributesOrderMode:
+          jsonAvailableProfileAttributesOrderMode == null && nullToAbsent
+              ? const Value.absent()
+              : Value(jsonAvailableProfileAttributesOrderMode),
       initialSyncDoneLoginRepository: Value(initialSyncDoneLoginRepository),
       initialSyncDoneAccountRepository: Value(initialSyncDoneAccountRepository),
       initialSyncDoneMediaRepository: Value(initialSyncDoneMediaRepository),
@@ -1538,9 +1545,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileLocationLongitude: profileLocationLongitude == null && nullToAbsent
           ? const Value.absent()
           : Value(profileLocationLongitude),
-      jsonProfileVisibility: jsonProfileVisibility == null && nullToAbsent
-          ? const Value.absent()
-          : Value(jsonProfileVisibility),
       jsonSearchGroups: jsonSearchGroups == null && nullToAbsent
           ? const Value.absent()
           : Value(jsonSearchGroups),
@@ -1620,23 +1624,27 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return AccountData(
       id: serializer.fromJson<int>(json['id']),
-      uuidAccountId: serializer.fromJson<AccountId?>(json['uuidAccountId']),
+      uuidAccountId: serializer.fromJson<api.AccountId?>(json['uuidAccountId']),
       jsonAccountState:
-          serializer.fromJson<EnumString?>(json['jsonAccountState']),
+          serializer.fromJson<JsonString?>(json['jsonAccountState']),
       jsonPermissions:
           serializer.fromJson<JsonString?>(json['jsonPermissions']),
-      jsonAvailableProfileAttributes: serializer
-          .fromJson<JsonString?>(json['jsonAvailableProfileAttributes']),
+      jsonProfileVisibility:
+          serializer.fromJson<EnumString?>(json['jsonProfileVisibility']),
       profileFilterFavorites:
           serializer.fromJson<bool>(json['profileFilterFavorites']),
-      profileIteratorSessionId: serializer.fromJson<ProfileIteratorSessionId?>(
-          json['profileIteratorSessionId']),
+      profileIteratorSessionId:
+          serializer.fromJson<api.ProfileIteratorSessionId?>(
+              json['profileIteratorSessionId']),
       receivedLikesIteratorSessionId:
-          serializer.fromJson<ReceivedLikesIteratorSessionId?>(
+          serializer.fromJson<api.ReceivedLikesIteratorSessionId?>(
               json['receivedLikesIteratorSessionId']),
-      matchesIteratorSessionId: serializer.fromJson<MatchesIteratorSessionId?>(
-          json['matchesIteratorSessionId']),
-      clientId: serializer.fromJson<ClientId?>(json['clientId']),
+      matchesIteratorSessionId:
+          serializer.fromJson<api.MatchesIteratorSessionId?>(
+              json['matchesIteratorSessionId']),
+      clientId: serializer.fromJson<api.ClientId?>(json['clientId']),
+      jsonAvailableProfileAttributesOrderMode: serializer.fromJson<EnumString?>(
+          json['jsonAvailableProfileAttributesOrderMode']),
       initialSyncDoneLoginRepository:
           serializer.fromJson<bool>(json['initialSyncDoneLoginRepository']),
       initialSyncDoneAccountRepository:
@@ -1660,7 +1668,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       primaryContentGridCropY:
           serializer.fromJson<double?>(json['primaryContentGridCropY']),
       profileContentVersion: serializer
-          .fromJson<ProfileContentVersion?>(json['profileContentVersion']),
+          .fromJson<api.ProfileContentVersion?>(json['profileContentVersion']),
       profileName: serializer.fromJson<String?>(json['profileName']),
       profileNameAccepted:
           serializer.fromJson<bool?>(json['profileNameAccepted']),
@@ -1672,24 +1680,22 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileTextModerationState:
           serializer.fromJson<EnumString?>(json['profileTextModerationState']),
       profileTextModerationRejectedCategory:
-          serializer.fromJson<ProfileTextModerationRejectedReasonCategory?>(
+          serializer.fromJson<api.ProfileTextModerationRejectedReasonCategory?>(
               json['profileTextModerationRejectedCategory']),
       profileTextModerationRejectedDetails:
-          serializer.fromJson<ProfileTextModerationRejectedReasonDetails?>(
+          serializer.fromJson<api.ProfileTextModerationRejectedReasonDetails?>(
               json['profileTextModerationRejectedDetails']),
       profileAge: serializer.fromJson<int?>(json['profileAge']),
       profileUnlimitedLikes:
           serializer.fromJson<bool?>(json['profileUnlimitedLikes']),
       profileVersion:
-          serializer.fromJson<ProfileVersion?>(json['profileVersion']),
+          serializer.fromJson<api.ProfileVersion?>(json['profileVersion']),
       jsonProfileAttributes:
           serializer.fromJson<JsonList?>(json['jsonProfileAttributes']),
       profileLocationLatitude:
           serializer.fromJson<double?>(json['profileLocationLatitude']),
       profileLocationLongitude:
           serializer.fromJson<double?>(json['profileLocationLongitude']),
-      jsonProfileVisibility:
-          serializer.fromJson<EnumString?>(json['jsonProfileVisibility']),
       jsonSearchGroups:
           serializer.fromJson<JsonString?>(json['jsonSearchGroups']),
       jsonProfileFilteringSettings: serializer
@@ -1721,10 +1727,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .fromJson<int?>(json['localImageSettingImageCacheDownscalingSize']),
       privateKeyData:
           serializer.fromJson<PrivateKeyData?>(json['privateKeyData']),
-      publicKeyData: serializer.fromJson<PublicKeyData?>(json['publicKeyData']),
-      publicKeyId: serializer.fromJson<PublicKeyId?>(json['publicKeyId']),
+      publicKeyData:
+          serializer.fromJson<api.PublicKeyData?>(json['publicKeyData']),
+      publicKeyId: serializer.fromJson<api.PublicKeyId?>(json['publicKeyId']),
       publicKeyVersion:
-          serializer.fromJson<PublicKeyVersion?>(json['publicKeyVersion']),
+          serializer.fromJson<api.PublicKeyVersion?>(json['publicKeyVersion']),
       profileInitialAgeSetUnixTime: serializer
           .fromJson<UtcDateTime?>(json['profileInitialAgeSetUnixTime']),
       profileInitialAge: serializer.fromJson<int?>(json['profileInitialAge']),
@@ -1735,20 +1742,22 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'uuidAccountId': serializer.toJson<AccountId?>(uuidAccountId),
-      'jsonAccountState': serializer.toJson<EnumString?>(jsonAccountState),
+      'uuidAccountId': serializer.toJson<api.AccountId?>(uuidAccountId),
+      'jsonAccountState': serializer.toJson<JsonString?>(jsonAccountState),
       'jsonPermissions': serializer.toJson<JsonString?>(jsonPermissions),
-      'jsonAvailableProfileAttributes':
-          serializer.toJson<JsonString?>(jsonAvailableProfileAttributes),
+      'jsonProfileVisibility':
+          serializer.toJson<EnumString?>(jsonProfileVisibility),
       'profileFilterFavorites': serializer.toJson<bool>(profileFilterFavorites),
       'profileIteratorSessionId': serializer
-          .toJson<ProfileIteratorSessionId?>(profileIteratorSessionId),
+          .toJson<api.ProfileIteratorSessionId?>(profileIteratorSessionId),
       'receivedLikesIteratorSessionId':
-          serializer.toJson<ReceivedLikesIteratorSessionId?>(
+          serializer.toJson<api.ReceivedLikesIteratorSessionId?>(
               receivedLikesIteratorSessionId),
       'matchesIteratorSessionId': serializer
-          .toJson<MatchesIteratorSessionId?>(matchesIteratorSessionId),
-      'clientId': serializer.toJson<ClientId?>(clientId),
+          .toJson<api.MatchesIteratorSessionId?>(matchesIteratorSessionId),
+      'clientId': serializer.toJson<api.ClientId?>(clientId),
+      'jsonAvailableProfileAttributesOrderMode': serializer
+          .toJson<EnumString?>(jsonAvailableProfileAttributesOrderMode),
       'initialSyncDoneLoginRepository':
           serializer.toJson<bool>(initialSyncDoneLoginRepository),
       'initialSyncDoneAccountRepository':
@@ -1772,7 +1781,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'primaryContentGridCropY':
           serializer.toJson<double?>(primaryContentGridCropY),
       'profileContentVersion':
-          serializer.toJson<ProfileContentVersion?>(profileContentVersion),
+          serializer.toJson<api.ProfileContentVersion?>(profileContentVersion),
       'profileName': serializer.toJson<String?>(profileName),
       'profileNameAccepted': serializer.toJson<bool?>(profileNameAccepted),
       'profileNameModerationState':
@@ -1782,22 +1791,20 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'profileTextModerationState':
           serializer.toJson<EnumString?>(profileTextModerationState),
       'profileTextModerationRejectedCategory':
-          serializer.toJson<ProfileTextModerationRejectedReasonCategory?>(
+          serializer.toJson<api.ProfileTextModerationRejectedReasonCategory?>(
               profileTextModerationRejectedCategory),
       'profileTextModerationRejectedDetails':
-          serializer.toJson<ProfileTextModerationRejectedReasonDetails?>(
+          serializer.toJson<api.ProfileTextModerationRejectedReasonDetails?>(
               profileTextModerationRejectedDetails),
       'profileAge': serializer.toJson<int?>(profileAge),
       'profileUnlimitedLikes': serializer.toJson<bool?>(profileUnlimitedLikes),
-      'profileVersion': serializer.toJson<ProfileVersion?>(profileVersion),
+      'profileVersion': serializer.toJson<api.ProfileVersion?>(profileVersion),
       'jsonProfileAttributes':
           serializer.toJson<JsonList?>(jsonProfileAttributes),
       'profileLocationLatitude':
           serializer.toJson<double?>(profileLocationLatitude),
       'profileLocationLongitude':
           serializer.toJson<double?>(profileLocationLongitude),
-      'jsonProfileVisibility':
-          serializer.toJson<EnumString?>(jsonProfileVisibility),
       'jsonSearchGroups': serializer.toJson<JsonString?>(jsonSearchGroups),
       'jsonProfileFilteringSettings':
           serializer.toJson<JsonString?>(jsonProfileFilteringSettings),
@@ -1821,10 +1828,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'localImageSettingImageCacheDownscalingSize':
           serializer.toJson<int?>(localImageSettingImageCacheDownscalingSize),
       'privateKeyData': serializer.toJson<PrivateKeyData?>(privateKeyData),
-      'publicKeyData': serializer.toJson<PublicKeyData?>(publicKeyData),
-      'publicKeyId': serializer.toJson<PublicKeyId?>(publicKeyId),
+      'publicKeyData': serializer.toJson<api.PublicKeyData?>(publicKeyData),
+      'publicKeyId': serializer.toJson<api.PublicKeyId?>(publicKeyId),
       'publicKeyVersion':
-          serializer.toJson<PublicKeyVersion?>(publicKeyVersion),
+          serializer.toJson<api.PublicKeyVersion?>(publicKeyVersion),
       'profileInitialAgeSetUnixTime':
           serializer.toJson<UtcDateTime?>(profileInitialAgeSetUnixTime),
       'profileInitialAge': serializer.toJson<int?>(profileInitialAge),
@@ -1833,19 +1840,20 @@ class AccountData extends DataClass implements Insertable<AccountData> {
 
   AccountData copyWith(
           {int? id,
-          Value<AccountId?> uuidAccountId = const Value.absent(),
-          Value<EnumString?> jsonAccountState = const Value.absent(),
+          Value<api.AccountId?> uuidAccountId = const Value.absent(),
+          Value<JsonString?> jsonAccountState = const Value.absent(),
           Value<JsonString?> jsonPermissions = const Value.absent(),
-          Value<JsonString?> jsonAvailableProfileAttributes =
-              const Value.absent(),
+          Value<EnumString?> jsonProfileVisibility = const Value.absent(),
           bool? profileFilterFavorites,
-          Value<ProfileIteratorSessionId?> profileIteratorSessionId =
+          Value<api.ProfileIteratorSessionId?> profileIteratorSessionId =
               const Value.absent(),
-          Value<ReceivedLikesIteratorSessionId?>
+          Value<api.ReceivedLikesIteratorSessionId?>
               receivedLikesIteratorSessionId = const Value.absent(),
-          Value<MatchesIteratorSessionId?> matchesIteratorSessionId =
+          Value<api.MatchesIteratorSessionId?> matchesIteratorSessionId =
               const Value.absent(),
-          Value<ClientId?> clientId = const Value.absent(),
+          Value<api.ClientId?> clientId = const Value.absent(),
+          Value<EnumString?> jsonAvailableProfileAttributesOrderMode =
+              const Value.absent(),
           bool? initialSyncDoneLoginRepository,
           bool? initialSyncDoneAccountRepository,
           bool? initialSyncDoneMediaRepository,
@@ -1859,7 +1867,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<double?> primaryContentGridCropSize = const Value.absent(),
           Value<double?> primaryContentGridCropX = const Value.absent(),
           Value<double?> primaryContentGridCropY = const Value.absent(),
-          Value<ProfileContentVersion?> profileContentVersion =
+          Value<api.ProfileContentVersion?> profileContentVersion =
               const Value.absent(),
           Value<String?> profileName = const Value.absent(),
           Value<bool?> profileNameAccepted = const Value.absent(),
@@ -1867,17 +1875,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<String?> profileText = const Value.absent(),
           Value<bool?> profileTextAccepted = const Value.absent(),
           Value<EnumString?> profileTextModerationState = const Value.absent(),
-          Value<ProfileTextModerationRejectedReasonCategory?>
+          Value<api.ProfileTextModerationRejectedReasonCategory?>
               profileTextModerationRejectedCategory = const Value.absent(),
-          Value<ProfileTextModerationRejectedReasonDetails?>
+          Value<api.ProfileTextModerationRejectedReasonDetails?>
               profileTextModerationRejectedDetails = const Value.absent(),
           Value<int?> profileAge = const Value.absent(),
           Value<bool?> profileUnlimitedLikes = const Value.absent(),
-          Value<ProfileVersion?> profileVersion = const Value.absent(),
+          Value<api.ProfileVersion?> profileVersion = const Value.absent(),
           Value<JsonList?> jsonProfileAttributes = const Value.absent(),
           Value<double?> profileLocationLatitude = const Value.absent(),
           Value<double?> profileLocationLongitude = const Value.absent(),
-          Value<EnumString?> jsonProfileVisibility = const Value.absent(),
           Value<JsonString?> jsonSearchGroups = const Value.absent(),
           Value<JsonString?> jsonProfileFilteringSettings =
               const Value.absent(),
@@ -1899,9 +1906,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<int?> localImageSettingImageCacheDownscalingSize =
               const Value.absent(),
           Value<PrivateKeyData?> privateKeyData = const Value.absent(),
-          Value<PublicKeyData?> publicKeyData = const Value.absent(),
-          Value<PublicKeyId?> publicKeyId = const Value.absent(),
-          Value<PublicKeyVersion?> publicKeyVersion = const Value.absent(),
+          Value<api.PublicKeyData?> publicKeyData = const Value.absent(),
+          Value<api.PublicKeyId?> publicKeyId = const Value.absent(),
+          Value<api.PublicKeyVersion?> publicKeyVersion = const Value.absent(),
           Value<UtcDateTime?> profileInitialAgeSetUnixTime =
               const Value.absent(),
           Value<int?> profileInitialAge = const Value.absent()}) =>
@@ -1915,9 +1922,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         jsonPermissions: jsonPermissions.present
             ? jsonPermissions.value
             : this.jsonPermissions,
-        jsonAvailableProfileAttributes: jsonAvailableProfileAttributes.present
-            ? jsonAvailableProfileAttributes.value
-            : this.jsonAvailableProfileAttributes,
+        jsonProfileVisibility: jsonProfileVisibility.present
+            ? jsonProfileVisibility.value
+            : this.jsonProfileVisibility,
         profileFilterFavorites:
             profileFilterFavorites ?? this.profileFilterFavorites,
         profileIteratorSessionId: profileIteratorSessionId.present
@@ -1930,6 +1937,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
             ? matchesIteratorSessionId.value
             : this.matchesIteratorSessionId,
         clientId: clientId.present ? clientId.value : this.clientId,
+        jsonAvailableProfileAttributesOrderMode:
+            jsonAvailableProfileAttributesOrderMode.present
+                ? jsonAvailableProfileAttributesOrderMode.value
+                : this.jsonAvailableProfileAttributesOrderMode,
         initialSyncDoneLoginRepository: initialSyncDoneLoginRepository ??
             this.initialSyncDoneLoginRepository,
         initialSyncDoneAccountRepository: initialSyncDoneAccountRepository ??
@@ -2002,9 +2013,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileLocationLongitude: profileLocationLongitude.present
             ? profileLocationLongitude.value
             : this.profileLocationLongitude,
-        jsonProfileVisibility: jsonProfileVisibility.present
-            ? jsonProfileVisibility.value
-            : this.jsonProfileVisibility,
         jsonSearchGroups: jsonSearchGroups.present
             ? jsonSearchGroups.value
             : this.jsonSearchGroups,
@@ -2083,10 +2091,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       jsonPermissions: data.jsonPermissions.present
           ? data.jsonPermissions.value
           : this.jsonPermissions,
-      jsonAvailableProfileAttributes:
-          data.jsonAvailableProfileAttributes.present
-              ? data.jsonAvailableProfileAttributes.value
-              : this.jsonAvailableProfileAttributes,
+      jsonProfileVisibility: data.jsonProfileVisibility.present
+          ? data.jsonProfileVisibility.value
+          : this.jsonProfileVisibility,
       profileFilterFavorites: data.profileFilterFavorites.present
           ? data.profileFilterFavorites.value
           : this.profileFilterFavorites,
@@ -2101,6 +2108,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ? data.matchesIteratorSessionId.value
           : this.matchesIteratorSessionId,
       clientId: data.clientId.present ? data.clientId.value : this.clientId,
+      jsonAvailableProfileAttributesOrderMode:
+          data.jsonAvailableProfileAttributesOrderMode.present
+              ? data.jsonAvailableProfileAttributesOrderMode.value
+              : this.jsonAvailableProfileAttributesOrderMode,
       initialSyncDoneLoginRepository:
           data.initialSyncDoneLoginRepository.present
               ? data.initialSyncDoneLoginRepository.value
@@ -2186,9 +2197,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileLocationLongitude: data.profileLocationLongitude.present
           ? data.profileLocationLongitude.value
           : this.profileLocationLongitude,
-      jsonProfileVisibility: data.jsonProfileVisibility.present
-          ? data.jsonProfileVisibility.value
-          : this.jsonProfileVisibility,
       jsonSearchGroups: data.jsonSearchGroups.present
           ? data.jsonSearchGroups.value
           : this.jsonSearchGroups,
@@ -2267,14 +2275,15 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('jsonAccountState: $jsonAccountState, ')
           ..write('jsonPermissions: $jsonPermissions, ')
-          ..write(
-              'jsonAvailableProfileAttributes: $jsonAvailableProfileAttributes, ')
+          ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
           ..write('profileFilterFavorites: $profileFilterFavorites, ')
           ..write('profileIteratorSessionId: $profileIteratorSessionId, ')
           ..write(
               'receivedLikesIteratorSessionId: $receivedLikesIteratorSessionId, ')
           ..write('matchesIteratorSessionId: $matchesIteratorSessionId, ')
           ..write('clientId: $clientId, ')
+          ..write(
+              'jsonAvailableProfileAttributesOrderMode: $jsonAvailableProfileAttributesOrderMode, ')
           ..write(
               'initialSyncDoneLoginRepository: $initialSyncDoneLoginRepository, ')
           ..write(
@@ -2310,7 +2319,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('profileLocationLatitude: $profileLocationLatitude, ')
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
-          ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
           ..write('jsonSearchGroups: $jsonSearchGroups, ')
           ..write(
               'jsonProfileFilteringSettings: $jsonProfileFilteringSettings, ')
@@ -2348,12 +2356,13 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         uuidAccountId,
         jsonAccountState,
         jsonPermissions,
-        jsonAvailableProfileAttributes,
+        jsonProfileVisibility,
         profileFilterFavorites,
         profileIteratorSessionId,
         receivedLikesIteratorSessionId,
         matchesIteratorSessionId,
         clientId,
+        jsonAvailableProfileAttributesOrderMode,
         initialSyncDoneLoginRepository,
         initialSyncDoneAccountRepository,
         initialSyncDoneMediaRepository,
@@ -2381,7 +2390,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         jsonProfileAttributes,
         profileLocationLatitude,
         profileLocationLongitude,
-        jsonProfileVisibility,
         jsonSearchGroups,
         jsonProfileFilteringSettings,
         profileSearchAgeRangeMin,
@@ -2413,14 +2421,15 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.uuidAccountId == this.uuidAccountId &&
           other.jsonAccountState == this.jsonAccountState &&
           other.jsonPermissions == this.jsonPermissions &&
-          other.jsonAvailableProfileAttributes ==
-              this.jsonAvailableProfileAttributes &&
+          other.jsonProfileVisibility == this.jsonProfileVisibility &&
           other.profileFilterFavorites == this.profileFilterFavorites &&
           other.profileIteratorSessionId == this.profileIteratorSessionId &&
           other.receivedLikesIteratorSessionId ==
               this.receivedLikesIteratorSessionId &&
           other.matchesIteratorSessionId == this.matchesIteratorSessionId &&
           other.clientId == this.clientId &&
+          other.jsonAvailableProfileAttributesOrderMode ==
+              this.jsonAvailableProfileAttributesOrderMode &&
           other.initialSyncDoneLoginRepository ==
               this.initialSyncDoneLoginRepository &&
           other.initialSyncDoneAccountRepository ==
@@ -2456,7 +2465,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.jsonProfileAttributes == this.jsonProfileAttributes &&
           other.profileLocationLatitude == this.profileLocationLatitude &&
           other.profileLocationLongitude == this.profileLocationLongitude &&
-          other.jsonProfileVisibility == this.jsonProfileVisibility &&
           other.jsonSearchGroups == this.jsonSearchGroups &&
           other.jsonProfileFilteringSettings ==
               this.jsonProfileFilteringSettings &&
@@ -2488,15 +2496,17 @@ class AccountData extends DataClass implements Insertable<AccountData> {
 
 class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<int> id;
-  final Value<AccountId?> uuidAccountId;
-  final Value<EnumString?> jsonAccountState;
+  final Value<api.AccountId?> uuidAccountId;
+  final Value<JsonString?> jsonAccountState;
   final Value<JsonString?> jsonPermissions;
-  final Value<JsonString?> jsonAvailableProfileAttributes;
+  final Value<EnumString?> jsonProfileVisibility;
   final Value<bool> profileFilterFavorites;
-  final Value<ProfileIteratorSessionId?> profileIteratorSessionId;
-  final Value<ReceivedLikesIteratorSessionId?> receivedLikesIteratorSessionId;
-  final Value<MatchesIteratorSessionId?> matchesIteratorSessionId;
-  final Value<ClientId?> clientId;
+  final Value<api.ProfileIteratorSessionId?> profileIteratorSessionId;
+  final Value<api.ReceivedLikesIteratorSessionId?>
+      receivedLikesIteratorSessionId;
+  final Value<api.MatchesIteratorSessionId?> matchesIteratorSessionId;
+  final Value<api.ClientId?> clientId;
+  final Value<EnumString?> jsonAvailableProfileAttributesOrderMode;
   final Value<bool> initialSyncDoneLoginRepository;
   final Value<bool> initialSyncDoneAccountRepository;
   final Value<bool> initialSyncDoneMediaRepository;
@@ -2509,24 +2519,23 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<double?> primaryContentGridCropSize;
   final Value<double?> primaryContentGridCropX;
   final Value<double?> primaryContentGridCropY;
-  final Value<ProfileContentVersion?> profileContentVersion;
+  final Value<api.ProfileContentVersion?> profileContentVersion;
   final Value<String?> profileName;
   final Value<bool?> profileNameAccepted;
   final Value<EnumString?> profileNameModerationState;
   final Value<String?> profileText;
   final Value<bool?> profileTextAccepted;
   final Value<EnumString?> profileTextModerationState;
-  final Value<ProfileTextModerationRejectedReasonCategory?>
+  final Value<api.ProfileTextModerationRejectedReasonCategory?>
       profileTextModerationRejectedCategory;
-  final Value<ProfileTextModerationRejectedReasonDetails?>
+  final Value<api.ProfileTextModerationRejectedReasonDetails?>
       profileTextModerationRejectedDetails;
   final Value<int?> profileAge;
   final Value<bool?> profileUnlimitedLikes;
-  final Value<ProfileVersion?> profileVersion;
+  final Value<api.ProfileVersion?> profileVersion;
   final Value<JsonList?> jsonProfileAttributes;
   final Value<double?> profileLocationLatitude;
   final Value<double?> profileLocationLongitude;
-  final Value<EnumString?> jsonProfileVisibility;
   final Value<JsonString?> jsonSearchGroups;
   final Value<JsonString?> jsonProfileFilteringSettings;
   final Value<int?> profileSearchAgeRangeMin;
@@ -2544,9 +2553,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<bool?> localImageSettingCacheFullSizedImages;
   final Value<int?> localImageSettingImageCacheDownscalingSize;
   final Value<PrivateKeyData?> privateKeyData;
-  final Value<PublicKeyData?> publicKeyData;
-  final Value<PublicKeyId?> publicKeyId;
-  final Value<PublicKeyVersion?> publicKeyVersion;
+  final Value<api.PublicKeyData?> publicKeyData;
+  final Value<api.PublicKeyId?> publicKeyId;
+  final Value<api.PublicKeyVersion?> publicKeyVersion;
   final Value<UtcDateTime?> profileInitialAgeSetUnixTime;
   final Value<int?> profileInitialAge;
   const AccountCompanion({
@@ -2554,12 +2563,13 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.uuidAccountId = const Value.absent(),
     this.jsonAccountState = const Value.absent(),
     this.jsonPermissions = const Value.absent(),
-    this.jsonAvailableProfileAttributes = const Value.absent(),
+    this.jsonProfileVisibility = const Value.absent(),
     this.profileFilterFavorites = const Value.absent(),
     this.profileIteratorSessionId = const Value.absent(),
     this.receivedLikesIteratorSessionId = const Value.absent(),
     this.matchesIteratorSessionId = const Value.absent(),
     this.clientId = const Value.absent(),
+    this.jsonAvailableProfileAttributesOrderMode = const Value.absent(),
     this.initialSyncDoneLoginRepository = const Value.absent(),
     this.initialSyncDoneAccountRepository = const Value.absent(),
     this.initialSyncDoneMediaRepository = const Value.absent(),
@@ -2587,7 +2597,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.jsonProfileAttributes = const Value.absent(),
     this.profileLocationLatitude = const Value.absent(),
     this.profileLocationLongitude = const Value.absent(),
-    this.jsonProfileVisibility = const Value.absent(),
     this.jsonSearchGroups = const Value.absent(),
     this.jsonProfileFilteringSettings = const Value.absent(),
     this.profileSearchAgeRangeMin = const Value.absent(),
@@ -2616,12 +2625,13 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.uuidAccountId = const Value.absent(),
     this.jsonAccountState = const Value.absent(),
     this.jsonPermissions = const Value.absent(),
-    this.jsonAvailableProfileAttributes = const Value.absent(),
+    this.jsonProfileVisibility = const Value.absent(),
     this.profileFilterFavorites = const Value.absent(),
     this.profileIteratorSessionId = const Value.absent(),
     this.receivedLikesIteratorSessionId = const Value.absent(),
     this.matchesIteratorSessionId = const Value.absent(),
     this.clientId = const Value.absent(),
+    this.jsonAvailableProfileAttributesOrderMode = const Value.absent(),
     this.initialSyncDoneLoginRepository = const Value.absent(),
     this.initialSyncDoneAccountRepository = const Value.absent(),
     this.initialSyncDoneMediaRepository = const Value.absent(),
@@ -2649,7 +2659,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.jsonProfileAttributes = const Value.absent(),
     this.profileLocationLatitude = const Value.absent(),
     this.profileLocationLongitude = const Value.absent(),
-    this.jsonProfileVisibility = const Value.absent(),
     this.jsonSearchGroups = const Value.absent(),
     this.jsonProfileFilteringSettings = const Value.absent(),
     this.profileSearchAgeRangeMin = const Value.absent(),
@@ -2678,12 +2687,13 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<String>? uuidAccountId,
     Expression<String>? jsonAccountState,
     Expression<String>? jsonPermissions,
-    Expression<String>? jsonAvailableProfileAttributes,
+    Expression<String>? jsonProfileVisibility,
     Expression<bool>? profileFilterFavorites,
     Expression<int>? profileIteratorSessionId,
     Expression<int>? receivedLikesIteratorSessionId,
     Expression<int>? matchesIteratorSessionId,
     Expression<int>? clientId,
+    Expression<String>? jsonAvailableProfileAttributesOrderMode,
     Expression<bool>? initialSyncDoneLoginRepository,
     Expression<bool>? initialSyncDoneAccountRepository,
     Expression<bool>? initialSyncDoneMediaRepository,
@@ -2711,7 +2721,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<String>? jsonProfileAttributes,
     Expression<double>? profileLocationLatitude,
     Expression<double>? profileLocationLongitude,
-    Expression<String>? jsonProfileVisibility,
     Expression<String>? jsonSearchGroups,
     Expression<String>? jsonProfileFilteringSettings,
     Expression<int>? profileSearchAgeRangeMin,
@@ -2740,8 +2749,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
       if (jsonAccountState != null) 'json_account_state': jsonAccountState,
       if (jsonPermissions != null) 'json_permissions': jsonPermissions,
-      if (jsonAvailableProfileAttributes != null)
-        'json_available_profile_attributes': jsonAvailableProfileAttributes,
+      if (jsonProfileVisibility != null)
+        'json_profile_visibility': jsonProfileVisibility,
       if (profileFilterFavorites != null)
         'profile_filter_favorites': profileFilterFavorites,
       if (profileIteratorSessionId != null)
@@ -2751,6 +2760,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (matchesIteratorSessionId != null)
         'matches_iterator_session_id': matchesIteratorSessionId,
       if (clientId != null) 'client_id': clientId,
+      if (jsonAvailableProfileAttributesOrderMode != null)
+        'json_available_profile_attributes_order_mode':
+            jsonAvailableProfileAttributesOrderMode,
       if (initialSyncDoneLoginRepository != null)
         'initial_sync_done_login_repository': initialSyncDoneLoginRepository,
       if (initialSyncDoneAccountRepository != null)
@@ -2806,8 +2818,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'profile_location_latitude': profileLocationLatitude,
       if (profileLocationLongitude != null)
         'profile_location_longitude': profileLocationLongitude,
-      if (jsonProfileVisibility != null)
-        'json_profile_visibility': jsonProfileVisibility,
       if (jsonSearchGroups != null) 'json_search_groups': jsonSearchGroups,
       if (jsonProfileFilteringSettings != null)
         'json_profile_filtering_settings': jsonProfileFilteringSettings,
@@ -2850,15 +2860,17 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
 
   AccountCompanion copyWith(
       {Value<int>? id,
-      Value<AccountId?>? uuidAccountId,
-      Value<EnumString?>? jsonAccountState,
+      Value<api.AccountId?>? uuidAccountId,
+      Value<JsonString?>? jsonAccountState,
       Value<JsonString?>? jsonPermissions,
-      Value<JsonString?>? jsonAvailableProfileAttributes,
+      Value<EnumString?>? jsonProfileVisibility,
       Value<bool>? profileFilterFavorites,
-      Value<ProfileIteratorSessionId?>? profileIteratorSessionId,
-      Value<ReceivedLikesIteratorSessionId?>? receivedLikesIteratorSessionId,
-      Value<MatchesIteratorSessionId?>? matchesIteratorSessionId,
-      Value<ClientId?>? clientId,
+      Value<api.ProfileIteratorSessionId?>? profileIteratorSessionId,
+      Value<api.ReceivedLikesIteratorSessionId?>?
+          receivedLikesIteratorSessionId,
+      Value<api.MatchesIteratorSessionId?>? matchesIteratorSessionId,
+      Value<api.ClientId?>? clientId,
+      Value<EnumString?>? jsonAvailableProfileAttributesOrderMode,
       Value<bool>? initialSyncDoneLoginRepository,
       Value<bool>? initialSyncDoneAccountRepository,
       Value<bool>? initialSyncDoneMediaRepository,
@@ -2871,24 +2883,23 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<double?>? primaryContentGridCropSize,
       Value<double?>? primaryContentGridCropX,
       Value<double?>? primaryContentGridCropY,
-      Value<ProfileContentVersion?>? profileContentVersion,
+      Value<api.ProfileContentVersion?>? profileContentVersion,
       Value<String?>? profileName,
       Value<bool?>? profileNameAccepted,
       Value<EnumString?>? profileNameModerationState,
       Value<String?>? profileText,
       Value<bool?>? profileTextAccepted,
       Value<EnumString?>? profileTextModerationState,
-      Value<ProfileTextModerationRejectedReasonCategory?>?
+      Value<api.ProfileTextModerationRejectedReasonCategory?>?
           profileTextModerationRejectedCategory,
-      Value<ProfileTextModerationRejectedReasonDetails?>?
+      Value<api.ProfileTextModerationRejectedReasonDetails?>?
           profileTextModerationRejectedDetails,
       Value<int?>? profileAge,
       Value<bool?>? profileUnlimitedLikes,
-      Value<ProfileVersion?>? profileVersion,
+      Value<api.ProfileVersion?>? profileVersion,
       Value<JsonList?>? jsonProfileAttributes,
       Value<double?>? profileLocationLatitude,
       Value<double?>? profileLocationLongitude,
-      Value<EnumString?>? jsonProfileVisibility,
       Value<JsonString?>? jsonSearchGroups,
       Value<JsonString?>? jsonProfileFilteringSettings,
       Value<int?>? profileSearchAgeRangeMin,
@@ -2906,9 +2917,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<bool?>? localImageSettingCacheFullSizedImages,
       Value<int?>? localImageSettingImageCacheDownscalingSize,
       Value<PrivateKeyData?>? privateKeyData,
-      Value<PublicKeyData?>? publicKeyData,
-      Value<PublicKeyId?>? publicKeyId,
-      Value<PublicKeyVersion?>? publicKeyVersion,
+      Value<api.PublicKeyData?>? publicKeyData,
+      Value<api.PublicKeyId?>? publicKeyId,
+      Value<api.PublicKeyVersion?>? publicKeyVersion,
       Value<UtcDateTime?>? profileInitialAgeSetUnixTime,
       Value<int?>? profileInitialAge}) {
     return AccountCompanion(
@@ -2916,8 +2927,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
       jsonAccountState: jsonAccountState ?? this.jsonAccountState,
       jsonPermissions: jsonPermissions ?? this.jsonPermissions,
-      jsonAvailableProfileAttributes:
-          jsonAvailableProfileAttributes ?? this.jsonAvailableProfileAttributes,
+      jsonProfileVisibility:
+          jsonProfileVisibility ?? this.jsonProfileVisibility,
       profileFilterFavorites:
           profileFilterFavorites ?? this.profileFilterFavorites,
       profileIteratorSessionId:
@@ -2927,6 +2938,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       matchesIteratorSessionId:
           matchesIteratorSessionId ?? this.matchesIteratorSessionId,
       clientId: clientId ?? this.clientId,
+      jsonAvailableProfileAttributesOrderMode:
+          jsonAvailableProfileAttributesOrderMode ??
+              this.jsonAvailableProfileAttributesOrderMode,
       initialSyncDoneLoginRepository:
           initialSyncDoneLoginRepository ?? this.initialSyncDoneLoginRepository,
       initialSyncDoneAccountRepository: initialSyncDoneAccountRepository ??
@@ -2976,8 +2990,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           profileLocationLatitude ?? this.profileLocationLatitude,
       profileLocationLongitude:
           profileLocationLongitude ?? this.profileLocationLongitude,
-      jsonProfileVisibility:
-          jsonProfileVisibility ?? this.jsonProfileVisibility,
       jsonSearchGroups: jsonSearchGroups ?? this.jsonSearchGroups,
       jsonProfileFilteringSettings:
           jsonProfileFilteringSettings ?? this.jsonProfileFilteringSettings,
@@ -3032,10 +3044,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['json_permissions'] = Variable<String>(
           $AccountTable.$converterjsonPermissions.toSql(jsonPermissions.value));
     }
-    if (jsonAvailableProfileAttributes.present) {
-      map['json_available_profile_attributes'] = Variable<String>($AccountTable
-          .$converterjsonAvailableProfileAttributes
-          .toSql(jsonAvailableProfileAttributes.value));
+    if (jsonProfileVisibility.present) {
+      map['json_profile_visibility'] = Variable<String>($AccountTable
+          .$converterjsonProfileVisibility
+          .toSql(jsonProfileVisibility.value));
     }
     if (profileFilterFavorites.present) {
       map['profile_filter_favorites'] =
@@ -3059,6 +3071,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (clientId.present) {
       map['client_id'] =
           Variable<int>($AccountTable.$converterclientId.toSql(clientId.value));
+    }
+    if (jsonAvailableProfileAttributesOrderMode.present) {
+      map['json_available_profile_attributes_order_mode'] = Variable<String>(
+          $AccountTable.$converterjsonAvailableProfileAttributesOrderMode
+              .toSql(jsonAvailableProfileAttributesOrderMode.value));
     }
     if (initialSyncDoneLoginRepository.present) {
       map['initial_sync_done_login_repository'] =
@@ -3167,11 +3184,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['profile_location_longitude'] =
           Variable<double>(profileLocationLongitude.value);
     }
-    if (jsonProfileVisibility.present) {
-      map['json_profile_visibility'] = Variable<String>($AccountTable
-          .$converterjsonProfileVisibility
-          .toSql(jsonProfileVisibility.value));
-    }
     if (jsonSearchGroups.present) {
       map['json_search_groups'] = Variable<String>($AccountTable
           .$converterjsonSearchGroups
@@ -3267,14 +3279,15 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('jsonAccountState: $jsonAccountState, ')
           ..write('jsonPermissions: $jsonPermissions, ')
-          ..write(
-              'jsonAvailableProfileAttributes: $jsonAvailableProfileAttributes, ')
+          ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
           ..write('profileFilterFavorites: $profileFilterFavorites, ')
           ..write('profileIteratorSessionId: $profileIteratorSessionId, ')
           ..write(
               'receivedLikesIteratorSessionId: $receivedLikesIteratorSessionId, ')
           ..write('matchesIteratorSessionId: $matchesIteratorSessionId, ')
           ..write('clientId: $clientId, ')
+          ..write(
+              'jsonAvailableProfileAttributesOrderMode: $jsonAvailableProfileAttributesOrderMode, ')
           ..write(
               'initialSyncDoneLoginRepository: $initialSyncDoneLoginRepository, ')
           ..write(
@@ -3310,7 +3323,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('profileLocationLatitude: $profileLocationLatitude, ')
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
-          ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
           ..write('jsonSearchGroups: $jsonSearchGroups, ')
           ..write(
               'jsonProfileFilteringSettings: $jsonProfileFilteringSettings, ')
@@ -3360,21 +3372,22 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   static const VerificationMeta _uuidAccountIdMeta =
       const VerificationMeta('uuidAccountId');
   @override
-  late final GeneratedColumnWithTypeConverter<AccountId, String> uuidAccountId =
-      GeneratedColumn<String>('uuid_account_id', aliasedName, false,
+  late final GeneratedColumnWithTypeConverter<api.AccountId, String>
+      uuidAccountId = GeneratedColumn<String>(
+              'uuid_account_id', aliasedName, false,
               type: DriftSqlType.string,
               requiredDuringInsert: true,
               defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
-          .withConverter<AccountId>($ProfilesTable.$converteruuidAccountId);
+          .withConverter<api.AccountId>($ProfilesTable.$converteruuidAccountId);
   static const VerificationMeta _profileContentVersionMeta =
       const VerificationMeta('profileContentVersion');
   @override
-  late final GeneratedColumnWithTypeConverter<ProfileContentVersion?, String>
-      profileContentVersion = GeneratedColumn<String>(
-              'profile_content_version', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ProfileContentVersion?>(
-              $ProfilesTable.$converterprofileContentVersion);
+  late final GeneratedColumnWithTypeConverter<api.ProfileContentVersion?,
+      String> profileContentVersion = GeneratedColumn<String>(
+          'profile_content_version', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false)
+      .withConverter<api.ProfileContentVersion?>(
+          $ProfilesTable.$converterprofileContentVersion);
   static const VerificationMeta _profileNameMeta =
       const VerificationMeta('profileName');
   @override
@@ -3408,11 +3421,11 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   static const VerificationMeta _profileVersionMeta =
       const VerificationMeta('profileVersion');
   @override
-  late final GeneratedColumnWithTypeConverter<ProfileVersion?, String>
+  late final GeneratedColumnWithTypeConverter<api.ProfileVersion?, String>
       profileVersion = GeneratedColumn<String>(
               'profile_version', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<ProfileVersion?>(
+          .withConverter<api.ProfileVersion?>(
               $ProfilesTable.$converterprofileVersion);
   static const VerificationMeta _profileAgeMeta =
       const VerificationMeta('profileAge');
@@ -3649,12 +3662,12 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     return $ProfilesTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<AccountId, String> $converteruuidAccountId =
+  static TypeConverter<api.AccountId, String> $converteruuidAccountId =
       const AccountIdConverter();
-  static TypeConverter<ProfileContentVersion?, String?>
+  static TypeConverter<api.ProfileContentVersion?, String?>
       $converterprofileContentVersion =
       const NullAwareTypeConverter.wrap(ProfileContentVersionConverter());
-  static TypeConverter<ProfileVersion?, String?> $converterprofileVersion =
+  static TypeConverter<api.ProfileVersion?, String?> $converterprofileVersion =
       const NullAwareTypeConverter.wrap(ProfileVersionConverter());
   static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
       NullAwareTypeConverter.wrap(JsonList.driftConverter);
@@ -3666,13 +3679,13 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
 
 class Profile extends DataClass implements Insertable<Profile> {
   final int id;
-  final AccountId uuidAccountId;
-  final ProfileContentVersion? profileContentVersion;
+  final api.AccountId uuidAccountId;
+  final api.ProfileContentVersion? profileContentVersion;
   final String? profileName;
   final bool? profileNameAccepted;
   final String? profileText;
   final bool? profileTextAccepted;
-  final ProfileVersion? profileVersion;
+  final api.ProfileVersion? profileVersion;
   final int? profileAge;
   final int? profileLastSeenTimeValue;
   final bool? profileUnlimitedLikes;
@@ -3827,9 +3840,9 @@ class Profile extends DataClass implements Insertable<Profile> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Profile(
       id: serializer.fromJson<int>(json['id']),
-      uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
+      uuidAccountId: serializer.fromJson<api.AccountId>(json['uuidAccountId']),
       profileContentVersion: serializer
-          .fromJson<ProfileContentVersion?>(json['profileContentVersion']),
+          .fromJson<api.ProfileContentVersion?>(json['profileContentVersion']),
       profileName: serializer.fromJson<String?>(json['profileName']),
       profileNameAccepted:
           serializer.fromJson<bool?>(json['profileNameAccepted']),
@@ -3837,7 +3850,7 @@ class Profile extends DataClass implements Insertable<Profile> {
       profileTextAccepted:
           serializer.fromJson<bool?>(json['profileTextAccepted']),
       profileVersion:
-          serializer.fromJson<ProfileVersion?>(json['profileVersion']),
+          serializer.fromJson<api.ProfileVersion?>(json['profileVersion']),
       profileAge: serializer.fromJson<int?>(json['profileAge']),
       profileLastSeenTimeValue:
           serializer.fromJson<int?>(json['profileLastSeenTimeValue']),
@@ -3862,14 +3875,14 @@ class Profile extends DataClass implements Insertable<Profile> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
+      'uuidAccountId': serializer.toJson<api.AccountId>(uuidAccountId),
       'profileContentVersion':
-          serializer.toJson<ProfileContentVersion?>(profileContentVersion),
+          serializer.toJson<api.ProfileContentVersion?>(profileContentVersion),
       'profileName': serializer.toJson<String?>(profileName),
       'profileNameAccepted': serializer.toJson<bool?>(profileNameAccepted),
       'profileText': serializer.toJson<String?>(profileText),
       'profileTextAccepted': serializer.toJson<bool?>(profileTextAccepted),
-      'profileVersion': serializer.toJson<ProfileVersion?>(profileVersion),
+      'profileVersion': serializer.toJson<api.ProfileVersion?>(profileVersion),
       'profileAge': serializer.toJson<int?>(profileAge),
       'profileLastSeenTimeValue':
           serializer.toJson<int?>(profileLastSeenTimeValue),
@@ -3891,14 +3904,14 @@ class Profile extends DataClass implements Insertable<Profile> {
 
   Profile copyWith(
           {int? id,
-          AccountId? uuidAccountId,
-          Value<ProfileContentVersion?> profileContentVersion =
+          api.AccountId? uuidAccountId,
+          Value<api.ProfileContentVersion?> profileContentVersion =
               const Value.absent(),
           Value<String?> profileName = const Value.absent(),
           Value<bool?> profileNameAccepted = const Value.absent(),
           Value<String?> profileText = const Value.absent(),
           Value<bool?> profileTextAccepted = const Value.absent(),
-          Value<ProfileVersion?> profileVersion = const Value.absent(),
+          Value<api.ProfileVersion?> profileVersion = const Value.absent(),
           Value<int?> profileAge = const Value.absent(),
           Value<int?> profileLastSeenTimeValue = const Value.absent(),
           Value<bool?> profileUnlimitedLikes = const Value.absent(),
@@ -4070,13 +4083,13 @@ class Profile extends DataClass implements Insertable<Profile> {
 
 class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<int> id;
-  final Value<AccountId> uuidAccountId;
-  final Value<ProfileContentVersion?> profileContentVersion;
+  final Value<api.AccountId> uuidAccountId;
+  final Value<api.ProfileContentVersion?> profileContentVersion;
   final Value<String?> profileName;
   final Value<bool?> profileNameAccepted;
   final Value<String?> profileText;
   final Value<bool?> profileTextAccepted;
-  final Value<ProfileVersion?> profileVersion;
+  final Value<api.ProfileVersion?> profileVersion;
   final Value<int?> profileAge;
   final Value<int?> profileLastSeenTimeValue;
   final Value<bool?> profileUnlimitedLikes;
@@ -4107,7 +4120,7 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   });
   ProfilesCompanion.insert({
     this.id = const Value.absent(),
-    required AccountId uuidAccountId,
+    required api.AccountId uuidAccountId,
     this.profileContentVersion = const Value.absent(),
     this.profileName = const Value.absent(),
     this.profileNameAccepted = const Value.absent(),
@@ -4177,13 +4190,13 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
 
   ProfilesCompanion copyWith(
       {Value<int>? id,
-      Value<AccountId>? uuidAccountId,
-      Value<ProfileContentVersion?>? profileContentVersion,
+      Value<api.AccountId>? uuidAccountId,
+      Value<api.ProfileContentVersion?>? profileContentVersion,
       Value<String?>? profileName,
       Value<bool?>? profileNameAccepted,
       Value<String?>? profileText,
       Value<bool?>? profileTextAccepted,
-      Value<ProfileVersion?>? profileVersion,
+      Value<api.ProfileVersion?>? profileVersion,
       Value<int?>? profileAge,
       Value<int?>? profileLastSeenTimeValue,
       Value<bool?>? profileUnlimitedLikes,
@@ -4329,10 +4342,11 @@ class $PublicProfileContentTable extends PublicProfileContent
   static const VerificationMeta _uuidAccountIdMeta =
       const VerificationMeta('uuidAccountId');
   @override
-  late final GeneratedColumnWithTypeConverter<AccountId, String> uuidAccountId =
-      GeneratedColumn<String>('uuid_account_id', aliasedName, false,
+  late final GeneratedColumnWithTypeConverter<api.AccountId, String>
+      uuidAccountId = GeneratedColumn<String>(
+              'uuid_account_id', aliasedName, false,
               type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<AccountId>(
+          .withConverter<api.AccountId>(
               $PublicProfileContentTable.$converteruuidAccountId);
   static const VerificationMeta _contentIndexMeta =
       const VerificationMeta('contentIndex');
@@ -4343,10 +4357,11 @@ class $PublicProfileContentTable extends PublicProfileContent
   static const VerificationMeta _uuidContentIdMeta =
       const VerificationMeta('uuidContentId');
   @override
-  late final GeneratedColumnWithTypeConverter<ContentId, String> uuidContentId =
-      GeneratedColumn<String>('uuid_content_id', aliasedName, false,
+  late final GeneratedColumnWithTypeConverter<api.ContentId, String>
+      uuidContentId = GeneratedColumn<String>(
+              'uuid_content_id', aliasedName, false,
               type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<ContentId>(
+          .withConverter<api.ContentId>(
               $PublicProfileContentTable.$converteruuidContentId);
   static const VerificationMeta _contentAcceptedMeta =
       const VerificationMeta('contentAccepted');
@@ -4441,17 +4456,17 @@ class $PublicProfileContentTable extends PublicProfileContent
     return $PublicProfileContentTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<AccountId, String> $converteruuidAccountId =
+  static TypeConverter<api.AccountId, String> $converteruuidAccountId =
       const AccountIdConverter();
-  static TypeConverter<ContentId, String> $converteruuidContentId =
+  static TypeConverter<api.ContentId, String> $converteruuidContentId =
       const ContentIdConverter();
 }
 
 class PublicProfileContentData extends DataClass
     implements Insertable<PublicProfileContentData> {
-  final AccountId uuidAccountId;
+  final api.AccountId uuidAccountId;
   final int contentIndex;
-  final ContentId uuidContentId;
+  final api.ContentId uuidContentId;
   final bool contentAccepted;
   final bool primaryContent;
   const PublicProfileContentData(
@@ -4493,9 +4508,9 @@ class PublicProfileContentData extends DataClass
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return PublicProfileContentData(
-      uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
+      uuidAccountId: serializer.fromJson<api.AccountId>(json['uuidAccountId']),
       contentIndex: serializer.fromJson<int>(json['contentIndex']),
-      uuidContentId: serializer.fromJson<ContentId>(json['uuidContentId']),
+      uuidContentId: serializer.fromJson<api.ContentId>(json['uuidContentId']),
       contentAccepted: serializer.fromJson<bool>(json['contentAccepted']),
       primaryContent: serializer.fromJson<bool>(json['primaryContent']),
     );
@@ -4504,18 +4519,18 @@ class PublicProfileContentData extends DataClass
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
+      'uuidAccountId': serializer.toJson<api.AccountId>(uuidAccountId),
       'contentIndex': serializer.toJson<int>(contentIndex),
-      'uuidContentId': serializer.toJson<ContentId>(uuidContentId),
+      'uuidContentId': serializer.toJson<api.ContentId>(uuidContentId),
       'contentAccepted': serializer.toJson<bool>(contentAccepted),
       'primaryContent': serializer.toJson<bool>(primaryContent),
     };
   }
 
   PublicProfileContentData copyWith(
-          {AccountId? uuidAccountId,
+          {api.AccountId? uuidAccountId,
           int? contentIndex,
-          ContentId? uuidContentId,
+          api.ContentId? uuidContentId,
           bool? contentAccepted,
           bool? primaryContent}) =>
       PublicProfileContentData(
@@ -4574,9 +4589,9 @@ class PublicProfileContentData extends DataClass
 
 class PublicProfileContentCompanion
     extends UpdateCompanion<PublicProfileContentData> {
-  final Value<AccountId> uuidAccountId;
+  final Value<api.AccountId> uuidAccountId;
   final Value<int> contentIndex;
-  final Value<ContentId> uuidContentId;
+  final Value<api.ContentId> uuidContentId;
   final Value<bool> contentAccepted;
   final Value<bool> primaryContent;
   final Value<int> rowid;
@@ -4589,9 +4604,9 @@ class PublicProfileContentCompanion
     this.rowid = const Value.absent(),
   });
   PublicProfileContentCompanion.insert({
-    required AccountId uuidAccountId,
+    required api.AccountId uuidAccountId,
     required int contentIndex,
-    required ContentId uuidContentId,
+    required api.ContentId uuidContentId,
     required bool contentAccepted,
     required bool primaryContent,
     this.rowid = const Value.absent(),
@@ -4619,9 +4634,9 @@ class PublicProfileContentCompanion
   }
 
   PublicProfileContentCompanion copyWith(
-      {Value<AccountId>? uuidAccountId,
+      {Value<api.AccountId>? uuidAccountId,
       Value<int>? contentIndex,
-      Value<ContentId>? uuidContentId,
+      Value<api.ContentId>? uuidContentId,
       Value<bool>? contentAccepted,
       Value<bool>? primaryContent,
       Value<int>? rowid}) {
@@ -4692,10 +4707,11 @@ class $MyMediaContentTable extends MyMediaContent
   static const VerificationMeta _uuidContentIdMeta =
       const VerificationMeta('uuidContentId');
   @override
-  late final GeneratedColumnWithTypeConverter<ContentId, String> uuidContentId =
-      GeneratedColumn<String>('uuid_content_id', aliasedName, false,
+  late final GeneratedColumnWithTypeConverter<api.ContentId, String>
+      uuidContentId = GeneratedColumn<String>(
+              'uuid_content_id', aliasedName, false,
               type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<ContentId>(
+          .withConverter<api.ContentId>(
               $MyMediaContentTable.$converteruuidContentId);
   static const VerificationMeta _faceDetectedMeta =
       const VerificationMeta('faceDetected');
@@ -4719,21 +4735,21 @@ class $MyMediaContentTable extends MyMediaContent
       const VerificationMeta('contentModerationRejectedCategory');
   @override
   late final GeneratedColumnWithTypeConverter<
-      ProfileContentModerationRejectedReasonCategory?,
+      api.ProfileContentModerationRejectedReasonCategory?,
       int> contentModerationRejectedCategory = GeneratedColumn<int>(
           'content_moderation_rejected_category', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false)
-      .withConverter<ProfileContentModerationRejectedReasonCategory?>(
+      .withConverter<api.ProfileContentModerationRejectedReasonCategory?>(
           $MyMediaContentTable.$convertercontentModerationRejectedCategory);
   static const VerificationMeta _contentModerationRejectedDetailsMeta =
       const VerificationMeta('contentModerationRejectedDetails');
   @override
   late final GeneratedColumnWithTypeConverter<
-      ProfileContentModerationRejectedReasonDetails?,
+      api.ProfileContentModerationRejectedReasonDetails?,
       String> contentModerationRejectedDetails = GeneratedColumn<String>(
           'content_moderation_rejected_details', aliasedName, true,
           type: DriftSqlType.string, requiredDuringInsert: false)
-      .withConverter<ProfileContentModerationRejectedReasonDetails?>(
+      .withConverter<api.ProfileContentModerationRejectedReasonDetails?>(
           $MyMediaContentTable.$convertercontentModerationRejectedDetails);
   @override
   List<GeneratedColumn> get $columns => [
@@ -4809,16 +4825,16 @@ class $MyMediaContentTable extends MyMediaContent
     return $MyMediaContentTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<ContentId, String> $converteruuidContentId =
+  static TypeConverter<api.ContentId, String> $converteruuidContentId =
       const ContentIdConverter();
   static TypeConverter<EnumString?, String?> $convertermoderationState =
       NullAwareTypeConverter.wrap(EnumString.driftConverter);
-  static TypeConverter<ProfileContentModerationRejectedReasonCategory?, int?>
-      $convertercontentModerationRejectedCategory =
+  static TypeConverter<api.ProfileContentModerationRejectedReasonCategory?,
+          int?> $convertercontentModerationRejectedCategory =
       const NullAwareTypeConverter.wrap(
           ProfileContentModerationRejectedReasonCategoryConverter());
-  static TypeConverter<ProfileContentModerationRejectedReasonDetails?, String?>
-      $convertercontentModerationRejectedDetails =
+  static TypeConverter<api.ProfileContentModerationRejectedReasonDetails?,
+          String?> $convertercontentModerationRejectedDetails =
       const NullAwareTypeConverter.wrap(
           ProfileContentModerationRejectedReasonDetailsConverter());
 }
@@ -4827,12 +4843,12 @@ class MyMediaContentData extends DataClass
     implements Insertable<MyMediaContentData> {
   /// Security content has index -1. Profile content indexes start from 0.
   final int contentIndex;
-  final ContentId uuidContentId;
+  final api.ContentId uuidContentId;
   final bool faceDetected;
   final EnumString? moderationState;
-  final ProfileContentModerationRejectedReasonCategory?
+  final api.ProfileContentModerationRejectedReasonCategory?
       contentModerationRejectedCategory;
-  final ProfileContentModerationRejectedReasonDetails?
+  final api.ProfileContentModerationRejectedReasonDetails?
       contentModerationRejectedDetails;
   const MyMediaContentData(
       {required this.contentIndex,
@@ -4892,15 +4908,15 @@ class MyMediaContentData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return MyMediaContentData(
       contentIndex: serializer.fromJson<int>(json['contentIndex']),
-      uuidContentId: serializer.fromJson<ContentId>(json['uuidContentId']),
+      uuidContentId: serializer.fromJson<api.ContentId>(json['uuidContentId']),
       faceDetected: serializer.fromJson<bool>(json['faceDetected']),
       moderationState:
           serializer.fromJson<EnumString?>(json['moderationState']),
-      contentModerationRejectedCategory:
-          serializer.fromJson<ProfileContentModerationRejectedReasonCategory?>(
+      contentModerationRejectedCategory: serializer
+          .fromJson<api.ProfileContentModerationRejectedReasonCategory?>(
               json['contentModerationRejectedCategory']),
-      contentModerationRejectedDetails:
-          serializer.fromJson<ProfileContentModerationRejectedReasonDetails?>(
+      contentModerationRejectedDetails: serializer
+          .fromJson<api.ProfileContentModerationRejectedReasonDetails?>(
               json['contentModerationRejectedDetails']),
     );
   }
@@ -4909,26 +4925,26 @@ class MyMediaContentData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'contentIndex': serializer.toJson<int>(contentIndex),
-      'uuidContentId': serializer.toJson<ContentId>(uuidContentId),
+      'uuidContentId': serializer.toJson<api.ContentId>(uuidContentId),
       'faceDetected': serializer.toJson<bool>(faceDetected),
       'moderationState': serializer.toJson<EnumString?>(moderationState),
-      'contentModerationRejectedCategory':
-          serializer.toJson<ProfileContentModerationRejectedReasonCategory?>(
+      'contentModerationRejectedCategory': serializer
+          .toJson<api.ProfileContentModerationRejectedReasonCategory?>(
               contentModerationRejectedCategory),
       'contentModerationRejectedDetails':
-          serializer.toJson<ProfileContentModerationRejectedReasonDetails?>(
+          serializer.toJson<api.ProfileContentModerationRejectedReasonDetails?>(
               contentModerationRejectedDetails),
     };
   }
 
   MyMediaContentData copyWith(
           {int? contentIndex,
-          ContentId? uuidContentId,
+          api.ContentId? uuidContentId,
           bool? faceDetected,
           Value<EnumString?> moderationState = const Value.absent(),
-          Value<ProfileContentModerationRejectedReasonCategory?>
+          Value<api.ProfileContentModerationRejectedReasonCategory?>
               contentModerationRejectedCategory = const Value.absent(),
-          Value<ProfileContentModerationRejectedReasonDetails?>
+          Value<api.ProfileContentModerationRejectedReasonDetails?>
               contentModerationRejectedDetails = const Value.absent()}) =>
       MyMediaContentData(
         contentIndex: contentIndex ?? this.contentIndex,
@@ -5010,12 +5026,12 @@ class MyMediaContentData extends DataClass
 
 class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
   final Value<int> contentIndex;
-  final Value<ContentId> uuidContentId;
+  final Value<api.ContentId> uuidContentId;
   final Value<bool> faceDetected;
   final Value<EnumString?> moderationState;
-  final Value<ProfileContentModerationRejectedReasonCategory?>
+  final Value<api.ProfileContentModerationRejectedReasonCategory?>
       contentModerationRejectedCategory;
-  final Value<ProfileContentModerationRejectedReasonDetails?>
+  final Value<api.ProfileContentModerationRejectedReasonDetails?>
       contentModerationRejectedDetails;
   const MyMediaContentCompanion({
     this.contentIndex = const Value.absent(),
@@ -5027,7 +5043,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
   });
   MyMediaContentCompanion.insert({
     this.contentIndex = const Value.absent(),
-    required ContentId uuidContentId,
+    required api.ContentId uuidContentId,
     required bool faceDetected,
     this.moderationState = const Value.absent(),
     this.contentModerationRejectedCategory = const Value.absent(),
@@ -5057,12 +5073,12 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
 
   MyMediaContentCompanion copyWith(
       {Value<int>? contentIndex,
-      Value<ContentId>? uuidContentId,
+      Value<api.ContentId>? uuidContentId,
       Value<bool>? faceDetected,
       Value<EnumString?>? moderationState,
-      Value<ProfileContentModerationRejectedReasonCategory?>?
+      Value<api.ProfileContentModerationRejectedReasonCategory?>?
           contentModerationRejectedCategory,
-      Value<ProfileContentModerationRejectedReasonDetails?>?
+      Value<api.ProfileContentModerationRejectedReasonDetails?>?
           contentModerationRejectedDetails}) {
     return MyMediaContentCompanion(
       contentIndex: contentIndex ?? this.contentIndex,
@@ -5142,12 +5158,13 @@ class $ProfileStatesTable extends ProfileStates
   static const VerificationMeta _uuidAccountIdMeta =
       const VerificationMeta('uuidAccountId');
   @override
-  late final GeneratedColumnWithTypeConverter<AccountId, String> uuidAccountId =
-      GeneratedColumn<String>('uuid_account_id', aliasedName, false,
+  late final GeneratedColumnWithTypeConverter<api.AccountId, String>
+      uuidAccountId = GeneratedColumn<String>(
+              'uuid_account_id', aliasedName, false,
               type: DriftSqlType.string,
               requiredDuringInsert: true,
               defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
-          .withConverter<AccountId>(
+          .withConverter<api.AccountId>(
               $ProfileStatesTable.$converteruuidAccountId);
   static const VerificationMeta _isInFavoritesMeta =
       const VerificationMeta('isInFavorites');
@@ -5286,7 +5303,7 @@ class $ProfileStatesTable extends ProfileStates
     return $ProfileStatesTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<AccountId, String> $converteruuidAccountId =
+  static TypeConverter<api.AccountId, String> $converteruuidAccountId =
       const AccountIdConverter();
   static TypeConverter<UtcDateTime?, int?> $converterisInFavorites =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
@@ -5306,7 +5323,7 @@ class $ProfileStatesTable extends ProfileStates
 
 class ProfileState extends DataClass implements Insertable<ProfileState> {
   final int id;
-  final AccountId uuidAccountId;
+  final api.AccountId uuidAccountId;
   final UtcDateTime? isInFavorites;
   final UtcDateTime? isInReceivedLikes;
   final UtcDateTime? isInSentLikes;
@@ -5398,7 +5415,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ProfileState(
       id: serializer.fromJson<int>(json['id']),
-      uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
+      uuidAccountId: serializer.fromJson<api.AccountId>(json['uuidAccountId']),
       isInFavorites: serializer.fromJson<UtcDateTime?>(json['isInFavorites']),
       isInReceivedLikes:
           serializer.fromJson<UtcDateTime?>(json['isInReceivedLikes']),
@@ -5417,7 +5434,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
+      'uuidAccountId': serializer.toJson<api.AccountId>(uuidAccountId),
       'isInFavorites': serializer.toJson<UtcDateTime?>(isInFavorites),
       'isInReceivedLikes': serializer.toJson<UtcDateTime?>(isInReceivedLikes),
       'isInSentLikes': serializer.toJson<UtcDateTime?>(isInSentLikes),
@@ -5431,7 +5448,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
 
   ProfileState copyWith(
           {int? id,
-          AccountId? uuidAccountId,
+          api.AccountId? uuidAccountId,
           Value<UtcDateTime?> isInFavorites = const Value.absent(),
           Value<UtcDateTime?> isInReceivedLikes = const Value.absent(),
           Value<UtcDateTime?> isInSentLikes = const Value.absent(),
@@ -5533,7 +5550,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
 
 class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   final Value<int> id;
-  final Value<AccountId> uuidAccountId;
+  final Value<api.AccountId> uuidAccountId;
   final Value<UtcDateTime?> isInFavorites;
   final Value<UtcDateTime?> isInReceivedLikes;
   final Value<UtcDateTime?> isInSentLikes;
@@ -5554,7 +5571,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   });
   ProfileStatesCompanion.insert({
     this.id = const Value.absent(),
-    required AccountId uuidAccountId,
+    required api.AccountId uuidAccountId,
     this.isInFavorites = const Value.absent(),
     this.isInReceivedLikes = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
@@ -5590,7 +5607,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
 
   ProfileStatesCompanion copyWith(
       {Value<int>? id,
-      Value<AccountId>? uuidAccountId,
+      Value<api.AccountId>? uuidAccountId,
       Value<UtcDateTime?>? isInFavorites,
       Value<UtcDateTime?>? isInReceivedLikes,
       Value<UtcDateTime?>? isInSentLikes,
@@ -5695,12 +5712,13 @@ class $ConversationListTable extends ConversationList
   static const VerificationMeta _uuidAccountIdMeta =
       const VerificationMeta('uuidAccountId');
   @override
-  late final GeneratedColumnWithTypeConverter<AccountId, String> uuidAccountId =
-      GeneratedColumn<String>('uuid_account_id', aliasedName, false,
+  late final GeneratedColumnWithTypeConverter<api.AccountId, String>
+      uuidAccountId = GeneratedColumn<String>(
+              'uuid_account_id', aliasedName, false,
               type: DriftSqlType.string,
               requiredDuringInsert: true,
               defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
-          .withConverter<AccountId>(
+          .withConverter<api.AccountId>(
               $ConversationListTable.$converteruuidAccountId);
   static const VerificationMeta _conversationLastChangedTimeMeta =
       const VerificationMeta('conversationLastChangedTime');
@@ -5790,7 +5808,7 @@ class $ConversationListTable extends ConversationList
     return $ConversationListTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<AccountId, String> $converteruuidAccountId =
+  static TypeConverter<api.AccountId, String> $converteruuidAccountId =
       const AccountIdConverter();
   static TypeConverter<UtcDateTime?, int?>
       $converterconversationLastChangedTime =
@@ -5804,7 +5822,7 @@ class $ConversationListTable extends ConversationList
 class ConversationListData extends DataClass
     implements Insertable<ConversationListData> {
   final int id;
-  final AccountId uuidAccountId;
+  final api.AccountId uuidAccountId;
   final UtcDateTime? conversationLastChangedTime;
   final UtcDateTime? isInConversationList;
   final UtcDateTime? isInSentBlocks;
@@ -5862,7 +5880,7 @@ class ConversationListData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ConversationListData(
       id: serializer.fromJson<int>(json['id']),
-      uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
+      uuidAccountId: serializer.fromJson<api.AccountId>(json['uuidAccountId']),
       conversationLastChangedTime: serializer
           .fromJson<UtcDateTime?>(json['conversationLastChangedTime']),
       isInConversationList:
@@ -5875,7 +5893,7 @@ class ConversationListData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
+      'uuidAccountId': serializer.toJson<api.AccountId>(uuidAccountId),
       'conversationLastChangedTime':
           serializer.toJson<UtcDateTime?>(conversationLastChangedTime),
       'isInConversationList':
@@ -5886,7 +5904,7 @@ class ConversationListData extends DataClass
 
   ConversationListData copyWith(
           {int? id,
-          AccountId? uuidAccountId,
+          api.AccountId? uuidAccountId,
           Value<UtcDateTime?> conversationLastChangedTime =
               const Value.absent(),
           Value<UtcDateTime?> isInConversationList = const Value.absent(),
@@ -5950,7 +5968,7 @@ class ConversationListData extends DataClass
 
 class ConversationListCompanion extends UpdateCompanion<ConversationListData> {
   final Value<int> id;
-  final Value<AccountId> uuidAccountId;
+  final Value<api.AccountId> uuidAccountId;
   final Value<UtcDateTime?> conversationLastChangedTime;
   final Value<UtcDateTime?> isInConversationList;
   final Value<UtcDateTime?> isInSentBlocks;
@@ -5963,7 +5981,7 @@ class ConversationListCompanion extends UpdateCompanion<ConversationListData> {
   });
   ConversationListCompanion.insert({
     this.id = const Value.absent(),
-    required AccountId uuidAccountId,
+    required api.AccountId uuidAccountId,
     this.conversationLastChangedTime = const Value.absent(),
     this.isInConversationList = const Value.absent(),
     this.isInSentBlocks = const Value.absent(),
@@ -5988,7 +6006,7 @@ class ConversationListCompanion extends UpdateCompanion<ConversationListData> {
 
   ConversationListCompanion copyWith(
       {Value<int>? id,
-      Value<AccountId>? uuidAccountId,
+      Value<api.AccountId>? uuidAccountId,
       Value<UtcDateTime?>? conversationLastChangedTime,
       Value<UtcDateTime?>? isInConversationList,
       Value<UtcDateTime?>? isInSentBlocks}) {
@@ -6061,20 +6079,20 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   static const VerificationMeta _uuidLocalAccountIdMeta =
       const VerificationMeta('uuidLocalAccountId');
   @override
-  late final GeneratedColumnWithTypeConverter<AccountId, String>
+  late final GeneratedColumnWithTypeConverter<api.AccountId, String>
       uuidLocalAccountId = GeneratedColumn<String>(
               'uuid_local_account_id', aliasedName, false,
               type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<AccountId>(
+          .withConverter<api.AccountId>(
               $MessagesTable.$converteruuidLocalAccountId);
   static const VerificationMeta _uuidRemoteAccountIdMeta =
       const VerificationMeta('uuidRemoteAccountId');
   @override
-  late final GeneratedColumnWithTypeConverter<AccountId, String>
+  late final GeneratedColumnWithTypeConverter<api.AccountId, String>
       uuidRemoteAccountId = GeneratedColumn<String>(
               'uuid_remote_account_id', aliasedName, false,
               type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<AccountId>(
+          .withConverter<api.AccountId>(
               $MessagesTable.$converteruuidRemoteAccountId);
   static const VerificationMeta _messageTextMeta =
       const VerificationMeta('messageText');
@@ -6098,10 +6116,10 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   static const VerificationMeta _messageNumberMeta =
       const VerificationMeta('messageNumber');
   @override
-  late final GeneratedColumnWithTypeConverter<MessageNumber?, int>
+  late final GeneratedColumnWithTypeConverter<api.MessageNumber?, int>
       messageNumber = GeneratedColumn<int>('message_number', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<MessageNumber?>(
+          .withConverter<api.MessageNumber?>(
               $MessagesTable.$convertermessageNumber);
   static const VerificationMeta _unixTimeMeta =
       const VerificationMeta('unixTime');
@@ -6194,13 +6212,13 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
     return $MessagesTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<AccountId, String> $converteruuidLocalAccountId =
+  static TypeConverter<api.AccountId, String> $converteruuidLocalAccountId =
       const AccountIdConverter();
-  static TypeConverter<AccountId, String> $converteruuidRemoteAccountId =
+  static TypeConverter<api.AccountId, String> $converteruuidRemoteAccountId =
       const AccountIdConverter();
   static TypeConverter<UtcDateTime, int> $converterlocalUnixTime =
       const UtcDateTimeConverter();
-  static TypeConverter<MessageNumber?, int?> $convertermessageNumber =
+  static TypeConverter<api.MessageNumber?, int?> $convertermessageNumber =
       const NullAwareTypeConverter.wrap(MessageNumberConverter());
   static TypeConverter<UtcDateTime?, int?> $converterunixTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
@@ -6208,12 +6226,12 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
 
 class Message extends DataClass implements Insertable<Message> {
   final int id;
-  final AccountId uuidLocalAccountId;
-  final AccountId uuidRemoteAccountId;
+  final api.AccountId uuidLocalAccountId;
+  final api.AccountId uuidRemoteAccountId;
   final String messageText;
   final UtcDateTime localUnixTime;
   final int messageState;
-  final MessageNumber? messageNumber;
+  final api.MessageNumber? messageNumber;
   final UtcDateTime? unixTime;
   const Message(
       {required this.id,
@@ -6278,13 +6296,14 @@ class Message extends DataClass implements Insertable<Message> {
     return Message(
       id: serializer.fromJson<int>(json['id']),
       uuidLocalAccountId:
-          serializer.fromJson<AccountId>(json['uuidLocalAccountId']),
+          serializer.fromJson<api.AccountId>(json['uuidLocalAccountId']),
       uuidRemoteAccountId:
-          serializer.fromJson<AccountId>(json['uuidRemoteAccountId']),
+          serializer.fromJson<api.AccountId>(json['uuidRemoteAccountId']),
       messageText: serializer.fromJson<String>(json['messageText']),
       localUnixTime: serializer.fromJson<UtcDateTime>(json['localUnixTime']),
       messageState: serializer.fromJson<int>(json['messageState']),
-      messageNumber: serializer.fromJson<MessageNumber?>(json['messageNumber']),
+      messageNumber:
+          serializer.fromJson<api.MessageNumber?>(json['messageNumber']),
       unixTime: serializer.fromJson<UtcDateTime?>(json['unixTime']),
     );
   }
@@ -6293,24 +6312,26 @@ class Message extends DataClass implements Insertable<Message> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'uuidLocalAccountId': serializer.toJson<AccountId>(uuidLocalAccountId),
-      'uuidRemoteAccountId': serializer.toJson<AccountId>(uuidRemoteAccountId),
+      'uuidLocalAccountId':
+          serializer.toJson<api.AccountId>(uuidLocalAccountId),
+      'uuidRemoteAccountId':
+          serializer.toJson<api.AccountId>(uuidRemoteAccountId),
       'messageText': serializer.toJson<String>(messageText),
       'localUnixTime': serializer.toJson<UtcDateTime>(localUnixTime),
       'messageState': serializer.toJson<int>(messageState),
-      'messageNumber': serializer.toJson<MessageNumber?>(messageNumber),
+      'messageNumber': serializer.toJson<api.MessageNumber?>(messageNumber),
       'unixTime': serializer.toJson<UtcDateTime?>(unixTime),
     };
   }
 
   Message copyWith(
           {int? id,
-          AccountId? uuidLocalAccountId,
-          AccountId? uuidRemoteAccountId,
+          api.AccountId? uuidLocalAccountId,
+          api.AccountId? uuidRemoteAccountId,
           String? messageText,
           UtcDateTime? localUnixTime,
           int? messageState,
-          Value<MessageNumber?> messageNumber = const Value.absent(),
+          Value<api.MessageNumber?> messageNumber = const Value.absent(),
           Value<UtcDateTime?> unixTime = const Value.absent()}) =>
       Message(
         id: id ?? this.id,
@@ -6381,12 +6402,12 @@ class Message extends DataClass implements Insertable<Message> {
 
 class MessagesCompanion extends UpdateCompanion<Message> {
   final Value<int> id;
-  final Value<AccountId> uuidLocalAccountId;
-  final Value<AccountId> uuidRemoteAccountId;
+  final Value<api.AccountId> uuidLocalAccountId;
+  final Value<api.AccountId> uuidRemoteAccountId;
   final Value<String> messageText;
   final Value<UtcDateTime> localUnixTime;
   final Value<int> messageState;
-  final Value<MessageNumber?> messageNumber;
+  final Value<api.MessageNumber?> messageNumber;
   final Value<UtcDateTime?> unixTime;
   const MessagesCompanion({
     this.id = const Value.absent(),
@@ -6400,8 +6421,8 @@ class MessagesCompanion extends UpdateCompanion<Message> {
   });
   MessagesCompanion.insert({
     this.id = const Value.absent(),
-    required AccountId uuidLocalAccountId,
-    required AccountId uuidRemoteAccountId,
+    required api.AccountId uuidLocalAccountId,
+    required api.AccountId uuidRemoteAccountId,
     required String messageText,
     required UtcDateTime localUnixTime,
     required int messageState,
@@ -6438,12 +6459,12 @@ class MessagesCompanion extends UpdateCompanion<Message> {
 
   MessagesCompanion copyWith(
       {Value<int>? id,
-      Value<AccountId>? uuidLocalAccountId,
-      Value<AccountId>? uuidRemoteAccountId,
+      Value<api.AccountId>? uuidLocalAccountId,
+      Value<api.AccountId>? uuidRemoteAccountId,
       Value<String>? messageText,
       Value<UtcDateTime>? localUnixTime,
       Value<int>? messageState,
-      Value<MessageNumber?>? messageNumber,
+      Value<api.MessageNumber?>? messageNumber,
       Value<UtcDateTime?>? unixTime}) {
     return MessagesCompanion(
       id: id ?? this.id,
@@ -6528,38 +6549,39 @@ class $ConversationsTable extends Conversations
   static const VerificationMeta _uuidAccountIdMeta =
       const VerificationMeta('uuidAccountId');
   @override
-  late final GeneratedColumnWithTypeConverter<AccountId, String> uuidAccountId =
-      GeneratedColumn<String>('uuid_account_id', aliasedName, false,
+  late final GeneratedColumnWithTypeConverter<api.AccountId, String>
+      uuidAccountId = GeneratedColumn<String>(
+              'uuid_account_id', aliasedName, false,
               type: DriftSqlType.string,
               requiredDuringInsert: true,
               defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
-          .withConverter<AccountId>(
+          .withConverter<api.AccountId>(
               $ConversationsTable.$converteruuidAccountId);
   static const VerificationMeta _publicKeyDataMeta =
       const VerificationMeta('publicKeyData');
   @override
-  late final GeneratedColumnWithTypeConverter<PublicKeyData?, String>
+  late final GeneratedColumnWithTypeConverter<api.PublicKeyData?, String>
       publicKeyData = GeneratedColumn<String>(
               'public_key_data', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<PublicKeyData?>(
+          .withConverter<api.PublicKeyData?>(
               $ConversationsTable.$converterpublicKeyData);
   static const VerificationMeta _publicKeyIdMeta =
       const VerificationMeta('publicKeyId');
   @override
-  late final GeneratedColumnWithTypeConverter<PublicKeyId?, int> publicKeyId =
-      GeneratedColumn<int>('public_key_id', aliasedName, true,
+  late final GeneratedColumnWithTypeConverter<api.PublicKeyId?, int>
+      publicKeyId = GeneratedColumn<int>('public_key_id', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<PublicKeyId?>(
+          .withConverter<api.PublicKeyId?>(
               $ConversationsTable.$converterpublicKeyId);
   static const VerificationMeta _publicKeyVersionMeta =
       const VerificationMeta('publicKeyVersion');
   @override
-  late final GeneratedColumnWithTypeConverter<PublicKeyVersion?, int>
+  late final GeneratedColumnWithTypeConverter<api.PublicKeyVersion?, int>
       publicKeyVersion = GeneratedColumn<int>(
               'public_key_version', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<PublicKeyVersion?>(
+          .withConverter<api.PublicKeyVersion?>(
               $ConversationsTable.$converterpublicKeyVersion);
   @override
   List<GeneratedColumn> get $columns =>
@@ -6612,22 +6634,22 @@ class $ConversationsTable extends Conversations
     return $ConversationsTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<AccountId, String> $converteruuidAccountId =
+  static TypeConverter<api.AccountId, String> $converteruuidAccountId =
       const AccountIdConverter();
-  static TypeConverter<PublicKeyData?, String?> $converterpublicKeyData =
+  static TypeConverter<api.PublicKeyData?, String?> $converterpublicKeyData =
       const NullAwareTypeConverter.wrap(PublicKeyDataConverter());
-  static TypeConverter<PublicKeyId?, int?> $converterpublicKeyId =
+  static TypeConverter<api.PublicKeyId?, int?> $converterpublicKeyId =
       const NullAwareTypeConverter.wrap(PublicKeyIdConverter());
-  static TypeConverter<PublicKeyVersion?, int?> $converterpublicKeyVersion =
+  static TypeConverter<api.PublicKeyVersion?, int?> $converterpublicKeyVersion =
       const NullAwareTypeConverter.wrap(PublicKeyVersionConverter());
 }
 
 class Conversation extends DataClass implements Insertable<Conversation> {
   final int id;
-  final AccountId uuidAccountId;
-  final PublicKeyData? publicKeyData;
-  final PublicKeyId? publicKeyId;
-  final PublicKeyVersion? publicKeyVersion;
+  final api.AccountId uuidAccountId;
+  final api.PublicKeyData? publicKeyData;
+  final api.PublicKeyId? publicKeyId;
+  final api.PublicKeyVersion? publicKeyVersion;
   const Conversation(
       {required this.id,
       required this.uuidAccountId,
@@ -6679,11 +6701,12 @@ class Conversation extends DataClass implements Insertable<Conversation> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Conversation(
       id: serializer.fromJson<int>(json['id']),
-      uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
-      publicKeyData: serializer.fromJson<PublicKeyData?>(json['publicKeyData']),
-      publicKeyId: serializer.fromJson<PublicKeyId?>(json['publicKeyId']),
+      uuidAccountId: serializer.fromJson<api.AccountId>(json['uuidAccountId']),
+      publicKeyData:
+          serializer.fromJson<api.PublicKeyData?>(json['publicKeyData']),
+      publicKeyId: serializer.fromJson<api.PublicKeyId?>(json['publicKeyId']),
       publicKeyVersion:
-          serializer.fromJson<PublicKeyVersion?>(json['publicKeyVersion']),
+          serializer.fromJson<api.PublicKeyVersion?>(json['publicKeyVersion']),
     );
   }
   @override
@@ -6691,20 +6714,21 @@ class Conversation extends DataClass implements Insertable<Conversation> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
-      'publicKeyData': serializer.toJson<PublicKeyData?>(publicKeyData),
-      'publicKeyId': serializer.toJson<PublicKeyId?>(publicKeyId),
+      'uuidAccountId': serializer.toJson<api.AccountId>(uuidAccountId),
+      'publicKeyData': serializer.toJson<api.PublicKeyData?>(publicKeyData),
+      'publicKeyId': serializer.toJson<api.PublicKeyId?>(publicKeyId),
       'publicKeyVersion':
-          serializer.toJson<PublicKeyVersion?>(publicKeyVersion),
+          serializer.toJson<api.PublicKeyVersion?>(publicKeyVersion),
     };
   }
 
   Conversation copyWith(
           {int? id,
-          AccountId? uuidAccountId,
-          Value<PublicKeyData?> publicKeyData = const Value.absent(),
-          Value<PublicKeyId?> publicKeyId = const Value.absent(),
-          Value<PublicKeyVersion?> publicKeyVersion = const Value.absent()}) =>
+          api.AccountId? uuidAccountId,
+          Value<api.PublicKeyData?> publicKeyData = const Value.absent(),
+          Value<api.PublicKeyId?> publicKeyId = const Value.absent(),
+          Value<api.PublicKeyVersion?> publicKeyVersion =
+              const Value.absent()}) =>
       Conversation(
         id: id ?? this.id,
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -6760,10 +6784,10 @@ class Conversation extends DataClass implements Insertable<Conversation> {
 
 class ConversationsCompanion extends UpdateCompanion<Conversation> {
   final Value<int> id;
-  final Value<AccountId> uuidAccountId;
-  final Value<PublicKeyData?> publicKeyData;
-  final Value<PublicKeyId?> publicKeyId;
-  final Value<PublicKeyVersion?> publicKeyVersion;
+  final Value<api.AccountId> uuidAccountId;
+  final Value<api.PublicKeyData?> publicKeyData;
+  final Value<api.PublicKeyId?> publicKeyId;
+  final Value<api.PublicKeyVersion?> publicKeyVersion;
   const ConversationsCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -6773,7 +6797,7 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
   });
   ConversationsCompanion.insert({
     this.id = const Value.absent(),
-    required AccountId uuidAccountId,
+    required api.AccountId uuidAccountId,
     this.publicKeyData = const Value.absent(),
     this.publicKeyId = const Value.absent(),
     this.publicKeyVersion = const Value.absent(),
@@ -6796,10 +6820,10 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
 
   ConversationsCompanion copyWith(
       {Value<int>? id,
-      Value<AccountId>? uuidAccountId,
-      Value<PublicKeyData?>? publicKeyData,
-      Value<PublicKeyId?>? publicKeyId,
-      Value<PublicKeyVersion?>? publicKeyVersion}) {
+      Value<api.AccountId>? uuidAccountId,
+      Value<api.PublicKeyData?>? publicKeyData,
+      Value<api.PublicKeyId?>? publicKeyId,
+      Value<api.PublicKeyVersion?>? publicKeyVersion}) {
     return ConversationsCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -6850,6 +6874,258 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
   }
 }
 
+class $AvailableProfileAttributesTableTable
+    extends AvailableProfileAttributesTable
+    with
+        TableInfo<$AvailableProfileAttributesTableTable,
+            AvailableProfileAttributesTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AvailableProfileAttributesTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _jsonAttributeMeta =
+      const VerificationMeta('jsonAttribute');
+  @override
+  late final GeneratedColumnWithTypeConverter<JsonString, String>
+      jsonAttribute = GeneratedColumn<String>(
+              'json_attribute', aliasedName, false,
+              type: DriftSqlType.string, requiredDuringInsert: true)
+          .withConverter<JsonString>(
+              $AvailableProfileAttributesTableTable.$converterjsonAttribute);
+  static const VerificationMeta _attributeHashMeta =
+      const VerificationMeta('attributeHash');
+  @override
+  late final GeneratedColumnWithTypeConverter<api.ProfileAttributeHash, String>
+      attributeHash = GeneratedColumn<String>(
+              'attribute_hash', aliasedName, false,
+              type: DriftSqlType.string, requiredDuringInsert: true)
+          .withConverter<api.ProfileAttributeHash>(
+              $AvailableProfileAttributesTableTable.$converterattributeHash);
+  @override
+  List<GeneratedColumn> get $columns => [id, jsonAttribute, attributeHash];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'available_profile_attributes_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<AvailableProfileAttributesTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    context.handle(_jsonAttributeMeta, const VerificationResult.success());
+    context.handle(_attributeHashMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AvailableProfileAttributesTableData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AvailableProfileAttributesTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      jsonAttribute: $AvailableProfileAttributesTableTable
+          .$converterjsonAttribute
+          .fromSql(attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}json_attribute'])!),
+      attributeHash: $AvailableProfileAttributesTableTable
+          .$converterattributeHash
+          .fromSql(attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}attribute_hash'])!),
+    );
+  }
+
+  @override
+  $AvailableProfileAttributesTableTable createAlias(String alias) {
+    return $AvailableProfileAttributesTableTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<JsonString, String> $converterjsonAttribute =
+      JsonString.driftConverter;
+  static TypeConverter<api.ProfileAttributeHash, String>
+      $converterattributeHash = const ProfileAttributeHashConverter();
+}
+
+class AvailableProfileAttributesTableData extends DataClass
+    implements Insertable<AvailableProfileAttributesTableData> {
+  final int id;
+  final JsonString jsonAttribute;
+  final api.ProfileAttributeHash attributeHash;
+  const AvailableProfileAttributesTableData(
+      {required this.id,
+      required this.jsonAttribute,
+      required this.attributeHash});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    {
+      map['json_attribute'] = Variable<String>(
+          $AvailableProfileAttributesTableTable.$converterjsonAttribute
+              .toSql(jsonAttribute));
+    }
+    {
+      map['attribute_hash'] = Variable<String>(
+          $AvailableProfileAttributesTableTable.$converterattributeHash
+              .toSql(attributeHash));
+    }
+    return map;
+  }
+
+  AvailableProfileAttributesTableCompanion toCompanion(bool nullToAbsent) {
+    return AvailableProfileAttributesTableCompanion(
+      id: Value(id),
+      jsonAttribute: Value(jsonAttribute),
+      attributeHash: Value(attributeHash),
+    );
+  }
+
+  factory AvailableProfileAttributesTableData.fromJson(
+      Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AvailableProfileAttributesTableData(
+      id: serializer.fromJson<int>(json['id']),
+      jsonAttribute: serializer.fromJson<JsonString>(json['jsonAttribute']),
+      attributeHash:
+          serializer.fromJson<api.ProfileAttributeHash>(json['attributeHash']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'jsonAttribute': serializer.toJson<JsonString>(jsonAttribute),
+      'attributeHash':
+          serializer.toJson<api.ProfileAttributeHash>(attributeHash),
+    };
+  }
+
+  AvailableProfileAttributesTableData copyWith(
+          {int? id,
+          JsonString? jsonAttribute,
+          api.ProfileAttributeHash? attributeHash}) =>
+      AvailableProfileAttributesTableData(
+        id: id ?? this.id,
+        jsonAttribute: jsonAttribute ?? this.jsonAttribute,
+        attributeHash: attributeHash ?? this.attributeHash,
+      );
+  AvailableProfileAttributesTableData copyWithCompanion(
+      AvailableProfileAttributesTableCompanion data) {
+    return AvailableProfileAttributesTableData(
+      id: data.id.present ? data.id.value : this.id,
+      jsonAttribute: data.jsonAttribute.present
+          ? data.jsonAttribute.value
+          : this.jsonAttribute,
+      attributeHash: data.attributeHash.present
+          ? data.attributeHash.value
+          : this.attributeHash,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AvailableProfileAttributesTableData(')
+          ..write('id: $id, ')
+          ..write('jsonAttribute: $jsonAttribute, ')
+          ..write('attributeHash: $attributeHash')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, jsonAttribute, attributeHash);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AvailableProfileAttributesTableData &&
+          other.id == this.id &&
+          other.jsonAttribute == this.jsonAttribute &&
+          other.attributeHash == this.attributeHash);
+}
+
+class AvailableProfileAttributesTableCompanion
+    extends UpdateCompanion<AvailableProfileAttributesTableData> {
+  final Value<int> id;
+  final Value<JsonString> jsonAttribute;
+  final Value<api.ProfileAttributeHash> attributeHash;
+  const AvailableProfileAttributesTableCompanion({
+    this.id = const Value.absent(),
+    this.jsonAttribute = const Value.absent(),
+    this.attributeHash = const Value.absent(),
+  });
+  AvailableProfileAttributesTableCompanion.insert({
+    this.id = const Value.absent(),
+    required JsonString jsonAttribute,
+    required api.ProfileAttributeHash attributeHash,
+  })  : jsonAttribute = Value(jsonAttribute),
+        attributeHash = Value(attributeHash);
+  static Insertable<AvailableProfileAttributesTableData> custom({
+    Expression<int>? id,
+    Expression<String>? jsonAttribute,
+    Expression<String>? attributeHash,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (jsonAttribute != null) 'json_attribute': jsonAttribute,
+      if (attributeHash != null) 'attribute_hash': attributeHash,
+    });
+  }
+
+  AvailableProfileAttributesTableCompanion copyWith(
+      {Value<int>? id,
+      Value<JsonString>? jsonAttribute,
+      Value<api.ProfileAttributeHash>? attributeHash}) {
+    return AvailableProfileAttributesTableCompanion(
+      id: id ?? this.id,
+      jsonAttribute: jsonAttribute ?? this.jsonAttribute,
+      attributeHash: attributeHash ?? this.attributeHash,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (jsonAttribute.present) {
+      map['json_attribute'] = Variable<String>(
+          $AvailableProfileAttributesTableTable.$converterjsonAttribute
+              .toSql(jsonAttribute.value));
+    }
+    if (attributeHash.present) {
+      map['attribute_hash'] = Variable<String>(
+          $AvailableProfileAttributesTableTable.$converterattributeHash
+              .toSql(attributeHash.value));
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AvailableProfileAttributesTableCompanion(')
+          ..write('id: $id, ')
+          ..write('jsonAttribute: $jsonAttribute, ')
+          ..write('attributeHash: $attributeHash')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AccountDatabase extends GeneratedDatabase {
   _$AccountDatabase(QueryExecutor e) : super(e);
   late final $AccountTable account = $AccountTable(this);
@@ -6862,6 +7138,9 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       $ConversationListTable(this);
   late final $MessagesTable messages = $MessagesTable(this);
   late final $ConversationsTable conversations = $ConversationsTable(this);
+  late final $AvailableProfileAttributesTableTable
+      availableProfileAttributesTable =
+      $AvailableProfileAttributesTableTable(this);
   late final DaoCurrentContent daoCurrentContent =
       DaoCurrentContent(this as AccountDatabase);
   late final DaoMyProfile daoMyProfile = DaoMyProfile(this as AccountDatabase);
@@ -6880,6 +7159,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       DaoMessageKeys(this as AccountDatabase);
   late final DaoProfileInitialAgeInfo daoProfileInitialAgeInfo =
       DaoProfileInitialAgeInfo(this as AccountDatabase);
+  late final DaoAvailableProfileAttributes daoAvailableProfileAttributes =
+      DaoAvailableProfileAttributes(this as AccountDatabase);
   late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
   late final DaoConversationList daoConversationList =
       DaoConversationList(this as AccountDatabase);
@@ -6892,6 +7173,9 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       DaoProfileStates(this as AccountDatabase);
   late final DaoConversations daoConversations =
       DaoConversations(this as AccountDatabase);
+  late final DaoAvailableProfileAttributesTable
+      daoAvailableProfileAttributesTable =
+      DaoAvailableProfileAttributesTable(this as AccountDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -6904,6 +7188,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
         profileStates,
         conversationList,
         messages,
-        conversations
+        conversations,
+        availableProfileAttributesTable
       ];
 }

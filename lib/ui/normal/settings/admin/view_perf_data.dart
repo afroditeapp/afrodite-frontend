@@ -9,10 +9,10 @@ import 'package:app/utils/result.dart';
 
 
 class ViewPerfDataPage extends StatefulWidget {
-  const ViewPerfDataPage({Key? key}) : super(key: key);
+  const ViewPerfDataPage({super.key});
 
   @override
-  _ViewPerfDataPageState createState() => _ViewPerfDataPageState();
+  State<ViewPerfDataPage> createState() => _ViewPerfDataPageState();
 }
 
 class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
@@ -21,7 +21,7 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
 
   final Server _selectedServer = Server.account;
   PerfData? _currentData;
-  List<(int, PerfHistoryValue)> filteredList = [];
+  List<(int, PerfMetricValues)> filteredList = [];
   int? selectedIndexFromAllData = 0;
   final api = LoginRepository.getInstance().repositories.api;
 
@@ -45,7 +45,7 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
         filteredList = list
             .indexed
             .where((indexAndCounter) {
-              final name = indexAndCounter.$2.counterName;
+              final name = indexAndCounter.$2.name;
               return name.toLowerCase().contains(filterText.toLowerCase());
             })
             .toList();
@@ -55,7 +55,7 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
       selectedIndexFromAllData = null;
       if (currentName.isNotEmpty) {
         final item = filteredList.where(
-          (element) => element.$2.counterName == currentName,
+          (element) => element.$2.name == currentName,
         ).firstOrNull;
         selectedIndexFromAllData = item?.$1;
       }
@@ -63,7 +63,7 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
   }
 
   String currentlySelectedName() {
-    return _currentData?.values[selectedIndexFromAllData ?? 0].counterName ?? "";
+    return _currentData?.values[selectedIndexFromAllData ?? 0].name ?? "";
   }
 
   @override
@@ -169,7 +169,7 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
                     .values
                     .indexed
                     .where((indexAndCounter) {
-                      final name = indexAndCounter.$2.counterName;
+                      final name = indexAndCounter.$2.name;
                       return value.isEmpty || name.toLowerCase().contains(value.toLowerCase());
                     })
                     .toList();
@@ -196,7 +196,7 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
               final (index, counter) = value;
               return DropdownMenuItem<String>(
                 value: index.toString(),
-                child: Text(counter.counterName),
+                child: Text(counter.name),
               );
             }).toList(),
           ),
@@ -211,7 +211,7 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
     );
   }
 
-  Widget getChart(BuildContext context, PerfHistoryValue value) {
+  Widget getChart(BuildContext context, PerfMetricValues value) {
     final data = <FlSpot>[];
     for (final pointArea in value.values) {
       if (pointArea.timeGranularity == TimeGranularity.hours) {
@@ -224,7 +224,6 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
       }
     }
     var upperTimeText = true;
-    final style = DefaultTextStyle.of(context);
 
     return LineChart(
       LineChartData(
@@ -296,14 +295,14 @@ Future<PerfData?> _getData(Server server, ApiManager api) async {
     return null;
   }
 
-  queryResults.counters.sort((a, b) {
-    return a.counterName.compareTo(b.counterName);
+  queryResults.metrics.sort((a, b) {
+    return a.name.compareTo(b.name);
   });
-  return PerfData(queryResults.counters);
+  return PerfData(queryResults.metrics);
 }
 
 class PerfData {
-  final List<PerfHistoryValue> values;
+  final List<PerfMetricValues> values;
 
   PerfData(
     this.values,

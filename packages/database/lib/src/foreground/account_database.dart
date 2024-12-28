@@ -2,10 +2,12 @@
 
 import 'package:async/async.dart';
 import 'package:database/src/foreground/account/dao_account_settings.dart';
+import 'package:database/src/foreground/account/dao_available_profile_attributes.dart';
 import 'package:database/src/foreground/account/dao_local_image_settings.dart';
 import 'package:database/src/foreground/account/dao_message_keys.dart';
 import 'package:database/src/foreground/account/dao_profile_initial_age_info.dart';
 import 'package:database/src/foreground/account/dao_sync_versions.dart';
+import 'package:database/src/foreground/available_profile_attributes_table.dart';
 import 'package:database/src/foreground/conversations_table.dart';
 import 'package:database/src/foreground/conversation_list_table.dart';
 import 'package:database/src/foreground/my_media_content_table.dart';
@@ -14,6 +16,7 @@ import 'package:database/src/foreground/profile_table.dart';
 import 'package:database/src/foreground/public_profile_content_table.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
+import 'package:openapi/api.dart' as api;
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 import 'account/dao_current_content.dart';
@@ -35,9 +38,9 @@ class Account extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   TextColumn get uuidAccountId => text().map(const NullAwareTypeConverter.wrap(AccountIdConverter())).nullable()();
-  TextColumn get jsonAccountState => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
+  TextColumn get jsonAccountState => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
   TextColumn get jsonPermissions => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
-  TextColumn get jsonAvailableProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
+  TextColumn get jsonProfileVisibility => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
 
   /// If true show only favorite profiles
   BoolColumn get profileFilterFavorites => boolean()
@@ -51,6 +54,10 @@ class Account extends Table {
     .map(const NullAwareTypeConverter.wrap(MatchesIteratorSessionIdConverter())).nullable()();
 
   IntColumn get clientId => integer().map(const NullAwareTypeConverter.wrap(ClientIdConverter())).nullable()();
+
+  // DaoAvailableProfileAttributes
+
+  TextColumn get jsonAvailableProfileAttributesOrderMode => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
 
   // DaoInitialSync
 
@@ -98,7 +105,6 @@ class Account extends Table {
 
   RealColumn get profileLocationLatitude => real().nullable()();
   RealColumn get profileLocationLongitude => real().nullable()();
-  TextColumn get jsonProfileVisibility => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
   TextColumn get jsonSearchGroups => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
   TextColumn get jsonProfileFilteringSettings => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
   IntColumn get profileSearchAgeRangeMin => integer().nullable()();
@@ -148,6 +154,7 @@ class Account extends Table {
     ConversationList,
     Messages,
     Conversations,
+    AvailableProfileAttributesTable,
   ],
   daos: [
     // Account table
@@ -161,6 +168,7 @@ class Account extends Table {
     DaoLocalImageSettings,
     DaoMessageKeys,
     DaoProfileInitialAgeInfo,
+    DaoAvailableProfileAttributes,
     // Other tables
     DaoMessages,
     DaoConversationList,
@@ -169,6 +177,7 @@ class Account extends Table {
     DaoMyMediaContent,
     DaoProfileStates,
     DaoConversations,
+    DaoAvailableProfileAttributesTable,
   ],
 )
 class AccountDatabase extends _$AccountDatabase {
@@ -228,33 +237,17 @@ class AccountDatabase extends _$AccountDatabase {
     );
   }
 
-  Future<void> updateAccountState(AccountState? value) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        jsonAccountState: Value(value?.toEnumString()),
-      ),
-    );
-  }
-
-  Future<void> updatePermissions(Permissions? value) async {
-    await into(account).insertOnConflictUpdate(
-      AccountCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        jsonPermissions: Value(value?.toJsonString()),
-      ),
-    );
-  }
-
-  Future<void> updateAvailableProfileAttributes(AvailableProfileAttributes value) async {
+  Future<void> updateAccountState(api.Account value) async {
     await transaction(() async {
       await into(account).insertOnConflictUpdate(
         AccountCompanion.insert(
           id: ACCOUNT_DB_DATA_ID,
-          jsonAvailableProfileAttributes: Value(value.toJsonString()),
+          jsonAccountState: Value(value.state.toJsonString()),
+          jsonPermissions: Value(value.permissions.toJsonString()),
+          jsonProfileVisibility: Value(value.visibility.toEnumString()),
         ),
       );
-      await daoSyncVersions.updateSyncVersionAvailableProfileAttributes(value.syncVersion);
+      await daoSyncVersions.updateSyncVersionAccount(value.syncVersion);
     });
   }
 
@@ -288,13 +281,13 @@ class AccountDatabase extends _$AccountDatabase {
     watchColumn((r) => r.matchesIteratorSessionId);
 
   Stream<AccountState?> watchAccountState() =>
-    watchColumn((r) => r.jsonAccountState?.toAccountState());
+    watchColumn((r) => r.jsonAccountState?.toAccountStateContainer()?.toAccountState());
+
+  Stream<ProfileVisibility?> watchProfileVisibility() =>
+    watchColumn((r) => r.jsonProfileVisibility?.toProfileVisibility());
 
   Stream<Permissions?> watchPermissions() =>
     watchColumn((r) => r.jsonPermissions?.toPermissions());
-
-  Stream<AvailableProfileAttributes?> watchAvailableProfileAttributes() =>
-    watchColumn((r) => r.jsonAvailableProfileAttributes?.toAvailableProfileAttributes());
 
   Stream<ClientId?> watchClientId() =>
     watchColumn((r) => r.clientId);

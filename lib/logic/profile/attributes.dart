@@ -1,7 +1,7 @@
 import "dart:async";
 
+import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:openapi/api.dart";
 import "package:app/data/login_repository.dart";
 import "package:app/data/profile_repository.dart";
 import "package:app/localizations.dart";
@@ -12,7 +12,7 @@ import "package:app/utils.dart";
 
 sealed class AttributesEvent {}
 class NewAttributes extends AttributesEvent {
-  final AvailableProfileAttributes? attributes;
+  final ProfileAttributes? attributes;
   NewAttributes(this.attributes);
 }
 class RefreshAttributesIfNeeded extends AttributesEvent {}
@@ -21,7 +21,7 @@ class RefreshAttributesIfNeeded extends AttributesEvent {}
 class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with ActionRunner {
   final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
 
-  StreamSubscription<AvailableProfileAttributes?>? _attributesSubscription;
+  StreamSubscription<ProfileAttributes?>? _attributesSubscription;
 
   ProfileAttributesBloc() : super(AttributesData()) {
     on<NewAttributes>((data, emit) async {

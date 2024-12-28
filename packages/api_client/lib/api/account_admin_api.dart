@@ -137,9 +137,106 @@ class AccountAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'NewsId',) as NewsId;
-    
+
     }
     return null;
+  }
+
+  /// Delete account instantly
+  ///
+  /// # Access  Permission [model_account::Permissions::admin_delete_account] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> postDeleteAccountWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/bdvzsZZOVVO89-enOb3tFnpU7yk/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Delete account instantly
+  ///
+  /// # Access  Permission [model_account::Permissions::admin_delete_account] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<void> postDeleteAccount(String aid,) async {
+    final response = await postDeleteAccountWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Ban or unban account
+  ///
+  /// # Access  Permission [model_account::Permissions::admin_ban_account] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [SetAccountBanState] setAccountBanState (required):
+  Future<Response> postSetBanStateWithHttpInfo(SetAccountBanState setAccountBanState,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/R5G1j887_zSwcgInJG5Y7mz73nE';
+
+    // ignore: prefer_final_locals
+    Object? postBody = setAccountBanState;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Ban or unban account
+  ///
+  /// # Access  Permission [model_account::Permissions::admin_ban_account] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [SetAccountBanState] setAccountBanState (required):
+  Future<void> postSetBanState(SetAccountBanState setAccountBanState,) async {
+    final response = await postSetBanStateWithHttpInfo(setAccountBanState,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Performs an HTTP 'DELETE /McvctMKFEqrUfola2WlvkbigBDU/{nid}' operation and returns the [Response].
@@ -238,7 +335,7 @@ class AccountAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UpdateNewsTranslationResult',) as UpdateNewsTranslationResult;
-    
+
     }
     return null;
   }

@@ -75,6 +75,20 @@ class ProfileContentVersionConverter extends TypeConverter<ProfileContentVersion
   }
 }
 
+class ProfileAttributeHashConverter extends TypeConverter<ProfileAttributeHash, String> {
+  const ProfileAttributeHashConverter();
+
+  @override
+  ProfileAttributeHash fromSql(fromDb) {
+    return ProfileAttributeHash(h: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.h;
+  }
+}
+
 class MessageNumberConverter extends TypeConverter<MessageNumber, int> {
   const MessageNumberConverter();
 
@@ -108,6 +122,10 @@ class JsonString {
   final Map<String, Object?> jsonMap;
   JsonString(this.jsonMap);
 
+  AccountStateContainer? toAccountStateContainer() {
+    return AccountStateContainer.fromJson(jsonMap);
+  }
+
   Permissions? toPermissions() {
     return Permissions.fromJson(jsonMap);
   }
@@ -124,10 +142,20 @@ class JsonString {
     return SearchGroups.fromJson(jsonMap);
   }
 
+  Attribute? toAttribute() {
+    return Attribute.fromJson(jsonMap);
+  }
+
   static TypeConverter<JsonString, String> driftConverter = TypeConverter.json(
     fromJson: (json) => JsonString(json as Map<String, Object?>),
     toJson: (object) => object.jsonMap,
   );
+}
+
+extension AccountStateContainerJson on AccountStateContainer {
+  JsonString toJsonString() {
+    return JsonString(toJson());
+  }
 }
 
 extension PermissionsJson on Permissions {
@@ -154,13 +182,15 @@ extension SearchGroupsJson on SearchGroups {
   }
 }
 
+extension AttributeJson on Attribute {
+  JsonString toJsonString() {
+    return JsonString(toJson());
+  }
+}
+
 class EnumString {
   final String enumString;
   EnumString(this.enumString);
-
-  AccountState? toAccountState() {
-    return AccountState.fromJson(enumString);
-  }
 
   ProfileVisibility? toProfileVisibility() {
     return ProfileVisibility.fromJson(enumString);
@@ -178,13 +208,11 @@ class EnumString {
     return ContentModerationState.fromJson(enumString);
   }
 
-  static TypeConverter<EnumString, String> driftConverter = const EnumStringConverter();
-}
-
-extension AccountStateConverter on AccountState {
-  EnumString toEnumString() {
-    return EnumString(toJson());
+  AttributeOrderMode? toAttributeOrderMode() {
+    return AttributeOrderMode.fromJson(enumString);
   }
+
+  static TypeConverter<EnumString, String> driftConverter = const EnumStringConverter();
 }
 
 extension ProfileVisibilityConverter on ProfileVisibility {
@@ -206,6 +234,12 @@ extension ProfileTextModerationStateConverter on ProfileTextModerationState {
 }
 
 extension ContentModerationStateConverter on ContentModerationState {
+  EnumString toEnumString() {
+    return EnumString(toJson());
+  }
+}
+
+extension AttributeOrderModeConverter on AttributeOrderMode {
   EnumString toEnumString() {
     return EnumString(toJson());
   }

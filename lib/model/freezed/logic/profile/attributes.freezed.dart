@@ -21,11 +21,11 @@ final _privateConstructorErrorAttributesData = UnsupportedError(
 
 /// @nodoc
 mixin _$AttributesData {
-  AvailableProfileAttributes? get attributes => throw _privateConstructorErrorAttributesData;
+  ProfileAttributes? get attributes => throw _privateConstructorErrorAttributesData;
   AttributeRefreshState? get refreshState => throw _privateConstructorErrorAttributesData;
 
   AttributesData copyWith({
-    AvailableProfileAttributes? attributes,
+    ProfileAttributes? attributes,
     AttributeRefreshState? refreshState,
   }) => throw _privateConstructorErrorAttributesData;
 }
@@ -33,7 +33,7 @@ mixin _$AttributesData {
 /// @nodoc
 abstract class _AttributesData implements AttributesData {
   factory _AttributesData({
-    AvailableProfileAttributes? attributes,
+    ProfileAttributes? attributes,
     AttributeRefreshState? refreshState,
   }) = _$AttributesDataImpl;
 }
@@ -46,7 +46,7 @@ class _$AttributesDataImpl implements _AttributesData {
   });
 
   @override
-  final AvailableProfileAttributes? attributes;
+  final ProfileAttributes? attributes;
   @override
   final AttributeRefreshState? refreshState;
 
@@ -79,7 +79,7 @@ class _$AttributesDataImpl implements _AttributesData {
     Object? attributes = _detectDefaultValueInCopyWith,
     Object? refreshState = _detectDefaultValueInCopyWith,
   }) => _$AttributesDataImpl(
-    attributes: (attributes == _detectDefaultValueInCopyWith ? this.attributes : attributes) as AvailableProfileAttributes?,
+    attributes: (attributes == _detectDefaultValueInCopyWith ? this.attributes : attributes) as ProfileAttributes?,
     refreshState: (refreshState == _detectDefaultValueInCopyWith ? this.refreshState : refreshState) as AttributeRefreshState?,
   );
 }

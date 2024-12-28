@@ -10,42 +10,42 @@
 
 part of openapi.api;
 
-class PerfHistoryValue {
-  /// Returns a new [PerfHistoryValue] instance.
-  PerfHistoryValue({
-    required this.counterName,
+class PerfMetricValues {
+  /// Returns a new [PerfMetricValues] instance.
+  PerfMetricValues({
+    required this.name,
     this.values = const [],
   });
 
-  String counterName;
+  String name;
 
-  List<PerfValueArea> values;
+  List<PerfMetricValueArea> values;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is PerfHistoryValue &&
-    other.counterName == counterName &&
+  bool operator ==(Object other) => identical(this, other) || other is PerfMetricValues &&
+    other.name == name &&
     _deepEquality.equals(other.values, values);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (counterName.hashCode) +
+    (name.hashCode) +
     (values.hashCode);
 
   @override
-  String toString() => 'PerfHistoryValue[counterName=$counterName, values=$values]';
+  String toString() => 'PerfMetricValues[name=$name, values=$values]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'counter_name'] = this.counterName;
+      json[r'name'] = this.name;
       json[r'values'] = this.values;
     return json;
   }
 
-  /// Returns a new [PerfHistoryValue] instance and imports its values from
+  /// Returns a new [PerfMetricValues] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static PerfHistoryValue? fromJson(dynamic value) {
+  static PerfMetricValues? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,25 +54,25 @@ class PerfHistoryValue {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PerfHistoryValue[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PerfHistoryValue[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "PerfMetricValues[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "PerfMetricValues[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return PerfHistoryValue(
-        counterName: mapValueOfType<String>(json, r'counter_name')!,
-        values: PerfValueArea.listFromJson(json[r'values']),
+      return PerfMetricValues(
+        name: mapValueOfType<String>(json, r'name')!,
+        values: PerfMetricValueArea.listFromJson(json[r'values']),
       );
     }
     return null;
   }
 
-  static List<PerfHistoryValue> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <PerfHistoryValue>[];
+  static List<PerfMetricValues> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <PerfMetricValues>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = PerfHistoryValue.fromJson(row);
+        final value = PerfMetricValues.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +81,12 @@ class PerfHistoryValue {
     return result.toList(growable: growable);
   }
 
-  static Map<String, PerfHistoryValue> mapFromJson(dynamic json) {
-    final map = <String, PerfHistoryValue>{};
+  static Map<String, PerfMetricValues> mapFromJson(dynamic json) {
+    final map = <String, PerfMetricValues>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = PerfHistoryValue.fromJson(entry.value);
+        final value = PerfMetricValues.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,14 +95,14 @@ class PerfHistoryValue {
     return map;
   }
 
-  // maps a json object with a list of PerfHistoryValue-objects as value to a dart map
-  static Map<String, List<PerfHistoryValue>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<PerfHistoryValue>>{};
+  // maps a json object with a list of PerfMetricValues-objects as value to a dart map
+  static Map<String, List<PerfMetricValues>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<PerfMetricValues>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = PerfHistoryValue.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = PerfMetricValues.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -110,8 +110,7 @@ class PerfHistoryValue {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'counter_name',
+    'name',
     'values',
   };
 }
-

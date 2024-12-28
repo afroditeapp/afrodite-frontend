@@ -47,9 +47,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       Location(latitude: 0.0, longitude: 0.0),
     );
 
-  Stream<AvailableProfileAttributes?> get profileAttributes => db
+  Stream<ProfileAttributes?> get profileAttributes => db
     .accountStream(
-      (db) => db.watchAvailableProfileAttributes(),
+      (db) => db.daoAvailableProfileAttributes.watchAvailableProfileAttributes(),
     );
 
   @override
@@ -272,13 +272,40 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   /// Save profile attributes from server to local storage and return them.
   Future<AvailableProfileAttributes?> receiveProfileAttributes() async {
-    final profileAttributes = await _api.profile((api) => api.getAvailableProfileAttributes()).ok();
-    if (profileAttributes != null) {
-      await db.accountAction(
-        (db) => db.updateAvailableProfileAttributes(profileAttributes),
-      );
+    final attributeInfo = await _api.profile((api) => api.getAvailableProfileAttributes()).ok();
+    if (attributeInfo == null) {
+      return null;
     }
-    return profileAttributes;
+    final latestAttributes = attributeInfo.info?.attributes ?? [];
+    final attributeOrder = attributeInfo.info?.attributeOrder;
+
+    final attributeRefreshList = await db.accountData(
+      (db) => db.daoAvailableProfileAttributesTable.getAttributeRefreshList(latestAttributes),
+    ).ok();
+    if (attributeRefreshList == null) {
+      return null;
+    }
+
+    final List<ProfileAttributeQueryItem> updatedAttributes;
+    if (attributeRefreshList.isEmpty) {
+      updatedAttributes = [];
+    } else {
+      final r = await _api.profile((api) => api.postGetQueryAvailableProfileAttributes(ProfileAttributeQuery(values: attributeRefreshList))).ok();
+      if (r == null) {
+        return null;
+      }
+      updatedAttributes = r.values;
+    }
+
+    await db.accountAction(
+      (db) => db.daoAvailableProfileAttributes.updateAvailableProfileAttributes(
+        attributeOrder,
+        attributeInfo.syncVersion,
+        latestAttributes,
+        updatedAttributes,
+      ),
+    );
+    return attributeInfo;
   }
 
   Future<Result<void, void>> reloadMyProfile() async {

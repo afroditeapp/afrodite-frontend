@@ -293,3 +293,40 @@ class AutomaticAgeChangeInfo {
     required this.year,
   });
 }
+
+enum AccountState {
+  initialSetup,
+  normal,
+  banned,
+  pendingDeletion,
+}
+
+extension AccountStateContainerToAccountState on AccountStateContainer {
+  AccountState toAccountState() {
+    if (pendingDeletion) {
+      return AccountState.pendingDeletion;
+    } else if (banned) {
+      return AccountState.banned;
+    } else if (!initialSetupCompleted) {
+      return AccountState.initialSetup;
+    } else {
+      return AccountState.normal;
+    }
+  }
+}
+
+class ProfileAttributes {
+  final AttributeOrderMode attributeOrder;
+  /// This list is sorted by Attribute ID and the IDs can be used to
+  /// index this list.
+  final List<ProfileAttributeAndHash> attributeInfo;
+  ProfileAttributes(this.attributeOrder, this.attributeInfo);
+
+  Iterable<Attribute> get attributes => attributeInfo.map((v) => v.attribute);
+}
+
+class ProfileAttributeAndHash {
+  final ProfileAttributeHash hash;
+  final Attribute attribute;
+  ProfileAttributeAndHash(this.hash, this.attribute);
+}

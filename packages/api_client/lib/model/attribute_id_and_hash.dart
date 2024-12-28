@@ -10,36 +10,43 @@
 
 part of openapi.api;
 
-class PerfHistoryQueryResult {
-  /// Returns a new [PerfHistoryQueryResult] instance.
-  PerfHistoryQueryResult({
-    this.counters = const [],
+class AttributeIdAndHash {
+  /// Returns a new [AttributeIdAndHash] instance.
+  AttributeIdAndHash({
+    required this.h,
+    required this.id,
   });
 
-  List<PerfHistoryValue> counters;
+  ProfileAttributeHash h;
+
+  /// Minimum value: 0
+  int id;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is PerfHistoryQueryResult &&
-    _deepEquality.equals(other.counters, counters);
+  bool operator ==(Object other) => identical(this, other) || other is AttributeIdAndHash &&
+    other.h == h &&
+    other.id == id;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (counters.hashCode);
+    (h.hashCode) +
+    (id.hashCode);
 
   @override
-  String toString() => 'PerfHistoryQueryResult[counters=$counters]';
+  String toString() => 'AttributeIdAndHash[h=$h, id=$id]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'counters'] = this.counters;
+      json[r'h'] = this.h;
+      json[r'id'] = this.id;
     return json;
   }
 
-  /// Returns a new [PerfHistoryQueryResult] instance and imports its values from
+  /// Returns a new [AttributeIdAndHash] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static PerfHistoryQueryResult? fromJson(dynamic value) {
+  static AttributeIdAndHash? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +55,25 @@ class PerfHistoryQueryResult {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PerfHistoryQueryResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PerfHistoryQueryResult[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AttributeIdAndHash[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AttributeIdAndHash[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return PerfHistoryQueryResult(
-        counters: PerfHistoryValue.listFromJson(json[r'counters']),
+      return AttributeIdAndHash(
+        h: ProfileAttributeHash.fromJson(json[r'h'])!,
+        id: mapValueOfType<int>(json, r'id')!,
       );
     }
     return null;
   }
 
-  static List<PerfHistoryQueryResult> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <PerfHistoryQueryResult>[];
+  static List<AttributeIdAndHash> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AttributeIdAndHash>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = PerfHistoryQueryResult.fromJson(row);
+        final value = AttributeIdAndHash.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +82,12 @@ class PerfHistoryQueryResult {
     return result.toList(growable: growable);
   }
 
-  static Map<String, PerfHistoryQueryResult> mapFromJson(dynamic json) {
-    final map = <String, PerfHistoryQueryResult>{};
+  static Map<String, AttributeIdAndHash> mapFromJson(dynamic json) {
+    final map = <String, AttributeIdAndHash>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = PerfHistoryQueryResult.fromJson(entry.value);
+        final value = AttributeIdAndHash.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +96,14 @@ class PerfHistoryQueryResult {
     return map;
   }
 
-  // maps a json object with a list of PerfHistoryQueryResult-objects as value to a dart map
-  static Map<String, List<PerfHistoryQueryResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<PerfHistoryQueryResult>>{};
+  // maps a json object with a list of AttributeIdAndHash-objects as value to a dart map
+  static Map<String, List<AttributeIdAndHash>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AttributeIdAndHash>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = PerfHistoryQueryResult.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = AttributeIdAndHash.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +111,7 @@ class PerfHistoryQueryResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'counters',
+    'h',
+    'id',
   };
 }
-

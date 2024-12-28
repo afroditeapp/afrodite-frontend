@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:async/async.dart' show StreamExtensions;
+import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logging/logging.dart';
@@ -283,6 +284,7 @@ class LoginRepository extends DataRepository {
       connectionManager: connectionManager,
       clientIdManager: clientIdManager,
       rememberToInitRepositoriesLateFinal: true,
+      currentUser: accountId,
     );
     final common = CommonRepository(connectionManager);
     final media = MediaRepository(account, accountDb, accountBackgroundDb, connectionManager, accountId);

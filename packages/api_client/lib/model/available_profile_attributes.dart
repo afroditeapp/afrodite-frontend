@@ -17,7 +17,7 @@ class AvailableProfileAttributes {
     required this.syncVersion,
   });
 
-  ProfileAttributes? info;
+  ProfileAttributeInfo? info;
 
   ProfileAttributesSyncVersion syncVersion;
 
@@ -65,7 +65,7 @@ class AvailableProfileAttributes {
       }());
 
       return AvailableProfileAttributes(
-        info: ProfileAttributes.fromJson(json[r'info']),
+        info: ProfileAttributeInfo.fromJson(json[r'info']),
         syncVersion: ProfileAttributesSyncVersion.fromJson(json[r'sync_version'])!,
       );
     }
@@ -117,4 +117,3 @@ class AvailableProfileAttributes {
     'sync_version',
   };
 }
-

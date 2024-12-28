@@ -2,6 +2,7 @@
 import 'dart:math';
 
 import 'package:app/utils/option.dart';
+import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -448,7 +449,7 @@ class EditAttributeFilters extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileAttributesBloc, AttributesData>(
       builder: (context, data) {
-        final availableAttributes = data.attributes?.info;
+        final availableAttributes = data.attributes;
         if (availableAttributes == null) {
           return const SizedBox.shrink();
         }

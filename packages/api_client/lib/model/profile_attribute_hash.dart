@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class DeleteStatus {
-  /// Returns a new [DeleteStatus] instance.
-  DeleteStatus({
-    required this.deleteDate,
+class ProfileAttributeHash {
+  /// Returns a new [ProfileAttributeHash] instance.
+  ProfileAttributeHash({
+    required this.h,
   });
 
-  String deleteDate;
+  String h;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is DeleteStatus &&
-    other.deleteDate == deleteDate;
+  bool operator ==(Object other) => identical(this, other) || other is ProfileAttributeHash &&
+    other.h == h;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (deleteDate.hashCode);
+    (h.hashCode);
 
   @override
-  String toString() => 'DeleteStatus[deleteDate=$deleteDate]';
+  String toString() => 'ProfileAttributeHash[h=$h]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'delete_date'] = this.deleteDate;
+      json[r'h'] = this.h;
     return json;
   }
 
-  /// Returns a new [DeleteStatus] instance and imports its values from
+  /// Returns a new [ProfileAttributeHash] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static DeleteStatus? fromJson(dynamic value) {
+  static ProfileAttributeHash? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class DeleteStatus {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "DeleteStatus[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "DeleteStatus[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ProfileAttributeHash[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ProfileAttributeHash[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return DeleteStatus(
-        deleteDate: mapValueOfType<String>(json, r'delete_date')!,
+      return ProfileAttributeHash(
+        h: mapValueOfType<String>(json, r'h')!,
       );
     }
     return null;
   }
 
-  static List<DeleteStatus> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <DeleteStatus>[];
+  static List<ProfileAttributeHash> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ProfileAttributeHash>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = DeleteStatus.fromJson(row);
+        final value = ProfileAttributeHash.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class DeleteStatus {
     return result.toList(growable: growable);
   }
 
-  static Map<String, DeleteStatus> mapFromJson(dynamic json) {
-    final map = <String, DeleteStatus>{};
+  static Map<String, ProfileAttributeHash> mapFromJson(dynamic json) {
+    final map = <String, ProfileAttributeHash>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = DeleteStatus.fromJson(entry.value);
+        final value = ProfileAttributeHash.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class DeleteStatus {
     return map;
   }
 
-  // maps a json object with a list of DeleteStatus-objects as value to a dart map
-  static Map<String, List<DeleteStatus>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<DeleteStatus>>{};
+  // maps a json object with a list of ProfileAttributeHash-objects as value to a dart map
+  static Map<String, List<ProfileAttributeHash>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ProfileAttributeHash>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = DeleteStatus.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ProfileAttributeHash.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +103,6 @@ class DeleteStatus {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'delete_date',
+    'h',
   };
 }
-

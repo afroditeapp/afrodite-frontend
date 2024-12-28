@@ -16,14 +16,10 @@ class AccountApi {
 
   final ApiClient apiClient;
 
-  /// Cancel account deletion.
-  ///
-  /// Account state will move to previous state.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  Future<Response> deleteCancelDeletionWithHttpInfo() async {
+  /// Performs an HTTP 'GET /VWEg82SMW2nbZNsujKsrEXdsYCQ' operation and returns the [Response].
+  Future<Response> getAccountBanTimeWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/_aiEAY0WZCquNl_WQ5fDORGuHwA';
+    final path = r'/VWEg82SMW2nbZNsujKsrEXdsYCQ';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -37,7 +33,7 @@ class AccountApi {
 
     return apiClient.invokeAPI(
       path,
-      'DELETE',
+      'GET',
       queryParams,
       postBody,
       headerParams,
@@ -46,14 +42,19 @@ class AccountApi {
     );
   }
 
-  /// Cancel account deletion.
-  ///
-  /// Account state will move to previous state.
-  Future<void> deleteCancelDeletion() async {
-    final response = await deleteCancelDeletionWithHttpInfo();
+  Future<GetAccountBanTimeResult?> getAccountBanTime() async {
+    final response = await getAccountBanTimeWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetAccountBanTimeResult',) as GetAccountBanTimeResult;
+
+    }
+    return null;
   }
 
   /// Get changeable user information to account.
@@ -95,7 +96,64 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountData',) as AccountData;
-    
+
+    }
+    return null;
+  }
+
+  /// Get account deletion request state
+  ///
+  /// # Access - Account owner - Permission [model_account::Permissions::admin_request_account_deletion]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> getAccountDeletionRequestStateWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/xRKw2cu2b8kk8Vkdpo8SdsaFWhQ/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get account deletion request state
+  ///
+  /// # Access - Account owner - Permission [model_account::Permissions::admin_request_account_deletion]
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<GetAccountDeletionRequestResult?> getAccountDeletionRequestState(String aid,) async {
+    final response = await getAccountDeletionRequestStateWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetAccountDeletionRequestResult',) as GetAccountDeletionRequestResult;
+
     }
     return null;
   }
@@ -139,7 +197,7 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountSetup',) as AccountSetup;
-    
+
     }
     return null;
   }
@@ -183,55 +241,7 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Account',) as Account;
-    
-    }
-    return null;
-  }
 
-  /// Get deletion status.
-  ///
-  /// Get information when account will be really deleted.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  Future<Response> getDeletionStatusWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/_aiEAY0WZCquNl_WQ5fDORGuHwA';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get deletion status.
-  ///
-  /// Get information when account will be really deleted.
-  Future<DeleteStatus?> getDeletionStatus() async {
-    final response = await getDeletionStatusWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'DeleteStatus',) as DeleteStatus;
-    
     }
     return null;
   }
@@ -272,7 +282,7 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LatestBirthdate',) as LatestBirthdate;
-    
+
     }
     return null;
   }
@@ -342,7 +352,7 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetNewsItemResult',) as GetNewsItemResult;
-    
+
     }
     return null;
   }
@@ -437,7 +447,7 @@ class AccountApi {
 
   /// Complete initial setup.
   ///
-  /// Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.  
+  /// Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> postCompleteSetupWithHttpInfo() async {
@@ -467,49 +477,9 @@ class AccountApi {
 
   /// Complete initial setup.
   ///
-  /// Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.  
+  /// Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.
   Future<void> postCompleteSetup() async {
     final response = await postCompleteSetupWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
-  /// Delete account.
-  ///
-  /// Changes account state to `pending deletion` from all possible states. Previous state will be saved, so it will be possible to stop automatic deletion process.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  Future<Response> postDeleteWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/_aiEAY0WZCquNl_WQ5fDORGuHwA';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'PUT',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Delete account.
-  ///
-  /// Changes account state to `pending deletion` from all possible states. Previous state will be saved, so it will be possible to stop automatic deletion process.
-  Future<void> postDelete() async {
-    final response = await postDeleteWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -616,7 +586,7 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'DemoModeConfirmLoginResult',) as DemoModeConfirmLoginResult;
-    
+
     }
     return null;
   }
@@ -668,7 +638,7 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'DemoModeLoginResult',) as DemoModeLoginResult;
-    
+
     }
     return null;
   }
@@ -715,7 +685,7 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LoginResult',) as LoginResult;
-    
+
     }
     return null;
   }
@@ -801,7 +771,7 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountId',) as AccountId;
-    
+
     }
     return null;
   }
@@ -842,7 +812,7 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ClientId',) as ClientId;
-    
+
     }
     return null;
   }
@@ -895,7 +865,7 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'NewsPage',) as NewsPage;
-    
+
     }
     return null;
   }
@@ -939,7 +909,7 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UnreadNewsCountResult',) as UnreadNewsCountResult;
-    
+
     }
     return null;
   }
@@ -1013,9 +983,62 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ResetNewsIteratorResult',) as ResetNewsIteratorResult;
-    
+
     }
     return null;
+  }
+
+  /// Request account deletion or cancel the deletion
+  ///
+  /// # Access - Account owner - Permission [model_account::Permissions::admin_request_account_deletion]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  ///
+  /// * [BooleanSetting] booleanSetting (required):
+  Future<Response> postSetAccountDeletionRequestStateWithHttpInfo(String aid, BooleanSetting booleanSetting,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/hpXIJMoxKOZo-Fp577gOdSf1pm4/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody = booleanSetting;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Request account deletion or cancel the deletion
+  ///
+  /// # Access - Account owner - Permission [model_account::Permissions::admin_request_account_deletion]
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  ///
+  /// * [BooleanSetting] booleanSetting (required):
+  Future<void> postSetAccountDeletionRequestState(String aid, BooleanSetting booleanSetting,) async {
+    final response = await postSetAccountDeletionRequestStateWithHttpInfo(aid, booleanSetting,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Start new session with sign in with Apple or Google. Creates new account if it does not exists.
@@ -1065,7 +1088,7 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LoginResult',) as LoginResult;
-    
+
     }
     return null;
   }

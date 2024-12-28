@@ -3,6 +3,7 @@
 
 import 'dart:typed_data';
 
+import 'package:database/database.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -113,7 +114,7 @@ class InitialSetupUtils {
     await _api.accountAction((api) => api.postCompleteSetup());
 
     final state = await _api.account((api) => api.getAccountState()).ok();
-    if (state == null || state.state != AccountState.normal) {
+    if (state == null || state.state.toAccountState() != AccountState.normal) {
       return "Error";
     }
 

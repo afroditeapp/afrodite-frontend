@@ -291,7 +291,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   Widget attributes() {
     return BlocBuilder<ProfileAttributesBloc, AttributesData>(
       builder: (context, state) {
-        final info = state.attributes?.info;
+        final info = state.attributes;
         if (info == null) {
           return const SizedBox.shrink();
         } else {

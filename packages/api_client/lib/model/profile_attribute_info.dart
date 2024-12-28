@@ -10,20 +10,19 @@
 
 part of openapi.api;
 
-class ProfileAttributes {
-  /// Returns a new [ProfileAttributes] instance.
-  ProfileAttributes({
+class ProfileAttributeInfo {
+  /// Returns a new [ProfileAttributeInfo] instance.
+  ProfileAttributeInfo({
     required this.attributeOrder,
     this.attributes = const [],
   });
 
   AttributeOrderMode attributeOrder;
 
-  /// List of attributes.  Attributes are sorted by Attribute ID and ID can be used to index this list.
-  List<Attribute> attributes;
+  List<AttributeIdAndHash> attributes;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileAttributes &&
+  bool operator ==(Object other) => identical(this, other) || other is ProfileAttributeInfo &&
     other.attributeOrder == attributeOrder &&
     _deepEquality.equals(other.attributes, attributes);
 
@@ -34,7 +33,7 @@ class ProfileAttributes {
     (attributes.hashCode);
 
   @override
-  String toString() => 'ProfileAttributes[attributeOrder=$attributeOrder, attributes=$attributes]';
+  String toString() => 'ProfileAttributeInfo[attributeOrder=$attributeOrder, attributes=$attributes]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -43,10 +42,10 @@ class ProfileAttributes {
     return json;
   }
 
-  /// Returns a new [ProfileAttributes] instance and imports its values from
+  /// Returns a new [ProfileAttributeInfo] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileAttributes? fromJson(dynamic value) {
+  static ProfileAttributeInfo? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -55,25 +54,25 @@ class ProfileAttributes {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileAttributes[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileAttributes[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ProfileAttributeInfo[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ProfileAttributeInfo[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileAttributes(
+      return ProfileAttributeInfo(
         attributeOrder: AttributeOrderMode.fromJson(json[r'attribute_order'])!,
-        attributes: Attribute.listFromJson(json[r'attributes']),
+        attributes: AttributeIdAndHash.listFromJson(json[r'attributes']),
       );
     }
     return null;
   }
 
-  static List<ProfileAttributes> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileAttributes>[];
+  static List<ProfileAttributeInfo> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ProfileAttributeInfo>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileAttributes.fromJson(row);
+        final value = ProfileAttributeInfo.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -82,12 +81,12 @@ class ProfileAttributes {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileAttributes> mapFromJson(dynamic json) {
-    final map = <String, ProfileAttributes>{};
+  static Map<String, ProfileAttributeInfo> mapFromJson(dynamic json) {
+    final map = <String, ProfileAttributeInfo>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileAttributes.fromJson(entry.value);
+        final value = ProfileAttributeInfo.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -96,14 +95,14 @@ class ProfileAttributes {
     return map;
   }
 
-  // maps a json object with a list of ProfileAttributes-objects as value to a dart map
-  static Map<String, List<ProfileAttributes>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileAttributes>>{};
+  // maps a json object with a list of ProfileAttributeInfo-objects as value to a dart map
+  static Map<String, List<ProfileAttributeInfo>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ProfileAttributeInfo>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileAttributes.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ProfileAttributeInfo.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -115,4 +114,3 @@ class ProfileAttributes {
     'attributes',
   };
 }
-

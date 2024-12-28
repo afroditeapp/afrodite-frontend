@@ -17,8 +17,6 @@ class ProfileAttributeValueUpdate {
     this.v = const [],
   });
 
-  /// Attribute ID
-  ///
   /// Minimum value: 0
   int id;
 
@@ -120,4 +118,3 @@ class ProfileAttributeValueUpdate {
     'v',
   };
 }
-

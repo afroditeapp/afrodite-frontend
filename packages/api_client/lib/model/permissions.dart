@@ -13,6 +13,8 @@ part of openapi.api;
 class Permissions {
   /// Returns a new [Permissions] instance.
   Permissions({
+    this.adminBanAccount = false,
+    this.adminDeleteAccount = false,
     this.adminDeleteMediaContent = false,
     this.adminModerateProfileContent = false,
     this.adminModerateProfileNames = false,
@@ -21,6 +23,7 @@ class Permissions {
     this.adminNewsCreate = false,
     this.adminNewsEditAll = false,
     this.adminProfileStatistics = false,
+    this.adminRequestAccountDeletion = false,
     this.adminServerMaintenanceRebootBackend = false,
     this.adminServerMaintenanceResetData = false,
     this.adminServerMaintenanceSaveBackendConfig = false,
@@ -31,6 +34,10 @@ class Permissions {
     this.adminViewPrivateInfo = false,
     this.adminViewProfileHistory = false,
   });
+
+  bool adminBanAccount;
+
+  bool adminDeleteAccount;
 
   bool adminDeleteMediaContent;
 
@@ -47,6 +54,8 @@ class Permissions {
   bool adminNewsEditAll;
 
   bool adminProfileStatistics;
+
+  bool adminRequestAccountDeletion;
 
   bool adminServerMaintenanceRebootBackend;
 
@@ -70,6 +79,8 @@ class Permissions {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Permissions &&
+    other.adminBanAccount == adminBanAccount &&
+    other.adminDeleteAccount == adminDeleteAccount &&
     other.adminDeleteMediaContent == adminDeleteMediaContent &&
     other.adminModerateProfileContent == adminModerateProfileContent &&
     other.adminModerateProfileNames == adminModerateProfileNames &&
@@ -78,6 +89,7 @@ class Permissions {
     other.adminNewsCreate == adminNewsCreate &&
     other.adminNewsEditAll == adminNewsEditAll &&
     other.adminProfileStatistics == adminProfileStatistics &&
+    other.adminRequestAccountDeletion == adminRequestAccountDeletion &&
     other.adminServerMaintenanceRebootBackend == adminServerMaintenanceRebootBackend &&
     other.adminServerMaintenanceResetData == adminServerMaintenanceResetData &&
     other.adminServerMaintenanceSaveBackendConfig == adminServerMaintenanceSaveBackendConfig &&
@@ -91,6 +103,8 @@ class Permissions {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (adminBanAccount.hashCode) +
+    (adminDeleteAccount.hashCode) +
     (adminDeleteMediaContent.hashCode) +
     (adminModerateProfileContent.hashCode) +
     (adminModerateProfileNames.hashCode) +
@@ -99,6 +113,7 @@ class Permissions {
     (adminNewsCreate.hashCode) +
     (adminNewsEditAll.hashCode) +
     (adminProfileStatistics.hashCode) +
+    (adminRequestAccountDeletion.hashCode) +
     (adminServerMaintenanceRebootBackend.hashCode) +
     (adminServerMaintenanceResetData.hashCode) +
     (adminServerMaintenanceSaveBackendConfig.hashCode) +
@@ -110,10 +125,12 @@ class Permissions {
     (adminViewProfileHistory.hashCode);
 
   @override
-  String toString() => 'Permissions[adminDeleteMediaContent=$adminDeleteMediaContent, adminModerateProfileContent=$adminModerateProfileContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminModifyPermissions=$adminModifyPermissions, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProfileStatistics=$adminProfileStatistics, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
+  String toString() => 'Permissions[adminBanAccount=$adminBanAccount, adminDeleteAccount=$adminDeleteAccount, adminDeleteMediaContent=$adminDeleteMediaContent, adminModerateProfileContent=$adminModerateProfileContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminModifyPermissions=$adminModifyPermissions, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProfileStatistics=$adminProfileStatistics, adminRequestAccountDeletion=$adminRequestAccountDeletion, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'admin_ban_account'] = this.adminBanAccount;
+      json[r'admin_delete_account'] = this.adminDeleteAccount;
       json[r'admin_delete_media_content'] = this.adminDeleteMediaContent;
       json[r'admin_moderate_profile_content'] = this.adminModerateProfileContent;
       json[r'admin_moderate_profile_names'] = this.adminModerateProfileNames;
@@ -122,6 +139,7 @@ class Permissions {
       json[r'admin_news_create'] = this.adminNewsCreate;
       json[r'admin_news_edit_all'] = this.adminNewsEditAll;
       json[r'admin_profile_statistics'] = this.adminProfileStatistics;
+      json[r'admin_request_account_deletion'] = this.adminRequestAccountDeletion;
       json[r'admin_server_maintenance_reboot_backend'] = this.adminServerMaintenanceRebootBackend;
       json[r'admin_server_maintenance_reset_data'] = this.adminServerMaintenanceResetData;
       json[r'admin_server_maintenance_save_backend_config'] = this.adminServerMaintenanceSaveBackendConfig;
@@ -153,6 +171,8 @@ class Permissions {
       }());
 
       return Permissions(
+        adminBanAccount: mapValueOfType<bool>(json, r'admin_ban_account') ?? false,
+        adminDeleteAccount: mapValueOfType<bool>(json, r'admin_delete_account') ?? false,
         adminDeleteMediaContent: mapValueOfType<bool>(json, r'admin_delete_media_content') ?? false,
         adminModerateProfileContent: mapValueOfType<bool>(json, r'admin_moderate_profile_content') ?? false,
         adminModerateProfileNames: mapValueOfType<bool>(json, r'admin_moderate_profile_names') ?? false,
@@ -161,6 +181,7 @@ class Permissions {
         adminNewsCreate: mapValueOfType<bool>(json, r'admin_news_create') ?? false,
         adminNewsEditAll: mapValueOfType<bool>(json, r'admin_news_edit_all') ?? false,
         adminProfileStatistics: mapValueOfType<bool>(json, r'admin_profile_statistics') ?? false,
+        adminRequestAccountDeletion: mapValueOfType<bool>(json, r'admin_request_account_deletion') ?? false,
         adminServerMaintenanceRebootBackend: mapValueOfType<bool>(json, r'admin_server_maintenance_reboot_backend') ?? false,
         adminServerMaintenanceResetData: mapValueOfType<bool>(json, r'admin_server_maintenance_reset_data') ?? false,
         adminServerMaintenanceSaveBackendConfig: mapValueOfType<bool>(json, r'admin_server_maintenance_save_backend_config') ?? false,
@@ -219,4 +240,3 @@ class Permissions {
   static const requiredKeys = <String>{
   };
 }
-
