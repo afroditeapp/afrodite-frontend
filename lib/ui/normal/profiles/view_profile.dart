@@ -89,7 +89,6 @@ class ViewProfilePage extends StatelessWidget {
           ),
           body: myProfilePage(context),
           floatingActionButton: actionButton(context, state),
-          floatingActionButtonAnimator: state.profileActionState == null ? FloatingActionButtonAnimator.noAnimation : FloatingActionButtonAnimator.noAnimation,
         );
       }
     );

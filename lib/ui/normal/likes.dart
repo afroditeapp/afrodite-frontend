@@ -237,8 +237,6 @@ class LikeViewContentState extends State<LikeViewContent> {
         _removeAccountIdFromList(event.profile);
       case ProfileBlocked():
         _removeAccountIdFromList(event.profile);
-      case ReceivedLikeRemoved():
-        _removeAccountIdFromList(event.id);
       case ProfileUnblocked() ||
         ConversationChanged() ||
         ReloadMainProfileView() ||

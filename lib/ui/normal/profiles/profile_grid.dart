@@ -147,8 +147,7 @@ class _ProfileGridState extends State<ProfileGrid> {
           _pagingController?.refresh();
         });
       case ProfileUnblocked() ||
-        ConversationChanged() ||
-        ReceivedLikeRemoved(): {}
+        ConversationChanged(): {}
     }
   }
 

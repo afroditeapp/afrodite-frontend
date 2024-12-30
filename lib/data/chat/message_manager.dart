@@ -358,16 +358,6 @@ class MessageManager extends LifecycleMethods {
         yield const ErrorBeforeMessageSaving();
         return;
       }
-      // TODO: Remove received likes status change once those are changed
-      //       to server side iterator. This will be removed so it does not
-      //       matter that this is not a transaction. And it is unlikely
-      //       that this would return an error.
-      final likeStatusChange = await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatus(accountId, false));
-      if (likeStatusChange.isErr()) {
-        yield const ErrorBeforeMessageSaving();
-        return;
-      }
-      profile.sendProfileChange(ReceivedLikeRemoved(accountId));
     }
 
     if (!await isInConversationList(accountId)) {

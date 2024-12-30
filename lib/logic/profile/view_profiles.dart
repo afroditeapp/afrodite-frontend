@@ -122,7 +122,8 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
             emit(state.copyWith(isBlocked: true));
           }
         }
-        case ReceivedLikeRemoved(): {
+        case ConversationChanged(): {
+          // Show the chat action when the first message is received
           final action = await resolveProfileAction(chat, state.profile.uuid);
           emit(state.copyWith(
             profileActionState: action,
@@ -130,7 +131,6 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
         }
         case ProfileNowPrivate() ||
           ProfileUnblocked() ||
-          ConversationChanged() ||
           ReloadMainProfileView() ||
           ProfileFavoriteStatusChange(): {}
       }

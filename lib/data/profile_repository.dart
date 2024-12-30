@@ -509,10 +509,6 @@ class ConversationChanged extends ProfileChange {
   final ConversationChangeType change;
   ConversationChanged(this.conversationWith, this.change);
 }
-class ReceivedLikeRemoved extends ProfileChange {
-  final AccountId id;
-  ReceivedLikeRemoved(this.id);
-}
 class ProfileFavoriteStatusChange extends ProfileChange {
   final AccountId profile;
   final bool isFavorite;

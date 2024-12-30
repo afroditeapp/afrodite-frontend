@@ -195,7 +195,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
         }
         case ProfileNowPrivate() ||
           ProfileUnblocked() ||
-          ReceivedLikeRemoved() ||
           ConversationChanged() ||
           ReloadMainProfileView() ||
           ProfileFavoriteStatusChange(): {}

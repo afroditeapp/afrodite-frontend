@@ -90,7 +90,6 @@ class SelectMatchScreenState extends State<SelectMatchScreen> {
       case ProfileBlocked():
         _removeAccountIdFromList(event.profile);
       case ProfileNowPrivate() ||
-        ReceivedLikeRemoved() ||
         ProfileUnblocked() ||
         ConversationChanged() ||
         ReloadMainProfileView() ||
