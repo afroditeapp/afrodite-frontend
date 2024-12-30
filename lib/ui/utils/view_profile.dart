@@ -369,6 +369,13 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
     return Stack(
       alignment: AlignmentDirectional.center,
       children: [
+        // Load all profile images to image cache to avoid flickering
+        // when changing to the next image.
+        ...imgs.map((image) => Visibility(
+          visible: false,
+          maintainState: true,
+          child: image,
+        )),
         PageView(
           controller: pageController,
           onPageChanged: (int index) {
