@@ -1,81 +1,45 @@
 # Afrodite
-Afrodite is a permissively licensed dating app based on profile browsing. This
-repository contains the frontend part.
+Afrodite is a dating app. This
+repository contains the frontend part. [Backend repository](https://github.com/jutuon/afrodite-backend)
 
 The app is under development and it is not ready for production.
 
 <img src="/../images/profiles-view.jpg?raw=true" alt="Profiles view screenshot" width="30%">
 
-## Update server API bindings
+## Features
 
-1. Install node version manager (nvm) <https://github.com/nvm-sh/nvm>
-2. Install latest node LTS with nvm. For example `nvm install 18`
-3. Install openapi-generator from npm. `npm install @openapitools/openapi-generator-cli -g`
-4. Start Afrodite backend in debug mode.
-5. Generate bindings
-```
-openapi-generator-cli generate -i http://localhost:3000/api-doc/app_api.json -g dart -o api_client
-```
+Check [features.md](docs/features.md).
 
-## Update generated code (freezed library)
+## Building and running
 
-```
-dart run build_runner build
-```
+Tagged development preview versions (0.x) of frontend and backend
+with the same minor version number are compatible with each other.
+Main branch might be broken or incompatible with the backend.
 
+1. Install [dependencies](#dependencies).
 
-## Android MacOS local DNS server for correct certificate handling
+2. Add [placeholder files](#placeholder-files-needed-for-compiling-the-project).
+   If building for iOS then also add missing
+   [iOS project files](#add-missing-ios-project-files).
 
-### DNS server
-```
-brew install dnsmasq
-```
-
-/opt/homebrew/etc/dnsmasq.conf
-```
-listen-address=::1,127.0.0.1
-address=/DOMAIN/10.0.2.2
-port=5353
-```
-
-And start DNS
+3. Build and run the frontend.
 
 ```
-/opt/homebrew/opt/dnsmasq/sbin/dnsmasq -d -q --keep-in-foreground -C /opt/homebrew/etc/dnsmasq.conf
+flutter devices
+flutter run --release -d DEVICE
 ```
 
-### Redirect
+4. Optionally install [development dependencies](#development-dependencies).
 
-./Library/Android/sdk/platform-tools/adb devices
+4. Optionally add [push notification and Sign in with Google support](#adding-push-notification-and-sign-in-with-google-support).
 
-telnet 127.0.0.1 5554
+### Dependencies
 
+#### Android builds (on Ubuntu 22.04 and macOS)
 
-## Update localizations
+1. Install [Rust](https://www.rust-lang.org/learn/get-started).
 
-Run `make update-localizations`
-
-The localizations are in the `translations` Android Studio project to make
-editing translations easier.
-
-## After git clone
-
-1. Install native code building dependencies. Instructions for that are in
-this file.
-
-2. Start Android emulator and run `flutter run`.
-
-## About Assets
-
-Google Sign In with buttons are from
-<https://developers.google.com/static/identity/images/signin-assets.zip>
-zip file found from <https://developers.google.com/identity/branding-guidelines>
-
-## Building native code
-
-1. Install Rust
-
-2. Instal targets
+2. Install Android Rust targets.
 
 ```
 rustup target add aarch64-linux-android
@@ -84,25 +48,13 @@ rustup target add i686-linux-android
 rustup target add x86_64-linux-android
 ```
 
-3. Build app normally
+3. Install [Flutter](https://docs.flutter.dev/get-started/install).
 
-4. If Rust dependencies are changed download cargo about and update
-LICENSE file of native_utils_ffi Dart package:
+#### iOS builds (on macOS)
 
-```
-cargo install cargo-about --locked
-make update-licenses-for-native-utils
-```
+1. Install [Rust](https://www.rust-lang.org/learn/get-started).
 
-## Building for iOS and iOS simulator
-
-1. Install cocoapods
-
-<https://guides.cocoapods.org/using/getting-started.html#sudo-less-installation>
-
-2. Xcode and related tools are also needed
-
-3. Install Rust targets
+2. Install iOS Rust targets.
 
 ```
 rustup target add aarch64-apple-ios
@@ -110,48 +62,85 @@ rustup target add aarch64-apple-ios-sim
 rustup target add x86_64-apple-ios
 ```
 
-## Firebase
+3. Install CocoaPods.
 
-If you modify the Firebase projects from Firebase web UI, you
-can update Firebase related config using command
-```
-flutterfire configure
-```
+   <https://guides.cocoapods.org/using/getting-started.html#sudo-less-installation>
 
-Install instructions for that tool is at
-<https://firebase.google.com/docs/flutter/setup?platform=android>
+4. Install [Flutter](https://docs.flutter.dev/get-started/install).
 
-## Local web build development
+### Development dependencies
 
-Create Visual Studio Code launch configuration like this:
+Makefile commands starting with `watch` requires `fswatch`.
 
 ```
- {
-    "name": "app (Flutter Chrome)",
-    "program": "lib/main.dart",
-    "deviceId": "chrome",
-    "request": "launch",
-    "type": "dart",
-    "args": [
-        "--wasm",
-        "--web-hostname",
-        "localhost",
-        "--web-port",
-        "51758",
-        "--web-browser-flag",
-        "--disable-web-security",
-    ]
+# Ubuntu
+sudo apt install fswatch
+```
+
+```
+# macOS with Homebrew package manager
+brew install fswatch
+```
+
+Commands `make watch-translations`, `make watch-translations-linux` and `make update-translations` requires [xml2arb](https://github.com/jutuon/xml2arb).
+
+Commands `make watch-freezed-code` and `make update-freezed-code` requires [icegen](https://github.com/jutuon/icegen).
+
+Command `make update-api-bindings` requires `openapi-generator-cli`.
+
+1. Install node version manager (nvm) <https://github.com/nvm-sh/nvm>
+2. Install latest node LTS with nvm. For example `nvm install 18`
+3. Install openapi-generator from npm.
+   `npm install @openapitools/openapi-generator-cli -g`
+4. Start backend in debug mode.
+5. Run `make update-api-bindings`.
+
+Command `make update-licenses-for-native-utils` requires
+[cargo-about](https://github.com/EmbarkStudios/cargo-about).
+
+### Placeholder files needed for compiling the project
+
+lib/firebase_options.dart
+```dart
+import 'package:firebase_core/firebase_core.dart';
+
+class DefaultFirebaseOptions {
+  static const FirebaseOptions currentPlatform = FirebaseOptions(
+    apiKey: '',
+    appId: '',
+    messagingSenderId: '',
+    projectId: '',
+  );
 }
 ```
 
-The port must be 51758 as Sign in with Google
-authorized JavaScript origins config currently includes URL
-http://localhost:51758
+lib/sign_in_with_google_ids.dart
+```dart
+String signInWithGoogleBackendClientId() {
+  return "";
+}
+```
 
-The backend runs on port 3000 so web security needs to be
-disabled.
+### Add missing iOS project files
 
-## Adding push notification and Sign in with Google support
+The file ios/Runner.xcodeproj is not included in the repository as it contains
+development team ID. It can be created with following commands
+
+```
+cd afrodite-frontend
+flutter create --platforms ios --project-name app .
+```
+
+Other new files or changes which `flutter create` command creates can be
+removed.
+
+## About Assets
+
+Sign in with Google buttons are from
+<https://developers.google.com/static/identity/images/signin-assets.zip>
+ZIP file found from <https://developers.google.com/identity/branding-guidelines>.
+
+## Add push notification and Sign in with Google support
 
 Add web client ID by modifying web/index.html line
 
@@ -185,41 +174,9 @@ lib/sign_in_with_google_ids.dart
 firebase.json
 ```
 
-### Placeholder files needed for compiling the project
+## Questions and answers
 
-lib/firebase_options.dart
-```dart
-import 'package:firebase_core/firebase_core.dart';
-
-class DefaultFirebaseOptions {
-  static const FirebaseOptions currentPlatform = FirebaseOptions(
-    apiKey: '',
-    appId: '',
-    messagingSenderId: '',
-    projectId: '',
-  );
-}
-```
-
-lib/sign_in_with_google_ids.dart
-```dart
-String signInWithGoogleBackendClientId() {
-  return "";
-}
-```
-
-## Add iOS support
-
-The file ios/Runner.xcodeproj is not included in the repository as it contains
-development team ID. It can be created with following commands
-
-```
-cd afrodite-frontend
-flutter create --platforms ios --project-name app .
-```
-
-Other new files or changes which `flutter create` command creates can be
-removed.
+Check backend [README.md](https://github.com/jutuon/afrodite-backend#questions-and-answers).
 
 ## Contributions
 
