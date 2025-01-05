@@ -106,6 +106,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
   final LoginRepository login = LoginRepository.getInstance();
   final AccountRepository account = LoginRepository.getInstance().repositories.account;
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
+  final AccountId currentUser = LoginRepository.getInstance().repositories.accountId;
 
   InitialSetupBloc() : super(InitialSetupData()) {
     on<ResetState>((data, emit) {
@@ -227,7 +228,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
       });
 
       var error = await account.doDeveloperInitialSetup(
-        "admin@example.com",
+        "${currentUser.aid}@example.com",
         "Admin",
         securitySelfie,
         profileImage,
