@@ -25,7 +25,9 @@ mixin _$EditProfileFilteringSettingsData {
   UnmodifiableList<ProfileAttributeFilterValueUpdate> get attributeFilters => throw _privateConstructorErrorEditProfileFilteringSettingsData;
   LastSeenTimeFilter? get lastSeenTimeFilter => throw _privateConstructorErrorEditProfileFilteringSettingsData;
   bool? get unlimitedLikesFilter => throw _privateConstructorErrorEditProfileFilteringSettingsData;
-  MaxDistanceKm? get maxDistanceKm => throw _privateConstructorErrorEditProfileFilteringSettingsData;
+  MaxDistanceKm? get maxDistanceKmFilter => throw _privateConstructorErrorEditProfileFilteringSettingsData;
+  AccountCreatedTimeFilter? get accountCreatedFilter => throw _privateConstructorErrorEditProfileFilteringSettingsData;
+  ProfileEditedTimeFilter? get profileEditedFilter => throw _privateConstructorErrorEditProfileFilteringSettingsData;
   bool get randomProfileOrder => throw _privateConstructorErrorEditProfileFilteringSettingsData;
 
   EditProfileFilteringSettingsData copyWith({
@@ -33,7 +35,9 @@ mixin _$EditProfileFilteringSettingsData {
     UnmodifiableList<ProfileAttributeFilterValueUpdate>? attributeFilters,
     LastSeenTimeFilter? lastSeenTimeFilter,
     bool? unlimitedLikesFilter,
-    MaxDistanceKm? maxDistanceKm,
+    MaxDistanceKm? maxDistanceKmFilter,
+    AccountCreatedTimeFilter? accountCreatedFilter,
+    ProfileEditedTimeFilter? profileEditedFilter,
     bool? randomProfileOrder,
   }) => throw _privateConstructorErrorEditProfileFilteringSettingsData;
 }
@@ -45,7 +49,9 @@ abstract class _EditProfileFilteringSettingsData implements EditProfileFiltering
     UnmodifiableList<ProfileAttributeFilterValueUpdate> attributeFilters,
     LastSeenTimeFilter? lastSeenTimeFilter,
     bool? unlimitedLikesFilter,
-    MaxDistanceKm? maxDistanceKm,
+    MaxDistanceKm? maxDistanceKmFilter,
+    AccountCreatedTimeFilter? accountCreatedFilter,
+    ProfileEditedTimeFilter? profileEditedFilter,
     bool randomProfileOrder,
   }) = _$EditProfileFilteringSettingsDataImpl;
 }
@@ -61,7 +67,9 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
     this.attributeFilters = _attributeFiltersDefaultValue,
     this.lastSeenTimeFilter,
     this.unlimitedLikesFilter,
-    this.maxDistanceKm,
+    this.maxDistanceKmFilter,
+    this.accountCreatedFilter,
+    this.profileEditedFilter,
     this.randomProfileOrder = _randomProfileOrderDefaultValue,
   });
 
@@ -74,13 +82,17 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
   @override
   final bool? unlimitedLikesFilter;
   @override
-  final MaxDistanceKm? maxDistanceKm;
+  final MaxDistanceKm? maxDistanceKmFilter;
+  @override
+  final AccountCreatedTimeFilter? accountCreatedFilter;
+  @override
+  final ProfileEditedTimeFilter? profileEditedFilter;
   @override
   final bool randomProfileOrder;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditProfileFilteringSettingsData(showOnlyFavorites: $showOnlyFavorites, attributeFilters: $attributeFilters, lastSeenTimeFilter: $lastSeenTimeFilter, unlimitedLikesFilter: $unlimitedLikesFilter, maxDistanceKm: $maxDistanceKm, randomProfileOrder: $randomProfileOrder)';
+    return 'EditProfileFilteringSettingsData(showOnlyFavorites: $showOnlyFavorites, attributeFilters: $attributeFilters, lastSeenTimeFilter: $lastSeenTimeFilter, unlimitedLikesFilter: $unlimitedLikesFilter, maxDistanceKmFilter: $maxDistanceKmFilter, accountCreatedFilter: $accountCreatedFilter, profileEditedFilter: $profileEditedFilter, randomProfileOrder: $randomProfileOrder)';
   }
 
   @override
@@ -92,7 +104,9 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
       ..add(DiagnosticsProperty('attributeFilters', attributeFilters))
       ..add(DiagnosticsProperty('lastSeenTimeFilter', lastSeenTimeFilter))
       ..add(DiagnosticsProperty('unlimitedLikesFilter', unlimitedLikesFilter))
-      ..add(DiagnosticsProperty('maxDistanceKm', maxDistanceKm))
+      ..add(DiagnosticsProperty('maxDistanceKmFilter', maxDistanceKmFilter))
+      ..add(DiagnosticsProperty('accountCreatedFilter', accountCreatedFilter))
+      ..add(DiagnosticsProperty('profileEditedFilter', profileEditedFilter))
       ..add(DiagnosticsProperty('randomProfileOrder', randomProfileOrder));
   }
 
@@ -109,8 +123,12 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
           other.lastSeenTimeFilter == lastSeenTimeFilter) &&
         (identical(other.unlimitedLikesFilter, unlimitedLikesFilter) ||
           other.unlimitedLikesFilter == unlimitedLikesFilter) &&
-        (identical(other.maxDistanceKm, maxDistanceKm) ||
-          other.maxDistanceKm == maxDistanceKm) &&
+        (identical(other.maxDistanceKmFilter, maxDistanceKmFilter) ||
+          other.maxDistanceKmFilter == maxDistanceKmFilter) &&
+        (identical(other.accountCreatedFilter, accountCreatedFilter) ||
+          other.accountCreatedFilter == accountCreatedFilter) &&
+        (identical(other.profileEditedFilter, profileEditedFilter) ||
+          other.profileEditedFilter == profileEditedFilter) &&
         (identical(other.randomProfileOrder, randomProfileOrder) ||
           other.randomProfileOrder == randomProfileOrder)
     );
@@ -123,7 +141,9 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
     attributeFilters,
     lastSeenTimeFilter,
     unlimitedLikesFilter,
-    maxDistanceKm,
+    maxDistanceKmFilter,
+    accountCreatedFilter,
+    profileEditedFilter,
     randomProfileOrder,
   );
 
@@ -133,14 +153,18 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
     Object? attributeFilters,
     Object? lastSeenTimeFilter = _detectDefaultValueInCopyWith,
     Object? unlimitedLikesFilter = _detectDefaultValueInCopyWith,
-    Object? maxDistanceKm = _detectDefaultValueInCopyWith,
+    Object? maxDistanceKmFilter = _detectDefaultValueInCopyWith,
+    Object? accountCreatedFilter = _detectDefaultValueInCopyWith,
+    Object? profileEditedFilter = _detectDefaultValueInCopyWith,
     Object? randomProfileOrder,
   }) => _$EditProfileFilteringSettingsDataImpl(
     showOnlyFavorites: (showOnlyFavorites ?? this.showOnlyFavorites) as bool,
     attributeFilters: (attributeFilters ?? this.attributeFilters) as UnmodifiableList<ProfileAttributeFilterValueUpdate>,
     lastSeenTimeFilter: (lastSeenTimeFilter == _detectDefaultValueInCopyWith ? this.lastSeenTimeFilter : lastSeenTimeFilter) as LastSeenTimeFilter?,
     unlimitedLikesFilter: (unlimitedLikesFilter == _detectDefaultValueInCopyWith ? this.unlimitedLikesFilter : unlimitedLikesFilter) as bool?,
-    maxDistanceKm: (maxDistanceKm == _detectDefaultValueInCopyWith ? this.maxDistanceKm : maxDistanceKm) as MaxDistanceKm?,
+    maxDistanceKmFilter: (maxDistanceKmFilter == _detectDefaultValueInCopyWith ? this.maxDistanceKmFilter : maxDistanceKmFilter) as MaxDistanceKm?,
+    accountCreatedFilter: (accountCreatedFilter == _detectDefaultValueInCopyWith ? this.accountCreatedFilter : accountCreatedFilter) as AccountCreatedTimeFilter?,
+    profileEditedFilter: (profileEditedFilter == _detectDefaultValueInCopyWith ? this.profileEditedFilter : profileEditedFilter) as ProfileEditedTimeFilter?,
     randomProfileOrder: (randomProfileOrder ?? this.randomProfileOrder) as bool,
   );
 }

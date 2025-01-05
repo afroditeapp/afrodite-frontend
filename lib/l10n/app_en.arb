@@ -1000,6 +1000,10 @@
   "@privacy_settings_screen_title": {
     "description": "Title for privacy settings screen"
   },
+  "profile_filtering_settings_screen_account_created_filter": "Account created",
+  "@profile_filtering_settings_screen_account_created_filter": {
+    "description": "Title for account created time filter"
+  },
   "profile_filtering_settings_screen_favorite_profile_filter": "Favorite profile",
   "@profile_filtering_settings_screen_favorite_profile_filter": {
     "description": "Title for favorite profile filter"
@@ -1020,6 +1024,10 @@
   "profile_filtering_settings_screen_max_distance_unlimited": "Unlimited",
   "@profile_filtering_settings_screen_max_distance_unlimited": {
     "description": "Value text for unlimited"
+  },
+  "profile_filtering_settings_screen_profile_edited_filter": "Profile edited",
+  "@profile_filtering_settings_screen_profile_edited_filter": {
+    "description": "Title for profile edited time filter"
   },
   "profile_filtering_settings_screen_profile_last_seen_time_filter": "Last seen",
   "@profile_filtering_settings_screen_profile_last_seen_time_filter": {

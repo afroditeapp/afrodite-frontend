@@ -56,7 +56,9 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       initialFilters,
       widget.profileFilteringSettingsBloc.state.filteringSettings?.lastSeenTimeFilter,
       widget.profileFilteringSettingsBloc.state.filteringSettings?.unlimitedLikesFilter,
-      widget.profileFilteringSettingsBloc.state.filteringSettings?.maxDistanceKm,
+      widget.profileFilteringSettingsBloc.state.filteringSettings?.maxDistanceKmFilter,
+      widget.profileFilteringSettingsBloc.state.filteringSettings?.accountCreatedFilter,
+      widget.profileFilteringSettingsBloc.state.filteringSettings?.profileEditedFilter,
       widget.profileFilteringSettingsBloc.state.filteringSettings?.randomProfileOrder ?? false,
     ));
   }
@@ -67,7 +69,9 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       widget.editProfileFilteringSettingsBloc.state.attributeFilters.toList(),
       widget.editProfileFilteringSettingsBloc.state.lastSeenTimeFilter,
       widget.editProfileFilteringSettingsBloc.state.unlimitedLikesFilter,
-      widget.editProfileFilteringSettingsBloc.state.maxDistanceKm,
+      widget.editProfileFilteringSettingsBloc.state.maxDistanceKmFilter,
+      widget.editProfileFilteringSettingsBloc.state.accountCreatedFilter,
+      widget.editProfileFilteringSettingsBloc.state.profileEditedFilter,
       widget.editProfileFilteringSettingsBloc.state.randomProfileOrder,
     ));
   }
@@ -78,7 +82,9 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       currentSettings.showOnlyFavorites != editedSettings.showOnlyFavorites ||
       currentSettings.filteringSettings?.lastSeenTimeFilter != editedSettings.lastSeenTimeFilter ||
       currentSettings.filteringSettings?.unlimitedLikesFilter != editedSettings.unlimitedLikesFilter ||
-      currentSettings.filteringSettings?.maxDistanceKm != editedSettings.maxDistanceKm ||
+      currentSettings.filteringSettings?.maxDistanceKmFilter != editedSettings.maxDistanceKmFilter ||
+      currentSettings.filteringSettings?.accountCreatedFilter != editedSettings.accountCreatedFilter ||
+      currentSettings.filteringSettings?.profileEditedFilter != editedSettings.profileEditedFilter ||
       currentSettings.filteringSettings?.randomProfileOrder != editedSettings.randomProfileOrder
     ) {
       return true;
@@ -161,9 +167,35 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           const Divider(),
           const EditAttributeFilters(),
           const Divider(),
+          maxDistanceFilter(context),
+          const Divider(),
           lastSeenTimeFilter(context),
           const Divider(),
-          maxDistanceFilter(context),
+          accountCreatedOrProfileEditedFilter(
+            context,
+            context.strings.profile_filtering_settings_screen_account_created_filter,
+            (state) => state.accountCreatedFilter?.value,
+            (bloc, value) {
+              if (value == null) {
+                bloc.add(SetAccountCreatedFilter(null));
+              } else {
+                bloc.add(SetAccountCreatedFilter(AccountCreatedTimeFilter(value: value)));
+              }
+            }
+          ),
+          const Divider(),
+          accountCreatedOrProfileEditedFilter(
+            context,
+            context.strings.profile_filtering_settings_screen_profile_edited_filter,
+            (state) => state.profileEditedFilter?.value,
+            (bloc, value) {
+              if (value == null) {
+                bloc.add(SetProfileEditedFilter(null));
+              } else {
+                bloc.add(SetProfileEditedFilter(ProfileEditedTimeFilter(value: value)));
+              }
+            }
+          ),
           const Divider(),
           unlimitedLikesSetting(context, myProfileUnlimitedLikesValue),
           const Divider(),
@@ -298,6 +330,113 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
     );
   }
 
+    Widget accountCreatedOrProfileEditedFilter(
+      BuildContext context,
+      String title,
+      int? Function(EditProfileFilteringSettingsData) valueGetter,
+      void Function(EditProfileFilteringSettingsBloc, int?) valueSetter,
+    ) {
+    return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
+      builder: (context, state) {
+        /// Selection for 1-7 days, 14 days, some months
+        /// and disabled value.
+        const VALUE_COUNT = 7 + 1 + 6 + 1;
+        const DIVISIONS = VALUE_COUNT - 1;
+
+        /// 1 day
+        const VALUE_MIN = 1.0;
+        /// All
+        const VALUE_MAX = 15.0;
+
+        double intDaysToDouble(int days) {
+          if (days <= 7) {
+            return max(VALUE_MIN, days.toDouble());
+          } else if (days == 14) {
+            return 8.0;
+          } else {
+            final selectedMonth = days ~/ 30;
+            return 8 + selectedMonth.toDouble();
+          }
+        }
+
+        int? doubleToIntDays(double value) {
+          if (value <= VALUE_MIN) {
+            return 1;
+          } else if (value >= VALUE_MAX) {
+            return null;
+          } else if (value <= 7) {
+            return value.toInt();
+          } else if (value == 8) {
+            return 14;
+          } else {
+            return (value.toInt() - 8) * 30;
+          }
+        }
+
+        final valueInt = valueGetter(state);
+        final String stateText;
+        final double days;
+        if (valueInt == null) {
+          stateText = context.strings.profile_filtering_settings_screen_profile_last_seen_time_filter_all;
+          days = VALUE_MAX;
+        } else if (valueInt >= 0) {
+          final daysInt = valueInt ~/ 60 ~/ 60 ~/ 24;
+          if (daysInt <= 1) {
+            stateText = context.strings.profile_filtering_settings_screen_profile_last_seen_time_filter_day(1.toString());
+          } else {
+            stateText = context.strings.profile_filtering_settings_screen_profile_last_seen_time_filter_days(daysInt.toString());
+          }
+          days = intDaysToDouble(daysInt);
+        } else {
+          stateText = context.strings.generic_error;
+          days = VALUE_MAX;
+        }
+
+        final TextStyle? valueTextStyle;
+        if (state.showOnlyFavorites) {
+          final disabledTextColor = Theme.of(context).disabledColor;
+          valueTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(color: disabledTextColor);
+        } else {
+          valueTextStyle = null;
+        }
+
+        return Column(
+          children: [
+            const Padding(padding: EdgeInsets.all(4)),
+            ViewAttributeTitle(title, isEnabled: !state.showOnlyFavorites),
+            const Padding(padding: EdgeInsets.all(4)),
+            Slider(
+              value: days,
+              min: VALUE_MIN,
+              max: VALUE_MAX,
+              divisions: DIVISIONS,
+              onChanged: !state.showOnlyFavorites ? (double value) {
+                final intDays = doubleToIntDays(value);
+                final int? seconds;
+                if (intDays != null) {
+                  seconds = intDays * 60 * 60 * 24;
+                } else {
+                  seconds = null;
+                }
+                valueSetter(context.read<EditProfileFilteringSettingsBloc>(), seconds);
+              } : null,
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: COMMON_SCREEN_EDGE_PADDING),
+                child: Text(
+                  stateText,
+                  style: valueTextStyle,
+                ),
+              ),
+            )
+          ],
+        );
+      }
+    );
+  }
+
   Widget maxDistanceFilter(BuildContext context) {
     return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
       builder: (context, state) {
@@ -341,7 +480,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           }
         }
 
-        final valueInt = state.maxDistanceKm?.value;
+        final valueInt = state.maxDistanceKmFilter?.value;
         final String stateText;
         final double sliderValue;
         if (valueInt == null) {
@@ -373,7 +512,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
               onChanged: !state.showOnlyFavorites ? (double value) {
                 final maxDistance = doubleToIntKilometers(value)
                   .map((v) => MaxDistanceKm(value: v));
-                context.read<EditProfileFilteringSettingsBloc>().add(SetMaxDistance(maxDistance));
+                context.read<EditProfileFilteringSettingsBloc>().add(SetMaxDistanceFilter(maxDistance));
               } : null,
             ),
             Align(

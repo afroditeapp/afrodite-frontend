@@ -22,6 +22,8 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
       filteringSettings?.filters.isNotEmpty == true ||
       filteringSettings?.lastSeenTimeFilter != null ||
       filteringSettings?.unlimitedLikesFilter != null ||
-      filteringSettings?.maxDistanceKm != null;
+      filteringSettings?.maxDistanceKmFilter != null ||
+      filteringSettings?.accountCreatedFilter != null ||
+      filteringSettings?.profileEditedFilter != null;
   }
 }

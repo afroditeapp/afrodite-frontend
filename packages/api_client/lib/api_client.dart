@@ -196,6 +196,8 @@ class ApiClient {
           return AccountBanReasonDetails.fromJson(value);
         case 'AccountContent':
           return AccountContent.fromJson(value);
+        case 'AccountCreatedTimeFilter':
+          return AccountCreatedTimeFilter.fromJson(value);
         case 'AccountData':
           return AccountData.fromJson(value);
         case 'AccountId':
@@ -436,6 +438,8 @@ class ApiClient {
           return ProfileContentPendingModeration.fromJson(value);
         case 'ProfileContentVersion':
           return ProfileContentVersion.fromJson(value);
+        case 'ProfileEditedTimeFilter':
+          return ProfileEditedTimeFilter.fromJson(value);
         case 'ProfileFilteringSettingsUpdate':
           return ProfileFilteringSettingsUpdate.fromJson(value);
         case 'ProfileIteratorSessionId':

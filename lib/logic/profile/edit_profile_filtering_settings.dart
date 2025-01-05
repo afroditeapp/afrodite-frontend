@@ -14,14 +14,18 @@ class ResetStateWith extends EditProfileFilteringSettingsEvent {
   final List<ProfileAttributeFilterValueUpdate> attributeFilters;
   final LastSeenTimeFilter? lastSeenTimeFilter;
   final bool? unlimitedLikesFilter;
-  final MaxDistanceKm? maxDistance;
+  final MaxDistanceKm? maxDistanceFilter;
+  final AccountCreatedTimeFilter? accountCreatedFilter;
+  final ProfileEditedTimeFilter? profileEditedFilter;
   final bool randomProfileOrder;
   ResetStateWith(
     this.showOnlyFavorites,
     this.attributeFilters,
     this.lastSeenTimeFilter,
     this.unlimitedLikesFilter,
-    this.maxDistance,
+    this.maxDistanceFilter,
+    this.accountCreatedFilter,
+    this.profileEditedFilter,
     this.randomProfileOrder,
   );
 }
@@ -38,9 +42,17 @@ class SetUnlimitedLikesFilter extends EditProfileFilteringSettingsEvent {
   final bool? value;
   SetUnlimitedLikesFilter(this.value);
 }
-class SetMaxDistance extends EditProfileFilteringSettingsEvent {
+class SetMaxDistanceFilter extends EditProfileFilteringSettingsEvent {
   final MaxDistanceKm? value;
-  SetMaxDistance(this.value);
+  SetMaxDistanceFilter(this.value);
+}
+class SetAccountCreatedFilter extends EditProfileFilteringSettingsEvent {
+  final AccountCreatedTimeFilter? value;
+  SetAccountCreatedFilter(this.value);
+}
+class SetProfileEditedFilter extends EditProfileFilteringSettingsEvent {
+  final ProfileEditedTimeFilter? value;
+  SetProfileEditedFilter(this.value);
 }
 class SetRandomProfileOrder extends EditProfileFilteringSettingsEvent {
   final bool value;
@@ -67,7 +79,9 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
         attributeFilters: UnmodifiableList(data.attributeFilters),
         lastSeenTimeFilter: data.lastSeenTimeFilter,
         unlimitedLikesFilter: data.unlimitedLikesFilter,
-        maxDistanceKm: data.maxDistance,
+        maxDistanceKmFilter: data.maxDistanceFilter,
+        accountCreatedFilter: data.accountCreatedFilter,
+        profileEditedFilter: data.profileEditedFilter,
         randomProfileOrder: data.randomProfileOrder,
       ));
     });
@@ -82,8 +96,14 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
     on<SetUnlimitedLikesFilter>((data, emit) async {
       emit(state.copyWith(unlimitedLikesFilter: data.value));
     });
-    on<SetMaxDistance>((data, emit) async {
-      emit(state.copyWith(maxDistanceKm: data.value));
+    on<SetMaxDistanceFilter>((data, emit) async {
+      emit(state.copyWith(maxDistanceKmFilter: data.value));
+    });
+    on<SetAccountCreatedFilter>((data, emit) async {
+      emit(state.copyWith(accountCreatedFilter: data.value));
+    });
+    on<SetProfileEditedFilter>((data, emit) async {
+      emit(state.copyWith(profileEditedFilter: data.value));
     });
     on<SetRandomProfileOrder>((data, emit) async {
       emit(state.copyWith(randomProfileOrder: data.value));

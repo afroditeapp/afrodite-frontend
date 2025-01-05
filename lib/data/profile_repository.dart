@@ -346,14 +346,18 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     List<ProfileAttributeFilterValueUpdate> newValues,
     LastSeenTimeFilter? lastSeenTimeFilter,
     bool? unlimitedLikesFilter,
-    MaxDistanceKm? maxDistance,
+    MaxDistanceKm? maxDistanceFilter,
+    AccountCreatedTimeFilter? accountCreatedFilter,
+    ProfileEditedTimeFilter? profileEditedFilter,
     bool randomProfileOrder,
   ) async {
     final update = ProfileFilteringSettingsUpdate(
       filters: newValues,
       lastSeenTimeFilter: lastSeenTimeFilter,
       unlimitedLikesFilter: unlimitedLikesFilter,
-      maxDistanceKm: maxDistance,
+      maxDistanceKmFilter: maxDistanceFilter,
+      accountCreatedFilter: accountCreatedFilter,
+      profileEditedFilter: profileEditedFilter,
       randomProfileOrder: randomProfileOrder,
     );
     return await _api.profileAction((api) => api.postProfileFilteringSettings(update))

@@ -13,18 +13,24 @@ part of openapi.api;
 class ProfileFilteringSettingsUpdate {
   /// Returns a new [ProfileFilteringSettingsUpdate] instance.
   ProfileFilteringSettingsUpdate({
+    this.accountCreatedFilter,
     this.filters = const [],
     this.lastSeenTimeFilter,
-    this.maxDistanceKm,
+    this.maxDistanceKmFilter,
+    this.profileEditedFilter,
     this.randomProfileOrder = false,
     this.unlimitedLikesFilter,
   });
+
+  AccountCreatedTimeFilter? accountCreatedFilter;
 
   List<ProfileAttributeFilterValueUpdate> filters;
 
   LastSeenTimeFilter? lastSeenTimeFilter;
 
-  MaxDistanceKm? maxDistanceKm;
+  MaxDistanceKm? maxDistanceKmFilter;
+
+  ProfileEditedTimeFilter? profileEditedFilter;
 
   bool randomProfileOrder;
 
@@ -32,36 +38,50 @@ class ProfileFilteringSettingsUpdate {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileFilteringSettingsUpdate &&
+    other.accountCreatedFilter == accountCreatedFilter &&
     _deepEquality.equals(other.filters, filters) &&
     other.lastSeenTimeFilter == lastSeenTimeFilter &&
-    other.maxDistanceKm == maxDistanceKm &&
+    other.maxDistanceKmFilter == maxDistanceKmFilter &&
+    other.profileEditedFilter == profileEditedFilter &&
     other.randomProfileOrder == randomProfileOrder &&
     other.unlimitedLikesFilter == unlimitedLikesFilter;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (accountCreatedFilter == null ? 0 : accountCreatedFilter!.hashCode) +
     (filters.hashCode) +
     (lastSeenTimeFilter == null ? 0 : lastSeenTimeFilter!.hashCode) +
-    (maxDistanceKm == null ? 0 : maxDistanceKm!.hashCode) +
+    (maxDistanceKmFilter == null ? 0 : maxDistanceKmFilter!.hashCode) +
+    (profileEditedFilter == null ? 0 : profileEditedFilter!.hashCode) +
     (randomProfileOrder.hashCode) +
     (unlimitedLikesFilter == null ? 0 : unlimitedLikesFilter!.hashCode);
 
   @override
-  String toString() => 'ProfileFilteringSettingsUpdate[filters=$filters, lastSeenTimeFilter=$lastSeenTimeFilter, maxDistanceKm=$maxDistanceKm, randomProfileOrder=$randomProfileOrder, unlimitedLikesFilter=$unlimitedLikesFilter]';
+  String toString() => 'ProfileFilteringSettingsUpdate[accountCreatedFilter=$accountCreatedFilter, filters=$filters, lastSeenTimeFilter=$lastSeenTimeFilter, maxDistanceKmFilter=$maxDistanceKmFilter, profileEditedFilter=$profileEditedFilter, randomProfileOrder=$randomProfileOrder, unlimitedLikesFilter=$unlimitedLikesFilter]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.accountCreatedFilter != null) {
+      json[r'account_created_filter'] = this.accountCreatedFilter;
+    } else {
+      json[r'account_created_filter'] = null;
+    }
       json[r'filters'] = this.filters;
     if (this.lastSeenTimeFilter != null) {
       json[r'last_seen_time_filter'] = this.lastSeenTimeFilter;
     } else {
       json[r'last_seen_time_filter'] = null;
     }
-    if (this.maxDistanceKm != null) {
-      json[r'max_distance_km'] = this.maxDistanceKm;
+    if (this.maxDistanceKmFilter != null) {
+      json[r'max_distance_km_filter'] = this.maxDistanceKmFilter;
     } else {
-      json[r'max_distance_km'] = null;
+      json[r'max_distance_km_filter'] = null;
+    }
+    if (this.profileEditedFilter != null) {
+      json[r'profile_edited_filter'] = this.profileEditedFilter;
+    } else {
+      json[r'profile_edited_filter'] = null;
     }
       json[r'random_profile_order'] = this.randomProfileOrder;
     if (this.unlimitedLikesFilter != null) {
@@ -91,9 +111,11 @@ class ProfileFilteringSettingsUpdate {
       }());
 
       return ProfileFilteringSettingsUpdate(
+        accountCreatedFilter: AccountCreatedTimeFilter.fromJson(json[r'account_created_filter']),
         filters: ProfileAttributeFilterValueUpdate.listFromJson(json[r'filters']),
         lastSeenTimeFilter: LastSeenTimeFilter.fromJson(json[r'last_seen_time_filter']),
-        maxDistanceKm: MaxDistanceKm.fromJson(json[r'max_distance_km']),
+        maxDistanceKmFilter: MaxDistanceKm.fromJson(json[r'max_distance_km_filter']),
+        profileEditedFilter: ProfileEditedTimeFilter.fromJson(json[r'profile_edited_filter']),
         randomProfileOrder: mapValueOfType<bool>(json, r'random_profile_order') ?? false,
         unlimitedLikesFilter: mapValueOfType<bool>(json, r'unlimited_likes_filter'),
       );
@@ -146,4 +168,3 @@ class ProfileFilteringSettingsUpdate {
     'filters',
   };
 }
-
