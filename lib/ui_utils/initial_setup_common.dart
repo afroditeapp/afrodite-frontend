@@ -1,6 +1,7 @@
 
 
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
@@ -18,8 +19,7 @@ Widget commonInitialSetupScreenContent({
   return Scaffold(
     appBar: AppBar(
       actions: [
-        // TODO(prod): Hide this from release build
-        IconButton(
+        if (kDebugMode) IconButton(
           icon: const Icon(Icons.skip_next),
           onPressed: () {
             context.read<InitialSetupBloc>().add(CreateDebugAdminAccount());
