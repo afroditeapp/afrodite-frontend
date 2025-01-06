@@ -34,6 +34,7 @@ lib/model/account_id.dart
 lib/model/account_setup.dart
 lib/model/account_state_container.dart
 lib/model/account_sync_version.dart
+lib/model/admin_info.dart
 lib/model/all_matches_page.dart
 lib/model/attribute.dart
 lib/model/attribute_id_and_hash.dart
@@ -78,6 +79,8 @@ lib/model/favorite_profiles_page.dart
 lib/model/fcm_device_token.dart
 lib/model/get_account_ban_time_result.dart
 lib/model/get_account_deletion_request_result.dart
+lib/model/get_account_id_from_email_result.dart
+lib/model/get_all_admins_result.dart
 lib/model/get_initial_profile_age_info_result.dart
 lib/model/get_media_content_result.dart
 lib/model/get_my_profile_result.dart

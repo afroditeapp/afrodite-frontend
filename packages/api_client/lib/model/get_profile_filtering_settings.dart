@@ -170,3 +170,4 @@ class GetProfileFilteringSettings {
     'filters',
   };
 }
+

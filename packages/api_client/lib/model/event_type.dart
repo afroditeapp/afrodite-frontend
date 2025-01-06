@@ -118,3 +118,4 @@ class EventTypeTypeTransformer {
   /// Singleton [EventTypeTypeTransformer] instance.
   static EventTypeTypeTransformer? _instance;
 }
+

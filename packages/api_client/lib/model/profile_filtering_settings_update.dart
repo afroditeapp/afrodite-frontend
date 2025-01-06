@@ -168,3 +168,4 @@ class ProfileFilteringSettingsUpdate {
     'filters',
   };
 }
+

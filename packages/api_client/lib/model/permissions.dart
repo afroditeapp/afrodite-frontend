@@ -240,3 +240,4 @@ class Permissions {
   static const requiredKeys = <String>{
   };
 }
+

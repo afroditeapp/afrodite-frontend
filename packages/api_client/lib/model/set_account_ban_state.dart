@@ -140,3 +140,4 @@ class SetAccountBanState {
     'account',
   };
 }
+

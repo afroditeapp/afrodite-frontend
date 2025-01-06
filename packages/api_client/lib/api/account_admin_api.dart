@@ -101,6 +101,168 @@ class AccountAdminApi {
     }
   }
 
+  /// Get account ID from email
+  ///
+  /// # Access  Permission [model_account::Permissions::admin_view_private_info] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] email (required):
+  Future<Response> getAccountIdFromEmailWithHttpInfo(String email,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/QOWhJ4V6cg9BzbwLCnopDKA6eEM/{email}'
+      .replaceAll('{email}', email);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get account ID from email
+  ///
+  /// # Access  Permission [model_account::Permissions::admin_view_private_info] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] email (required):
+  Future<GetAccountIdFromEmailResult?> getAccountIdFromEmail(String email,) async {
+    final response = await getAccountIdFromEmailWithHttpInfo(email,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetAccountIdFromEmailResult',) as GetAccountIdFromEmailResult;
+    
+    }
+    return null;
+  }
+
+  /// Get [model::Account] for specific account.
+  ///
+  /// # Access  Permission [model_account::Permissions::admin_view_private_info] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> getAccountStateAdminWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/SJd6qnB7ZOLWObvYpZvSEAQlV9E/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get [model::Account] for specific account.
+  ///
+  /// # Access  Permission [model_account::Permissions::admin_view_private_info] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Account?> getAccountStateAdmin(String aid,) async {
+    final response = await getAccountStateAdminWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Account',) as Account;
+    
+    }
+    return null;
+  }
+
+  /// Get all admins
+  ///
+  /// # Access  Permission [model_account::Permissions::admin_view_private_info] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getAllAdminsWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/S08JTRmVrgj4MoI2AYsbMMcfpoU';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get all admins
+  ///
+  /// # Access  Permission [model_account::Permissions::admin_view_private_info] is required.
+  Future<GetAllAdminsResult?> getAllAdmins() async {
+    final response = await getAllAdminsWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetAllAdminsResult',) as GetAllAdminsResult;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'POST /XEss8YDw9lPgwKoH6K9THZIF_N4' operation and returns the [Response].
   Future<Response> postCreateNewsItemWithHttpInfo() async {
     // ignore: prefer_const_declarations
@@ -137,7 +299,7 @@ class AccountAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'NewsId',) as NewsId;
-
+    
     }
     return null;
   }
@@ -283,6 +445,59 @@ class AccountAdminApi {
     }
   }
 
+  /// Set permissions for account
+  ///
+  /// # Access  Permission [model_account::Permissions::admin_modify_permissions] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  ///
+  /// * [Permissions] permissions (required):
+  Future<Response> postSetPermissionsWithHttpInfo(String aid, Permissions permissions,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/dVzZRtEelHVDz6bG4AcjaZSQVFo/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody = permissions;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Set permissions for account
+  ///
+  /// # Access  Permission [model_account::Permissions::admin_modify_permissions] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  ///
+  /// * [Permissions] permissions (required):
+  Future<void> postSetPermissions(String aid, Permissions permissions,) async {
+    final response = await postSetPermissionsWithHttpInfo(aid, permissions,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Performs an HTTP 'POST /4pD-Q4FhZGTNkUGYExHmZN6TxjU/{nid}/{locale}' operation and returns the [Response].
   /// Parameters:
   ///
@@ -335,7 +550,7 @@ class AccountAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UpdateNewsTranslationResult',) as UpdateNewsTranslationResult;
-
+    
     }
     return null;
   }

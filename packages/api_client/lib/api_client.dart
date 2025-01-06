@@ -208,6 +208,8 @@ class ApiClient {
           return AccountStateContainer.fromJson(value);
         case 'AccountSyncVersion':
           return AccountSyncVersion.fromJson(value);
+        case 'AdminInfo':
+          return AdminInfo.fromJson(value);
         case 'AllMatchesPage':
           return AllMatchesPage.fromJson(value);
         case 'Attribute':
@@ -296,6 +298,10 @@ class ApiClient {
           return GetAccountBanTimeResult.fromJson(value);
         case 'GetAccountDeletionRequestResult':
           return GetAccountDeletionRequestResult.fromJson(value);
+        case 'GetAccountIdFromEmailResult':
+          return GetAccountIdFromEmailResult.fromJson(value);
+        case 'GetAllAdminsResult':
+          return GetAllAdminsResult.fromJson(value);
         case 'GetInitialProfileAgeInfoResult':
           return GetInitialProfileAgeInfoResult.fromJson(value);
         case 'GetMediaContentResult':

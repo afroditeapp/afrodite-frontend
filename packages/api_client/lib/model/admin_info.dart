@@ -10,36 +10,42 @@
 
 part of openapi.api;
 
-class ProfileEditedTimeFilter {
-  /// Returns a new [ProfileEditedTimeFilter] instance.
-  ProfileEditedTimeFilter({
-    required this.value,
+class AdminInfo {
+  /// Returns a new [AdminInfo] instance.
+  AdminInfo({
+    required this.aid,
+    required this.permissions,
   });
 
-  int value;
+  AccountId aid;
+
+  Permissions permissions;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileEditedTimeFilter &&
-    other.value == value;
+  bool operator ==(Object other) => identical(this, other) || other is AdminInfo &&
+    other.aid == aid &&
+    other.permissions == permissions;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (value.hashCode);
+    (aid.hashCode) +
+    (permissions.hashCode);
 
   @override
-  String toString() => 'ProfileEditedTimeFilter[value=$value]';
+  String toString() => 'AdminInfo[aid=$aid, permissions=$permissions]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'value'] = this.value;
+      json[r'aid'] = this.aid;
+      json[r'permissions'] = this.permissions;
     return json;
   }
 
-  /// Returns a new [ProfileEditedTimeFilter] instance and imports its values from
+  /// Returns a new [AdminInfo] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileEditedTimeFilter? fromJson(dynamic value) {
+  static AdminInfo? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +54,25 @@ class ProfileEditedTimeFilter {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileEditedTimeFilter[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileEditedTimeFilter[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AdminInfo[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AdminInfo[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileEditedTimeFilter(
-        value: mapValueOfType<int>(json, r'value')!,
+      return AdminInfo(
+        aid: AccountId.fromJson(json[r'aid'])!,
+        permissions: Permissions.fromJson(json[r'permissions'])!,
       );
     }
     return null;
   }
 
-  static List<ProfileEditedTimeFilter> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileEditedTimeFilter>[];
+  static List<AdminInfo> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AdminInfo>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileEditedTimeFilter.fromJson(row);
+        final value = AdminInfo.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +81,12 @@ class ProfileEditedTimeFilter {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileEditedTimeFilter> mapFromJson(dynamic json) {
-    final map = <String, ProfileEditedTimeFilter>{};
+  static Map<String, AdminInfo> mapFromJson(dynamic json) {
+    final map = <String, AdminInfo>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileEditedTimeFilter.fromJson(entry.value);
+        final value = AdminInfo.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +95,14 @@ class ProfileEditedTimeFilter {
     return map;
   }
 
-  // maps a json object with a list of ProfileEditedTimeFilter-objects as value to a dart map
-  static Map<String, List<ProfileEditedTimeFilter>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileEditedTimeFilter>>{};
+  // maps a json object with a list of AdminInfo-objects as value to a dart map
+  static Map<String, List<AdminInfo>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AdminInfo>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileEditedTimeFilter.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = AdminInfo.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +110,8 @@ class ProfileEditedTimeFilter {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'value',
+    'aid',
+    'permissions',
   };
 }
 

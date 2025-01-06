@@ -117,3 +117,4 @@ class AvailableProfileAttributes {
     'sync_version',
   };
 }
+

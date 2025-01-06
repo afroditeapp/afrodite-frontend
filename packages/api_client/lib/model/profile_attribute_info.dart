@@ -114,3 +114,4 @@ class ProfileAttributeInfo {
     'attributes',
   };
 }
+

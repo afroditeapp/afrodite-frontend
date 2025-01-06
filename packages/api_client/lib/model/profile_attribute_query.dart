@@ -108,3 +108,4 @@ class ProfileAttributeQuery {
     'values',
   };
 }
+

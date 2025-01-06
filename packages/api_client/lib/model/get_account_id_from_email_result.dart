@@ -10,36 +10,40 @@
 
 part of openapi.api;
 
-class ProfileEditedTimeFilter {
-  /// Returns a new [ProfileEditedTimeFilter] instance.
-  ProfileEditedTimeFilter({
-    required this.value,
+class GetAccountIdFromEmailResult {
+  /// Returns a new [GetAccountIdFromEmailResult] instance.
+  GetAccountIdFromEmailResult({
+    this.aid,
   });
 
-  int value;
+  AccountId? aid;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileEditedTimeFilter &&
-    other.value == value;
+  bool operator ==(Object other) => identical(this, other) || other is GetAccountIdFromEmailResult &&
+    other.aid == aid;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (value.hashCode);
+    (aid == null ? 0 : aid!.hashCode);
 
   @override
-  String toString() => 'ProfileEditedTimeFilter[value=$value]';
+  String toString() => 'GetAccountIdFromEmailResult[aid=$aid]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'value'] = this.value;
+    if (this.aid != null) {
+      json[r'aid'] = this.aid;
+    } else {
+      json[r'aid'] = null;
+    }
     return json;
   }
 
-  /// Returns a new [ProfileEditedTimeFilter] instance and imports its values from
+  /// Returns a new [GetAccountIdFromEmailResult] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileEditedTimeFilter? fromJson(dynamic value) {
+  static GetAccountIdFromEmailResult? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +52,24 @@ class ProfileEditedTimeFilter {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileEditedTimeFilter[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileEditedTimeFilter[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "GetAccountIdFromEmailResult[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "GetAccountIdFromEmailResult[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileEditedTimeFilter(
-        value: mapValueOfType<int>(json, r'value')!,
+      return GetAccountIdFromEmailResult(
+        aid: AccountId.fromJson(json[r'aid']),
       );
     }
     return null;
   }
 
-  static List<ProfileEditedTimeFilter> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileEditedTimeFilter>[];
+  static List<GetAccountIdFromEmailResult> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <GetAccountIdFromEmailResult>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileEditedTimeFilter.fromJson(row);
+        final value = GetAccountIdFromEmailResult.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +78,12 @@ class ProfileEditedTimeFilter {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileEditedTimeFilter> mapFromJson(dynamic json) {
-    final map = <String, ProfileEditedTimeFilter>{};
+  static Map<String, GetAccountIdFromEmailResult> mapFromJson(dynamic json) {
+    final map = <String, GetAccountIdFromEmailResult>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileEditedTimeFilter.fromJson(entry.value);
+        final value = GetAccountIdFromEmailResult.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +92,14 @@ class ProfileEditedTimeFilter {
     return map;
   }
 
-  // maps a json object with a list of ProfileEditedTimeFilter-objects as value to a dart map
-  static Map<String, List<ProfileEditedTimeFilter>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileEditedTimeFilter>>{};
+  // maps a json object with a list of GetAccountIdFromEmailResult-objects as value to a dart map
+  static Map<String, List<GetAccountIdFromEmailResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<GetAccountIdFromEmailResult>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileEditedTimeFilter.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = GetAccountIdFromEmailResult.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +107,6 @@ class ProfileEditedTimeFilter {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'value',
   };
 }
 

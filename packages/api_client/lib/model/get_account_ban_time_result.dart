@@ -132,3 +132,4 @@ class GetAccountBanTimeResult {
   static const requiredKeys = <String>{
   };
 }
+

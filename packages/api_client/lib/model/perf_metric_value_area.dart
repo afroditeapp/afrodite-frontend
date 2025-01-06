@@ -126,3 +126,4 @@ class PerfMetricValueArea {
     'values',
   };
 }
+
