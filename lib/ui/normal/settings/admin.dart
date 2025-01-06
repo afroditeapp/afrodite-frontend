@@ -1,6 +1,7 @@
 
 
 import 'package:app/ui/normal/settings/admin/moderate_profile_texts.dart';
+import 'package:app/ui/normal/settings/admin/open_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -87,6 +88,11 @@ class AdminSettingsPage extends StatelessWidget {
           ));
           settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile texts (human)", () =>
             MyNavigator.push(context, const MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: false)),)
+          ));
+        }
+        if (state.permissions.adminViewPrivateInfo) {
+          settings.add(Setting.createSetting(Icons.account_box, "Open profile", () =>
+            MyNavigator.push(context, const MaterialPage<void>(child: OpenProfileScreen()),)
           ));
         }
 
