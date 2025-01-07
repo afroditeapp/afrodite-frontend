@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 
-Widget menuActions(List<MenuItemButton> actions) {
+Widget menuActions(List<Widget> actions) {
   return MenuAnchor(
     builder: (context, controller, child) {
       return IconButton(

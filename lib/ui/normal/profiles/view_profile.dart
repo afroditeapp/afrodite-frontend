@@ -1,6 +1,9 @@
 
 
 
+import 'package:app/logic/account/account.dart';
+import 'package:app/model/freezed/logic/account/account.dart';
+import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -83,7 +86,31 @@ class ViewProfilePage extends StatelessWidget {
               menuActions([
                 commonActionBlockProfile(context, () {
                   context.read<ViewProfileBloc>().add(BlockProfile(initialProfile.uuid));
-                })
+                }),
+                BlocBuilder<AccountBloc, AccountBlocData>(
+                  builder: (_, state) {
+                    final p = state.permissions;
+                    if (
+                      p.adminBanAccount ||
+                      p.adminDeleteAccount ||
+                      p.adminDeleteMediaContent ||
+                      p.adminModerateProfileContent ||
+                      p.adminModerateProfileTexts ||
+                      p.adminModifyPermissions ||
+                      p.adminRequestAccountDeletion ||
+                      p.adminViewPrivateInfo
+                    ) {
+                      return MenuItemButton(
+                        onPressed: () {
+                          MyNavigator.push(context, MaterialPage<void>(child: AccountAdminSettingsScreen(entry: initialProfile)));
+                        },
+                        child: const Text("Admin"),
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  },
+                ),
               ]),
             ],
           ),
