@@ -12,8 +12,10 @@ class ContentData with _$ContentData {
 
   factory ContentData({
     PrimaryProfileContent? primaryContent,
+    @Default(true) bool isLoadingPrimaryContent,
     @Default(false) bool primaryImageDataAvailable,
     MyContent? securityContent,
+    @Default(true) bool isLoadingSecurityContent,
   }) = _ContentData;
 
   ContentId? get primaryProfilePicture {

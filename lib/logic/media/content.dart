@@ -52,11 +52,13 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> with ActionRunner {
     on<NewPrimaryContent>((data, emit) {
       emit(state.copyWith(
         primaryContent: data.content,
+        isLoadingPrimaryContent: false,
       ));
     });
     on<NewSecurityContent>((data, emit) {
       emit(state.copyWith(
         securityContent: data.content,
+        isLoadingSecurityContent: false,
       ));
     });
     on<NewPrimaryImageDataAvailable>((data, emit) {

@@ -86,6 +86,10 @@ class _ProfileViewState extends State<ProfileView> {
         if (data.visibility == ProfileVisibility.public) {
           return BlocBuilder<ContentBloc, ContentData>(
             builder: (context, contentState) {
+              if (contentState.isLoadingSecurityContent || contentState.isLoadingPrimaryContent) {
+                return const SizedBox.shrink();
+              }
+
               final securityContent = contentState.securityContent;
               if (securityContent?.accepted == true && securityContent?.faceDetected == true) {
                 return BlocBuilder<MyProfileBloc, MyProfileData>(
