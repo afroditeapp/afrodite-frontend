@@ -24,18 +24,6 @@ class DoDemoAccountLoginToAccount extends DemoAccountEvent {
   final AccountId id;
   DoDemoAccountLoginToAccount(this.id);
 }
-class NewDemoAccountUserIdValue extends DemoAccountEvent {
-  final String? value;
-  NewDemoAccountUserIdValue(this.value);
-}
-class NewDemoAccountPasswordValue extends DemoAccountEvent {
-  final String? value;
-  NewDemoAccountPasswordValue(this.value);
-}
-class NewLoginProgressValue extends DemoAccountEvent {
-  final bool value;
-  NewLoginProgressValue(this.value);
-}
 
 class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with ActionRunner {
   final LoginRepository login = LoginRepository.getInstance();
@@ -93,25 +81,6 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
           await login.demoAccountLoginToAccount(data.id)
         );
       });
-    });
-    on<NewDemoAccountUserIdValue>((id, emit) {
-      emit(state.copyWith(userId: id.value));
-    });
-    on<NewDemoAccountPasswordValue>((key, emit) {
-      emit(state.copyWith(password: key.value));
-    });
-    on<NewLoginProgressValue>((key, emit) {
-      emit(state.copyWith(loginProgressVisible: key.value));
-    });
-
-    login.demoAccountUserId.listen((event) {
-      add(NewDemoAccountUserIdValue(event));
-    });
-    login.demoAccountPassword.listen((event) {
-      add(NewDemoAccountPasswordValue(event));
-    });
-    login.demoAccountLoginInProgress.listen((event) {
-      add(NewLoginProgressValue(event));
     });
   }
 }

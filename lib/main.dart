@@ -18,17 +18,10 @@ import 'package:app/data/push_notification_manager.dart';
 import 'package:app/database/background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:app/localizations.dart';
-import 'package:app/logic/account/demo_account.dart';
-import 'package:app/logic/app/bottom_navigation_state.dart';
-import 'package:app/logic/app/like_grid_instance_manager.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/chat/conversation_bloc.dart';
-import 'package:app/logic/login.dart';
-import 'package:app/logic/server/address.dart';
-import 'package:app/logic/sign_in_with.dart';
 
 import 'package:app/logic/app/main_state.dart';
-import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/storage/encryption.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -104,16 +97,6 @@ Future<void> main() async {
       providers: [
         // Navigation
         BlocProvider(create: (_) => MainStateBloc()),
-
-        // Login
-        BlocProvider(create: (_) => DemoAccountBloc()),
-        BlocProvider(create: (_) => ServerAddressBloc()),
-        BlocProvider(create: (_) => SignInWithBloc()),
-        BlocProvider(create: (_) => LoginBloc()),
-
-        // Main UI (app process starting from notification requires this here)
-        // TODO(future): move somehow to app state specific bloc creating
-        BlocProvider(create: (_) => LikeGridInstanceManagerBloc()),
       ],
       child: const MyApp(),
     )
@@ -123,7 +106,7 @@ Future<void> main() async {
 final globalScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

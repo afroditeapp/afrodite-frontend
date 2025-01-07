@@ -4,6 +4,12 @@
 import 'package:app/data/general/notification/utils/notification_payload.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
+import 'package:app/logic/account/demo_account.dart';
+import 'package:app/logic/account/demo_account_login.dart';
+import 'package:app/logic/app/like_grid_instance_manager.dart';
+import 'package:app/logic/login.dart';
+import 'package:app/logic/server/address.dart';
+import 'package:app/logic/sign_in_with.dart';
 import 'package:app/main.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/splash_screen.dart';
@@ -108,6 +114,20 @@ class MainStateUiLogic extends StatelessWidget {
         final navigator = AppNavigator();
 
         final blocProvider = switch (state) {
+          MainState.loginRequired => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => ServerAddressBloc()),
+              BlocProvider(create: (_) => SignInWithBloc()),
+              BlocProvider(create: (_) => DemoAccountLoginBloc()),
+            ],
+            child: navigator
+          ),
+          MainState.demoAccount => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => DemoAccountBloc()),
+            ],
+            child: navigator
+          ),
           MainState.initialSetup => MultiBlocProvider(
             providers: [
               // Init AccountBloc so that the initial setup UI does not change from
@@ -159,15 +179,36 @@ class MainStateUiLogic extends StatelessWidget {
 
               // News
               BlocProvider(create: (_) => NewsCountBloc()),
+
+              // Likes
+              BlocProvider(create: (_) => LikeGridInstanceManagerBloc()),
             ],
-            child: navigator,
+            child: NotificationActionHandler(
+              notificationNavigation: notficationRelatedObjects,
+              child: navigator,
+            ),
           ),
-          MainState.loginRequired ||
-          MainState.demoAccount ||
           MainState.accountBanned ||
           MainState.pendingRemoval ||
           MainState.unsupportedClientVersion ||
           MainState.splashScreen => navigator,
+        };
+
+        final loggedInStateRelatedBlocs = switch (state) {
+          MainState.initialSetup ||
+          MainState.initialSetupComplete ||
+          MainState.accountBanned ||
+          MainState.pendingRemoval ||
+          MainState.unsupportedClientVersion => MultiBlocProvider(
+            providers: [
+              // Logout action
+              BlocProvider(create: (_) => LoginBloc()),
+            ],
+            child: blocProvider
+          ),
+          MainState.loginRequired ||
+          MainState.demoAccount ||
+          MainState.splashScreen => blocProvider,
         };
 
         return MultiBlocProvider(
@@ -175,16 +216,28 @@ class MainStateUiLogic extends StatelessWidget {
           key: UniqueKey(),
           providers: [
             // Navigation
-            BlocProvider(create: (_) => NavigatorStateBloc(blocInitialState), lazy: false),
-            BlocProvider(create: (_) => BottomNavigationStateBloc(), lazy: false),
+            BlocProvider(create: (_) => NavigatorStateBloc(blocInitialState)),
+            BlocProvider(create: (_) => BottomNavigationStateBloc()),
           ],
-          child: NotificationActionHandler(
-            notificationNavigation: notficationRelatedObjects,
-            child: blocProvider,
-          ),
+          child: NavigationBlocUpdater(child: loggedInStateRelatedBlocs),
         );
       }
     );
+  }
+}
+
+class NavigationBlocUpdater extends StatelessWidget {
+  const NavigationBlocUpdater({required this.child, super.key});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final navigatorStateBloc = context.read<NavigatorStateBloc>();
+    NavigationStateBlocInstance.getInstance().setLatestBloc(navigatorStateBloc);
+    final bottomNavigatorStateBloc = context.read<BottomNavigationStateBloc>();
+    BottomNavigationStateBlocInstance.getInstance().setLatestBloc(bottomNavigatorStateBloc);
+
+    return child;
   }
 }
 
@@ -211,9 +264,8 @@ class _NotificationActionHandlerState extends State<NotificationActionHandler> {
   @override
   Widget build(BuildContext context) {
     final navigatorStateBloc = context.read<NavigatorStateBloc>();
-    NavigationStateBlocInstance.getInstance().setLatestBloc(navigatorStateBloc);
     final bottomNavigatorStateBloc = context.read<BottomNavigationStateBloc>();
-    BottomNavigationStateBlocInstance.getInstance().setLatestBloc(bottomNavigatorStateBloc);
+    final likeGridInstanceBloc = context.read<LikeGridInstanceManagerBloc>();
 
     final notificationNavigation = widget.notificationNavigation;
     if (notificationNavigation != null && !navigationDone) {
@@ -223,6 +275,7 @@ class _NotificationActionHandlerState extends State<NotificationActionHandler> {
         notificationNavigation.accountDb,
         navigatorStateBloc,
         bottomNavigatorStateBloc,
+        likeGridInstanceBloc,
         showError: false,
         navigateToAction: (bloc, page) {
           final pages = [notificationNavigation.rootPage];

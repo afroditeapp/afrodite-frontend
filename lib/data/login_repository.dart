@@ -76,7 +76,7 @@ class LoginRepository extends DataRepository {
     BehaviorSubject.seeded(LoginState.splashScreen);
   final BehaviorSubject<LoginRepositoryState> _internalState =
     BehaviorSubject.seeded(LoginRepositoryState.initRequired);
-  final BehaviorSubject<bool> _demoAccountLoginInProgress =
+  final BehaviorSubject<bool> _demoAccountLoginProgress =
     BehaviorSubject.seeded(false);
   final BehaviorSubject<bool> _loginInProgress =
     BehaviorSubject.seeded(false);
@@ -109,7 +109,7 @@ class LoginRepository extends DataRepository {
 
   Stream<String?> get demoAccountToken => DatabaseManager.getInstance()
     .commonStream((db) => db.watchDemoAccountToken());
-  Stream<bool> get demoAccountLoginInProgress => _demoAccountLoginInProgress;
+  Stream<bool> get demoAccountLoginProgress => _demoAccountLoginProgress;
 
   // Account
   Stream<AccountId?> get accountId => BackgroundDatabaseManager.getInstance()
@@ -511,9 +511,9 @@ class LoginRepository extends DataRepository {
   }
 
   Future<Result<void, void>> demoAccountLogin(DemoAccountCredentials credentials) async {
-    _demoAccountLoginInProgress.add(true);
+    _demoAccountLoginProgress.add(true);
     final loginResult = await _apiNoConnection.account((api) => api.postDemoModeLogin(DemoModePassword(password: credentials.id))).ok();
-    _demoAccountLoginInProgress.add(false);
+    _demoAccountLoginProgress.add(false);
 
     final loginToken = loginResult?.token;
     if (loginToken == null) {

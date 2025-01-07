@@ -45,6 +45,7 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
           final bloc = context.read<NotificationPayloadHandlerBloc>();
           final navigatorStateBloc = context.read<NavigatorStateBloc>();
           final bottomNavigationStateBloc = context.read<BottomNavigationStateBloc>();
+          final likeGridInstanceBloc = context.read<LikeGridInstanceManagerBloc>();
           bloc.add(
             HandleFirstPayload(createHandlePayloadCallback(
               context,
@@ -52,6 +53,7 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
               bloc.accountDb,
               navigatorStateBloc,
               bottomNavigationStateBloc,
+              likeGridInstanceBloc,
               showError: true)),
           );
         }
@@ -68,11 +70,11 @@ Future<void> Function(NotificationPayload) createHandlePayloadCallback(
   AccountDatabaseManager accountDb,
   NavigatorStateBloc navigatorStateBloc,
   BottomNavigationStateBloc bottomNavigatorStateBloc,
+  LikeGridInstanceManagerBloc likeGridInstanceBloc,
   {
     required bool showError,
     void Function(NavigatorStateBloc, NewPageDetails?) navigateToAction = defaultNavigateToAction,
   }) {
-  final likeGridInstanceBloc = context.read<LikeGridInstanceManagerBloc>();
 
   return (payload) async {
     final newPage = await handlePayload(

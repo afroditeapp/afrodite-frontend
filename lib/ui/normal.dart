@@ -1,3 +1,4 @@
+import "package:app/data/login_repository.dart";
 import "package:app/ui/normal/menu.dart";
 import "package:database/database.dart";
 import 'package:flutter/material.dart';
@@ -13,7 +14,6 @@ import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/app/notification_permission.dart";
 import "package:app/logic/chat/new_received_likes_available_bloc.dart";
 import "package:app/logic/chat/unread_conversations_bloc.dart";
-import "package:app/logic/login.dart";
 import "package:app/logic/media/content.dart";
 import "package:app/logic/profile/attributes.dart";
 import "package:app/logic/profile/my_profile.dart";
@@ -21,7 +21,6 @@ import "package:app/model/freezed/logic/account/account.dart";
 import "package:app/model/freezed/logic/account/news/news_count.dart";
 import "package:app/model/freezed/logic/chat/new_received_likes_available_bloc.dart";
 import "package:app/model/freezed/logic/chat/unread_conversations_count_bloc.dart";
-import "package:app/model/freezed/logic/login.dart";
 import "package:app/model/freezed/logic/main/bottom_navigation_state.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/model/freezed/logic/media/content.dart";
@@ -97,6 +96,8 @@ class _NormalStateContentState extends State<NormalStateContent> {
     MenuView(),
   ];
 
+  final currentUser = LoginRepository.getInstance().repositories.accountId;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavigationStateBloc, BottomNavigationStateData>(
@@ -119,8 +120,6 @@ class _NormalStateContentState extends State<NormalStateContent> {
   }
 
   Widget buildScreen(BuildContext context, int selectedView, bool isScrolled) {
-
-
     return Scaffold(
       appBar: AppBar(
         // Make sure that AppBar has correct elevation
@@ -221,31 +220,26 @@ class _NormalStateContentState extends State<NormalStateContent> {
   }
 
   Widget primaryImageButton() {
-    return BlocBuilder<LoginBloc, LoginBlocData>(
-      builder: (context, loginState) {
-        final id = loginState.accountId;
-        return BlocBuilder<ContentBloc, ContentData>(
-          builder: (context, state) {
-            final img = state.primaryProfilePicture;
-            final cropInfo = state.primaryProfilePictureCropInfo;
-            if (id != null && img != null && state.primaryImageDataAvailable) {
-              return ProfileThumbnailImage(
-                accountId: id,
-                contentId: img,
-                cropResults: cropInfo,
-                cacheSize: ImageCacheSize.sizeForAppBarThumbnail(),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: openMyProfileScreen,
-                  ),
-                )
-              );
-            } else {
-              return primaryImageButtonError();
-            }
-          }
-        );
+    return BlocBuilder<ContentBloc, ContentData>(
+      builder: (context, state) {
+        final img = state.primaryProfilePicture;
+        final cropInfo = state.primaryProfilePictureCropInfo;
+        if (img != null && state.primaryImageDataAvailable) {
+          return ProfileThumbnailImage(
+            accountId: currentUser,
+            contentId: img,
+            cropResults: cropInfo,
+            cacheSize: ImageCacheSize.sizeForAppBarThumbnail(),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: openMyProfileScreen,
+              ),
+            )
+          );
+        } else {
+          return primaryImageButtonError();
+        }
       }
     );
   }

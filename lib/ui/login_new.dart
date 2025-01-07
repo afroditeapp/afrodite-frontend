@@ -1,15 +1,15 @@
 import "dart:io";
 
+import "package:app/logic/account/demo_account_login.dart";
+import "package:app/model/freezed/logic/account/demo_account_login.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/assets.dart";
 import "package:app/data/login_repository.dart";
-import "package:app/logic/account/demo_account.dart";
 import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/sign_in_with.dart";
-import "package:app/model/freezed/logic/account/demo_account.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/model/freezed/logic/sign_in_with.dart";
 import "package:app/ui/login.dart";
@@ -38,7 +38,7 @@ class LoginScreen extends StatelessWidget {
       body: Column(
         children: [
           Expanded(child: screenContent()),
-          ProgressDialogOpener<DemoAccountBloc, DemoAccountBlocData>(
+          ProgressDialogOpener<DemoAccountLoginBloc, DemoAccountLoginData>(
             dialogVisibilityGetter:
               (state) => state.loginProgressVisible,
             loadingText:
@@ -60,7 +60,7 @@ class LoginScreen extends StatelessWidget {
             MenuItemButton(
               child: Text(context.strings.login_screen_action_demo_account_login),
               onPressed: () {
-                final demoAccountBloc = context.read<DemoAccountBloc>();
+                final demoAccountBloc = context.read<DemoAccountLoginBloc>();
                 openFirstDemoAccountLoginDialog(context)
                   .then((value) {
                     if (value != null) {
@@ -76,7 +76,7 @@ class LoginScreen extends StatelessWidget {
             if (kDebugMode || (kIsWeb && kProfileMode)) MenuItemButton(
               child: Text("Old login"),
               onPressed: () {
-                MyNavigator.push(context, MaterialPage<void>(child: LoginScreenOld()));
+                MyNavigator.push(context, const MaterialPage<void>(child: LoginScreenOld()));
               },
             ),
             ...commonActionsWhenLoggedOut(context),
@@ -269,12 +269,12 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
   final idField = SimpleTextField(
     hintText: context.strings.login_screen_demo_account_identifier,
     // TODO(prod): remove default username and password
-    getInitialValue: () => context.read<DemoAccountBloc>().state.userId ?? "test",
+    getInitialValue: () => context.read<DemoAccountLoginBloc>().state.userId ?? "test",
   );
   final passwordField = SimpleTextField(
     hintText: context.strings.login_screen_demo_account_password,
     obscureText: true,
-    getInitialValue: () => context.read<DemoAccountBloc>().state.password ?? "tThlYqVHIiY=",
+    getInitialValue: () => context.read<DemoAccountLoginBloc>().state.password ?? "tThlYqVHIiY=",
   );
   final pageKey = PageKey();
   return MyNavigator.showDialog<DemoAccountCredentials?>(
