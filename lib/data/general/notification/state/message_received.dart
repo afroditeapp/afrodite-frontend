@@ -77,7 +77,7 @@ class NotificationMessageReceived extends AppSingletonNoInit {
   }
 
   bool _isConversationUiOpen(AccountId accountId) {
-    final lastPage = NavigationStateBlocInstance.getInstance().bloc.state.pages.lastOrNull;
+    final lastPage = NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull;
     final info = lastPage?.pageInfo;
     return info is ConversationPageInfo &&
       info.accountId == accountId &&

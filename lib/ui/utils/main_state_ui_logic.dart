@@ -1,6 +1,12 @@
 
 
 
+import 'package:app/data/general/notification/utils/notification_payload.dart';
+import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/database/account_database_manager.dart';
+import 'package:app/main.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -48,13 +54,12 @@ import 'package:app/ui/utils/notification_payload_handler.dart';
 final log = Logger("MainStateUiLogic");
 
 class MainStateUiLogic extends StatelessWidget {
-  final Widget child;
-  const MainStateUiLogic({required this.child, super.key});
+  const MainStateUiLogic({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MainStateBloc, MainState>(
-      listener: (context, state) {
+    return BlocBuilder<MainStateBloc, MainState>(
+      builder: (context, state) {
         final screen = switch (state) {
           MainState.loginRequired => const LoginScreen(),
           MainState.demoAccount => const DemoAccountScreen(),
@@ -63,12 +68,8 @@ class MainStateUiLogic extends StatelessWidget {
           MainState.accountBanned => const AccountBannedScreen(),
           MainState.pendingRemoval => const PendingDeletionPage(),
           MainState.unsupportedClientVersion => const UnsupportedClientScreen(),
-          MainState.splashScreen => null,
+          MainState.splashScreen => const SplashScreen(),
         };
-
-        if (screen == null) {
-          return;
-        }
 
         var appLaunchPayloadNullable = NotificationManager.getInstance().getAndRemoveAppLaunchNotificationPayload();
         if (state != MainState.initialSetupComplete) {
@@ -76,51 +77,37 @@ class MainStateUiLogic extends StatelessWidget {
           // it should be handled only when state is
           // MainState.initialSetupComplete.
           appLaunchPayloadNullable = null;
-          BottomNavigationStateBlocInstance.getInstance()
-            .bloc
-            .add(ChangeScreen(BottomNavigationScreenId.profiles, resetIsScrolledValues: true));
         }
         final appLaunchPayload = appLaunchPayloadNullable;
         final accountBackgroundDb = LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
         final accountDb = LoginRepository.getInstance().repositoriesOrNull?.accountDb;
 
-        final rootPage = NewPageDetails(
-          MaterialPage<void>(child: screen),
-        );
-
+        final NotificationActionHandlerObjects? notficationRelatedObjects;
+        final NewPageDetails rootPage;
         if (appLaunchPayload != null && accountBackgroundDb != null && accountDb != null) {
           log.info("Handling app launch notification payload");
-          createHandlePayloadCallback(
-            context,
-            accountBackgroundDb,
+          notficationRelatedObjects = NotificationActionHandlerObjects(
+            appLaunchPayload,
             accountDb,
-            showError: false,
-            navigateToAction: (bloc, page) {
-              final pages = [rootPage];
-              if (page != null) {
-                pages.add(page);
-              }
-              bloc.replaceAllWith(
-                pages,
-                disableAnimation: true,
-              );
-            },
-          )(appLaunchPayload);
+            accountBackgroundDb,
+            NewPageDetails(
+              MaterialPage<void>(child: screen),
+            ),
+          );
+          rootPage = NewPageDetails(
+            const MaterialPage<void>(child: SplashScreen()),
+          );
         } else {
-          MyNavigator.replaceAllWith(
-            context,
-            [rootPage],
+          notficationRelatedObjects = null;
+          rootPage = NewPageDetails(
+            MaterialPage<void>(child: screen),
           );
         }
-      },
-      child: stateSpecificBlocProvider(),
-    );
-  }
 
-  Widget stateSpecificBlocProvider() {
-    return BlocBuilder<MainStateBloc, MainState>(
-      builder: (context, data) {
-        final blocProvider = switch (data) {
+        final NavigatorStateData blocInitialState = ReplaceAllWith([rootPage], false).toInitialState();
+        final navigator = AppNavigator();
+
+        final blocProvider = switch (state) {
           MainState.initialSetup => MultiBlocProvider(
             providers: [
               // Init AccountBloc so that the initial setup UI does not change from
@@ -134,7 +121,7 @@ class MainStateUiLogic extends StatelessWidget {
               BlocProvider(create: (_) => SelectContentBloc()),
               BlocProvider(create: (_) => ProfilePicturesBloc()),
             ],
-            child: child,
+            child: navigator,
           ),
           MainState.initialSetupComplete => MultiBlocProvider(
             providers: [
@@ -173,17 +160,122 @@ class MainStateUiLogic extends StatelessWidget {
               // News
               BlocProvider(create: (_) => NewsCountBloc()),
             ],
-            child: child,
+            child: navigator,
           ),
           MainState.loginRequired ||
           MainState.demoAccount ||
           MainState.accountBanned ||
           MainState.pendingRemoval ||
           MainState.unsupportedClientVersion ||
-          MainState.splashScreen => child,
+          MainState.splashScreen => navigator,
         };
 
-        return blocProvider;
+        return MultiBlocProvider(
+          // Create new Blocs when MainState changes
+          key: UniqueKey(),
+          providers: [
+            // Navigation
+            BlocProvider(create: (_) => NavigatorStateBloc(blocInitialState), lazy: false),
+            BlocProvider(create: (_) => BottomNavigationStateBloc(), lazy: false),
+          ],
+          child: NotificationActionHandler(
+            notificationNavigation: notficationRelatedObjects,
+            child: blocProvider,
+          ),
+        );
+      }
+    );
+  }
+}
+
+class NotificationActionHandlerObjects {
+  final NotificationPayload payload;
+  final AccountDatabaseManager accountDb;
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final NewPageDetails rootPage;
+  NotificationActionHandlerObjects(this.payload, this.accountDb, this.accountBackgroundDb, this.rootPage);
+}
+
+class NotificationActionHandler extends StatefulWidget {
+  const NotificationActionHandler({required this.notificationNavigation, required this.child, super.key});
+  final NotificationActionHandlerObjects? notificationNavigation;
+  final Widget child;
+
+  @override
+  State<NotificationActionHandler> createState() => _NotificationActionHandlerState();
+}
+
+class _NotificationActionHandlerState extends State<NotificationActionHandler> {
+  bool navigationDone = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final navigatorStateBloc = context.read<NavigatorStateBloc>();
+    NavigationStateBlocInstance.getInstance().setLatestBloc(navigatorStateBloc);
+    final bottomNavigatorStateBloc = context.read<BottomNavigationStateBloc>();
+    BottomNavigationStateBlocInstance.getInstance().setLatestBloc(bottomNavigatorStateBloc);
+
+    final notificationNavigation = widget.notificationNavigation;
+    if (notificationNavigation != null && !navigationDone) {
+      createHandlePayloadCallback(
+        context,
+        notificationNavigation.accountBackgroundDb,
+        notificationNavigation.accountDb,
+        navigatorStateBloc,
+        bottomNavigatorStateBloc,
+        showError: false,
+        navigateToAction: (bloc, page) {
+          final pages = [notificationNavigation.rootPage];
+          if (page != null) {
+            pages.add(page);
+          }
+          bloc.replaceAllWith(
+            pages,
+            disableAnimation: true,
+          );
+        },
+      )(notificationNavigation.payload);
+      navigationDone = true;
+    }
+
+    return widget.child;
+  }
+}
+
+class AppNavigator extends StatelessWidget {
+  AppNavigator({super.key});
+
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<NavigatorStateBloc, NavigatorStateData>(
+      builder: (context, state) {
+        return NavigatorPopHandler(
+          onPop: () {
+            navigatorKey.currentState?.maybePop();
+          },
+          child: createNavigator(context, state),
+        );
+      }
+    );
+  }
+
+  Widget createNavigator(BuildContext context, NavigatorStateData state) {
+    final TransitionDelegate<void> transitionDelegate = state.disableAnimation ?
+      const ReplaceSplashScreenTransitionDelegate() : const DefaultTransitionDelegate();
+    return Navigator(
+      key: navigatorKey,
+      transitionDelegate: transitionDelegate,
+      pages: state.getPages(),
+      onPopPage: (route, result) {
+        if (!route.didPop(result)) {
+          return false;
+        }
+
+        context.read<NavigatorStateBloc>().add(PopPage(null));
+
+        return true;
       }
     );
   }

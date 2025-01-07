@@ -223,7 +223,6 @@ class LikeViewContentState extends State<LikeViewContent> {
 
   void updateIsScrolled(bool isScrolled) {
     BottomNavigationStateBlocInstance.getInstance()
-      .bloc
       .updateIsScrolled(
         isScrolled,
         BottomNavigationScreenId.likes,
@@ -463,10 +462,10 @@ class LikeViewContentState extends State<LikeViewContent> {
 
   Future<void> automaticReloadLogic(NewReceivedLikesAvailableData state) async {
     final bloc = widget.receivedLikesBloc;
-    final navigationBloc = BottomNavigationStateBlocInstance.getInstance().bloc;
+    final navigationBlocState = BottomNavigationStateBlocInstance.getInstance().navigationState;
     // Refresh resets server side new likes count so it needs to be saved
     // to keep the count badge visible.
-    if (navigationBloc.state.screen != BottomNavigationScreenId.likes) {
+    if (navigationBlocState.screen != BottomNavigationScreenId.likes) {
       log.info("Automatic like screen refresh on background");
       final newReceivedLikesCountBeforeReload = bloc.state.newReceivedLikesCount;
       final event = UpdateReceivedLikesCountNotViewed(newReceivedLikesCountBeforeReload);

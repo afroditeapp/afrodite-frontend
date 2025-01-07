@@ -103,9 +103,6 @@ Future<void> main() async {
     MultiBlocProvider(
       providers: [
         // Navigation
-        BlocProvider.value(value: NavigationStateBlocInstance.getInstance().bloc),
-        // TODO(future): move somehow to app state specific bloc creating
-        BlocProvider.value(value: BottomNavigationStateBlocInstance.getInstance().bloc),
         BlocProvider(create: (_) => MainStateBloc()),
 
         // Login
@@ -142,11 +139,9 @@ class MyApp extends StatelessWidget {
         pageTransitionsTheme: createPageTransitionsTheme(),
       ),
       themeMode: ThemeMode.system,
-      home: GlobalLocalizationsInitializer(
+      home: const GlobalLocalizationsInitializer(
         child: AppLifecycleHandler(
-          child: MainStateUiLogic(
-            child: AppNavigator()
-          ),
+          child: MainStateUiLogic(),
         ),
       ),
       scaffoldMessengerKey: globalScaffoldMessengerKey,
@@ -221,44 +216,6 @@ class GlobalLocalizationsInitializer extends StatelessWidget {
     // Init correct localizations to R class.
     final _ = context.strings.app_name;
     return child;
-  }
-}
-
-class AppNavigator extends StatelessWidget {
-  AppNavigator({super.key});
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<NavigatorStateBloc, NavigatorStateData>(
-      builder: (context, state) {
-        return NavigatorPopHandler(
-          onPop: () {
-            navigatorKey.currentState?.maybePop();
-          },
-          child: createNavigator(context, state),
-        );
-      }
-    );
-  }
-
-  Widget createNavigator(BuildContext context, NavigatorStateData state) {
-    final TransitionDelegate<void> transitionDelegate = state.disableAnimation ?
-      const ReplaceSplashScreenTransitionDelegate() : const DefaultTransitionDelegate();
-    return Navigator(
-      key: navigatorKey,
-      transitionDelegate: transitionDelegate,
-      pages: state.getPages(),
-      onPopPage: (route, result) {
-        if (!route.didPop(result)) {
-          return false;
-        }
-
-        context.read<NavigatorStateBloc>().add(PopPage(null));
-
-        return true;
-      }
-    );
   }
 }
 

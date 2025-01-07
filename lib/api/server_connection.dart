@@ -175,7 +175,7 @@ class ServerConnection {
     _state.add(Connecting());
     unawaited(_connect().then((value) => null)); // Connect in background.
 
-    _navigationSubscription ??= NavigationStateBlocInstance.getInstance().bloc.stream.listen((navigationState) {
+    _navigationSubscription ??= NavigationStateBlocInstance.getInstance().navigationStateStream.listen((navigationState) {
       final ws = _connection;
       if (ws != null) {
         ws.updatePingInterval(navigationState);
@@ -291,7 +291,7 @@ class ServerConnection {
               protocolState = ConnectionProtocolState.receiveEvents;
               log.info("Connection ready");
               _state.add(Ready());
-              await ws.updatePingInterval(NavigationStateBlocInstance.getInstance().bloc.state);
+              await ws.updatePingInterval(NavigationStateBlocInstance.getInstance().navigationState);
             } else {
               await _endConnectionToGeneralError();
             }

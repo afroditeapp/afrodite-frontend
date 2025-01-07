@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
@@ -29,6 +31,22 @@ class ReplaceAllWith extends NavigatorStateEvent {
   final List<NewPageDetails> pageList;
   final bool disableAnimation;
   ReplaceAllWith(this.pageList, this.disableAnimation);
+
+  NavigatorStateData toInitialState() {
+    return NavigatorStateData(
+      pages: UnmodifiableList(
+        pageList.map((newPageDetails) {
+          return PageAndChannel(
+            newPageDetails.pageKey ?? PageKey(),
+            newPageDetails.page,
+            BehaviorSubject.seeded(const WaitingPagePop()),
+            newPageDetails.pageInfo,
+          );
+        })
+      ),
+      disableAnimation: disableAnimation,
+    );
+  }
 }
 class ReplaceSinglePage extends NavigatorStateEvent {
   final PageKey existingPage;
@@ -36,13 +54,8 @@ class ReplaceSinglePage extends NavigatorStateEvent {
   ReplaceSinglePage(this.existingPage, this.newPage);
 }
 
-// NOTE: This bloc must be dependency free because of NavigationStateBlocInstance.
 class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
-  NavigatorStateBloc._() : super(
-    NavigatorStateData(
-      pages: UnmodifiableList(PageAndChannel.splashScreen()),
-    )
-  ) {
+  NavigatorStateBloc(super.initialState) {
     on<PushPage>((data, emit) {
       emit(state.copyWith(
         pages: UnmodifiableList([
@@ -227,7 +240,21 @@ class NavigationStateBlocInstance extends AppSingletonNoInit {
     return _instance;
   }
 
-  final bloc = NavigatorStateBloc._();
+  final BehaviorSubject<NavigatorStateBloc> _latestBloc =
+    BehaviorSubject.seeded(NavigatorStateBloc(NavigatorStateData.defaultValue()));
+
+  Stream<NavigatorStateData> get navigationStateStream => _latestBloc
+    .switchMap((b) {
+      return b.stream;
+    });
+
+  NavigatorStateData get navigationState => _latestBloc.value.state;
+
+  void setLatestBloc(NavigatorStateBloc newBloc) {
+    if (_latestBloc.value != newBloc) {
+      _latestBloc.add(newBloc);
+    }
+  }
 }
 
 class MyNavigator {

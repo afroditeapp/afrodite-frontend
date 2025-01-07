@@ -104,7 +104,6 @@ class _ChatViewState extends State<ChatView> {
 
   void updateIsScrolled(bool isScrolled) {
     BottomNavigationStateBlocInstance.getInstance()
-      .bloc
       .updateIsScrolled(
         isScrolled,
         BottomNavigationScreenId.chats,

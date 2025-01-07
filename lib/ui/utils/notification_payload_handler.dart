@@ -43,8 +43,16 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
         final payload = state.toBeHandled.firstOrNull;
         if (payload != null) {
           final bloc = context.read<NotificationPayloadHandlerBloc>();
+          final navigatorStateBloc = context.read<NavigatorStateBloc>();
+          final bottomNavigationStateBloc = context.read<BottomNavigationStateBloc>();
           bloc.add(
-            HandleFirstPayload(createHandlePayloadCallback(context, bloc.accountBackgroundDb, bloc.accountDb, showError: true)),
+            HandleFirstPayload(createHandlePayloadCallback(
+              context,
+              bloc.accountBackgroundDb,
+              bloc.accountDb,
+              navigatorStateBloc,
+              bottomNavigationStateBloc,
+              showError: true)),
           );
         }
 
@@ -58,12 +66,12 @@ Future<void> Function(NotificationPayload) createHandlePayloadCallback(
   BuildContext context,
   AccountBackgroundDatabaseManager accountBackgroundDb,
   AccountDatabaseManager accountDb,
+  NavigatorStateBloc navigatorStateBloc,
+  BottomNavigationStateBloc bottomNavigatorStateBloc,
   {
     required bool showError,
     void Function(NavigatorStateBloc, NewPageDetails?) navigateToAction = defaultNavigateToAction,
   }) {
-  final navigatorStateBloc = context.read<NavigatorStateBloc>();
-  final bottomNavigatorStateBloc = context.read<BottomNavigationStateBloc>();
   final likeGridInstanceBloc = context.read<LikeGridInstanceManagerBloc>();
 
   return (payload) async {
@@ -122,7 +130,7 @@ Future<NewPageDetails?> handlePayload(
         return null;
       }
 
-      final lastPage = NavigationStateBlocInstance.getInstance().bloc.state.pages.lastOrNull;
+      final lastPage = NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull;
       final info = lastPage?.pageInfo;
       final correctConversatinoAlreadyOpen = info is ConversationPageInfo &&
         info.accountId == profile.uuid;

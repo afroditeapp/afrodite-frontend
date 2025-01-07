@@ -110,7 +110,6 @@ class _ProfileGridState extends State<ProfileGrid> {
 
   void updateIsScrolled(bool isScrolled) {
     BottomNavigationStateBlocInstance.getInstance()
-      .bloc
       .updateIsScrolled(
         isScrolled,
         BottomNavigationScreenId.profiles,

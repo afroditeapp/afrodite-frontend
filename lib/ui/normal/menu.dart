@@ -63,7 +63,6 @@ class _MenuViewState extends State<MenuView> {
 
   void updateIsScrolled(bool isScrolled) {
     BottomNavigationStateBlocInstance.getInstance()
-      .bloc
       .updateIsScrolled(
         isScrolled,
         BottomNavigationScreenId.settings,

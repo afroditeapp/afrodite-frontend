@@ -65,9 +65,9 @@ class NotificationLikeReceived extends AppSingletonNoInit {
   }
 
   bool isLikesUiOpen() {
-    final likesScreenOpen = (NavigationStateBlocInstance.getInstance().bloc.state.pages.length == 1 &&
-      BottomNavigationStateBlocInstance.getInstance().bloc.state.screen == BottomNavigationScreenId.likes) ||
-      (NavigationStateBlocInstance.getInstance().bloc.state.pages.lastOrNull?.pageInfo is LikesPageInfo);
+    final likesScreenOpen = (NavigationStateBlocInstance.getInstance().navigationState.pages.length == 1 &&
+      BottomNavigationStateBlocInstance.getInstance().navigationState.screen == BottomNavigationScreenId.likes) ||
+      (NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo is LikesPageInfo);
     return likesScreenOpen && AppVisibilityProvider.getInstance().isForeground;
   }
 }

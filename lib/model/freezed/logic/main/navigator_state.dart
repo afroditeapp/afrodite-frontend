@@ -20,6 +20,10 @@ class NavigatorStateData with _$NavigatorStateData {
   List<Page<Object?>> getPages() {
     return pages.map((e) => e.page).toList();
   }
+
+  static NavigatorStateData defaultValue() {
+    return NavigatorStateData(pages: UnmodifiableList(PageAndChannel.splashScreen()));
+  }
 }
 
 class PageAndChannel {

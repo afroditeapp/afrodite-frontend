@@ -2,6 +2,7 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/general/notification/state/like_received.dart";
 import "package:app/data/login_repository.dart";
 import "package:app/model/freezed/logic/main/bottom_navigation_state.dart";
+import "package:rxdart/rxdart.dart";
 import 'package:utils/utils.dart';
 
 
@@ -23,7 +24,7 @@ class SetIsTappedAgainValue extends BottomNavigationStateEvent {
   SetIsTappedAgainValue(this.screen, this.value);
 }
 class BottomNavigationStateBloc extends Bloc<BottomNavigationStateEvent, BottomNavigationStateData> {
-  BottomNavigationStateBloc._() : super(BottomNavigationStateData()) {
+  BottomNavigationStateBloc() : super(BottomNavigationStateData()) {
     on<ChangeScreen>((data, emit) {
       final accountBackgroundDb = LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
       if (data.value == BottomNavigationScreenId.likes && accountBackgroundDb != null) {
@@ -107,7 +108,27 @@ class BottomNavigationStateBlocInstance extends AppSingletonNoInit {
     return _instance;
   }
 
-  final bloc = BottomNavigationStateBloc._();
+  final BehaviorSubject<BottomNavigationStateBloc> _latestBloc =
+    BehaviorSubject.seeded(BottomNavigationStateBloc());
+
+  Stream<BottomNavigationStateData> get navigationStateStream => _latestBloc
+    .switchMap((b) => b.stream);
+
+  BottomNavigationStateData get navigationState => _latestBloc.value.state;
+
+  void updateIsScrolled(
+    bool isScrolled,
+    BottomNavigationScreenId screen,
+    bool Function(BottomNavigationStateData) currentIsScrolledGetter,
+  ) {
+    _latestBloc.value.updateIsScrolled(isScrolled, screen, currentIsScrolledGetter);
+  }
+
+  void setLatestBloc(BottomNavigationStateBloc newBloc) {
+    if (_latestBloc.value != newBloc) {
+      _latestBloc.add(newBloc);
+    }
+  }
 }
 
 enum BottomNavigationScreenId {
