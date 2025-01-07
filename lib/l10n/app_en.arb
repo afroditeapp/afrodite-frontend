@@ -1,4 +1,17 @@
 {
+  "account_deletion_pending_screen_time_text": "Account automatic deletion process begins at {p0}",
+  "@account_deletion_pending_screen_time_text": {
+    "description": "Time when account deletion process will begin",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "account_deletion_pending_screen_title": "Account deletion pending",
+  "@account_deletion_pending_screen_title": {
+    "description": "Title for account deletion pending screen"
+  },
   "account_settings_screen_delete_account_action": "Request account deletion",
   "@account_settings_screen_delete_account_action": {
     "description": "Title for delete account action"
@@ -346,6 +359,10 @@
   "generic_cancel": "Cancel",
   "@generic_cancel": {
     "description": "Generic cancel text"
+  },
+  "generic_cancel_question": "Cancel?",
+  "@generic_cancel_question": {
+    "description": "Generic cancel question"
   },
   "generic_close": "Close",
   "@generic_close": {

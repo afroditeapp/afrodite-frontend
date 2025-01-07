@@ -47,6 +47,7 @@
     <string name="generic_data_sync_failed" description="Generic data sync failed">Data sync failed</string>
     <string name="generic_reject_question" description="Generic reject question">Reject?</string>
     <string name="generic_delete_question" description="Generic delete question">Delete?</string>
+    <string name="generic_cancel_question" description="Generic cancel question">Cancel?</string>
     <string name="generic_logout_failed" description="Generic logout failed text">Logout failed</string>
     <string name="generic_edit" description="Generic edit text">Edit</string>
 
@@ -434,6 +435,10 @@
     <string name="profile_statistics_screen_count_woman" description="Text for woman profiles count">Women: %s</string>
     <string name="profile_statistics_screen_count_non_binary" description="Text for non-binary profiles count">Non-binaries: %s</string>
     <string name="profile_statistics_screen_count_bar_chart_tooltip" description="Text for profile bar chart tooltip">Count: %s, Age: %s</string>
+
+    <!-- Account deletion pending screen -->
+    <string name="account_deletion_pending_screen_title" description="Title for account deletion pending screen">Account deletion pending</string>
+    <string name="account_deletion_pending_screen_time_text" description="Time when account deletion process will begin">Account automatic deletion process begins at %s</string>
 
     <!-- Admin features -->
 
