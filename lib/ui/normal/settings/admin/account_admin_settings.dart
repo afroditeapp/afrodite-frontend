@@ -1,6 +1,10 @@
 
 import 'package:app/logic/account/account.dart';
+import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui/normal/menu.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/edit_permissions.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
@@ -35,22 +39,49 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
   }
 
   Widget screenContent(BuildContext context, Permissions permissions) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(padding: EdgeInsets.all(8.0)),
-        hPad(Text(
-          "${widget.entry.name}, ${widget.entry.age}",
-          style: Theme.of(context).textTheme.titleMedium,
-        )),
-        const Padding(padding: EdgeInsets.all(4.0)),
-        hPad(Text(
-          "Account ID: ${widget.entry.uuid.aid}",
-          style: Theme.of(context).textTheme.bodySmall,
-        )),
-        const Padding(padding: EdgeInsets.all(8.0)),
-      ],
+    return BlocBuilder<AccountBloc, AccountBlocData>(
+      builder: (context, state) {
+        final settings = settingsList(context, state.permissions);
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(padding: EdgeInsets.all(8.0)),
+              hPad(Text(
+                "${widget.entry.name}, ${widget.entry.age}",
+                style: Theme.of(context).textTheme.titleMedium,
+              )),
+              const Padding(padding: EdgeInsets.all(4.0)),
+              hPad(Text(
+                "Account ID: ${widget.entry.uuid.aid}",
+                style: Theme.of(context).textTheme.bodySmall,
+              )),
+              const Padding(padding: EdgeInsets.all(8.0)),
+              ...settings.map((setting) => setting.toListTile()),
+            ],
+          ),
+        );
+      }
     );
+  }
+
+  List<Setting> settingsList(BuildContext context, Permissions permissions) {
+    List<Setting> settings = [];
+
+    if (permissions.adminModifyPermissions) {
+      settings.add(Setting.createSetting(Icons.admin_panel_settings, "Edit permissions", () {
+        final pageKey = PageKey();
+        MyNavigator.pushWithKey(
+          context,
+          MaterialPage<void>(child: EditPermissionsScreen(
+            pageKey: pageKey,
+            account: widget.entry.uuid
+          )),
+          pageKey
+        );
+      }));
+    }
+
+    return settings;
   }
 }

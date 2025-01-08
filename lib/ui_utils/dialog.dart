@@ -29,7 +29,7 @@ void showAppAboutDialog(BuildContext context) {
   );
 }
 
-Future<bool?> showConfirmDialog(BuildContext context, String titleText, {String? details, bool yesNoActions = false}) {
+Future<bool?> showConfirmDialog(BuildContext context, String titleText, {String? details, bool yesNoActions = false, bool scrollable = false}) {
   final String negativeActionText;
   final String positiveActionText;
   if (yesNoActions) {
@@ -47,6 +47,7 @@ Future<bool?> showConfirmDialog(BuildContext context, String titleText, {String?
     builder: (context) => AlertDialog(
       title: Text(titleText),
       content: details != null ? Text(details) : null,
+      scrollable: scrollable,
       actions: <Widget>[
         TextButton(
           onPressed: () {
