@@ -165,6 +165,16 @@ extension UnixTimeExtensions on UnixTime {
   UtcDateTime toUtcDateTime() {
     return UtcDateTime.fromUnixEpochMilliseconds(ut * 1000);
   }
+
+  void addSeconds(int seconds) {
+    ut = ut + seconds;
+  }
+}
+
+extension UtcDateTimeExtensions on UtcDateTime {
+  UnixTime toUnixTime() {
+    return UnixTime(ut: toUnixEpochMilliseconds() ~/ 1000);
+  }
 }
 
 extension ContentInfoDetailedExtensions on ContentInfoDetailed {

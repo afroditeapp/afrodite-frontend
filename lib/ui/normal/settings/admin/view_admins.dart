@@ -127,16 +127,16 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
       },
     );
   }
+}
 
-  String enabledPermissions(Permissions permissions) {
-    final permissionsMap = permissions.toJson();
-    permissionsMap.removeWhere((name, value) => value is bool && !value);
-    final permissionsList = permissionsMap.entries.toList();
-    permissionsList.sortBy((v) => v.key);
-    String text = "";
-    for (final v in permissionsList) {
-      text = "$text\n${v.key}";
-    }
-    return text.trim();
+String enabledPermissions(Permissions permissions) {
+  final permissionsMap = permissions.toJson();
+  permissionsMap.removeWhere((name, value) => value is bool && !value);
+  final permissionsList = permissionsMap.entries.toList();
+  permissionsList.sortBy((v) => v.key);
+  String text = "";
+  for (final v in permissionsList) {
+    text = "$text\n${v.key}";
   }
+  return text.trim();
 }

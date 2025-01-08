@@ -4,6 +4,9 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/menu.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/account_private_info.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/ban_account.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/delete_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/edit_permissions.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:database/database.dart';
@@ -68,6 +71,12 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
   List<Setting> settingsList(BuildContext context, Permissions permissions) {
     List<Setting> settings = [];
 
+    if (permissions.adminViewPrivateInfo) {
+      settings.add(Setting.createSetting(Icons.person, "Account private info", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: AccountPrivateInfoScreen(entry: widget.entry)))
+      ));
+    }
+
     if (permissions.adminModifyPermissions) {
       settings.add(Setting.createSetting(Icons.admin_panel_settings, "Edit permissions", () {
         final pageKey = PageKey();
@@ -80,6 +89,18 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
           pageKey
         );
       }));
+    }
+
+    if (permissions.adminBanAccount) {
+      settings.add(Setting.createSetting(Icons.block, "Ban account", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: BanAccountScreen(entry: widget.entry)))
+      ));
+    }
+
+    if (permissions.adminDeleteAccount || permissions.adminRequestAccountDeletion) {
+      settings.add(Setting.createSetting(Icons.delete, "Delete account", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: DeleteAccountScreen(entry: widget.entry)))
+      ));
     }
 
     return settings;
