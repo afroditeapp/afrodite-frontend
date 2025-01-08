@@ -59,13 +59,27 @@ import 'package:app/ui/utils/notification_payload_handler.dart';
 
 final log = Logger("MainStateUiLogic");
 
-class MainStateUiLogic extends StatelessWidget {
+class MainStateUiLogic extends StatefulWidget {
   const MainStateUiLogic({super.key});
+
+  @override
+  State<MainStateUiLogic> createState() => _MainStateUiLogicState();
+}
+
+class _MainStateUiLogicState extends State<MainStateUiLogic> {
+  UniqueKey navigationKey = UniqueKey();
+  MainState? previousState;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainStateBloc, MainState>(
       builder: (context, state) {
+        // Generate new key only when needed
+        if (previousState != state) {
+          previousState = state;
+          navigationKey = UniqueKey();
+        }
+
         final screen = switch (state) {
           MainState.loginRequired => const LoginScreen(),
           MainState.demoAccount => const DemoAccountScreen(),
@@ -213,7 +227,7 @@ class MainStateUiLogic extends StatelessWidget {
 
         return MultiBlocProvider(
           // Create new Blocs when MainState changes
-          key: UniqueKey(),
+          key: navigationKey,
           providers: [
             // Navigation
             BlocProvider(create: (_) => NavigatorStateBloc(blocInitialState)),
