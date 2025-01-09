@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/account/account.dart';
-import 'package:app/logic/account/account_details.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/settings/edit_search_settings.dart';
 import 'package:app/logic/settings/privacy_settings.dart';
@@ -46,12 +45,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       builder: (context, state) {
         List<Setting> settings = [
           Setting.createSetting(Icons.person, context.strings.account_settings_screen_title, () {
-              final accountDetailsBloc = context.read<AccountDetailsBloc>();
-              MyNavigator.push(context, MaterialPage<void>(child:
-                AccountSettingsScreen(
-                  accountDetailsBloc: accountDetailsBloc,
-                )
-              ));
+              openAccountSettings(context);
             }
           ),
           Setting.createSetting(Icons.search, context.strings.search_settings_screen_title, () {

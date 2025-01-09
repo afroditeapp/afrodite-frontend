@@ -6,6 +6,7 @@ import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
+import 'package:app/utils/time.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:app/data/login_repository.dart';
@@ -34,7 +35,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
   final banDaysTextController = TextEditingController();
   final banDetailsController = TextEditingController();
 
-  bool? banned;
+  GetAccountBanTimeResult? data;
 
   bool isLoading = true;
   bool isError = false;
@@ -43,8 +44,8 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
 
   Future<void> _getData() async {
     final result = await api
-      .accountAdmin(
-        (api) => api.getAccountStateAdmin(widget.entry.uuid.aid)
+      .account(
+        (api) => api.getAccountBanTime(widget.entry.uuid.aid)
       ).ok();
 
     if (!context.mounted) {
@@ -60,7 +61,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
     } else {
       setState(() {
         isLoading = false;
-        banned = result.state.banned;
+        data = result;
       });
     }
   }
@@ -82,7 +83,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
   }
 
   Widget screenContent(BuildContext context) {
-    final bannedInfo = banned;
+    final bannedInfo = data;
     if (isLoading) {
       return const Center(
         child: CircularProgressIndicator(),
@@ -98,18 +99,28 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
     }
   }
 
-  Widget showData(BuildContext context, bool bannedInfo, Permissions myPermissions) {
+  Widget showData(BuildContext context, GetAccountBanTimeResult bannedInfo, Permissions myPermissions) {
+    final bannedUntilUnixTime = bannedInfo.bannedUntil;
+    final String? bannedUntil;
+    if (bannedUntilUnixTime != null) {
+      bannedUntil = fullTimeString(bannedUntilUnixTime.toUtcDateTime());
+    } else {
+      bannedUntil = null;
+    }
+    final banningReason = bannedInfo.reasonDetails?.value;
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(padding: EdgeInsets.all(8.0)),
-          if (bannedInfo) hPad(const Text("Banned")),
-          if (!bannedInfo) hPad(const Text("Not banned")),
+          if (bannedUntil != null) hPad(Text("Banned until $bannedUntil")),
+          if (bannedUntil == null) hPad(const Text("Not banned")),
+          if (banningReason != null) const Padding(padding: EdgeInsets.all(8.0)),
+          if (banningReason != null) hPad(Text("Banning reason: $banningReason")),
           const Padding(padding: EdgeInsets.all(8.0)),
-          if (bannedInfo) hPad(unbanWidget(context)),
-          if (!bannedInfo) hPad(banWidget(context)),
+          if (bannedUntil != null) hPad(unbanWidget(context)),
+          if (bannedUntil == null) hPad(banWidget(context)),
           const Padding(padding: EdgeInsets.all(8.0)),
         ],
       ),
@@ -130,10 +141,11 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
           keyboardType: TextInputType.number,
           enableSuggestions: false,
           autocorrect: false,
+          maxLength: 5,
           onChanged: (value) {
             final valueInt = int.tryParse(value);
             setState(() {
-              selectedBanSeconds = valueInt ?? 0;
+              selectedBanSeconds = (valueInt ?? 0) * 60 * 60 * 24;
             });
           },
           inputFormatters: [
@@ -147,6 +159,8 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
             hintText: "Ban reason",
           ),
         ),
+        const Padding(padding: EdgeInsets.all(8.0)),
+        bannedUntilTimePreview(),
         const Padding(padding: EdgeInsets.all(8.0)),
         ElevatedButton(
           onPressed: selectedBanSeconds != null ? () async {
@@ -204,5 +218,16 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
       },
       child: const Text("Unban"),
     );
+  }
+
+  Widget bannedUntilTimePreview() {
+    final seconds = selectedBanSeconds;
+    if (seconds == null) {
+      return const Text("");
+    }
+
+    final time = UtcDateTime.now().add(Duration(seconds: seconds));
+    final timeString = fullTimeString(time);
+    return Text("Banned until: $timeString");
   }
 }

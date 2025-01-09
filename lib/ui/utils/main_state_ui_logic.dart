@@ -202,7 +202,12 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
               child: navigator,
             ),
           ),
-          MainState.accountBanned ||
+          MainState.accountBanned => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => AccountDetailsBloc()),
+            ],
+            child: navigator
+          ),
           MainState.pendingRemoval ||
           MainState.unsupportedClientVersion ||
           MainState.splashScreen => navigator,

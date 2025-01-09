@@ -1,4 +1,26 @@
 {
+  "account_banned_screen_ban_reason": "Ban reason: {p0}",
+  "@account_banned_screen_ban_reason": {
+    "description": "Text for account ban reason",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "account_banned_screen_time_text": "Account automatic unban process begins at {p0}",
+  "@account_banned_screen_time_text": {
+    "description": "Time when account unban process will begin",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "account_banned_screen_title": "Account banned",
+  "@account_banned_screen_title": {
+    "description": "Title for account banned screen"
+  },
   "account_deletion_pending_screen_time_text": "Account automatic deletion process begins at {p0}",
   "@account_deletion_pending_screen_time_text": {
     "description": "Time when account deletion process will begin",

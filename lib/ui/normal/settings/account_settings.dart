@@ -1,5 +1,6 @@
 
 
+import 'package:app/logic/app/navigator_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
@@ -9,12 +10,21 @@ import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 
+void openAccountSettings(BuildContext context) {
+  final accountDetailsBloc = context.read<AccountDetailsBloc>();
+  MyNavigator.push(context, MaterialPage<void>(child:
+    AccountSettingsScreen(
+      accountDetailsBloc: accountDetailsBloc,
+    )
+  ));
+}
+
 class AccountSettingsScreen extends StatefulWidget {
   final AccountDetailsBloc accountDetailsBloc;
   const AccountSettingsScreen({
     required this.accountDetailsBloc,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<AccountSettingsScreen> createState() => _AccountSettingsScreenState();

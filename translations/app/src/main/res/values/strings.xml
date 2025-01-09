@@ -440,6 +440,11 @@
     <string name="account_deletion_pending_screen_title" description="Title for account deletion pending screen">Account deletion pending</string>
     <string name="account_deletion_pending_screen_time_text" description="Time when account deletion process will begin">Account automatic deletion process begins at %s</string>
 
+    <!-- Account banned screen -->
+    <string name="account_banned_screen_title" description="Title for account banned screen">Account banned</string>
+    <string name="account_banned_screen_ban_reason" description="Text for account ban reason">Ban reason: %s</string>
+    <string name="account_banned_screen_time_text" description="Time when account unban process will begin">Account automatic unban process begins at %s</string>
+
     <!-- Admin features -->
 
     <!-- Admin screen -->

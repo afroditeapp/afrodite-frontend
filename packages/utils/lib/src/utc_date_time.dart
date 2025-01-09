@@ -21,4 +21,8 @@ class UtcDateTime {
   Duration difference(UtcDateTime other) {
     return dateTime.difference(other.dateTime);
   }
+
+  UtcDateTime add(Duration duration) {
+    return UtcDateTime._(dateTime.add(duration));
+  }
 }
