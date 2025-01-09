@@ -46,9 +46,10 @@ import 'package:openapi/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
 
 final api_instance = AccountApi();
+final aid = aid_example; // String | 
 
 try {
-    final result = api_instance.getAccountBanTime();
+    final result = api_instance.getAccountBanTime(aid);
     print(result);
 } catch (e) {
     print('Exception when calling AccountApi->getAccountBanTime: $e\n');
@@ -62,7 +63,7 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*AccountApi* | [**getAccountBanTime**](doc//AccountApi.md#getaccountbantime) | **GET** /VWEg82SMW2nbZNsujKsrEXdsYCQ | 
+*AccountApi* | [**getAccountBanTime**](doc//AccountApi.md#getaccountbantime) | **GET** /VWEg82SMW2nbZNsujKsrEXdsYCQ/{aid} | Get account ban time
 *AccountApi* | [**getAccountData**](doc//AccountApi.md#getaccountdata) | **GET** /Ln3_j2LpJIbQABKwnMMhUEtio5k | Get changeable user information to account.
 *AccountApi* | [**getAccountDeletionRequestState**](doc//AccountApi.md#getaccountdeletionrequeststate) | **GET** /xRKw2cu2b8kk8Vkdpo8SdsaFWhQ/{aid} | Get account deletion request state
 *AccountApi* | [**getAccountSetup**](doc//AccountApi.md#getaccountsetup) | **GET** /RNb6qhf_lZU8t6kOm5kQY7Y34ok | Get non-changeable user information to account.

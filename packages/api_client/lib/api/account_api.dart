@@ -16,10 +16,19 @@ class AccountApi {
 
   final ApiClient apiClient;
 
-  /// Performs an HTTP 'GET /VWEg82SMW2nbZNsujKsrEXdsYCQ' operation and returns the [Response].
-  Future<Response> getAccountBanTimeWithHttpInfo() async {
+  /// Get account ban time
+  ///
+  /// # Access - Account owner - Permission [model::Permissions::admin_ban_account]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> getAccountBanTimeWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/VWEg82SMW2nbZNsujKsrEXdsYCQ';
+    final path = r'/VWEg82SMW2nbZNsujKsrEXdsYCQ/{aid}'
+      .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -42,8 +51,15 @@ class AccountApi {
     );
   }
 
-  Future<GetAccountBanTimeResult?> getAccountBanTime() async {
-    final response = await getAccountBanTimeWithHttpInfo();
+  /// Get account ban time
+  ///
+  /// # Access - Account owner - Permission [model::Permissions::admin_ban_account]
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<GetAccountBanTimeResult?> getAccountBanTime(String aid,) async {
+    final response = await getAccountBanTimeWithHttpInfo(aid,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
