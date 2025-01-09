@@ -5,6 +5,7 @@ import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/menu.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/account_private_info.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/admin_content_management.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/ban_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/delete_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/edit_permissions.dart';
@@ -100,6 +101,15 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
     if (permissions.adminDeleteAccount || permissions.adminRequestAccountDeletion) {
       settings.add(Setting.createSetting(Icons.delete, "Delete account", () =>
         MyNavigator.push(context, MaterialPage<void>(child: DeleteAccountScreen(entry: widget.entry)))
+      ));
+    }
+
+    // TODO(prod): Change adminModerateProfileContent to
+    // adminModerateMediaContent
+
+    if (permissions.adminModerateProfileContent) {
+      settings.add(Setting.createSetting(Icons.image, "Admin image management", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: AdminContentManagementScreen(entry: widget.entry)))
       ));
     }
 

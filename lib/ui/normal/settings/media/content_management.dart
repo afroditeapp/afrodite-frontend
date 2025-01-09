@@ -102,7 +102,7 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
     final List<Widget> listWidgets = [];
 
     listWidgets.addAll(
-      content.data.reversed.map((e) => buildAvailableImg(
+      content.data.reversed.map((e) => _buildAvailableImg(
         context,
         accountId,
         e,
@@ -136,7 +136,7 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
   }
 }
 
-Widget buildAvailableImg(
+Widget _buildAvailableImg(
   BuildContext context,
   AccountId accountId,
   ContentInfoDetailed content,
