@@ -72,7 +72,7 @@ class MediaApi {
 
   /// Get list of all media content on the server for one account.
   ///
-  /// # Access  - Own account
+  /// # Access  - Own account - Permission [model::Permissions::admin_moderate_profile_content]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -107,7 +107,7 @@ class MediaApi {
 
   /// Get list of all media content on the server for one account.
   ///
-  /// # Access  - Own account
+  /// # Access  - Own account - Permission [model::Permissions::admin_moderate_profile_content]
   ///
   /// Parameters:
   ///

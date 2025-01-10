@@ -14,9 +14,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
 class AccountPrivateInfoScreen extends StatefulWidget {
-  final ProfileEntry entry;
+  final AccountId accountId;
   const AccountPrivateInfoScreen({
-    required this.entry,
+    required this.accountId,
     super.key,
   });
 
@@ -36,7 +36,7 @@ class _AccountPrivateInfoScreenState extends State<AccountPrivateInfoScreen> {
   Future<void> _getData() async {
     final result = await api
       .accountAdmin(
-        (api) => api.getAccountStateAdmin(widget.entry.uuid.aid)
+        (api) => api.getAccountStateAdmin(widget.accountId.aid)
       ).ok();
 
     if (!context.mounted) {

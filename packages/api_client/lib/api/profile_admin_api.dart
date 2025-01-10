@@ -16,6 +16,63 @@ class ProfileAdminApi {
 
   final ApiClient apiClient;
 
+  /// Get profile age and name
+  ///
+  /// # Access - Permission [model::Permissions::admin_find_account_by_email]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> getProfileAgeAndNameWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/vaT3tB2QTgv7HaJl4pxFaQR7dEQ/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get profile age and name
+  ///
+  /// # Access - Permission [model::Permissions::admin_find_account_by_email]
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<GetProfileAgeAndName?> getProfileAgeAndName(String aid,) async {
+    final response = await getProfileAgeAndNameWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileAgeAndName',) as GetProfileAgeAndName;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'GET /82woXm_Kq9yEtRHP7KAcXkgRWnU' operation and returns the [Response].
   Future<Response> getProfileNamePendingModerationListWithHttpInfo() async {
     // ignore: prefer_const_declarations
@@ -164,6 +221,63 @@ class ProfileAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileTextPendingModerationList',) as GetProfileTextPendingModerationList;
+    
+    }
+    return null;
+  }
+
+  /// Get profile text state
+  ///
+  /// # Access - Permission [model::Permissions::admin_moderate_profile_texts]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> getProfileTextStateWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/zJnMNwOsdHxzZfSNNFzubM-Gess/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get profile text state
+  ///
+  /// # Access - Permission [model::Permissions::admin_moderate_profile_texts]
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<GetProfileTextState?> getProfileTextState(String aid,) async {
+    final response = await getProfileTextStateWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileTextState',) as GetProfileTextState;
     
     }
     return null;

@@ -5,7 +5,6 @@ import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
-import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -14,9 +13,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
 class DeleteAccountScreen extends StatefulWidget {
-  final ProfileEntry entry;
+  final AccountId accountId;
   const DeleteAccountScreen({
-    required this.entry,
+    required this.accountId,
     super.key,
   });
 
@@ -36,7 +35,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
   Future<void> _getData() async {
     final result = await api
       .accountAdmin(
-        (api) => api.getAccountStateAdmin(widget.entry.uuid.aid)
+        (api) => api.getAccountStateAdmin(widget.accountId.aid)
       ).ok();
 
     if (!context.mounted) {
@@ -128,7 +127,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
           final result = await api
             .accountAction(
               (api) => api.postSetAccountDeletionRequestState(
-                widget.entry.uuid.aid,
+                widget.accountId.aid,
                 BooleanSetting(value: true),
               )
             );
@@ -150,7 +149,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
           final result = await api
             .accountAction(
               (api) => api.postSetAccountDeletionRequestState(
-                widget.entry.uuid.aid,
+                widget.accountId.aid,
                 BooleanSetting(value: false),
               )
             );
@@ -172,7 +171,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
           final result = await api
             .accountAdminAction(
               (api) => api.postDeleteAccount(
-                widget.entry.uuid.aid,
+                widget.accountId.aid,
               )
             );
           if (result.isErr()) {

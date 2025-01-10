@@ -16,6 +16,7 @@ class Permissions {
     this.adminBanAccount = false,
     this.adminDeleteAccount = false,
     this.adminDeleteMediaContent = false,
+    this.adminFindAccountByEmail = false,
     this.adminModerateProfileContent = false,
     this.adminModerateProfileNames = false,
     this.adminModerateProfileTexts = false,
@@ -40,6 +41,8 @@ class Permissions {
   bool adminDeleteAccount;
 
   bool adminDeleteMediaContent;
+
+  bool adminFindAccountByEmail;
 
   bool adminModerateProfileContent;
 
@@ -82,6 +85,7 @@ class Permissions {
     other.adminBanAccount == adminBanAccount &&
     other.adminDeleteAccount == adminDeleteAccount &&
     other.adminDeleteMediaContent == adminDeleteMediaContent &&
+    other.adminFindAccountByEmail == adminFindAccountByEmail &&
     other.adminModerateProfileContent == adminModerateProfileContent &&
     other.adminModerateProfileNames == adminModerateProfileNames &&
     other.adminModerateProfileTexts == adminModerateProfileTexts &&
@@ -106,6 +110,7 @@ class Permissions {
     (adminBanAccount.hashCode) +
     (adminDeleteAccount.hashCode) +
     (adminDeleteMediaContent.hashCode) +
+    (adminFindAccountByEmail.hashCode) +
     (adminModerateProfileContent.hashCode) +
     (adminModerateProfileNames.hashCode) +
     (adminModerateProfileTexts.hashCode) +
@@ -125,13 +130,14 @@ class Permissions {
     (adminViewProfileHistory.hashCode);
 
   @override
-  String toString() => 'Permissions[adminBanAccount=$adminBanAccount, adminDeleteAccount=$adminDeleteAccount, adminDeleteMediaContent=$adminDeleteMediaContent, adminModerateProfileContent=$adminModerateProfileContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminModifyPermissions=$adminModifyPermissions, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProfileStatistics=$adminProfileStatistics, adminRequestAccountDeletion=$adminRequestAccountDeletion, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
+  String toString() => 'Permissions[adminBanAccount=$adminBanAccount, adminDeleteAccount=$adminDeleteAccount, adminDeleteMediaContent=$adminDeleteMediaContent, adminFindAccountByEmail=$adminFindAccountByEmail, adminModerateProfileContent=$adminModerateProfileContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminModifyPermissions=$adminModifyPermissions, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProfileStatistics=$adminProfileStatistics, adminRequestAccountDeletion=$adminRequestAccountDeletion, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'admin_ban_account'] = this.adminBanAccount;
       json[r'admin_delete_account'] = this.adminDeleteAccount;
       json[r'admin_delete_media_content'] = this.adminDeleteMediaContent;
+      json[r'admin_find_account_by_email'] = this.adminFindAccountByEmail;
       json[r'admin_moderate_profile_content'] = this.adminModerateProfileContent;
       json[r'admin_moderate_profile_names'] = this.adminModerateProfileNames;
       json[r'admin_moderate_profile_texts'] = this.adminModerateProfileTexts;
@@ -174,6 +180,7 @@ class Permissions {
         adminBanAccount: mapValueOfType<bool>(json, r'admin_ban_account') ?? false,
         adminDeleteAccount: mapValueOfType<bool>(json, r'admin_delete_account') ?? false,
         adminDeleteMediaContent: mapValueOfType<bool>(json, r'admin_delete_media_content') ?? false,
+        adminFindAccountByEmail: mapValueOfType<bool>(json, r'admin_find_account_by_email') ?? false,
         adminModerateProfileContent: mapValueOfType<bool>(json, r'admin_moderate_profile_content') ?? false,
         adminModerateProfileNames: mapValueOfType<bool>(json, r'admin_moderate_profile_names') ?? false,
         adminModerateProfileTexts: mapValueOfType<bool>(json, r'admin_moderate_profile_texts') ?? false,

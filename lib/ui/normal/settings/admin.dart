@@ -91,10 +91,12 @@ class AdminSettingsPage extends StatelessWidget {
             MyNavigator.push(context, const MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: false)),)
           ));
         }
-        if (state.permissions.adminViewPrivateInfo) {
-          settings.add(Setting.createSetting(Icons.account_box, "Open profile", () =>
-            MyNavigator.push(context, const MaterialPage<void>(child: OpenProfileScreen()),)
+        if (state.permissions.adminFindAccountByEmail) {
+          settings.add(Setting.createSetting(Icons.account_box, "Open account admin tools", () =>
+            MyNavigator.push(context, const MaterialPage<void>(child: OpenAccountAdminSettings()),)
           ));
+        }
+        if (state.permissions.adminViewPrivateInfo) {
           settings.add(Setting.createSetting(Icons.admin_panel_settings, "View admins", () =>
             MyNavigator.push(context, const MaterialPage<void>(child: ViewAdminsScreen()),)
           ));

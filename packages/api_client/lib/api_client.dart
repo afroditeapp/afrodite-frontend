@@ -310,6 +310,8 @@ class ApiClient {
           return GetMyProfileResult.fromJson(value);
         case 'GetNewsItemResult':
           return GetNewsItemResult.fromJson(value);
+        case 'GetProfileAgeAndName':
+          return GetProfileAgeAndName.fromJson(value);
         case 'GetProfileContentPendingModerationList':
           return GetProfileContentPendingModerationList.fromJson(value);
         case 'GetProfileContentResult':
@@ -326,6 +328,8 @@ class ApiClient {
           return GetProfileStatisticsResult.fromJson(value);
         case 'GetProfileTextPendingModerationList':
           return GetProfileTextPendingModerationList.fromJson(value);
+        case 'GetProfileTextState':
+          return GetProfileTextState.fromJson(value);
         case 'GetPublicKey':
           return GetPublicKey.fromJson(value);
         case 'GroupValues':

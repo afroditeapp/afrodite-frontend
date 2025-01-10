@@ -7,7 +7,6 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
-import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -18,9 +17,9 @@ import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
 class BanAccountScreen extends StatefulWidget {
-  final ProfileEntry entry;
+  final AccountId accountId;
   const BanAccountScreen({
-    required this.entry,
+    required this.accountId,
     super.key,
   });
 
@@ -45,7 +44,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
   Future<void> _getData() async {
     final result = await api
       .account(
-        (api) => api.getAccountBanTime(widget.entry.uuid.aid)
+        (api) => api.getAccountBanTime(widget.accountId.aid)
       ).ok();
 
     if (!context.mounted) {
@@ -179,7 +178,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
                 .accountAdminAction(
                   (api) => api.postSetBanState(
                     SetAccountBanState(
-                      account: widget.entry.uuid,
+                      account: widget.accountId,
                       banUntil: UtcDateTime.now().toUnixTime()..addSeconds(seconds),
                       reasonDetails: banDetails,
                     ),
@@ -206,7 +205,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
             .accountAdminAction(
               (api) => api.postSetBanState(
                 SetAccountBanState(
-                  account: widget.entry.uuid,
+                  account: widget.accountId,
                 ),
               )
             );

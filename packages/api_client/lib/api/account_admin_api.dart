@@ -103,7 +103,7 @@ class AccountAdminApi {
 
   /// Get account ID from email
   ///
-  /// # Access  Permission [model_account::Permissions::admin_view_private_info] is required.
+  /// # Access  Permission [model_account::Permissions::admin_find_account_by_email] is required.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -138,7 +138,7 @@ class AccountAdminApi {
 
   /// Get account ID from email
   ///
-  /// # Access  Permission [model_account::Permissions::admin_view_private_info] is required.
+  /// # Access  Permission [model_account::Permissions::admin_find_account_by_email] is required.
   ///
   /// Parameters:
   ///

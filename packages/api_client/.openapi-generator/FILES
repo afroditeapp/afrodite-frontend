@@ -85,6 +85,7 @@ lib/model/get_initial_profile_age_info_result.dart
 lib/model/get_media_content_result.dart
 lib/model/get_my_profile_result.dart
 lib/model/get_news_item_result.dart
+lib/model/get_profile_age_and_name.dart
 lib/model/get_profile_content_pending_moderation_list.dart
 lib/model/get_profile_content_result.dart
 lib/model/get_profile_filtering_settings.dart
@@ -93,6 +94,7 @@ lib/model/get_profile_result.dart
 lib/model/get_profile_statistics_history_result.dart
 lib/model/get_profile_statistics_result.dart
 lib/model/get_profile_text_pending_moderation_list.dart
+lib/model/get_profile_text_state.dart
 lib/model/get_public_key.dart
 lib/model/group_values.dart
 lib/model/initial_content_moderation_completed_result.dart

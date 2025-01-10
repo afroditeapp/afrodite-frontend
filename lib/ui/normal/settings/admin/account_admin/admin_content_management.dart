@@ -11,7 +11,6 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/view_image_screen.dart';
-import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -25,9 +24,9 @@ class RequiredData {
 }
 
 class AdminContentManagementScreen extends StatefulWidget {
-  final ProfileEntry entry;
+  final AccountId accountId;
   const AdminContentManagementScreen({
-    required this.entry,
+    required this.accountId,
     super.key,
   });
 
@@ -47,7 +46,7 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
   Future<void> _getData() async {
     final result = await api
       .media(
-        (api) => api.getAllAccountMediaContent(widget.entry.uuid.aid)
+        (api) => api.getAllAccountMediaContent(widget.accountId.aid)
       ).ok();
 
     if (!context.mounted) {
@@ -95,7 +94,7 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
     } else {
       return BlocBuilder<AccountBloc, AccountBlocData>(
         builder: (context, state) {
-          return selectContentPage(context, widget.entry.uuid, info.accountContent, state.permissions);
+          return selectContentPage(context, widget.accountId, info.accountContent, state.permissions);
         }
       );
     }

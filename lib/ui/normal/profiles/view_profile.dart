@@ -102,7 +102,11 @@ class ViewProfilePage extends StatelessWidget {
                     ) {
                       return MenuItemButton(
                         onPressed: () {
-                          MyNavigator.push(context, MaterialPage<void>(child: AccountAdminSettingsScreen(entry: initialProfile)));
+                          MyNavigator.push(context, MaterialPage<void>(child: AccountAdminSettingsScreen(
+                            accountId: initialProfile.uuid,
+                            age: initialProfile.age,
+                            name: initialProfile.name,
+                          )));
                         },
                         child: const Text("Admin"),
                       );

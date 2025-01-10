@@ -1,24 +1,23 @@
 
 
-import 'package:app/data/profile_repository.dart';
-import 'package:app/ui/normal/profiles/view_profile.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 
-class OpenProfileScreen extends StatefulWidget {
-  const OpenProfileScreen({super.key});
+class OpenAccountAdminSettings extends StatefulWidget {
+  const OpenAccountAdminSettings({super.key});
 
   @override
-  State<OpenProfileScreen> createState() => _OpenProfileScreenState();
+  State<OpenAccountAdminSettings> createState() => _OpenAccountAdminSettingsState();
 }
 
-class _OpenProfileScreenState extends State<OpenProfileScreen> {
+class _OpenAccountAdminSettingsState extends State<OpenAccountAdminSettings> {
   final TextEditingController _emailController = TextEditingController();
   final api = LoginRepository.getInstance().repositories.api;
-  final profile = LoginRepository.getInstance().repositories.profile;
 
   @override
   void initState() {
@@ -29,7 +28,7 @@ class _OpenProfileScreenState extends State<OpenProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Open profile"),
+        title: const Text("Open account admin settings"),
       ),
       body: screenContent(context),
     );
@@ -63,18 +62,26 @@ class _OpenProfileScreenState extends State<OpenProfileScreen> {
         } else if (aid == null) {
           showSnackBar("Email not found");
         } else {
-          final entry = await profile.getProfile(aid);
+          final ageAndName = await api
+            .profileAdmin(
+              (api) => api.getProfileAgeAndName(aid.aid)
+            ).ok();
+
             if (!context.mounted) {
               return;
             }
-          if (entry == null) {
-            showSnackBar("Get profile failed");
+          if (ageAndName == null) {
+            showSnackBar("Get profile age and name failed");
           } else {
-            openProfileView(context, entry, null, ProfileRefreshPriority.low);
+            await MyNavigator.push(context, MaterialPage<void>(child: AccountAdminSettingsScreen(
+              accountId: aid,
+              age: ageAndName.age,
+              name: ageAndName.name,
+            )));
           }
         }
       },
-      child: const Text("Open profile"),
+      child: const Text("Open"),
     );
 
     return Column(
