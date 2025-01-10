@@ -13,6 +13,7 @@ import 'package:app/ui/normal/settings/admin/account_admin/admin_content_managem
 import 'package:app/ui/normal/settings/admin/account_admin/ban_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/delete_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/edit_permissions.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_text.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -144,6 +145,12 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
     if (permissions.adminModerateProfileContent) {
       settings.add(Setting.createSetting(Icons.image, "Admin image management", () =>
         MyNavigator.push(context, MaterialPage<void>(child: AdminContentManagementScreen(accountId: widget.accountId)))
+      ));
+    }
+
+    if (permissions.adminModerateProfileTexts) {
+      settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile text", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: ModerateSingleProfileTextScreen(accountId: widget.accountId)))
       ));
     }
 
