@@ -1,7 +1,7 @@
 
 
 import 'package:app/ui/normal/settings/admin/moderate_profile_texts.dart';
-import 'package:app/ui/normal/settings/admin/open_profile.dart';
+import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
