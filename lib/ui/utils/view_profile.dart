@@ -54,7 +54,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-
+        final showProfileText = widget.profile.profileText.trim().isNotEmpty;
         return SingleChildScrollView(
           child: Column(
             children: [
@@ -67,12 +67,13 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
                   showNonAcceptedImages: widget.profile is MyProfileEntry,
                 ),
               ),
-              const Padding(padding: EdgeInsets.all(8)),
+              const Padding(padding: EdgeInsets.only(top: 16)),
               title(context),
-              const Padding(padding: EdgeInsets.only(top: 8)),
-              lastSeenTime(context),
-              profileText(context),
-              const Padding(padding: EdgeInsets.all(8)),
+              if (!isMyProfile()) const Padding(padding: EdgeInsets.only(top: 8)),
+              if (!isMyProfile()) lastSeenTime(context),
+              const Padding(padding: EdgeInsets.only(top: 16)),
+              if (showProfileText) profileText(context),
+              if (showProfileText) const Padding(padding: EdgeInsets.only(top: 16)),
               attributes(),
               const Padding(padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA)),
               // Zero sized widgets
@@ -182,7 +183,6 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
 
     return Padding(
       padding: EdgeInsets.only(
-        top: 8,
         left: COMMON_SCREEN_EDGE_PADDING,
         right: rightPadding,
       ),
@@ -506,11 +506,8 @@ class AttributeList extends StatelessWidget {
       attributeWidgets.removeLast();
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Column(
-        children: attributeWidgets,
-      ),
+    return Column(
+      children: attributeWidgets,
     );
   }
 
