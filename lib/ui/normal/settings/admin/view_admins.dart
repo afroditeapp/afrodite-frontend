@@ -1,18 +1,17 @@
 
 
-import 'package:app/data/profile_repository.dart';
 import 'package:app/localizations.dart';
-import 'package:app/ui/normal/profiles/view_profile.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:collection/collection.dart';
-import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:openapi/api.dart';
 
-typedef ViewAdminsData = List<(ProfileEntry, Permissions)>;
+typedef ViewAdminsData = List<(AccountId, GetProfileAgeAndName, Permissions)>;
 
 class ViewAdminsScreen extends StatefulWidget {
   const ViewAdminsScreen({super.key});
@@ -23,7 +22,6 @@ class ViewAdminsScreen extends StatefulWidget {
 
 class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
   final api = LoginRepository.getInstance().repositories.api;
-  final profile = LoginRepository.getInstance().repositories.profile;
 
   Future<ViewAdminsData> _getData() async {
     final result = await api
@@ -38,11 +36,15 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
       showSnackBar("Get admins failed");
     } else {
       for (final a in admins) {
-        final entry = await profile.getProfile(a.aid);
-        if (entry == null) {
-          showSnackBar("Get profile failed");
+        final ageAndName = await api
+          .profileAdmin(
+            (api) => api.getProfileAgeAndName(a.aid.aid)
+          ).ok();
+
+        if (ageAndName == null) {
+          showSnackBar("Get profile age and name failed");
         } else {
-          data.add((entry, a.permissions));
+          data.add((a.aid, ageAndName, a.permissions));
         }
       }
     }
@@ -87,12 +89,16 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
     );
   }
 
-  Widget openProfileButton(BuildContext context, ProfileEntry profile) {
+  Widget openAccountAdminSettings(BuildContext context, AccountId accountId, GetProfileAgeAndName ageAndName) {
     return ElevatedButton(
-      onPressed: () async {
-        openProfileView(context, profile, null, ProfileRefreshPriority.low);
+      onPressed: () {
+         MyNavigator.push(context, MaterialPage<void>(child: AccountAdminSettingsScreen(
+            accountId: accountId,
+            age: ageAndName.age,
+            name: ageAndName.name,
+          )));
       },
-      child: const Text("Open profile"),
+      child: const Text("Open admin settings"),
     );
   }
 
@@ -100,7 +106,7 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
     return ListView.builder(
       itemCount: data.length,
       itemBuilder: (context, i) {
-        final (entry, permissions) = data[i];
+        final (accountId, ageAndName, permissions) = data[i];
 
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -111,12 +117,12 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
               Row(
                 children: [
                   Text(
-                    "${entry.name}, ${entry.age}",
+                    "${ageAndName.name}, ${ageAndName.age}",
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   const Spacer(),
                   const Padding(padding: EdgeInsets.all(8.0)),
-                  openProfileButton(context, entry),
+                  openAccountAdminSettings(context, accountId, ageAndName),
                 ],
               )
             ),

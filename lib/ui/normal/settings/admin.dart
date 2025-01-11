@@ -109,7 +109,7 @@ class AdminSettingsPage extends StatelessWidget {
         MyNavigator.push(context, const MaterialPage<void>(child: OpenAccountAdminSettings()),)
       ));
     }
-    if (permissions.adminViewPrivateInfo) {
+    if (permissions.adminViewPermissions) {
       settings.add(Setting.createSetting(Icons.admin_panel_settings, "View admins", () =>
         MyNavigator.push(context, const MaterialPage<void>(child: ViewAdminsScreen()),)
       ));
@@ -124,7 +124,6 @@ class AdminSettingsPermissions {
   bool get adminModerateProfileTexts => _permissions.adminModerateProfileTexts;
   bool get adminModerateProfileNames => _permissions.adminModerateProfileNames;
   bool get adminViewPermissions => _permissions.adminViewPermissions;
-  bool get adminViewPrivateInfo => _permissions.adminViewPrivateInfo;
   bool get adminServerMaintenanceRebootBackend => _permissions.adminServerMaintenanceRebootBackend;
   bool get adminServerMaintenanceSaveBackendConfig => _permissions.adminServerMaintenanceSaveBackendConfig;
   bool get adminServerMaintenanceViewBackendConfig => _permissions.adminServerMaintenanceViewBackendConfig;
@@ -139,7 +138,6 @@ class AdminSettingsPermissions {
       adminModerateProfileTexts ||
       adminModerateProfileNames ||
       adminViewPermissions ||
-      adminViewPrivateInfo ||
       adminServerMaintenanceRebootBackend ||
       adminServerMaintenanceSaveBackendConfig ||
       adminServerMaintenanceViewBackendConfig ||
