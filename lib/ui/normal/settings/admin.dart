@@ -27,81 +27,14 @@ class AdminSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(context.strings.admin_settings_title)),
-      body: settingsList(context),
+      body: settingsListWidget(context),
     );
   }
 
-  Widget settingsList(BuildContext context) {
+  Widget settingsListWidget(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
-        List<Setting> settings = [];
-
-        if (state.permissions.adminModerateProfileContent) {
-          settings.add(Setting.createSetting(Icons.image, "Moderate images (initial moderation, bot and human)", () =>
-            MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.initialMediaModeration, showContentWhichBotsCanModerate: true)),)
-          ));
-          settings.add(Setting.createSetting(Icons.image, "Moderate images (initial moderation, human)", () =>
-            MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.initialMediaModeration, showContentWhichBotsCanModerate: false)),)
-          ));
-          settings.add(Setting.createSetting(Icons.image, "Moderate images (normal, bot and human)", () =>
-            MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: true)),)
-          ));
-          settings.add(Setting.createSetting(Icons.image, "Moderate images (normal, human)", () =>
-            MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: false)),)
-          ));
-        }
-        if (state.permissions.adminServerMaintenanceRebootBackend ||
-            state.permissions.adminServerMaintenanceSaveBackendConfig ||
-            state.permissions.adminServerMaintenanceViewBackendConfig) {
-          settings.add(Setting.createSetting(Icons.settings, "Configure backend", () =>
-            MyNavigator.push(context, MaterialPage<void>(child: const ConfigureBackendPage()),)
-          ));
-        }
-        if (state.permissions.adminServerMaintenanceViewInfo) {
-          settings.add(Setting.createSetting(Icons.info_outline, "Server system info", () =>
-            MyNavigator.push(context, MaterialPage<void>(child: const ServerSystemInfoPage()),)
-          ));
-        }
-        if (state.permissions.adminServerMaintenanceViewInfo &&
-            state.permissions.adminServerMaintenanceUpdateSoftware) {
-          settings.add(Setting.createSetting(Icons.system_update_alt, "Server software update", () =>
-            MyNavigator.push(context, MaterialPage<void>(child: const ServerSoftwareUpdatePage()),)
-          ));
-        }
-        if (state.permissions.adminServerMaintenanceViewInfo) {
-          settings.add(Setting.createSetting(Icons.query_stats, "View server perf data", () =>
-            MyNavigator.push(context, MaterialPage<void>(child: const ViewPerfDataPage()))
-          ));
-        }
-        if (state.permissions.adminProfileStatistics) {
-          settings.add(Setting.createSetting(Icons.query_stats, context.strings.profile_statistics_history_screen_title, () =>
-            openProfileStatisticsHistoryScreen(context),
-          ));
-        }
-        if (state.permissions.adminModerateProfileNames) {
-          settings.add(Setting.createSetting(Icons.text_fields, context.strings.moderate_profile_names_screen_title, () =>
-            openProfileNameModerationScreen(context),
-          ));
-        }
-        if (state.permissions.adminModerateProfileTexts) {
-          settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile texts (bot and human)", () =>
-            MyNavigator.push(context, const MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: true)),)
-          ));
-          settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile texts (human)", () =>
-            MyNavigator.push(context, const MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: false)),)
-          ));
-        }
-        if (state.permissions.adminFindAccountByEmail) {
-          settings.add(Setting.createSetting(Icons.account_box, "Open account admin tools", () =>
-            MyNavigator.push(context, const MaterialPage<void>(child: OpenAccountAdminSettings()),)
-          ));
-        }
-        if (state.permissions.adminViewPrivateInfo) {
-          settings.add(Setting.createSetting(Icons.admin_panel_settings, "View admins", () =>
-            MyNavigator.push(context, const MaterialPage<void>(child: ViewAdminsScreen()),)
-          ));
-        }
-
+        List<Setting> settings = settingsList(context, AdminSettingsPermissions(state.permissions));
         return SingleChildScrollView(
           child: Column(
             children: [
@@ -111,5 +44,108 @@ class AdminSettingsPage extends StatelessWidget {
         );
       }
     );
+  }
+
+  List<Setting> settingsList(BuildContext context, AdminSettingsPermissions permissions) {
+    List<Setting> settings = [];
+
+    if (permissions.adminModerateMediaContent) {
+      settings.add(Setting.createSetting(Icons.image, "Moderate images (initial moderation, bot and human)", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.initialMediaModeration, showContentWhichBotsCanModerate: true)),)
+      ));
+      settings.add(Setting.createSetting(Icons.image, "Moderate images (initial moderation, human)", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.initialMediaModeration, showContentWhichBotsCanModerate: false)),)
+      ));
+      settings.add(Setting.createSetting(Icons.image, "Moderate images (normal, bot and human)", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: true)),)
+      ));
+      settings.add(Setting.createSetting(Icons.image, "Moderate images (normal, human)", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: false)),)
+      ));
+    }
+    if (permissions.adminServerMaintenanceRebootBackend ||
+        permissions.adminServerMaintenanceSaveBackendConfig ||
+        permissions.adminServerMaintenanceViewBackendConfig) {
+      settings.add(Setting.createSetting(Icons.settings, "Configure backend", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: const ConfigureBackendPage()),)
+      ));
+    }
+    if (permissions.adminServerMaintenanceViewInfo) {
+      settings.add(Setting.createSetting(Icons.info_outline, "Server system info", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: const ServerSystemInfoPage()),)
+      ));
+    }
+    if (permissions.adminServerMaintenanceViewInfo &&
+        permissions.adminServerMaintenanceUpdateSoftware) {
+      settings.add(Setting.createSetting(Icons.system_update_alt, "Server software update", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: const ServerSoftwareUpdatePage()),)
+      ));
+    }
+    if (permissions.adminServerMaintenanceViewInfo) {
+      settings.add(Setting.createSetting(Icons.query_stats, "View server perf data", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: const ViewPerfDataPage()))
+      ));
+    }
+    if (permissions.adminProfileStatistics) {
+      settings.add(Setting.createSetting(Icons.query_stats, context.strings.profile_statistics_history_screen_title, () =>
+        openProfileStatisticsHistoryScreen(context),
+      ));
+    }
+    if (permissions.adminModerateProfileNames) {
+      settings.add(Setting.createSetting(Icons.text_fields, context.strings.moderate_profile_names_screen_title, () =>
+        openProfileNameModerationScreen(context),
+      ));
+    }
+    if (permissions.adminModerateProfileTexts) {
+      settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile texts (bot and human)", () =>
+        MyNavigator.push(context, const MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: true)),)
+      ));
+      settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile texts (human)", () =>
+        MyNavigator.push(context, const MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: false)),)
+      ));
+    }
+    if (permissions.adminFindAccountByEmail) {
+      settings.add(Setting.createSetting(Icons.account_box, "Open account admin tools", () =>
+        MyNavigator.push(context, const MaterialPage<void>(child: OpenAccountAdminSettings()),)
+      ));
+    }
+    if (permissions.adminViewPrivateInfo) {
+      settings.add(Setting.createSetting(Icons.admin_panel_settings, "View admins", () =>
+        MyNavigator.push(context, const MaterialPage<void>(child: ViewAdminsScreen()),)
+      ));
+    }
+    return settings;
+  }
+}
+
+class AdminSettingsPermissions {
+  final Permissions _permissions;
+  bool get adminModerateMediaContent => _permissions.adminModerateMediaContent;
+  bool get adminModerateProfileTexts => _permissions.adminModerateProfileTexts;
+  bool get adminModerateProfileNames => _permissions.adminModerateProfileNames;
+  bool get adminViewPermissions => _permissions.adminViewPermissions;
+  bool get adminViewPrivateInfo => _permissions.adminViewPrivateInfo;
+  bool get adminServerMaintenanceRebootBackend => _permissions.adminServerMaintenanceRebootBackend;
+  bool get adminServerMaintenanceSaveBackendConfig => _permissions.adminServerMaintenanceSaveBackendConfig;
+  bool get adminServerMaintenanceViewBackendConfig => _permissions.adminServerMaintenanceViewBackendConfig;
+  bool get adminServerMaintenanceViewInfo => _permissions.adminServerMaintenanceViewInfo;
+  bool get adminServerMaintenanceUpdateSoftware => _permissions.adminServerMaintenanceUpdateSoftware;
+  bool get adminProfileStatistics => _permissions.adminProfileStatistics;
+  bool get adminFindAccountByEmail => _permissions.adminFindAccountByEmail;
+  AdminSettingsPermissions(this._permissions);
+
+  bool somePermissionEnabled() {
+    return adminModerateMediaContent ||
+      adminModerateProfileTexts ||
+      adminModerateProfileNames ||
+      adminViewPermissions ||
+      adminViewPrivateInfo ||
+      adminServerMaintenanceRebootBackend ||
+      adminServerMaintenanceSaveBackendConfig ||
+      adminServerMaintenanceViewBackendConfig ||
+      adminServerMaintenanceViewInfo ||
+      adminServerMaintenanceUpdateSoftware ||
+      adminProfileStatistics ||
+      adminFindAccountByEmail;
   }
 }

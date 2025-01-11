@@ -18,7 +18,6 @@ import 'package:app/localizations.dart';
 import 'package:app/ui_utils/app_bar/common_actions.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
-import 'package:app/utils/api.dart';
 
 class MenuView extends BottomNavigationScreen {
   const MenuView({Key? key}) : super(key: key);
@@ -104,7 +103,7 @@ class _MenuViewState extends State<MenuView> {
         ];
 
         // TODO(prod): Remove/hide admin settings from production build?
-        if (state.permissions.adminSettingsVisible()) {
+        if (AdminSettingsPermissions(state.permissions).somePermissionEnabled()) {
           settings.add(Setting.createSetting(Icons.admin_panel_settings, context.strings.admin_settings_title, () =>
             MyNavigator.push(context, const MaterialPage<void>(child: AdminSettingsPage()))
           ));

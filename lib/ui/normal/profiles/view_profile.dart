@@ -89,17 +89,8 @@ class ViewProfilePage extends StatelessWidget {
                 }),
                 BlocBuilder<AccountBloc, AccountBlocData>(
                   builder: (_, state) {
-                    final p = state.permissions;
-                    if (
-                      p.adminBanAccount ||
-                      p.adminDeleteAccount ||
-                      p.adminDeleteMediaContent ||
-                      p.adminModerateProfileContent ||
-                      p.adminModerateProfileTexts ||
-                      p.adminModifyPermissions ||
-                      p.adminRequestAccountDeletion ||
-                      p.adminViewPrivateInfo
-                    ) {
+                    final p = AccountAdminSettingsPermissions(state.permissions);
+                    if (p.somePermissionEnabled()) {
                       return MenuItemButton(
                         onPressed: () {
                           MyNavigator.push(context, MaterialPage<void>(child: AccountAdminSettingsScreen(

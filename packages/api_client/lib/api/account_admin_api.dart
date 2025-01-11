@@ -160,7 +160,7 @@ class AccountAdminApi {
 
   /// Get [model::Account] for specific account.
   ///
-  /// # Access  Permission [model_account::Permissions::admin_view_private_info] is required.
+  /// # Access  Permission [model::Permissions::admin_view_private_info] is required.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -195,7 +195,7 @@ class AccountAdminApi {
 
   /// Get [model::Account] for specific account.
   ///
-  /// # Access  Permission [model_account::Permissions::admin_view_private_info] is required.
+  /// # Access  Permission [model::Permissions::admin_view_private_info] is required.
   ///
   /// Parameters:
   ///
@@ -217,7 +217,7 @@ class AccountAdminApi {
 
   /// Get all admins
   ///
-  /// # Access  Permission [model_account::Permissions::admin_view_private_info] is required.
+  /// # Access  Permission [model_account::Permissions::admin_view_permissions] is required.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getAllAdminsWithHttpInfo() async {
@@ -247,7 +247,7 @@ class AccountAdminApi {
 
   /// Get all admins
   ///
-  /// # Access  Permission [model_account::Permissions::admin_view_private_info] is required.
+  /// # Access  Permission [model_account::Permissions::admin_view_permissions] is required.
   Future<GetAllAdminsResult?> getAllAdmins() async {
     final response = await getAllAdminsWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -258,6 +258,63 @@ class AccountAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetAllAdminsResult',) as GetAllAdminsResult;
+    
+    }
+    return null;
+  }
+
+  /// Get [model::Permissions] for specific account.
+  ///
+  /// # Access  Permission [model::Permissions::admin_view_permissions] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> getPermissionsWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/gNXvEk_GxY-Rj3l4Ja9T8Gh3BHk/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get [model::Permissions] for specific account.
+  ///
+  /// # Access  Permission [model::Permissions::admin_view_permissions] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Permissions?> getPermissions(String aid,) async {
+    final response = await getPermissionsWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Permissions',) as Permissions;
     
     }
     return null;

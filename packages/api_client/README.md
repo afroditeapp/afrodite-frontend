@@ -93,6 +93,7 @@ Class | Method | HTTP request | Description
 *AccountAdminApi* | [**getAccountIdFromEmail**](doc//AccountAdminApi.md#getaccountidfromemail) | **GET** /QOWhJ4V6cg9BzbwLCnopDKA6eEM/{email} | Get account ID from email
 *AccountAdminApi* | [**getAccountStateAdmin**](doc//AccountAdminApi.md#getaccountstateadmin) | **GET** /SJd6qnB7ZOLWObvYpZvSEAQlV9E/{aid} | Get [model::Account] for specific account.
 *AccountAdminApi* | [**getAllAdmins**](doc//AccountAdminApi.md#getalladmins) | **GET** /S08JTRmVrgj4MoI2AYsbMMcfpoU | Get all admins
+*AccountAdminApi* | [**getPermissions**](doc//AccountAdminApi.md#getpermissions) | **GET** /gNXvEk_GxY-Rj3l4Ja9T8Gh3BHk/{aid} | Get [model::Permissions] for specific account.
 *AccountAdminApi* | [**postCreateNewsItem**](doc//AccountAdminApi.md#postcreatenewsitem) | **POST** /XEss8YDw9lPgwKoH6K9THZIF_N4 | 
 *AccountAdminApi* | [**postDeleteAccount**](doc//AccountAdminApi.md#postdeleteaccount) | **POST** /bdvzsZZOVVO89-enOb3tFnpU7yk/{aid} | Delete account instantly
 *AccountAdminApi* | [**postSetBanState**](doc//AccountAdminApi.md#postsetbanstate) | **POST** /R5G1j887_zSwcgInJG5Y7mz73nE | Ban or unban account

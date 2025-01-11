@@ -73,14 +73,6 @@ extension ProfileAttributeFilterValueUpdateExtensions on ProfileAttributeFilterV
   }
 }
 
-extension PermissionsExtensions on Permissions {
-  bool adminSettingsVisible() {
-    // TODO(prod): Add missing permissions once
-    // capability properies are non-nullable
-    return adminModerateProfileContent;
-  }
-}
-
 extension SearchGroupsExtensions on SearchGroups {
   Gender? toGender() {
     if (manForMan || manForWoman || manForNonBinary) {

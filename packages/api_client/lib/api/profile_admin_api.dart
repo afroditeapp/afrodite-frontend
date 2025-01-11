@@ -324,7 +324,7 @@ class ProfileAdminApi {
 
   /// Rejected category and details can be set only when the text is rejected.
   ///
-  /// This route will fail if the text is already moderated or the users's profile text is not the same text that was moderated.
+  /// This route will fail if the users's profile text is empty or it is not the same text that was moderated.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -358,7 +358,7 @@ class ProfileAdminApi {
 
   /// Rejected category and details can be set only when the text is rejected.
   ///
-  /// This route will fail if the text is already moderated or the users's profile text is not the same text that was moderated.
+  /// This route will fail if the users's profile text is empty or it is not the same text that was moderated.
   ///
   /// Parameters:
   ///

@@ -56,7 +56,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
   Widget screenContent(BuildContext context, Permissions permissions) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
-        final settings = settingsList(context, state.permissions);
+        final settings = settingsList(context, AccountAdminSettingsPermissions(state.permissions));
         return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +95,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
     openProfileView(context, entry, null, ProfileRefreshPriority.low);
   }
 
-  List<Setting> settingsList(BuildContext context, Permissions permissions) {
+  List<Setting> settingsList(BuildContext context, AccountAdminSettingsPermissions permissions) {
     List<Setting> settings = [];
 
     String showProfileTitle;
@@ -113,7 +113,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       ));
     }
 
-    if (permissions.adminModifyPermissions) {
+    if (permissions.adminViewPermissions && permissions.adminModifyPermissions) {
       settings.add(Setting.createSetting(Icons.admin_panel_settings, "Edit permissions", () {
         final pageKey = PageKey();
         MyNavigator.pushWithKey(
@@ -139,10 +139,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       ));
     }
 
-    // TODO(prod): Change adminModerateProfileContent to
-    // adminModerateMediaContent
-
-    if (permissions.adminModerateProfileContent) {
+    if (permissions.adminModerateMediaContent) {
       settings.add(Setting.createSetting(Icons.image, "Admin image management", () =>
         MyNavigator.push(context, MaterialPage<void>(child: AdminContentManagementScreen(accountId: widget.accountId)))
       ));
@@ -155,5 +152,31 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
     }
 
     return settings;
+  }
+}
+
+class AccountAdminSettingsPermissions {
+  final Permissions _permissions;
+  bool get adminModifyPermissions => _permissions.adminModifyPermissions;
+  bool get adminModerateMediaContent => _permissions.adminModerateMediaContent;
+  bool get adminModerateProfileTexts => _permissions.adminModerateProfileTexts;
+  bool get adminDeleteAccount => _permissions.adminDeleteAccount;
+  bool get adminRequestAccountDeletion => _permissions.adminRequestAccountDeletion;
+  bool get adminBanAccount => _permissions.adminBanAccount;
+  bool get adminViewAllProfiles => _permissions.adminViewAllProfiles;
+  bool get adminViewPermissions => _permissions.adminViewPermissions;
+  bool get adminViewPrivateInfo => _permissions.adminViewPrivateInfo;
+  AccountAdminSettingsPermissions(this._permissions);
+
+  bool somePermissionEnabled() {
+    return adminModifyPermissions ||
+      adminModerateMediaContent ||
+      adminModerateProfileTexts ||
+      adminDeleteAccount ||
+      adminRequestAccountDeletion ||
+      adminBanAccount ||
+      adminViewAllProfiles ||
+      adminViewPermissions ||
+      adminViewPrivateInfo;
   }
 }
