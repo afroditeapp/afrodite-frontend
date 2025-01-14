@@ -1066,7 +1066,7 @@ class AccountApi {
   /// * [SignInWithLoginInfo] signInWithLoginInfo (required):
   Future<Response> postSignInWithLoginWithHttpInfo(SignInWithLoginInfo signInWithLoginInfo,) async {
     // ignore: prefer_const_declarations
-    final path = r'/ijts6B4AAg_6Dyjhaw85iBnw5Bo';
+    final path = r'/account_api/sign_in_with_login';
 
     // ignore: prefer_final_locals
     Object? postBody = signInWithLoginInfo;

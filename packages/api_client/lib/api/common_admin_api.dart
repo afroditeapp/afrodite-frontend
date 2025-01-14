@@ -325,52 +325,6 @@ class CommonAdminApi {
     }
   }
 
-  /// Request building new software from manager instance.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [SoftwareOptions] softwareOptions (required):
-  Future<Response> postRequestBuildSoftwareWithHttpInfo(SoftwareOptions softwareOptions,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/vGQvKiH7zbpopxyScZILldwiCsg';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-      queryParams.addAll(_queryParams('', 'software_options', softwareOptions));
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Request building new software from manager instance.
-  ///
-  /// Parameters:
-  ///
-  /// * [SoftwareOptions] softwareOptions (required):
-  Future<void> postRequestBuildSoftware(SoftwareOptions softwareOptions,) async {
-    final response = await postRequestBuildSoftwareWithHttpInfo(softwareOptions,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
   /// Request restarting or reseting backend through app-manager instance.
   ///
   /// # Permissions Requires admin_server_maintenance_restart_backend. Also requires admin_server_maintenance_reset_data if reset_data is true.

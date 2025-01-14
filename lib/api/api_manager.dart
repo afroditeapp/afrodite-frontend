@@ -248,7 +248,7 @@ String addWebSocketRoutePathToAddress(String baseUrl) {
     scheme: base.scheme,
     host: base.host,
     port: base.port,
-    path: "/6qQZ2jQO5exMKFI2jCzGAdMysxE",
+    path: "/common_api/connect",
   ).toString();
 
   return newAddress;

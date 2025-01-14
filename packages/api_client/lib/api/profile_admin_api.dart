@@ -18,7 +18,7 @@ class ProfileAdminApi {
 
   /// Get profile age and name
   ///
-  /// # Access - Permission [model::Permissions::admin_find_account_by_email]
+  /// # Access - Permission [model::Permissions::admin_find_account_by_email] - Permission [model::Permissions::admin_view_permissions]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -53,7 +53,7 @@ class ProfileAdminApi {
 
   /// Get profile age and name
   ///
-  /// # Access - Permission [model::Permissions::admin_find_account_by_email]
+  /// # Access - Permission [model::Permissions::admin_find_account_by_email] - Permission [model::Permissions::admin_view_permissions]
   ///
   /// Parameters:
   ///

@@ -23,12 +23,10 @@ class SoftwareOptions {
 
   String toJson() => value;
 
-  static const manager = SoftwareOptions._(r'Manager');
   static const backend = SoftwareOptions._(r'Backend');
 
   /// List of all possible values in this [enum][SoftwareOptions].
   static const values = <SoftwareOptions>[
-    manager,
     backend,
   ];
 
@@ -68,7 +66,6 @@ class SoftwareOptionsTypeTransformer {
   SoftwareOptions? decode(dynamic data, {bool allowNull = true}) {
     if (data != null) {
       switch (data) {
-        case r'Manager': return SoftwareOptions.manager;
         case r'Backend': return SoftwareOptions.backend;
         default:
           if (!allowNull) {

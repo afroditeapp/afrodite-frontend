@@ -85,7 +85,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postLogout**](doc//AccountApi.md#postlogout) | **POST** /g2UxTGqbCXXzUsALaE6udVrIh2U | 
 *AccountApi* | [**postResetNewsPaging**](doc//AccountApi.md#postresetnewspaging) | **POST** /BQwxuLNWbM8vN0-p-Wu-QCRy3x0 | 
 *AccountApi* | [**postSetAccountDeletionRequestState**](doc//AccountApi.md#postsetaccountdeletionrequeststate) | **POST** /hpXIJMoxKOZo-Fp577gOdSf1pm4/{aid} | Request account deletion or cancel the deletion
-*AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /ijts6B4AAg_6Dyjhaw85iBnw5Bo | Start new session with sign in with Apple or Google. Creates new account if it does not exists.
+*AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google. Creates new account if it does not exists.
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /yG0OQXcMed-EGdvhSoq3qlXTYQc | Update current or pending profile visiblity value.
 *AccountApi* | [**putSettingUnlimitedLikes**](doc//AccountApi.md#putsettingunlimitedlikes) | **PUT** /oKbgnRxyzLb50Y2_ZCuLJYtEIcM | 
 *AccountAdminApi* | [**deleteNewsItem**](doc//AccountAdminApi.md#deletenewsitem) | **DELETE** /ca0uk9qgmQ82WCpd83_WNNn8qOY/{nid} | 
@@ -126,15 +126,14 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /YEFESgzw0YxQUETcUmnmfWCaF1g | Send message to a match.
 *ChatApi* | [**postSetDeviceToken**](doc//ChatApi.md#postsetdevicetoken) | **POST** /CBoGGZ4HDW0REbM6SxasDCvXJNM | 
 *ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /j2Ofh-WeAFmjCQqO_AyHIM1eZEo | Unblock profile
-*CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /6qQZ2jQO5exMKFI2jCzGAdMysxE | Connect to server using WebSocket after getting refresh and access tokens. Connection is required as API access is allowed for connected clients.
-*CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /0E_N3KS0gI2PPBujveMhHLv292Y | Get backend version.
+*CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens. Connection is required as API access is allowed for connected clients.
+*CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
 *CommonAdminApi* | [**getBackendConfig**](doc//CommonAdminApi.md#getbackendconfig) | **GET** /E1D6g_Gvk0QMUdCm5KecTU_CfxY | Get dynamic backend config.
 *CommonAdminApi* | [**getLatestBuildInfo**](doc//CommonAdminApi.md#getlatestbuildinfo) | **GET** /iTg7lktGRkK6vDTVhYAZcnfGSQk | Get latest software build information available for update from manager instance.
 *CommonAdminApi* | [**getPerfData**](doc//CommonAdminApi.md#getperfdata) | **GET** /LFF7-r3TWVsPUnfVzncXBphb0CM | Get performance data
 *CommonAdminApi* | [**getSoftwareInfo**](doc//CommonAdminApi.md#getsoftwareinfo) | **GET** /uAURrHBf-ePlVvcYS0FslKy5pV8 | Get software version information from manager instance.
 *CommonAdminApi* | [**getSystemInfo**](doc//CommonAdminApi.md#getsysteminfo) | **GET** /NZCbtziElAJucvGefGs9Z6btUrQ | Get system information from manager instance.
 *CommonAdminApi* | [**postBackendConfig**](doc//CommonAdminApi.md#postbackendconfig) | **POST** /E1D6g_Gvk0QMUdCm5KecTU_CfxY | Save dynamic backend config.
-*CommonAdminApi* | [**postRequestBuildSoftware**](doc//CommonAdminApi.md#postrequestbuildsoftware) | **POST** /vGQvKiH7zbpopxyScZILldwiCsg | Request building new software from manager instance.
 *CommonAdminApi* | [**postRequestRestartOrResetBackend**](doc//CommonAdminApi.md#postrequestrestartorresetbackend) | **POST** /rAIji-qOFiclUKWs_5JIR_-dLoI | Request restarting or reseting backend through app-manager instance.
 *CommonAdminApi* | [**postRequestUpdateSoftware**](doc//CommonAdminApi.md#postrequestupdatesoftware) | **POST** /yFSS8sqNjFU8nfjNqoKN1qQ743w | Request updating new software from manager instance.
 *MediaApi* | [**deleteContent**](doc//MediaApi.md#deletecontent) | **DELETE** /9ztWJZUmcnzICLL2gJ8qV8gVoR8/{aid}/{cid} | Delete content data.

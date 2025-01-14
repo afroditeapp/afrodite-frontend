@@ -117,9 +117,6 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
     data.installedSoftware.currentSoftware.sort((a, b) => a.name.compareTo(b.name));
     for (final buildInfo in data.installedSoftware.currentSoftware) {
       switch (buildInfo.name) {
-        case "manager": {
-          displaySoftware(context, widgets, buildInfo, data.latestAvailableManager, SoftwareOptions.manager);
-        }
         case "backend": {
           displaySoftware(context, widgets, buildInfo, data.latestAvailableBackend, SoftwareOptions.backend);
         }
@@ -164,27 +161,8 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
         widgets.add(displayUpdate(context, softwareOptions));
       }
     } else {
-      widgets.add(const Text("No builds available from app-manager"));
+      widgets.add(const Text("No info about latest software"));
     }
-
-    final requestBuildButton = Row(
-      children: [ElevatedButton(
-        onPressed: () async {
-          final result = await api
-            .commonAdminAction(
-              _selectedServer, (api) =>
-                api.postRequestBuildSoftware(softwareOptions),
-            );
-          if (result case Ok()) {
-            showSnackBar("Build requested!");
-          } else {
-            showSnackBar("Build request failed!");
-          }
-        },
-        child: const Text("Request build"),
-      )],
-    );
-    widgets.add(requestBuildButton);
   }
 
   Widget displayBuildInfo(BuildContext context, String startText, BuildInfo buildInfo) {
@@ -336,7 +314,6 @@ Future<SoftwareData?> _getData(Server server, ApiManager api) async {
   final version = await api.common(server, (api) => api.getVersion()).ok();
   final installedSoftware = await api.commonAdmin(server, (api) => api.getSoftwareInfo()).ok();
   final latestAvailableBackend = await api.commonAdmin(server, (api) => api.getLatestBuildInfo(SoftwareOptions.backend)).ok();
-  final latestAvailableManager = await api.commonAdmin(server, (api) => api.getLatestBuildInfo(SoftwareOptions.manager)).ok();
   final systemInfo = await api.commonAdmin(server, (api) => api.getSystemInfo()).ok();
 
 
@@ -352,21 +329,19 @@ Future<SoftwareData?> _getData(Server server, ApiManager api) async {
     return null;
   }
 
-  return SoftwareData(version, installedSoftware, latestAvailableBackend, latestAvailableManager, systemInfo);
+  return SoftwareData(version, installedSoftware, latestAvailableBackend, systemInfo);
 }
 
 class SoftwareData {
   final BackendVersion runningVersion;
   final SoftwareInfo installedSoftware;
   final BuildInfo? latestAvailableBackend;
-  final BuildInfo? latestAvailableManager;
   final SystemInfoList systemInfo;
 
   SoftwareData(
     this.runningVersion,
     this.installedSoftware,
     this.latestAvailableBackend,
-    this.latestAvailableManager,
     this.systemInfo,
   );
 }
