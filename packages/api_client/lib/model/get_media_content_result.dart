@@ -25,7 +25,8 @@ class GetMediaContentResult {
 
   ContentInfoWithFd? securityContent;
 
-  MediaContentSyncVersion syncVersion;
+  /// Sync version for profile and security content
+  SyncVersion syncVersion;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetMediaContentResult &&
@@ -80,7 +81,7 @@ class GetMediaContentResult {
         profileContent: MyProfileContent.fromJson(json[r'profile_content'])!,
         profileContentVersion: ProfileContentVersion.fromJson(json[r'profile_content_version'])!,
         securityContent: ContentInfoWithFd.fromJson(json[r'security_content']),
-        syncVersion: MediaContentSyncVersion.fromJson(json[r'sync_version'])!,
+        syncVersion: SyncVersion.fromJson(json[r'sync_version'])!,
       );
     }
     return null;

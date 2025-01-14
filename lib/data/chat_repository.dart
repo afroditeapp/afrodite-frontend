@@ -270,12 +270,12 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     final currentCountInt = currentCount?.c ?? 0;
 
     final r = await api.chat((api) => api.postGetNewReceivedLikesCount()).ok();
-    final v = r?.v;
+    final v = r?.v.version;
     final c = r?.c;
     if (v == null || c == null) {
       return;
     }
-    await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(v, c));
+    await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(ReceivedLikesSyncVersion(version: v), c));
 
     if (currentCountInt == 0 && c.c > 0) {
       await NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb);
