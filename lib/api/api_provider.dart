@@ -13,7 +13,6 @@ class ApiProvider {
   ApiKeyAuth? _apiKey;
   AccountApi _account;
   AccountAdminApi _accountAdmin;
-  AccountInternalApi _accountInternal;
   ProfileApi _profile;
   ProfileAdminApi _profileAdmin;
   MediaApi _media;
@@ -28,7 +27,6 @@ class ApiProvider {
 
   AccountApi get account => _account;
   AccountAdminApi get accountAdmin => _accountAdmin;
-  AccountInternalApi get accountInternal => _accountInternal;
   ProfileApi get profile => _profile;
   ProfileAdminApi get profileAdmin => _profileAdmin;
   MediaApi get media => _media;
@@ -45,7 +43,6 @@ class ApiProvider {
     _serverAddress = serverAddress,
     _account = AccountApi(client),
     _accountAdmin = AccountAdminApi(client),
-    _accountInternal = AccountInternalApi(client),
     _profile = ProfileApi(client),
     _profileAdmin = ProfileAdminApi(client),
     _media = MediaApi(client),
@@ -72,7 +69,6 @@ class ApiProvider {
 
     _account = AccountApi(client);
     _accountAdmin = AccountAdminApi(client);
-    _accountInternal = AccountInternalApi(client);
     _profile = ProfileApi(client);
     _profileAdmin = ProfileAdminApi(client);
     _media = MediaApi(client);

@@ -5,7 +5,7 @@ git_push.sh
 lib/api.dart
 lib/api/account_admin_api.dart
 lib/api/account_api.dart
-lib/api/account_internal_api.dart
+lib/api/account_bot_api.dart
 lib/api/chat_api.dart
 lib/api/common_admin_api.dart
 lib/api/common_api.dart

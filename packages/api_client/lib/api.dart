@@ -30,7 +30,7 @@ part 'auth/http_bearer_auth.dart';
 
 part 'api/account_api.dart';
 part 'api/account_admin_api.dart';
-part 'api/account_internal_api.dart';
+part 'api/account_bot_api.dart';
 part 'api/chat_api.dart';
 part 'api/common_api.dart';
 part 'api/common_admin_api.dart';

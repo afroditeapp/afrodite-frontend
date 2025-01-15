@@ -11,14 +11,14 @@
 part of openapi.api;
 
 
-class AccountInternalApi {
-  AccountInternalApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
+class AccountBotApi {
+  AccountBotApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
 
   final ApiClient apiClient;
 
   /// Get new AccessToken for a bot account. If the account is not registered as a bot account, then the request will fail.
   ///
-  /// Available only if server internal API is enabled with bot_login from config file.
+  /// Available only from bot API port.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -52,7 +52,7 @@ class AccountInternalApi {
 
   /// Get new AccessToken for a bot account. If the account is not registered as a bot account, then the request will fail.
   ///
-  /// Available only if server internal API is enabled with bot_login from config file.
+  /// Available only from bot API port.
   ///
   /// Parameters:
   ///
@@ -74,7 +74,7 @@ class AccountInternalApi {
 
   /// Register a new bot account. Returns new account ID which is UUID.
   ///
-  /// Available only if server internal API is enabled with bot_login from config file.
+  /// Available only from bot API port.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> postRegisterWithHttpInfo() async {
@@ -104,7 +104,7 @@ class AccountInternalApi {
 
   /// Register a new bot account. Returns new account ID which is UUID.
   ///
-  /// Available only if server internal API is enabled with bot_login from config file.
+  /// Available only from bot API port.
   Future<AccountId?> postRegister() async {
     final response = await postRegisterWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
