@@ -239,7 +239,7 @@ Future<void> _handlePushNotificationReceivedLikesChanged(NewReceivedLikesCountRe
   }
 
   await NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb);
-  await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(ReceivedLikesSyncVersion(version: r.v.version), r.c));
+  await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(r.v, r.c));
 }
 
 Future<void> _handlePushNotificationInitialContentModerationCompleted(InitialContentModerationCompletedResult? s, AccountBackgroundDatabaseManager accountBackgroundDb) async {

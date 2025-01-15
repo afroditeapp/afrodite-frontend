@@ -22,8 +22,7 @@ class ResetReceivedLikesIteratorResult {
 
   ReceivedLikesIteratorSessionId s;
 
-  /// Sync version for new received likes count
-  SyncVersion v;
+  ReceivedLikesSyncVersion v;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ResetReceivedLikesIteratorResult &&
@@ -70,7 +69,7 @@ class ResetReceivedLikesIteratorResult {
       return ResetReceivedLikesIteratorResult(
         c: NewReceivedLikesCount.fromJson(json[r'c'])!,
         s: ReceivedLikesIteratorSessionId.fromJson(json[r's'])!,
-        v: SyncVersion.fromJson(json[r'v'])!,
+        v: ReceivedLikesSyncVersion.fromJson(json[r'v'])!,
       );
     }
     return null;

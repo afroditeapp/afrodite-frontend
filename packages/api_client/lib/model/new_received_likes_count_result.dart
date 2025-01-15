@@ -19,8 +19,7 @@ class NewReceivedLikesCountResult {
 
   NewReceivedLikesCount c;
 
-  /// Sync version for new received likes count
-  SyncVersion v;
+  ReceivedLikesSyncVersion v;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is NewReceivedLikesCountResult &&
@@ -63,7 +62,7 @@ class NewReceivedLikesCountResult {
 
       return NewReceivedLikesCountResult(
         c: NewReceivedLikesCount.fromJson(json[r'c'])!,
-        v: SyncVersion.fromJson(json[r'v'])!,
+        v: ReceivedLikesSyncVersion.fromJson(json[r'v'])!,
       );
     }
     return null;
