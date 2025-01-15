@@ -29,7 +29,7 @@ class MediaApi {
   /// * [String] cid (required):
   Future<Response> deleteContentWithHttpInfo(String aid, String cid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/9ztWJZUmcnzICLL2gJ8qV8gVoR8/{aid}/{cid}'
+    final path = r'/media_api/content/{aid}/{cid}'
       .replaceAll('{aid}', aid)
       .replaceAll('{cid}', cid);
 
@@ -81,7 +81,7 @@ class MediaApi {
   /// * [String] aid (required):
   Future<Response> getAllAccountMediaContentWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/RzBkQfHdmWHdL0L1Uq-DVE6kiVY/{aid}'
+    final path = r'/media_api/all_account_media_content/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -143,7 +143,7 @@ class MediaApi {
   ///   If false media content access is allowed when profile is set as public. If true media content access is allowed when users are a match.
   Future<Response> getContentWithHttpInfo(String aid, String cid, { bool? isMatch, }) async {
     // ignore: prefer_const_declarations
-    final path = r'/9ztWJZUmcnzICLL2gJ8qV8gVoR8/{aid}/{cid}'
+    final path = r'/media_api/content/{aid}/{cid}'
       .replaceAll('{aid}', aid)
       .replaceAll('{cid}', cid);
 
@@ -210,7 +210,7 @@ class MediaApi {
   /// * [int] slotId (required):
   Future<Response> getContentSlotStateWithHttpInfo(int slotId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/y5DgJJAaDZF89y6X4ge84klpBq0/{slot_id}'
+    final path = r'/media_api/content_slot/{slot_id}'
       .replaceAll('{slot_id}', slotId.toString());
 
     // ignore: prefer_final_locals
@@ -271,7 +271,7 @@ class MediaApi {
   /// * [String] y (required):
   Future<Response> getMapTileWithHttpInfo(int z, int x, String y,) async {
     // ignore: prefer_const_declarations
-    final path = r'/BoFh54UgWwlQvwJfb0TpJqd4gaM/{z}/{x}/{y}'
+    final path = r'/media_api/map_tile/{z}/{x}/{y}'
       .replaceAll('{z}', z.toString())
       .replaceAll('{x}', x.toString())
       .replaceAll('{y}', y);
@@ -328,7 +328,7 @@ class MediaApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getMediaContentInfoWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/IVQB_zKtVtalr-77q1-670RgOpg';
+    final path = r'/media_api/media_content_info';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -383,7 +383,7 @@ class MediaApi {
   ///   If false profile content access is allowed when profile is set as public. If true profile content access is allowed when users are a match.
   Future<Response> getProfileContentInfoWithHttpInfo(String aid, { String? version, bool? isMatch, }) async {
     // ignore: prefer_const_declarations
-    final path = r'/ZYlzEPvPMBx2V1S6Ee-kIhp2_rg/{aid}'
+    final path = r'/media_api/profile_content_info/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -452,7 +452,7 @@ class MediaApi {
   /// * [String] aid (required):
   Future<Response> getSecurityContentInfoWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/6lWoyl4YuurCAEnkJbnSy1wP22M/{aid}'
+    final path = r'/media_api/security_content_info/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -503,7 +503,7 @@ class MediaApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> postGetInitialContentModerationCompletedWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/F6vxr3u-OBwaCkVm_bzTaM4NmRc';
+    final path = r'/media_api/initial_content_moderation_completed_result';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -560,7 +560,7 @@ class MediaApi {
   /// * [MultipartFile] body (required):
   Future<Response> putContentToContentSlotWithHttpInfo(int slotId, bool secureCapture, MediaContentType contentType, MultipartFile body,) async {
     // ignore: prefer_const_declarations
-    final path = r'/y5DgJJAaDZF89y6X4ge84klpBq0/{slot_id}'
+    final path = r'/media_api/content_slot/{slot_id}'
       .replaceAll('{slot_id}', slotId.toString());
 
     // ignore: prefer_final_locals
@@ -627,7 +627,7 @@ class MediaApi {
   /// * [SetProfileContent] setProfileContent (required):
   Future<Response> putProfileContentWithHttpInfo(SetProfileContent setProfileContent,) async {
     // ignore: prefer_const_declarations
-    final path = r'/_rsyG4gpvDy3O3Aj5hpLp3-8oPE';
+    final path = r'/media_api/profile_content';
 
     // ignore: prefer_final_locals
     Object? postBody = setProfileContent;
@@ -675,7 +675,7 @@ class MediaApi {
   /// * [ContentId] contentId (required):
   Future<Response> putSecurityContentInfoWithHttpInfo(ContentId contentId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/6lWoyl4YuurCAEnkJbnSy1wP22M';
+    final path = r'/media_api/security_content_info';
 
     // ignore: prefer_final_locals
     Object? postBody = contentId;

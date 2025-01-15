@@ -27,7 +27,7 @@ class AccountApi {
   /// * [String] aid (required):
   Future<Response> getAccountBanTimeWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/VWEg82SMW2nbZNsujKsrEXdsYCQ/{aid}'
+    final path = r'/account_api/account_ban_time/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -78,7 +78,7 @@ class AccountApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getAccountDataWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/Ln3_j2LpJIbQABKwnMMhUEtio5k';
+    final path = r'/account_api/account_data';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -128,7 +128,7 @@ class AccountApi {
   /// * [String] aid (required):
   Future<Response> getAccountDeletionRequestStateWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/xRKw2cu2b8kk8Vkdpo8SdsaFWhQ/{aid}'
+    final path = r'/account_api/get_account_deletion_request_state/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -179,7 +179,7 @@ class AccountApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getAccountSetupWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/RNb6qhf_lZU8t6kOm5kQY7Y34ok';
+    final path = r'/account_api/account_setup';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -223,7 +223,7 @@ class AccountApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getAccountStateWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/C9sCP6O2IfIBQCu8LM1_SCybuW0';
+    final path = r'/account_api/state';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -262,10 +262,10 @@ class AccountApi {
     return null;
   }
 
-  /// Performs an HTTP 'GET /Hg2W1drXZ94YVp3Uh38hnQzYIng' operation and returns the [Response].
+  /// Performs an HTTP 'GET /account_api/latest_birthdate' operation and returns the [Response].
   Future<Response> getLatestBirthdateWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/Hg2W1drXZ94YVp3Uh38hnQzYIng';
+    final path = r'/account_api/latest_birthdate';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -318,7 +318,7 @@ class AccountApi {
   /// * [bool] requireLocale:
   Future<Response> getNewsItemWithHttpInfo(int nid, String locale, { bool? requireLocale, }) async {
     // ignore: prefer_const_declarations
-    final path = r'/2OHF85k7hpH2tAibkA0V9YLwpF4/{nid}'
+    final path = r'/account_api/news_item/{nid}'
       .replaceAll('{nid}', nid.toString());
 
     // ignore: prefer_final_locals
@@ -382,7 +382,7 @@ class AccountApi {
   /// * [AccountData] accountData (required):
   Future<Response> postAccountDataWithHttpInfo(AccountData accountData,) async {
     // ignore: prefer_const_declarations
-    final path = r'/Ln3_j2LpJIbQABKwnMMhUEtio5k';
+    final path = r'/account_api/account_data';
 
     // ignore: prefer_final_locals
     Object? postBody = accountData;
@@ -426,7 +426,7 @@ class AccountApi {
   /// * [SetAccountSetup] setAccountSetup (required):
   Future<Response> postAccountSetupWithHttpInfo(SetAccountSetup setAccountSetup,) async {
     // ignore: prefer_const_declarations
-    final path = r'/RNb6qhf_lZU8t6kOm5kQY7Y34ok';
+    final path = r'/account_api/account_setup';
 
     // ignore: prefer_final_locals
     Object? postBody = setAccountSetup;
@@ -468,7 +468,7 @@ class AccountApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> postCompleteSetupWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/VzPyCXS5Hx50SbAApdpUYfCY-Iw';
+    final path = r'/account_api/complete_setup';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -512,7 +512,7 @@ class AccountApi {
   /// * [DemoModeToken] demoModeToken (required):
   Future<Response> postDemoModeAccessibleAccountsWithHttpInfo(DemoModeToken demoModeToken,) async {
     // ignore: prefer_const_declarations
-    final path = r'/xyG8kH6eLanLiKYXdnOx1xxeAdA';
+    final path = r'/account_api/demo_mode_accessible_accounts';
 
     // ignore: prefer_final_locals
     Object? postBody = demoModeToken;
@@ -560,13 +560,13 @@ class AccountApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /3KlEajKOIo1Drd3uW-IzQ1L3qlE' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/demo_mode_confirm_login' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [DemoModeConfirmLogin] demoModeConfirmLogin (required):
   Future<Response> postDemoModeConfirmLoginWithHttpInfo(DemoModeConfirmLogin demoModeConfirmLogin,) async {
     // ignore: prefer_const_declarations
-    final path = r'/3KlEajKOIo1Drd3uW-IzQ1L3qlE';
+    final path = r'/account_api/demo_mode_confirm_login';
 
     // ignore: prefer_final_locals
     Object? postBody = demoModeConfirmLogin;
@@ -616,7 +616,7 @@ class AccountApi {
   /// * [DemoModePassword] demoModePassword (required):
   Future<Response> postDemoModeLoginWithHttpInfo(DemoModePassword demoModePassword,) async {
     // ignore: prefer_const_declarations
-    final path = r'/TYbxniP-G9ibgdoAkpvVWTKkxaU';
+    final path = r'/account_api/demo_mode_login';
 
     // ignore: prefer_final_locals
     Object? postBody = demoModePassword;
@@ -659,13 +659,13 @@ class AccountApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /sBH-LyNGOOFXivrv5clCpNrkwcA' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/demo_mode_login_to_account' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [DemoModeLoginToAccount] demoModeLoginToAccount (required):
   Future<Response> postDemoModeLoginToAccountWithHttpInfo(DemoModeLoginToAccount demoModeLoginToAccount,) async {
     // ignore: prefer_const_declarations
-    final path = r'/sBH-LyNGOOFXivrv5clCpNrkwcA';
+    final path = r'/account_api/demo_mode_login_to_account';
 
     // ignore: prefer_final_locals
     Object? postBody = demoModeLoginToAccount;
@@ -706,13 +706,13 @@ class AccountApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /C4cOpRmlYJh2YBXbEHQGkcz3iMY' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/demo_mode_logout' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [DemoModeToken] demoModeToken (required):
   Future<Response> postDemoModeLogoutWithHttpInfo(DemoModeToken demoModeToken,) async {
     // ignore: prefer_const_declarations
-    final path = r'/C4cOpRmlYJh2YBXbEHQGkcz3iMY';
+    final path = r'/account_api/demo_mode_logout';
 
     // ignore: prefer_final_locals
     Object? postBody = demoModeToken;
@@ -745,13 +745,13 @@ class AccountApi {
     }
   }
 
-  /// Performs an HTTP 'POST /oDv1gK4Y6nMrPgEo5nArQAckh6Q' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/demo_mode_register_account' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [DemoModeToken] demoModeToken (required):
   Future<Response> postDemoModeRegisterAccountWithHttpInfo(DemoModeToken demoModeToken,) async {
     // ignore: prefer_const_declarations
-    final path = r'/oDv1gK4Y6nMrPgEo5nArQAckh6Q';
+    final path = r'/account_api/demo_mode_register_account';
 
     // ignore: prefer_final_locals
     Object? postBody = demoModeToken;
@@ -792,10 +792,10 @@ class AccountApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /b5kd4x8_ybr1Rj_tprU5BxF_xGo' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/next_client_id' operation and returns the [Response].
   Future<Response> postGetNextClientIdWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/b5kd4x8_ybr1Rj_tprU5BxF_xGo';
+    final path = r'/account_api/next_client_id';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -833,7 +833,7 @@ class AccountApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /i9QOC8N-Nx9PdWvjKyAz8tXD2Q0' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/next_news_page' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [String] locale (required):
@@ -841,7 +841,7 @@ class AccountApi {
   /// * [NewsIteratorSessionId] newsIteratorSessionId (required):
   Future<Response> postGetNextNewsPageWithHttpInfo(String locale, NewsIteratorSessionId newsIteratorSessionId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/i9QOC8N-Nx9PdWvjKyAz8tXD2Q0';
+    final path = r'/account_api/next_news_page';
 
     // ignore: prefer_final_locals
     Object? postBody = newsIteratorSessionId;
@@ -891,7 +891,7 @@ class AccountApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> postGetUnreadNewsCountWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/ljfyAP7CbP0864cA6nZX7ESufjY';
+    final path = r'/account_api/news_count';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -930,10 +930,10 @@ class AccountApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /g2UxTGqbCXXzUsALaE6udVrIh2U' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/logout' operation and returns the [Response].
   Future<Response> postLogoutWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/g2UxTGqbCXXzUsALaE6udVrIh2U';
+    final path = r'/account_api/logout';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -963,10 +963,10 @@ class AccountApi {
     }
   }
 
-  /// Performs an HTTP 'POST /BQwxuLNWbM8vN0-p-Wu-QCRy3x0' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/reset_news_paging' operation and returns the [Response].
   Future<Response> postResetNewsPagingWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/BQwxuLNWbM8vN0-p-Wu-QCRy3x0';
+    final path = r'/account_api/reset_news_paging';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -1017,7 +1017,7 @@ class AccountApi {
   /// * [BooleanSetting] booleanSetting (required):
   Future<Response> postSetAccountDeletionRequestStateWithHttpInfo(String aid, BooleanSetting booleanSetting,) async {
     // ignore: prefer_const_declarations
-    final path = r'/hpXIJMoxKOZo-Fp577gOdSf1pm4/{aid}'
+    final path = r'/account_api/set_account_deletion_request_state/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -1120,7 +1120,7 @@ class AccountApi {
   /// * [BooleanSetting] booleanSetting (required):
   Future<Response> putSettingProfileVisiblityWithHttpInfo(BooleanSetting booleanSetting,) async {
     // ignore: prefer_const_declarations
-    final path = r'/yG0OQXcMed-EGdvhSoq3qlXTYQc';
+    final path = r'/account_api/settings/profile_visibility';
 
     // ignore: prefer_final_locals
     Object? postBody = booleanSetting;
@@ -1157,13 +1157,13 @@ class AccountApi {
     }
   }
 
-  /// Performs an HTTP 'PUT /oKbgnRxyzLb50Y2_ZCuLJYtEIcM' operation and returns the [Response].
+  /// Performs an HTTP 'PUT /account_api/settings/unlimited_likes' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [BooleanSetting] booleanSetting (required):
   Future<Response> putSettingUnlimitedLikesWithHttpInfo(BooleanSetting booleanSetting,) async {
     // ignore: prefer_const_declarations
-    final path = r'/oKbgnRxyzLb50Y2_ZCuLJYtEIcM';
+    final path = r'/account_api/settings/unlimited_likes';
 
     // ignore: prefer_final_locals
     Object? postBody = booleanSetting;

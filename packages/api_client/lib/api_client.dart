@@ -310,6 +310,8 @@ class ApiClient {
           return GetMyProfileResult.fromJson(value);
         case 'GetNewsItemResult':
           return GetNewsItemResult.fromJson(value);
+        case 'GetPerfDataEndTimeParameter':
+          return GetPerfDataEndTimeParameter.fromJson(value);
         case 'GetProfileAgeAndName':
           return GetProfileAgeAndName.fromJson(value);
         case 'GetProfileContentPendingModerationList':

@@ -16,13 +16,13 @@ class AccountAdminApi {
 
   final ApiClient apiClient;
 
-  /// Performs an HTTP 'DELETE /ca0uk9qgmQ82WCpd83_WNNn8qOY/{nid}' operation and returns the [Response].
+  /// Performs an HTTP 'DELETE /account_api/admin/delete_news/{nid}' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [int] nid (required):
   Future<Response> deleteNewsItemWithHttpInfo(int nid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/ca0uk9qgmQ82WCpd83_WNNn8qOY/{nid}'
+    final path = r'/account_api/admin/delete_news/{nid}'
       .replaceAll('{nid}', nid.toString());
 
     // ignore: prefer_final_locals
@@ -56,7 +56,7 @@ class AccountAdminApi {
     }
   }
 
-  /// Performs an HTTP 'DELETE /jo1Lboa4U8YVA07py8NJebpu1zo/{nid}/{locale}' operation and returns the [Response].
+  /// Performs an HTTP 'DELETE /account_api/admin/delete_news_translation/{nid}/{locale}' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [int] nid (required):
@@ -64,7 +64,7 @@ class AccountAdminApi {
   /// * [String] locale (required):
   Future<Response> deleteNewsTranslationWithHttpInfo(int nid, String locale,) async {
     // ignore: prefer_const_declarations
-    final path = r'/jo1Lboa4U8YVA07py8NJebpu1zo/{nid}/{locale}'
+    final path = r'/account_api/admin/delete_news_translation/{nid}/{locale}'
       .replaceAll('{nid}', nid.toString())
       .replaceAll('{locale}', locale);
 
@@ -112,7 +112,7 @@ class AccountAdminApi {
   /// * [String] email (required):
   Future<Response> getAccountIdFromEmailWithHttpInfo(String email,) async {
     // ignore: prefer_const_declarations
-    final path = r'/QOWhJ4V6cg9BzbwLCnopDKA6eEM/{email}'
+    final path = r'/account_api/get_account_id_from_email/{email}'
       .replaceAll('{email}', email);
 
     // ignore: prefer_final_locals
@@ -169,7 +169,7 @@ class AccountAdminApi {
   /// * [String] aid (required):
   Future<Response> getAccountStateAdminWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/SJd6qnB7ZOLWObvYpZvSEAQlV9E/{aid}'
+    final path = r'/account_api/get_account_state_admin/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -222,7 +222,7 @@ class AccountAdminApi {
   /// Note: This method returns the HTTP [Response].
   Future<Response> getAllAdminsWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/S08JTRmVrgj4MoI2AYsbMMcfpoU';
+    final path = r'/account_api/get_all_admins';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -274,7 +274,7 @@ class AccountAdminApi {
   /// * [String] aid (required):
   Future<Response> getPermissionsWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/gNXvEk_GxY-Rj3l4Ja9T8Gh3BHk/{aid}'
+    final path = r'/account_api/get_permissions/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -320,10 +320,10 @@ class AccountAdminApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /XEss8YDw9lPgwKoH6K9THZIF_N4' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/admin/create_news_item' operation and returns the [Response].
   Future<Response> postCreateNewsItemWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/XEss8YDw9lPgwKoH6K9THZIF_N4';
+    final path = r'/account_api/admin/create_news_item';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -372,7 +372,7 @@ class AccountAdminApi {
   /// * [String] aid (required):
   Future<Response> postDeleteAccountWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/bdvzsZZOVVO89-enOb3tFnpU7yk/{aid}'
+    final path = r'/account_api/delete_account/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -421,7 +421,7 @@ class AccountAdminApi {
   /// * [SetAccountBanState] setAccountBanState (required):
   Future<Response> postSetBanStateWithHttpInfo(SetAccountBanState setAccountBanState,) async {
     // ignore: prefer_const_declarations
-    final path = r'/R5G1j887_zSwcgInJG5Y7mz73nE';
+    final path = r'/account_api/set_ban_state';
 
     // ignore: prefer_final_locals
     Object? postBody = setAccountBanState;
@@ -458,7 +458,7 @@ class AccountAdminApi {
     }
   }
 
-  /// Performs an HTTP 'DELETE /McvctMKFEqrUfola2WlvkbigBDU/{nid}' operation and returns the [Response].
+  /// Performs an HTTP 'DELETE /account_api/admin/set_news_publicity/{nid}' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [int] nid (required):
@@ -466,7 +466,7 @@ class AccountAdminApi {
   /// * [BooleanSetting] booleanSetting (required):
   Future<Response> postSetNewsPublicityWithHttpInfo(int nid, BooleanSetting booleanSetting,) async {
     // ignore: prefer_const_declarations
-    final path = r'/McvctMKFEqrUfola2WlvkbigBDU/{nid}'
+    final path = r'/account_api/admin/set_news_publicity/{nid}'
       .replaceAll('{nid}', nid.toString());
 
     // ignore: prefer_final_locals
@@ -515,7 +515,7 @@ class AccountAdminApi {
   /// * [Permissions] permissions (required):
   Future<Response> postSetPermissionsWithHttpInfo(String aid, Permissions permissions,) async {
     // ignore: prefer_const_declarations
-    final path = r'/dVzZRtEelHVDz6bG4AcjaZSQVFo/{aid}'
+    final path = r'/account_api/set_permissions/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -555,7 +555,7 @@ class AccountAdminApi {
     }
   }
 
-  /// Performs an HTTP 'POST /4pD-Q4FhZGTNkUGYExHmZN6TxjU/{nid}/{locale}' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/admin/update_news_translation/{nid}/{locale}' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [int] nid (required):
@@ -565,7 +565,7 @@ class AccountAdminApi {
   /// * [UpdateNewsTranslation] updateNewsTranslation (required):
   Future<Response> postUpdateNewsTranslationWithHttpInfo(int nid, String locale, UpdateNewsTranslation updateNewsTranslation,) async {
     // ignore: prefer_const_declarations
-    final path = r'/4pD-Q4FhZGTNkUGYExHmZN6TxjU/{nid}/{locale}'
+    final path = r'/account_api/admin/update_news_translation/{nid}/{locale}'
       .replaceAll('{nid}', nid.toString())
       .replaceAll('{locale}', locale);
 

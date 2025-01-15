@@ -27,7 +27,7 @@ class ProfileAdminApi {
   /// * [String] aid (required):
   Future<Response> getProfileAgeAndNameWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/vaT3tB2QTgv7HaJl4pxFaQR7dEQ/{aid}'
+    final path = r'/profile_api/get_profile_age_and_name/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -73,10 +73,10 @@ class ProfileAdminApi {
     return null;
   }
 
-  /// Performs an HTTP 'GET /82woXm_Kq9yEtRHP7KAcXkgRWnU' operation and returns the [Response].
+  /// Performs an HTTP 'GET /profile_api/admin/profile_name_pending_moderation' operation and returns the [Response].
   Future<Response> getProfileNamePendingModerationListWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/82woXm_Kq9yEtRHP7KAcXkgRWnU';
+    final path = r'/profile_api/admin/profile_name_pending_moderation';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -114,7 +114,7 @@ class ProfileAdminApi {
     return null;
   }
 
-  /// Performs an HTTP 'GET /6CGbSNdoURdJRTBxb3Hb_OGw9ME' operation and returns the [Response].
+  /// Performs an HTTP 'GET /profile_api/profile_statistics_history' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [ProfileStatisticsHistoryValueType] valueType (required):
@@ -123,7 +123,7 @@ class ProfileAdminApi {
   ///   Required only for AgeChange history
   Future<Response> getProfileStatisticsHistoryWithHttpInfo(ProfileStatisticsHistoryValueType valueType, { int? age, }) async {
     // ignore: prefer_const_declarations
-    final path = r'/6CGbSNdoURdJRTBxb3Hb_OGw9ME';
+    final path = r'/profile_api/profile_statistics_history';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -181,7 +181,7 @@ class ProfileAdminApi {
   /// * [bool] showTextsWhichBotsCanModerate (required):
   Future<Response> getProfileTextPendingModerationListWithHttpInfo(bool showTextsWhichBotsCanModerate,) async {
     // ignore: prefer_const_declarations
-    final path = r'/pdEU3ussEDsELfe6TOtjqrDojOc';
+    final path = r'/profile_api/admin/profile_text_pending_moderation';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -237,7 +237,7 @@ class ProfileAdminApi {
   /// * [String] aid (required):
   Future<Response> getProfileTextStateWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/zJnMNwOsdHxzZfSNNFzubM-Gess/{aid}'
+    final path = r'/profile_api/get_profile_text_state/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -283,13 +283,13 @@ class ProfileAdminApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /bnrAbC2DpwIftQouXUAVR1W6g8Y' operation and returns the [Response].
+  /// Performs an HTTP 'POST /profile_api/admin/moderate_profile_name' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [PostModerateProfileName] postModerateProfileName (required):
   Future<Response> postModerateProfileNameWithHttpInfo(PostModerateProfileName postModerateProfileName,) async {
     // ignore: prefer_const_declarations
-    final path = r'/bnrAbC2DpwIftQouXUAVR1W6g8Y';
+    final path = r'/profile_api/admin/moderate_profile_name';
 
     // ignore: prefer_final_locals
     Object? postBody = postModerateProfileName;
@@ -333,7 +333,7 @@ class ProfileAdminApi {
   /// * [PostModerateProfileText] postModerateProfileText (required):
   Future<Response> postModerateProfileTextWithHttpInfo(PostModerateProfileText postModerateProfileText,) async {
     // ignore: prefer_const_declarations
-    final path = r'/53BBFzgF9dZhb7_HvZSqLidsqbg';
+    final path = r'/profile_api/admin/moderate_profile_text';
 
     // ignore: prefer_final_locals
     Object? postBody = postModerateProfileText;
