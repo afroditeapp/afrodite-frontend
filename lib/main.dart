@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 
 import 'package:app/config.dart';
+import 'package:app/data/app_version.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:encryption/encryption.dart';
 import 'package:flutter/foundation.dart';
@@ -249,6 +250,7 @@ class GlobalInitManager {
     await CameraManager.getInstance().init();
     await NotificationManager.getInstance().init();
     await PushNotificationManager.getInstance().init();
+    await AppVersionManager.getInstance().init();
 
     await LoginRepository.getInstance().init();
 

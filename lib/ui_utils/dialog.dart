@@ -1,3 +1,4 @@
+import 'package:app/data/app_version.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/assets.dart';
@@ -18,7 +19,7 @@ void showAppAboutDialog(BuildContext context) {
     context: context,
     builder: (context) => AboutDialog(
       applicationName: context.strings.app_name,
-      applicationVersion: "0.6",
+      applicationVersion: AppVersionManager.getInstance().appVersion,
       applicationIcon: Image.asset(
         ImageAsset.appLogo.path,
         width: ICON_SIZE,

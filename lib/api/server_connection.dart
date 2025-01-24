@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:app/data/app_version.dart';
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
@@ -393,9 +394,9 @@ Uint8List clientVersionInfoBytes() {
     throw UnimplementedError("Platform not supported");
   }
   final protocolBytes = <int>[protocolVersion, platform];
-  const major = 0;
-  const minor = 0;
-  const patch = 0;
+  final major = AppVersionManager.getInstance().major;
+  final minor = AppVersionManager.getInstance().minor;
+  final patch = AppVersionManager.getInstance().patch;
   protocolBytes.addAll(u16VersionToLittleEndianBytes(major));
   protocolBytes.addAll(u16VersionToLittleEndianBytes(minor));
   protocolBytes.addAll(u16VersionToLittleEndianBytes(patch));
