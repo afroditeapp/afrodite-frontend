@@ -1,10 +1,10 @@
 
 
 import 'package:app/config.dart';
+import 'package:app/localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:openapi/api.dart';
-import 'package:app/api/api_manager.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:app/data/login_repository.dart';
@@ -12,110 +12,76 @@ import 'package:app/utils/result.dart';
 
 
 class ServerSystemInfoPage extends StatefulWidget {
-  const ServerSystemInfoPage({Key? key}) : super(key: key);
+  const ServerSystemInfoPage({super.key});
 
   @override
-  _ServerSystemInfoPageState createState() => _ServerSystemInfoPageState();
+  State<ServerSystemInfoPage> createState() => _ServerSystemInfoPageState();
 }
 
 class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
-
-  var _selectedServer = Server.account;
+  ManagerInstanceNameList? _managers;
   List<ManagerSystemInfo>? _currentData = [];
   final api = LoginRepository.getInstance().repositories.api;
+
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
+
     // Allow landscape mode if allowed by system
     SystemChrome.setPreferredOrientations([]);
+
+    _refreshData();
+  }
+
+  Future<void> _refreshData() async {
+    _managers ??= await api.mediaCommonAdmin((api) => api.getManagerInstanceNames()).ok();
+
+    final managers = _managers?.names ?? [];
+    final List<ManagerSystemInfo> data = [];
+    for (final m in managers) {
+      final info = await api.mediaCommonAdmin((api) => api.getSystemInfo(m)).ok();
+      if (info != null) {
+        data.add(ManagerSystemInfo(m, info));
+      } else {
+        data.add(ManagerSystemInfo(m, null));
+      }
+    }
+
+    setState(() {
+      isLoading = false;
+      _currentData = data;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> actions;
-    if (api.inMicroserviceMode()) {
-      actions = [buildPopUpMenuButtons()];
-    } else {
-      actions = [];
-    }
+    List<Widget> actions = [];
     actions.add(IconButton(onPressed: () async {
-        // final data = await api.mediaCommonAdmin((api) => api.getSystemInfo()).ok();
-        // setState(() {
-        //   _currentData = data;
-        // });
+      await _refreshData();
     }, icon: const Icon(Icons.refresh)));
-
-    Widget body;
-    if (_currentData == null) {
-      body = loadInitialData();
-    } else {
-      body = displayData();
-    }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Server system info: ${_selectedServer.name}"),
+        title: const Text("Server system info"),
         actions: actions,
       ),
-      body: body,
+      body: displayState(),
     );
   }
 
-  Widget buildPopUpMenuButtons() {
-    return PopupMenuButton<Server>(
-      onSelected: (Server result) {
-        setState(() {
-          _selectedServer = result;
-        });
-      },
-      itemBuilder: (BuildContext context) {
-        final list = <PopupMenuEntry<Server>>[
-          const PopupMenuItem<Server>(
-            value: Server.account,
-            child: Text('Account server'),
-          )
-        ];
-
-        if (api.mediaInMicroserviceMode()) {
-          list.add(const PopupMenuItem<Server>(
-            value: Server.media,
-            child: Text('Media server'),
-          ));
-        }
-
-        if (api.profileInMicroserviceMode()) {
-          list.add(const PopupMenuItem<Server>(
-            value: Server.profile,
-            child: Text('Profile server'),
-          ));
-        }
-
-        return list;
-      }
-    );
-  }
-
-  Widget loadInitialData() {
-    // return FutureBuilder(
-    //   future: api.mediaCommonAdmin((api) => api.getSystemInfo()).ok(),
-    //   builder: (context, snapshot) {
-    //     switch (snapshot.connectionState) {
-    //       case ConnectionState.active || ConnectionState.waiting: {
-    //         return buildProgressIndicator();
-    //       }
-    //       case ConnectionState.none || ConnectionState.done: {
-    //         final data = snapshot.data;
-    //         if (data != null) {
-    //           _currentData = data;
-    //           return displayData();
-    //         }
-    //         return const Text("Error");
-    //       }
-    //     }
-    //   }
-    // );
-    return buildProgressIndicator();
+  Widget displayState() {
+    final data = _currentData;
+    if (isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    } else if (_managers == null || data == null) {
+      return Center(child: Text(context.strings.generic_error));
+    } else {
+      return displayData(data);
+    }
   }
 
   Widget buildProgressIndicator() {
@@ -124,35 +90,37 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
     );
   }
 
-  Widget displayData() {
+  Widget displayData(List<ManagerSystemInfo> infoList) {
     return RefreshIndicator(
-      onRefresh: () async {
-        // final data = await api.mediaCommonAdmin((api) => api.getSystemInfo()).ok();
-
-        // setState(() {
-        //   _currentData = data;
-        // });
-      },
+      onRefresh: _refreshData,
       child: ListView.builder(
-        itemCount: _currentData?.length ?? 0,
+        itemCount: infoList.length,
         itemBuilder: (context, index) {
-          final data = _currentData;
-          if (data == null) {
-            return const Text("Error");
-          }
+          final info = infoList[index];
 
-          final info = data[index];
-          final widgets = <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  info.name,
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
+          final List<Widget> widgets = <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                info.name,
+                textAlign: TextAlign.left,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
-            ];
-          widgets.addAll(displayCommandList(info.info.info));
+            ),
+          ];
+
+          final cmdList = info.info;
+          if (cmdList == null) {
+            widgets.add(Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                context.strings.generic_error,
+                textAlign: TextAlign.left,
+              ),
+            ));
+          } else {
+            widgets.addAll(displayCommandList(cmdList.info));
+          }
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,6 +169,6 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
 
 class ManagerSystemInfo {
   String name;
-  SystemInfo info;
+  SystemInfo? info;
   ManagerSystemInfo(this.name, this.info);
 }
