@@ -1,5 +1,7 @@
 
 
+import 'package:app/data/login_repository.dart';
+import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:app/logic/admin/image_moderation.dart';
@@ -46,6 +48,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
   final ScrollController _controller = ScrollController();
   int currentPosition = -100;
   final logic = ImageModerationLogic.getInstance();
+  final api = LoginRepository.getInstance().repositories.api;
 
   @override
   void initState() {
@@ -165,7 +168,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
       },
       onLongPress: () {
         if (index != null) {
-          showActionDialog(imageOwner, image, index);
+          showActionDialog(context, imageOwner, image, index);
         }
       },
       child: accountImgWidget(
@@ -201,7 +204,7 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
     );
   }
 
-  Future<void> showActionDialog(AccountId account, ContentId contentId, int index) {
+  Future<void> showActionDialog(BuildContext context, AccountId account, ContentId contentId, int index) {
     final pageKey = PageKey();
 
     final rejectAction = SimpleDialogOption(
@@ -225,17 +228,24 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
     return MyNavigator.showDialog(
       context: context,
       pageKey: pageKey,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return SimpleDialog(
           title: const Text("Select action"),
           children: <Widget>[
             if (logic.rejectingIsPossible(index)) rejectAction,
             SimpleDialogOption(
               onPressed: () {
-                MyNavigator.removePage(context, pageKey);
+                MyNavigator.removePage(dialogContext, pageKey);
                 showInfoDialog(context, "Account ID\n\n${account.aid}\n\nContent ID\n\n${contentId.cid}");
               },
               child: const Text("Show info"),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                MyNavigator.removePage(dialogContext, pageKey);
+                getAgeAndNameAndShowAdminSettings(context, api, account);
+              },
+              child: const Text("Show admin settings"),
             ),
           ],
         );

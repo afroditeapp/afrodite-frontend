@@ -1,4 +1,5 @@
 
+import 'package:app/api/api_manager.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/localizations.dart';
@@ -16,9 +17,21 @@ import 'package:app/ui/normal/settings/admin/account_admin/edit_permissions.dart
 import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_text.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
+
+Future<void> getAgeAndNameAndShowAdminSettings(BuildContext context, ApiManager api, AccountId account) async {
+  final ageAndName = await api.profileAdmin((api) => api.getProfileAgeAndName(account.aid)).ok();
+  if (ageAndName != null && context.mounted) {
+    await MyNavigator.push(context, MaterialPage<void>(child: AccountAdminSettingsScreen(
+      accountId: account,
+      age: ageAndName.age,
+      name: ageAndName.name,
+    )));
+  }
+}
 
 class AccountAdminSettingsScreen extends StatefulWidget {
   final AccountId accountId;

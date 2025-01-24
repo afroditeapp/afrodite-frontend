@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:app/data/login_repository.dart';
+import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -43,6 +45,7 @@ class ProfileNameModerationScreen extends StatefulWidget {
 }
 
 class ProfileNameModerationScreenState extends State<ProfileNameModerationScreen> {
+  final api = LoginRepository.getInstance().repositories.api;
 
   @override
   Widget build(BuildContext context) {
@@ -188,9 +191,35 @@ class ProfileNameModerationScreenState extends State<ProfileNameModerationScreen
           UpdateSelectedStatus(name, !selected.contains(name))
         );
       },
+      onLongPress: () {
+        showActionDialog(context, name.id);
+      },
       selectedColor: Theme.of(context).colorScheme.onPrimary,
       selectedTileColor: Theme.of(context).colorScheme.primary,
       selected: selected.contains(name),
+    );
+  }
+
+  Future<void> showActionDialog(BuildContext context, AccountId account) {
+    final pageKey = PageKey();
+
+    return MyNavigator.showDialog(
+      context: context,
+      pageKey: pageKey,
+      builder: (BuildContext dialogContext) {
+        return SimpleDialog(
+          title: const Text("Select action"),
+          children: <Widget>[
+            SimpleDialogOption(
+              onPressed: () {
+                MyNavigator.removePage(dialogContext, pageKey);
+                getAgeAndNameAndShowAdminSettings(context, api, account);
+              },
+              child: const Text("Show admin settings"),
+            ),
+          ],
+        );
+      },
     );
   }
 }

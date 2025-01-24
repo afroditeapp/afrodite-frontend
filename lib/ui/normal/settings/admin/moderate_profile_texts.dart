@@ -1,6 +1,8 @@
 
 
+import 'package:app/data/login_repository.dart';
 import 'package:app/logic/admin/profile_text_moderation.dart';
+import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 
@@ -23,6 +25,7 @@ class ModerateProfileTextsScreen extends StatefulWidget {
 class _ModerateProfileTextsScreenState extends State<ModerateProfileTextsScreen> {
   final ItemPositionsListener _listener = ItemPositionsListener.create();
   final _logic = ProfileTextModerationLogic.getInstance();
+  final api = LoginRepository.getInstance().repositories.api;
 
   @override
   void initState() {
@@ -122,7 +125,7 @@ class _ModerateProfileTextsScreenState extends State<ModerateProfileTextsScreen>
     return InkWell(
       onLongPress: () {
         if (index != null) {
-          showActionDialog(imageOwner, index);
+          showActionDialog(context, imageOwner, index);
         }
       },
       child: Padding(
@@ -156,7 +159,7 @@ class _ModerateProfileTextsScreenState extends State<ModerateProfileTextsScreen>
     );
   }
 
-  Future<void> showActionDialog(AccountId account, int index) {
+  Future<void> showActionDialog(BuildContext context, AccountId account, int index) {
     final pageKey = PageKey();
 
     final rejectAction = SimpleDialogOption(
@@ -180,17 +183,24 @@ class _ModerateProfileTextsScreenState extends State<ModerateProfileTextsScreen>
     return MyNavigator.showDialog(
       context: context,
       pageKey: pageKey,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return SimpleDialog(
           title: const Text("Select action"),
           children: <Widget>[
             if (_logic.rejectingIsPossible(index)) rejectAction,
             SimpleDialogOption(
               onPressed: () {
-                MyNavigator.removePage(context, pageKey);
+                MyNavigator.removePage(dialogContext, pageKey);
                 showInfoDialog(context, "Account ID\n\n${account.aid}");
               },
               child: const Text("Show info"),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                MyNavigator.removePage(dialogContext, pageKey);
+                getAgeAndNameAndShowAdminSettings(context, api, account);
+              },
+              child: const Text("Show admin settings"),
             ),
           ],
         );
