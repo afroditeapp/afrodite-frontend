@@ -36,12 +36,12 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
   }
 
   Future<void> _refreshData() async {
-    _managers ??= await api.mediaCommonAdmin((api) => api.getManagerInstanceNames()).ok();
+    _managers ??= await api.accountCommonAdmin((api) => api.getManagerInstanceNames()).ok();
 
     final managers = _managers?.names ?? [];
     final List<ManagerSystemInfo> data = [];
     for (final m in managers) {
-      final info = await api.mediaCommonAdmin((api) => api.getSystemInfo(m)).ok();
+      final info = await api.accountCommonAdmin((api) => api.getSystemInfo(m)).ok();
       if (info != null) {
         data.add(ManagerSystemInfo(m, info));
       } else {
@@ -58,9 +58,10 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> actions = [];
-    actions.add(IconButton(onPressed: () async {
-      await _refreshData();
-    }, icon: const Icon(Icons.refresh)));
+    actions.add(IconButton(
+      onPressed: _refreshData,
+      icon: const Icon(Icons.refresh),
+    ));
 
     return Scaffold(
       appBar: AppBar(
@@ -82,12 +83,6 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
     } else {
       return displayData(data);
     }
-  }
-
-  Widget buildProgressIndicator() {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
   }
 
   Widget displayData(List<ManagerSystemInfo> infoList) {

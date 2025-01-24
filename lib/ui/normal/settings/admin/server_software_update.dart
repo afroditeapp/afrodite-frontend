@@ -1,339 +1,276 @@
 
-
+import 'package:app/localizations.dart';
+import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:openapi/api.dart';
-import 'package:app/api/api_manager.dart';
 import 'package:app/data/login_repository.dart';
-
-
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 
-
-
 class ServerSoftwareUpdatePage extends StatefulWidget {
-  const ServerSoftwareUpdatePage({Key? key}) : super(key: key);
+  const ServerSoftwareUpdatePage({super.key});
 
   @override
-  _ServerSoftwareUpdatePageState createState() => _ServerSoftwareUpdatePageState();
+  State<ServerSoftwareUpdatePage> createState() => _ServerSoftwareUpdatePageState();
 }
 
 class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
 
-  final Server _selectedServer = Server.account;
-  bool _reboot = false;
-  bool _reset_data = false;
-  SoftwareData? _currentData;
+  BackendVersion? _runningVersion;
+  ManagerInstanceNameList? _managers;
+  List<ManagerInstanceRelatedState>? _currentData = [];
   final api = LoginRepository.getInstance().repositories.api;
+
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    _refreshData();
+  }
+
+  Future<void> _refreshData() async {
+    _managers ??= await api.mediaCommonAdmin((api) => api.getManagerInstanceNames()).ok();
+    _runningVersion = await api.accountCommon((api) => api.getVersion()).ok();
+
+    final managers = _managers?.names ?? [];
+    final List<ManagerInstanceRelatedState> data = [];
+    for (final m in managers) {
+      final status = await api.accountCommonAdmin((api) => api.getSoftwareUpdateStatus(m)).ok();
+      if (status != null) {
+        data.add(ManagerInstanceRelatedState(m, status));
+      } else {
+        data.add(ManagerInstanceRelatedState(m, null));
+      }
+    }
+
+    setState(() {
+      isLoading = false;
+      _currentData = data;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> actions;
-    if (api.inMicroserviceMode()) {
-      actions = [];
-    } else {
-      actions = [];
-    }
-    actions.add(IconButton(onPressed: () async {
-        final data = await _getData(_selectedServer, api);
-        setState(() {
-          _currentData = data;
-        });
-    }, icon: const Icon(Icons.refresh)));
-
-    Widget body;
-    if (_currentData == null) {
-      body = loadInitialData();
-    } else {
-      body = displayData();
-    }
+    List<Widget> actions = [];
+    actions.add(IconButton(
+      onPressed: _refreshData,
+      icon: const Icon(Icons.refresh),
+    ));
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Server software: ${_selectedServer.name}"),
+        title: const Text("Server software update"),
         actions: actions,
       ),
-      body: body,
+      body: displayState(),
     );
   }
 
-
-  Widget loadInitialData() {
-    return FutureBuilder(
-      future: _getData(_selectedServer, api),
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.active || ConnectionState.waiting: {
-            return buildProgressIndicator();
-          }
-          case ConnectionState.none || ConnectionState.done: {
-            final data = snapshot.data;
-            if (data != null) {
-              _currentData = data;
-              return displayData();
-            }
-            return const Text("Error");
-          }
-        }
-      }
-    );
+  Widget displayState() {
+    final runningVersion = _runningVersion;
+    final data = _currentData;
+    if (isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    } else if (_managers == null || runningVersion == null || data == null) {
+      return Center(child: Text(context.strings.generic_error));
+    } else {
+      return displayData(runningVersion, data);
+    }
   }
 
-  Widget buildProgressIndicator() {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
-
-  Widget displayData() {
+  Widget displayData(BackendVersion runningVersion, List<ManagerInstanceRelatedState> statusList) {
     return RefreshIndicator(
-      onRefresh: () async {
-        final data = await _getData(_selectedServer, api);
-
-        setState(() {
-          _currentData = data;
-        });
-      },
-      child: ListView(
+      onRefresh: _refreshData,
+      child: ListView.builder(
+        itemCount: statusList.length + 1,
         scrollDirection: Axis.vertical,
-        // children: displaySoftwareData(context, _currentData!),
-        children: [],
+        itemBuilder: (context, i) {
+          if (i == 0) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Running backend: ${runningVersion.backendVersion} ${runningVersion.backendCodeVersion}"),
+            );
+          } else {
+            final data = statusList[i - 1];
+            return displaySoftwareUpdate(context, data);
+          }
+        },
       ),
     );
   }
 
-  // List<Widget> displaySoftwareData(BuildContext context, SoftwareData data) {
-  //   var widgets = <Widget>[];
-
-  //   final currentVersion = Text("Running backend: ${data.runningVersion.backendVersion} ${data.runningVersion.backendCodeVersion}");
-  //   widgets.add(currentVersion);
-
-  //   data.installedSoftware.currentSoftware.sort((a, b) => a.name.compareTo(b.name));
-  //   for (final buildInfo in data.installedSoftware.currentSoftware) {
-  //     switch (buildInfo.name) {
-  //       case "backend": {
-  //         displaySoftware(context, widgets, buildInfo, data.latestAvailableBackend, SoftwareOptions.backend);
-  //       }
-  //       default: {
-  //         widgets.add(Text("Unknown build: ${buildInfo.name}"));
-  //       }
-  //     }
-  //   }
-
-  //   final paddedWidgets = <Widget>[];
-  //   for (var widget in widgets) {
-  //     paddedWidgets.add(Padding(
-  //       padding: const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
-  //       child: widget
-  //     ));
-  //   }
-
-  //   paddedWidgets.addAll(displaySystemInfo(context, data.systemInfo));
-
-  //   return paddedWidgets;
-  // }
-
-  // void displaySoftware(
-  //   BuildContext context,
-  //   List<Widget> widgets,
-  //   BuildInfo buildInfo,
-  //   BuildInfo? latestAvailable,
-  //   SoftwareOptions softwareOptions,
-  // ) {
-  //   widgets.add(Text(
-  //     buildInfo.name,
-  //     textAlign: TextAlign.left,
-  //     style: Theme.of(context).textTheme.headlineSmall,
-  //   ));
-  //   widgets.add(displayBuildInfo(context, "Installed: ", buildInfo));
-  //   if (latestAvailable != null) {
-  //     widgets.add(displayBuildInfo(context, "Available: ", latestAvailable));
-  //     if (latestAvailable.commitSha == buildInfo.commitSha) {
-  //       widgets.add(Text("No updates available (${buildInfo.name})"));
-  //     } else {
-  //       widgets.add(Text("Update available! (${buildInfo.name})"));
-  //       widgets.add(displayUpdate(context, softwareOptions));
-  //     }
-  //   } else {
-  //     widgets.add(const Text("No info about latest software"));
-  //   }
-  // }
-
-  // Widget displayBuildInfo(BuildContext context, String startText, BuildInfo buildInfo) {
-  //   final details = "$startText\nname: ${buildInfo.name}\ntime: ${buildInfo.timestamp}\n${buildInfo.buildInfo}";
-  //   final shortCommit = buildInfo.commitSha.substring(0, 7);
-  //   final buildInfoLines = buildInfo.buildInfo.split("\n");
-  //   var version = "";
-  //   for (final line in buildInfoLines) {
-  //     if (line.startsWith("version:")) {
-  //       version = line.substring(9);
-  //       break;
-  //     }
-  //   }
-  //   return Row(
-  //     children: [
-  //       Padding(
-  //         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-  //         child: Text("$startText$version $shortCommit"),
-  //       ),
-  //       ElevatedButton(
-  //         onPressed: () {
-  //           showInfoDialog(context, details);
-  //         },
-  //         child: const Text("Info"),
-  //       ),
-  //     ],
-  //   );
-  // }
-
-  Widget displayUpdate(BuildContext context) {
-
-    final rebootCheckbox = IntrinsicHeight(
-      child: CheckboxListTile(
-        title: const Text("Reboot"),
-        value: _reboot,
-        onChanged: (value) {
-          setState(() {
-            _reboot = value ?? false;
-          });
-        },
-      ),
+  Widget displaySoftwareUpdate(BuildContext context, ManagerInstanceRelatedState data) {
+    final status = data.status;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            data.manager,
+            textAlign: TextAlign.left,
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+        ),
+        const Padding(padding: EdgeInsets.only(top: 8.0)),
+        if (status == null) Text(context.strings.generic_error),
+        if (status != null) displaySoftwareStatus(context, data, status),
+      ],
     );
+  }
 
-    final resetData = IntrinsicHeight(
-      child: CheckboxListTile(
-        title: const Text("Reset data"),
-        value: _reset_data,
-        onChanged: (value) {
-          setState(() {
-            _reset_data = value ?? false;
-          });
-        },
-      ),
+  Widget displaySoftwareStatus(
+    BuildContext context,
+    ManagerInstanceRelatedState state,
+    SoftwareUpdateStatus status,
+  ) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        hPad(Text("State", style: Theme.of(context).textTheme.titleSmall)),
+        hPad(Text(status.state.toString())),
+        const Padding(padding: EdgeInsets.all(8.0)),
+        ...displaySoftware(context, state, status.installed, status.downloaded),
+        const Padding(padding: EdgeInsets.all(8.0)),
+        hPad(displayDownload(context, state)),
+      ],
     );
+  }
 
+  List<Widget> displaySoftware(
+    BuildContext context,
+    ManagerInstanceRelatedState state,
+    SoftwareInfo? installed,
+    SoftwareInfo? downloaded,
+  ) {
+    final List<Widget> widgets = [];
+    if (installed != null && downloaded != null && installed == downloaded) {
+      widgets.add(displayBuildInfo(context, "Installed", installed));
+      widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
+    } else {
+      if (installed != null) {
+        widgets.add(displayBuildInfo(context, "Installed", installed));
+        widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
+      }
+      if (downloaded != null) {
+        widgets.add(displayBuildInfo(context, "Downloaded", downloaded));
+        widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
+      }
+    }
+
+    if (installed != null && downloaded != null && downloaded.sha256 == installed.sha256) {
+      widgets.add(hPad(const Text("No updates available")));
+    } else if (downloaded != null) {
+      widgets.add(hPad(const Text("Update available!")));
+      widgets.add(hPad(displayUpdate(context, state, downloaded)));
+    }
+
+    return widgets;
+  }
+
+  Widget displayBuildInfo(BuildContext context, String title, SoftwareInfo info) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        hPad(Text(title, style: Theme.of(context).textTheme.titleLarge)),
+        const Padding(padding: EdgeInsets.all(8.0)),
+        hPad(Text("Name", style: Theme.of(context).textTheme.titleSmall)),
+        hPad(Text(info.name)),
+        const Padding(padding: EdgeInsets.all(8.0)),
+        hPad(Text("sha256", style: Theme.of(context).textTheme.titleSmall)),
+        hPad(SelectableText(info.sha256)),
+      ],
+    );
+  }
+
+  Widget displayUpdate(
+    BuildContext context,
+    ManagerInstanceRelatedState state,
+    SoftwareInfo downloaded,
+  ) {
     final requestUpdateButton = ElevatedButton(
       onPressed: () {
-        showConfirmDialog(context, "Request update?", details: "Reboot: $_reboot \nReset data: $_reset_data")
+        if (downloaded.sha256 != state.sha256Controller.text) {
+          showSnackBar("Text field sha256 value does not match with the downloaded file");
+          return;
+        }
+
+        showConfirmDialog(context, "Request update?")
           .then((value) async {
             if (value == true) {
-              // final result = await api
-              //   .commonAdminAction(
-              //     _selectedServer, (api) =>
-              //       api.postRequestUpdateSoftware(softwareOptions, _reboot, _reset_data)
-              //   );
-              // if (result case Ok()) {
-              //   showSnackBar("Update requested!");
-              // } else {
-              //   showSnackBar("Update request failed!");
-              // }
+              final result = await api
+                .accountCommonAdminAction(
+                  (api) => api.postTriggerSoftwareUpdateInstall(state.manager, downloaded.name, downloaded.sha256)
+                );
+              if (result case Ok()) {
+                showSnackBar("Update requested!");
+              } else {
+                showSnackBar("Update request failed!");
+              }
+              if (context.mounted) {
+                await _refreshData();
+              }
             }
           });
       },
       child: const Text("Request update"),
     );
 
-    var options = <Widget>[
-      rebootCheckbox,
-      resetData,
-    ];
-
-    return Row(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Column(
-            children: options,
+        TextField(
+          controller: state.sha256Controller,
+          decoration: const InputDecoration(
+            hintText: "sha256",
           ),
         ),
+        const Padding(padding: EdgeInsets.all(8.0)),
         requestUpdateButton,
       ],
     );
   }
 
-  List<Widget> displaySystemInfo(BuildContext context, SystemInfo data) {
-    var widgets = <Widget>[];
-    widgets.addAll(displayCommandList(data.info));
-    return widgets;
-  }
-
-  List<Widget> displayCommandList(List<CommandOutput> commands) {
-    List<Widget> list = [];
-
-    for (var command in commands) {
-      if (!command.name.contains("-manager")) {
-        continue;
-      }
-
-      list.add(Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          command.name,
-          textAlign: TextAlign.left,
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
-      ));
-
-      Widget output = SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            command.output,
-            style: GoogleFonts.robotoMono(),
-          ),
-        ),
-      );
-      list.add(output);
-    }
-
-    return list;
+  Widget displayDownload(
+    BuildContext context,
+    ManagerInstanceRelatedState state,
+  ) {
+    return ElevatedButton(
+      onPressed: () {
+        showConfirmDialog(context, "Check updates?")
+          .then((value) async {
+            if (value == true) {
+              final result = await api
+                .accountCommonAdminAction(
+                  (api) => api.postTriggerSoftwareUpdateDownload(state.manager)
+                );
+              if (result case Ok()) {
+                showSnackBar("Check updates requested!");
+              } else {
+                showSnackBar("Check updates failed!");
+              }
+              if (context.mounted) {
+                await _refreshData();
+              }
+            }
+          });
+      },
+      child: const Text("Check updates"),
+    );
   }
 }
 
-
-Future<SoftwareData?> _getData(Server server, ApiManager api) async {
-  final version = await api.common(server, (api) => api.getVersion()).ok();
-  final managers = await api.commonAdmin(server, (api) => api.getManagerInstanceNames()).ok();
-  final managerName = managers?.names.firstOrNull;
-  if (managerName == null) {
-    return null;
-  }
-  final updateStatus = await api.commonAdmin(server, (api) => api.getSoftwareUpdateStatus(managerName)).ok();
-  final systemInfo = await api.commonAdmin(server, (api) => api.getSystemInfo(managerName)).ok();
-
-
-  if (version == null) {
-    return null;
-  }
-
-  if (updateStatus == null) {
-    return null;
-  }
-
-  if (systemInfo == null) {
-    return null;
-  }
-
-  return SoftwareData(version, updateStatus.downloaded, updateStatus.installed, systemInfo);
-}
-
-class SoftwareData {
-  final BackendVersion runningVersion;
-  final SoftwareInfo? downloadedSoftware;
-  final SoftwareInfo? installedSoftware;
-  final SystemInfo systemInfo;
-
-  SoftwareData(
-    this.runningVersion,
-    this.downloadedSoftware,
-    this.installedSoftware,
-    this.systemInfo,
-  );
+class ManagerInstanceRelatedState {
+  String manager;
+  SoftwareUpdateStatus? status;
+  TextEditingController sha256Controller = TextEditingController();
+  ManagerInstanceRelatedState(this.manager, this.status);
 }
