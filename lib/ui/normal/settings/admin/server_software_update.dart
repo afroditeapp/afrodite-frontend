@@ -31,7 +31,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
   }
 
   Future<void> _refreshData() async {
-    _managers ??= await api.mediaCommonAdmin((api) => api.getManagerInstanceNames()).ok();
+    _managers ??= await api.accountCommonAdmin((api) => api.getManagerInstanceNames()).ok();
     _runningVersion = await api.accountCommon((api) => api.getVersion()).ok();
 
     final managers = _managers?.names ?? [];
@@ -118,7 +118,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
           ),
         ),
         const Padding(padding: EdgeInsets.only(top: 8.0)),
-        if (status == null) Text(context.strings.generic_error),
+        if (status == null) hPad(Text(context.strings.generic_error)),
         if (status != null) displaySoftwareStatus(context, data, status),
       ],
     );

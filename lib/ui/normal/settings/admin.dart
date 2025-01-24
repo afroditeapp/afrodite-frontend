@@ -2,6 +2,7 @@
 
 import 'package:app/ui/normal/settings/admin/moderate_profile_texts.dart';
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
+import 'package:app/ui/normal/settings/admin/server_tasks.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,8 +64,7 @@ class AdminSettingsPage extends StatelessWidget {
         MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: false)),)
       ));
     }
-    if (permissions.adminServerMaintenanceRebootBackend ||
-        permissions.adminServerMaintenanceSaveBackendConfig ||
+    if (permissions.adminServerMaintenanceSaveBackendConfig ||
         permissions.adminServerMaintenanceViewBackendConfig) {
       settings.add(Setting.createSetting(Icons.settings, "Configure backend", () =>
         MyNavigator.push(context, MaterialPage<void>(child: const ConfigureBackendPage()),)
@@ -75,8 +75,15 @@ class AdminSettingsPage extends StatelessWidget {
         MyNavigator.push(context, MaterialPage<void>(child: const ServerSystemInfoPage()),)
       ));
     }
-    if (permissions.adminServerMaintenanceViewInfo &&
-        permissions.adminServerMaintenanceUpdateSoftware) {
+    if (
+      permissions.adminServerMaintenanceRebootBackend ||
+      permissions.adminServerMaintenanceResetData
+    ) {
+      settings.add(Setting.createSetting(Icons.schedule, "Server tasks", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: ServerTasksScreen(permissions: permissions._permissions,)),)
+      ));
+    }
+    if (permissions.adminServerMaintenanceUpdateSoftware) {
       settings.add(Setting.createSetting(Icons.system_update_alt, "Server software update", () =>
         MyNavigator.push(context, MaterialPage<void>(child: const ServerSoftwareUpdatePage()),)
       ));
@@ -129,6 +136,7 @@ class AdminSettingsPermissions {
   bool get adminServerMaintenanceViewBackendConfig => _permissions.adminServerMaintenanceViewBackendConfig;
   bool get adminServerMaintenanceViewInfo => _permissions.adminServerMaintenanceViewInfo;
   bool get adminServerMaintenanceUpdateSoftware => _permissions.adminServerMaintenanceUpdateSoftware;
+  bool get adminServerMaintenanceResetData => _permissions.adminServerMaintenanceResetData;
   bool get adminProfileStatistics => _permissions.adminProfileStatistics;
   bool get adminFindAccountByEmail => _permissions.adminFindAccountByEmail;
   AdminSettingsPermissions(this._permissions);
@@ -143,6 +151,7 @@ class AdminSettingsPermissions {
       adminServerMaintenanceViewBackendConfig ||
       adminServerMaintenanceViewInfo ||
       adminServerMaintenanceUpdateSoftware ||
+      adminServerMaintenanceResetData ||
       adminProfileStatistics ||
       adminFindAccountByEmail;
   }
