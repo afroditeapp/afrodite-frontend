@@ -236,8 +236,6 @@ class ApiClient {
           return BooleanSetting.fromJson(value);
         case 'BotConfig':
           return BotConfig.fromJson(value);
-        case 'BuildInfo':
-          return BuildInfo.fromJson(value);
         case 'ClientId':
           return ClientId.fromJson(value);
         case 'ClientInfo':
@@ -352,6 +350,10 @@ class ApiClient {
           return Location.fromJson(value);
         case 'LoginResult':
           return LoginResult.fromJson(value);
+        case 'MaintenanceTask':
+          return MaintenanceTask.fromJson(value);
+        case 'ManagerInstanceNameList':
+          return ManagerInstanceNameList.fromJson(value);
         case 'MatchesIteratorSessionId':
           return MatchesIteratorSessionId.fromJson(value);
         case 'MatchesPage':
@@ -516,6 +518,14 @@ class ApiClient {
           return ResetNewsIteratorResult.fromJson(value);
         case 'ResetReceivedLikesIteratorResult':
           return ResetReceivedLikesIteratorResult.fromJson(value);
+        case 'ScheduledMaintenanceStatus':
+          return ScheduledMaintenanceStatus.fromJson(value);
+        case 'ScheduledTaskStatus':
+          return ScheduledTaskStatus.fromJson(value);
+        case 'ScheduledTaskType':
+          return ScheduledTaskTypeTypeTransformer().decode(value);
+        case 'ScheduledTaskTypeValue':
+          return ScheduledTaskTypeValue.fromJson(value);
         case 'SearchGroups':
           return SearchGroups.fromJson(value);
         case 'SecurityContent':
@@ -548,16 +558,16 @@ class ApiClient {
           return SignInWithLoginInfo.fromJson(value);
         case 'SoftwareInfo':
           return SoftwareInfo.fromJson(value);
-        case 'SoftwareOptions':
-          return SoftwareOptionsTypeTransformer().decode(value);
+        case 'SoftwareUpdateState':
+          return SoftwareUpdateStateTypeTransformer().decode(value);
+        case 'SoftwareUpdateStatus':
+          return SoftwareUpdateStatus.fromJson(value);
         case 'StatisticsProfileVisibility':
           return StatisticsProfileVisibilityTypeTransformer().decode(value);
         case 'SyncVersion':
           return SyncVersion.fromJson(value);
         case 'SystemInfo':
           return SystemInfo.fromJson(value);
-        case 'SystemInfoList':
-          return SystemInfoList.fromJson(value);
         case 'TimeGranularity':
           return TimeGranularityTypeTransformer().decode(value);
         case 'Translation':

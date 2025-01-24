@@ -172,15 +172,15 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
         showConfirmDialog(context, "Restart backend?")
           .then((value) async {
             if (value == true) {
-              final result = await api
-                .commonAdminAction(
-                  _selectedServer, (api) => api.postRequestRestartOrResetBackend(false)
-                );
-              if (result case Ok()) {
-                showSnackBar("Restart requested!");
-              } else {
-                showSnackBar("Restart request failed!");
-              }
+              // final result = await api
+              //   .commonAdminAction(
+              //     _selectedServer, (api) => api.postRequestRestartOrResetBackend(false)
+              //   );
+              // if (result case Ok()) {
+              //   showSnackBar("Restart requested!");
+              // } else {
+              //   showSnackBar("Restart request failed!");
+              // }
             }
           });
       },
@@ -196,16 +196,16 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
       showConfirmDialog(context, "Reset backend?", details: "Data loss warning! This can remove data, if done more than once.")
           .then((value) async {
             if (value == true) {
-              final result = await api
-                .commonAdminAction(
-                  _selectedServer, (api) =>
-                    api.postRequestRestartOrResetBackend(true)
-                );
-              if (result case Ok()) {
-                showSnackBar("Reset requested!");
-              } else {
-                showSnackBar("Reset request failed!");
-              }
+              // final result = await api
+              //   .commonAdminAction(
+              //     _selectedServer, (api) =>
+              //       api.postRequestRestartOrResetBackend(true)
+              //   );
+              // if (result case Ok()) {
+              //   showSnackBar("Reset requested!");
+              // } else {
+              //   showSnackBar("Reset request failed!");
+              // }
             }
           });
       },

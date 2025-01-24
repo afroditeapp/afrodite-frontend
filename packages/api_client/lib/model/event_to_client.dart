@@ -16,6 +16,7 @@ class EventToClient {
     this.contentProcessingStateChanged,
     required this.event,
     this.latestViewedMessageChanged,
+    this.scheduledMaintenanceStatus,
   });
 
   /// Data for event ContentProcessingStateChanged
@@ -26,21 +27,26 @@ class EventToClient {
   /// Data for event LatestViewedMessageChanged
   LatestViewedMessageChanged? latestViewedMessageChanged;
 
+  /// Data for event ScheduledMaintenanceStatus
+  ScheduledMaintenanceStatus? scheduledMaintenanceStatus;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is EventToClient &&
     other.contentProcessingStateChanged == contentProcessingStateChanged &&
     other.event == event &&
-    other.latestViewedMessageChanged == latestViewedMessageChanged;
+    other.latestViewedMessageChanged == latestViewedMessageChanged &&
+    other.scheduledMaintenanceStatus == scheduledMaintenanceStatus;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (contentProcessingStateChanged == null ? 0 : contentProcessingStateChanged!.hashCode) +
     (event.hashCode) +
-    (latestViewedMessageChanged == null ? 0 : latestViewedMessageChanged!.hashCode);
+    (latestViewedMessageChanged == null ? 0 : latestViewedMessageChanged!.hashCode) +
+    (scheduledMaintenanceStatus == null ? 0 : scheduledMaintenanceStatus!.hashCode);
 
   @override
-  String toString() => 'EventToClient[contentProcessingStateChanged=$contentProcessingStateChanged, event=$event, latestViewedMessageChanged=$latestViewedMessageChanged]';
+  String toString() => 'EventToClient[contentProcessingStateChanged=$contentProcessingStateChanged, event=$event, latestViewedMessageChanged=$latestViewedMessageChanged, scheduledMaintenanceStatus=$scheduledMaintenanceStatus]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -54,6 +60,11 @@ class EventToClient {
       json[r'latest_viewed_message_changed'] = this.latestViewedMessageChanged;
     } else {
       json[r'latest_viewed_message_changed'] = null;
+    }
+    if (this.scheduledMaintenanceStatus != null) {
+      json[r'scheduled_maintenance_status'] = this.scheduledMaintenanceStatus;
+    } else {
+      json[r'scheduled_maintenance_status'] = null;
     }
     return json;
   }
@@ -80,6 +91,7 @@ class EventToClient {
         contentProcessingStateChanged: ContentProcessingStateChanged.fromJson(json[r'content_processing_state_changed']),
         event: EventType.fromJson(json[r'event'])!,
         latestViewedMessageChanged: LatestViewedMessageChanged.fromJson(json[r'latest_viewed_message_changed']),
+        scheduledMaintenanceStatus: ScheduledMaintenanceStatus.fromJson(json[r'scheduled_maintenance_status']),
       );
     }
     return null;

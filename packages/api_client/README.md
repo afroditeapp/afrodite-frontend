@@ -129,13 +129,19 @@ Class | Method | HTTP request | Description
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens. Connection is required as API access is allowed for connected clients.
 *CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
 *CommonAdminApi* | [**getBackendConfig**](doc//CommonAdminApi.md#getbackendconfig) | **GET** /common_api/backend_config | Get dynamic backend config.
-*CommonAdminApi* | [**getLatestBuildInfo**](doc//CommonAdminApi.md#getlatestbuildinfo) | **GET** /common_api/get_latest_build_info | Get latest software build information available for update from manager instance.
+*CommonAdminApi* | [**getManagerInstanceNames**](doc//CommonAdminApi.md#getmanagerinstancenames) | **GET** /common_api/manager_instance_names | Get available manager instances.
 *CommonAdminApi* | [**getPerfData**](doc//CommonAdminApi.md#getperfdata) | **GET** /common_api/perf_data | Get performance data
-*CommonAdminApi* | [**getSoftwareInfo**](doc//CommonAdminApi.md#getsoftwareinfo) | **GET** /common_api/software_info | Get software version information from manager instance.
+*CommonAdminApi* | [**getScheduledTasksStatus**](doc//CommonAdminApi.md#getscheduledtasksstatus) | **GET** /common_api/scheduled_tasks_status | Get scheduled tasks status from manager instance.
+*CommonAdminApi* | [**getSoftwareUpdateStatus**](doc//CommonAdminApi.md#getsoftwareupdatestatus) | **GET** /common_api/software_info | Get software version information from manager instance.
 *CommonAdminApi* | [**getSystemInfo**](doc//CommonAdminApi.md#getsysteminfo) | **GET** /common_api/system_info | Get system information from manager instance.
 *CommonAdminApi* | [**postBackendConfig**](doc//CommonAdminApi.md#postbackendconfig) | **POST** /common_api/backend_config | Save dynamic backend config.
-*CommonAdminApi* | [**postRequestRestartOrResetBackend**](doc//CommonAdminApi.md#postrequestrestartorresetbackend) | **POST** /common_api/request_restart_or_reset_backend | Request restarting or reseting backend through app-manager instance.
-*CommonAdminApi* | [**postRequestUpdateSoftware**](doc//CommonAdminApi.md#postrequestupdatesoftware) | **POST** /common_api/request_update_software | Request updating new software from manager instance.
+*CommonAdminApi* | [**postScheduleTask**](doc//CommonAdminApi.md#postscheduletask) | **POST** /common_api/schedule_task | Schedule task.
+*CommonAdminApi* | [**postTriggerBackendDataReset**](doc//CommonAdminApi.md#posttriggerbackenddatareset) | **POST** /common_api/trigger_backend_data_reset | Trigger backend data reset which also restarts the backend.
+*CommonAdminApi* | [**postTriggerBackendRestart**](doc//CommonAdminApi.md#posttriggerbackendrestart) | **POST** /common_api/trigger_backend_restart | Trigger backend restart.
+*CommonAdminApi* | [**postTriggerSoftwareUpdateDownload**](doc//CommonAdminApi.md#posttriggersoftwareupdatedownload) | **POST** /common_api/trigger_software_update_download | Trigger software update download.
+*CommonAdminApi* | [**postTriggerSoftwareUpdateInstall**](doc//CommonAdminApi.md#posttriggersoftwareupdateinstall) | **POST** /common_api/trigger_software_update_install | Trigger software update install.
+*CommonAdminApi* | [**postTriggerSystemReboot**](doc//CommonAdminApi.md#posttriggersystemreboot) | **POST** /common_api/trigger_system_reboot | Trigger system reboot.
+*CommonAdminApi* | [**postUnscheduleTask**](doc//CommonAdminApi.md#postunscheduletask) | **POST** /common_api/unschedule_task | Unschedule task.
 *MediaApi* | [**deleteContent**](doc//MediaApi.md#deletecontent) | **DELETE** /media_api/content/{aid}/{cid} | Delete content data.
 *MediaApi* | [**getAllAccountMediaContent**](doc//MediaApi.md#getallaccountmediacontent) | **GET** /media_api/all_account_media_content/{aid} | Get list of all media content on the server for one account.
 *MediaApi* | [**getContent**](doc//MediaApi.md#getcontent) | **GET** /media_api/content/{aid}/{cid} | Get content data
@@ -210,7 +216,6 @@ Class | Method | HTTP request | Description
  - [BackendVersion](doc//BackendVersion.md)
  - [BooleanSetting](doc//BooleanSetting.md)
  - [BotConfig](doc//BotConfig.md)
- - [BuildInfo](doc//BuildInfo.md)
  - [ClientId](doc//ClientId.md)
  - [ClientInfo](doc//ClientInfo.md)
  - [ClientLocalId](doc//ClientLocalId.md)
@@ -268,6 +273,8 @@ Class | Method | HTTP request | Description
  - [LimitedActionStatus](doc//LimitedActionStatus.md)
  - [Location](doc//Location.md)
  - [LoginResult](doc//LoginResult.md)
+ - [MaintenanceTask](doc//MaintenanceTask.md)
+ - [ManagerInstanceNameList](doc//ManagerInstanceNameList.md)
  - [MatchesIteratorSessionId](doc//MatchesIteratorSessionId.md)
  - [MatchesPage](doc//MatchesPage.md)
  - [MatchesSyncVersion](doc//MatchesSyncVersion.md)
@@ -350,6 +357,10 @@ Class | Method | HTTP request | Description
  - [ResetMatchesIteratorResult](doc//ResetMatchesIteratorResult.md)
  - [ResetNewsIteratorResult](doc//ResetNewsIteratorResult.md)
  - [ResetReceivedLikesIteratorResult](doc//ResetReceivedLikesIteratorResult.md)
+ - [ScheduledMaintenanceStatus](doc//ScheduledMaintenanceStatus.md)
+ - [ScheduledTaskStatus](doc//ScheduledTaskStatus.md)
+ - [ScheduledTaskType](doc//ScheduledTaskType.md)
+ - [ScheduledTaskTypeValue](doc//ScheduledTaskTypeValue.md)
  - [SearchGroups](doc//SearchGroups.md)
  - [SecurityContent](doc//SecurityContent.md)
  - [SendLikeResult](doc//SendLikeResult.md)
@@ -366,11 +377,11 @@ Class | Method | HTTP request | Description
  - [SetPublicKey](doc//SetPublicKey.md)
  - [SignInWithLoginInfo](doc//SignInWithLoginInfo.md)
  - [SoftwareInfo](doc//SoftwareInfo.md)
- - [SoftwareOptions](doc//SoftwareOptions.md)
+ - [SoftwareUpdateState](doc//SoftwareUpdateState.md)
+ - [SoftwareUpdateStatus](doc//SoftwareUpdateStatus.md)
  - [StatisticsProfileVisibility](doc//StatisticsProfileVisibility.md)
  - [SyncVersion](doc//SyncVersion.md)
  - [SystemInfo](doc//SystemInfo.md)
- - [SystemInfoList](doc//SystemInfoList.md)
  - [TimeGranularity](doc//TimeGranularity.md)
  - [Translation](doc//Translation.md)
  - [UnixTime](doc//UnixTime.md)

@@ -21,7 +21,7 @@ class ServerSystemInfoPage extends StatefulWidget {
 class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
 
   var _selectedServer = Server.account;
-  SystemInfoList? _currentData;
+  List<ManagerSystemInfo>? _currentData = [];
   final api = LoginRepository.getInstance().repositories.api;
 
   @override
@@ -40,10 +40,10 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
       actions = [];
     }
     actions.add(IconButton(onPressed: () async {
-        final data = await api.mediaCommonAdmin((api) => api.getSystemInfo()).ok();
-        setState(() {
-          _currentData = data;
-        });
+        // final data = await api.mediaCommonAdmin((api) => api.getSystemInfo()).ok();
+        // setState(() {
+        //   _currentData = data;
+        // });
     }, icon: const Icon(Icons.refresh)));
 
     Widget body;
@@ -97,24 +97,25 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
   }
 
   Widget loadInitialData() {
-    return FutureBuilder(
-      future: api.mediaCommonAdmin((api) => api.getSystemInfo()).ok(),
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.active || ConnectionState.waiting: {
-            return buildProgressIndicator();
-          }
-          case ConnectionState.none || ConnectionState.done: {
-            final data = snapshot.data;
-            if (data != null) {
-              _currentData = data;
-              return displayData();
-            }
-            return const Text("Error");
-          }
-        }
-      }
-    );
+    // return FutureBuilder(
+    //   future: api.mediaCommonAdmin((api) => api.getSystemInfo()).ok(),
+    //   builder: (context, snapshot) {
+    //     switch (snapshot.connectionState) {
+    //       case ConnectionState.active || ConnectionState.waiting: {
+    //         return buildProgressIndicator();
+    //       }
+    //       case ConnectionState.none || ConnectionState.done: {
+    //         final data = snapshot.data;
+    //         if (data != null) {
+    //           _currentData = data;
+    //           return displayData();
+    //         }
+    //         return const Text("Error");
+    //       }
+    //     }
+    //   }
+    // );
+    return buildProgressIndicator();
   }
 
   Widget buildProgressIndicator() {
@@ -126,21 +127,21 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
   Widget displayData() {
     return RefreshIndicator(
       onRefresh: () async {
-        final data = await api.mediaCommonAdmin((api) => api.getSystemInfo()).ok();
+        // final data = await api.mediaCommonAdmin((api) => api.getSystemInfo()).ok();
 
-        setState(() {
-          _currentData = data;
-        });
+        // setState(() {
+        //   _currentData = data;
+        // });
       },
       child: ListView.builder(
-        itemCount: _currentData?.info.length ?? 1,
+        itemCount: _currentData?.length ?? 0,
         itemBuilder: (context, index) {
           final data = _currentData;
           if (data == null) {
             return const Text("Error");
           }
 
-          final info = data.info[index];
+          final info = data[index];
           final widgets = <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -151,7 +152,7 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
                 ),
               ),
             ];
-          widgets.addAll(displayCommandList(info.info));
+          widgets.addAll(displayCommandList(info.info.info));
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,4 +197,10 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
     SystemChrome.setPreferredOrientations(DEFAULT_ORIENTATIONS);
     super.dispose();
   }
+}
+
+class ManagerSystemInfo {
+  String name;
+  SystemInfo info;
+  ManagerSystemInfo(this.name, this.info);
 }

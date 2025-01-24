@@ -103,8 +103,11 @@ String parameterToString(dynamic value) {
   if (value is ProfileVisibility) {
     return ProfileVisibilityTypeTransformer().encode(value).toString();
   }
-  if (value is SoftwareOptions) {
-    return SoftwareOptionsTypeTransformer().encode(value).toString();
+  if (value is ScheduledTaskType) {
+    return ScheduledTaskTypeTypeTransformer().encode(value).toString();
+  }
+  if (value is SoftwareUpdateState) {
+    return SoftwareUpdateStateTypeTransformer().encode(value).toString();
   }
   if (value is StatisticsProfileVisibility) {
     return StatisticsProfileVisibilityTypeTransformer().encode(value).toString();

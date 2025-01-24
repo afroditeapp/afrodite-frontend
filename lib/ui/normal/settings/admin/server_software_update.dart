@@ -103,96 +103,97 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
       },
       child: ListView(
         scrollDirection: Axis.vertical,
-        children: displaySoftwareData(context, _currentData!),
+        // children: displaySoftwareData(context, _currentData!),
+        children: [],
       ),
     );
   }
 
-  List<Widget> displaySoftwareData(BuildContext context, SoftwareData data) {
-    var widgets = <Widget>[];
+  // List<Widget> displaySoftwareData(BuildContext context, SoftwareData data) {
+  //   var widgets = <Widget>[];
 
-    final currentVersion = Text("Running backend: ${data.runningVersion.backendVersion} ${data.runningVersion.backendCodeVersion}");
-    widgets.add(currentVersion);
+  //   final currentVersion = Text("Running backend: ${data.runningVersion.backendVersion} ${data.runningVersion.backendCodeVersion}");
+  //   widgets.add(currentVersion);
 
-    data.installedSoftware.currentSoftware.sort((a, b) => a.name.compareTo(b.name));
-    for (final buildInfo in data.installedSoftware.currentSoftware) {
-      switch (buildInfo.name) {
-        case "backend": {
-          displaySoftware(context, widgets, buildInfo, data.latestAvailableBackend, SoftwareOptions.backend);
-        }
-        default: {
-          widgets.add(Text("Unknown build: ${buildInfo.name}"));
-        }
-      }
-    }
+  //   data.installedSoftware.currentSoftware.sort((a, b) => a.name.compareTo(b.name));
+  //   for (final buildInfo in data.installedSoftware.currentSoftware) {
+  //     switch (buildInfo.name) {
+  //       case "backend": {
+  //         displaySoftware(context, widgets, buildInfo, data.latestAvailableBackend, SoftwareOptions.backend);
+  //       }
+  //       default: {
+  //         widgets.add(Text("Unknown build: ${buildInfo.name}"));
+  //       }
+  //     }
+  //   }
 
-    final paddedWidgets = <Widget>[];
-    for (var widget in widgets) {
-      paddedWidgets.add(Padding(
-        padding: const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
-        child: widget
-      ));
-    }
+  //   final paddedWidgets = <Widget>[];
+  //   for (var widget in widgets) {
+  //     paddedWidgets.add(Padding(
+  //       padding: const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+  //       child: widget
+  //     ));
+  //   }
 
-    paddedWidgets.addAll(displaySystemInfo(context, data.systemInfo));
+  //   paddedWidgets.addAll(displaySystemInfo(context, data.systemInfo));
 
-    return paddedWidgets;
-  }
+  //   return paddedWidgets;
+  // }
 
-  void displaySoftware(
-    BuildContext context,
-    List<Widget> widgets,
-    BuildInfo buildInfo,
-    BuildInfo? latestAvailable,
-    SoftwareOptions softwareOptions,
-  ) {
-    widgets.add(Text(
-      buildInfo.name,
-      textAlign: TextAlign.left,
-      style: Theme.of(context).textTheme.headlineSmall,
-    ));
-    widgets.add(displayBuildInfo(context, "Installed: ", buildInfo));
-    if (latestAvailable != null) {
-      widgets.add(displayBuildInfo(context, "Available: ", latestAvailable));
-      if (latestAvailable.commitSha == buildInfo.commitSha) {
-        widgets.add(Text("No updates available (${buildInfo.name})"));
-      } else {
-        widgets.add(Text("Update available! (${buildInfo.name})"));
-        widgets.add(displayUpdate(context, softwareOptions));
-      }
-    } else {
-      widgets.add(const Text("No info about latest software"));
-    }
-  }
+  // void displaySoftware(
+  //   BuildContext context,
+  //   List<Widget> widgets,
+  //   BuildInfo buildInfo,
+  //   BuildInfo? latestAvailable,
+  //   SoftwareOptions softwareOptions,
+  // ) {
+  //   widgets.add(Text(
+  //     buildInfo.name,
+  //     textAlign: TextAlign.left,
+  //     style: Theme.of(context).textTheme.headlineSmall,
+  //   ));
+  //   widgets.add(displayBuildInfo(context, "Installed: ", buildInfo));
+  //   if (latestAvailable != null) {
+  //     widgets.add(displayBuildInfo(context, "Available: ", latestAvailable));
+  //     if (latestAvailable.commitSha == buildInfo.commitSha) {
+  //       widgets.add(Text("No updates available (${buildInfo.name})"));
+  //     } else {
+  //       widgets.add(Text("Update available! (${buildInfo.name})"));
+  //       widgets.add(displayUpdate(context, softwareOptions));
+  //     }
+  //   } else {
+  //     widgets.add(const Text("No info about latest software"));
+  //   }
+  // }
 
-  Widget displayBuildInfo(BuildContext context, String startText, BuildInfo buildInfo) {
-    final details = "$startText\nname: ${buildInfo.name}\ntime: ${buildInfo.timestamp}\n${buildInfo.buildInfo}";
-    final shortCommit = buildInfo.commitSha.substring(0, 7);
-    final buildInfoLines = buildInfo.buildInfo.split("\n");
-    var version = "";
-    for (final line in buildInfoLines) {
-      if (line.startsWith("version:")) {
-        version = line.substring(9);
-        break;
-      }
-    }
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text("$startText$version $shortCommit"),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            showInfoDialog(context, details);
-          },
-          child: const Text("Info"),
-        ),
-      ],
-    );
-  }
+  // Widget displayBuildInfo(BuildContext context, String startText, BuildInfo buildInfo) {
+  //   final details = "$startText\nname: ${buildInfo.name}\ntime: ${buildInfo.timestamp}\n${buildInfo.buildInfo}";
+  //   final shortCommit = buildInfo.commitSha.substring(0, 7);
+  //   final buildInfoLines = buildInfo.buildInfo.split("\n");
+  //   var version = "";
+  //   for (final line in buildInfoLines) {
+  //     if (line.startsWith("version:")) {
+  //       version = line.substring(9);
+  //       break;
+  //     }
+  //   }
+  //   return Row(
+  //     children: [
+  //       Padding(
+  //         padding: const EdgeInsets.symmetric(horizontal: 8.0),
+  //         child: Text("$startText$version $shortCommit"),
+  //       ),
+  //       ElevatedButton(
+  //         onPressed: () {
+  //           showInfoDialog(context, details);
+  //         },
+  //         child: const Text("Info"),
+  //       ),
+  //     ],
+  //   );
+  // }
 
-  Widget displayUpdate(BuildContext context, SoftwareOptions softwareOptions) {
+  Widget displayUpdate(BuildContext context) {
 
     final rebootCheckbox = IntrinsicHeight(
       child: CheckboxListTile(
@@ -223,16 +224,16 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
         showConfirmDialog(context, "Request update?", details: "Reboot: $_reboot \nReset data: $_reset_data")
           .then((value) async {
             if (value == true) {
-              final result = await api
-                .commonAdminAction(
-                  _selectedServer, (api) =>
-                    api.postRequestUpdateSoftware(softwareOptions, _reboot, _reset_data)
-                );
-              if (result case Ok()) {
-                showSnackBar("Update requested!");
-              } else {
-                showSnackBar("Update request failed!");
-              }
+              // final result = await api
+              //   .commonAdminAction(
+              //     _selectedServer, (api) =>
+              //       api.postRequestUpdateSoftware(softwareOptions, _reboot, _reset_data)
+              //   );
+              // if (result case Ok()) {
+              //   showSnackBar("Update requested!");
+              // } else {
+              //   showSnackBar("Update request failed!");
+              // }
             }
           });
       },
@@ -256,22 +257,9 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
     );
   }
 
-  List<Widget> displaySystemInfo(BuildContext context, SystemInfoList data) {
+  List<Widget> displaySystemInfo(BuildContext context, SystemInfo data) {
     var widgets = <Widget>[];
-
-    for (final systemInfo in data.info) {
-      widgets.add(
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            systemInfo.name,
-            textAlign: TextAlign.left,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-      ));
-
-      widgets.addAll(displayCommandList(systemInfo.info));
-    }
+    widgets.addAll(displayCommandList(data.info));
     return widgets;
   }
 
@@ -312,16 +300,20 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
 
 Future<SoftwareData?> _getData(Server server, ApiManager api) async {
   final version = await api.common(server, (api) => api.getVersion()).ok();
-  final installedSoftware = await api.commonAdmin(server, (api) => api.getSoftwareInfo()).ok();
-  final latestAvailableBackend = await api.commonAdmin(server, (api) => api.getLatestBuildInfo(SoftwareOptions.backend)).ok();
-  final systemInfo = await api.commonAdmin(server, (api) => api.getSystemInfo()).ok();
+  final managers = await api.commonAdmin(server, (api) => api.getManagerInstanceNames()).ok();
+  final managerName = managers?.names.firstOrNull;
+  if (managerName == null) {
+    return null;
+  }
+  final updateStatus = await api.commonAdmin(server, (api) => api.getSoftwareUpdateStatus(managerName)).ok();
+  final systemInfo = await api.commonAdmin(server, (api) => api.getSystemInfo(managerName)).ok();
 
 
   if (version == null) {
     return null;
   }
 
-  if (installedSoftware == null) {
+  if (updateStatus == null) {
     return null;
   }
 
@@ -329,19 +321,19 @@ Future<SoftwareData?> _getData(Server server, ApiManager api) async {
     return null;
   }
 
-  return SoftwareData(version, installedSoftware, latestAvailableBackend, systemInfo);
+  return SoftwareData(version, updateStatus.downloaded, updateStatus.installed, systemInfo);
 }
 
 class SoftwareData {
   final BackendVersion runningVersion;
-  final SoftwareInfo installedSoftware;
-  final BuildInfo? latestAvailableBackend;
-  final SystemInfoList systemInfo;
+  final SoftwareInfo? downloadedSoftware;
+  final SoftwareInfo? installedSoftware;
+  final SystemInfo systemInfo;
 
   SoftwareData(
     this.runningVersion,
+    this.downloadedSoftware,
     this.installedSoftware,
-    this.latestAvailableBackend,
     this.systemInfo,
   );
 }

@@ -10,42 +10,42 @@
 
 part of openapi.api;
 
-class SoftwareInfo {
-  /// Returns a new [SoftwareInfo] instance.
-  SoftwareInfo({
-    required this.name,
-    required this.sha256,
+class MaintenanceTask {
+  /// Returns a new [MaintenanceTask] instance.
+  MaintenanceTask({
+    required this.notifyBackend,
+    required this.time,
   });
 
-  String name;
+  bool notifyBackend;
 
-  String sha256;
+  UnixTime time;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is SoftwareInfo &&
-    other.name == name &&
-    other.sha256 == sha256;
+  bool operator ==(Object other) => identical(this, other) || other is MaintenanceTask &&
+    other.notifyBackend == notifyBackend &&
+    other.time == time;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (name.hashCode) +
-    (sha256.hashCode);
+    (notifyBackend.hashCode) +
+    (time.hashCode);
 
   @override
-  String toString() => 'SoftwareInfo[name=$name, sha256=$sha256]';
+  String toString() => 'MaintenanceTask[notifyBackend=$notifyBackend, time=$time]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'name'] = this.name;
-      json[r'sha256'] = this.sha256;
+      json[r'notify_backend'] = this.notifyBackend;
+      json[r'time'] = this.time;
     return json;
   }
 
-  /// Returns a new [SoftwareInfo] instance and imports its values from
+  /// Returns a new [MaintenanceTask] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static SoftwareInfo? fromJson(dynamic value) {
+  static MaintenanceTask? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,25 +54,25 @@ class SoftwareInfo {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "SoftwareInfo[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SoftwareInfo[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "MaintenanceTask[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "MaintenanceTask[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return SoftwareInfo(
-        name: mapValueOfType<String>(json, r'name')!,
-        sha256: mapValueOfType<String>(json, r'sha256')!,
+      return MaintenanceTask(
+        notifyBackend: mapValueOfType<bool>(json, r'notify_backend')!,
+        time: UnixTime.fromJson(json[r'time'])!,
       );
     }
     return null;
   }
 
-  static List<SoftwareInfo> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <SoftwareInfo>[];
+  static List<MaintenanceTask> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <MaintenanceTask>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = SoftwareInfo.fromJson(row);
+        final value = MaintenanceTask.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +81,12 @@ class SoftwareInfo {
     return result.toList(growable: growable);
   }
 
-  static Map<String, SoftwareInfo> mapFromJson(dynamic json) {
-    final map = <String, SoftwareInfo>{};
+  static Map<String, MaintenanceTask> mapFromJson(dynamic json) {
+    final map = <String, MaintenanceTask>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = SoftwareInfo.fromJson(entry.value);
+        final value = MaintenanceTask.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,14 +95,14 @@ class SoftwareInfo {
     return map;
   }
 
-  // maps a json object with a list of SoftwareInfo-objects as value to a dart map
-  static Map<String, List<SoftwareInfo>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<SoftwareInfo>>{};
+  // maps a json object with a list of MaintenanceTask-objects as value to a dart map
+  static Map<String, List<MaintenanceTask>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<MaintenanceTask>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = SoftwareInfo.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = MaintenanceTask.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -110,8 +110,8 @@ class SoftwareInfo {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'name',
-    'sha256',
+    'notify_backend',
+    'time',
   };
 }
 

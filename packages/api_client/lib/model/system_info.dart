@@ -14,31 +14,25 @@ class SystemInfo {
   /// Returns a new [SystemInfo] instance.
   SystemInfo({
     this.info = const [],
-    required this.name,
   });
 
   List<CommandOutput> info;
 
-  String name;
-
   @override
   bool operator ==(Object other) => identical(this, other) || other is SystemInfo &&
-    _deepEquality.equals(other.info, info) &&
-    other.name == name;
+    _deepEquality.equals(other.info, info);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (info.hashCode) +
-    (name.hashCode);
+    (info.hashCode);
 
   @override
-  String toString() => 'SystemInfo[info=$info, name=$name]';
+  String toString() => 'SystemInfo[info=$info]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'info'] = this.info;
-      json[r'name'] = this.name;
     return json;
   }
 
@@ -62,7 +56,6 @@ class SystemInfo {
 
       return SystemInfo(
         info: CommandOutput.listFromJson(json[r'info']),
-        name: mapValueOfType<String>(json, r'name')!,
       );
     }
     return null;
@@ -111,7 +104,6 @@ class SystemInfo {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'info',
-    'name',
   };
 }
 

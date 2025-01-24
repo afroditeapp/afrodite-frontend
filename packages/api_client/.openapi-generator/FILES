@@ -48,7 +48,6 @@ lib/model/backend_config.dart
 lib/model/backend_version.dart
 lib/model/boolean_setting.dart
 lib/model/bot_config.dart
-lib/model/build_info.dart
 lib/model/client_id.dart
 lib/model/client_info.dart
 lib/model/client_local_id.dart
@@ -106,6 +105,8 @@ lib/model/latest_viewed_message_changed.dart
 lib/model/limited_action_status.dart
 lib/model/location.dart
 lib/model/login_result.dart
+lib/model/maintenance_task.dart
+lib/model/manager_instance_name_list.dart
 lib/model/matches_iterator_session_id.dart
 lib/model/matches_page.dart
 lib/model/matches_sync_version.dart
@@ -188,6 +189,10 @@ lib/model/refresh_token.dart
 lib/model/reset_matches_iterator_result.dart
 lib/model/reset_news_iterator_result.dart
 lib/model/reset_received_likes_iterator_result.dart
+lib/model/scheduled_maintenance_status.dart
+lib/model/scheduled_task_status.dart
+lib/model/scheduled_task_type.dart
+lib/model/scheduled_task_type_value.dart
 lib/model/search_groups.dart
 lib/model/security_content.dart
 lib/model/send_like_result.dart
@@ -204,11 +209,11 @@ lib/model/set_profile_content.dart
 lib/model/set_public_key.dart
 lib/model/sign_in_with_login_info.dart
 lib/model/software_info.dart
-lib/model/software_options.dart
+lib/model/software_update_state.dart
+lib/model/software_update_status.dart
 lib/model/statistics_profile_visibility.dart
 lib/model/sync_version.dart
 lib/model/system_info.dart
-lib/model/system_info_list.dart
 lib/model/time_granularity.dart
 lib/model/translation.dart
 lib/model/unix_time.dart

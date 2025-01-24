@@ -10,42 +10,36 @@
 
 part of openapi.api;
 
-class SoftwareInfo {
-  /// Returns a new [SoftwareInfo] instance.
-  SoftwareInfo({
-    required this.name,
-    required this.sha256,
+class ScheduledTaskTypeValue {
+  /// Returns a new [ScheduledTaskTypeValue] instance.
+  ScheduledTaskTypeValue({
+    required this.scheduledTaskType,
   });
 
-  String name;
-
-  String sha256;
+  ScheduledTaskType scheduledTaskType;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is SoftwareInfo &&
-    other.name == name &&
-    other.sha256 == sha256;
+  bool operator ==(Object other) => identical(this, other) || other is ScheduledTaskTypeValue &&
+    other.scheduledTaskType == scheduledTaskType;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (name.hashCode) +
-    (sha256.hashCode);
+    (scheduledTaskType.hashCode);
 
   @override
-  String toString() => 'SoftwareInfo[name=$name, sha256=$sha256]';
+  String toString() => 'ScheduledTaskTypeValue[scheduledTaskType=$scheduledTaskType]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'name'] = this.name;
-      json[r'sha256'] = this.sha256;
+      json[r'scheduled_task_type'] = this.scheduledTaskType;
     return json;
   }
 
-  /// Returns a new [SoftwareInfo] instance and imports its values from
+  /// Returns a new [ScheduledTaskTypeValue] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static SoftwareInfo? fromJson(dynamic value) {
+  static ScheduledTaskTypeValue? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,25 +48,24 @@ class SoftwareInfo {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "SoftwareInfo[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SoftwareInfo[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ScheduledTaskTypeValue[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ScheduledTaskTypeValue[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return SoftwareInfo(
-        name: mapValueOfType<String>(json, r'name')!,
-        sha256: mapValueOfType<String>(json, r'sha256')!,
+      return ScheduledTaskTypeValue(
+        scheduledTaskType: ScheduledTaskType.fromJson(json[r'scheduled_task_type'])!,
       );
     }
     return null;
   }
 
-  static List<SoftwareInfo> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <SoftwareInfo>[];
+  static List<ScheduledTaskTypeValue> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ScheduledTaskTypeValue>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = SoftwareInfo.fromJson(row);
+        final value = ScheduledTaskTypeValue.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +74,12 @@ class SoftwareInfo {
     return result.toList(growable: growable);
   }
 
-  static Map<String, SoftwareInfo> mapFromJson(dynamic json) {
-    final map = <String, SoftwareInfo>{};
+  static Map<String, ScheduledTaskTypeValue> mapFromJson(dynamic json) {
+    final map = <String, ScheduledTaskTypeValue>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = SoftwareInfo.fromJson(entry.value);
+        final value = ScheduledTaskTypeValue.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,14 +88,14 @@ class SoftwareInfo {
     return map;
   }
 
-  // maps a json object with a list of SoftwareInfo-objects as value to a dart map
-  static Map<String, List<SoftwareInfo>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<SoftwareInfo>>{};
+  // maps a json object with a list of ScheduledTaskTypeValue-objects as value to a dart map
+  static Map<String, List<ScheduledTaskTypeValue>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ScheduledTaskTypeValue>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = SoftwareInfo.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ScheduledTaskTypeValue.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -110,8 +103,7 @@ class SoftwareInfo {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'name',
-    'sha256',
+    'scheduled_task_type',
   };
 }
 

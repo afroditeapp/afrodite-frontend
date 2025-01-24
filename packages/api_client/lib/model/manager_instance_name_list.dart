@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class SystemInfoList {
-  /// Returns a new [SystemInfoList] instance.
-  SystemInfoList({
-    this.info = const [],
+class ManagerInstanceNameList {
+  /// Returns a new [ManagerInstanceNameList] instance.
+  ManagerInstanceNameList({
+    this.names = const [],
   });
 
-  List<SystemInfo> info;
+  List<String> names;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is SystemInfoList &&
-    _deepEquality.equals(other.info, info);
+  bool operator ==(Object other) => identical(this, other) || other is ManagerInstanceNameList &&
+    _deepEquality.equals(other.names, names);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (info.hashCode);
+    (names.hashCode);
 
   @override
-  String toString() => 'SystemInfoList[info=$info]';
+  String toString() => 'ManagerInstanceNameList[names=$names]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'info'] = this.info;
+      json[r'names'] = this.names;
     return json;
   }
 
-  /// Returns a new [SystemInfoList] instance and imports its values from
+  /// Returns a new [ManagerInstanceNameList] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static SystemInfoList? fromJson(dynamic value) {
+  static ManagerInstanceNameList? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,26 @@ class SystemInfoList {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "SystemInfoList[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SystemInfoList[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ManagerInstanceNameList[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ManagerInstanceNameList[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return SystemInfoList(
-        info: SystemInfo.listFromJson(json[r'info']),
+      return ManagerInstanceNameList(
+        names: json[r'names'] is Iterable
+            ? (json[r'names'] as Iterable).cast<String>().toList(growable: false)
+            : const [],
       );
     }
     return null;
   }
 
-  static List<SystemInfoList> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <SystemInfoList>[];
+  static List<ManagerInstanceNameList> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ManagerInstanceNameList>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = SystemInfoList.fromJson(row);
+        final value = ManagerInstanceNameList.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +76,12 @@ class SystemInfoList {
     return result.toList(growable: growable);
   }
 
-  static Map<String, SystemInfoList> mapFromJson(dynamic json) {
-    final map = <String, SystemInfoList>{};
+  static Map<String, ManagerInstanceNameList> mapFromJson(dynamic json) {
+    final map = <String, ManagerInstanceNameList>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = SystemInfoList.fromJson(entry.value);
+        final value = ManagerInstanceNameList.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +90,14 @@ class SystemInfoList {
     return map;
   }
 
-  // maps a json object with a list of SystemInfoList-objects as value to a dart map
-  static Map<String, List<SystemInfoList>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<SystemInfoList>>{};
+  // maps a json object with a list of ManagerInstanceNameList-objects as value to a dart map
+  static Map<String, List<ManagerInstanceNameList>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ManagerInstanceNameList>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = SystemInfoList.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ManagerInstanceNameList.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +105,7 @@ class SystemInfoList {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'info',
+    'names',
   };
 }
 
