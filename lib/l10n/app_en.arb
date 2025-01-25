@@ -850,6 +850,15 @@
   "@map_select_location_help_text": {
     "description": "Help text for selecting map location"
   },
+  "menu_screen_server_maintenance_info": "Maintenance break: {p0}",
+  "@menu_screen_server_maintenance_info": {
+    "description": "Info text about server maintenance",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "menu_screen_title": "Menu",
   "@menu_screen_title": {
     "description": "Title for menu screen"

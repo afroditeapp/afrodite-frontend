@@ -1,4 +1,7 @@
+import 'package:app/logic/server/maintenance.dart';
 import 'package:app/ui/normal/settings.dart';
+import 'package:app/utils/time.dart';
+import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/account/account.dart';
@@ -20,7 +23,7 @@ import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
 
 class MenuView extends BottomNavigationScreen {
-  const MenuView({Key? key}) : super(key: key);
+  const MenuView({super.key});
 
   @override
   State<MenuView> createState() => _MenuViewState();
@@ -128,7 +131,15 @@ class _MenuViewState extends State<MenuView> {
                 _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
               }
             },
-            child: list(settings),
+            child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
+              listenWhen: (previous, current) => previous.screen != current.screen,
+              listener: (context, state) {
+                if (state.screen == BottomNavigationScreenId.settings) {
+                  context.read<ServerMaintenanceBloc>().add(ViewServerMaintenanceInfo());
+                }
+              },
+              child: list(settings),
+            ),
           ),
         );
       }
@@ -141,9 +152,42 @@ class _MenuViewState extends State<MenuView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          viewServerMaintenanceInfo(),
           ...settings.map((setting) => setting.toListTile()),
         ],
       ),
+    );
+  }
+
+  Widget viewServerMaintenanceInfo() {
+    return BlocBuilder<ServerMaintenanceBloc, ServerMaintenanceInfo>(
+      builder: (context, state) {
+        final latest = state.maintenanceLatest;
+        if (latest == null) {
+          return const SizedBox.shrink();
+        }
+
+        if (context.read<BottomNavigationStateBloc>().state.screen == BottomNavigationScreenId.settings) {
+          context.read<ServerMaintenanceBloc>().add(ViewServerMaintenanceInfo());
+        }
+
+        final time = fullTimeString(latest);
+        return Container(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Row(
+              children: [
+                const Padding(padding: EdgeInsets.only(right: 16)),
+                Icon(Icons.info, color: Theme.of(context).colorScheme.onPrimaryContainer),
+                const Padding(padding: EdgeInsets.only(right: 8)),
+                Text(context.strings.menu_screen_server_maintenance_info(time)),
+                const Padding(padding: EdgeInsets.only(right: 16)),
+              ],
+            ),
+          ),
+        );
+      }
     );
   }
 

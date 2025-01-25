@@ -483,6 +483,24 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<int> profileInitialAge = GeneratedColumn<int>(
       'profile_initial_age', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _serverMaintenanceUnixTimeMeta =
+      const VerificationMeta('serverMaintenanceUnixTime');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+      serverMaintenanceUnixTime = GeneratedColumn<int>(
+              'server_maintenance_unix_time', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $AccountTable.$converterserverMaintenanceUnixTime);
+  static const VerificationMeta _serverMaintenanceUnixTimeViewedMeta =
+      const VerificationMeta('serverMaintenanceUnixTimeViewed');
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+      serverMaintenanceUnixTimeViewed = GeneratedColumn<int>(
+              'server_maintenance_unix_time_viewed', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $AccountTable.$converterserverMaintenanceUnixTimeViewed);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -544,7 +562,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         publicKeyId,
         publicKeyVersion,
         profileInitialAgeSetUnixTime,
-        profileInitialAge
+        profileInitialAge,
+        serverMaintenanceUnixTime,
+        serverMaintenanceUnixTimeViewed
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -828,6 +848,10 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           profileInitialAge.isAcceptableOrUnknown(
               data['profile_initial_age']!, _profileInitialAgeMeta));
     }
+    context.handle(
+        _serverMaintenanceUnixTimeMeta, const VerificationResult.success());
+    context.handle(_serverMaintenanceUnixTimeViewedMeta,
+        const VerificationResult.success());
     return context;
   }
 
@@ -1014,6 +1038,14 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['${effectivePrefix}profile_initial_age_set_unix_time'])),
       profileInitialAge: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}profile_initial_age']),
+      serverMaintenanceUnixTime: $AccountTable
+          .$converterserverMaintenanceUnixTime
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}server_maintenance_unix_time'])),
+      serverMaintenanceUnixTimeViewed: $AccountTable
+          .$converterserverMaintenanceUnixTimeViewed
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}server_maintenance_unix_time_viewed'])),
     );
   }
 
@@ -1082,6 +1114,11 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<UtcDateTime?, int?>
       $converterprofileInitialAgeSetUnixTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterserverMaintenanceUnixTime =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?>
+      $converterserverMaintenanceUnixTimeViewed =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
 
 class AccountData extends DataClass implements Insertable<AccountData> {
@@ -1149,6 +1186,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final api.PublicKeyVersion? publicKeyVersion;
   final UtcDateTime? profileInitialAgeSetUnixTime;
   final int? profileInitialAge;
+  final UtcDateTime? serverMaintenanceUnixTime;
+  final UtcDateTime? serverMaintenanceUnixTimeViewed;
   const AccountData(
       {required this.id,
       this.uuidAccountId,
@@ -1209,7 +1248,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.publicKeyId,
       this.publicKeyVersion,
       this.profileInitialAgeSetUnixTime,
-      this.profileInitialAge});
+      this.profileInitialAge,
+      this.serverMaintenanceUnixTime,
+      this.serverMaintenanceUnixTimeViewed});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1432,6 +1473,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     if (!nullToAbsent || profileInitialAge != null) {
       map['profile_initial_age'] = Variable<int>(profileInitialAge);
     }
+    if (!nullToAbsent || serverMaintenanceUnixTime != null) {
+      map['server_maintenance_unix_time'] = Variable<int>($AccountTable
+          .$converterserverMaintenanceUnixTime
+          .toSql(serverMaintenanceUnixTime));
+    }
+    if (!nullToAbsent || serverMaintenanceUnixTimeViewed != null) {
+      map['server_maintenance_unix_time_viewed'] = Variable<int>($AccountTable
+          .$converterserverMaintenanceUnixTimeViewed
+          .toSql(serverMaintenanceUnixTimeViewed));
+    }
     return map;
   }
 
@@ -1616,6 +1667,14 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileInitialAge: profileInitialAge == null && nullToAbsent
           ? const Value.absent()
           : Value(profileInitialAge),
+      serverMaintenanceUnixTime:
+          serverMaintenanceUnixTime == null && nullToAbsent
+              ? const Value.absent()
+              : Value(serverMaintenanceUnixTime),
+      serverMaintenanceUnixTimeViewed:
+          serverMaintenanceUnixTimeViewed == null && nullToAbsent
+              ? const Value.absent()
+              : Value(serverMaintenanceUnixTimeViewed),
     );
   }
 
@@ -1735,6 +1794,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileInitialAgeSetUnixTime: serializer
           .fromJson<UtcDateTime?>(json['profileInitialAgeSetUnixTime']),
       profileInitialAge: serializer.fromJson<int?>(json['profileInitialAge']),
+      serverMaintenanceUnixTime:
+          serializer.fromJson<UtcDateTime?>(json['serverMaintenanceUnixTime']),
+      serverMaintenanceUnixTimeViewed: serializer
+          .fromJson<UtcDateTime?>(json['serverMaintenanceUnixTimeViewed']),
     );
   }
   @override
@@ -1835,6 +1898,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'profileInitialAgeSetUnixTime':
           serializer.toJson<UtcDateTime?>(profileInitialAgeSetUnixTime),
       'profileInitialAge': serializer.toJson<int?>(profileInitialAge),
+      'serverMaintenanceUnixTime':
+          serializer.toJson<UtcDateTime?>(serverMaintenanceUnixTime),
+      'serverMaintenanceUnixTimeViewed':
+          serializer.toJson<UtcDateTime?>(serverMaintenanceUnixTimeViewed),
     };
   }
 
@@ -1911,7 +1978,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<api.PublicKeyVersion?> publicKeyVersion = const Value.absent(),
           Value<UtcDateTime?> profileInitialAgeSetUnixTime =
               const Value.absent(),
-          Value<int?> profileInitialAge = const Value.absent()}) =>
+          Value<int?> profileInitialAge = const Value.absent(),
+          Value<UtcDateTime?> serverMaintenanceUnixTime = const Value.absent(),
+          Value<UtcDateTime?> serverMaintenanceUnixTimeViewed =
+              const Value.absent()}) =>
       AccountData(
         id: id ?? this.id,
         uuidAccountId:
@@ -2078,6 +2148,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileInitialAge: profileInitialAge.present
             ? profileInitialAge.value
             : this.profileInitialAge,
+        serverMaintenanceUnixTime: serverMaintenanceUnixTime.present
+            ? serverMaintenanceUnixTime.value
+            : this.serverMaintenanceUnixTime,
+        serverMaintenanceUnixTimeViewed: serverMaintenanceUnixTimeViewed.present
+            ? serverMaintenanceUnixTimeViewed.value
+            : this.serverMaintenanceUnixTimeViewed,
       );
   AccountData copyWithCompanion(AccountCompanion data) {
     return AccountData(
@@ -2265,6 +2341,13 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileInitialAge: data.profileInitialAge.present
           ? data.profileInitialAge.value
           : this.profileInitialAge,
+      serverMaintenanceUnixTime: data.serverMaintenanceUnixTime.present
+          ? data.serverMaintenanceUnixTime.value
+          : this.serverMaintenanceUnixTime,
+      serverMaintenanceUnixTimeViewed:
+          data.serverMaintenanceUnixTimeViewed.present
+              ? data.serverMaintenanceUnixTimeViewed.value
+              : this.serverMaintenanceUnixTimeViewed,
     );
   }
 
@@ -2345,7 +2428,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('publicKeyVersion: $publicKeyVersion, ')
           ..write(
               'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ')
-          ..write('profileInitialAge: $profileInitialAge')
+          ..write('profileInitialAge: $profileInitialAge, ')
+          ..write('serverMaintenanceUnixTime: $serverMaintenanceUnixTime, ')
+          ..write(
+              'serverMaintenanceUnixTimeViewed: $serverMaintenanceUnixTimeViewed')
           ..write(')'))
         .toString();
   }
@@ -2411,7 +2497,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         publicKeyId,
         publicKeyVersion,
         profileInitialAgeSetUnixTime,
-        profileInitialAge
+        profileInitialAge,
+        serverMaintenanceUnixTime,
+        serverMaintenanceUnixTimeViewed
       ]);
   @override
   bool operator ==(Object other) =>
@@ -2491,7 +2579,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.publicKeyVersion == this.publicKeyVersion &&
           other.profileInitialAgeSetUnixTime ==
               this.profileInitialAgeSetUnixTime &&
-          other.profileInitialAge == this.profileInitialAge);
+          other.profileInitialAge == this.profileInitialAge &&
+          other.serverMaintenanceUnixTime == this.serverMaintenanceUnixTime &&
+          other.serverMaintenanceUnixTimeViewed ==
+              this.serverMaintenanceUnixTimeViewed);
 }
 
 class AccountCompanion extends UpdateCompanion<AccountData> {
@@ -2558,6 +2649,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<api.PublicKeyVersion?> publicKeyVersion;
   final Value<UtcDateTime?> profileInitialAgeSetUnixTime;
   final Value<int?> profileInitialAge;
+  final Value<UtcDateTime?> serverMaintenanceUnixTime;
+  final Value<UtcDateTime?> serverMaintenanceUnixTimeViewed;
   const AccountCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -2619,6 +2712,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.publicKeyVersion = const Value.absent(),
     this.profileInitialAgeSetUnixTime = const Value.absent(),
     this.profileInitialAge = const Value.absent(),
+    this.serverMaintenanceUnixTime = const Value.absent(),
+    this.serverMaintenanceUnixTimeViewed = const Value.absent(),
   });
   AccountCompanion.insert({
     this.id = const Value.absent(),
@@ -2681,6 +2776,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.publicKeyVersion = const Value.absent(),
     this.profileInitialAgeSetUnixTime = const Value.absent(),
     this.profileInitialAge = const Value.absent(),
+    this.serverMaintenanceUnixTime = const Value.absent(),
+    this.serverMaintenanceUnixTimeViewed = const Value.absent(),
   });
   static Insertable<AccountData> custom({
     Expression<int>? id,
@@ -2743,6 +2840,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<int>? publicKeyVersion,
     Expression<int>? profileInitialAgeSetUnixTime,
     Expression<int>? profileInitialAge,
+    Expression<int>? serverMaintenanceUnixTime,
+    Expression<int>? serverMaintenanceUnixTimeViewed,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2855,6 +2954,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (profileInitialAgeSetUnixTime != null)
         'profile_initial_age_set_unix_time': profileInitialAgeSetUnixTime,
       if (profileInitialAge != null) 'profile_initial_age': profileInitialAge,
+      if (serverMaintenanceUnixTime != null)
+        'server_maintenance_unix_time': serverMaintenanceUnixTime,
+      if (serverMaintenanceUnixTimeViewed != null)
+        'server_maintenance_unix_time_viewed': serverMaintenanceUnixTimeViewed,
     });
   }
 
@@ -2921,7 +3024,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<api.PublicKeyId?>? publicKeyId,
       Value<api.PublicKeyVersion?>? publicKeyVersion,
       Value<UtcDateTime?>? profileInitialAgeSetUnixTime,
-      Value<int?>? profileInitialAge}) {
+      Value<int?>? profileInitialAge,
+      Value<UtcDateTime?>? serverMaintenanceUnixTime,
+      Value<UtcDateTime?>? serverMaintenanceUnixTimeViewed}) {
     return AccountCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -3022,6 +3127,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       profileInitialAgeSetUnixTime:
           profileInitialAgeSetUnixTime ?? this.profileInitialAgeSetUnixTime,
       profileInitialAge: profileInitialAge ?? this.profileInitialAge,
+      serverMaintenanceUnixTime:
+          serverMaintenanceUnixTime ?? this.serverMaintenanceUnixTime,
+      serverMaintenanceUnixTimeViewed: serverMaintenanceUnixTimeViewed ??
+          this.serverMaintenanceUnixTimeViewed,
     );
   }
 
@@ -3269,6 +3378,16 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     if (profileInitialAge.present) {
       map['profile_initial_age'] = Variable<int>(profileInitialAge.value);
     }
+    if (serverMaintenanceUnixTime.present) {
+      map['server_maintenance_unix_time'] = Variable<int>($AccountTable
+          .$converterserverMaintenanceUnixTime
+          .toSql(serverMaintenanceUnixTime.value));
+    }
+    if (serverMaintenanceUnixTimeViewed.present) {
+      map['server_maintenance_unix_time_viewed'] = Variable<int>($AccountTable
+          .$converterserverMaintenanceUnixTimeViewed
+          .toSql(serverMaintenanceUnixTimeViewed.value));
+    }
     return map;
   }
 
@@ -3349,7 +3468,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('publicKeyVersion: $publicKeyVersion, ')
           ..write(
               'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ')
-          ..write('profileInitialAge: $profileInitialAge')
+          ..write('profileInitialAge: $profileInitialAge, ')
+          ..write('serverMaintenanceUnixTime: $serverMaintenanceUnixTime, ')
+          ..write(
+              'serverMaintenanceUnixTimeViewed: $serverMaintenanceUnixTimeViewed')
           ..write(')'))
         .toString();
   }
@@ -7161,6 +7283,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       DaoProfileInitialAgeInfo(this as AccountDatabase);
   late final DaoAvailableProfileAttributes daoAvailableProfileAttributes =
       DaoAvailableProfileAttributes(this as AccountDatabase);
+  late final DaoServerMaintenance daoServerMaintenance =
+      DaoServerMaintenance(this as AccountDatabase);
   late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
   late final DaoConversationList daoConversationList =
       DaoConversationList(this as AccountDatabase);

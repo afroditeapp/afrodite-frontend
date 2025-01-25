@@ -144,12 +144,15 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 
     final latestViewedMessageChanged = event.latestViewedMessageChanged;
     final contentProcessingEvent = event.contentProcessingStateChanged;
+    final maintenanceEvent = event.scheduledMaintenanceStatus;
     if (event.event == EventType.accountStateChanged) {
       await _receiveAccountState();
     } else if (event.event == EventType.latestViewedMessageChanged && latestViewedMessageChanged != null) {
       log.finest("Ignoring latest viewed message changed event");
     } else if (event.event == EventType.contentProcessingStateChanged && contentProcessingEvent != null) {
       _contentProcessingStateChanges.add(contentProcessingEvent);
+    } else if (event.event == EventType.scheduledMaintenanceStatus && maintenanceEvent != null ) {
+      await handleServerMaintenanceStatusEvent(maintenanceEvent);
     } else if (event.event == EventType.receivedLikesChanged) {
       await chat.receivedLikesCountRefresh();
     } else if (event.event == EventType.receivedBlocksChanged) {
@@ -254,5 +257,11 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       return await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(r, accountBackgroundDb);
     }
     return const Err(null);
+  }
+
+  Future<Result<void, void>> handleServerMaintenanceStatusEvent(ScheduledMaintenanceStatus event) {
+    return db.accountAction((db) => db.daoServerMaintenance.setMaintenanceTime(
+      time: event.scheduledMaintenance?.toUtcDateTime()
+    ));
   }
 }

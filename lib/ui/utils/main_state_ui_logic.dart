@@ -9,6 +9,7 @@ import 'package:app/logic/account/demo_account_login.dart';
 import 'package:app/logic/app/like_grid_instance_manager.dart';
 import 'package:app/logic/login.dart';
 import 'package:app/logic/server/address.dart';
+import 'package:app/logic/server/maintenance.dart';
 import 'package:app/logic/sign_in_with.dart';
 import 'package:app/main.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
@@ -193,6 +194,9 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
 
               // News
               BlocProvider(create: (_) => NewsCountBloc()),
+
+              // Server maintenance
+              BlocProvider(create: (_) => ServerMaintenanceBloc()),
 
               // Likes
               BlocProvider(create: (_) => LikeGridInstanceManagerBloc()),

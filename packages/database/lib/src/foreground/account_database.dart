@@ -6,6 +6,7 @@ import 'package:database/src/foreground/account/dao_available_profile_attributes
 import 'package:database/src/foreground/account/dao_local_image_settings.dart';
 import 'package:database/src/foreground/account/dao_message_keys.dart';
 import 'package:database/src/foreground/account/dao_profile_initial_age_info.dart';
+import 'package:database/src/foreground/account/dao_server_maintenance.dart';
 import 'package:database/src/foreground/account/dao_sync_versions.dart';
 import 'package:database/src/foreground/available_profile_attributes_table.dart';
 import 'package:database/src/foreground/conversations_table.dart';
@@ -30,6 +31,10 @@ import '../private_key_data.dart';
 import '../utils.dart';
 
 part 'account_database.g.dart';
+
+// TODO(prod): Split Account table to multiple tables.
+//             That might improve app performance because
+//             watch streams emit from all table changes.
 
 const ACCOUNT_DB_DATA_ID = Value(0);
 const PROFILE_FILTER_FAVORITES_DEFAULT = false;
@@ -142,6 +147,11 @@ class Account extends Table {
 
   IntColumn get profileInitialAgeSetUnixTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get profileInitialAge => integer().nullable()();
+
+  // DaoServerMaintenance
+
+  IntColumn get serverMaintenanceUnixTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  IntColumn get serverMaintenanceUnixTimeViewed => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 }
 
 @DriftDatabase(
@@ -169,6 +179,7 @@ class Account extends Table {
     DaoMessageKeys,
     DaoProfileInitialAgeInfo,
     DaoAvailableProfileAttributes,
+    DaoServerMaintenance,
     // Other tables
     DaoMessages,
     DaoConversationList,

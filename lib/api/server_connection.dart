@@ -424,6 +424,9 @@ const forceSync = 255;
     Profile = 7,
     News = 8,
     MediaContent = 9,
+    /// Special value without valid [SyncVersionFromClient] informing
+    /// the server that client has info that server maintenance is scheduled.
+    ServerMaintenanceIsScheduled = 255,
 */
 
 // TODO(prod): Implement sync data version handling
@@ -448,6 +451,11 @@ Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundData
     (db) => db.daoSyncVersions.watchSyncVersionMediaContent()
   ).ok() ?? forceSync;
 
+  final currentMaintenanceInfo = await db.accountStreamSingle(
+    (db) => db.daoServerMaintenance.watchServerMaintenanceInfo()
+  ).ok();
+  final sendMaintenanceSyncVersion = currentMaintenanceInfo?.maintenanceLatest != null;
+
   final bytes = <int>[
     0, // Account
     syncVersionAccount,
@@ -461,6 +469,8 @@ Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundData
     syncVersionNews,
     9, // Media content
     syncVersionMediaContent,
+    if (sendMaintenanceSyncVersion) 255,
+    if (sendMaintenanceSyncVersion) 0,
   ];
 
   return Uint8List.fromList(bytes);
