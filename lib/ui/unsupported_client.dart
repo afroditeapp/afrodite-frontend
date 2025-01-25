@@ -1,21 +1,37 @@
+import "package:app/localizations.dart";
+import "package:app/ui_utils/app_bar/common_actions.dart";
+import "package:app/ui_utils/app_bar/menu_actions.dart";
+import "package:app/ui_utils/list.dart";
 import "package:flutter/material.dart";
 
-// TODO(prod): Translate text
-
 class UnsupportedClientScreen extends StatelessWidget {
-  const UnsupportedClientScreen({Key? key}) : super(key: key);
+  const UnsupportedClientScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Current client version is not supported. Please update the app."),
-            ],
-          ),
-        ),
-      );
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(context.strings.unsupported_client_screen_title),
+        actions: [
+          menuActions([
+            commonActionLogout(context),
+            commonActionOpenAboutDialog(context),
+          ]),
+        ],
+      ),
+      body: showInfo(context),
+    );
+  }
+
+  Widget showInfo(BuildContext context) {
+    return buildListReplacementMessage(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(context.strings.unsupported_client_screen_info),
+        ],
+      )
+    );
   }
 }

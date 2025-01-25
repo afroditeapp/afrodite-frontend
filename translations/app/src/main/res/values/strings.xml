@@ -445,6 +445,10 @@
     <string name="account_banned_screen_ban_reason" description="Text for account ban reason">Ban reason: %s</string>
     <string name="account_banned_screen_time_text" description="Time when account unban process will begin">Account automatic unban process begins at %s</string>
 
+    <!-- Unsupported client screen -->
+    <string name="unsupported_client_screen_title" description="Title for unsupported client screen">App update required</string>
+    <string name="unsupported_client_screen_info" description="Info text that app update is required">Current app version is not supported. Please update the app.</string>
+
     <!-- Admin features -->
 
     <!-- Admin screen -->

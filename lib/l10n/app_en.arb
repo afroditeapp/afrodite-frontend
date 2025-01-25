@@ -1341,6 +1341,14 @@
   "@settings_screen_title": {
     "description": "Title for settings screen"
   },
+  "unsupported_client_screen_info": "Current app version is not supported. Please update the app.",
+  "@unsupported_client_screen_info": {
+    "description": "Info text that app update is required"
+  },
+  "unsupported_client_screen_title": "App update required",
+  "@unsupported_client_screen_title": {
+    "description": "Title for unsupported client screen"
+  },
   "url_app_privacy_policy_link": "https://example.com",
   "url_app_tos_link": "https://example.com",
   "user_interface_settings_screen_show_non_accepted_profile_names": "Show non-accepted profile names",
