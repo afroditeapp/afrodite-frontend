@@ -1,5 +1,6 @@
 
 
+import 'package:openapi/api.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:utils/utils.dart';
 
@@ -14,6 +15,12 @@ class AppVersionManager extends AppSingleton {
   late int major;
   late int minor;
   late int patch;
+
+  ClientVersion get clientVersion => ClientVersion(
+    major: major,
+    minor: minor,
+    patch_: patch
+  );
 
   @override
   Future<void> init() async {

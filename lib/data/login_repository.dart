@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:app/data/app_version.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
@@ -376,15 +377,9 @@ class LoginRepository extends DataRepository {
     } else {
       throw UnsupportedError("Unsupported platform");
     }
-    // TODO(prod): Send proper version number. Check also websocket code version
-    // number.
     return ClientInfo(
       clientType: clientType,
-      clientVersion: ClientVersion(
-        major: 0,
-        minor: 0,
-        patch_: 0,
-      )
+      clientVersion: AppVersionManager.getInstance().clientVersion,
     );
   }
 
