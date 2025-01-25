@@ -379,7 +379,13 @@ class LoginRepository extends DataRepository {
     // TODO(prod): Send proper version number. Check also websocket code version
     // number.
     return ClientInfo(
-      clientType: clientType, majorVersion: 0, minorVersion: 0, patchVersion: 0);
+      clientType: clientType,
+      clientVersion: ClientVersion(
+        major: 0,
+        minor: 0,
+        patch_: 0,
+      )
+    );
   }
 
   Future<Result<void, SignInWithGoogleEvent>> _handleSignInWithGoogleAccountInfo(GoogleSignInAccount signedIn) async {
@@ -596,7 +602,13 @@ class LoginRepository extends DataRepository {
       return Err(OtherError());
     }
     final demoToken = DemoModeToken(token: token);
-    final loginResult = await _apiNoConnection.account((api) => api.postDemoModeLoginToAccount(DemoModeLoginToAccount(aid: id, token: demoToken))).ok();
+    final loginResult = await _apiNoConnection.account((api) => api.postDemoModeLoginToAccount(
+      DemoModeLoginToAccount(
+        aid: id,
+        token: demoToken,
+        clientInfo: _clientInfo(),
+      ),
+    )).ok();
     if (loginResult != null) {
       switch (await _handleLoginResult(loginResult)) {
         case Err(:final e):

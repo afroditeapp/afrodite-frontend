@@ -220,6 +220,7 @@ Class | Method | HTTP request | Description
  - [ClientInfo](doc//ClientInfo.md)
  - [ClientLocalId](doc//ClientLocalId.md)
  - [ClientType](doc//ClientType.md)
+ - [ClientVersion](doc//ClientVersion.md)
  - [CommandOutput](doc//CommandOutput.md)
  - [ContentId](doc//ContentId.md)
  - [ContentInfo](doc//ContentInfo.md)

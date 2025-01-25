@@ -244,6 +244,8 @@ class ApiClient {
           return ClientLocalId.fromJson(value);
         case 'ClientType':
           return ClientTypeTypeTransformer().decode(value);
+        case 'ClientVersion':
+          return ClientVersion.fromJson(value);
         case 'CommandOutput':
           return CommandOutput.fromJson(value);
         case 'ContentId':

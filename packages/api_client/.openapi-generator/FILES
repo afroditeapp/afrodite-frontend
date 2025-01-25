@@ -52,6 +52,7 @@ lib/model/client_id.dart
 lib/model/client_info.dart
 lib/model/client_local_id.dart
 lib/model/client_type.dart
+lib/model/client_version.dart
 lib/model/command_output.dart
 lib/model/content_id.dart
 lib/model/content_info.dart

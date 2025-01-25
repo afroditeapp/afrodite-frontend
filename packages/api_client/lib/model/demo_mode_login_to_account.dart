@@ -14,30 +14,36 @@ class DemoModeLoginToAccount {
   /// Returns a new [DemoModeLoginToAccount] instance.
   DemoModeLoginToAccount({
     required this.aid,
+    required this.clientInfo,
     required this.token,
   });
 
   AccountId aid;
+
+  ClientInfo clientInfo;
 
   DemoModeToken token;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is DemoModeLoginToAccount &&
     other.aid == aid &&
+    other.clientInfo == clientInfo &&
     other.token == token;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (aid.hashCode) +
+    (clientInfo.hashCode) +
     (token.hashCode);
 
   @override
-  String toString() => 'DemoModeLoginToAccount[aid=$aid, token=$token]';
+  String toString() => 'DemoModeLoginToAccount[aid=$aid, clientInfo=$clientInfo, token=$token]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'aid'] = this.aid;
+      json[r'client_info'] = this.clientInfo;
       json[r'token'] = this.token;
     return json;
   }
@@ -62,6 +68,7 @@ class DemoModeLoginToAccount {
 
       return DemoModeLoginToAccount(
         aid: AccountId.fromJson(json[r'aid'])!,
+        clientInfo: ClientInfo.fromJson(json[r'client_info'])!,
         token: DemoModeToken.fromJson(json[r'token'])!,
       );
     }
@@ -111,6 +118,7 @@ class DemoModeLoginToAccount {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'aid',
+    'client_info',
     'token',
   };
 }

@@ -70,6 +70,7 @@ part 'model/client_id.dart';
 part 'model/client_info.dart';
 part 'model/client_local_id.dart';
 part 'model/client_type.dart';
+part 'model/client_version.dart';
 part 'model/command_output.dart';
 part 'model/content_id.dart';
 part 'model/content_info.dart';

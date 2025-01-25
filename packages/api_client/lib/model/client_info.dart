@@ -14,46 +14,31 @@ class ClientInfo {
   /// Returns a new [ClientInfo] instance.
   ClientInfo({
     required this.clientType,
-    required this.majorVersion,
-    required this.minorVersion,
-    required this.patchVersion,
+    required this.clientVersion,
   });
 
   ClientType clientType;
 
-  /// Minimum value: 0
-  int majorVersion;
-
-  /// Minimum value: 0
-  int minorVersion;
-
-  /// Minimum value: 0
-  int patchVersion;
+  ClientVersion clientVersion;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ClientInfo &&
     other.clientType == clientType &&
-    other.majorVersion == majorVersion &&
-    other.minorVersion == minorVersion &&
-    other.patchVersion == patchVersion;
+    other.clientVersion == clientVersion;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (clientType.hashCode) +
-    (majorVersion.hashCode) +
-    (minorVersion.hashCode) +
-    (patchVersion.hashCode);
+    (clientVersion.hashCode);
 
   @override
-  String toString() => 'ClientInfo[clientType=$clientType, majorVersion=$majorVersion, minorVersion=$minorVersion, patchVersion=$patchVersion]';
+  String toString() => 'ClientInfo[clientType=$clientType, clientVersion=$clientVersion]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'client_type'] = this.clientType;
-      json[r'major_version'] = this.majorVersion;
-      json[r'minor_version'] = this.minorVersion;
-      json[r'patch_version'] = this.patchVersion;
+      json[r'client_version'] = this.clientVersion;
     return json;
   }
 
@@ -77,9 +62,7 @@ class ClientInfo {
 
       return ClientInfo(
         clientType: ClientType.fromJson(json[r'client_type'])!,
-        majorVersion: mapValueOfType<int>(json, r'major_version')!,
-        minorVersion: mapValueOfType<int>(json, r'minor_version')!,
-        patchVersion: mapValueOfType<int>(json, r'patch_version')!,
+        clientVersion: ClientVersion.fromJson(json[r'client_version'])!,
       );
     }
     return null;
@@ -128,9 +111,7 @@ class ClientInfo {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'client_type',
-    'major_version',
-    'minor_version',
-    'patch_version',
+    'client_version',
   };
 }
 
