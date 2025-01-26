@@ -16,6 +16,117 @@ class ProfileAdminApi {
 
   final ApiClient apiClient;
 
+  /// Get admin profile iterator page
+  ///
+  /// # Access - Permission [model::Permissions::admin_view_all_profiles]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [int] startPosition (required):
+  ///
+  /// * [int] page (required):
+  Future<Response> getAdminProfileIteratorPageWithHttpInfo(int startPosition, int page,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/get_admin_profile_iterator_page';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'start_position', startPosition));
+      queryParams.addAll(_queryParams('', 'page', page));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get admin profile iterator page
+  ///
+  /// # Access - Permission [model::Permissions::admin_view_all_profiles]
+  ///
+  /// Parameters:
+  ///
+  /// * [int] startPosition (required):
+  ///
+  /// * [int] page (required):
+  Future<ProfileIteratorPage?> getAdminProfileIteratorPage(int startPosition, int page,) async {
+    final response = await getAdminProfileIteratorPageWithHttpInfo(startPosition, page,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileIteratorPage',) as ProfileIteratorPage;
+    
+    }
+    return null;
+  }
+
+  /// Get latest created account ID DB
+  ///
+  /// # Access - Permission [model::Permissions::admin_view_all_profiles]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getLatestCreatedAccountIdDbWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/get_latest_created_account_id_db';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get latest created account ID DB
+  ///
+  /// # Access - Permission [model::Permissions::admin_view_all_profiles]
+  Future<AccountIdDbValue?> getLatestCreatedAccountIdDb() async {
+    final response = await getLatestCreatedAccountIdDbWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountIdDbValue',) as AccountIdDbValue;
+    
+    }
+    return null;
+  }
+
   /// Get profile age and name
   ///
   /// # Access - Permission [model::Permissions::admin_find_account_by_email] - Permission [model::Permissions::admin_view_permissions] - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_moderate_profile_names] - Permission [model::Permissions::admin_moderate_profile_texts]

@@ -278,7 +278,7 @@
     <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_day" description="Value text for profile last seen time filter when day is selected">%s day</string>
     <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_days" description="Value text for profile last seen time filter when multiple days is selected">%s days</string>
     <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_all" description="Value text for profile last seen time filter when all is selected">Anytime</string>
-    <string name="profile_filtering_settings_screen_account_created_filter" description="Title for account created time filter">Account created</string>
+    <string name="profile_filtering_settings_screen_profile_created_filter" description="Title for profile created time filter">Profile created</string>
     <string name="profile_filtering_settings_screen_profile_edited_filter" description="Title for profile edited time filter">Profile edited</string>
     <string name="profile_filtering_settings_screen_max_distance" description="Title text for max distance">Max distance</string>
     <string name="profile_filtering_settings_screen_max_distance_kilometers" description="Value text for kilometers">%s km</string>

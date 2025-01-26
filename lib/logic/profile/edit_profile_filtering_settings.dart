@@ -15,7 +15,7 @@ class ResetStateWith extends EditProfileFilteringSettingsEvent {
   final LastSeenTimeFilter? lastSeenTimeFilter;
   final bool? unlimitedLikesFilter;
   final MaxDistanceKm? maxDistanceFilter;
-  final AccountCreatedTimeFilter? accountCreatedFilter;
+  final ProfileCreatedTimeFilter? profileCreatedFilter;
   final ProfileEditedTimeFilter? profileEditedFilter;
   final bool randomProfileOrder;
   ResetStateWith(
@@ -24,7 +24,7 @@ class ResetStateWith extends EditProfileFilteringSettingsEvent {
     this.lastSeenTimeFilter,
     this.unlimitedLikesFilter,
     this.maxDistanceFilter,
-    this.accountCreatedFilter,
+    this.profileCreatedFilter,
     this.profileEditedFilter,
     this.randomProfileOrder,
   );
@@ -46,9 +46,9 @@ class SetMaxDistanceFilter extends EditProfileFilteringSettingsEvent {
   final MaxDistanceKm? value;
   SetMaxDistanceFilter(this.value);
 }
-class SetAccountCreatedFilter extends EditProfileFilteringSettingsEvent {
-  final AccountCreatedTimeFilter? value;
-  SetAccountCreatedFilter(this.value);
+class SetProfileCreatedFilter extends EditProfileFilteringSettingsEvent {
+  final ProfileCreatedTimeFilter? value;
+  SetProfileCreatedFilter(this.value);
 }
 class SetProfileEditedFilter extends EditProfileFilteringSettingsEvent {
   final ProfileEditedTimeFilter? value;
@@ -80,7 +80,7 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
         lastSeenTimeFilter: data.lastSeenTimeFilter,
         unlimitedLikesFilter: data.unlimitedLikesFilter,
         maxDistanceKmFilter: data.maxDistanceFilter,
-        accountCreatedFilter: data.accountCreatedFilter,
+        profileCreatedFilter: data.profileCreatedFilter,
         profileEditedFilter: data.profileEditedFilter,
         randomProfileOrder: data.randomProfileOrder,
       ));
@@ -99,8 +99,8 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
     on<SetMaxDistanceFilter>((data, emit) async {
       emit(state.copyWith(maxDistanceKmFilter: data.value));
     });
-    on<SetAccountCreatedFilter>((data, emit) async {
-      emit(state.copyWith(accountCreatedFilter: data.value));
+    on<SetProfileCreatedFilter>((data, emit) async {
+      emit(state.copyWith(profileCreatedFilter: data.value));
     });
     on<SetProfileEditedFilter>((data, emit) async {
       emit(state.copyWith(profileEditedFilter: data.value));

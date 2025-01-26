@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class AccountCreatedTimeFilter {
-  /// Returns a new [AccountCreatedTimeFilter] instance.
-  AccountCreatedTimeFilter({
-    required this.value,
+class AccountIdDbValue {
+  /// Returns a new [AccountIdDbValue] instance.
+  AccountIdDbValue({
+    required this.accountDbId,
   });
 
-  int value;
+  int accountDbId;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AccountCreatedTimeFilter &&
-    other.value == value;
+  bool operator ==(Object other) => identical(this, other) || other is AccountIdDbValue &&
+    other.accountDbId == accountDbId;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (value.hashCode);
+    (accountDbId.hashCode);
 
   @override
-  String toString() => 'AccountCreatedTimeFilter[value=$value]';
+  String toString() => 'AccountIdDbValue[accountDbId=$accountDbId]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'value'] = this.value;
+      json[r'account_db_id'] = this.accountDbId;
     return json;
   }
 
-  /// Returns a new [AccountCreatedTimeFilter] instance and imports its values from
+  /// Returns a new [AccountIdDbValue] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AccountCreatedTimeFilter? fromJson(dynamic value) {
+  static AccountIdDbValue? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class AccountCreatedTimeFilter {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AccountCreatedTimeFilter[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AccountCreatedTimeFilter[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AccountIdDbValue[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AccountIdDbValue[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AccountCreatedTimeFilter(
-        value: mapValueOfType<int>(json, r'value')!,
+      return AccountIdDbValue(
+        accountDbId: mapValueOfType<int>(json, r'account_db_id')!,
       );
     }
     return null;
   }
 
-  static List<AccountCreatedTimeFilter> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AccountCreatedTimeFilter>[];
+  static List<AccountIdDbValue> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AccountIdDbValue>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AccountCreatedTimeFilter.fromJson(row);
+        final value = AccountIdDbValue.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class AccountCreatedTimeFilter {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AccountCreatedTimeFilter> mapFromJson(dynamic json) {
-    final map = <String, AccountCreatedTimeFilter>{};
+  static Map<String, AccountIdDbValue> mapFromJson(dynamic json) {
+    final map = <String, AccountIdDbValue>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AccountCreatedTimeFilter.fromJson(entry.value);
+        final value = AccountIdDbValue.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class AccountCreatedTimeFilter {
     return map;
   }
 
-  // maps a json object with a list of AccountCreatedTimeFilter-objects as value to a dart map
-  static Map<String, List<AccountCreatedTimeFilter>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AccountCreatedTimeFilter>>{};
+  // maps a json object with a list of AccountIdDbValue-objects as value to a dart map
+  static Map<String, List<AccountIdDbValue>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AccountIdDbValue>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = AccountCreatedTimeFilter.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = AccountIdDbValue.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +103,7 @@ class AccountCreatedTimeFilter {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'value',
+    'account_db_id',
   };
 }
 

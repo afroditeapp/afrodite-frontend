@@ -23,7 +23,7 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
       filteringSettings?.lastSeenTimeFilter != null ||
       filteringSettings?.unlimitedLikesFilter != null ||
       filteringSettings?.maxDistanceKmFilter != null ||
-      filteringSettings?.accountCreatedFilter != null ||
+      filteringSettings?.profileCreatedFilter != null ||
       filteringSettings?.profileEditedFilter != null;
   }
 }

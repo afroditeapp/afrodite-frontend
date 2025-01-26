@@ -92,7 +92,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
                 filters.lastSeenTimeFilter,
                 null,
                 filters.maxDistanceKmFilter,
-                filters.accountCreatedFilter,
+                filters.profileCreatedFilter,
                 filters.profileEditedFilter,
                 filters.randomProfileOrder,
               ).isErr()

@@ -16,7 +16,7 @@ class EditProfileFilteringSettingsData with _$EditProfileFilteringSettingsData {
     LastSeenTimeFilter? lastSeenTimeFilter,
     bool? unlimitedLikesFilter,
     MaxDistanceKm? maxDistanceKmFilter,
-    AccountCreatedTimeFilter? accountCreatedFilter,
+    ProfileCreatedTimeFilter? profileCreatedFilter,
     ProfileEditedTimeFilter? profileEditedFilter,
     @Default(false) bool randomProfileOrder,
   }) = _EditProfileFilteringSettingsData;

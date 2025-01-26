@@ -178,6 +178,8 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**postSearchAgeRange**](doc//ProfileApi.md#postsearchagerange) | **POST** /profile_api/search_age_range | Set account's current search age range
 *ProfileApi* | [**postSearchGroups**](doc//ProfileApi.md#postsearchgroups) | **POST** /profile_api/search_groups | Set account's current search groups (gender and what gender user is looking for)
 *ProfileApi* | [**putLocation**](doc//ProfileApi.md#putlocation) | **PUT** /profile_api/location | Update location for account which makes this request.
+*ProfileAdminApi* | [**getAdminProfileIteratorPage**](doc//ProfileAdminApi.md#getadminprofileiteratorpage) | **GET** /profile_api/get_admin_profile_iterator_page | Get admin profile iterator page
+*ProfileAdminApi* | [**getLatestCreatedAccountIdDb**](doc//ProfileAdminApi.md#getlatestcreatedaccountiddb) | **GET** /profile_api/get_latest_created_account_id_db | Get latest created account ID DB
 *ProfileAdminApi* | [**getProfileAgeAndName**](doc//ProfileAdminApi.md#getprofileageandname) | **GET** /profile_api/get_profile_age_and_name/{aid} | Get profile age and name
 *ProfileAdminApi* | [**getProfileNamePendingModerationList**](doc//ProfileAdminApi.md#getprofilenamependingmoderationlist) | **GET** /profile_api/admin/profile_name_pending_moderation | 
 *ProfileAdminApi* | [**getProfileStatisticsHistory**](doc//ProfileAdminApi.md#getprofilestatisticshistory) | **GET** /profile_api/profile_statistics_history | 
@@ -196,9 +198,9 @@ Class | Method | HTTP request | Description
  - [AccountBanReasonCategory](doc//AccountBanReasonCategory.md)
  - [AccountBanReasonDetails](doc//AccountBanReasonDetails.md)
  - [AccountContent](doc//AccountContent.md)
- - [AccountCreatedTimeFilter](doc//AccountCreatedTimeFilter.md)
  - [AccountData](doc//AccountData.md)
  - [AccountId](doc//AccountId.md)
+ - [AccountIdDbValue](doc//AccountIdDbValue.md)
  - [AccountSetup](doc//AccountSetup.md)
  - [AccountStateContainer](doc//AccountStateContainer.md)
  - [AccountSyncVersion](doc//AccountSyncVersion.md)
@@ -325,8 +327,11 @@ Class | Method | HTTP request | Description
  - [ProfileContentModerationRejectedReasonDetails](doc//ProfileContentModerationRejectedReasonDetails.md)
  - [ProfileContentPendingModeration](doc//ProfileContentPendingModeration.md)
  - [ProfileContentVersion](doc//ProfileContentVersion.md)
+ - [ProfileCreatedTimeFilter](doc//ProfileCreatedTimeFilter.md)
  - [ProfileEditedTimeFilter](doc//ProfileEditedTimeFilter.md)
  - [ProfileFilteringSettingsUpdate](doc//ProfileFilteringSettingsUpdate.md)
+ - [ProfileIteratorPage](doc//ProfileIteratorPage.md)
+ - [ProfileIteratorPageValue](doc//ProfileIteratorPageValue.md)
  - [ProfileIteratorSessionId](doc//ProfileIteratorSessionId.md)
  - [ProfileLink](doc//ProfileLink.md)
  - [ProfileNameModerationState](doc//ProfileNameModerationState.md)

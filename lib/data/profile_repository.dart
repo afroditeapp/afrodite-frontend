@@ -347,7 +347,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     LastSeenTimeFilter? lastSeenTimeFilter,
     bool? unlimitedLikesFilter,
     MaxDistanceKm? maxDistanceFilter,
-    AccountCreatedTimeFilter? accountCreatedFilter,
+    ProfileCreatedTimeFilter? profileCreatedFilter,
     ProfileEditedTimeFilter? profileEditedFilter,
     bool randomProfileOrder,
   ) async {
@@ -356,7 +356,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       lastSeenTimeFilter: lastSeenTimeFilter,
       unlimitedLikesFilter: unlimitedLikesFilter,
       maxDistanceKmFilter: maxDistanceFilter,
-      accountCreatedFilter: accountCreatedFilter,
+      profileCreatedFilter: profileCreatedFilter,
       profileEditedFilter: profileEditedFilter,
       randomProfileOrder: randomProfileOrder,
     );

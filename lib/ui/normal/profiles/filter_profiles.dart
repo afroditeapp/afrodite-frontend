@@ -57,7 +57,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       widget.profileFilteringSettingsBloc.state.filteringSettings?.lastSeenTimeFilter,
       widget.profileFilteringSettingsBloc.state.filteringSettings?.unlimitedLikesFilter,
       widget.profileFilteringSettingsBloc.state.filteringSettings?.maxDistanceKmFilter,
-      widget.profileFilteringSettingsBloc.state.filteringSettings?.accountCreatedFilter,
+      widget.profileFilteringSettingsBloc.state.filteringSettings?.profileCreatedFilter,
       widget.profileFilteringSettingsBloc.state.filteringSettings?.profileEditedFilter,
       widget.profileFilteringSettingsBloc.state.filteringSettings?.randomProfileOrder ?? false,
     ));
@@ -70,7 +70,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       widget.editProfileFilteringSettingsBloc.state.lastSeenTimeFilter,
       widget.editProfileFilteringSettingsBloc.state.unlimitedLikesFilter,
       widget.editProfileFilteringSettingsBloc.state.maxDistanceKmFilter,
-      widget.editProfileFilteringSettingsBloc.state.accountCreatedFilter,
+      widget.editProfileFilteringSettingsBloc.state.profileCreatedFilter,
       widget.editProfileFilteringSettingsBloc.state.profileEditedFilter,
       widget.editProfileFilteringSettingsBloc.state.randomProfileOrder,
     ));
@@ -83,7 +83,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       currentSettings.filteringSettings?.lastSeenTimeFilter != editedSettings.lastSeenTimeFilter ||
       currentSettings.filteringSettings?.unlimitedLikesFilter != editedSettings.unlimitedLikesFilter ||
       currentSettings.filteringSettings?.maxDistanceKmFilter != editedSettings.maxDistanceKmFilter ||
-      currentSettings.filteringSettings?.accountCreatedFilter != editedSettings.accountCreatedFilter ||
+      currentSettings.filteringSettings?.profileCreatedFilter != editedSettings.profileCreatedFilter ||
       currentSettings.filteringSettings?.profileEditedFilter != editedSettings.profileEditedFilter ||
       currentSettings.filteringSettings?.randomProfileOrder != editedSettings.randomProfileOrder
     ) {
@@ -171,20 +171,20 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           const Divider(),
           lastSeenTimeFilter(context),
           const Divider(),
-          accountCreatedOrProfileEditedFilter(
+          profileCreatedOrEditedFilter(
             context,
-            context.strings.profile_filtering_settings_screen_account_created_filter,
-            (state) => state.accountCreatedFilter?.value,
+            context.strings.profile_filtering_settings_screen_profile_created_filter,
+            (state) => state.profileCreatedFilter?.value,
             (bloc, value) {
               if (value == null) {
-                bloc.add(SetAccountCreatedFilter(null));
+                bloc.add(SetProfileCreatedFilter(null));
               } else {
-                bloc.add(SetAccountCreatedFilter(AccountCreatedTimeFilter(value: value)));
+                bloc.add(SetProfileCreatedFilter(ProfileCreatedTimeFilter(value: value)));
               }
             }
           ),
           const Divider(),
-          accountCreatedOrProfileEditedFilter(
+          profileCreatedOrEditedFilter(
             context,
             context.strings.profile_filtering_settings_screen_profile_edited_filter,
             (state) => state.profileEditedFilter?.value,
@@ -330,7 +330,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
     );
   }
 
-    Widget accountCreatedOrProfileEditedFilter(
+    Widget profileCreatedOrEditedFilter(
       BuildContext context,
       String title,
       int? Function(EditProfileFilteringSettingsData) valueGetter,
