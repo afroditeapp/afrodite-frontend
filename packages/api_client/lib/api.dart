@@ -109,6 +109,7 @@ part 'model/get_profile_content_pending_moderation_list.dart';
 part 'model/get_profile_content_result.dart';
 part 'model/get_profile_filtering_settings.dart';
 part 'model/get_profile_name_pending_moderation_list.dart';
+part 'model/get_profile_name_state.dart';
 part 'model/get_profile_result.dart';
 part 'model/get_profile_statistics_history_result.dart';
 part 'model/get_profile_statistics_result.dart';

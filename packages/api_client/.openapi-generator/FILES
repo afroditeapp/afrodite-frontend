@@ -91,6 +91,7 @@ lib/model/get_profile_content_pending_moderation_list.dart
 lib/model/get_profile_content_result.dart
 lib/model/get_profile_filtering_settings.dart
 lib/model/get_profile_name_pending_moderation_list.dart
+lib/model/get_profile_name_state.dart
 lib/model/get_profile_result.dart
 lib/model/get_profile_statistics_history_result.dart
 lib/model/get_profile_statistics_result.dart

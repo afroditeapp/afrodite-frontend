@@ -322,6 +322,8 @@ class ApiClient {
           return GetProfileFilteringSettings.fromJson(value);
         case 'GetProfileNamePendingModerationList':
           return GetProfileNamePendingModerationList.fromJson(value);
+        case 'GetProfileNameState':
+          return GetProfileNameState.fromJson(value);
         case 'GetProfileResult':
           return GetProfileResult.fromJson(value);
         case 'GetProfileStatisticsHistoryResult':
