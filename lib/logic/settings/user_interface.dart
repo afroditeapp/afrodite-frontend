@@ -6,6 +6,10 @@ import "package:app/data/login_repository.dart";
 import "package:app/database/account_background_database_manager.dart";
 import "package:app/model/freezed/logic/settings/user_interface.dart";
 
+// TODO(prod): Make sure that it is possible to display non accepted profile
+//             name from account admin settings and then remove the
+//             non accepted profile name setting.
+
 sealed class UserInterfaceSettingsEvent {}
 class NewShowNonAcceptedProfileNames extends UserInterfaceSettingsEvent {
   final bool value;

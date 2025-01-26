@@ -3,6 +3,7 @@
 import 'package:app/ui/normal/settings/admin/moderate_profile_texts.dart';
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
 import 'package:app/ui/normal/settings/admin/server_tasks.dart';
+import 'package:app/ui/normal/settings/admin/view_accounts.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -121,6 +122,11 @@ class AdminSettingsPage extends StatelessWidget {
         MyNavigator.push(context, const MaterialPage<void>(child: ViewAdminsScreen()),)
       ));
     }
+    if (permissions.adminViewAllProfiles) {
+      settings.add(Setting.createSetting(Icons.group, "View accounts", () =>
+        MyNavigator.push(context, const MaterialPage<void>(child: ViewAccountsScreen()),)
+      ));
+    }
     return settings;
   }
 }
@@ -131,6 +137,7 @@ class AdminSettingsPermissions {
   bool get adminModerateProfileTexts => _permissions.adminModerateProfileTexts;
   bool get adminModerateProfileNames => _permissions.adminModerateProfileNames;
   bool get adminViewPermissions => _permissions.adminViewPermissions;
+  bool get adminViewAllProfiles => _permissions.adminViewAllProfiles;
   bool get adminServerMaintenanceRebootBackend => _permissions.adminServerMaintenanceRebootBackend;
   bool get adminServerMaintenanceSaveBackendConfig => _permissions.adminServerMaintenanceSaveBackendConfig;
   bool get adminServerMaintenanceViewBackendConfig => _permissions.adminServerMaintenanceViewBackendConfig;
@@ -146,6 +153,7 @@ class AdminSettingsPermissions {
       adminModerateProfileTexts ||
       adminModerateProfileNames ||
       adminViewPermissions ||
+      adminViewAllProfiles ||
       adminServerMaintenanceRebootBackend ||
       adminServerMaintenanceSaveBackendConfig ||
       adminServerMaintenanceViewBackendConfig ||
