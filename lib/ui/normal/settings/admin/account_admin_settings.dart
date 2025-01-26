@@ -14,6 +14,7 @@ import 'package:app/ui/normal/settings/admin/account_admin/admin_content_managem
 import 'package:app/ui/normal/settings/admin/account_admin/ban_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/delete_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/edit_permissions.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_name.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_text.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -164,6 +165,12 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       ));
     }
 
+    if (permissions.adminModerateProfileNames) {
+      settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile name", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: ModerateSingleProfileNameScreen(accountId: widget.accountId)))
+      ));
+    }
+
     return settings;
   }
 }
@@ -173,6 +180,7 @@ class AccountAdminSettingsPermissions {
   bool get adminModifyPermissions => _permissions.adminModifyPermissions;
   bool get adminModerateMediaContent => _permissions.adminModerateMediaContent;
   bool get adminModerateProfileTexts => _permissions.adminModerateProfileTexts;
+  bool get adminModerateProfileNames => _permissions.adminModerateProfileNames;
   bool get adminDeleteAccount => _permissions.adminDeleteAccount;
   bool get adminRequestAccountDeletion => _permissions.adminRequestAccountDeletion;
   bool get adminBanAccount => _permissions.adminBanAccount;
@@ -185,6 +193,7 @@ class AccountAdminSettingsPermissions {
     return adminModifyPermissions ||
       adminModerateMediaContent ||
       adminModerateProfileTexts ||
+      adminModerateProfileNames ||
       adminDeleteAccount ||
       adminRequestAccountDeletion ||
       adminBanAccount ||
