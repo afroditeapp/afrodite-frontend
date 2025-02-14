@@ -158,6 +158,47 @@ class AccountAdminApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /account_api/admin/account_report_pending_processing' operation and returns the [Response].
+  Future<Response> getAccountReportPendingProcessingListWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/admin/account_report_pending_processing';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<GetAccountReportList?> getAccountReportPendingProcessingList() async {
+    final response = await getAccountReportPendingProcessingListWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetAccountReportList',) as GetAccountReportList;
+    
+    }
+    return null;
+  }
+
   /// Get [model::Account] for specific account.
   ///
   /// # Access  Permission [model::Permissions::admin_view_private_info] is required.
@@ -405,6 +446,45 @@ class AccountAdminApi {
   /// * [String] aid (required):
   Future<void> postDeleteAccount(String aid,) async {
     final response = await postDeleteAccountWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'POST /account_api/admin/process_account_report' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [ProcessAccountReport] processAccountReport (required):
+  Future<Response> postProcessAccountReportWithHttpInfo(ProcessAccountReport processAccountReport,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/admin/process_account_report';
+
+    // ignore: prefer_final_locals
+    Object? postBody = processAccountReport;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [ProcessAccountReport] processAccountReport (required):
+  Future<void> postProcessAccountReport(ProcessAccountReport processAccountReport,) async {
+    final response = await postProcessAccountReportWithHttpInfo(processAccountReport,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

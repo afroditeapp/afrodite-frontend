@@ -14,21 +14,26 @@ class BackendConfig {
   /// Returns a new [BackendConfig] instance.
   BackendConfig({
     this.bots,
+    this.remoteBotLogin,
   });
 
   BotConfig? bots;
 
+  bool? remoteBotLogin;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is BackendConfig &&
-    other.bots == bots;
+    other.bots == bots &&
+    other.remoteBotLogin == remoteBotLogin;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (bots == null ? 0 : bots!.hashCode);
+    (bots == null ? 0 : bots!.hashCode) +
+    (remoteBotLogin == null ? 0 : remoteBotLogin!.hashCode);
 
   @override
-  String toString() => 'BackendConfig[bots=$bots]';
+  String toString() => 'BackendConfig[bots=$bots, remoteBotLogin=$remoteBotLogin]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -36,6 +41,11 @@ class BackendConfig {
       json[r'bots'] = this.bots;
     } else {
       json[r'bots'] = null;
+    }
+    if (this.remoteBotLogin != null) {
+      json[r'remote_bot_login'] = this.remoteBotLogin;
+    } else {
+      json[r'remote_bot_login'] = null;
     }
     return json;
   }
@@ -60,6 +70,7 @@ class BackendConfig {
 
       return BackendConfig(
         bots: BotConfig.fromJson(json[r'bots']),
+        remoteBotLogin: mapValueOfType<bool>(json, r'remote_bot_login'),
       );
     }
     return null;

@@ -72,6 +72,62 @@ class ChatApi {
     return null;
   }
 
+  /// Get chat report
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountId] target (required):
+  ///   Report target
+  Future<Response> getChatReportWithHttpInfo(AccountId target,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/chat_report';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'target', target));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get chat report
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountId] target (required):
+  ///   Report target
+  Future<ChatReport?> getChatReport(AccountId target,) async {
+    final response = await getChatReportWithHttpInfo(target,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ChatReport',) as ChatReport;
+    
+    }
+    return null;
+  }
+
   /// Get matches
   ///
   /// Note: This method returns the HTTP [Response].
@@ -572,6 +628,62 @@ class ChatApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Update chat report.
+  ///
+  /// The [ChatReportContent::is_against_video_calling] can be true only when users are a match.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateChatReport] updateChatReport (required):
+  Future<Response> postChatReportWithHttpInfo(UpdateChatReport updateChatReport,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/chat_report';
+
+    // ignore: prefer_final_locals
+    Object? postBody = updateChatReport;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Update chat report.
+  ///
+  /// The [ChatReportContent::is_against_video_calling] can be true only when users are a match.
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateChatReport] updateChatReport (required):
+  Future<UpdateChatReportResult?> postChatReport(UpdateChatReport updateChatReport,) async {
+    final response = await postChatReportWithHttpInfo(updateChatReport,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UpdateChatReportResult',) as UpdateChatReportResult;
+    
+    }
+    return null;
   }
 
   /// Performs an HTTP 'POST /chat_api/new_received_likes_count' operation and returns the [Response].

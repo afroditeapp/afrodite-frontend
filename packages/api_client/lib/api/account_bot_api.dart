@@ -18,16 +18,16 @@ class AccountBotApi {
 
   /// Get new AccessToken for a bot account. If the account is not registered as a bot account, then the request will fail.
   ///
-  /// Available only from bot API port.
+  /// Available only from local bot API port.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
-  Future<Response> postLoginWithHttpInfo(AccountId accountId,) async {
+  Future<Response> postBotLoginWithHttpInfo(AccountId accountId,) async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/login';
+    final path = r'/account_api/bot_login';
 
     // ignore: prefer_final_locals
     Object? postBody = accountId;
@@ -52,13 +52,13 @@ class AccountBotApi {
 
   /// Get new AccessToken for a bot account. If the account is not registered as a bot account, then the request will fail.
   ///
-  /// Available only from bot API port.
+  /// Available only from local bot API port.
   ///
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
-  Future<LoginResult?> postLogin(AccountId accountId,) async {
-    final response = await postLoginWithHttpInfo(accountId,);
+  Future<LoginResult?> postBotLogin(AccountId accountId,) async {
+    final response = await postBotLoginWithHttpInfo(accountId,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -74,12 +74,12 @@ class AccountBotApi {
 
   /// Register a new bot account. Returns new account ID which is UUID.
   ///
-  /// Available only from bot API port.
+  /// Available only from local bot API port.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> postRegisterWithHttpInfo() async {
+  Future<Response> postBotRegisterWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/register';
+    final path = r'/account_api/bot_register';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -104,9 +104,9 @@ class AccountBotApi {
 
   /// Register a new bot account. Returns new account ID which is UUID.
   ///
-  /// Available only from bot API port.
-  Future<AccountId?> postRegister() async {
-    final response = await postRegisterWithHttpInfo();
+  /// Available only from local bot API port.
+  Future<AccountId?> postBotRegister() async {
+    final response = await postBotRegisterWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -115,6 +115,62 @@ class AccountBotApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountId',) as AccountId;
+    
+    }
+    return null;
+  }
+
+  /// Login for remote bots which are listed in server config file.
+  ///
+  /// Available only from public and local bot API ports.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [RemoteBotLogin] remoteBotLogin (required):
+  Future<Response> postRemoteBotLoginWithHttpInfo(RemoteBotLogin remoteBotLogin,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/remote_bot_login';
+
+    // ignore: prefer_final_locals
+    Object? postBody = remoteBotLogin;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Login for remote bots which are listed in server config file.
+  ///
+  /// Available only from public and local bot API ports.
+  ///
+  /// Parameters:
+  ///
+  /// * [RemoteBotLogin] remoteBotLogin (required):
+  Future<LoginResult?> postRemoteBotLogin(RemoteBotLogin remoteBotLogin,) async {
+    final response = await postRemoteBotLoginWithHttpInfo(remoteBotLogin,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LoginResult',) as LoginResult;
     
     }
     return null;

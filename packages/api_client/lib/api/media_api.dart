@@ -367,6 +367,62 @@ class MediaApi {
     return null;
   }
 
+  /// Get media report
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountId] target (required):
+  ///   Report target
+  Future<Response> getMediaReportWithHttpInfo(AccountId target,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/media_report';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'target', target));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get media report
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountId] target (required):
+  ///   Report target
+  Future<MediaReport?> getMediaReport(AccountId target,) async {
+    final response = await getMediaReportWithHttpInfo(target,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MediaReport',) as MediaReport;
+    
+    }
+    return null;
+  }
+
   /// Get current profile content for selected profile.
   ///
   /// # Access  ## Own profile Unrestricted access.  ## Other profiles Normal account state required.  ## Private other profiles If the profile is a match, then the profile can be accessed if query parameter `is_match` is set to `true`.  If the profile is not a match, then permission `admin_view_all_profiles` is required.
@@ -537,6 +593,62 @@ class MediaApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'InitialContentModerationCompletedResult',) as InitialContentModerationCompletedResult;
+    
+    }
+    return null;
+  }
+
+  /// Update media report.
+  ///
+  /// If profile content is reported and it is bot moderated, the content's moderation state changes to [model_media::ContentModerationState::WaitingHumanModeration].
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateMediaReport] updateMediaReport (required):
+  Future<Response> postMediaReportWithHttpInfo(UpdateMediaReport updateMediaReport,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/media_report';
+
+    // ignore: prefer_final_locals
+    Object? postBody = updateMediaReport;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Update media report.
+  ///
+  /// If profile content is reported and it is bot moderated, the content's moderation state changes to [model_media::ContentModerationState::WaitingHumanModeration].
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateMediaReport] updateMediaReport (required):
+  Future<UpdateReportResult?> postMediaReport(UpdateMediaReport updateMediaReport,) async {
+    final response = await postMediaReportWithHttpInfo(updateMediaReport,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UpdateReportResult',) as UpdateReportResult;
     
     }
     return null;

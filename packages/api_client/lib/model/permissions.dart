@@ -23,6 +23,10 @@ class Permissions {
     this.adminModifyPermissions = false,
     this.adminNewsCreate = false,
     this.adminNewsEditAll = false,
+    this.adminProcessAccountReports = false,
+    this.adminProcessChatReports = false,
+    this.adminProcessMediaReports = false,
+    this.adminProcessProfileReports = false,
     this.adminProfileStatistics = false,
     this.adminRequestAccountDeletion = false,
     this.adminServerMaintenanceRebootBackend = false,
@@ -56,6 +60,14 @@ class Permissions {
   bool adminNewsCreate;
 
   bool adminNewsEditAll;
+
+  bool adminProcessAccountReports;
+
+  bool adminProcessChatReports;
+
+  bool adminProcessMediaReports;
+
+  bool adminProcessProfileReports;
 
   bool adminProfileStatistics;
 
@@ -95,6 +107,10 @@ class Permissions {
     other.adminModifyPermissions == adminModifyPermissions &&
     other.adminNewsCreate == adminNewsCreate &&
     other.adminNewsEditAll == adminNewsEditAll &&
+    other.adminProcessAccountReports == adminProcessAccountReports &&
+    other.adminProcessChatReports == adminProcessChatReports &&
+    other.adminProcessMediaReports == adminProcessMediaReports &&
+    other.adminProcessProfileReports == adminProcessProfileReports &&
     other.adminProfileStatistics == adminProfileStatistics &&
     other.adminRequestAccountDeletion == adminRequestAccountDeletion &&
     other.adminServerMaintenanceRebootBackend == adminServerMaintenanceRebootBackend &&
@@ -121,6 +137,10 @@ class Permissions {
     (adminModifyPermissions.hashCode) +
     (adminNewsCreate.hashCode) +
     (adminNewsEditAll.hashCode) +
+    (adminProcessAccountReports.hashCode) +
+    (adminProcessChatReports.hashCode) +
+    (adminProcessMediaReports.hashCode) +
+    (adminProcessProfileReports.hashCode) +
     (adminProfileStatistics.hashCode) +
     (adminRequestAccountDeletion.hashCode) +
     (adminServerMaintenanceRebootBackend.hashCode) +
@@ -135,7 +155,7 @@ class Permissions {
     (adminViewProfileHistory.hashCode);
 
   @override
-  String toString() => 'Permissions[adminBanAccount=$adminBanAccount, adminDeleteAccount=$adminDeleteAccount, adminDeleteMediaContent=$adminDeleteMediaContent, adminFindAccountByEmail=$adminFindAccountByEmail, adminModerateMediaContent=$adminModerateMediaContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminModifyPermissions=$adminModifyPermissions, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProfileStatistics=$adminProfileStatistics, adminRequestAccountDeletion=$adminRequestAccountDeletion, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPermissions=$adminViewPermissions, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
+  String toString() => 'Permissions[adminBanAccount=$adminBanAccount, adminDeleteAccount=$adminDeleteAccount, adminDeleteMediaContent=$adminDeleteMediaContent, adminFindAccountByEmail=$adminFindAccountByEmail, adminModerateMediaContent=$adminModerateMediaContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminModifyPermissions=$adminModifyPermissions, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProcessAccountReports=$adminProcessAccountReports, adminProcessChatReports=$adminProcessChatReports, adminProcessMediaReports=$adminProcessMediaReports, adminProcessProfileReports=$adminProcessProfileReports, adminProfileStatistics=$adminProfileStatistics, adminRequestAccountDeletion=$adminRequestAccountDeletion, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPermissions=$adminViewPermissions, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -149,6 +169,10 @@ class Permissions {
       json[r'admin_modify_permissions'] = this.adminModifyPermissions;
       json[r'admin_news_create'] = this.adminNewsCreate;
       json[r'admin_news_edit_all'] = this.adminNewsEditAll;
+      json[r'admin_process_account_reports'] = this.adminProcessAccountReports;
+      json[r'admin_process_chat_reports'] = this.adminProcessChatReports;
+      json[r'admin_process_media_reports'] = this.adminProcessMediaReports;
+      json[r'admin_process_profile_reports'] = this.adminProcessProfileReports;
       json[r'admin_profile_statistics'] = this.adminProfileStatistics;
       json[r'admin_request_account_deletion'] = this.adminRequestAccountDeletion;
       json[r'admin_server_maintenance_reboot_backend'] = this.adminServerMaintenanceRebootBackend;
@@ -193,6 +217,10 @@ class Permissions {
         adminModifyPermissions: mapValueOfType<bool>(json, r'admin_modify_permissions') ?? false,
         adminNewsCreate: mapValueOfType<bool>(json, r'admin_news_create') ?? false,
         adminNewsEditAll: mapValueOfType<bool>(json, r'admin_news_edit_all') ?? false,
+        adminProcessAccountReports: mapValueOfType<bool>(json, r'admin_process_account_reports') ?? false,
+        adminProcessChatReports: mapValueOfType<bool>(json, r'admin_process_chat_reports') ?? false,
+        adminProcessMediaReports: mapValueOfType<bool>(json, r'admin_process_media_reports') ?? false,
+        adminProcessProfileReports: mapValueOfType<bool>(json, r'admin_process_profile_reports') ?? false,
         adminProfileStatistics: mapValueOfType<bool>(json, r'admin_profile_statistics') ?? false,
         adminRequestAccountDeletion: mapValueOfType<bool>(json, r'admin_request_account_deletion') ?? false,
         adminServerMaintenanceRebootBackend: mapValueOfType<bool>(json, r'admin_server_maintenance_reboot_backend') ?? false,

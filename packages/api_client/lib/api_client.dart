@@ -202,6 +202,12 @@ class ApiClient {
           return AccountId.fromJson(value);
         case 'AccountIdDbValue':
           return AccountIdDbValue.fromJson(value);
+        case 'AccountReport':
+          return AccountReport.fromJson(value);
+        case 'AccountReportContent':
+          return AccountReportContent.fromJson(value);
+        case 'AccountReportDetailed':
+          return AccountReportDetailed.fromJson(value);
         case 'AccountSetup':
           return AccountSetup.fromJson(value);
         case 'AccountStateContainer':
@@ -236,6 +242,12 @@ class ApiClient {
           return BooleanSetting.fromJson(value);
         case 'BotConfig':
           return BotConfig.fromJson(value);
+        case 'ChatReport':
+          return ChatReport.fromJson(value);
+        case 'ChatReportContent':
+          return ChatReportContent.fromJson(value);
+        case 'ChatReportDetailed':
+          return ChatReportDetailed.fromJson(value);
         case 'ClientId':
           return ClientId.fromJson(value);
         case 'ClientInfo':
@@ -300,12 +312,18 @@ class ApiClient {
           return GetAccountDeletionRequestResult.fromJson(value);
         case 'GetAccountIdFromEmailResult':
           return GetAccountIdFromEmailResult.fromJson(value);
+        case 'GetAccountReportList':
+          return GetAccountReportList.fromJson(value);
         case 'GetAllAdminsResult':
           return GetAllAdminsResult.fromJson(value);
+        case 'GetChatReportList':
+          return GetChatReportList.fromJson(value);
         case 'GetInitialProfileAgeInfoResult':
           return GetInitialProfileAgeInfoResult.fromJson(value);
         case 'GetMediaContentResult':
           return GetMediaContentResult.fromJson(value);
+        case 'GetMediaReportList':
+          return GetMediaReportList.fromJson(value);
         case 'GetMyProfileResult':
           return GetMyProfileResult.fromJson(value);
         case 'GetNewsItemResult':
@@ -324,6 +342,8 @@ class ApiClient {
           return GetProfileNamePendingModerationList.fromJson(value);
         case 'GetProfileNameState':
           return GetProfileNameState.fromJson(value);
+        case 'GetProfileReportList':
+          return GetProfileReportList.fromJson(value);
         case 'GetProfileResult':
           return GetProfileResult.fromJson(value);
         case 'GetProfileStatisticsHistoryResult':
@@ -370,6 +390,12 @@ class ApiClient {
           return MediaContentSyncVersion.fromJson(value);
         case 'MediaContentType':
           return MediaContentTypeTypeTransformer().decode(value);
+        case 'MediaReport':
+          return MediaReport.fromJson(value);
+        case 'MediaReportContent':
+          return MediaReportContent.fromJson(value);
+        case 'MediaReportDetailed':
+          return MediaReportDetailed.fromJson(value);
         case 'MessageNumber':
           return MessageNumber.fromJson(value);
         case 'ModerationQueueType':
@@ -422,6 +448,14 @@ class ApiClient {
           return PostModerateProfileName.fromJson(value);
         case 'PostModerateProfileText':
           return PostModerateProfileText.fromJson(value);
+        case 'ProcessAccountReport':
+          return ProcessAccountReport.fromJson(value);
+        case 'ProcessChatReport':
+          return ProcessChatReport.fromJson(value);
+        case 'ProcessMediaReport':
+          return ProcessMediaReport.fromJson(value);
+        case 'ProcessProfileReport':
+          return ProcessProfileReport.fromJson(value);
         case 'Profile':
           return Profile.fromJson(value);
         case 'ProfileAgeCounts':
@@ -476,6 +510,12 @@ class ApiClient {
           return ProfileNamePendingModeration.fromJson(value);
         case 'ProfilePage':
           return ProfilePage.fromJson(value);
+        case 'ProfileReport':
+          return ProfileReport.fromJson(value);
+        case 'ProfileReportContent':
+          return ProfileReportContent.fromJson(value);
+        case 'ProfileReportDetailed':
+          return ProfileReportDetailed.fromJson(value);
         case 'ProfileSearchAgeRange':
           return ProfileSearchAgeRange.fromJson(value);
         case 'ProfileStatisticsHistoryValue':
@@ -522,6 +562,10 @@ class ApiClient {
           return ReceivedLikesSyncVersion.fromJson(value);
         case 'RefreshToken':
           return RefreshToken.fromJson(value);
+        case 'RemoteBotLogin':
+          return RemoteBotLogin.fromJson(value);
+        case 'ReportProcessingState':
+          return ReportProcessingStateTypeTransformer().decode(value);
         case 'ResetMatchesIteratorResult':
           return ResetMatchesIteratorResult.fromJson(value);
         case 'ResetNewsIteratorResult':
@@ -588,12 +632,24 @@ class ApiClient {
           return UnreadNewsCount.fromJson(value);
         case 'UnreadNewsCountResult':
           return UnreadNewsCountResult.fromJson(value);
+        case 'UpdateAccountReport':
+          return UpdateAccountReport.fromJson(value);
+        case 'UpdateChatReport':
+          return UpdateChatReport.fromJson(value);
+        case 'UpdateChatReportResult':
+          return UpdateChatReportResult.fromJson(value);
+        case 'UpdateMediaReport':
+          return UpdateMediaReport.fromJson(value);
         case 'UpdateMessageViewStatus':
           return UpdateMessageViewStatus.fromJson(value);
         case 'UpdateNewsTranslation':
           return UpdateNewsTranslation.fromJson(value);
         case 'UpdateNewsTranslationResult':
           return UpdateNewsTranslationResult.fromJson(value);
+        case 'UpdateProfileReport':
+          return UpdateProfileReport.fromJson(value);
+        case 'UpdateReportResult':
+          return UpdateReportResult.fromJson(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

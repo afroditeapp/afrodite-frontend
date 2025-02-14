@@ -16,6 +16,47 @@ class MediaAdminApi {
 
   final ApiClient apiClient;
 
+  /// Performs an HTTP 'GET /media_api/admin/media_report_pending_processing' operation and returns the [Response].
+  Future<Response> getMediaReportPendingProcessingListWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/admin/media_report_pending_processing';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<GetMediaReportList?> getMediaReportPendingProcessingList() async {
+    final response = await getMediaReportPendingProcessingListWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetMediaReportList',) as GetMediaReportList;
+    
+    }
+    return null;
+  }
+
   /// Get first page of pending profile content moderations. Oldest item is first and count 25.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -123,6 +164,45 @@ class MediaAdminApi {
   /// * [PostModerateProfileContent] postModerateProfileContent (required):
   Future<void> postModerateProfileContent(PostModerateProfileContent postModerateProfileContent,) async {
     final response = await postModerateProfileContentWithHttpInfo(postModerateProfileContent,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'POST /media_api/admin/process_media_report' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [ProcessMediaReport] processMediaReport (required):
+  Future<Response> postProcessMediaReportWithHttpInfo(ProcessMediaReport processMediaReport,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/admin/process_media_report';
+
+    // ignore: prefer_final_locals
+    Object? postBody = processMediaReport;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [ProcessMediaReport] processMediaReport (required):
+  Future<void> postProcessMediaReport(ProcessMediaReport processMediaReport,) async {
+    final response = await postProcessMediaReportWithHttpInfo(processMediaReport,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

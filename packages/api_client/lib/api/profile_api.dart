@@ -453,6 +453,62 @@ class ProfileApi {
     return null;
   }
 
+  /// Get profile report
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountId] target (required):
+  ///   Report target
+  Future<Response> getProfileReportWithHttpInfo(AccountId target,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/profile_report';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'target', target));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get profile report
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountId] target (required):
+  ///   Report target
+  Future<ProfileReport?> getProfileReport(AccountId target,) async {
+    final response = await getProfileReportWithHttpInfo(target,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileReport',) as ProfileReport;
+    
+    }
+    return null;
+  }
+
   /// Non default values for [model::GetProfileStatisticsParams] requires [model::Permissions::admin_profile_statistics].
   ///
   /// Note: This method returns the HTTP [Response].
@@ -850,6 +906,62 @@ class ProfileApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Update profile report.
+  ///
+  /// If profile text is reported and it is bot moderated, the text's moderation state changes to [model_profile::ProfileTextModerationState::WaitingHumanModeration].
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateProfileReport] updateProfileReport (required):
+  Future<Response> postProfileReportWithHttpInfo(UpdateProfileReport updateProfileReport,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/profile_report';
+
+    // ignore: prefer_final_locals
+    Object? postBody = updateProfileReport;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Update profile report.
+  ///
+  /// If profile text is reported and it is bot moderated, the text's moderation state changes to [model_profile::ProfileTextModerationState::WaitingHumanModeration].
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateProfileReport] updateProfileReport (required):
+  Future<UpdateReportResult?> postProfileReport(UpdateProfileReport updateProfileReport,) async {
+    final response = await postProfileReportWithHttpInfo(updateProfileReport,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UpdateReportResult',) as UpdateReportResult;
+    
+    }
+    return null;
   }
 
   /// Post account's current profile directly to database. Debug mode must be enabled that route can be used.

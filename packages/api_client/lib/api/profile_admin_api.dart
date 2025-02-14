@@ -282,6 +282,47 @@ class ProfileAdminApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /profile_api/admin/profile_report_pending_processing' operation and returns the [Response].
+  Future<Response> getProfileReportPendingProcessingListWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/admin/profile_report_pending_processing';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<GetProfileReportList?> getProfileReportPendingProcessingList() async {
+    final response = await getProfileReportPendingProcessingListWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileReportList',) as GetProfileReportList;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'GET /profile_api/profile_statistics_history' operation and returns the [Response].
   /// Parameters:
   ///
@@ -533,6 +574,45 @@ class ProfileAdminApi {
   /// * [PostModerateProfileText] postModerateProfileText (required):
   Future<void> postModerateProfileText(PostModerateProfileText postModerateProfileText,) async {
     final response = await postModerateProfileTextWithHttpInfo(postModerateProfileText,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'POST /profile_api/admin/process_profile_report' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [ProcessProfileReport] processProfileReport (required):
+  Future<Response> postProcessProfileReportWithHttpInfo(ProcessProfileReport processProfileReport,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/admin/process_profile_report';
+
+    // ignore: prefer_final_locals
+    Object? postBody = processProfileReport;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [ProcessProfileReport] processProfileReport (required):
+  Future<void> postProcessProfileReport(ProcessProfileReport processProfileReport,) async {
+    final response = await postProcessProfileReportWithHttpInfo(processProfileReport,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
