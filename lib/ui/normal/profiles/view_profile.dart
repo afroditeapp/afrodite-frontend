@@ -3,6 +3,7 @@
 
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
+import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -87,6 +88,7 @@ class ViewProfilePage extends StatelessWidget {
                 commonActionBlockProfile(context, () {
                   context.read<ViewProfileBloc>().add(BlockProfile(initialProfile.uuid));
                 }),
+                showReportAction(context, state.profile),
                 BlocBuilder<AccountBloc, AccountBlocData>(
                   builder: (_, state) {
                     final p = AccountAdminSettingsPermissions(state.permissions);
@@ -109,7 +111,7 @@ class ViewProfilePage extends StatelessWidget {
               ]),
             ],
           ),
-          body: myProfilePage(context),
+          body: profilePage(context),
           floatingActionButton: actionButton(context, state),
         );
       }
@@ -179,7 +181,7 @@ class ViewProfilePage extends StatelessWidget {
     }
   }
 
-  Widget myProfilePage(BuildContext context) {
+  Widget profilePage(BuildContext context) {
     return BlocBuilder<ViewProfileBloc, ViewProfilesData>(
       builder: (context, state) {
         handleStateAction(context, state);

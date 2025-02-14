@@ -1282,6 +1282,26 @@
   "@profile_statistics_screen_title": {
     "description": "Title for profile statistics screen"
   },
+  "report_screen_action_profile_text": "Profile text",
+  "@report_screen_action_profile_text": {
+    "description": "Title for report profile text action"
+  },
+  "report_screen_dialog_profile_text_title": "Report profile text?",
+  "@report_screen_dialog_profile_text_title": {
+    "description": "Profile text reporting confirmation dialog title"
+  },
+  "report_screen_snackbar_profile_text_has_changed": "Report failed. Profile text has changed.",
+  "@report_screen_snackbar_profile_text_has_changed": {
+    "description": "Snackbar text for when reporting old profile text"
+  },
+  "report_screen_snackbar_report_successful": "Reported",
+  "@report_screen_snackbar_report_successful": {
+    "description": "Snackbar text for successful report"
+  },
+  "report_screen_title": "Report",
+  "@report_screen_title": {
+    "description": "Title for report screen"
+  },
   "search_settings_screen_age_range_is_invalid": "Age range is invalid",
   "@search_settings_screen_age_range_is_invalid": {
     "description": "Snackbar text about invalid age range"

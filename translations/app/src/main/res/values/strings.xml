@@ -450,6 +450,13 @@
     <string name="unsupported_client_screen_title" description="Title for unsupported client screen">App update required</string>
     <string name="unsupported_client_screen_info" description="Info text that app update is required">Current app version is not supported. Please update the app.</string>
 
+    <!-- Report screen -->
+    <string name="report_screen_title" description="Title for report screen">Report</string>
+    <string name="report_screen_action_profile_text" description="Title for report profile text action">Profile text</string>
+    <string name="report_screen_dialog_profile_text_title" description="Profile text reporting confirmation dialog title">Report profile text?</string>
+    <string name="report_screen_snackbar_report_successful" description="Snackbar text for successful report">Reported</string>
+    <string name="report_screen_snackbar_profile_text_has_changed" description="Snackbar text for when reporting old profile text">Report failed. Profile text has changed.</string>
+
     <!-- Admin features -->
 
     <!-- Admin screen -->

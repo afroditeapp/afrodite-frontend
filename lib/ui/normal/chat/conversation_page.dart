@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -124,7 +125,8 @@ class ConversationPageState extends State<ConversationPage> {
           menuActions([
             commonActionBlockProfile(context, () {
               context.read<ConversationBloc>().add(BlockProfile(widget.profileEntry.uuid));
-            })
+            }),
+            showReportAction(context, widget.profileEntry),
           ]),
         ],
       ),

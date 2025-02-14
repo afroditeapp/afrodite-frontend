@@ -68,6 +68,7 @@ class ProfileEntry implements PublicContentProvider {
   }
 
   String profileTextOrFirstCharacterProfileText(bool showNonAcceptedProfileTexts) {
+    // TODO(prod): Remove showNonAcceptedProfileTexts
     if (showNonAcceptedProfileTexts || profileTextAccepted) {
       return profileText;
     } else {
