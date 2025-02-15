@@ -12,7 +12,7 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-class ContentDecicionScreen<C extends ContentOwnerGetter> extends StatefulWidget {
+class ContentDecicionScreen<C extends ContentInfoGetter> extends StatefulWidget {
   final String title;
   final double infoMessageRowHeight;
   final ContentIo<C> io;
@@ -29,7 +29,7 @@ class ContentDecicionScreen<C extends ContentOwnerGetter> extends StatefulWidget
   State<ContentDecicionScreen<C>> createState() => _ContentDecicionScreenState<C>();
 }
 
-class _ContentDecicionScreenState<C extends ContentOwnerGetter> extends State<ContentDecicionScreen<C>> {
+class _ContentDecicionScreenState<C extends ContentInfoGetter> extends State<ContentDecicionScreen<C>> {
   final ItemPositionsListener _listener = ItemPositionsListener.create();
   late final ContentDecicionStreamLogic<C> _logic;
   final api = LoginRepository.getInstance().repositories.api;
@@ -133,7 +133,7 @@ class _ContentDecicionScreenState<C extends ContentOwnerGetter> extends State<Co
     return InkWell(
       onLongPress: () {
         if (index != null) {
-          showActionDialog(context, content.owner, index);
+          showActionDialog(context, content, index);
         }
       },
       child: widget.builder.buildRowContent(context, content),
@@ -164,7 +164,7 @@ class _ContentDecicionScreenState<C extends ContentOwnerGetter> extends State<Co
     );
   }
 
-  Future<void> showActionDialog(BuildContext context, AccountId account, int index) {
+  Future<void> showActionDialog(BuildContext context, ContentInfoGetter info, int index) {
     final pageKey = PageKey();
 
     final rejectAction = SimpleDialogOption(
@@ -185,6 +185,8 @@ class _ContentDecicionScreenState<C extends ContentOwnerGetter> extends State<Co
       child: const Text("Reject"),
     );
 
+    final target = info.target;
+
     return MyNavigator.showDialog(
       context: context,
       pageKey: pageKey,
@@ -192,17 +194,43 @@ class _ContentDecicionScreenState<C extends ContentOwnerGetter> extends State<Co
         return SimpleDialog(
           title: const Text("Select action"),
           children: <Widget>[
-            if (_logic.rejectingIsPossible(index)) rejectAction,
-            SimpleDialogOption(
-              onPressed: () {
-                MyNavigator.removePage(dialogContext, pageKey);
-                getAgeAndNameAndShowAdminSettings(context, api, account);
-              },
-              child: const Text("Show admin settings"),
+            if (_logic.rejectingIsPossible(index) && widget.builder.allowRejecting) rejectAction,
+            if (target == null) openAdminSettingsAction(
+              dialogContext,
+              pageKey,
+              "Show admin settings",
+              info.owner,
+            ),
+            if (target != null) openAdminSettingsAction(
+              dialogContext,
+              pageKey,
+              "Show creator admin settings",
+              info.owner,
+            ),
+            if (target != null) openAdminSettingsAction(
+              dialogContext,
+              pageKey,
+              "Show target admin settings",
+              target,
             ),
           ],
         );
       },
+    );
+  }
+
+  Widget openAdminSettingsAction(
+    BuildContext dialogContext,
+    PageKey pageKey,
+    String title,
+    AccountId account,
+  ) {
+    return SimpleDialogOption(
+      onPressed: () {
+        MyNavigator.removePage(dialogContext, pageKey);
+        getAgeAndNameAndShowAdminSettings(context, api, account);
+      },
+      child: Text(title),
     );
   }
 
@@ -213,10 +241,12 @@ class _ContentDecicionScreenState<C extends ContentOwnerGetter> extends State<Co
   }
 }
 
-abstract class ContentUiBuilder<C extends ContentOwnerGetter> {
+abstract class ContentUiBuilder<C extends ContentInfoGetter> {
+  bool get allowRejecting => true;
   Widget buildRowContent(BuildContext context, C content);
 }
 
-abstract class ContentOwnerGetter {
+abstract class ContentInfoGetter {
   AccountId get owner;
+  AccountId? get target => null;
 }

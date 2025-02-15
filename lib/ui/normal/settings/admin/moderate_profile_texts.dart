@@ -20,7 +20,7 @@ class ModerateProfileTextsScreen extends ContentDecicionScreen<WrappedProfileTex
   );
 }
 
-class WrappedProfileTextModeration extends ProfileTextPendingModeration implements ContentOwnerGetter {
+class WrappedProfileTextModeration extends ProfileTextPendingModeration implements ContentInfoGetter {
   WrappedProfileTextModeration({
     required super.id,
     required super.text
@@ -28,6 +28,9 @@ class WrappedProfileTextModeration extends ProfileTextPendingModeration implemen
 
   @override
   AccountId get owner => id;
+
+  @override
+  AccountId? get target => null;
 }
 
 class ProfileTextIo extends ContentIo<WrappedProfileTextModeration> {

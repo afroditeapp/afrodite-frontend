@@ -28,7 +28,7 @@ class ModerateImagesScreen extends ContentDecicionScreen<WrappedMediaContentPend
   );
 }
 
-class WrappedMediaContentPendingModeration extends ProfileContentPendingModeration implements ContentOwnerGetter {
+class WrappedMediaContentPendingModeration extends ProfileContentPendingModeration implements ContentInfoGetter {
   final ContentId? securitySelfie;
   WrappedMediaContentPendingModeration({
     required this.securitySelfie,
@@ -38,6 +38,9 @@ class WrappedMediaContentPendingModeration extends ProfileContentPendingModerati
 
   @override
   AccountId get owner => accountId;
+
+  @override
+  AccountId? get target => null;
 }
 
 class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
