@@ -1,136 +1,109 @@
 
 
 import 'package:app/data/login_repository.dart';
-import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
+import 'package:app/logic/admin/content_decicion_stream.dart';
+import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
+import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
-import 'package:app/logic/admin/image_moderation.dart';
-
-
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/view_image_screen.dart';
-import 'package:app/ui_utils/dialog.dart';
-
-
-// Plan: Infinite list of rows of two images, first is security selfie, the
-// other is to be moderated image. First image is empty if moderating security
-// selfie.
-//
-// Long pressing the row opens option to discard the request. Maeby there should
-// be space in the right side for status color.
-//
-// If trying to display previous rows, maeby just display empty rows? After it
-// is not possible to load more entries then empty rows untill all moderated.
-// Change entry to contain message all moderated.
-//
-// Taping image should open it to another view.
 
 const ROW_HEIGHT = 300.0;
 
-
-class ModerateImagesPage extends StatefulWidget {
+class ModerateImagesScreen extends ContentDecicionScreen<WrappedMediaContentPendingModeration> {
   final ModerationQueueType queueType;
   final bool showContentWhichBotsCanModerate;
-  const ModerateImagesPage({
+  ModerateImagesScreen({
     required this.queueType,
     required this.showContentWhichBotsCanModerate,
     super.key,
+  }) : super(
+    title: "Moderate profile images",
+    infoMessageRowHeight: ROW_HEIGHT,
+    io: MediaContentIo(showContentWhichBotsCanModerate, queueType),
+    builder: MediaContentUiBuilder(),
+  );
+}
+
+class WrappedMediaContentPendingModeration extends ProfileContentPendingModeration implements ContentOwnerGetter {
+  final ContentId? securitySelfie;
+  WrappedMediaContentPendingModeration({
+    required this.securitySelfie,
+    required super.accountId,
+    required super.contentId,
   });
 
   @override
-  State<ModerateImagesPage> createState() => _ModerateImagesPageState();
+  AccountId get owner => accountId;
 }
 
-class _ModerateImagesPageState extends State<ModerateImagesPage> {
-  final ScrollController _controller = ScrollController();
-  int currentPosition = -100;
-  final logic = ImageModerationLogic.getInstance();
+class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
+  final media = LoginRepository.getInstance().repositories.media;
   final api = LoginRepository.getInstance().repositories.api;
+  final bool showContentWhichBotsCanModerate;
+  final ModerationQueueType queue;
+
+  MediaContentIo(this.showContentWhichBotsCanModerate, this.queue);
 
   @override
-  void initState() {
-    super.initState();
-    logic.reset(widget.queueType, widget.showContentWhichBotsCanModerate);
-    _controller.addListener(() {
-      final offset = _controller.offset - ROW_HEIGHT;
-      final position = offset ~/ ROW_HEIGHT;
-      if (currentPosition != position && offset > 0) {
-        currentPosition = position;
-        logic.moderateImageRow(currentPosition, true);
-      }
-    });
+  Future<Result<List<WrappedMediaContentPendingModeration>, void>> getNextContent() async {
+    final r = await api.mediaAdmin((api) => api.getProfileContentPendingModerationList(
+      MediaContentType.jpegImage,
+      queue,
+      showContentWhichBotsCanModerate,
+    ));
+
+    final GetProfileContentPendingModerationList list;
+    switch (r) {
+      case Err():
+        return const Err(null);
+      case Ok():
+        list = r.v;
+    }
+
+    List<WrappedMediaContentPendingModeration> newList = [];
+    for (final v in list.values) {
+      var securitySelfie = await media.getSecuritySelfie(v.accountId);
+
+      newList.add(WrappedMediaContentPendingModeration(
+        securitySelfie: securitySelfie,
+        accountId: v.accountId,
+        contentId: v.contentId,
+      ));
+    }
+
+    return Ok(newList);
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(context.strings.moderate_images_screen_title)),
-      body: list(context),
-    );
+  Future<void> sendToServer(WrappedMediaContentPendingModeration content, bool accept) async {
+    final info = PostModerateProfileContent(accept: accept, accountId: content.accountId, contentId: content.contentId);
+    await api.mediaAdminAction((api) => api.postModerateProfileContent(info));
   }
+}
 
-  Widget list(BuildContext context) {
-    return StreamBuilder(
-      stream: logic.imageModerationStatus,
-      builder: (context, state) {
-        final d = state.data;
-        switch (d) {
-          case ImageModerationStatus.allModerated:
-            return buildEmptyText(ROW_HEIGHT);
-          case ImageModerationStatus.moderating:
-            return ListView.builder(
-              itemCount: null,
-              controller: _controller,
-              itemBuilder: (context, index) {
-                return buildEntry(context, index);
-              },
-            );
-          case ImageModerationStatus.loading || null:
-            return Center(child: buildProgressIndicator(ROW_HEIGHT));
-        }
+class MediaContentUiBuilder extends ContentUiBuilder<WrappedMediaContentPendingModeration> {
+  @override
+  Widget buildRowContent(BuildContext context, WrappedMediaContentPendingModeration content) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return buildRow(context, content, constraints.maxWidth.toInt());
       },
     );
   }
 
-  Widget buildEntry(BuildContext context, int index) {
-    return StreamBuilder(
-      stream: logic.getImageRow(index),
-      builder: (context, snapshot) {
-        final s = snapshot.data;
-        if (s != null) {
-          switch (s) {
-            case AllModerated() : return buildEmptyText(ROW_HEIGHT);
-            case Loading() : return buildProgressIndicator(ROW_HEIGHT);
-            case ImageRow r : {
-              return LayoutBuilder(
-                builder: (context, constraints) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: buildImageRow(context, r, index, constraints.maxWidth, ROW_HEIGHT - 8),
-                  );
-                }
-              );
-            }
-          }
-        } else {
-          return buildProgressIndicator(ROW_HEIGHT);
-        }
-      }
-    );
-  }
-
-  Widget buildImageRow(BuildContext contex, ImageRow r, int index, double maxWidth, double height) {
-    final securitySelfie = r.securitySelfie;
+  Widget buildRow(BuildContext context, WrappedMediaContentPendingModeration content, int maxWidth) {
+    final securitySelfie = content.securitySelfie;
     final Widget securitySelfieWidget;
     if (securitySelfie != null) {
       securitySelfieWidget =
-        buildImage(contex, r.state.m.accountId, securitySelfie, null, maxWidth/2, height);
+        buildImage(context, content.accountId, securitySelfie, maxWidth/2, ROW_HEIGHT);
     } else {
       securitySelfieWidget =
-        SizedBox(width: maxWidth/2, height: height, child: Row(
+        SizedBox(width: maxWidth/2, height: ROW_HEIGHT, child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(context.strings.generic_empty),
@@ -138,38 +111,22 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
         ));
     }
 
-    final Color? color;
-    switch (r.status) {
-      case Accepted(): color = Colors.green.shade200;
-      case Denied(): color = Colors.red.shade200;
-      case ModerationDecicionNeeded(): color = null;
-    }
-
-    return Container(
-      color: color,
-      height: height,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          securitySelfieWidget,
-          buildImage(contex, r.state.m.accountId, r.target, index, maxWidth/2, height),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        securitySelfieWidget,
+        buildImage(context, content.accountId, content.contentId, maxWidth/2, ROW_HEIGHT),
+      ],
     );
   }
 
-  Widget buildImage(BuildContext contex, AccountId imageOwner, ContentId image, int? index, double width, double height) {
+  Widget buildImage(BuildContext context, AccountId imageOwner, ContentId image, double width, double height) {
     return InkWell(
       onTap: () {
         MyNavigator.push(
           context,
           MaterialPage<void>(child: ViewImageScreen(ViewImageAccountContent(imageOwner, image))),
         );
-      },
-      onLongPress: () {
-        if (index != null) {
-          showActionDialog(context, imageOwner, image, index);
-        }
       },
       child: accountImgWidget(
         imageOwner,
@@ -178,84 +135,5 @@ class _ModerateImagesPageState extends State<ModerateImagesPage> {
         height: height,
       ),
     );
-  }
-
-  Widget buildProgressIndicator(double height) {
-    return SizedBox(
-      height: height,
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(),
-        ],
-      )
-    );
-  }
-
-  Widget buildEmptyText(double height) {
-    return SizedBox(
-      height: height,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(context.strings.generic_empty)
-        ],
-      )
-    );
-  }
-
-  Future<void> showActionDialog(BuildContext context, AccountId account, ContentId contentId, int index) {
-    final pageKey = PageKey();
-
-    final rejectAction = SimpleDialogOption(
-      onPressed: () {
-        MyNavigator.removePage(context, pageKey);
-        showConfirmDialog(
-          context,
-          context.strings.generic_reject_question,
-        )
-        .then(
-            (value) {
-              if (value == true) {
-                logic.moderateImageRow(index, false);
-              }
-            }
-        );
-      },
-      child: const Text("Reject image"),
-    );
-
-    return MyNavigator.showDialog(
-      context: context,
-      pageKey: pageKey,
-      builder: (BuildContext dialogContext) {
-        return SimpleDialog(
-          title: const Text("Select action"),
-          children: <Widget>[
-            if (logic.rejectingIsPossible(index)) rejectAction,
-            SimpleDialogOption(
-              onPressed: () {
-                MyNavigator.removePage(dialogContext, pageKey);
-                showInfoDialog(context, "Account ID\n\n${account.aid}\n\nContent ID\n\n${contentId.cid}");
-              },
-              child: const Text("Show info"),
-            ),
-            SimpleDialogOption(
-              onPressed: () {
-                MyNavigator.removePage(dialogContext, pageKey);
-                getAgeAndNameAndShowAdminSettings(context, api, account);
-              },
-              child: const Text("Show admin settings"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 }

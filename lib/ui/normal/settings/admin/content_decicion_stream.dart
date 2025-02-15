@@ -12,14 +12,14 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-const double ROW_HEIGHT = 100;
-
 class ContentDecicionScreen<C extends ContentOwnerGetter> extends StatefulWidget {
   final String title;
+  final double infoMessageRowHeight;
   final ContentIo<C> io;
   final ContentUiBuilder<C> builder;
   const ContentDecicionScreen({
     required this.title,
+    required this.infoMessageRowHeight,
     required this.io,
     required this.builder,
     super.key,
@@ -64,7 +64,7 @@ class _ContentDecicionScreenState<C extends ContentOwnerGetter> extends State<Co
         final d = state.data;
         switch (d) {
           case ContentDecicionStreamStatus.allHandled:
-            return buildEmptyText(ROW_HEIGHT);
+            return buildEmptyText(widget.infoMessageRowHeight);
           case ContentDecicionStreamStatus.handling:
             return ScrollablePositionedList.separated(
               itemCount: 1000000,
@@ -77,7 +77,7 @@ class _ContentDecicionScreenState<C extends ContentOwnerGetter> extends State<Co
               },
             );
           case ContentDecicionStreamStatus.loading || null:
-            return Center(child: buildProgressIndicator(ROW_HEIGHT));
+            return Center(child: buildProgressIndicator(widget.infoMessageRowHeight));
         }
       },
     );
@@ -90,8 +90,8 @@ class _ContentDecicionScreenState<C extends ContentOwnerGetter> extends State<Co
         final s = snapshot.data;
         if (s != null) {
           switch (s) {
-            case AllModerated<C>() : return buildEmptyText(ROW_HEIGHT);
-            case Loading<C>() : return buildProgressIndicator(ROW_HEIGHT);
+            case AllModerated<C>() : return buildEmptyText(widget.infoMessageRowHeight);
+            case Loading<C>() : return buildProgressIndicator(widget.infoMessageRowHeight);
             case ContentRow<C> r : {
               return LayoutBuilder(
                 builder: (context, constraints) {
@@ -104,7 +104,7 @@ class _ContentDecicionScreenState<C extends ContentOwnerGetter> extends State<Co
             }
           }
         } else {
-          return buildProgressIndicator(ROW_HEIGHT);
+          return buildProgressIndicator(widget.infoMessageRowHeight);
         }
       }
     );
@@ -136,7 +136,7 @@ class _ContentDecicionScreenState<C extends ContentOwnerGetter> extends State<Co
           showActionDialog(context, content.owner, index);
         }
       },
-      child: widget.builder.buildRowContent(content),
+      child: widget.builder.buildRowContent(context, content),
     );
   }
 
@@ -214,7 +214,7 @@ class _ContentDecicionScreenState<C extends ContentOwnerGetter> extends State<Co
 }
 
 abstract class ContentUiBuilder<C extends ContentOwnerGetter> {
-  Widget buildRowContent(C content);
+  Widget buildRowContent(BuildContext context, C content);
 }
 
 abstract class ContentOwnerGetter {

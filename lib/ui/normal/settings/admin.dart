@@ -53,16 +53,16 @@ class AdminSettingsPage extends StatelessWidget {
 
     if (permissions.adminModerateMediaContent) {
       settings.add(Setting.createSetting(Icons.image, "Moderate images (initial moderation, bot and human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.initialMediaModeration, showContentWhichBotsCanModerate: true)),)
+        MyNavigator.push(context, MaterialPage<void>(child: ModerateImagesScreen(queueType: ModerationQueueType.initialMediaModeration, showContentWhichBotsCanModerate: true)),)
       ));
       settings.add(Setting.createSetting(Icons.image, "Moderate images (initial moderation, human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.initialMediaModeration, showContentWhichBotsCanModerate: false)),)
+        MyNavigator.push(context, MaterialPage<void>(child: ModerateImagesScreen(queueType: ModerationQueueType.initialMediaModeration, showContentWhichBotsCanModerate: false)),)
       ));
       settings.add(Setting.createSetting(Icons.image, "Moderate images (normal, bot and human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: true)),)
+        MyNavigator.push(context, MaterialPage<void>(child: ModerateImagesScreen(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: true)),)
       ));
       settings.add(Setting.createSetting(Icons.image, "Moderate images (normal, human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: const ModerateImagesPage(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: false)),)
+        MyNavigator.push(context, MaterialPage<void>(child: ModerateImagesScreen(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: false)),)
       ));
     }
     if (permissions.adminServerMaintenanceSaveBackendConfig ||

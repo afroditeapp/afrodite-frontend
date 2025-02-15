@@ -6,12 +6,15 @@ import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 
+const double ROW_HEIGHT = 100;
+
 class ModerateProfileTextsScreen extends ContentDecicionScreen<WrappedProfileTextModeration> {
   ModerateProfileTextsScreen({
     required bool showTextsWhichBotsCanModerate,
     super.key,
   }) : super(
     title: "Moderate profile texts",
+    infoMessageRowHeight: ROW_HEIGHT,
     io: ProfileTextIo(showTextsWhichBotsCanModerate),
     builder: ProfileTextUiBuilder(),
   );
@@ -48,7 +51,7 @@ class ProfileTextIo extends ContentIo<WrappedProfileTextModeration> {
 
 class ProfileTextUiBuilder extends ContentUiBuilder<WrappedProfileTextModeration> {
   @override
-  Widget buildRowContent(WrappedProfileTextModeration content) {
+  Widget buildRowContent(BuildContext context, WrappedProfileTextModeration content) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Text(content.text),
