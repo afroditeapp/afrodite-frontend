@@ -61,25 +61,51 @@ class _ReportScreenState extends State<ReportScreen> {
   List<Widget> reportList(BuildContext context) {
     List<Widget> settings = [];
 
-    if (widget.profile.profileText.isNotEmpty) {
-      settings.add(reportListTile(context.strings.report_screen_action_profile_text, () async {
+    if (widget.profile.name.isNotEmpty) {
+      settings.add(reportListTile(context.strings.report_screen_profile_name_action, () async {
         final r = await showConfirmDialog(
           context,
-          context.strings.report_screen_dialog_profile_text_title,
-          details: widget.profile.profileTextOrFirstCharacterProfileText(false),
+          context.strings.report_screen_profile_name_dialog_title,
+          details: widget.profile.profileNameOrFirstCharacterProfileName(),
           yesNoActions: true,
           scrollable: true,
         );
         if (context.mounted && r == true) {
           final result = await api.profile((api) => api.postReportProfileName(UpdateProfileNameReport(
             target: widget.profile.uuid,
-            profileName: widget.profile.profileText,
+            profileName: widget.profile.name,
           ))).ok();
 
           if (result == null) {
             showSnackBar(R.strings.generic_error_occurred);
           } else if (result.errorOutdatedReportContent) {
-            showSnackBar(R.strings.report_screen_snackbar_profile_text_has_changed);
+            showSnackBar(R.strings.report_screen_profile_name_changed_error);
+          } else {
+            showSnackBar(R.strings.report_screen_snackbar_report_successful);
+          }
+        }
+      }));
+    }
+
+    if (widget.profile.profileText.isNotEmpty) {
+      settings.add(reportListTile(context.strings.report_screen_profile_text_action, () async {
+        final r = await showConfirmDialog(
+          context,
+          context.strings.report_screen_profile_text_dialog_title,
+          details: widget.profile.profileTextOrFirstCharacterProfileText(false),
+          yesNoActions: true,
+          scrollable: true,
+        );
+        if (context.mounted && r == true) {
+          final result = await api.profile((api) => api.postReportProfileText(UpdateProfileTextReport(
+            target: widget.profile.uuid,
+            profileText: widget.profile.profileText,
+          ))).ok();
+
+          if (result == null) {
+            showSnackBar(R.strings.generic_error_occurred);
+          } else if (result.errorOutdatedReportContent) {
+            showSnackBar(R.strings.report_screen_profile_text_changed_error);
           } else {
             showSnackBar(R.strings.report_screen_snackbar_report_successful);
           }

@@ -72,16 +72,28 @@ class ProfileEntry implements PublicContentProvider {
     if (showNonAcceptedProfileTexts || profileTextAccepted) {
       return profileText;
     } else {
-      final iterator = profileText.runes.iterator;
-      iterator.moveNext();
-      final onlyFirstCharacterVisible = "${iterator.currentAsString}…";
-      if (iterator.moveNext()) {
-        // String contains more than one character
-        return onlyFirstCharacterVisible;
-      } else {
-        return name;
-      }
+      return hideOtherCharactersThanTheFirst(profileText);
     }
+  }
+
+  String profileNameOrFirstCharacterProfileName() {
+    if (nameAccepted) {
+      return name;
+    } else {
+      return hideOtherCharactersThanTheFirst(name);
+    }
+  }
+}
+
+String hideOtherCharactersThanTheFirst(String value) {
+  final iterator = value.runes.iterator;
+  iterator.moveNext();
+  final onlyFirstCharacterVisible = "${iterator.currentAsString}…";
+  if (iterator.moveNext()) {
+    // String contains more than one character
+    return onlyFirstCharacterVisible;
+  } else {
+    return value;
   }
 }
 
@@ -130,6 +142,7 @@ class ProfileLocalDbId {
 class ProfileTitle {
   final String name;
   final bool nameAccepted;
+  // TODO(prod): Remove showNonAcceptedProfileNames
   final bool showNonAcceptedProfileNames;
   const ProfileTitle(this.name, this.nameAccepted, this.showNonAcceptedProfileNames);
 
@@ -137,15 +150,7 @@ class ProfileTitle {
     if (showNonAcceptedProfileNames || nameAccepted) {
       return name;
     } else {
-      final iterator = name.runes.iterator;
-      iterator.moveNext();
-      final onlyFirstCharacterVisible = "${iterator.currentAsString}…";
-      if (iterator.moveNext()) {
-        // Name is more than one character
-        return onlyFirstCharacterVisible;
-      } else {
-        return name;
-      }
+      return hideOtherCharactersThanTheFirst(name);
     }
   }
 }
