@@ -10,40 +10,36 @@
 
 part of openapi.api;
 
-class ProfileReportContent {
-  /// Returns a new [ProfileReportContent] instance.
-  ProfileReportContent({
-    this.profileText,
+class GetProfileNameReportList {
+  /// Returns a new [GetProfileNameReportList] instance.
+  GetProfileNameReportList({
+    this.values = const [],
   });
 
-  String? profileText;
+  List<ProfileNameReportDetailed> values;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileReportContent &&
-    other.profileText == profileText;
+  bool operator ==(Object other) => identical(this, other) || other is GetProfileNameReportList &&
+    _deepEquality.equals(other.values, values);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (profileText == null ? 0 : profileText!.hashCode);
+    (values.hashCode);
 
   @override
-  String toString() => 'ProfileReportContent[profileText=$profileText]';
+  String toString() => 'GetProfileNameReportList[values=$values]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.profileText != null) {
-      json[r'profile_text'] = this.profileText;
-    } else {
-      json[r'profile_text'] = null;
-    }
+      json[r'values'] = this.values;
     return json;
   }
 
-  /// Returns a new [ProfileReportContent] instance and imports its values from
+  /// Returns a new [GetProfileNameReportList] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileReportContent? fromJson(dynamic value) {
+  static GetProfileNameReportList? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -52,24 +48,24 @@ class ProfileReportContent {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileReportContent[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileReportContent[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "GetProfileNameReportList[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "GetProfileNameReportList[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileReportContent(
-        profileText: mapValueOfType<String>(json, r'profile_text'),
+      return GetProfileNameReportList(
+        values: ProfileNameReportDetailed.listFromJson(json[r'values']),
       );
     }
     return null;
   }
 
-  static List<ProfileReportContent> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileReportContent>[];
+  static List<GetProfileNameReportList> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <GetProfileNameReportList>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileReportContent.fromJson(row);
+        final value = GetProfileNameReportList.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -78,12 +74,12 @@ class ProfileReportContent {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileReportContent> mapFromJson(dynamic json) {
-    final map = <String, ProfileReportContent>{};
+  static Map<String, GetProfileNameReportList> mapFromJson(dynamic json) {
+    final map = <String, GetProfileNameReportList>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileReportContent.fromJson(entry.value);
+        final value = GetProfileNameReportList.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -92,14 +88,14 @@ class ProfileReportContent {
     return map;
   }
 
-  // maps a json object with a list of ProfileReportContent-objects as value to a dart map
-  static Map<String, List<ProfileReportContent>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileReportContent>>{};
+  // maps a json object with a list of GetProfileNameReportList-objects as value to a dart map
+  static Map<String, List<GetProfileNameReportList>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<GetProfileNameReportList>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileReportContent.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = GetProfileNameReportList.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -107,6 +103,7 @@ class ProfileReportContent {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'values',
   };
 }
 

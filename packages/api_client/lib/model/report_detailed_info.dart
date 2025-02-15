@@ -10,42 +10,48 @@
 
 part of openapi.api;
 
-class ProfileReport {
-  /// Returns a new [ProfileReport] instance.
-  ProfileReport({
-    required this.content,
+class ReportDetailedInfo {
+  /// Returns a new [ReportDetailedInfo] instance.
+  ReportDetailedInfo({
+    required this.creator,
     required this.processingState,
+    required this.target,
   });
 
-  ProfileReportContent content;
+  AccountId creator;
 
   ReportProcessingState processingState;
 
+  AccountId target;
+
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileReport &&
-    other.content == content &&
-    other.processingState == processingState;
+  bool operator ==(Object other) => identical(this, other) || other is ReportDetailedInfo &&
+    other.creator == creator &&
+    other.processingState == processingState &&
+    other.target == target;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (content.hashCode) +
-    (processingState.hashCode);
+    (creator.hashCode) +
+    (processingState.hashCode) +
+    (target.hashCode);
 
   @override
-  String toString() => 'ProfileReport[content=$content, processingState=$processingState]';
+  String toString() => 'ReportDetailedInfo[creator=$creator, processingState=$processingState, target=$target]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'content'] = this.content;
+      json[r'creator'] = this.creator;
       json[r'processing_state'] = this.processingState;
+      json[r'target'] = this.target;
     return json;
   }
 
-  /// Returns a new [ProfileReport] instance and imports its values from
+  /// Returns a new [ReportDetailedInfo] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileReport? fromJson(dynamic value) {
+  static ReportDetailedInfo? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,25 +60,26 @@ class ProfileReport {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileReport[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileReport[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ReportDetailedInfo[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ReportDetailedInfo[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileReport(
-        content: ProfileReportContent.fromJson(json[r'content'])!,
+      return ReportDetailedInfo(
+        creator: AccountId.fromJson(json[r'creator'])!,
         processingState: ReportProcessingState.fromJson(json[r'processing_state'])!,
+        target: AccountId.fromJson(json[r'target'])!,
       );
     }
     return null;
   }
 
-  static List<ProfileReport> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileReport>[];
+  static List<ReportDetailedInfo> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ReportDetailedInfo>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileReport.fromJson(row);
+        final value = ReportDetailedInfo.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +88,12 @@ class ProfileReport {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileReport> mapFromJson(dynamic json) {
-    final map = <String, ProfileReport>{};
+  static Map<String, ReportDetailedInfo> mapFromJson(dynamic json) {
+    final map = <String, ReportDetailedInfo>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileReport.fromJson(entry.value);
+        final value = ReportDetailedInfo.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,14 +102,14 @@ class ProfileReport {
     return map;
   }
 
-  // maps a json object with a list of ProfileReport-objects as value to a dart map
-  static Map<String, List<ProfileReport>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileReport>>{};
+  // maps a json object with a list of ReportDetailedInfo-objects as value to a dart map
+  static Map<String, List<ReportDetailedInfo>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ReportDetailedInfo>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileReport.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ReportDetailedInfo.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -110,8 +117,9 @@ class ProfileReport {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'content',
+    'creator',
     'processing_state',
+    'target',
   };
 }
 

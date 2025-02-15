@@ -178,7 +178,6 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**getProfile**](doc//ProfileApi.md#getprofile) | **GET** /profile_api/profile/{aid} | Get account's current profile.
 *ProfileApi* | [**getProfileFilteringSettings**](doc//ProfileApi.md#getprofilefilteringsettings) | **GET** /profile_api/profile_filtering_settings | Get current profile filtering settings.
 *ProfileApi* | [**getProfileFromDatabaseDebugModeBenchmark**](doc//ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /profile_api/benchmark/profile/{aid} | Get account's current profile from database. Debug mode must be enabled that route can be used.
-*ProfileApi* | [**getProfileReport**](doc//ProfileApi.md#getprofilereport) | **GET** /profile_api/profile_report | Get profile report
 *ProfileApi* | [**getProfileStatistics**](doc//ProfileApi.md#getprofilestatistics) | **GET** /profile_api/profile_statistics | Non default values for [model::GetProfileStatisticsParams] requires [model::Permissions::admin_profile_statistics].
 *ProfileApi* | [**getSearchAgeRange**](doc//ProfileApi.md#getsearchagerange) | **GET** /profile_api/search_age_range | Get account's current search age range
 *ProfileApi* | [**getSearchGroups**](doc//ProfileApi.md#getsearchgroups) | **GET** /profile_api/search_groups | Get account's current search groups (gender and what gender user is looking for)
@@ -187,8 +186,9 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**postGetQueryAvailableProfileAttributes**](doc//ProfileApi.md#postgetqueryavailableprofileattributes) | **POST** /profile_api/query_available_profile_attributes | Query profile attributes using attribute ID list.
 *ProfileApi* | [**postProfile**](doc//ProfileApi.md#postprofile) | **POST** /profile_api/profile | Update profile information.
 *ProfileApi* | [**postProfileFilteringSettings**](doc//ProfileApi.md#postprofilefilteringsettings) | **POST** /profile_api/profile_filtering_settings | Set profile filtering settings.
-*ProfileApi* | [**postProfileReport**](doc//ProfileApi.md#postprofilereport) | **POST** /profile_api/profile_report | Update profile report.
 *ProfileApi* | [**postProfileToDatabaseDebugModeBenchmark**](doc//ProfileApi.md#postprofiletodatabasedebugmodebenchmark) | **POST** /profile_api/benchmark/profile | Post account's current profile directly to database. Debug mode must be enabled that route can be used.
+*ProfileApi* | [**postReportProfileName**](doc//ProfileApi.md#postreportprofilename) | **POST** /profile_api/report_profile_name | Report profile name
+*ProfileApi* | [**postReportProfileText**](doc//ProfileApi.md#postreportprofiletext) | **POST** /profile_api/report_profile_text | Report profile text
 *ProfileApi* | [**postResetProfilePaging**](doc//ProfileApi.md#postresetprofilepaging) | **POST** /profile_api/page/reset | Reset profile paging.
 *ProfileApi* | [**postSearchAgeRange**](doc//ProfileApi.md#postsearchagerange) | **POST** /profile_api/search_age_range | Set account's current search age range
 *ProfileApi* | [**postSearchGroups**](doc//ProfileApi.md#postsearchgroups) | **POST** /profile_api/search_groups | Set account's current search groups (gender and what gender user is looking for)
@@ -198,13 +198,15 @@ Class | Method | HTTP request | Description
 *ProfileAdminApi* | [**getProfileAgeAndName**](doc//ProfileAdminApi.md#getprofileageandname) | **GET** /profile_api/get_profile_age_and_name/{aid} | Get profile age and name
 *ProfileAdminApi* | [**getProfileNamePendingModerationList**](doc//ProfileAdminApi.md#getprofilenamependingmoderationlist) | **GET** /profile_api/admin/profile_name_pending_moderation | 
 *ProfileAdminApi* | [**getProfileNameState**](doc//ProfileAdminApi.md#getprofilenamestate) | **GET** /profile_api/get_profile_name_state/{aid} | Get profile name state
-*ProfileAdminApi* | [**getProfileReportPendingProcessingList**](doc//ProfileAdminApi.md#getprofilereportpendingprocessinglist) | **GET** /profile_api/admin/profile_report_pending_processing | 
 *ProfileAdminApi* | [**getProfileStatisticsHistory**](doc//ProfileAdminApi.md#getprofilestatisticshistory) | **GET** /profile_api/profile_statistics_history | 
 *ProfileAdminApi* | [**getProfileTextPendingModerationList**](doc//ProfileAdminApi.md#getprofiletextpendingmoderationlist) | **GET** /profile_api/admin/profile_text_pending_moderation | Get first page of pending profile text moderations. Oldest item is first and count 25.
 *ProfileAdminApi* | [**getProfileTextState**](doc//ProfileAdminApi.md#getprofiletextstate) | **GET** /profile_api/get_profile_text_state/{aid} | Get profile text state
+*ProfileAdminApi* | [**getWaitingProfileNameReportPage**](doc//ProfileAdminApi.md#getwaitingprofilenamereportpage) | **GET** /profile_api/admin/waiting_profile_name_report_page | 
+*ProfileAdminApi* | [**getWaitingProfileTextReportPage**](doc//ProfileAdminApi.md#getwaitingprofiletextreportpage) | **GET** /profile_api/admin/waiting_profile_text_report_page | 
 *ProfileAdminApi* | [**postModerateProfileName**](doc//ProfileAdminApi.md#postmoderateprofilename) | **POST** /profile_api/admin/moderate_profile_name | 
 *ProfileAdminApi* | [**postModerateProfileText**](doc//ProfileAdminApi.md#postmoderateprofiletext) | **POST** /profile_api/admin/moderate_profile_text | Rejected category and details can be set only when the text is rejected.
-*ProfileAdminApi* | [**postProcessProfileReport**](doc//ProfileAdminApi.md#postprocessprofilereport) | **POST** /profile_api/admin/process_profile_report | 
+*ProfileAdminApi* | [**postProcessProfileNameReport**](doc//ProfileAdminApi.md#postprocessprofilenamereport) | **POST** /profile_api/admin/process_profile_name_report | 
+*ProfileAdminApi* | [**postProcessProfileTextReport**](doc//ProfileAdminApi.md#postprocessprofiletextreport) | **POST** /profile_api/admin/process_profile_text_report | 
 
 
 ## Documentation For Models
@@ -288,12 +290,13 @@ Class | Method | HTTP request | Description
  - [GetProfileContentResult](doc//GetProfileContentResult.md)
  - [GetProfileFilteringSettings](doc//GetProfileFilteringSettings.md)
  - [GetProfileNamePendingModerationList](doc//GetProfileNamePendingModerationList.md)
+ - [GetProfileNameReportList](doc//GetProfileNameReportList.md)
  - [GetProfileNameState](doc//GetProfileNameState.md)
- - [GetProfileReportList](doc//GetProfileReportList.md)
  - [GetProfileResult](doc//GetProfileResult.md)
  - [GetProfileStatisticsHistoryResult](doc//GetProfileStatisticsHistoryResult.md)
  - [GetProfileStatisticsResult](doc//GetProfileStatisticsResult.md)
  - [GetProfileTextPendingModerationList](doc//GetProfileTextPendingModerationList.md)
+ - [GetProfileTextReportList](doc//GetProfileTextReportList.md)
  - [GetProfileTextState](doc//GetProfileTextState.md)
  - [GetPublicKey](doc//GetPublicKey.md)
  - [GroupValues](doc//GroupValues.md)
@@ -345,7 +348,8 @@ Class | Method | HTTP request | Description
  - [ProcessAccountReport](doc//ProcessAccountReport.md)
  - [ProcessChatReport](doc//ProcessChatReport.md)
  - [ProcessMediaReport](doc//ProcessMediaReport.md)
- - [ProcessProfileReport](doc//ProcessProfileReport.md)
+ - [ProcessProfileNameReport](doc//ProcessProfileNameReport.md)
+ - [ProcessProfileTextReport](doc//ProcessProfileTextReport.md)
  - [Profile](doc//Profile.md)
  - [ProfileAgeCounts](doc//ProfileAgeCounts.md)
  - [ProfileAttributeFilterValue](doc//ProfileAttributeFilterValue.md)
@@ -372,10 +376,8 @@ Class | Method | HTTP request | Description
  - [ProfileLink](doc//ProfileLink.md)
  - [ProfileNameModerationState](doc//ProfileNameModerationState.md)
  - [ProfileNamePendingModeration](doc//ProfileNamePendingModeration.md)
+ - [ProfileNameReportDetailed](doc//ProfileNameReportDetailed.md)
  - [ProfilePage](doc//ProfilePage.md)
- - [ProfileReport](doc//ProfileReport.md)
- - [ProfileReportContent](doc//ProfileReportContent.md)
- - [ProfileReportDetailed](doc//ProfileReportDetailed.md)
  - [ProfileSearchAgeRange](doc//ProfileSearchAgeRange.md)
  - [ProfileStatisticsHistoryValue](doc//ProfileStatisticsHistoryValue.md)
  - [ProfileStatisticsHistoryValueType](doc//ProfileStatisticsHistoryValueType.md)
@@ -385,6 +387,7 @@ Class | Method | HTTP request | Description
  - [ProfileTextModerationRejectedReasonDetails](doc//ProfileTextModerationRejectedReasonDetails.md)
  - [ProfileTextModerationState](doc//ProfileTextModerationState.md)
  - [ProfileTextPendingModeration](doc//ProfileTextPendingModeration.md)
+ - [ProfileTextReportDetailed](doc//ProfileTextReportDetailed.md)
  - [ProfileUpdate](doc//ProfileUpdate.md)
  - [ProfileVersion](doc//ProfileVersion.md)
  - [ProfileVisibility](doc//ProfileVisibility.md)
@@ -400,6 +403,7 @@ Class | Method | HTTP request | Description
  - [ReceivedLikesSyncVersion](doc//ReceivedLikesSyncVersion.md)
  - [RefreshToken](doc//RefreshToken.md)
  - [RemoteBotLogin](doc//RemoteBotLogin.md)
+ - [ReportDetailedInfo](doc//ReportDetailedInfo.md)
  - [ReportProcessingState](doc//ReportProcessingState.md)
  - [ResetMatchesIteratorResult](doc//ResetMatchesIteratorResult.md)
  - [ResetNewsIteratorResult](doc//ResetNewsIteratorResult.md)
@@ -441,7 +445,8 @@ Class | Method | HTTP request | Description
  - [UpdateMessageViewStatus](doc//UpdateMessageViewStatus.md)
  - [UpdateNewsTranslation](doc//UpdateNewsTranslation.md)
  - [UpdateNewsTranslationResult](doc//UpdateNewsTranslationResult.md)
- - [UpdateProfileReport](doc//UpdateProfileReport.md)
+ - [UpdateProfileNameReport](doc//UpdateProfileNameReport.md)
+ - [UpdateProfileTextReport](doc//UpdateProfileTextReport.md)
  - [UpdateReportResult](doc//UpdateReportResult.md)
 
 

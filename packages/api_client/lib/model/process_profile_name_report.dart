@@ -10,48 +10,48 @@
 
 part of openapi.api;
 
-class ProcessProfileReport {
-  /// Returns a new [ProcessProfileReport] instance.
-  ProcessProfileReport({
-    required this.content,
+class ProcessProfileNameReport {
+  /// Returns a new [ProcessProfileNameReport] instance.
+  ProcessProfileNameReport({
     required this.creator,
+    required this.profileName,
     required this.target,
   });
 
-  ProfileReportContent content;
-
   AccountId creator;
+
+  String profileName;
 
   AccountId target;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProcessProfileReport &&
-    other.content == content &&
+  bool operator ==(Object other) => identical(this, other) || other is ProcessProfileNameReport &&
     other.creator == creator &&
+    other.profileName == profileName &&
     other.target == target;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (content.hashCode) +
     (creator.hashCode) +
+    (profileName.hashCode) +
     (target.hashCode);
 
   @override
-  String toString() => 'ProcessProfileReport[content=$content, creator=$creator, target=$target]';
+  String toString() => 'ProcessProfileNameReport[creator=$creator, profileName=$profileName, target=$target]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'content'] = this.content;
       json[r'creator'] = this.creator;
+      json[r'profile_name'] = this.profileName;
       json[r'target'] = this.target;
     return json;
   }
 
-  /// Returns a new [ProcessProfileReport] instance and imports its values from
+  /// Returns a new [ProcessProfileNameReport] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProcessProfileReport? fromJson(dynamic value) {
+  static ProcessProfileNameReport? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -60,26 +60,26 @@ class ProcessProfileReport {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProcessProfileReport[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProcessProfileReport[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ProcessProfileNameReport[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ProcessProfileNameReport[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProcessProfileReport(
-        content: ProfileReportContent.fromJson(json[r'content'])!,
+      return ProcessProfileNameReport(
         creator: AccountId.fromJson(json[r'creator'])!,
+        profileName: mapValueOfType<String>(json, r'profile_name')!,
         target: AccountId.fromJson(json[r'target'])!,
       );
     }
     return null;
   }
 
-  static List<ProcessProfileReport> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProcessProfileReport>[];
+  static List<ProcessProfileNameReport> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ProcessProfileNameReport>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProcessProfileReport.fromJson(row);
+        final value = ProcessProfileNameReport.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -88,12 +88,12 @@ class ProcessProfileReport {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProcessProfileReport> mapFromJson(dynamic json) {
-    final map = <String, ProcessProfileReport>{};
+  static Map<String, ProcessProfileNameReport> mapFromJson(dynamic json) {
+    final map = <String, ProcessProfileNameReport>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProcessProfileReport.fromJson(entry.value);
+        final value = ProcessProfileNameReport.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -102,14 +102,14 @@ class ProcessProfileReport {
     return map;
   }
 
-  // maps a json object with a list of ProcessProfileReport-objects as value to a dart map
-  static Map<String, List<ProcessProfileReport>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProcessProfileReport>>{};
+  // maps a json object with a list of ProcessProfileNameReport-objects as value to a dart map
+  static Map<String, List<ProcessProfileNameReport>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ProcessProfileNameReport>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProcessProfileReport.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ProcessProfileNameReport.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -117,8 +117,8 @@ class ProcessProfileReport {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'content',
     'creator',
+    'profile_name',
     'target',
   };
 }

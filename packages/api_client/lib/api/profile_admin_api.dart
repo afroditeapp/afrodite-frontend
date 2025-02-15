@@ -282,47 +282,6 @@ class ProfileAdminApi {
     return null;
   }
 
-  /// Performs an HTTP 'GET /profile_api/admin/profile_report_pending_processing' operation and returns the [Response].
-  Future<Response> getProfileReportPendingProcessingListWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/profile_api/admin/profile_report_pending_processing';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  Future<GetProfileReportList?> getProfileReportPendingProcessingList() async {
-    final response = await getProfileReportPendingProcessingListWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileReportList',) as GetProfileReportList;
-    
-    }
-    return null;
-  }
-
   /// Performs an HTTP 'GET /profile_api/profile_statistics_history' operation and returns the [Response].
   /// Parameters:
   ///
@@ -492,6 +451,88 @@ class ProfileAdminApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /profile_api/admin/waiting_profile_name_report_page' operation and returns the [Response].
+  Future<Response> getWaitingProfileNameReportPageWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/admin/waiting_profile_name_report_page';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<GetProfileNameReportList?> getWaitingProfileNameReportPage() async {
+    final response = await getWaitingProfileNameReportPageWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileNameReportList',) as GetProfileNameReportList;
+    
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'GET /profile_api/admin/waiting_profile_text_report_page' operation and returns the [Response].
+  Future<Response> getWaitingProfileTextReportPageWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/admin/waiting_profile_text_report_page';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<GetProfileTextReportList?> getWaitingProfileTextReportPage() async {
+    final response = await getWaitingProfileTextReportPageWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileTextReportList',) as GetProfileTextReportList;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'POST /profile_api/admin/moderate_profile_name' operation and returns the [Response].
   /// Parameters:
   ///
@@ -579,16 +620,16 @@ class ProfileAdminApi {
     }
   }
 
-  /// Performs an HTTP 'POST /profile_api/admin/process_profile_report' operation and returns the [Response].
+  /// Performs an HTTP 'POST /profile_api/admin/process_profile_name_report' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [ProcessProfileReport] processProfileReport (required):
-  Future<Response> postProcessProfileReportWithHttpInfo(ProcessProfileReport processProfileReport,) async {
+  /// * [ProcessProfileNameReport] processProfileNameReport (required):
+  Future<Response> postProcessProfileNameReportWithHttpInfo(ProcessProfileNameReport processProfileNameReport,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/admin/process_profile_report';
+    final path = r'/profile_api/admin/process_profile_name_report';
 
     // ignore: prefer_final_locals
-    Object? postBody = processProfileReport;
+    Object? postBody = processProfileNameReport;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -610,9 +651,48 @@ class ProfileAdminApi {
 
   /// Parameters:
   ///
-  /// * [ProcessProfileReport] processProfileReport (required):
-  Future<void> postProcessProfileReport(ProcessProfileReport processProfileReport,) async {
-    final response = await postProcessProfileReportWithHttpInfo(processProfileReport,);
+  /// * [ProcessProfileNameReport] processProfileNameReport (required):
+  Future<void> postProcessProfileNameReport(ProcessProfileNameReport processProfileNameReport,) async {
+    final response = await postProcessProfileNameReportWithHttpInfo(processProfileNameReport,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'POST /profile_api/admin/process_profile_text_report' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [ProcessProfileTextReport] processProfileTextReport (required):
+  Future<Response> postProcessProfileTextReportWithHttpInfo(ProcessProfileTextReport processProfileTextReport,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/admin/process_profile_text_report';
+
+    // ignore: prefer_final_locals
+    Object? postBody = processProfileTextReport;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [ProcessProfileTextReport] processProfileTextReport (required):
+  Future<void> postProcessProfileTextReport(ProcessProfileTextReport processProfileTextReport,) async {
+    final response = await postProcessProfileTextReportWithHttpInfo(processProfileTextReport,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

@@ -71,9 +71,9 @@ class _ReportScreenState extends State<ReportScreen> {
           scrollable: true,
         );
         if (context.mounted && r == true) {
-          final result = await api.profile((api) => api.postProfileReport(UpdateProfileReport(
-            content: ProfileReportContent(profileText: widget.profile.profileText),
+          final result = await api.profile((api) => api.postReportProfileName(UpdateProfileNameReport(
             target: widget.profile.uuid,
+            profileName: widget.profile.profileText,
           ))).ok();
 
           if (result == null) {
