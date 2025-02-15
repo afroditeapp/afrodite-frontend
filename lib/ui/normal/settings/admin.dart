@@ -106,10 +106,10 @@ class AdminSettingsPage extends StatelessWidget {
     }
     if (permissions.adminModerateProfileTexts) {
       settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile texts (bot and human)", () =>
-        MyNavigator.push(context, const MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: true)),)
+        MyNavigator.push(context, MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: true)),)
       ));
       settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile texts (human)", () =>
-        MyNavigator.push(context, const MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: false)),)
+        MyNavigator.push(context, MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: false)),)
       ));
     }
     if (permissions.adminFindAccountByEmail) {
