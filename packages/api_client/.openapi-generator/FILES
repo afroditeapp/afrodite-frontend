@@ -101,15 +101,14 @@ lib/model/get_profile_content_pending_moderation_list.dart
 lib/model/get_profile_content_result.dart
 lib/model/get_profile_filtering_settings.dart
 lib/model/get_profile_name_pending_moderation_list.dart
-lib/model/get_profile_name_report_list.dart
 lib/model/get_profile_name_state.dart
 lib/model/get_profile_result.dart
 lib/model/get_profile_statistics_history_result.dart
 lib/model/get_profile_statistics_result.dart
 lib/model/get_profile_text_pending_moderation_list.dart
-lib/model/get_profile_text_report_list.dart
 lib/model/get_profile_text_state.dart
 lib/model/get_public_key.dart
+lib/model/get_report_list.dart
 lib/model/group_values.dart
 lib/model/initial_content_moderation_completed_result.dart
 lib/model/language.dart
@@ -159,8 +158,7 @@ lib/model/post_moderate_profile_text.dart
 lib/model/process_account_report.dart
 lib/model/process_chat_report.dart
 lib/model/process_media_report.dart
-lib/model/process_profile_name_report.dart
-lib/model/process_profile_text_report.dart
+lib/model/process_report.dart
 lib/model/profile.dart
 lib/model/profile_age_counts.dart
 lib/model/profile_attribute_filter_value.dart
@@ -187,7 +185,6 @@ lib/model/profile_iterator_session_id.dart
 lib/model/profile_link.dart
 lib/model/profile_name_moderation_state.dart
 lib/model/profile_name_pending_moderation.dart
-lib/model/profile_name_report_detailed.dart
 lib/model/profile_page.dart
 lib/model/profile_search_age_range.dart
 lib/model/profile_statistics_history_value.dart
@@ -198,7 +195,6 @@ lib/model/profile_text_moderation_rejected_reason_category.dart
 lib/model/profile_text_moderation_rejected_reason_details.dart
 lib/model/profile_text_moderation_state.dart
 lib/model/profile_text_pending_moderation.dart
-lib/model/profile_text_report_detailed.dart
 lib/model/profile_update.dart
 lib/model/profile_version.dart
 lib/model/profile_visibility.dart
@@ -214,8 +210,13 @@ lib/model/received_likes_page.dart
 lib/model/received_likes_sync_version.dart
 lib/model/refresh_token.dart
 lib/model/remote_bot_login.dart
+lib/model/report_account_info.dart
+lib/model/report_content.dart
+lib/model/report_detailed.dart
 lib/model/report_detailed_info.dart
+lib/model/report_iterator_mode.dart
 lib/model/report_processing_state.dart
+lib/model/report_type_number.dart
 lib/model/reset_matches_iterator_result.dart
 lib/model/reset_news_iterator_result.dart
 lib/model/reset_received_likes_iterator_result.dart

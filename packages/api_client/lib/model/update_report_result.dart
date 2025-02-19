@@ -14,25 +14,31 @@ class UpdateReportResult {
   /// Returns a new [UpdateReportResult] instance.
   UpdateReportResult({
     this.errorOutdatedReportContent = false,
+    this.errorTooManyReports = false,
   });
 
   bool errorOutdatedReportContent;
 
+  bool errorTooManyReports;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is UpdateReportResult &&
-    other.errorOutdatedReportContent == errorOutdatedReportContent;
+    other.errorOutdatedReportContent == errorOutdatedReportContent &&
+    other.errorTooManyReports == errorTooManyReports;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (errorOutdatedReportContent.hashCode);
+    (errorOutdatedReportContent.hashCode) +
+    (errorTooManyReports.hashCode);
 
   @override
-  String toString() => 'UpdateReportResult[errorOutdatedReportContent=$errorOutdatedReportContent]';
+  String toString() => 'UpdateReportResult[errorOutdatedReportContent=$errorOutdatedReportContent, errorTooManyReports=$errorTooManyReports]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'error_outdated_report_content'] = this.errorOutdatedReportContent;
+      json[r'error_too_many_reports'] = this.errorTooManyReports;
     return json;
   }
 
@@ -56,6 +62,7 @@ class UpdateReportResult {
 
       return UpdateReportResult(
         errorOutdatedReportContent: mapValueOfType<bool>(json, r'error_outdated_report_content') ?? false,
+        errorTooManyReports: mapValueOfType<bool>(json, r'error_too_many_reports') ?? false,
       );
     }
     return null;

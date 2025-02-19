@@ -103,8 +103,14 @@ String parameterToString(dynamic value) {
   if (value is ProfileVisibility) {
     return ProfileVisibilityTypeTransformer().encode(value).toString();
   }
+  if (value is ReportIteratorMode) {
+    return ReportIteratorModeTypeTransformer().encode(value).toString();
+  }
   if (value is ReportProcessingState) {
     return ReportProcessingStateTypeTransformer().encode(value).toString();
+  }
+  if (value is ReportTypeNumber) {
+    return ReportTypeNumberTypeTransformer().encode(value).toString();
   }
   if (value is ScheduledTaskType) {
     return ScheduledTaskTypeTypeTransformer().encode(value).toString();

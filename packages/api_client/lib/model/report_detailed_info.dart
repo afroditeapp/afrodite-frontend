@@ -15,6 +15,7 @@ class ReportDetailedInfo {
   ReportDetailedInfo({
     required this.creator,
     required this.processingState,
+    required this.reportType,
     required this.target,
   });
 
@@ -22,12 +23,15 @@ class ReportDetailedInfo {
 
   ReportProcessingState processingState;
 
+  ReportTypeNumber reportType;
+
   AccountId target;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ReportDetailedInfo &&
     other.creator == creator &&
     other.processingState == processingState &&
+    other.reportType == reportType &&
     other.target == target;
 
   @override
@@ -35,15 +39,17 @@ class ReportDetailedInfo {
     // ignore: unnecessary_parenthesis
     (creator.hashCode) +
     (processingState.hashCode) +
+    (reportType.hashCode) +
     (target.hashCode);
 
   @override
-  String toString() => 'ReportDetailedInfo[creator=$creator, processingState=$processingState, target=$target]';
+  String toString() => 'ReportDetailedInfo[creator=$creator, processingState=$processingState, reportType=$reportType, target=$target]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'creator'] = this.creator;
       json[r'processing_state'] = this.processingState;
+      json[r'report_type'] = this.reportType;
       json[r'target'] = this.target;
     return json;
   }
@@ -69,6 +75,7 @@ class ReportDetailedInfo {
       return ReportDetailedInfo(
         creator: AccountId.fromJson(json[r'creator'])!,
         processingState: ReportProcessingState.fromJson(json[r'processing_state'])!,
+        reportType: ReportTypeNumber.fromJson(json[r'report_type'])!,
         target: AccountId.fromJson(json[r'target'])!,
       );
     }
@@ -119,6 +126,7 @@ class ReportDetailedInfo {
   static const requiredKeys = <String>{
     'creator',
     'processing_state',
+    'report_type',
     'target',
   };
 }

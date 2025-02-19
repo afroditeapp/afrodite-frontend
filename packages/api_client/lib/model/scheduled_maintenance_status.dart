@@ -16,7 +16,7 @@ class ScheduledMaintenanceStatus {
     this.scheduledMaintenance,
   });
 
-  UnixTime? scheduledMaintenance;
+  GetPerfDataEndTimeParameter? scheduledMaintenance;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ScheduledMaintenanceStatus &&
@@ -59,7 +59,7 @@ class ScheduledMaintenanceStatus {
       }());
 
       return ScheduledMaintenanceStatus(
-        scheduledMaintenance: UnixTime.fromJson(json[r'scheduled_maintenance']),
+        scheduledMaintenance: GetPerfDataEndTimeParameter.fromJson(json[r'scheduled_maintenance']),
       );
     }
     return null;

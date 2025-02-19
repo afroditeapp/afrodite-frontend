@@ -340,8 +340,6 @@ class ApiClient {
           return GetProfileFilteringSettings.fromJson(value);
         case 'GetProfileNamePendingModerationList':
           return GetProfileNamePendingModerationList.fromJson(value);
-        case 'GetProfileNameReportList':
-          return GetProfileNameReportList.fromJson(value);
         case 'GetProfileNameState':
           return GetProfileNameState.fromJson(value);
         case 'GetProfileResult':
@@ -352,12 +350,12 @@ class ApiClient {
           return GetProfileStatisticsResult.fromJson(value);
         case 'GetProfileTextPendingModerationList':
           return GetProfileTextPendingModerationList.fromJson(value);
-        case 'GetProfileTextReportList':
-          return GetProfileTextReportList.fromJson(value);
         case 'GetProfileTextState':
           return GetProfileTextState.fromJson(value);
         case 'GetPublicKey':
           return GetPublicKey.fromJson(value);
+        case 'GetReportList':
+          return GetReportList.fromJson(value);
         case 'GroupValues':
           return GroupValues.fromJson(value);
         case 'InitialContentModerationCompletedResult':
@@ -456,10 +454,8 @@ class ApiClient {
           return ProcessChatReport.fromJson(value);
         case 'ProcessMediaReport':
           return ProcessMediaReport.fromJson(value);
-        case 'ProcessProfileNameReport':
-          return ProcessProfileNameReport.fromJson(value);
-        case 'ProcessProfileTextReport':
-          return ProcessProfileTextReport.fromJson(value);
+        case 'ProcessReport':
+          return ProcessReport.fromJson(value);
         case 'Profile':
           return Profile.fromJson(value);
         case 'ProfileAgeCounts':
@@ -512,8 +508,6 @@ class ApiClient {
           return ProfileNameModerationStateTypeTransformer().decode(value);
         case 'ProfileNamePendingModeration':
           return ProfileNamePendingModeration.fromJson(value);
-        case 'ProfileNameReportDetailed':
-          return ProfileNameReportDetailed.fromJson(value);
         case 'ProfilePage':
           return ProfilePage.fromJson(value);
         case 'ProfileSearchAgeRange':
@@ -534,8 +528,6 @@ class ApiClient {
           return ProfileTextModerationStateTypeTransformer().decode(value);
         case 'ProfileTextPendingModeration':
           return ProfileTextPendingModeration.fromJson(value);
-        case 'ProfileTextReportDetailed':
-          return ProfileTextReportDetailed.fromJson(value);
         case 'ProfileUpdate':
           return ProfileUpdate.fromJson(value);
         case 'ProfileVersion':
@@ -566,10 +558,20 @@ class ApiClient {
           return RefreshToken.fromJson(value);
         case 'RemoteBotLogin':
           return RemoteBotLogin.fromJson(value);
+        case 'ReportAccountInfo':
+          return ReportAccountInfo.fromJson(value);
+        case 'ReportContent':
+          return ReportContent.fromJson(value);
+        case 'ReportDetailed':
+          return ReportDetailed.fromJson(value);
         case 'ReportDetailedInfo':
           return ReportDetailedInfo.fromJson(value);
+        case 'ReportIteratorMode':
+          return ReportIteratorModeTypeTransformer().decode(value);
         case 'ReportProcessingState':
           return ReportProcessingStateTypeTransformer().decode(value);
+        case 'ReportTypeNumber':
+          return ReportTypeNumberTypeTransformer().decode(value);
         case 'ResetMatchesIteratorResult':
           return ResetMatchesIteratorResult.fromJson(value);
         case 'ResetNewsIteratorResult':

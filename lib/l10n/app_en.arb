@@ -1310,6 +1310,10 @@
   "@report_screen_snackbar_report_successful": {
     "description": "Snackbar text for successful report"
   },
+  "report_screen_snackbar_too_many_reports_error": "Report failed. Too many reports.",
+  "@report_screen_snackbar_too_many_reports_error": {
+    "description": "Snackbar text for too many reports error"
+  },
   "report_screen_title": "Report",
   "@report_screen_title": {
     "description": "Title for report screen"

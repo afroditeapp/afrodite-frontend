@@ -64,6 +64,95 @@ class CommonAdminApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /common_api/admin/latest_report_iterator_start_position' operation and returns the [Response].
+  Future<Response> getLatestReportIteratorStartPositionWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/admin/latest_report_iterator_start_position';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<UnixTime?> getLatestReportIteratorStartPosition() async {
+    final response = await getLatestReportIteratorStartPositionWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UnixTime',) as UnixTime;
+    
+    }
+    return null;
+  }
+
+  /// Get maintenance notification.
+  ///
+  /// # Permissions Requires admin_server_maintenance_edit_notification.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getMaintenanceNotificationWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/maintenance_notification';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get maintenance notification.
+  ///
+  /// # Permissions Requires admin_server_maintenance_edit_notification.
+  Future<ScheduledMaintenanceStatus?> getMaintenanceNotification() async {
+    final response = await getMaintenanceNotificationWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ScheduledMaintenanceStatus',) as ScheduledMaintenanceStatus;
+    
+    }
+    return null;
+  }
+
   /// Get available manager instances.
   ///
   /// # Access * Permission [model::Permissions::admin_server_maintenance_view_info] * Permission [model::Permissions::admin_server_maintenance_update_software] * Permission [model::Permissions::admin_server_maintenance_reset_data] * Permission [model::Permissions::admin_server_maintenance_reboot_backend]
@@ -178,6 +267,70 @@ class CommonAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PerfMetricQueryResult',) as PerfMetricQueryResult;
+    
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'GET /common_api/admin/report_iterator_page' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [UnixTime] startPosition (required):
+  ///
+  /// * [int] page (required):
+  ///
+  /// * [AccountId] aid (required):
+  ///
+  /// * [ReportIteratorMode] mode (required):
+  Future<Response> getReportIteratorPageWithHttpInfo(UnixTime startPosition, int page, AccountId aid, ReportIteratorMode mode,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/admin/report_iterator_page';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'start_position', startPosition));
+      queryParams.addAll(_queryParams('', 'page', page));
+      queryParams.addAll(_queryParams('', 'aid', aid));
+      queryParams.addAll(_queryParams('', 'mode', mode));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [UnixTime] startPosition (required):
+  ///
+  /// * [int] page (required):
+  ///
+  /// * [AccountId] aid (required):
+  ///
+  /// * [ReportIteratorMode] mode (required):
+  Future<GetReportList?> getReportIteratorPage(UnixTime startPosition, int page, AccountId aid, ReportIteratorMode mode,) async {
+    final response = await getReportIteratorPageWithHttpInfo(startPosition, page, aid, mode,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetReportList',) as GetReportList;
     
     }
     return null;
@@ -357,6 +510,47 @@ class CommonAdminApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /common_api/admin/waiting_report_page' operation and returns the [Response].
+  Future<Response> getWaitingReportPageWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/admin/waiting_report_page';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<GetReportList?> getWaitingReportPage() async {
+    final response = await getWaitingReportPageWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetReportList',) as GetReportList;
+    
+    }
+    return null;
+  }
+
   /// Save dynamic backend config.
   ///
   /// # Permissions Requires admin_server_maintenance_save_backend_settings.
@@ -400,6 +594,93 @@ class CommonAdminApi {
   /// * [BackendConfig] backendConfig (required):
   Future<void> postBackendConfig(BackendConfig backendConfig,) async {
     final response = await postBackendConfigWithHttpInfo(backendConfig,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Edit maintenance notification
+  ///
+  /// # Permissions Requires admin_server_maintenance_edit_notification.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [ScheduledMaintenanceStatus] scheduledMaintenanceStatus (required):
+  Future<Response> postEditMaintenanceNotificationWithHttpInfo(ScheduledMaintenanceStatus scheduledMaintenanceStatus,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/edit_maintenance_notification';
+
+    // ignore: prefer_final_locals
+    Object? postBody = scheduledMaintenanceStatus;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Edit maintenance notification
+  ///
+  /// # Permissions Requires admin_server_maintenance_edit_notification.
+  ///
+  /// Parameters:
+  ///
+  /// * [ScheduledMaintenanceStatus] scheduledMaintenanceStatus (required):
+  Future<void> postEditMaintenanceNotification(ScheduledMaintenanceStatus scheduledMaintenanceStatus,) async {
+    final response = await postEditMaintenanceNotificationWithHttpInfo(scheduledMaintenanceStatus,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'POST /common_api/admin/process_report' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [ProcessReport] processReport (required):
+  Future<Response> postProcessReportWithHttpInfo(ProcessReport processReport,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/admin/process_report';
+
+    // ignore: prefer_final_locals
+    Object? postBody = processReport;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [ProcessReport] processReport (required):
+  Future<void> postProcessReport(ProcessReport processReport,) async {
+    final response = await postProcessReportWithHttpInfo(processReport,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

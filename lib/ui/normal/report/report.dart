@@ -80,6 +80,8 @@ class _ReportScreenState extends State<ReportScreen> {
             showSnackBar(R.strings.generic_error_occurred);
           } else if (result.errorOutdatedReportContent) {
             showSnackBar(R.strings.report_screen_profile_name_changed_error);
+          } else if (result.errorTooManyReports) {
+            showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
           } else {
             showSnackBar(R.strings.report_screen_snackbar_report_successful);
           }
@@ -106,6 +108,8 @@ class _ReportScreenState extends State<ReportScreen> {
             showSnackBar(R.strings.generic_error_occurred);
           } else if (result.errorOutdatedReportContent) {
             showSnackBar(R.strings.report_screen_profile_text_changed_error);
+          } else if (result.errorTooManyReports) {
+            showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
           } else {
             showSnackBar(R.strings.report_screen_snackbar_report_successful);
           }

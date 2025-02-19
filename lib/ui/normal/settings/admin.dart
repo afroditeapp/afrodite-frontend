@@ -2,8 +2,7 @@
 
 import 'package:app/ui/normal/settings/admin/moderate_profile_texts.dart';
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
-import 'package:app/ui/normal/settings/admin/report/process_profile_name_reports.dart';
-import 'package:app/ui/normal/settings/admin/report/process_profile_text_reports.dart';
+import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
 import 'package:app/ui/normal/settings/admin/server_tasks.dart';
 import 'package:app/ui/normal/settings/admin/view_accounts.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
@@ -129,12 +128,9 @@ class AdminSettingsPage extends StatelessWidget {
         MyNavigator.push(context, const MaterialPage<void>(child: ViewAccountsScreen()),)
       ));
     }
-    if (permissions.adminProcessProfileReports) {
-      settings.add(Setting.createSetting(Icons.report, "Process profile name reports", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ProcessProfileNameReportsScreen()),)
-      ));
-      settings.add(Setting.createSetting(Icons.report, "Process profile text reports", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ProcessProfileTextReportsScreen()),)
+    if (permissions.adminProcessReports) {
+      settings.add(Setting.createSetting(Icons.report, "Process reports", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: ProcessReportsScreen()))
       ));
     }
     return settings;
@@ -146,7 +142,7 @@ class AdminSettingsPermissions {
   bool get adminModerateMediaContent => _permissions.adminModerateMediaContent;
   bool get adminModerateProfileTexts => _permissions.adminModerateProfileTexts;
   bool get adminModerateProfileNames => _permissions.adminModerateProfileNames;
-  bool get adminProcessProfileReports => _permissions.adminProcessProfileReports;
+  bool get adminProcessReports => _permissions.adminProcessReports;
   bool get adminViewPermissions => _permissions.adminViewPermissions;
   bool get adminViewAllProfiles => _permissions.adminViewAllProfiles;
   bool get adminServerMaintenanceRebootBackend => _permissions.adminServerMaintenanceRebootBackend;
@@ -163,7 +159,7 @@ class AdminSettingsPermissions {
     return adminModerateMediaContent ||
       adminModerateProfileTexts ||
       adminModerateProfileNames ||
-      adminProcessProfileReports ||
+      adminProcessReports ||
       adminViewPermissions ||
       adminViewAllProfiles ||
       adminServerMaintenanceRebootBackend ||

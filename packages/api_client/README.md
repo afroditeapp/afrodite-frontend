@@ -138,12 +138,18 @@ Class | Method | HTTP request | Description
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens. Connection is required as API access is allowed for connected clients.
 *CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
 *CommonAdminApi* | [**getBackendConfig**](doc//CommonAdminApi.md#getbackendconfig) | **GET** /common_api/backend_config | Get dynamic backend config.
+*CommonAdminApi* | [**getLatestReportIteratorStartPosition**](doc//CommonAdminApi.md#getlatestreportiteratorstartposition) | **GET** /common_api/admin/latest_report_iterator_start_position | 
+*CommonAdminApi* | [**getMaintenanceNotification**](doc//CommonAdminApi.md#getmaintenancenotification) | **GET** /common_api/maintenance_notification | Get maintenance notification.
 *CommonAdminApi* | [**getManagerInstanceNames**](doc//CommonAdminApi.md#getmanagerinstancenames) | **GET** /common_api/manager_instance_names | Get available manager instances.
 *CommonAdminApi* | [**getPerfData**](doc//CommonAdminApi.md#getperfdata) | **GET** /common_api/perf_data | Get performance data
+*CommonAdminApi* | [**getReportIteratorPage**](doc//CommonAdminApi.md#getreportiteratorpage) | **GET** /common_api/admin/report_iterator_page | 
 *CommonAdminApi* | [**getScheduledTasksStatus**](doc//CommonAdminApi.md#getscheduledtasksstatus) | **GET** /common_api/scheduled_tasks_status | Get scheduled tasks status from manager instance.
 *CommonAdminApi* | [**getSoftwareUpdateStatus**](doc//CommonAdminApi.md#getsoftwareupdatestatus) | **GET** /common_api/software_info | Get software version information from manager instance.
 *CommonAdminApi* | [**getSystemInfo**](doc//CommonAdminApi.md#getsysteminfo) | **GET** /common_api/system_info | Get system information from manager instance.
+*CommonAdminApi* | [**getWaitingReportPage**](doc//CommonAdminApi.md#getwaitingreportpage) | **GET** /common_api/admin/waiting_report_page | 
 *CommonAdminApi* | [**postBackendConfig**](doc//CommonAdminApi.md#postbackendconfig) | **POST** /common_api/backend_config | Save dynamic backend config.
+*CommonAdminApi* | [**postEditMaintenanceNotification**](doc//CommonAdminApi.md#posteditmaintenancenotification) | **POST** /common_api/edit_maintenance_notification | Edit maintenance notification
+*CommonAdminApi* | [**postProcessReport**](doc//CommonAdminApi.md#postprocessreport) | **POST** /common_api/admin/process_report | 
 *CommonAdminApi* | [**postScheduleTask**](doc//CommonAdminApi.md#postscheduletask) | **POST** /common_api/schedule_task | Schedule task.
 *CommonAdminApi* | [**postTriggerBackendDataReset**](doc//CommonAdminApi.md#posttriggerbackenddatareset) | **POST** /common_api/trigger_backend_data_reset | Trigger backend data reset which also restarts the backend.
 *CommonAdminApi* | [**postTriggerBackendRestart**](doc//CommonAdminApi.md#posttriggerbackendrestart) | **POST** /common_api/trigger_backend_restart | Trigger backend restart.
@@ -201,12 +207,8 @@ Class | Method | HTTP request | Description
 *ProfileAdminApi* | [**getProfileStatisticsHistory**](doc//ProfileAdminApi.md#getprofilestatisticshistory) | **GET** /profile_api/profile_statistics_history | 
 *ProfileAdminApi* | [**getProfileTextPendingModerationList**](doc//ProfileAdminApi.md#getprofiletextpendingmoderationlist) | **GET** /profile_api/admin/profile_text_pending_moderation | Get first page of pending profile text moderations. Oldest item is first and count 25.
 *ProfileAdminApi* | [**getProfileTextState**](doc//ProfileAdminApi.md#getprofiletextstate) | **GET** /profile_api/get_profile_text_state/{aid} | Get profile text state
-*ProfileAdminApi* | [**getWaitingProfileNameReportPage**](doc//ProfileAdminApi.md#getwaitingprofilenamereportpage) | **GET** /profile_api/admin/waiting_profile_name_report_page | 
-*ProfileAdminApi* | [**getWaitingProfileTextReportPage**](doc//ProfileAdminApi.md#getwaitingprofiletextreportpage) | **GET** /profile_api/admin/waiting_profile_text_report_page | 
 *ProfileAdminApi* | [**postModerateProfileName**](doc//ProfileAdminApi.md#postmoderateprofilename) | **POST** /profile_api/admin/moderate_profile_name | 
 *ProfileAdminApi* | [**postModerateProfileText**](doc//ProfileAdminApi.md#postmoderateprofiletext) | **POST** /profile_api/admin/moderate_profile_text | Rejected category and details can be set only when the text is rejected.
-*ProfileAdminApi* | [**postProcessProfileNameReport**](doc//ProfileAdminApi.md#postprocessprofilenamereport) | **POST** /profile_api/admin/process_profile_name_report | 
-*ProfileAdminApi* | [**postProcessProfileTextReport**](doc//ProfileAdminApi.md#postprocessprofiletextreport) | **POST** /profile_api/admin/process_profile_text_report | 
 
 
 ## Documentation For Models
@@ -290,15 +292,14 @@ Class | Method | HTTP request | Description
  - [GetProfileContentResult](doc//GetProfileContentResult.md)
  - [GetProfileFilteringSettings](doc//GetProfileFilteringSettings.md)
  - [GetProfileNamePendingModerationList](doc//GetProfileNamePendingModerationList.md)
- - [GetProfileNameReportList](doc//GetProfileNameReportList.md)
  - [GetProfileNameState](doc//GetProfileNameState.md)
  - [GetProfileResult](doc//GetProfileResult.md)
  - [GetProfileStatisticsHistoryResult](doc//GetProfileStatisticsHistoryResult.md)
  - [GetProfileStatisticsResult](doc//GetProfileStatisticsResult.md)
  - [GetProfileTextPendingModerationList](doc//GetProfileTextPendingModerationList.md)
- - [GetProfileTextReportList](doc//GetProfileTextReportList.md)
  - [GetProfileTextState](doc//GetProfileTextState.md)
  - [GetPublicKey](doc//GetPublicKey.md)
+ - [GetReportList](doc//GetReportList.md)
  - [GroupValues](doc//GroupValues.md)
  - [InitialContentModerationCompletedResult](doc//InitialContentModerationCompletedResult.md)
  - [Language](doc//Language.md)
@@ -348,8 +349,7 @@ Class | Method | HTTP request | Description
  - [ProcessAccountReport](doc//ProcessAccountReport.md)
  - [ProcessChatReport](doc//ProcessChatReport.md)
  - [ProcessMediaReport](doc//ProcessMediaReport.md)
- - [ProcessProfileNameReport](doc//ProcessProfileNameReport.md)
- - [ProcessProfileTextReport](doc//ProcessProfileTextReport.md)
+ - [ProcessReport](doc//ProcessReport.md)
  - [Profile](doc//Profile.md)
  - [ProfileAgeCounts](doc//ProfileAgeCounts.md)
  - [ProfileAttributeFilterValue](doc//ProfileAttributeFilterValue.md)
@@ -376,7 +376,6 @@ Class | Method | HTTP request | Description
  - [ProfileLink](doc//ProfileLink.md)
  - [ProfileNameModerationState](doc//ProfileNameModerationState.md)
  - [ProfileNamePendingModeration](doc//ProfileNamePendingModeration.md)
- - [ProfileNameReportDetailed](doc//ProfileNameReportDetailed.md)
  - [ProfilePage](doc//ProfilePage.md)
  - [ProfileSearchAgeRange](doc//ProfileSearchAgeRange.md)
  - [ProfileStatisticsHistoryValue](doc//ProfileStatisticsHistoryValue.md)
@@ -387,7 +386,6 @@ Class | Method | HTTP request | Description
  - [ProfileTextModerationRejectedReasonDetails](doc//ProfileTextModerationRejectedReasonDetails.md)
  - [ProfileTextModerationState](doc//ProfileTextModerationState.md)
  - [ProfileTextPendingModeration](doc//ProfileTextPendingModeration.md)
- - [ProfileTextReportDetailed](doc//ProfileTextReportDetailed.md)
  - [ProfileUpdate](doc//ProfileUpdate.md)
  - [ProfileVersion](doc//ProfileVersion.md)
  - [ProfileVisibility](doc//ProfileVisibility.md)
@@ -403,8 +401,13 @@ Class | Method | HTTP request | Description
  - [ReceivedLikesSyncVersion](doc//ReceivedLikesSyncVersion.md)
  - [RefreshToken](doc//RefreshToken.md)
  - [RemoteBotLogin](doc//RemoteBotLogin.md)
+ - [ReportAccountInfo](doc//ReportAccountInfo.md)
+ - [ReportContent](doc//ReportContent.md)
+ - [ReportDetailed](doc//ReportDetailed.md)
  - [ReportDetailedInfo](doc//ReportDetailedInfo.md)
+ - [ReportIteratorMode](doc//ReportIteratorMode.md)
  - [ReportProcessingState](doc//ReportProcessingState.md)
+ - [ReportTypeNumber](doc//ReportTypeNumber.md)
  - [ResetMatchesIteratorResult](doc//ResetMatchesIteratorResult.md)
  - [ResetNewsIteratorResult](doc//ResetNewsIteratorResult.md)
  - [ResetReceivedLikesIteratorResult](doc//ResetReceivedLikesIteratorResult.md)
