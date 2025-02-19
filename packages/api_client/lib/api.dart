@@ -233,6 +233,7 @@ part 'model/report_content.dart';
 part 'model/report_detailed.dart';
 part 'model/report_detailed_info.dart';
 part 'model/report_iterator_mode.dart';
+part 'model/report_iterator_query.dart';
 part 'model/report_processing_state.dart';
 part 'model/report_type_number.dart';
 part 'model/reset_matches_iterator_result.dart';

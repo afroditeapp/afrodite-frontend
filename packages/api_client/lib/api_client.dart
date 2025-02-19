@@ -568,6 +568,8 @@ class ApiClient {
           return ReportDetailedInfo.fromJson(value);
         case 'ReportIteratorMode':
           return ReportIteratorModeTypeTransformer().decode(value);
+        case 'ReportIteratorQuery':
+          return ReportIteratorQuery.fromJson(value);
         case 'ReportProcessingState':
           return ReportProcessingStateTypeTransformer().decode(value);
         case 'ReportTypeNumber':

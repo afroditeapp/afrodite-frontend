@@ -142,13 +142,13 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**getMaintenanceNotification**](doc//CommonAdminApi.md#getmaintenancenotification) | **GET** /common_api/maintenance_notification | Get maintenance notification.
 *CommonAdminApi* | [**getManagerInstanceNames**](doc//CommonAdminApi.md#getmanagerinstancenames) | **GET** /common_api/manager_instance_names | Get available manager instances.
 *CommonAdminApi* | [**getPerfData**](doc//CommonAdminApi.md#getperfdata) | **GET** /common_api/perf_data | Get performance data
-*CommonAdminApi* | [**getReportIteratorPage**](doc//CommonAdminApi.md#getreportiteratorpage) | **GET** /common_api/admin/report_iterator_page | 
 *CommonAdminApi* | [**getScheduledTasksStatus**](doc//CommonAdminApi.md#getscheduledtasksstatus) | **GET** /common_api/scheduled_tasks_status | Get scheduled tasks status from manager instance.
 *CommonAdminApi* | [**getSoftwareUpdateStatus**](doc//CommonAdminApi.md#getsoftwareupdatestatus) | **GET** /common_api/software_info | Get software version information from manager instance.
 *CommonAdminApi* | [**getSystemInfo**](doc//CommonAdminApi.md#getsysteminfo) | **GET** /common_api/system_info | Get system information from manager instance.
 *CommonAdminApi* | [**getWaitingReportPage**](doc//CommonAdminApi.md#getwaitingreportpage) | **GET** /common_api/admin/waiting_report_page | 
 *CommonAdminApi* | [**postBackendConfig**](doc//CommonAdminApi.md#postbackendconfig) | **POST** /common_api/backend_config | Save dynamic backend config.
 *CommonAdminApi* | [**postEditMaintenanceNotification**](doc//CommonAdminApi.md#posteditmaintenancenotification) | **POST** /common_api/edit_maintenance_notification | Edit maintenance notification
+*CommonAdminApi* | [**postGetReportIteratorPage**](doc//CommonAdminApi.md#postgetreportiteratorpage) | **POST** /common_api/admin/report_iterator_page | Get report iterator page.
 *CommonAdminApi* | [**postProcessReport**](doc//CommonAdminApi.md#postprocessreport) | **POST** /common_api/admin/process_report | 
 *CommonAdminApi* | [**postScheduleTask**](doc//CommonAdminApi.md#postscheduletask) | **POST** /common_api/schedule_task | Schedule task.
 *CommonAdminApi* | [**postTriggerBackendDataReset**](doc//CommonAdminApi.md#posttriggerbackenddatareset) | **POST** /common_api/trigger_backend_data_reset | Trigger backend data reset which also restarts the backend.
@@ -406,6 +406,7 @@ Class | Method | HTTP request | Description
  - [ReportDetailed](doc//ReportDetailed.md)
  - [ReportDetailedInfo](doc//ReportDetailedInfo.md)
  - [ReportIteratorMode](doc//ReportIteratorMode.md)
+ - [ReportIteratorQuery](doc//ReportIteratorQuery.md)
  - [ReportProcessingState](doc//ReportProcessingState.md)
  - [ReportTypeNumber](doc//ReportTypeNumber.md)
  - [ResetMatchesIteratorResult](doc//ResetMatchesIteratorResult.md)

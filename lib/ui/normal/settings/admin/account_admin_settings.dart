@@ -16,6 +16,7 @@ import 'package:app/ui/normal/settings/admin/account_admin/delete_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/edit_permissions.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_name.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_text.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/view_reports.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
@@ -171,6 +172,26 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       ));
     }
 
+    if (permissions.adminProcessReports) {
+      const sentReports = "View sent reports";
+      settings.add(Setting.createSetting(Icons.report, sentReports, () =>
+        MyNavigator.push(context, MaterialPage<void>(child: ViewReportsScreen(
+          account: widget.accountId,
+          mode: ReportIteratorMode.sent,
+          title: sentReports,
+        )))
+      ));
+
+      const receivedReports = "View received reports";
+      settings.add(Setting.createSetting(Icons.report, receivedReports, () =>
+        MyNavigator.push(context, MaterialPage<void>(child: ViewReportsScreen(
+          account: widget.accountId,
+          mode: ReportIteratorMode.received,
+          title: receivedReports,
+        )))
+      ));
+    }
+
     return settings;
   }
 }
@@ -181,6 +202,7 @@ class AccountAdminSettingsPermissions {
   bool get adminModerateMediaContent => _permissions.adminModerateMediaContent;
   bool get adminModerateProfileTexts => _permissions.adminModerateProfileTexts;
   bool get adminModerateProfileNames => _permissions.adminModerateProfileNames;
+  bool get adminProcessReports => _permissions.adminProcessReports;
   bool get adminDeleteAccount => _permissions.adminDeleteAccount;
   bool get adminRequestAccountDeletion => _permissions.adminRequestAccountDeletion;
   bool get adminBanAccount => _permissions.adminBanAccount;
@@ -194,6 +216,7 @@ class AccountAdminSettingsPermissions {
       adminModerateMediaContent ||
       adminModerateProfileTexts ||
       adminModerateProfileNames ||
+      adminProcessReports ||
       adminDeleteAccount ||
       adminRequestAccountDeletion ||
       adminBanAccount ||

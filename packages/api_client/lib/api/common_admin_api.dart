@@ -272,70 +272,6 @@ class CommonAdminApi {
     return null;
   }
 
-  /// Performs an HTTP 'GET /common_api/admin/report_iterator_page' operation and returns the [Response].
-  /// Parameters:
-  ///
-  /// * [UnixTime] startPosition (required):
-  ///
-  /// * [int] page (required):
-  ///
-  /// * [AccountId] aid (required):
-  ///
-  /// * [ReportIteratorMode] mode (required):
-  Future<Response> getReportIteratorPageWithHttpInfo(UnixTime startPosition, int page, AccountId aid, ReportIteratorMode mode,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/common_api/admin/report_iterator_page';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-      queryParams.addAll(_queryParams('', 'start_position', startPosition));
-      queryParams.addAll(_queryParams('', 'page', page));
-      queryParams.addAll(_queryParams('', 'aid', aid));
-      queryParams.addAll(_queryParams('', 'mode', mode));
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Parameters:
-  ///
-  /// * [UnixTime] startPosition (required):
-  ///
-  /// * [int] page (required):
-  ///
-  /// * [AccountId] aid (required):
-  ///
-  /// * [ReportIteratorMode] mode (required):
-  Future<GetReportList?> getReportIteratorPage(UnixTime startPosition, int page, AccountId aid, ReportIteratorMode mode,) async {
-    final response = await getReportIteratorPageWithHttpInfo(startPosition, page, aid, mode,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetReportList',) as GetReportList;
-    
-    }
-    return null;
-  }
-
   /// Get scheduled tasks status from manager instance.
   ///
   /// # Access * Permission [model::Permissions::admin_server_maintenance_reboot_backend]
@@ -645,6 +581,62 @@ class CommonAdminApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Get report iterator page.
+  ///
+  /// The HTTP method is POST because HTTP GET does not allow request body.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [ReportIteratorQuery] reportIteratorQuery (required):
+  Future<Response> postGetReportIteratorPageWithHttpInfo(ReportIteratorQuery reportIteratorQuery,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/admin/report_iterator_page';
+
+    // ignore: prefer_final_locals
+    Object? postBody = reportIteratorQuery;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get report iterator page.
+  ///
+  /// The HTTP method is POST because HTTP GET does not allow request body.
+  ///
+  /// Parameters:
+  ///
+  /// * [ReportIteratorQuery] reportIteratorQuery (required):
+  Future<GetReportList?> postGetReportIteratorPage(ReportIteratorQuery reportIteratorQuery,) async {
+    final response = await postGetReportIteratorPageWithHttpInfo(reportIteratorQuery,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetReportList',) as GetReportList;
+    
+    }
+    return null;
   }
 
   /// Performs an HTTP 'POST /common_api/admin/process_report' operation and returns the [Response].

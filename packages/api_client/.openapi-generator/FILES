@@ -215,6 +215,7 @@ lib/model/report_content.dart
 lib/model/report_detailed.dart
 lib/model/report_detailed_info.dart
 lib/model/report_iterator_mode.dart
+lib/model/report_iterator_query.dart
 lib/model/report_processing_state.dart
 lib/model/report_type_number.dart
 lib/model/reset_matches_iterator_result.dart

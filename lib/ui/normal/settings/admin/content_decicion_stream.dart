@@ -44,7 +44,7 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter> extends State<Con
 
   void positionListener() {
     final firstVisible = _listener.itemPositions.value.firstOrNull;
-    if (firstVisible != null) {
+    if (firstVisible != null && widget.builder.allowAccepting) {
       _logic.moderateRow(firstVisible.index - 1, true);
     }
   }
@@ -243,6 +243,7 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter> extends State<Con
 
 abstract class ContentUiBuilder<C extends ContentInfoGetter> {
   bool get allowRejecting => true;
+  bool get allowAccepting => true;
   Widget buildRowContent(BuildContext context, C content);
 }
 
