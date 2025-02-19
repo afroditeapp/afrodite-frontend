@@ -13,6 +13,10 @@ class UtcDateTime {
     return UtcDateTime._(DateTime.fromMillisecondsSinceEpoch(milliseconds, isUtc: true));
   }
 
+  factory UtcDateTime.fromDateTime(DateTime time) {
+    return UtcDateTime._(time.toUtc());
+  }
+
   int toUnixEpochMilliseconds() {
     return dateTime.millisecondsSinceEpoch;
   }

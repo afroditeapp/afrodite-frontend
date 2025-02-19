@@ -1,5 +1,6 @@
 
 
+import 'package:app/ui/normal/settings/admin/edit_maintenance_notification.dart';
 import 'package:app/ui/normal/settings/admin/moderate_profile_texts.dart';
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
 import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
@@ -95,6 +96,11 @@ class AdminSettingsPage extends StatelessWidget {
         MyNavigator.push(context, MaterialPage<void>(child: const ViewPerfDataPage()))
       ));
     }
+    if (permissions.adminServerMaintenanceEditNotification) {
+      settings.add(Setting.createSetting(Icons.settings, "Edit maintenance notification", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: const EditMaintenanceNotificationScreen()))
+      ));
+    }
     if (permissions.adminProfileStatistics) {
       settings.add(Setting.createSetting(Icons.query_stats, context.strings.profile_statistics_history_screen_title, () =>
         openProfileStatisticsHistoryScreen(context),
@@ -151,6 +157,7 @@ class AdminSettingsPermissions {
   bool get adminServerMaintenanceViewInfo => _permissions.adminServerMaintenanceViewInfo;
   bool get adminServerMaintenanceUpdateSoftware => _permissions.adminServerMaintenanceUpdateSoftware;
   bool get adminServerMaintenanceResetData => _permissions.adminServerMaintenanceResetData;
+  bool get adminServerMaintenanceEditNotification => _permissions.adminServerMaintenanceEditNotification;
   bool get adminProfileStatistics => _permissions.adminProfileStatistics;
   bool get adminFindAccountByEmail => _permissions.adminFindAccountByEmail;
   AdminSettingsPermissions(this._permissions);
@@ -168,6 +175,7 @@ class AdminSettingsPermissions {
       adminServerMaintenanceViewInfo ||
       adminServerMaintenanceUpdateSoftware ||
       adminServerMaintenanceResetData ||
+      adminServerMaintenanceEditNotification ||
       adminProfileStatistics ||
       adminFindAccountByEmail;
   }
