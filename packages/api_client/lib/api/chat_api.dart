@@ -72,62 +72,6 @@ class ChatApi {
     return null;
   }
 
-  /// Get chat report
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [AccountId] target (required):
-  ///   Report target
-  Future<Response> getChatReportWithHttpInfo(AccountId target,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/chat_api/chat_report';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-      queryParams.addAll(_queryParams('', 'target', target));
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get chat report
-  ///
-  /// Parameters:
-  ///
-  /// * [AccountId] target (required):
-  ///   Report target
-  Future<ChatReport?> getChatReport(AccountId target,) async {
-    final response = await getChatReportWithHttpInfo(target,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ChatReport',) as ChatReport;
-    
-    }
-    return null;
-  }
-
   /// Get matches
   ///
   /// Note: This method returns the HTTP [Response].
@@ -630,21 +574,21 @@ class ChatApi {
     }
   }
 
-  /// Update chat report.
+  /// Report chat message.
   ///
-  /// The [ChatReportContent::is_against_video_calling] can be true only when users are a match.
+  /// The report target must be a match.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [UpdateChatReport] updateChatReport (required):
-  Future<Response> postChatReportWithHttpInfo(UpdateChatReport updateChatReport,) async {
+  /// * [UpdateChatMessageReport] updateChatMessageReport (required):
+  Future<Response> postChatMessageReportWithHttpInfo(UpdateChatMessageReport updateChatMessageReport,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/chat_report';
+    final path = r'/chat_api/chat_message_report';
 
     // ignore: prefer_final_locals
-    Object? postBody = updateChatReport;
+    Object? postBody = updateChatMessageReport;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -664,15 +608,15 @@ class ChatApi {
     );
   }
 
-  /// Update chat report.
+  /// Report chat message.
   ///
-  /// The [ChatReportContent::is_against_video_calling] can be true only when users are a match.
+  /// The report target must be a match.
   ///
   /// Parameters:
   ///
-  /// * [UpdateChatReport] updateChatReport (required):
-  Future<UpdateChatReportResult?> postChatReport(UpdateChatReport updateChatReport,) async {
-    final response = await postChatReportWithHttpInfo(updateChatReport,);
+  /// * [UpdateChatMessageReport] updateChatMessageReport (required):
+  Future<UpdateReportResult?> postChatMessageReport(UpdateChatMessageReport updateChatMessageReport,) async {
+    final response = await postChatMessageReportWithHttpInfo(updateChatMessageReport,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -680,7 +624,7 @@ class ChatApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UpdateChatReportResult',) as UpdateChatReportResult;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UpdateReportResult',) as UpdateReportResult;
     
     }
     return null;

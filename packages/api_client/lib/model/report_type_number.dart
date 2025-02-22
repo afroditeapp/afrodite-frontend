@@ -25,11 +25,15 @@ class ReportTypeNumber {
 
   static const profileName = ReportTypeNumber._(r'ProfileName');
   static const profileText = ReportTypeNumber._(r'ProfileText');
+  static const profileContent = ReportTypeNumber._(r'ProfileContent');
+  static const chatMessage = ReportTypeNumber._(r'ChatMessage');
 
   /// List of all possible values in this [enum][ReportTypeNumber].
   static const values = <ReportTypeNumber>[
     profileName,
     profileText,
+    profileContent,
+    chatMessage,
   ];
 
   static ReportTypeNumber? fromJson(dynamic value) => ReportTypeNumberTypeTransformer().decode(value);
@@ -70,6 +74,8 @@ class ReportTypeNumberTypeTransformer {
       switch (data) {
         case r'ProfileName': return ReportTypeNumber.profileName;
         case r'ProfileText': return ReportTypeNumber.profileText;
+        case r'ProfileContent': return ReportTypeNumber.profileContent;
+        case r'ChatMessage': return ReportTypeNumber.chatMessage;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

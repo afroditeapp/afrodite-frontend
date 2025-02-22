@@ -13,11 +13,15 @@ part of openapi.api;
 class ReportDetailed {
   /// Returns a new [ReportDetailed] instance.
   ReportDetailed({
+    this.chatInfo,
     required this.content,
     this.creatorInfo,
     required this.info,
     this.targetInfo,
   });
+
+  /// Only available when chat component is enabled and account interaction exists.
+  ReportChatInfo? chatInfo;
 
   ReportContent content;
 
@@ -31,6 +35,7 @@ class ReportDetailed {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ReportDetailed &&
+    other.chatInfo == chatInfo &&
     other.content == content &&
     other.creatorInfo == creatorInfo &&
     other.info == info &&
@@ -39,16 +44,22 @@ class ReportDetailed {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (chatInfo == null ? 0 : chatInfo!.hashCode) +
     (content.hashCode) +
     (creatorInfo == null ? 0 : creatorInfo!.hashCode) +
     (info.hashCode) +
     (targetInfo == null ? 0 : targetInfo!.hashCode);
 
   @override
-  String toString() => 'ReportDetailed[content=$content, creatorInfo=$creatorInfo, info=$info, targetInfo=$targetInfo]';
+  String toString() => 'ReportDetailed[chatInfo=$chatInfo, content=$content, creatorInfo=$creatorInfo, info=$info, targetInfo=$targetInfo]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.chatInfo != null) {
+      json[r'chat_info'] = this.chatInfo;
+    } else {
+      json[r'chat_info'] = null;
+    }
       json[r'content'] = this.content;
     if (this.creatorInfo != null) {
       json[r'creator_info'] = this.creatorInfo;
@@ -83,6 +94,7 @@ class ReportDetailed {
       }());
 
       return ReportDetailed(
+        chatInfo: ReportChatInfo.fromJson(json[r'chat_info']),
         content: ReportContent.fromJson(json[r'content'])!,
         creatorInfo: ReportAccountInfo.fromJson(json[r'creator_info']),
         info: ReportDetailedInfo.fromJson(json[r'info'])!,

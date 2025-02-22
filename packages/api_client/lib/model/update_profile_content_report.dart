@@ -10,19 +10,19 @@
 
 part of openapi.api;
 
-class UpdateChatReport {
-  /// Returns a new [UpdateChatReport] instance.
-  UpdateChatReport({
+class UpdateProfileContentReport {
+  /// Returns a new [UpdateProfileContentReport] instance.
+  UpdateProfileContentReport({
     required this.content,
     required this.target,
   });
 
-  ChatReportContent content;
+  ContentId content;
 
   AccountId target;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is UpdateChatReport &&
+  bool operator ==(Object other) => identical(this, other) || other is UpdateProfileContentReport &&
     other.content == content &&
     other.target == target;
 
@@ -33,7 +33,7 @@ class UpdateChatReport {
     (target.hashCode);
 
   @override
-  String toString() => 'UpdateChatReport[content=$content, target=$target]';
+  String toString() => 'UpdateProfileContentReport[content=$content, target=$target]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -42,10 +42,10 @@ class UpdateChatReport {
     return json;
   }
 
-  /// Returns a new [UpdateChatReport] instance and imports its values from
+  /// Returns a new [UpdateProfileContentReport] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static UpdateChatReport? fromJson(dynamic value) {
+  static UpdateProfileContentReport? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,25 +54,25 @@ class UpdateChatReport {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "UpdateChatReport[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "UpdateChatReport[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "UpdateProfileContentReport[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "UpdateProfileContentReport[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return UpdateChatReport(
-        content: ChatReportContent.fromJson(json[r'content'])!,
+      return UpdateProfileContentReport(
+        content: ContentId.fromJson(json[r'content'])!,
         target: AccountId.fromJson(json[r'target'])!,
       );
     }
     return null;
   }
 
-  static List<UpdateChatReport> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <UpdateChatReport>[];
+  static List<UpdateProfileContentReport> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <UpdateProfileContentReport>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = UpdateChatReport.fromJson(row);
+        final value = UpdateProfileContentReport.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +81,12 @@ class UpdateChatReport {
     return result.toList(growable: growable);
   }
 
-  static Map<String, UpdateChatReport> mapFromJson(dynamic json) {
-    final map = <String, UpdateChatReport>{};
+  static Map<String, UpdateProfileContentReport> mapFromJson(dynamic json) {
+    final map = <String, UpdateProfileContentReport>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = UpdateChatReport.fromJson(entry.value);
+        final value = UpdateProfileContentReport.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,14 +95,14 @@ class UpdateChatReport {
     return map;
   }
 
-  // maps a json object with a list of UpdateChatReport-objects as value to a dart map
-  static Map<String, List<UpdateChatReport>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<UpdateChatReport>>{};
+  // maps a json object with a list of UpdateProfileContentReport-objects as value to a dart map
+  static Map<String, List<UpdateProfileContentReport>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<UpdateProfileContentReport>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = UpdateChatReport.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = UpdateProfileContentReport.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

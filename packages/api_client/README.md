@@ -108,7 +108,6 @@ Class | Method | HTTP request | Description
 *AccountBotApi* | [**postBotRegister**](doc//AccountBotApi.md#postbotregister) | **POST** /account_api/bot_register | Register a new bot account. Returns new account ID which is UUID.
 *AccountBotApi* | [**postRemoteBotLogin**](doc//AccountBotApi.md#postremotebotlogin) | **POST** /account_api/remote_bot_login | Login for remote bots which are listed in server config file.
 *ChatApi* | [**deleteLike**](doc//ChatApi.md#deletelike) | **DELETE** /chat_api/delete_like | Delete sent like.
-*ChatApi* | [**getChatReport**](doc//ChatApi.md#getchatreport) | **GET** /chat_api/chat_report | Get chat report
 *ChatApi* | [**getMatches**](doc//ChatApi.md#getmatches) | **GET** /chat_api/matches | Get matches
 *ChatApi* | [**getMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#getmessagenumberoflatestviewedmessage) | **GET** /chat_api/message_number_of_latest_viewed_message | Get message number of the most recent message that the recipient has viewed.
 *ChatApi* | [**getPendingMessages**](doc//ChatApi.md#getpendingmessages) | **GET** /chat_api/pending_messages | Get list of pending messages.
@@ -120,7 +119,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postAddReceiverAcknowledgement**](doc//ChatApi.md#postaddreceiveracknowledgement) | **POST** /chat_api/add_receiver_acknowledgement | 
 *ChatApi* | [**postAddSenderAcknowledgement**](doc//ChatApi.md#postaddsenderacknowledgement) | **POST** /chat_api/add_sender_acknowledgement | 
 *ChatApi* | [**postBlockProfile**](doc//ChatApi.md#postblockprofile) | **POST** /chat_api/block_profile | Block profile
-*ChatApi* | [**postChatReport**](doc//ChatApi.md#postchatreport) | **POST** /chat_api/chat_report | Update chat report.
+*ChatApi* | [**postChatMessageReport**](doc//ChatApi.md#postchatmessagereport) | **POST** /chat_api/chat_message_report | Report chat message.
 *ChatApi* | [**postGetNewReceivedLikesCount**](doc//ChatApi.md#postgetnewreceivedlikescount) | **POST** /chat_api/new_received_likes_count | 
 *ChatApi* | [**postGetNextMatchesPage**](doc//ChatApi.md#postgetnextmatchespage) | **POST** /chat_api/matches_page | Update matches iterator and get next page of matches. If the page is empty there is no more matches available.
 *ChatApi* | [**postGetNextReceivedLikesPage**](doc//ChatApi.md#postgetnextreceivedlikespage) | **POST** /chat_api/received_likes | Update received likes iterator and get next page of received likes. If the page is empty there is no more received likes available.
@@ -133,8 +132,6 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /chat_api/send_message | Send message to a match.
 *ChatApi* | [**postSetDeviceToken**](doc//ChatApi.md#postsetdevicetoken) | **POST** /chat_api/set_device_token | 
 *ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /chat_api/unblock_profile | Unblock profile
-*ChatAdminApi* | [**getChatReportPendingProcessingList**](doc//ChatAdminApi.md#getchatreportpendingprocessinglist) | **GET** /chat_api/admin/chat_report_pending_processing | 
-*ChatAdminApi* | [**postProcessChatReport**](doc//ChatAdminApi.md#postprocesschatreport) | **POST** /chat_api/admin/process_chat_report | 
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens. Connection is required as API access is allowed for connected clients.
 *CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
 *CommonAdminApi* | [**getBackendConfig**](doc//CommonAdminApi.md#getbackendconfig) | **GET** /common_api/backend_config | Get dynamic backend config.
@@ -163,18 +160,15 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**getContentSlotState**](doc//MediaApi.md#getcontentslotstate) | **GET** /media_api/content_slot/{slot_id} | Get state of content slot.
 *MediaApi* | [**getMapTile**](doc//MediaApi.md#getmaptile) | **GET** /media_api/map_tile/{z}/{x}/{y} | Get map tile PNG file.
 *MediaApi* | [**getMediaContentInfo**](doc//MediaApi.md#getmediacontentinfo) | **GET** /media_api/media_content_info | Get my profile and security content
-*MediaApi* | [**getMediaReport**](doc//MediaApi.md#getmediareport) | **GET** /media_api/media_report | Get media report
 *MediaApi* | [**getProfileContentInfo**](doc//MediaApi.md#getprofilecontentinfo) | **GET** /media_api/profile_content_info/{aid} | Get current profile content for selected profile.
 *MediaApi* | [**getSecurityContentInfo**](doc//MediaApi.md#getsecuritycontentinfo) | **GET** /media_api/security_content_info/{aid} | Get current security content for selected profile.
 *MediaApi* | [**postGetInitialContentModerationCompleted**](doc//MediaApi.md#postgetinitialcontentmoderationcompleted) | **POST** /media_api/initial_content_moderation_completed_result | Get initial content moderation completed result.
-*MediaApi* | [**postMediaReport**](doc//MediaApi.md#postmediareport) | **POST** /media_api/media_report | Update media report.
+*MediaApi* | [**postProfileContentReport**](doc//MediaApi.md#postprofilecontentreport) | **POST** /media_api/profile_content_report | Report profile content.
 *MediaApi* | [**putContentToContentSlot**](doc//MediaApi.md#putcontenttocontentslot) | **PUT** /media_api/content_slot/{slot_id} | Upload content to server. The content is saved to content processing slot when account state is [model::AccountState::InitialSetup]. In other states the slot number is ignored and content goes directly to moderation.
 *MediaApi* | [**putProfileContent**](doc//MediaApi.md#putprofilecontent) | **PUT** /media_api/profile_content | Set new profile content for current account.
 *MediaApi* | [**putSecurityContentInfo**](doc//MediaApi.md#putsecuritycontentinfo) | **PUT** /media_api/security_content_info | Set current security content for current account.
-*MediaAdminApi* | [**getMediaReportPendingProcessingList**](doc//MediaAdminApi.md#getmediareportpendingprocessinglist) | **GET** /media_api/admin/media_report_pending_processing | 
 *MediaAdminApi* | [**getProfileContentPendingModerationList**](doc//MediaAdminApi.md#getprofilecontentpendingmoderationlist) | **GET** /media_api/admin/profile_content_pending_moderation | Get first page of pending profile content moderations. Oldest item is first and count 25.
 *MediaAdminApi* | [**postModerateProfileContent**](doc//MediaAdminApi.md#postmoderateprofilecontent) | **POST** /media_api/admin/moderate_profile_content | Rejected category and details can be set only when the content is rejected.
-*MediaAdminApi* | [**postProcessMediaReport**](doc//MediaAdminApi.md#postprocessmediareport) | **POST** /media_api/admin/process_media_report | 
 *ProfileApi* | [**deleteFavoriteProfile**](doc//ProfileApi.md#deletefavoriteprofile) | **DELETE** /profile_api/favorite_profile | Delete favorite profile
 *ProfileApi* | [**getAvailableProfileAttributes**](doc//ProfileApi.md#getavailableprofileattributes) | **GET** /profile_api/available_profile_attributes | Get info what profile attributes server supports.
 *ProfileApi* | [**getFavoriteProfiles**](doc//ProfileApi.md#getfavoriteprofiles) | **GET** /profile_api/favorite_profiles | Get list of all favorite profiles.
@@ -243,9 +237,6 @@ Class | Method | HTTP request | Description
  - [BackendVersion](doc//BackendVersion.md)
  - [BooleanSetting](doc//BooleanSetting.md)
  - [BotConfig](doc//BotConfig.md)
- - [ChatReport](doc//ChatReport.md)
- - [ChatReportContent](doc//ChatReportContent.md)
- - [ChatReportDetailed](doc//ChatReportDetailed.md)
  - [ClientId](doc//ClientId.md)
  - [ClientInfo](doc//ClientInfo.md)
  - [ClientLocalId](doc//ClientLocalId.md)
@@ -280,10 +271,8 @@ Class | Method | HTTP request | Description
  - [GetAccountIdFromEmailResult](doc//GetAccountIdFromEmailResult.md)
  - [GetAccountReportList](doc//GetAccountReportList.md)
  - [GetAllAdminsResult](doc//GetAllAdminsResult.md)
- - [GetChatReportList](doc//GetChatReportList.md)
  - [GetInitialProfileAgeInfoResult](doc//GetInitialProfileAgeInfoResult.md)
  - [GetMediaContentResult](doc//GetMediaContentResult.md)
- - [GetMediaReportList](doc//GetMediaReportList.md)
  - [GetMyProfileResult](doc//GetMyProfileResult.md)
  - [GetNewsItemResult](doc//GetNewsItemResult.md)
  - [GetPerfDataEndTimeParameter](doc//GetPerfDataEndTimeParameter.md)
@@ -317,9 +306,6 @@ Class | Method | HTTP request | Description
  - [MaxDistanceKm](doc//MaxDistanceKm.md)
  - [MediaContentSyncVersion](doc//MediaContentSyncVersion.md)
  - [MediaContentType](doc//MediaContentType.md)
- - [MediaReport](doc//MediaReport.md)
- - [MediaReportContent](doc//MediaReportContent.md)
- - [MediaReportDetailed](doc//MediaReportDetailed.md)
  - [MessageNumber](doc//MessageNumber.md)
  - [ModerationQueueType](doc//ModerationQueueType.md)
  - [MyProfileContent](doc//MyProfileContent.md)
@@ -347,8 +333,6 @@ Class | Method | HTTP request | Description
  - [PostModerateProfileName](doc//PostModerateProfileName.md)
  - [PostModerateProfileText](doc//PostModerateProfileText.md)
  - [ProcessAccountReport](doc//ProcessAccountReport.md)
- - [ProcessChatReport](doc//ProcessChatReport.md)
- - [ProcessMediaReport](doc//ProcessMediaReport.md)
  - [ProcessReport](doc//ProcessReport.md)
  - [Profile](doc//Profile.md)
  - [ProfileAgeCounts](doc//ProfileAgeCounts.md)
@@ -402,6 +386,8 @@ Class | Method | HTTP request | Description
  - [RefreshToken](doc//RefreshToken.md)
  - [RemoteBotLogin](doc//RemoteBotLogin.md)
  - [ReportAccountInfo](doc//ReportAccountInfo.md)
+ - [ReportChatInfo](doc//ReportChatInfo.md)
+ - [ReportChatInfoInteractionState](doc//ReportChatInfoInteractionState.md)
  - [ReportContent](doc//ReportContent.md)
  - [ReportDetailed](doc//ReportDetailed.md)
  - [ReportDetailedInfo](doc//ReportDetailedInfo.md)
@@ -443,12 +429,11 @@ Class | Method | HTTP request | Description
  - [UnreadNewsCount](doc//UnreadNewsCount.md)
  - [UnreadNewsCountResult](doc//UnreadNewsCountResult.md)
  - [UpdateAccountReport](doc//UpdateAccountReport.md)
- - [UpdateChatReport](doc//UpdateChatReport.md)
- - [UpdateChatReportResult](doc//UpdateChatReportResult.md)
- - [UpdateMediaReport](doc//UpdateMediaReport.md)
+ - [UpdateChatMessageReport](doc//UpdateChatMessageReport.md)
  - [UpdateMessageViewStatus](doc//UpdateMessageViewStatus.md)
  - [UpdateNewsTranslation](doc//UpdateNewsTranslation.md)
  - [UpdateNewsTranslationResult](doc//UpdateNewsTranslationResult.md)
+ - [UpdateProfileContentReport](doc//UpdateProfileContentReport.md)
  - [UpdateProfileNameReport](doc//UpdateProfileNameReport.md)
  - [UpdateProfileTextReport](doc//UpdateProfileTextReport.md)
  - [UpdateReportResult](doc//UpdateReportResult.md)

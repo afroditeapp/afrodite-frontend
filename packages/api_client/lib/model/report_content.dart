@@ -13,9 +13,15 @@ part of openapi.api;
 class ReportContent {
   /// Returns a new [ReportContent] instance.
   ReportContent({
+    this.chatMessage,
+    this.profileContent,
     this.profileName,
     this.profileText,
   });
+
+  String? chatMessage;
+
+  ContentId? profileContent;
 
   String? profileName;
 
@@ -23,20 +29,34 @@ class ReportContent {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ReportContent &&
+    other.chatMessage == chatMessage &&
+    other.profileContent == profileContent &&
     other.profileName == profileName &&
     other.profileText == profileText;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (chatMessage == null ? 0 : chatMessage!.hashCode) +
+    (profileContent == null ? 0 : profileContent!.hashCode) +
     (profileName == null ? 0 : profileName!.hashCode) +
     (profileText == null ? 0 : profileText!.hashCode);
 
   @override
-  String toString() => 'ReportContent[profileName=$profileName, profileText=$profileText]';
+  String toString() => 'ReportContent[chatMessage=$chatMessage, profileContent=$profileContent, profileName=$profileName, profileText=$profileText]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.chatMessage != null) {
+      json[r'chat_message'] = this.chatMessage;
+    } else {
+      json[r'chat_message'] = null;
+    }
+    if (this.profileContent != null) {
+      json[r'profile_content'] = this.profileContent;
+    } else {
+      json[r'profile_content'] = null;
+    }
     if (this.profileName != null) {
       json[r'profile_name'] = this.profileName;
     } else {
@@ -69,6 +89,8 @@ class ReportContent {
       }());
 
       return ReportContent(
+        chatMessage: mapValueOfType<String>(json, r'chat_message'),
+        profileContent: ContentId.fromJson(json[r'profile_content']),
         profileName: mapValueOfType<String>(json, r'profile_name'),
         profileText: mapValueOfType<String>(json, r'profile_text'),
       );

@@ -6,7 +6,6 @@ lib/api.dart
 lib/api/account_admin_api.dart
 lib/api/account_api.dart
 lib/api/account_bot_api.dart
-lib/api/chat_admin_api.dart
 lib/api/chat_api.dart
 lib/api/common_admin_api.dart
 lib/api/common_api.dart
@@ -52,9 +51,6 @@ lib/model/backend_config.dart
 lib/model/backend_version.dart
 lib/model/boolean_setting.dart
 lib/model/bot_config.dart
-lib/model/chat_report.dart
-lib/model/chat_report_content.dart
-lib/model/chat_report_detailed.dart
 lib/model/client_id.dart
 lib/model/client_info.dart
 lib/model/client_local_id.dart
@@ -89,10 +85,8 @@ lib/model/get_account_deletion_request_result.dart
 lib/model/get_account_id_from_email_result.dart
 lib/model/get_account_report_list.dart
 lib/model/get_all_admins_result.dart
-lib/model/get_chat_report_list.dart
 lib/model/get_initial_profile_age_info_result.dart
 lib/model/get_media_content_result.dart
-lib/model/get_media_report_list.dart
 lib/model/get_my_profile_result.dart
 lib/model/get_news_item_result.dart
 lib/model/get_perf_data_end_time_parameter.dart
@@ -126,9 +120,6 @@ lib/model/matches_sync_version.dart
 lib/model/max_distance_km.dart
 lib/model/media_content_sync_version.dart
 lib/model/media_content_type.dart
-lib/model/media_report.dart
-lib/model/media_report_content.dart
-lib/model/media_report_detailed.dart
 lib/model/message_number.dart
 lib/model/moderation_queue_type.dart
 lib/model/my_profile_content.dart
@@ -156,8 +147,6 @@ lib/model/post_moderate_profile_content.dart
 lib/model/post_moderate_profile_name.dart
 lib/model/post_moderate_profile_text.dart
 lib/model/process_account_report.dart
-lib/model/process_chat_report.dart
-lib/model/process_media_report.dart
 lib/model/process_report.dart
 lib/model/profile.dart
 lib/model/profile_age_counts.dart
@@ -211,6 +200,8 @@ lib/model/received_likes_sync_version.dart
 lib/model/refresh_token.dart
 lib/model/remote_bot_login.dart
 lib/model/report_account_info.dart
+lib/model/report_chat_info.dart
+lib/model/report_chat_info_interaction_state.dart
 lib/model/report_content.dart
 lib/model/report_detailed.dart
 lib/model/report_detailed_info.dart
@@ -252,12 +243,11 @@ lib/model/unix_time.dart
 lib/model/unread_news_count.dart
 lib/model/unread_news_count_result.dart
 lib/model/update_account_report.dart
-lib/model/update_chat_report.dart
-lib/model/update_chat_report_result.dart
-lib/model/update_media_report.dart
+lib/model/update_chat_message_report.dart
 lib/model/update_message_view_status.dart
 lib/model/update_news_translation.dart
 lib/model/update_news_translation_result.dart
+lib/model/update_profile_content_report.dart
 lib/model/update_profile_name_report.dart
 lib/model/update_profile_text_report.dart
 lib/model/update_report_result.dart

@@ -242,12 +242,6 @@ class ApiClient {
           return BooleanSetting.fromJson(value);
         case 'BotConfig':
           return BotConfig.fromJson(value);
-        case 'ChatReport':
-          return ChatReport.fromJson(value);
-        case 'ChatReportContent':
-          return ChatReportContent.fromJson(value);
-        case 'ChatReportDetailed':
-          return ChatReportDetailed.fromJson(value);
         case 'ClientId':
           return ClientId.fromJson(value);
         case 'ClientInfo':
@@ -316,14 +310,10 @@ class ApiClient {
           return GetAccountReportList.fromJson(value);
         case 'GetAllAdminsResult':
           return GetAllAdminsResult.fromJson(value);
-        case 'GetChatReportList':
-          return GetChatReportList.fromJson(value);
         case 'GetInitialProfileAgeInfoResult':
           return GetInitialProfileAgeInfoResult.fromJson(value);
         case 'GetMediaContentResult':
           return GetMediaContentResult.fromJson(value);
-        case 'GetMediaReportList':
-          return GetMediaReportList.fromJson(value);
         case 'GetMyProfileResult':
           return GetMyProfileResult.fromJson(value);
         case 'GetNewsItemResult':
@@ -390,12 +380,6 @@ class ApiClient {
           return MediaContentSyncVersion.fromJson(value);
         case 'MediaContentType':
           return MediaContentTypeTypeTransformer().decode(value);
-        case 'MediaReport':
-          return MediaReport.fromJson(value);
-        case 'MediaReportContent':
-          return MediaReportContent.fromJson(value);
-        case 'MediaReportDetailed':
-          return MediaReportDetailed.fromJson(value);
         case 'MessageNumber':
           return MessageNumber.fromJson(value);
         case 'ModerationQueueType':
@@ -450,10 +434,6 @@ class ApiClient {
           return PostModerateProfileText.fromJson(value);
         case 'ProcessAccountReport':
           return ProcessAccountReport.fromJson(value);
-        case 'ProcessChatReport':
-          return ProcessChatReport.fromJson(value);
-        case 'ProcessMediaReport':
-          return ProcessMediaReport.fromJson(value);
         case 'ProcessReport':
           return ProcessReport.fromJson(value);
         case 'Profile':
@@ -560,6 +540,10 @@ class ApiClient {
           return RemoteBotLogin.fromJson(value);
         case 'ReportAccountInfo':
           return ReportAccountInfo.fromJson(value);
+        case 'ReportChatInfo':
+          return ReportChatInfo.fromJson(value);
+        case 'ReportChatInfoInteractionState':
+          return ReportChatInfoInteractionStateTypeTransformer().decode(value);
         case 'ReportContent':
           return ReportContent.fromJson(value);
         case 'ReportDetailed':
@@ -642,18 +626,16 @@ class ApiClient {
           return UnreadNewsCountResult.fromJson(value);
         case 'UpdateAccountReport':
           return UpdateAccountReport.fromJson(value);
-        case 'UpdateChatReport':
-          return UpdateChatReport.fromJson(value);
-        case 'UpdateChatReportResult':
-          return UpdateChatReportResult.fromJson(value);
-        case 'UpdateMediaReport':
-          return UpdateMediaReport.fromJson(value);
+        case 'UpdateChatMessageReport':
+          return UpdateChatMessageReport.fromJson(value);
         case 'UpdateMessageViewStatus':
           return UpdateMessageViewStatus.fromJson(value);
         case 'UpdateNewsTranslation':
           return UpdateNewsTranslation.fromJson(value);
         case 'UpdateNewsTranslationResult':
           return UpdateNewsTranslationResult.fromJson(value);
+        case 'UpdateProfileContentReport':
+          return UpdateProfileContentReport.fromJson(value);
         case 'UpdateProfileNameReport':
           return UpdateProfileNameReport.fromJson(value);
         case 'UpdateProfileTextReport':
