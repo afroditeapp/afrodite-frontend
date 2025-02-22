@@ -14,11 +14,13 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class ContentDecicionScreen<C extends ContentInfoGetter> extends StatefulWidget {
   final String title;
+  final String? screenInstructions;
   final double infoMessageRowHeight;
   final ContentIo<C> io;
   final ContentUiBuilder<C> builder;
   const ContentDecicionScreen({
     required this.title,
+    this.screenInstructions,
     required this.infoMessageRowHeight,
     required this.io,
     required this.builder,
@@ -51,8 +53,19 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter> extends State<Con
 
   @override
   Widget build(BuildContext context) {
+    final instructions = widget.screenInstructions;
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          if (instructions != null) IconButton(
+            onPressed: () {
+              showInfoDialog(context, instructions);
+            },
+            icon: const Icon(Icons.info),
+          )
+        ],
+      ),
       body: list(context),
     );
   }

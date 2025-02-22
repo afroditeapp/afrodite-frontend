@@ -16,6 +16,7 @@ class ViewReportsScreen extends ContentDecicionScreen<WrappedReportDetailed> {
     super.key,
   }) : super(
     infoMessageRowHeight: ROW_HEIGHT,
+    screenInstructions: ReportUiBuilder.instructions,
     io: ViewReportReportIo(account, mode),
     builder: ViewReportUiBuilder(),
   );
@@ -67,6 +68,7 @@ class ViewReportReportIo extends ContentIo<WrappedReportDetailed> {
           content: v.content,
           creatorInfo: v.creatorInfo,
           targetInfo: v.targetInfo,
+          chatInfo: v.chatInfo,
         )).toList();
         return Ok(list);
     }

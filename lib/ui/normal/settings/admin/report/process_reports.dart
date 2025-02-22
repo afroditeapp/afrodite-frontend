@@ -14,6 +14,7 @@ class ProcessReportsScreen extends ContentDecicionScreen<WrappedReportDetailed> 
     super.key,
   }) : super(
     title: "Process reports",
+    screenInstructions: ReportUiBuilder.instructions,
     infoMessageRowHeight: ROW_HEIGHT,
     io: ReportIo(),
     builder: ReportUiBuilder(),
@@ -26,6 +27,7 @@ class WrappedReportDetailed extends ReportDetailed implements ContentInfoGetter 
     required super.info,
     required super.creatorInfo,
     required super.targetInfo,
+    required super.chatInfo,
   });
 
   @override
@@ -47,6 +49,7 @@ class ReportIo extends ContentIo<WrappedReportDetailed> {
         content: v.content,
         creatorInfo: v.creatorInfo,
         targetInfo: v.targetInfo,
+        chatInfo: v.chatInfo,
       )).toList());
   }
 
@@ -66,14 +69,45 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
   @override
   bool get allowRejecting => false;
 
+  static String instructions = "B = block received, L = like received, M = match";
+
   @override
   Widget buildRowContent(BuildContext context, WrappedReportDetailed content) {
     final creatorInfo = content.creatorInfo;
     final targetInfo = content.targetInfo;
+    final chatInfo = content.chatInfo;
+
+    final String creatorDetails;
+    final String targetDetails;
+    if (chatInfo != null) {
+      final infoCreator = [
+        if (chatInfo.targetBlockedCreator) "B",
+        if (chatInfo.state == ReportChatInfoInteractionState.targetLiked) "L",
+        if (chatInfo.state == ReportChatInfoInteractionState.match) "M",
+      ];
+      if (infoCreator.isNotEmpty) {
+        creatorDetails = ", ${infoCreator.join("")}";
+      } else {
+        creatorDetails = "";
+      }
+      final infoTarget = [
+        if (chatInfo.creatorBlockedTarget) "B",
+        if (chatInfo.state == ReportChatInfoInteractionState.creatorLiked) "L",
+        if (chatInfo.state == ReportChatInfoInteractionState.match) "M",
+      ];
+      if (infoTarget.isNotEmpty) {
+        targetDetails = ", ${infoTarget.join("")}";
+      } else {
+        targetDetails = "";
+      }
+    } else {
+      creatorDetails = "";
+      targetDetails = "";
+    }
 
     final String infoText;
     if (creatorInfo != null && targetInfo != null) {
-      infoText = "${creatorInfo.name}, ${creatorInfo.age} -> ${targetInfo.name}, ${targetInfo.age}";
+      infoText = "${creatorInfo.name}, ${creatorInfo.age}$creatorDetails -> ${targetInfo.name}, ${targetInfo.age}$targetDetails";
     } else {
       infoText = "";
     }
