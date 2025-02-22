@@ -1,5 +1,6 @@
 
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
+import 'package:app/utils/time.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,7 @@ import 'package:app/ui_utils/scroll_controller.dart';
 import 'package:app/utils/cache.dart';
 import 'package:app/utils/immutable_list.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:utils/utils.dart';
 
 var log = Logger("ChatView");
 
@@ -277,7 +279,7 @@ class _ChatViewState extends State<ChatView> {
           if (cData == null) {
             return errorWidget(context);
           } else {
-            return conversationItem(cData, allowOpenConversation: allowOpenConversation);
+            return conversationItem(context, cData, allowOpenConversation: allowOpenConversation);
           }
         },
       );
@@ -290,6 +292,7 @@ class _ChatViewState extends State<ChatView> {
   }
 
   Widget conversationItem(
+    BuildContext context,
     ConversationData data,
     {required bool allowOpenConversation}
   ) {
@@ -303,14 +306,7 @@ class _ChatViewState extends State<ChatView> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          data.entry.profileTitle(
-            context.read<UserInterfaceSettingsBloc>().state.showNonAcceptedProfileNames,
-          ),
-          style: Theme.of(context).textTheme.titleMedium,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-        ),
+        conversationTitle(context, data),
         ...conversationStatusText(context, data),
       ],
     );
@@ -342,6 +338,31 @@ class _ChatViewState extends State<ChatView> {
     } else {
       return rowAndPadding;
     }
+  }
+
+  Widget conversationTitle(BuildContext context, ConversationData data) {
+    final UtcDateTime? messageTime = data.message?.unixTime ?? data.message?.localUnixTime;
+    final TextStyle? textStyle;
+    if (data.count.count > 0) {
+      textStyle = Theme.of(context).textTheme.titleMedium;
+    } else {
+      textStyle = Theme.of(context).textTheme.bodyMedium;
+    }
+    return Row(
+      children: [
+        Text(
+          data.entry.profileTitle(
+            context.read<UserInterfaceSettingsBloc>().state.showNonAcceptedProfileNames,
+          ),
+          style: Theme.of(context).textTheme.titleMedium,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+        ),
+        const Spacer(),
+        if (messageTime != null) const Padding(padding: EdgeInsets.only(left: 8)),
+        if (messageTime != null) Text(timeString(messageTime), style: textStyle),
+      ],
+    );
   }
 
   List<Widget> conversationStatusText(BuildContext context, ConversationData data) {
