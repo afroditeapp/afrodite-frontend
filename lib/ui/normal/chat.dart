@@ -376,7 +376,12 @@ class _ChatViewState extends State<ChatView> {
       text = context.strings.chat_list_screen_unread_message;
     } else if (messageText != null) {
       textStyle = Theme.of(context).textTheme.bodyMedium;
-      text = messageWidgetText(context, messageText, sentMessageState, receivedMessageState);
+      final message = messageWidgetText(context, messageText, sentMessageState, receivedMessageState);
+      if (data.message?.messageState.isSent() == true) {
+        text = context.strings.chat_list_screen_sent_message_indicator(message);
+      } else {
+        text = message;
+      }
     } else {
       return [];
     }

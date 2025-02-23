@@ -156,6 +156,15 @@
   "@chat_list_screen_open_matches_screen_action": {
     "description": "Title for action which opens matches screen"
   },
+  "chat_list_screen_sent_message_indicator": "You: {p0}",
+  "@chat_list_screen_sent_message_indicator": {
+    "description": "Text indicating that the message is a sent message.",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "chat_list_screen_title": "Chats",
   "@chat_list_screen_title": {
     "description": "Title for chat list screen"
