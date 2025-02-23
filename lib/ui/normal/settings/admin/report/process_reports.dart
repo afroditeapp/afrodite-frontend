@@ -69,7 +69,7 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
   @override
   bool get allowRejecting => false;
 
-  static String instructions = "B = block received, L = like received, M = match";
+  static String instructions = "B = block received, L = like received, Mnumber = match and sent messages count";
 
   @override
   Widget buildRowContent(BuildContext context, WrappedReportDetailed content) {
@@ -80,20 +80,32 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
     final String creatorDetails;
     final String targetDetails;
     if (chatInfo != null) {
+      final String creatorMessages;
+      if (chatInfo.creatorSentMessagesCount == 0) {
+        creatorMessages = "";
+      } else {
+        creatorMessages = chatInfo.creatorSentMessagesCount.toString();
+      }
       final infoCreator = [
         if (chatInfo.targetBlockedCreator) "B",
         if (chatInfo.state == ReportChatInfoInteractionState.targetLiked) "L",
-        if (chatInfo.state == ReportChatInfoInteractionState.match) "M",
+        if (chatInfo.state == ReportChatInfoInteractionState.match) "M$creatorMessages",
       ];
       if (infoCreator.isNotEmpty) {
         creatorDetails = ", ${infoCreator.join("")}";
       } else {
         creatorDetails = "";
       }
+      final String targetMessages;
+      if (chatInfo.targetSentMessagesCount == 0) {
+        targetMessages = "";
+      } else {
+        targetMessages = chatInfo.targetSentMessagesCount.toString();
+      }
       final infoTarget = [
         if (chatInfo.creatorBlockedTarget) "B",
         if (chatInfo.state == ReportChatInfoInteractionState.creatorLiked) "L",
-        if (chatInfo.state == ReportChatInfoInteractionState.match) "M",
+        if (chatInfo.state == ReportChatInfoInteractionState.match) "M$targetMessages",
       ];
       if (infoTarget.isNotEmpty) {
         targetDetails = ", ${infoTarget.join("")}";
