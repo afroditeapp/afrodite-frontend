@@ -14,44 +14,49 @@ class ReportChatInfo {
   /// Returns a new [ReportChatInfo] instance.
   ReportChatInfo({
     this.creatorBlockedTarget = false,
-    this.messageSent = false,
+    this.creatorSentMessagesCount = 0,
     required this.state,
     this.targetBlockedCreator = false,
+    this.targetSentMessagesCount = 0,
   });
 
   bool creatorBlockedTarget;
 
-  /// Creator or target have sent at least one message.
-  bool messageSent;
+  int creatorSentMessagesCount;
 
   ReportChatInfoInteractionState state;
 
   bool targetBlockedCreator;
 
+  int targetSentMessagesCount;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is ReportChatInfo &&
     other.creatorBlockedTarget == creatorBlockedTarget &&
-    other.messageSent == messageSent &&
+    other.creatorSentMessagesCount == creatorSentMessagesCount &&
     other.state == state &&
-    other.targetBlockedCreator == targetBlockedCreator;
+    other.targetBlockedCreator == targetBlockedCreator &&
+    other.targetSentMessagesCount == targetSentMessagesCount;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (creatorBlockedTarget.hashCode) +
-    (messageSent.hashCode) +
+    (creatorSentMessagesCount.hashCode) +
     (state.hashCode) +
-    (targetBlockedCreator.hashCode);
+    (targetBlockedCreator.hashCode) +
+    (targetSentMessagesCount.hashCode);
 
   @override
-  String toString() => 'ReportChatInfo[creatorBlockedTarget=$creatorBlockedTarget, messageSent=$messageSent, state=$state, targetBlockedCreator=$targetBlockedCreator]';
+  String toString() => 'ReportChatInfo[creatorBlockedTarget=$creatorBlockedTarget, creatorSentMessagesCount=$creatorSentMessagesCount, state=$state, targetBlockedCreator=$targetBlockedCreator, targetSentMessagesCount=$targetSentMessagesCount]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'creator_blocked_target'] = this.creatorBlockedTarget;
-      json[r'message_sent'] = this.messageSent;
+      json[r'creator_sent_messages_count'] = this.creatorSentMessagesCount;
       json[r'state'] = this.state;
       json[r'target_blocked_creator'] = this.targetBlockedCreator;
+      json[r'target_sent_messages_count'] = this.targetSentMessagesCount;
     return json;
   }
 
@@ -75,9 +80,10 @@ class ReportChatInfo {
 
       return ReportChatInfo(
         creatorBlockedTarget: mapValueOfType<bool>(json, r'creator_blocked_target') ?? false,
-        messageSent: mapValueOfType<bool>(json, r'message_sent') ?? false,
+        creatorSentMessagesCount: mapValueOfType<int>(json, r'creator_sent_messages_count') ?? 0,
         state: ReportChatInfoInteractionState.fromJson(json[r'state'])!,
         targetBlockedCreator: mapValueOfType<bool>(json, r'target_blocked_creator') ?? false,
+        targetSentMessagesCount: mapValueOfType<int>(json, r'target_sent_messages_count') ?? 0,
       );
     }
     return null;
