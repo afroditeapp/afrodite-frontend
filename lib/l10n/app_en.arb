@@ -1291,6 +1291,27 @@
   "@profile_statistics_screen_title": {
     "description": "Title for profile statistics screen"
   },
+  "report_profile_image_screen_confirm_dialog_title": "Report profile image?",
+  "@report_profile_image_screen_confirm_dialog_title": {
+    "description": "Profile image reporting confirmation dialog title"
+  },
+  "report_profile_image_screen_image_title": "Profile image {p0}",
+  "@report_profile_image_screen_image_title": {
+    "description": "Profile image title for reporting screen",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "report_profile_image_screen_profile_image_changed_error": "Report failed. Profile image has changed.",
+  "@report_profile_image_screen_profile_image_changed_error": {
+    "description": "Snackbar text displayed when reporting old profile image"
+  },
+  "report_screen_profile_image_action": "Profile image",
+  "@report_screen_profile_image_action": {
+    "description": "Title for report profile image action"
+  },
   "report_screen_profile_name_action": "Profile name",
   "@report_screen_profile_name_action": {
     "description": "Title for report profile name action"

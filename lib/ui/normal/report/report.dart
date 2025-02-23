@@ -2,6 +2,7 @@
 import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/ui/normal/report/report_profile_image.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
@@ -11,9 +12,15 @@ import 'package:openapi/api.dart';
 
 Widget showReportAction(BuildContext context, ProfileEntry profile) {
   return MenuItemButton(
-    onPressed: () {
-      MyNavigator.push(context, MaterialPage<void>(child: ReportScreen(
+    onPressed: () async {
+      final chat = LoginRepository.getInstance().repositories.chat;
+      final isMatch = await chat.isInMatches(profile.uuid);
+      if (!context.mounted) {
+        return;
+      }
+      await MyNavigator.push(context, MaterialPage<void>(child: ReportScreen(
         profile: profile,
+        isMatch: isMatch,
       )));
     },
     child: Text(context.strings.report_screen_title),
@@ -22,8 +29,10 @@ Widget showReportAction(BuildContext context, ProfileEntry profile) {
 
 class ReportScreen extends StatefulWidget {
   final ProfileEntry profile;
+  final bool isMatch;
   const ReportScreen({
     required this.profile,
+    required this.isMatch,
     super.key,
   });
 
@@ -114,6 +123,16 @@ class _ReportScreenState extends State<ReportScreen> {
             showSnackBar(R.strings.report_screen_snackbar_report_successful);
           }
         }
+      }));
+    }
+
+    final acceptedContent = widget.profile.content.where((v) => v.accepted);
+    if (acceptedContent.isNotEmpty) {
+      settings.add(reportListTile(context.strings.report_screen_profile_image_action, () {
+        MyNavigator.push(context, MaterialPage<void>(child: ReportProfileImageScreen(
+          profileEntry: widget.profile,
+          isMatch: widget.isMatch,
+        )));
       }));
     }
 

@@ -2,7 +2,10 @@
 import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
+import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
+import 'package:app/ui_utils/image.dart';
+import 'package:app/ui_utils/view_image_screen.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -126,12 +129,25 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
 
     final profileName = content.content.profileName;
     final profileText = content.content.profileText;
+    final profileContent = content.content.profileContent;
+    final target = content.target;
     final Widget report;
 
     if (profileName != null) {
       report = Text(profileName);
     } else if (profileText != null) {
       report = Text(profileText);
+    } else if (profileContent != null && target != null) {
+      report = LayoutBuilder(
+        builder: (context, constraints) {
+          return buildImage(
+            context,
+            target,
+            profileContent,
+            constraints.maxWidth / 2,
+          );
+        },
+      );
     } else {
       report = Text(context.strings.generic_error);
     }
@@ -146,6 +162,22 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
           const Padding(padding: EdgeInsets.only(top: 8)),
           report,
         ],
+      ),
+    );
+  }
+
+  Widget buildImage(BuildContext context, AccountId imageOwner, ContentId image, double width) {
+    return InkWell(
+      onTap: () {
+        MyNavigator.push(
+          context,
+          MaterialPage<void>(child: ViewImageScreen(ViewImageAccountContent(imageOwner, image))),
+        );
+      },
+      child: accountImgWidget(
+        imageOwner,
+        image,
+        width: width,
       ),
     );
   }

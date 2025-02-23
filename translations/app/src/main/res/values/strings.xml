@@ -459,8 +459,14 @@
     <string name="report_screen_profile_text_action" description="Title for report profile text action">Profile text</string>
     <string name="report_screen_profile_text_dialog_title" description="Profile text reporting confirmation dialog title">Report profile text?</string>
     <string name="report_screen_profile_text_changed_error" description="Snackbar text for when reporting old profile text">Report failed. Profile text has changed.</string>
+    <string name="report_screen_profile_image_action" description="Title for report profile image action">Profile image</string>
     <string name="report_screen_snackbar_report_successful" description="Snackbar text for successful report">Reported</string>
     <string name="report_screen_snackbar_too_many_reports_error" description="Snackbar text for too many reports error">Report failed. Too many reports.</string>
+
+    <!-- Report profile image screen -->
+    <string name="report_profile_image_screen_confirm_dialog_title" description="Profile image reporting confirmation dialog title">Report profile image?</string>
+    <string name="report_profile_image_screen_image_title" description="Profile image title for reporting screen">Profile image %s</string>
+    <string name="report_profile_image_screen_profile_image_changed_error" description="Snackbar text displayed when reporting old profile image">Report failed. Profile image has changed.</string>
 
     <!-- Admin features -->
 
