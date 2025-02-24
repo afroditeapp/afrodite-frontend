@@ -44,7 +44,6 @@ class _ReportScreenState extends State<ReportScreen> {
 
   final api = LoginRepository.getInstance().repositories.api;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

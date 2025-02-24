@@ -204,7 +204,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
       });
 
     _getProfileDataSubscription = profile
-      .getProfileStream(state.profile.uuid, priority)
+      .getProfileStream(chat, state.profile.uuid, priority)
       .listen((event) {
         add(HandleProfileResult(event));
       });

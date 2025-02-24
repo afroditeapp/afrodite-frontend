@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:app/data/chat_repository.dart';
+import 'package:app/utils/stream.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -173,16 +175,21 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return entry;
   }
 
-  /// Get cached (if available) and then latest profile (if available and enough
-  /// time has passed since last profile data refresh).
-  Stream<GetProfileResultClient> getProfileStream(AccountId id, ProfileRefreshPriority priority) async* {
+  /// Get cached (if available), latest profile (if available and enough
+  /// time has passed since last profile data refresh) and future profile
+  /// updates.
+  Stream<GetProfileResultClient> getProfileStream(ChatRepository chat, AccountId id, ProfileRefreshPriority priority) async* {
     // TODO: perhaps more detailed error message, so that changes from public to
     // private profile can be handled.
 
-    final profile = await db.profileData((db) => db.getProfileEntry(id)).ok();
+    final dbProfileIteator = StreamIterator(db.accountStream((db) => db.daoProfiles.watchProfileEntry(id)));
+
+    final profile = await dbProfileIteator.next();
     if (profile != null) {
       yield GetProfileSuccess(profile);
     }
+
+    bool download = true;
 
     final lastRefreshTime = await db.profileData((db) => db.getProfileDataRefreshTime(id)).ok();
     if (profile != null && lastRefreshTime != null) {
@@ -193,29 +200,46 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         ProfileRefreshPriority.low => 60 * 5,
       };
       if (difference.inSeconds < timePassedAtLeastSeconds) {
-        return;
+        download = false;
       }
     }
 
-    final result = await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(id);
-    switch (result) {
-      case Ok(:final v):
-        yield GetProfileSuccess(v);
-      case Err(:final e):
-        switch (e) {
-          case PrivateProfile():
-            // Accessing profile failed (not public or something else)
-            await db.profileAction((db) => db.removeProfileData(id));
-            await db.accountAction((db) => db.daoProfileStates.setProfileGridStatus(id, false));
-            // Favorites are not changed even if profile will become private
-            yield GetProfileDoesNotExist();
-            _profileChangesRelay.add(
-              ProfileNowPrivate(id)
-            );
-          case OtherProfileDownloadError():
-            yield GetProfileFailed();
-        }
+    if (download) {
+      final isMatch = await chat.isInMatches(id);
+      final result = await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(id, isMatch: isMatch);
+      switch (result) {
+        case Ok():
+          ();
+        case Err(:final e):
+          switch (e) {
+            case PrivateProfile():
+              // Accessing profile failed (not public or something else)
+              await db.profileAction((db) => db.removeProfileData(id));
+              await db.accountAction((db) => db.daoProfileStates.setProfileGridStatus(id, false));
+              // Favorites are not changed even if profile will become private
+              yield GetProfileDoesNotExist();
+              _profileChangesRelay.add(
+                ProfileNowPrivate(id)
+              );
+            case OtherProfileDownloadError():
+              yield GetProfileFailed();
+          }
+      }
     }
+
+    while (true) {
+      final profile = await dbProfileIteator.next();
+      if (profile != null) {
+        yield GetProfileSuccess(profile);
+      } else {
+        return;
+      }
+    }
+  }
+
+  Future<void> downloadProfileToDatabase(ChatRepository chat, AccountId id) async {
+    final isMatch = await chat.isInMatches(id);
+    await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(id, isMatch: isMatch);
   }
 
   /// Returns true if profile update was successful

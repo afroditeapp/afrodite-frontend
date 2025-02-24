@@ -19,30 +19,33 @@ class ReportProfileImageScreen extends StatefulWidget {
   });
 
   @override
-  State<ReportProfileImageScreen> createState() => _BlockedProfilesScreen();
+  State<ReportProfileImageScreen> createState() => _ReportProfileImageScreen();
 }
 
 const _IMG_SIZE = 100.0;
 
-class _BlockedProfilesScreen extends State<ReportProfileImageScreen> {
+class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
   final api = LoginRepository.getInstance().repositories.api;
   final chat = LoginRepository.getInstance().repositories.chat;
   final profile = LoginRepository.getInstance().repositories.profile;
+
+  List<(int, ContentIdAndAccepted)> images = [];
+
+  @override
+  void initState() {
+    super.initState();
+    images = widget.profileEntry.content.indexed.where((v) => v.$2.accepted).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(context.strings.report_screen_title)),
-      body: page(context),
+      body: list(context),
     );
   }
 
-  Widget page(BuildContext context) {
-    return grid(context);
-  }
-
-  Widget grid(BuildContext context) {
-    final images = widget.profileEntry.content.indexed.where((v) => v.$2.accepted).toList();
+  Widget list(BuildContext context) {
     return ListView.builder(
       itemCount: images.length,
       itemBuilder: (context, index) {
@@ -100,6 +103,13 @@ class _BlockedProfilesScreen extends State<ReportProfileImageScreen> {
             showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
           } else {
             showSnackBar(R.strings.report_screen_snackbar_report_successful);
+
+            if (context.mounted) {
+              setState(() {
+                images = images.where((v) => v.$2.id != content).toList();
+              });
+              await profile.downloadProfileToDatabase(chat, widget.profileEntry.uuid);
+            }
           }
         }
       },
