@@ -43,6 +43,8 @@ class ReportScreen extends StatefulWidget {
 class _ReportScreenState extends State<ReportScreen> {
 
   final api = LoginRepository.getInstance().repositories.api;
+  final profile = LoginRepository.getInstance().repositories.profile;
+  final chat = LoginRepository.getInstance().repositories.chat;
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +94,7 @@ class _ReportScreenState extends State<ReportScreen> {
             showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
           } else {
             showSnackBar(R.strings.report_screen_snackbar_report_successful);
+            await profile.downloadProfileToDatabase(chat, widget.profile.uuid);
           }
         }
       }));
@@ -120,6 +123,7 @@ class _ReportScreenState extends State<ReportScreen> {
             showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
           } else {
             showSnackBar(R.strings.report_screen_snackbar_report_successful);
+            await profile.downloadProfileToDatabase(chat, widget.profile.uuid);
           }
         }
       }));

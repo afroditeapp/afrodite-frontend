@@ -37,6 +37,7 @@ class AdminContentManagementScreen extends StatefulWidget {
 class _AdminContentManagementScreenState extends State<AdminContentManagementScreen> {
   final api = LoginRepository.getInstance().repositories.api;
   final profile = LoginRepository.getInstance().repositories.profile;
+  final chat = LoginRepository.getInstance().repositories.chat;
 
   RequiredData? data;
 
@@ -175,6 +176,8 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
     }
 
     await _getData();
+
+    await profile.downloadProfileToDatabase(chat, account);
   }
 }
 

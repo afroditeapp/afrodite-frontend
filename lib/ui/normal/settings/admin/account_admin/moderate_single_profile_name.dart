@@ -26,6 +26,7 @@ class ModerateSingleProfileNameScreen extends StatefulWidget {
 class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileNameScreen> {
   final api = LoginRepository.getInstance().repositories.api;
   final profile = LoginRepository.getInstance().repositories.profile;
+  final chat = LoginRepository.getInstance().repositories.chat;
 
   GetProfileNameState? data;
 
@@ -159,7 +160,7 @@ class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileN
               if (result.isErr()) {
                 showSnackBar(R.strings.generic_error);
               }
-              await _getData();
+              await _refreshAfterAction();
             }
           },
           child: const Text("Reject"),
@@ -180,12 +181,17 @@ class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileN
               if (result.isErr()) {
                 showSnackBar(R.strings.generic_error);
               }
-              await _getData();
+              await _refreshAfterAction();
             }
           },
           child: const Text("Accept"),
         )
       ],
     );
+  }
+
+  Future<void> _refreshAfterAction() async {
+    await _getData();
+    await profile.downloadProfileToDatabase(chat, widget.accountId);
   }
 }

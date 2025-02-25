@@ -26,6 +26,7 @@ class ModerateSingleProfileTextScreen extends StatefulWidget {
 class _ModerateSingleProfileTextScreenState extends State<ModerateSingleProfileTextScreen> {
   final api = LoginRepository.getInstance().repositories.api;
   final profile = LoginRepository.getInstance().repositories.profile;
+  final chat = LoginRepository.getInstance().repositories.chat;
 
   final detailsController = TextEditingController();
 
@@ -182,7 +183,7 @@ class _ModerateSingleProfileTextScreenState extends State<ModerateSingleProfileT
               if (result.isErr()) {
                 showSnackBar(R.strings.generic_error);
               }
-              await _getData();
+              await _refreshAfterAction();
             }
           },
           child: const Text("Reject"),
@@ -203,12 +204,17 @@ class _ModerateSingleProfileTextScreenState extends State<ModerateSingleProfileT
               if (result.isErr()) {
                 showSnackBar(R.strings.generic_error);
               }
-              await _getData();
+              await _refreshAfterAction();
             }
           },
           child: const Text("Accept"),
         )
       ],
     );
+  }
+
+  Future<void> _refreshAfterAction() async {
+    await _getData();
+    await profile.downloadProfileToDatabase(chat, widget.accountId);
   }
 }
