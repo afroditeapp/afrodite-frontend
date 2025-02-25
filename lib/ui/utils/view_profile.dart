@@ -389,12 +389,12 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
           alignment: Alignment.bottomCenter,
           child: SelectedImgIndicator(selectedImg: selectedImg, imgCount: imgs.length),
         ),
-        touchArea(),
+        touchArea(imgs.length),
       ]
     );
   }
 
-  Widget touchArea() {
+  Widget touchArea(int visibleImagesCount) {
     return Row(
       children: [
         Expanded(
@@ -415,7 +415,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
           child: GestureDetector(
             onTap: () {
               setState(() {
-                if (selectedImg < contentList.length - 1) {
+                if (selectedImg < visibleImagesCount - 1) {
                   selectedImg++;
                   if (pageController.hasClients) {
                     pageController.jumpToPage(selectedImg);
