@@ -30,7 +30,7 @@ class ProfileThumbnailImageOrError extends StatefulWidget {
     super.key,
   }) :
     accountId = entry.uuid,
-    contentId = entry.primaryImg(),
+    contentId = entry.acceptedPrimaryImg(),
     cropResults = CropResults.fromValues(
       entry.primaryContentGridCropSize,
       entry.primaryContentGridCropX,
