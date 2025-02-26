@@ -2,6 +2,7 @@
 import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/ui/normal/report/report_chat_message.dart';
 import 'package:app/ui/normal/report/report_profile_image.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -15,12 +16,14 @@ Widget showReportAction(BuildContext context, ProfileEntry profile) {
     onPressed: () async {
       final chat = LoginRepository.getInstance().repositories.chat;
       final isMatch = await chat.isInMatches(profile.uuid);
+      final messages = await chat.getAllMessages(profile.uuid);
       if (!context.mounted) {
         return;
       }
       await MyNavigator.push(context, MaterialPage<void>(child: ReportScreen(
         profile: profile,
         isMatch: isMatch,
+        messages: messages,
       )));
     },
     child: Text(context.strings.report_screen_title),
@@ -30,9 +33,11 @@ Widget showReportAction(BuildContext context, ProfileEntry profile) {
 class ReportScreen extends StatefulWidget {
   final ProfileEntry profile;
   final bool isMatch;
+  final List<MessageEntry> messages;
   const ReportScreen({
     required this.profile,
     required this.isMatch,
+    required this.messages,
     super.key,
   });
 
@@ -135,6 +140,15 @@ class _ReportScreenState extends State<ReportScreen> {
         MyNavigator.push(context, MaterialPage<void>(child: ReportProfileImageScreen(
           profileEntry: widget.profile,
           isMatch: widget.isMatch,
+        )));
+      }));
+    }
+
+    if (widget.messages.isNotEmpty) {
+      settings.add(reportListTile(context.strings.report_screen_chat_message_action, () {
+        MyNavigator.push(context, MaterialPage<void>(child: ReportChatMessageScreen(
+          profileEntry: widget.profile,
+          messages: widget.messages,
         )));
       }));
     }

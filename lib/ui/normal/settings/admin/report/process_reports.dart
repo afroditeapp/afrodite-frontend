@@ -72,7 +72,7 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
   @override
   bool get allowRejecting => false;
 
-  static String instructions = "B = block received, L = like received, Mnumber = match and sent messages count";
+  static String instructions = "B = block received\nL = like received\nMnumber = match and sent messages count\n\nN = profile name\nT = profile text\nM = chat message";
 
   @override
   Widget buildRowContent(BuildContext context, WrappedReportDetailed content) {
@@ -130,13 +130,14 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
     final profileName = content.content.profileName;
     final profileText = content.content.profileText;
     final profileContent = content.content.profileContent;
+    final chatMessage = content.content.chatMessage;
     final target = content.target;
     final Widget report;
 
     if (profileName != null) {
-      report = Text(profileName);
+      report = Text("N: $profileName");
     } else if (profileText != null) {
-      report = Text(profileText);
+      report = Text("T: $profileText");
     } else if (profileContent != null && target != null) {
       report = LayoutBuilder(
         builder: (context, constraints) {
@@ -148,6 +149,8 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
           );
         },
       );
+    } else if (chatMessage != null) {
+      report = Text("M: $chatMessage");
     } else {
       report = Text(context.strings.generic_error);
     }

@@ -1291,6 +1291,10 @@
   "@profile_statistics_screen_title": {
     "description": "Title for profile statistics screen"
   },
+  "report_chat_message_screen_confirm_dialog_title": "Report chat message?",
+  "@report_chat_message_screen_confirm_dialog_title": {
+    "description": "Chat message reporting confirmation dialog title"
+  },
   "report_profile_image_screen_confirm_dialog_title": "Report profile image?",
   "@report_profile_image_screen_confirm_dialog_title": {
     "description": "Profile image reporting confirmation dialog title"
@@ -1307,6 +1311,10 @@
   "report_profile_image_screen_profile_image_changed_error": "Report failed. Profile image has changed.",
   "@report_profile_image_screen_profile_image_changed_error": {
     "description": "Snackbar text displayed when reporting old profile image"
+  },
+  "report_screen_chat_message_action": "Chat message",
+  "@report_screen_chat_message_action": {
+    "description": "Title for report chat message action"
   },
   "report_screen_profile_image_action": "Profile image",
   "@report_screen_profile_image_action": {
