@@ -174,62 +174,6 @@ class AccountApi {
     return null;
   }
 
-  /// Get account report
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [AccountId] target (required):
-  ///   Report target
-  Future<Response> getAccountReportWithHttpInfo(AccountId target,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/account_api/account_report';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-      queryParams.addAll(_queryParams('', 'target', target));
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get account report
-  ///
-  /// Parameters:
-  ///
-  /// * [AccountId] target (required):
-  ///   Report target
-  Future<AccountReport?> getAccountReport(AccountId target,) async {
-    final response = await getAccountReportWithHttpInfo(target,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountReport',) as AccountReport;
-    
-    }
-    return null;
-  }
-
   /// Get non-changeable user information to account.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -473,50 +417,6 @@ class AccountApi {
     }
   }
 
-  /// Update account report.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [UpdateAccountReport] updateAccountReport (required):
-  Future<Response> postAccountReportWithHttpInfo(UpdateAccountReport updateAccountReport,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/account_api/account_report';
-
-    // ignore: prefer_final_locals
-    Object? postBody = updateAccountReport;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Update account report.
-  ///
-  /// Parameters:
-  ///
-  /// * [UpdateAccountReport] updateAccountReport (required):
-  Future<void> postAccountReport(UpdateAccountReport updateAccountReport,) async {
-    final response = await postAccountReportWithHttpInfo(updateAccountReport,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
   /// Setup non-changeable user information during `initial setup` state.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -599,6 +499,58 @@ class AccountApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Send custom report
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateCustomReportBoolean] updateCustomReportBoolean (required):
+  Future<Response> postCustomReportBooleanWithHttpInfo(UpdateCustomReportBoolean updateCustomReportBoolean,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/custom_report_boolean';
+
+    // ignore: prefer_final_locals
+    Object? postBody = updateCustomReportBoolean;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Send custom report
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateCustomReportBoolean] updateCustomReportBoolean (required):
+  Future<UpdateReportResult?> postCustomReportBoolean(UpdateCustomReportBoolean updateCustomReportBoolean,) async {
+    final response = await postCustomReportBooleanWithHttpInfo(updateCustomReportBoolean,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UpdateReportResult',) as UpdateReportResult;
+    
+    }
+    return null;
   }
 
   /// Get demo account's available accounts.
@@ -887,6 +839,53 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountId',) as AccountId;
+    
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'POST /account_api/custom_reports_config' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [CustomReportsFileHash] customReportsFileHash (required):
+  Future<Response> postGetCustomReportsConfigWithHttpInfo(CustomReportsFileHash customReportsFileHash,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/custom_reports_config';
+
+    // ignore: prefer_final_locals
+    Object? postBody = customReportsFileHash;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [CustomReportsFileHash] customReportsFileHash (required):
+  Future<GetCustomReportsConfigResult?> postGetCustomReportsConfig(CustomReportsFileHash customReportsFileHash,) async {
+    final response = await postGetCustomReportsConfigWithHttpInfo(customReportsFileHash,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetCustomReportsConfigResult',) as GetCustomReportsConfigResult;
     
     }
     return null;

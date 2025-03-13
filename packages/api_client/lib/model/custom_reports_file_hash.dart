@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class ProfileAttributesSyncVersion {
-  /// Returns a new [ProfileAttributesSyncVersion] instance.
-  ProfileAttributesSyncVersion({
-    required this.version,
+class CustomReportsFileHash {
+  /// Returns a new [CustomReportsFileHash] instance.
+  CustomReportsFileHash({
+    required this.h,
   });
 
-  int version;
+  String h;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileAttributesSyncVersion &&
-    other.version == version;
+  bool operator ==(Object other) => identical(this, other) || other is CustomReportsFileHash &&
+    other.h == h;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (version.hashCode);
+    (h.hashCode);
 
   @override
-  String toString() => 'ProfileAttributesSyncVersion[version=$version]';
+  String toString() => 'CustomReportsFileHash[h=$h]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'version'] = this.version;
+      json[r'h'] = this.h;
     return json;
   }
 
-  /// Returns a new [ProfileAttributesSyncVersion] instance and imports its values from
+  /// Returns a new [CustomReportsFileHash] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileAttributesSyncVersion? fromJson(dynamic value) {
+  static CustomReportsFileHash? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class ProfileAttributesSyncVersion {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileAttributesSyncVersion[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileAttributesSyncVersion[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "CustomReportsFileHash[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "CustomReportsFileHash[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileAttributesSyncVersion(
-        version: mapValueOfType<int>(json, r'version')!,
+      return CustomReportsFileHash(
+        h: mapValueOfType<String>(json, r'h')!,
       );
     }
     return null;
   }
 
-  static List<ProfileAttributesSyncVersion> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileAttributesSyncVersion>[];
+  static List<CustomReportsFileHash> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <CustomReportsFileHash>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileAttributesSyncVersion.fromJson(row);
+        final value = CustomReportsFileHash.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class ProfileAttributesSyncVersion {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileAttributesSyncVersion> mapFromJson(dynamic json) {
-    final map = <String, ProfileAttributesSyncVersion>{};
+  static Map<String, CustomReportsFileHash> mapFromJson(dynamic json) {
+    final map = <String, CustomReportsFileHash>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileAttributesSyncVersion.fromJson(entry.value);
+        final value = CustomReportsFileHash.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class ProfileAttributesSyncVersion {
     return map;
   }
 
-  // maps a json object with a list of ProfileAttributesSyncVersion-objects as value to a dart map
-  static Map<String, List<ProfileAttributesSyncVersion>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileAttributesSyncVersion>>{};
+  // maps a json object with a list of CustomReportsFileHash-objects as value to a dart map
+  static Map<String, List<CustomReportsFileHash>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<CustomReportsFileHash>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileAttributesSyncVersion.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = CustomReportsFileHash.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +103,7 @@ class ProfileAttributesSyncVersion {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'version',
+    'h',
   };
 }
 

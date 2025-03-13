@@ -66,21 +66,21 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**getAccountBanTime**](doc//AccountApi.md#getaccountbantime) | **GET** /account_api/account_ban_time/{aid} | Get account ban time
 *AccountApi* | [**getAccountData**](doc//AccountApi.md#getaccountdata) | **GET** /account_api/account_data | Get changeable user information to account.
 *AccountApi* | [**getAccountDeletionRequestState**](doc//AccountApi.md#getaccountdeletionrequeststate) | **GET** /account_api/get_account_deletion_request_state/{aid} | Get account deletion request state
-*AccountApi* | [**getAccountReport**](doc//AccountApi.md#getaccountreport) | **GET** /account_api/account_report | Get account report
 *AccountApi* | [**getAccountSetup**](doc//AccountApi.md#getaccountsetup) | **GET** /account_api/account_setup | Get non-changeable user information to account.
 *AccountApi* | [**getAccountState**](doc//AccountApi.md#getaccountstate) | **GET** /account_api/state | Get current account state.
 *AccountApi* | [**getLatestBirthdate**](doc//AccountApi.md#getlatestbirthdate) | **GET** /account_api/latest_birthdate | 
 *AccountApi* | [**getNewsItem**](doc//AccountApi.md#getnewsitem) | **GET** /account_api/news_item/{nid} | Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
 *AccountApi* | [**postAccountData**](doc//AccountApi.md#postaccountdata) | **POST** /account_api/account_data | Set changeable user information to account.
-*AccountApi* | [**postAccountReport**](doc//AccountApi.md#postaccountreport) | **POST** /account_api/account_report | Update account report.
 *AccountApi* | [**postAccountSetup**](doc//AccountApi.md#postaccountsetup) | **POST** /account_api/account_setup | Setup non-changeable user information during `initial setup` state.
 *AccountApi* | [**postCompleteSetup**](doc//AccountApi.md#postcompletesetup) | **POST** /account_api/complete_setup | Complete initial setup.
+*AccountApi* | [**postCustomReportBoolean**](doc//AccountApi.md#postcustomreportboolean) | **POST** /account_api/custom_report_boolean | Send custom report
 *AccountApi* | [**postDemoModeAccessibleAccounts**](doc//AccountApi.md#postdemomodeaccessibleaccounts) | **POST** /account_api/demo_mode_accessible_accounts | Get demo account's available accounts.
 *AccountApi* | [**postDemoModeConfirmLogin**](doc//AccountApi.md#postdemomodeconfirmlogin) | **POST** /account_api/demo_mode_confirm_login | 
 *AccountApi* | [**postDemoModeLogin**](doc//AccountApi.md#postdemomodelogin) | **POST** /account_api/demo_mode_login | Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
 *AccountApi* | [**postDemoModeLoginToAccount**](doc//AccountApi.md#postdemomodelogintoaccount) | **POST** /account_api/demo_mode_login_to_account | 
 *AccountApi* | [**postDemoModeLogout**](doc//AccountApi.md#postdemomodelogout) | **POST** /account_api/demo_mode_logout | 
 *AccountApi* | [**postDemoModeRegisterAccount**](doc//AccountApi.md#postdemomoderegisteraccount) | **POST** /account_api/demo_mode_register_account | 
+*AccountApi* | [**postGetCustomReportsConfig**](doc//AccountApi.md#postgetcustomreportsconfig) | **POST** /account_api/custom_reports_config | 
 *AccountApi* | [**postGetNextClientId**](doc//AccountApi.md#postgetnextclientid) | **POST** /account_api/next_client_id | 
 *AccountApi* | [**postGetNextNewsPage**](doc//AccountApi.md#postgetnextnewspage) | **POST** /account_api/next_news_page | 
 *AccountApi* | [**postGetUnreadNewsCount**](doc//AccountApi.md#postgetunreadnewscount) | **POST** /account_api/news_count | The unread news count for public news.
@@ -93,13 +93,11 @@ Class | Method | HTTP request | Description
 *AccountAdminApi* | [**deleteNewsItem**](doc//AccountAdminApi.md#deletenewsitem) | **DELETE** /account_api/admin/delete_news/{nid} | 
 *AccountAdminApi* | [**deleteNewsTranslation**](doc//AccountAdminApi.md#deletenewstranslation) | **DELETE** /account_api/admin/delete_news_translation/{nid}/{locale} | 
 *AccountAdminApi* | [**getAccountIdFromEmail**](doc//AccountAdminApi.md#getaccountidfromemail) | **GET** /account_api/get_account_id_from_email/{email} | Get account ID from email
-*AccountAdminApi* | [**getAccountReportPendingProcessingList**](doc//AccountAdminApi.md#getaccountreportpendingprocessinglist) | **GET** /account_api/admin/account_report_pending_processing | 
 *AccountAdminApi* | [**getAccountStateAdmin**](doc//AccountAdminApi.md#getaccountstateadmin) | **GET** /account_api/get_account_state_admin/{aid} | Get [model::Account] for specific account.
 *AccountAdminApi* | [**getAllAdmins**](doc//AccountAdminApi.md#getalladmins) | **GET** /account_api/get_all_admins | Get all admins
 *AccountAdminApi* | [**getPermissions**](doc//AccountAdminApi.md#getpermissions) | **GET** /account_api/get_permissions/{aid} | Get [model::Permissions] for specific account.
 *AccountAdminApi* | [**postCreateNewsItem**](doc//AccountAdminApi.md#postcreatenewsitem) | **POST** /account_api/admin/create_news_item | 
 *AccountAdminApi* | [**postDeleteAccount**](doc//AccountAdminApi.md#postdeleteaccount) | **POST** /account_api/delete_account/{aid} | Delete account instantly
-*AccountAdminApi* | [**postProcessAccountReport**](doc//AccountAdminApi.md#postprocessaccountreport) | **POST** /account_api/admin/process_account_report | 
 *AccountAdminApi* | [**postSetBanState**](doc//AccountAdminApi.md#postsetbanstate) | **POST** /account_api/set_ban_state | Ban or unban account
 *AccountAdminApi* | [**postSetNewsPublicity**](doc//AccountAdminApi.md#postsetnewspublicity) | **DELETE** /account_api/admin/set_news_publicity/{nid} | 
 *AccountAdminApi* | [**postSetPermissions**](doc//AccountAdminApi.md#postsetpermissions) | **POST** /account_api/set_permissions/{aid} | Set permissions for account
@@ -132,6 +130,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /chat_api/send_message | Send message to a match.
 *ChatApi* | [**postSetDeviceToken**](doc//ChatApi.md#postsetdevicetoken) | **POST** /chat_api/set_device_token | 
 *ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /chat_api/unblock_profile | Unblock profile
+*CommonApi* | [**getClientConfig**](doc//CommonApi.md#getclientconfig) | **GET** /common_api/client_config | 
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens. Connection is required as API access is allowed for connected clients.
 *CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
 *CommonAdminApi* | [**getBackendConfig**](doc//CommonAdminApi.md#getbackendconfig) | **GET** /common_api/backend_config | Get dynamic backend config.
@@ -170,7 +169,6 @@ Class | Method | HTTP request | Description
 *MediaAdminApi* | [**getProfileContentPendingModerationList**](doc//MediaAdminApi.md#getprofilecontentpendingmoderationlist) | **GET** /media_api/admin/profile_content_pending_moderation | Get first page of pending profile content moderations. Oldest item is first and count 25.
 *MediaAdminApi* | [**postModerateProfileContent**](doc//MediaAdminApi.md#postmoderateprofilecontent) | **POST** /media_api/admin/moderate_profile_content | Rejected category and details can be set only when the content is rejected.
 *ProfileApi* | [**deleteFavoriteProfile**](doc//ProfileApi.md#deletefavoriteprofile) | **DELETE** /profile_api/favorite_profile | Delete favorite profile
-*ProfileApi* | [**getAvailableProfileAttributes**](doc//ProfileApi.md#getavailableprofileattributes) | **GET** /profile_api/available_profile_attributes | Get info what profile attributes server supports.
 *ProfileApi* | [**getFavoriteProfiles**](doc//ProfileApi.md#getfavoriteprofiles) | **GET** /profile_api/favorite_profiles | Get list of all favorite profiles.
 *ProfileApi* | [**getInitialProfileAgeInfo**](doc//ProfileApi.md#getinitialprofileageinfo) | **GET** /profile_api/initial_profile_age_info | Get initial profile age information which can be used for calculating current accepted profile ages.
 *ProfileApi* | [**getLocation**](doc//ProfileApi.md#getlocation) | **GET** /profile_api/location | Get location for account which makes this request.
@@ -217,9 +215,6 @@ Class | Method | HTTP request | Description
  - [AccountData](doc//AccountData.md)
  - [AccountId](doc//AccountId.md)
  - [AccountIdDbValue](doc//AccountIdDbValue.md)
- - [AccountReport](doc//AccountReport.md)
- - [AccountReportContent](doc//AccountReportContent.md)
- - [AccountReportDetailed](doc//AccountReportDetailed.md)
  - [AccountSetup](doc//AccountSetup.md)
  - [AccountStateContainer](doc//AccountStateContainer.md)
  - [AccountSyncVersion](doc//AccountSyncVersion.md)
@@ -232,11 +227,12 @@ Class | Method | HTTP request | Description
  - [AttributeValue](doc//AttributeValue.md)
  - [AttributeValueOrderMode](doc//AttributeValueOrderMode.md)
  - [AuthPair](doc//AuthPair.md)
- - [AvailableProfileAttributes](doc//AvailableProfileAttributes.md)
  - [BackendConfig](doc//BackendConfig.md)
  - [BackendVersion](doc//BackendVersion.md)
  - [BooleanSetting](doc//BooleanSetting.md)
  - [BotConfig](doc//BotConfig.md)
+ - [ClientConfig](doc//ClientConfig.md)
+ - [ClientConfigSyncVersion](doc//ClientConfigSyncVersion.md)
  - [ClientId](doc//ClientId.md)
  - [ClientInfo](doc//ClientInfo.md)
  - [ClientLocalId](doc//ClientLocalId.md)
@@ -254,6 +250,14 @@ Class | Method | HTTP request | Description
  - [ContentProcessingStateType](doc//ContentProcessingStateType.md)
  - [ContentSlot](doc//ContentSlot.md)
  - [CurrentAccountInteractionState](doc//CurrentAccountInteractionState.md)
+ - [CustomReport](doc//CustomReport.md)
+ - [CustomReportContent](doc//CustomReportContent.md)
+ - [CustomReportLanguage](doc//CustomReportLanguage.md)
+ - [CustomReportTranslation](doc//CustomReportTranslation.md)
+ - [CustomReportType](doc//CustomReportType.md)
+ - [CustomReportsConfig](doc//CustomReportsConfig.md)
+ - [CustomReportsFileHash](doc//CustomReportsFileHash.md)
+ - [CustomReportsOrderMode](doc//CustomReportsOrderMode.md)
  - [DeleteLikeResult](doc//DeleteLikeResult.md)
  - [DemoModeConfirmLogin](doc//DemoModeConfirmLogin.md)
  - [DemoModeConfirmLoginResult](doc//DemoModeConfirmLoginResult.md)
@@ -269,8 +273,8 @@ Class | Method | HTTP request | Description
  - [GetAccountBanTimeResult](doc//GetAccountBanTimeResult.md)
  - [GetAccountDeletionRequestResult](doc//GetAccountDeletionRequestResult.md)
  - [GetAccountIdFromEmailResult](doc//GetAccountIdFromEmailResult.md)
- - [GetAccountReportList](doc//GetAccountReportList.md)
  - [GetAllAdminsResult](doc//GetAllAdminsResult.md)
+ - [GetCustomReportsConfigResult](doc//GetCustomReportsConfigResult.md)
  - [GetInitialProfileAgeInfoResult](doc//GetInitialProfileAgeInfoResult.md)
  - [GetMediaContentResult](doc//GetMediaContentResult.md)
  - [GetMyProfileResult](doc//GetMyProfileResult.md)
@@ -332,7 +336,6 @@ Class | Method | HTTP request | Description
  - [PostModerateProfileContent](doc//PostModerateProfileContent.md)
  - [PostModerateProfileName](doc//PostModerateProfileName.md)
  - [PostModerateProfileText](doc//PostModerateProfileText.md)
- - [ProcessAccountReport](doc//ProcessAccountReport.md)
  - [ProcessReport](doc//ProcessReport.md)
  - [Profile](doc//Profile.md)
  - [ProfileAgeCounts](doc//ProfileAgeCounts.md)
@@ -345,7 +348,6 @@ Class | Method | HTTP request | Description
  - [ProfileAttributeQueryResult](doc//ProfileAttributeQueryResult.md)
  - [ProfileAttributeValue](doc//ProfileAttributeValue.md)
  - [ProfileAttributeValueUpdate](doc//ProfileAttributeValueUpdate.md)
- - [ProfileAttributesSyncVersion](doc//ProfileAttributesSyncVersion.md)
  - [ProfileContent](doc//ProfileContent.md)
  - [ProfileContentModerationRejectedReasonCategory](doc//ProfileContentModerationRejectedReasonCategory.md)
  - [ProfileContentModerationRejectedReasonDetails](doc//ProfileContentModerationRejectedReasonDetails.md)
@@ -428,8 +430,8 @@ Class | Method | HTTP request | Description
  - [UnixTime](doc//UnixTime.md)
  - [UnreadNewsCount](doc//UnreadNewsCount.md)
  - [UnreadNewsCountResult](doc//UnreadNewsCountResult.md)
- - [UpdateAccountReport](doc//UpdateAccountReport.md)
  - [UpdateChatMessageReport](doc//UpdateChatMessageReport.md)
+ - [UpdateCustomReportBoolean](doc//UpdateCustomReportBoolean.md)
  - [UpdateMessageViewStatus](doc//UpdateMessageViewStatus.md)
  - [UpdateNewsTranslation](doc//UpdateNewsTranslation.md)
  - [UpdateNewsTranslationResult](doc//UpdateNewsTranslationResult.md)

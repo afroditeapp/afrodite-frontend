@@ -294,20 +294,20 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     );
   }
 
-  /// Save profile attributes from server to local storage and return them.
-  Future<AvailableProfileAttributes?> receiveProfileAttributes() async {
-    final attributeInfo = await _api.profile((api) => api.getAvailableProfileAttributes()).ok();
-    if (attributeInfo == null) {
-      return null;
+  /// Save client config from server to local database and return them.
+  Future<Result<ClientConfig, void>> receiveClientConfig() async {
+    final config = await _api.accountCommon((api) => api.getClientConfig()).ok();
+    if (config == null) {
+      return const Err(null);
     }
-    final latestAttributes = attributeInfo.info?.attributes ?? [];
-    final attributeOrder = attributeInfo.info?.attributeOrder;
+    final latestAttributes = config.profileAttributes?.attributes ?? [];
+    final attributeOrder = config.profileAttributes?.attributeOrder;
 
     final attributeRefreshList = await db.accountData(
       (db) => db.daoAvailableProfileAttributesTable.getAttributeRefreshList(latestAttributes),
     ).ok();
     if (attributeRefreshList == null) {
-      return null;
+      return const Err(null);
     }
 
     final List<ProfileAttributeQueryItem> updatedAttributes;
@@ -316,20 +316,20 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     } else {
       final r = await _api.profile((api) => api.postGetQueryAvailableProfileAttributes(ProfileAttributeQuery(values: attributeRefreshList))).ok();
       if (r == null) {
-        return null;
+        return const Err(null);
       }
       updatedAttributes = r.values;
     }
 
     await db.accountAction(
-      (db) => db.daoAvailableProfileAttributes.updateAvailableProfileAttributes(
+      (db) => db.daoAvailableProfileAttributes.updateClientConfig(
         attributeOrder,
-        attributeInfo.syncVersion,
+        config.syncVersion,
         latestAttributes,
         updatedAttributes,
       ),
     );
-    return attributeInfo;
+    return Ok(config);
   }
 
   Future<Result<void, void>> reloadMyProfile() async {

@@ -420,7 +420,7 @@ const forceSync = 255;
     SentLikes = 3,
     SentBlocks = 4,
     Matches = 5,
-    AvailableProfileAttributes = 6,
+    ClientConfig = 6,
     Profile = 7,
     News = 8,
     MediaContent = 9,
@@ -438,8 +438,8 @@ Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundData
   final syncVersionReceivedLikes = await accountBackgroundDb.accountStreamSingle(
     (db) => db.daoNewReceivedLikesAvailable.watchSyncVersionReceivedLikes()
   ).ok() ?? forceSync;
-  final syncVersionAvailableProfileAttributes = await db.accountStreamSingle(
-    (db) => db.daoSyncVersions.watchSyncVersionAvailableProfileAttributes()
+  final syncVersionClientConfig = await db.accountStreamSingle(
+    (db) => db.daoSyncVersions.watchSyncVersionClientConfig()
   ).ok() ?? forceSync;
   final syncVersionProfile = await db.accountStreamSingle(
     (db) => db.daoSyncVersions.watchSyncVersionProfile()
@@ -461,8 +461,8 @@ Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundData
     syncVersionAccount,
     1, // ReveivedLikes
     syncVersionReceivedLikes,
-    6, // AvailableProfileAttributes
-    syncVersionAvailableProfileAttributes,
+    6, // ClientConfig
+    syncVersionClientConfig,
     7, // Profile
     syncVersionProfile,
     8, // News

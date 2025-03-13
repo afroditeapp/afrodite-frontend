@@ -202,12 +202,6 @@ class ApiClient {
           return AccountId.fromJson(value);
         case 'AccountIdDbValue':
           return AccountIdDbValue.fromJson(value);
-        case 'AccountReport':
-          return AccountReport.fromJson(value);
-        case 'AccountReportContent':
-          return AccountReportContent.fromJson(value);
-        case 'AccountReportDetailed':
-          return AccountReportDetailed.fromJson(value);
         case 'AccountSetup':
           return AccountSetup.fromJson(value);
         case 'AccountStateContainer':
@@ -232,8 +226,6 @@ class ApiClient {
           return AttributeValueOrderModeTypeTransformer().decode(value);
         case 'AuthPair':
           return AuthPair.fromJson(value);
-        case 'AvailableProfileAttributes':
-          return AvailableProfileAttributes.fromJson(value);
         case 'BackendConfig':
           return BackendConfig.fromJson(value);
         case 'BackendVersion':
@@ -242,6 +234,10 @@ class ApiClient {
           return BooleanSetting.fromJson(value);
         case 'BotConfig':
           return BotConfig.fromJson(value);
+        case 'ClientConfig':
+          return ClientConfig.fromJson(value);
+        case 'ClientConfigSyncVersion':
+          return ClientConfigSyncVersion.fromJson(value);
         case 'ClientId':
           return ClientId.fromJson(value);
         case 'ClientInfo':
@@ -276,6 +272,22 @@ class ApiClient {
           return ContentSlotTypeTransformer().decode(value);
         case 'CurrentAccountInteractionState':
           return CurrentAccountInteractionStateTypeTransformer().decode(value);
+        case 'CustomReport':
+          return CustomReport.fromJson(value);
+        case 'CustomReportContent':
+          return CustomReportContent.fromJson(value);
+        case 'CustomReportLanguage':
+          return CustomReportLanguage.fromJson(value);
+        case 'CustomReportTranslation':
+          return CustomReportTranslation.fromJson(value);
+        case 'CustomReportType':
+          return CustomReportTypeTypeTransformer().decode(value);
+        case 'CustomReportsConfig':
+          return CustomReportsConfig.fromJson(value);
+        case 'CustomReportsFileHash':
+          return CustomReportsFileHash.fromJson(value);
+        case 'CustomReportsOrderMode':
+          return CustomReportsOrderModeTypeTransformer().decode(value);
         case 'DeleteLikeResult':
           return DeleteLikeResult.fromJson(value);
         case 'DemoModeConfirmLogin':
@@ -306,10 +318,10 @@ class ApiClient {
           return GetAccountDeletionRequestResult.fromJson(value);
         case 'GetAccountIdFromEmailResult':
           return GetAccountIdFromEmailResult.fromJson(value);
-        case 'GetAccountReportList':
-          return GetAccountReportList.fromJson(value);
         case 'GetAllAdminsResult':
           return GetAllAdminsResult.fromJson(value);
+        case 'GetCustomReportsConfigResult':
+          return GetCustomReportsConfigResult.fromJson(value);
         case 'GetInitialProfileAgeInfoResult':
           return GetInitialProfileAgeInfoResult.fromJson(value);
         case 'GetMediaContentResult':
@@ -432,8 +444,6 @@ class ApiClient {
           return PostModerateProfileName.fromJson(value);
         case 'PostModerateProfileText':
           return PostModerateProfileText.fromJson(value);
-        case 'ProcessAccountReport':
-          return ProcessAccountReport.fromJson(value);
         case 'ProcessReport':
           return ProcessReport.fromJson(value);
         case 'Profile':
@@ -458,8 +468,6 @@ class ApiClient {
           return ProfileAttributeValue.fromJson(value);
         case 'ProfileAttributeValueUpdate':
           return ProfileAttributeValueUpdate.fromJson(value);
-        case 'ProfileAttributesSyncVersion':
-          return ProfileAttributesSyncVersion.fromJson(value);
         case 'ProfileContent':
           return ProfileContent.fromJson(value);
         case 'ProfileContentModerationRejectedReasonCategory':
@@ -557,7 +565,7 @@ class ApiClient {
         case 'ReportProcessingState':
           return ReportProcessingStateTypeTransformer().decode(value);
         case 'ReportTypeNumber':
-          return ReportTypeNumberTypeTransformer().decode(value);
+          return ReportTypeNumber.fromJson(value);
         case 'ResetMatchesIteratorResult':
           return ResetMatchesIteratorResult.fromJson(value);
         case 'ResetNewsIteratorResult':
@@ -624,10 +632,10 @@ class ApiClient {
           return UnreadNewsCount.fromJson(value);
         case 'UnreadNewsCountResult':
           return UnreadNewsCountResult.fromJson(value);
-        case 'UpdateAccountReport':
-          return UpdateAccountReport.fromJson(value);
         case 'UpdateChatMessageReport':
           return UpdateChatMessageReport.fromJson(value);
+        case 'UpdateCustomReportBoolean':
+          return UpdateCustomReportBoolean.fromJson(value);
         case 'UpdateMessageViewStatus':
           return UpdateMessageViewStatus.fromJson(value);
         case 'UpdateNewsTranslation':

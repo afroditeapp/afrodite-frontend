@@ -31,9 +31,6 @@ lib/model/account_content.dart
 lib/model/account_data.dart
 lib/model/account_id.dart
 lib/model/account_id_db_value.dart
-lib/model/account_report.dart
-lib/model/account_report_content.dart
-lib/model/account_report_detailed.dart
 lib/model/account_setup.dart
 lib/model/account_state_container.dart
 lib/model/account_sync_version.dart
@@ -46,11 +43,12 @@ lib/model/attribute_order_mode.dart
 lib/model/attribute_value.dart
 lib/model/attribute_value_order_mode.dart
 lib/model/auth_pair.dart
-lib/model/available_profile_attributes.dart
 lib/model/backend_config.dart
 lib/model/backend_version.dart
 lib/model/boolean_setting.dart
 lib/model/bot_config.dart
+lib/model/client_config.dart
+lib/model/client_config_sync_version.dart
 lib/model/client_id.dart
 lib/model/client_info.dart
 lib/model/client_local_id.dart
@@ -68,6 +66,14 @@ lib/model/content_processing_state_changed.dart
 lib/model/content_processing_state_type.dart
 lib/model/content_slot.dart
 lib/model/current_account_interaction_state.dart
+lib/model/custom_report.dart
+lib/model/custom_report_content.dart
+lib/model/custom_report_language.dart
+lib/model/custom_report_translation.dart
+lib/model/custom_report_type.dart
+lib/model/custom_reports_config.dart
+lib/model/custom_reports_file_hash.dart
+lib/model/custom_reports_order_mode.dart
 lib/model/delete_like_result.dart
 lib/model/demo_mode_confirm_login.dart
 lib/model/demo_mode_confirm_login_result.dart
@@ -83,8 +89,8 @@ lib/model/fcm_device_token.dart
 lib/model/get_account_ban_time_result.dart
 lib/model/get_account_deletion_request_result.dart
 lib/model/get_account_id_from_email_result.dart
-lib/model/get_account_report_list.dart
 lib/model/get_all_admins_result.dart
+lib/model/get_custom_reports_config_result.dart
 lib/model/get_initial_profile_age_info_result.dart
 lib/model/get_media_content_result.dart
 lib/model/get_my_profile_result.dart
@@ -146,7 +152,6 @@ lib/model/permissions.dart
 lib/model/post_moderate_profile_content.dart
 lib/model/post_moderate_profile_name.dart
 lib/model/post_moderate_profile_text.dart
-lib/model/process_account_report.dart
 lib/model/process_report.dart
 lib/model/profile.dart
 lib/model/profile_age_counts.dart
@@ -159,7 +164,6 @@ lib/model/profile_attribute_query_item.dart
 lib/model/profile_attribute_query_result.dart
 lib/model/profile_attribute_value.dart
 lib/model/profile_attribute_value_update.dart
-lib/model/profile_attributes_sync_version.dart
 lib/model/profile_content.dart
 lib/model/profile_content_moderation_rejected_reason_category.dart
 lib/model/profile_content_moderation_rejected_reason_details.dart
@@ -242,8 +246,8 @@ lib/model/translation.dart
 lib/model/unix_time.dart
 lib/model/unread_news_count.dart
 lib/model/unread_news_count_result.dart
-lib/model/update_account_report.dart
 lib/model/update_chat_message_report.dart
+lib/model/update_custom_report_boolean.dart
 lib/model/update_message_view_status.dart
 lib/model/update_news_translation.dart
 lib/model/update_news_translation_result.dart

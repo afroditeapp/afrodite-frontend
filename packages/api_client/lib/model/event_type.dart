@@ -32,7 +32,7 @@ class EventType {
   static const matchesChanged = EventType._(r'MatchesChanged');
   static const latestViewedMessageChanged = EventType._(r'LatestViewedMessageChanged');
   static const contentProcessingStateChanged = EventType._(r'ContentProcessingStateChanged');
-  static const availableProfileAttributesChanged = EventType._(r'AvailableProfileAttributesChanged');
+  static const clientConfigChanged = EventType._(r'ClientConfigChanged');
   static const profileChanged = EventType._(r'ProfileChanged');
   static const newsCountChanged = EventType._(r'NewsCountChanged');
   static const initialContentModerationCompleted = EventType._(r'InitialContentModerationCompleted');
@@ -50,7 +50,7 @@ class EventType {
     matchesChanged,
     latestViewedMessageChanged,
     contentProcessingStateChanged,
-    availableProfileAttributesChanged,
+    clientConfigChanged,
     profileChanged,
     newsCountChanged,
     initialContentModerationCompleted,
@@ -103,7 +103,7 @@ class EventTypeTypeTransformer {
         case r'MatchesChanged': return EventType.matchesChanged;
         case r'LatestViewedMessageChanged': return EventType.latestViewedMessageChanged;
         case r'ContentProcessingStateChanged': return EventType.contentProcessingStateChanged;
-        case r'AvailableProfileAttributesChanged': return EventType.availableProfileAttributesChanged;
+        case r'ClientConfigChanged': return EventType.clientConfigChanged;
         case r'ProfileChanged': return EventType.profileChanged;
         case r'NewsCountChanged': return EventType.newsCountChanged;
         case r'InitialContentModerationCompleted': return EventType.initialContentModerationCompleted;

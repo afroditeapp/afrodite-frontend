@@ -34,12 +34,12 @@ class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with A
       }
 
       emit(state.copyWith(refreshState: AttributeRefreshLoading()));
-      final attributes = await profile.receiveProfileAttributes();
+      final r = await profile.receiveClientConfig();
       emit(state.copyWith(refreshState: null));
 
       // Only check error as the new attributes will be received from the
       // listener
-      if (attributes == null) {
+      if (r.isErr()) {
         showSnackBar(R.strings.generic_error_occurred);
       }
     });

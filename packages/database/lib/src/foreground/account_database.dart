@@ -82,7 +82,7 @@ class Account extends Table {
   IntColumn get syncVersionAccount => integer().nullable()();
   IntColumn get syncVersionProfile => integer().nullable()();
   IntColumn get syncVersionMediaContent => integer().nullable()();
-  IntColumn get syncVersionAvailableProfileAttributes => integer().nullable()();
+  IntColumn get syncVersionClientConfig => integer().nullable()();
 
   // DaoCurrentContent
 

@@ -130,10 +130,6 @@ class JsonString {
     return Permissions.fromJson(jsonMap);
   }
 
-  AvailableProfileAttributes? toAvailableProfileAttributes() {
-    return AvailableProfileAttributes.fromJson(jsonMap);
-  }
-
   GetProfileFilteringSettings? toProfileAttributeFilterList() {
     return GetProfileFilteringSettings.fromJson(jsonMap);
   }
@@ -159,12 +155,6 @@ extension AccountStateContainerJson on AccountStateContainer {
 }
 
 extension PermissionsJson on Permissions {
-  JsonString toJsonString() {
-    return JsonString(toJson());
-  }
-}
-
-extension AvailableProfileAttributesJson on AvailableProfileAttributes {
   JsonString toJsonString() {
     return JsonString(toJson());
   }

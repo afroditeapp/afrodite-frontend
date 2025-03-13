@@ -177,12 +177,11 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<int> syncVersionMediaContent =
       GeneratedColumn<int>('sync_version_media_content', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _syncVersionAvailableProfileAttributesMeta =
-      const VerificationMeta('syncVersionAvailableProfileAttributes');
+  static const VerificationMeta _syncVersionClientConfigMeta =
+      const VerificationMeta('syncVersionClientConfig');
   @override
-  late final GeneratedColumn<int> syncVersionAvailableProfileAttributes =
-      GeneratedColumn<int>(
-          'sync_version_available_profile_attributes', aliasedName, true,
+  late final GeneratedColumn<int> syncVersionClientConfig =
+      GeneratedColumn<int>('sync_version_client_config', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _primaryContentGridCropSizeMeta =
       const VerificationMeta('primaryContentGridCropSize');
@@ -522,7 +521,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         syncVersionAccount,
         syncVersionProfile,
         syncVersionMediaContent,
-        syncVersionAvailableProfileAttributes,
+        syncVersionClientConfig,
         primaryContentGridCropSize,
         primaryContentGridCropX,
         primaryContentGridCropY,
@@ -653,12 +652,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['sync_version_media_content']!,
               _syncVersionMediaContentMeta));
     }
-    if (data.containsKey('sync_version_available_profile_attributes')) {
+    if (data.containsKey('sync_version_client_config')) {
       context.handle(
-          _syncVersionAvailableProfileAttributesMeta,
-          syncVersionAvailableProfileAttributes.isAcceptableOrUnknown(
-              data['sync_version_available_profile_attributes']!,
-              _syncVersionAvailableProfileAttributesMeta));
+          _syncVersionClientConfigMeta,
+          syncVersionClientConfig.isAcceptableOrUnknown(
+              data['sync_version_client_config']!,
+              _syncVersionClientConfigMeta));
     }
     if (data.containsKey('primary_content_grid_crop_size')) {
       context.handle(
@@ -919,9 +918,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       syncVersionMediaContent: attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}sync_version_media_content']),
-      syncVersionAvailableProfileAttributes: attachedDatabase.typeMapping.read(
+      syncVersionClientConfig: attachedDatabase.typeMapping.read(
           DriftSqlType.int,
-          data['${effectivePrefix}sync_version_available_profile_attributes']),
+          data['${effectivePrefix}sync_version_client_config']),
       primaryContentGridCropSize: attachedDatabase.typeMapping.read(
           DriftSqlType.double,
           data['${effectivePrefix}primary_content_grid_crop_size']),
@@ -1143,7 +1142,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final int? syncVersionAccount;
   final int? syncVersionProfile;
   final int? syncVersionMediaContent;
-  final int? syncVersionAvailableProfileAttributes;
+  final int? syncVersionClientConfig;
   final double? primaryContentGridCropSize;
   final double? primaryContentGridCropX;
   final double? primaryContentGridCropY;
@@ -1208,7 +1207,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.syncVersionAccount,
       this.syncVersionProfile,
       this.syncVersionMediaContent,
-      this.syncVersionAvailableProfileAttributes,
+      this.syncVersionClientConfig,
       this.primaryContentGridCropSize,
       this.primaryContentGridCropX,
       this.primaryContentGridCropY,
@@ -1317,9 +1316,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['sync_version_media_content'] =
           Variable<int>(syncVersionMediaContent);
     }
-    if (!nullToAbsent || syncVersionAvailableProfileAttributes != null) {
-      map['sync_version_available_profile_attributes'] =
-          Variable<int>(syncVersionAvailableProfileAttributes);
+    if (!nullToAbsent || syncVersionClientConfig != null) {
+      map['sync_version_client_config'] =
+          Variable<int>(syncVersionClientConfig);
     }
     if (!nullToAbsent || primaryContentGridCropSize != null) {
       map['primary_content_grid_crop_size'] =
@@ -1533,10 +1532,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       syncVersionMediaContent: syncVersionMediaContent == null && nullToAbsent
           ? const Value.absent()
           : Value(syncVersionMediaContent),
-      syncVersionAvailableProfileAttributes:
-          syncVersionAvailableProfileAttributes == null && nullToAbsent
-              ? const Value.absent()
-              : Value(syncVersionAvailableProfileAttributes),
+      syncVersionClientConfig: syncVersionClientConfig == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncVersionClientConfig),
       primaryContentGridCropSize:
           primaryContentGridCropSize == null && nullToAbsent
               ? const Value.absent()
@@ -1718,8 +1716,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       syncVersionProfile: serializer.fromJson<int?>(json['syncVersionProfile']),
       syncVersionMediaContent:
           serializer.fromJson<int?>(json['syncVersionMediaContent']),
-      syncVersionAvailableProfileAttributes: serializer
-          .fromJson<int?>(json['syncVersionAvailableProfileAttributes']),
+      syncVersionClientConfig:
+          serializer.fromJson<int?>(json['syncVersionClientConfig']),
       primaryContentGridCropSize:
           serializer.fromJson<double?>(json['primaryContentGridCropSize']),
       primaryContentGridCropX:
@@ -1835,8 +1833,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'syncVersionProfile': serializer.toJson<int?>(syncVersionProfile),
       'syncVersionMediaContent':
           serializer.toJson<int?>(syncVersionMediaContent),
-      'syncVersionAvailableProfileAttributes':
-          serializer.toJson<int?>(syncVersionAvailableProfileAttributes),
+      'syncVersionClientConfig':
+          serializer.toJson<int?>(syncVersionClientConfig),
       'primaryContentGridCropSize':
           serializer.toJson<double?>(primaryContentGridCropSize),
       'primaryContentGridCropX':
@@ -1929,8 +1927,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<int?> syncVersionAccount = const Value.absent(),
           Value<int?> syncVersionProfile = const Value.absent(),
           Value<int?> syncVersionMediaContent = const Value.absent(),
-          Value<int?> syncVersionAvailableProfileAttributes =
-              const Value.absent(),
+          Value<int?> syncVersionClientConfig = const Value.absent(),
           Value<double?> primaryContentGridCropSize = const Value.absent(),
           Value<double?> primaryContentGridCropX = const Value.absent(),
           Value<double?> primaryContentGridCropY = const Value.absent(),
@@ -2030,10 +2027,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         syncVersionMediaContent: syncVersionMediaContent.present
             ? syncVersionMediaContent.value
             : this.syncVersionMediaContent,
-        syncVersionAvailableProfileAttributes:
-            syncVersionAvailableProfileAttributes.present
-                ? syncVersionAvailableProfileAttributes.value
-                : this.syncVersionAvailableProfileAttributes,
+        syncVersionClientConfig: syncVersionClientConfig.present
+            ? syncVersionClientConfig.value
+            : this.syncVersionClientConfig,
         primaryContentGridCropSize: primaryContentGridCropSize.present
             ? primaryContentGridCropSize.value
             : this.primaryContentGridCropSize,
@@ -2216,10 +2212,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       syncVersionMediaContent: data.syncVersionMediaContent.present
           ? data.syncVersionMediaContent.value
           : this.syncVersionMediaContent,
-      syncVersionAvailableProfileAttributes:
-          data.syncVersionAvailableProfileAttributes.present
-              ? data.syncVersionAvailableProfileAttributes.value
-              : this.syncVersionAvailableProfileAttributes,
+      syncVersionClientConfig: data.syncVersionClientConfig.present
+          ? data.syncVersionClientConfig.value
+          : this.syncVersionClientConfig,
       primaryContentGridCropSize: data.primaryContentGridCropSize.present
           ? data.primaryContentGridCropSize.value
           : this.primaryContentGridCropSize,
@@ -2380,8 +2375,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('syncVersionAccount: $syncVersionAccount, ')
           ..write('syncVersionProfile: $syncVersionProfile, ')
           ..write('syncVersionMediaContent: $syncVersionMediaContent, ')
-          ..write(
-              'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
+          ..write('syncVersionClientConfig: $syncVersionClientConfig, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
           ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
@@ -2457,7 +2451,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         syncVersionAccount,
         syncVersionProfile,
         syncVersionMediaContent,
-        syncVersionAvailableProfileAttributes,
+        syncVersionClientConfig,
         primaryContentGridCropSize,
         primaryContentGridCropX,
         primaryContentGridCropY,
@@ -2531,8 +2525,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.syncVersionAccount == this.syncVersionAccount &&
           other.syncVersionProfile == this.syncVersionProfile &&
           other.syncVersionMediaContent == this.syncVersionMediaContent &&
-          other.syncVersionAvailableProfileAttributes ==
-              this.syncVersionAvailableProfileAttributes &&
+          other.syncVersionClientConfig == this.syncVersionClientConfig &&
           other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
           other.primaryContentGridCropX == this.primaryContentGridCropX &&
           other.primaryContentGridCropY == this.primaryContentGridCropY &&
@@ -2606,7 +2599,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<int?> syncVersionAccount;
   final Value<int?> syncVersionProfile;
   final Value<int?> syncVersionMediaContent;
-  final Value<int?> syncVersionAvailableProfileAttributes;
+  final Value<int?> syncVersionClientConfig;
   final Value<double?> primaryContentGridCropSize;
   final Value<double?> primaryContentGridCropX;
   final Value<double?> primaryContentGridCropY;
@@ -2671,7 +2664,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.syncVersionAccount = const Value.absent(),
     this.syncVersionProfile = const Value.absent(),
     this.syncVersionMediaContent = const Value.absent(),
-    this.syncVersionAvailableProfileAttributes = const Value.absent(),
+    this.syncVersionClientConfig = const Value.absent(),
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
     this.primaryContentGridCropY = const Value.absent(),
@@ -2735,7 +2728,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.syncVersionAccount = const Value.absent(),
     this.syncVersionProfile = const Value.absent(),
     this.syncVersionMediaContent = const Value.absent(),
-    this.syncVersionAvailableProfileAttributes = const Value.absent(),
+    this.syncVersionClientConfig = const Value.absent(),
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
     this.primaryContentGridCropY = const Value.absent(),
@@ -2799,7 +2792,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<int>? syncVersionAccount,
     Expression<int>? syncVersionProfile,
     Expression<int>? syncVersionMediaContent,
-    Expression<int>? syncVersionAvailableProfileAttributes,
+    Expression<int>? syncVersionClientConfig,
     Expression<double>? primaryContentGridCropSize,
     Expression<double>? primaryContentGridCropX,
     Expression<double>? primaryContentGridCropY,
@@ -2880,9 +2873,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'sync_version_profile': syncVersionProfile,
       if (syncVersionMediaContent != null)
         'sync_version_media_content': syncVersionMediaContent,
-      if (syncVersionAvailableProfileAttributes != null)
-        'sync_version_available_profile_attributes':
-            syncVersionAvailableProfileAttributes,
+      if (syncVersionClientConfig != null)
+        'sync_version_client_config': syncVersionClientConfig,
       if (primaryContentGridCropSize != null)
         'primary_content_grid_crop_size': primaryContentGridCropSize,
       if (primaryContentGridCropX != null)
@@ -2982,7 +2974,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<int?>? syncVersionAccount,
       Value<int?>? syncVersionProfile,
       Value<int?>? syncVersionMediaContent,
-      Value<int?>? syncVersionAvailableProfileAttributes,
+      Value<int?>? syncVersionClientConfig,
       Value<double?>? primaryContentGridCropSize,
       Value<double?>? primaryContentGridCropX,
       Value<double?>? primaryContentGridCropY,
@@ -3060,9 +3052,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       syncVersionProfile: syncVersionProfile ?? this.syncVersionProfile,
       syncVersionMediaContent:
           syncVersionMediaContent ?? this.syncVersionMediaContent,
-      syncVersionAvailableProfileAttributes:
-          syncVersionAvailableProfileAttributes ??
-              this.syncVersionAvailableProfileAttributes,
+      syncVersionClientConfig:
+          syncVersionClientConfig ?? this.syncVersionClientConfig,
       primaryContentGridCropSize:
           primaryContentGridCropSize ?? this.primaryContentGridCropSize,
       primaryContentGridCropX:
@@ -3216,9 +3207,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['sync_version_media_content'] =
           Variable<int>(syncVersionMediaContent.value);
     }
-    if (syncVersionAvailableProfileAttributes.present) {
-      map['sync_version_available_profile_attributes'] =
-          Variable<int>(syncVersionAvailableProfileAttributes.value);
+    if (syncVersionClientConfig.present) {
+      map['sync_version_client_config'] =
+          Variable<int>(syncVersionClientConfig.value);
     }
     if (primaryContentGridCropSize.present) {
       map['primary_content_grid_crop_size'] =
@@ -3420,8 +3411,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('syncVersionAccount: $syncVersionAccount, ')
           ..write('syncVersionProfile: $syncVersionProfile, ')
           ..write('syncVersionMediaContent: $syncVersionMediaContent, ')
-          ..write(
-              'syncVersionAvailableProfileAttributes: $syncVersionAvailableProfileAttributes, ')
+          ..write('syncVersionClientConfig: $syncVersionClientConfig, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
           ..write('primaryContentGridCropY: $primaryContentGridCropY, ')

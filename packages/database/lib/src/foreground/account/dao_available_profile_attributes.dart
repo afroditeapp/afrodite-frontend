@@ -16,9 +16,9 @@ part 'dao_available_profile_attributes.g.dart';
 class DaoAvailableProfileAttributes extends DatabaseAccessor<AccountDatabase> with _$DaoAvailableProfileAttributesMixin, AccountTools {
   DaoAvailableProfileAttributes(super.db);
 
-  Future<void> updateAvailableProfileAttributes(
+  Future<void> updateClientConfig(
     api.AttributeOrderMode? orderMode,
-    api.ProfileAttributesSyncVersion syncVersion,
+    api.ClientConfigSyncVersion syncVersion,
     List<api.AttributeIdAndHash> latestAttributes,
     List<api.ProfileAttributeQueryItem> updatedAttributes,
   ) async {
@@ -35,7 +35,7 @@ class DaoAvailableProfileAttributes extends DatabaseAccessor<AccountDatabase> wi
         ),
       );
 
-      await db.daoSyncVersions.updateSyncVersionAvailableProfileAttributes(syncVersion);
+      await db.daoSyncVersions.updateSyncVersionClientConfig(syncVersion);
 
       for (final c in currentAttributes) {
         final l = latestAttributes.firstWhereOrNull((l) => l.id == c.attribute.id);

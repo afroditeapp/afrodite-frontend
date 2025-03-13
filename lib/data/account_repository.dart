@@ -165,8 +165,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       log.finest("Ignoring matches changed event");
     } else if (event.event == EventType.newMessageReceived) {
       await chat.receiveNewMessages();
-    } else if (event.event == EventType.availableProfileAttributesChanged) {
-      await profile.receiveProfileAttributes();
+    } else if (event.event == EventType.clientConfigChanged) {
+      await profile.receiveClientConfig();
     } else if (event.event == EventType.profileChanged) {
       await profile.reloadMyProfile();
     } else if (event.event == EventType.newsCountChanged) {

@@ -10,37 +10,36 @@
 
 part of openapi.api;
 
-class ReportTypeNumber {
-  /// Returns a new [ReportTypeNumber] instance.
-  ReportTypeNumber({
-    required this.n,
+class ClientConfigSyncVersion {
+  /// Returns a new [ClientConfigSyncVersion] instance.
+  ClientConfigSyncVersion({
+    required this.version,
   });
 
-  /// This is i8 so that max value is 127. That makes SQLite to store the value using single byte.
-  int n;
+  int version;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ReportTypeNumber &&
-    other.n == n;
+  bool operator ==(Object other) => identical(this, other) || other is ClientConfigSyncVersion &&
+    other.version == version;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (n.hashCode);
+    (version.hashCode);
 
   @override
-  String toString() => 'ReportTypeNumber[n=$n]';
+  String toString() => 'ClientConfigSyncVersion[version=$version]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'n'] = this.n;
+      json[r'version'] = this.version;
     return json;
   }
 
-  /// Returns a new [ReportTypeNumber] instance and imports its values from
+  /// Returns a new [ClientConfigSyncVersion] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ReportTypeNumber? fromJson(dynamic value) {
+  static ClientConfigSyncVersion? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -49,24 +48,24 @@ class ReportTypeNumber {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ReportTypeNumber[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ReportTypeNumber[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ClientConfigSyncVersion[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ClientConfigSyncVersion[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ReportTypeNumber(
-        n: mapValueOfType<int>(json, r'n')!,
+      return ClientConfigSyncVersion(
+        version: mapValueOfType<int>(json, r'version')!,
       );
     }
     return null;
   }
 
-  static List<ReportTypeNumber> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ReportTypeNumber>[];
+  static List<ClientConfigSyncVersion> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ClientConfigSyncVersion>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ReportTypeNumber.fromJson(row);
+        final value = ClientConfigSyncVersion.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -75,12 +74,12 @@ class ReportTypeNumber {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ReportTypeNumber> mapFromJson(dynamic json) {
-    final map = <String, ReportTypeNumber>{};
+  static Map<String, ClientConfigSyncVersion> mapFromJson(dynamic json) {
+    final map = <String, ClientConfigSyncVersion>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ReportTypeNumber.fromJson(entry.value);
+        final value = ClientConfigSyncVersion.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -89,14 +88,14 @@ class ReportTypeNumber {
     return map;
   }
 
-  // maps a json object with a list of ReportTypeNumber-objects as value to a dart map
-  static Map<String, List<ReportTypeNumber>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ReportTypeNumber>>{};
+  // maps a json object with a list of ClientConfigSyncVersion-objects as value to a dart map
+  static Map<String, List<ClientConfigSyncVersion>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ClientConfigSyncVersion>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ReportTypeNumber.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ClientConfigSyncVersion.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -104,7 +103,7 @@ class ReportTypeNumber {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'n',
+    'version',
   };
 }
 

@@ -79,6 +79,12 @@ String parameterToString(dynamic value) {
   if (value is CurrentAccountInteractionState) {
     return CurrentAccountInteractionStateTypeTransformer().encode(value).toString();
   }
+  if (value is CustomReportType) {
+    return CustomReportTypeTypeTransformer().encode(value).toString();
+  }
+  if (value is CustomReportsOrderMode) {
+    return CustomReportsOrderModeTypeTransformer().encode(value).toString();
+  }
   if (value is EventType) {
     return EventTypeTypeTransformer().encode(value).toString();
   }
@@ -111,9 +117,6 @@ String parameterToString(dynamic value) {
   }
   if (value is ReportProcessingState) {
     return ReportProcessingStateTypeTransformer().encode(value).toString();
-  }
-  if (value is ReportTypeNumber) {
-    return ReportTypeNumberTypeTransformer().encode(value).toString();
   }
   if (value is ScheduledTaskType) {
     return ScheduledTaskTypeTypeTransformer().encode(value).toString();
