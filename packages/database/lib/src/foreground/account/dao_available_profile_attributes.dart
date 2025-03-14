@@ -21,6 +21,8 @@ class DaoAvailableProfileAttributes extends DatabaseAccessor<AccountDatabase> wi
     api.ClientConfigSyncVersion syncVersion,
     List<api.AttributeIdAndHash> latestAttributes,
     List<api.ProfileAttributeQueryItem> updatedAttributes,
+    api.CustomReportsFileHash? fileHash,
+    api.CustomReportsConfig? config,
   ) async {
     await transaction(() async {
       final currentAttributes = await db.daoAvailableProfileAttributesTable.watchAttributes().firstOrNull;
@@ -47,6 +49,8 @@ class DaoAvailableProfileAttributes extends DatabaseAccessor<AccountDatabase> wi
       for (final u in updatedAttributes) {
         await db.daoAvailableProfileAttributesTable.updateAttribute(u.h, u.a);
       }
+
+      await db.daoCustomReports.updateCustomReportsConfig(fileHash, config);
     });
   }
 

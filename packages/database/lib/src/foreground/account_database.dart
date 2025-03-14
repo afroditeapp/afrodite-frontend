@@ -3,6 +3,7 @@
 import 'package:async/async.dart';
 import 'package:database/src/foreground/account/dao_account_settings.dart';
 import 'package:database/src/foreground/account/dao_available_profile_attributes.dart';
+import 'package:database/src/foreground/account/dao_custom_reports.dart';
 import 'package:database/src/foreground/account/dao_local_image_settings.dart';
 import 'package:database/src/foreground/account/dao_message_keys.dart';
 import 'package:database/src/foreground/account/dao_profile_initial_age_info.dart';
@@ -152,6 +153,11 @@ class Account extends Table {
 
   IntColumn get serverMaintenanceUnixTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get serverMaintenanceUnixTimeViewed => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+
+  // DaoCustomReports
+
+  TextColumn get customReportsFileHash => text().map(const NullAwareTypeConverter.wrap(CustomReportsFileHashConverter())).nullable()();
+  TextColumn get customReportsConfig => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
 }
 
 @DriftDatabase(
@@ -180,6 +186,7 @@ class Account extends Table {
     DaoProfileInitialAgeInfo,
     DaoAvailableProfileAttributes,
     DaoServerMaintenance,
+    DaoCustomReports,
     // Other tables
     DaoMessages,
     DaoConversationList,

@@ -117,6 +117,19 @@ class UtcDateTimeConverter extends TypeConverter<UtcDateTime, int> {
   }
 }
 
+class CustomReportsFileHashConverter extends TypeConverter<CustomReportsFileHash, String> {
+  const CustomReportsFileHashConverter();
+
+  @override
+  CustomReportsFileHash fromSql(fromDb) {
+    return CustomReportsFileHash(h: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.h;
+  }
+}
 
 class JsonString {
   final Map<String, Object?> jsonMap;
@@ -140,6 +153,10 @@ class JsonString {
 
   Attribute? toAttribute() {
     return Attribute.fromJson(jsonMap);
+  }
+
+  CustomReportsConfig? toCustomReportsConfig() {
+    return CustomReportsConfig.fromJson(jsonMap);
   }
 
   static TypeConverter<JsonString, String> driftConverter = TypeConverter.json(
@@ -173,6 +190,12 @@ extension SearchGroupsJson on SearchGroups {
 }
 
 extension AttributeJson on Attribute {
+  JsonString toJsonString() {
+    return JsonString(toJson());
+  }
+}
+
+extension CustomReportsConfigJson on CustomReportsConfig {
   JsonString toJsonString() {
     return JsonString(toJson());
   }

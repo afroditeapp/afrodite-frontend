@@ -500,6 +500,24 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $AccountTable.$converterserverMaintenanceUnixTimeViewed);
+  static const VerificationMeta _customReportsFileHashMeta =
+      const VerificationMeta('customReportsFileHash');
+  @override
+  late final GeneratedColumnWithTypeConverter<api.CustomReportsFileHash?,
+      String> customReportsFileHash = GeneratedColumn<String>(
+          'custom_reports_file_hash', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false)
+      .withConverter<api.CustomReportsFileHash?>(
+          $AccountTable.$convertercustomReportsFileHash);
+  static const VerificationMeta _customReportsConfigMeta =
+      const VerificationMeta('customReportsConfig');
+  @override
+  late final GeneratedColumnWithTypeConverter<JsonString?, String>
+      customReportsConfig = GeneratedColumn<String>(
+              'custom_reports_config', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<JsonString?>(
+              $AccountTable.$convertercustomReportsConfig);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -563,7 +581,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         profileInitialAgeSetUnixTime,
         profileInitialAge,
         serverMaintenanceUnixTime,
-        serverMaintenanceUnixTimeViewed
+        serverMaintenanceUnixTimeViewed,
+        customReportsFileHash,
+        customReportsConfig
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -851,6 +871,10 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         _serverMaintenanceUnixTimeMeta, const VerificationResult.success());
     context.handle(_serverMaintenanceUnixTimeViewedMeta,
         const VerificationResult.success());
+    context.handle(
+        _customReportsFileHashMeta, const VerificationResult.success());
+    context.handle(
+        _customReportsConfigMeta, const VerificationResult.success());
     return context;
   }
 
@@ -1045,6 +1069,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           .$converterserverMaintenanceUnixTimeViewed
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
               data['${effectivePrefix}server_maintenance_unix_time_viewed'])),
+      customReportsFileHash: $AccountTable.$convertercustomReportsFileHash
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}custom_reports_file_hash'])),
+      customReportsConfig: $AccountTable.$convertercustomReportsConfig.fromSql(
+          attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}custom_reports_config'])),
     );
   }
 
@@ -1118,6 +1148,11 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<UtcDateTime?, int?>
       $converterserverMaintenanceUnixTimeViewed =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<api.CustomReportsFileHash?, String?>
+      $convertercustomReportsFileHash =
+      const NullAwareTypeConverter.wrap(CustomReportsFileHashConverter());
+  static TypeConverter<JsonString?, String?> $convertercustomReportsConfig =
+      NullAwareTypeConverter.wrap(JsonString.driftConverter);
 }
 
 class AccountData extends DataClass implements Insertable<AccountData> {
@@ -1187,6 +1222,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final int? profileInitialAge;
   final UtcDateTime? serverMaintenanceUnixTime;
   final UtcDateTime? serverMaintenanceUnixTimeViewed;
+  final api.CustomReportsFileHash? customReportsFileHash;
+  final JsonString? customReportsConfig;
   const AccountData(
       {required this.id,
       this.uuidAccountId,
@@ -1249,7 +1286,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.profileInitialAgeSetUnixTime,
       this.profileInitialAge,
       this.serverMaintenanceUnixTime,
-      this.serverMaintenanceUnixTimeViewed});
+      this.serverMaintenanceUnixTimeViewed,
+      this.customReportsFileHash,
+      this.customReportsConfig});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1482,6 +1521,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .$converterserverMaintenanceUnixTimeViewed
           .toSql(serverMaintenanceUnixTimeViewed));
     }
+    if (!nullToAbsent || customReportsFileHash != null) {
+      map['custom_reports_file_hash'] = Variable<String>($AccountTable
+          .$convertercustomReportsFileHash
+          .toSql(customReportsFileHash));
+    }
+    if (!nullToAbsent || customReportsConfig != null) {
+      map['custom_reports_config'] = Variable<String>($AccountTable
+          .$convertercustomReportsConfig
+          .toSql(customReportsConfig));
+    }
     return map;
   }
 
@@ -1673,6 +1722,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serverMaintenanceUnixTimeViewed == null && nullToAbsent
               ? const Value.absent()
               : Value(serverMaintenanceUnixTimeViewed),
+      customReportsFileHash: customReportsFileHash == null && nullToAbsent
+          ? const Value.absent()
+          : Value(customReportsFileHash),
+      customReportsConfig: customReportsConfig == null && nullToAbsent
+          ? const Value.absent()
+          : Value(customReportsConfig),
     );
   }
 
@@ -1796,6 +1851,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<UtcDateTime?>(json['serverMaintenanceUnixTime']),
       serverMaintenanceUnixTimeViewed: serializer
           .fromJson<UtcDateTime?>(json['serverMaintenanceUnixTimeViewed']),
+      customReportsFileHash: serializer
+          .fromJson<api.CustomReportsFileHash?>(json['customReportsFileHash']),
+      customReportsConfig:
+          serializer.fromJson<JsonString?>(json['customReportsConfig']),
     );
   }
   @override
@@ -1900,6 +1959,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.toJson<UtcDateTime?>(serverMaintenanceUnixTime),
       'serverMaintenanceUnixTimeViewed':
           serializer.toJson<UtcDateTime?>(serverMaintenanceUnixTimeViewed),
+      'customReportsFileHash':
+          serializer.toJson<api.CustomReportsFileHash?>(customReportsFileHash),
+      'customReportsConfig':
+          serializer.toJson<JsonString?>(customReportsConfig),
     };
   }
 
@@ -1978,7 +2041,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<int?> profileInitialAge = const Value.absent(),
           Value<UtcDateTime?> serverMaintenanceUnixTime = const Value.absent(),
           Value<UtcDateTime?> serverMaintenanceUnixTimeViewed =
-              const Value.absent()}) =>
+              const Value.absent(),
+          Value<api.CustomReportsFileHash?> customReportsFileHash =
+              const Value.absent(),
+          Value<JsonString?> customReportsConfig = const Value.absent()}) =>
       AccountData(
         id: id ?? this.id,
         uuidAccountId:
@@ -2150,6 +2216,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         serverMaintenanceUnixTimeViewed: serverMaintenanceUnixTimeViewed.present
             ? serverMaintenanceUnixTimeViewed.value
             : this.serverMaintenanceUnixTimeViewed,
+        customReportsFileHash: customReportsFileHash.present
+            ? customReportsFileHash.value
+            : this.customReportsFileHash,
+        customReportsConfig: customReportsConfig.present
+            ? customReportsConfig.value
+            : this.customReportsConfig,
       );
   AccountData copyWithCompanion(AccountCompanion data) {
     return AccountData(
@@ -2343,6 +2415,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           data.serverMaintenanceUnixTimeViewed.present
               ? data.serverMaintenanceUnixTimeViewed.value
               : this.serverMaintenanceUnixTimeViewed,
+      customReportsFileHash: data.customReportsFileHash.present
+          ? data.customReportsFileHash.value
+          : this.customReportsFileHash,
+      customReportsConfig: data.customReportsConfig.present
+          ? data.customReportsConfig.value
+          : this.customReportsConfig,
     );
   }
 
@@ -2425,7 +2503,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('profileInitialAge: $profileInitialAge, ')
           ..write('serverMaintenanceUnixTime: $serverMaintenanceUnixTime, ')
           ..write(
-              'serverMaintenanceUnixTimeViewed: $serverMaintenanceUnixTimeViewed')
+              'serverMaintenanceUnixTimeViewed: $serverMaintenanceUnixTimeViewed, ')
+          ..write('customReportsFileHash: $customReportsFileHash, ')
+          ..write('customReportsConfig: $customReportsConfig')
           ..write(')'))
         .toString();
   }
@@ -2493,7 +2573,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileInitialAgeSetUnixTime,
         profileInitialAge,
         serverMaintenanceUnixTime,
-        serverMaintenanceUnixTimeViewed
+        serverMaintenanceUnixTimeViewed,
+        customReportsFileHash,
+        customReportsConfig
       ]);
   @override
   bool operator ==(Object other) =>
@@ -2575,7 +2657,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.profileInitialAge == this.profileInitialAge &&
           other.serverMaintenanceUnixTime == this.serverMaintenanceUnixTime &&
           other.serverMaintenanceUnixTimeViewed ==
-              this.serverMaintenanceUnixTimeViewed);
+              this.serverMaintenanceUnixTimeViewed &&
+          other.customReportsFileHash == this.customReportsFileHash &&
+          other.customReportsConfig == this.customReportsConfig);
 }
 
 class AccountCompanion extends UpdateCompanion<AccountData> {
@@ -2644,6 +2728,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<int?> profileInitialAge;
   final Value<UtcDateTime?> serverMaintenanceUnixTime;
   final Value<UtcDateTime?> serverMaintenanceUnixTimeViewed;
+  final Value<api.CustomReportsFileHash?> customReportsFileHash;
+  final Value<JsonString?> customReportsConfig;
   const AccountCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -2707,6 +2793,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileInitialAge = const Value.absent(),
     this.serverMaintenanceUnixTime = const Value.absent(),
     this.serverMaintenanceUnixTimeViewed = const Value.absent(),
+    this.customReportsFileHash = const Value.absent(),
+    this.customReportsConfig = const Value.absent(),
   });
   AccountCompanion.insert({
     this.id = const Value.absent(),
@@ -2771,6 +2859,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.profileInitialAge = const Value.absent(),
     this.serverMaintenanceUnixTime = const Value.absent(),
     this.serverMaintenanceUnixTimeViewed = const Value.absent(),
+    this.customReportsFileHash = const Value.absent(),
+    this.customReportsConfig = const Value.absent(),
   });
   static Insertable<AccountData> custom({
     Expression<int>? id,
@@ -2835,6 +2925,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<int>? profileInitialAge,
     Expression<int>? serverMaintenanceUnixTime,
     Expression<int>? serverMaintenanceUnixTimeViewed,
+    Expression<String>? customReportsFileHash,
+    Expression<String>? customReportsConfig,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2950,6 +3042,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'server_maintenance_unix_time': serverMaintenanceUnixTime,
       if (serverMaintenanceUnixTimeViewed != null)
         'server_maintenance_unix_time_viewed': serverMaintenanceUnixTimeViewed,
+      if (customReportsFileHash != null)
+        'custom_reports_file_hash': customReportsFileHash,
+      if (customReportsConfig != null)
+        'custom_reports_config': customReportsConfig,
     });
   }
 
@@ -3018,7 +3114,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<UtcDateTime?>? profileInitialAgeSetUnixTime,
       Value<int?>? profileInitialAge,
       Value<UtcDateTime?>? serverMaintenanceUnixTime,
-      Value<UtcDateTime?>? serverMaintenanceUnixTimeViewed}) {
+      Value<UtcDateTime?>? serverMaintenanceUnixTimeViewed,
+      Value<api.CustomReportsFileHash?>? customReportsFileHash,
+      Value<JsonString?>? customReportsConfig}) {
     return AccountCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -3122,6 +3220,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           serverMaintenanceUnixTime ?? this.serverMaintenanceUnixTime,
       serverMaintenanceUnixTimeViewed: serverMaintenanceUnixTimeViewed ??
           this.serverMaintenanceUnixTimeViewed,
+      customReportsFileHash:
+          customReportsFileHash ?? this.customReportsFileHash,
+      customReportsConfig: customReportsConfig ?? this.customReportsConfig,
     );
   }
 
@@ -3379,6 +3480,16 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           .$converterserverMaintenanceUnixTimeViewed
           .toSql(serverMaintenanceUnixTimeViewed.value));
     }
+    if (customReportsFileHash.present) {
+      map['custom_reports_file_hash'] = Variable<String>($AccountTable
+          .$convertercustomReportsFileHash
+          .toSql(customReportsFileHash.value));
+    }
+    if (customReportsConfig.present) {
+      map['custom_reports_config'] = Variable<String>($AccountTable
+          .$convertercustomReportsConfig
+          .toSql(customReportsConfig.value));
+    }
     return map;
   }
 
@@ -3461,7 +3572,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('profileInitialAge: $profileInitialAge, ')
           ..write('serverMaintenanceUnixTime: $serverMaintenanceUnixTime, ')
           ..write(
-              'serverMaintenanceUnixTimeViewed: $serverMaintenanceUnixTimeViewed')
+              'serverMaintenanceUnixTimeViewed: $serverMaintenanceUnixTimeViewed, ')
+          ..write('customReportsFileHash: $customReportsFileHash, ')
+          ..write('customReportsConfig: $customReportsConfig')
           ..write(')'))
         .toString();
   }
@@ -7275,6 +7388,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       DaoAvailableProfileAttributes(this as AccountDatabase);
   late final DaoServerMaintenance daoServerMaintenance =
       DaoServerMaintenance(this as AccountDatabase);
+  late final DaoCustomReports daoCustomReports =
+      DaoCustomReports(this as AccountDatabase);
   late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
   late final DaoConversationList daoConversationList =
       DaoConversationList(this as AccountDatabase);

@@ -321,12 +321,43 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       updatedAttributes = r.values;
     }
 
+    final latestCustomReportsFileHash = config.customReports;
+    final currentCustomReportsFileHash = await db.accountStream(
+      (db) => db.daoCustomReports.watchCustomReportsFileHash(),
+    ).firstOrNull;
+    final currentCustomReportsConfig = await db.accountStream(
+      (db) => db.daoCustomReports.watchCustomReportsConfig(),
+    ).firstOrNull;
+
+    final CustomReportsFileHash? customReportsFileHash;
+    final CustomReportsConfig? customReportsConfig;
+    if (latestCustomReportsFileHash != null) {
+      if (currentCustomReportsFileHash == latestCustomReportsFileHash && currentCustomReportsConfig != null) {
+        // Latest custom reports config already downloaded
+        customReportsFileHash = currentCustomReportsFileHash;
+        customReportsConfig = currentCustomReportsConfig;
+      } else {
+        final latestConfig = await _api.account((api) => api.postGetCustomReportsConfig(latestCustomReportsFileHash)).ok();
+        if (latestConfig == null) {
+          return const Err(null);
+        }
+        customReportsFileHash = latestCustomReportsFileHash;
+        customReportsConfig = latestConfig.config;
+      }
+    } else {
+      // Custom reports disabled
+      customReportsFileHash = null;
+      customReportsConfig = null;
+    }
+
     await db.accountAction(
       (db) => db.daoAvailableProfileAttributes.updateClientConfig(
         attributeOrder,
         config.syncVersion,
         latestAttributes,
         updatedAttributes,
+        customReportsFileHash,
+        customReportsConfig,
       ),
     );
     return Ok(config);
