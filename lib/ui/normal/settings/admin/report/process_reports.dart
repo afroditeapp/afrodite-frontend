@@ -1,13 +1,17 @@
 
 import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
+import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
+import 'package:app/ui_utils/api.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/view_image_screen.dart';
+import 'package:app/utils/list.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
 const double ROW_HEIGHT = 100;
@@ -72,7 +76,7 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
   @override
   bool get allowRejecting => false;
 
-  static String instructions = "B = block received\nL = like received\nMnumber = match and sent messages count\n\nN = profile name\nT = profile text\nM = chat message";
+  static String instructions = "B = block received\nL = like received\nMnumber = match and sent messages count\n\nN = profile name\nT = profile text\nM = chat message\nB = custom report with boolean value";
 
   @override
   Widget buildRowContent(BuildContext context, WrappedReportDetailed content) {
@@ -131,6 +135,7 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
     final profileText = content.content.profileText;
     final profileContent = content.content.profileContent;
     final chatMessage = content.content.chatMessage;
+    final customReportBoolean = content.content.customReport?.booleanValue;
     final target = content.target;
     final Widget report;
 
@@ -151,6 +156,23 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
       );
     } else if (chatMessage != null) {
       report = Text("M: $chatMessage");
+    } else if (customReportBoolean != null) {
+      final config = context.read<CustomReportsConfigBloc>().state;
+      const FIRST_CUSTOM_REPORT_TYPE_NUMBER = 64;
+      final reportId = content.info.reportType.n - FIRST_CUSTOM_REPORT_TYPE_NUMBER;
+      final customReportInfo = config.report.getAtOrNull(reportId);
+      if (customReportInfo != null) {
+        final text = customReportInfo.translatedName(context);
+        final String falseValue;
+        if (customReportBoolean) {
+          falseValue = "";
+        } else {
+          falseValue = ", value: false";
+        }
+        report = Text("B: $text$falseValue");
+      } else {
+        report = Text(context.strings.generic_error);
+      }
     } else {
       report = Text(context.strings.generic_error);
     }

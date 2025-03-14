@@ -1316,6 +1316,19 @@
   "@report_screen_chat_message_action": {
     "description": "Title for report chat message action"
   },
+  "report_screen_custom_report_boolean_dialog_description": "Report user as '{p0}'?",
+  "@report_screen_custom_report_boolean_dialog_description": {
+    "description": "Text for dialog for custom report boolean reporting",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "report_screen_custom_report_boolean_dialog_title": "Report?",
+  "@report_screen_custom_report_boolean_dialog_title": {
+    "description": "Title for dialog for custom report boolean reporting"
+  },
   "report_screen_profile_image_action": "Profile image",
   "@report_screen_profile_image_action": {
     "description": "Title for report profile image action"

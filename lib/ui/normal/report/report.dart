@@ -1,14 +1,17 @@
 
 import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
+import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/report/report_chat_message.dart';
 import 'package:app/ui/normal/report/report_profile_image.dart';
+import 'package:app/ui_utils/api.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
 Widget showReportAction(BuildContext context, ProfileEntry profile) {
@@ -62,18 +65,23 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   Widget screenContent(BuildContext context) {
-    final settings = reportList(context);
+
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ...settings,
-        ],
+      child: BlocBuilder<CustomReportsConfigBloc, CustomReportsConfig>(
+        builder: (context, state) {
+          final settings = reportList(context, state);
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...settings,
+            ],
+          );
+        }
       ),
     );
   }
 
-  List<Widget> reportList(BuildContext context) {
+  List<Widget> reportList(BuildContext context, CustomReportsConfig config) {
     List<Widget> settings = [];
 
     if (widget.profile.name.isNotEmpty) {
@@ -150,6 +158,44 @@ class _ReportScreenState extends State<ReportScreen> {
           profileEntry: widget.profile,
           messages: widget.messages,
         )));
+      }));
+    }
+
+    final availableReports = [
+      ...config.report.where((v) => v.reportType == CustomReportType.boolean && v.visible)
+    ];
+
+    availableReports.sort((a, b) => a.orderNumber.compareTo(b.orderNumber));
+
+    for (final report in availableReports) {
+      final name = report.translatedName(context);
+      settings.add(reportListTile(report.translatedName(context), () async {
+        final r = await showConfirmDialog(
+          context,
+          context.strings.report_screen_custom_report_boolean_dialog_title,
+          details: context.strings.report_screen_custom_report_boolean_dialog_description(name),
+          yesNoActions: true,
+        );
+        if (context.mounted && r == true) {
+          final result = await api.account((api) => api.postCustomReportBoolean(UpdateCustomReportBoolean(
+            customReportId: report.id,
+            target: widget.profile.uuid,
+            value: true,
+          ))).ok();
+
+          if (result == null) {
+            showSnackBar(R.strings.generic_error_occurred);
+          } else if (result.errorOutdatedReportContent) {
+            // Should not happen as the report value is a boolean.
+            showSnackBar(R.strings.generic_error);
+          } else if (result.errorTooManyReports) {
+            // Should not happen as the report is ignored when sending
+            // again the same boolean report with the same value.
+            showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
+          } else {
+            showSnackBar(R.strings.report_screen_snackbar_report_successful);
+          }
+        }
       }));
     }
 

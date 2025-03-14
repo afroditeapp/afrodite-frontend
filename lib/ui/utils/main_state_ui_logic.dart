@@ -4,6 +4,7 @@
 import 'package:app/data/general/notification/utils/notification_payload.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
+import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/account/demo_account.dart';
 import 'package:app/logic/account/demo_account_login.dart';
 import 'package:app/logic/app/like_grid_instance_manager.dart';
@@ -169,6 +170,7 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
               BlocProvider(create: (_) => ConversationListBloc()),
               BlocProvider(create: (_) => UnreadConversationsCountBloc()),
               BlocProvider(create: (_) => NewReceivedLikesAvailableBloc()),
+              BlocProvider(create: (_) => CustomReportsConfigBloc()),
 
               // Account data
               BlocProvider(create: (_) => AccountBloc()),

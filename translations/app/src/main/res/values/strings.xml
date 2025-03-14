@@ -463,6 +463,8 @@
     <string name="report_screen_chat_message_action" description="Title for report chat message action">Chat message</string>
     <string name="report_screen_snackbar_report_successful" description="Snackbar text for successful report">Reported</string>
     <string name="report_screen_snackbar_too_many_reports_error" description="Snackbar text for too many reports error">Report failed. Too many reports.</string>
+    <string name="report_screen_custom_report_boolean_dialog_title" description="Title for dialog for custom report boolean reporting">Report?</string>
+    <string name="report_screen_custom_report_boolean_dialog_description" description="Text for dialog for custom report boolean reporting">Report user as '%s'?</string>
 
     <!-- Report profile image screen -->
     <string name="report_profile_image_screen_confirm_dialog_title" description="Profile image reporting confirmation dialog title">Report profile image?</string>
