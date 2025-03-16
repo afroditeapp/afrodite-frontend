@@ -1,6 +1,11 @@
 # Afrodite
-Afrodite is a dating app. This
-repository contains the frontend part. [Backend repository](https://github.com/jutuon/afrodite-backend)
+
+Afrodite is a dating app aiming to change dating app market to offer more
+ethical, private and secure dating apps. Written using modern technologies,
+Flutter and Rust, the app offers ethical profile browsing centered UI together
+with private and secure end-to-end encrypted chat messaging.
+
+This repository contains the frontend part. [Backend repository](https://github.com/afroditeapp/afrodite-backend)
 
 The app is under development and it is not ready for production.
 
