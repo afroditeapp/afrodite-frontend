@@ -238,6 +238,10 @@ class ApiClient {
           return ClientConfig.fromJson(value);
         case 'ClientConfigSyncVersion':
           return ClientConfigSyncVersion.fromJson(value);
+        case 'ClientFeaturesConfig':
+          return ClientFeaturesConfig.fromJson(value);
+        case 'ClientFeaturesFileHash':
+          return ClientFeaturesFileHash.fromJson(value);
         case 'ClientId':
           return ClientId.fromJson(value);
         case 'ClientInfo':
@@ -320,6 +324,8 @@ class ApiClient {
           return GetAccountIdFromEmailResult.fromJson(value);
         case 'GetAllAdminsResult':
           return GetAllAdminsResult.fromJson(value);
+        case 'GetClientFeaturesConfigResult':
+          return GetClientFeaturesConfigResult.fromJson(value);
         case 'GetCustomReportsConfigResult':
           return GetCustomReportsConfigResult.fromJson(value);
         case 'GetInitialProfileAgeInfoResult':

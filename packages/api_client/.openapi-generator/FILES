@@ -49,6 +49,8 @@ lib/model/boolean_setting.dart
 lib/model/bot_config.dart
 lib/model/client_config.dart
 lib/model/client_config_sync_version.dart
+lib/model/client_features_config.dart
+lib/model/client_features_file_hash.dart
 lib/model/client_id.dart
 lib/model/client_info.dart
 lib/model/client_local_id.dart
@@ -90,6 +92,7 @@ lib/model/get_account_ban_time_result.dart
 lib/model/get_account_deletion_request_result.dart
 lib/model/get_account_id_from_email_result.dart
 lib/model/get_all_admins_result.dart
+lib/model/get_client_features_config_result.dart
 lib/model/get_custom_reports_config_result.dart
 lib/model/get_initial_profile_age_info_result.dart
 lib/model/get_media_content_result.dart

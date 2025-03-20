@@ -13,10 +13,14 @@ part of openapi.api;
 class ClientConfig {
   /// Returns a new [ClientConfig] instance.
   ClientConfig({
+    this.clientFeatures,
     this.customReports,
     this.profileAttributes,
     required this.syncVersion,
   });
+
+  /// Account component specific config. It is also possible that client features are not configured.
+  ClientFeaturesFileHash? clientFeatures;
 
   /// Account component specific config. It is also possible that custom reports are not configured.
   CustomReportsFileHash? customReports;
@@ -28,6 +32,7 @@ class ClientConfig {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ClientConfig &&
+    other.clientFeatures == clientFeatures &&
     other.customReports == customReports &&
     other.profileAttributes == profileAttributes &&
     other.syncVersion == syncVersion;
@@ -35,15 +40,21 @@ class ClientConfig {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (clientFeatures == null ? 0 : clientFeatures!.hashCode) +
     (customReports == null ? 0 : customReports!.hashCode) +
     (profileAttributes == null ? 0 : profileAttributes!.hashCode) +
     (syncVersion.hashCode);
 
   @override
-  String toString() => 'ClientConfig[customReports=$customReports, profileAttributes=$profileAttributes, syncVersion=$syncVersion]';
+  String toString() => 'ClientConfig[clientFeatures=$clientFeatures, customReports=$customReports, profileAttributes=$profileAttributes, syncVersion=$syncVersion]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.clientFeatures != null) {
+      json[r'client_features'] = this.clientFeatures;
+    } else {
+      json[r'client_features'] = null;
+    }
     if (this.customReports != null) {
       json[r'custom_reports'] = this.customReports;
     } else {
@@ -77,6 +88,7 @@ class ClientConfig {
       }());
 
       return ClientConfig(
+        clientFeatures: ClientFeaturesFileHash.fromJson(json[r'client_features']),
         customReports: CustomReportsFileHash.fromJson(json[r'custom_reports']),
         profileAttributes: ProfileAttributeInfo.fromJson(json[r'profile_attributes']),
         syncVersion: ClientConfigSyncVersion.fromJson(json[r'sync_version'])!,

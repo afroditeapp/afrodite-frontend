@@ -80,6 +80,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postDemoModeLoginToAccount**](doc//AccountApi.md#postdemomodelogintoaccount) | **POST** /account_api/demo_mode_login_to_account | 
 *AccountApi* | [**postDemoModeLogout**](doc//AccountApi.md#postdemomodelogout) | **POST** /account_api/demo_mode_logout | 
 *AccountApi* | [**postDemoModeRegisterAccount**](doc//AccountApi.md#postdemomoderegisteraccount) | **POST** /account_api/demo_mode_register_account | 
+*AccountApi* | [**postGetClientFeaturesConfig**](doc//AccountApi.md#postgetclientfeaturesconfig) | **POST** /account_api/client_features_config | 
 *AccountApi* | [**postGetCustomReportsConfig**](doc//AccountApi.md#postgetcustomreportsconfig) | **POST** /account_api/custom_reports_config | 
 *AccountApi* | [**postGetNextClientId**](doc//AccountApi.md#postgetnextclientid) | **POST** /account_api/next_client_id | 
 *AccountApi* | [**postGetNextNewsPage**](doc//AccountApi.md#postgetnextnewspage) | **POST** /account_api/next_news_page | 
@@ -233,6 +234,8 @@ Class | Method | HTTP request | Description
  - [BotConfig](doc//BotConfig.md)
  - [ClientConfig](doc//ClientConfig.md)
  - [ClientConfigSyncVersion](doc//ClientConfigSyncVersion.md)
+ - [ClientFeaturesConfig](doc//ClientFeaturesConfig.md)
+ - [ClientFeaturesFileHash](doc//ClientFeaturesFileHash.md)
  - [ClientId](doc//ClientId.md)
  - [ClientInfo](doc//ClientInfo.md)
  - [ClientLocalId](doc//ClientLocalId.md)
@@ -274,6 +277,7 @@ Class | Method | HTTP request | Description
  - [GetAccountDeletionRequestResult](doc//GetAccountDeletionRequestResult.md)
  - [GetAccountIdFromEmailResult](doc//GetAccountIdFromEmailResult.md)
  - [GetAllAdminsResult](doc//GetAllAdminsResult.md)
+ - [GetClientFeaturesConfigResult](doc//GetClientFeaturesConfigResult.md)
  - [GetCustomReportsConfigResult](doc//GetCustomReportsConfigResult.md)
  - [GetInitialProfileAgeInfoResult](doc//GetInitialProfileAgeInfoResult.md)
  - [GetMediaContentResult](doc//GetMediaContentResult.md)
