@@ -81,6 +81,7 @@ clean:
 	cd packages/native_utils_ffi && flutter clean
 	rm -rf packages/native_utils_ffi/android/.cxx
 	cd packages/native_utils_ffi/rust_utils && cargo clean
+	rm -rf android/app/.cxx
 
 code-stats:
 	@/bin/echo -n "Lines:"
