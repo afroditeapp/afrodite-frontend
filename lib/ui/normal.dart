@@ -1,4 +1,5 @@
 import "package:app/data/login_repository.dart";
+import "package:app/logic/account/client_features_config.dart";
 import "package:app/logic/server/maintenance.dart";
 import "package:app/ui/normal/menu.dart";
 import "package:database/database.dart";
@@ -31,6 +32,7 @@ import "package:app/ui/normal/profiles.dart";
 import "package:app/ui/normal/settings/my_profile.dart";
 import "package:app/ui/utils/notification_payload_handler.dart";
 import "package:app/ui_utils/profile_thumbnail_image.dart";
+import "package:openapi/api.dart";
 
 class NormalStateScreen extends StatelessWidget {
   const NormalStateScreen({Key? key}) : super(key: key);
@@ -204,17 +206,21 @@ class _NormalStateContentState extends State<NormalStateContent> {
         label: VIEWS[2].title(context),
       ),
       BottomNavigationBarItem(
-        icon: BlocBuilder<ServerMaintenanceBloc, ServerMaintenanceInfo>(
-          builder: (context, serverMaintenanceInfo) {
-            return BlocBuilder<NewsCountBloc, NewsCountData>(
-              builder: (context, state) {
-                final icon = Icon(selectedView == 3 ? Icons.menu : Icons.menu_outlined);
-                final count = serverMaintenanceInfo.uiBadgeCount() + state.newsCountForUi();
-                if (count == 0) {
-                  return icon;
-                } else {
-                  return Badge.count(count: count, child: icon);
-                }
+        icon: BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfig>(
+          builder: (context, clientFeatures) {
+            return BlocBuilder<ServerMaintenanceBloc, ServerMaintenanceInfo>(
+              builder: (context, serverMaintenanceInfo) {
+                return BlocBuilder<NewsCountBloc, NewsCountData>(
+                  builder: (context, state) {
+                    final icon = Icon(selectedView == 3 ? Icons.menu : Icons.menu_outlined);
+                    final count = serverMaintenanceInfo.uiBadgeCount() + state.newsCountForUi(clientFeatures);
+                    if (count == 0) {
+                      return icon;
+                    } else {
+                      return Badge.count(count: count, child: icon);
+                    }
+                  }
+                );
               }
             );
           }

@@ -321,33 +321,24 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       updatedAttributes = r.values;
     }
 
-    final latestCustomReportsFileHash = config.customReports;
-    final currentCustomReportsFileHash = await db.accountStream(
-      (db) => db.daoCustomReports.watchCustomReportsFileHash(),
-    ).firstOrNull;
-    final currentCustomReportsConfig = await db.accountStream(
-      (db) => db.daoCustomReports.watchCustomReportsConfig(),
-    ).firstOrNull;
-
     final CustomReportsFileHash? customReportsFileHash;
     final CustomReportsConfig? customReportsConfig;
-    if (latestCustomReportsFileHash != null) {
-      if (currentCustomReportsFileHash == latestCustomReportsFileHash && currentCustomReportsConfig != null) {
-        // Latest custom reports config already downloaded
-        customReportsFileHash = currentCustomReportsFileHash;
-        customReportsConfig = currentCustomReportsConfig;
-      } else {
-        final latestConfig = await _api.account((api) => api.postGetCustomReportsConfig(latestCustomReportsFileHash)).ok();
-        if (latestConfig == null) {
-          return const Err(null);
-        }
-        customReportsFileHash = latestCustomReportsFileHash;
-        customReportsConfig = latestConfig.config;
-      }
-    } else {
-      // Custom reports disabled
-      customReportsFileHash = null;
-      customReportsConfig = null;
+    switch (await _downloadCustomReportsIfNeeded(config.customReports)) {
+      case Err():
+        return const Err(null);
+      case Ok(v: (final fileHash, final config)):
+        customReportsFileHash = fileHash;
+        customReportsConfig = config;
+    }
+
+    final ClientFeaturesFileHash? clientFeaturesFileHash;
+    final ClientFeaturesConfig? clientFeaturesConfig;
+    switch (await _downloadClientFeaturesIfNeeded(config.clientFeatures)) {
+      case Err():
+        return const Err(null);
+      case Ok(v: (final fileHash, final config)):
+        clientFeaturesFileHash = fileHash;
+        clientFeaturesConfig = config;
     }
 
     await db.accountAction(
@@ -358,9 +349,79 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         updatedAttributes,
         customReportsFileHash,
         customReportsConfig,
+        clientFeaturesFileHash,
+        clientFeaturesConfig,
       ),
     );
     return Ok(config);
+  }
+
+  Future<Result<(CustomReportsFileHash?, CustomReportsConfig?), void>> _downloadCustomReportsIfNeeded(
+    CustomReportsFileHash? latestFileHash,
+  ) async {
+    final currentFileHash = await db.accountStream(
+      (db) => db.daoCustomReports.watchCustomReportsFileHash(),
+    ).firstOrNull;
+    final currentConfig = await db.accountStream(
+      (db) => db.daoCustomReports.watchCustomReportsConfig(),
+    ).firstOrNull;
+
+    final CustomReportsFileHash? fileHash;
+    final CustomReportsConfig? config;
+    if (latestFileHash != null) {
+      if (currentFileHash == latestFileHash && currentConfig != null) {
+        // Latest config already downloaded
+        fileHash = currentFileHash;
+        config = currentConfig;
+      } else {
+        final latestConfig = await _api.account((api) => api.postGetCustomReportsConfig(latestFileHash)).ok();
+        if (latestConfig == null) {
+          return const Err(null);
+        }
+        fileHash = latestFileHash;
+        config = latestConfig.config;
+      }
+    } else {
+      // Custom reports disabled
+      fileHash = null;
+      config = null;
+    }
+
+    return Ok((fileHash, config));
+  }
+
+  Future<Result<(ClientFeaturesFileHash?, ClientFeaturesConfig?), void>> _downloadClientFeaturesIfNeeded(
+    ClientFeaturesFileHash? latestFileHash,
+  ) async {
+    final currentFileHash = await db.accountStream(
+      (db) => db.daoClientFeatures.watchClientFeaturesFileHash(),
+    ).firstOrNull;
+    final currentConfig = await db.accountStream(
+      (db) => db.daoClientFeatures.watchClientFeaturesConfig(),
+    ).firstOrNull;
+
+    final ClientFeaturesFileHash? fileHash;
+    final ClientFeaturesConfig? config;
+    if (latestFileHash != null) {
+      if (currentFileHash == latestFileHash && currentConfig != null) {
+        // Latest config already downloaded
+        fileHash = currentFileHash;
+        config = currentConfig;
+      } else {
+        final latestConfig = await _api.account((api) => api.postGetClientFeaturesConfig(latestFileHash)).ok();
+        if (latestConfig == null) {
+          return const Err(null);
+        }
+        fileHash = latestFileHash;
+        config = latestConfig.config;
+      }
+    } else {
+      // Client features disabled
+      fileHash = null;
+      config = null;
+    }
+
+    return Ok((fileHash, config));
   }
 
   Future<Result<void, void>> reloadMyProfile() async {

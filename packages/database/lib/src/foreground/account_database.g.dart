@@ -465,6 +465,20 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           .withConverter<JsonString?>(
               $AccountTable.$convertercustomReportsConfig);
   @override
+  late final GeneratedColumnWithTypeConverter<api.ClientFeaturesFileHash?,
+      String> clientFeaturesFileHash = GeneratedColumn<String>(
+          'client_features_file_hash', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false)
+      .withConverter<api.ClientFeaturesFileHash?>(
+          $AccountTable.$converterclientFeaturesFileHash);
+  @override
+  late final GeneratedColumnWithTypeConverter<JsonString?, String>
+      clientFeaturesConfig = GeneratedColumn<String>(
+              'client_features_config', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<JsonString?>(
+              $AccountTable.$converterclientFeaturesConfig);
+  @override
   List<GeneratedColumn> get $columns => [
         id,
         uuidAccountId,
@@ -529,7 +543,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         serverMaintenanceUnixTime,
         serverMaintenanceUnixTimeViewed,
         customReportsFileHash,
-        customReportsConfig
+        customReportsConfig,
+        clientFeaturesFileHash,
+        clientFeaturesConfig
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -977,6 +993,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       customReportsConfig: $AccountTable.$convertercustomReportsConfig.fromSql(
           attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}custom_reports_config'])),
+      clientFeaturesFileHash: $AccountTable.$converterclientFeaturesFileHash
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}client_features_file_hash'])),
+      clientFeaturesConfig: $AccountTable.$converterclientFeaturesConfig
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}client_features_config'])),
     );
   }
 
@@ -1055,6 +1077,11 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       const NullAwareTypeConverter.wrap(CustomReportsFileHashConverter());
   static TypeConverter<JsonString?, String?> $convertercustomReportsConfig =
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
+  static TypeConverter<api.ClientFeaturesFileHash?, String?>
+      $converterclientFeaturesFileHash =
+      const NullAwareTypeConverter.wrap(ClientFeaturesFileHashConverter());
+  static TypeConverter<JsonString?, String?> $converterclientFeaturesConfig =
+      NullAwareTypeConverter.wrap(JsonString.driftConverter);
 }
 
 class AccountData extends DataClass implements Insertable<AccountData> {
@@ -1126,6 +1153,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final UtcDateTime? serverMaintenanceUnixTimeViewed;
   final api.CustomReportsFileHash? customReportsFileHash;
   final JsonString? customReportsConfig;
+  final api.ClientFeaturesFileHash? clientFeaturesFileHash;
+  final JsonString? clientFeaturesConfig;
   const AccountData(
       {required this.id,
       this.uuidAccountId,
@@ -1190,7 +1219,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.serverMaintenanceUnixTime,
       this.serverMaintenanceUnixTimeViewed,
       this.customReportsFileHash,
-      this.customReportsConfig});
+      this.customReportsConfig,
+      this.clientFeaturesFileHash,
+      this.clientFeaturesConfig});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1433,6 +1464,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .$convertercustomReportsConfig
           .toSql(customReportsConfig));
     }
+    if (!nullToAbsent || clientFeaturesFileHash != null) {
+      map['client_features_file_hash'] = Variable<String>($AccountTable
+          .$converterclientFeaturesFileHash
+          .toSql(clientFeaturesFileHash));
+    }
+    if (!nullToAbsent || clientFeaturesConfig != null) {
+      map['client_features_config'] = Variable<String>($AccountTable
+          .$converterclientFeaturesConfig
+          .toSql(clientFeaturesConfig));
+    }
     return map;
   }
 
@@ -1630,6 +1671,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       customReportsConfig: customReportsConfig == null && nullToAbsent
           ? const Value.absent()
           : Value(customReportsConfig),
+      clientFeaturesFileHash: clientFeaturesFileHash == null && nullToAbsent
+          ? const Value.absent()
+          : Value(clientFeaturesFileHash),
+      clientFeaturesConfig: clientFeaturesConfig == null && nullToAbsent
+          ? const Value.absent()
+          : Value(clientFeaturesConfig),
     );
   }
 
@@ -1757,6 +1804,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .fromJson<api.CustomReportsFileHash?>(json['customReportsFileHash']),
       customReportsConfig:
           serializer.fromJson<JsonString?>(json['customReportsConfig']),
+      clientFeaturesFileHash: serializer.fromJson<api.ClientFeaturesFileHash?>(
+          json['clientFeaturesFileHash']),
+      clientFeaturesConfig:
+          serializer.fromJson<JsonString?>(json['clientFeaturesConfig']),
     );
   }
   @override
@@ -1865,6 +1916,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.toJson<api.CustomReportsFileHash?>(customReportsFileHash),
       'customReportsConfig':
           serializer.toJson<JsonString?>(customReportsConfig),
+      'clientFeaturesFileHash': serializer
+          .toJson<api.ClientFeaturesFileHash?>(clientFeaturesFileHash),
+      'clientFeaturesConfig':
+          serializer.toJson<JsonString?>(clientFeaturesConfig),
     };
   }
 
@@ -1946,7 +2001,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
               const Value.absent(),
           Value<api.CustomReportsFileHash?> customReportsFileHash =
               const Value.absent(),
-          Value<JsonString?> customReportsConfig = const Value.absent()}) =>
+          Value<JsonString?> customReportsConfig = const Value.absent(),
+          Value<api.ClientFeaturesFileHash?> clientFeaturesFileHash =
+              const Value.absent(),
+          Value<JsonString?> clientFeaturesConfig = const Value.absent()}) =>
       AccountData(
         id: id ?? this.id,
         uuidAccountId:
@@ -2124,6 +2182,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         customReportsConfig: customReportsConfig.present
             ? customReportsConfig.value
             : this.customReportsConfig,
+        clientFeaturesFileHash: clientFeaturesFileHash.present
+            ? clientFeaturesFileHash.value
+            : this.clientFeaturesFileHash,
+        clientFeaturesConfig: clientFeaturesConfig.present
+            ? clientFeaturesConfig.value
+            : this.clientFeaturesConfig,
       );
   AccountData copyWithCompanion(AccountCompanion data) {
     return AccountData(
@@ -2323,6 +2387,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       customReportsConfig: data.customReportsConfig.present
           ? data.customReportsConfig.value
           : this.customReportsConfig,
+      clientFeaturesFileHash: data.clientFeaturesFileHash.present
+          ? data.clientFeaturesFileHash.value
+          : this.clientFeaturesFileHash,
+      clientFeaturesConfig: data.clientFeaturesConfig.present
+          ? data.clientFeaturesConfig.value
+          : this.clientFeaturesConfig,
     );
   }
 
@@ -2407,7 +2477,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write(
               'serverMaintenanceUnixTimeViewed: $serverMaintenanceUnixTimeViewed, ')
           ..write('customReportsFileHash: $customReportsFileHash, ')
-          ..write('customReportsConfig: $customReportsConfig')
+          ..write('customReportsConfig: $customReportsConfig, ')
+          ..write('clientFeaturesFileHash: $clientFeaturesFileHash, ')
+          ..write('clientFeaturesConfig: $clientFeaturesConfig')
           ..write(')'))
         .toString();
   }
@@ -2477,7 +2549,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         serverMaintenanceUnixTime,
         serverMaintenanceUnixTimeViewed,
         customReportsFileHash,
-        customReportsConfig
+        customReportsConfig,
+        clientFeaturesFileHash,
+        clientFeaturesConfig
       ]);
   @override
   bool operator ==(Object other) =>
@@ -2561,7 +2635,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.serverMaintenanceUnixTimeViewed ==
               this.serverMaintenanceUnixTimeViewed &&
           other.customReportsFileHash == this.customReportsFileHash &&
-          other.customReportsConfig == this.customReportsConfig);
+          other.customReportsConfig == this.customReportsConfig &&
+          other.clientFeaturesFileHash == this.clientFeaturesFileHash &&
+          other.clientFeaturesConfig == this.clientFeaturesConfig);
 }
 
 class AccountCompanion extends UpdateCompanion<AccountData> {
@@ -2632,6 +2708,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<UtcDateTime?> serverMaintenanceUnixTimeViewed;
   final Value<api.CustomReportsFileHash?> customReportsFileHash;
   final Value<JsonString?> customReportsConfig;
+  final Value<api.ClientFeaturesFileHash?> clientFeaturesFileHash;
+  final Value<JsonString?> clientFeaturesConfig;
   const AccountCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -2697,6 +2775,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.serverMaintenanceUnixTimeViewed = const Value.absent(),
     this.customReportsFileHash = const Value.absent(),
     this.customReportsConfig = const Value.absent(),
+    this.clientFeaturesFileHash = const Value.absent(),
+    this.clientFeaturesConfig = const Value.absent(),
   });
   AccountCompanion.insert({
     this.id = const Value.absent(),
@@ -2763,6 +2843,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.serverMaintenanceUnixTimeViewed = const Value.absent(),
     this.customReportsFileHash = const Value.absent(),
     this.customReportsConfig = const Value.absent(),
+    this.clientFeaturesFileHash = const Value.absent(),
+    this.clientFeaturesConfig = const Value.absent(),
   });
   static Insertable<AccountData> custom({
     Expression<int>? id,
@@ -2829,6 +2911,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<int>? serverMaintenanceUnixTimeViewed,
     Expression<String>? customReportsFileHash,
     Expression<String>? customReportsConfig,
+    Expression<String>? clientFeaturesFileHash,
+    Expression<String>? clientFeaturesConfig,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2948,6 +3032,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'custom_reports_file_hash': customReportsFileHash,
       if (customReportsConfig != null)
         'custom_reports_config': customReportsConfig,
+      if (clientFeaturesFileHash != null)
+        'client_features_file_hash': clientFeaturesFileHash,
+      if (clientFeaturesConfig != null)
+        'client_features_config': clientFeaturesConfig,
     });
   }
 
@@ -3018,7 +3106,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<UtcDateTime?>? serverMaintenanceUnixTime,
       Value<UtcDateTime?>? serverMaintenanceUnixTimeViewed,
       Value<api.CustomReportsFileHash?>? customReportsFileHash,
-      Value<JsonString?>? customReportsConfig}) {
+      Value<JsonString?>? customReportsConfig,
+      Value<api.ClientFeaturesFileHash?>? clientFeaturesFileHash,
+      Value<JsonString?>? clientFeaturesConfig}) {
     return AccountCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -3125,6 +3215,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       customReportsFileHash:
           customReportsFileHash ?? this.customReportsFileHash,
       customReportsConfig: customReportsConfig ?? this.customReportsConfig,
+      clientFeaturesFileHash:
+          clientFeaturesFileHash ?? this.clientFeaturesFileHash,
+      clientFeaturesConfig: clientFeaturesConfig ?? this.clientFeaturesConfig,
     );
   }
 
@@ -3392,6 +3485,16 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           .$convertercustomReportsConfig
           .toSql(customReportsConfig.value));
     }
+    if (clientFeaturesFileHash.present) {
+      map['client_features_file_hash'] = Variable<String>($AccountTable
+          .$converterclientFeaturesFileHash
+          .toSql(clientFeaturesFileHash.value));
+    }
+    if (clientFeaturesConfig.present) {
+      map['client_features_config'] = Variable<String>($AccountTable
+          .$converterclientFeaturesConfig
+          .toSql(clientFeaturesConfig.value));
+    }
     return map;
   }
 
@@ -3476,7 +3579,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write(
               'serverMaintenanceUnixTimeViewed: $serverMaintenanceUnixTimeViewed, ')
           ..write('customReportsFileHash: $customReportsFileHash, ')
-          ..write('customReportsConfig: $customReportsConfig')
+          ..write('customReportsConfig: $customReportsConfig, ')
+          ..write('clientFeaturesFileHash: $clientFeaturesFileHash, ')
+          ..write('clientFeaturesConfig: $clientFeaturesConfig')
           ..write(')'))
         .toString();
   }
@@ -7177,6 +7282,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       DaoServerMaintenance(this as AccountDatabase);
   late final DaoCustomReports daoCustomReports =
       DaoCustomReports(this as AccountDatabase);
+  late final DaoClientFeatures daoClientFeatures =
+      DaoClientFeatures(this as AccountDatabase);
   late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
   late final DaoConversationList daoConversationList =
       DaoConversationList(this as AccountDatabase);

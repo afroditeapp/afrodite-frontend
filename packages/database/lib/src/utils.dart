@@ -131,6 +131,20 @@ class CustomReportsFileHashConverter extends TypeConverter<CustomReportsFileHash
   }
 }
 
+class ClientFeaturesFileHashConverter  extends TypeConverter<ClientFeaturesFileHash, String> {
+  const ClientFeaturesFileHashConverter();
+
+  @override
+  ClientFeaturesFileHash fromSql(fromDb) {
+    return ClientFeaturesFileHash(h: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.h;
+  }
+}
+
 class JsonString {
   final Map<String, Object?> jsonMap;
   JsonString(this.jsonMap);
@@ -157,6 +171,10 @@ class JsonString {
 
   CustomReportsConfig? toCustomReportsConfig() {
     return CustomReportsConfig.fromJson(jsonMap);
+  }
+
+  ClientFeaturesConfig? toClientFeaturesConfig() {
+    return ClientFeaturesConfig.fromJson(jsonMap);
   }
 
   static TypeConverter<JsonString, String> driftConverter = TypeConverter.json(
@@ -196,6 +214,12 @@ extension AttributeJson on Attribute {
 }
 
 extension CustomReportsConfigJson on CustomReportsConfig {
+  JsonString toJsonString() {
+    return JsonString(toJson());
+  }
+}
+
+extension ClientFeaturesConfigJson on ClientFeaturesConfig {
   JsonString toJsonString() {
     return JsonString(toJson());
   }

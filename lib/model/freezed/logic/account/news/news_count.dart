@@ -1,5 +1,6 @@
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
+import 'package:openapi/api.dart';
 
 part 'news_count.freezed.dart';
 
@@ -11,7 +12,11 @@ class NewsCountData with _$NewsCountData {
     @Default(0) int newsCount,
   }) = _NewsCountData;
 
-  int newsCountForUi() {
-    return newsCount;
+  int newsCountForUi(ClientFeaturesConfig clientFeatures) {
+    if (clientFeatures.news) {
+      return newsCount;
+    } else {
+      return 0;
+    }
   }
 }

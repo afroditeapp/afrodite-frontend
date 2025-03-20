@@ -1,3 +1,4 @@
+import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/server/maintenance.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/utils/time.dart';
@@ -21,6 +22,7 @@ import 'package:app/localizations.dart';
 import 'package:app/ui_utils/app_bar/common_actions.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
+import 'package:openapi/api.dart';
 
 class MenuView extends BottomNavigationScreen {
   const MenuView({super.key});
@@ -76,74 +78,87 @@ class _MenuViewState extends State<MenuView> {
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
-        List<Setting> settings = [
-          Setting.createSetting(Icons.account_box, context.strings.view_profile_screen_my_profile_title, () =>
-            MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()))
-          ),
-          Setting.createSettingWithCustomIcon(
-            BlocBuilder<NewsCountBloc, NewsCountData>(
-              builder: (context, state) {
-                const icon = Icon(Icons.newspaper);
-                final count = state.newsCountForUi();
-                if (count == 0) {
-                  return icon;
-                } else {
-                  return Badge.count(count: count, child: icon);
-                }
-              }
-            ),
-            context.strings.news_list_screen_title, () => openNewsList(context),
-          ),
-          Setting.createSetting(Icons.bar_chart, context.strings.profile_statistics_screen_title, () =>
-            openProfileStatisticsScreen(context)
-          ),
-          Setting.createSetting(Icons.settings, context.strings.settings_screen_title, () {
-              MyNavigator.push(context, const MaterialPage<void>(child:
-                SettingsScreen()
-              ));
-            }
-          ),
-        ];
-
-        // TODO(prod): Remove/hide admin settings from production build?
-        if (AdminSettingsPermissions(state.permissions).somePermissionEnabled()) {
-          settings.add(Setting.createSetting(Icons.admin_panel_settings, context.strings.admin_settings_title, () =>
-            MyNavigator.push(context, const MaterialPage<void>(child: AdminSettingsPage()))
-          ));
-        }
-
-        // TODO(prod): Remove/hide debug settings
-        settings.add(Setting.createSetting(Icons.bug_report_rounded, "Debug", () =>
-          MyNavigator.push(context, MaterialPage<void>(child: DebugSettingsPage()))
-        ));
-
-        return NotificationListener<ScrollMetricsNotification>(
-          onNotification: (notification) {
-            final isScrolled = notification.metrics.pixels > 0;
-            updateIsScrolled(isScrolled);
-            return true;
-          },
-          child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
-            listenWhen: (previous, current) => previous.isTappedAgainSettings != current.isTappedAgainSettings,
-            listener: (context, state) {
-              if (state.isTappedAgainSettings) {
-                context.read<BottomNavigationStateBloc>().add(SetIsTappedAgainValue(BottomNavigationScreenId.settings, false));
-                _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
-              }
-            },
-            child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
-              listenWhen: (previous, current) => previous.screen != current.screen,
-              listener: (context, state) {
-                if (state.screen == BottomNavigationScreenId.settings) {
-                  context.read<ServerMaintenanceBloc>().add(ViewServerMaintenanceInfo());
-                }
+        return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfig>(
+          builder: (context, clientFeatures) {
+            List<Setting> settings = menuItems(context, state.permissions, clientFeatures);
+            return NotificationListener<ScrollMetricsNotification>(
+              onNotification: (notification) {
+                final isScrolled = notification.metrics.pixels > 0;
+                updateIsScrolled(isScrolled);
+                return true;
               },
-              child: list(settings),
-            ),
-          ),
+              child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
+                listenWhen: (previous, current) => previous.isTappedAgainSettings != current.isTappedAgainSettings,
+                listener: (context, state) {
+                  if (state.isTappedAgainSettings) {
+                    context.read<BottomNavigationStateBloc>().add(SetIsTappedAgainValue(BottomNavigationScreenId.settings, false));
+                    _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
+                  }
+                },
+                child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
+                  listenWhen: (previous, current) => previous.screen != current.screen,
+                  listener: (context, state) {
+                    if (state.screen == BottomNavigationScreenId.settings) {
+                      context.read<ServerMaintenanceBloc>().add(ViewServerMaintenanceInfo());
+                    }
+                  },
+                  child: list(settings),
+                ),
+              ),
+            );
+          }
         );
       }
     );
+  }
+
+  List<Setting> menuItems(
+    BuildContext context,
+    Permissions permissions,
+    ClientFeaturesConfig clientFeatures,
+  ) {
+    List<Setting> settings = [
+      Setting.createSetting(Icons.account_box, context.strings.view_profile_screen_my_profile_title, () =>
+        MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()))
+      ),
+      if (clientFeatures.news) Setting.createSettingWithCustomIcon(
+        BlocBuilder<NewsCountBloc, NewsCountData>(
+          builder: (context, state) {
+            const icon = Icon(Icons.newspaper);
+            final count = state.newsCountForUi(clientFeatures);
+            if (count == 0) {
+              return icon;
+            } else {
+              return Badge.count(count: count, child: icon);
+            }
+          }
+        ),
+        context.strings.news_list_screen_title, () => openNewsList(context),
+      ),
+      Setting.createSetting(Icons.bar_chart, context.strings.profile_statistics_screen_title, () =>
+        openProfileStatisticsScreen(context)
+      ),
+      Setting.createSetting(Icons.settings, context.strings.settings_screen_title, () {
+          MyNavigator.push(context, const MaterialPage<void>(child:
+            SettingsScreen()
+          ));
+        }
+      ),
+    ];
+
+    // TODO(prod): Remove/hide admin settings from production build?
+    if (AdminSettingsPermissions(permissions).somePermissionEnabled()) {
+      settings.add(Setting.createSetting(Icons.admin_panel_settings, context.strings.admin_settings_title, () =>
+        MyNavigator.push(context, const MaterialPage<void>(child: AdminSettingsPage()))
+      ));
+    }
+
+    // TODO(prod): Remove/hide debug settings
+    settings.add(Setting.createSetting(Icons.bug_report_rounded, "Debug", () =>
+      MyNavigator.push(context, MaterialPage<void>(child: DebugSettingsPage()))
+    ));
+
+    return settings;
   }
 
   Widget list(List<Setting> settings) {
