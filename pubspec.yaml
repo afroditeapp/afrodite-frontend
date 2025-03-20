@@ -18,7 +18,23 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 0.7.0+1
 
 environment:
-  sdk: ">=3.3.0 <4.0.0"
+  sdk: ">=3.6.0 <4.0.0"
+
+workspace:
+  - packages/afrodite_frontend
+  - packages/api_client
+  - packages/database
+  - packages/database_provider
+  - packages/database_provider_native
+  - packages/database_provider_web
+  - packages/encryption
+  - packages/encryption_common
+  - packages/encryption_native
+  - packages/encryption_web
+  - packages/native_utils
+  - packages/native_utils_common
+  - packages/native_utils_ffi
+  - packages/utils
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
