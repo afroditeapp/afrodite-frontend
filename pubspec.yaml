@@ -134,12 +134,6 @@ dependencies:
   firebase_messaging: ^15.1.5
   google_api_availability: ^5.0.0
 
-dependency_overrides:
-  # Replace flutter_secure_storage_web with empty version to fix compiling
-  # to Wasm.
-  flutter_secure_storage_web:
-    path: "packages/flutter_secure_storage_web"
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
