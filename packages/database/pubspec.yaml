@@ -29,9 +29,9 @@ dependencies:
   rxdart: ^0.28.0
 
   path: ^1.9.0
-  drift: ^2.20.2
+  drift: ^2.26.0
 
 dev_dependencies:
   lints: ^4.0.0
   build_runner: ^2.4.8
-  drift_dev: ^2.20.3
+  drift_dev: ^2.26.0

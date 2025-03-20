@@ -15,7 +15,7 @@ dependencies:
     sdk: flutter
 
   logging: ^1.2.0
-  drift: ^2.20.2
+  drift: ^2.26.0
 
   database:
     path: "../database"

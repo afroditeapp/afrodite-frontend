@@ -17,32 +17,24 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _uuidAccountIdMeta =
-      const VerificationMeta('uuidAccountId');
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId?, String>
       uuidAccountId = GeneratedColumn<String>(
               'uuid_account_id', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<api.AccountId?>($AccountTable.$converteruuidAccountId);
-  static const VerificationMeta _jsonAccountStateMeta =
-      const VerificationMeta('jsonAccountState');
   @override
   late final GeneratedColumnWithTypeConverter<JsonString?, String>
       jsonAccountState = GeneratedColumn<String>(
               'json_account_state', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<JsonString?>($AccountTable.$converterjsonAccountState);
-  static const VerificationMeta _jsonPermissionsMeta =
-      const VerificationMeta('jsonPermissions');
   @override
   late final GeneratedColumnWithTypeConverter<JsonString?, String>
       jsonPermissions = GeneratedColumn<String>(
               'json_permissions', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<JsonString?>($AccountTable.$converterjsonPermissions);
-  static const VerificationMeta _jsonProfileVisibilityMeta =
-      const VerificationMeta('jsonProfileVisibility');
   @override
   late final GeneratedColumnWithTypeConverter<EnumString?, String>
       jsonProfileVisibility = GeneratedColumn<String>(
@@ -60,8 +52,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           defaultConstraints: GeneratedColumn.constraintIsAlways(
               'CHECK ("profile_filter_favorites" IN (0, 1))'),
           defaultValue: const Constant(PROFILE_FILTER_FAVORITES_DEFAULT));
-  static const VerificationMeta _profileIteratorSessionIdMeta =
-      const VerificationMeta('profileIteratorSessionId');
   @override
   late final GeneratedColumnWithTypeConverter<api.ProfileIteratorSessionId?,
       int> profileIteratorSessionId = GeneratedColumn<int>(
@@ -69,8 +59,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           type: DriftSqlType.int, requiredDuringInsert: false)
       .withConverter<api.ProfileIteratorSessionId?>(
           $AccountTable.$converterprofileIteratorSessionId);
-  static const VerificationMeta _receivedLikesIteratorSessionIdMeta =
-      const VerificationMeta('receivedLikesIteratorSessionId');
   @override
   late final GeneratedColumnWithTypeConverter<
       api.ReceivedLikesIteratorSessionId?,
@@ -79,8 +67,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           type: DriftSqlType.int, requiredDuringInsert: false)
       .withConverter<api.ReceivedLikesIteratorSessionId?>(
           $AccountTable.$converterreceivedLikesIteratorSessionId);
-  static const VerificationMeta _matchesIteratorSessionIdMeta =
-      const VerificationMeta('matchesIteratorSessionId');
   @override
   late final GeneratedColumnWithTypeConverter<api.MatchesIteratorSessionId?,
       int> matchesIteratorSessionId = GeneratedColumn<int>(
@@ -88,15 +74,11 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           type: DriftSqlType.int, requiredDuringInsert: false)
       .withConverter<api.MatchesIteratorSessionId?>(
           $AccountTable.$convertermatchesIteratorSessionId);
-  static const VerificationMeta _clientIdMeta =
-      const VerificationMeta('clientId');
   @override
   late final GeneratedColumnWithTypeConverter<api.ClientId?, int> clientId =
       GeneratedColumn<int>('client_id', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<api.ClientId?>($AccountTable.$converterclientId);
-  static const VerificationMeta _jsonAvailableProfileAttributesOrderModeMeta =
-      const VerificationMeta('jsonAvailableProfileAttributesOrderMode');
   @override
   late final GeneratedColumnWithTypeConverter<EnumString?, String>
       jsonAvailableProfileAttributesOrderMode = GeneratedColumn<String>(
@@ -202,8 +184,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<double> primaryContentGridCropY =
       GeneratedColumn<double>('primary_content_grid_crop_y', aliasedName, true,
           type: DriftSqlType.double, requiredDuringInsert: false);
-  static const VerificationMeta _profileContentVersionMeta =
-      const VerificationMeta('profileContentVersion');
   @override
   late final GeneratedColumnWithTypeConverter<api.ProfileContentVersion?,
       String> profileContentVersion = GeneratedColumn<String>(
@@ -226,8 +206,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       requiredDuringInsert: false,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("profile_name_accepted" IN (0, 1))'));
-  static const VerificationMeta _profileNameModerationStateMeta =
-      const VerificationMeta('profileNameModerationState');
   @override
   late final GeneratedColumnWithTypeConverter<EnumString?, String>
       profileNameModerationState = GeneratedColumn<String>(
@@ -250,8 +228,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       requiredDuringInsert: false,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("profile_text_accepted" IN (0, 1))'));
-  static const VerificationMeta _profileTextModerationStateMeta =
-      const VerificationMeta('profileTextModerationState');
   @override
   late final GeneratedColumnWithTypeConverter<EnumString?, String>
       profileTextModerationState = GeneratedColumn<String>(
@@ -259,8 +235,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<EnumString?>(
               $AccountTable.$converterprofileTextModerationState);
-  static const VerificationMeta _profileTextModerationRejectedCategoryMeta =
-      const VerificationMeta('profileTextModerationRejectedCategory');
   @override
   late final GeneratedColumnWithTypeConverter<
       api.ProfileTextModerationRejectedReasonCategory?,
@@ -269,8 +243,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           type: DriftSqlType.int, requiredDuringInsert: false)
       .withConverter<api.ProfileTextModerationRejectedReasonCategory?>(
           $AccountTable.$converterprofileTextModerationRejectedCategory);
-  static const VerificationMeta _profileTextModerationRejectedDetailsMeta =
-      const VerificationMeta('profileTextModerationRejectedDetails');
   @override
   late final GeneratedColumnWithTypeConverter<
       api.ProfileTextModerationRejectedReasonDetails?,
@@ -294,8 +266,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           requiredDuringInsert: false,
           defaultConstraints: GeneratedColumn.constraintIsAlways(
               'CHECK ("profile_unlimited_likes" IN (0, 1))'));
-  static const VerificationMeta _profileVersionMeta =
-      const VerificationMeta('profileVersion');
   @override
   late final GeneratedColumnWithTypeConverter<api.ProfileVersion?, String>
       profileVersion = GeneratedColumn<String>(
@@ -303,8 +273,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<api.ProfileVersion?>(
               $AccountTable.$converterprofileVersion);
-  static const VerificationMeta _jsonProfileAttributesMeta =
-      const VerificationMeta('jsonProfileAttributes');
   @override
   late final GeneratedColumnWithTypeConverter<JsonList?, String>
       jsonProfileAttributes = GeneratedColumn<String>(
@@ -324,16 +292,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<double> profileLocationLongitude =
       GeneratedColumn<double>('profile_location_longitude', aliasedName, true,
           type: DriftSqlType.double, requiredDuringInsert: false);
-  static const VerificationMeta _jsonSearchGroupsMeta =
-      const VerificationMeta('jsonSearchGroups');
   @override
   late final GeneratedColumnWithTypeConverter<JsonString?, String>
       jsonSearchGroups = GeneratedColumn<String>(
               'json_search_groups', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<JsonString?>($AccountTable.$converterjsonSearchGroups);
-  static const VerificationMeta _jsonProfileFilteringSettingsMeta =
-      const VerificationMeta('jsonProfileFilteringSettings');
   @override
   late final GeneratedColumnWithTypeConverter<JsonString?, String>
       jsonProfileFilteringSettings = GeneratedColumn<String>(
@@ -433,8 +397,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       GeneratedColumn<int>(
           'local_image_setting_image_cache_downscaling_size', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _privateKeyDataMeta =
-      const VerificationMeta('privateKeyData');
   @override
   late final GeneratedColumnWithTypeConverter<PrivateKeyData?, String>
       privateKeyData = GeneratedColumn<String>(
@@ -442,8 +404,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<PrivateKeyData?>(
               $AccountTable.$converterprivateKeyData);
-  static const VerificationMeta _publicKeyDataMeta =
-      const VerificationMeta('publicKeyData');
   @override
   late final GeneratedColumnWithTypeConverter<api.PublicKeyData?, String>
       publicKeyData = GeneratedColumn<String>(
@@ -451,15 +411,11 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<api.PublicKeyData?>(
               $AccountTable.$converterpublicKeyData);
-  static const VerificationMeta _publicKeyIdMeta =
-      const VerificationMeta('publicKeyId');
   @override
   late final GeneratedColumnWithTypeConverter<api.PublicKeyId?, int>
       publicKeyId = GeneratedColumn<int>('public_key_id', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<api.PublicKeyId?>($AccountTable.$converterpublicKeyId);
-  static const VerificationMeta _publicKeyVersionMeta =
-      const VerificationMeta('publicKeyVersion');
   @override
   late final GeneratedColumnWithTypeConverter<api.PublicKeyVersion?, int>
       publicKeyVersion = GeneratedColumn<int>(
@@ -467,8 +423,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<api.PublicKeyVersion?>(
               $AccountTable.$converterpublicKeyVersion);
-  static const VerificationMeta _profileInitialAgeSetUnixTimeMeta =
-      const VerificationMeta('profileInitialAgeSetUnixTime');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
       profileInitialAgeSetUnixTime = GeneratedColumn<int>(
@@ -482,8 +436,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   late final GeneratedColumn<int> profileInitialAge = GeneratedColumn<int>(
       'profile_initial_age', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _serverMaintenanceUnixTimeMeta =
-      const VerificationMeta('serverMaintenanceUnixTime');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
       serverMaintenanceUnixTime = GeneratedColumn<int>(
@@ -491,8 +443,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $AccountTable.$converterserverMaintenanceUnixTime);
-  static const VerificationMeta _serverMaintenanceUnixTimeViewedMeta =
-      const VerificationMeta('serverMaintenanceUnixTimeViewed');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
       serverMaintenanceUnixTimeViewed = GeneratedColumn<int>(
@@ -500,8 +450,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $AccountTable.$converterserverMaintenanceUnixTimeViewed);
-  static const VerificationMeta _customReportsFileHashMeta =
-      const VerificationMeta('customReportsFileHash');
   @override
   late final GeneratedColumnWithTypeConverter<api.CustomReportsFileHash?,
       String> customReportsFileHash = GeneratedColumn<String>(
@@ -509,8 +457,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           type: DriftSqlType.string, requiredDuringInsert: false)
       .withConverter<api.CustomReportsFileHash?>(
           $AccountTable.$convertercustomReportsFileHash);
-  static const VerificationMeta _customReportsConfigMeta =
-      const VerificationMeta('customReportsConfig');
   @override
   late final GeneratedColumnWithTypeConverter<JsonString?, String>
       customReportsConfig = GeneratedColumn<String>(
@@ -598,26 +544,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
-    context.handle(_jsonAccountStateMeta, const VerificationResult.success());
-    context.handle(_jsonPermissionsMeta, const VerificationResult.success());
-    context.handle(
-        _jsonProfileVisibilityMeta, const VerificationResult.success());
     if (data.containsKey('profile_filter_favorites')) {
       context.handle(
           _profileFilterFavoritesMeta,
           profileFilterFavorites.isAcceptableOrUnknown(
               data['profile_filter_favorites']!, _profileFilterFavoritesMeta));
     }
-    context.handle(
-        _profileIteratorSessionIdMeta, const VerificationResult.success());
-    context.handle(_receivedLikesIteratorSessionIdMeta,
-        const VerificationResult.success());
-    context.handle(
-        _matchesIteratorSessionIdMeta, const VerificationResult.success());
-    context.handle(_clientIdMeta, const VerificationResult.success());
-    context.handle(_jsonAvailableProfileAttributesOrderModeMeta,
-        const VerificationResult.success());
     if (data.containsKey('initial_sync_done_login_repository')) {
       context.handle(
           _initialSyncDoneLoginRepositoryMeta,
@@ -700,8 +632,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['primary_content_grid_crop_y']!,
               _primaryContentGridCropYMeta));
     }
-    context.handle(
-        _profileContentVersionMeta, const VerificationResult.success());
     if (data.containsKey('profile_name')) {
       context.handle(
           _profileNameMeta,
@@ -714,8 +644,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           profileNameAccepted.isAcceptableOrUnknown(
               data['profile_name_accepted']!, _profileNameAcceptedMeta));
     }
-    context.handle(
-        _profileNameModerationStateMeta, const VerificationResult.success());
     if (data.containsKey('profile_text')) {
       context.handle(
           _profileTextMeta,
@@ -728,12 +656,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           profileTextAccepted.isAcceptableOrUnknown(
               data['profile_text_accepted']!, _profileTextAcceptedMeta));
     }
-    context.handle(
-        _profileTextModerationStateMeta, const VerificationResult.success());
-    context.handle(_profileTextModerationRejectedCategoryMeta,
-        const VerificationResult.success());
-    context.handle(_profileTextModerationRejectedDetailsMeta,
-        const VerificationResult.success());
     if (data.containsKey('profile_age')) {
       context.handle(
           _profileAgeMeta,
@@ -746,9 +668,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           profileUnlimitedLikes.isAcceptableOrUnknown(
               data['profile_unlimited_likes']!, _profileUnlimitedLikesMeta));
     }
-    context.handle(_profileVersionMeta, const VerificationResult.success());
-    context.handle(
-        _jsonProfileAttributesMeta, const VerificationResult.success());
     if (data.containsKey('profile_location_latitude')) {
       context.handle(
           _profileLocationLatitudeMeta,
@@ -763,9 +682,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['profile_location_longitude']!,
               _profileLocationLongitudeMeta));
     }
-    context.handle(_jsonSearchGroupsMeta, const VerificationResult.success());
-    context.handle(
-        _jsonProfileFilteringSettingsMeta, const VerificationResult.success());
     if (data.containsKey('profile_search_age_range_min')) {
       context.handle(
           _profileSearchAgeRangeMinMeta,
@@ -855,26 +771,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               data['local_image_setting_image_cache_downscaling_size']!,
               _localImageSettingImageCacheDownscalingSizeMeta));
     }
-    context.handle(_privateKeyDataMeta, const VerificationResult.success());
-    context.handle(_publicKeyDataMeta, const VerificationResult.success());
-    context.handle(_publicKeyIdMeta, const VerificationResult.success());
-    context.handle(_publicKeyVersionMeta, const VerificationResult.success());
-    context.handle(
-        _profileInitialAgeSetUnixTimeMeta, const VerificationResult.success());
     if (data.containsKey('profile_initial_age')) {
       context.handle(
           _profileInitialAgeMeta,
           profileInitialAge.isAcceptableOrUnknown(
               data['profile_initial_age']!, _profileInitialAgeMeta));
     }
-    context.handle(
-        _serverMaintenanceUnixTimeMeta, const VerificationResult.success());
-    context.handle(_serverMaintenanceUnixTimeViewedMeta,
-        const VerificationResult.success());
-    context.handle(
-        _customReportsFileHashMeta, const VerificationResult.success());
-    context.handle(
-        _customReportsConfigMeta, const VerificationResult.success());
     return context;
   }
 
@@ -3594,8 +3496,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _uuidAccountIdMeta =
-      const VerificationMeta('uuidAccountId');
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId, String>
       uuidAccountId = GeneratedColumn<String>(
@@ -3604,8 +3504,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
               requiredDuringInsert: true,
               defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
           .withConverter<api.AccountId>($ProfilesTable.$converteruuidAccountId);
-  static const VerificationMeta _profileContentVersionMeta =
-      const VerificationMeta('profileContentVersion');
   @override
   late final GeneratedColumnWithTypeConverter<api.ProfileContentVersion?,
       String> profileContentVersion = GeneratedColumn<String>(
@@ -3643,8 +3541,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
       requiredDuringInsert: false,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("profile_text_accepted" IN (0, 1))'));
-  static const VerificationMeta _profileVersionMeta =
-      const VerificationMeta('profileVersion');
   @override
   late final GeneratedColumnWithTypeConverter<api.ProfileVersion?, String>
       profileVersion = GeneratedColumn<String>(
@@ -3673,8 +3569,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
           requiredDuringInsert: false,
           defaultConstraints: GeneratedColumn.constraintIsAlways(
               'CHECK ("profile_unlimited_likes" IN (0, 1))'));
-  static const VerificationMeta _jsonProfileAttributesMeta =
-      const VerificationMeta('jsonProfileAttributes');
   @override
   late final GeneratedColumnWithTypeConverter<JsonList?, String>
       jsonProfileAttributes = GeneratedColumn<String>(
@@ -3701,8 +3595,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   late final GeneratedColumn<double> primaryContentGridCropY =
       GeneratedColumn<double>('primary_content_grid_crop_y', aliasedName, true,
           type: DriftSqlType.double, requiredDuringInsert: false);
-  static const VerificationMeta _profileDataRefreshTimeMeta =
-      const VerificationMeta('profileDataRefreshTime');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
       profileDataRefreshTime = GeneratedColumn<int>(
@@ -3710,8 +3602,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $ProfilesTable.$converterprofileDataRefreshTime);
-  static const VerificationMeta _newLikeInfoReceivedTimeMeta =
-      const VerificationMeta('newLikeInfoReceivedTime');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
       newLikeInfoReceivedTime = GeneratedColumn<int>(
@@ -3752,9 +3642,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
-    context.handle(
-        _profileContentVersionMeta, const VerificationResult.success());
     if (data.containsKey('profile_name')) {
       context.handle(
           _profileNameMeta,
@@ -3779,7 +3666,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
           profileTextAccepted.isAcceptableOrUnknown(
               data['profile_text_accepted']!, _profileTextAcceptedMeta));
     }
-    context.handle(_profileVersionMeta, const VerificationResult.success());
     if (data.containsKey('profile_age')) {
       context.handle(
           _profileAgeMeta,
@@ -3799,8 +3685,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
           profileUnlimitedLikes.isAcceptableOrUnknown(
               data['profile_unlimited_likes']!, _profileUnlimitedLikesMeta));
     }
-    context.handle(
-        _jsonProfileAttributesMeta, const VerificationResult.success());
     if (data.containsKey('primary_content_grid_crop_size')) {
       context.handle(
           _primaryContentGridCropSizeMeta,
@@ -3822,10 +3706,6 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
               data['primary_content_grid_crop_y']!,
               _primaryContentGridCropYMeta));
     }
-    context.handle(
-        _profileDataRefreshTimeMeta, const VerificationResult.success());
-    context.handle(
-        _newLikeInfoReceivedTimeMeta, const VerificationResult.success());
     return context;
   }
 
@@ -4564,8 +4444,6 @@ class $PublicProfileContentTable extends PublicProfileContent
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $PublicProfileContentTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _uuidAccountIdMeta =
-      const VerificationMeta('uuidAccountId');
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId, String>
       uuidAccountId = GeneratedColumn<String>(
@@ -4579,8 +4457,6 @@ class $PublicProfileContentTable extends PublicProfileContent
   late final GeneratedColumn<int> contentIndex = GeneratedColumn<int>(
       'content_index', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _uuidContentIdMeta =
-      const VerificationMeta('uuidContentId');
   @override
   late final GeneratedColumnWithTypeConverter<api.ContentId, String>
       uuidContentId = GeneratedColumn<String>(
@@ -4625,7 +4501,6 @@ class $PublicProfileContentTable extends PublicProfileContent
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
     if (data.containsKey('content_index')) {
       context.handle(
           _contentIndexMeta,
@@ -4634,7 +4509,6 @@ class $PublicProfileContentTable extends PublicProfileContent
     } else if (isInserting) {
       context.missing(_contentIndexMeta);
     }
-    context.handle(_uuidContentIdMeta, const VerificationResult.success());
     if (data.containsKey('content_accepted')) {
       context.handle(
           _contentAcceptedMeta,
@@ -4929,8 +4803,6 @@ class $MyMediaContentTable extends MyMediaContent
   late final GeneratedColumn<int> contentIndex = GeneratedColumn<int>(
       'content_index', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _uuidContentIdMeta =
-      const VerificationMeta('uuidContentId');
   @override
   late final GeneratedColumnWithTypeConverter<api.ContentId, String>
       uuidContentId = GeneratedColumn<String>(
@@ -4947,8 +4819,6 @@ class $MyMediaContentTable extends MyMediaContent
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("face_detected" IN (0, 1))'));
-  static const VerificationMeta _moderationStateMeta =
-      const VerificationMeta('moderationState');
   @override
   late final GeneratedColumnWithTypeConverter<EnumString?, String>
       moderationState = GeneratedColumn<String>(
@@ -4956,8 +4826,6 @@ class $MyMediaContentTable extends MyMediaContent
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<EnumString?>(
               $MyMediaContentTable.$convertermoderationState);
-  static const VerificationMeta _contentModerationRejectedCategoryMeta =
-      const VerificationMeta('contentModerationRejectedCategory');
   @override
   late final GeneratedColumnWithTypeConverter<
       api.ProfileContentModerationRejectedReasonCategory?,
@@ -4966,8 +4834,6 @@ class $MyMediaContentTable extends MyMediaContent
           type: DriftSqlType.int, requiredDuringInsert: false)
       .withConverter<api.ProfileContentModerationRejectedReasonCategory?>(
           $MyMediaContentTable.$convertercontentModerationRejectedCategory);
-  static const VerificationMeta _contentModerationRejectedDetailsMeta =
-      const VerificationMeta('contentModerationRejectedDetails');
   @override
   late final GeneratedColumnWithTypeConverter<
       api.ProfileContentModerationRejectedReasonDetails?,
@@ -5001,7 +4867,6 @@ class $MyMediaContentTable extends MyMediaContent
           contentIndex.isAcceptableOrUnknown(
               data['content_index']!, _contentIndexMeta));
     }
-    context.handle(_uuidContentIdMeta, const VerificationResult.success());
     if (data.containsKey('face_detected')) {
       context.handle(
           _faceDetectedMeta,
@@ -5010,11 +4875,6 @@ class $MyMediaContentTable extends MyMediaContent
     } else if (isInserting) {
       context.missing(_faceDetectedMeta);
     }
-    context.handle(_moderationStateMeta, const VerificationResult.success());
-    context.handle(_contentModerationRejectedCategoryMeta,
-        const VerificationResult.success());
-    context.handle(_contentModerationRejectedDetailsMeta,
-        const VerificationResult.success());
     return context;
   }
 
@@ -5380,8 +5240,6 @@ class $ProfileStatesTable extends ProfileStates
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _uuidAccountIdMeta =
-      const VerificationMeta('uuidAccountId');
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId, String>
       uuidAccountId = GeneratedColumn<String>(
@@ -5391,16 +5249,12 @@ class $ProfileStatesTable extends ProfileStates
               defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
           .withConverter<api.AccountId>(
               $ProfileStatesTable.$converteruuidAccountId);
-  static const VerificationMeta _isInFavoritesMeta =
-      const VerificationMeta('isInFavorites');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> isInFavorites =
       GeneratedColumn<int>('is_in_favorites', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $ProfileStatesTable.$converterisInFavorites);
-  static const VerificationMeta _isInReceivedLikesMeta =
-      const VerificationMeta('isInReceivedLikes');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
       isInReceivedLikes = GeneratedColumn<int>(
@@ -5408,24 +5262,18 @@ class $ProfileStatesTable extends ProfileStates
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $ProfileStatesTable.$converterisInReceivedLikes);
-  static const VerificationMeta _isInSentLikesMeta =
-      const VerificationMeta('isInSentLikes');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> isInSentLikes =
       GeneratedColumn<int>('is_in_sent_likes', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $ProfileStatesTable.$converterisInSentLikes);
-  static const VerificationMeta _isInMatchesMeta =
-      const VerificationMeta('isInMatches');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> isInMatches =
       GeneratedColumn<int>('is_in_matches', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $ProfileStatesTable.$converterisInMatches);
-  static const VerificationMeta _isInProfileGridMeta =
-      const VerificationMeta('isInProfileGrid');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
       isInProfileGrid = GeneratedColumn<int>(
@@ -5433,8 +5281,6 @@ class $ProfileStatesTable extends ProfileStates
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $ProfileStatesTable.$converterisInProfileGrid);
-  static const VerificationMeta _isInReceivedLikesGridMeta =
-      const VerificationMeta('isInReceivedLikesGrid');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
       isInReceivedLikesGrid = GeneratedColumn<int>(
@@ -5442,8 +5288,6 @@ class $ProfileStatesTable extends ProfileStates
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $ProfileStatesTable.$converterisInReceivedLikesGrid);
-  static const VerificationMeta _isInMatchesGridMeta =
-      const VerificationMeta('isInMatchesGrid');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
       isInMatchesGrid = GeneratedColumn<int>(
@@ -5476,15 +5320,6 @@ class $ProfileStatesTable extends ProfileStates
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
-    context.handle(_isInFavoritesMeta, const VerificationResult.success());
-    context.handle(_isInReceivedLikesMeta, const VerificationResult.success());
-    context.handle(_isInSentLikesMeta, const VerificationResult.success());
-    context.handle(_isInMatchesMeta, const VerificationResult.success());
-    context.handle(_isInProfileGridMeta, const VerificationResult.success());
-    context.handle(
-        _isInReceivedLikesGridMeta, const VerificationResult.success());
-    context.handle(_isInMatchesGridMeta, const VerificationResult.success());
     return context;
   }
 
@@ -5934,8 +5769,6 @@ class $ConversationListTable extends ConversationList
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _uuidAccountIdMeta =
-      const VerificationMeta('uuidAccountId');
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId, String>
       uuidAccountId = GeneratedColumn<String>(
@@ -5945,8 +5778,6 @@ class $ConversationListTable extends ConversationList
               defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
           .withConverter<api.AccountId>(
               $ConversationListTable.$converteruuidAccountId);
-  static const VerificationMeta _conversationLastChangedTimeMeta =
-      const VerificationMeta('conversationLastChangedTime');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
       conversationLastChangedTime = GeneratedColumn<int>(
@@ -5954,8 +5785,6 @@ class $ConversationListTable extends ConversationList
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $ConversationListTable.$converterconversationLastChangedTime);
-  static const VerificationMeta _isInConversationListMeta =
-      const VerificationMeta('isInConversationList');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
       isInConversationList = GeneratedColumn<int>(
@@ -5963,8 +5792,6 @@ class $ConversationListTable extends ConversationList
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>(
               $ConversationListTable.$converterisInConversationList);
-  static const VerificationMeta _isInSentBlocksMeta =
-      const VerificationMeta('isInSentBlocks');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
       isInSentBlocks = GeneratedColumn<int>(
@@ -5994,12 +5821,6 @@ class $ConversationListTable extends ConversationList
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
-    context.handle(
-        _conversationLastChangedTimeMeta, const VerificationResult.success());
-    context.handle(
-        _isInConversationListMeta, const VerificationResult.success());
-    context.handle(_isInSentBlocksMeta, const VerificationResult.success());
     return context;
   }
 
@@ -6301,8 +6122,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _uuidLocalAccountIdMeta =
-      const VerificationMeta('uuidLocalAccountId');
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId, String>
       uuidLocalAccountId = GeneratedColumn<String>(
@@ -6310,8 +6129,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
               type: DriftSqlType.string, requiredDuringInsert: true)
           .withConverter<api.AccountId>(
               $MessagesTable.$converteruuidLocalAccountId);
-  static const VerificationMeta _uuidRemoteAccountIdMeta =
-      const VerificationMeta('uuidRemoteAccountId');
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId, String>
       uuidRemoteAccountId = GeneratedColumn<String>(
@@ -6325,8 +6142,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   late final GeneratedColumn<String> messageText = GeneratedColumn<String>(
       'message_text', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _localUnixTimeMeta =
-      const VerificationMeta('localUnixTime');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime, int> localUnixTime =
       GeneratedColumn<int>('local_unix_time', aliasedName, false,
@@ -6338,16 +6153,12 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   late final GeneratedColumn<int> messageState = GeneratedColumn<int>(
       'message_state', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _messageNumberMeta =
-      const VerificationMeta('messageNumber');
   @override
   late final GeneratedColumnWithTypeConverter<api.MessageNumber?, int>
       messageNumber = GeneratedColumn<int>('message_number', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<api.MessageNumber?>(
               $MessagesTable.$convertermessageNumber);
-  static const VerificationMeta _unixTimeMeta =
-      const VerificationMeta('unixTime');
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> unixTime =
       GeneratedColumn<int>('unix_time', aliasedName, true,
@@ -6377,9 +6188,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    context.handle(_uuidLocalAccountIdMeta, const VerificationResult.success());
-    context.handle(
-        _uuidRemoteAccountIdMeta, const VerificationResult.success());
     if (data.containsKey('message_text')) {
       context.handle(
           _messageTextMeta,
@@ -6388,7 +6196,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
     } else if (isInserting) {
       context.missing(_messageTextMeta);
     }
-    context.handle(_localUnixTimeMeta, const VerificationResult.success());
     if (data.containsKey('message_state')) {
       context.handle(
           _messageStateMeta,
@@ -6397,8 +6204,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
     } else if (isInserting) {
       context.missing(_messageStateMeta);
     }
-    context.handle(_messageNumberMeta, const VerificationResult.success());
-    context.handle(_unixTimeMeta, const VerificationResult.success());
     return context;
   }
 
@@ -6771,8 +6576,6 @@ class $ConversationsTable extends Conversations
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _uuidAccountIdMeta =
-      const VerificationMeta('uuidAccountId');
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId, String>
       uuidAccountId = GeneratedColumn<String>(
@@ -6782,8 +6585,6 @@ class $ConversationsTable extends Conversations
               defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
           .withConverter<api.AccountId>(
               $ConversationsTable.$converteruuidAccountId);
-  static const VerificationMeta _publicKeyDataMeta =
-      const VerificationMeta('publicKeyData');
   @override
   late final GeneratedColumnWithTypeConverter<api.PublicKeyData?, String>
       publicKeyData = GeneratedColumn<String>(
@@ -6791,16 +6592,12 @@ class $ConversationsTable extends Conversations
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<api.PublicKeyData?>(
               $ConversationsTable.$converterpublicKeyData);
-  static const VerificationMeta _publicKeyIdMeta =
-      const VerificationMeta('publicKeyId');
   @override
   late final GeneratedColumnWithTypeConverter<api.PublicKeyId?, int>
       publicKeyId = GeneratedColumn<int>('public_key_id', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<api.PublicKeyId?>(
               $ConversationsTable.$converterpublicKeyId);
-  static const VerificationMeta _publicKeyVersionMeta =
-      const VerificationMeta('publicKeyVersion');
   @override
   late final GeneratedColumnWithTypeConverter<api.PublicKeyVersion?, int>
       publicKeyVersion = GeneratedColumn<int>(
@@ -6824,10 +6621,6 @@ class $ConversationsTable extends Conversations
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
-    context.handle(_publicKeyDataMeta, const VerificationResult.success());
-    context.handle(_publicKeyIdMeta, const VerificationResult.success());
-    context.handle(_publicKeyVersionMeta, const VerificationResult.success());
     return context;
   }
 
@@ -7113,8 +6906,6 @@ class $AvailableProfileAttributesTableTable
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _jsonAttributeMeta =
-      const VerificationMeta('jsonAttribute');
   @override
   late final GeneratedColumnWithTypeConverter<JsonString, String>
       jsonAttribute = GeneratedColumn<String>(
@@ -7122,8 +6913,6 @@ class $AvailableProfileAttributesTableTable
               type: DriftSqlType.string, requiredDuringInsert: true)
           .withConverter<JsonString>(
               $AvailableProfileAttributesTableTable.$converterjsonAttribute);
-  static const VerificationMeta _attributeHashMeta =
-      const VerificationMeta('attributeHash');
   @override
   late final GeneratedColumnWithTypeConverter<api.ProfileAttributeHash, String>
       attributeHash = GeneratedColumn<String>(
@@ -7147,8 +6936,6 @@ class $AvailableProfileAttributesTableTable
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    context.handle(_jsonAttributeMeta, const VerificationResult.success());
-    context.handle(_attributeHashMeta, const VerificationResult.success());
     return context;
   }
 

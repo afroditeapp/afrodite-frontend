@@ -18,8 +18,6 @@ class $AccountBackgroundTable extends AccountBackground
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _uuidAccountIdMeta =
-      const VerificationMeta('uuidAccountId');
   @override
   late final GeneratedColumnWithTypeConverter<AccountId?, String>
       uuidAccountId = GeneratedColumn<String>(
@@ -107,7 +105,6 @@ class $AccountBackgroundTable extends AccountBackground
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
     if (data.containsKey('local_notification_setting_messages')) {
       context.handle(
           _localNotificationSettingMessagesMeta,
@@ -576,8 +573,6 @@ class $ProfilesBackgroundTable extends ProfilesBackground
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _uuidAccountIdMeta =
-      const VerificationMeta('uuidAccountId');
   @override
   late final GeneratedColumnWithTypeConverter<AccountId, String> uuidAccountId =
       GeneratedColumn<String>('uuid_account_id', aliasedName, false,
@@ -618,7 +613,6 @@ class $ProfilesBackgroundTable extends ProfilesBackground
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
     if (data.containsKey('profile_name')) {
       context.handle(
           _profileNameMeta,
@@ -869,8 +863,6 @@ class $ConversationsBackgroundTable extends ConversationsBackground
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _uuidAccountIdMeta =
-      const VerificationMeta('uuidAccountId');
   @override
   late final GeneratedColumnWithTypeConverter<AccountId, String> uuidAccountId =
       GeneratedColumn<String>('uuid_account_id', aliasedName, false,
@@ -879,8 +871,6 @@ class $ConversationsBackgroundTable extends ConversationsBackground
               defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
           .withConverter<AccountId>(
               $ConversationsBackgroundTable.$converteruuidAccountId);
-  static const VerificationMeta _conversationUnreadMessagesCountMeta =
-      const VerificationMeta('conversationUnreadMessagesCount');
   @override
   late final GeneratedColumnWithTypeConverter<UnreadMessagesCount, int>
       conversationUnreadMessagesCount = GeneratedColumn<int>(
@@ -907,9 +897,6 @@ class $ConversationsBackgroundTable extends ConversationsBackground
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
-    context.handle(_conversationUnreadMessagesCountMeta,
-        const VerificationResult.success());
     return context;
   }
 
@@ -1135,8 +1122,6 @@ class $NewMessageNotificationTable extends NewMessageNotification
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _uuidAccountIdMeta =
-      const VerificationMeta('uuidAccountId');
   @override
   late final GeneratedColumnWithTypeConverter<AccountId, String> uuidAccountId =
       GeneratedColumn<String>('uuid_account_id', aliasedName, false,
@@ -1171,7 +1156,6 @@ class $NewMessageNotificationTable extends NewMessageNotification
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
     if (data.containsKey('notification_shown')) {
       context.handle(
           _notificationShownMeta,
@@ -1386,8 +1370,6 @@ class $NewReceivedLikesAvailableTable extends NewReceivedLikesAvailable
   late final GeneratedColumn<int> syncVersionReceivedLikes =
       GeneratedColumn<int>('sync_version_received_likes', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _newReceivedLikesCountMeta =
-      const VerificationMeta('newReceivedLikesCount');
   @override
   late final GeneratedColumnWithTypeConverter<NewReceivedLikesCount?, int>
       newReceivedLikesCount = GeneratedColumn<int>(
@@ -1395,8 +1377,6 @@ class $NewReceivedLikesAvailableTable extends NewReceivedLikesAvailable
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<NewReceivedLikesCount?>(
               $NewReceivedLikesAvailableTable.$converternewReceivedLikesCount);
-  static const VerificationMeta _newReceivedLikesCountNotViewedMeta =
-      const VerificationMeta('newReceivedLikesCountNotViewed');
   @override
   late final GeneratedColumnWithTypeConverter<NewReceivedLikesCount?, int>
       newReceivedLikesCountNotViewed = GeneratedColumn<int>(
@@ -1432,10 +1412,6 @@ class $NewReceivedLikesAvailableTable extends NewReceivedLikesAvailable
               data['sync_version_received_likes']!,
               _syncVersionReceivedLikesMeta));
     }
-    context.handle(
-        _newReceivedLikesCountMeta, const VerificationResult.success());
-    context.handle(_newReceivedLikesCountNotViewedMeta,
-        const VerificationResult.success());
     return context;
   }
 
@@ -1718,8 +1694,6 @@ class $NewsTable extends News with TableInfo<$NewsTable, New> {
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _newsCountMeta =
-      const VerificationMeta('newsCount');
   @override
   late final GeneratedColumnWithTypeConverter<UnreadNewsCount?, int> newsCount =
       GeneratedColumn<int>('news_count', aliasedName, true,
@@ -1746,7 +1720,6 @@ class $NewsTable extends News with TableInfo<$NewsTable, New> {
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    context.handle(_newsCountMeta, const VerificationResult.success());
     if (data.containsKey('sync_version_news')) {
       context.handle(
           _syncVersionNewsMeta,

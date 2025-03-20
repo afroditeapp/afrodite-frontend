@@ -41,8 +41,9 @@ watch-freezed-code:
 remove-and-download-drift-web-dependencies:
 	rm -f web/drift_worker.js
 	rm -f web/sqlite3.wasm
-	cd web && curl "https://github.com/simolus3/drift/releases/download/drift-2.19.1/drift_worker.js" -L -o drift_worker.js
-	cd web && curl "https://github.com/simolus3/sqlite3.dart/releases/download/sqlite3-2.4.6/sqlite3.wasm" -L -o sqlite3.wasm
+	cd web && curl "https://github.com/simolus3/drift/releases/download/drift-2.26.0/drift_worker.js" -L -o drift_worker.js
+	# Download for sqlite3-2.7.5 does not exist so download older version
+	cd web && curl "https://github.com/simolus3/sqlite3.dart/releases/download/sqlite3-2.7.4/sqlite3.wasm" -L -o sqlite3.wasm
 
 build-web-release-tar-linux:
 	flutter build web --release --wasm

@@ -42,8 +42,6 @@ class $CommonBackgroundTable extends CommonBackground
   late final GeneratedColumn<String> serverUrlChat = GeneratedColumn<String>(
       'server_url_chat', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _uuidAccountIdMeta =
-      const VerificationMeta('uuidAccountId');
   @override
   late final GeneratedColumnWithTypeConverter<AccountId?, String>
       uuidAccountId = GeneratedColumn<String>(
@@ -51,8 +49,6 @@ class $CommonBackgroundTable extends CommonBackground
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<AccountId?>(
               $CommonBackgroundTable.$converteruuidAccountId);
-  static const VerificationMeta _notificationSessionIdMeta =
-      const VerificationMeta('notificationSessionId');
   @override
   late final GeneratedColumnWithTypeConverter<NotificationSessionId?, int>
       notificationSessionId = GeneratedColumn<int>(
@@ -60,8 +56,6 @@ class $CommonBackgroundTable extends CommonBackground
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<NotificationSessionId?>(
               $CommonBackgroundTable.$converternotificationSessionId);
-  static const VerificationMeta _fcmDeviceTokenMeta =
-      const VerificationMeta('fcmDeviceToken');
   @override
   late final GeneratedColumnWithTypeConverter<FcmDeviceToken?, String>
       fcmDeviceToken = GeneratedColumn<String>(
@@ -69,8 +63,6 @@ class $CommonBackgroundTable extends CommonBackground
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<FcmDeviceToken?>(
               $CommonBackgroundTable.$converterfcmDeviceToken);
-  static const VerificationMeta _pendingNotificationTokenMeta =
-      const VerificationMeta('pendingNotificationToken');
   @override
   late final GeneratedColumnWithTypeConverter<PendingNotificationToken?, String>
       pendingNotificationToken = GeneratedColumn<String>(
@@ -135,12 +127,6 @@ class $CommonBackgroundTable extends CommonBackground
           serverUrlChat.isAcceptableOrUnknown(
               data['server_url_chat']!, _serverUrlChatMeta));
     }
-    context.handle(_uuidAccountIdMeta, const VerificationResult.success());
-    context.handle(
-        _notificationSessionIdMeta, const VerificationResult.success());
-    context.handle(_fcmDeviceTokenMeta, const VerificationResult.success());
-    context.handle(
-        _pendingNotificationTokenMeta, const VerificationResult.success());
     if (data.containsKey('current_locale')) {
       context.handle(
           _currentLocaleMeta,
