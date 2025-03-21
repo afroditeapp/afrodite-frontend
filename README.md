@@ -3,7 +3,8 @@
 Afrodite is a dating app aiming to change dating app market to offer more
 ethical, private and secure dating apps. Written using modern technologies,
 Flutter and Rust, the app offers ethical profile browsing centered UI together
-with private and secure end-to-end encrypted chat messaging.
+with private and secure end-to-end encrypted chat messaging. The app supports
+Android and iOS platforms.
 
 This repository contains the frontend part. [Backend repository](https://github.com/afroditeapp/afrodite-backend)
 
@@ -91,6 +92,13 @@ Commands `make watch-translations`, `make watch-translations-linux` and `make up
 
 Commands `make watch-freezed-code` and `make update-freezed-code` requires [icegen](https://github.com/jutuon/icegen).
 
+Command `make update-api-bindings` does not work currently as OpenAPI generator
+Dart code generation does not currently support OpenAPI 3.1 composed schemas.
+[Commit](https://github.com/jutuon/openapi-generator/tree/dart-improve-composed-schema-support)
+with the support exists so it is possible to build OpenAPI generator from that
+commit for example with [IntelliJ IDEA](https://www.jetbrains.com/idea/).
+
+<!--
 Command `make update-api-bindings` requires `openapi-generator-cli`.
 
 1. Install node version manager (nvm) <https://github.com/nvm-sh/nvm>
@@ -99,6 +107,7 @@ Command `make update-api-bindings` requires `openapi-generator-cli`.
    `npm install @openapitools/openapi-generator-cli -g`
 4. Start backend in debug mode.
 5. Run `make update-api-bindings`.
+-->
 
 Command `make update-licenses-for-native-utils` requires
 [cargo-about](https://github.com/EmbarkStudios/cargo-about).
@@ -181,14 +190,19 @@ firebase.json
 
 ## Questions and answers
 
-Check backend [README.md](https://github.com/jutuon/afrodite-backend#questions-and-answers).
+Check backend [README.md](https://github.com/afroditeapp/afrodite-backend#questions-and-answers).
 
 ## Contributions
 
-Only bug fixes or documentation improvements are accepted at the moment.
+Bug fixes or documentation improvements are usually welcome. For new features,
+please open a new issue and ask could the new feature be accepted. The
+feature might not be accepted for example if it is considered unethical
+or adds too much maintenance burden.
 
 Contributions must have the same license as the project (dual-licensed with
 MIT and Apache 2.0).
+
+Also note that TODO comments and documentation might be outdated.
 
 ## License
 

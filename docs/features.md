@@ -3,7 +3,7 @@
 
 The frontend supports backend features with some differences and this
 file contains the differences. For backend features check backend repository
-[features.md](https://github.com/jutuon/afrodite-backend/blob/main/docs/features.md).
+[features.md](https://github.com/afroditeapp/afrodite-backend/blob/main/docs/features.md).
 
 ## Profile
 
@@ -14,11 +14,6 @@ file contains the differences. For backend features check backend repository
 ## Chat
 
 * End-to-end encryption (OpenPGP)
-
-# Missing frontend features
-
-* Account removing
-* Account banning
 
 # Possible future frontend features
 
