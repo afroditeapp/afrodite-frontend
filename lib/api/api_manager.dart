@@ -207,7 +207,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
     ]);
   }
 
-  /// Wait untill current login session connects to server.
+  /// Wait until current login session connects to server.
   ///
   /// If notification session ID changes then error is returned.
   Future<Result<void, void>> waitUntilCurrentSessionConnects() async {
