@@ -16,6 +16,7 @@ import 'package:app/ui/normal/settings/admin/account_admin/delete_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/edit_permissions.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_name.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_text.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/view_api_usage.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_reports.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -53,6 +54,7 @@ class AccountAdminSettingsScreen extends StatefulWidget {
 class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen> {
 
   final profile = LoginRepository.getInstance().repositories.profile;
+  final api = LoginRepository.getInstance().repositories.api;
 
   @override
   Widget build(BuildContext context) {
@@ -126,6 +128,10 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       settings.add(Setting.createSetting(Icons.person, "Account private info", () =>
         MyNavigator.push(context, MaterialPage<void>(child: AccountPrivateInfoScreen(accountId: widget.accountId)))
       ));
+      const apiUsageStatistics = "API usage statistics";
+      settings.add(Setting.createSetting(Icons.query_stats, apiUsageStatistics, () {
+        openViewApiUsageScreen(context, apiUsageStatistics, api, widget.accountId);
+      }));
     }
 
     if (permissions.adminViewPermissions && permissions.adminModifyPermissions) {
