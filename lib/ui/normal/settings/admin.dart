@@ -8,6 +8,7 @@ import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
 import 'package:app/ui/normal/settings/admin/server_tasks.dart';
 import 'package:app/ui/normal/settings/admin/view_accounts.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
+import 'package:app/ui/normal/settings/admin/view_client_version_statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -97,6 +98,14 @@ class AdminSettingsPage extends StatelessWidget {
       const title = "View server perf data";
       settings.add(Setting.createSetting(Icons.query_stats, title, () =>
         openViewPerfDataScreen(context, title, api)
+      ));
+      const clientVersionStatistics = "Client version statistics (hourly)";
+      settings.add(Setting.createSetting(Icons.query_stats, clientVersionStatistics, () =>
+        openViewClientVersionStatisticsScreen(context, clientVersionStatistics, api)
+      ));
+      const clientVersionStatisticsDaily = "Client version statistics (daily)";
+      settings.add(Setting.createSetting(Icons.query_stats, clientVersionStatisticsDaily, () =>
+        openViewClientVersionStatisticsScreen(context, clientVersionStatisticsDaily, api, daily: true)
       ));
     }
     if (permissions.adminServerMaintenanceEditNotification) {

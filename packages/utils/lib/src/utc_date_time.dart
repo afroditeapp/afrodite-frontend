@@ -29,4 +29,8 @@ class UtcDateTime {
   UtcDateTime add(Duration duration) {
     return UtcDateTime._(dateTime.add(duration));
   }
+
+  UtcDateTime substract(Duration duration) {
+    return UtcDateTime._(dateTime.subtract(duration));
+  }
 }

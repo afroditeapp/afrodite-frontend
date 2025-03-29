@@ -40,3 +40,9 @@ extension CustomReportUiExtensions on CustomReport {
     return name;
   }
 }
+
+extension ClientVersionUiExtensions on ClientVersion {
+  String versionString() {
+    return "$major.$minor.$patch_";
+  }
+}
