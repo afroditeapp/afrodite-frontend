@@ -1,5 +1,6 @@
 
 
+import 'package:app/data/login_repository.dart';
 import 'package:app/ui/normal/settings/admin/edit_maintenance_notification.dart';
 import 'package:app/ui/normal/settings/admin/moderate_profile_texts.dart';
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
@@ -51,6 +52,7 @@ class AdminSettingsPage extends StatelessWidget {
   }
 
   List<Setting> settingsList(BuildContext context, AdminSettingsPermissions permissions) {
+    final api = LoginRepository.getInstance().repositories.api;
     List<Setting> settings = [];
 
     if (permissions.adminModerateMediaContent) {
@@ -92,8 +94,9 @@ class AdminSettingsPage extends StatelessWidget {
       ));
     }
     if (permissions.adminServerMaintenanceViewInfo) {
-      settings.add(Setting.createSetting(Icons.query_stats, "View server perf data", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: const ViewPerfDataPage()))
+      const title = "View server perf data";
+      settings.add(Setting.createSetting(Icons.query_stats, title, () =>
+        openViewPerfDataScreen(context, title, api)
       ));
     }
     if (permissions.adminServerMaintenanceEditNotification) {
