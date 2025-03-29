@@ -13,13 +13,13 @@ part of openapi.api;
 class PerfMetricValueArea {
   /// Returns a new [PerfMetricValueArea] instance.
   PerfMetricValueArea({
-    required this.startTime,
+    required this.firstTimeValue,
     required this.timeGranularity,
     this.values = const [],
   });
 
-  /// Time for first data point in values.
-  UnixTime startTime;
+  /// Time value for the first data point. Every next time value is increased with [Self::time_granularity].
+  UnixTime firstTimeValue;
 
   /// Time granularity for values in between start time and time points.
   TimeGranularity timeGranularity;
@@ -28,23 +28,23 @@ class PerfMetricValueArea {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PerfMetricValueArea &&
-    other.startTime == startTime &&
+    other.firstTimeValue == firstTimeValue &&
     other.timeGranularity == timeGranularity &&
     _deepEquality.equals(other.values, values);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (startTime.hashCode) +
+    (firstTimeValue.hashCode) +
     (timeGranularity.hashCode) +
     (values.hashCode);
 
   @override
-  String toString() => 'PerfMetricValueArea[startTime=$startTime, timeGranularity=$timeGranularity, values=$values]';
+  String toString() => 'PerfMetricValueArea[firstTimeValue=$firstTimeValue, timeGranularity=$timeGranularity, values=$values]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'start_time'] = this.startTime;
+      json[r'first_time_value'] = this.firstTimeValue;
       json[r'time_granularity'] = this.timeGranularity;
       json[r'values'] = this.values;
     return json;
@@ -69,7 +69,7 @@ class PerfMetricValueArea {
       }());
 
       return PerfMetricValueArea(
-        startTime: UnixTime.fromJson(json[r'start_time'])!,
+        firstTimeValue: UnixTime.fromJson(json[r'first_time_value'])!,
         timeGranularity: TimeGranularity.fromJson(json[r'time_granularity'])!,
         values: json[r'values'] is Iterable
             ? (json[r'values'] as Iterable).cast<int>().toList(growable: false)
@@ -121,7 +121,7 @@ class PerfMetricValueArea {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'start_time',
+    'first_time_value',
     'time_granularity',
     'values',
   };

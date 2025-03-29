@@ -410,6 +410,62 @@ class AccountAdminApi {
     }
   }
 
+  /// Get client version statistics.
+  ///
+  /// HTTP method is POST to allow JSON request body.  # Permissions Requires admin_server_maintenance_view_info.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [GetClientVersionStatisticsSettings] getClientVersionStatisticsSettings (required):
+  Future<Response> postGetClientVersionStatisticsWithHttpInfo(GetClientVersionStatisticsSettings getClientVersionStatisticsSettings,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/client_version_statistics';
+
+    // ignore: prefer_final_locals
+    Object? postBody = getClientVersionStatisticsSettings;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get client version statistics.
+  ///
+  /// HTTP method is POST to allow JSON request body.  # Permissions Requires admin_server_maintenance_view_info.
+  ///
+  /// Parameters:
+  ///
+  /// * [GetClientVersionStatisticsSettings] getClientVersionStatisticsSettings (required):
+  Future<GetClientVersionStatisticsResult?> postGetClientVersionStatistics(GetClientVersionStatisticsSettings getClientVersionStatisticsSettings,) async {
+    final response = await postGetClientVersionStatisticsWithHttpInfo(getClientVersionStatisticsSettings,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetClientVersionStatisticsResult',) as GetClientVersionStatisticsResult;
+    
+    }
+    return null;
+  }
+
   /// Ban or unban account
   ///
   /// # Access  Permission [model_account::Permissions::admin_ban_account] is required.

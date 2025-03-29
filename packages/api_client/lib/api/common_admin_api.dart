@@ -201,77 +201,6 @@ class CommonAdminApi {
     return null;
   }
 
-  /// Get performance data
-  ///
-  /// # Permissions Requires admin_server_maintenance_view_info.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [UnixTime] startTime:
-  ///   Start time for query results.
-  ///
-  /// * [GetPerfDataEndTimeParameter] endTime:
-  ///   End time for query results.
-  Future<Response> getPerfDataWithHttpInfo({ UnixTime? startTime, GetPerfDataEndTimeParameter? endTime, }) async {
-    // ignore: prefer_const_declarations
-    final path = r'/common_api/perf_data';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    if (startTime != null) {
-      queryParams.addAll(_queryParams('', 'start_time', startTime));
-    }
-    if (endTime != null) {
-      queryParams.addAll(_queryParams('', 'end_time', endTime));
-    }
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get performance data
-  ///
-  /// # Permissions Requires admin_server_maintenance_view_info.
-  ///
-  /// Parameters:
-  ///
-  /// * [UnixTime] startTime:
-  ///   Start time for query results.
-  ///
-  /// * [GetPerfDataEndTimeParameter] endTime:
-  ///   End time for query results.
-  Future<PerfMetricQueryResult?> getPerfData({ UnixTime? startTime, GetPerfDataEndTimeParameter? endTime, }) async {
-    final response = await getPerfDataWithHttpInfo( startTime: startTime, endTime: endTime, );
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PerfMetricQueryResult',) as PerfMetricQueryResult;
-    
-    }
-    return null;
-  }
-
   /// Get scheduled tasks status from manager instance.
   ///
   /// # Access * Permission [model::Permissions::admin_server_maintenance_reboot_backend]
@@ -581,6 +510,174 @@ class CommonAdminApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Get API usage data for account
+  ///
+  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires [Permissions::admin_view_private_info].
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [GetApiUsageStatisticsSettings] getApiUsageStatisticsSettings (required):
+  Future<Response> postGetApiUsageDataWithHttpInfo(GetApiUsageStatisticsSettings getApiUsageStatisticsSettings,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/api_usage_data';
+
+    // ignore: prefer_final_locals
+    Object? postBody = getApiUsageStatisticsSettings;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get API usage data for account
+  ///
+  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires [Permissions::admin_view_private_info].
+  ///
+  /// Parameters:
+  ///
+  /// * [GetApiUsageStatisticsSettings] getApiUsageStatisticsSettings (required):
+  Future<GetApiUsageStatisticsResult?> postGetApiUsageData(GetApiUsageStatisticsSettings getApiUsageStatisticsSettings,) async {
+    final response = await postGetApiUsageDataWithHttpInfo(getApiUsageStatisticsSettings,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetApiUsageStatisticsResult',) as GetApiUsageStatisticsResult;
+    
+    }
+    return null;
+  }
+
+  /// Get IP address usage data for account
+  ///
+  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires [Permissions::admin_view_private_info].
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [GetIpAddressStatisticsSettings] getIpAddressStatisticsSettings (required):
+  Future<Response> postGetIpAddressUsageDataWithHttpInfo(GetIpAddressStatisticsSettings getIpAddressStatisticsSettings,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/ip_address_usage_data';
+
+    // ignore: prefer_final_locals
+    Object? postBody = getIpAddressStatisticsSettings;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get IP address usage data for account
+  ///
+  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires [Permissions::admin_view_private_info].
+  ///
+  /// Parameters:
+  ///
+  /// * [GetIpAddressStatisticsSettings] getIpAddressStatisticsSettings (required):
+  Future<GetIpAddressStatisticsResult?> postGetIpAddressUsageData(GetIpAddressStatisticsSettings getIpAddressStatisticsSettings,) async {
+    final response = await postGetIpAddressUsageDataWithHttpInfo(getIpAddressStatisticsSettings,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetIpAddressStatisticsResult',) as GetIpAddressStatisticsResult;
+    
+    }
+    return null;
+  }
+
+  /// Get performance data
+  ///
+  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires admin_server_maintenance_view_info.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [PerfMetricQuery] perfMetricQuery (required):
+  Future<Response> postGetPerfDataWithHttpInfo(PerfMetricQuery perfMetricQuery,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/perf_data';
+
+    // ignore: prefer_final_locals
+    Object? postBody = perfMetricQuery;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get performance data
+  ///
+  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires admin_server_maintenance_view_info.
+  ///
+  /// Parameters:
+  ///
+  /// * [PerfMetricQuery] perfMetricQuery (required):
+  Future<PerfMetricQueryResult?> postGetPerfData(PerfMetricQuery perfMetricQuery,) async {
+    final response = await postGetPerfDataWithHttpInfo(perfMetricQuery,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PerfMetricQueryResult',) as PerfMetricQueryResult;
+    
+    }
+    return null;
   }
 
   /// Get report iterator page.

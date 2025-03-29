@@ -10,36 +10,42 @@
 
 part of openapi.api;
 
-class GetPerfDataEndTimeParameter {
-  /// Returns a new [GetPerfDataEndTimeParameter] instance.
-  GetPerfDataEndTimeParameter({
-    required this.ut,
+class ApiUsageCount {
+  /// Returns a new [ApiUsageCount] instance.
+  ApiUsageCount({
+    required this.c,
+    required this.t,
   });
 
-  int ut;
+  int c;
+
+  UnixTime t;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is GetPerfDataEndTimeParameter &&
-    other.ut == ut;
+  bool operator ==(Object other) => identical(this, other) || other is ApiUsageCount &&
+    other.c == c &&
+    other.t == t;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (ut.hashCode);
+    (c.hashCode) +
+    (t.hashCode);
 
   @override
-  String toString() => 'GetPerfDataEndTimeParameter[ut=$ut]';
+  String toString() => 'ApiUsageCount[c=$c, t=$t]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'ut'] = this.ut;
+      json[r'c'] = this.c;
+      json[r't'] = this.t;
     return json;
   }
 
-  /// Returns a new [GetPerfDataEndTimeParameter] instance and imports its values from
+  /// Returns a new [ApiUsageCount] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static GetPerfDataEndTimeParameter? fromJson(dynamic value) {
+  static ApiUsageCount? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +54,25 @@ class GetPerfDataEndTimeParameter {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "GetPerfDataEndTimeParameter[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "GetPerfDataEndTimeParameter[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ApiUsageCount[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ApiUsageCount[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return GetPerfDataEndTimeParameter(
-        ut: mapValueOfType<int>(json, r'ut')!,
+      return ApiUsageCount(
+        c: mapValueOfType<int>(json, r'c')!,
+        t: UnixTime.fromJson(json[r't'])!,
       );
     }
     return null;
   }
 
-  static List<GetPerfDataEndTimeParameter> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <GetPerfDataEndTimeParameter>[];
+  static List<ApiUsageCount> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ApiUsageCount>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = GetPerfDataEndTimeParameter.fromJson(row);
+        final value = ApiUsageCount.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +81,12 @@ class GetPerfDataEndTimeParameter {
     return result.toList(growable: growable);
   }
 
-  static Map<String, GetPerfDataEndTimeParameter> mapFromJson(dynamic json) {
-    final map = <String, GetPerfDataEndTimeParameter>{};
+  static Map<String, ApiUsageCount> mapFromJson(dynamic json) {
+    final map = <String, ApiUsageCount>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = GetPerfDataEndTimeParameter.fromJson(entry.value);
+        final value = ApiUsageCount.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +95,14 @@ class GetPerfDataEndTimeParameter {
     return map;
   }
 
-  // maps a json object with a list of GetPerfDataEndTimeParameter-objects as value to a dart map
-  static Map<String, List<GetPerfDataEndTimeParameter>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<GetPerfDataEndTimeParameter>>{};
+  // maps a json object with a list of ApiUsageCount-objects as value to a dart map
+  static Map<String, List<ApiUsageCount>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ApiUsageCount>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = GetPerfDataEndTimeParameter.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ApiUsageCount.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +110,8 @@ class GetPerfDataEndTimeParameter {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'ut',
+    'c',
+    't',
   };
 }
 

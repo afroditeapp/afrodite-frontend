@@ -212,6 +212,10 @@ class ApiClient {
           return AdminInfo.fromJson(value);
         case 'AllMatchesPage':
           return AllMatchesPage.fromJson(value);
+        case 'ApiUsageCount':
+          return ApiUsageCount.fromJson(value);
+        case 'ApiUsageStatistics':
+          return ApiUsageStatistics.fromJson(value);
         case 'Attribute':
           return Attribute.fromJson(value);
         case 'AttributeIdAndHash':
@@ -252,6 +256,10 @@ class ApiClient {
           return ClientTypeTypeTransformer().decode(value);
         case 'ClientVersion':
           return ClientVersion.fromJson(value);
+        case 'ClientVersionCount':
+          return ClientVersionCount.fromJson(value);
+        case 'ClientVersionStatistics':
+          return ClientVersionStatistics.fromJson(value);
         case 'CommandOutput':
           return CommandOutput.fromJson(value);
         case 'ContentId':
@@ -324,20 +332,30 @@ class ApiClient {
           return GetAccountIdFromEmailResult.fromJson(value);
         case 'GetAllAdminsResult':
           return GetAllAdminsResult.fromJson(value);
+        case 'GetApiUsageStatisticsResult':
+          return GetApiUsageStatisticsResult.fromJson(value);
+        case 'GetApiUsageStatisticsSettings':
+          return GetApiUsageStatisticsSettings.fromJson(value);
         case 'GetClientFeaturesConfigResult':
           return GetClientFeaturesConfigResult.fromJson(value);
+        case 'GetClientVersionStatisticsResult':
+          return GetClientVersionStatisticsResult.fromJson(value);
+        case 'GetClientVersionStatisticsSettings':
+          return GetClientVersionStatisticsSettings.fromJson(value);
         case 'GetCustomReportsConfigResult':
           return GetCustomReportsConfigResult.fromJson(value);
         case 'GetInitialProfileAgeInfoResult':
           return GetInitialProfileAgeInfoResult.fromJson(value);
+        case 'GetIpAddressStatisticsResult':
+          return GetIpAddressStatisticsResult.fromJson(value);
+        case 'GetIpAddressStatisticsSettings':
+          return GetIpAddressStatisticsSettings.fromJson(value);
         case 'GetMediaContentResult':
           return GetMediaContentResult.fromJson(value);
         case 'GetMyProfileResult':
           return GetMyProfileResult.fromJson(value);
         case 'GetNewsItemResult':
           return GetNewsItemResult.fromJson(value);
-        case 'GetPerfDataEndTimeParameter':
-          return GetPerfDataEndTimeParameter.fromJson(value);
         case 'GetProfileAgeAndName':
           return GetProfileAgeAndName.fromJson(value);
         case 'GetProfileContentPendingModerationList':
@@ -368,6 +386,8 @@ class ApiClient {
           return GroupValues.fromJson(value);
         case 'InitialContentModerationCompletedResult':
           return InitialContentModerationCompletedResult.fromJson(value);
+        case 'IpAddressInfo':
+          return IpAddressInfo.fromJson(value);
         case 'Language':
           return Language.fromJson(value);
         case 'LastSeenTimeFilter':
@@ -436,6 +456,8 @@ class ApiClient {
           return PendingNotificationToken.fromJson(value);
         case 'PendingNotificationWithData':
           return PendingNotificationWithData.fromJson(value);
+        case 'PerfMetricQuery':
+          return PerfMetricQuery.fromJson(value);
         case 'PerfMetricQueryResult':
           return PerfMetricQueryResult.fromJson(value);
         case 'PerfMetricValueArea':

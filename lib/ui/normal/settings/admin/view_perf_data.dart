@@ -219,7 +219,7 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
       }
 
       for (final (index, point) in pointArea.values.indexed) {
-        final time = pointArea.startTime.ut + (index * 60);
+        final time = pointArea.firstTimeValue.ut + (index * 60);
         data.add(FlSpot(time.toDouble(), point.toDouble()));
       }
     }
@@ -289,7 +289,7 @@ class _ViewPerfDataPageState extends State<ViewPerfDataPage> {
 
 
 Future<PerfData?> _getData(Server server, ApiManager api) async {
-  final queryResults = await api.commonAdmin(server, (api) => api.getPerfData()).ok();
+  final queryResults = await api.commonAdmin(server, (api) => api.postGetPerfData(PerfMetricQuery())).ok();
 
   if (queryResults == null) {
     return null;

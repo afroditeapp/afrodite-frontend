@@ -36,6 +36,8 @@ lib/model/account_state_container.dart
 lib/model/account_sync_version.dart
 lib/model/admin_info.dart
 lib/model/all_matches_page.dart
+lib/model/api_usage_count.dart
+lib/model/api_usage_statistics.dart
 lib/model/attribute.dart
 lib/model/attribute_id_and_hash.dart
 lib/model/attribute_mode.dart
@@ -56,6 +58,8 @@ lib/model/client_info.dart
 lib/model/client_local_id.dart
 lib/model/client_type.dart
 lib/model/client_version.dart
+lib/model/client_version_count.dart
+lib/model/client_version_statistics.dart
 lib/model/command_output.dart
 lib/model/content_id.dart
 lib/model/content_info.dart
@@ -92,13 +96,18 @@ lib/model/get_account_ban_time_result.dart
 lib/model/get_account_deletion_request_result.dart
 lib/model/get_account_id_from_email_result.dart
 lib/model/get_all_admins_result.dart
+lib/model/get_api_usage_statistics_result.dart
+lib/model/get_api_usage_statistics_settings.dart
 lib/model/get_client_features_config_result.dart
+lib/model/get_client_version_statistics_result.dart
+lib/model/get_client_version_statistics_settings.dart
 lib/model/get_custom_reports_config_result.dart
 lib/model/get_initial_profile_age_info_result.dart
+lib/model/get_ip_address_statistics_result.dart
+lib/model/get_ip_address_statistics_settings.dart
 lib/model/get_media_content_result.dart
 lib/model/get_my_profile_result.dart
 lib/model/get_news_item_result.dart
-lib/model/get_perf_data_end_time_parameter.dart
 lib/model/get_profile_age_and_name.dart
 lib/model/get_profile_content_pending_moderation_list.dart
 lib/model/get_profile_content_result.dart
@@ -114,6 +123,7 @@ lib/model/get_public_key.dart
 lib/model/get_report_list.dart
 lib/model/group_values.dart
 lib/model/initial_content_moderation_completed_result.dart
+lib/model/ip_address_info.dart
 lib/model/language.dart
 lib/model/last_seen_time_filter.dart
 lib/model/latest_birthdate.dart
@@ -148,6 +158,7 @@ lib/model/pending_message_acknowledgement_list.dart
 lib/model/pending_message_id.dart
 lib/model/pending_notification_token.dart
 lib/model/pending_notification_with_data.dart
+lib/model/perf_metric_query.dart
 lib/model/perf_metric_query_result.dart
 lib/model/perf_metric_value_area.dart
 lib/model/perf_metric_values.dart

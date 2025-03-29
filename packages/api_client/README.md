@@ -99,6 +99,7 @@ Class | Method | HTTP request | Description
 *AccountAdminApi* | [**getPermissions**](doc//AccountAdminApi.md#getpermissions) | **GET** /account_api/get_permissions/{aid} | Get [model::Permissions] for specific account.
 *AccountAdminApi* | [**postCreateNewsItem**](doc//AccountAdminApi.md#postcreatenewsitem) | **POST** /account_api/admin/create_news_item | 
 *AccountAdminApi* | [**postDeleteAccount**](doc//AccountAdminApi.md#postdeleteaccount) | **POST** /account_api/delete_account/{aid} | Delete account instantly
+*AccountAdminApi* | [**postGetClientVersionStatistics**](doc//AccountAdminApi.md#postgetclientversionstatistics) | **POST** /account_api/client_version_statistics | Get client version statistics.
 *AccountAdminApi* | [**postSetBanState**](doc//AccountAdminApi.md#postsetbanstate) | **POST** /account_api/set_ban_state | Ban or unban account
 *AccountAdminApi* | [**postSetNewsPublicity**](doc//AccountAdminApi.md#postsetnewspublicity) | **DELETE** /account_api/admin/set_news_publicity/{nid} | 
 *AccountAdminApi* | [**postSetPermissions**](doc//AccountAdminApi.md#postsetpermissions) | **POST** /account_api/set_permissions/{aid} | Set permissions for account
@@ -138,13 +139,15 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**getLatestReportIteratorStartPosition**](doc//CommonAdminApi.md#getlatestreportiteratorstartposition) | **GET** /common_api/admin/latest_report_iterator_start_position | 
 *CommonAdminApi* | [**getMaintenanceNotification**](doc//CommonAdminApi.md#getmaintenancenotification) | **GET** /common_api/maintenance_notification | Get maintenance notification.
 *CommonAdminApi* | [**getManagerInstanceNames**](doc//CommonAdminApi.md#getmanagerinstancenames) | **GET** /common_api/manager_instance_names | Get available manager instances.
-*CommonAdminApi* | [**getPerfData**](doc//CommonAdminApi.md#getperfdata) | **GET** /common_api/perf_data | Get performance data
 *CommonAdminApi* | [**getScheduledTasksStatus**](doc//CommonAdminApi.md#getscheduledtasksstatus) | **GET** /common_api/scheduled_tasks_status | Get scheduled tasks status from manager instance.
 *CommonAdminApi* | [**getSoftwareUpdateStatus**](doc//CommonAdminApi.md#getsoftwareupdatestatus) | **GET** /common_api/software_info | Get software version information from manager instance.
 *CommonAdminApi* | [**getSystemInfo**](doc//CommonAdminApi.md#getsysteminfo) | **GET** /common_api/system_info | Get system information from manager instance.
 *CommonAdminApi* | [**getWaitingReportPage**](doc//CommonAdminApi.md#getwaitingreportpage) | **GET** /common_api/admin/waiting_report_page | 
 *CommonAdminApi* | [**postBackendConfig**](doc//CommonAdminApi.md#postbackendconfig) | **POST** /common_api/backend_config | Save dynamic backend config.
 *CommonAdminApi* | [**postEditMaintenanceNotification**](doc//CommonAdminApi.md#posteditmaintenancenotification) | **POST** /common_api/edit_maintenance_notification | Edit maintenance notification
+*CommonAdminApi* | [**postGetApiUsageData**](doc//CommonAdminApi.md#postgetapiusagedata) | **POST** /common_api/api_usage_data | Get API usage data for account
+*CommonAdminApi* | [**postGetIpAddressUsageData**](doc//CommonAdminApi.md#postgetipaddressusagedata) | **POST** /common_api/ip_address_usage_data | Get IP address usage data for account
+*CommonAdminApi* | [**postGetPerfData**](doc//CommonAdminApi.md#postgetperfdata) | **POST** /common_api/perf_data | Get performance data
 *CommonAdminApi* | [**postGetReportIteratorPage**](doc//CommonAdminApi.md#postgetreportiteratorpage) | **POST** /common_api/admin/report_iterator_page | Get report iterator page.
 *CommonAdminApi* | [**postProcessReport**](doc//CommonAdminApi.md#postprocessreport) | **POST** /common_api/admin/process_report | 
 *CommonAdminApi* | [**postScheduleTask**](doc//CommonAdminApi.md#postscheduletask) | **POST** /common_api/schedule_task | Schedule task.
@@ -221,6 +224,8 @@ Class | Method | HTTP request | Description
  - [AccountSyncVersion](doc//AccountSyncVersion.md)
  - [AdminInfo](doc//AdminInfo.md)
  - [AllMatchesPage](doc//AllMatchesPage.md)
+ - [ApiUsageCount](doc//ApiUsageCount.md)
+ - [ApiUsageStatistics](doc//ApiUsageStatistics.md)
  - [Attribute](doc//Attribute.md)
  - [AttributeIdAndHash](doc//AttributeIdAndHash.md)
  - [AttributeMode](doc//AttributeMode.md)
@@ -241,6 +246,8 @@ Class | Method | HTTP request | Description
  - [ClientLocalId](doc//ClientLocalId.md)
  - [ClientType](doc//ClientType.md)
  - [ClientVersion](doc//ClientVersion.md)
+ - [ClientVersionCount](doc//ClientVersionCount.md)
+ - [ClientVersionStatistics](doc//ClientVersionStatistics.md)
  - [CommandOutput](doc//CommandOutput.md)
  - [ContentId](doc//ContentId.md)
  - [ContentInfo](doc//ContentInfo.md)
@@ -277,13 +284,18 @@ Class | Method | HTTP request | Description
  - [GetAccountDeletionRequestResult](doc//GetAccountDeletionRequestResult.md)
  - [GetAccountIdFromEmailResult](doc//GetAccountIdFromEmailResult.md)
  - [GetAllAdminsResult](doc//GetAllAdminsResult.md)
+ - [GetApiUsageStatisticsResult](doc//GetApiUsageStatisticsResult.md)
+ - [GetApiUsageStatisticsSettings](doc//GetApiUsageStatisticsSettings.md)
  - [GetClientFeaturesConfigResult](doc//GetClientFeaturesConfigResult.md)
+ - [GetClientVersionStatisticsResult](doc//GetClientVersionStatisticsResult.md)
+ - [GetClientVersionStatisticsSettings](doc//GetClientVersionStatisticsSettings.md)
  - [GetCustomReportsConfigResult](doc//GetCustomReportsConfigResult.md)
  - [GetInitialProfileAgeInfoResult](doc//GetInitialProfileAgeInfoResult.md)
+ - [GetIpAddressStatisticsResult](doc//GetIpAddressStatisticsResult.md)
+ - [GetIpAddressStatisticsSettings](doc//GetIpAddressStatisticsSettings.md)
  - [GetMediaContentResult](doc//GetMediaContentResult.md)
  - [GetMyProfileResult](doc//GetMyProfileResult.md)
  - [GetNewsItemResult](doc//GetNewsItemResult.md)
- - [GetPerfDataEndTimeParameter](doc//GetPerfDataEndTimeParameter.md)
  - [GetProfileAgeAndName](doc//GetProfileAgeAndName.md)
  - [GetProfileContentPendingModerationList](doc//GetProfileContentPendingModerationList.md)
  - [GetProfileContentResult](doc//GetProfileContentResult.md)
@@ -299,6 +311,7 @@ Class | Method | HTTP request | Description
  - [GetReportList](doc//GetReportList.md)
  - [GroupValues](doc//GroupValues.md)
  - [InitialContentModerationCompletedResult](doc//InitialContentModerationCompletedResult.md)
+ - [IpAddressInfo](doc//IpAddressInfo.md)
  - [Language](doc//Language.md)
  - [LastSeenTimeFilter](doc//LastSeenTimeFilter.md)
  - [LatestBirthdate](doc//LatestBirthdate.md)
@@ -333,6 +346,7 @@ Class | Method | HTTP request | Description
  - [PendingMessageId](doc//PendingMessageId.md)
  - [PendingNotificationToken](doc//PendingNotificationToken.md)
  - [PendingNotificationWithData](doc//PendingNotificationWithData.md)
+ - [PerfMetricQuery](doc//PerfMetricQuery.md)
  - [PerfMetricQueryResult](doc//PerfMetricQueryResult.md)
  - [PerfMetricValueArea](doc//PerfMetricValueArea.md)
  - [PerfMetricValues](doc//PerfMetricValues.md)

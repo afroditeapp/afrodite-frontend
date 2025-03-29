@@ -147,7 +147,7 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
         currentDateSelection = currentDateSelection.add(Duration(hours: hour, minutes: minute));
       }
       final UnixTime ut = currentDateSelection.toUnixTime();
-      maintenanceStatus = ScheduledMaintenanceStatus(scheduledMaintenance: GetPerfDataEndTimeParameter(ut: ut.ut));
+      maintenanceStatus = ScheduledMaintenanceStatus(scheduledMaintenance: ut);
       currentDateSelectionText = fullTimeString(currentDateSelection);
     } else {
       maintenanceStatus = ScheduledMaintenanceStatus(scheduledMaintenance: null);
