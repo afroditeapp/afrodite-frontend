@@ -17,6 +17,7 @@ import 'package:app/ui/normal/settings/admin/account_admin/edit_permissions.dart
 import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_name.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_text.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_api_usage.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/view_ip_address_usage.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_reports.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -132,6 +133,9 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       settings.add(Setting.createSetting(Icons.query_stats, apiUsageStatistics, () {
         openViewApiUsageScreen(context, apiUsageStatistics, api, widget.accountId);
       }));
+      settings.add(Setting.createSetting(Icons.public, "IP address usage", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: ViewIpAddressUsageScreen(accountId: widget.accountId)))
+      ));
     }
 
     if (permissions.adminViewPermissions && permissions.adminModifyPermissions) {
