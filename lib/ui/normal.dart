@@ -244,7 +244,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: openMyProfileScreen,
+                onTap: () => openMyProfileScreen(context),
               ),
             )
           );
@@ -258,12 +258,8 @@ class _NormalStateContentState extends State<NormalStateContent> {
   Widget primaryImageButtonError() {
     return IconButton(
       icon: const Icon(Icons.warning_rounded),
-      onPressed: openMyProfileScreen,
+      onPressed: () => openMyProfileScreen(context),
     );
-  }
-
-  void openMyProfileScreen() {
-    MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()));
   }
 }
 

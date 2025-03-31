@@ -208,6 +208,7 @@
     <string name="profile_grid_screen_primary_profile_content_does_not_exist" description="Text displayed when primary profile content does not exist">First profile picture does not exist</string>
 
     <!-- View profile screen -->
+    <string name="view_profile_screen_my_profile_initial_setup_not_done" description="Snackbar text that it is not possible to open my profile screen when initial setup is not done">Dating profile is not created</string>
     <string name="view_profile_screen_my_profile_title" description="Title for view profile screen when my profile is viewed">My profile</string>
     <string name="view_profile_screen_my_profile_loading_failed" description="Text displayed when current account's profile loading fails">Profile loading failed</string>
     <string name="view_profile_screen_my_profile_edit_action" description="Text for view profile screen edit my profile action">Edit profile</string>

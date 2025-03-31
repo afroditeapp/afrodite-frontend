@@ -1541,6 +1541,10 @@
   "@view_profile_screen_my_profile_edit_action": {
     "description": "Text for view profile screen edit my profile action"
   },
+  "view_profile_screen_my_profile_initial_setup_not_done": "Dating profile is not created",
+  "@view_profile_screen_my_profile_initial_setup_not_done": {
+    "description": "Snackbar text that it is not possible to open my profile screen when initial setup is not done"
+  },
   "view_profile_screen_my_profile_loading_failed": "Profile loading failed",
   "@view_profile_screen_my_profile_loading_failed": {
     "description": "Text displayed when current account's profile loading fails"

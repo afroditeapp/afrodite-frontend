@@ -1,5 +1,8 @@
 
 
+import 'package:app/logic/account/account.dart';
+import 'package:app/ui_utils/snack_bar.dart';
+import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -16,6 +19,13 @@ import 'package:app/ui/utils/view_profile.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/loading_dialog.dart';
 
+void openMyProfileScreen(BuildContext context) {
+  if (context.read<AccountBloc>().state.accountState == AccountState.initialSetup) {
+    showSnackBar(context.strings.view_profile_screen_my_profile_initial_setup_not_done);
+  } else {
+    MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()));
+  }
+}
 
 class MyProfileScreen extends StatelessWidget {
   const MyProfileScreen({super.key});
