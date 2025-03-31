@@ -56,7 +56,7 @@ class SecureStorageManager extends AppSingleton {
     );
 
     const iosOptions = IOSOptions(
-      accessibility: KeychainAccessibility.unlocked_this_device,
+      accessibility: KeychainAccessibility.unlocked,
     );
 
     storage = const FlutterSecureStorage(
@@ -80,11 +80,11 @@ class SecureStorageManager extends AppSingleton {
     final IOSOptions iosOptions;
     if (backgroundDb) {
       iosOptions = const IOSOptions(
-        accessibility: KeychainAccessibility.first_unlock_this_device,
+        accessibility: KeychainAccessibility.first_unlock,
       );
     } else {
       iosOptions = const IOSOptions(
-        accessibility: KeychainAccessibility.unlocked_this_device,
+        accessibility: KeychainAccessibility.unlocked,
       );
     }
 
