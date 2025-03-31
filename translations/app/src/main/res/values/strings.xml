@@ -50,6 +50,7 @@
     <string name="generic_cancel_question" description="Generic cancel question">Cancel?</string>
     <string name="generic_logout_failed" description="Generic logout failed text">Logout failed</string>
     <string name="generic_edit" description="Generic edit text">Edit</string>
+    <string name="generic_skip" description="Generic skip text">Skip</string>
 
     <string name="generic_text_field_age_hint_text" description="Input field hint text for age">Insert an age between 18–99</string>
     <string name="generic_search_settings_looking_for_all_genders_text" desctiption="Search settings radio button option for men and women who are looking all genders">All</string>
@@ -134,6 +135,8 @@
     <string name="demo_account_screen_confirm_logout_dialog_title" description="Dialog title text for confirming logout from demo account">Logout?</string>
 
     <!-- Initial setup -->
+    <string name="initial_setup_screen_skip_dialog_title" description="Title for skip initial setup confirm dialog">Create dating profile later?</string>
+    <string name="initial_setup_screen_skip_dialog_description" description="Description for skip initial setup confirm dialog">Dating profile is required for viewing public profiles.</string>
     <string name="initial_setup_screen_email_title" description="Title for initial setup email address info">My email address is…</string>
     <string name="initial_setup_screen_email_hint_text" description="Hint text for inserting email address to text field">Insert email address</string>
     <string name="initial_setup_screen_age_confirmation_title" description="Title for age confirmation screen">Age confirmation</string>

@@ -28,6 +28,8 @@ enum Server {
 
 // TODO(prod): Localize connection snackbar texts
 
+// TODO(prod): Rename ApiManagerState to ServerConnectionState?
+
 enum ApiManagerState {
   /// No valid refresh token available. UI should display login view.
   waitingRefreshToken,

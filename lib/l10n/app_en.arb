@@ -529,6 +529,10 @@
   "@generic_show_only_selected": {
     "description": "Generic show only selected text"
   },
+  "generic_skip": "Skip",
+  "@generic_skip": {
+    "description": "Generic skip text"
+  },
   "generic_state": "State",
   "@generic_state": {
     "description": "Generic state text"
@@ -742,6 +746,14 @@
   "initial_setup_screen_security_selfie_title": "My security selfie is…",
   "@initial_setup_screen_security_selfie_title": {
     "description": "Title for initial setup security selfie screen"
+  },
+  "initial_setup_screen_skip_dialog_description": "Dating profile is required for viewing public profiles.",
+  "@initial_setup_screen_skip_dialog_description": {
+    "description": "Description for skip initial setup confirm dialog"
+  },
+  "initial_setup_screen_skip_dialog_title": "Create dating profile later?",
+  "@initial_setup_screen_skip_dialog_title": {
+    "description": "Title for skip initial setup confirm dialog"
   },
   "initial_setup_screen_unlimited_likes_description_part_1": "Looking a date for tonight? Enable unlimited chat requests and send unlimited amount of chat requests to those with the same setting enabled.",
   "@initial_setup_screen_unlimited_likes_description_part_1": {

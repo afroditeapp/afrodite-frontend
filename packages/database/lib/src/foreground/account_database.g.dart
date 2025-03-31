@@ -478,6 +478,16 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<JsonString?>(
               $AccountTable.$converterclientFeaturesConfig);
+  static const VerificationMeta _initialSetupSkippedMeta =
+      const VerificationMeta('initialSetupSkipped');
+  @override
+  late final GeneratedColumn<bool> initialSetupSkipped = GeneratedColumn<bool>(
+      'initial_setup_skipped', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("initial_setup_skipped" IN (0, 1))'),
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -545,7 +555,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         customReportsFileHash,
         customReportsConfig,
         clientFeaturesFileHash,
-        clientFeaturesConfig
+        clientFeaturesConfig,
+        initialSetupSkipped
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -793,6 +804,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           profileInitialAge.isAcceptableOrUnknown(
               data['profile_initial_age']!, _profileInitialAgeMeta));
     }
+    if (data.containsKey('initial_setup_skipped')) {
+      context.handle(
+          _initialSetupSkippedMeta,
+          initialSetupSkipped.isAcceptableOrUnknown(
+              data['initial_setup_skipped']!, _initialSetupSkippedMeta));
+    }
     return context;
   }
 
@@ -999,6 +1016,8 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       clientFeaturesConfig: $AccountTable.$converterclientFeaturesConfig
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}client_features_config'])),
+      initialSetupSkipped: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool, data['${effectivePrefix}initial_setup_skipped'])!,
     );
   }
 
@@ -1155,6 +1174,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final JsonString? customReportsConfig;
   final api.ClientFeaturesFileHash? clientFeaturesFileHash;
   final JsonString? clientFeaturesConfig;
+  final bool initialSetupSkipped;
   const AccountData(
       {required this.id,
       this.uuidAccountId,
@@ -1221,7 +1241,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.customReportsFileHash,
       this.customReportsConfig,
       this.clientFeaturesFileHash,
-      this.clientFeaturesConfig});
+      this.clientFeaturesConfig,
+      required this.initialSetupSkipped});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1474,6 +1495,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .$converterclientFeaturesConfig
           .toSql(clientFeaturesConfig));
     }
+    map['initial_setup_skipped'] = Variable<bool>(initialSetupSkipped);
     return map;
   }
 
@@ -1677,6 +1699,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       clientFeaturesConfig: clientFeaturesConfig == null && nullToAbsent
           ? const Value.absent()
           : Value(clientFeaturesConfig),
+      initialSetupSkipped: Value(initialSetupSkipped),
     );
   }
 
@@ -1808,6 +1831,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           json['clientFeaturesFileHash']),
       clientFeaturesConfig:
           serializer.fromJson<JsonString?>(json['clientFeaturesConfig']),
+      initialSetupSkipped:
+          serializer.fromJson<bool>(json['initialSetupSkipped']),
     );
   }
   @override
@@ -1920,6 +1945,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .toJson<api.ClientFeaturesFileHash?>(clientFeaturesFileHash),
       'clientFeaturesConfig':
           serializer.toJson<JsonString?>(clientFeaturesConfig),
+      'initialSetupSkipped': serializer.toJson<bool>(initialSetupSkipped),
     };
   }
 
@@ -2004,7 +2030,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<JsonString?> customReportsConfig = const Value.absent(),
           Value<api.ClientFeaturesFileHash?> clientFeaturesFileHash =
               const Value.absent(),
-          Value<JsonString?> clientFeaturesConfig = const Value.absent()}) =>
+          Value<JsonString?> clientFeaturesConfig = const Value.absent(),
+          bool? initialSetupSkipped}) =>
       AccountData(
         id: id ?? this.id,
         uuidAccountId:
@@ -2188,6 +2215,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         clientFeaturesConfig: clientFeaturesConfig.present
             ? clientFeaturesConfig.value
             : this.clientFeaturesConfig,
+        initialSetupSkipped: initialSetupSkipped ?? this.initialSetupSkipped,
       );
   AccountData copyWithCompanion(AccountCompanion data) {
     return AccountData(
@@ -2393,6 +2421,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       clientFeaturesConfig: data.clientFeaturesConfig.present
           ? data.clientFeaturesConfig.value
           : this.clientFeaturesConfig,
+      initialSetupSkipped: data.initialSetupSkipped.present
+          ? data.initialSetupSkipped.value
+          : this.initialSetupSkipped,
     );
   }
 
@@ -2479,7 +2510,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('customReportsFileHash: $customReportsFileHash, ')
           ..write('customReportsConfig: $customReportsConfig, ')
           ..write('clientFeaturesFileHash: $clientFeaturesFileHash, ')
-          ..write('clientFeaturesConfig: $clientFeaturesConfig')
+          ..write('clientFeaturesConfig: $clientFeaturesConfig, ')
+          ..write('initialSetupSkipped: $initialSetupSkipped')
           ..write(')'))
         .toString();
   }
@@ -2551,7 +2583,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         customReportsFileHash,
         customReportsConfig,
         clientFeaturesFileHash,
-        clientFeaturesConfig
+        clientFeaturesConfig,
+        initialSetupSkipped
       ]);
   @override
   bool operator ==(Object other) =>
@@ -2637,7 +2670,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.customReportsFileHash == this.customReportsFileHash &&
           other.customReportsConfig == this.customReportsConfig &&
           other.clientFeaturesFileHash == this.clientFeaturesFileHash &&
-          other.clientFeaturesConfig == this.clientFeaturesConfig);
+          other.clientFeaturesConfig == this.clientFeaturesConfig &&
+          other.initialSetupSkipped == this.initialSetupSkipped);
 }
 
 class AccountCompanion extends UpdateCompanion<AccountData> {
@@ -2710,6 +2744,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<JsonString?> customReportsConfig;
   final Value<api.ClientFeaturesFileHash?> clientFeaturesFileHash;
   final Value<JsonString?> clientFeaturesConfig;
+  final Value<bool> initialSetupSkipped;
   const AccountCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
@@ -2777,6 +2812,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.customReportsConfig = const Value.absent(),
     this.clientFeaturesFileHash = const Value.absent(),
     this.clientFeaturesConfig = const Value.absent(),
+    this.initialSetupSkipped = const Value.absent(),
   });
   AccountCompanion.insert({
     this.id = const Value.absent(),
@@ -2845,6 +2881,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.customReportsConfig = const Value.absent(),
     this.clientFeaturesFileHash = const Value.absent(),
     this.clientFeaturesConfig = const Value.absent(),
+    this.initialSetupSkipped = const Value.absent(),
   });
   static Insertable<AccountData> custom({
     Expression<int>? id,
@@ -2913,6 +2950,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<String>? customReportsConfig,
     Expression<String>? clientFeaturesFileHash,
     Expression<String>? clientFeaturesConfig,
+    Expression<bool>? initialSetupSkipped,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -3036,6 +3074,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'client_features_file_hash': clientFeaturesFileHash,
       if (clientFeaturesConfig != null)
         'client_features_config': clientFeaturesConfig,
+      if (initialSetupSkipped != null)
+        'initial_setup_skipped': initialSetupSkipped,
     });
   }
 
@@ -3108,7 +3148,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<api.CustomReportsFileHash?>? customReportsFileHash,
       Value<JsonString?>? customReportsConfig,
       Value<api.ClientFeaturesFileHash?>? clientFeaturesFileHash,
-      Value<JsonString?>? clientFeaturesConfig}) {
+      Value<JsonString?>? clientFeaturesConfig,
+      Value<bool>? initialSetupSkipped}) {
     return AccountCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -3218,6 +3259,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       clientFeaturesFileHash:
           clientFeaturesFileHash ?? this.clientFeaturesFileHash,
       clientFeaturesConfig: clientFeaturesConfig ?? this.clientFeaturesConfig,
+      initialSetupSkipped: initialSetupSkipped ?? this.initialSetupSkipped,
     );
   }
 
@@ -3495,6 +3537,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           .$converterclientFeaturesConfig
           .toSql(clientFeaturesConfig.value));
     }
+    if (initialSetupSkipped.present) {
+      map['initial_setup_skipped'] = Variable<bool>(initialSetupSkipped.value);
+    }
     return map;
   }
 
@@ -3581,7 +3626,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('customReportsFileHash: $customReportsFileHash, ')
           ..write('customReportsConfig: $customReportsConfig, ')
           ..write('clientFeaturesFileHash: $clientFeaturesFileHash, ')
-          ..write('clientFeaturesConfig: $clientFeaturesConfig')
+          ..write('clientFeaturesConfig: $clientFeaturesConfig, ')
+          ..write('initialSetupSkipped: $initialSetupSkipped')
           ..write(')'))
         .toString();
   }
@@ -7284,6 +7330,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       DaoCustomReports(this as AccountDatabase);
   late final DaoClientFeatures daoClientFeatures =
       DaoClientFeatures(this as AccountDatabase);
+  late final DaoInitialSetup daoInitialSetup =
+      DaoInitialSetup(this as AccountDatabase);
   late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
   late final DaoConversationList daoConversationList =
       DaoConversationList(this as AccountDatabase);

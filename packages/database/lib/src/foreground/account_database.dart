@@ -5,6 +5,7 @@ import 'package:database/src/foreground/account/dao_account_settings.dart';
 import 'package:database/src/foreground/account/dao_available_profile_attributes.dart';
 import 'package:database/src/foreground/account/dao_client_features.dart';
 import 'package:database/src/foreground/account/dao_custom_reports.dart';
+import 'package:database/src/foreground/account/dao_initial_setup.dart';
 import 'package:database/src/foreground/account/dao_local_image_settings.dart';
 import 'package:database/src/foreground/account/dao_message_keys.dart';
 import 'package:database/src/foreground/account/dao_profile_initial_age_info.dart';
@@ -164,6 +165,11 @@ class Account extends Table {
 
   TextColumn get clientFeaturesFileHash => text().map(const NullAwareTypeConverter.wrap(ClientFeaturesFileHashConverter())).nullable()();
   TextColumn get clientFeaturesConfig => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
+
+  // DaoInitialSetup
+
+  BoolColumn get initialSetupSkipped => boolean()
+    .withDefault(const Constant(false))();
 }
 
 @DriftDatabase(
@@ -194,6 +200,7 @@ class Account extends Table {
     DaoServerMaintenance,
     DaoCustomReports,
     DaoClientFeatures,
+    DaoInitialSetup,
     // Other tables
     DaoMessages,
     DaoConversationList,

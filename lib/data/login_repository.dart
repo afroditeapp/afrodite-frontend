@@ -68,10 +68,9 @@ class LoginRepository extends DataRepository {
 
   late final GoogleSignIn _google;
 
-  final BehaviorSubject<AccountState?> _accountState =
-    BehaviorSubject.seeded(null);
-  StreamSubscription<AccountState?>? _accountStateSubscription;
-  Stream<AccountState?> get accountState => _accountState;
+  final RepositoryStateStreams _repositoryStateStreams = RepositoryStateStreams();
+  Stream<AccountState?> get accountState => _repositoryStateStreams.accountState;
+  Stream<bool?> get initialSetupSkipped => _repositoryStateStreams.initialSetupSkipped;
 
   final BehaviorSubject<LoginState> _loginState =
     BehaviorSubject.seeded(LoginState.splashScreen);
@@ -82,13 +81,7 @@ class LoginRepository extends DataRepository {
   final BehaviorSubject<bool> _loginInProgress =
     BehaviorSubject.seeded(false);
 
-  final PublishSubject<ServerWsEvent> _serverEvents =
-    PublishSubject();
-  StreamSubscription<ServerWsEvent>? _serverEventsSubscription;
-
-  final PublishSubject<ApiManagerState> _serverConnectionManagerStateEvents =
-    PublishSubject();
-  StreamSubscription<ApiManagerState>? _serverConnectionManagerStateEventsSubscription;
+  StreamSubscription<ApiManagerState>? _repositorySpecificAutomaticLogoutSubscription;
 
   DateTime? _backgroundedAt;
 
@@ -156,7 +149,7 @@ class LoginRepository extends DataRepository {
     }
 
     Rx.combineLatest3(
-      _serverConnectionManagerStateEvents,
+      _repositoryStateStreams._serverConnectionManagerStateEvents,
       demoAccountToken,
       _loginInProgress,
       (a, b, c) => (a, b, c),
@@ -192,11 +185,12 @@ class LoginRepository extends DataRepository {
     if (currentAccountId == null) {
       // ServerConnectionManager is not yet created so init
       // _serverConnectionManagerStateEvents manually so that previous
-      // combineLatest2 starts working.
-      _serverConnectionManagerStateEvents.add(ApiManagerState.waitingRefreshToken);
+      // combineLatest3 starts working.
+      _repositoryStateStreams._handleAppStartWithoutLoggedInAccount();
     }
 
-    _serverEvents
+    _repositoryStateStreams
+      .serverEvents
       .asyncMap((event) async {
         switch (event) {
           case EventToClientContainer e: {
@@ -316,19 +310,14 @@ class LoginRepository extends DataRepository {
     account.repositories = newRepositories;
     await newRepositories.init();
 
-    await _accountStateSubscription?.cancel();
-    _accountStateSubscription = account.accountState.listen((v) {
-      _accountState.add(v);
-    });
+    await _repositoryStateStreams._subscribe(
+      account,
+      accountDb,
+      connectionManager
+    );
 
-    await _serverEventsSubscription?.cancel();
-    _serverEventsSubscription = connectionManager.serverEvents.listen((v) {
-      _serverEvents.add(v);
-    });
-
-    await _serverConnectionManagerStateEventsSubscription?.cancel();
-    _serverConnectionManagerStateEventsSubscription = connectionManager.state.listen((v) {
-      _serverConnectionManagerStateEvents.add(v);
+    await _repositorySpecificAutomaticLogoutSubscription?.cancel();
+    _repositorySpecificAutomaticLogoutSubscription = connectionManager.state.listen((v) {
       if (v == ApiManagerState.waitingRefreshToken && !newRepositories.logoutStarted) {
         // Tokens are invalid. Logout is required.
         newRepositories.logoutStarted = true;
@@ -772,5 +761,59 @@ class RepositoryInstances implements DataRepositoryMethods {
     await media.onResumeAppUsage();
     await profile.onResumeAppUsage();
     await account.onResumeAppUsage();
+  }
+}
+
+class RepositoryStateStreams {
+  final BehaviorSubject<AccountState?> _accountState =
+    BehaviorSubject.seeded(null);
+  StreamSubscription<AccountState?>? _accountStateSubscription;
+  Stream<AccountState?> get accountState => _accountState;
+
+  final BehaviorSubject<bool?> _initialSetupSkipped =
+    BehaviorSubject.seeded(null);
+  StreamSubscription<bool?>? _initialSetupSkippedSubscription;
+  Stream<bool?> get initialSetupSkipped => _initialSetupSkipped;
+
+  final PublishSubject<ServerWsEvent> _serverEvents =
+    PublishSubject();
+  StreamSubscription<ServerWsEvent>? _serverEventsSubscription;
+  Stream<ServerWsEvent> get serverEvents => _serverEvents;
+
+  final PublishSubject<ApiManagerState> _serverConnectionManagerStateEvents =
+    PublishSubject();
+  StreamSubscription<ApiManagerState>? _serverConnectionManagerStateEventsSubscription;
+  Stream<ApiManagerState> get serverConnectionState => _serverConnectionManagerStateEvents;
+
+  Future<void> _subscribe(
+    AccountRepository account,
+    AccountDatabaseManager accountDb,
+    ServerConnectionManager connectionManager,
+  ) async {
+    await _accountStateSubscription?.cancel();
+    _accountStateSubscription = account.accountState.listen((v) {
+      _accountState.add(v);
+    });
+
+    await _initialSetupSkippedSubscription?.cancel();
+    _initialSetupSkippedSubscription = accountDb
+      .accountStream((db) => db.daoInitialSetup.watchInitialSetupSkipped())
+      .listen((v) {
+        _initialSetupSkipped.add(v);
+      });
+
+    await _serverEventsSubscription?.cancel();
+    _serverEventsSubscription = connectionManager.serverEvents.listen((v) {
+      _serverEvents.add(v);
+    });
+
+    await _serverConnectionManagerStateEventsSubscription?.cancel();
+    _serverConnectionManagerStateEventsSubscription = connectionManager.state.listen((v) {
+      _serverConnectionManagerStateEvents.add(v);
+    });
+  }
+
+  void _handleAppStartWithoutLoggedInAccount() {
+    _serverConnectionManagerStateEvents.add(ApiManagerState.waitingRefreshToken);
   }
 }

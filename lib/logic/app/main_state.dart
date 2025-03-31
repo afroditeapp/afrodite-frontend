@@ -40,19 +40,24 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
     on<ToUnsupportedClientScreen>((_, emit) => emit(MainState.unsupportedClientVersion));
     on<ToDemoAccountScreen>((_, emit) => emit(MainState.demoAccount));
 
-    Rx.combineLatest2(
+    Rx.combineLatest3(
       login.loginState,
       login.accountState,
-      (a, b) => (a, b),
+      login.initialSetupSkipped,
+      (a, b, c) => (a, b, c),
     ).listen((current) {
-      final (loginState, accountState) = current;
+      final (loginState, accountState, initialSetupSkipped) = current;
       final action = switch (loginState) {
         LoginState.loginRequired => ToLoginRequiredScreen(),
         LoginState.demoAccount => ToDemoAccountScreen(),
         LoginState.splashScreen => ToSplashScreen(),
         LoginState.unsupportedClientVersion => ToUnsupportedClientScreen(),
         LoginState.viewAccountStateOnceItExists => switch (accountState) {
-          AccountState.initialSetup => ToInitialSetup(),
+          AccountState.initialSetup => switch (initialSetupSkipped) {
+            true => ToMainScreen(),
+            false => ToInitialSetup(),
+            null => null,
+          },
           AccountState.banned => ToAccountBannedScreen(),
           AccountState.pendingDeletion => ToPendingRemovalScreen(),
           AccountState.normal => ToMainScreen(),

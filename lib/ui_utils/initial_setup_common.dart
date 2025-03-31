@@ -1,6 +1,7 @@
 
 
 
+import 'package:app/ui_utils/dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +16,7 @@ Widget commonInitialSetupScreenContent({
   required BuildContext context,
   required Widget child,
   bool resizeToAvoidBottomInset = true,
+  bool showSkipInitialSetupAction = false,
 }) {
   return Scaffold(
     appBar: AppBar(
@@ -27,6 +29,20 @@ Widget commonInitialSetupScreenContent({
         ),
         menuActions([
             ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),
+            if (showSkipInitialSetupAction) MenuItemButton(
+              child: Text(context.strings.generic_skip),
+              onPressed: () async {
+                final r = await showConfirmDialog(
+                  context,
+                  context.strings.initial_setup_screen_skip_dialog_title,
+                  details: context.strings.initial_setup_screen_skip_dialog_description,
+                  yesNoActions: true,
+                );
+                if (r == true && context.mounted) {
+                  context.read<InitialSetupBloc>().add(SkipInitialSetup());
+                }
+              },
+            ),
         ]),
       ],
     ),

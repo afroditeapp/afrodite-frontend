@@ -18,6 +18,7 @@ class AskEmailScreen extends StatelessWidget {
         final currentAccountEmail = state.email;
         return commonInitialSetupScreenContent(
           context: context,
+          showSkipInitialSetupAction: true,
           child: QuestionAsker(
             getContinueButtonCallback: (context, state) {
               final email = state.email;

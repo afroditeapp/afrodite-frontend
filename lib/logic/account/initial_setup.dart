@@ -1,6 +1,7 @@
 import "dart:io";
 import "dart:typed_data";
 
+import "package:app/database/account_database_manager.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:latlong2/latlong.dart";
 import "package:logging/logging.dart";
@@ -101,12 +102,14 @@ class SetUnlimitedLikes extends InitialSetupEvent {
 class CompleteInitialSetup extends InitialSetupEvent {}
 class ResetState extends InitialSetupEvent {}
 class CreateDebugAdminAccount extends InitialSetupEvent {}
+class SkipInitialSetup extends InitialSetupEvent {}
 
 class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with ActionRunner {
   final LoginRepository login = LoginRepository.getInstance();
   final AccountRepository account = LoginRepository.getInstance().repositories.account;
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
   final AccountId currentUser = LoginRepository.getInstance().repositories.accountId;
+  final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
 
   InitialSetupBloc() : super(InitialSetupData()) {
     on<ResetState>((data, emit) {
@@ -242,6 +245,12 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
       emit(state.copyWith(
         sendingInProgress: false,
       ));
+    });
+    on<SkipInitialSetup>((data, emit) async {
+      final r = await db.accountAction((db) => db.daoInitialSetup.updateInitialSetupSkipped(true));
+      if (r.isErr()) {
+        showSnackBar(R.strings.generic_error_occurred);
+      }
     });
   }
 }
