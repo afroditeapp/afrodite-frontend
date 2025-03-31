@@ -37,6 +37,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
 
   AccountBloc() :
     super(AccountBlocData(
+      // Use cached account state value to directly show start initial setup
+      // button when initial setup is skipped.
+      accountState: LoginRepository.getInstance().repositories.account.accountStateValue,
       permissions: Permissions(),
       // Use cached profile visiblity to avoid profile grid UI changing quickly
       // from private profile info to profile grid after login.

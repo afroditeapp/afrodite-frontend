@@ -8,6 +8,7 @@ enum MainState {
   splashScreen,
   loginRequired,
   initialSetup,
+  initialSetupSkipped,
   initialSetupComplete,
   accountBanned,
   pendingRemoval,
@@ -20,6 +21,7 @@ abstract class MainStateEvent {}
 class ToSplashScreen extends MainStateEvent {}
 class ToLoginRequiredScreen extends MainStateEvent {}
 class ToInitialSetup extends MainStateEvent {}
+class ToMainScreenWhenInitialSetupIsSkipped extends MainStateEvent {}
 class ToMainScreen extends MainStateEvent {}
 class ToAccountBannedScreen extends MainStateEvent {}
 class ToPendingRemovalScreen extends MainStateEvent {}
@@ -34,6 +36,7 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
     on<ToSplashScreen>((_, emit) => emit(MainState.splashScreen));
     on<ToLoginRequiredScreen>((_, emit) => emit(MainState.loginRequired));
     on<ToInitialSetup>((_, emit) => emit(MainState.initialSetup));
+    on<ToMainScreenWhenInitialSetupIsSkipped>((_, emit) => emit(MainState.initialSetupSkipped));
     on<ToMainScreen>((_, emit) => emit(MainState.initialSetupComplete));
     on<ToAccountBannedScreen>((_, emit) => emit(MainState.accountBanned));
     on<ToPendingRemovalScreen>((_, emit) => emit(MainState.pendingRemoval));
@@ -54,7 +57,7 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
         LoginState.unsupportedClientVersion => ToUnsupportedClientScreen(),
         LoginState.viewAccountStateOnceItExists => switch (accountState) {
           AccountState.initialSetup => switch (initialSetupSkipped) {
-            true => ToMainScreen(),
+            true => ToMainScreenWhenInitialSetupIsSkipped(),
             false => ToInitialSetup(),
             null => null,
           },

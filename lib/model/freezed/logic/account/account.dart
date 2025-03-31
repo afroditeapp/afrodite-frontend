@@ -8,12 +8,14 @@ import "package:app/utils/api.dart";
 
 part 'account.freezed.dart';
 
+// TODO(prod): Add default value for AccountState?
+
 @freezed
 class AccountBlocData with _$AccountBlocData {
   AccountBlocData._();
   factory AccountBlocData({
     String? email,
-    AccountState? accountState,
+    required AccountState? accountState,
     required Permissions permissions,
     required ProfileVisibility visibility,
   }) = _AccountBlocData;

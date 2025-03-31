@@ -87,6 +87,7 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
           MainState.loginRequired => const LoginScreen(),
           MainState.demoAccount => const DemoAccountScreen(),
           MainState.initialSetup => const InitialSetupScreen(),
+          MainState.initialSetupSkipped ||
           MainState.initialSetupComplete => const NormalStateScreen(),
           MainState.accountBanned => const AccountBannedScreen(),
           MainState.pendingRemoval => const PendingDeletionPage(),
@@ -160,8 +161,11 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
             ],
             child: navigator,
           ),
-          MainState.initialSetupComplete => MultiBlocProvider(
+          MainState.initialSetupSkipped || MainState.initialSetupComplete => MultiBlocProvider(
             providers: [
+              // Initial setup (MainState.initialSetupSkipped requires this)
+              BlocProvider(create: (_) => InitialSetupBloc()),
+
               // General
               BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
               BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
@@ -223,6 +227,7 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
 
         final loggedInStateRelatedBlocs = switch (state) {
           MainState.initialSetup ||
+          MainState.initialSetupSkipped ||
           MainState.initialSetupComplete ||
           MainState.accountBanned ||
           MainState.pendingRemoval ||

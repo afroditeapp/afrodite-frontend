@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:app/data/general/notification/state/news_item_available.dart';
 import 'package:app/database/account_background_database_manager.dart';
-import 'package:async/async.dart' show StreamExtensions;
 import 'package:database/database.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -53,25 +52,23 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   final BehaviorSubject<AccountRepositoryState> _internalState =
     BehaviorSubject.seeded(AccountRepositoryState.initRequired);
 
-  final BehaviorSubject<String?> _cachedEmailAddress =
-    BehaviorSubject.seeded(null);
-  StreamSubscription<String?>? _cachedEmailSubscription;
-  final BehaviorSubject<ProfileVisibility> _cachedProfileVisibility =
-    BehaviorSubject.seeded(PROFILE_VISIBILITY_DEFAULT);
-  StreamSubscription<ProfileVisibility>? _cachedProfileVisibilitySubscription;
+  final CachedValues _cachedValues = CachedValues();
+
+  // TODO(prod): Default value for AccountState?
 
   Stream<AccountState?> get accountState => db
     .accountStream((db) => db.watchAccountState());
-  Stream<String?> get emailAddress => _cachedEmailAddress;
+  Stream<String?> get emailAddress => _cachedValues._cachedEmailAddress;
   Stream<Permissions> get permissions => db
     .accountStreamOrDefault(
       (db) => db.watchPermissions(),
       Permissions(),
     );
-  Stream<ProfileVisibility> get profileVisibility => _cachedProfileVisibility;
+  Stream<ProfileVisibility> get profileVisibility => _cachedValues._cachedProfileVisibility;
 
-  ProfileVisibility get profileVisibilityValue => _cachedProfileVisibility.value;
-  String? get emailAddressValue => _cachedEmailAddress.value;
+  ProfileVisibility get profileVisibilityValue => _cachedValues._cachedProfileVisibility.value;
+  String? get emailAddressValue => _cachedValues._cachedEmailAddress.value;
+  AccountState? get accountStateValue => _cachedValues._cachedAccountState.value;
 
   // WebSocket related event streams
   final _contentProcessingStateChanges = PublishSubject<ContentProcessingStateChanged>();
@@ -84,23 +81,12 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     }
     _internalState.add(AccountRepositoryState.initComplete);
 
-    _cachedEmailSubscription = db
-      .accountStream((db) => db.daoAccountSettings.watchEmailAddress())
-      .listen((v) {
-        _cachedEmailAddress.add(v);
-      });
-
-    _cachedProfileVisibilitySubscription = db
-        .accountStreamOrDefault((db) => db.watchProfileVisibility(), PROFILE_VISIBILITY_DEFAULT)
-        .listen((v) {
-          _cachedProfileVisibility.add(v);
-        });
+    _cachedValues._subscribe(db);
   }
 
   @override
   Future<void> dispose() async {
-    await _cachedEmailSubscription?.cancel();
-    await _cachedProfileVisibilitySubscription?.cancel();
+    await _cachedValues._dispose();
     await _syncHandler.dispose();
   }
 
@@ -271,5 +257,43 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     return db.accountAction((db) => db.daoServerMaintenance.setMaintenanceTime(
       time: time?.toUtcDateTime(),
     ));
+  }
+}
+
+class CachedValues {
+  final BehaviorSubject<String?> _cachedEmailAddress =
+    BehaviorSubject.seeded(null);
+  StreamSubscription<String?>? _cachedEmailSubscription;
+  final BehaviorSubject<ProfileVisibility> _cachedProfileVisibility =
+    BehaviorSubject.seeded(PROFILE_VISIBILITY_DEFAULT);
+  StreamSubscription<ProfileVisibility>? _cachedProfileVisibilitySubscription;
+  final BehaviorSubject<AccountState?> _cachedAccountState =
+    BehaviorSubject.seeded(null);
+  StreamSubscription<AccountState?>? _cachedAccountStateSubscription;
+
+  void _subscribe(AccountDatabaseManager db) {
+    _cachedEmailSubscription = db
+      .accountStream((db) => db.daoAccountSettings.watchEmailAddress())
+      .listen((v) {
+        _cachedEmailAddress.add(v);
+      });
+
+    _cachedProfileVisibilitySubscription = db
+      .accountStreamOrDefault((db) => db.watchProfileVisibility(), PROFILE_VISIBILITY_DEFAULT)
+      .listen((v) {
+        _cachedProfileVisibility.add(v);
+      });
+
+    _cachedAccountStateSubscription = db
+      .accountStream((db) => db.watchAccountState())
+      .listen((v) {
+        _cachedAccountState.add(v);
+      });
+  }
+
+  Future<void> _dispose() async {
+    await _cachedEmailSubscription?.cancel();
+    await _cachedProfileVisibilitySubscription?.cancel();
+    await _cachedAccountStateSubscription?.cancel();
   }
 }

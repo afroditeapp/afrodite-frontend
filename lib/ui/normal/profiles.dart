@@ -3,6 +3,7 @@ import 'package:app/logic/media/content.dart';
 import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/media/content.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
+import 'package:app/ui/initial_setup.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/api.dart';
 import 'package:app/utils/list.dart';
@@ -83,7 +84,9 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, data) {
-        if (data.visibility == ProfileVisibility.public) {
+        if (data.accountState == AccountState.initialSetup) {
+          return startInitialSetupButton(context);
+        } else if (data.visibility == ProfileVisibility.public) {
           return BlocBuilder<ContentBloc, ContentData>(
             builder: (context, contentState) {
               if (contentState.isLoadingSecurityContent || contentState.isLoadingPrimaryContent) {
@@ -188,6 +191,22 @@ class _ProfileViewState extends State<ProfileView> {
     }
 
     return buildListReplacementMessageSimple(context, message);
+  }
+
+  Widget startInitialSetupButton(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+           MyNavigator.push(
+            context,
+            const MaterialPage<void>(
+              child: InitialSetupScreen(),
+            ),
+          );
+        },
+        child: Text(context.strings.profile_grid_screen_start_initial_setup_button),
+      ),
+    );
   }
 }
 

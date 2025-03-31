@@ -1212,6 +1212,10 @@
   "@profile_grid_screen_security_content_is_not_accepted": {
     "description": "Text displayed when security selfie is not accepted"
   },
+  "profile_grid_screen_start_initial_setup_button": "Create dating profile",
+  "@profile_grid_screen_start_initial_setup_button": {
+    "description": "Button text for start initial setup button"
+  },
   "profile_grid_screen_title": "Profiles",
   "@profile_grid_screen_title": {
     "description": "Title for profile grid screen"
