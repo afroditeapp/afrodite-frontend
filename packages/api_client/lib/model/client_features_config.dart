@@ -13,27 +13,32 @@ part of openapi.api;
 class ClientFeaturesConfig {
   /// Returns a new [ClientFeaturesConfig] instance.
   ClientFeaturesConfig({
-    required this.news,
+    required this.features,
+    required this.map,
   });
 
-  /// Enable news UI
-  bool news;
+  FeaturesConfig features;
+
+  MapConfig map;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ClientFeaturesConfig &&
-    other.news == news;
+    other.features == features &&
+    other.map == map;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (news.hashCode);
+    (features.hashCode) +
+    (map.hashCode);
 
   @override
-  String toString() => 'ClientFeaturesConfig[news=$news]';
+  String toString() => 'ClientFeaturesConfig[features=$features, map=$map]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'news'] = this.news;
+      json[r'features'] = this.features;
+      json[r'map'] = this.map;
     return json;
   }
 
@@ -56,7 +61,8 @@ class ClientFeaturesConfig {
       }());
 
       return ClientFeaturesConfig(
-        news: mapValueOfType<bool>(json, r'news')!,
+        features: FeaturesConfig.fromJson(json[r'features'])!,
+        map: MapConfig.fromJson(json[r'map'])!,
       );
     }
     return null;
@@ -104,7 +110,8 @@ class ClientFeaturesConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'news',
+    'features',
+    'map',
   };
 }
 

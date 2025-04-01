@@ -324,6 +324,8 @@ class ApiClient {
           return FavoriteProfilesPage.fromJson(value);
         case 'FcmDeviceToken':
           return FcmDeviceToken.fromJson(value);
+        case 'FeaturesConfig':
+          return FeaturesConfig.fromJson(value);
         case 'GetAccountBanTimeResult':
           return GetAccountBanTimeResult.fromJson(value);
         case 'GetAccountDeletionRequestResult':
@@ -406,6 +408,14 @@ class ApiClient {
           return MaintenanceTask.fromJson(value);
         case 'ManagerInstanceNameList':
           return ManagerInstanceNameList.fromJson(value);
+        case 'MapBounds':
+          return MapBounds.fromJson(value);
+        case 'MapConfig':
+          return MapConfig.fromJson(value);
+        case 'MapCoordinate':
+          return MapCoordinate.fromJson(value);
+        case 'MapZoom':
+          return MapZoom.fromJson(value);
         case 'MatchesIteratorSessionId':
           return MatchesIteratorSessionId.fromJson(value);
         case 'MatchesPage':

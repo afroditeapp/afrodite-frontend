@@ -121,7 +121,7 @@ class _MenuViewState extends State<MenuView> {
       Setting.createSetting(Icons.account_box, context.strings.view_profile_screen_my_profile_title, () =>
         openMyProfileScreen(context)
       ),
-      if (clientFeatures.news) Setting.createSettingWithCustomIcon(
+      if (clientFeatures.features.news) Setting.createSettingWithCustomIcon(
         BlocBuilder<NewsCountBloc, NewsCountData>(
           builder: (context, state) {
             const icon = Icon(Icons.newspaper);

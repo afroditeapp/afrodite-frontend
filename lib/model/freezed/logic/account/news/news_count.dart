@@ -13,7 +13,7 @@ class NewsCountData with _$NewsCountData {
   }) = _NewsCountData;
 
   int newsCountForUi(ClientFeaturesConfig clientFeatures) {
-    if (clientFeatures.news) {
+    if (clientFeatures.features.news) {
       return newsCount;
     } else {
       return 0;
