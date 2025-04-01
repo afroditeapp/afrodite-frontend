@@ -252,6 +252,7 @@ lib/model/sent_message_id_list.dart
 lib/model/set_account_ban_state.dart
 lib/model/set_account_setup.dart
 lib/model/set_profile_content.dart
+lib/model/set_profile_name.dart
 lib/model/set_public_key.dart
 lib/model/sign_in_with_login_info.dart
 lib/model/software_info.dart

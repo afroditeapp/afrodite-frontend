@@ -537,4 +537,52 @@ class ProfileAdminApi {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
+
+  /// Set profile name
+  ///
+  /// The new name has the same requirements as in [crate::profile::post_profile] route documentation.  # Access - Permission [model::Permissions::admin_edit_profile_name]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [SetProfileName] setProfileName (required):
+  Future<Response> postSetProfileNameWithHttpInfo(SetProfileName setProfileName,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/set_profile_name';
+
+    // ignore: prefer_final_locals
+    Object? postBody = setProfileName;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Set profile name
+  ///
+  /// The new name has the same requirements as in [crate::profile::post_profile] route documentation.  # Access - Permission [model::Permissions::admin_edit_profile_name]
+  ///
+  /// Parameters:
+  ///
+  /// * [SetProfileName] setProfileName (required):
+  Future<void> postSetProfileName(SetProfileName setProfileName,) async {
+    final response = await postSetProfileNameWithHttpInfo(setProfileName,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
 }

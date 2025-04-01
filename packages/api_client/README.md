@@ -205,6 +205,7 @@ Class | Method | HTTP request | Description
 *ProfileAdminApi* | [**getProfileTextState**](doc//ProfileAdminApi.md#getprofiletextstate) | **GET** /profile_api/get_profile_text_state/{aid} | Get profile text state
 *ProfileAdminApi* | [**postModerateProfileName**](doc//ProfileAdminApi.md#postmoderateprofilename) | **POST** /profile_api/admin/moderate_profile_name | 
 *ProfileAdminApi* | [**postModerateProfileText**](doc//ProfileAdminApi.md#postmoderateprofiletext) | **POST** /profile_api/admin/moderate_profile_text | Rejected category and details can be set only when the text is rejected.
+*ProfileAdminApi* | [**postSetProfileName**](doc//ProfileAdminApi.md#postsetprofilename) | **POST** /profile_api/set_profile_name | Set profile name
 
 
 ## Documentation For Models
@@ -440,6 +441,7 @@ Class | Method | HTTP request | Description
  - [SetAccountBanState](doc//SetAccountBanState.md)
  - [SetAccountSetup](doc//SetAccountSetup.md)
  - [SetProfileContent](doc//SetProfileContent.md)
+ - [SetProfileName](doc//SetProfileName.md)
  - [SetPublicKey](doc//SetPublicKey.md)
  - [SignInWithLoginInfo](doc//SignInWithLoginInfo.md)
  - [SoftwareInfo](doc//SoftwareInfo.md)

@@ -644,6 +644,8 @@ class ApiClient {
           return SetAccountSetup.fromJson(value);
         case 'SetProfileContent':
           return SetProfileContent.fromJson(value);
+        case 'SetProfileName':
+          return SetProfileName.fromJson(value);
         case 'SetPublicKey':
           return SetPublicKey.fromJson(value);
         case 'SignInWithLoginInfo':

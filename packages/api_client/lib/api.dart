@@ -270,6 +270,7 @@ part 'model/sent_message_id_list.dart';
 part 'model/set_account_ban_state.dart';
 part 'model/set_account_setup.dart';
 part 'model/set_profile_content.dart';
+part 'model/set_profile_name.dart';
 part 'model/set_public_key.dart';
 part 'model/sign_in_with_login_info.dart';
 part 'model/software_info.dart';
