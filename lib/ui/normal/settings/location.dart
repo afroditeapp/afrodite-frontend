@@ -2,6 +2,8 @@
 
 import 'dart:ui';
 
+import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/utils/api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -141,21 +143,23 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
+    final config = context.read<ClientFeaturesConfigBloc>().state.map;
+
     final bounds = LatLngBounds(
-      const LatLng(75, 12),
-      const LatLng(50, 40),
+      config.bounds.topLeft.toLatLng(),
+      config.bounds.bottomRight.toLatLng(),
     );
 
     final LatLng initialLocation;
     final double initialZoom;
 
-    final locationLatLng = _profileLocationMarker ?? const LatLng(0, 0);
-    if (bounds.contains(locationLatLng)) {
+    final locationLatLng = _profileLocationMarker;
+    if (locationLatLng != null && bounds.contains(locationLatLng)) {
       initialLocation = locationLatLng;
-      initialZoom = 10;
+      initialZoom = config.zoom.locationSelected.toDouble();
     } else {
-      initialLocation = const LatLng(61, 24.5);
-      initialZoom = 6;
+      initialLocation = config.initialLocation.toLatLng();
+      initialZoom = config.zoom.locationNotSelected.toDouble();
     }
 
     final initialMap = FlutterMap(
@@ -163,8 +167,8 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
       options: MapOptions(
         initialCenter: initialLocation,
         initialZoom: initialZoom,
-        minZoom: 4,
-        maxZoom: 15,
+        minZoom: config.zoom.min.toDouble(),
+        maxZoom: config.zoom.max.toDouble(),
         cameraConstraint: CameraConstraint.contain(bounds: bounds),
         interactionOptions: const InteractionOptions(
           flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
@@ -179,7 +183,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
       ),
       children: [
         TileLayer(
-          maxNativeZoom: 13,
+          maxNativeZoom: config.zoom.maxTileDownloading,
           tileProvider: CustomTileProvider(),
         ),
         markerLayer(),

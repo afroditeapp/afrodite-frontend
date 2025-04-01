@@ -158,6 +158,7 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
               BlocProvider(create: (_) => ContentBloc()),
               BlocProvider(create: (_) => SelectContentBloc()),
               BlocProvider(create: (_) => ProfilePicturesBloc()),
+              BlocProvider(create: (_) => ClientFeaturesConfigBloc()),
             ],
             child: navigator,
           ),

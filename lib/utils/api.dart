@@ -1,6 +1,7 @@
 
 
 import 'package:database/database.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
 import 'package:app/model/freezed/logic/account/initial_setup.dart';
 import 'package:app/utils/list.dart';
@@ -183,5 +184,11 @@ extension GetProfileFilteringSettingsExtension on GetProfileFilteringSettings {
       filterValues: [...e.filterValues],
       id: e.id,
     )).toList();
+  }
+}
+
+extension MapCoordinateExtension on MapCoordinate {
+  LatLng toLatLng() {
+    return LatLng(lat, lon);
   }
 }
