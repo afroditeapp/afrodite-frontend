@@ -1,6 +1,8 @@
 
 
 
+import 'package:app/api/api_manager.dart';
+import 'package:app/data/login_repository.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui/normal/report/report.dart';
@@ -34,6 +36,9 @@ extension type ProfileHeroTag(ProfileHeroTagRaw value) {
   }
 }
 
+// TODO(refactor): Consider making ApiManager available using
+//                 context.read<ApiManager>().
+
 void openProfileView(
   BuildContext context,
   ProfileEntry profile,
@@ -44,6 +49,7 @@ void openProfileView(
     bool noAction = false,
   }
 ) {
+  final ApiManager api = LoginRepository.getInstance().repositories.api;
   final pageKey = PageKey();
   MyNavigator.pushWithKey(
     context,
@@ -54,6 +60,7 @@ void openProfileView(
         child: ViewProfilePage(
           pageKey: pageKey,
           initialProfile: profile,
+          api: api,
           noAction: noAction,
         ),
       ),
@@ -68,9 +75,12 @@ class ViewProfilePage extends StatelessWidget {
   final ProfileEntry initialProfile;
   final ProfileHeroTag? heroTag;
 
+  final ApiManager api;
+
   const ViewProfilePage({
     required this.pageKey,
     required this.initialProfile,
+    required this.api,
     this.heroTag,
     this.noAction = false,
     super.key,
@@ -94,13 +104,7 @@ class ViewProfilePage extends StatelessWidget {
                     final p = AccountAdminSettingsPermissions(state.permissions);
                     if (p.somePermissionEnabled()) {
                       return MenuItemButton(
-                        onPressed: () {
-                          MyNavigator.push(context, MaterialPage<void>(child: AccountAdminSettingsScreen(
-                            accountId: initialProfile.uuid,
-                            age: initialProfile.age,
-                            name: initialProfile.name,
-                          )));
-                        },
+                        onPressed: () => getAgeAndNameAndShowAdminSettings(context, api, initialProfile.uuid),
                         child: const Text("Admin"),
                       );
                     } else {

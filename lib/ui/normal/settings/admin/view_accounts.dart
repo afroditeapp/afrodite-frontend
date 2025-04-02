@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
@@ -89,11 +88,7 @@ class _BlockedProfilesScreen extends State<ViewAccountsScreen> {
               title: Text("${item.name}, ${item.age}"),
               subtitle: Text(item.accountId.aid),
               onTap: () {
-                MyNavigator.push(context, MaterialPage<void>(child: AccountAdminSettingsScreen(
-                  accountId: item.accountId,
-                  age: item.age,
-                  name: item.name,
-                )));
+                getAgeAndNameAndShowAdminSettings(context, api, item.accountId);
               },
             );
           },

@@ -14,6 +14,7 @@ import 'package:app/ui/normal/settings/admin/account_admin/admin_content_managem
 import 'package:app/ui/normal/settings/admin/account_admin/ban_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/delete_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/edit_permissions.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/edit_profile_name.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_name.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_text.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_api_usage.dart';
@@ -28,23 +29,28 @@ import 'package:openapi/api.dart';
 
 Future<void> getAgeAndNameAndShowAdminSettings(BuildContext context, ApiManager api, AccountId account) async {
   final ageAndName = await api.profileAdmin((api) => api.getProfileAgeAndName(account.aid)).ok();
+
   if (ageAndName != null && context.mounted) {
     await MyNavigator.push(context, MaterialPage<void>(child: AccountAdminSettingsScreen(
       accountId: account,
-      age: ageAndName.age,
-      name: ageAndName.name,
+      initialAge: ageAndName.age,
+      initialName: ageAndName.name,
     )));
+  } else if (ageAndName == null) {
+    showSnackBar("Get profile age and name failed");
   }
 }
 
+/// This screen should be opened using getAgeAndNameAndShowAdminSettings
+/// as profile name editing is possible and current UI might have old name data.
 class AccountAdminSettingsScreen extends StatefulWidget {
   final AccountId accountId;
-  final String name;
-  final int age;
+  final String initialName;
+  final int initialAge;
   const AccountAdminSettingsScreen({
     required this.accountId,
-    required this.name,
-    required this.age,
+    required this.initialName,
+    required this.initialAge,
     super.key,
   });
 
@@ -56,6 +62,26 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
 
   final profile = LoginRepository.getInstance().repositories.profile;
   final api = LoginRepository.getInstance().repositories.api;
+
+  late String name;
+  late int age;
+
+  @override
+  void initState() {
+    super.initState();
+    name = widget.initialName;
+    age = widget.initialAge;
+  }
+
+  Future<void> updateProfileAgeAndName() async {
+    final ageAndName = await api.profileAdmin((api) => api.getProfileAgeAndName(widget.accountId.aid)).ok();
+    if (ageAndName != null && context.mounted) {
+      setState(() {
+        age = ageAndName.age;
+        name = ageAndName.name;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +107,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
             children: [
               const Padding(padding: EdgeInsets.all(8.0)),
               hPad(Text(
-                "${widget.name}, ${widget.age}",
+                "$name, $age",
                 style: Theme.of(context).textTheme.titleMedium,
               )),
               const Padding(padding: EdgeInsets.all(4.0)),
@@ -152,6 +178,19 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       }));
     }
 
+    if (permissions.adminEditProfileName) {
+      settings.add(Setting.createSetting(Icons.edit, "Edit profile name", () async {
+        await MyNavigator.push(
+          context,
+          MaterialPage<void>(child: EditProfileNameScreen(
+            accountId: widget.accountId,
+            initialName: name,
+          )),
+        );
+        await updateProfileAgeAndName();
+      }));
+    }
+
     if (permissions.adminBanAccount) {
       settings.add(Setting.createSetting(Icons.block, "Ban account", () =>
         MyNavigator.push(context, MaterialPage<void>(child: BanAccountScreen(accountId: widget.accountId)))
@@ -209,6 +248,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
 class AccountAdminSettingsPermissions {
   final Permissions _permissions;
   bool get adminModifyPermissions => _permissions.adminModifyPermissions;
+  bool get adminEditProfileName => _permissions.adminEditProfileName;
   bool get adminModerateMediaContent => _permissions.adminModerateMediaContent;
   bool get adminModerateProfileTexts => _permissions.adminModerateProfileTexts;
   bool get adminModerateProfileNames => _permissions.adminModerateProfileNames;
@@ -223,6 +263,7 @@ class AccountAdminSettingsPermissions {
 
   bool somePermissionEnabled() {
     return adminModifyPermissions ||
+      adminEditProfileName ||
       adminModerateMediaContent ||
       adminModerateProfileTexts ||
       adminModerateProfileNames ||

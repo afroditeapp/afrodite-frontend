@@ -1,7 +1,6 @@
 
 
 import 'package:app/localizations.dart';
-import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:collection/collection.dart';
@@ -92,11 +91,7 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
   Widget openAccountAdminSettings(BuildContext context, AccountId accountId, GetProfileAgeAndName ageAndName) {
     return ElevatedButton(
       onPressed: () {
-         MyNavigator.push(context, MaterialPage<void>(child: AccountAdminSettingsScreen(
-            accountId: accountId,
-            age: ageAndName.age,
-            name: ageAndName.name,
-          )));
+        getAgeAndNameAndShowAdminSettings(context, api, accountId);
       },
       child: const Text("Open admin settings"),
     );

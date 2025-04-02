@@ -1,6 +1,5 @@
 
 
-import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
@@ -62,23 +61,7 @@ class _OpenAccountAdminSettingsState extends State<OpenAccountAdminSettings> {
         } else if (aid == null) {
           showSnackBar("Email not found");
         } else {
-          final ageAndName = await api
-            .profileAdmin(
-              (api) => api.getProfileAgeAndName(aid.aid)
-            ).ok();
-
-            if (!context.mounted) {
-              return;
-            }
-          if (ageAndName == null) {
-            showSnackBar("Get profile age and name failed");
-          } else {
-            await MyNavigator.push(context, MaterialPage<void>(child: AccountAdminSettingsScreen(
-              accountId: aid,
-              age: ageAndName.age,
-              name: ageAndName.name,
-            )));
-          }
+          await getAgeAndNameAndShowAdminSettings(context, api, aid);
         }
       },
       child: const Text("Open"),
