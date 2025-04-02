@@ -1,7 +1,11 @@
 
 
+import 'dart:io';
+
+import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app_settings/app_settings.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/data/notification_manager.dart';
@@ -11,6 +15,11 @@ import 'package:app/logic/app/notification_settings.dart';
 import 'package:app/model/freezed/logic/settings/notification_settings.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:openapi/api.dart';
+
+// TODO(prod): Consider removing initial image moderation status cagetory
+//             and adding categories for profile name, text and image
+//             moderations.
+// TODO(prod): Introduce notification categories Chat, General, Other
 
 void openNotificationSettings(BuildContext context) {
   if (NotificationManager.getInstance().osProvidesNotificationSettingsUi) {
@@ -78,12 +87,19 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
   ) {
     final List<Widget> settingsList;
     if (state.areNotificationsEnabled) {
-      settingsList = [
+      final settings = [
         messagesSlider(context, state),
         likesSlider(context, state),
         initialContentModerationSlider(context, state),
         if (features.features.news) newsSlider(context, state),
       ];
+      if (Platform.isAndroid) {
+        // Use same order as in system notification settings
+        settings.sortBy<String>((v) => v.$1.id);
+      } else {
+        settings.sortBy<String>((v) => v.$1.title);
+      }
+      settingsList = settings.map((v) => v.$2).toList();
     } else {
       settingsList = [
         const Padding(padding: EdgeInsets.all(4)),
@@ -100,48 +116,56 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     );
   }
 
-  Widget messagesSlider(BuildContext context, NotificationSettingsData state) {
-    return categorySwitch(
-      title: context.strings.notification_category_messages,
+  (NotificationCategory, Widget) messagesSlider(BuildContext context, NotificationSettingsData state) {
+    const category = NotificationCategoryMessages();
+    final widget = categorySwitch(
+      title: category.title,
       isEnabled: state.categoryEnabledMessages,
       isEnabledFromSystemSettings: state.categorySystemEnabledMessages,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleMessages());
       },
     );
+    return (category, widget);
   }
 
-  Widget likesSlider(BuildContext context, NotificationSettingsData state) {
-    return categorySwitch(
-      title: context.strings.notification_category_likes,
+  (NotificationCategory, Widget) likesSlider(BuildContext context, NotificationSettingsData state) {
+    const category = NotificationCategoryLikes();
+    final widget = categorySwitch(
+      title: category.title,
       isEnabled: state.categoryEnabledLikes,
       isEnabledFromSystemSettings: state.categorySystemEnabledLikes,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleLikes());
       },
     );
+    return (category, widget);
   }
 
-  Widget initialContentModerationSlider(BuildContext context, NotificationSettingsData state) {
-    return categorySwitch(
-      title: context.strings.notification_category_initial_content_moderation,
+  (NotificationCategory, Widget) initialContentModerationSlider(BuildContext context, NotificationSettingsData state) {
+    const category = NotificationCategoryInitialContentModeration();
+    final widget = categorySwitch(
+      title: category.title,
       isEnabled: state.categoryEnabledInitialContentModeration,
       isEnabledFromSystemSettings: state.categorySystemEnabledInitialContentModeration,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleInitialContentModeration());
       },
     );
+    return (category, widget);
   }
 
-  Widget newsSlider(BuildContext context, NotificationSettingsData state) {
-    return categorySwitch(
-      title: context.strings.notification_category_news_item_available,
+  (NotificationCategory, Widget) newsSlider(BuildContext context, NotificationSettingsData state) {
+    const category = NotificationCategoryNewsItemAvailable();
+    final widget = categorySwitch(
+      title: category.title,
       isEnabled: state.categoryEnabledNews,
       isEnabledFromSystemSettings: state.categorySystemEnabledNews,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleNews());
       },
     );
+    return (category, widget);
   }
 
   Widget actionOpenSystemNotificationSettings() {
