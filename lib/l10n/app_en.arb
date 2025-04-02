@@ -747,11 +747,11 @@
   "@initial_setup_screen_security_selfie_title": {
     "description": "Title for initial setup security selfie screen"
   },
-  "initial_setup_screen_skip_dialog_description": "Dating profile is required for viewing public profiles.",
+  "initial_setup_screen_skip_dialog_description": "Use this only if you will have some admin rights to the service.",
   "@initial_setup_screen_skip_dialog_description": {
     "description": "Description for skip initial setup confirm dialog"
   },
-  "initial_setup_screen_skip_dialog_title": "Create dating profile later?",
+  "initial_setup_screen_skip_dialog_title": "Skip account initial setup?",
   "@initial_setup_screen_skip_dialog_title": {
     "description": "Title for skip initial setup confirm dialog"
   },
@@ -1212,7 +1212,7 @@
   "@profile_grid_screen_security_content_is_not_accepted": {
     "description": "Text displayed when security selfie is not accepted"
   },
-  "profile_grid_screen_start_initial_setup_button": "Create dating profile",
+  "profile_grid_screen_start_initial_setup_button": "Start account initial setup",
   "@profile_grid_screen_start_initial_setup_button": {
     "description": "Button text for start initial setup button"
   },

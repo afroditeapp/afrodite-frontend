@@ -135,8 +135,8 @@
     <string name="demo_account_screen_confirm_logout_dialog_title" description="Dialog title text for confirming logout from demo account">Logout?</string>
 
     <!-- Initial setup -->
-    <string name="initial_setup_screen_skip_dialog_title" description="Title for skip initial setup confirm dialog">Create dating profile later?</string>
-    <string name="initial_setup_screen_skip_dialog_description" description="Description for skip initial setup confirm dialog">Dating profile is required for viewing public profiles.</string>
+    <string name="initial_setup_screen_skip_dialog_title" description="Title for skip initial setup confirm dialog">Skip account initial setup?</string>
+    <string name="initial_setup_screen_skip_dialog_description" description="Description for skip initial setup confirm dialog">Use this only if you will have some admin rights to the service.</string>
     <string name="initial_setup_screen_email_title" description="Title for initial setup email address info">My email address is…</string>
     <string name="initial_setup_screen_email_hint_text" description="Hint text for inserting email address to text field">Insert email address</string>
     <string name="initial_setup_screen_age_confirmation_title" description="Title for age confirmation screen">Age confirmation</string>
@@ -192,7 +192,7 @@
 
     <!-- Profile grid screen -->
     <string name="profile_grid_screen_title" description="Title for profile grid screen">Profiles</string>
-    <string name="profile_grid_screen_start_initial_setup_button" description="Button text for start initial setup button">Create dating profile</string>
+    <string name="profile_grid_screen_start_initial_setup_button" description="Button text for start initial setup button">Start account initial setup</string>
     <string name="profile_grid_screen_profile_is_private_info" description="Info text which is shown when profile visibility is set to private">To view profiles, set your profile visibility to public from app settings.</string>
     <string name="profile_grid_screen_initial_moderation_ongoing" description="Info text that initial moderation is ongoing">You can view profiles and others can see your profile after your profile images are moderated.</string>
     <string name="profile_grid_screen_initial_moderation_in_progress" description="Info text that initial moderation is in progress">Moderation in progress.</string>
