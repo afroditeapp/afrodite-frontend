@@ -1,5 +1,6 @@
 
 
+import 'package:app/logic/account/client_features_config.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/app/notification_settings.dart';
 import 'package:app/model/freezed/logic/settings/notification_settings.dart';
 import 'package:app/ui_utils/padding.dart';
+import 'package:openapi/api.dart';
 
 void openNotificationSettings(BuildContext context) {
   if (NotificationManager.getInstance().osProvidesNotificationSettingsUi) {
@@ -25,8 +27,8 @@ class NotificationSettingsScreen extends StatefulWidget {
   final NotificationSettingsBloc notificationSettingsBloc;
   const NotificationSettingsScreen({
     required this.notificationSettingsBloc,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<NotificationSettingsScreen> createState() => _NotificationSettingsScreenState();
@@ -58,31 +60,43 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
   }
 
   Widget content(BuildContext context) {
-    return BlocBuilder<NotificationSettingsBloc, NotificationSettingsData>(
-      builder: (context, state) {
-        final List<Widget> settingsList;
-        if (state.areNotificationsEnabled) {
-          settingsList = [
-            messagesSlider(context, state),
-            likesSlider(context, state),
-            initialContentModerationSlider(context, state),
-            newsSlider(context, state),
-          ];
-        } else {
-          settingsList = [
-            const Padding(padding: EdgeInsets.all(4)),
-            hPad(Text(context.strings.notification_settings_screen_notifications_disabled_from_system_settings_text)),
-            const Padding(padding: EdgeInsets.all(4)),
-          ];
-        }
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ...settingsList,
-            actionOpenSystemNotificationSettings(),
-          ],
+    return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfig>(
+      builder: (context, features) {
+        return BlocBuilder<NotificationSettingsBloc, NotificationSettingsData>(
+          builder: (context, state) {
+            return contentWidget(context, features, state);
+          }
         );
       }
+    );
+  }
+
+  Widget contentWidget(
+    BuildContext context,
+    ClientFeaturesConfig features,
+    NotificationSettingsData state,
+  ) {
+    final List<Widget> settingsList;
+    if (state.areNotificationsEnabled) {
+      settingsList = [
+        messagesSlider(context, state),
+        likesSlider(context, state),
+        initialContentModerationSlider(context, state),
+        if (features.features.news) newsSlider(context, state),
+      ];
+    } else {
+      settingsList = [
+        const Padding(padding: EdgeInsets.all(4)),
+        hPad(Text(context.strings.notification_settings_screen_notifications_disabled_from_system_settings_text)),
+        const Padding(padding: EdgeInsets.all(4)),
+      ];
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ...settingsList,
+        actionOpenSystemNotificationSettings(),
+      ],
     );
   }
 
