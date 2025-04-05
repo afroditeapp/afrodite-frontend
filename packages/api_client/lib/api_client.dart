@@ -208,6 +208,8 @@ class ApiClient {
           return AccountStateContainer.fromJson(value);
         case 'AccountSyncVersion':
           return AccountSyncVersion.fromJson(value);
+        case 'AddPublicKeyResult':
+          return AddPublicKeyResult.fromJson(value);
         case 'AdminInfo':
           return AdminInfo.fromJson(value);
         case 'AllMatchesPage':
@@ -352,12 +354,16 @@ class ApiClient {
           return GetIpAddressStatisticsResult.fromJson(value);
         case 'GetIpAddressStatisticsSettings':
           return GetIpAddressStatisticsSettings.fromJson(value);
+        case 'GetLatestPublicKeyId':
+          return GetLatestPublicKeyId.fromJson(value);
         case 'GetMediaContentResult':
           return GetMediaContentResult.fromJson(value);
         case 'GetMyProfileResult':
           return GetMyProfileResult.fromJson(value);
         case 'GetNewsItemResult':
           return GetNewsItemResult.fromJson(value);
+        case 'GetPrivatePublicKeyInfo':
+          return GetPrivatePublicKeyInfo.fromJson(value);
         case 'GetProfileAgeAndName':
           return GetProfileAgeAndName.fromJson(value);
         case 'GetProfileContentPendingModerationList':
@@ -380,8 +386,6 @@ class ApiClient {
           return GetProfileTextPendingModerationList.fromJson(value);
         case 'GetProfileTextState':
           return GetProfileTextState.fromJson(value);
-        case 'GetPublicKey':
-          return GetPublicKey.fromJson(value);
         case 'GetReportList':
           return GetReportList.fromJson(value);
         case 'GroupValues':
@@ -560,16 +564,8 @@ class ApiClient {
           return ProfileVersion.fromJson(value);
         case 'ProfileVisibility':
           return ProfileVisibilityTypeTransformer().decode(value);
-        case 'PublicKey':
-          return PublicKey.fromJson(value);
-        case 'PublicKeyData':
-          return PublicKeyData.fromJson(value);
         case 'PublicKeyId':
           return PublicKeyId.fromJson(value);
-        case 'PublicKeyIdAndVersion':
-          return PublicKeyIdAndVersion.fromJson(value);
-        case 'PublicKeyVersion':
-          return PublicKeyVersion.fromJson(value);
         case 'ReceivedBlocksPage':
           return ReceivedBlocksPage.fromJson(value);
         case 'ReceivedBlocksSyncVersion':
@@ -642,12 +638,12 @@ class ApiClient {
           return SetAccountBanState.fromJson(value);
         case 'SetAccountSetup':
           return SetAccountSetup.fromJson(value);
+        case 'SetMaxPublicKeyCount':
+          return SetMaxPublicKeyCount.fromJson(value);
         case 'SetProfileContent':
           return SetProfileContent.fromJson(value);
         case 'SetProfileName':
           return SetProfileName.fromJson(value);
-        case 'SetPublicKey':
-          return SetPublicKey.fromJson(value);
         case 'SignInWithLoginInfo':
           return SignInWithLoginInfo.fromJson(value);
         case 'SoftwareInfo':

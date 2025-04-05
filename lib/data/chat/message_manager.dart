@@ -295,8 +295,11 @@ class MessageManager extends LifecycleMethods {
       }
 
       final (messageBytes, decryptingResult) = decryptMessage(
-        publicKey.data.data,
-        allKeys.private.data,
+        // publicKey.data.data,
+        // allKeys.private.data,
+        // TODO: Update once native utils is updated
+        "",
+        "",
         encryptedMessageBytes,
       );
 
@@ -391,7 +394,7 @@ class MessageManager extends LifecycleMethods {
         }
     }
 
-    final PublicKey receiverPublicKey;
+    final ForeignPublicKey receiverPublicKey;
     final receiverPublicKeyOrNull = await _getPublicKeyForForeignAccount(accountId, forceDownload: false).ok();
     if (receiverPublicKeyOrNull == null) {
       yield const ErrorBeforeMessageSaving();
@@ -437,8 +440,11 @@ class MessageManager extends LifecycleMethods {
     }
 
     final (encryptedMessage, encryptingResult) = encryptMessage(
-      currentUserKeys.private.data,
-      receiverPublicKey.data.data,
+      // currentUserKeys.private.data,
+      // receiverPublicKey.data.data,
+      // TODO: Update once native utils is updated
+      "",
+      "",
       messageBytes,
     );
 
@@ -458,7 +464,6 @@ class MessageManager extends LifecycleMethods {
       final result = await api.chat((api) => api.postSendMessage(
         accountId.aid,
         receiverPublicKey.id.id,
-        receiverPublicKey.version.version,
         clientId.id,
         localId.id,
         MultipartFile.fromBytes("", dataIdentifierAndEncryptedMessage),
@@ -574,8 +579,8 @@ class MessageManager extends LifecycleMethods {
     return const Ok(null);
   }
 
-  /// If PublicKey is null then PublicKey for that account does not exist.
-  Future<Result<PublicKey?, void>> _getPublicKeyForForeignAccount(
+  /// If ForeignPublicKey is null then PublicKey for that account does not exist.
+  Future<Result<ForeignPublicKey?, void>> _getPublicKeyForForeignAccount(
     AccountId accountId,
     {required bool forceDownload}
   ) async {
@@ -601,11 +606,26 @@ class MessageManager extends LifecycleMethods {
   }
 
   Future<Result<void, void>> _refreshForeignPublicKey(AccountId accountId) async {
-    final keyResult = await api.chat((api) => api.getPublicKey(accountId.aid, 1));
-    final PublicKey? key;
+    // TODO: use public key ID from message when that is available
+    final r = await api.chat((api) => api.getLatestPublicKeyId(accountId.aid));
+    final PublicKeyId latestPublicKeyId;
+    switch (r) {
+      case Ok(:final v):
+        final id = v.id;
+        if (id == null) {
+          return const Err(null);
+        } else {
+          latestPublicKeyId = id;
+        }
+      case Err():
+        return const Err(null);
+    }
+
+    final keyResult = await api.chat((api) => api.getPublicKeyFixed(accountId.aid, latestPublicKeyId.id));
+    final Uint8List latestPublicKeyData;
     switch (keyResult) {
       case Ok(:final v):
-        key = v.key;
+        latestPublicKeyData = v;
       case Err():
         return const Err(null);
     }
@@ -613,9 +633,9 @@ class MessageManager extends LifecycleMethods {
     final InfoMessageState? infoState;
     switch (await db.accountData((db) => db.daoConversations.getPublicKey(accountId))) {
       case Ok(:final v):
-        if (v == null && key != null) {
+        if (v == null) {
           infoState = InfoMessageState.infoMatchFirstPublicKeyReceived;
-        } else if (v != key) {
+        } else if (v.id != latestPublicKeyId) {
           infoState = InfoMessageState.infoMatchPublicKeyChanged;
         } else {
           infoState = null;
@@ -624,7 +644,7 @@ class MessageManager extends LifecycleMethods {
         return const Err(null);
     }
 
-    return await db.accountAction((db) => db.daoConversations.updatePublicKeyAndAddInfoMessage(currentUser, accountId, key, infoState))
+    return await db.accountAction((db) => db.daoConversations.updatePublicKeyAndAddInfoMessage(currentUser, accountId, latestPublicKeyData, latestPublicKeyId, infoState))
       .mapErr((_) => null);
   }
 

@@ -17,7 +17,6 @@ class LoginResult {
     this.aid,
     this.email,
     this.errorUnsupportedClient = false,
-    this.latestPublicKeys = const [],
     this.media,
     this.profile,
   });
@@ -38,9 +37,6 @@ class LoginResult {
 
   bool errorUnsupportedClient;
 
-  /// Info about latest public keys. Client can use this value to ask if user wants to copy existing private and public key from other device. If empty, public key is not set or the client is unsupported.
-  List<PublicKeyIdAndVersion> latestPublicKeys;
-
   /// If `None`, media microservice is disabled or the client version is unsupported.
   AuthPair? media;
 
@@ -53,7 +49,6 @@ class LoginResult {
     other.aid == aid &&
     other.email == email &&
     other.errorUnsupportedClient == errorUnsupportedClient &&
-    _deepEquality.equals(other.latestPublicKeys, latestPublicKeys) &&
     other.media == media &&
     other.profile == profile;
 
@@ -64,12 +59,11 @@ class LoginResult {
     (aid == null ? 0 : aid!.hashCode) +
     (email == null ? 0 : email!.hashCode) +
     (errorUnsupportedClient.hashCode) +
-    (latestPublicKeys.hashCode) +
     (media == null ? 0 : media!.hashCode) +
     (profile == null ? 0 : profile!.hashCode);
 
   @override
-  String toString() => 'LoginResult[account=$account, aid=$aid, email=$email, errorUnsupportedClient=$errorUnsupportedClient, latestPublicKeys=$latestPublicKeys, media=$media, profile=$profile]';
+  String toString() => 'LoginResult[account=$account, aid=$aid, email=$email, errorUnsupportedClient=$errorUnsupportedClient, media=$media, profile=$profile]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -89,7 +83,6 @@ class LoginResult {
       json[r'email'] = null;
     }
       json[r'error_unsupported_client'] = this.errorUnsupportedClient;
-      json[r'latest_public_keys'] = this.latestPublicKeys;
     if (this.media != null) {
       json[r'media'] = this.media;
     } else {
@@ -126,7 +119,6 @@ class LoginResult {
         aid: AccountId.fromJson(json[r'aid']),
         email: mapValueOfType<String>(json, r'email'),
         errorUnsupportedClient: mapValueOfType<bool>(json, r'error_unsupported_client') ?? false,
-        latestPublicKeys: PublicKeyIdAndVersion.listFromJson(json[r'latest_public_keys']),
         media: AuthPair.fromJson(json[r'media']),
         profile: AuthPair.fromJson(json[r'profile']),
       );
@@ -178,4 +170,3 @@ class LoginResult {
   static const requiredKeys = <String>{
   };
 }
-

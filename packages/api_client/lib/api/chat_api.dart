@@ -67,7 +67,60 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'DeleteLikeResult',) as DeleteLikeResult;
-    
+
+    }
+    return null;
+  }
+
+  /// Get latest public key ID for some account
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> getLatestPublicKeyIdWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/latest_public_key_id/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get latest public key ID for some account
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<GetLatestPublicKeyId?> getLatestPublicKeyId(String aid,) async {
+    final response = await getLatestPublicKeyIdWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetLatestPublicKeyId',) as GetLatestPublicKeyId;
+
     }
     return null;
   }
@@ -111,7 +164,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AllMatchesPage',) as AllMatchesPage;
-    
+
     }
     return null;
   }
@@ -163,7 +216,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MessageNumber',) as MessageNumber;
-    
+
     }
     return null;
   }
@@ -211,7 +264,64 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MultipartFile',) as MultipartFile;
-    
+
+    }
+    return null;
+  }
+
+  /// Get private public key info
+  ///
+  /// # Access * Owner of the requested account * Permission [model::Permissions::admin_edit_max_public_key_count]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> getPrivatePublicKeyInfoWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/private_public_key_info/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get private public key info
+  ///
+  /// # Access * Owner of the requested account * Permission [model::Permissions::admin_edit_max_public_key_count]
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<GetPrivatePublicKeyInfo?> getPrivatePublicKeyInfo(String aid,) async {
+    final response = await getPrivatePublicKeyInfoWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetPrivatePublicKeyInfo',) as GetPrivatePublicKeyInfo;
+
     }
     return null;
   }
@@ -224,8 +334,8 @@ class ChatApi {
   ///
   /// * [String] aid (required):
   ///
-  /// * [int] version (required):
-  Future<Response> getPublicKeyWithHttpInfo(String aid, int version,) async {
+  /// * [int] id (required):
+  Future<Response> getPublicKeyWithHttpInfo(String aid, int id,) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/public_key/{aid}'
       .replaceAll('{aid}', aid);
@@ -237,7 +347,7 @@ class ChatApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
-      queryParams.addAll(_queryParams('', 'version', version));
+      queryParams.addAll(_queryParams('', 'id', id));
 
     const contentTypes = <String>[];
 
@@ -259,9 +369,9 @@ class ChatApi {
   ///
   /// * [String] aid (required):
   ///
-  /// * [int] version (required):
-  Future<GetPublicKey?> getPublicKey(String aid, int version,) async {
-    final response = await getPublicKeyWithHttpInfo(aid, version,);
+  /// * [int] id (required):
+  Future<MultipartFile?> getPublicKey(String aid, int id,) async {
+    final response = await getPublicKeyWithHttpInfo(aid, id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -269,8 +379,8 @@ class ChatApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetPublicKey',) as GetPublicKey;
-    
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MultipartFile',) as MultipartFile;
+
     }
     return null;
   }
@@ -314,7 +424,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ReceivedBlocksPage',) as ReceivedBlocksPage;
-    
+
     }
     return null;
   }
@@ -358,7 +468,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SentBlocksPage',) as SentBlocksPage;
-    
+
     }
     return null;
   }
@@ -406,7 +516,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SentLikesPage',) as SentLikesPage;
-    
+
     }
     return null;
   }
@@ -447,7 +557,63 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SentMessageIdList',) as SentMessageIdList;
-    
+
+    }
+    return null;
+  }
+
+  /// Add new public key.
+  ///
+  /// Returns next public key ID number.  # Limits  Server can store limited amount of public keys. The limit is configurable from server config file and also user specific config exists. Max value between the two previous values is used to check is adding the key allowed.  Max key size is 8192 bytes.  The key must be OpenPGP public key with one signed user which ID is [model::AccountId] string.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [MultipartFile] body (required):
+  Future<Response> postAddPublicKeyWithHttpInfo(MultipartFile body,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/add_public_key';
+
+    // ignore: prefer_final_locals
+    Object? postBody = body;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/octet-stream'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Add new public key.
+  ///
+  /// Returns next public key ID number.  # Limits  Server can store limited amount of public keys. The limit is configurable from server config file and also user specific config exists. Max value between the two previous values is used to check is adding the key allowed.  Max key size is 8192 bytes.  The key must be OpenPGP public key with one signed user which ID is [model::AccountId] string.
+  ///
+  /// Parameters:
+  ///
+  /// * [MultipartFile] body (required):
+  Future<AddPublicKeyResult?> postAddPublicKey(MultipartFile body,) async {
+    final response = await postAddPublicKeyWithHttpInfo(body,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AddPublicKeyResult',) as AddPublicKeyResult;
+
     }
     return null;
   }
@@ -625,7 +791,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UpdateReportResult',) as UpdateReportResult;
-    
+
     }
     return null;
   }
@@ -666,7 +832,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'NewReceivedLikesCountResult',) as NewReceivedLikesCountResult;
-    
+
     }
     return null;
   }
@@ -718,7 +884,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MatchesPage',) as MatchesPage;
-    
+
     }
     return null;
   }
@@ -774,7 +940,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ReceivedLikesPage',) as ReceivedLikesPage;
-    
+
     }
     return null;
   }
@@ -830,7 +996,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingNotificationWithData',) as PendingNotificationWithData;
-    
+
     }
     return null;
   }
@@ -879,62 +1045,6 @@ class ChatApi {
     }
   }
 
-  /// Replace current public key with a new public key. Returns public key ID number which server increments. This must be called only when needed as this route will fail every time if current public key ID number is i64::MAX.
-  ///
-  /// Only version 1 public keys are currently supported.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [SetPublicKey] setPublicKey (required):
-  Future<Response> postPublicKeyWithHttpInfo(SetPublicKey setPublicKey,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/chat_api/public_key';
-
-    // ignore: prefer_final_locals
-    Object? postBody = setPublicKey;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Replace current public key with a new public key. Returns public key ID number which server increments. This must be called only when needed as this route will fail every time if current public key ID number is i64::MAX.
-  ///
-  /// Only version 1 public keys are currently supported.
-  ///
-  /// Parameters:
-  ///
-  /// * [SetPublicKey] setPublicKey (required):
-  Future<PublicKeyId?> postPublicKey(SetPublicKey setPublicKey,) async {
-    final response = await postPublicKeyWithHttpInfo(setPublicKey,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PublicKeyId',) as PublicKeyId;
-    
-    }
-    return null;
-  }
-
   /// Performs an HTTP 'POST /chat_api/matches/reset' operation and returns the [Response].
   Future<Response> postResetMatchesPagingWithHttpInfo() async {
     // ignore: prefer_const_declarations
@@ -971,7 +1081,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ResetMatchesIteratorResult',) as ResetMatchesIteratorResult;
-    
+
     }
     return null;
   }
@@ -1012,7 +1122,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ResetReceivedLikesIteratorResult',) as ResetReceivedLikesIteratorResult;
-    
+
     }
     return null;
   }
@@ -1064,7 +1174,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SendLikeResult',) as SendLikeResult;
-    
+
     }
     return null;
   }
@@ -1083,14 +1193,12 @@ class ChatApi {
   /// * [int] receiverPublicKeyId (required):
   ///   Message receiver's public key ID for check to prevent sending message encrypted with outdated public key.
   ///
-  /// * [int] receiverPublicKeyVersion (required):
-  ///
   /// * [int] clientId (required):
   ///
   /// * [int] clientLocalId (required):
   ///
   /// * [MultipartFile] body (required):
-  Future<Response> postSendMessageWithHttpInfo(String receiver, int receiverPublicKeyId, int receiverPublicKeyVersion, int clientId, int clientLocalId, MultipartFile body,) async {
+  Future<Response> postSendMessageWithHttpInfo(String receiver, int receiverPublicKeyId, int clientId, int clientLocalId, MultipartFile body,) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/send_message';
 
@@ -1103,7 +1211,6 @@ class ChatApi {
 
       queryParams.addAll(_queryParams('', 'receiver', receiver));
       queryParams.addAll(_queryParams('', 'receiver_public_key_id', receiverPublicKeyId));
-      queryParams.addAll(_queryParams('', 'receiver_public_key_version', receiverPublicKeyVersion));
       queryParams.addAll(_queryParams('', 'client_id', clientId));
       queryParams.addAll(_queryParams('', 'client_local_id', clientLocalId));
 
@@ -1133,15 +1240,13 @@ class ChatApi {
   /// * [int] receiverPublicKeyId (required):
   ///   Message receiver's public key ID for check to prevent sending message encrypted with outdated public key.
   ///
-  /// * [int] receiverPublicKeyVersion (required):
-  ///
   /// * [int] clientId (required):
   ///
   /// * [int] clientLocalId (required):
   ///
   /// * [MultipartFile] body (required):
-  Future<SendMessageResult?> postSendMessage(String receiver, int receiverPublicKeyId, int receiverPublicKeyVersion, int clientId, int clientLocalId, MultipartFile body,) async {
-    final response = await postSendMessageWithHttpInfo(receiver, receiverPublicKeyId, receiverPublicKeyVersion, clientId, clientLocalId, body,);
+  Future<SendMessageResult?> postSendMessage(String receiver, int receiverPublicKeyId, int clientId, int clientLocalId, MultipartFile body,) async {
+    final response = await postSendMessageWithHttpInfo(receiver, receiverPublicKeyId, clientId, clientLocalId, body,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1150,7 +1255,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SendMessageResult',) as SendMessageResult;
-    
+
     }
     return null;
   }
@@ -1197,7 +1302,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingNotificationToken',) as PendingNotificationToken;
-    
+
     }
     return null;
   }

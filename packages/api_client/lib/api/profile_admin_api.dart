@@ -74,7 +74,7 @@ class ProfileAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileIteratorPage',) as ProfileIteratorPage;
-    
+
     }
     return null;
   }
@@ -122,14 +122,14 @@ class ProfileAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountIdDbValue',) as AccountIdDbValue;
-    
+
     }
     return null;
   }
 
   /// Get profile age and name
   ///
-  /// # Access - Permission [model::Permissions::admin_find_account_by_email] - Permission [model::Permissions::admin_view_permissions] - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_moderate_profile_names] - Permission [model::Permissions::admin_moderate_profile_texts]
+  /// # Access - Permission [model::Permissions::admin_edit_profile_name] - Permission [model::Permissions::admin_find_account_by_email] - Permission [model::Permissions::admin_view_permissions] - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_moderate_profile_names] - Permission [model::Permissions::admin_moderate_profile_texts]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -164,7 +164,7 @@ class ProfileAdminApi {
 
   /// Get profile age and name
   ///
-  /// # Access - Permission [model::Permissions::admin_find_account_by_email] - Permission [model::Permissions::admin_view_permissions] - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_moderate_profile_names] - Permission [model::Permissions::admin_moderate_profile_texts]
+  /// # Access - Permission [model::Permissions::admin_edit_profile_name] - Permission [model::Permissions::admin_find_account_by_email] - Permission [model::Permissions::admin_view_permissions] - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_moderate_profile_names] - Permission [model::Permissions::admin_moderate_profile_texts]
   ///
   /// Parameters:
   ///
@@ -179,7 +179,7 @@ class ProfileAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileAgeAndName',) as GetProfileAgeAndName;
-    
+
     }
     return null;
   }
@@ -220,7 +220,7 @@ class ProfileAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileNamePendingModerationList',) as GetProfileNamePendingModerationList;
-    
+
     }
     return null;
   }
@@ -277,7 +277,7 @@ class ProfileAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileNameState',) as GetProfileNameState;
-    
+
     }
     return null;
   }
@@ -335,7 +335,7 @@ class ProfileAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileStatisticsHistoryResult',) as GetProfileStatisticsHistoryResult;
-    
+
     }
     return null;
   }
@@ -389,7 +389,7 @@ class ProfileAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileTextPendingModerationList',) as GetProfileTextPendingModerationList;
-    
+
     }
     return null;
   }
@@ -446,7 +446,7 @@ class ProfileAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileTextState',) as GetProfileTextState;
-    
+
     }
     return null;
   }

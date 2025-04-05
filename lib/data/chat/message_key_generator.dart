@@ -4,6 +4,7 @@ import 'dart:isolate';
 
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
@@ -81,31 +82,30 @@ class MessageKeyManager {
   Future<Result<AllKeyData, void>> uploadPublicKeyAndSaveAllKeys(
     GeneratedMessageKeys newKeys,
   ) async {
-    final version = PublicKeyVersion(version: 1);
-    final keyId = await api.chat((api) => api.postPublicKey(SetPublicKey(
-      data: PublicKeyData(data: newKeys.armoredPublicKey),
-      version: version,
-    ))).ok();
+    // TODO: update
+    final Uint8List data = Uint8List.fromList([]);
+    final List<int> keyData = data.toList();
+    final r = await api.chat((api) => api.postAddPublicKey(MultipartFile.fromBytes("", keyData))).ok();
 
-    if (keyId == null) {
+    final keyId = r?.keyId;
+    if (r == null || keyId == null || r.errorTooManyPublicKeys) {
       return const Err(null);
     }
 
-    final private = PrivateKeyData(data: newKeys.armoredPrivateKey);
-    final public = PublicKey(
-      data: PublicKeyData(data: newKeys.armoredPublicKey),
-      id: keyId,
-      version: version,
-    );
+    // TODO: update
+    final private = PrivateKeyData(data: data);
+    final public = PublicKeyData(data: data);
+
     final dbResult = await db.accountAction((db) => db.daoMessageKeys.setMessageKeys(
       private: private,
       public: public,
+      publicKeyId: keyId,
     ));
 
     if (dbResult.isErr()) {
       return const Err(null);
     } else {
-      return Ok(AllKeyData(private: private, public: public));
+      return Ok(AllKeyData(private: private, public: public, id: keyId));
     }
   }
 }

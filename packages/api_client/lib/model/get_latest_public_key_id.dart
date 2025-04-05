@@ -10,36 +10,40 @@
 
 part of openapi.api;
 
-class PublicKeyData {
-  /// Returns a new [PublicKeyData] instance.
-  PublicKeyData({
-    required this.data,
+class GetLatestPublicKeyId {
+  /// Returns a new [GetLatestPublicKeyId] instance.
+  GetLatestPublicKeyId({
+    this.id,
   });
 
-  String data;
+  PublicKeyId? id;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is PublicKeyData &&
-    other.data == data;
+  bool operator ==(Object other) => identical(this, other) || other is GetLatestPublicKeyId &&
+    other.id == id;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (data.hashCode);
+    (id == null ? 0 : id!.hashCode);
 
   @override
-  String toString() => 'PublicKeyData[data=$data]';
+  String toString() => 'GetLatestPublicKeyId[id=$id]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'data'] = this.data;
+    if (this.id != null) {
+      json[r'id'] = this.id;
+    } else {
+      json[r'id'] = null;
+    }
     return json;
   }
 
-  /// Returns a new [PublicKeyData] instance and imports its values from
+  /// Returns a new [GetLatestPublicKeyId] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static PublicKeyData? fromJson(dynamic value) {
+  static GetLatestPublicKeyId? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +52,24 @@ class PublicKeyData {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PublicKeyData[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PublicKeyData[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "GetLatestPublicKeyId[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "GetLatestPublicKeyId[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return PublicKeyData(
-        data: mapValueOfType<String>(json, r'data')!,
+      return GetLatestPublicKeyId(
+        id: PublicKeyId.fromJson(json[r'id']),
       );
     }
     return null;
   }
 
-  static List<PublicKeyData> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <PublicKeyData>[];
+  static List<GetLatestPublicKeyId> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <GetLatestPublicKeyId>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = PublicKeyData.fromJson(row);
+        final value = GetLatestPublicKeyId.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +78,12 @@ class PublicKeyData {
     return result.toList(growable: growable);
   }
 
-  static Map<String, PublicKeyData> mapFromJson(dynamic json) {
-    final map = <String, PublicKeyData>{};
+  static Map<String, GetLatestPublicKeyId> mapFromJson(dynamic json) {
+    final map = <String, GetLatestPublicKeyId>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = PublicKeyData.fromJson(entry.value);
+        final value = GetLatestPublicKeyId.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +92,14 @@ class PublicKeyData {
     return map;
   }
 
-  // maps a json object with a list of PublicKeyData-objects as value to a dart map
-  static Map<String, List<PublicKeyData>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<PublicKeyData>>{};
+  // maps a json object with a list of GetLatestPublicKeyId-objects as value to a dart map
+  static Map<String, List<GetLatestPublicKeyId>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<GetLatestPublicKeyId>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = PublicKeyData.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = GetLatestPublicKeyId.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +107,5 @@ class PublicKeyData {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'data',
   };
 }
-

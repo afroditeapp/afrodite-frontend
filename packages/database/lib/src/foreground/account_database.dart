@@ -141,10 +141,9 @@ class Account extends Table {
 
   // DaoMessageKeys
 
-  TextColumn get privateKeyData => text().map(const NullAwareTypeConverter.wrap(PrivateKeyDataConverter())).nullable()();
-  TextColumn get publicKeyData => text().map(const NullAwareTypeConverter.wrap(PublicKeyDataConverter())).nullable()();
+  BlobColumn get privateKeyData => blob().map(const NullAwareTypeConverter.wrap(PrivateKeyDataConverter())).nullable()();
+  BlobColumn get publicKeyData => blob().map(const NullAwareTypeConverter.wrap(PublicKeyDataConverter())).nullable()();
   IntColumn get publicKeyId => integer().map(const NullAwareTypeConverter.wrap(PublicKeyIdConverter())).nullable()();
-  IntColumn get publicKeyVersion => integer().map(const NullAwareTypeConverter.wrap(PublicKeyVersionConverter())).nullable()();
 
   // DaoProfileInitialAgeInfo
 

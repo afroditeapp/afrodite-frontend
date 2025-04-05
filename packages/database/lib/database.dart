@@ -15,6 +15,6 @@ export 'src/message_entry.dart' show MessageEntry, MessageState, SentMessageStat
 export 'src/profile_entry.dart' show MyProfileEntry, ProfileEntry, ProfileLocalDbId, NewMessageNotificationId, ProfileTitle, InitialAgeInfo, AvailableAges, AutomaticAgeChangeInfo, MyContent, ContentIdAndAccepted, AccountState, AccountStateContainerToAccountState, ProfileAttributeAndHash, ProfileAttributes;
 export 'src/notification_session_id.dart' show NotificationSessionId;
 export 'src/server_maintenance.dart' show ServerMaintenanceInfo;
-export 'src/private_key_data.dart' show PrivateKeyData, AllKeyData;
+export 'src/private_key_data.dart' show PrivateKeyData, PublicKeyData, AllKeyData, ForeignPublicKey;
 export 'src/utils.dart' show QueryExcecutorProvider;
 export 'src/db_file.dart' show DbFile, CommonDbFile, CommonBackgroundDbFile, AccountDbFile, AccountBackgroundDbFile;

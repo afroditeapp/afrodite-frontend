@@ -414,20 +414,6 @@ class MatchesIteratorSessionIdConverter extends TypeConverter<MatchesIteratorSes
   }
 }
 
-class PublicKeyDataConverter extends TypeConverter<PublicKeyData, String> {
-  const PublicKeyDataConverter();
-
-  @override
-  PublicKeyData fromSql(fromDb) {
-    return PublicKeyData(data: fromDb);
-  }
-
-  @override
-  String toSql(value) {
-    return value.data;
-  }
-}
-
 class PublicKeyIdConverter extends TypeConverter<PublicKeyId, int> {
   const PublicKeyIdConverter();
 
@@ -442,21 +428,7 @@ class PublicKeyIdConverter extends TypeConverter<PublicKeyId, int> {
   }
 }
 
-class PublicKeyVersionConverter extends TypeConverter<PublicKeyVersion, int> {
-  const PublicKeyVersionConverter();
-
-  @override
-  PublicKeyVersion fromSql(fromDb) {
-    return PublicKeyVersion(version: fromDb);
-  }
-
-  @override
-  int toSql(value) {
-    return value.version;
-  }
-}
-
-class PrivateKeyDataConverter extends TypeConverter<PrivateKeyData, String> {
+class PrivateKeyDataConverter extends TypeConverter<PrivateKeyData, Uint8List> {
   const PrivateKeyDataConverter();
 
   @override
@@ -465,7 +437,21 @@ class PrivateKeyDataConverter extends TypeConverter<PrivateKeyData, String> {
   }
 
   @override
-  String toSql(value) {
+  Uint8List toSql(value) {
+    return value.data;
+  }
+}
+
+class PublicKeyDataConverter extends TypeConverter<PublicKeyData, Uint8List> {
+  const PublicKeyDataConverter();
+
+  @override
+  PublicKeyData fromSql(fromDb) {
+    return PublicKeyData(data: fromDb);
+  }
+
+  @override
+  Uint8List toSql(value) {
     return value.data;
   }
 }

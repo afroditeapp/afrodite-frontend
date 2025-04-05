@@ -398,31 +398,23 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
           'local_image_setting_image_cache_downscaling_size', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false);
   @override
-  late final GeneratedColumnWithTypeConverter<PrivateKeyData?, String>
-      privateKeyData = GeneratedColumn<String>(
+  late final GeneratedColumnWithTypeConverter<PrivateKeyData?, Uint8List>
+      privateKeyData = GeneratedColumn<Uint8List>(
               'private_key_data', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
+              type: DriftSqlType.blob, requiredDuringInsert: false)
           .withConverter<PrivateKeyData?>(
               $AccountTable.$converterprivateKeyData);
   @override
-  late final GeneratedColumnWithTypeConverter<api.PublicKeyData?, String>
-      publicKeyData = GeneratedColumn<String>(
+  late final GeneratedColumnWithTypeConverter<PublicKeyData?, Uint8List>
+      publicKeyData = GeneratedColumn<Uint8List>(
               'public_key_data', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<api.PublicKeyData?>(
-              $AccountTable.$converterpublicKeyData);
+              type: DriftSqlType.blob, requiredDuringInsert: false)
+          .withConverter<PublicKeyData?>($AccountTable.$converterpublicKeyData);
   @override
   late final GeneratedColumnWithTypeConverter<api.PublicKeyId?, int>
       publicKeyId = GeneratedColumn<int>('public_key_id', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<api.PublicKeyId?>($AccountTable.$converterpublicKeyId);
-  @override
-  late final GeneratedColumnWithTypeConverter<api.PublicKeyVersion?, int>
-      publicKeyVersion = GeneratedColumn<int>(
-              'public_key_version', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<api.PublicKeyVersion?>(
-              $AccountTable.$converterpublicKeyVersion);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
       profileInitialAgeSetUnixTime = GeneratedColumn<int>(
@@ -547,7 +539,6 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         privateKeyData,
         publicKeyData,
         publicKeyId,
-        publicKeyVersion,
         profileInitialAgeSetUnixTime,
         profileInitialAge,
         serverMaintenanceUnixTime,
@@ -980,16 +971,13 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
               '${effectivePrefix}local_image_setting_image_cache_downscaling_size']),
       privateKeyData: $AccountTable.$converterprivateKeyData.fromSql(
           attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}private_key_data'])),
+              DriftSqlType.blob, data['${effectivePrefix}private_key_data'])),
       publicKeyData: $AccountTable.$converterpublicKeyData.fromSql(
           attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}public_key_data'])),
+              DriftSqlType.blob, data['${effectivePrefix}public_key_data'])),
       publicKeyId: $AccountTable.$converterpublicKeyId.fromSql(attachedDatabase
           .typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}public_key_id'])),
-      publicKeyVersion: $AccountTable.$converterpublicKeyVersion.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}public_key_version'])),
       profileInitialAgeSetUnixTime: $AccountTable
           .$converterprofileInitialAgeSetUnixTime
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
@@ -1075,14 +1063,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<JsonString?, String?>
       $converterjsonProfileFilteringSettings =
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
-  static TypeConverter<PrivateKeyData?, String?> $converterprivateKeyData =
+  static TypeConverter<PrivateKeyData?, Uint8List?> $converterprivateKeyData =
       const NullAwareTypeConverter.wrap(PrivateKeyDataConverter());
-  static TypeConverter<api.PublicKeyData?, String?> $converterpublicKeyData =
+  static TypeConverter<PublicKeyData?, Uint8List?> $converterpublicKeyData =
       const NullAwareTypeConverter.wrap(PublicKeyDataConverter());
   static TypeConverter<api.PublicKeyId?, int?> $converterpublicKeyId =
       const NullAwareTypeConverter.wrap(PublicKeyIdConverter());
-  static TypeConverter<api.PublicKeyVersion?, int?> $converterpublicKeyVersion =
-      const NullAwareTypeConverter.wrap(PublicKeyVersionConverter());
   static TypeConverter<UtcDateTime?, int?>
       $converterprofileInitialAgeSetUnixTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
@@ -1163,9 +1149,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final bool? localImageSettingCacheFullSizedImages;
   final int? localImageSettingImageCacheDownscalingSize;
   final PrivateKeyData? privateKeyData;
-  final api.PublicKeyData? publicKeyData;
+  final PublicKeyData? publicKeyData;
   final api.PublicKeyId? publicKeyId;
-  final api.PublicKeyVersion? publicKeyVersion;
   final UtcDateTime? profileInitialAgeSetUnixTime;
   final int? profileInitialAge;
   final UtcDateTime? serverMaintenanceUnixTime;
@@ -1233,7 +1218,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.privateKeyData,
       this.publicKeyData,
       this.publicKeyId,
-      this.publicKeyVersion,
       this.profileInitialAgeSetUnixTime,
       this.profileInitialAge,
       this.serverMaintenanceUnixTime,
@@ -1442,20 +1426,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Variable<int>(localImageSettingImageCacheDownscalingSize);
     }
     if (!nullToAbsent || privateKeyData != null) {
-      map['private_key_data'] = Variable<String>(
+      map['private_key_data'] = Variable<Uint8List>(
           $AccountTable.$converterprivateKeyData.toSql(privateKeyData));
     }
     if (!nullToAbsent || publicKeyData != null) {
-      map['public_key_data'] = Variable<String>(
+      map['public_key_data'] = Variable<Uint8List>(
           $AccountTable.$converterpublicKeyData.toSql(publicKeyData));
     }
     if (!nullToAbsent || publicKeyId != null) {
       map['public_key_id'] =
           Variable<int>($AccountTable.$converterpublicKeyId.toSql(publicKeyId));
-    }
-    if (!nullToAbsent || publicKeyVersion != null) {
-      map['public_key_version'] = Variable<int>(
-          $AccountTable.$converterpublicKeyVersion.toSql(publicKeyVersion));
     }
     if (!nullToAbsent || profileInitialAgeSetUnixTime != null) {
       map['profile_initial_age_set_unix_time'] = Variable<int>($AccountTable
@@ -1669,9 +1649,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       publicKeyId: publicKeyId == null && nullToAbsent
           ? const Value.absent()
           : Value(publicKeyId),
-      publicKeyVersion: publicKeyVersion == null && nullToAbsent
-          ? const Value.absent()
-          : Value(publicKeyVersion),
       profileInitialAgeSetUnixTime:
           profileInitialAgeSetUnixTime == null && nullToAbsent
               ? const Value.absent()
@@ -1811,11 +1788,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           .fromJson<int?>(json['localImageSettingImageCacheDownscalingSize']),
       privateKeyData:
           serializer.fromJson<PrivateKeyData?>(json['privateKeyData']),
-      publicKeyData:
-          serializer.fromJson<api.PublicKeyData?>(json['publicKeyData']),
+      publicKeyData: serializer.fromJson<PublicKeyData?>(json['publicKeyData']),
       publicKeyId: serializer.fromJson<api.PublicKeyId?>(json['publicKeyId']),
-      publicKeyVersion:
-          serializer.fromJson<api.PublicKeyVersion?>(json['publicKeyVersion']),
       profileInitialAgeSetUnixTime: serializer
           .fromJson<UtcDateTime?>(json['profileInitialAgeSetUnixTime']),
       profileInitialAge: serializer.fromJson<int?>(json['profileInitialAge']),
@@ -1926,10 +1900,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'localImageSettingImageCacheDownscalingSize':
           serializer.toJson<int?>(localImageSettingImageCacheDownscalingSize),
       'privateKeyData': serializer.toJson<PrivateKeyData?>(privateKeyData),
-      'publicKeyData': serializer.toJson<api.PublicKeyData?>(publicKeyData),
+      'publicKeyData': serializer.toJson<PublicKeyData?>(publicKeyData),
       'publicKeyId': serializer.toJson<api.PublicKeyId?>(publicKeyId),
-      'publicKeyVersion':
-          serializer.toJson<api.PublicKeyVersion?>(publicKeyVersion),
       'profileInitialAgeSetUnixTime':
           serializer.toJson<UtcDateTime?>(profileInitialAgeSetUnixTime),
       'profileInitialAge': serializer.toJson<int?>(profileInitialAge),
@@ -2016,9 +1988,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<int?> localImageSettingImageCacheDownscalingSize =
               const Value.absent(),
           Value<PrivateKeyData?> privateKeyData = const Value.absent(),
-          Value<api.PublicKeyData?> publicKeyData = const Value.absent(),
+          Value<PublicKeyData?> publicKeyData = const Value.absent(),
           Value<api.PublicKeyId?> publicKeyId = const Value.absent(),
-          Value<api.PublicKeyVersion?> publicKeyVersion = const Value.absent(),
           Value<UtcDateTime?> profileInitialAgeSetUnixTime =
               const Value.absent(),
           Value<int?> profileInitialAge = const Value.absent(),
@@ -2188,9 +2159,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         publicKeyData:
             publicKeyData.present ? publicKeyData.value : this.publicKeyData,
         publicKeyId: publicKeyId.present ? publicKeyId.value : this.publicKeyId,
-        publicKeyVersion: publicKeyVersion.present
-            ? publicKeyVersion.value
-            : this.publicKeyVersion,
         profileInitialAgeSetUnixTime: profileInitialAgeSetUnixTime.present
             ? profileInitialAgeSetUnixTime.value
             : this.profileInitialAgeSetUnixTime,
@@ -2393,9 +2361,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           : this.publicKeyData,
       publicKeyId:
           data.publicKeyId.present ? data.publicKeyId.value : this.publicKeyId,
-      publicKeyVersion: data.publicKeyVersion.present
-          ? data.publicKeyVersion.value
-          : this.publicKeyVersion,
       profileInitialAgeSetUnixTime: data.profileInitialAgeSetUnixTime.present
           ? data.profileInitialAgeSetUnixTime.value
           : this.profileInitialAgeSetUnixTime,
@@ -2500,7 +2465,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('privateKeyData: $privateKeyData, ')
           ..write('publicKeyData: $publicKeyData, ')
           ..write('publicKeyId: $publicKeyId, ')
-          ..write('publicKeyVersion: $publicKeyVersion, ')
           ..write(
               'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ')
           ..write('profileInitialAge: $profileInitialAge, ')
@@ -2575,7 +2539,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         privateKeyData,
         publicKeyData,
         publicKeyId,
-        publicKeyVersion,
         profileInitialAgeSetUnixTime,
         profileInitialAge,
         serverMaintenanceUnixTime,
@@ -2660,7 +2623,6 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.privateKeyData == this.privateKeyData &&
           other.publicKeyData == this.publicKeyData &&
           other.publicKeyId == this.publicKeyId &&
-          other.publicKeyVersion == this.publicKeyVersion &&
           other.profileInitialAgeSetUnixTime ==
               this.profileInitialAgeSetUnixTime &&
           other.profileInitialAge == this.profileInitialAge &&
@@ -2733,9 +2695,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<bool?> localImageSettingCacheFullSizedImages;
   final Value<int?> localImageSettingImageCacheDownscalingSize;
   final Value<PrivateKeyData?> privateKeyData;
-  final Value<api.PublicKeyData?> publicKeyData;
+  final Value<PublicKeyData?> publicKeyData;
   final Value<api.PublicKeyId?> publicKeyId;
-  final Value<api.PublicKeyVersion?> publicKeyVersion;
   final Value<UtcDateTime?> profileInitialAgeSetUnixTime;
   final Value<int?> profileInitialAge;
   final Value<UtcDateTime?> serverMaintenanceUnixTime;
@@ -2803,7 +2764,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.privateKeyData = const Value.absent(),
     this.publicKeyData = const Value.absent(),
     this.publicKeyId = const Value.absent(),
-    this.publicKeyVersion = const Value.absent(),
     this.profileInitialAgeSetUnixTime = const Value.absent(),
     this.profileInitialAge = const Value.absent(),
     this.serverMaintenanceUnixTime = const Value.absent(),
@@ -2872,7 +2832,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.privateKeyData = const Value.absent(),
     this.publicKeyData = const Value.absent(),
     this.publicKeyId = const Value.absent(),
-    this.publicKeyVersion = const Value.absent(),
     this.profileInitialAgeSetUnixTime = const Value.absent(),
     this.profileInitialAge = const Value.absent(),
     this.serverMaintenanceUnixTime = const Value.absent(),
@@ -2938,10 +2897,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<int>? localImageSettingImageCacheMaxBytes,
     Expression<bool>? localImageSettingCacheFullSizedImages,
     Expression<int>? localImageSettingImageCacheDownscalingSize,
-    Expression<String>? privateKeyData,
-    Expression<String>? publicKeyData,
+    Expression<Uint8List>? privateKeyData,
+    Expression<Uint8List>? publicKeyData,
     Expression<int>? publicKeyId,
-    Expression<int>? publicKeyVersion,
     Expression<int>? profileInitialAgeSetUnixTime,
     Expression<int>? profileInitialAge,
     Expression<int>? serverMaintenanceUnixTime,
@@ -3058,7 +3016,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       if (privateKeyData != null) 'private_key_data': privateKeyData,
       if (publicKeyData != null) 'public_key_data': publicKeyData,
       if (publicKeyId != null) 'public_key_id': publicKeyId,
-      if (publicKeyVersion != null) 'public_key_version': publicKeyVersion,
       if (profileInitialAgeSetUnixTime != null)
         'profile_initial_age_set_unix_time': profileInitialAgeSetUnixTime,
       if (profileInitialAge != null) 'profile_initial_age': profileInitialAge,
@@ -3138,9 +3095,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<bool?>? localImageSettingCacheFullSizedImages,
       Value<int?>? localImageSettingImageCacheDownscalingSize,
       Value<PrivateKeyData?>? privateKeyData,
-      Value<api.PublicKeyData?>? publicKeyData,
+      Value<PublicKeyData?>? publicKeyData,
       Value<api.PublicKeyId?>? publicKeyId,
-      Value<api.PublicKeyVersion?>? publicKeyVersion,
       Value<UtcDateTime?>? profileInitialAgeSetUnixTime,
       Value<int?>? profileInitialAge,
       Value<UtcDateTime?>? serverMaintenanceUnixTime,
@@ -3245,7 +3201,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       privateKeyData: privateKeyData ?? this.privateKeyData,
       publicKeyData: publicKeyData ?? this.publicKeyData,
       publicKeyId: publicKeyId ?? this.publicKeyId,
-      publicKeyVersion: publicKeyVersion ?? this.publicKeyVersion,
       profileInitialAgeSetUnixTime:
           profileInitialAgeSetUnixTime ?? this.profileInitialAgeSetUnixTime,
       profileInitialAge: profileInitialAge ?? this.profileInitialAge,
@@ -3483,21 +3438,16 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           Variable<int>(localImageSettingImageCacheDownscalingSize.value);
     }
     if (privateKeyData.present) {
-      map['private_key_data'] = Variable<String>(
+      map['private_key_data'] = Variable<Uint8List>(
           $AccountTable.$converterprivateKeyData.toSql(privateKeyData.value));
     }
     if (publicKeyData.present) {
-      map['public_key_data'] = Variable<String>(
+      map['public_key_data'] = Variable<Uint8List>(
           $AccountTable.$converterpublicKeyData.toSql(publicKeyData.value));
     }
     if (publicKeyId.present) {
       map['public_key_id'] = Variable<int>(
           $AccountTable.$converterpublicKeyId.toSql(publicKeyId.value));
-    }
-    if (publicKeyVersion.present) {
-      map['public_key_version'] = Variable<int>($AccountTable
-          .$converterpublicKeyVersion
-          .toSql(publicKeyVersion.value));
     }
     if (profileInitialAgeSetUnixTime.present) {
       map['profile_initial_age_set_unix_time'] = Variable<int>($AccountTable
@@ -3616,7 +3566,6 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('privateKeyData: $privateKeyData, ')
           ..write('publicKeyData: $publicKeyData, ')
           ..write('publicKeyId: $publicKeyId, ')
-          ..write('publicKeyVersion: $publicKeyVersion, ')
           ..write(
               'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ')
           ..write('profileInitialAge: $profileInitialAge, ')
@@ -6736,13 +6685,12 @@ class $ConversationsTable extends Conversations
               defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
           .withConverter<api.AccountId>(
               $ConversationsTable.$converteruuidAccountId);
+  static const VerificationMeta _publicKeyDataMeta =
+      const VerificationMeta('publicKeyData');
   @override
-  late final GeneratedColumnWithTypeConverter<api.PublicKeyData?, String>
-      publicKeyData = GeneratedColumn<String>(
-              'public_key_data', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<api.PublicKeyData?>(
-              $ConversationsTable.$converterpublicKeyData);
+  late final GeneratedColumn<Uint8List> publicKeyData =
+      GeneratedColumn<Uint8List>('public_key_data', aliasedName, true,
+          type: DriftSqlType.blob, requiredDuringInsert: false);
   @override
   late final GeneratedColumnWithTypeConverter<api.PublicKeyId?, int>
       publicKeyId = GeneratedColumn<int>('public_key_id', aliasedName, true,
@@ -6750,15 +6698,8 @@ class $ConversationsTable extends Conversations
           .withConverter<api.PublicKeyId?>(
               $ConversationsTable.$converterpublicKeyId);
   @override
-  late final GeneratedColumnWithTypeConverter<api.PublicKeyVersion?, int>
-      publicKeyVersion = GeneratedColumn<int>(
-              'public_key_version', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<api.PublicKeyVersion?>(
-              $ConversationsTable.$converterpublicKeyVersion);
-  @override
   List<GeneratedColumn> get $columns =>
-      [id, uuidAccountId, publicKeyData, publicKeyId, publicKeyVersion];
+      [id, uuidAccountId, publicKeyData, publicKeyId];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -6771,6 +6712,12 @@ class $ConversationsTable extends Conversations
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('public_key_data')) {
+      context.handle(
+          _publicKeyDataMeta,
+          publicKeyData.isAcceptableOrUnknown(
+              data['public_key_data']!, _publicKeyDataMeta));
     }
     return context;
   }
@@ -6786,15 +6733,11 @@ class $ConversationsTable extends Conversations
       uuidAccountId: $ConversationsTable.$converteruuidAccountId.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
-      publicKeyData: $ConversationsTable.$converterpublicKeyData.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}public_key_data'])),
+      publicKeyData: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}public_key_data']),
       publicKeyId: $ConversationsTable.$converterpublicKeyId.fromSql(
           attachedDatabase.typeMapping
               .read(DriftSqlType.int, data['${effectivePrefix}public_key_id'])),
-      publicKeyVersion: $ConversationsTable.$converterpublicKeyVersion.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}public_key_version'])),
     );
   }
 
@@ -6805,26 +6748,20 @@ class $ConversationsTable extends Conversations
 
   static TypeConverter<api.AccountId, String> $converteruuidAccountId =
       const AccountIdConverter();
-  static TypeConverter<api.PublicKeyData?, String?> $converterpublicKeyData =
-      const NullAwareTypeConverter.wrap(PublicKeyDataConverter());
   static TypeConverter<api.PublicKeyId?, int?> $converterpublicKeyId =
       const NullAwareTypeConverter.wrap(PublicKeyIdConverter());
-  static TypeConverter<api.PublicKeyVersion?, int?> $converterpublicKeyVersion =
-      const NullAwareTypeConverter.wrap(PublicKeyVersionConverter());
 }
 
 class Conversation extends DataClass implements Insertable<Conversation> {
   final int id;
   final api.AccountId uuidAccountId;
-  final api.PublicKeyData? publicKeyData;
+  final Uint8List? publicKeyData;
   final api.PublicKeyId? publicKeyId;
-  final api.PublicKeyVersion? publicKeyVersion;
   const Conversation(
       {required this.id,
       required this.uuidAccountId,
       this.publicKeyData,
-      this.publicKeyId,
-      this.publicKeyVersion});
+      this.publicKeyId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -6834,17 +6771,11 @@ class Conversation extends DataClass implements Insertable<Conversation> {
           $ConversationsTable.$converteruuidAccountId.toSql(uuidAccountId));
     }
     if (!nullToAbsent || publicKeyData != null) {
-      map['public_key_data'] = Variable<String>(
-          $ConversationsTable.$converterpublicKeyData.toSql(publicKeyData));
+      map['public_key_data'] = Variable<Uint8List>(publicKeyData);
     }
     if (!nullToAbsent || publicKeyId != null) {
       map['public_key_id'] = Variable<int>(
           $ConversationsTable.$converterpublicKeyId.toSql(publicKeyId));
-    }
-    if (!nullToAbsent || publicKeyVersion != null) {
-      map['public_key_version'] = Variable<int>($ConversationsTable
-          .$converterpublicKeyVersion
-          .toSql(publicKeyVersion));
     }
     return map;
   }
@@ -6859,9 +6790,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
       publicKeyId: publicKeyId == null && nullToAbsent
           ? const Value.absent()
           : Value(publicKeyId),
-      publicKeyVersion: publicKeyVersion == null && nullToAbsent
-          ? const Value.absent()
-          : Value(publicKeyVersion),
     );
   }
 
@@ -6871,11 +6799,8 @@ class Conversation extends DataClass implements Insertable<Conversation> {
     return Conversation(
       id: serializer.fromJson<int>(json['id']),
       uuidAccountId: serializer.fromJson<api.AccountId>(json['uuidAccountId']),
-      publicKeyData:
-          serializer.fromJson<api.PublicKeyData?>(json['publicKeyData']),
+      publicKeyData: serializer.fromJson<Uint8List?>(json['publicKeyData']),
       publicKeyId: serializer.fromJson<api.PublicKeyId?>(json['publicKeyId']),
-      publicKeyVersion:
-          serializer.fromJson<api.PublicKeyVersion?>(json['publicKeyVersion']),
     );
   }
   @override
@@ -6884,29 +6809,22 @@ class Conversation extends DataClass implements Insertable<Conversation> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'uuidAccountId': serializer.toJson<api.AccountId>(uuidAccountId),
-      'publicKeyData': serializer.toJson<api.PublicKeyData?>(publicKeyData),
+      'publicKeyData': serializer.toJson<Uint8List?>(publicKeyData),
       'publicKeyId': serializer.toJson<api.PublicKeyId?>(publicKeyId),
-      'publicKeyVersion':
-          serializer.toJson<api.PublicKeyVersion?>(publicKeyVersion),
     };
   }
 
   Conversation copyWith(
           {int? id,
           api.AccountId? uuidAccountId,
-          Value<api.PublicKeyData?> publicKeyData = const Value.absent(),
-          Value<api.PublicKeyId?> publicKeyId = const Value.absent(),
-          Value<api.PublicKeyVersion?> publicKeyVersion =
-              const Value.absent()}) =>
+          Value<Uint8List?> publicKeyData = const Value.absent(),
+          Value<api.PublicKeyId?> publicKeyId = const Value.absent()}) =>
       Conversation(
         id: id ?? this.id,
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
         publicKeyData:
             publicKeyData.present ? publicKeyData.value : this.publicKeyData,
         publicKeyId: publicKeyId.present ? publicKeyId.value : this.publicKeyId,
-        publicKeyVersion: publicKeyVersion.present
-            ? publicKeyVersion.value
-            : this.publicKeyVersion,
       );
   Conversation copyWithCompanion(ConversationsCompanion data) {
     return Conversation(
@@ -6919,9 +6837,6 @@ class Conversation extends DataClass implements Insertable<Conversation> {
           : this.publicKeyData,
       publicKeyId:
           data.publicKeyId.present ? data.publicKeyId.value : this.publicKeyId,
-      publicKeyVersion: data.publicKeyVersion.present
-          ? data.publicKeyVersion.value
-          : this.publicKeyVersion,
     );
   }
 
@@ -6931,74 +6846,65 @@ class Conversation extends DataClass implements Insertable<Conversation> {
           ..write('id: $id, ')
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('publicKeyData: $publicKeyData, ')
-          ..write('publicKeyId: $publicKeyId, ')
-          ..write('publicKeyVersion: $publicKeyVersion')
+          ..write('publicKeyId: $publicKeyId')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(
-      id, uuidAccountId, publicKeyData, publicKeyId, publicKeyVersion);
+      id, uuidAccountId, $driftBlobEquality.hash(publicKeyData), publicKeyId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Conversation &&
           other.id == this.id &&
           other.uuidAccountId == this.uuidAccountId &&
-          other.publicKeyData == this.publicKeyData &&
-          other.publicKeyId == this.publicKeyId &&
-          other.publicKeyVersion == this.publicKeyVersion);
+          $driftBlobEquality.equals(other.publicKeyData, this.publicKeyData) &&
+          other.publicKeyId == this.publicKeyId);
 }
 
 class ConversationsCompanion extends UpdateCompanion<Conversation> {
   final Value<int> id;
   final Value<api.AccountId> uuidAccountId;
-  final Value<api.PublicKeyData?> publicKeyData;
+  final Value<Uint8List?> publicKeyData;
   final Value<api.PublicKeyId?> publicKeyId;
-  final Value<api.PublicKeyVersion?> publicKeyVersion;
   const ConversationsCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
     this.publicKeyData = const Value.absent(),
     this.publicKeyId = const Value.absent(),
-    this.publicKeyVersion = const Value.absent(),
   });
   ConversationsCompanion.insert({
     this.id = const Value.absent(),
     required api.AccountId uuidAccountId,
     this.publicKeyData = const Value.absent(),
     this.publicKeyId = const Value.absent(),
-    this.publicKeyVersion = const Value.absent(),
   }) : uuidAccountId = Value(uuidAccountId);
   static Insertable<Conversation> custom({
     Expression<int>? id,
     Expression<String>? uuidAccountId,
-    Expression<String>? publicKeyData,
+    Expression<Uint8List>? publicKeyData,
     Expression<int>? publicKeyId,
-    Expression<int>? publicKeyVersion,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
       if (publicKeyData != null) 'public_key_data': publicKeyData,
       if (publicKeyId != null) 'public_key_id': publicKeyId,
-      if (publicKeyVersion != null) 'public_key_version': publicKeyVersion,
     });
   }
 
   ConversationsCompanion copyWith(
       {Value<int>? id,
       Value<api.AccountId>? uuidAccountId,
-      Value<api.PublicKeyData?>? publicKeyData,
-      Value<api.PublicKeyId?>? publicKeyId,
-      Value<api.PublicKeyVersion?>? publicKeyVersion}) {
+      Value<Uint8List?>? publicKeyData,
+      Value<api.PublicKeyId?>? publicKeyId}) {
     return ConversationsCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
       publicKeyData: publicKeyData ?? this.publicKeyData,
       publicKeyId: publicKeyId ?? this.publicKeyId,
-      publicKeyVersion: publicKeyVersion ?? this.publicKeyVersion,
     );
   }
 
@@ -7014,18 +6920,11 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
           .toSql(uuidAccountId.value));
     }
     if (publicKeyData.present) {
-      map['public_key_data'] = Variable<String>($ConversationsTable
-          .$converterpublicKeyData
-          .toSql(publicKeyData.value));
+      map['public_key_data'] = Variable<Uint8List>(publicKeyData.value);
     }
     if (publicKeyId.present) {
       map['public_key_id'] = Variable<int>(
           $ConversationsTable.$converterpublicKeyId.toSql(publicKeyId.value));
-    }
-    if (publicKeyVersion.present) {
-      map['public_key_version'] = Variable<int>($ConversationsTable
-          .$converterpublicKeyVersion
-          .toSql(publicKeyVersion.value));
     }
     return map;
   }
@@ -7036,8 +6935,7 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
           ..write('id: $id, ')
           ..write('uuidAccountId: $uuidAccountId, ')
           ..write('publicKeyData: $publicKeyData, ')
-          ..write('publicKeyId: $publicKeyId, ')
-          ..write('publicKeyVersion: $publicKeyVersion')
+          ..write('publicKeyId: $publicKeyId')
           ..write(')'))
         .toString();
   }

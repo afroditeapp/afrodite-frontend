@@ -1,7 +1,7 @@
 
 
 
-import 'package:database/src/message_entry.dart';
+import 'package:database/database.dart';
 import 'package:openapi/api.dart' show AccountId;
 import 'package:openapi/api.dart' as api;
 import 'account_database.dart';
@@ -16,9 +16,8 @@ class Conversations extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuidAccountId => text().map(const AccountIdConverter()).unique()();
 
-  TextColumn get publicKeyData => text().map(const NullAwareTypeConverter.wrap(PublicKeyDataConverter())).nullable()();
+  BlobColumn get publicKeyData => blob().nullable()();
   IntColumn get publicKeyId => integer().map(const NullAwareTypeConverter.wrap(PublicKeyIdConverter())).nullable()();
-  IntColumn get publicKeyVersion => integer().map(const NullAwareTypeConverter.wrap(PublicKeyVersionConverter())).nullable()();
 }
 
 @DriftAccessor(tables: [Conversations])
@@ -28,21 +27,20 @@ class DaoConversations extends DatabaseAccessor<AccountDatabase> with _$DaoConve
   Future<void> updatePublicKeyAndAddInfoMessage(
     AccountId localAccountId,
     AccountId remoteAccountId,
-    api.PublicKey? value,
+    Uint8List publicKeyData,
+    api.PublicKeyId publicKeyId,
     InfoMessageState? infoState,
   ) async {
     await transaction(() async {
       await into(conversations).insert(
         ConversationsCompanion.insert(
           uuidAccountId: remoteAccountId,
-          publicKeyData: Value(value?.data),
-          publicKeyId: Value(value?.id),
-          publicKeyVersion: Value(value?.version),
+          publicKeyData: Value(publicKeyData),
+          publicKeyId: Value(publicKeyId),
         ),
         onConflict: DoUpdate((old) => ConversationsCompanion(
-          publicKeyData: Value(value?.data),
-          publicKeyId: Value(value?.id),
-          publicKeyVersion: Value(value?.version),
+          publicKeyData: Value(publicKeyData),
+          publicKeyId: Value(publicKeyId),
         ),
           target: [conversations.uuidAccountId]
         ),
@@ -53,7 +51,7 @@ class DaoConversations extends DatabaseAccessor<AccountDatabase> with _$DaoConve
     });
   }
 
-  Future<api.PublicKey?> getPublicKey(AccountId accountId) async {
+  Future<ForeignPublicKey?> getPublicKey(AccountId accountId) async {
     final r = await (select(conversations)
       ..where((t) => t.uuidAccountId.equals(accountId.aid))
     )
@@ -61,10 +59,9 @@ class DaoConversations extends DatabaseAccessor<AccountDatabase> with _$DaoConve
 
     final data = r?.publicKeyData;
     final id = r?.publicKeyId;
-    final version = r?.publicKeyVersion;
 
-    if (data != null && id != null && version != null) {
-      return api.PublicKey(data: data, id: id, version: version);
+    if (data != null && id != null) {
+      return ForeignPublicKey(data: data, id: id);
     } else {
       return null;
     }

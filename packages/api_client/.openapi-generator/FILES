@@ -6,6 +6,7 @@ lib/api.dart
 lib/api/account_admin_api.dart
 lib/api/account_api.dart
 lib/api/account_bot_api.dart
+lib/api/chat_admin_api.dart
 lib/api/chat_api.dart
 lib/api/common_admin_api.dart
 lib/api/common_api.dart
@@ -34,6 +35,7 @@ lib/model/account_id_db_value.dart
 lib/model/account_setup.dart
 lib/model/account_state_container.dart
 lib/model/account_sync_version.dart
+lib/model/add_public_key_result.dart
 lib/model/admin_info.dart
 lib/model/all_matches_page.dart
 lib/model/api_usage_count.dart
@@ -106,9 +108,11 @@ lib/model/get_custom_reports_config_result.dart
 lib/model/get_initial_profile_age_info_result.dart
 lib/model/get_ip_address_statistics_result.dart
 lib/model/get_ip_address_statistics_settings.dart
+lib/model/get_latest_public_key_id.dart
 lib/model/get_media_content_result.dart
 lib/model/get_my_profile_result.dart
 lib/model/get_news_item_result.dart
+lib/model/get_private_public_key_info.dart
 lib/model/get_profile_age_and_name.dart
 lib/model/get_profile_content_pending_moderation_list.dart
 lib/model/get_profile_content_result.dart
@@ -120,7 +124,6 @@ lib/model/get_profile_statistics_history_result.dart
 lib/model/get_profile_statistics_result.dart
 lib/model/get_profile_text_pending_moderation_list.dart
 lib/model/get_profile_text_state.dart
-lib/model/get_public_key.dart
 lib/model/get_report_list.dart
 lib/model/group_values.dart
 lib/model/initial_content_moderation_completed_result.dart
@@ -210,11 +213,7 @@ lib/model/profile_text_pending_moderation.dart
 lib/model/profile_update.dart
 lib/model/profile_version.dart
 lib/model/profile_visibility.dart
-lib/model/public_key.dart
-lib/model/public_key_data.dart
 lib/model/public_key_id.dart
-lib/model/public_key_id_and_version.dart
-lib/model/public_key_version.dart
 lib/model/received_blocks_page.dart
 lib/model/received_blocks_sync_version.dart
 lib/model/received_likes_iterator_session_id.dart
@@ -251,9 +250,9 @@ lib/model/sent_message_id.dart
 lib/model/sent_message_id_list.dart
 lib/model/set_account_ban_state.dart
 lib/model/set_account_setup.dart
+lib/model/set_max_public_key_count.dart
 lib/model/set_profile_content.dart
 lib/model/set_profile_name.dart
-lib/model/set_public_key.dart
 lib/model/sign_in_with_login_info.dart
 lib/model/software_info.dart
 lib/model/software_update_state.dart
