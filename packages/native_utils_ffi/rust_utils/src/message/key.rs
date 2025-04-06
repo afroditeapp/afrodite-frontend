@@ -1,6 +1,5 @@
 
 use pgp::composed::{KeyType, key::SecretKeyParamsBuilder};
-use pgp::crypto::ecc_curve::ECCCurve;
 use pgp::ser::Serialize;
 use pgp::types::SecretKeyTrait;
 use pgp::crypto::{sym::SymmetricKeyAlgorithm, hash::HashAlgorithm};
@@ -22,7 +21,7 @@ pub fn generate_keys(
     account_id: String,
 ) -> Result<(PublicKeyBytes, PrivateKeyBytes), MessageEncryptionError>  {
     let params = SecretKeyParamsBuilder::default()
-        .key_type(KeyType::ECDSA(ECCCurve::P256))
+        .key_type(KeyType::Ed25519)
         .can_encrypt(false)
         .can_certify(false)
         .can_sign(true)
@@ -36,7 +35,7 @@ pub fn generate_keys(
         .preferred_compression_algorithms(smallvec![])
         .subkey(
             SubkeyParamsBuilder::default()
-                .key_type(KeyType::ECDH(ECCCurve::P256))
+                .key_type(KeyType::X25519)
                 .can_authenticate(false)
                 .can_certify(false)
                 .can_encrypt(true)
