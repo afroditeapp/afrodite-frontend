@@ -5,6 +5,7 @@ use pgp::ser::Serialize;
 use pgp::types::SecretKeyTrait;
 use pgp::crypto::{sym::SymmetricKeyAlgorithm, hash::HashAlgorithm};
 use pgp::SubkeyParamsBuilder;
+use rand::rngs::OsRng;
 use smallvec::smallvec;
 
 use super::MessageEncryptionError;
@@ -119,10 +120,10 @@ pub fn generate_keys(
         .build()
         .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeyParams)?;
     let private_key = params
-        .generate()
+        .generate(OsRng)
         .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeyGenerate)?;
     let signed_private_key = private_key
-        .sign(String::new)
+        .sign(OsRng, String::new)
         .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeySign)?;
     let private_key = signed_private_key
         .to_bytes()
@@ -130,7 +131,7 @@ pub fn generate_keys(
 
     let signed_public_key = signed_private_key
         .public_key()
-        .sign(&signed_private_key, String::new)
+        .sign(OsRng, &signed_private_key, String::new)
         .map_err(|_| MessageEncryptionError::GenerateKeysPublicKeySign)?;
     let public_key = signed_public_key
         .to_bytes()
