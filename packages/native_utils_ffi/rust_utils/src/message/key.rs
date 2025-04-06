@@ -18,8 +18,7 @@ pub struct PrivateKeyBytes {
 }
 
 pub fn generate_keys(
-    // Not used at the moment
-    _account_id: String,
+    account_id: String,
 ) -> Result<(PublicKeyBytes, PrivateKeyBytes), MessageEncryptionError>  {
     // 2024-08-02
     // Some reasons for current algorithms
@@ -99,7 +98,7 @@ pub fn generate_keys(
         .can_encrypt(false)
         .can_certify(false)
         .can_sign(true)
-        .primary_user_id("".to_string())
+        .primary_user_id(account_id)
         .preferred_symmetric_algorithms(smallvec![
             SymmetricKeyAlgorithm::AES128,
         ])
