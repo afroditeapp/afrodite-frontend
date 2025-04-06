@@ -1220,7 +1220,7 @@
   "@profile_grid_screen_title": {
     "description": "Title for profile grid screen"
   },
-  "profile_location_screen_title": "My profile's location",
+  "profile_location_screen_title": "Location",
   "@profile_location_screen_title": {
     "description": "Title for profile location screen"
   },

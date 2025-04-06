@@ -379,7 +379,7 @@
     <string name="current_security_selfie_screen_security_selfie_changed" description="Snackbar text displayed when security selfie is changed">Security selfie changed</string>
 
     <!-- Profile location screen -->
-    <string name="profile_location_screen_title" description="Title for profile location screen">My profile\'s location</string>
+    <string name="profile_location_screen_title" description="Title for profile location screen">Location</string>
 
     <!-- Data settings selfie -->
     <string name="data_settings_screen_title" description="Title for data settings">Data management</string>
