@@ -14,19 +14,15 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/profile/edit_profile_filtering_settings.dart';
 import 'package:app/logic/profile/profile_filtering_settings.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
-import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:app/ui/normal/profiles/filter_profiles.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 
 import 'package:app/localizations.dart';
-import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/list.dart';
-import 'package:app/ui_utils/snack_bar.dart';
 
 var log = Logger("ProfileView");
 
@@ -46,33 +42,9 @@ class ProfileView extends BottomNavigationScreen {
     return [
       IconButton(
         icon: BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-          builder: (context, state) {
-            if (state.isSomeFilterEnabled()) {
-              return const Icon(Icons.filter_alt_rounded);
-            } else {
-              return const Icon(Icons.filter_alt_outlined);
-            }
-          },
+          builder: (_, state) => Icon(state.icon()),
         ),
-        onPressed: () {
-          final filteringSettingsBloc = context.read<ProfileFilteringSettingsBloc>();
-          if (filteringSettingsBloc.state.updateState is! UpdateIdle) {
-            showSnackBar(context.strings.profile_grid_screen_profile_filter_settings_update_ongoing);
-            return;
-          }
-
-          final editFilteringSettingsBloc = context.read<EditProfileFilteringSettingsBloc>();
-          final pageKey = PageKey();
-          MyNavigator.pushWithKey(
-            context,
-            MaterialPage<void>(child: ProfileFilteringSettingsPage(
-              pageKey: pageKey,
-              profileFilteringSettingsBloc: filteringSettingsBloc,
-              editProfileFilteringSettingsBloc: editFilteringSettingsBloc,
-            )),
-            pageKey,
-          );
-        },
+        onPressed: () => openProfileFilteringSettings(context),
       )
     ];
   }

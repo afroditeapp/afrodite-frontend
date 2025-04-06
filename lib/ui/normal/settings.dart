@@ -1,4 +1,7 @@
 import 'package:app/logic/media/select_content.dart';
+import 'package:app/logic/profile/profile_filtering_settings.dart';
+import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
+import 'package:app/ui/normal/profiles/filter_profiles.dart';
 import 'package:app/ui/normal/settings/location.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +66,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               pageKey,
             );
           }),
+          Setting.createSettingWithCustomIcon(
+            BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+              builder: (_, state) => Icon(state.icon()),
+            ),
+            context.strings.profile_filtering_settings_screen_title,
+            () => openProfileFilteringSettings(context),
+          ),
           Setting.createSetting(Icons.location_on, context.strings.profile_location_screen_title, () {
             MyNavigator.push(context, const MaterialPage<void>(child: LocationScreen()));
           }),

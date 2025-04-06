@@ -1,6 +1,7 @@
 
 import 'dart:math';
 
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/option.dart';
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
@@ -25,6 +26,26 @@ import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/utils/api.dart';
+
+void openProfileFilteringSettings(BuildContext context) {
+  final filteringSettingsBloc = context.read<ProfileFilteringSettingsBloc>();
+  if (filteringSettingsBloc.state.updateState is! UpdateIdle) {
+    showSnackBar(context.strings.profile_grid_screen_profile_filter_settings_update_ongoing);
+    return;
+  }
+
+  final editFilteringSettingsBloc = context.read<EditProfileFilteringSettingsBloc>();
+  final pageKey = PageKey();
+  MyNavigator.pushWithKey(
+    context,
+    MaterialPage<void>(child: ProfileFilteringSettingsPage(
+      pageKey: pageKey,
+      profileFilteringSettingsBloc: filteringSettingsBloc,
+      editProfileFilteringSettingsBloc: editFilteringSettingsBloc,
+    )),
+    pageKey,
+  );
+}
 
 class ProfileFilteringSettingsPage extends StatefulWidget {
   final PageKey pageKey;

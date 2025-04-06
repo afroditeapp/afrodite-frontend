@@ -1,5 +1,6 @@
 
 
+import 'package:flutter/material.dart';
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
@@ -25,5 +26,13 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
       filteringSettings?.maxDistanceKmFilter != null ||
       filteringSettings?.profileCreatedFilter != null ||
       filteringSettings?.profileEditedFilter != null;
+  }
+
+  IconData icon() {
+    if (isSomeFilterEnabled()) {
+      return Icons.filter_alt_rounded;
+    } else {
+      return Icons.filter_alt_outlined;
+    }
   }
 }
