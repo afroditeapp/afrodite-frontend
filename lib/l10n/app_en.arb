@@ -1421,7 +1421,7 @@
   "@search_settings_screen_search_settings_update_failed": {
     "description": "Snackbar text about failed search settings update"
   },
-  "search_settings_screen_title": "Search options",
+  "search_settings_screen_title": "Profile search",
   "@search_settings_screen_title": {
     "description": "Title for search settings"
   },

@@ -298,7 +298,7 @@
     <string name="edit_attribute_filter_value_screen_search_placeholder_text" description="Attribute value search box placeholder text">Search…</string>
 
     <!-- Search settings screen -->
-    <string name="search_settings_screen_title" description="Title for search settings">Search options</string>
+    <string name="search_settings_screen_title" description="Title for search settings">Profile search</string>
     <string name="search_settings_screen_help_text" description="Note about search behavior">Profile grid only shows profiles which match with the above values.</string>
     <string name="search_settings_screen_age_range_min_value_title" description="Title for search age range min value text field">Min age</string>
     <string name="search_settings_screen_age_range_max_value_title" description="Title for search age range max value text field">Max age</string>
