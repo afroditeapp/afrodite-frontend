@@ -1,6 +1,6 @@
 use crate::{content::{decrypt_content, encrypt_content, generate_content_encryption_key}, ffi::CApiResult};
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub unsafe extern "C" fn rust_generate_content_encryption_key(
     key: *mut u8,
     key_len: isize,
@@ -8,11 +8,13 @@ pub unsafe extern "C" fn rust_generate_content_encryption_key(
     assert!(!key.is_null());
     assert!(key_len >= 0);
     generate_content_encryption_key(
-        std::slice::from_raw_parts_mut(key, key_len as usize)
+        unsafe {
+            std::slice::from_raw_parts_mut(key, key_len as usize)
+        }
     ).to_c_api_result()
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub unsafe extern "C" fn rust_encrypt_content(
     data: *mut u8,
     data_len: isize,
@@ -24,13 +26,15 @@ pub unsafe extern "C" fn rust_encrypt_content(
     assert!(!key.is_null());
     assert!(key_len >= 0);
 
-    encrypt_content(
-        std::slice::from_raw_parts_mut(data, data_len as usize),
-        std::slice::from_raw_parts(key, key_len as usize),
-    ).to_c_api_result()
+    unsafe {
+        encrypt_content(
+            std::slice::from_raw_parts_mut(data, data_len as usize),
+            std::slice::from_raw_parts(key, key_len as usize),
+        ).to_c_api_result()
+    }
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub unsafe extern "C" fn rust_decrypt_content(
     data: *mut u8,
     data_len: isize,
@@ -42,8 +46,10 @@ pub unsafe extern "C" fn rust_decrypt_content(
     assert!(!key.is_null());
     assert!(key_len >= 0);
 
-    decrypt_content(
-        std::slice::from_raw_parts_mut(data, data_len as usize),
-        std::slice::from_raw_parts(key, key_len as usize),
-    ).to_c_api_result()
+    unsafe {
+        decrypt_content(
+            std::slice::from_raw_parts_mut(data, data_len as usize),
+            std::slice::from_raw_parts(key, key_len as usize),
+        ).to_c_api_result()
+    }
 }
