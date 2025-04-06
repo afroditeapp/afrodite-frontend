@@ -1,6 +1,6 @@
 use std::{ffi::{c_char, CStr}, ptr::null};
 
-use crate::message::{decrypt::decrypt_data, encrypt::encrypt_data, key::{generate_keys, PrivateKeyBytes, PublicKeyBytes}, MessageEncryptionError};
+use crate::message::{decrypt, encrypt, key::{self, PrivateKeyBytes, PublicKeyBytes}, MessageEncryptionError};
 
 use super::API_OK;
 
@@ -73,7 +73,7 @@ impl GenerateMessageKeysResult {
 }
 
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn rust_generate_message_keys(
+pub unsafe extern "C" fn generate_message_keys(
     account_id: *const c_char,
 ) -> GenerateMessageKeysResult {
     assert!(!account_id.is_null());
@@ -84,7 +84,7 @@ pub unsafe extern "C" fn rust_generate_message_keys(
             .expect("Account ID contains non UTF-8 data")
     };
 
-    match generate_keys(account_id.to_string()) {
+    match key::generate_keys(account_id.to_string()) {
         Ok((public, private)) =>
             GenerateMessageKeysResult::success(public, private),
         Err(e) => GenerateMessageKeysResult::error(e)
@@ -92,7 +92,7 @@ pub unsafe extern "C" fn rust_generate_message_keys(
 }
 
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn rust_generate_message_keys_free_result(
+pub unsafe extern "C" fn generate_message_keys_free_result(
     result: GenerateMessageKeysResult,
 ) {
     unsafe {
@@ -157,7 +157,7 @@ impl EncryptMessageResult {
 }
 
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn rust_encrypt_message(
+pub unsafe extern "C" fn encrypt_message(
     sender_private_key: *const u8,
     sender_private_key_len: isize,
     receiver_public_key: *const u8,
@@ -180,7 +180,7 @@ pub unsafe extern "C" fn rust_encrypt_message(
         std::slice::from_raw_parts(data, data_len as usize)
     };
 
-    match encrypt_data(sender_private_key, receiver_public_key, data) {
+    match encrypt::encrypt_data(sender_private_key, receiver_public_key, data) {
         Ok(message) => {
             EncryptMessageResult::success(message)
         }
@@ -189,7 +189,7 @@ pub unsafe extern "C" fn rust_encrypt_message(
 }
 
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn rust_encrypt_message_free_result(
+pub unsafe extern "C" fn encrypt_message_free_result(
     result: EncryptMessageResult,
 ) {
     unsafe {
@@ -247,7 +247,7 @@ impl DecryptMessageResult {
 }
 
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn rust_decrypt_message(
+pub unsafe extern "C" fn decrypt_message(
     sender_public_key: *const u8,
     sender_public_key_len: isize,
     receiver_private_key: *const u8,
@@ -271,14 +271,14 @@ pub unsafe extern "C" fn rust_decrypt_message(
         std::slice::from_raw_parts(pgp_message, pgp_message_len as usize)
     };
 
-    match decrypt_data(sender_public_key, receiver_private_key, pgp_message) {
+    match decrypt::decrypt_data(sender_public_key, receiver_private_key, pgp_message) {
         Ok(data) => DecryptMessageResult::success(data),
         Err(e) => DecryptMessageResult::error(e),
     }
 }
 
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn rust_decrypt_message_free_result(
+pub unsafe extern "C" fn decrypt_message_free_result(
     result: DecryptMessageResult,
 ) {
     unsafe {

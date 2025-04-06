@@ -1,9 +1,9 @@
 #include <stdint.h>
 
 #if _WIN32
-#define FFI_PLUGIN_EXPORT __declspec(dllexport)
+#define FFI_PLUGIN_EXPORT extern __declspec(dllexport)
 #else
-#define FFI_PLUGIN_EXPORT
+#define FFI_PLUGIN_EXPORT extern
 #endif
 
 // Content encryption API
