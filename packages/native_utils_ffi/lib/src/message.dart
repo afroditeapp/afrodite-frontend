@@ -17,8 +17,8 @@ import 'package:native_utils_ffi/src/bindings.dart';
   final (GeneratedMessageKeys?, int) returnValue;
   if (result == 0) {
     final keys = GeneratedMessageKeys(
-      armoredPublicKey: keyGenerationResult.public_key.cast<Utf8>().toDartString(),
-      armoredPrivateKey: keyGenerationResult.private_key.cast<Utf8>().toDartString(),
+      public: copyToList(keyGenerationResult.public_key, keyGenerationResult.public_key_len),
+      private: copyToList(keyGenerationResult.private_key, keyGenerationResult.private_key_len),
     );
     returnValue = (keys, 0);
   } else {
@@ -30,17 +30,26 @@ import 'package:native_utils_ffi/src/bindings.dart';
 
 /// If encrypting fails, null is returned
 (Uint8List?, int) encryptMessage(
-  String dataSenderArmoredPrivateKey,
-  String dataReceiverArmoredPublicKey,
+  Uint8List senderPrivateKey,
+  Uint8List receiverPublicKey,
   Uint8List data,
 ) {
-  final cDataSender = dataSenderArmoredPrivateKey.toNativeUtf8();
-  final cDataReceiver = dataReceiverArmoredPublicKey.toNativeUtf8();
+  final Pointer<Uint8> cSender = malloc.allocate(senderPrivateKey.length);
+  cSender.asTypedList(senderPrivateKey.length).setAll(0, senderPrivateKey);
+  final Pointer<Uint8> cReceiver = malloc.allocate(receiverPublicKey.length);
+  cReceiver.asTypedList(receiverPublicKey.length).setAll(0, receiverPublicKey);
   final Pointer<Uint8> cData = malloc.allocate(data.length);
   cData.asTypedList(data.length).setAll(0, data);
-  final encryptResult = getBindings().encrypt_message(cDataSender.cast(), cDataReceiver.cast(), cData, data.length);
-  malloc.free(cDataSender);
-  malloc.free(cDataReceiver);
+  final encryptResult = getBindings().encrypt_message(
+    cSender,
+    senderPrivateKey.length,
+    cReceiver,
+    receiverPublicKey.length,
+    cData,
+    data.length,
+  );
+  malloc.free(cSender);
+  malloc.free(cReceiver);
   malloc.free(cData);
 
   final result = encryptResult.result;
@@ -59,29 +68,43 @@ import 'package:native_utils_ffi/src/bindings.dart';
 
 /// If decrypting fails, null is returned
 (Uint8List?, int) decryptMessage(
-  String dataSenderArmoredPublicKey,
-  String dataReceiverArmoredPrivateKey,
+  Uint8List senderPublicKey,
+  Uint8List receiverPrivateKey,
   Uint8List pgpMessage,
 ) {
-  final cDataSender = dataSenderArmoredPublicKey.toNativeUtf8();
-  final cDataReceiver = dataReceiverArmoredPrivateKey.toNativeUtf8();
+  final Pointer<Uint8> cSenderPublicKey = malloc.allocate(senderPublicKey.length);
+  cSenderPublicKey.asTypedList(senderPublicKey.length).setAll(0, senderPublicKey);
+  final Pointer<Uint8> cReceiverPrivateKey = malloc.allocate(receiverPrivateKey.length);
+  cReceiverPrivateKey.asTypedList(receiverPrivateKey.length).setAll(0, receiverPrivateKey);
   final Pointer<Uint8> cMessageData = malloc.allocate(pgpMessage.length);
   cMessageData.asTypedList(pgpMessage.length).setAll(0, pgpMessage);
-  final decryptResult = getBindings().decrypt_message(cDataSender.cast(), cDataReceiver.cast(), cMessageData, pgpMessage.length);
-  malloc.free(cDataSender);
-  malloc.free(cDataReceiver);
+  final decryptResult = getBindings().decrypt_message(
+    cSenderPublicKey,
+    senderPublicKey.length,
+    cReceiverPrivateKey,
+    receiverPrivateKey.length,
+    cMessageData,
+    pgpMessage.length
+  );
+  malloc.free(cSenderPublicKey);
+  malloc.free(cReceiverPrivateKey);
   malloc.free(cMessageData);
 
   final result = decryptResult.result;
   final (Uint8List?, int) returnValue;
   if (result == 0) {
-    final Uint8List cDataView = decryptResult.decrypted_message.asTypedList(decryptResult.decrypted_message_len);
-    final decryptedData = Uint8List(decryptResult.decrypted_message_len);
-    decryptedData.setAll(0, cDataView);
+    final decryptedData = copyToList(decryptResult.decrypted_message, decryptResult.decrypted_message_len);
     returnValue = (decryptedData, 0);
   } else {
     returnValue = (null, result);
   }
   getBindings().decrypt_message_free_result(decryptResult);
   return returnValue;
+}
+
+Uint8List copyToList(Pointer<Uint8> data, int len) {
+  final Uint8List cDataView = data.asTypedList(len);
+  final newData = Uint8List(len);
+  newData.setAll(0, cDataView);
+  return newData;
 }

@@ -295,11 +295,8 @@ class MessageManager extends LifecycleMethods {
       }
 
       final (messageBytes, decryptingResult) = decryptMessage(
-        // publicKey.data.data,
-        // allKeys.private.data,
-        // TODO: Update once native utils is updated
-        "",
-        "",
+        publicKey.data,
+        allKeys.private.data,
         encryptedMessageBytes,
       );
 
@@ -440,11 +437,8 @@ class MessageManager extends LifecycleMethods {
     }
 
     final (encryptedMessage, encryptingResult) = encryptMessage(
-      // currentUserKeys.private.data,
-      // receiverPublicKey.data.data,
-      // TODO: Update once native utils is updated
-      "",
-      "",
+      currentUserKeys.private.data,
+      receiverPublicKey.data,
       messageBytes,
     );
 

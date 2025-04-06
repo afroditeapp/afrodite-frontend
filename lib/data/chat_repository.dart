@@ -114,11 +114,8 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
     if (serverPublicKeyInfo.latestPublicKeyId != keys.id) {
       final uploadAndSaveResult = await messageKeyManager.uploadPublicKeyAndSaveAllKeys(GeneratedMessageKeys(
-        // armoredPublicKey: keys.public.data.data,
-        // armoredPrivateKey: keys.private.data,
-        // TODO: Update once native utils is updated
-        armoredPublicKey: "",
-        armoredPrivateKey: "",
+        public: keys.public.data,
+        private: keys.private.data,
       ));
       if (uploadAndSaveResult.isErr()) {
         return const Err(null);

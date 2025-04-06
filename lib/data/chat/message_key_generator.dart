@@ -82,19 +82,16 @@ class MessageKeyManager {
   Future<Result<AllKeyData, void>> uploadPublicKeyAndSaveAllKeys(
     GeneratedMessageKeys newKeys,
   ) async {
-    // TODO: update
-    final Uint8List data = Uint8List.fromList([]);
-    final List<int> keyData = data.toList();
-    final r = await api.chat((api) => api.postAddPublicKey(MultipartFile.fromBytes("", keyData))).ok();
+    final r = await api.chat((api) => api.postAddPublicKey(MultipartFile.fromBytes("", newKeys.public.toList()))).ok();
 
+    // TODO(prod): Handle errorTooManyPublicKeys properly
     final keyId = r?.keyId;
     if (r == null || keyId == null || r.errorTooManyPublicKeys) {
       return const Err(null);
     }
 
-    // TODO: update
-    final private = PrivateKeyData(data: data);
-    final public = PublicKeyData(data: data);
+    final private = PrivateKeyData(data: newKeys.private);
+    final public = PublicKeyData(data: newKeys.public);
 
     final dbResult = await db.accountAction((db) => db.daoMessageKeys.setMessageKeys(
       private: private,

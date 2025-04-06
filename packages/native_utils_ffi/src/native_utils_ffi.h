@@ -51,9 +51,13 @@ FFI_PLUGIN_EXPORT intptr_t decrypt_content(
 struct GenerateMessageKeysResult {
   intptr_t result;
   // Null if failure
-  const char* public_key;
+  const uint8_t* public_key;
+  intptr_t public_key_len;
+  intptr_t public_key_capacity;
   // Null if failure
-  const char* private_key;
+  const uint8_t* private_key;
+  intptr_t private_key_len;
+  intptr_t private_key_capacity;
 };
 
 // Generate a new message encryption keys.
@@ -79,8 +83,10 @@ struct EncryptMessageResult {
 //
 // Run equivalent free function for the result.
 FFI_PLUGIN_EXPORT struct EncryptMessageResult encrypt_message(
-  const char* data_sender_armored_private_key,
-  const char* data_receiver_armored_public_key,
+  const uint8_t* sender_private_key,
+  intptr_t sender_private_key_len,
+  const uint8_t* receiver_public_key,
+  intptr_t receiver_public_key_len,
   const uint8_t* data,
   intptr_t data_len
 );
@@ -101,8 +107,10 @@ struct DecryptMessageResult {
 //
 // Run equivalent free function for the result.
 FFI_PLUGIN_EXPORT struct DecryptMessageResult decrypt_message(
-  const char* data_sender_armored_public_key,
-  const char* data_receiver_armored_private_key,
+  const uint8_t* sender_public_key,
+  intptr_t sender_public_key_len,
+  const uint8_t* receiver_private_key,
+  intptr_t receiver_private_key_len,
   const uint8_t* pgp_message,
   intptr_t pgp_message_len
 );

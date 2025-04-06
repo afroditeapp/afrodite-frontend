@@ -1,25 +1,26 @@
 
 use pgp::composed::{KeyType, key::SecretKeyParamsBuilder};
 use pgp::crypto::ecc_curve::ECCCurve;
+use pgp::ser::Serialize;
 use pgp::types::SecretKeyTrait;
 use pgp::crypto::{sym::SymmetricKeyAlgorithm, hash::HashAlgorithm};
-use pgp::{ArmorOptions, SubkeyParamsBuilder};
+use pgp::SubkeyParamsBuilder;
 use smallvec::smallvec;
 
 use super::MessageEncryptionError;
 
-pub struct PublicKeyString {
-    pub value: String,
+pub struct PublicKeyBytes {
+    pub value: Vec<u8>,
 }
 
-pub struct PrivateKeyString {
-    pub value: String,
+pub struct PrivateKeyBytes {
+    pub value: Vec<u8>,
 }
 
 pub fn generate_keys(
     // Not used at the moment
     _account_id: String,
-) -> Result<(PublicKeyString, PrivateKeyString), MessageEncryptionError>  {
+) -> Result<(PublicKeyBytes, PrivateKeyBytes), MessageEncryptionError>  {
     // 2024-08-02
     // Some reasons for current algorithms
     //
@@ -124,24 +125,24 @@ pub fn generate_keys(
     let signed_private_key = private_key
         .sign(String::new)
         .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeySign)?;
-    let armored_private_key = signed_private_key
-            .to_armored_string(ArmorOptions::default())
-            .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeyArmor)?;
+    let private_key = signed_private_key
+        .to_bytes()
+        .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeyToBytes)?;
 
     let signed_public_key = signed_private_key
         .public_key()
         .sign(&signed_private_key, String::new)
         .map_err(|_| MessageEncryptionError::GenerateKeysPublicKeySign)?;
-    let armored_public_key = signed_public_key
-        .to_armored_string(ArmorOptions::default())
-        .map_err(|_| MessageEncryptionError::GenerateKeysPublicKeyArmor)?;
+    let public_key = signed_public_key
+        .to_bytes()
+        .map_err(|_| MessageEncryptionError::GenerateKeysPublicKeyToBytes)?;
 
     Ok((
-        PublicKeyString {
-            value: armored_public_key,
+        PublicKeyBytes {
+            value: public_key,
         },
-        PrivateKeyString {
-            value: armored_private_key,
+        PrivateKeyBytes {
+            value: private_key,
         }
     ))
 }

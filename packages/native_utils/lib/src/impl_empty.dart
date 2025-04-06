@@ -21,14 +21,14 @@ import 'package:native_utils/native_utils.dart';
 
 /// If encrypting fails, null is returned
 (Uint8List?, int) encryptMessage(
-  String dataSenderArmoredPrivateKey,
-  String dataReceiverArmoredPublicKey,
+  Uint8List senderPrivateKey,
+  Uint8List receiverPublicKey,
   Uint8List data,
 ) => throw UnsupportedError("Not implemented");
 
 /// If decrypting fails, null is returned
 (Uint8List?, int) decryptMessage(
-  String dataSenderArmoredPublicKey,
-  String dataReceiverArmoredPrivateKey,
+  Uint8List senderPublicKey,
+  Uint8List receiverPrivateKey,
   Uint8List pgpMessage,
 ) => throw UnsupportedError("Not implemented");

@@ -1,5 +1,7 @@
 #include "native_utils_ffi.h"
 
+// TODO(prod): Try to remove this file
+
 // Content encryption API
 
 extern intptr_t rust_generate_content_encryption_key(
@@ -65,20 +67,26 @@ FFI_PLUGIN_EXPORT void generate_message_keys_free_result(
 }
 
 extern struct EncryptMessageResult rust_encrypt_message(
-  const char* data_sender_armored_private_key,
-  const char* data_receiver_armored_public_key,
+  const uint8_t* sender_private_key,
+  intptr_t sender_private_key_len,
+  const uint8_t* receiver_public_key,
+  intptr_t receiver_public_key_len,
   const uint8_t* data,
   intptr_t data_len
 );
 FFI_PLUGIN_EXPORT struct EncryptMessageResult encrypt_message(
-  const char* data_sender_armored_private_key,
-  const char* data_receiver_armored_public_key,
+  const uint8_t* sender_private_key,
+  intptr_t sender_private_key_len,
+  const uint8_t* receiver_public_key,
+  intptr_t receiver_public_key_len,
   const uint8_t* data,
   intptr_t data_len
 ) {
   return rust_encrypt_message(
-    data_sender_armored_private_key,
-    data_receiver_armored_public_key,
+    sender_private_key,
+    sender_private_key_len,
+    receiver_public_key,
+    receiver_public_key_len,
     data,
     data_len
   );
@@ -94,20 +102,26 @@ FFI_PLUGIN_EXPORT void encrypt_message_free_result(
 }
 
 extern struct DecryptMessageResult rust_decrypt_message(
-  const char* data_sender_armored_public_key,
-  const char* data_receiver_armored_private_key,
+  const uint8_t* sender_public_key,
+  intptr_t sender_public_key_len,
+  const uint8_t* receiver_private_key,
+  intptr_t receiver_private_key_len,
   const uint8_t* pgp_message,
   intptr_t pgp_message_len
 );
 FFI_PLUGIN_EXPORT struct DecryptMessageResult decrypt_message(
-  const char* data_sender_armored_public_key,
-  const char* data_receiver_armored_private_key,
+  const uint8_t* sender_public_key,
+  intptr_t sender_public_key_len,
+  const uint8_t* receiver_private_key,
+  intptr_t receiver_private_key_len,
   const uint8_t* pgp_message,
   intptr_t pgp_message_len
 ) {
   return rust_decrypt_message(
-    data_sender_armored_public_key,
-    data_receiver_armored_private_key,
+    sender_public_key,
+    sender_public_key_len,
+    receiver_private_key,
+    receiver_private_key_len,
     pgp_message,
     pgp_message_len
   );

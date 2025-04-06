@@ -1,5 +1,7 @@
+import 'package:flutter/services.dart';
+
 class GeneratedMessageKeys {
-  final String armoredPublicKey;
-  final String armoredPrivateKey;
-  GeneratedMessageKeys({required this.armoredPublicKey, required this.armoredPrivateKey});
+  final Uint8List public;
+  final Uint8List private;
+  GeneratedMessageKeys({required this.public, required this.private});
 }
