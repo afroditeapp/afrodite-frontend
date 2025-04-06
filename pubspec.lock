@@ -358,10 +358,10 @@ packages:
     dependency: transitive
     description:
       name: ffigen
-      sha256: "3a80687577e7e51ba915114742f389a128e8aa241c52ce69a0f70aecb8e14365"
+      sha256: "12a941976ec8f2147fba5cc4551006dd1e8051a88b98e84c9c53fa18e27fed01"
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.1"
+    version: "18.0.0"
   file:
     dependency: transitive
     description:
