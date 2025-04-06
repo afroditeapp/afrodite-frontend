@@ -1,4 +1,5 @@
 import 'package:app/logic/media/select_content.dart';
+import 'package:app/ui/normal/settings/location.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,6 +62,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               )),
               pageKey,
             );
+          }),
+          Setting.createSetting(Icons.location_on, context.strings.profile_location_screen_title, () {
+            MyNavigator.push(context, const MaterialPage<void>(child: LocationScreen()));
           }),
           if (!kIsWeb) Setting.createSetting(Icons.notifications, context.strings.notification_settings_screen_title, () {
               openNotificationSettings(context);
