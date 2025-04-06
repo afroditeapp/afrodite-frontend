@@ -274,7 +274,7 @@
     <string name="content_management_screen_content_deletion_allowed_wait_time" description="Text for content deletion allowed wait time">Deletion possible starting at %s</string>
 
     <!-- Profile filtering settings screen -->
-    <string name="profile_filtering_settings_screen_title" description="Title for profile filtering settings screen">Filtering settings</string>
+    <string name="profile_filtering_settings_screen_title" description="Title for profile filtering settings screen">Profile filters</string>
     <string name="profile_filtering_settings_screen_favorite_profile_filter" description="Title for favorite profile filter">Favorite profile</string>
     <string name="profile_filtering_settings_screen_unlimited_likes_filter" description="Title for unlimited likes filter">Unlimited chat requests</string>
     <string name="profile_filtering_settings_screen_unlimited_likes_filter_not_available" description="Description for unlimited likes filter when unlimited likes are disabled">Enable unlimited chat requests to use this filter</string>

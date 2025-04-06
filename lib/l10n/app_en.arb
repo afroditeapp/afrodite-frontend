@@ -1140,7 +1140,7 @@
   "@profile_filtering_settings_screen_random_profile_order_description_enabled": {
     "description": "Description for random profile order setting when setting is enabled"
   },
-  "profile_filtering_settings_screen_title": "Filtering settings",
+  "profile_filtering_settings_screen_title": "Profile filters",
   "@profile_filtering_settings_screen_title": {
     "description": "Title for profile filtering settings screen"
   },
