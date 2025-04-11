@@ -119,6 +119,13 @@ class IpInfoWidget extends StatelessWidget {
       listInfo = null;
     }
 
+    final String? countryInfo;
+    if (ip.country != null) {
+      countryInfo = "Country: ${ip.country}";
+    } else {
+      countryInfo = null;
+    }
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,6 +135,7 @@ class IpInfoWidget extends StatelessWidget {
         Text(first),
         Text("Count: ${ip.c}"),
         if (listInfo != null) Text(listInfo),
+        if (countryInfo != null) Text(countryInfo),
       ],
     );
   }
