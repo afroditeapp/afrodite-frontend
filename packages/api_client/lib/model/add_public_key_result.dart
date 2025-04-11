@@ -117,3 +117,4 @@ class AddPublicKeyResult {
     'error_too_many_public_keys',
   };
 }
+

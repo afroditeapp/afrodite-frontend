@@ -15,6 +15,7 @@ class IpAddressInfo {
   IpAddressInfo({
     required this.a,
     required this.c,
+    this.country,
     required this.f,
     required this.l,
     this.lists = const [],
@@ -25,6 +26,8 @@ class IpAddressInfo {
 
   /// Usage count
   int c;
+
+  String? country;
 
   /// First usage time
   UnixTime f;
@@ -39,6 +42,7 @@ class IpAddressInfo {
   bool operator ==(Object other) => identical(this, other) || other is IpAddressInfo &&
     other.a == a &&
     other.c == c &&
+    other.country == country &&
     other.f == f &&
     other.l == l &&
     _deepEquality.equals(other.lists, lists);
@@ -48,17 +52,23 @@ class IpAddressInfo {
     // ignore: unnecessary_parenthesis
     (a.hashCode) +
     (c.hashCode) +
+    (country == null ? 0 : country!.hashCode) +
     (f.hashCode) +
     (l.hashCode) +
     (lists.hashCode);
 
   @override
-  String toString() => 'IpAddressInfo[a=$a, c=$c, f=$f, l=$l, lists=$lists]';
+  String toString() => 'IpAddressInfo[a=$a, c=$c, country=$country, f=$f, l=$l, lists=$lists]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'a'] = this.a;
       json[r'c'] = this.c;
+    if (this.country != null) {
+      json[r'country'] = this.country;
+    } else {
+      json[r'country'] = null;
+    }
       json[r'f'] = this.f;
       json[r'l'] = this.l;
       json[r'lists'] = this.lists;
@@ -86,6 +96,7 @@ class IpAddressInfo {
       return IpAddressInfo(
         a: mapValueOfType<String>(json, r'a')!,
         c: mapValueOfType<int>(json, r'c')!,
+        country: mapValueOfType<String>(json, r'country'),
         f: UnixTime.fromJson(json[r'f'])!,
         l: UnixTime.fromJson(json[r'l'])!,
         lists: json[r'lists'] is Iterable

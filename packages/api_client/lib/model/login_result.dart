@@ -170,3 +170,4 @@ class LoginResult {
   static const requiredKeys = <String>{
   };
 }
+
