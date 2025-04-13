@@ -171,6 +171,7 @@ lib/model/perf_metric_query_result.dart
 lib/model/perf_metric_value_area.dart
 lib/model/perf_metric_values.dart
 lib/model/permissions.dart
+lib/model/post_media_content_face_detected_value.dart
 lib/model/post_moderate_profile_content.dart
 lib/model/post_moderate_profile_name.dart
 lib/model/post_moderate_profile_text.dart

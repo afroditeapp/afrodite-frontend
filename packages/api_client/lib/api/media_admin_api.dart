@@ -80,6 +80,54 @@ class MediaAdminApi {
     return null;
   }
 
+  /// Change media content face detected value
+  ///
+  /// # Access * Permission [model::Permissions::admin_edit_media_content_face_detected_value]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [PostMediaContentFaceDetectedValue] postMediaContentFaceDetectedValue (required):
+  Future<Response> postMediaContentFaceDetectedValueWithHttpInfo(PostMediaContentFaceDetectedValue postMediaContentFaceDetectedValue,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/media_content_face_detected_value';
+
+    // ignore: prefer_final_locals
+    Object? postBody = postMediaContentFaceDetectedValue;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Change media content face detected value
+  ///
+  /// # Access * Permission [model::Permissions::admin_edit_media_content_face_detected_value]
+  ///
+  /// Parameters:
+  ///
+  /// * [PostMediaContentFaceDetectedValue] postMediaContentFaceDetectedValue (required):
+  Future<void> postMediaContentFaceDetectedValue(PostMediaContentFaceDetectedValue postMediaContentFaceDetectedValue,) async {
+    final response = await postMediaContentFaceDetectedValueWithHttpInfo(postMediaContentFaceDetectedValue,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Rejected category and details can be set only when the content is rejected.
   ///
   /// This route will fail if the content is in slot.  Also profile visibility moves from pending to normal when all profile content is moderated as accepted.

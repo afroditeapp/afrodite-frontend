@@ -174,6 +174,7 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**putProfileContent**](doc//MediaApi.md#putprofilecontent) | **PUT** /media_api/profile_content | Set new profile content for current account.
 *MediaApi* | [**putSecurityContentInfo**](doc//MediaApi.md#putsecuritycontentinfo) | **PUT** /media_api/security_content_info | Set current security content for current account.
 *MediaAdminApi* | [**getProfileContentPendingModerationList**](doc//MediaAdminApi.md#getprofilecontentpendingmoderationlist) | **GET** /media_api/admin/profile_content_pending_moderation | Get first page of pending profile content moderations. Oldest item is first and count 25.
+*MediaAdminApi* | [**postMediaContentFaceDetectedValue**](doc//MediaAdminApi.md#postmediacontentfacedetectedvalue) | **POST** /media_api/media_content_face_detected_value | Change media content face detected value
 *MediaAdminApi* | [**postModerateProfileContent**](doc//MediaAdminApi.md#postmoderateprofilecontent) | **POST** /media_api/admin/moderate_profile_content | Rejected category and details can be set only when the content is rejected.
 *ProfileApi* | [**deleteFavoriteProfile**](doc//ProfileApi.md#deletefavoriteprofile) | **DELETE** /profile_api/favorite_profile | Delete favorite profile
 *ProfileApi* | [**getFavoriteProfiles**](doc//ProfileApi.md#getfavoriteprofiles) | **GET** /profile_api/favorite_profiles | Get list of all favorite profiles.
@@ -362,6 +363,7 @@ Class | Method | HTTP request | Description
  - [PerfMetricValueArea](doc//PerfMetricValueArea.md)
  - [PerfMetricValues](doc//PerfMetricValues.md)
  - [Permissions](doc//Permissions.md)
+ - [PostMediaContentFaceDetectedValue](doc//PostMediaContentFaceDetectedValue.md)
  - [PostModerateProfileContent](doc//PostModerateProfileContent.md)
  - [PostModerateProfileName](doc//PostModerateProfileName.md)
  - [PostModerateProfileText](doc//PostModerateProfileText.md)

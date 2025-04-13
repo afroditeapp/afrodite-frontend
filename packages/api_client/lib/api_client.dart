@@ -480,6 +480,8 @@ class ApiClient {
           return PerfMetricValues.fromJson(value);
         case 'Permissions':
           return Permissions.fromJson(value);
+        case 'PostMediaContentFaceDetectedValue':
+          return PostMediaContentFaceDetectedValue.fromJson(value);
         case 'PostModerateProfileContent':
           return PostModerateProfileContent.fromJson(value);
         case 'PostModerateProfileName':

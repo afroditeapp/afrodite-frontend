@@ -189,6 +189,7 @@ part 'model/perf_metric_query_result.dart';
 part 'model/perf_metric_value_area.dart';
 part 'model/perf_metric_values.dart';
 part 'model/permissions.dart';
+part 'model/post_media_content_face_detected_value.dart';
 part 'model/post_moderate_profile_content.dart';
 part 'model/post_moderate_profile_name.dart';
 part 'model/post_moderate_profile_text.dart';
