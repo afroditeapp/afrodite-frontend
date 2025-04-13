@@ -137,13 +137,14 @@
     <!-- Initial setup -->
     <string name="initial_setup_screen_skip_dialog_title" description="Title for skip initial setup confirm dialog">Skip account initial setup?</string>
     <string name="initial_setup_screen_skip_dialog_description" description="Description for skip initial setup confirm dialog">Use this only if you will have some admin rights to the service.</string>
+    <string name="initial_setup_screen_refresh_face_detected_values_action" description="Title for refresh face detected values">Refresh face detection statuses</string>
     <string name="initial_setup_screen_email_title" description="Title for initial setup email address info">My email address is…</string>
     <string name="initial_setup_screen_email_hint_text" description="Hint text for inserting email address to text field">Insert email address</string>
     <string name="initial_setup_screen_age_confirmation_title" description="Title for age confirmation screen">Age confirmation</string>
     <string name="initial_setup_screen_age_confirmation_checkbox" description="Title for age confirmation checkbox">I\'m at least 18 years old</string>
     <string name="initial_setup_screen_security_selfie_title" description="Title for initial setup security selfie screen">My security selfie is…</string>
     <string name="initial_setup_screen_security_selfie_description" description="Description for initial setup security selfie step">Take selfie with your phone\'s front camera. The selfie is used for moderating your profile images and by default it is only visible to content Moderators.</string>
-    <string name="initial_setup_screen_security_selfie_face_not_detected" description="Error text that face is not detected for initial setup security selfie screen">Face is not detected. Please try again.</string>
+    <string name="initial_setup_screen_security_selfie_face_not_detected" description="Error text that face is not detected for initial setup security selfie screen">Face is not detected. Please try again several times and if necessary ask customer support to do manual face detection.</string>
     <string name="initial_setup_screen_profile_pictures_title" description="Title for profile pictures selection screen">My profile pictures are…</string>
     <string name="initial_setup_screen_profile_pictures_select_picture_dialog_title" description="Dialog title for initial setup profile picture selection dialog">Select picture…</string>
     <string name="initial_setup_screen_profile_pictures_select_picture_from_gallery_title" description="Action title for selecting profile picture from gallery">From gallery</string>

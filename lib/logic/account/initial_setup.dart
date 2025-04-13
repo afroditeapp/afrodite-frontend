@@ -1,7 +1,10 @@
 import "dart:io";
 import "dart:typed_data";
 
+import "package:app/api/api_manager.dart";
 import "package:app/database/account_database_manager.dart";
+import "package:app/utils/result.dart";
+import "package:collection/collection.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:latlong2/latlong.dart";
 import "package:logging/logging.dart";
@@ -103,6 +106,7 @@ class CompleteInitialSetup extends InitialSetupEvent {}
 class ResetState extends InitialSetupEvent {}
 class CreateDebugAdminAccount extends InitialSetupEvent {}
 class SkipInitialSetup extends InitialSetupEvent {}
+class RefreshSecuritySelfieFaceDetectedValue extends InitialSetupEvent {}
 
 class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with ActionRunner {
   final LoginRepository login = LoginRepository.getInstance();
@@ -110,6 +114,8 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
   final AccountId currentUser = LoginRepository.getInstance().repositories.accountId;
   final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
+  final ApiManager api = LoginRepository.getInstance().repositories.api;
+  final AccountId currentAccount = LoginRepository.getInstance().repositories.accountId;
 
   InitialSetupBloc() : super(InitialSetupData()) {
     on<ResetState>((data, emit) {
@@ -251,6 +257,25 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
       if (r.isErr()) {
         showSnackBar(R.strings.generic_error_occurred);
       }
+    });
+    on<RefreshSecuritySelfieFaceDetectedValue>((data, emit) async {
+      final r = await api.media((api) => api.getAllAccountMediaContent(currentAccount.aid)).ok();
+      if (r == null) {
+        showSnackBar(R.strings.generic_error_occurred);
+        return;
+      }
+
+      final securitySelfie = state.securitySelfie;
+      if (securitySelfie != null) {
+        final newSecuritySelfieState = r.data.firstWhereOrNull((v) => v.cid == securitySelfie.contentId);
+        if (newSecuritySelfieState != null) {
+          emit(state.copyWith(
+            securitySelfie: securitySelfie.copyWithFaceDetectedValue(newSecuritySelfieState.fd),
+          ));
+        }
+      }
+
+      showSnackBar(R.strings.generic_action_completed);
     });
   }
 }

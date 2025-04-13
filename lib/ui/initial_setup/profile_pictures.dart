@@ -61,6 +61,7 @@ class AskProfilePicturesScreen extends StatelessWidget {
         },
         question: AskProfilePictures(),
       ),
+      showRefreshProfilePicturesFaceDetectedValuesAction: true,
     );
   }
 }

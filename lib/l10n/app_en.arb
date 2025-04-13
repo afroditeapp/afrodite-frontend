@@ -723,6 +723,10 @@
   "@initial_setup_screen_profile_pictures_title": {
     "description": "Title for profile pictures selection screen"
   },
+  "initial_setup_screen_refresh_face_detected_values_action": "Refresh face detection statuses",
+  "@initial_setup_screen_refresh_face_detected_values_action": {
+    "description": "Title for refresh face detected values"
+  },
   "initial_setup_screen_search_settings_max_age_subtitle": "…with max age…",
   "@initial_setup_screen_search_settings_max_age_subtitle": {
     "description": "Subtitle for max age search setting"
@@ -739,7 +743,7 @@
   "@initial_setup_screen_security_selfie_description": {
     "description": "Description for initial setup security selfie step"
   },
-  "initial_setup_screen_security_selfie_face_not_detected": "Face is not detected. Please try again.",
+  "initial_setup_screen_security_selfie_face_not_detected": "Face is not detected. Please try again several times and if necessary ask customer support to do manual face detection.",
   "@initial_setup_screen_security_selfie_face_not_detected": {
     "description": "Error text that face is not detected for initial setup security selfie screen"
   },

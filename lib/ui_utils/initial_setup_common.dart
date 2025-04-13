@@ -1,6 +1,7 @@
 
 
 
+import 'package:app/logic/media/profile_pictures.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,8 @@ Widget commonInitialSetupScreenContent({
   required Widget child,
   bool resizeToAvoidBottomInset = true,
   bool showSkipInitialSetupAction = false,
+  bool showRefreshSecuritySelfieFaceDetectedValuesAction = false,
+  bool showRefreshProfilePicturesFaceDetectedValuesAction = false,
 }) {
   return Scaffold(
     appBar: AppBar(
@@ -40,6 +43,22 @@ Widget commonInitialSetupScreenContent({
                 );
                 if (r == true && context.mounted) {
                   context.read<InitialSetupBloc>().add(SkipInitialSetup());
+                }
+              },
+            ),
+            if (showRefreshSecuritySelfieFaceDetectedValuesAction) MenuItemButton(
+              child: Text(context.strings.initial_setup_screen_refresh_face_detected_values_action),
+              onPressed: () async {
+                if (context.mounted) {
+                  context.read<InitialSetupBloc>().add(RefreshSecuritySelfieFaceDetectedValue());
+                }
+              },
+            ),
+            if (showRefreshProfilePicturesFaceDetectedValuesAction) MenuItemButton(
+              child: Text(context.strings.initial_setup_screen_refresh_face_detected_values_action),
+              onPressed: () async {
+                if (context.mounted) {
+                  context.read<ProfilePicturesBloc>().add(RefreshProfilePicturesFaceDetectedValues());
                 }
               },
             ),

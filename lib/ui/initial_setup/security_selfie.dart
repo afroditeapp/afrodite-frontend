@@ -49,6 +49,7 @@ class AskSecuritySelfieScreen extends StatelessWidget {
         },
         question: const AskSecuritySelfie(),
       ),
+      showRefreshSecuritySelfieFaceDetectedValuesAction: true,
     );
   }
 }
@@ -176,16 +177,20 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.close,
-                    color: Colors.red,
-                    size: 32,
-                  ),
-                  Text(context.strings.initial_setup_screen_security_selfie_face_not_detected),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.close,
+                      color: Colors.red,
+                      size: 32,
+                    ),
+                    const Padding(padding: EdgeInsets.only(right: 8.0)),
+                    Flexible(child: Text(context.strings.initial_setup_screen_security_selfie_face_not_detected)),
+                  ],
+                ),
               ),
               const Padding(padding: EdgeInsets.all(8.0)),
               normalCameraButton(),

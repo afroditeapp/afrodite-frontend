@@ -45,6 +45,10 @@ class ProcessedAccountImage {
   /// Slot where the image was uploaded.
   final int slot;
   final bool faceDetected;
+
+  ProcessedAccountImage copyWithFaceDetectedValue(bool value) {
+    return ProcessedAccountImage(accountId, contentId, slot, value);
+  }
 }
 
 sealed class ContentUploadState {}

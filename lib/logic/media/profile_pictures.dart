@@ -1,8 +1,15 @@
 
+import "package:app/api/api_manager.dart";
+import "package:app/data/login_repository.dart";
+import "package:app/localizations.dart";
+import "package:app/ui_utils/snack_bar.dart";
+import "package:app/utils/result.dart";
+import "package:collection/collection.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:app/model/freezed/logic/media/profile_pictures.dart";
 import "package:app/ui_utils/crop_image_screen.dart";
+import "package:openapi/api.dart";
 
 final log = Logger("ProfilePicturesBloc");
 
@@ -31,8 +38,12 @@ class MoveImageTo extends ProfilePicturesEvent {
   MoveImageTo(this.src, this.dst);
 }
 class ResetProfilePicturesBloc extends ProfilePicturesEvent {}
+class RefreshProfilePicturesFaceDetectedValues extends ProfilePicturesEvent {}
 
 class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData> {
+  final ApiManager api = LoginRepository.getInstance().repositories.api;
+  final AccountId currentAccount = LoginRepository.getInstance().repositories.accountId;
+
   ProfilePicturesBloc() : super(const ProfilePicturesData()) {
     on<ResetIfModeChanges>((data, emit) {
       if (state.mode.runtimeType != data.mode.runtimeType) {
@@ -82,6 +93,34 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
       pictures[data.dst] = srcImg;
       _modifyPicturesListToHaveCorrectStates(pictures);
       _emitPictureChanges(emit, pictures);
+    });
+    on<RefreshProfilePicturesFaceDetectedValues>((data, emit) async {
+      final r = await api.media((api) => api.getAllAccountMediaContent(currentAccount.aid)).ok();
+      if (r == null) {
+        showSnackBar(R.strings.generic_error_occurred);
+        return;
+      }
+
+      final imgs = state.pictures();
+      for (final (i, img) in imgs.indexed) {
+        if (img is ImageSelected) {
+          final imgInfo = img.img;
+          if (imgInfo is ProfileImage) {
+            final newImgState = r.data.firstWhereOrNull((v) => v.cid == imgInfo.id.contentId);
+            if (newImgState != null) {
+              imgs[i] = img.copyWithImg(imgInfo.copyWithFaceDetected(newImgState.fd));
+            }
+          }
+        }
+      }
+      emit(state.copyWith(
+        picture0: imgs[0],
+        picture1: imgs[1],
+        picture2: imgs[2],
+        picture3: imgs[3],
+      ));
+
+      showSnackBar(R.strings.generic_action_completed);
     });
   }
 

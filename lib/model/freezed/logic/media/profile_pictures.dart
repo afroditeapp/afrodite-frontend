@@ -109,6 +109,10 @@ class ImageSelected extends ImgState {
   final SelectedImageInfo img;
   final CropResults cropResults;
   const ImageSelected(this.img, {this.cropResults = CropResults.full});
+
+  ImageSelected copyWithImg(SelectedImageInfo img) {
+    return ImageSelected(img, cropResults: cropResults);
+  }
 }
 
 sealed class SelectedImageInfo {
@@ -128,6 +132,10 @@ class ProfileImage extends SelectedImageInfo {
   /// Slot where image is uploaded to.
   final int? slot;
   ProfileImage(this.id, this.slot);
+
+  ProfileImage copyWithFaceDetected(bool faceDetected) {
+    return ProfileImage(AccountImageId(id.accountId, id.contentId, faceDetected, id.accepted), slot);
+  }
 }
 
 class AccountImageId {
