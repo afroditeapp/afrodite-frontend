@@ -11,7 +11,7 @@ abstract class NotificationSettingsEvent {}
 class ReloadNotificationsEnabledStatus extends NotificationSettingsEvent {}
 class ToggleMessages extends NotificationSettingsEvent {}
 class ToggleLikes extends NotificationSettingsEvent {}
-class ToggleInitialContentModeration extends NotificationSettingsEvent {}
+class ToggleMediaContentModerationCompleted extends NotificationSettingsEvent {}
 class ToggleNews extends NotificationSettingsEvent {}
 class NewValueMessages extends NotificationSettingsEvent {
   final bool value;
@@ -21,9 +21,9 @@ class NewValueLikes extends NotificationSettingsEvent {
   final bool value;
   NewValueLikes(this.value);
 }
-class NewValueInitialContentModeration extends NotificationSettingsEvent {
+class NewValueMediaContentModerationCompleted extends NotificationSettingsEvent {
   final bool value;
-  NewValueInitialContentModeration(this.value);
+  NewValueMediaContentModerationCompleted(this.value);
 }
 class NewValueNews extends NotificationSettingsEvent {
   final bool value;
@@ -36,7 +36,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
 
   StreamSubscription<bool?>? _messagesSubscription;
   StreamSubscription<bool?>? _likesSubscription;
-  StreamSubscription<bool?>? _initialContentModerationSubscription;
+  StreamSubscription<bool?>? _mediaContentModerationCompletedSubscription;
   StreamSubscription<bool?>? _newsSubscription;
 
   NotificationSettingsBloc() : super(NotificationSettingsData()) {
@@ -46,7 +46,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
         areNotificationsEnabled: await notifications.areNotificationsEnabled(),
         categorySystemEnabledLikes: !disabledChannelIds.contains(const NotificationCategoryLikes().id),
         categorySystemEnabledMessages: !disabledChannelIds.contains(const NotificationCategoryMessages().id),
-        categorySystemEnabledInitialContentModeration: !disabledChannelIds.contains(const NotificationCategoryInitialContentModeration().id),
+        categorySystemEnabledMediaContentModerationCompleted: !disabledChannelIds.contains(const NotificationCategoryMediaContentModerationCompleted().id),
         categorySystemEnabledNews: !disabledChannelIds.contains(const NotificationCategoryNewsItemAvailable().id),
       ));
     });
@@ -56,8 +56,8 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     on<ToggleLikes>((data, emit) async {
       await db.accountAction((db) => db.daoLocalNotificationSettings.updateLikes(!state.categoryEnabledLikes));
     });
-    on<ToggleInitialContentModeration>((data, emit) async {
-      await db.accountAction((db) => db.daoLocalNotificationSettings.updateInitialContentModeration(!state.categoryEnabledInitialContentModeration));
+    on<ToggleMediaContentModerationCompleted>((data, emit) async {
+      await db.accountAction((db) => db.daoLocalNotificationSettings.updateMediaContentModerationCompleted(!state.categoryEnabledMediaContentModerationCompleted));
     });
     on<ToggleNews>((data, emit) async {
       await db.accountAction((db) => db.daoLocalNotificationSettings.updateNews(!state.categoryEnabledNews));
@@ -68,8 +68,8 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     on<NewValueMessages>((data, emit) =>
       emit(state.copyWith(categoryEnabledMessages: data.value))
     );
-    on<NewValueInitialContentModeration>((data, emit) =>
-      emit(state.copyWith(categoryEnabledInitialContentModeration: data.value))
+    on<NewValueMediaContentModerationCompleted>((data, emit) =>
+      emit(state.copyWith(categoryEnabledMediaContentModerationCompleted: data.value))
     );
     on<NewValueNews>((data, emit) =>
       emit(state.copyWith(categoryEnabledNews: data.value))
@@ -85,10 +85,10 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
       .listen((state) {
         add(NewValueLikes(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });
-    _initialContentModerationSubscription = db
-      .accountStream((db) => db.daoLocalNotificationSettings.watchInitialContentModeration())
+    _mediaContentModerationCompletedSubscription = db
+      .accountStream((db) => db.daoLocalNotificationSettings.watchMediaContentModerationCompleted())
       .listen((state) {
-        add(NewValueInitialContentModeration(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
+        add(NewValueMediaContentModerationCompleted(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });
     _newsSubscription = db
       .accountStream((db) => db.daoLocalNotificationSettings.watchNewsItemAvailable())
@@ -101,7 +101,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
   Future<void> close() async {
     await _messagesSubscription?.cancel();
     await _likesSubscription?.cancel();
-    await _initialContentModerationSubscription?.cancel();
+    await _mediaContentModerationCompletedSubscription?.cancel();
     await _newsSubscription?.cancel();
     await super.close();
   }

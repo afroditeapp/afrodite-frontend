@@ -10,52 +10,38 @@ import 'package:app/database/database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:utils/utils.dart';
 
-class NotificationModerationRequestStatus extends AppSingletonNoInit {
-  NotificationModerationRequestStatus._();
-  static final _instance = NotificationModerationRequestStatus._();
-  factory NotificationModerationRequestStatus.getInstance() {
+class NotificationMediaContentModerationCompleted extends AppSingletonNoInit {
+  NotificationMediaContentModerationCompleted._();
+  static final _instance = NotificationMediaContentModerationCompleted._();
+  factory NotificationMediaContentModerationCompleted.getInstance() {
     return _instance;
   }
 
-  final notificationId = NotificationIdStatic.moderationRequestStatus.id;
+  final notificationIdAccepted = NotificationIdStatic.mediaContentModerationAccepted.id;
+  final notificationIdRejected = NotificationIdStatic.mediaContentModerationRejected.id;
   final notifications = NotificationManager.getInstance();
   final db = DatabaseManager.getInstance();
 
-  ModerationRequestStateSimple? _state;
-
-  Future<void> show(ModerationRequestStateSimple state, AccountBackgroundDatabaseManager accountBackgroundDb) async {
-    _state = state;
-    await _updateNotification(accountBackgroundDb);
-  }
-
-  Future<void> hide(AccountBackgroundDatabaseManager accountBackgroundDb) async {
-    _state = null;
-    await _updateNotification(accountBackgroundDb);
-  }
-
-  Future<void> _updateNotification(AccountBackgroundDatabaseManager accountBackgroundDb) async {
-    final state = _state;
-    if (state == null) {
-      await notifications.hideNotification(notificationId);
-      return;
-    }
-
-    final String title = switch (state) {
-      ModerationRequestStateSimple.accepted => R.strings.notification_initial_content_moderation_accepted,
-      ModerationRequestStateSimple.rejected => R.strings.notification_initial_content_moderation_rejected,
+  Future<void> show(ModerationCompletedState state, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+    final NotificationId id = switch (state) {
+      ModerationCompletedState.accepted => notificationIdAccepted,
+      ModerationCompletedState.rejected => notificationIdRejected,
     };
-
+    final String title = switch (state) {
+      ModerationCompletedState.accepted => R.strings.notification_media_content_accepted,
+      ModerationCompletedState.rejected => R.strings.notification_media_content_rejected,
+    };
     await notifications.sendNotification(
-      id: notificationId,
+      id: id,
       title: title,
-      category: const NotificationCategoryInitialContentModeration(),
+      category: const NotificationCategoryMediaContentModerationCompleted(),
       notificationPayload: NavigateToContentManagement(sessionId: await notifications.getSessionId()),
       accountBackgroundDb: accountBackgroundDb,
     );
   }
 }
 
-enum ModerationRequestStateSimple {
+enum ModerationCompletedState {
   accepted,
   rejected,
 }

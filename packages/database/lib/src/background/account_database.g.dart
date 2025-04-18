@@ -46,18 +46,20 @@ class $AccountBackgroundTable extends AccountBackground
           defaultConstraints: GeneratedColumn.constraintIsAlways(
               'CHECK ("local_notification_setting_likes" IN (0, 1))'));
   static const VerificationMeta
-      _localNotificationSettingInitialContentModerationMeta =
+      _localNotificationSettingMediaContentModerationCompletedMeta =
       const VerificationMeta(
-          'localNotificationSettingInitialContentModeration');
+          'localNotificationSettingMediaContentModerationCompleted');
   @override
-  late final GeneratedColumn<
-      bool> localNotificationSettingInitialContentModeration = GeneratedColumn<
-          bool>('local_notification_setting_initial_content_moderation',
-      aliasedName, true,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("local_notification_setting_initial_content_moderation" IN (0, 1))'));
+  late final GeneratedColumn<bool>
+      localNotificationSettingMediaContentModerationCompleted =
+      GeneratedColumn<bool>(
+          'local_notification_setting_media_content_moderation_completed',
+          aliasedName,
+          true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("local_notification_setting_media_content_moderation_completed" IN (0, 1))'));
   static const VerificationMeta _localNotificationSettingNewsItemAvailableMeta =
       const VerificationMeta('localNotificationSettingNewsItemAvailable');
   @override
@@ -87,7 +89,7 @@ class $AccountBackgroundTable extends AccountBackground
         uuidAccountId,
         localNotificationSettingMessages,
         localNotificationSettingLikes,
-        localNotificationSettingInitialContentModeration,
+        localNotificationSettingMediaContentModerationCompleted,
         localNotificationSettingNewsItemAvailable,
         userInterfaceSettingShowNonAcceptedProfileNames
       ];
@@ -119,15 +121,15 @@ class $AccountBackgroundTable extends AccountBackground
               data['local_notification_setting_likes']!,
               _localNotificationSettingLikesMeta));
     }
-    if (data
-        .containsKey('local_notification_setting_initial_content_moderation')) {
+    if (data.containsKey(
+        'local_notification_setting_media_content_moderation_completed')) {
       context.handle(
-          _localNotificationSettingInitialContentModerationMeta,
-          localNotificationSettingInitialContentModeration
+          _localNotificationSettingMediaContentModerationCompletedMeta,
+          localNotificationSettingMediaContentModerationCompleted
               .isAcceptableOrUnknown(
                   data[
-                      'local_notification_setting_initial_content_moderation']!,
-                  _localNotificationSettingInitialContentModerationMeta));
+                      'local_notification_setting_media_content_moderation_completed']!,
+                  _localNotificationSettingMediaContentModerationCompletedMeta));
     }
     if (data.containsKey('local_notification_setting_news_item_available')) {
       context.handle(
@@ -164,11 +166,11 @@ class $AccountBackgroundTable extends AccountBackground
       localNotificationSettingLikes: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
           data['${effectivePrefix}local_notification_setting_likes']),
-      localNotificationSettingInitialContentModeration:
+      localNotificationSettingMediaContentModerationCompleted:
           attachedDatabase.typeMapping.read(
               DriftSqlType.bool,
               data[
-                  '${effectivePrefix}local_notification_setting_initial_content_moderation']),
+                  '${effectivePrefix}local_notification_setting_media_content_moderation_completed']),
       localNotificationSettingNewsItemAvailable: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
           data[
@@ -196,7 +198,7 @@ class AccountBackgroundData extends DataClass
   final AccountId? uuidAccountId;
   final bool? localNotificationSettingMessages;
   final bool? localNotificationSettingLikes;
-  final bool? localNotificationSettingInitialContentModeration;
+  final bool? localNotificationSettingMediaContentModerationCompleted;
   final bool? localNotificationSettingNewsItemAvailable;
   final bool? userInterfaceSettingShowNonAcceptedProfileNames;
   const AccountBackgroundData(
@@ -204,7 +206,7 @@ class AccountBackgroundData extends DataClass
       this.uuidAccountId,
       this.localNotificationSettingMessages,
       this.localNotificationSettingLikes,
-      this.localNotificationSettingInitialContentModeration,
+      this.localNotificationSettingMediaContentModerationCompleted,
       this.localNotificationSettingNewsItemAvailable,
       this.userInterfaceSettingShowNonAcceptedProfileNames});
   @override
@@ -224,9 +226,10 @@ class AccountBackgroundData extends DataClass
           Variable<bool>(localNotificationSettingLikes);
     }
     if (!nullToAbsent ||
-        localNotificationSettingInitialContentModeration != null) {
-      map['local_notification_setting_initial_content_moderation'] =
-          Variable<bool>(localNotificationSettingInitialContentModeration);
+        localNotificationSettingMediaContentModerationCompleted != null) {
+      map['local_notification_setting_media_content_moderation_completed'] =
+          Variable<bool>(
+              localNotificationSettingMediaContentModerationCompleted);
     }
     if (!nullToAbsent || localNotificationSettingNewsItemAvailable != null) {
       map['local_notification_setting_news_item_available'] =
@@ -254,11 +257,11 @@ class AccountBackgroundData extends DataClass
           localNotificationSettingLikes == null && nullToAbsent
               ? const Value.absent()
               : Value(localNotificationSettingLikes),
-      localNotificationSettingInitialContentModeration:
-          localNotificationSettingInitialContentModeration == null &&
+      localNotificationSettingMediaContentModerationCompleted:
+          localNotificationSettingMediaContentModerationCompleted == null &&
                   nullToAbsent
               ? const Value.absent()
-              : Value(localNotificationSettingInitialContentModeration),
+              : Value(localNotificationSettingMediaContentModerationCompleted),
       localNotificationSettingNewsItemAvailable:
           localNotificationSettingNewsItemAvailable == null && nullToAbsent
               ? const Value.absent()
@@ -281,9 +284,9 @@ class AccountBackgroundData extends DataClass
           serializer.fromJson<bool?>(json['localNotificationSettingMessages']),
       localNotificationSettingLikes:
           serializer.fromJson<bool?>(json['localNotificationSettingLikes']),
-      localNotificationSettingInitialContentModeration:
+      localNotificationSettingMediaContentModerationCompleted:
           serializer.fromJson<bool?>(
-              json['localNotificationSettingInitialContentModeration']),
+              json['localNotificationSettingMediaContentModerationCompleted']),
       localNotificationSettingNewsItemAvailable: serializer
           .fromJson<bool?>(json['localNotificationSettingNewsItemAvailable']),
       userInterfaceSettingShowNonAcceptedProfileNames:
@@ -301,8 +304,9 @@ class AccountBackgroundData extends DataClass
           serializer.toJson<bool?>(localNotificationSettingMessages),
       'localNotificationSettingLikes':
           serializer.toJson<bool?>(localNotificationSettingLikes),
-      'localNotificationSettingInitialContentModeration': serializer
-          .toJson<bool?>(localNotificationSettingInitialContentModeration),
+      'localNotificationSettingMediaContentModerationCompleted':
+          serializer.toJson<bool?>(
+              localNotificationSettingMediaContentModerationCompleted),
       'localNotificationSettingNewsItemAvailable':
           serializer.toJson<bool?>(localNotificationSettingNewsItemAvailable),
       'userInterfaceSettingShowNonAcceptedProfileNames': serializer
@@ -315,7 +319,7 @@ class AccountBackgroundData extends DataClass
           Value<AccountId?> uuidAccountId = const Value.absent(),
           Value<bool?> localNotificationSettingMessages = const Value.absent(),
           Value<bool?> localNotificationSettingLikes = const Value.absent(),
-          Value<bool?> localNotificationSettingInitialContentModeration =
+          Value<bool?> localNotificationSettingMediaContentModerationCompleted =
               const Value.absent(),
           Value<bool?> localNotificationSettingNewsItemAvailable =
               const Value.absent(),
@@ -332,10 +336,10 @@ class AccountBackgroundData extends DataClass
         localNotificationSettingLikes: localNotificationSettingLikes.present
             ? localNotificationSettingLikes.value
             : this.localNotificationSettingLikes,
-        localNotificationSettingInitialContentModeration:
-            localNotificationSettingInitialContentModeration.present
-                ? localNotificationSettingInitialContentModeration.value
-                : this.localNotificationSettingInitialContentModeration,
+        localNotificationSettingMediaContentModerationCompleted:
+            localNotificationSettingMediaContentModerationCompleted.present
+                ? localNotificationSettingMediaContentModerationCompleted.value
+                : this.localNotificationSettingMediaContentModerationCompleted,
         localNotificationSettingNewsItemAvailable:
             localNotificationSettingNewsItemAvailable.present
                 ? localNotificationSettingNewsItemAvailable.value
@@ -358,10 +362,10 @@ class AccountBackgroundData extends DataClass
       localNotificationSettingLikes: data.localNotificationSettingLikes.present
           ? data.localNotificationSettingLikes.value
           : this.localNotificationSettingLikes,
-      localNotificationSettingInitialContentModeration:
-          data.localNotificationSettingInitialContentModeration.present
-              ? data.localNotificationSettingInitialContentModeration.value
-              : this.localNotificationSettingInitialContentModeration,
+      localNotificationSettingMediaContentModerationCompleted: data
+              .localNotificationSettingMediaContentModerationCompleted.present
+          ? data.localNotificationSettingMediaContentModerationCompleted.value
+          : this.localNotificationSettingMediaContentModerationCompleted,
       localNotificationSettingNewsItemAvailable:
           data.localNotificationSettingNewsItemAvailable.present
               ? data.localNotificationSettingNewsItemAvailable.value
@@ -383,7 +387,7 @@ class AccountBackgroundData extends DataClass
           ..write(
               'localNotificationSettingLikes: $localNotificationSettingLikes, ')
           ..write(
-              'localNotificationSettingInitialContentModeration: $localNotificationSettingInitialContentModeration, ')
+              'localNotificationSettingMediaContentModerationCompleted: $localNotificationSettingMediaContentModerationCompleted, ')
           ..write(
               'localNotificationSettingNewsItemAvailable: $localNotificationSettingNewsItemAvailable, ')
           ..write(
@@ -398,7 +402,7 @@ class AccountBackgroundData extends DataClass
       uuidAccountId,
       localNotificationSettingMessages,
       localNotificationSettingLikes,
-      localNotificationSettingInitialContentModeration,
+      localNotificationSettingMediaContentModerationCompleted,
       localNotificationSettingNewsItemAvailable,
       userInterfaceSettingShowNonAcceptedProfileNames);
   @override
@@ -411,8 +415,8 @@ class AccountBackgroundData extends DataClass
               this.localNotificationSettingMessages &&
           other.localNotificationSettingLikes ==
               this.localNotificationSettingLikes &&
-          other.localNotificationSettingInitialContentModeration ==
-              this.localNotificationSettingInitialContentModeration &&
+          other.localNotificationSettingMediaContentModerationCompleted ==
+              this.localNotificationSettingMediaContentModerationCompleted &&
           other.localNotificationSettingNewsItemAvailable ==
               this.localNotificationSettingNewsItemAvailable &&
           other.userInterfaceSettingShowNonAcceptedProfileNames ==
@@ -425,7 +429,7 @@ class AccountBackgroundCompanion
   final Value<AccountId?> uuidAccountId;
   final Value<bool?> localNotificationSettingMessages;
   final Value<bool?> localNotificationSettingLikes;
-  final Value<bool?> localNotificationSettingInitialContentModeration;
+  final Value<bool?> localNotificationSettingMediaContentModerationCompleted;
   final Value<bool?> localNotificationSettingNewsItemAvailable;
   final Value<bool?> userInterfaceSettingShowNonAcceptedProfileNames;
   const AccountBackgroundCompanion({
@@ -433,7 +437,7 @@ class AccountBackgroundCompanion
     this.uuidAccountId = const Value.absent(),
     this.localNotificationSettingMessages = const Value.absent(),
     this.localNotificationSettingLikes = const Value.absent(),
-    this.localNotificationSettingInitialContentModeration =
+    this.localNotificationSettingMediaContentModerationCompleted =
         const Value.absent(),
     this.localNotificationSettingNewsItemAvailable = const Value.absent(),
     this.userInterfaceSettingShowNonAcceptedProfileNames = const Value.absent(),
@@ -443,7 +447,7 @@ class AccountBackgroundCompanion
     this.uuidAccountId = const Value.absent(),
     this.localNotificationSettingMessages = const Value.absent(),
     this.localNotificationSettingLikes = const Value.absent(),
-    this.localNotificationSettingInitialContentModeration =
+    this.localNotificationSettingMediaContentModerationCompleted =
         const Value.absent(),
     this.localNotificationSettingNewsItemAvailable = const Value.absent(),
     this.userInterfaceSettingShowNonAcceptedProfileNames = const Value.absent(),
@@ -453,7 +457,7 @@ class AccountBackgroundCompanion
     Expression<String>? uuidAccountId,
     Expression<bool>? localNotificationSettingMessages,
     Expression<bool>? localNotificationSettingLikes,
-    Expression<bool>? localNotificationSettingInitialContentModeration,
+    Expression<bool>? localNotificationSettingMediaContentModerationCompleted,
     Expression<bool>? localNotificationSettingNewsItemAvailable,
     Expression<bool>? userInterfaceSettingShowNonAcceptedProfileNames,
   }) {
@@ -464,9 +468,9 @@ class AccountBackgroundCompanion
         'local_notification_setting_messages': localNotificationSettingMessages,
       if (localNotificationSettingLikes != null)
         'local_notification_setting_likes': localNotificationSettingLikes,
-      if (localNotificationSettingInitialContentModeration != null)
-        'local_notification_setting_initial_content_moderation':
-            localNotificationSettingInitialContentModeration,
+      if (localNotificationSettingMediaContentModerationCompleted != null)
+        'local_notification_setting_media_content_moderation_completed':
+            localNotificationSettingMediaContentModerationCompleted,
       if (localNotificationSettingNewsItemAvailable != null)
         'local_notification_setting_news_item_available':
             localNotificationSettingNewsItemAvailable,
@@ -481,7 +485,7 @@ class AccountBackgroundCompanion
       Value<AccountId?>? uuidAccountId,
       Value<bool?>? localNotificationSettingMessages,
       Value<bool?>? localNotificationSettingLikes,
-      Value<bool?>? localNotificationSettingInitialContentModeration,
+      Value<bool?>? localNotificationSettingMediaContentModerationCompleted,
       Value<bool?>? localNotificationSettingNewsItemAvailable,
       Value<bool?>? userInterfaceSettingShowNonAcceptedProfileNames}) {
     return AccountBackgroundCompanion(
@@ -491,9 +495,9 @@ class AccountBackgroundCompanion
           this.localNotificationSettingMessages,
       localNotificationSettingLikes:
           localNotificationSettingLikes ?? this.localNotificationSettingLikes,
-      localNotificationSettingInitialContentModeration:
-          localNotificationSettingInitialContentModeration ??
-              this.localNotificationSettingInitialContentModeration,
+      localNotificationSettingMediaContentModerationCompleted:
+          localNotificationSettingMediaContentModerationCompleted ??
+              this.localNotificationSettingMediaContentModerationCompleted,
       localNotificationSettingNewsItemAvailable:
           localNotificationSettingNewsItemAvailable ??
               this.localNotificationSettingNewsItemAvailable,
@@ -522,10 +526,10 @@ class AccountBackgroundCompanion
       map['local_notification_setting_likes'] =
           Variable<bool>(localNotificationSettingLikes.value);
     }
-    if (localNotificationSettingInitialContentModeration.present) {
-      map['local_notification_setting_initial_content_moderation'] =
+    if (localNotificationSettingMediaContentModerationCompleted.present) {
+      map['local_notification_setting_media_content_moderation_completed'] =
           Variable<bool>(
-              localNotificationSettingInitialContentModeration.value);
+              localNotificationSettingMediaContentModerationCompleted.value);
     }
     if (localNotificationSettingNewsItemAvailable.present) {
       map['local_notification_setting_news_item_available'] =
@@ -548,7 +552,7 @@ class AccountBackgroundCompanion
           ..write(
               'localNotificationSettingLikes: $localNotificationSettingLikes, ')
           ..write(
-              'localNotificationSettingInitialContentModeration: $localNotificationSettingInitialContentModeration, ')
+              'localNotificationSettingMediaContentModerationCompleted: $localNotificationSettingMediaContentModerationCompleted, ')
           ..write(
               'localNotificationSettingNewsItemAvailable: $localNotificationSettingNewsItemAvailable, ')
           ..write(
@@ -1910,6 +1914,255 @@ class NewsCompanion extends UpdateCompanion<New> {
   }
 }
 
+class $MediaContentModerationCompletedNotificationTableTable
+    extends MediaContentModerationCompletedNotificationTable
+    with
+        TableInfo<$MediaContentModerationCompletedNotificationTableTable,
+            MediaContentModerationCompletedNotificationTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MediaContentModerationCompletedNotificationTableTable(this.attachedDatabase,
+      [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _acceptedViewedMeta =
+      const VerificationMeta('acceptedViewed');
+  @override
+  late final GeneratedColumn<int> acceptedViewed = GeneratedColumn<int>(
+      'accepted_viewed', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _rejectedViewedMeta =
+      const VerificationMeta('rejectedViewed');
+  @override
+  late final GeneratedColumn<int> rejectedViewed = GeneratedColumn<int>(
+      'rejected_viewed', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  @override
+  List<GeneratedColumn> get $columns => [id, acceptedViewed, rejectedViewed];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name =
+      'media_content_moderation_completed_notification_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<MediaContentModerationCompletedNotificationTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('accepted_viewed')) {
+      context.handle(
+          _acceptedViewedMeta,
+          acceptedViewed.isAcceptableOrUnknown(
+              data['accepted_viewed']!, _acceptedViewedMeta));
+    }
+    if (data.containsKey('rejected_viewed')) {
+      context.handle(
+          _rejectedViewedMeta,
+          rejectedViewed.isAcceptableOrUnknown(
+              data['rejected_viewed']!, _rejectedViewedMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MediaContentModerationCompletedNotificationTableData map(
+      Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MediaContentModerationCompletedNotificationTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      acceptedViewed: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}accepted_viewed'])!,
+      rejectedViewed: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}rejected_viewed'])!,
+    );
+  }
+
+  @override
+  $MediaContentModerationCompletedNotificationTableTable createAlias(
+      String alias) {
+    return $MediaContentModerationCompletedNotificationTableTable(
+        attachedDatabase, alias);
+  }
+}
+
+class MediaContentModerationCompletedNotificationTableData extends DataClass
+    implements
+        Insertable<MediaContentModerationCompletedNotificationTableData> {
+  final int id;
+  final int acceptedViewed;
+  final int rejectedViewed;
+  const MediaContentModerationCompletedNotificationTableData(
+      {required this.id,
+      required this.acceptedViewed,
+      required this.rejectedViewed});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['accepted_viewed'] = Variable<int>(acceptedViewed);
+    map['rejected_viewed'] = Variable<int>(rejectedViewed);
+    return map;
+  }
+
+  MediaContentModerationCompletedNotificationTableCompanion toCompanion(
+      bool nullToAbsent) {
+    return MediaContentModerationCompletedNotificationTableCompanion(
+      id: Value(id),
+      acceptedViewed: Value(acceptedViewed),
+      rejectedViewed: Value(rejectedViewed),
+    );
+  }
+
+  factory MediaContentModerationCompletedNotificationTableData.fromJson(
+      Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MediaContentModerationCompletedNotificationTableData(
+      id: serializer.fromJson<int>(json['id']),
+      acceptedViewed: serializer.fromJson<int>(json['acceptedViewed']),
+      rejectedViewed: serializer.fromJson<int>(json['rejectedViewed']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'acceptedViewed': serializer.toJson<int>(acceptedViewed),
+      'rejectedViewed': serializer.toJson<int>(rejectedViewed),
+    };
+  }
+
+  MediaContentModerationCompletedNotificationTableData copyWith(
+          {int? id, int? acceptedViewed, int? rejectedViewed}) =>
+      MediaContentModerationCompletedNotificationTableData(
+        id: id ?? this.id,
+        acceptedViewed: acceptedViewed ?? this.acceptedViewed,
+        rejectedViewed: rejectedViewed ?? this.rejectedViewed,
+      );
+  MediaContentModerationCompletedNotificationTableData copyWithCompanion(
+      MediaContentModerationCompletedNotificationTableCompanion data) {
+    return MediaContentModerationCompletedNotificationTableData(
+      id: data.id.present ? data.id.value : this.id,
+      acceptedViewed: data.acceptedViewed.present
+          ? data.acceptedViewed.value
+          : this.acceptedViewed,
+      rejectedViewed: data.rejectedViewed.present
+          ? data.rejectedViewed.value
+          : this.rejectedViewed,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer(
+            'MediaContentModerationCompletedNotificationTableData(')
+          ..write('id: $id, ')
+          ..write('acceptedViewed: $acceptedViewed, ')
+          ..write('rejectedViewed: $rejectedViewed')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, acceptedViewed, rejectedViewed);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MediaContentModerationCompletedNotificationTableData &&
+          other.id == this.id &&
+          other.acceptedViewed == this.acceptedViewed &&
+          other.rejectedViewed == this.rejectedViewed);
+}
+
+class MediaContentModerationCompletedNotificationTableCompanion
+    extends UpdateCompanion<
+        MediaContentModerationCompletedNotificationTableData> {
+  final Value<int> id;
+  final Value<int> acceptedViewed;
+  final Value<int> rejectedViewed;
+  const MediaContentModerationCompletedNotificationTableCompanion({
+    this.id = const Value.absent(),
+    this.acceptedViewed = const Value.absent(),
+    this.rejectedViewed = const Value.absent(),
+  });
+  MediaContentModerationCompletedNotificationTableCompanion.insert({
+    this.id = const Value.absent(),
+    this.acceptedViewed = const Value.absent(),
+    this.rejectedViewed = const Value.absent(),
+  });
+  static Insertable<MediaContentModerationCompletedNotificationTableData>
+      custom({
+    Expression<int>? id,
+    Expression<int>? acceptedViewed,
+    Expression<int>? rejectedViewed,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (acceptedViewed != null) 'accepted_viewed': acceptedViewed,
+      if (rejectedViewed != null) 'rejected_viewed': rejectedViewed,
+    });
+  }
+
+  MediaContentModerationCompletedNotificationTableCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? acceptedViewed,
+      Value<int>? rejectedViewed}) {
+    return MediaContentModerationCompletedNotificationTableCompanion(
+      id: id ?? this.id,
+      acceptedViewed: acceptedViewed ?? this.acceptedViewed,
+      rejectedViewed: rejectedViewed ?? this.rejectedViewed,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (acceptedViewed.present) {
+      map['accepted_viewed'] = Variable<int>(acceptedViewed.value);
+    }
+    if (rejectedViewed.present) {
+      map['rejected_viewed'] = Variable<int>(rejectedViewed.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer(
+            'MediaContentModerationCompletedNotificationTableCompanion(')
+          ..write('id: $id, ')
+          ..write('acceptedViewed: $acceptedViewed, ')
+          ..write('rejectedViewed: $rejectedViewed')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
   _$AccountBackgroundDatabase(QueryExecutor e) : super(e);
   late final $AccountBackgroundTable accountBackground =
@@ -1923,6 +2176,9 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
   late final $NewReceivedLikesAvailableTable newReceivedLikesAvailable =
       $NewReceivedLikesAvailableTable(this);
   late final $NewsTable news = $NewsTable(this);
+  late final $MediaContentModerationCompletedNotificationTableTable
+      mediaContentModerationCompletedNotificationTable =
+      $MediaContentModerationCompletedNotificationTableTable(this);
   late final DaoLocalNotificationSettings daoLocalNotificationSettings =
       DaoLocalNotificationSettings(this as AccountBackgroundDatabase);
   late final DaoUserInterfaceSettings daoUserInterfaceSettings =
@@ -1936,6 +2192,10 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
   late final DaoNewReceivedLikesAvailable daoNewReceivedLikesAvailable =
       DaoNewReceivedLikesAvailable(this as AccountBackgroundDatabase);
   late final DaoNews daoNews = DaoNews(this as AccountBackgroundDatabase);
+  late final DaoMediaContentModerationCompletedNotificationTable
+      daoMediaContentModerationCompletedNotificationTable =
+      DaoMediaContentModerationCompletedNotificationTable(
+          this as AccountBackgroundDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1946,6 +2206,7 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
         conversationsBackground,
         newMessageNotification,
         newReceivedLikesAvailable,
-        news
+        news,
+        mediaContentModerationCompletedNotificationTable
       ];
 }

@@ -9,11 +9,11 @@ class NotificationSettingsData with _$NotificationSettingsData {
     @Default(false) bool areNotificationsEnabled,
     @Default(true) bool categoryEnabledMessages,
     @Default(true) bool categoryEnabledLikes,
-    @Default(true) bool categoryEnabledInitialContentModeration,
+    @Default(true) bool categoryEnabledMediaContentModerationCompleted,
     @Default(true) bool categoryEnabledNews,
     @Default(true) bool categorySystemEnabledMessages,
     @Default(true) bool categorySystemEnabledLikes,
-    @Default(true) bool categorySystemEnabledInitialContentModeration,
+    @Default(true) bool categorySystemEnabledMediaContentModerationCompleted,
     @Default(true) bool categorySystemEnabledNews,
   }) = _NotificationSettingsData;
 }

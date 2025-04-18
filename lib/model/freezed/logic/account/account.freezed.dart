@@ -38,7 +38,7 @@ mixin _$AccountBlocData {
 abstract class _AccountBlocData extends AccountBlocData {
   factory _AccountBlocData({
     String? email,
-    AccountState? accountState,
+    required AccountState? accountState,
     required Permissions permissions,
     required ProfileVisibility visibility,
   }) = _$AccountBlocDataImpl;
@@ -49,7 +49,7 @@ abstract class _AccountBlocData extends AccountBlocData {
 class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixin {
   _$AccountBlocDataImpl({
     this.email,
-    this.accountState,
+    required this.accountState,
     required this.permissions,
     required this.visibility,
   }) : super._();

@@ -27,11 +27,11 @@ class DaoLocalNotificationSettings extends DatabaseAccessor<AccountBackgroundDat
     );
   }
 
-  Future<void> updateInitialContentModeration(bool value) async {
+  Future<void> updateMediaContentModerationCompleted(bool value) async {
     await into(accountBackground).insertOnConflictUpdate(
       AccountBackgroundCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
-        localNotificationSettingInitialContentModeration: Value(value),
+        localNotificationSettingMediaContentModerationCompleted: Value(value),
       ),
     );
   }
@@ -49,8 +49,8 @@ class DaoLocalNotificationSettings extends DatabaseAccessor<AccountBackgroundDat
     watchColumn((r) => r.localNotificationSettingMessages);
   Stream<bool?> watchLikes() =>
     watchColumn((r) => r.localNotificationSettingLikes);
-  Stream<bool?> watchInitialContentModeration() =>
-    watchColumn((r) => r.localNotificationSettingInitialContentModeration);
+  Stream<bool?> watchMediaContentModerationCompleted() =>
+    watchColumn((r) => r.localNotificationSettingMediaContentModerationCompleted);
   Stream<bool?> watchNewsItemAvailable() =>
     watchColumn((r) => r.localNotificationSettingNewsItemAvailable);
 }

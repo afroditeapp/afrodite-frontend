@@ -963,13 +963,13 @@
   "@news_list_screen_title": {
     "description": "Title for news list screen title"
   },
-  "notification_category_initial_content_moderation": "Initial image moderation status",
-  "@notification_category_initial_content_moderation": {
-    "description": "Title for notification category initial content moderation"
-  },
   "notification_category_likes": "Chat requests",
   "@notification_category_likes": {
     "description": "Title for notification category likes"
+  },
+  "notification_category_media_content_moderation_completed": "Image moderation",
+  "@notification_category_media_content_moderation_completed": {
+    "description": "Title for notification category media content moderation completed"
   },
   "notification_category_messages": "Messages",
   "@notification_category_messages": {
@@ -979,14 +979,6 @@
   "@notification_category_news_item_available": {
     "description": "Title for notification category news item available"
   },
-  "notification_initial_content_moderation_accepted": "Profile images accepted",
-  "@notification_initial_content_moderation_accepted": {
-    "description": "Title for initial content moderation notification when some content is accepted"
-  },
-  "notification_initial_content_moderation_rejected": "Some profile image was rejected",
-  "@notification_initial_content_moderation_rejected": {
-    "description": "Title for initial content moderation notification when some content is rejected"
-  },
   "notification_like_received_multiple": "Chat requests received",
   "@notification_like_received_multiple": {
     "description": "Title for like received notification when multiple likes is received"
@@ -994,6 +986,14 @@
   "notification_like_received_single": "Chat request received",
   "@notification_like_received_single": {
     "description": "Title for like received notification when single like is received"
+  },
+  "notification_media_content_accepted": "Image accepted",
+  "@notification_media_content_accepted": {
+    "description": "Title for media content accepted notification"
+  },
+  "notification_media_content_rejected": "Image rejected",
+  "@notification_media_content_rejected": {
+    "description": "Title for media content rejected notification"
   },
   "notification_message_received_multiple": "{p0} sent messages",
   "@notification_message_received_multiple": {

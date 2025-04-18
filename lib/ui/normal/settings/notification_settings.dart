@@ -90,7 +90,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
       final settings = [
         messagesSlider(context, state),
         likesSlider(context, state),
-        initialContentModerationSlider(context, state),
+        mediaContentModerationCompletedSlider(context, state),
         if (features.features.news) newsSlider(context, state),
       ];
       if (Platform.isAndroid) {
@@ -142,14 +142,14 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     return (category, widget);
   }
 
-  (NotificationCategory, Widget) initialContentModerationSlider(BuildContext context, NotificationSettingsData state) {
-    const category = NotificationCategoryInitialContentModeration();
+  (NotificationCategory, Widget) mediaContentModerationCompletedSlider(BuildContext context, NotificationSettingsData state) {
+    const category = NotificationCategoryMediaContentModerationCompleted();
     final widget = categorySwitch(
       title: category.title,
-      isEnabled: state.categoryEnabledInitialContentModeration,
-      isEnabledFromSystemSettings: state.categorySystemEnabledInitialContentModeration,
+      isEnabled: state.categoryEnabledMediaContentModerationCompleted,
+      isEnabledFromSystemSettings: state.categorySystemEnabledMediaContentModerationCompleted,
       onChanged: (value) {
-        context.read<NotificationSettingsBloc>().add(ToggleInitialContentModeration());
+        context.read<NotificationSettingsBloc>().add(ToggleMediaContentModerationCompleted());
       },
     );
     return (category, widget);

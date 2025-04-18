@@ -241,19 +241,29 @@ Future<void> _handlePushNotificationReceivedLikesChanged(NewReceivedLikesCountRe
   await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(r.v, r.c));
 }
 
-Future<void> _handlePushNotificationMediaContentModerationCompleted(MediaContentModerationCompletedNotification? s, AccountBackgroundDatabaseManager accountBackgroundDb) async {
-  if (s == null) {
+Future<void> _handlePushNotificationMediaContentModerationCompleted(
+  MediaContentModerationCompletedNotification? notification,
+  AccountBackgroundDatabaseManager accountBackgroundDb,
+) async {
+  if (notification == null) {
     return;
   }
 
-  // TODO(prod): Update
+  final showAccepted = await accountBackgroundDb.accountData(
+    (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.accepted)
+  ).ok() ?? false;
 
-  // final simpleStatus = switch (s.accepted) {
-  //   true => ModerationRequestStateSimple.accepted,
-  //   false => ModerationRequestStateSimple.rejected,
-  // };
+  if (showAccepted) {
+    await NotificationMediaContentModerationCompleted.getInstance().show(ModerationCompletedState.accepted, accountBackgroundDb);
+  }
 
-  // await NotificationModerationRequestStatus.getInstance().show(simpleStatus, accountBackgroundDb);
+  final showRejected = await accountBackgroundDb.accountData(
+    (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.rejected)
+  ).ok() ?? false;
+
+  if (showRejected) {
+    await NotificationMediaContentModerationCompleted.getInstance().show(ModerationCompletedState.rejected, accountBackgroundDb);
+  }
 }
 
 Future<void> _handlePushNotificationNewsChanged(UnreadNewsCountResult? r, AccountBackgroundDatabaseManager accountBackgroundDb) async {

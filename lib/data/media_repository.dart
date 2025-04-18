@@ -128,23 +128,32 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     yield* task.sendImageToSlot(imgBytes, slot, secureCapture: secureCapture);
   }
 
-  // TODO(prod): Consider sync version for moderation request state
-  // as notification does not show if the event is lost
+  Future<void> handleMediaContentModerationCompletedEvent() async {
+    final notification = await api.media((api) => api.postGetMediaContentModerationCompletedNotification()).ok();
 
-  Future<void> handleInitialModerationCompletedEvent() async {
-    final r = await api.media((api) => api.postGetMediaContentModerationCompletedNotification()).ok();
-    final accepted = r?.accepted;
-    final rejected = r?.rejected;
-    if (accepted != null && rejected != null) {
-      // TODO(prod): Update
-
-      // final simpleStatus = switch (s) {
-      //   true => ModerationRequestStateSimple.accepted,
-      //   false => ModerationRequestStateSimple.rejected,
-      // };
-
-      // await NotificationModerationRequestStatus.getInstance().show(simpleStatus, accountBackgroundDb);
+    if (notification == null) {
+      return;
     }
+
+    final showAccepted = await accountBackgroundDb.accountData(
+      (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.accepted)
+    ).ok() ?? false;
+
+    if (showAccepted) {
+      await NotificationMediaContentModerationCompleted.getInstance().show(ModerationCompletedState.accepted, accountBackgroundDb);
+    }
+
+    final showRejected = await accountBackgroundDb.accountData(
+      (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldRejectedNotificationBeShown(notification.rejected)
+    ).ok() ?? false;
+
+    if (showRejected) {
+      await NotificationMediaContentModerationCompleted.getInstance().show(ModerationCompletedState.rejected, accountBackgroundDb);
+    }
+
+    await api.mediaAction((api) => api.postMarkMediaContentModerationCompletedNotificationViewed(
+      MediaContentModerationCompletedNotificationViewed(accepted: notification.accepted, rejected: notification.rejected),
+    )).ok();
   }
 
   Future<Result<void, void>> setProfileContent(SetProfileContent imgInfo) =>

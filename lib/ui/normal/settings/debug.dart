@@ -47,10 +47,6 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
       openConversationDebugScreen(context, 5),
     ));
 
-    settings.add(Setting.createSetting(Icons.notification_add, "Notification: Image moderation status", () =>
-      NotificationModerationRequestStatus.getInstance().show(ModerationRequestStateSimple.accepted, accountBackgroundDb)
-    ));
-
     settings.add(Setting.createSetting(Icons.notification_add, "Notification: Likes", () =>
       NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb)
     ));

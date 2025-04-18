@@ -4,6 +4,7 @@ import 'package:async/async.dart' show StreamExtensions;
 import 'package:database/src/background/account/dao_local_notification_settings.dart';
 import 'package:database/src/background/account/dao_user_interface_settings.dart';
 import 'package:database/src/background/conversations_table.dart';
+import 'package:database/src/background/media_content_moderation_completed_notification_table.dart';
 import 'package:database/src/background/new_received_likes_available_table.dart';
 import 'package:database/src/background/new_message_notification_table.dart';
 import 'package:database/src/background/news_table.dart';
@@ -28,7 +29,7 @@ class AccountBackground extends Table {
 
   BoolColumn get localNotificationSettingMessages => boolean().nullable()();
   BoolColumn get localNotificationSettingLikes => boolean().nullable()();
-  BoolColumn get localNotificationSettingInitialContentModeration => boolean().nullable()();
+  BoolColumn get localNotificationSettingMediaContentModerationCompleted => boolean().nullable()();
   BoolColumn get localNotificationSettingNewsItemAvailable => boolean().nullable()();
 
   // DaoUserInterfaceSettings
@@ -44,6 +45,7 @@ class AccountBackground extends Table {
     NewMessageNotification,
     NewReceivedLikesAvailable,
     News,
+    MediaContentModerationCompletedNotificationTable,
   ],
   daos: [
     // Related to AccountBackground table
@@ -59,6 +61,8 @@ class AccountBackground extends Table {
     DaoNewReceivedLikesAvailable,
     // Related to News table
     DaoNews,
+    // Related to MediaContentModerationCompletedNotificationTable
+    DaoMediaContentModerationCompletedNotificationTable,
   ],
 )
 class AccountBackgroundDatabase extends _$AccountBackgroundDatabase {

@@ -9,8 +9,9 @@ class NotificationId {
 
 enum NotificationIdStatic {
   likeReceived(id: NotificationId(0)),
-  moderationRequestStatus(id: NotificationId(1)),
-  newsItemAvailable(id: NotificationId(2)),
+  mediaContentModerationAccepted(id: NotificationId(1)),
+  mediaContentModerationRejected(id: NotificationId(2)),
+  newsItemAvailable(id: NotificationId(3)),
   lastStaticId(id: NotificationId(1000000));
 
   final NotificationId id;
