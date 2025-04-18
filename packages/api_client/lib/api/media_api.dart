@@ -323,6 +323,47 @@ class MediaApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /media_api/get_media_app_notification_settings' operation and returns the [Response].
+  Future<Response> getMediaAppNotificationSettingsWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/get_media_app_notification_settings';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<MediaAppNotificationSettings?> getMediaAppNotificationSettings() async {
+    final response = await getMediaAppNotificationSettingsWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MediaAppNotificationSettings',) as MediaAppNotificationSettings;
+    
+    }
+    return null;
+  }
+
   /// Get my profile and security content
   ///
   /// Note: This method returns the HTTP [Response].
@@ -498,12 +539,12 @@ class MediaApi {
     return null;
   }
 
-  /// Get initial content moderation completed result.
+  /// Get media content moderation completed notification.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> postGetInitialContentModerationCompletedWithHttpInfo() async {
+  Future<Response> postGetMediaContentModerationCompletedNotificationWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/initial_content_moderation_completed_result';
+    final path = r'/media_api/media_content_moderation_completed_notification';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -526,9 +567,9 @@ class MediaApi {
     );
   }
 
-  /// Get initial content moderation completed result.
-  Future<InitialContentModerationCompletedResult?> postGetInitialContentModerationCompleted() async {
-    final response = await postGetInitialContentModerationCompletedWithHttpInfo();
+  /// Get media content moderation completed notification.
+  Future<MediaContentModerationCompletedNotification?> postGetMediaContentModerationCompletedNotification() async {
+    final response = await postGetMediaContentModerationCompletedNotificationWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -536,10 +577,93 @@ class MediaApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'InitialContentModerationCompletedResult',) as InitialContentModerationCompletedResult;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MediaContentModerationCompletedNotification',) as MediaContentModerationCompletedNotification;
     
     }
     return null;
+  }
+
+  /// The viewed values must be updated to prevent WebSocket code from sending unnecessary event about new notification.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [MediaContentModerationCompletedNotificationViewed] mediaContentModerationCompletedNotificationViewed (required):
+  Future<Response> postMarkMediaContentModerationCompletedNotificationViewedWithHttpInfo(MediaContentModerationCompletedNotificationViewed mediaContentModerationCompletedNotificationViewed,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/mark_media_content_moderation_completed_notification_viewed';
+
+    // ignore: prefer_final_locals
+    Object? postBody = mediaContentModerationCompletedNotificationViewed;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// The viewed values must be updated to prevent WebSocket code from sending unnecessary event about new notification.
+  ///
+  /// Parameters:
+  ///
+  /// * [MediaContentModerationCompletedNotificationViewed] mediaContentModerationCompletedNotificationViewed (required):
+  Future<void> postMarkMediaContentModerationCompletedNotificationViewed(MediaContentModerationCompletedNotificationViewed mediaContentModerationCompletedNotificationViewed,) async {
+    final response = await postMarkMediaContentModerationCompletedNotificationViewedWithHttpInfo(mediaContentModerationCompletedNotificationViewed,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'POST /media_api/post_media_app_notification_settings' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [MediaAppNotificationSettings] mediaAppNotificationSettings (required):
+  Future<Response> postMediaAppNotificationSettingsWithHttpInfo(MediaAppNotificationSettings mediaAppNotificationSettings,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/post_media_app_notification_settings';
+
+    // ignore: prefer_final_locals
+    Object? postBody = mediaAppNotificationSettings;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [MediaAppNotificationSettings] mediaAppNotificationSettings (required):
+  Future<void> postMediaAppNotificationSettings(MediaAppNotificationSettings mediaAppNotificationSettings,) async {
+    final response = await postMediaAppNotificationSettingsWithHttpInfo(mediaAppNotificationSettings,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Report profile content.

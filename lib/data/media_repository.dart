@@ -132,15 +132,18 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   // as notification does not show if the event is lost
 
   Future<void> handleInitialModerationCompletedEvent() async {
-    final r = await api.media((api) => api.postGetInitialContentModerationCompleted()).ok();
-    final s = r?.accepted;
-    if (s != null) {
-      final simpleStatus = switch (s) {
-        true => ModerationRequestStateSimple.accepted,
-        false => ModerationRequestStateSimple.rejected,
-      };
+    final r = await api.media((api) => api.postGetMediaContentModerationCompletedNotification()).ok();
+    final accepted = r?.accepted;
+    final rejected = r?.rejected;
+    if (accepted != null && rejected != null) {
+      // TODO(prod): Update
 
-      await NotificationModerationRequestStatus.getInstance().show(simpleStatus, accountBackgroundDb);
+      // final simpleStatus = switch (s) {
+      //   true => ModerationRequestStateSimple.accepted,
+      //   false => ModerationRequestStateSimple.rejected,
+      // };
+
+      // await NotificationModerationRequestStatus.getInstance().show(simpleStatus, accountBackgroundDb);
     }
   }
 

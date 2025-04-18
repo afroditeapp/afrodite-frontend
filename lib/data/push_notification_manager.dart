@@ -130,7 +130,7 @@ class PushNotificationManager extends AppSingleton {
         log.info("FCM token changed, skipping FCM token update because server API is not available");
         return;
       }
-      final result = await api.chat((api) => api.postSetDeviceToken(newToken)).ok();
+      final result = await api.accountCommon((api) => api.postSetDeviceToken(newToken)).ok();
       if (result != null) {
         log.info("FCM token sending successful");
         final dbResult = await BackgroundDatabaseManager.getInstance().commonAction((db) => db.updateFcmDeviceTokenAndPendingNotificationToken(newToken, result));
@@ -176,8 +176,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   log.info("Handling FCM background message");
 
-  // TODO(microservice): Use chat server URL instead.
-  final chatUrl = await db.commonStreamSingleOrDefault(
+  final accountUrl = await db.commonStreamSingleOrDefault(
     (db) => db.watchServerUrlAccount(),
     defaultServerUrlAccount(),
   );
@@ -194,10 +193,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
   final accountBackgroundDb = db.getAccountBackgroundDatabaseManager(currentAccountId);
 
-  final apiProvider = ApiProvider(chatUrl);
+  final apiProvider = ApiProvider(accountUrl);
   await apiProvider.init();
-  final ApiWrapper<ChatApi> chatApi = ApiWrapper(apiProvider.chat, NoConnection());
-  final result = await chatApi.requestValue((api) => api.postGetPendingNotification(pendingNotificationToken), logError: false);
+  final ApiWrapper<CommonApi> commonApi = ApiWrapper(apiProvider.common, NoConnection());
+  final result = await commonApi.requestValue((api) => api.postGetPendingNotification(pendingNotificationToken), logError: false);
   switch (result) {
     case Ok(:final v):
       final manager = NotificationManager.getInstance();
@@ -213,7 +212,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         await _handlePushNotificationReceivedLikesChanged(v.receivedLikesChanged, accountBackgroundDb);
       }
       if ((v.value & 0x4) == 0x4) {
-        await _handlePushNotificationInitialContentModerationCompleted(v.initialContentModerationCompleted, accountBackgroundDb);
+        await _handlePushNotificationMediaContentModerationCompleted(v.mediaContentModerationCompleted, accountBackgroundDb);
       }
       if ((v.value & 0x8) == 0x8) {
         await _handlePushNotificationNewsChanged(v.newsChanged, accountBackgroundDb);
@@ -242,17 +241,19 @@ Future<void> _handlePushNotificationReceivedLikesChanged(NewReceivedLikesCountRe
   await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(r.v, r.c));
 }
 
-Future<void> _handlePushNotificationInitialContentModerationCompleted(InitialContentModerationCompletedResult? s, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+Future<void> _handlePushNotificationMediaContentModerationCompleted(MediaContentModerationCompletedNotification? s, AccountBackgroundDatabaseManager accountBackgroundDb) async {
   if (s == null) {
     return;
   }
 
-  final simpleStatus = switch (s.accepted) {
-    true => ModerationRequestStateSimple.accepted,
-    false => ModerationRequestStateSimple.rejected,
-  };
+  // TODO(prod): Update
 
-  await NotificationModerationRequestStatus.getInstance().show(simpleStatus, accountBackgroundDb);
+  // final simpleStatus = switch (s.accepted) {
+  //   true => ModerationRequestStateSimple.accepted,
+  //   false => ModerationRequestStateSimple.rejected,
+  // };
+
+  // await NotificationModerationRequestStatus.getInstance().show(simpleStatus, accountBackgroundDb);
 }
 
 Future<void> _handlePushNotificationNewsChanged(UnreadNewsCountResult? r, AccountBackgroundDatabaseManager accountBackgroundDb) async {

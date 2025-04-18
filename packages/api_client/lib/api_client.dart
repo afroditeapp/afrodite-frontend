@@ -190,6 +190,8 @@ class ApiClient {
           return AccessibleAccount.fromJson(value);
         case 'Account':
           return Account.fromJson(value);
+        case 'AccountAppNotificationSettings':
+          return AccountAppNotificationSettings.fromJson(value);
         case 'AccountBanReasonCategory':
           return AccountBanReasonCategory.fromJson(value);
         case 'AccountBanReasonDetails':
@@ -232,6 +234,10 @@ class ApiClient {
           return AttributeValueOrderModeTypeTransformer().decode(value);
         case 'AuthPair':
           return AuthPair.fromJson(value);
+        case 'AutomaticProfileSearchCompletedNotification':
+          return AutomaticProfileSearchCompletedNotification.fromJson(value);
+        case 'AutomaticProfileSearchCompletedNotificationViewed':
+          return AutomaticProfileSearchCompletedNotificationViewed.fromJson(value);
         case 'BackendConfig':
           return BackendConfig.fromJson(value);
         case 'BackendVersion':
@@ -240,6 +246,8 @@ class ApiClient {
           return BooleanSetting.fromJson(value);
         case 'BotConfig':
           return BotConfig.fromJson(value);
+        case 'ChatAppNotificationSettings':
+          return ChatAppNotificationSettings.fromJson(value);
         case 'ClientConfig':
           return ClientConfig.fromJson(value);
         case 'ClientConfigSyncVersion':
@@ -390,8 +398,6 @@ class ApiClient {
           return GetReportList.fromJson(value);
         case 'GroupValues':
           return GroupValues.fromJson(value);
-        case 'InitialContentModerationCompletedResult':
-          return InitialContentModerationCompletedResult.fromJson(value);
         case 'IpAddressInfo':
           return IpAddressInfo.fromJson(value);
         case 'Language':
@@ -428,6 +434,12 @@ class ApiClient {
           return MatchesSyncVersion.fromJson(value);
         case 'MaxDistanceKm':
           return MaxDistanceKm.fromJson(value);
+        case 'MediaAppNotificationSettings':
+          return MediaAppNotificationSettings.fromJson(value);
+        case 'MediaContentModerationCompletedNotification':
+          return MediaContentModerationCompletedNotification.fromJson(value);
+        case 'MediaContentModerationCompletedNotificationViewed':
+          return MediaContentModerationCompletedNotificationViewed.fromJson(value);
         case 'MediaContentSyncVersion':
           return MediaContentSyncVersion.fromJson(value);
         case 'MediaContentType':
@@ -494,6 +506,8 @@ class ApiClient {
           return Profile.fromJson(value);
         case 'ProfileAgeCounts':
           return ProfileAgeCounts.fromJson(value);
+        case 'ProfileAppNotificationSettings':
+          return ProfileAppNotificationSettings.fromJson(value);
         case 'ProfileAttributeFilterValue':
           return ProfileAttributeFilterValue.fromJson(value);
         case 'ProfileAttributeFilterValueUpdate':
@@ -550,6 +564,10 @@ class ApiClient {
           return ProfileStatisticsHistoryValueTypeTypeTransformer().decode(value);
         case 'ProfileSyncVersion':
           return ProfileSyncVersion.fromJson(value);
+        case 'ProfileTextModerationCompletedNotification':
+          return ProfileTextModerationCompletedNotification.fromJson(value);
+        case 'ProfileTextModerationCompletedNotificationViewed':
+          return ProfileTextModerationCompletedNotificationViewed.fromJson(value);
         case 'ProfileTextModerationInfo':
           return ProfileTextModerationInfo.fromJson(value);
         case 'ProfileTextModerationRejectedReasonCategory':

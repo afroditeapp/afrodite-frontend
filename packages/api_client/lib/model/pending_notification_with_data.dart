@@ -13,15 +13,20 @@ part of openapi.api;
 class PendingNotificationWithData {
   /// Returns a new [PendingNotificationWithData] instance.
   PendingNotificationWithData({
-    this.initialContentModerationCompleted,
+    this.automaticProfileSearchCompleted,
+    this.mediaContentModerationCompleted,
     this.newMessageReceivedFrom = const [],
     this.newsChanged,
+    this.profileTextModerationCompleted,
     this.receivedLikesChanged,
     required this.value,
   });
 
-  /// Data for INITIAL_CONTENT_MODERATION_COMPLETED notification.
-  InitialContentModerationCompletedResult? initialContentModerationCompleted;
+  /// Data for AUTOMATIC_PROFILE_SEARCH_COMPLETED notification.
+  AutomaticProfileSearchCompletedNotification? automaticProfileSearchCompleted;
+
+  /// Data for MEDIA_CONTENT_MODERATION_COMPLETED notification.
+  MediaContentModerationCompletedNotification? mediaContentModerationCompleted;
 
   /// Data for NEW_MESSAGE notification.  List of account IDs which have sent a new message.
   List<AccountId>? newMessageReceivedFrom;
@@ -29,38 +34,50 @@ class PendingNotificationWithData {
   /// Data for NEWS_CHANGED notification.
   UnreadNewsCountResult? newsChanged;
 
+  /// Data for PROFILE_TEXT_MODERATION_COMPLETED notification.
+  ProfileTextModerationCompletedNotification? profileTextModerationCompleted;
+
   /// Data for RECEIVED_LIKES_CHANGED notification.
   NewReceivedLikesCountResult? receivedLikesChanged;
 
-  /// Pending notification (or multiple notifications which each have different type) not yet received notifications which push notification requests client to download.  The integer is a bitflag.  - const NEW_MESSAGE = 0x1; - const RECEIVED_LIKES_CHANGED = 0x2; - const INITIAL_CONTENT_MODERATION_COMPLETED = 0x4; - const NEWS_CHANGED = 0x8; 
+  /// Pending notification (or multiple notifications which each have different type) not yet received notifications which push notification requests client to download.  The integer is a bitflag.  - const NEW_MESSAGE = 0x1; - const RECEIVED_LIKES_CHANGED = 0x2; - const MEDIA_CONTENT_MODERATION_COMPLETED = 0x4; - const NEWS_CHANGED = 0x8; - const PROFILE_TEXT_MODERATION_COMPLETED = 0x10; - const AUTOMATIC_PROFILE_SEARCH_COMPLETED = 0x20; 
   int value;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PendingNotificationWithData &&
-    other.initialContentModerationCompleted == initialContentModerationCompleted &&
+    other.automaticProfileSearchCompleted == automaticProfileSearchCompleted &&
+    other.mediaContentModerationCompleted == mediaContentModerationCompleted &&
     _deepEquality.equals(other.newMessageReceivedFrom, newMessageReceivedFrom) &&
     other.newsChanged == newsChanged &&
+    other.profileTextModerationCompleted == profileTextModerationCompleted &&
     other.receivedLikesChanged == receivedLikesChanged &&
     other.value == value;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (initialContentModerationCompleted == null ? 0 : initialContentModerationCompleted!.hashCode) +
+    (automaticProfileSearchCompleted == null ? 0 : automaticProfileSearchCompleted!.hashCode) +
+    (mediaContentModerationCompleted == null ? 0 : mediaContentModerationCompleted!.hashCode) +
     (newMessageReceivedFrom == null ? 0 : newMessageReceivedFrom!.hashCode) +
     (newsChanged == null ? 0 : newsChanged!.hashCode) +
+    (profileTextModerationCompleted == null ? 0 : profileTextModerationCompleted!.hashCode) +
     (receivedLikesChanged == null ? 0 : receivedLikesChanged!.hashCode) +
     (value.hashCode);
 
   @override
-  String toString() => 'PendingNotificationWithData[initialContentModerationCompleted=$initialContentModerationCompleted, newMessageReceivedFrom=$newMessageReceivedFrom, newsChanged=$newsChanged, receivedLikesChanged=$receivedLikesChanged, value=$value]';
+  String toString() => 'PendingNotificationWithData[automaticProfileSearchCompleted=$automaticProfileSearchCompleted, mediaContentModerationCompleted=$mediaContentModerationCompleted, newMessageReceivedFrom=$newMessageReceivedFrom, newsChanged=$newsChanged, profileTextModerationCompleted=$profileTextModerationCompleted, receivedLikesChanged=$receivedLikesChanged, value=$value]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.initialContentModerationCompleted != null) {
-      json[r'initial_content_moderation_completed'] = this.initialContentModerationCompleted;
+    if (this.automaticProfileSearchCompleted != null) {
+      json[r'automatic_profile_search_completed'] = this.automaticProfileSearchCompleted;
     } else {
-      json[r'initial_content_moderation_completed'] = null;
+      json[r'automatic_profile_search_completed'] = null;
+    }
+    if (this.mediaContentModerationCompleted != null) {
+      json[r'media_content_moderation_completed'] = this.mediaContentModerationCompleted;
+    } else {
+      json[r'media_content_moderation_completed'] = null;
     }
     if (this.newMessageReceivedFrom != null) {
       json[r'new_message_received_from'] = this.newMessageReceivedFrom;
@@ -71,6 +88,11 @@ class PendingNotificationWithData {
       json[r'news_changed'] = this.newsChanged;
     } else {
       json[r'news_changed'] = null;
+    }
+    if (this.profileTextModerationCompleted != null) {
+      json[r'profile_text_moderation_completed'] = this.profileTextModerationCompleted;
+    } else {
+      json[r'profile_text_moderation_completed'] = null;
     }
     if (this.receivedLikesChanged != null) {
       json[r'received_likes_changed'] = this.receivedLikesChanged;
@@ -100,9 +122,11 @@ class PendingNotificationWithData {
       }());
 
       return PendingNotificationWithData(
-        initialContentModerationCompleted: InitialContentModerationCompletedResult.fromJson(json[r'initial_content_moderation_completed']),
+        automaticProfileSearchCompleted: AutomaticProfileSearchCompletedNotification.fromJson(json[r'automatic_profile_search_completed']),
+        mediaContentModerationCompleted: MediaContentModerationCompletedNotification.fromJson(json[r'media_content_moderation_completed']),
         newMessageReceivedFrom: AccountId.listFromJson(json[r'new_message_received_from']),
         newsChanged: UnreadNewsCountResult.fromJson(json[r'news_changed']),
+        profileTextModerationCompleted: ProfileTextModerationCompletedNotification.fromJson(json[r'profile_text_moderation_completed']),
         receivedLikesChanged: NewReceivedLikesCountResult.fromJson(json[r'received_likes_changed']),
         value: mapValueOfType<int>(json, r'value')!,
       );

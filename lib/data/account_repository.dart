@@ -157,7 +157,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       await profile.reloadMyProfile();
     } else if (event.event == EventType.newsCountChanged) {
       await receiveNewsCount();
-    } else if (event.event == EventType.initialContentModerationCompleted) {
+    } else if (event.event == EventType.mediaContentModerationCompleted) {
       await media.handleInitialModerationCompletedEvent();
     } else if (event.event == EventType.mediaContentChanged) {
       await media.reloadMyMediaContent();

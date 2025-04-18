@@ -26,6 +26,7 @@ lib/model/accepted_profile_ages.dart
 lib/model/access_token.dart
 lib/model/accessible_account.dart
 lib/model/account.dart
+lib/model/account_app_notification_settings.dart
 lib/model/account_ban_reason_category.dart
 lib/model/account_ban_reason_details.dart
 lib/model/account_content.dart
@@ -47,10 +48,13 @@ lib/model/attribute_order_mode.dart
 lib/model/attribute_value.dart
 lib/model/attribute_value_order_mode.dart
 lib/model/auth_pair.dart
+lib/model/automatic_profile_search_completed_notification.dart
+lib/model/automatic_profile_search_completed_notification_viewed.dart
 lib/model/backend_config.dart
 lib/model/backend_version.dart
 lib/model/boolean_setting.dart
 lib/model/bot_config.dart
+lib/model/chat_app_notification_settings.dart
 lib/model/client_config.dart
 lib/model/client_config_sync_version.dart
 lib/model/client_features_config.dart
@@ -126,7 +130,6 @@ lib/model/get_profile_text_pending_moderation_list.dart
 lib/model/get_profile_text_state.dart
 lib/model/get_report_list.dart
 lib/model/group_values.dart
-lib/model/initial_content_moderation_completed_result.dart
 lib/model/ip_address_info.dart
 lib/model/language.dart
 lib/model/last_seen_time_filter.dart
@@ -145,6 +148,9 @@ lib/model/matches_iterator_session_id.dart
 lib/model/matches_page.dart
 lib/model/matches_sync_version.dart
 lib/model/max_distance_km.dart
+lib/model/media_app_notification_settings.dart
+lib/model/media_content_moderation_completed_notification.dart
+lib/model/media_content_moderation_completed_notification_viewed.dart
 lib/model/media_content_sync_version.dart
 lib/model/media_content_type.dart
 lib/model/message_number.dart
@@ -178,6 +184,7 @@ lib/model/post_moderate_profile_text.dart
 lib/model/process_report.dart
 lib/model/profile.dart
 lib/model/profile_age_counts.dart
+lib/model/profile_app_notification_settings.dart
 lib/model/profile_attribute_filter_value.dart
 lib/model/profile_attribute_filter_value_update.dart
 lib/model/profile_attribute_hash.dart
@@ -206,6 +213,8 @@ lib/model/profile_search_age_range.dart
 lib/model/profile_statistics_history_value.dart
 lib/model/profile_statistics_history_value_type.dart
 lib/model/profile_sync_version.dart
+lib/model/profile_text_moderation_completed_notification.dart
+lib/model/profile_text_moderation_completed_notification_viewed.dart
 lib/model/profile_text_moderation_info.dart
 lib/model/profile_text_moderation_rejected_reason_category.dart
 lib/model/profile_text_moderation_rejected_reason_details.dart

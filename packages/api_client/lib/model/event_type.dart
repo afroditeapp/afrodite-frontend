@@ -35,9 +35,11 @@ class EventType {
   static const clientConfigChanged = EventType._(r'ClientConfigChanged');
   static const profileChanged = EventType._(r'ProfileChanged');
   static const newsCountChanged = EventType._(r'NewsCountChanged');
-  static const initialContentModerationCompleted = EventType._(r'InitialContentModerationCompleted');
+  static const mediaContentModerationCompleted = EventType._(r'MediaContentModerationCompleted');
   static const mediaContentChanged = EventType._(r'MediaContentChanged');
   static const scheduledMaintenanceStatus = EventType._(r'ScheduledMaintenanceStatus');
+  static const profileTextModerationCompleted = EventType._(r'ProfileTextModerationCompleted');
+  static const automaticProfileSearchCompleted = EventType._(r'AutomaticProfileSearchCompleted');
 
   /// List of all possible values in this [enum][EventType].
   static const values = <EventType>[
@@ -53,9 +55,11 @@ class EventType {
     clientConfigChanged,
     profileChanged,
     newsCountChanged,
-    initialContentModerationCompleted,
+    mediaContentModerationCompleted,
     mediaContentChanged,
     scheduledMaintenanceStatus,
+    profileTextModerationCompleted,
+    automaticProfileSearchCompleted,
   ];
 
   static EventType? fromJson(dynamic value) => EventTypeTypeTransformer().decode(value);
@@ -106,9 +110,11 @@ class EventTypeTypeTransformer {
         case r'ClientConfigChanged': return EventType.clientConfigChanged;
         case r'ProfileChanged': return EventType.profileChanged;
         case r'NewsCountChanged': return EventType.newsCountChanged;
-        case r'InitialContentModerationCompleted': return EventType.initialContentModerationCompleted;
+        case r'MediaContentModerationCompleted': return EventType.mediaContentModerationCompleted;
         case r'MediaContentChanged': return EventType.mediaContentChanged;
         case r'ScheduledMaintenanceStatus': return EventType.scheduledMaintenanceStatus;
+        case r'ProfileTextModerationCompleted': return EventType.profileTextModerationCompleted;
+        case r'AutomaticProfileSearchCompleted': return EventType.automaticProfileSearchCompleted;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');
