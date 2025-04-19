@@ -963,11 +963,23 @@
   "@news_list_screen_title": {
     "description": "Title for news list screen title"
   },
+  "notification_category_group_chat": "Chat",
+  "@notification_category_group_chat": {
+    "description": "Title for notification category group chat"
+  },
+  "notification_category_group_content_moderation": "Content moderation",
+  "@notification_category_group_content_moderation": {
+    "description": "Title for notification category group content moderation"
+  },
+  "notification_category_group_general": "General",
+  "@notification_category_group_general": {
+    "description": "Title for notification category group general"
+  },
   "notification_category_likes": "Chat requests",
   "@notification_category_likes": {
     "description": "Title for notification category likes"
   },
-  "notification_category_media_content_moderation_completed": "Image moderation",
+  "notification_category_media_content_moderation_completed": "Images",
   "@notification_category_media_content_moderation_completed": {
     "description": "Title for notification category media content moderation completed"
   },
@@ -979,7 +991,7 @@
   "@notification_category_news_item_available": {
     "description": "Title for notification category news item available"
   },
-  "notification_category_profile_text_moderation_completed": "Profile text moderation",
+  "notification_category_profile_text_moderation_completed": "Profile texts",
   "@notification_category_profile_text_moderation_completed": {
     "description": "Title for notification category profile text moderation completed"
   },

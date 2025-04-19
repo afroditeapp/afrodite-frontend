@@ -88,19 +88,47 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     final List<Widget> settingsList;
     if (state.areNotificationsEnabled) {
       final settings = [
-        messagesSlider(context, state),
-        likesSlider(context, state),
-        mediaContentModerationCompletedSlider(context, state),
-        profileTextModerationCompletedSlider(context, state),
-        if (features.features.news) newsSlider(context, state),
+        [
+          messagesSlider(context, state),
+          likesSlider(context, state),
+        ],
+        [
+          mediaContentModerationCompletedSlider(context, state),
+          profileTextModerationCompletedSlider(context, state),
+        ],
+        if (features.features.news) [
+          if (features.features.news) newsSlider(context, state),
+        ]
       ];
+      for (final group in settings) {
+        if (Platform.isAndroid) {
+          // Use same order as in system notification settings
+          group.sortBy<String>((v) => v.$1.id);
+        } else {
+          group.sortBy<String>((v) => v.$1.title);
+        }
+      }
+
       if (Platform.isAndroid) {
         // Use same order as in system notification settings
-        settings.sortBy<String>((v) => v.$1.id);
+        settings.sortBy<String>((v) => v.first.$1.group.id);
       } else {
-        settings.sortBy<String>((v) => v.$1.title);
+        settings.sortBy<String>((v) => v.first.$1.title);
       }
-      settingsList = settings.map((v) => v.$2).toList();
+
+      settingsList = [];
+      for (final group in settings) {
+        settingsList.add(Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Text(
+            group.first.$1.group.title,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+            )
+          ),
+        ));
+        settingsList.addAll(group.map((v) => v.$2));
+      }
     } else {
       settingsList = [
         const Padding(padding: EdgeInsets.all(4)),

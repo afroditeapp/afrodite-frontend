@@ -1,4 +1,5 @@
 
+import 'package:app/data/general/notification/utils/notification_category_group.dart';
 import 'package:database/database.dart';
 import 'package:app/data/notification_manager.dart';
 import 'package:app/database/account_background_database_manager.dart';
@@ -9,8 +10,13 @@ typedef IsEnabledGetter = Stream<bool?> Function(AccountBackgroundDatabase);
 
 sealed class NotificationCategory {
   final String id;
+  final NotificationCategoryGroup group;
   final bool headsUpNotification;
-  const NotificationCategory({required this.id, this.headsUpNotification = false});
+  const NotificationCategory({
+    required this.id,
+    required this.group,
+    this.headsUpNotification = false,
+  });
 
   String get title;
 
@@ -33,6 +39,7 @@ sealed class NotificationCategory {
 class NotificationCategoryMessages extends NotificationCategory {
   const NotificationCategoryMessages() : super(
     id: "notification_category_messages",
+    group: const NotificationCategoryGroupChat(),
     headsUpNotification: true,
   );
 
@@ -46,6 +53,7 @@ class NotificationCategoryMessages extends NotificationCategory {
 class NotificationCategoryLikes extends NotificationCategory {
   const NotificationCategoryLikes() : super(
     id: "notification_category_likes",
+    group: const NotificationCategoryGroupChat(),
     headsUpNotification: true,
   );
 
@@ -59,6 +67,7 @@ class NotificationCategoryLikes extends NotificationCategory {
 class NotificationCategoryMediaContentModerationCompleted extends NotificationCategory {
   const NotificationCategoryMediaContentModerationCompleted() : super(
     id: "notification_category_media_content_moderation_completed",
+    group: const NotificationCategoryGroupContentModeration(),
     headsUpNotification: true,
   );
 
@@ -72,6 +81,7 @@ class NotificationCategoryMediaContentModerationCompleted extends NotificationCa
 class NotificationCategoryProfileTextModerationCompleted extends NotificationCategory {
   const NotificationCategoryProfileTextModerationCompleted() : super(
     id: "notification_category_profile_text_moderation_completed",
+    group: const NotificationCategoryGroupContentModeration(),
     headsUpNotification: true,
   );
 
@@ -85,6 +95,7 @@ class NotificationCategoryProfileTextModerationCompleted extends NotificationCat
 class NotificationCategoryNewsItemAvailable extends NotificationCategory {
   const NotificationCategoryNewsItemAvailable() : super(
     id: "notification_category_news_item_available",
+    group: const NotificationCategoryGroupGeneral(),
     headsUpNotification: true,
   );
 
