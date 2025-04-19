@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/general/notification/state/like_received.dart';
 import 'package:app/data/general/notification/state/message_received.dart';
-import 'package:app/data/general/notification/state/moderation_request_status.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';

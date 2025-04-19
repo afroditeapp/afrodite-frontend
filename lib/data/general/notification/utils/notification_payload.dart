@@ -76,6 +76,8 @@ sealed class NotificationPayload extends Immutable {
         return NavigateToConversation.parseFromJsonObject(jsonObject, sessionId);
       case NotificationPayloadTypeString.stringNavigateToContentManagement:
         return NavigateToContentManagement(sessionId: sessionId);
+      case NotificationPayloadTypeString.stringNavigateToMyProfile:
+        return NavigateToMyProfile(sessionId: sessionId);
       default:
         log.error("Payload type is unknown");
         return null;
@@ -153,12 +155,21 @@ class NavigateToContentManagement extends NotificationPayload {
   );
 }
 
+class NavigateToMyProfile extends NotificationPayload {
+  const NavigateToMyProfile({
+    required super.sessionId,
+  }) : super(
+    payloadType: NotificationPayloadTypeString.navigateToMyProfile,
+  );
+}
+
 enum NotificationPayloadTypeString {
   navigateToLikes(value: stringNavigateToLikes),
   navigateToNews(value: stringNavigateToNews),
   navigateToConversation(value: stringNavigateToConversation),
   navigateToConversationList(value: stringNavigateToConversationList),
-  navigateToContentManagement(value: stringNavigateToContentManagement);
+  navigateToContentManagement(value: stringNavigateToContentManagement),
+  navigateToMyProfile(value: stringNavigateToMyProfile);
 
   final String value;
   const NotificationPayloadTypeString({
@@ -170,4 +181,5 @@ enum NotificationPayloadTypeString {
   static const String stringNavigateToConversation = "navigate_to_conversation";
   static const String stringNavigateToConversationList = "navigate_to_conversation_list";
   static const String stringNavigateToContentManagement = "navigate_to_content_management";
+  static const String stringNavigateToMyProfile = "navigate_to_my_profile";
 }

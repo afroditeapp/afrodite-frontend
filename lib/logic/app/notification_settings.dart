@@ -12,6 +12,7 @@ class ReloadNotificationsEnabledStatus extends NotificationSettingsEvent {}
 class ToggleMessages extends NotificationSettingsEvent {}
 class ToggleLikes extends NotificationSettingsEvent {}
 class ToggleMediaContentModerationCompleted extends NotificationSettingsEvent {}
+class ToggleProfileTextModerationCompleted extends NotificationSettingsEvent {}
 class ToggleNews extends NotificationSettingsEvent {}
 class NewValueMessages extends NotificationSettingsEvent {
   final bool value;
@@ -25,6 +26,10 @@ class NewValueMediaContentModerationCompleted extends NotificationSettingsEvent 
   final bool value;
   NewValueMediaContentModerationCompleted(this.value);
 }
+class NewValueProfileTextModerationCompleted extends NotificationSettingsEvent {
+  final bool value;
+  NewValueProfileTextModerationCompleted(this.value);
+}
 class NewValueNews extends NotificationSettingsEvent {
   final bool value;
   NewValueNews(this.value);
@@ -37,6 +42,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
   StreamSubscription<bool?>? _messagesSubscription;
   StreamSubscription<bool?>? _likesSubscription;
   StreamSubscription<bool?>? _mediaContentModerationCompletedSubscription;
+  StreamSubscription<bool?>? _profileTextModerationCompletedSubscription;
   StreamSubscription<bool?>? _newsSubscription;
 
   NotificationSettingsBloc() : super(NotificationSettingsData()) {
@@ -47,6 +53,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
         categorySystemEnabledLikes: !disabledChannelIds.contains(const NotificationCategoryLikes().id),
         categorySystemEnabledMessages: !disabledChannelIds.contains(const NotificationCategoryMessages().id),
         categorySystemEnabledMediaContentModerationCompleted: !disabledChannelIds.contains(const NotificationCategoryMediaContentModerationCompleted().id),
+        categorySystemEnabledProfileTextModerationCompleted: !disabledChannelIds.contains(const NotificationCategoryProfileTextModerationCompleted().id),
         categorySystemEnabledNews: !disabledChannelIds.contains(const NotificationCategoryNewsItemAvailable().id),
       ));
     });
@@ -59,6 +66,9 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     on<ToggleMediaContentModerationCompleted>((data, emit) async {
       await db.accountAction((db) => db.daoLocalNotificationSettings.updateMediaContentModerationCompleted(!state.categoryEnabledMediaContentModerationCompleted));
     });
+    on<ToggleProfileTextModerationCompleted>((data, emit) async {
+      await db.accountAction((db) => db.daoLocalNotificationSettings.updateProfileTextModerationCompleted(!state.categoryEnabledProfileTextModerationCompleted));
+    });
     on<ToggleNews>((data, emit) async {
       await db.accountAction((db) => db.daoLocalNotificationSettings.updateNews(!state.categoryEnabledNews));
     });
@@ -70,6 +80,9 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     );
     on<NewValueMediaContentModerationCompleted>((data, emit) =>
       emit(state.copyWith(categoryEnabledMediaContentModerationCompleted: data.value))
+    );
+    on<NewValueProfileTextModerationCompleted>((data, emit) =>
+      emit(state.copyWith(categoryEnabledProfileTextModerationCompleted: data.value))
     );
     on<NewValueNews>((data, emit) =>
       emit(state.copyWith(categoryEnabledNews: data.value))
@@ -90,6 +103,11 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
       .listen((state) {
         add(NewValueMediaContentModerationCompleted(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });
+    _profileTextModerationCompletedSubscription = db
+      .accountStream((db) => db.daoLocalNotificationSettings.watchProfileTextModerationCompleted())
+      .listen((state) {
+        add(NewValueProfileTextModerationCompleted(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
+      });
     _newsSubscription = db
       .accountStream((db) => db.daoLocalNotificationSettings.watchNewsItemAvailable())
       .listen((state) {
@@ -102,6 +120,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     await _messagesSubscription?.cancel();
     await _likesSubscription?.cancel();
     await _mediaContentModerationCompletedSubscription?.cancel();
+    await _profileTextModerationCompletedSubscription?.cancel();
     await _newsSubscription?.cancel();
     await super.close();
   }

@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:app/data/general/notification/state/profile_text_moderation_completed.dart';
 import 'package:async/async.dart' show StreamExtensions;
-import 'package:app/data/general/notification/state/moderation_request_status.dart';
+import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
 import 'package:app/data/general/notification/state/news_item_available.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -217,6 +218,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       if ((v.value & 0x8) == 0x8) {
         await _handlePushNotificationNewsChanged(v.newsChanged, accountBackgroundDb);
       }
+      if ((v.value & 0x10) == 0x10) {
+        await _handlePushNotificationProfileTextModerationCompleted(v.profileTextModerationCompleted, accountBackgroundDb);
+      }
     case Err():
       log.error("Downloading pending notification failed");
   }
@@ -248,22 +252,17 @@ Future<void> _handlePushNotificationMediaContentModerationCompleted(
   if (notification == null) {
     return;
   }
+  await NotificationMediaContentModerationCompleted.handleMediaContentModerationCompleted(notification, accountBackgroundDb);
+}
 
-  final showAccepted = await accountBackgroundDb.accountData(
-    (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.accepted)
-  ).ok() ?? false;
-
-  if (showAccepted) {
-    await NotificationMediaContentModerationCompleted.getInstance().show(ModerationCompletedState.accepted, accountBackgroundDb);
+Future<void> _handlePushNotificationProfileTextModerationCompleted(
+  ProfileTextModerationCompletedNotification? notification,
+  AccountBackgroundDatabaseManager accountBackgroundDb,
+) async {
+  if (notification == null) {
+    return;
   }
-
-  final showRejected = await accountBackgroundDb.accountData(
-    (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.rejected)
-  ).ok() ?? false;
-
-  if (showRejected) {
-    await NotificationMediaContentModerationCompleted.getInstance().show(ModerationCompletedState.rejected, accountBackgroundDb);
-  }
+  await NotificationProfileTextModerationCompleted.handleProfileTextModerationCompleted(notification, accountBackgroundDb);
 }
 
 Future<void> _handlePushNotificationNewsChanged(UnreadNewsCountResult? r, AccountBackgroundDatabaseManager accountBackgroundDb) async {

@@ -70,6 +70,7 @@
     <string name="notification_category_messages" description="Title for notification category messages">Messages</string>
     <string name="notification_category_likes" description="Title for notification category likes">Chat requests</string>
     <string name="notification_category_media_content_moderation_completed" description="Title for notification category media content moderation completed">Image moderation</string>
+    <string name="notification_category_profile_text_moderation_completed" description="Title for notification category profile text moderation completed">Profile text moderation</string>
     <string name="notification_category_news_item_available" description="Title for notification category news item available">News</string>
 
     <!-- Notification like received -->
@@ -79,6 +80,10 @@
     <!-- Notification media content moderation completed -->
     <string name="notification_media_content_accepted" description="Title for media content accepted notification">Image accepted</string>
     <string name="notification_media_content_rejected" description="Title for media content rejected notification">Image rejected</string>
+
+    <!-- Notification profile text moderation completed -->
+    <string name="notification_profile_text_accepted" description="Title for profile text accepted notification">Profile text accepted</string>
+    <string name="notification_profile_text_rejected" description="Title for profile text rejected notification">Profile text rejected</string>
 
     <!-- Notification message received -->
     <string name="notification_message_received_single" description="Title for message received when single message is received">%s sent a message</string>

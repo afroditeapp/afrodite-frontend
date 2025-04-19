@@ -10,10 +10,12 @@ class NotificationSettingsData with _$NotificationSettingsData {
     @Default(true) bool categoryEnabledMessages,
     @Default(true) bool categoryEnabledLikes,
     @Default(true) bool categoryEnabledMediaContentModerationCompleted,
+    @Default(true) bool categoryEnabledProfileTextModerationCompleted,
     @Default(true) bool categoryEnabledNews,
     @Default(true) bool categorySystemEnabledMessages,
     @Default(true) bool categorySystemEnabledLikes,
     @Default(true) bool categorySystemEnabledMediaContentModerationCompleted,
+    @Default(true) bool categorySystemEnabledProfileTextModerationCompleted,
     @Default(true) bool categorySystemEnabledNews,
   }) = _NotificationSettingsData;
 }

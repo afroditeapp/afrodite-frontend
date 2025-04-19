@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:app/ui/normal/settings/my_profile.dart';
 import 'package:app/ui/normal/settings/news/news_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -166,6 +167,11 @@ Future<NewPageDetails?> handlePayload(
           child: ContentManagementScreenOpener(),
         ),
       );
+    case NavigateToMyProfile():
+      final currentPageInfo = NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo;
+      if (currentPageInfo is! MyProfilePageInfo) {
+        return newMyProfileScreen();
+      }
   }
   return null;
 }

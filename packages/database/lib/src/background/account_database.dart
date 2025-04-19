@@ -9,6 +9,7 @@ import 'package:database/src/background/new_received_likes_available_table.dart'
 import 'package:database/src/background/new_message_notification_table.dart';
 import 'package:database/src/background/news_table.dart';
 import 'package:database/src/background/profile_table.dart';
+import 'package:database/src/background/profile_text_moderation_completed_notification_table.dart';
 import 'package:database/src/message_entry.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
@@ -25,11 +26,12 @@ class AccountBackground extends Table {
 
   TextColumn get uuidAccountId => text().map(const NullAwareTypeConverter.wrap(AccountIdConverter())).nullable()();
 
-  // DaoNotificationSettings
+  // DaoLocalNotificationSettings
 
   BoolColumn get localNotificationSettingMessages => boolean().nullable()();
   BoolColumn get localNotificationSettingLikes => boolean().nullable()();
   BoolColumn get localNotificationSettingMediaContentModerationCompleted => boolean().nullable()();
+  BoolColumn get localNotificationSettingProfileTextModerationCompleted => boolean().nullable()();
   BoolColumn get localNotificationSettingNewsItemAvailable => boolean().nullable()();
 
   // DaoUserInterfaceSettings
@@ -46,6 +48,7 @@ class AccountBackground extends Table {
     NewReceivedLikesAvailable,
     News,
     MediaContentModerationCompletedNotificationTable,
+    ProfileTextModerationCompletedNotificationTable,
   ],
   daos: [
     // Related to AccountBackground table
@@ -63,6 +66,8 @@ class AccountBackground extends Table {
     DaoNews,
     // Related to MediaContentModerationCompletedNotificationTable
     DaoMediaContentModerationCompletedNotificationTable,
+    // Related to ProfileTextModerationCompletedNotificationTable
+    DaoProfileTextModerationCompletedNotificationTable,
   ],
 )
 class AccountBackgroundDatabase extends _$AccountBackgroundDatabase {

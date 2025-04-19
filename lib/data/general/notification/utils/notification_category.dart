@@ -25,6 +25,7 @@ sealed class NotificationCategory {
     NotificationCategoryLikes(),
     NotificationCategoryMessages(),
     NotificationCategoryMediaContentModerationCompleted(),
+    NotificationCategoryProfileTextModerationCompleted(),
     NotificationCategoryNewsItemAvailable(),
   ];
 }
@@ -66,6 +67,19 @@ class NotificationCategoryMediaContentModerationCompleted extends NotificationCa
 
   @override
   IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoLocalNotificationSettings.watchMediaContentModerationCompleted();
+}
+
+class NotificationCategoryProfileTextModerationCompleted extends NotificationCategory {
+  const NotificationCategoryProfileTextModerationCompleted() : super(
+    id: "notification_category_profile_text_moderation_completed",
+    headsUpNotification: true,
+  );
+
+  @override
+  String get title => R.strings.notification_category_profile_text_moderation_completed;
+
+  @override
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoLocalNotificationSettings.watchProfileTextModerationCompleted();
 }
 
 class NotificationCategoryNewsItemAvailable extends NotificationCategory {

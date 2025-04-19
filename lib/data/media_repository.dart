@@ -3,7 +3,8 @@
 
 import 'dart:async';
 
-import 'package:app/data/general/notification/state/moderation_request_status.dart';
+import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
+import 'package:app/data/general/notification/state/profile_text_moderation_completed.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:drift/drift.dart';
@@ -135,24 +136,24 @@ class MediaRepository extends DataRepositoryWithLifecycle {
       return;
     }
 
-    final showAccepted = await accountBackgroundDb.accountData(
-      (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.accepted)
-    ).ok() ?? false;
-
-    if (showAccepted) {
-      await NotificationMediaContentModerationCompleted.getInstance().show(ModerationCompletedState.accepted, accountBackgroundDb);
-    }
-
-    final showRejected = await accountBackgroundDb.accountData(
-      (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldRejectedNotificationBeShown(notification.rejected)
-    ).ok() ?? false;
-
-    if (showRejected) {
-      await NotificationMediaContentModerationCompleted.getInstance().show(ModerationCompletedState.rejected, accountBackgroundDb);
-    }
+    await NotificationMediaContentModerationCompleted.handleMediaContentModerationCompleted(notification, accountBackgroundDb);
 
     await api.mediaAction((api) => api.postMarkMediaContentModerationCompletedNotificationViewed(
       MediaContentModerationCompletedNotificationViewed(accepted: notification.accepted, rejected: notification.rejected),
+    )).ok();
+  }
+
+  Future<void> handleProfileTextModerationCompletedEvent() async {
+    final notification = await api.profile((api) => api.postGetProfileTextModerationCompletedNotification()).ok();
+
+    if (notification == null) {
+      return;
+    }
+
+    await NotificationProfileTextModerationCompleted.handleProfileTextModerationCompleted(notification, accountBackgroundDb);
+
+    await api.profileAction((api) => api.postMarkProfileTextModerationCompletedNotificationViewed(
+      ProfileTextModerationCompletedNotificationViewed(accepted: notification.accepted, rejected: notification.rejected),
     )).ok();
   }
 

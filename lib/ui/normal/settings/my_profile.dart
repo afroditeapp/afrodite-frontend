@@ -23,8 +23,17 @@ void openMyProfileScreen(BuildContext context) {
   if (context.read<AccountBloc>().state.accountState == AccountState.initialSetup) {
     showSnackBar(context.strings.view_profile_screen_my_profile_initial_setup_not_done);
   } else {
-    MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()));
+    MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()), pageInfo: const MyProfilePageInfo());
   }
+}
+
+NewPageDetails newMyProfileScreen() {
+  return NewPageDetails(
+    const MaterialPage<void>(
+      child: MyProfileScreen(),
+    ),
+    pageInfo: const MyProfilePageInfo(),
+  );
 }
 
 class MyProfileScreen extends StatelessWidget {

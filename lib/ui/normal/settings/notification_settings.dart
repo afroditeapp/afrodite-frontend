@@ -91,6 +91,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
         messagesSlider(context, state),
         likesSlider(context, state),
         mediaContentModerationCompletedSlider(context, state),
+        profileTextModerationCompletedSlider(context, state),
         if (features.features.news) newsSlider(context, state),
       ];
       if (Platform.isAndroid) {
@@ -150,6 +151,19 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
       isEnabledFromSystemSettings: state.categorySystemEnabledMediaContentModerationCompleted,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleMediaContentModerationCompleted());
+      },
+    );
+    return (category, widget);
+  }
+
+  (NotificationCategory, Widget) profileTextModerationCompletedSlider(BuildContext context, NotificationSettingsData state) {
+    const category = NotificationCategoryProfileTextModerationCompleted();
+    final widget = categorySwitch(
+      title: category.title,
+      isEnabled: state.categoryEnabledProfileTextModerationCompleted,
+      isEnabledFromSystemSettings: state.categorySystemEnabledProfileTextModerationCompleted,
+      onChanged: (value) {
+        context.read<NotificationSettingsBloc>().add(ToggleProfileTextModerationCompleted());
       },
     );
     return (category, widget);
