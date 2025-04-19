@@ -80,6 +80,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         return const Ok(null);
       })
       .andThen((_) => reloadFavoriteProfiles())
+      .andThen((_) => _reloadProfileNotificationSettings())
       .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(true)));
   }
 
@@ -117,8 +118,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
       final syncDone = await db.accountStreamSingle((db) => db.daoInitialSync.watchProfileSyncDone()).ok() ?? false;
       if (!syncDone) {
-        await reloadFavoriteProfiles();
-        await db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(true));
+        await reloadFavoriteProfiles()
+          .andThen((_) => _reloadProfileNotificationSettings())
+          .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(true)));
       }
     });
   }
@@ -594,6 +596,13 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
           );
         }
     }
+  }
+
+  Future<Result<void, void>> _reloadProfileNotificationSettings() async {
+    return await _api.profile((api) => api.getProfileAppNotificationSettings())
+      .andThen((v) => accountBackgroundDb.accountAction(
+        (db) => db.daoLocalNotificationSettings.updateProfileNotificationSettings(v),
+      ));
   }
 }
 

@@ -57,6 +57,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   @override
   Future<Result<void, void>> onLoginDataSync() async {
     return await reloadMyMediaContent()
+      .andThen((_) => _reloadMediaNotificationSettings())
       .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateMediaSyncDone(true)));
   }
 
@@ -65,10 +66,9 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     syncHandler.onResumeAppUsageSync(() async {
       final syncDone = await db.accountStreamSingle((db) => db.daoInitialSync.watchMediaSyncDone()).ok() ?? false;
       if (!syncDone) {
-        final r1 = await reloadMyMediaContent();
-        if (r1.isOk()) {
-          await db.accountAction((db) => db.daoInitialSync.updateMediaSyncDone(true));
-        }
+        await reloadMyMediaContent()
+          .andThen((_) => _reloadMediaNotificationSettings())
+          .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateMediaSyncDone(true)));
       }
     });
   }
@@ -168,6 +168,13 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     final result = await InitialSetupUtils(api).handleInitialSetupImages(content.securitySelfie, content.profileImgs);
     await reloadMyMediaContent();
     return result;
+  }
+
+  Future<Result<void, void>> _reloadMediaNotificationSettings() async {
+    return await api.media((api) => api.getMediaAppNotificationSettings())
+      .andThen((v) => accountBackgroundDb.accountAction(
+        (db) => db.daoLocalNotificationSettings.updateMediaNotificationSettings(v),
+      ));
   }
 }
 

@@ -4,6 +4,9 @@ import 'dart:io';
 
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui_utils/common_update_logic.dart';
+import 'package:app/ui_utils/dialog.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -16,33 +19,37 @@ import 'package:app/model/freezed/logic/settings/notification_settings.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:openapi/api.dart';
 
-// TODO(prod): Consider removing initial image moderation status cagetory
-//             and adding categories for profile name, text and image
-//             moderations.
-// TODO(prod): Introduce notification categories Chat, General, Other
-
 void openNotificationSettings(BuildContext context) {
   if (NotificationManager.getInstance().osProvidesNotificationSettingsUi) {
     AppSettings.openAppSettings(type: AppSettingsType.notification);
   } else {
     final notificationSettingsBloc = context.read<NotificationSettingsBloc>();
-    MyNavigator.push(context, MaterialPage<void>(child:
-      NotificationSettingsScreen(notificationSettingsBloc: notificationSettingsBloc)
-    ));
+    final pageKey = PageKey();
+    MyNavigator.pushWithKey(
+      context,
+      MaterialPage<void>(
+        child: NotificationSettingsScreen(
+          notificationSettingsBloc: notificationSettingsBloc,
+          pageKey: pageKey,
+        ),
+      ),
+      pageKey,
+    );
   }
 }
 
 class NotificationSettingsScreen extends StatefulWidget {
   final NotificationSettingsBloc notificationSettingsBloc;
+  final PageKey pageKey;
   const NotificationSettingsScreen({
     required this.notificationSettingsBloc,
+    required this.pageKey,
     super.key,
   });
 
   @override
   State<NotificationSettingsScreen> createState() => _NotificationSettingsScreenState();
 }
-
 
 class _NotificationSettingsScreenState extends State<NotificationSettingsScreen> {
   late final AppLifecycleListener listener;
@@ -51,6 +58,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
   void initState() {
     super.initState();
     widget.notificationSettingsBloc.add(ReloadNotificationsEnabledStatus());
+    widget.notificationSettingsBloc.add(ResetEditedValues());
     listener = AppLifecycleListener(
       onShow: () {
         widget.notificationSettingsBloc.add(ReloadNotificationsEnabledStatus());
@@ -60,22 +68,47 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(context.strings.notification_settings_screen_title),
+    return updateStateHandler<NotificationSettingsBloc, NotificationSettingsData>(
+      context: context,
+      pageKey: widget.pageKey,
+      child: BlocBuilder<NotificationSettingsBloc, NotificationSettingsData>(
+        builder: (context, data) {
+          final dataEditingDetected = data.unsavedChanges();
+
+          return PopScope(
+            canPop: !dataEditingDetected,
+            onPopInvoked: (didPop) {
+              if (didPop) {
+                return;
+              }
+              showConfirmDialog(context, context.strings.generic_save_confirmation_title, yesNoActions: true)
+                .then((value) {
+                  if (value == true) {
+                    widget.notificationSettingsBloc.add(SaveSettings());
+                  } else if (value == false && context.mounted) {
+                    widget.notificationSettingsBloc.add(ResetEditedValues());
+                    MyNavigator.pop(context);
+                  }
+                });
+            },
+            child: Scaffold(
+              appBar: AppBar(title: Text(context.strings.notification_settings_screen_title)),
+              body: content(context, data),
+              floatingActionButton: dataEditingDetected ? FloatingActionButton(
+                onPressed: () => widget.notificationSettingsBloc.add(SaveSettings()),
+                child: const Icon(Icons.check),
+              ) : null
+            ),
+          );
+        }
       ),
-      body: content(context),
     );
   }
 
-  Widget content(BuildContext context) {
+  Widget content(BuildContext context, NotificationSettingsData state) {
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfig>(
       builder: (context, features) {
-        return BlocBuilder<NotificationSettingsBloc, NotificationSettingsData>(
-          builder: (context, state) {
-            return contentWidget(context, features, state);
-          }
-        );
+        return contentWidget(context, features, state);
       }
     );
   }
@@ -149,7 +182,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     const category = NotificationCategoryMessages();
     final widget = categorySwitch(
       title: category.title,
-      isEnabled: state.categoryEnabledMessages,
+      isEnabled: state.valueMessages(),
       isEnabledFromSystemSettings: state.categorySystemEnabledMessages,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleMessages());
@@ -162,7 +195,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     const category = NotificationCategoryLikes();
     final widget = categorySwitch(
       title: category.title,
-      isEnabled: state.categoryEnabledLikes,
+      isEnabled: state.valueLikes(),
       isEnabledFromSystemSettings: state.categorySystemEnabledLikes,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleLikes());
@@ -175,7 +208,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     const category = NotificationCategoryMediaContentModerationCompleted();
     final widget = categorySwitch(
       title: category.title,
-      isEnabled: state.categoryEnabledMediaContentModerationCompleted,
+      isEnabled: state.valueMediaContent(),
       isEnabledFromSystemSettings: state.categorySystemEnabledMediaContentModerationCompleted,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleMediaContentModerationCompleted());
@@ -188,7 +221,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     const category = NotificationCategoryProfileTextModerationCompleted();
     final widget = categorySwitch(
       title: category.title,
-      isEnabled: state.categoryEnabledProfileTextModerationCompleted,
+      isEnabled: state.valueProfileText(),
       isEnabledFromSystemSettings: state.categorySystemEnabledProfileTextModerationCompleted,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleProfileTextModerationCompleted());
@@ -201,7 +234,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     const category = NotificationCategoryNewsItemAvailable();
     final widget = categorySwitch(
       title: category.title,
-      isEnabled: state.categoryEnabledNews,
+      isEnabled: state.valueNews(),
       isEnabledFromSystemSettings: state.categorySystemEnabledNews,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleNews());

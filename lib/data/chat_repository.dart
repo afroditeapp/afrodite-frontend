@@ -84,6 +84,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> onLoginDataSync() async {
     return await _sentBlocksRefresh()
       .andThen((_) => _generateMessageKeyIfNeeded())
+      .andThen((_) => _reloadChatNotificationSettings())
       .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(true)));
   }
 
@@ -97,6 +98,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
       }
       await _sentBlocksRefresh()
         .andThen((_) => _generateMessageKeyIfNeeded())
+        .andThen((_) => _reloadChatNotificationSettings())
         .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(true)));
     });
   }
@@ -341,6 +343,13 @@ class ChatRepository extends DataRepositoryWithLifecycle {
       allMessages.addAll(messages);
     }
     return allMessages;
+  }
+
+  Future<Result<void, void>> _reloadChatNotificationSettings() async {
+    return await api.chat((api) => api.getChatAppNotificationSettings())
+      .andThen((v) => accountBackgroundDb.accountAction(
+        (db) => db.daoLocalNotificationSettings.updateChatNotificationSettings(v),
+      ));
   }
 
   // Message manager API

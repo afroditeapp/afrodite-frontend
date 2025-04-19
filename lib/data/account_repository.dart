@@ -94,17 +94,26 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Future<void> onLogin() async {
     await db.accountAction((db) => db.daoSyncVersions.resetSyncVersions());
     await accountBackgroundDb.accountAction((db) => db.resetSyncVersions());
+    await db.accountAction((db) => db.daoInitialSync.updateAccountSyncDone(false));
   }
 
   @override
   Future<Result<void, void>> onLoginDataSync() async {
-    return await clientIdManager.getClientId();
+    return await clientIdManager.getClientId()
+      .andThen((_) => _reloadAccountNotificationSettings())
+      .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateAccountSyncDone(true)));
   }
 
   @override
   Future<void> onResumeAppUsage() async {
     _syncHandler.onResumeAppUsageSync(() async {
       await clientIdManager.getClientId();
+
+      final syncDone = await db.accountStreamSingle((db) => db.daoInitialSync.watchAccountSyncDone()).ok() ?? false;
+      if (!syncDone) {
+        await _reloadAccountNotificationSettings()
+          .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateAccountSyncDone(true)));
+      }
     });
   }
 
@@ -259,6 +268,13 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     return db.accountAction((db) => db.daoServerMaintenance.setMaintenanceTime(
       time: time?.toUtcDateTime(),
     ));
+  }
+
+  Future<Result<void, void>> _reloadAccountNotificationSettings() async {
+    return await api.account((api) => api.getAccountAppNotificationSettings())
+      .andThen((v) => accountBackgroundDb.accountAction(
+        (db) => db.daoLocalNotificationSettings.updateAccountNotificationSettings(v),
+      ));
   }
 }
 

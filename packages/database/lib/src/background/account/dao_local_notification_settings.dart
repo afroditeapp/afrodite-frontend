@@ -1,4 +1,6 @@
 
+import 'package:openapi/api.dart' as api;
+
 import '../account_database.dart';
 
 import 'package:drift/drift.dart';
@@ -9,47 +11,39 @@ part 'dao_local_notification_settings.g.dart';
 class DaoLocalNotificationSettings extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoLocalNotificationSettingsMixin, AccountBackgroundTools {
   DaoLocalNotificationSettings(super.db);
 
-  Future<void> updateMessages(bool value) async {
+  Future<void> updateAccountNotificationSettings(api.AccountAppNotificationSettings value) async {
     await into(accountBackground).insertOnConflictUpdate(
       AccountBackgroundCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
-        localNotificationSettingMessages: Value(value),
+        localNotificationSettingNewsItemAvailable: Value(value.news),
       ),
     );
   }
 
-  Future<void> updateLikes(bool value) async {
+  Future<void> updateProfileNotificationSettings(api.ProfileAppNotificationSettings value) async {
     await into(accountBackground).insertOnConflictUpdate(
       AccountBackgroundCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
-        localNotificationSettingLikes: Value(value),
+        localNotificationSettingProfileTextModerationCompleted: Value(value.profileTextModeration),
       ),
     );
   }
 
-  Future<void> updateMediaContentModerationCompleted(bool value) async {
+  Future<void> updateMediaNotificationSettings(api.MediaAppNotificationSettings value) async {
     await into(accountBackground).insertOnConflictUpdate(
       AccountBackgroundCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
-        localNotificationSettingMediaContentModerationCompleted: Value(value),
+        localNotificationSettingMediaContentModerationCompleted: Value(value.mediaContentModeration),
       ),
     );
   }
 
-  Future<void> updateProfileTextModerationCompleted(bool value) async {
+  Future<void> updateChatNotificationSettings(api.ChatAppNotificationSettings value) async {
     await into(accountBackground).insertOnConflictUpdate(
       AccountBackgroundCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
-        localNotificationSettingProfileTextModerationCompleted: Value(value),
-      ),
-    );
-  }
-
-  Future<void> updateNews(bool value) async {
-    await into(accountBackground).insertOnConflictUpdate(
-      AccountBackgroundCompanion.insert(
-        id: ACCOUNT_DB_DATA_ID,
-        localNotificationSettingNewsItemAvailable: Value(value),
+        localNotificationSettingLikes: Value(value.likes),
+        localNotificationSettingMessages: Value(value.messages),
       ),
     );
   }
