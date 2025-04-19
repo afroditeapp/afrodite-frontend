@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:app/data/general/notification/utils/notification_category_group.dart';
 import 'package:database/database.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
@@ -209,14 +208,11 @@ class NotificationManager extends AppSingleton {
 
     final handle = _pluginHandle.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
 
-    for (final category in NotificationCategoryGroup.all) {
-      final group = AndroidNotificationChannelGroup(
-        category.id,
-        category.title,
-      );
-
-      await handle?.createNotificationChannelGroup(group);
-    }
+    // The notification library does not support getting info
+    // is AndroidNotificationChannelGroup enabled, so the channels are
+    // not grouped in Android settings to avoid displaying notification
+    // channel enabled state in app UI when the related channel group is
+    // disabled.
 
     for (final category in NotificationCategory.all) {
       final Importance importance;
@@ -229,7 +225,6 @@ class NotificationManager extends AppSingleton {
       final notificationChannel = AndroidNotificationChannel(
         category.id,
         category.title,
-        groupId: category.group.id,
         importance: importance,
         enableLights: true,
       );
