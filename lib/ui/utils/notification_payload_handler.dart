@@ -162,11 +162,10 @@ Future<NewPageDetails?> handlePayload(
         ),
       );
     case NavigateToContentManagement():
-      return NewPageDetails(
-        const MaterialPage<void>(
-          child: ContentManagementScreenOpener(),
-        ),
-      );
+      final currentPageInfo = NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo;
+      if (currentPageInfo is! ContentManagementPageInfo) {
+        return newContentManagementScreen();
+      }
     case NavigateToMyProfile():
       final currentPageInfo = NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo;
       if (currentPageInfo is! MyProfilePageInfo) {

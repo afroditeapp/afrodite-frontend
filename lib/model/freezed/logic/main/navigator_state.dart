@@ -71,6 +71,9 @@ class ConversationPageInfo extends PageInfo {
 class LikesPageInfo extends PageInfo {
   const LikesPageInfo();
 }
+class ContentManagementPageInfo extends PageInfo {
+  const ContentManagementPageInfo();
+}
 class MyProfilePageInfo extends PageInfo {
   const MyProfilePageInfo();
 }

@@ -25,6 +25,17 @@ import 'package:app/ui_utils/view_image_screen.dart';
 import 'package:app/utils/api.dart';
 import 'package:utils/utils.dart';
 
+void openContentManagementScreen(BuildContext context) {
+  final bloc = context.read<SelectContentBloc>();
+  MyNavigator.push(
+    context,
+    MaterialPage<void>(child:
+      ContentManagementScreen(selectContentBloc: bloc)
+    ),
+    pageInfo: const ContentManagementPageInfo(),
+  );
+}
+
 class ContentManagementScreenOpener extends StatelessWidget {
   const ContentManagementScreenOpener({super.key});
 
@@ -34,6 +45,15 @@ class ContentManagementScreenOpener extends StatelessWidget {
       selectContentBloc: context.read<SelectContentBloc>()
     );
   }
+}
+
+NewPageDetails newContentManagementScreen() {
+  return NewPageDetails(
+    const MaterialPage<void>(
+      child: ContentManagementScreenOpener(),
+    ),
+    pageInfo: const ContentManagementPageInfo(),
+  );
 }
 
 class ContentManagementScreen extends StatefulWidget {

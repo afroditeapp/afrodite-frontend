@@ -95,12 +95,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             );
           }),
           Setting.createSetting(Icons.image_rounded, context.strings.content_management_screen_title, () {
-              final bloc = context.read<SelectContentBloc>();
-              MyNavigator.push(context, MaterialPage<void>(child:
-                ContentManagementScreen(selectContentBloc: bloc)
-              ));
-            }
-          ),
+            openContentManagementScreen(context);
+          }),
           Setting.createSetting(Icons.storage, context.strings.data_settings_screen_title, () {
               MyNavigator.push(context, const MaterialPage<void>(child:
                 DataSettingsScreen()
